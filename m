@@ -2,137 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7DB075C9AB
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98E2D75C9B0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229566AbjGUOSQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41476 "EHLO
+        id S231436AbjGUOVl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231865AbjGUOR7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:17:59 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283DC2D4A
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:17:55 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1bb1baf55f5so14961715ad.0
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689949074; x=1690553874;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=3KDVlrghaGw8634LcPRX07bWjDPu8sw2z0/PhvJ9WwM=;
-        b=yo66IYLa6CDCDQELZZPtbTOsrcWyWn2tjuaepEKeY6d9eYyRtZ1EgQdbAARhzaf5PN
-         19aG+Lnd39bXE4SSXNFY1krYNdNnTtn/r6Z2tzinBA1fnw9AXW0nhxEWw6GNIt4swAtN
-         pAknCc4aTlj572JlsSU+QTMGiPdCDtrabK0w/vwOHENTbMkWNJiZt5AbcGVmJiYLiG0Y
-         U0JrYZX31t+wXb8nnySDITorXNlGBVtm1nt2PwGodojP51zd/XaFad3JYowrKrqDXT5V
-         m/gUULamJ2ERNMlqwx6nm6ah1mZeIa0FcYqPTNHsVMUvdqjZ+hhxyChxsmPJk01cT/x5
-         XJqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689949074; x=1690553874;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3KDVlrghaGw8634LcPRX07bWjDPu8sw2z0/PhvJ9WwM=;
-        b=UArlgC7ZvC4d92WiGOxR245G9jz1OxHkt6Ckg859mFbBzgZwL0fjv3DbKPFEbO0nIX
-         R9t5v/bqaZuNFTENNDIBs22R5yUwG05+n18x4/iLG9Ddx4fBK5NT3xtuDHruAgJqY9sx
-         e01McTvbP0PC8y3dhkJj+3Ok8QpVfHc94dMKsr5jsXqT3itzM5DyU54lNkN/UDLIyrpg
-         PLI6cKCeW4Q362eHAHkI7BUuCROJlyquhxoHKffJYrl4gJXL3OvNsrmOB8GzsYgljZWr
-         rmgyDjreQnClYYibcWzU6BiSqfcN/T7bC+Q9YZOGUtuOVTzNxm0rwFdBCM+j/h5DevTg
-         HwrA==
-X-Gm-Message-State: ABy/qLayyZUEWyKT2nDXJzAOtjP4aPlJBoZA70ZkrPXQNBudlm+jewee
-        4dPWB1/rnp/A9Lbxz22DwSfBaTUETiTlmJ9In4/vIQ==
-X-Google-Smtp-Source: APBJJlEwWy3Th1B85JrW/iXlqEmhhezbP5qQp3Lk5IOL6OhJ7H4MZAzGEAYlF93Z5Ruvx2NkOdZ6vw==
-X-Received: by 2002:a17:903:24c:b0:1bb:1504:b659 with SMTP id j12-20020a170903024c00b001bb1504b659mr2576845plh.40.1689949074235;
-        Fri, 21 Jul 2023 07:17:54 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id a20-20020a1709027d9400b001a5fccab02dsm3532957plm.177.2023.07.21.07.17.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 07:17:53 -0700 (PDT)
-Message-ID: <64ba9391.170a0220.4869c.66e6@mx.google.com>
-Date:   Fri, 21 Jul 2023 07:17:53 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229914AbjGUOVl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:21:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0760D1BD
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:21:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97EED6195D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:21:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A30C433C8;
+        Fri, 21 Jul 2023 14:21:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689949299;
+        bh=/P1y5v+Qrm6JksRzYHb+dg9ex9p1Osliha3rZHUf89o=;
+        h=Subject:To:Cc:From:Date:From;
+        b=cs1E1h8kqJblsUBowvQwfqC2JqOhBq5s2el338kpVRHyN+wkIVFYFXOvs2+swD3tH
+         VimMoVpCWJnpKF3mTj4FX+G3WXF03WbdyXwSBrF4nI31l+Z+6FMm7/cIXOJFTVgfpq
+         dm7F6kkuh43T0SgEG9dXjdJzDxN5/6f9+uLMGkoM=
+Subject: FAILED: patch "[PATCH] ceph: fix blindly expanding the readahead windows" failed to apply to 5.15-stable tree
+To:     xiubli@redhat.com, idryomov@gmail.com, mchangir@redhat.com,
+        sehuww@mail.scut.edu.cn
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 21 Jul 2023 16:21:16 +0200
+Message-ID: <2023072116-grading-unplanned-fd32@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Kernel: v5.15.120-461-gf00f5bd44794
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.15.y build: 4 builds: 0 failed, 4 passed,
- 1 warning (v5.15.120-461-gf00f5bd44794)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 4 builds: 0 failed, 4 passed, 1 warning (v5.1=
-5.120-461-gf00f5bd44794)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.120-461-gf00f5bd44794/
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.120-461-gf00f5bd44794
-Git Commit: f00f5bd447944c43362d06c5029e5c78ae14d2da
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 4 unique architectures
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Warnings Detected:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x dc94bb8f271c079f69583d0f12a489aaf5202751
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072116-grading-unplanned-fd32@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-arm:
+Possible dependencies:
 
-i386:
+dc94bb8f271c ("ceph: fix blindly expanding the readahead windows")
 
-riscv:
+thanks,
 
-x86_64:
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+greg k-h
 
+------------------ original commit in Linus's tree ------------------
 
-Warnings summary:
+From dc94bb8f271c079f69583d0f12a489aaf5202751 Mon Sep 17 00:00:00 2001
+From: Xiubo Li <xiubli@redhat.com>
+Date: Thu, 4 May 2023 19:00:42 +0800
+Subject: [PATCH] ceph: fix blindly expanding the readahead windows
 
-    1    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
+Blindly expanding the readahead windows will cause unneccessary
+pagecache thrashing and also will introduce the network workload.
+We should disable expanding the windows if the readahead is disabled
+and also shouldn't expand the windows too much.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+Expanding forward firstly instead of expanding backward for possible
+sequential reads.
 
-Detailed per-defconfig build reports:
+Bound `rreq->len` to the actual file size to restore the previous page
+cache usage.
 
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
+The posix_fadvise may change the maximum size of a file readahead.
 
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+Cc: stable@vger.kernel.org
+Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
+Link: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
+Link: https://www.spinics.net/lists/ceph-users/msg76183.html
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-and-tested-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 19c4f08454d2..59cbfb80edbd 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -187,16 +187,42 @@ static void ceph_netfs_expand_readahead(struct netfs_io_request *rreq)
+ 	struct inode *inode = rreq->inode;
+ 	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_file_layout *lo = &ci->i_layout;
++	unsigned long max_pages = inode->i_sb->s_bdi->ra_pages;
++	loff_t end = rreq->start + rreq->len, new_end;
++	struct ceph_netfs_request_data *priv = rreq->netfs_priv;
++	unsigned long max_len;
+ 	u32 blockoff;
+-	u64 blockno;
+ 
+-	/* Expand the start downward */
+-	blockno = div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+-	rreq->start = blockno * lo->stripe_unit;
+-	rreq->len += blockoff;
++	if (priv) {
++		/* Readahead is disabled by posix_fadvise POSIX_FADV_RANDOM */
++		if (priv->file_ra_disabled)
++			max_pages = 0;
++		else
++			max_pages = priv->file_ra_pages;
+ 
+-	/* Now, round up the length to the next block */
+-	rreq->len = roundup(rreq->len, lo->stripe_unit);
++	}
++
++	/* Readahead is disabled */
++	if (!max_pages)
++		return;
++
++	max_len = max_pages << PAGE_SHIFT;
++
++	/*
++	 * Try to expand the length forward by rounding up it to the next
++	 * block, but do not exceed the file size, unless the original
++	 * request already exceeds it.
++	 */
++	new_end = min(round_up(end, lo->stripe_unit), rreq->i_size);
++	if (new_end > end && new_end <= rreq->start + max_len)
++		rreq->len = new_end - rreq->start;
++
++	/* Try to expand the start downward */
++	div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
++	if (rreq->len + blockoff <= max_len) {
++		rreq->start -= blockoff;
++		rreq->len += blockoff;
++	}
+ }
+ 
+ static bool ceph_netfs_clamp_length(struct netfs_io_subrequest *subreq)
 
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----
-For more info write to <info@kernelci.org>
