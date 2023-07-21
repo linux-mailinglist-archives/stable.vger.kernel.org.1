@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED9475D2AE
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E0CC75D2BA
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231562AbjGUTC2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:02:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
+        id S231584AbjGUTDE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:03:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231560AbjGUTC2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:02:28 -0400
+        with ESMTP id S231691AbjGUTC7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:02:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C996030CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:02:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F149530D6
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:02:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67F4A61D91
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:02:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B306C433C9;
-        Fri, 21 Jul 2023 19:02:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90CA961D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:02:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D15C433C8;
+        Fri, 21 Jul 2023 19:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966145;
-        bh=d3ngUTbu7OHCcg+lxRS9R70eruI3G/PNnTp8z6hF6xs=;
+        s=korg; t=1689966177;
+        bh=83chOLz1xwA9ENQKxHerclny42/4UnK8Q/Ay/i/ykCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HsdyGUiPflXi4XixO+h9gpivqZ8p3+R4Ps8e6HgawZb44q2sgIMR0OM2eX9K2iNSl
-         xxKnSWY5oqa6Y7yGf9+r3fkhYmBcmJkLLKEIRcV1asGmySYY05eWecvtydZlJUrPKC
-         KvNPEWfgvElwKhAv4Y9FrV6Zm5L6OEo0JwkSagHQ=
+        b=Bnj7bEO6PIKDBOiw7Z7r9ZSZ0+sfvElFm81HWJlrMCxCzKgNdL41asvwMRlVbdCxH
+         4TkSQwNvZmRrAufsNiJHgY4f7DCLdMs4d4f2qga/BW2ETC4OD+RxA/iX4QiiEd+Rh9
+         MU64O9dhH3Ek/+qP1e3FTRGDdzDCwRA1DwVq+llQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 223/532] hwrng: virtio - Fix race on data_avail and actual data
-Date:   Fri, 21 Jul 2023 18:02:07 +0200
-Message-ID: <20230721160626.478440394@linuxfoundation.org>
+Subject: [PATCH 5.15 224/532] modpost: remove broken calculation of exception_table_entry size
+Date:   Fri, 21 Jul 2023 18:02:08 +0200
+Message-ID: <20230721160626.531128466@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -57,84 +54,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit ac52578d6e8d300dd50f790f29a24169b1edd26c ]
+[ Upstream commit d0acc76a49aa917c1a455d11d32d34a01e8b2835 ]
 
-The virtio rng device kicks off a new entropy request whenever the
-data available reaches zero.  When a new request occurs at the end
-of a read operation, that is, when the result of that request is
-only needed by the next reader, then there is a race between the
-writing of the new data and the next reader.
+find_extable_entry_size() is completely broken. It has awesome comments
+about how to calculate sizeof(struct exception_table_entry).
 
-This is because there is no synchronisation whatsoever between the
-writer and the reader.
+It was based on these assumptions:
 
-Fix this by writing data_avail with smp_store_release and reading
-it with smp_load_acquire when we first enter read.  The subsequent
-reads are safe because they're either protected by the first load
-acquire, or by the completion mechanism.
+  - struct exception_table_entry has two fields
+  - both of the fields have the same size
 
-Also remove the redundant zeroing of data_idx in random_recv_done
-(data_idx must already be zero at this point) and data_avail in
-request_entropy (ditto).
+Then, we came up with this equation:
 
-Reported-by: syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com
-Fixes: f7f510ec1957 ("virtio: An entropy device, as suggested by hpa.")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  (offset of the second field) * 2 == (size of struct)
+
+It was true for all architectures when commit 52dc0595d540 ("modpost:
+handle relocations mismatch in __ex_table.") was applied.
+
+Our mathematics broke when commit 548acf19234d ("x86/mm: Expand the
+exception table logic to allow new handling options") introduced the
+third field.
+
+Now, the definition of exception_table_entry is highly arch-dependent.
+
+For x86, sizeof(struct exception_table_entry) is apparently 12, but
+find_extable_entry_size() sets extable_entry_size to 8.
+
+I could fix it, but I do not see much value in this code.
+
+extable_entry_size is used just for selecting a slightly different
+error message.
+
+If the first field ("insn") references to a non-executable section,
+
+    The relocation at %s+0x%lx references
+    section "%s" which is not executable, IOW
+    it is not possible for the kernel to fault
+    at that address.  Something is seriously wrong
+    and should be fixed.
+
+If the second field ("fixup") references to a non-executable section,
+
+    The relocation at %s+0x%lx references
+    section "%s" which is not executable, IOW
+    the kernel will fault if it ever tries to
+    jump to it.  Something is seriously wrong
+    and should be fixed.
+
+Merge the two error messages rather than adding even more complexity.
+
+Change fatal() to error() to make it continue running and catch more
+possible errors.
+
+Fixes: 548acf19234d ("x86/mm: Expand the exception table logic to allow new handling options")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/virtio-rng.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ scripts/mod/modpost.c | 60 +++----------------------------------------
+ 1 file changed, 3 insertions(+), 57 deletions(-)
 
-diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
-index 0a7dde135db19..3a194eb3ce8ad 100644
---- a/drivers/char/hw_random/virtio-rng.c
-+++ b/drivers/char/hw_random/virtio-rng.c
-@@ -4,6 +4,7 @@
-  *  Copyright (C) 2007, 2008 Rusty Russell IBM Corporation
-  */
- 
-+#include <asm/barrier.h>
- #include <linux/err.h>
- #include <linux/hw_random.h>
- #include <linux/scatterlist.h>
-@@ -37,13 +38,13 @@ struct virtrng_info {
- static void random_recv_done(struct virtqueue *vq)
- {
- 	struct virtrng_info *vi = vq->vdev->priv;
-+	unsigned int len;
- 
- 	/* We can get spurious callbacks, e.g. shared IRQs + virtio_pci. */
--	if (!virtqueue_get_buf(vi->vq, &vi->data_avail))
-+	if (!virtqueue_get_buf(vi->vq, &len))
- 		return;
- 
--	vi->data_idx = 0;
--
-+	smp_store_release(&vi->data_avail, len);
- 	complete(&vi->have_data);
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index b284ee01fdebb..b29af4ad08321 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1612,43 +1612,6 @@ static int is_executable_section(struct elf_info* elf, unsigned int section_inde
+ 	return ((elf->sechdrs[section_index].sh_flags & SHF_EXECINSTR) == SHF_EXECINSTR);
  }
  
-@@ -52,7 +53,6 @@ static void request_entropy(struct virtrng_info *vi)
- 	struct scatterlist sg;
+-/*
+- * We rely on a gross hack in section_rel[a]() calling find_extable_entry_size()
+- * to know the sizeof(struct exception_table_entry) for the target architecture.
+- */
+-static unsigned int extable_entry_size = 0;
+-static void find_extable_entry_size(const char* const sec, const Elf_Rela* r)
+-{
+-	/*
+-	 * If we're currently checking the second relocation within __ex_table,
+-	 * that relocation offset tells us the offsetof(struct
+-	 * exception_table_entry, fixup) which is equal to sizeof(struct
+-	 * exception_table_entry) divided by two.  We use that to our advantage
+-	 * since there's no portable way to get that size as every architecture
+-	 * seems to go with different sized types.  Not pretty but better than
+-	 * hard-coding the size for every architecture..
+-	 */
+-	if (!extable_entry_size)
+-		extable_entry_size = r->r_offset * 2;
+-}
+-
+-static inline bool is_extable_fault_address(Elf_Rela *r)
+-{
+-	/*
+-	 * extable_entry_size is only discovered after we've handled the
+-	 * _second_ relocation in __ex_table, so only abort when we're not
+-	 * handling the first reloc and extable_entry_size is zero.
+-	 */
+-	if (r->r_offset && extable_entry_size == 0)
+-		fatal("extable_entry size hasn't been discovered!\n");
+-
+-	return ((r->r_offset == 0) ||
+-		(r->r_offset % extable_entry_size == 0));
+-}
+-
+-#define is_second_extable_reloc(Start, Cur, Sec)			\
+-	(((Cur) == (Start) + 1) && (strcmp("__ex_table", (Sec)) == 0))
+-
+ static void report_extable_warnings(const char* modname, struct elf_info* elf,
+ 				    const struct sectioncheck* const mismatch,
+ 				    Elf_Rela* r, Elf_Sym* sym,
+@@ -1705,22 +1668,9 @@ static void extable_mismatch_handler(const char* modname, struct elf_info *elf,
+ 		      "You might get more information about where this is\n"
+ 		      "coming from by using scripts/check_extable.sh %s\n",
+ 		      fromsec, (long)r->r_offset, tosec, modname);
+-	else if (!is_executable_section(elf, get_secindex(elf, sym))) {
+-		if (is_extable_fault_address(r))
+-			fatal("The relocation at %s+0x%lx references\n"
+-			      "section \"%s\" which is not executable, IOW\n"
+-			      "it is not possible for the kernel to fault\n"
+-			      "at that address.  Something is seriously wrong\n"
+-			      "and should be fixed.\n",
+-			      fromsec, (long)r->r_offset, tosec);
+-		else
+-			fatal("The relocation at %s+0x%lx references\n"
+-			      "section \"%s\" which is not executable, IOW\n"
+-			      "the kernel will fault if it ever tries to\n"
+-			      "jump to it.  Something is seriously wrong\n"
+-			      "and should be fixed.\n",
+-			      fromsec, (long)r->r_offset, tosec);
+-	}
++	else if (!is_executable_section(elf, get_secindex(elf, sym)))
++		error("%s+0x%lx references non-executable section '%s'\n",
++		      fromsec, (long)r->r_offset, tosec);
+ }
  
- 	reinit_completion(&vi->have_data);
--	vi->data_avail = 0;
- 	vi->data_idx = 0;
- 
- 	sg_init_one(&sg, vi->data, sizeof(vi->data));
-@@ -88,7 +88,7 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
- 	read = 0;
- 
- 	/* copy available data */
--	if (vi->data_avail) {
-+	if (smp_load_acquire(&vi->data_avail)) {
- 		chunk = copy_data(vi, buf, size);
- 		size -= chunk;
- 		read += chunk;
+ static void check_section_mismatch(const char *modname, struct elf_info *elf,
+@@ -1871,8 +1821,6 @@ static void section_rela(const char *modname, struct elf_info *elf,
+ 		/* Skip special sections */
+ 		if (is_shndx_special(sym->st_shndx))
+ 			continue;
+-		if (is_second_extable_reloc(start, rela, fromsec))
+-			find_extable_entry_size(fromsec, &r);
+ 		check_section_mismatch(modname, elf, &r, sym, fromsec);
+ 	}
+ }
+@@ -1931,8 +1879,6 @@ static void section_rel(const char *modname, struct elf_info *elf,
+ 		/* Skip special sections */
+ 		if (is_shndx_special(sym->st_shndx))
+ 			continue;
+-		if (is_second_extable_reloc(start, rel, fromsec))
+-			find_extable_entry_size(fromsec, &r);
+ 		check_section_mismatch(modname, elf, &r, sym, fromsec);
+ 	}
+ }
 -- 
 2.39.2
 
