@@ -2,54 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E8275D45C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B2C175D37B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232108AbjGUTUW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:20:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42332 "EHLO
+        id S231835AbjGUTLL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:11:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232099AbjGUTUV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:20:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C20342733
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:16 -0700 (PDT)
+        with ESMTP id S231837AbjGUTLL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:11:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8A62D4A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:11:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6186461D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:20:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75602C433C7;
-        Fri, 21 Jul 2023 19:20:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B84161D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82791C433C8;
+        Fri, 21 Jul 2023 19:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967215;
-        bh=qMctiIhFdm1UJKR2caz8af/qpSbzL9udYa5leDsWI34=;
+        s=korg; t=1689966669;
+        bh=KL7x7U9xGDX349j3rQXvxG6EQBKsTdd0/nN2U3jn1t0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=02Ucsqo7i1dUfM02W8cVQTLYnuAo+XH3fDLjMqTPTMv9QDO5fN0muIuutengTCa99
-         yom0jJSghqzrr2LpmNhXjToUxY+v0b2e3drlqSVXclZcKoqo0LTNo4O855PNnUd0l3
-         PjY2Vra+3DiidU73Ijpc8ygrd4fFMZtRm/pqPHSI=
+        b=MsB8KqMY7fJ9aPIFrIkNddWF+kchK5SwWpqAKsy49+7nZFTzgWIbpYJ8tLhbqhW2P
+         +fmfjukQGxUvReqNWmEQTZyruFoXaijrzkUQ8vgTD+zFX/kdCPlb97My+V0YIyUlVF
+         Y+y25Lmw0E3XVG1F9IniFfa8Wy0SX4jlnR4m6a4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Guruvendra Punugupati <Guruvendra.Punugupati@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 077/223] pinctrl: amd: Add Z-state wake control bits
+        Florian Kauer <florian.kauer@linutronix.de>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 426/532] igc: Fix inserting of empty frame for launchtime
 Date:   Fri, 21 Jul 2023 18:05:30 +0200
-Message-ID: <20230721160524.147094733@linuxfoundation.org>
+Message-ID: <20230721160637.679831531@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,57 +58,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Florian Kauer <florian.kauer@linutronix.de>
 
-commit df72b4a692b60d3e5d99d9ef662b2d03c44bb9c0 upstream.
+[ Upstream commit 0bcc62858d6ba62cbade957d69745e6adeed5f3d ]
 
-GPIO registers include Bit 27 for WakeCntrlZ used to enable wake in
-Z state. Hence add Z-state wake control bits to debugfs output to
-debug and analyze Z-states problems.
+The insertion of an empty frame was introduced with
+commit db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
+in order to ensure that the current cycle has at least one packet if
+there is some packet to be scheduled for the next cycle.
 
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Guruvendra Punugupati <Guruvendra.Punugupati@amd.com>
-Link: https://lore.kernel.org/r/20221208093704.1151928-1-Basavaraj.Natikar@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the current implementation does not properly check if
+a packet is already scheduled for the current cycle. Currently,
+an empty packet is always inserted if and only if
+txtime >= end_of_cycle && txtime > last_tx_cycle
+but since last_tx_cycle is always either the end of the current
+cycle (end_of_cycle) or the end of a previous cycle, the
+second part (txtime > last_tx_cycle) is always true unless
+txtime == last_tx_cycle.
+
+What actually needs to be checked here is if the last_tx_cycle
+was already written within the current cycle, so an empty frame
+should only be inserted if and only if
+txtime >= end_of_cycle && end_of_cycle > last_tx_cycle.
+
+This patch does not only avoid an unnecessary insertion, but it
+can actually be harmful to insert an empty packet if packets
+are already scheduled in the current cycle, because it can lead
+to a situation where the empty packet is actually processed
+as the first packet in the upcoming cycle shifting the packet
+with the first_flag even one cycle into the future, finally leading
+to a TX hang.
+
+The TX hang can be reproduced on a i225 with:
+
+    sudo tc qdisc replace dev enp1s0 parent root handle 100 taprio \
+	    num_tc 1 \
+	    map 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \
+	    queues 1@0 \
+	    base-time 0 \
+	    sched-entry S 01 300000 \
+	    flags 0x1 \
+	    txtime-delay 500000 \
+	    clockid CLOCK_TAI
+    sudo tc qdisc replace dev enp1s0 parent 100:1 etf \
+	    clockid CLOCK_TAI \
+	    delta 500000 \
+	    offload \
+	    skip_sock_check
+
+and traffic generator
+
+    sudo trafgen -i traffic.cfg -o enp1s0 --cpp -n0 -q -t1400ns
+
+with traffic.cfg
+
+    #define ETH_P_IP        0x0800
+
+    {
+      /* Ethernet Header */
+      0x30, 0x1f, 0x9a, 0xd0, 0xf0, 0x0e,  # MAC Dest - adapt as needed
+      0x24, 0x5e, 0xbe, 0x57, 0x2e, 0x36,  # MAC Src  - adapt as needed
+      const16(ETH_P_IP),
+
+      /* IPv4 Header */
+      0b01000101, 0,   # IPv4 version, IHL, TOS
+      const16(1028),   # IPv4 total length (UDP length + 20 bytes (IP header))
+      const16(2),      # IPv4 ident
+      0b01000000, 0,   # IPv4 flags, fragmentation off
+      64,              # IPv4 TTL
+      17,              # Protocol UDP
+      csumip(14, 33),  # IPv4 checksum
+
+      /* UDP Header */
+      10,  0, 48, 1,   # IP Src - adapt as needed
+      10,  0, 48, 10,  # IP Dest - adapt as needed
+      const16(5555),   # UDP Src Port
+      const16(6666),   # UDP Dest Port
+      const16(1008),   # UDP length (UDP header 8 bytes + payload length)
+      csumudp(14, 34), # UDP checksum
+
+      /* Payload */
+      fill('W', 1000),
+    }
+
+and the observed message with that is for example
+
+ igc 0000:01:00.0 enp1s0: Detected Tx Unit Hang
+   Tx Queue             <0>
+   TDH                  <32>
+   TDT                  <3c>
+   next_to_use          <3c>
+   next_to_clean        <32>
+ buffer_info[next_to_clean]
+   time_stamp           <ffff26a8>
+   next_to_watch        <00000000632a1828>
+   jiffies              <ffff27f8>
+   desc.status          <1048000>
+
+Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
+Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |    7 +++++++
- drivers/pinctrl/pinctrl-amd.h |    1 +
- 2 files changed, 8 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -218,6 +218,7 @@ static void amd_gpio_dbg_show(struct seq
- 	char *orientation;
- 	char debounce_value[40];
- 	char *debounce_enable;
-+	char *wake_cntrlz;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 491b80407df49..db48979cdecbc 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1026,7 +1026,7 @@ static __le32 igc_tx_launchtime(struct igc_ring *ring, ktime_t txtime,
+ 			*first_flag = true;
+ 			ring->last_ff_cycle = baset_est;
  
- 	for (bank = 0; bank < gpio_dev->hwbank_num; bank++) {
- 		unsigned int time = 0;
-@@ -305,6 +306,12 @@ static void amd_gpio_dbg_show(struct seq
- 				wake_cntrl2 = " ∅";
- 			seq_printf(s, "S4/S5 %s| ", wake_cntrl2);
- 
-+			if (pin_reg & BIT(WAKECNTRL_Z_OFF))
-+				wake_cntrlz = "⏰";
-+			else
-+				wake_cntrlz = " ∅";
-+			seq_printf(s, "Z %s| ", wake_cntrlz);
-+
- 			if (pin_reg & BIT(PULL_UP_ENABLE_OFF)) {
- 				pull_up_enable = "+";
- 				if (pin_reg & BIT(PULL_UP_SEL_OFF))
---- a/drivers/pinctrl/pinctrl-amd.h
-+++ b/drivers/pinctrl/pinctrl-amd.h
-@@ -42,6 +42,7 @@
- #define OUTPUT_ENABLE_OFF		23
- #define SW_CNTRL_IN_OFF			24
- #define SW_CNTRL_EN_OFF			25
-+#define WAKECNTRL_Z_OFF			27
- #define INTERRUPT_STS_OFF		28
- #define WAKE_STS_OFF			29
- 
+-			if (ktime_compare(txtime, ring->last_tx_cycle) > 0)
++			if (ktime_compare(end_of_cycle, ring->last_tx_cycle) > 0)
+ 				*insert_empty = true;
+ 		}
+ 	}
+-- 
+2.39.2
+
 
 
