@@ -2,101 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90DA775D44C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B04DD75D374
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232051AbjGUTTo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
+        id S231830AbjGUTKv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:10:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232081AbjGUTTj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E91B2273F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:19:36 -0700 (PDT)
+        with ESMTP id S231831AbjGUTKu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EC32D4A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DEBD61D5F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:19:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90418C433C9;
-        Fri, 21 Jul 2023 19:19:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A54CB61D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2426C433C7;
+        Fri, 21 Jul 2023 19:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967175;
-        bh=O05TXVz/qaAcc9mYw41t3d6J5r+H7xk0MN9KLJfmuR0=;
+        s=korg; t=1689966649;
+        bh=+b3SczwGhidj6BP7sLIBK0e/s6nbN7YmyVfm56HvbLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mc492mlVRcxUv/aMux0zaMszIRq9X/nlAP6z5nRYYR5Q8aCMJt7KJVbh3qr5lqHpb
-         VR8Fw4A28zZCamc+Xjkc2wr77xiVLnqadiZLs6bU+DLkgRvLEGBZi2PHkq/KPgRq5O
-         4SfwIsIpg7+BXr8299H61LTDuDCQrEqHIg0h3KmM=
+        b=cvZwPxZQFmTQpqRKBpNA4JkniYQZrIRcJYrrlFGhvTznU0/ocfovNnDiDNXEiywjf
+         pGA1eJ43bE0kVDtlf47D0/NRarQ85VhqKuZTg7OhyX827z6S+EB/00BG/aI2u7MiIx
+         GDrzgHNXnZ+bjBhNpO+ch/90IjPtAEWJnt3JZh9o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Felix Kuehling <Felix.Kuehling@amd.com>,
-        Aaron Liu <aaron.liu@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 070/223] drm/amdgpu/sdma4: set align mask to 255
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 419/532] ipv6/addrconf: fix a potential refcount underflow for idev
 Date:   Fri, 21 Jul 2023 18:05:23 +0200
-Message-ID: <20230721160523.850115903@linuxfoundation.org>
+Message-ID: <20230721160637.236729080@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit e5df16d9428f5c6d2d0b1eff244d6c330ba9ef3a upstream.
+[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
 
-The wptr needs to be incremented at at least 64 dword intervals,
-use 256 to align with windows.  This should fix potential hangs
-with unaligned updates.
+Now in addrconf_mod_rs_timer(), reference idev depends on whether
+rs_timer is not pending. Then modify rs_timer timeout.
 
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Reviewed-by: Aaron Liu <aaron.liu@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e5df16d9428f5c6d2d0b1eff244d6c330ba9ef3a)
-The path `drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c` doesn't exist in
-6.1.y, only modify the file that does exist.
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There is a time gap in [1], during which if the pending rs_timer
+becomes not pending. It will miss to hold idev, but the rs_timer
+is activated. Thus rs_timer callback function addrconf_rs_timer()
+will be executed and put idev later without holding idev. A refcount
+underflow issue for idev can be caused by this.
+
+	if (!timer_pending(&idev->rs_timer))
+		in6_dev_hold(idev);
+		  <--------------[1]
+	mod_timer(&idev->rs_timer, jiffies + when);
+
+To fix the issue, hold idev if mod_timer() return 0.
+
+Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/addrconf.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2330,7 +2330,7 @@ const struct amd_ip_funcs sdma_v4_0_ip_f
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 6ba34f51c411f..e0d3909172a84 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -323,9 +323,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
+ static void addrconf_mod_rs_timer(struct inet6_dev *idev,
+ 				  unsigned long when)
+ {
+-	if (!timer_pending(&idev->rs_timer))
++	if (!mod_timer(&idev->rs_timer, jiffies + when))
+ 		in6_dev_hold(idev);
+-	mod_timer(&idev->rs_timer, jiffies + when);
+ }
  
- static const struct amdgpu_ring_funcs sdma_v4_0_ring_funcs = {
- 	.type = AMDGPU_RING_TYPE_SDMA,
--	.align_mask = 0xf,
-+	.align_mask = 0xff,
- 	.nop = SDMA_PKT_NOP_HEADER_OP(SDMA_OP_NOP),
- 	.support_64bit_ptrs = true,
- 	.secure_submission_supported = true,
-@@ -2400,7 +2400,7 @@ static const struct amdgpu_ring_funcs sd
- 
- static const struct amdgpu_ring_funcs sdma_v4_0_page_ring_funcs = {
- 	.type = AMDGPU_RING_TYPE_SDMA,
--	.align_mask = 0xf,
-+	.align_mask = 0xff,
- 	.nop = SDMA_PKT_NOP_HEADER_OP(SDMA_OP_NOP),
- 	.support_64bit_ptrs = true,
- 	.secure_submission_supported = true,
+ static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
+-- 
+2.39.2
+
 
 
