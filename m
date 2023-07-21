@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4064275D356
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E66AB75D423
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231795AbjGUTJb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:09:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32950 "EHLO
+        id S232010AbjGUTSX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:18:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231796AbjGUTJa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:09:30 -0400
+        with ESMTP id S232019AbjGUTSU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E466330E3
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:09:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD3A3A86
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 720CB61D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F03C433C7;
-        Fri, 21 Jul 2023 19:09:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9593361D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A509FC433C7;
+        Fri, 21 Jul 2023 19:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966566;
-        bh=HceHIAAas8UAKL14HDW0cBrI5HZwdb4BSXTyQ8DDSEs=;
+        s=korg; t=1689967093;
+        bh=EN4zunWOUQ/UeqdQbsx3/N32g3is52DZAMMUeMwJRv8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=weZ6F8fze8tgAueejfPkHuEgy//aTslUJ1ptnG5zhW9nhaV2T1+vuXzyyk2zT0i17
-         Co7L/qMujNaFnQM2iHpYIsCD2GQqlHJgsKa6p5RuktJ1HlA5AbiySR7ASK92wBAFe0
-         ICeYIVbdkUDFIhL7qRBee+5nskUrCQNcADR8ET3A=
+        b=G8oSu2gAlpnuLArI7ujnOIJ4mnCRaPl9n/snXcWylmLJd4/HvuU2Ay4iu4iDk+Pgh
+         w5d0QNgdd+YWUP/PpcOXh51V8lc8frDi2xySwwEhJvsFrC4EYErN3lKfazfgJdJsHE
+         tKk/uNy5FrYb3106jTXRSG3smbcYP9SdKGhoJh94=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Airlie <airlied@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Tejun Heo <tj@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 390/532] workqueue: clean up WORK_* constant types, clarify masking
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/223] ipv6/addrconf: fix a potential refcount underflow for idev
 Date:   Fri, 21 Jul 2023 18:04:54 +0200
-Message-ID: <20230721160635.634854404@linuxfoundation.org>
+Message-ID: <20230721160522.612235844@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,137 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit afa4bb778e48d79e4a642ed41e3b4e0de7489a6c upstream.
+[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
 
-Dave Airlie reports that gcc-13.1.1 has started complaining about some
-of the workqueue code in 32-bit arm builds:
+Now in addrconf_mod_rs_timer(), reference idev depends on whether
+rs_timer is not pending. Then modify rs_timer timeout.
 
-  kernel/workqueue.c: In function ‘get_work_pwq’:
-  kernel/workqueue.c:713:24: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    713 |                 return (void *)(data & WORK_STRUCT_WQ_DATA_MASK);
-        |                        ^
-  [ ... a couple of other cases ... ]
+There is a time gap in [1], during which if the pending rs_timer
+becomes not pending. It will miss to hold idev, but the rs_timer
+is activated. Thus rs_timer callback function addrconf_rs_timer()
+will be executed and put idev later without holding idev. A refcount
+underflow issue for idev can be caused by this.
 
-and while it's not immediately clear exactly why gcc started complaining
-about it now, I suspect it's some C23-induced enum type handlign fixup in
-gcc-13 is the cause.
+	if (!timer_pending(&idev->rs_timer))
+		in6_dev_hold(idev);
+		  <--------------[1]
+	mod_timer(&idev->rs_timer, jiffies + when);
 
-Whatever the reason for starting to complain, the code and data types
-are indeed disgusting enough that the complaint is warranted.
+To fix the issue, hold idev if mod_timer() return 0.
 
-The wq code ends up creating various "helper constants" (like that
-WORK_STRUCT_WQ_DATA_MASK) using an enum type, which is all kinds of
-confused.  The mask needs to be 'unsigned long', not some unspecified
-enum type.
-
-To make matters worse, the actual "mask and cast to a pointer" is
-repeated a couple of times, and the cast isn't even always done to the
-right pointer, but - as the error case above - to a 'void *' with then
-the compiler finishing the job.
-
-That's now how we roll in the kernel.
-
-So create the masks using the proper types rather than some ambiguous
-enumeration, and use a nice helper that actually does the type
-conversion in one well-defined place.
-
-Incidentally, this magically makes clang generate better code.  That,
-admittedly, is really just a sign of clang having been seriously
-confused before, and cleaning up the typing unconfuses the compiler too.
-
-Reported-by: Dave Airlie <airlied@gmail.com>
-Link: https://lore.kernel.org/lkml/CAPM=9twNnV4zMCvrPkw3H-ajZOH-01JVh_kDrxdPYQErz8ZTdA@mail.gmail.com/
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/workqueue.h |   15 ++++++++-------
- kernel/workqueue.c        |   13 ++++++++-----
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ net/ipv6/addrconf.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/linux/workqueue.h
-+++ b/include/linux/workqueue.h
-@@ -68,7 +68,6 @@ enum {
- 	WORK_OFFQ_FLAG_BASE	= WORK_STRUCT_COLOR_SHIFT,
- 
- 	__WORK_OFFQ_CANCELING	= WORK_OFFQ_FLAG_BASE,
--	WORK_OFFQ_CANCELING	= (1 << __WORK_OFFQ_CANCELING),
- 
- 	/*
- 	 * When a work item is off queue, its high bits point to the last
-@@ -79,12 +78,6 @@ enum {
- 	WORK_OFFQ_POOL_SHIFT	= WORK_OFFQ_FLAG_BASE + WORK_OFFQ_FLAG_BITS,
- 	WORK_OFFQ_LEFT		= BITS_PER_LONG - WORK_OFFQ_POOL_SHIFT,
- 	WORK_OFFQ_POOL_BITS	= WORK_OFFQ_LEFT <= 31 ? WORK_OFFQ_LEFT : 31,
--	WORK_OFFQ_POOL_NONE	= (1LU << WORK_OFFQ_POOL_BITS) - 1,
--
--	/* convenience constants */
--	WORK_STRUCT_FLAG_MASK	= (1UL << WORK_STRUCT_FLAG_BITS) - 1,
--	WORK_STRUCT_WQ_DATA_MASK = ~WORK_STRUCT_FLAG_MASK,
--	WORK_STRUCT_NO_POOL	= (unsigned long)WORK_OFFQ_POOL_NONE << WORK_OFFQ_POOL_SHIFT,
- 
- 	/* bit mask for work_busy() return values */
- 	WORK_BUSY_PENDING	= 1 << 0,
-@@ -94,6 +87,14 @@ enum {
- 	WORKER_DESC_LEN		= 24,
- };
- 
-+/* Convenience constants - of type 'unsigned long', not 'enum'! */
-+#define WORK_OFFQ_CANCELING	(1ul << __WORK_OFFQ_CANCELING)
-+#define WORK_OFFQ_POOL_NONE	((1ul << WORK_OFFQ_POOL_BITS) - 1)
-+#define WORK_STRUCT_NO_POOL	(WORK_OFFQ_POOL_NONE << WORK_OFFQ_POOL_SHIFT)
-+
-+#define WORK_STRUCT_FLAG_MASK    ((1ul << WORK_STRUCT_FLAG_BITS) - 1)
-+#define WORK_STRUCT_WQ_DATA_MASK (~WORK_STRUCT_FLAG_MASK)
-+
- struct work_struct {
- 	atomic_long_t data;
- 	struct list_head entry;
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -697,12 +697,17 @@ static void clear_work_data(struct work_
- 	set_work_data(work, WORK_STRUCT_NO_POOL, 0);
- }
- 
-+static inline struct pool_workqueue *work_struct_pwq(unsigned long data)
-+{
-+	return (struct pool_workqueue *)(data & WORK_STRUCT_WQ_DATA_MASK);
-+}
-+
- static struct pool_workqueue *get_work_pwq(struct work_struct *work)
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index e6c7edcf68343..51bfc74805ecf 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -318,9 +318,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
+ static void addrconf_mod_rs_timer(struct inet6_dev *idev,
+ 				  unsigned long when)
  {
- 	unsigned long data = atomic_long_read(&work->data);
- 
- 	if (data & WORK_STRUCT_PWQ)
--		return (void *)(data & WORK_STRUCT_WQ_DATA_MASK);
-+		return work_struct_pwq(data);
- 	else
- 		return NULL;
+-	if (!timer_pending(&idev->rs_timer))
++	if (!mod_timer(&idev->rs_timer, jiffies + when))
+ 		in6_dev_hold(idev);
+-	mod_timer(&idev->rs_timer, jiffies + when);
  }
-@@ -730,8 +735,7 @@ static struct worker_pool *get_work_pool
- 	assert_rcu_or_pool_mutex();
  
- 	if (data & WORK_STRUCT_PWQ)
--		return ((struct pool_workqueue *)
--			(data & WORK_STRUCT_WQ_DATA_MASK))->pool;
-+		return work_struct_pwq(data)->pool;
- 
- 	pool_id = data >> WORK_OFFQ_POOL_SHIFT;
- 	if (pool_id == WORK_OFFQ_POOL_NONE)
-@@ -752,8 +756,7 @@ static int get_work_pool_id(struct work_
- 	unsigned long data = atomic_long_read(&work->data);
- 
- 	if (data & WORK_STRUCT_PWQ)
--		return ((struct pool_workqueue *)
--			(data & WORK_STRUCT_WQ_DATA_MASK))->pool->id;
-+		return work_struct_pwq(data)->pool->id;
- 
- 	return data >> WORK_OFFQ_POOL_SHIFT;
- }
+ static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
+-- 
+2.39.2
+
 
 
