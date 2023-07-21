@@ -2,125 +2,301 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B074675D438
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1269375D469
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232069AbjGUTTR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:19:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41202 "EHLO
+        id S232111AbjGUTU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:20:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232108AbjGUTTI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:08 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C37E3AAA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:57 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3a3df1ee4a3so1391502b6e.3
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:57 -0700 (PDT)
+        with ESMTP id S232134AbjGUTUy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:20:54 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7859273E
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:51 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-635f293884cso16839816d6.3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689967136; x=1690571936;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=YnaW2N2yVrnTEe6hUMIRb9wxbXeaqtFKVL+sKMepVVU=;
-        b=Tg5u0BLZTshmn4SR/nZtP5n5w83+nI6Yyjr3TQuPvzHPbQq1xd68LemVPkUHseQhKN
-         ytgjguXlibhhOsRkRi4t4GO8TAFZfjJ9Hez4QKeVjn8ETMBV3VmQp//vLMLsf61byRJ6
-         suiC3ZCUrd96BAt6yBNhkJd0Rfd/CD9MKwxdUmzlK5q4y78AFXV65WNry6/WXlRQrRYi
-         m/kt9oFMvh2X3dz2k9uw/fzYAs3X6uSNikWsDHcNJFMkQgbu6MPX0AjPT5Ip7ELVTK4Q
-         aQXQUGxvrCM/C/CmoTF3pUXlMjmy4UuAYjW8Qe8JQ2iHf+UMcXX+RXufIBbR9YqaJ8ZV
-         pE6Q==
+        d=joelfernandes.org; s=google; t=1689967251; x=1690572051;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gVLht2DkkpNq7SBlRJvR3FFoekKm//GcsByuwOIRh5c=;
+        b=sn+TuX6yDPWPGmIE18lk8KdECmq4UypqVf1UZ/HSBedoa+3FFGKQTlkQryRE7CFJZb
+         ObKksKomePZCwmYlz6erwXrGrEahfYJ7FA3dVBrilFcfwvjBbE+/aFJmF5OLwqC/2QjZ
+         HJzxlnEV9bIFQGJEf9XBLiluxE3QS/5UaCkWQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689967136; x=1690571936;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YnaW2N2yVrnTEe6hUMIRb9wxbXeaqtFKVL+sKMepVVU=;
-        b=VlgEQAV5lJPILOZhYs4q98o0eEcGqNJCHUiqrxwOuz3NrdiEa1i21XEB7oY3YgGjU1
-         sZizj6xjA+D+w4v24Zbe9dD3iqVsvzdTElDTTJL3yB7TFq6frfQYHHhG3G/DeLmBdKkI
-         tFXV7UyD1M9+JLHj/GdENECSShWnUdaHgtMF0TbXmOJY22nwosyoEQvIjmeTX9GgYLBh
-         rG0K8o1XMDucxtgoxsAimm6Tfd/xuaQgRsP3K1zH5SAV3yEhVmU+gUQdk0MAOnMHYb1d
-         zQBvi8SP/f6Cuu4r51ercmuS8rlqgr8eL6IFVQt4KJ1O4m94LPAVS96zTJNC2J3vzFEo
-         yBbg==
-X-Gm-Message-State: ABy/qLbIwjnHXERJlsnwp5wNNjUdU0q+K9+hzmiOa4AYNpfgx74IMz/i
-        /RzOWZ6yHU+CUjmv0wu9iwdUcCv0c6uF9k27lns=
-X-Google-Smtp-Source: APBJJlHIvSqqL647O54LebWnK2blKLQixgwhMESDVaxTHWTzp3hcYJI7oN9nGmKbuu4NYZVzZJBgBQ==
-X-Received: by 2002:a05:6358:723:b0:139:55de:329 with SMTP id e35-20020a056358072300b0013955de0329mr711614rwj.27.1689967135954;
-        Fri, 21 Jul 2023 12:18:55 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x27-20020a656abb000000b0054f9936accesm3179345pgu.55.2023.07.21.12.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 12:18:55 -0700 (PDT)
-Message-ID: <64bada1f.650a0220.4dfc3.5f2c@mx.google.com>
-Date:   Fri, 21 Jul 2023 12:18:55 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1689967251; x=1690572051;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gVLht2DkkpNq7SBlRJvR3FFoekKm//GcsByuwOIRh5c=;
+        b=OVB6GbI81gjHSS3EPPi09m80DPpCJzezFKarMQSETtgpEYjehfCehvtCeWxVnGWtLI
+         iHvxUfzAyLAEIUzgnvY6f9ogrUXrGQ6ecqlYw1rIruHuDEpeaaj5bGqaBI9ANxzHO3bV
+         tYOeuTWjibjgTQl7TVdeNwrpeRZ84uVbCoZfU8lGOhza1sN3vWyjvZlUZGe9gRchSYER
+         3D4XEOXRWsit3on+oV5d1CWu4RYt9FwaMqDX7Vzd/b4OGEDSEwsc6g/RQBlDRv2TvbNa
+         gX/7ElUckPmh2Zt4CE2XxKWY2zL5Tw6QCiXdyIF+7TGV0TPuRaKtghZbx6HQ8EVWLuGX
+         hHdw==
+X-Gm-Message-State: ABy/qLZSsZeqtdRYzDFLh3EOzw5q/xWnSHtBplu9xFFUmo6D9lRG6yYS
+        wzVoi0Lr7M7/rHWKrd3lFbT5EQ==
+X-Google-Smtp-Source: APBJJlEzKRW06Nmn01vfB7usPeznyCnZo/8lMp6GPv6bFuVhXPhCpe3b/j3i/7YnntE3sRhPtRfdKA==
+X-Received: by 2002:a05:6214:e4d:b0:635:df71:1fe5 with SMTP id o13-20020a0562140e4d00b00635df711fe5mr1114700qvc.34.1689967250671;
+        Fri, 21 Jul 2023 12:20:50 -0700 (PDT)
+Received: from [192.168.0.198] (c-98-249-43-138.hsd1.va.comcast.net. [98.249.43.138])
+        by smtp.gmail.com with ESMTPSA id x20-20020a0cb214000000b00626362f1bf1sm1501058qvd.63.2023.07.21.12.20.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Jul 2023 12:20:49 -0700 (PDT)
+Message-ID: <9b42cb38-8375-fc41-475a-2bd26c60a7b9@joelfernandes.org>
+Date:   Fri, 21 Jul 2023 15:20:48 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Kernel: v5.10.186-441-g2f0e20469d5f
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.10.y build: 2 builds: 0 failed, 2 passed,
- 1 warning (v5.10.186-441-g2f0e20469d5f)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [BUG] Re: Linux 6.4.4
+Content-Language: en-US
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     paulmck@kernel.org
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+References: <2023071940-suspect-ominous-4a6a@gregkh>
+ <20230720132714.GA3726096@google.com>
+ <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
+ <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
+ <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
+ <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
+ <eb04b7d0-2f49-4e01-be09-9062d9f08404@paulmck-laptop>
+ <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
+In-Reply-To: <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 2 builds: 0 failed, 2 passed, 1 warning (v5.1=
-0.186-441-g2f0e20469d5f)
+(Trimming the CC list a bit)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.186-441-g2f0e20469d5f/
+On 7/21/23 08:13, Joel Fernandes wrote:
+> On 7/20/23 15:47, Paul E. McKenney wrote:
+>> On Thu, Jul 20, 2023 at 03:32:35PM -0400, Joel Fernandes wrote:
+>>> On 7/20/23 15:04, Paul E. McKenney wrote:
+>>>> On Thu, Jul 20, 2023 at 12:31:13PM -0400, Joel Fernandes wrote:
+>>>>> Hi Paul,
+>>>>>
+>>>>> On Thu, Jul 20, 2023 at 11:55 AM Paul E. McKenney
+>>>>> <paulmck@kernel.org> wrote:
+>>>>>>
+>>>>>> On Thu, Jul 20, 2023 at 01:27:14PM +0000, Joel Fernandes wrote:
+>>> [...]
+>>>>>>>
+>>>>>>> So likely RCU boosting is failing:
+>>>>>>>
+>>>>>>> The full TREE03 splat:
+>>>>>>> [   54.243588] ------------[ cut here ]------------
+>>>>>>> [   54.244547] rcu-torture: rcu_torture_boost started
+>>> [...]
+>>>>>>> [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
+>>> [...]
+>>>>>>> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+>>>>>>>
+>>>>>>> However, if we are to believe the '9', it appears the object did
+>>>>>>> made it
+>>>>>>> quite some till the end of the pipe array but not until the free
+>>>>>>> pool.
+>>>>>>
+>>>>>> This is from this if/for statement, correct?
+>>>>>>
+>>>>>>                   stutter_waited =
+>>>>>> stutter_wait("rcu_torture_writer");
+>>>>>>                   if (stutter_waited &&
+>>>>>>                       !atomic_read(&rcu_fwd_cb_nodelay) &&
+>>>>>>                       !cur_ops->slow_gps &&
+>>>>>>                       !torture_must_stop() &&
+>>>>>>                       boot_ended)
+>>>>>>                           for (i = 0; i <
+>>>>>> ARRAY_SIZE(rcu_tortures); i++)
+>>>>>>                                   if
+>>>>>> (list_empty(&rcu_tortures[i].rtort_free) &&
+>>>>>>                                      
+>>>>>> rcu_access_pointer(rcu_torture_current) !=
+>>>>>>                                       &rcu_tortures[i]) {
+>>>>>>                                           tracing_off();
+>>>>>>                                           show_rcu_gp_kthreads();
+>>>>>>                                           WARN(1, "%s:
+>>>>>> rtort_pipe_count:
+>>>>>>                                           rcu_ftrace_dump(DUMP_ALL);
+>>>>>>                                   }
+>>>>>
+>>>>> Yes, that's right.
+>>>>>
+>>>>>> If so, this happens when there was a stutter wait, but RCU grace
+>>>>>> periods failed to clear out the backlog during the several seconds
+>>>>>> that
+>>>>>> rcutorture was forced idle.  This might be related to the RCU
+>>>>>> priority
+>>>>>> boosting failure, in which a preempted reader persisted across the
+>>>>>> stutter interval.
+>>>>>
+>>>>> When RCU is operating normally, shouldn't the check
+>>>>> "(list_empty(&rcu_tortures[i].rtort_free)" not run until the preempted
+>>>>> reader unblocks and exits its RCU read-side critical section?
+>>>>
+>>>> Yes, but not just "until", but rather "long after".  If RCU is doing
+>>>> grace periods correctly, an active reader on a given rcu_tortures[]
+>>>> element will prevent .rtort_pipe_count from exceeding the value 2.
+>>>
+>>> Ah ok, so the rtort_pipe_count being 9 is a sign RCU isn't making
+>>> progress
+>>> thus making it absent from the free list.
+>>
+>> Yes, though RCU is -just- -barely- too slow, as one more grace period
+>> would have done it.
+>>
+>>>> The element will not be put on a list until .rtort_pipe_count is equal
+>>>> to RCU_TORTURE_PIPE_LEN, which is 10.
+>>>>
+>>>> This warning usually appears when something is holding up the
+>>>> grace-period
+>>>> kthread.  Historically, this has included deadlocks, missed timers,
+>>>> and whatever else can prevent the grace-period kthread from running.
+>>>
+>>> Makes sense.
+>>>
+>>>>> One thing that confuses me, in the case of
+>>>>> "cur_ops->deferred_free(old_rp);" , the earlier do-while loop may exit
+>>>>> before the async callbacks can finish. So what prevents the
+>>>>> "(list_empty(&rcu_tortures[i].rtort_free)" check from happening before
+>>>>> grace periods happen? Thanks for any clarification.
+>>>>
+>>>> We only enter this code if the stutter_wait() actually waited, and by
+>>>> default this function will wait about five seconds.  Since the
+>>>> rcutorture
+>>>> testing goes idle during this time period (or is supposed to!), if
+>>>> things
+>>>> are working properly, knocking off ten grace periods during that time
+>>>> should be pretty much a given.
+>>>
+>>> Sure, makes sense. And this is not Lazy-RCU so 5 seconds should be
+>>> plenty
+>>> ;). I think I was subconsciously expecting an rcu_barrier() somewhere
+>>> in the
+>>> code before those checks, but that's not needed as you pointed that the
+>>> stutter should be giving enough time for RCU to make progress.
+>>
+>> And there might need to be a call_rcu_hurry() in there somewhere,
+>> now that you mention it.  Which would pretty much defeat any sort of
+>> lazy-RCU-callback testing in rcutorture, but testing of laziness might
+>> need to be separate anyway.
+>>
+>>> So hmm, the count being 9 means that not enough RCU grace periods have
+>>> passed for the rcu_torture object in question thus keeping it always
+>>> allocated. The GP thread not getting CPU can do that indeed, or perhaps
+>>> something else stalling RCU like a preempted reader, length preemption
+>>> disabling on a CPU and so forth..  I'll try to collect a trace when it
+>>> happens.
+>>
+>> Looking forward to seeing what you come up with!
+> 
+> So far I found this. Before the crash, GPs took about 50ms, during the
+> crash it took 5 seconds before the warning which aligns with what you
+> mentioned about stutter.
+> 
+> 
+> The GP that never completed is at this line:
+> 
+> [ 2816.041082]    <...>-13       13d.... 1237016139us :
+> rcu_grace_period: rcu_sched 144681 start
+> 
+> And fqs loop got a "dti" for CPUs:
+> 1
+> 2
+> 12
+> 
+> And I see cpuqs for:
+> 13
+> 6
+> 10
+> 5
+> 4
+> 11
+> 
+> No idea what happened to 3, 8, 9, 14, 15. Maybe the "dti" for those did
+> not show in the trace?
+> 
+> However, I see that CPU 7 did this:
+> [ 2816.205277]   <idle>-0         7d.... 1237016284us : sched_switch:
+> prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==>
+> next_comm=rcu_torture_rea next_pid=149 next_prio=139
+> 
+> 
+> and then did this about 3 seconds later:
+> [ 2819.394111] rcu_tort-149       7dNs.. 1237025699us :
+> rcu_grace_period: rcu_sched 144677 cpuend
+> [ 2819.412745] rcu_tort-149       7dNs.. 1237025699us :
+> rcu_grace_period: rcu_sched 144681 cpustart
+> 
+> 
+> Which means it never switched out from the CPU all this while. Neither
+> did it report cpuqs. Ok it did notice the new GP started, welcome to the
+> party mate ;)
+> 
+> That points the issue I think. I wonder if the emergency provisions for
+> forcing quiescent states on NOHZ_FULL CPUs kicked in. ISTR, we had
+> issues with that in the past where we had to fix the tick path to report
+> a QS.
+> 
+> I'll add some more traces. Especially around preempted readers, the
+> emergency provisions for forcing a QS and so forth and see if I can dig
+> more information.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.186-441-g2f0e20469d5f
-Git Commit: 2f0e20469d5f1c35ef084c4c84db0fd7bbfb0d2d
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 2 unique architectures
+In another instance, I caught a stack trace of CPU5 when it did not
+check-in with RCU for 3 seconds or so:
 
-Warnings Detected:
+[ 1127.067889]  kmalloc_trace+0x25/0x90
+[ 1127.072823]  rcu_torture_fwd_prog+0x3d8/0xa60
+[ 1127.078749]  ? __pfx_rcu_torture_fwd_prog+0x10/0x10
+[ 1127.085468]  ? kthread+0xcb/0xf0
+[ 1127.090040]  ? __pfx_rcu_torture_fwd_prog+0x10/0x10
+[ 1127.096626]  kthread+0xcb/0xf0
+[ 1127.100803]  ? __pfx_kthread+0x10/0x10
+[ 1127.107207]  ret_from_fork+0x2c/0x50
+[ 1127.113662]  </TASK>
+[ 1127.117818] Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-arc:
+It appears it was in "rcu_torture_fwd_prog" at the time. It got stuck
+there for 2 seconds.
 
-arm:
-    vexpress_defconfig (gcc-10): 1 warning
+Interestingly, I did find the scheduler tick was trying to get in touch
+with the CPU and it was running code on it even:
+[ 5858.463102] rcu_tort-174       5d.h.. 1131149320us : rcu_utilization:
+Start scheduler-tick
+[ 5858.472903] rcu_tort-174       5d.h.. 1131149320us : rcu_utilization:
+End scheduler-tick
 
+So I could add some traces there to figure out what is it upto. ISTR, we
+also send IPIs to these CPUs? So maybe adding some traces there too is
+in order.
 
-Warnings summary:
+Also earlier in dmesg it did this:
+[ 1124.825504] rcu_torture_fwd_prog n_max_cbs: 44181
+[ 1124.832158] rcu_torture_fwd_prog: Starting forward-progress test 0
+[ 1124.840977] rcu_torture_fwd_prog_cr: Starting forward-progress test 0
+[ 1126.726621] ------------[ cut here ]------------
+[ 1126.733296] rcutorture_oom_notify invoked upon OOM during
+forward-progress testing.
 
-    1    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=
-=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
-without a cast [-Wint-conversion]
+Before that "cut here", there is a 2 second gap which tells me it got
+stuck there.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+So this function rcu_torture_fwd_prog() is keeping the CPU unresponsive
+from an RCU perspective for some reason? Because I never saw the
+"rcu_torture_fwd_prog_cr: Waiting for CBs" message before it panicked.
 
-Detailed per-defconfig build reports:
+Collecting traces again.. ;) thanks,
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+ - Joel
 
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----
-For more info write to <info@kernelci.org>
