@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7C675BFA5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EDC775BFA6
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:24:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbjGUHYt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:24:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54318 "EHLO
+        id S229653AbjGUHYw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:24:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229911AbjGUHYs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:24:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5681715
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:24:47 -0700 (PDT)
+        with ESMTP id S229804AbjGUHYw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:24:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9F2189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:24:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3562E61136
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C741C433C7;
-        Fri, 21 Jul 2023 07:24:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CF05611A0
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64DCC433C8;
+        Fri, 21 Jul 2023 07:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689924286;
-        bh=qIA+ZEJWarj/KkSl4yHVKQXZRAnpTI1b0xEDWN7mO/Y=;
+        s=korg; t=1689924289;
+        bh=JW1iN9X5S0ugDECa1EN2YTdgIswERDaIgyjvt0J357Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=ohwT+s0AO7gnkRKjNrL7vewXz7dkxY1wueEDcXda/reYXzqNiB9Oo2w3ygzwi9KSH
-         3SaccE9jX/LN17OiPsaoPAg3t8uU9RU92aYKYq51zX1JSlGNHZLuCH9HtCXBAtOGiR
-         J0B5dzEGcxnc8ZsqsZwrbgbszrXSBvv41BYwXvQo=
-Subject: FAILED: patch "[PATCH] drm/amd/display: add ODM case when looking for first split" failed to apply to 6.1-stable tree
+        b=eoMo4MJMjw0FxiAIoasi8K12RUyKqHiFKKghopBE7a9AG4sOlt+KWhVQ2pm6bqKJb
+         w+0ZyWZAJ2BKsoCtWUij63I5TAhOVTEmPG89xXx4o9dcSXESfx96lzvhGHTI/HKz8+
+         WvHHoUi4SO29YEvg0f1WQd8UlConZoSDKMQsXy70=
+Subject: FAILED: patch "[PATCH] drm/amd/display: add ODM case when looking for first split" failed to apply to 6.4-stable tree
 To:     samson.tam@amd.com, Alvin.Lee2@amd.com, alexander.deucher@amd.com,
         daniel.wheeler@amd.com, mario.limonciello@amd.com,
         stylon.wang@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:24:39 +0200
-Message-ID: <2023072139-passenger-economy-e0b6@gregkh>
+Date:   Fri, 21 Jul 2023 09:24:40 +0200
+Message-ID: <2023072140-pranker-colossal-5a25@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -51,31 +51,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 24e461e84f1c6d58fa1032f06d97e277dd0b4adf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072139-passenger-economy-e0b6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072140-pranker-colossal-5a25@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-24e461e84f1c ("drm/amd/display: add ODM case when looking for first split pipe")
-e4c1b01bc35b ("drm/amd/display: Use min transition for all SubVP plane add/remove")
-9e7d03e8b046 ("drm/amd/display: Use min transition for SubVP into MPO")
-1e8fd864afdc ("drm/amd/display: skip commit minimal transition state")
-f6ae69f49fcf ("drm/amd/display: Include surface of unaffected streams")
-0e986cea0347 ("drm/amd/display: Copy DC context in the commit streams")
-7b36f4d18e3e ("drm/amd/display: Enable new commit sequence only for DCN32x")
-10fdb0a11c55 ("drm/amd/display: Rework context change check")
-03ce7b387e8b ("drm/amd/display: Check if link state is valid")
+
 
 thanks,
 
