@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B04DD75D374
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D8C75D44D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231830AbjGUTKv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:10:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
+        id S232038AbjGUTTo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:19:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231831AbjGUTKu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:50 -0400
+        with ESMTP id S232059AbjGUTTl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EC32D4A
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFDAC189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:19:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A54CB61D02
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2426C433C7;
-        Fri, 21 Jul 2023 19:10:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76E1961D7F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:19:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E350C433C8;
+        Fri, 21 Jul 2023 19:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966649;
-        bh=+b3SczwGhidj6BP7sLIBK0e/s6nbN7YmyVfm56HvbLw=;
+        s=korg; t=1689967178;
+        bh=BixtcL6TFBoy08m+p0ROADkjm3qjQJUK65MIl1WjP+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cvZwPxZQFmTQpqRKBpNA4JkniYQZrIRcJYrrlFGhvTznU0/ocfovNnDiDNXEiywjf
-         pGA1eJ43bE0kVDtlf47D0/NRarQ85VhqKuZTg7OhyX827z6S+EB/00BG/aI2u7MiIx
-         GDrzgHNXnZ+bjBhNpO+ch/90IjPtAEWJnt3JZh9o=
+        b=ZncMknmjFN6Ogx16PLeVM/lORptn8uF3sh+6O1lnie29JBTmfHLSIJY3dE4nRgCOv
+         ldZpNpAgz59a7inIuAvlpHE2oHvUH6MPzKU1X8K6cT1Nopv7QzCigUYclZ3u2oH3IL
+         jO54Yn14YCY3yqnqmkF1X4Mday/zihO/RMxGm3jI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 419/532] ipv6/addrconf: fix a potential refcount underflow for idev
-Date:   Fri, 21 Jul 2023 18:05:23 +0200
-Message-ID: <20230721160637.236729080@linuxfoundation.org>
+        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 071/223] drm/amd/pm: revise the ASPM settings for thunderbolt attached scenario
+Date:   Fri, 21 Jul 2023 18:05:24 +0200
+Message-ID: <20230721160523.891940720@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Evan Quan <evan.quan@amd.com>
 
-[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
+commit fd21987274463a439c074b8f3c93d3b132e4c031 upstream.
 
-Now in addrconf_mod_rs_timer(), reference idev depends on whether
-rs_timer is not pending. Then modify rs_timer timeout.
+Also, correct the comment for NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT
+as 0x0000000E stands for 400ms instead of 4ms.
 
-There is a time gap in [1], during which if the pending rs_timer
-becomes not pending. It will miss to hold idev, but the rs_timer
-is activated. Thus rs_timer callback function addrconf_rs_timer()
-will be executed and put idev later without holding idev. A refcount
-underflow issue for idev can be caused by this.
-
-	if (!timer_pending(&idev->rs_timer))
-		in6_dev_hold(idev);
-		  <--------------[1]
-	mod_timer(&idev->rs_timer, jiffies + when);
-
-To fix the issue, hold idev if mod_timer() return 0.
-
-Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Evan Quan <evan.quan@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v2_3.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 6ba34f51c411f..e0d3909172a84 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -323,9 +323,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
- static void addrconf_mod_rs_timer(struct inet6_dev *idev,
- 				  unsigned long when)
- {
--	if (!timer_pending(&idev->rs_timer))
-+	if (!mod_timer(&idev->rs_timer, jiffies + when))
- 		in6_dev_hold(idev);
--	mod_timer(&idev->rs_timer, jiffies + when);
- }
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v2_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v2_3.c
+@@ -346,7 +346,7 @@ static void nbio_v2_3_init_registers(str
  
- static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
--- 
-2.39.2
-
+ #define NAVI10_PCIE__LC_L0S_INACTIVITY_DEFAULT		0x00000000 // off by default, no gains over L1
+ #define NAVI10_PCIE__LC_L1_INACTIVITY_DEFAULT		0x00000009 // 1=1us, 9=1ms
+-#define NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT	0x0000000E // 4ms
++#define NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT	0x0000000E // 400ms
+ 
+ static void nbio_v2_3_enable_aspm(struct amdgpu_device *adev,
+ 				  bool enable)
+@@ -479,9 +479,12 @@ static void nbio_v2_3_program_aspm(struc
+ 		WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5, data);
+ 
+ 	def = data = RREG32_PCIE(smnPCIE_LC_CNTL);
+-	data &= ~PCIE_LC_CNTL__LC_L0S_INACTIVITY_MASK;
+-	data |= 0x9 << PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;
+-	data |= 0x1 << PCIE_LC_CNTL__LC_PMI_TO_L1_DIS__SHIFT;
++	data |= NAVI10_PCIE__LC_L0S_INACTIVITY_DEFAULT << PCIE_LC_CNTL__LC_L0S_INACTIVITY__SHIFT;
++	if (pci_is_thunderbolt_attached(adev->pdev))
++		data |= NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT  << PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;
++	else
++		data |= NAVI10_PCIE__LC_L1_INACTIVITY_DEFAULT << PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;
++	data &= ~PCIE_LC_CNTL__LC_PMI_TO_L1_DIS_MASK;
+ 	if (def != data)
+ 		WREG32_PCIE(smnPCIE_LC_CNTL, data);
+ 
 
 
