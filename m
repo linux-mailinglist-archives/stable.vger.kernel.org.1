@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB1075D246
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AEB075D247
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:58:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbjGUS6H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:58:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52008 "EHLO
+        id S231426AbjGUS6I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:58:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231417AbjGUS6F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:58:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EB73A8E
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:57:47 -0700 (PDT)
+        with ESMTP id S231411AbjGUS6H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:58:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0188030CF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:57:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE21761D80
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:57:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB14C433C8;
-        Fri, 21 Jul 2023 18:57:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 94AE561D5F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:57:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65D0C433C8;
+        Fri, 21 Jul 2023 18:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965867;
-        bh=/zozPttlSbLTRnrUj+5VfRZaVaDnvxjL4jrMe1l3sp0=;
+        s=korg; t=1689965870;
+        bh=SGwUS6sk76kDeCDdaLwYH+0+jH+G81UpT4PF8HmiPdc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GLFOsi2uQiEhzzvrIotEy3XHjdBH5qP7uu9WOvyovAB6m9YHO+hT1pYtUyfTDEruW
-         ICC2hDv8/MxGiK/DJbKSC7ibCOkF8obudOsoW+TRxGMHmShFi9SVHPtxT7JaPVInwK
-         Fvw5Qq4o9mYmi1mP9Th1hItXFCBeD0+oXRzHWjjo=
+        b=qEUrl6hff/gthOiF6ZqsJZ2/Gkfpdr4SrTtzOk8QnqtcmeOTwa74YgDOXN4tK8QiA
+         0aZY67V4UDUjWpesLiE/DxwgjHZ4U2LeZEwHKLw9OgKytUGfuuzmueBiTfxymTlxXz
+         +749HZAXT1MhzcL9uHHh19AQJLDQdC6iRWKqN6qI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julius Werner <jwerner@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/532] arm64: dts: mediatek: mt8183: Add mediatek,broken-save-restore-fw to kukui
-Date:   Fri, 21 Jul 2023 18:00:47 +0200
-Message-ID: <20230721160622.205400128@linuxfoundation.org>
+Subject: [PATCH 5.15 144/532] ARM: dts: stm32: Shorten the AV96 HDMI sound card name
+Date:   Fri, 21 Jul 2023 18:00:48 +0200
+Message-ID: <20230721160622.258813295@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -48,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,41 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 42127f578ebde652d1373e0233356fbd351675c4 ]
+[ Upstream commit 0cf765e598712addec34d0208cc1418c151fefb2 ]
 
-Firmware shipped on mt8183 Chromebooks is affected by the GICR
-save/restore issue as described by the patch ("dt-bindings:
-interrupt-controller: arm,gic-v3: Add quirk for Mediatek SoCs w/
-broken FW"). Add the quirk property.
+Fix the following error in kernel log due to too long sound card name:
+"
+asoc-audio-graph-card sound: ASoC: driver name too long 'STM32MP1-AV96-HDMI' -> 'STM32MP1-AV96-H'
+"
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Reviewed-by: Julius Werner <jwerner@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230515131353.v2.3.I525a2ed4260046d43c885ee1275e91707743df1c@changeid
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: e027da342772 ("ARM: dts: stm32: Add bindings for audio on AV96")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index 8e9cf36a9a41a..6529962edd4e9 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -281,6 +281,10 @@ dsi_out: endpoint {
- 	};
- };
+diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
+index 7fe93cdc82bbb..5f65d96435f6e 100644
+--- a/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
++++ b/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
+@@ -88,7 +88,7 @@ sd_switch: regulator-sd_switch {
  
-+&gic {
-+	mediatek,broken-save-restore-fw;
-+};
-+
- &gpu {
- 	mali-supply = <&mt6358_vgpu_reg>;
- 	sram-supply = <&mt6358_vsram_gpu_reg>;
+ 	sound {
+ 		compatible = "audio-graph-card";
+-		label = "STM32MP1-AV96-HDMI";
++		label = "STM32-AV96-HDMI";
+ 		dais = <&sai2a_port>;
+ 		status = "okay";
+ 	};
 -- 
 2.39.2
 
