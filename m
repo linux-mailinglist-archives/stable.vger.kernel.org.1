@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1276075D470
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 107B675D394
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232144AbjGUTVL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:21:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42910 "EHLO
+        id S231866AbjGUTMV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232140AbjGUTVJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:21:09 -0400
+        with ESMTP id S231859AbjGUTMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4137B30E3
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:21:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3701BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77A8D61B24
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:21:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F99C433C7;
-        Fri, 21 Jul 2023 19:21:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AE2B61D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDE6C433C7;
+        Fri, 21 Jul 2023 19:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967266;
-        bh=bnmzvOelThxo+ZKiXE6kDzW9cWHaTm6Gyao2pzGJeN4=;
+        s=korg; t=1689966739;
+        bh=r8hUdG5KKj5eKxySeNN88UsLPMCQT6kJPFVgWqUG+Q0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t4Tcsx5ST9OdOfYWzHGu4ffJ+JidgekojWiMtR0o6pfBqpp2P9iJ5lMUDAEQmJwLY
-         7+rtc91+aqVwbJNF4sgaychstWyRE0t664jKCCvyJCTPwA20pYMm0J4jabSlD+y7vi
-         mgYMgFRLlGfIyRWAzHJSb4yw7J7YZc2J8DJBiTGs=
+        b=RH6cujlIL+v/tDzSjyqVJh2J6lKI3i4Mq0CZKUZFYmMTsJ2LotH/skRcfqt+l+Jt7
+         jQpXpFHJHdb84vMo3fdrD9zbteVj8Ekj+z69MPgTvA3xweCyb4lSpA+ePd0+UB4rW7
+         tDvGwUDjeGfdeK5YZtXCE9/qeC4UQLB6a41SydlM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Huang Pei <huangpei@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 102/223] MIPS: Loongson: Fix cpu_probe_loongson() again
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 451/532] mtd: rawnand: meson: fix unaligned DMA buffers handling
 Date:   Fri, 21 Jul 2023 18:05:55 +0200
-Message-ID: <20230721160525.213078801@linuxfoundation.org>
+Message-ID: <20230721160639.005954496@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,85 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
 
-commit 65fee014dc41a774bcd94896f3fb380bc39d8dda upstream.
+commit 98480a181a08ceeede417e5b28f6d0429d8ae156 upstream.
 
-Commit 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
-move decode_configs() from the beginning of cpu_probe_loongson() to the
-end in order to fix FTLB configuration. However, it breaks the CPUCFG
-decoding because decode_configs() use "c->options = xxxx" rather than
-"c->options |= xxxx", all information get from CPUCFG by decode_cpucfg()
-is lost.
+Meson NAND controller requires 8 bytes alignment for DMA addresses,
+otherwise it "aligns" passed address by itself thus accessing invalid
+location in the provided buffer. This patch makes unaligned buffers to
+be reallocated to become valid.
 
-This causes error when creating a KVM guest on Loongson-3A4000:
-Exception Code: 4 not handled @ PC: 0000000087ad5981, inst: 0xcb7a1898 BadVaddr: 0x0 Status: 0x0
-
-Fix this by moving the c->cputype setting to the beginning and moving
-decode_configs() after that.
-
-Fixes: 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
-Cc: stable@vger.kernel.org
-Cc: Huang Pei <huangpei@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230615080815.3291006-1-AVKrasnov@sberdevices.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/cpu-probe.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/raw/meson_nand.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1675,7 +1675,10 @@ static inline void decode_cpucfg(struct
+--- a/drivers/mtd/nand/raw/meson_nand.c
++++ b/drivers/mtd/nand/raw/meson_nand.c
+@@ -72,6 +72,7 @@
+ #define GENCMDIADDRH(aih, addr)		((aih) | (((addr) >> 16) & 0xffff))
  
- static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ #define DMA_DIR(dir)		((dir) ? NFC_CMD_N2M : NFC_CMD_M2N)
++#define DMA_ADDR_ALIGN		8
+ 
+ #define ECC_CHECK_RETURN_FF	(-1)
+ 
+@@ -838,6 +839,9 @@ static int meson_nfc_read_oob(struct nan
+ 
+ static bool meson_nfc_is_buffer_dma_safe(const void *buffer)
  {
-+	c->cputype = CPU_LOONGSON64;
++	if ((uintptr_t)buffer % DMA_ADDR_ALIGN)
++		return false;
 +
- 	/* All Loongson processors covered here define ExcCode 16 as GSExc. */
-+	decode_configs(c);
- 	c->options |= MIPS_CPU_GSEXCEX;
- 
- 	switch (c->processor_id & PRID_IMP_MASK) {
-@@ -1685,7 +1688,6 @@ static inline void cpu_probe_loongson(st
- 		case PRID_REV_LOONGSON2K_R1_1:
- 		case PRID_REV_LOONGSON2K_R1_2:
- 		case PRID_REV_LOONGSON2K_R1_3:
--			c->cputype = CPU_LOONGSON64;
- 			__cpu_name[cpu] = "Loongson-2K";
- 			set_elf_platform(cpu, "gs264e");
- 			set_isa(c, MIPS_CPU_ISA_M64R2);
-@@ -1698,14 +1700,12 @@ static inline void cpu_probe_loongson(st
- 		switch (c->processor_id & PRID_REV_MASK) {
- 		case PRID_REV_LOONGSON3A_R2_0:
- 		case PRID_REV_LOONGSON3A_R2_1:
--			c->cputype = CPU_LOONGSON64;
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
- 			set_isa(c, MIPS_CPU_ISA_M64R2);
- 			break;
- 		case PRID_REV_LOONGSON3A_R3_0:
- 		case PRID_REV_LOONGSON3A_R3_1:
--			c->cputype = CPU_LOONGSON64;
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
- 			set_isa(c, MIPS_CPU_ISA_M64R2);
-@@ -1725,7 +1725,6 @@ static inline void cpu_probe_loongson(st
- 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
- 		break;
- 	case PRID_IMP_LOONGSON_64G:
--		c->cputype = CPU_LOONGSON64;
- 		__cpu_name[cpu] = "ICT Loongson-3";
- 		set_elf_platform(cpu, "loongson3a");
- 		set_isa(c, MIPS_CPU_ISA_M64R2);
-@@ -1735,8 +1734,6 @@ static inline void cpu_probe_loongson(st
- 		panic("Unknown Loongson Processor ID!");
- 		break;
- 	}
--
--	decode_configs(c);
- }
- #else
- static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu) { }
+ 	if (virt_addr_valid(buffer) && (!object_is_on_stack(buffer)))
+ 		return true;
+ 	return false;
 
 
