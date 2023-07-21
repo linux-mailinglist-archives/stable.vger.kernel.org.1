@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F270E75BDC9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 07:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 667C875BE39
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229818AbjGUFgj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 01:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59554 "EHLO
+        id S229690AbjGUGFz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:05:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjGUFgi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 01:36:38 -0400
+        with ESMTP id S229927AbjGUGFZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:05:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934031719
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 22:36:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31BBF1BEF
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:04:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A566B61083
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601C7C433C8;
-        Fri, 21 Jul 2023 05:36:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6C13612B3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:04:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8E8C433C7;
+        Fri, 21 Jul 2023 06:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689917794;
-        bh=/ay/yn1ukt8dSbBlM3m/9caIy6ww4xCLkLDyNuQswis=;
+        s=korg; t=1689919448;
+        bh=VyCBvbFQGRMSfL7mSBYzMY1ItmHfvtMJIXl3yH79Ow8=;
         h=Subject:To:Cc:From:Date:From;
-        b=uRJA9WvRIb4HaFpsfwvOc49guve0Dtc6hFvdwpXXFsk9FcGh/oA1xHuEzZBjjJRDB
-         VZYxzsLaWdprKjsk4/ASvzeZzw1ud2qB5e4fpRC9H9BHi+4PfgTRrY5Hj5E+XAtCXm
-         OeJUlPcFt7xcRZS6r07SEhG7R/7lSomE4O/YDXh8=
-Subject: FAILED: patch "[PATCH] MIPS: Loongson: Fix build error when make modules_install" failed to apply to 6.1-stable tree
-To:     chenhuacai@kernel.org, chenfeiyang@loongson.cn,
-        chenhuacai@loongson.cn, nathan@kernel.org, ndesaulniers@google.com,
-        tsbogend@alpha.franken.de
+        b=oiu6wp1MW5uDeXg19VwPKU1WQ1vZ2Cp9guVDYv4802MvGWkOzxLtk4q8n94GOrA6K
+         Jx9OsSriR1iMZAmnsTZ1G1Xht557gIMsta/Wk/rECEW80P80RG10KRa9gz/IlKrmhJ
+         j54HSl/Z1LXs4XMMzzHj/W1nb+k0f7AnrOV5ngeI=
+Subject: FAILED: patch "[PATCH] ext4: Fix reusing stale buffer heads from last failed" failed to apply to 5.4-stable tree
+To:     chengzhihao1@huawei.com, jack@suse.cz, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 07:36:31 +0200
-Message-ID: <2023072131-hydrant-clatter-4b9f@gregkh>
+Date:   Fri, 21 Jul 2023 08:04:06 +0200
+Message-ID: <2023072106-retrial-nature-2689@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,25 +49,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 531b3d1195d096f14e030c4b01ec3a53b80276bf
+git cherry-pick -x 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072131-hydrant-clatter-4b9f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072106-retrial-nature-2689@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-531b3d1195d0 ("MIPS: Loongson: Fix build error when make modules_install")
-194a83521052 ("MIPS: Loongson: Move arch cflags to MIPS top level Makefile")
-337ff6bb8960 ("MIPS: Prefer cc-option for additions to cflags")
+26fb5290240d ("ext4: Fix reusing stale buffer heads from last failed mounting")
+ee7ed3aa0f08 ("ext4: rename journal_dev to s_journal_dev inside ext4_sb_info")
 
 thanks,
 
@@ -77,68 +74,120 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 531b3d1195d096f14e030c4b01ec3a53b80276bf Mon Sep 17 00:00:00 2001
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 28 Jun 2023 19:08:47 +0800
-Subject: [PATCH] MIPS: Loongson: Fix build error when make modules_install
+From 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b Mon Sep 17 00:00:00 2001
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Date: Wed, 15 Mar 2023 09:31:23 +0800
+Subject: [PATCH] ext4: Fix reusing stale buffer heads from last failed
+ mounting
 
-After commit 0e96ea5c3eb5904e5dc2f ("MIPS: Loongson64: Clean up use of
-cc-ifversion") we get a build error when make modules_install:
+Following process makes ext4 load stale buffer heads from last failed
+mounting in a new mounting operation:
+mount_bdev
+ ext4_fill_super
+ | ext4_load_and_init_journal
+ |  ext4_load_journal
+ |   jbd2_journal_load
+ |    load_superblock
+ |     journal_get_superblock
+ |      set_buffer_verified(bh) // buffer head is verified
+ |   jbd2_journal_recover // failed caused by EIO
+ | goto failed_mount3a // skip 'sb->s_root' initialization
+ deactivate_locked_super
+  kill_block_super
+   generic_shutdown_super
+    if (sb->s_root)
+    // false, skip ext4_put_super->invalidate_bdev->
+    // invalidate_mapping_pages->mapping_evict_folio->
+    // filemap_release_folio->try_to_free_buffers, which
+    // cannot drop buffer head.
+   blkdev_put
+    blkdev_put_whole
+     if (atomic_dec_and_test(&bdev->bd_openers))
+     // false, systemd-udev happens to open the device. Then
+     // blkdev_flush_mapping->kill_bdev->truncate_inode_pages->
+     // truncate_inode_folio->truncate_cleanup_folio->
+     // folio_invalidate->block_invalidate_folio->
+     // filemap_release_folio->try_to_free_buffers will be skipped,
+     // dropping buffer head is missed again.
 
-cc1: error: '-mloongson-mmi' must be used with '-mhard-float'
+Second mount:
+ext4_fill_super
+ ext4_load_and_init_journal
+  ext4_load_journal
+   ext4_get_journal
+    jbd2_journal_init_inode
+     journal_init_common
+      bh = getblk_unmovable
+       bh = __find_get_block // Found stale bh in last failed mounting
+      journal->j_sb_buffer = bh
+   jbd2_journal_load
+    load_superblock
+     journal_get_superblock
+      if (buffer_verified(bh))
+      // true, skip journal->j_format_version = 2, value is 0
+    jbd2_journal_recover
+     do_one_pass
+      next_log_block += count_tags(journal, bh)
+      // According to journal_tag_bytes(), 'tag_bytes' calculating is
+      // affected by jbd2_has_feature_csum3(), jbd2_has_feature_csum3()
+      // returns false because 'j->j_format_version >= 2' is not true,
+      // then we get wrong next_log_block. The do_one_pass may exit
+      // early whenoccuring non JBD2_MAGIC_NUMBER in 'next_log_block'.
 
-The reason is when make modules_install, 'call cc-option' doesn't work
-in $(KBUILD_CFLAGS) of 'CHECKFLAGS'. Then there is no -mno-loongson-mmi
-applied and -march=loongson3a enable MMI instructions.
+The filesystem is corrupted here, journal is partially replayed, and
+new journal sequence number actually is already used by last mounting.
 
-To be detail, the error message comes from the CHECKFLAGS invocation of
-$(CC) but it has no impact on the final result of make modules_install,
-it is purely a cosmetic issue. The error occurs because cc-option is
-defined in scripts/Makefile.compiler, which is not included in Makefile
-when running 'make modules_install', as install targets are not supposed
-to require the compiler; see commit 805b2e1d427aab4b ("kbuild: include
-Makefile.compiler only when compiler is needed"). As a result, the call
-to check for '-mno-loongson-mmi' just never happens.
+The invalidate_bdev() can drop all buffer heads even racing with bare
+reading block device(eg. systemd-udev), so we can fix it by invalidating
+bdev in error handling path in __ext4_fill_super().
 
-Fix this by partially reverting to the old logic, use 'call cc-option'
-to conditionally apply -march=loongson3a and -march=mips64r2.
+Fetch a reproducer in [Link].
 
-By the way, Loongson-2E/2F is also broken in commit 13ceb48bc19c563e05f4
-("MIPS: Loongson2ef: Remove unnecessary {as,cc}-option calls") so fix it
-together.
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217171
+Fixes: 25ed6e8a54df ("jbd2: enable journal clients to enable v2 checksumming")
+Cc: stable@vger.kernel.org # v3.5
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230315013128.3911115-2-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-Fixes: 13ceb48bc19c563e05f4 ("MIPS: Loongson2ef: Remove unnecessary {as,cc}-option calls")
-Fixes: 0e96ea5c3eb5904e5dc2 ("MIPS: Loongson64: Clean up use of cc-ifversion")
-Cc: stable@vger.kernel.org
-Cc: Feiyang Chen <chenfeiyang@loongson.cn>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index a7a4ee66a9d3..35a1b9b34734 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -181,16 +181,12 @@ endif
- cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
- cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 7f9b087b9b20..6a8c5c3c9126 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1128,6 +1128,12 @@ static void ext4_blkdev_remove(struct ext4_sb_info *sbi)
+ 	struct block_device *bdev;
+ 	bdev = sbi->s_journal_bdev;
+ 	if (bdev) {
++		/*
++		 * Invalidate the journal device's buffers.  We don't want them
++		 * floating about in memory - the physical journal device may
++		 * hotswapped, and it breaks the `ro-after' testing code.
++		 */
++		invalidate_bdev(bdev);
+ 		ext4_blkdev_put(bdev);
+ 		sbi->s_journal_bdev = NULL;
+ 	}
+@@ -1328,13 +1334,7 @@ static void ext4_put_super(struct super_block *sb)
+ 	sync_blockdev(sb->s_bdev);
+ 	invalidate_bdev(sb->s_bdev);
+ 	if (sbi->s_journal_bdev && sbi->s_journal_bdev != sb->s_bdev) {
+-		/*
+-		 * Invalidate the journal device's buffers.  We don't want them
+-		 * floating about in memory - the physical journal device may
+-		 * hotswapped, and it breaks the `ro-after' testing code.
+-		 */
+ 		sync_blockdev(sbi->s_journal_bdev);
+-		invalidate_bdev(sbi->s_journal_bdev);
+ 		ext4_blkdev_remove(sbi);
+ 	}
  
--cflags-$(CONFIG_CPU_LOONGSON2E) += -march=loongson2e -Wa,--trap
--cflags-$(CONFIG_CPU_LOONGSON2F) += -march=loongson2f -Wa,--trap
-+cflags-$(CONFIG_CPU_LOONGSON2E) += $(call cc-option,-march=loongson2e) -Wa,--trap
-+cflags-$(CONFIG_CPU_LOONGSON2F) += $(call cc-option,-march=loongson2f) -Wa,--trap
-+cflags-$(CONFIG_CPU_LOONGSON64) += $(call cc-option,-march=loongson3a,-march=mips64r2) -Wa,--trap
- # Some -march= flags enable MMI instructions, and GCC complains about that
- # support being enabled alongside -msoft-float. Thus explicitly disable MMI.
- cflags-$(CONFIG_CPU_LOONGSON2EF) += $(call cc-option,-mno-loongson-mmi)
--ifdef CONFIG_CPU_LOONGSON64
--cflags-$(CONFIG_CPU_LOONGSON64)	+= -Wa,--trap
--cflags-$(CONFIG_CC_IS_GCC) += -march=loongson3a
--cflags-$(CONFIG_CC_IS_CLANG) += -march=mips64r2
--endif
- cflags-$(CONFIG_CPU_LOONGSON64) += $(call cc-option,-mno-loongson-mmi)
- 
- cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
+@@ -5655,6 +5655,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	brelse(sbi->s_sbh);
+ 	ext4_blkdev_remove(sbi);
+ out_fail:
++	invalidate_bdev(sb->s_bdev);
+ 	sb->s_fs_info = NULL;
+ 	return err;
+ }
 
