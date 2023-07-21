@@ -2,145 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 191B375C099
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D30A75C0B5
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 10:04:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbjGUH7r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:59:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47948 "EHLO
+        id S230194AbjGUIEM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 04:04:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229914AbjGUH7o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:59:44 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C7C2710;
-        Fri, 21 Jul 2023 00:59:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=Nlw4/Z4Qos4HKINH1+acYEbUVYzFzh3QlKFg9k7JSog=; b=r5BWTa/VoWNG6OqLSTFt06vbOM
-        zqex4vbFUL/U0a3v1WWSjZ2vngYZ/e6RTM8AGHzjrl1pDRnyZhZ4IWFido2QjjCmOZAD6MNmoW7fn
-        DjfdhBvxh1CI8eVrmsQ+QB4h4pH2VT6vqGVAmspMkaPrzKziBx4ghai0A1BFxPi5EY+FTiBNQMC8B
-        9d8Vf6IQcjIeQJDoA+3knsl4O9S62/tKKuQQCm5VkzmZVlDCyMup+tlbtbaBMXYexoKhKD0NdHTse
-        fAO/jglCqOfRE26G67TZss3Rs1dx/3KD3TJ/9SNv7bZUZDOGuX91/+Kb7EB5pspPicarAupRVPnq6
-        Mg0pyz5A==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qMl2H-000uO8-Ru; Fri, 21 Jul 2023 07:58:50 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 714B3300095;
-        Fri, 21 Jul 2023 09:58:48 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 57F3E3154DF57; Fri, 21 Jul 2023 09:58:48 +0200 (CEST)
-Date:   Fri, 21 Jul 2023 09:58:48 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-Cc:     KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "hpa@zytor.com" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/1] x86/hyperv: Disable IBT when hypercall page lacks
- ENDBR instruction
-Message-ID: <20230721075848.GA3630545@hirez.programming.kicks-ass.net>
-References: <1689885237-32662-1-git-send-email-mikelley@microsoft.com>
- <20230720211553.GA3615208@hirez.programming.kicks-ass.net>
- <SN6PR2101MB16933FAC4E09E15D824EB2FDD73FA@SN6PR2101MB1693.namprd21.prod.outlook.com>
+        with ESMTP id S230060AbjGUIEL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 04:04:11 -0400
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831E82706;
+        Fri, 21 Jul 2023 01:04:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=5aObg4Rh5qEJeJ8tTIo3XUeRpbH8XsDqwD/4y5QHoas=; b=ePWcXIwzt+RNEgOZKYQH8qXMiO
+        4KnaWZdeCy3jTxoOndr8CECc1s7RsE20nrWnYyEWsLK1Eoz3t6kNLKxugTA4+YRjIlGMIE6Fp2lKa
+        mq1kKxzsPU6Etd6cMHVyPiVEIIh8fMIOSWOTE1E4+22B8nb7SBKr9t2A9iFHBY67HgJU=;
+Received: from [217.114.218.24] (helo=nf.local)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1qMl78-003Cex-6Z; Fri, 21 Jul 2023 10:03:50 +0200
+Message-ID: <00a2f5ba-7f46-641c-2c0e-e8ecb1356df8@nbd.name>
+Date:   Fri, 21 Jul 2023 10:03:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR2101MB16933FAC4E09E15D824EB2FDD73FA@SN6PR2101MB1693.namprd21.prod.outlook.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mt76: mt7615: do not advertise 5 GHz on first phy of
+ MT7615D (DBDC)
+To:     Paul Fertser <fercerpav@gmail.com>, linux-wireless@vger.kernel.org
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, Rani Hod <rani.hod@gmail.com>,
+        stable@vger.kernel.org
+References: <20230605073408.8699-1-fercerpav@gmail.com>
+Content-Language: en-US
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <20230605073408.8699-1-fercerpav@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 12:41:35AM +0000, Michael Kelley (LINUX) wrote:
-
-> > Other than that, this seems fairly straight forward. One thing I
-> > wondered about; wouldn't it be possible to re-write the indirect
-> > hypercall thingies to a direct call? I mean, once we have the hypercall
-> > page mapped, the address is known right?
+On 05.06.23 09:34, Paul Fertser wrote:
+> On DBDC devices the first (internal) phy is only capable of using
+> 2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
+> so avoid the false advertising.
 > 
-> Yes, the address is known.  It does not change across things like
-> hibernation.  But the indirect call instruction is part of an inline assembly
-> sequence, so the call instructions that need re-writing are scattered
-> throughout the code. There's also the SEV-SNP case from the
-> latest version of Tianyu Lan's patch set [1] where vmmcall may be used
-> instead, based on your recent enhancement for nested ALTERNATIVE.
-> Re-writing seems like that's more complexity than warranted for a
-> mostly interim situation until the Hyper-V patch is available and
-> users install it.
+> Reported-by: Rani Hod <rani.hod@gmail.com>
+> Closes: https://github.com/openwrt/openwrt/pull/12361
+> Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Acked-by: Felix Fietkau <nbd@nbd.name>
 
-Well, we have a lot of infrastructure for this already. Specifically
-this is very like the paravirt patching.
+Jakub, could you please pick this one up for 6.5?
 
-Also, direct calls are both faster and have less speculation issues, so
-it might still be worth looking at.
+Thanks,
 
-The way to do something like this would be:
-
-
-	asm volatile ("   ANNOTATE_RETPOLINE_SAFE	\n\t"
-		      "1: call *hv_hypercall_page	\n\t"
-		      ".pushsection .hv_call_sites	\n\t"
-		      ".long 1b - .			\n\t"
-		      ".popsection			\n\t");
-
-
-And then (see alternative.c for many other examples):
-
-
-patch_hypercalls()
-{
-	s32 *s;
-
-	for (s = __hv_call_sites_begin; s < __hv_call_sites_end; s++) {
-		void *addr = (void *)s + *s;
-		struct insn insn;
-
-		ret = insn_decode_kernel(&insn, addr);
-		if (WARN_ON_ONCE(ret < 0))
-			continue;
-
-		/*
-		 * indirect call: ff 15 disp32
-		 * direct call:   2e e8 disp32
-		 */
-		if (insn.length == 6 &&
-		    insn.opcode.bytes[0] == 0xFF &&
-		    X86_MODRM_REG(insn.modrm.bytes[0]) == 2) {
-
-			/* verify it was calling hy_hypercall_page */
-			if (WARN_ON_ONCE(addr + 6 + insn.displacement.value != &hv_hypercall_page))
-				continue;
-
-			/*
-			 * write a CS padded direct call -- assumes the
-			 * hypercall page is in the 2G immediate range
-			 * of the kernel text
-			 */
-			addr[0] = 0x2e; /* CS prefix */
-			addr[1] = CALL_INSN_OPCODE;
-			(s32 *)&Addr[2] = *hv_hypercall_page - (addr + 6);
-		}
-	}
-}
-
-
-See, easy :-)
+- Felix
