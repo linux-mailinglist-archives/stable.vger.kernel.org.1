@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347F275D36B
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C19275D419
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:17:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231819AbjGUTK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:10:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
+        id S232013AbjGUTR6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231821AbjGUTK0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBAC030E1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:24 -0700 (PDT)
+        with ESMTP id S232007AbjGUTR5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:17:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155B51FD2
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71DE261D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831C6C433C8;
-        Fri, 21 Jul 2023 19:10:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FA5261D7F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE391C433C8;
+        Fri, 21 Jul 2023 19:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966623;
-        bh=Vzjy8BGmqTws7AFIwXBnE67tW9pmha71wjzMZrs/n8g=;
+        s=korg; t=1689967067;
+        bh=JbVmS/ii7+KX3NhIZ+Z0Mh61XcuFPp+JdCj6MQfqD0s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kJMX2AQNpgL68efda1eGtqCRWOINeHiwJqTX9nzNKnqMGjrQddfHqAEl91oinA3yJ
-         kntjy3uX/L7QUZnepHc3MklRZPZG0ewczbOK2zGTheV8a6M078gGhxP2GlIA0mO50F
-         nDB6Z3UpWrp136A6MC6IrnXlAwKkf5S+ajwe16sQ=
+        b=fiNDnulvg6O4KM6FajETTF4arKmtd4FqAdCdxxfmpCgf5HNEdPVi2rKqGXT63Fdb1
+         MLSL+vwf5tm27oAA1HGINLDNlPDPLkA6WlA94sPECQkxAfQX7G73Ritu4sXeYHoOV1
+         UvtaHu4x8NgF/woHoDNYT1AQ8+aXqWPld5JvZTWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 382/532] netfilter: nf_tables: prevent OOB access in nft_byteorder_eval
+        patches@lists.linux.dev, Ian Kumlien <ian.kumlien@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 033/223] net: prevent skb corruption on frag list segmentation
 Date:   Fri, 21 Jul 2023 18:04:46 +0200
-Message-ID: <20230721160635.202788749@linuxfoundation.org>
+Message-ID: <20230721160522.279811892@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,211 +57,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit caf3ef7468f7534771b5c44cd8dbd6f7f87c2cbd upstream.
+[ Upstream commit c329b261afe71197d9da83c1f18eb45a7e97e089 ]
 
-When evaluating byteorder expressions with size 2, a union with 32-bit and
-16-bit members is used. Since the 16-bit members are aligned to 32-bit,
-the array accesses will be out-of-bounds.
+Ian reported several skb corruptions triggered by rx-gro-list,
+collecting different oops alike:
 
-It may lead to a stack-out-of-bounds access like the one below:
+[   62.624003] BUG: kernel NULL pointer dereference, address: 00000000000000c0
+[   62.631083] #PF: supervisor read access in kernel mode
+[   62.636312] #PF: error_code(0x0000) - not-present page
+[   62.641541] PGD 0 P4D 0
+[   62.644174] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[   62.648629] CPU: 1 PID: 913 Comm: napi/eno2-79 Not tainted 6.4.0 #364
+[   62.655162] Hardware name: Supermicro Super Server/A2SDi-12C-HLN4F, BIOS 1.7a 10/13/2022
+[   62.663344] RIP: 0010:__udp_gso_segment (./include/linux/skbuff.h:2858
+./include/linux/udp.h:23 net/ipv4/udp_offload.c:228 net/ipv4/udp_offload.c:261
+net/ipv4/udp_offload.c:277)
+[   62.687193] RSP: 0018:ffffbd3a83b4f868 EFLAGS: 00010246
+[   62.692515] RAX: 00000000000000ce RBX: 0000000000000000 RCX: 0000000000000000
+[   62.699743] RDX: ffffa124def8a000 RSI: 0000000000000079 RDI: ffffa125952a14d4
+[   62.706970] RBP: ffffa124def8a000 R08: 0000000000000022 R09: 00002000001558c9
+[   62.714199] R10: 0000000000000000 R11: 00000000be554639 R12: 00000000000000e2
+[   62.721426] R13: ffffa125952a1400 R14: ffffa125952a1400 R15: 00002000001558c9
+[   62.728654] FS:  0000000000000000(0000) GS:ffffa127efa40000(0000)
+knlGS:0000000000000000
+[   62.736852] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   62.742702] CR2: 00000000000000c0 CR3: 00000001034b0000 CR4: 00000000003526e0
+[   62.749948] Call Trace:
+[   62.752498]  <TASK>
+[   62.779267] inet_gso_segment (net/ipv4/af_inet.c:1398)
+[   62.787605] skb_mac_gso_segment (net/core/gro.c:141)
+[   62.791906] __skb_gso_segment (net/core/dev.c:3403 (discriminator 2))
+[   62.800492] validate_xmit_skb (./include/linux/netdevice.h:4862
+net/core/dev.c:3659)
+[   62.804695] validate_xmit_skb_list (net/core/dev.c:3710)
+[   62.809158] sch_direct_xmit (net/sched/sch_generic.c:330)
+[   62.813198] __dev_queue_xmit (net/core/dev.c:3805 net/core/dev.c:4210)
+net/netfilter/core.c:626)
+[   62.821093] br_dev_queue_push_xmit (net/bridge/br_forward.c:55)
+[   62.825652] maybe_deliver (net/bridge/br_forward.c:193)
+[   62.829420] br_flood (net/bridge/br_forward.c:233)
+[   62.832758] br_handle_frame_finish (net/bridge/br_input.c:215)
+[   62.837403] br_handle_frame (net/bridge/br_input.c:298
+net/bridge/br_input.c:416)
+[   62.851417] __netif_receive_skb_core.constprop.0 (net/core/dev.c:5387)
+[   62.866114] __netif_receive_skb_list_core (net/core/dev.c:5570)
+[   62.871367] netif_receive_skb_list_internal (net/core/dev.c:5638
+net/core/dev.c:5727)
+[   62.876795] napi_complete_done (./include/linux/list.h:37
+./include/net/gro.h:434 ./include/net/gro.h:429 net/core/dev.c:6067)
+[   62.881004] ixgbe_poll (drivers/net/ethernet/intel/ixgbe/ixgbe_main.c:3191)
+[   62.893534] __napi_poll (net/core/dev.c:6498)
+[   62.897133] napi_threaded_poll (./include/linux/netpoll.h:89
+net/core/dev.c:6640)
+[   62.905276] kthread (kernel/kthread.c:379)
+[   62.913435] ret_from_fork (arch/x86/entry/entry_64.S:314)
+[   62.917119]  </TASK>
 
-[   23.095215] ==================================================================
-[   23.095625] BUG: KASAN: stack-out-of-bounds in nft_byteorder_eval+0x13c/0x320
-[   23.096020] Read of size 2 at addr ffffc90000007948 by task ping/115
-[   23.096358]
-[   23.096456] CPU: 0 PID: 115 Comm: ping Not tainted 6.4.0+ #413
-[   23.096770] Call Trace:
-[   23.096910]  <IRQ>
-[   23.097030]  dump_stack_lvl+0x60/0xc0
-[   23.097218]  print_report+0xcf/0x630
-[   23.097388]  ? nft_byteorder_eval+0x13c/0x320
-[   23.097577]  ? kasan_addr_to_slab+0xd/0xc0
-[   23.097760]  ? nft_byteorder_eval+0x13c/0x320
-[   23.097949]  kasan_report+0xc9/0x110
-[   23.098106]  ? nft_byteorder_eval+0x13c/0x320
-[   23.098298]  __asan_load2+0x83/0xd0
-[   23.098453]  nft_byteorder_eval+0x13c/0x320
-[   23.098659]  nft_do_chain+0x1c8/0xc50
-[   23.098852]  ? __pfx_nft_do_chain+0x10/0x10
-[   23.099078]  ? __kasan_check_read+0x11/0x20
-[   23.099295]  ? __pfx___lock_acquire+0x10/0x10
-[   23.099535]  ? __pfx___lock_acquire+0x10/0x10
-[   23.099745]  ? __kasan_check_read+0x11/0x20
-[   23.099929]  nft_do_chain_ipv4+0xfe/0x140
-[   23.100105]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
-[   23.100327]  ? lock_release+0x204/0x400
-[   23.100515]  ? nf_hook.constprop.0+0x340/0x550
-[   23.100779]  nf_hook_slow+0x6c/0x100
-[   23.100977]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
-[   23.101223]  nf_hook.constprop.0+0x334/0x550
-[   23.101443]  ? __pfx_ip_local_deliver_finish+0x10/0x10
-[   23.101677]  ? __pfx_nf_hook.constprop.0+0x10/0x10
-[   23.101882]  ? __pfx_ip_rcv_finish+0x10/0x10
-[   23.102071]  ? __pfx_ip_local_deliver_finish+0x10/0x10
-[   23.102291]  ? rcu_read_lock_held+0x4b/0x70
-[   23.102481]  ip_local_deliver+0xbb/0x110
-[   23.102665]  ? __pfx_ip_rcv+0x10/0x10
-[   23.102839]  ip_rcv+0x199/0x2a0
-[   23.102980]  ? __pfx_ip_rcv+0x10/0x10
-[   23.103140]  __netif_receive_skb_one_core+0x13e/0x150
-[   23.103362]  ? __pfx___netif_receive_skb_one_core+0x10/0x10
-[   23.103647]  ? mark_held_locks+0x48/0xa0
-[   23.103819]  ? process_backlog+0x36c/0x380
-[   23.103999]  __netif_receive_skb+0x23/0xc0
-[   23.104179]  process_backlog+0x91/0x380
-[   23.104350]  __napi_poll.constprop.0+0x66/0x360
-[   23.104589]  ? net_rx_action+0x1cb/0x610
-[   23.104811]  net_rx_action+0x33e/0x610
-[   23.105024]  ? _raw_spin_unlock+0x23/0x50
-[   23.105257]  ? __pfx_net_rx_action+0x10/0x10
-[   23.105485]  ? mark_held_locks+0x48/0xa0
-[   23.105741]  __do_softirq+0xfa/0x5ab
-[   23.105956]  ? __dev_queue_xmit+0x765/0x1c00
-[   23.106193]  do_softirq.part.0+0x49/0xc0
-[   23.106423]  </IRQ>
-[   23.106547]  <TASK>
-[   23.106670]  __local_bh_enable_ip+0xf5/0x120
-[   23.106903]  __dev_queue_xmit+0x789/0x1c00
-[   23.107131]  ? __pfx___dev_queue_xmit+0x10/0x10
-[   23.107381]  ? find_held_lock+0x8e/0xb0
-[   23.107585]  ? lock_release+0x204/0x400
-[   23.107798]  ? neigh_resolve_output+0x185/0x350
-[   23.108049]  ? mark_held_locks+0x48/0xa0
-[   23.108265]  ? neigh_resolve_output+0x185/0x350
-[   23.108514]  neigh_resolve_output+0x246/0x350
-[   23.108753]  ? neigh_resolve_output+0x246/0x350
-[   23.109003]  ip_finish_output2+0x3c3/0x10b0
-[   23.109250]  ? __pfx_ip_finish_output2+0x10/0x10
-[   23.109510]  ? __pfx_nf_hook+0x10/0x10
-[   23.109732]  __ip_finish_output+0x217/0x390
-[   23.109978]  ip_finish_output+0x2f/0x130
-[   23.110207]  ip_output+0xc9/0x170
-[   23.110404]  ip_push_pending_frames+0x1a0/0x240
-[   23.110652]  raw_sendmsg+0x102e/0x19e0
-[   23.110871]  ? __pfx_raw_sendmsg+0x10/0x10
-[   23.111093]  ? lock_release+0x204/0x400
-[   23.111304]  ? __mod_lruvec_page_state+0x148/0x330
-[   23.111567]  ? find_held_lock+0x8e/0xb0
-[   23.111777]  ? find_held_lock+0x8e/0xb0
-[   23.111993]  ? __rcu_read_unlock+0x7c/0x2f0
-[   23.112225]  ? aa_sk_perm+0x18a/0x550
-[   23.112431]  ? filemap_map_pages+0x4f1/0x900
-[   23.112665]  ? __pfx_aa_sk_perm+0x10/0x10
-[   23.112880]  ? find_held_lock+0x8e/0xb0
-[   23.113098]  inet_sendmsg+0xa0/0xb0
-[   23.113297]  ? inet_sendmsg+0xa0/0xb0
-[   23.113500]  ? __pfx_inet_sendmsg+0x10/0x10
-[   23.113727]  sock_sendmsg+0xf4/0x100
-[   23.113924]  ? move_addr_to_kernel.part.0+0x4f/0xa0
-[   23.114190]  __sys_sendto+0x1d4/0x290
-[   23.114391]  ? __pfx___sys_sendto+0x10/0x10
-[   23.114621]  ? __pfx_mark_lock.part.0+0x10/0x10
-[   23.114869]  ? lock_release+0x204/0x400
-[   23.115076]  ? find_held_lock+0x8e/0xb0
-[   23.115287]  ? rcu_is_watching+0x23/0x60
-[   23.115503]  ? __rseq_handle_notify_resume+0x6e2/0x860
-[   23.115778]  ? __kasan_check_write+0x14/0x30
-[   23.116008]  ? blkcg_maybe_throttle_current+0x8d/0x770
-[   23.116285]  ? mark_held_locks+0x28/0xa0
-[   23.116503]  ? do_syscall_64+0x37/0x90
-[   23.116713]  __x64_sys_sendto+0x7f/0xb0
-[   23.116924]  do_syscall_64+0x59/0x90
-[   23.117123]  ? irqentry_exit_to_user_mode+0x25/0x30
-[   23.117387]  ? irqentry_exit+0x77/0xb0
-[   23.117593]  ? exc_page_fault+0x92/0x140
-[   23.117806]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[   23.118081] RIP: 0033:0x7f744aee2bba
-[   23.118282] Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
-[   23.119237] RSP: 002b:00007ffd04a7c9f8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[   23.119644] RAX: ffffffffffffffda RBX: 00007ffd04a7e0a0 RCX: 00007f744aee2bba
-[   23.120023] RDX: 0000000000000040 RSI: 000056488e9e6300 RDI: 0000000000000003
-[   23.120413] RBP: 000056488e9e6300 R08: 00007ffd04a80320 R09: 0000000000000010
-[   23.120809] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000040
-[   23.121219] R13: 00007ffd04a7dc38 R14: 00007ffd04a7ca00 R15: 00007ffd04a7e0a0
-[   23.121617]  </TASK>
-[   23.121749]
-[   23.121845] The buggy address belongs to the virtual mapping at
-[   23.121845]  [ffffc90000000000, ffffc90000009000) created by:
-[   23.121845]  irq_init_percpu_irqstack+0x1cf/0x270
-[   23.122707]
-[   23.122803] The buggy address belongs to the physical page:
-[   23.123104] page:0000000072ac19f0 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x24a09
-[   23.123609] flags: 0xfffffc0001000(reserved|node=0|zone=1|lastcpupid=0x1fffff)
-[   23.123998] page_type: 0xffffffff()
-[   23.124194] raw: 000fffffc0001000 ffffea0000928248 ffffea0000928248 0000000000000000
-[   23.124610] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-[   23.125023] page dumped because: kasan: bad access detected
-[   23.125326]
-[   23.125421] Memory state around the buggy address:
-[   23.125682]  ffffc90000007800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   23.126072]  ffffc90000007880: 00 00 00 00 00 f1 f1 f1 f1 f1 f1 00 00 f2 f2 00
-[   23.126455] >ffffc90000007900: 00 00 00 00 00 00 00 00 00 f2 f2 f2 f2 00 00 00
-[   23.126840]                                               ^
-[   23.127138]  ffffc90000007980: 00 00 00 00 00 00 00 00 00 00 00 00 00 f3 f3 f3
-[   23.127522]  ffffc90000007a00: f3 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1
-[   23.127906] ==================================================================
-[   23.128324] Disabling lock debugging due to kernel taint
+In the critical scenario, rx-gro-list GRO-ed packets are fed, via a
+bridge, both to the local input path and to an egress device (tun).
 
-Using simple s16 pointers for the 16-bit accesses fixes the problem. For
-the 32-bit accesses, src and dst can be used directly.
+The segmentation of such packets unsafely writes to the cloned skbs
+with shared heads.
 
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Cc: stable@vger.kernel.org
-Reported-by: Tanguy DUBROCA (@SidewayRE) from @Synacktiv working with ZDI
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change addresses the issue by uncloning as needed the
+to-be-segmented skbs.
+
+Reported-by: Ian Kumlien <ian.kumlien@gmail.com>
+Tested-by: Ian Kumlien <ian.kumlien@gmail.com>
+Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_byteorder.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/core/skbuff.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/netfilter/nft_byteorder.c
-+++ b/net/netfilter/nft_byteorder.c
-@@ -30,11 +30,11 @@ void nft_byteorder_eval(const struct nft
- 	const struct nft_byteorder *priv = nft_expr_priv(expr);
- 	u32 *src = &regs->data[priv->sreg];
- 	u32 *dst = &regs->data[priv->dreg];
--	union { u32 u32; u16 u16; } *s, *d;
-+	u16 *s16, *d16;
- 	unsigned int i;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index ef9772b12624c..b6c16db86c719 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4042,6 +4042,11 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
  
--	s = (void *)src;
--	d = (void *)dst;
-+	s16 = (void *)src;
-+	d16 = (void *)dst;
+ 	skb_push(skb, -skb_network_offset(skb) + offset);
  
- 	switch (priv->size) {
- 	case 8: {
-@@ -61,11 +61,11 @@ void nft_byteorder_eval(const struct nft
- 		switch (priv->op) {
- 		case NFT_BYTEORDER_NTOH:
- 			for (i = 0; i < priv->len / 4; i++)
--				d[i].u32 = ntohl((__force __be32)s[i].u32);
-+				dst[i] = ntohl((__force __be32)src[i]);
- 			break;
- 		case NFT_BYTEORDER_HTON:
- 			for (i = 0; i < priv->len / 4; i++)
--				d[i].u32 = (__force __u32)htonl(s[i].u32);
-+				dst[i] = (__force __u32)htonl(src[i]);
- 			break;
- 		}
- 		break;
-@@ -73,11 +73,11 @@ void nft_byteorder_eval(const struct nft
- 		switch (priv->op) {
- 		case NFT_BYTEORDER_NTOH:
- 			for (i = 0; i < priv->len / 2; i++)
--				d[i].u16 = ntohs((__force __be16)s[i].u16);
-+				d16[i] = ntohs((__force __be16)s16[i]);
- 			break;
- 		case NFT_BYTEORDER_HTON:
- 			for (i = 0; i < priv->len / 2; i++)
--				d[i].u16 = (__force __u16)htons(s[i].u16);
-+				d16[i] = (__force __u16)htons(s16[i]);
- 			break;
- 		}
- 		break;
++	/* Ensure the head is writeable before touching the shared info */
++	err = skb_unclone(skb, GFP_ATOMIC);
++	if (err)
++		goto err_linearize;
++
+ 	skb_shinfo(skb)->frag_list = NULL;
+ 
+ 	while (list_skb) {
+-- 
+2.39.2
+
 
 
