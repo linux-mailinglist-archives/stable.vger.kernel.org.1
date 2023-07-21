@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4506775D36C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB22D75D41B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231824AbjGUTK3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:10:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33804 "EHLO
+        id S232016AbjGUTSC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231823AbjGUTK2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:28 -0400
+        with ESMTP id S232010AbjGUTSB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE1B1BF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6155A30ED
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39A7961D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9F1C433C7;
-        Fri, 21 Jul 2023 19:10:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 990F961D82
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B20C433C7;
+        Fri, 21 Jul 2023 19:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966626;
-        bh=jbU/E+nKIFSxau9+ObOakyHqpYw2tMLSD6dmiCqF+Jk=;
+        s=korg; t=1689967070;
+        bh=B4sPVKzgyEvQmJxHUv5LySKXliFDpgfRlnvL8IHyz10=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m4QfZHxaj0MWmkjJVAbdizm2YqSGavJVGXwlIOvbgUfvdLhQZ0E3NAzawLKt4sdvX
-         dcgXIuaHEz9qc77NsULa+kGiyCYXaWaWBIB3lZIibA3QuVnANOGH1B111p/Yg8Z+vA
-         mNTMsk8CsrMZEBOVIU6xruHJPiFcu0sqE37LXftY=
+        b=ewwaQUuglRVzCZ1x6XRMwUYrfkCp/KWgy3IqBZmqDpJPH6zTJR42CBg8D8/Cz4xJ6
+         vWmSAxVgH3e9/BIbSQB9gXJXnsTkNnhYB/sYFuNdKJ6rSdmFudIKtt7AVO8Fq+aC1d
+         ifb5RA9p64LzgA0ZobHk5n2G+/l85Kk0OxTaFI+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Manuel Leiner <manuel.leiner@gmx.de>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 383/532] wireguard: queueing: use saner cpu selection wrapping
+        patches@lists.linux.dev, Wang Yufen <wangyufen@huawei.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 034/223] icmp6: Fix null-ptr-deref of ip6_null_entry->rt6i_idev in icmp6_dev().
 Date:   Fri, 21 Jul 2023 18:04:47 +0200
-Message-ID: <20230721160635.256344119@linuxfoundation.org>
+Message-ID: <20230721160522.321209138@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,111 +58,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 7387943fa35516f6f8017a3b0e9ce48a3bef9faa upstream.
+[ Upstream commit 2aaa8a15de73874847d62eb595c6683bface80fd ]
 
-Using `% nr_cpumask_bits` is slow and complicated, and not totally
-robust toward dynamic changes to CPU topologies. Rather than storing the
-next CPU in the round-robin, just store the last one, and also return
-that value. This simplifies the loop drastically into a much more common
-pattern.
+With some IPv6 Ext Hdr (RPL, SRv6, etc.), we can send a packet that
+has the link-local address as src and dst IP and will be forwarded to
+an external IP in the IPv6 Ext Hdr.
 
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Cc: stable@vger.kernel.org
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Tested-by: Manuel Leiner <manuel.leiner@gmx.de>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+For example, the script below generates a packet whose src IP is the
+link-local address and dst is updated to 11::.
+
+  # for f in $(find /proc/sys/net/ -name *seg6_enabled*); do echo 1 > $f; done
+  # python3
+  >>> from socket import *
+  >>> from scapy.all import *
+  >>>
+  >>> SRC_ADDR = DST_ADDR = "fe80::5054:ff:fe12:3456"
+  >>>
+  >>> pkt = IPv6(src=SRC_ADDR, dst=DST_ADDR)
+  >>> pkt /= IPv6ExtHdrSegmentRouting(type=4, addresses=["11::", "22::"], segleft=1)
+  >>>
+  >>> sk = socket(AF_INET6, SOCK_RAW, IPPROTO_RAW)
+  >>> sk.sendto(bytes(pkt), (DST_ADDR, 0))
+
+For such a packet, we call ip6_route_input() to look up a route for the
+next destination in these three functions depending on the header type.
+
+  * ipv6_rthdr_rcv()
+  * ipv6_rpl_srh_rcv()
+  * ipv6_srh_rcv()
+
+If no route is found, ip6_null_entry is set to skb, and the following
+dst_input(skb) calls ip6_pkt_drop().
+
+Finally, in icmp6_dev(), we dereference skb_rt6_info(skb)->rt6i_idev->dev
+as the input device is the loopback interface.  Then, we have to check if
+skb_rt6_info(skb)->rt6i_idev is NULL or not to avoid NULL pointer deref
+for ip6_null_entry.
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 157 Comm: python3 Not tainted 6.4.0-11996-gb121d614371c #35
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
+Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
+RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
+RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
+RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
+R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
+R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
+FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ ip6_pkt_drop (net/ipv6/route.c:4513)
+ ipv6_rthdr_rcv (net/ipv6/exthdrs.c:640 net/ipv6/exthdrs.c:686)
+ ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:437 (discriminator 5))
+ ip6_input_finish (./include/linux/rcupdate.h:781 net/ipv6/ip6_input.c:483)
+ __netif_receive_skb_one_core (net/core/dev.c:5455)
+ process_backlog (./include/linux/rcupdate.h:781 net/core/dev.c:5895)
+ __napi_poll (net/core/dev.c:6460)
+ net_rx_action (net/core/dev.c:6529 net/core/dev.c:6660)
+ __do_softirq (./arch/x86/include/asm/jump_label.h:27 ./include/linux/jump_label.h:207 ./include/trace/events/irq.h:142 kernel/softirq.c:554)
+ do_softirq (kernel/softirq.c:454 kernel/softirq.c:441)
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip (kernel/softirq.c:381)
+ __dev_queue_xmit (net/core/dev.c:4231)
+ ip6_finish_output2 (./include/net/neighbour.h:544 net/ipv6/ip6_output.c:135)
+ rawv6_sendmsg (./include/net/dst.h:458 ./include/linux/netfilter.h:303 net/ipv6/raw.c:656 net/ipv6/raw.c:914)
+ sock_sendmsg (net/socket.c:725 net/socket.c:748)
+ __sys_sendto (net/socket.c:2134)
+ __x64_sys_sendto (net/socket.c:2146 net/socket.c:2142 net/socket.c:2142)
+ do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:120)
+RIP: 0033:0x7f9dc751baea
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffe98712c38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007ffe98712cf8 RCX: 00007f9dc751baea
+RDX: 0000000000000060 RSI: 00007f9dc6460b90 RDI: 0000000000000003
+RBP: 00007f9dc56e8be0 R08: 00007ffe98712d70 R09: 000000000000001c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: ffffffffc4653600 R14: 0000000000000001 R15: 00007f9dc6af5d1b
+ </TASK>
+Modules linked in:
+CR2: 0000000000000000
+ ---[ end trace 0000000000000000 ]---
+RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
+Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
+RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
+RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
+RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
+R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
+R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
+FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
+PKRU: 55555554
+Kernel panic - not syncing: Fatal exception in interrupt
+Kernel Offset: disabled
+
+Fixes: 4832c30d5458 ("net: ipv6: put host and anycast routes on device with address")
+Reported-by: Wang Yufen <wangyufen@huawei.com>
+Closes: https://lore.kernel.org/netdev/c41403a9-c2f6-3b7e-0c96-e1901e605cd0@huawei.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireguard/queueing.c |    1 +
- drivers/net/wireguard/queueing.h |   25 +++++++++++--------------
- drivers/net/wireguard/receive.c  |    2 +-
- drivers/net/wireguard/send.c     |    2 +-
- 4 files changed, 14 insertions(+), 16 deletions(-)
+ net/ipv6/icmp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireguard/queueing.c
-+++ b/drivers/net/wireguard/queueing.c
-@@ -28,6 +28,7 @@ int wg_packet_queue_init(struct crypt_qu
- 	int ret;
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 9d92d51c47577..e2af7ab992821 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -422,7 +422,10 @@ static struct net_device *icmp6_dev(const struct sk_buff *skb)
+ 	if (unlikely(dev->ifindex == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
+ 		const struct rt6_info *rt6 = skb_rt6_info(skb);
  
- 	memset(queue, 0, sizeof(*queue));
-+	queue->last_cpu = -1;
- 	ret = ptr_ring_init(&queue->ring, len, GFP_KERNEL);
- 	if (ret)
- 		return ret;
---- a/drivers/net/wireguard/queueing.h
-+++ b/drivers/net/wireguard/queueing.h
-@@ -119,20 +119,17 @@ static inline int wg_cpumask_choose_onli
- 	return cpu;
- }
+-		if (rt6)
++		/* The destination could be an external IP in Ext Hdr (SRv6, RPL, etc.),
++		 * and ip6_null_entry could be set to skb if no route is found.
++		 */
++		if (rt6 && rt6->rt6i_idev)
+ 			dev = rt6->rt6i_idev->dev;
+ 	}
  
--/* This function is racy, in the sense that next is unlocked, so it could return
-- * the same CPU twice. A race-free version of this would be to instead store an
-- * atomic sequence number, do an increment-and-return, and then iterate through
-- * every possible CPU until we get to that index -- choose_cpu. However that's
-- * a bit slower, and it doesn't seem like this potential race actually
-- * introduces any performance loss, so we live with it.
-+/* This function is racy, in the sense that it's called while last_cpu is
-+ * unlocked, so it could return the same CPU twice. Adding locking or using
-+ * atomic sequence numbers is slower though, and the consequences of racing are
-+ * harmless, so live with it.
-  */
--static inline int wg_cpumask_next_online(int *next)
-+static inline int wg_cpumask_next_online(int *last_cpu)
- {
--	int cpu = *next;
--
--	while (unlikely(!cpumask_test_cpu(cpu, cpu_online_mask)))
--		cpu = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
--	*next = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
-+	int cpu = cpumask_next(*last_cpu, cpu_online_mask);
-+	if (cpu >= nr_cpu_ids)
-+		cpu = cpumask_first(cpu_online_mask);
-+	*last_cpu = cpu;
- 	return cpu;
- }
- 
-@@ -161,7 +158,7 @@ static inline void wg_prev_queue_drop_pe
- 
- static inline int wg_queue_enqueue_per_device_and_peer(
- 	struct crypt_queue *device_queue, struct prev_queue *peer_queue,
--	struct sk_buff *skb, struct workqueue_struct *wq, int *next_cpu)
-+	struct sk_buff *skb, struct workqueue_struct *wq)
- {
- 	int cpu;
- 
-@@ -175,7 +172,7 @@ static inline int wg_queue_enqueue_per_d
- 	/* Then we queue it up in the device queue, which consumes the
- 	 * packet as soon as it can.
- 	 */
--	cpu = wg_cpumask_next_online(next_cpu);
-+	cpu = wg_cpumask_next_online(&device_queue->last_cpu);
- 	if (unlikely(ptr_ring_produce_bh(&device_queue->ring, skb)))
- 		return -EPIPE;
- 	queue_work_on(cpu, wq, &per_cpu_ptr(device_queue->worker, cpu)->work);
---- a/drivers/net/wireguard/receive.c
-+++ b/drivers/net/wireguard/receive.c
-@@ -531,7 +531,7 @@ static void wg_packet_consume_data(struc
- 		goto err;
- 
- 	ret = wg_queue_enqueue_per_device_and_peer(&wg->decrypt_queue, &peer->rx_queue, skb,
--						   wg->packet_crypt_wq, &wg->decrypt_queue.last_cpu);
-+						   wg->packet_crypt_wq);
- 	if (unlikely(ret == -EPIPE))
- 		wg_queue_enqueue_per_peer_rx(skb, PACKET_STATE_DEAD);
- 	if (likely(!ret || ret == -EPIPE)) {
---- a/drivers/net/wireguard/send.c
-+++ b/drivers/net/wireguard/send.c
-@@ -318,7 +318,7 @@ static void wg_packet_create_data(struct
- 		goto err;
- 
- 	ret = wg_queue_enqueue_per_device_and_peer(&wg->encrypt_queue, &peer->tx_queue, first,
--						   wg->packet_crypt_wq, &wg->encrypt_queue.last_cpu);
-+						   wg->packet_crypt_wq);
- 	if (unlikely(ret == -EPIPE))
- 		wg_queue_enqueue_per_peer_tx(first, PACKET_STATE_DEAD);
- err:
+-- 
+2.39.2
+
 
 
