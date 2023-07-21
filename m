@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CF675C971
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C44D75C972
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:14:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230340AbjGUOOe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:14:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39130 "EHLO
+        id S231765AbjGUOOg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231432AbjGUOOb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:14:31 -0400
+        with ESMTP id S231848AbjGUOOc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:14:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A0FC30E3
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:14:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631FA30FF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:14:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89B2761C3C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:14:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B139C433C8;
-        Fri, 21 Jul 2023 14:14:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8F9C61B23
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:14:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CA2C433C9;
+        Fri, 21 Jul 2023 14:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689948866;
-        bh=YJ2Y2tdo/LvqEgxtpAu464vwN448bFsxUh4HaTi6Dos=;
+        s=korg; t=1689948869;
+        bh=2R9B0VRQzG1Cl/Qx7OpKWngo0mr85egAaMhUheRm3oY=;
         h=Subject:To:Cc:From:Date:From;
-        b=K27YWETbnguLu47X8rAQa9ARjCcdGLa3bX1i8Ph5ZbI8bN0QDqfdPX1arwxCMBkvm
-         atzogDEHB3a9dCqm3HvvRv3ne2uOM0x5RJ094dAxuNLMuEuaAjBA+VdFAzUsXwCqUd
-         Ge/15x13NkrkJ/oGQ+UfGlPoUN5NNiEL7BxAaDKg=
-Subject: FAILED: patch "[PATCH] xhci: Show ZHAOXIN xHCI root hub speed correctly" failed to apply to 6.1-stable tree
+        b=TdgiclZVtWRA1Zb+f+JgAECvf+7q93Ja/UxdYCIkyhAqVQU95TAhbrJ8pxAnObqsY
+         6T1mzLxIbFCi8n7MLtEbHeHRxJkEJBSkV+XQhB5MFdTj9U36P9L9kErVhINE41BbnN
+         YW2v5zuAcqhixoNHuJLFb4PYz+u2cRBXMMX23SHs=
+Subject: FAILED: patch "[PATCH] xhci: Show ZHAOXIN xHCI root hub speed correctly" failed to apply to 5.15-stable tree
 To:     WeitaoWang-oc@zhaoxin.com, gregkh@linuxfoundation.org,
         mathias.nyman@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:14:21 +0200
-Message-ID: <2023072121-estrogen-muppet-2973@gregkh>
+Date:   Fri, 21 Jul 2023 16:14:22 +0200
+Message-ID: <2023072122-wimp-haiku-ddd2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,25 +50,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x d9b0328d0b8b8298dfdc97cd8e0e2371d4bcc97b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072121-estrogen-muppet-2973@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072122-wimp-haiku-ddd2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 d9b0328d0b8b ("xhci: Show ZHAOXIN xHCI root hub speed correctly")
 2a865a652299 ("xhci: Fix TRB prefetch issue of ZHAOXIN hosts")
 f927728186f0 ("xhci: Fix resume issue of some ZHAOXIN hosts")
+a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all xHC 1.2 or later devices")
+34cd2db408d5 ("xhci: Add quirk to reset host back to default state at shutdown")
+a956f91247da ("Merge 6.0-rc4 into usb-next")
 
 thanks,
 
