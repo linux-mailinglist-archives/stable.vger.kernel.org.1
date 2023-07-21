@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6899675C95D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF08875C95B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231539AbjGUOOC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230045AbjGUOOC (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 21 Jul 2023 10:14:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38680 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231807AbjGUONw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:13:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A90192D47
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:13:45 -0700 (PDT)
+        with ESMTP id S231811AbjGUONx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:13:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EEE91BE2
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:13:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4682D61AE1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:13:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE81C433C8;
-        Fri, 21 Jul 2023 14:13:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0BE461C3C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:13:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D0EC433C7;
+        Fri, 21 Jul 2023 14:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689948824;
-        bh=d4ZMbbFOjCn8kDGfXY8czZ1VQrmxBKNE6neERLbOPDA=;
+        s=korg; t=1689948831;
+        bh=3dL2j5HvJuQqoKbUhJ+rwiIa5wYAdznmFpWHVpY6jtU=;
         h=Subject:To:Cc:From:Date:From;
-        b=KZ2lAIRSTdpuPTcGgWQvbRsUSit/CjNfAofQifPQ8FA9gc9Xp+rs8yMk/fJkMc46o
-         g9c8VE5Y54dX34Nazt82MMxwBi1XPFTn4mJ1U/GuTPVfxx0/gNh3Zlj5jtGDeFN1qI
-         xsPPM5EKpE4wE+zmaFYFzMbEpCFKWu7JulhwZ+mU=
-Subject: FAILED: patch "[PATCH] arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at" failed to apply to 6.1-stable tree
+        b=v5nrRxHbz/1GAjb64K8uZwhY45YPYv74mswcadoo4QLXgJ9zdqo10knx7WFs70L9h
+         R4ekn99wgWzFOjB3MfdLfzCNIPWf8DgjAUyYljnJnKLni07YnrPbsVawG9qp9g+ft3
+         PJUyMUYhlPirMf0iA5NixBhSn8neJJCFf9gNG2GE=
+Subject: FAILED: patch "[PATCH] arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at" failed to apply to 5.15-stable tree
 To:     oliver.upton@linux.dev, catalin.marinas@arm.com,
         darren@os.amperecomputing.com, scott@os.amperecomputing.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:13:41 +0200
-Message-ID: <2023072141-reopen-courier-0e65@gregkh>
+Date:   Fri, 21 Jul 2023 16:13:42 +0200
+Message-ID: <2023072142-overture-police-6050@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,24 +50,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6df696cd9bc1ceed0e92e36908f88bbd16d18255
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072141-reopen-courier-0e65@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072142-overture-police-6050@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 6df696cd9bc1 ("arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at stage-2")
 1dfc3e905089 ("KVM: arm64: Condition HW AF updates on config option")
+1bdb0fbb2e27 ("arm64: errata: remove BF16 HWCAP due to incorrect result on Cortex-A510")
+e89d120c4b72 ("arm64: errata: add detection for AMEVCNTR01 incrementing incorrectly")
+44b3834b2eed ("arm64: errata: Remove AES hwcap for COMPAT tasks")
+39fdb65f52e9 ("arm64: errata: Add Cortex-A510 to the repeat tlbi list")
+1dd498e5e26a ("KVM: arm64: Workaround Cortex-A510's single-step and PAC trap errata")
+297ae1eb23b0 ("arm64: cpufeature: List early Cortex-A510 parts as having broken dbm")
+708e8af4924e ("arm64: errata: Add detection for TRBE trace data corruption")
+3bd94a8759de ("arm64: errata: Add detection for TRBE invalid prohibited states")
+607a9afaae09 ("arm64: errata: Add detection for TRBE ignored system register writes")
+83bb2c1a01d7 ("KVM: arm64: Save PSTATE early on exit")
+d7e0a795bf37 ("Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm")
 
 thanks,
 
