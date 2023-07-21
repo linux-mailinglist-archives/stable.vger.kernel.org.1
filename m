@@ -2,93 +2,182 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04BBA75BFEE
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B0575BFF1
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:39:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbjGUHjF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:39:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59884 "EHLO
+        id S230444AbjGUHjW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:39:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjGUHjA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:39:00 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A871E19A1;
-        Fri, 21 Jul 2023 00:38:58 -0700 (PDT)
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E21B51EC0BE2;
-        Fri, 21 Jul 2023 09:38:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1689925126;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=KAUU/mdQhd4wg4dt+1FcBtRhDhZZCh+Oqx1GNFQ2HqQ=;
-        b=H/YFvoh8XMZfoEqGM7qZkRTLrfhZlT2DvBWpfIPFpqaa4T5a8BMeph7Fd4RGUf9xf1GIXo
-        5/yTVgh4Qb4lkxo44i9ccQBU8kxHs3PinwyMjSgsIqnmZnKV6Pvl2xICqRPasDlX6HbHCJ
-        lfPomGrUvas3A8MwDSJAM7SaZRxS8rc=
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 4S9mVmsDxJuN; Fri, 21 Jul 2023 07:38:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1689925124; bh=KAUU/mdQhd4wg4dt+1FcBtRhDhZZCh+Oqx1GNFQ2HqQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RuOMpjP/mk2PCS4QCTX2fuHKJo+7+r4eIuRcoSQcBIyjmuC3y4bxKHunGcD0/XLdY
-         H4How9uU9jt8gHRf6vBeZIauU0TJakr+0iE+fIxykB+vBgERhnNVaWUOjKzGwnPUZd
-         T0q8Ivn9wIWrU42CXkSd66Pl9rVoGteD8NklIEfELBQl2uvS2ypzxY3J3YL3r/6+iJ
-         kI40S++QVHjhcrPav3tt2ptWkRg9q9DSOYGmS/B/AiabBxmh9iluJq5KOZsYQbQb2q
-         XqziAtVPUuG8zYAQxvMIwpsFEPKtVbTlgEJbWqgKDXvQf+aNqGaWaYOP9u2KvDIRiY
-         tRGwwmYlvjpdzTmlifXm3Bpdvvolx4ay054vY86h/G6ECpz+5TEXsTlAFdLVWb70rT
-         E8kvYxzXyErY6bgde4NCC5suKMbdi8zI/aczK4a+hGF2BLzKYUP+RM3CMybq8hgNuJ
-         puxeELmkdOudKtaiHCjbP1Nh0e1v6+cQt1HHGhkMDYMIn4m5bXnAUbIA1yZxlgB3/1
-         Bns1/GVAgHMRhtM3L42BPvH58e28MaAr9VcmjaxDsBK6oawOl6Y2YyWEov0R3FAbVy
-         /QZh0PS8pLnA+Cp+aItu2LpnDIEsFOwJckhD/I753KTRKX1Z0YenzsmtOFCol1nnwu
-         pociFFbVljCb4hT6E6yXimRU=
-Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
+        with ESMTP id S230475AbjGUHjN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:39:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 478B630C8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:39:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0838E40E0034;
-        Fri, 21 Jul 2023 07:38:35 +0000 (UTC)
-Date:   Fri, 21 Jul 2023 09:38:30 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jiri Slaby <jirislaby@kernel.org>
-Cc:     John Allen <john.allen@amd.com>, linux-kernel@vger.kernel.org,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/microcode/AMD: Increase microcode PATCH_MAX_SIZE
-Message-ID: <20230721073830.GAZLo19vwzyEWESHum@fat_crate.local>
-References: <20230720202813.3269888-1-john.allen@amd.com>
- <748e8be1-d7e6-c0a3-b83b-a8475873cc4c@kernel.org>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D175261407
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:39:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3863C433C9;
+        Fri, 21 Jul 2023 07:39:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689925149;
+        bh=rfSH/l56I6qkVBy5JnegJsoEAQqob797p/Q3AmaQs7c=;
+        h=Subject:To:Cc:From:Date:From;
+        b=gbCGJAYbarZN4UHiB3mXulQbM4FSfkXwatkG4pxRkfXsvo2KKbUhmraVrKh00oSFz
+         WqAqEdEzcq966cUc/yyHDla+Ji3DPOccqkbqsoOTQR41wroGWDMe16aKZr4TSgrnTw
+         Z8DRS0qGkDrNK27oH7tqlUoByhacwNIkHSy4W0Ws=
+Subject: FAILED: patch "[PATCH] tty: fix hang on tty device with no_room set" failed to apply to 6.1-stable tree
+To:     caelli@tencent.com, gregkh@linuxfoundation.org,
+        ilpo.jarvinen@linux.intel.com, stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 21 Jul 2023 09:39:06 +0200
+Message-ID: <2023072106-ripening-magician-6a5e@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <748e8be1-d7e6-c0a3-b83b-a8475873cc4c@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 06:47:39AM +0200, Jiri Slaby wrote:
-> is now 32M instead of 12M. That is a complete waste on my _one_ node system.
-> Can we make amd_ucode_patch dynamic first, depending on num_online_nodes()?
 
-I have a small set which gets rid of all those arrays - I just need to
-finish it.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-:-(
+To reproduce the conflict and resubmit, you may use the following commands:
 
--- 
-Regards/Gruss,
-    Boris.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4903fde8047a28299d1fc79c1a0dcc255e928f12
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072106-ripening-magician-6a5e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Possible dependencies:
+
+4903fde8047a ("tty: fix hang on tty device with no_room set")
+947d66b68f3c ("n_tty: Rename tail to old_tail in n_tty_read()")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4903fde8047a28299d1fc79c1a0dcc255e928f12 Mon Sep 17 00:00:00 2001
+From: Hui Li <caelli@tencent.com>
+Date: Thu, 6 Apr 2023 10:44:50 +0800
+Subject: [PATCH] tty: fix hang on tty device with no_room set
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+It is possible to hang pty devices in this case, the reader was
+blocking at epoll on master side, the writer was sleeping at
+wait_woken inside n_tty_write on slave side, and the write buffer
+on tty_port was full, we found that the reader and writer would
+never be woken again and blocked forever.
+
+The problem was caused by a race between reader and kworker:
+n_tty_read(reader):  n_tty_receive_buf_common(kworker):
+copy_from_read_buf()|
+                    |room = N_TTY_BUF_SIZE - (ldata->read_head - tail)
+                    |room <= 0
+n_tty_kick_worker() |
+                    |ldata->no_room = true
+
+After writing to slave device, writer wakes up kworker to flush
+data on tty_port to reader, and the kworker finds that reader
+has no room to store data so room <= 0 is met. At this moment,
+reader consumes all the data on reader buffer and calls
+n_tty_kick_worker to check ldata->no_room which is false and
+reader quits reading. Then kworker sets ldata->no_room=true
+and quits too.
+
+If write buffer is not full, writer will wake kworker to flush data
+again after following writes, but if write buffer is full and writer
+goes to sleep, kworker will never be woken again and tty device is
+blocked.
+
+This problem can be solved with a check for read buffer size inside
+n_tty_receive_buf_common, if read buffer is empty and ldata->no_room
+is true, a call to n_tty_kick_worker is necessary to keep flushing
+data to reader.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 42458f41d08f ("n_tty: Ensure reader restarts worker for next reader")
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Hui Li <caelli@tencent.com>
+Message-ID: <1680749090-14106-1-git-send-email-caelli@tencent.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
+index 1c9e5d2ea7de..552e8a741562 100644
+--- a/drivers/tty/n_tty.c
++++ b/drivers/tty/n_tty.c
+@@ -203,8 +203,8 @@ static void n_tty_kick_worker(struct tty_struct *tty)
+ 	struct n_tty_data *ldata = tty->disc_data;
+ 
+ 	/* Did the input worker stop? Restart it */
+-	if (unlikely(ldata->no_room)) {
+-		ldata->no_room = 0;
++	if (unlikely(READ_ONCE(ldata->no_room))) {
++		WRITE_ONCE(ldata->no_room, 0);
+ 
+ 		WARN_RATELIMIT(tty->port->itty == NULL,
+ 				"scheduling with invalid itty\n");
+@@ -1697,7 +1697,7 @@ n_tty_receive_buf_common(struct tty_struct *tty, const unsigned char *cp,
+ 			if (overflow && room < 0)
+ 				ldata->read_head--;
+ 			room = overflow;
+-			ldata->no_room = flow && !room;
++			WRITE_ONCE(ldata->no_room, flow && !room);
+ 		} else
+ 			overflow = 0;
+ 
+@@ -1728,6 +1728,17 @@ n_tty_receive_buf_common(struct tty_struct *tty, const unsigned char *cp,
+ 	} else
+ 		n_tty_check_throttle(tty);
+ 
++	if (unlikely(ldata->no_room)) {
++		/*
++		 * Barrier here is to ensure to read the latest read_tail in
++		 * chars_in_buffer() and to make sure that read_tail is not loaded
++		 * before ldata->no_room is set.
++		 */
++		smp_mb();
++		if (!chars_in_buffer(tty))
++			n_tty_kick_worker(tty);
++	}
++
+ 	up_read(&tty->termios_rwsem);
+ 
+ 	return rcvd;
+@@ -2281,8 +2292,14 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file,
+ 		if (time)
+ 			timeout = time;
+ 	}
+-	if (old_tail != ldata->read_tail)
++	if (old_tail != ldata->read_tail) {
++		/*
++		 * Make sure no_room is not read in n_tty_kick_worker()
++		 * before setting ldata->read_tail in copy_from_read_buf().
++		 */
++		smp_mb();
+ 		n_tty_kick_worker(tty);
++	}
+ 	up_read(&tty->termios_rwsem);
+ 
+ 	remove_wait_queue(&tty->read_wait, &wait);
+
