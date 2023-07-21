@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F8F75CA2A
+	by mail.lfdr.de (Postfix) with ESMTP id 21DE975CA29
 	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:37:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjGUOhJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:37:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53260 "EHLO
+        id S230229AbjGUOhK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:37:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231633AbjGUOgu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:36:50 -0400
+        with ESMTP id S231659AbjGUOg7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:36:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2448E68
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:36:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7498D1710
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:36:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5136E61CC7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:36:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6558EC433C8;
-        Fri, 21 Jul 2023 14:36:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1342A61CD0
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:36:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2555CC433C9;
+        Fri, 21 Jul 2023 14:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950208;
-        bh=Jv23yvE280LUB6Rreazxm3Px0HNBgfk3g+1ahthleyE=;
+        s=korg; t=1689950217;
+        bh=CYNp+d343EM10cZ7tGN4bTZX+94shYC6dc4dKJVHOrU=;
         h=Subject:To:Cc:From:Date:From;
-        b=V3vaei0WNA86ZaJ80E8wji9pjSXO8u4GCvdHyUexcyLpEsk/spZrRA9tbNW0KXZFz
-         f0q3Na6NqGLFy5jWL6Yi1e+tQL09BuEdL5kvz/Iiwu5FLvd+dp5W3h39hCGoSb0bvY
-         YFNWTwyJd/v9gpgZhLyXiNaxocqdSW5P0mkuoqYA=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: sockopt: use 'iptables-legacy' if available" failed to apply to 5.15-stable tree
+        b=ZnLqVeUTYwMi7Wg2XJB/+GTV/ZioWdQDR1yDvyP/TlkUB6WagAjVWpdbvehEV/Kli
+         gcmC+oJ6JbMm8358zg08y6BnW7QxtxHqD9nRuIP3jFZf9D+nf52+DgJA2xwA3VECEX
+         X4m9AM64vzTfuA+JjLOy+cNICpefTBCsV55UUnEs=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: sockopt: use 'iptables-legacy' if available" failed to apply to 6.1-stable tree
 To:     matthieu.baerts@tessares.net, davem@davemloft.net,
         pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:36:45 +0200
-Message-ID: <2023072145-cardigan-stinger-9c9a@gregkh>
+Date:   Fri, 21 Jul 2023 16:36:46 +0200
+Message-ID: <2023072146-grit-winking-6e88@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x a5a5990c099dd354e05e89ee77cd2dbf6655d4a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072145-cardigan-stinger-9c9a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072146-grit-winking-6e88@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,20 +72,6 @@ de2392028a19 ("selftests: mptcp: clearly declare global ns vars")
 787eb1e4df93 ("selftests: mptcp: uniform 'rndh' variable")
 b71dd705179c ("selftests: mptcp: removed defined but unused vars")
 b4e0df4cafe1 ("selftests: mptcp: run mptcp_inq from a clean netns")
-7e68d31020f1 ("selftests: mptcp: run mptcp_sockopt from a new netns")
-259a834fadda ("selftests: mptcp: functional tests for the userspace PM type")
-1e777bd818bd ("selftests: mptcp: join: clarify local/global vars")
-ae7bd9ccecc3 ("selftests: mptcp: join: option to execute specific tests")
-e59300ce3ff8 ("selftests: mptcp: join: reset failing links")
-3afd0280e7d3 ("selftests: mptcp: join: define tests groups once")
-3c082695e78b ("selftests: mptcp: drop msg argument of chk_csum_nr")
-69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
-d045b9eb95a9 ("mptcp: introduce implicit endpoints")
-6fa0174a7c86 ("mptcp: more careful RM_ADDR generation")
-f98c2bca7b2b ("selftests: mptcp: Rename wait function")
-826d7bdca833 ("selftests: mptcp: join: allow running -cCi")
-7d9bf018f907 ("selftests: mptcp: update output info of chk_rm_nr")
-26516e10c433 ("selftests: mptcp: add more arguments for chk_join_nr")
 
 thanks,
 
