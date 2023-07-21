@@ -2,91 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A1BF75D1A1
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF78375D49F
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbjGUSvG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:51:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45152 "EHLO
+        id S232183AbjGUTXO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:23:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbjGUSvF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:51:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E3030CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:51:04 -0700 (PDT)
+        with ESMTP id S232191AbjGUTXN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:23:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0559E189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D94A961D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC125C433C8;
-        Fri, 21 Jul 2023 18:51:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98FF761D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AFBC433C7;
+        Fri, 21 Jul 2023 19:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965463;
-        bh=oEsAdvAoqGh94Sj+atleiphPz+iPAf4z7pnd9COARt8=;
+        s=korg; t=1689967392;
+        bh=6eVy0EbYVCgrDkkFnLXetWVeIMLRjP2W20dwNm95z+o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jCzn0+C9VGV2/deSUgF9hrk6S4dXb1dwpkSrl875pyZ0hC2j5mvxnQ/YiyqPbm6HK
-         3u3Zk29irrEQJq0GCxu8c/LQyo2nQgFlVceldQ/UQKOjKKMeb/F5HNSjYMgKwx9KuJ
-         +YaQ0yy10ESTKeCFeJWDrSXLLlTV0tiKekXgKmA8=
+        b=d4P0VgnDzIqDRcHn0oFRqTVKOlZPynnDM7pyqYMM7nfQLwamvjlTT38gl2nAOFWVd
+         JuZ+5sMWVeMh8Ydlatp2mTvtbHe51bEHtS2YgPS5iXtJMIkR+T3EX8Q8sDLAo4VGZV
+         c0UlO/A/6NplE3oQ5I8NJV2p2VieEEFNFa0iuZkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.4 282/292] scsi: qla2xxx: Avoid fcport pointer dereference
-Date:   Fri, 21 Jul 2023 18:06:31 +0200
-Message-ID: <20230721160541.084618164@linuxfoundation.org>
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>
+Subject: [PATCH 6.1 139/223] fs: dlm: interrupt posix locks only when process is killed
+Date:   Fri, 21 Jul 2023 18:06:32 +0200
+Message-ID: <20230721160526.800216372@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-References: <20230721160528.800311148@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit 6b504d06976fe4a61cc05dedc68b84fadb397f77 upstream.
+commit 59e45c758ca1b9893ac923dd63536da946ac333b upstream.
 
-Klocwork reported warning of NULL pointer may be dereferenced.  The routine
-exits when sa_ctl is NULL and fcport is allocated after the exit call thus
-causing NULL fcport pointer to dereference at the time of exit.
-
-To avoid fcport pointer dereference, exit the routine when sa_ctl is NULL.
+If a posix lock request is waiting for a result from user space
+(dlm_controld), do not let it be interrupted unless the process
+is killed. This reverts commit a6b1533e9a57 ("dlm: make posix locks
+interruptible"). The problem with the interruptible change is
+that all locks were cleared on any signal interrupt. If a signal
+was received that did not terminate the process, the process
+could continue running after all its dlm posix locks had been
+cleared. A future patch will add cancelation to allow proper
+interruption.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: a6b1533e9a57 ("dlm: make posix locks interruptible")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_edif.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/dlm/plock.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_edif.c
-+++ b/drivers/scsi/qla2xxx/qla_edif.c
-@@ -2361,8 +2361,8 @@ qla24xx_issue_sa_replace_iocb(scsi_qla_h
- 	if (!sa_ctl) {
- 		ql_dbg(ql_dbg_edif, vha, 0x70e6,
- 		    "sa_ctl allocation failed\n");
--		rval =  -ENOMEM;
--		goto done;
-+		rval = -ENOMEM;
-+		return rval;
- 	}
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -154,7 +154,7 @@ int dlm_posix_lock(dlm_lockspace_t *lock
  
- 	fcport = sa_ctl->fcport;
+ 	send_op(op);
+ 
+-	rv = wait_event_interruptible(recv_wq, (op->done != 0));
++	rv = wait_event_killable(recv_wq, (op->done != 0));
+ 	if (rv == -ERESTARTSYS) {
+ 		spin_lock(&ops_lock);
+ 		/* recheck under ops_lock if we got a done != 0,
 
 
