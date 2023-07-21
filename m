@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6208075D439
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3F2C75D38F
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232109AbjGUTTT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:19:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40916 "EHLO
+        id S231864AbjGUTMH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:12:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232094AbjGUTTI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16282737
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:59 -0700 (PDT)
+        with ESMTP id S231859AbjGUTMG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03D80E4C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E22C61D2F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E5BC433C8;
-        Fri, 21 Jul 2023 19:18:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D92E61D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F559C433C8;
+        Fri, 21 Jul 2023 19:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967138;
-        bh=tmBqGOkpBHSBnO88dtFUHok2dBwDWO1kAtUCtvXhjWE=;
+        s=korg; t=1689966725;
+        bh=LuZ9YjifZcb11F6DZ6dlDfMtlwi51oPwGsWkR/7MkO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aDR2W6eGD5dBhMTG5YCwvsjmOLh/eoFDOdSZGFgDJmfkMMcG3EaKZ8EtioePWmboL
-         UcPLf/E2fnubGxjsueO3MzZyP0GFV+gSyb6hKqcKuKQ4qS6Snk2U6sNoN780G3JPDJ
-         FHkza1Es2CEYbIiBcVd/YXHNVPOsyDGMgJa2OTAU=
+        b=IemWuzlQ7H3LsPsMtPXk8d8/icBL5K4ZLBu6u1MkRwKcPp51WvdPhCQ/XhKuy5LOi
+         t+BYi3f0kO5DqW9IFcLvvg11UO64HEC6kw5duu1ARZsQZw0v6WU4oRpe1gTtjB9lK1
+         034klrB70/juWmAK+Hqab1xSkBYo2BMFt0aCey6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jisheng Zhang <jszhang@kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev, M A Ramdhan <ramdhan@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/223] riscv: mm: fix truncation warning on RV32
+Subject: [PATCH 5.15 407/532] net/sched: cls_fw: Fix improper refcount update leads to use-after-free
 Date:   Fri, 21 Jul 2023 18:05:11 +0200
-Message-ID: <20230721160523.325856087@linuxfoundation.org>
+Message-ID: <20230721160636.540673312@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,44 +57,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: M A Ramdhan <ramdhan@starlabs.sg>
 
-[ Upstream commit b690e266dae2f85f4dfea21fa6a05e3500a51054 ]
+[ Upstream commit 0323bce598eea038714f941ce2b22541c46d488f ]
 
-lkp reports below sparse warning when building for RV32:
-arch/riscv/mm/init.c:1204:48: sparse: warning: cast truncates bits from
-constant value (100000000 becomes 0)
+In the event of a failure in tcf_change_indev(), fw_set_parms() will
+immediately return an error after incrementing or decrementing
+reference counter in tcf_bind_filter().  If attacker can control
+reference counter to zero and make reference freed, leading to
+use after free.
 
-IMO, the reason we didn't see this truncates bug in real world is "0"
-means MEMBLOCK_ALLOC_ACCESSIBLE in memblock and there's no RV32 HW
-with more than 4GB memory.
+In order to prevent this, move the point of possible failure above the
+point where the TC_FW_CLASSID is handled.
 
-Fix it anyway to make sparse happy.
-
-Fixes: decf89f86ecd ("riscv: try to allocate crashkern region from 32bit addressible memory")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306080034.SLiCiOMn-lkp@intel.com/
-Link: https://lore.kernel.org/r/20230709171036.1906-1-jszhang@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
+Signed-off-by: M A Ramdhan <ramdhan@starlabs.sg>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Message-ID: <20230705161530.52003-1-ramdhan@starlabs.sg>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/cls_fw.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 9390cdff39ffc..7c4852af9e3f1 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1187,7 +1187,7 @@ static void __init reserve_crashkernel(void)
- 	 */
- 	crash_base = memblock_phys_alloc_range(crash_size, PMD_SIZE,
- 					       search_start,
--					       min(search_end, (unsigned long) SZ_4G));
-+					       min(search_end, (unsigned long)(SZ_4G - 1)));
- 	if (crash_base == 0) {
- 		/* Try again without restricting region to 32bit addressible memory */
- 		crash_base = memblock_phys_alloc_range(crash_size, PMD_SIZE,
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index 8654b0ce997c1..ea52c320f67c4 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -210,11 +210,6 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (tb[TCA_FW_CLASSID]) {
+-		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
+-		tcf_bind_filter(tp, &f->res, base);
+-	}
+-
+ 	if (tb[TCA_FW_INDEV]) {
+ 		int ret;
+ 		ret = tcf_change_indev(net, tb[TCA_FW_INDEV], extack);
+@@ -231,6 +226,11 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
+ 	} else if (head->mask != 0xFFFFFFFF)
+ 		return err;
+ 
++	if (tb[TCA_FW_CLASSID]) {
++		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
++		tcf_bind_filter(tp, &f->res, base);
++	}
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
