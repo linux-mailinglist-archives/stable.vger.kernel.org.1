@@ -2,118 +2,541 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D35B75D38C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6CC575D442
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231860AbjGUTL7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34830 "EHLO
+        id S232047AbjGUTTd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:19:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231855AbjGUTL6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:11:58 -0400
+        with ESMTP id S232058AbjGUTTZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958881BF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:11:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF0793AA7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:19:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34F3E61D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:11:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481D7C433C8;
-        Fri, 21 Jul 2023 19:11:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 557CB61D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:19:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67573C433C8;
+        Fri, 21 Jul 2023 19:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966716;
-        bh=yZf5AtOYMv3q1Ymv75YfAVPYcPyeEjt3eioe2kkh3O4=;
+        s=korg; t=1689967161;
+        bh=6p3kGuulhyXWeL4oas8klbF9tOjHktOp88monpkk8cw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ooIxQf1whmuS1OF6W5U6dIMgl7DEA8PDXIv/ylxvTMNMyGsYkgcWvEC7Vo6z88nRq
-         kr2pjJO1NQB7YgpJKYoJRpL9PK8X7vTsBf9Kpzm3+aS8rKQM6Jeyn9jS34B35TJK7A
-         +qR/otC29xPLTzG5OFzoVOI1QEpGgkHp90uBmgs0=
+        b=lGnUrNnASRm3C1Hur0y3gnvDYCNkr378BtSDDXC81S4sjm0rU8Ks2UebGgBE3hrM8
+         s2aaoIV34z0iR6KF4jOHMhHdmS4lC/L0f7D5j9q657FTI4cX9TQWrJrB/xvkGPd4+V
+         37oO5I1smY9FrbgwHKzBpP/4M+n1aAvx0U9drBRg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 414/532] ntb: idt: Fix error handling in idt_pci_driver_init()
+        patches@lists.linux.dev, van fantasy <g1042620637@gmail.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 065/223] fs/ntfs3: Check fields while reading
 Date:   Fri, 21 Jul 2023 18:05:18 +0200
-Message-ID: <20230721160636.912553867@linuxfoundation.org>
+Message-ID: <20230721160523.633208720@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit c012968259b451dc4db407f2310fe131eaefd800 ]
+commit 0e8235d28f3a0e9eda9f02ff67ee566d5f42b66b upstream.
 
-A problem about ntb_hw_idt create debugfs failed is triggered with the
-following log given:
+Added new functions index_hdr_check and index_buf_check.
+Now we check all stuff for correctness while reading from disk.
+Also fixed bug with stale nfs data.
 
- [ 1236.637636] IDT PCI-E Non-Transparent Bridge Driver 2.0
- [ 1236.639292] debugfs: Directory 'ntb_hw_idt' with parent '/' already present!
-
-The reason is that idt_pci_driver_init() returns pci_register_driver()
-directly without checking its return value, if pci_register_driver()
-failed, it returns without destroy the newly created debugfs, resulting
-the debugfs of ntb_hw_idt can never be created later.
-
- idt_pci_driver_init()
-   debugfs_create_dir() # create debugfs directory
-   pci_register_driver()
-     driver_register()
-       bus_add_driver()
-         priv = kzalloc(...) # OOM happened
-   # return without destroy debugfs directory
-
-Fix by removing debugfs when pci_register_driver() returns error.
-
-Fixes: bf2a952d31d2 ("NTB: Add IDT 89HPESxNTx PCIe-switches support")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: van fantasy <g1042620637@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/idt/ntb_hw_idt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/ntfs3/index.c   |   84 ++++++++++++++++++++++++++++++++++++----
+ fs/ntfs3/inode.c   |   18 ++++----
+ fs/ntfs3/ntfs_fs.h |    4 -
+ fs/ntfs3/run.c     |    7 ++-
+ fs/ntfs3/xattr.c   |  109 ++++++++++++++++++++++++++++++++++-------------------
+ 5 files changed, 164 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
-index 733557231ed0b..72060acb9cafc 100644
---- a/drivers/ntb/hw/idt/ntb_hw_idt.c
-+++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
-@@ -2891,6 +2891,7 @@ static struct pci_driver idt_pci_driver = {
- 
- static int __init idt_pci_driver_init(void)
- {
-+	int ret;
- 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
- 
- 	/* Create the top DebugFS directory if the FS is initialized */
-@@ -2898,7 +2899,11 @@ static int __init idt_pci_driver_init(void)
- 		dbgfs_topdir = debugfs_create_dir(KBUILD_MODNAME, NULL);
- 
- 	/* Register the NTB hardware driver to handle the PCI device */
--	return pci_register_driver(&idt_pci_driver);
-+	ret = pci_register_driver(&idt_pci_driver);
-+	if (ret)
-+		debugfs_remove_recursive(dbgfs_topdir);
-+
-+	return ret;
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -605,11 +605,58 @@ static const struct NTFS_DE *hdr_insert_
+ 	return e;
  }
- module_init(idt_pci_driver_init);
  
--- 
-2.39.2
-
++/*
++ * index_hdr_check
++ *
++ * return true if INDEX_HDR is valid
++ */
++static bool index_hdr_check(const struct INDEX_HDR *hdr, u32 bytes)
++{
++	u32 end = le32_to_cpu(hdr->used);
++	u32 tot = le32_to_cpu(hdr->total);
++	u32 off = le32_to_cpu(hdr->de_off);
++
++	if (!IS_ALIGNED(off, 8) || tot > bytes || end > tot ||
++	    off + sizeof(struct NTFS_DE) > end) {
++		/* incorrect index buffer. */
++		return false;
++	}
++
++	return true;
++}
++
++/*
++ * index_buf_check
++ *
++ * return true if INDEX_BUFFER seems is valid
++ */
++static bool index_buf_check(const struct INDEX_BUFFER *ib, u32 bytes,
++			    const CLST *vbn)
++{
++	const struct NTFS_RECORD_HEADER *rhdr = &ib->rhdr;
++	u16 fo = le16_to_cpu(rhdr->fix_off);
++	u16 fn = le16_to_cpu(rhdr->fix_num);
++
++	if (bytes <= offsetof(struct INDEX_BUFFER, ihdr) ||
++	    rhdr->sign != NTFS_INDX_SIGNATURE ||
++	    fo < sizeof(struct INDEX_BUFFER)
++	    /* Check index buffer vbn. */
++	    || (vbn && *vbn != le64_to_cpu(ib->vbn)) || (fo % sizeof(short)) ||
++	    fo + fn * sizeof(short) >= bytes ||
++	    fn != ((bytes >> SECTOR_SHIFT) + 1)) {
++		/* incorrect index buffer. */
++		return false;
++	}
++
++	return index_hdr_check(&ib->ihdr,
++			       bytes - offsetof(struct INDEX_BUFFER, ihdr));
++}
++
+ void fnd_clear(struct ntfs_fnd *fnd)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < fnd->level; i++) {
++	for (i = fnd->level - 1; i >= 0; i--) {
+ 		struct indx_node *n = fnd->nodes[i];
+ 
+ 		if (!n)
+@@ -828,9 +875,16 @@ int indx_init(struct ntfs_index *indx, s
+ 	u32 t32;
+ 	const struct INDEX_ROOT *root = resident_data(attr);
+ 
++	t32 = le32_to_cpu(attr->res.data_size);
++	if (t32 <= offsetof(struct INDEX_ROOT, ihdr) ||
++	    !index_hdr_check(&root->ihdr,
++			     t32 - offsetof(struct INDEX_ROOT, ihdr))) {
++		goto out;
++	}
++
+ 	/* Check root fields. */
+ 	if (!root->index_block_clst)
+-		return -EINVAL;
++		goto out;
+ 
+ 	indx->type = type;
+ 	indx->idx2vbn_bits = __ffs(root->index_block_clst);
+@@ -842,19 +896,19 @@ int indx_init(struct ntfs_index *indx, s
+ 	if (t32 < sbi->cluster_size) {
+ 		/* Index record is smaller than a cluster, use 512 blocks. */
+ 		if (t32 != root->index_block_clst * SECTOR_SIZE)
+-			return -EINVAL;
++			goto out;
+ 
+ 		/* Check alignment to a cluster. */
+ 		if ((sbi->cluster_size >> SECTOR_SHIFT) &
+ 		    (root->index_block_clst - 1)) {
+-			return -EINVAL;
++			goto out;
+ 		}
+ 
+ 		indx->vbn2vbo_bits = SECTOR_SHIFT;
+ 	} else {
+ 		/* Index record must be a multiple of cluster size. */
+ 		if (t32 != root->index_block_clst << sbi->cluster_bits)
+-			return -EINVAL;
++			goto out;
+ 
+ 		indx->vbn2vbo_bits = sbi->cluster_bits;
+ 	}
+@@ -862,7 +916,14 @@ int indx_init(struct ntfs_index *indx, s
+ 	init_rwsem(&indx->run_lock);
+ 
+ 	indx->cmp = get_cmp_func(root);
+-	return indx->cmp ? 0 : -EINVAL;
++	if (!indx->cmp)
++		goto out;
++
++	return 0;
++
++out:
++	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
++	return -EINVAL;
+ }
+ 
+ static struct indx_node *indx_new(struct ntfs_index *indx,
+@@ -1020,6 +1081,13 @@ int indx_read(struct ntfs_index *indx, s
+ 		goto out;
+ 
+ ok:
++	if (!index_buf_check(ib, bytes, &vbn)) {
++		ntfs_inode_err(&ni->vfs_inode, "directory corrupted");
++		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	if (err == -E_NTFS_FIXUP) {
+ 		ntfs_write_bh(ni->mi.sbi, &ib->rhdr, &in->nb, 0);
+ 		err = 0;
+@@ -1607,9 +1675,9 @@ static int indx_insert_into_root(struct
+ 
+ 	if (err) {
+ 		/* Restore root. */
+-		if (mi_resize_attr(mi, attr, -ds_root))
++		if (mi_resize_attr(mi, attr, -ds_root)) {
+ 			memcpy(attr, a_root, asize);
+-		else {
++		} else {
+ 			/* Bug? */
+ 			ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
+ 		}
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -81,7 +81,7 @@ static struct inode *ntfs_read_mft(struc
+ 			 le16_to_cpu(ref->seq), le16_to_cpu(rec->seq));
+ 		goto out;
+ 	} else if (!is_rec_inuse(rec)) {
+-		err = -EINVAL;
++		err = -ESTALE;
+ 		ntfs_err(sb, "Inode r=%x is not in use!", (u32)ino);
+ 		goto out;
+ 	}
+@@ -92,8 +92,10 @@ static struct inode *ntfs_read_mft(struc
+ 		goto out;
+ 	}
+ 
+-	if (!is_rec_base(rec))
+-		goto Ok;
++	if (!is_rec_base(rec)) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+ 	/* Record should contain $I30 root. */
+ 	is_dir = rec->flags & RECORD_FLAG_DIR;
+@@ -472,7 +474,6 @@ end_enum:
+ 		inode->i_flags |= S_NOSEC;
+ 	}
+ 
+-Ok:
+ 	if (ino == MFT_REC_MFT && !sb->s_root)
+ 		sbi->mft.ni = NULL;
+ 
+@@ -526,6 +527,9 @@ struct inode *ntfs_iget5(struct super_bl
+ 		_ntfs_bad_inode(inode);
+ 	}
+ 
++	if (IS_ERR(inode) && name)
++		ntfs_set_state(sb->s_fs_info, NTFS_DIRTY_ERROR);
++
+ 	return inode;
+ }
+ 
+@@ -1641,10 +1645,8 @@ out6:
+ 		ntfs_remove_reparse(sbi, IO_REPARSE_TAG_SYMLINK, &new_de->ref);
+ 
+ out5:
+-	if (S_ISDIR(mode) || run_is_empty(&ni->file.run))
+-		goto out4;
+-
+-	run_deallocate(sbi, &ni->file.run, false);
++	if (!S_ISDIR(mode))
++		run_deallocate(sbi, &ni->file.run, false);
+ 
+ out4:
+ 	clear_rec_inuse(rec);
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -794,12 +794,12 @@ int run_pack(const struct runs_tree *run
+ 	     u32 run_buf_size, CLST *packed_vcns);
+ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 	       CLST svcn, CLST evcn, CLST vcn, const u8 *run_buf,
+-	       u32 run_buf_size);
++	       int run_buf_size);
+ 
+ #ifdef NTFS3_CHECK_FREE_CLST
+ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 		  CLST svcn, CLST evcn, CLST vcn, const u8 *run_buf,
+-		  u32 run_buf_size);
++		  int run_buf_size);
+ #else
+ #define run_unpack_ex run_unpack
+ #endif
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -919,12 +919,15 @@ out:
+  */
+ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 	       CLST svcn, CLST evcn, CLST vcn, const u8 *run_buf,
+-	       u32 run_buf_size)
++	       int run_buf_size)
+ {
+ 	u64 prev_lcn, vcn64, lcn, next_vcn;
+ 	const u8 *run_last, *run_0;
+ 	bool is_mft = ino == MFT_REC_MFT;
+ 
++	if (run_buf_size < 0)
++		return -EINVAL;
++
+ 	/* Check for empty. */
+ 	if (evcn + 1 == svcn)
+ 		return 0;
+@@ -1046,7 +1049,7 @@ int run_unpack(struct runs_tree *run, st
+  */
+ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 		  CLST svcn, CLST evcn, CLST vcn, const u8 *run_buf,
+-		  u32 run_buf_size)
++		  int run_buf_size)
+ {
+ 	int ret, err;
+ 	CLST next_vcn, lcn, len;
+--- a/fs/ntfs3/xattr.c
++++ b/fs/ntfs3/xattr.c
+@@ -42,28 +42,26 @@ static inline size_t packed_ea_size(cons
+  * Assume there is at least one xattr in the list.
+  */
+ static inline bool find_ea(const struct EA_FULL *ea_all, u32 bytes,
+-			   const char *name, u8 name_len, u32 *off)
++			   const char *name, u8 name_len, u32 *off, u32 *ea_sz)
+ {
+-	*off = 0;
++	u32 ea_size;
+ 
+-	if (!ea_all || !bytes)
++	*off = 0;
++	if (!ea_all)
+ 		return false;
+ 
+-	for (;;) {
++	for (; *off < bytes; *off += ea_size) {
+ 		const struct EA_FULL *ea = Add2Ptr(ea_all, *off);
+-		u32 next_off = *off + unpacked_ea_size(ea);
+-
+-		if (next_off > bytes)
+-			return false;
+-
++		ea_size = unpacked_ea_size(ea);
+ 		if (ea->name_len == name_len &&
+-		    !memcmp(ea->name, name, name_len))
++		    !memcmp(ea->name, name, name_len)) {
++			if (ea_sz)
++				*ea_sz = ea_size;
+ 			return true;
+-
+-		*off = next_off;
+-		if (next_off >= bytes)
+-			return false;
++		}
+ 	}
++
++	return false;
+ }
+ 
+ /*
+@@ -74,12 +72,12 @@ static inline bool find_ea(const struct
+ static int ntfs_read_ea(struct ntfs_inode *ni, struct EA_FULL **ea,
+ 			size_t add_bytes, const struct EA_INFO **info)
+ {
+-	int err;
++	int err = -EINVAL;
+ 	struct ntfs_sb_info *sbi = ni->mi.sbi;
+ 	struct ATTR_LIST_ENTRY *le = NULL;
+ 	struct ATTRIB *attr_info, *attr_ea;
+ 	void *ea_p;
+-	u32 size;
++	u32 size, off, ea_size;
+ 
+ 	static_assert(le32_to_cpu(ATTR_EA_INFO) < le32_to_cpu(ATTR_EA));
+ 
+@@ -96,24 +94,31 @@ static int ntfs_read_ea(struct ntfs_inod
+ 
+ 	*info = resident_data_ex(attr_info, sizeof(struct EA_INFO));
+ 	if (!*info)
+-		return -EINVAL;
++		goto out;
+ 
+ 	/* Check Ea limit. */
+ 	size = le32_to_cpu((*info)->size);
+-	if (size > sbi->ea_max_size)
+-		return -EFBIG;
++	if (size > sbi->ea_max_size) {
++		err = -EFBIG;
++		goto out;
++	}
+ 
+-	if (attr_size(attr_ea) > sbi->ea_max_size)
+-		return -EFBIG;
++	if (attr_size(attr_ea) > sbi->ea_max_size) {
++		err = -EFBIG;
++		goto out;
++	}
++
++	if (!size) {
++		/* EA info persists, but xattr is empty. Looks like EA problem. */
++		goto out;
++	}
+ 
+ 	/* Allocate memory for packed Ea. */
+ 	ea_p = kmalloc(size_add(size, add_bytes), GFP_NOFS);
+ 	if (!ea_p)
+ 		return -ENOMEM;
+ 
+-	if (!size) {
+-		/* EA info persists, but xattr is empty. Looks like EA problem. */
+-	} else if (attr_ea->non_res) {
++	if (attr_ea->non_res) {
+ 		struct runs_tree run;
+ 
+ 		run_init(&run);
+@@ -124,24 +129,52 @@ static int ntfs_read_ea(struct ntfs_inod
+ 		run_close(&run);
+ 
+ 		if (err)
+-			goto out;
++			goto out1;
+ 	} else {
+ 		void *p = resident_data_ex(attr_ea, size);
+ 
+-		if (!p) {
+-			err = -EINVAL;
+-			goto out;
+-		}
++		if (!p)
++			goto out1;
+ 		memcpy(ea_p, p, size);
+ 	}
+ 
+ 	memset(Add2Ptr(ea_p, size), 0, add_bytes);
++
++	/* Check all attributes for consistency. */
++	for (off = 0; off < size; off += ea_size) {
++		const struct EA_FULL *ef = Add2Ptr(ea_p, off);
++		u32 bytes = size - off;
++
++		/* Check if we can use field ea->size. */
++		if (bytes < sizeof(ef->size))
++			goto out1;
++
++		if (ef->size) {
++			ea_size = le32_to_cpu(ef->size);
++			if (ea_size > bytes)
++				goto out1;
++			continue;
++		}
++
++		/* Check if we can use fields ef->name_len and ef->elength. */
++		if (bytes < offsetof(struct EA_FULL, name))
++			goto out1;
++
++		ea_size = ALIGN(struct_size(ef, name,
++					    1 + ef->name_len +
++						    le16_to_cpu(ef->elength)),
++				4);
++		if (ea_size > bytes)
++			goto out1;
++	}
++
+ 	*ea = ea_p;
+ 	return 0;
+ 
+-out:
++out1:
+ 	kfree(ea_p);
+-	*ea = NULL;
++out:
++	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
+ 	return err;
+ }
+ 
+@@ -163,6 +196,7 @@ static ssize_t ntfs_list_ea(struct ntfs_
+ 	const struct EA_FULL *ea;
+ 	u32 off, size;
+ 	int err;
++	int ea_size;
+ 	size_t ret;
+ 
+ 	err = ntfs_read_ea(ni, &ea_all, 0, &info);
+@@ -175,8 +209,9 @@ static ssize_t ntfs_list_ea(struct ntfs_
+ 	size = le32_to_cpu(info->size);
+ 
+ 	/* Enumerate all xattrs. */
+-	for (ret = 0, off = 0; off < size; off += unpacked_ea_size(ea)) {
++	for (ret = 0, off = 0; off < size; off += ea_size) {
+ 		ea = Add2Ptr(ea_all, off);
++		ea_size = unpacked_ea_size(ea);
+ 
+ 		if (!ea->name_len)
+ 			break;
+@@ -230,7 +265,8 @@ static int ntfs_get_ea(struct inode *ino
+ 		goto out;
+ 
+ 	/* Enumerate all xattrs. */
+-	if (!find_ea(ea_all, le32_to_cpu(info->size), name, name_len, &off)) {
++	if (!find_ea(ea_all, le32_to_cpu(info->size), name, name_len, &off,
++		     NULL)) {
+ 		err = -ENODATA;
+ 		goto out;
+ 	}
+@@ -272,7 +308,7 @@ static noinline int ntfs_set_ea(struct i
+ 	struct EA_FULL *new_ea;
+ 	struct EA_FULL *ea_all = NULL;
+ 	size_t add, new_pack;
+-	u32 off, size;
++	u32 off, size, ea_sz;
+ 	__le16 size_pack;
+ 	struct ATTRIB *attr;
+ 	struct ATTR_LIST_ENTRY *le;
+@@ -307,9 +343,8 @@ static noinline int ntfs_set_ea(struct i
+ 		size_pack = ea_info.size_pack;
+ 	}
+ 
+-	if (info && find_ea(ea_all, size, name, name_len, &off)) {
++	if (info && find_ea(ea_all, size, name, name_len, &off, &ea_sz)) {
+ 		struct EA_FULL *ea;
+-		size_t ea_sz;
+ 
+ 		if (flags & XATTR_CREATE) {
+ 			err = -EEXIST;
+@@ -332,8 +367,6 @@ static noinline int ntfs_set_ea(struct i
+ 		if (ea->flags & FILE_NEED_EA)
+ 			le16_add_cpu(&ea_info.count, -1);
+ 
+-		ea_sz = unpacked_ea_size(ea);
+-
+ 		le16_add_cpu(&ea_info.size_pack, 0 - packed_ea_size(ea));
+ 
+ 		memmove(ea, Add2Ptr(ea, ea_sz), size - off - ea_sz);
 
 
