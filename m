@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26C2775CE49
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1004675CE4A
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbjGUQT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
+        id S232646AbjGUQT3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231210AbjGUQTN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:19:13 -0400
+        with ESMTP id S231478AbjGUQTR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:19:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEE0468C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:17:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5059469B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:17:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C301561D2A
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:17:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A975AC433C8;
-        Fri, 21 Jul 2023 16:17:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 926CF61D29
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:17:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A362BC433C8;
+        Fri, 21 Jul 2023 16:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956269;
-        bh=9HlVhkWCVKyP9n6mog91Ob/F06qrrJ6MnEw70/qdtwk=;
+        s=korg; t=1689956272;
+        bh=NoJ2NKdqLQA7IKSwiojgIsg3ZlTlviPpkJnQ7NbdBHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T2AZLYhjgaEbVbdSMUpxF28tzKXvNk02+QBuq1GVST+Ffbi4P29ZlK7Js5aNIh5NQ
-         pkAYs51K/LnCwxqLCVyEmF/NlAOFNn+nLrBAMRxzY2hsDKatAFvSYRgt3roIxLC+hJ
-         6pl2kg7JClPaPmKP/x2MMVpX9yp2H8EXe0yFrleI=
+        b=e/iiBTZm2+qyw2/AUWze1jR6Pk2TyGMpf3wkdhpcTW/7XSMYxf+9BMlFy/xH9yUtX
+         nDv8i7cUWlgoPUKdWv9iqPIYNuDSftFdrxzSdgDm7ceX2eJ5UMeeOkuLuhifDrbjrL
+         zAYs6OnWnEuLus7caYgg/BGIGxCyxJrh3grPIYEI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Bezdeka <florian@bezdeka.de>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.4 132/292] tpm/tpm_tis: Disable interrupts for Lenovo L590 devices
-Date:   Fri, 21 Jul 2023 18:04:01 +0200
-Message-ID: <20230721160534.498595024@linuxfoundation.org>
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.4 133/292] mtd: rawnand: meson: fix unaligned DMA buffers handling
+Date:   Fri, 21 Jul 2023 18:04:02 +0200
+Message-ID: <20230721160534.548819100@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -56,47 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Bezdeka <florian@bezdeka.de>
+From: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
 
-commit 393f362389cecc2e4f2e3520a6c8ee9dbb1e3d15 upstream.
+commit 98480a181a08ceeede417e5b28f6d0429d8ae156 upstream.
 
-The Lenovo L590 suffers from an irq storm issue like the T490, T490s
-and P360 Tiny, so add an entry for it to tpm_tis_dmi_table and force
-polling.
+Meson NAND controller requires 8 bytes alignment for DMA addresses,
+otherwise it "aligns" passed address by itself thus accessing invalid
+location in the provided buffer. This patch makes unaligned buffers to
+be reallocated to become valid.
 
-Cc: stable@vger.kernel.org # v6.4+
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2214069#c0
-Fixes: e644b2f498d2 ("tpm, tpm_tis: Enable interrupt test")
-Signed-off-by: Florian Bezdeka <florian@bezdeka.de>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230615080815.3291006-1-AVKrasnov@sberdevices.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/mtd/nand/raw/meson_nand.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
-index 4e4426965cd0..cc42cf3de960 100644
---- a/drivers/char/tpm/tpm_tis.c
-+++ b/drivers/char/tpm/tpm_tis.c
-@@ -154,6 +154,14 @@ static const struct dmi_system_id tpm_tis_dmi_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L490"),
- 		},
- 	},
-+	{
-+		.callback = tpm_tis_disable_irq,
-+		.ident = "ThinkPad L590",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L590"),
-+		},
-+	},
- 	{
- 		.callback = tpm_tis_disable_irq,
- 		.ident = "UPX-TGL",
--- 
-2.41.0
-
+--- a/drivers/mtd/nand/raw/meson_nand.c
++++ b/drivers/mtd/nand/raw/meson_nand.c
+@@ -76,6 +76,7 @@
+ #define GENCMDIADDRH(aih, addr)		((aih) | (((addr) >> 16) & 0xffff))
+ 
+ #define DMA_DIR(dir)		((dir) ? NFC_CMD_N2M : NFC_CMD_M2N)
++#define DMA_ADDR_ALIGN		8
+ 
+ #define ECC_CHECK_RETURN_FF	(-1)
+ 
+@@ -842,6 +843,9 @@ static int meson_nfc_read_oob(struct nan
+ 
+ static bool meson_nfc_is_buffer_dma_safe(const void *buffer)
+ {
++	if ((uintptr_t)buffer % DMA_ADDR_ALIGN)
++		return false;
++
+ 	if (virt_addr_valid(buffer) && (!object_is_on_stack(buffer)))
+ 		return true;
+ 	return false;
 
 
