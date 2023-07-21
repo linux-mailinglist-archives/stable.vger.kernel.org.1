@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D6175CE36
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CDDC75CE32
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231440AbjGUQSs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45020 "EHLO
+        id S230487AbjGUQSp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231434AbjGUQS0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:18:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4604448D
+        with ESMTP id S231187AbjGUQSZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:18:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9295D4234
         for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:17:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D91E61D30
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:17:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B8AC433C8;
-        Fri, 21 Jul 2023 16:17:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4037C61D33
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:17:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D3CC433C9;
+        Fri, 21 Jul 2023 16:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956226;
-        bh=PWF97O/gBhcSPe30b+7dXUBi36jIwlUGrMe4GJI67nE=;
+        s=korg; t=1689956229;
+        bh=8uMn/SSxlgCFLWYzj5tSX5VX8LgxLYbJxe4XVxhE8cY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r5q3umWI4EljgOdHu4PtWeXCFudbyPW/K6sGBVnKjRt5iDt6Mdd2XSbylwt1dp4wG
-         mIvOnWgNxsiWVQsgFnekySko2mfjNjdE/8SciY0ZQW8odqX+G8v1VD+g3GByQGelFG
-         XGEEZqyRtmSUX/4N6cRvOx1fLuj7OHU04IfMycW4=
+        b=p3MBMY04nThkgVcTA+oNkcITvQEwGWz0FoRLyfxfaQ2k9DK2YMVMQxQHNV/+uoyb4
+         WWnfoEYVoXnYYzB7RqEf00f0HV4vXm76c+lS/F5IZ7TPbbZn0mcWwNkwpO4FItUA1R
+         hw5U5/xGZTP5Iwpzp66U6e9z0wDVkG4MEc4TAjZY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leo Li <sunpeng.li@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.4 145/292] drm/amd/display: perform a bounds check before filling dirty rectangles
-Date:   Fri, 21 Jul 2023 18:04:14 +0200
-Message-ID: <20230721160535.117430662@linuxfoundation.org>
+        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.4 146/292] MIPS: cpu-features: Use boot_cpu_type for CPU type based features
+Date:   Fri, 21 Jul 2023 18:04:15 +0200
+Message-ID: <20230721160535.160017716@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -55,72 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit af22d6a869cc26b519bfdcd54293c53f2e491870 upstream.
+commit 5487a7b60695a92cf998350e4beac17144c91fcd upstream.
 
-Currently, it is possible for us to access memory that we shouldn't.
-Since, we acquire (possibly dangling) pointers to dirty rectangles
-before doing a bounds check to make sure we can actually accommodate the
-number of dirty rectangles userspace has requested to fill. This issue
-is especially evident if a compositor requests both MPO and damage clips
-at the same time, in which case I have observed a soft-hang. So, to
-avoid this issue, perform the bounds check before filling a single dirty
-rectangle and WARN() about it, if it is ever attempted in
-fill_dc_dirty_rect().
+Some CPU feature macros were using current_cpu_type to mark feature
+availability.
 
-Cc: stable@vger.kernel.org # 6.1+
-Fixes: 30ebe41582d1 ("drm/amd/display: add FB_DAMAGE_CLIPS support")
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+However current_cpu_type will use smp_processor_id, which is prohibited
+under preemptable context.
+
+Since those features are all uniform on all CPUs in a SMP system, use
+boot_cpu_type instead of current_cpu_type to fix preemptable kernel.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ arch/mips/include/asm/cpu-features.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5057,11 +5057,7 @@ static inline void fill_dc_dirty_rect(st
- 				      s32 y, s32 width, s32 height,
- 				      int *i, bool ffu)
- {
--	if (*i > DC_MAX_DIRTY_RECTS)
--		return;
--
--	if (*i == DC_MAX_DIRTY_RECTS)
--		goto out;
-+	WARN_ON(*i >= DC_MAX_DIRTY_RECTS);
- 
- 	dirty_rect->x = x;
- 	dirty_rect->y = y;
-@@ -5077,7 +5073,6 @@ static inline void fill_dc_dirty_rect(st
- 			"[PLANE:%d] PSR SU dirty rect at (%d, %d) size (%d, %d)",
- 			plane->base.id, x, y, width, height);
- 
--out:
- 	(*i)++;
- }
- 
-@@ -5164,6 +5159,9 @@ static void fill_dc_dirty_rects(struct d
- 
- 	*dirty_regions_changed = bb_changed;
- 
-+	if ((num_clips + (bb_changed ? 2 : 0)) > DC_MAX_DIRTY_RECTS)
-+		goto ffu;
-+
- 	if (bb_changed) {
- 		fill_dc_dirty_rect(new_plane_state->plane, &dirty_rects[i],
- 				   new_plane_state->crtc_x,
-@@ -5193,9 +5191,6 @@ static void fill_dc_dirty_rects(struct d
- 				   new_plane_state->crtc_h, &i, false);
- 	}
- 
--	if (i > DC_MAX_DIRTY_RECTS)
--		goto ffu;
--
- 	flip_addrs->dirty_rect_count = i;
- 	return;
- 
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -125,7 +125,7 @@
+ ({									\
+ 	int __res;							\
+ 									\
+-	switch (current_cpu_type()) {					\
++	switch (boot_cpu_type()) {					\
+ 	case CPU_CAVIUM_OCTEON:						\
+ 	case CPU_CAVIUM_OCTEON_PLUS:					\
+ 	case CPU_CAVIUM_OCTEON2:					\
+@@ -368,7 +368,7 @@
+ ({									\
+ 	int __res;							\
+ 									\
+-	switch (current_cpu_type()) {					\
++	switch (boot_cpu_type()) {					\
+ 	case CPU_M14KC:							\
+ 	case CPU_74K:							\
+ 	case CPU_1074K:							\
 
 
