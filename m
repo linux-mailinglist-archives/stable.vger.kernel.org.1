@@ -2,179 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFB0875BCBE
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 05:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 388FB75BCCF
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 05:30:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229883AbjGUDU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 23:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53040 "EHLO
+        id S230034AbjGUDaw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 23:30:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbjGUDUz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 23:20:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C891F2737
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 20:20:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689909603;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FYC8NzIvQBfwMzCN4Y1JOBLQ6XrEE/2B7fUpOXrUmEI=;
-        b=UOou8QTfjxXTcno8FoKmJcG0BQpk9GOfcU4bKaKsjYjMqHecL4M2mgy+YZRCRlwJvOKk8u
-        yObIxoix7UNvhgiw460+kD+R3ZzFYTdtgNO9KRsaFuX2+huQLDAHYNCuRUXo7l3n2nGofN
-        XegKuHysKOv9chbWP++B9yWOcKlFrnE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-rjIt131FOt-s2BXL25b6qA-1; Thu, 20 Jul 2023 23:20:02 -0400
-X-MC-Unique: rjIt131FOt-s2BXL25b6qA-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-9932e8e76b9so108227866b.3
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 20:20:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689909601; x=1690514401;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FYC8NzIvQBfwMzCN4Y1JOBLQ6XrEE/2B7fUpOXrUmEI=;
-        b=AYiwFZKPxXhopw51BeS5dzGTUJNP6vqZRVaCoZ7cJMEG2NjGj9Gn6WE3Zcr4p+Mvnl
-         /PMzBwrs93NqDDUiG1a/4luHhy1wKAsZYYYw0QTQCOKr8chg1tT1FiNYL9tmRpcmGr9Z
-         luQhnhwAhAP5AEb/OAvVUJF8Ft9Sa582VWX6FA+l4WAlgFB0aurAGIucq/f6olSDyfmL
-         qsKvshMcRUyRbDrO/hSnPIiZ0s7yxir0A85Bc7sBfN+h13sXCbAMItcZWZb45zwQmPGn
-         g5U2Uxdx3sh6RF+hzg615N5jMI+fo1DpIzp094gL7mVkAIMaD2oPY1mn8fmRwBPtLncY
-         QpLA==
-X-Gm-Message-State: ABy/qLbSHJRkR82i28IlR7V8AYK7fQNaQnJPXy+lcB5Fvp/xyG8fjVb7
-        79y3vbGyg8HCq9l0WcJS9L189UDbEMMur66n53UC8g3j8YZ4tPjiXd7bgCYoMrQA88dwhwMmiyU
-        ZJfmI1tEvUmq4j7tfbpohj06EUA22MWuH
-X-Received: by 2002:a17:907:2cd0:b0:997:e7d9:50f7 with SMTP id hg16-20020a1709072cd000b00997e7d950f7mr524602ejc.66.1689909601021;
-        Thu, 20 Jul 2023 20:20:01 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGxZ/7dmQ0ACW+P/oCGilRh3gbPCGWZCS1cQlobNnvAlXPulCfJCA6v70a4Rl8/p73DNoW7OzSpxKuezbFoMUo=
-X-Received: by 2002:a17:907:2cd0:b0:997:e7d9:50f7 with SMTP id
- hg16-20020a1709072cd000b00997e7d950f7mr524588ejc.66.1689909600689; Thu, 20
- Jul 2023 20:20:00 -0700 (PDT)
+        with ESMTP id S229824AbjGUDav (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 23:30:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341CF272E;
+        Thu, 20 Jul 2023 20:30:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB55D604AD;
+        Fri, 21 Jul 2023 03:30:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B17CC433CA;
+        Fri, 21 Jul 2023 03:30:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689910244;
+        bh=P3Y0G8/zzL+Nhngt7XtAvkZnhEiGjeTZy9ZP98jV8+c=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=TaKDXTTI0MEadIT8proVhhnPM/KEjCQ9oUz0S5kAB/Lnlw2hpfi+3PwCV15q9zXB9
+         JeYB1j01UxMrZi4l/2+x29bBaMCmKIPJqnToeUKjYKa7IQnoWob8FkhgKRc0VK4x6h
+         xXY2hltxIS+KstWggXPV+oEobwJYpakq0MiHYIb0ApnlC3Q9lq5mlbPPEOACInsw3L
+         DuKedrqfIvxer1OvzGfbCYf1eGtP949HQNnlLJ6mSUkeV2MVxqVgjl6zLuKg4qCur4
+         4e+SOwI85PcpmBrLXcF/jehA84NS/EPPRi/vWj8e66QFOsVwROWyDXAwranCht09Wn
+         2lI3BVbnE/0PQ==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-564e4656fecso975386eaf.0;
+        Thu, 20 Jul 2023 20:30:44 -0700 (PDT)
+X-Gm-Message-State: ABy/qLYb8j3daAZ/GPe5WRH4gAJV6kSk5xz/YU7EtwVW7a1/6Vb4wh2X
+        Mic4h5OY5RIZSiMyaDeJhAvzWLSz6enrQWG9AV4=
+X-Google-Smtp-Source: APBJJlEbukEvjQ2n/VPRmQTsiDSn1rOtzwNlK20fmI6AD+8Ik06WmpFrbwE3agD/3iKtnFrfOfMCDsb7Ni807E5NnxQ=
+X-Received: by 2002:a4a:344a:0:b0:566:efc9:1464 with SMTP id
+ n10-20020a4a344a000000b00566efc91464mr767853oof.0.1689910243449; Thu, 20 Jul
+ 2023 20:30:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230629033533.270535-1-xiubli@redhat.com>
-In-Reply-To: <20230629033533.270535-1-xiubli@redhat.com>
-From:   Milind Changire <mchangir@redhat.com>
-Date:   Fri, 21 Jul 2023 08:49:24 +0530
-Message-ID: <CAED=hWCkMMjina5q1VhygNnkHD+nqLfeNKVp8Oof623K6iEwbw@mail.gmail.com>
-Subject: Re: [PATCH] ceph: defer stopping the mdsc delayed_work
-To:     xiubli@redhat.com
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, stable@vger.kernel.org
+References: <e7292802-e517-6469-6fbd-a4d30887c99b@gmail.com>
+In-Reply-To: <e7292802-e517-6469-6fbd-a4d30887c99b@gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Fri, 21 Jul 2023 12:30:07 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATehP+0Woq6yVkB_NdvsmCLX3g04j-h22T9qy-GbWQ3_w@mail.gmail.com>
+Message-ID: <CAK7LNATehP+0Woq6yVkB_NdvsmCLX3g04j-h22T9qy-GbWQ3_w@mail.gmail.com>
+Subject: Re: 6.4.4 breaks module-free builds of Debian kernel packages
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Josh Triplett <josh@joshtriplett.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Sasha Levin <sashal@kernel.org>,
+        Brian Lindholm <brian_lindholm@users.sourceforge.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Kernel Build System <linux-kbuild@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Looks good to me.
-
-nit: typo for perioudically in commit message
-
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-
-
-On Thu, Jun 29, 2023 at 9:07=E2=80=AFAM <xiubli@redhat.com> wrote:
+On Fri, Jul 21, 2023 at 12:19=E2=80=AFPM Bagas Sanjaya <bagasdotme@gmail.co=
+m> wrote:
 >
-> From: Xiubo Li <xiubli@redhat.com>
+> Hi,
 >
-> Flushing the dirty buffer may take a long time if the Rados is
-> overloaded or if there is network issue. So we should ping the
-> MDSs perioudically to keep alive, else the MDS will blocklist
-> the kclient.
+> I notice a regression report on Bugzilla [1]. Quoting from it:
 >
-> Cc: stable@vger.kernel.org
-> Cc: Venky Shankar <vshankar@redhat.com>
-> URL: https://tracker.ceph.com/issues/61843
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> ---
->  fs/ceph/mds_client.c | 2 +-
->  fs/ceph/mds_client.h | 3 ++-
->  fs/ceph/super.c      | 7 ++++---
->  3 files changed, 7 insertions(+), 5 deletions(-)
+> > I'm on AMD64 with Debian testing (trixie), where I build my own kernels=
+ (with CONFIG_MODULES unset) using "make bindeb-pkg". The build proceeds th=
+rough 99% of the process, but fails here:
+> >
+> > Kernel: arch/x86/boot/bzImage is ready  (#2)
+> > make -f ./Makefile ARCH=3Dx86     KERNELRELEASE=3D6.4.4-i5 intdeb-pkg
+> > sh ./scripts/package/builddeb
+> > ***
+> > *** The present kernel configuration has modules disabled.
+> > *** To use the module feature, please run "make menuconfig" etc.
+> > *** to enable CONFIG_MODULES.
+> > ***
+> > make[5]: *** [Makefile:1969: modules_install] Error 1
+> > make[4]: *** [scripts/Makefile.package:150: intdeb-pkg] Error 2
+> > make[3]: *** [Makefile:1657: intdeb-pkg] Error 2
+> > make[2]: *** [debian/rules:16: binary-arch] Error 2
+> > dpkg-buildpackage: error: debian/rules binary subprocess returned exit =
+status 2
+> > make[1]: *** [scripts/Makefile.package:139: bindeb-pkg] Error 2
+> > make: *** [Makefile:1657: bindeb-pkg] Error 2
+> >
+> > 6.3.13 contained the same error, but I "fixed" that by moving to 6.4.3.=
+  But alas, 6.4.4 now has the same issue.
+> >
+> > I worked around the issue by changing "exit 1" to "exit 0" in the main =
+Makefile (at "modules module_install", per the attached patch), but I don't=
+ know if this is a true fix or something that simply happens to work for my=
+ particular configuration.
 >
-> diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-> index 65230ebefd51..70987b3c198a 100644
-> --- a/fs/ceph/mds_client.c
-> +++ b/fs/ceph/mds_client.c
-> @@ -5192,7 +5192,7 @@ static void delayed_work(struct work_struct *work)
+> See Bugzilla for the full thread and attached patch that ignores the erro=
+r.
 >
->         doutc(mdsc->fsc->client, "mdsc delayed_work\n");
+> Josh: It looks like this regression is caused by a commit of yours
+> (and also 1240dabe8d58b4). Would you like to take a look on it?
 >
-> -       if (mdsc->stopping)
-> +       if (mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHED)
->                 return;
+> Anyway, I'm adding this regression to be tracked by regzbot:
 >
->         mutex_lock(&mdsc->mutex);
-> diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
-> index 5d02c8c582fd..befbd384428e 100644
-> --- a/fs/ceph/mds_client.h
-> +++ b/fs/ceph/mds_client.h
-> @@ -400,7 +400,8 @@ struct cap_wait {
+> #regzbot introduced: 4243afdb932677 https://bugzilla.kernel.org/show_bug.=
+cgi?id=3D217689
+> #regzbot title: always doing modules_install breaks CONFIG_MODULES=3Dn bu=
+ilds
 >
->  enum {
->         CEPH_MDSC_STOPPING_BEGIN =3D 1,
-> -       CEPH_MDSC_STOPPING_FLUSHED =3D 2,
-> +       CEPH_MDSC_STOPPING_FLUSHING =3D 2,
-> +       CEPH_MDSC_STOPPING_FLUSHED =3D 3,
->  };
+> Thanks.
 >
->  /*
-> diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-> index 8e1e517a45db..fb694ba72955 100644
-> --- a/fs/ceph/super.c
-> +++ b/fs/ceph/super.c
-> @@ -1488,7 +1488,7 @@ static int ceph_init_fs_context(struct fs_context *=
-fc)
->  static bool __inc_stopping_blocker(struct ceph_mds_client *mdsc)
->  {
->         spin_lock(&mdsc->stopping_lock);
-> -       if (mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHED) {
-> +       if (mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHING) {
->                 spin_unlock(&mdsc->stopping_lock);
->                 return false;
->         }
-> @@ -1501,7 +1501,7 @@ static void __dec_stopping_blocker(struct ceph_mds_=
-client *mdsc)
->  {
->         spin_lock(&mdsc->stopping_lock);
->         if (!atomic_dec_return(&mdsc->stopping_blockers) &&
-> -           mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHED)
-> +           mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHING)
->                 complete_all(&mdsc->stopping_waiter);
->         spin_unlock(&mdsc->stopping_lock);
->  }
-> @@ -1562,7 +1562,7 @@ static void ceph_kill_sb(struct super_block *s)
->         sync_filesystem(s);
+> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217689
 >
->         spin_lock(&mdsc->stopping_lock);
-> -       mdsc->stopping =3D CEPH_MDSC_STOPPING_FLUSHED;
-> +       mdsc->stopping =3D CEPH_MDSC_STOPPING_FLUSHING;
->         wait =3D !!atomic_read(&mdsc->stopping_blockers);
->         spin_unlock(&mdsc->stopping_lock);
->
-> @@ -1576,6 +1576,7 @@ static void ceph_kill_sb(struct super_block *s)
->                         pr_warn_client(cl, "umount was killed, %ld\n", ti=
-meleft);
->         }
->
-> +       mdsc->stopping =3D CEPH_MDSC_STOPPING_FLUSHED;
->         kill_anon_super(s);
->
->         fsc->client->extra_mon_dispatch =3D NULL;
 > --
-> 2.40.1
->
+> An old man doll... just what I always wanted! - Clara
+
+
+
+
+The following commit must be back-ported.
+
+
+
+commit 8ae071fc216a25f4f797f33c56857f4dd6b4408e
+Author: Masahiro Yamada <masahiroy@kernel.org>
+Date:   Thu Jun 15 20:17:43 2023 +0900
+
+    kbuild: make modules_install copy modules.builtin(.modinfo)
+
+
+
+
+
+
+
 
 
 --=20
-Milind
-
+Best Regards
+Masahiro Yamada
