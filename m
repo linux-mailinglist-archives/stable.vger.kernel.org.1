@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C132B75CEDC
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E949575CEFF
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232770AbjGUQZM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:25:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
+        id S232777AbjGUQ0n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjGUQYy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:24:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F91155BB
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:21:39 -0700 (PDT)
+        with ESMTP id S232693AbjGUQ0L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:26:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D2C49FD
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:23:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FD5961CF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:21:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D91CC433CA;
-        Fri, 21 Jul 2023 16:21:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 210EC61D50
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:21:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F447C433C8;
+        Fri, 21 Jul 2023 16:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956498;
-        bh=ViVK/A1ivXTOnHA73U5uv1cUvjuK/tk1XdW8eHlOPEM=;
+        s=korg; t=1689956501;
+        bh=u8TusT89NqsRk1Xreq0hb+r7uSALyDEcNc/TcyfmKoY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ajNgj4iVg2TmFLLYRVVYpXc8F+chTat5zUZJZZycgrNrPB6EgmspaPWZdg+Z05srN
-         HrMaPD6RYk4O45fsTlQLXDiMFmvrmGhlDPybkKErR77DY+5vnSJzqkrTi74u2B1PJm
-         mlSviPF6HzI8B/UHH9bLQ0xiSJzvE7SSszckHBW8=
+        b=UEKMv3JUmYMRkjTvHlq1XHh2SulbwzkWsM3N2Whkc9A4L59CjwRh44ThVJhetcv1Y
+         3FmkzrEGwFaPP5oEBjhooeuudeqeOhKFVkj/Ihf7pQwU7sWSAQaKKfg3vPxfvWNte0
+         ihshohBhk51/mA+Wh9GGwrLFEy0a9R6ad2qS+wBI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Pelloux-Prayer@vger.kernel.org
-Subject: [PATCH 6.4 213/292] drm/ttm: never consider pinned BOs for eviction&swap
-Date:   Fri, 21 Jul 2023 18:05:22 +0200
-Message-ID: <20230721160538.025887603@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.4 214/292] serial: atmel: dont enable IRQs prematurely
+Date:   Fri, 21 Jul 2023 18:05:23 +0200
+Message-ID: <20230721160538.067754452@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -47,48 +46,55 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian König <christian.koenig@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit a2848d08742c8e8494675892c02c0d22acbe3cf8 upstream.
+commit 27a826837ec9a3e94cc44bd9328b8289b0fcecd7 upstream.
 
-There is a small window where we have already incremented the pin count
-but not yet moved the bo from the lru to the pinned list.
+The atmel_complete_tx_dma() function disables IRQs at the start
+of the function by calling spin_lock_irqsave(&port->lock, flags);
+There is no need to disable them a second time using the
+spin_lock_irq() function and, in fact, doing so is a bug because
+it will enable IRQs prematurely when we call spin_unlock_irq().
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reported-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
-Tested-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://patchwork.freedesktop.org/patch/msgid/20230707120826.3701-1-christian.koenig@amd.com
+Just use spin_lock/unlock() instead without disabling or enabling
+IRQs.
+
+Fixes: 08f738be88bb ("serial: at91: add tx dma support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Acked-by: Richard Genoud <richard.genoud@gmail.com>
+Link: https://lore.kernel.org/r/cb7c39a9-c004-4673-92e1-be4e34b85368@moroto.mountain
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/tty/serial/atmel_serial.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -517,6 +517,12 @@ static bool ttm_bo_evict_swapout_allowab
- {
- 	bool ret = false;
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -868,11 +868,11 @@ static void atmel_complete_tx_dma(void *
+ 		dmaengine_terminate_all(chan);
+ 	uart_xmit_advance(port, atmel_port->tx_len);
  
-+	if (bo->pin_count) {
-+		*locked = false;
-+		*busy = false;
-+		return false;
-+	}
-+
- 	if (bo->base.resv == ctx->resv) {
- 		dma_resv_assert_held(bo->base.resv);
- 		if (ctx->allow_res_evict)
+-	spin_lock_irq(&atmel_port->lock_tx);
++	spin_lock(&atmel_port->lock_tx);
+ 	async_tx_ack(atmel_port->desc_tx);
+ 	atmel_port->cookie_tx = -EINVAL;
+ 	atmel_port->desc_tx = NULL;
+-	spin_unlock_irq(&atmel_port->lock_tx);
++	spin_unlock(&atmel_port->lock_tx);
+ 
+ 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
+ 		uart_write_wakeup(port);
 
 
