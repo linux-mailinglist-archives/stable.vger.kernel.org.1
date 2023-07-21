@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA6175CA3E
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F1975CA41
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbjGUOkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230355AbjGUOkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 21 Jul 2023 10:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54692 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231613AbjGUOkL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:40:11 -0400
+        with ESMTP id S231614AbjGUOkO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:40:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E5130C4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:40:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF372D7B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:40:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 036AB61CBC
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:40:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF0FC433CA;
-        Fri, 21 Jul 2023 14:40:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C943F61CB8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1511C433C8;
+        Fri, 21 Jul 2023 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950409;
-        bh=Uz3q+MeY8h6P36K1rqQEQin71gSBHQ7Hyv6QU2EGjag=;
+        s=korg; t=1689950412;
+        bh=AMcP02aZtJLs+wloglE3TIE4/5pRusKBZPlzNk7OEl8=;
         h=Subject:To:Cc:From:Date:From;
-        b=TXj6nfglq4+9WqFQRZeWbltNGkQnXpkkEBoHSrSIYWcACNJ1rRdWTQSnekhCDscky
-         apuPmiRmU552b0/gWZ1GCzQz6LdBYoMMd/qdL+L+1LBQLwe/a5DIRpRxnGyFB87Xvf
-         PSRl2kHkfM375uZniwx8H9G8GquSSjy7d0TCXbqg=
-Subject: FAILED: patch "[PATCH] tracing/probes: Fix to record 0-length data_loc in" failed to apply to 5.15-stable tree
+        b=zpHHGARBx958jELSUunwEo0ZHwCMb1++/mKN2GZF/oi2LUXeVTJ2Qyllx6KHet3Kv
+         b+TEROsO1ZlDmHCfWDNLvB/b5lvLv4vC2/NptcMGlGN1WNXp/8cig11004wFxYettM
+         2jE6zkUv+aZJalodZObCE2DN4uV/29WsjnetwqSU=
+Subject: FAILED: patch "[PATCH] tracing/probes: Fix to record 0-length data_loc in" failed to apply to 5.10-stable tree
 To:     mhiramat@kernel.org, rostedt@goodmis.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:40:04 +0200
-Message-ID: <2023072104-epilepsy-remedial-bdd8@gregkh>
+Date:   Fri, 21 Jul 2023 16:40:05 +0200
+Message-ID: <2023072105-drop-down-yearling-a66f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 797311bce5c2ac90b8d65e357603cfd410d36ebb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072104-epilepsy-remedial-bdd8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072105-drop-down-yearling-a66f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,12 @@ Possible dependencies:
 e38e2c6a9efc ("tracing/probes: Fix to update dynamic data counter if fetcharg uses it")
 00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
 f1d3cbfaafc1 ("tracing: Move duplicate code of trace_kprobe/eprobe.c into header")
+7491e2c44278 ("tracing: Add a probe that attaches to trace events")
+8565a45d0858 ("tracing/probes: Have process_fetch_insn() take a void * instead of pt_regs")
+007517a01995 ("tracing/probe: Change traceprobe_set_print_fmt() to take a type")
+3b13911a2fd0 ("tracing: Synthetic event field_pos is an index not a boolean")
+bc87cf0a08d4 ("trace: Add a generic function to read/write u64 values from tracefs")
+d262271d0483 ("tracing/dynevent: Delegate parsing to create function")
 
 thanks,
 
