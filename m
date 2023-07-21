@@ -2,109 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C99C75D194
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D91D975D3A0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229785AbjGUSug (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:50:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
+        id S231876AbjGUTMo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:12:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230118AbjGUSue (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:34 -0400
+        with ESMTP id S231882AbjGUTMo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3AC359D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD4C730EF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 069F7619FD
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A689C433C8;
-        Fri, 21 Jul 2023 18:50:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 451F461D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B62DC433C8;
+        Fri, 21 Jul 2023 19:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965426;
-        bh=P2nzFaOh88wi6SizWl8zl/ryn8FlEmXuddHIQ3YIDAI=;
+        s=korg; t=1689966761;
+        bh=rEq52FdVj26jXDrlhS267sxTKsdTWH8TO2Wj1cOQZns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZyLV0neJkXuYwPe7UvomNM8bfn8qzbXqF75AJWXQOdKWpWZ6ba7bp1IXYRkHBLwXX
-         tMXWQgqRdolVnGNUBBeDv0MkwLb8gV7AGadPAEdGgDI8BlTBtWPwBmPuPPiUwl+h+c
-         JHzWeWP3hH9+LFYbrvODuE8UrqEmrmbQgF3RlBC0=
+        b=eV6vykKG0yJOWt/agYQp7dBvtPCwlE+00gX+GxytGhB/zD7dWPRo4XTbxO/P0eEWP
+         BHS2x5bdYuuzN2d4+5rTnwk4wr9T/HPxLfcEhwZWcM2eoHb+u6RpzXZh5LgOw+je7f
+         CpZ7zZ+VmBXkTKAk6zs8SICAKdOE3V+P3Ka4EcPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Subject: [PATCH 6.4 252/292] pwm: meson: modify and simplify calculation in meson_pwm_get_state
-Date:   Fri, 21 Jul 2023 18:06:01 +0200
-Message-ID: <20230721160539.750182725@linuxfoundation.org>
+        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 5.15 458/532] erofs: fix compact 4B support for 16k block size
+Date:   Fri, 21 Jul 2023 18:06:02 +0200
+Message-ID: <20230721160639.376412441@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-References: <20230721160528.800311148@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 6b9352f3f8a1a35faf0efc1ad1807ee303467796 upstream.
+commit 001b8ccd0650727e54ec16ef72bf1b8eeab7168e upstream.
 
-I don't see a reason why we should treat the case lo < hi differently
-and return 0 as period and duty_cycle. The current logic was added with
-c375bcbaabdb ("pwm: meson: Read the full hardware state in
-meson_pwm_get_state()"), Martin as original author doesn't remember why
-it was implemented this way back then.
-So let's handle it as normal use case and also remove the optimization
-for lo == 0. I think the improved readability is worth it.
+In compact 4B, two adjacent lclusters are packed together as a unit to
+form on-disk indexes for effective random access, as below:
 
-Fixes: c375bcbaabdb ("pwm: meson: Read the full hardware state in meson_pwm_get_state()")
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+(amortized = 4, vcnt = 2)
+       _____________________________________________
+      |___@_____ encoded bits __________|_ blkaddr _|
+      0        .                                    amortized * vcnt = 8
+      .             .
+      .                  .              amortized * vcnt - 4 = 4
+      .                        .
+      .____________________________.
+      |_type (2 bits)_|_clusterofs_|
+
+Therefore, encoded bits for each pack are 32 bits (4 bytes). IOWs,
+since each lcluster can get 16 bits for its type and clusterofs, the
+maximum supported lclustersize for compact 4B format is 16k (14 bits).
+
+Fix this to enable compact 4B format for 16k lclusters (blocks), which
+is tested on an arm64 server with 16k page size.
+
+Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230601112341.56960-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-meson.c |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ fs/erofs/zmap.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -351,18 +351,8 @@ static int meson_pwm_get_state(struct pw
- 	channel->lo = FIELD_GET(PWM_LOW_MASK, value);
- 	channel->hi = FIELD_GET(PWM_HIGH_MASK, value);
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -253,7 +253,7 @@ static int unpack_compacted_index(struct
+ 	u8 *in, type;
+ 	bool big_pcluster;
  
--	if (channel->lo == 0) {
--		state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
--		state->duty_cycle = state->period;
--	} else if (channel->lo >= channel->hi) {
--		state->period = meson_pwm_cnt_to_ns(chip, pwm,
--						    channel->lo + channel->hi);
--		state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm,
--							channel->hi);
--	} else {
--		state->period = 0;
--		state->duty_cycle = 0;
--	}
-+	state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->lo + channel->hi);
-+	state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
+-	if (1 << amortizedshift == 4)
++	if (1 << amortizedshift == 4 && lclusterbits <= 14)
+ 		vcnt = 2;
+ 	else if (1 << amortizedshift == 2 && lclusterbits == 12)
+ 		vcnt = 16;
+@@ -351,7 +351,6 @@ static int compacted_load_cluster_from_d
+ {
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+-	const unsigned int lclusterbits = vi->z_logical_clusterbits;
+ 	const erofs_off_t ebase = ALIGN(iloc(EROFS_I_SB(inode), vi->nid) +
+ 					vi->inode_isize + vi->xattr_isize, 8) +
+ 		sizeof(struct z_erofs_map_header);
+@@ -361,9 +360,6 @@ static int compacted_load_cluster_from_d
+ 	erofs_off_t pos;
+ 	int err;
  
- 	state->polarity = PWM_POLARITY_NORMAL;
+-	if (lclusterbits != 12)
+-		return -EOPNOTSUPP;
+-
+ 	if (lcn >= totalidx)
+ 		return -EINVAL;
  
 
 
