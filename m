@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E442875D4CE
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4445B75D4D1
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232235AbjGUTZP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:25:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46306 "EHLO
+        id S232244AbjGUTZS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:25:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232245AbjGUTZO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:25:14 -0400
+        with ESMTP id S232248AbjGUTZQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:25:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4249130E1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:25:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D1C230F1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:25:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2249061D54
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:25:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354C9C433C8;
-        Fri, 21 Jul 2023 19:25:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA9F261D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB0BC433C8;
+        Fri, 21 Jul 2023 19:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967506;
-        bh=HObl+iY30lYIWVAQA6PMNMMHJ3XLAcmMnNHdI4emXiM=;
+        s=korg; t=1689967512;
+        bh=EjewOMFgqtIdvNOu1km6Tffffy+X6G1QaFapHl6hHcU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ouohvaoeNELCvPw+JfplCXQUhwpoB+uF/fGP7wblsD09lw3fTnvj0UpK8SWup8pL9
-         enW+PPNFMiKSe7UFst/WBILXuw7uZdJrRp0ZFM6nbj8BUBY0YQZBWhEzIpyoTMbkZU
-         3kv2wzjg90x66SdGCBnEw217SYk8vn9DupzNygWA=
+        b=vsJ89tr5HKRh3bb4/xHTh7DLZq6uDA2xxbFpD+8SvI5hVCAGgZ/P0hso4bPZKLoP6
+         4yoyXcw6wSKfKlKuH7ZieMiAsGwuwaJ0sNrnVcNJ2/CJ3hUw9NViVwbBX4vxBBDHaM
+         jVjg4Npr8VJWuT4u3HGKgox25cfzAIYoBL18Q00U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 187/223] cifs: if deferred close is disabled then close files immediately
-Date:   Fri, 21 Jul 2023 18:07:20 +0200
-Message-ID: <20230721160528.860416098@linuxfoundation.org>
+        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 6.1 188/223] xtensa: ISS: fix call to split_if_spec
+Date:   Fri, 21 Jul 2023 18:07:21 +0200
+Message-ID: <20230721160528.903045577@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
 References: <20230721160520.865493356@linuxfoundation.org>
@@ -55,36 +53,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-commit df9d70c18616760c6504b97fec66b6379c172dbb upstream.
+commit bc8d5916541fa19ca5bc598eb51a5f78eb891a36 upstream.
 
-If defer close timeout value is set to 0, then there is no
-need to include files in the deferred close list and utilize
-the delayed worker for closing. Instead, we can close them
-immediately.
+split_if_spec expects a NULL-pointer as an end marker for the argument
+list, but tuntap_probe never supplied that terminating NULL. As a result
+incorrectly formatted interface specification string may cause a crash
+because of the random memory access. Fix that by adding NULL terminator
+to the split_if_spec argument list.
 
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 7282bee78798 ("[PATCH] xtensa: Architecture support for Tensilica Xtensa Part 8")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/file.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/xtensa/platforms/iss/network.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -954,8 +954,8 @@ int cifs_close(struct inode *inode, stru
- 		cfile = file->private_data;
- 		file->private_data = NULL;
- 		dclose = kmalloc(sizeof(struct cifs_deferred_close), GFP_KERNEL);
--		if ((cinode->oplock == CIFS_CACHE_RHW_FLG) &&
--		    cinode->lease_granted &&
-+		if ((cifs_sb->ctx->closetimeo && cinode->oplock == CIFS_CACHE_RHW_FLG)
-+		    && cinode->lease_granted &&
- 		    !test_bit(CIFS_INO_CLOSE_ON_LOCK, &cinode->flags) &&
- 		    dclose) {
- 			if (test_and_clear_bit(CIFS_INO_MODIFIED_ATTR, &cinode->flags)) {
+--- a/arch/xtensa/platforms/iss/network.c
++++ b/arch/xtensa/platforms/iss/network.c
+@@ -237,7 +237,7 @@ static int tuntap_probe(struct iss_net_p
+ 
+ 	init += sizeof(TRANSPORT_TUNTAP_NAME) - 1;
+ 	if (*init == ',') {
+-		rem = split_if_spec(init + 1, &mac_str, &dev_name);
++		rem = split_if_spec(init + 1, &mac_str, &dev_name, NULL);
+ 		if (rem != NULL) {
+ 			pr_err("%s: extra garbage on specification : '%s'\n",
+ 			       dev->name, rem);
 
 
