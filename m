@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCA675D2C8
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59E6E75D2C9
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:03:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231611AbjGUTDg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56622 "EHLO
+        id S231605AbjGUTDj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:03:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231605AbjGUTDf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:03:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61A430CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:03:34 -0700 (PDT)
+        with ESMTP id S231613AbjGUTDi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:03:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7382130DB
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:03:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4561761D84
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:03:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55858C433CA;
-        Fri, 21 Jul 2023 19:03:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C3CD61D84
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:03:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F57AC433C7;
+        Fri, 21 Jul 2023 19:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966213;
-        bh=HcxjWD8tOc6sGxoH9bh+lo1nEOvDGxgGTM1YEVCMaHo=;
+        s=korg; t=1689966216;
+        bh=gbepNwzUiPT8KkoIjbwymTet91H+gx3Nw+PekQtK9vk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A01FOtMhDfBQJ/V58N75wEMBdMS+YY8zH1GbM31Es/58rjylhyrm2yOV4McNdvh81
-         mAUOkC27yb1OVH4Nr2PRjSPwRSWG63s4mLEiyivmsTOjQAjg9bmZ9BIDTuuVSHWtTO
-         82fnXERW42OsY/qSmvW7qO/Nyq37zBHWRd7Qr4Rs=
+        b=cS3RUcz729jK4nZENHbXqxz3JOlYDwiRpbJBMwVo2TZlOHImfTva2o8TH0CMALV3c
+         98YrQA8EDBWB5rkpdLDRg3HwQ4w6yC/6+yPVwLoEaIiFimYQMi/9+UdOerPbfsL6ID
+         xStO180EYS3NMwbGBS/aHZZBl8sRAG7H37zJRB2Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Landley <rob@landley.net>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 265/532] w1: fix loop in w1_fini()
-Date:   Fri, 21 Jul 2023 18:02:49 +0200
-Message-ID: <20230721160628.723314162@linuxfoundation.org>
+Subject: [PATCH 5.15 266/532] sh: j2: Use ioremap() to translate device tree address into kernel memory
+Date:   Fri, 21 Jul 2023 18:02:50 +0200
+Message-ID: <20230721160628.777233565@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -45,9 +47,9 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,41 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-[ Upstream commit 83f3fcf96fcc7e5405b37d9424c7ef26bfa203f8 ]
+[ Upstream commit bc9d1f0cecd2407cfb2364a7d4be2f52d1d46a9d ]
 
-The __w1_remove_master_device() function calls:
+Addresses the following warning when building j2_defconfig:
 
-	list_del(&dev->w1_master_entry);
+arch/sh/kernel/cpu/sh2/probe.c: In function 'scan_cache':
+arch/sh/kernel/cpu/sh2/probe.c:24:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   24 |  j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
+      |
 
-So presumably this can cause an endless loop.
-
-Fixes: 7785925dd8e0 ("[PATCH] w1: cleanups.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 5a846abad07f ("sh: add support for J-Core J2 processor")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Rob Landley <rob@landley.net>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230503125746.331835-1-glaubitz@physik.fu-berlin.de
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/w1.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sh/kernel/cpu/sh2/probe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
-index 4a2ddf730a3ac..2eee26b7fc4a3 100644
---- a/drivers/w1/w1.c
-+++ b/drivers/w1/w1.c
-@@ -1263,10 +1263,10 @@ static int __init w1_init(void)
+diff --git a/arch/sh/kernel/cpu/sh2/probe.c b/arch/sh/kernel/cpu/sh2/probe.c
+index d342ea08843f6..70a07f4f2142f 100644
+--- a/arch/sh/kernel/cpu/sh2/probe.c
++++ b/arch/sh/kernel/cpu/sh2/probe.c
+@@ -21,7 +21,7 @@ static int __init scan_cache(unsigned long node, const char *uname,
+ 	if (!of_flat_dt_is_compatible(node, "jcore,cache"))
+ 		return 0;
  
- static void __exit w1_fini(void)
- {
--	struct w1_master *dev;
-+	struct w1_master *dev, *n;
+-	j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
++	j2_ccr_base = ioremap(of_flat_dt_translate_address(node), 4);
  
- 	/* Set netlink removal messages and some cleanup */
--	list_for_each_entry(dev, &w1_masters, w1_master_entry)
-+	list_for_each_entry_safe(dev, n, &w1_masters, w1_master_entry)
- 		__w1_remove_master_device(dev);
- 
- 	w1_fini_netlink();
+ 	return 1;
+ }
 -- 
 2.39.2
 
