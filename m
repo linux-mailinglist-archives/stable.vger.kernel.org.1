@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22DF375D2CF
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3746875D2D1
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231613AbjGUTDx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
+        id S231618AbjGUTD6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:03:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231609AbjGUTDw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:03:52 -0400
+        with ESMTP id S231609AbjGUTD6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:03:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738252D4A
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:03:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F9830CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:03:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 129FF61D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:03:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2485AC433C7;
-        Fri, 21 Jul 2023 19:03:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C588161D90
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:03:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5304C433C8;
+        Fri, 21 Jul 2023 19:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966230;
-        bh=+1hMspF/G9VnTE1U8jAUe9oapUDtIFZeqHZj3czvEns=;
+        s=korg; t=1689966236;
+        bh=tOFIa/fxNLcAu6h6GuVST2YWjk38g77k1sRQ6RyZxeI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TjAnONimX3qwciODkXWAeEYES5gBhK0cImE4JLXcvqdOjC8UwNxMR84scRUuI2dVx
-         9d6PneGbcZjtIXqwR+0Z7ml2Jcx9LjIMtAGy6uGHcePxyPrmMEQGLU6Y6Ttv6vAmND
-         2f+37ozPKI5rxXN+ffUTRw2svm0Et+SbI296PjD8=
+        b=cHG7FMZ99TJqSz4ZM6Jkbe7/s5hY55w9hxEFhTi4PspJds0bCPqRtxulwnlN5b306
+         9qQRBLJd+j5PP2f/oMn/fkAkbUq+CP0Z+0kOlJIMZSLKDO9VqI/S8x3Cu1QwbPOz85
+         uRNbJks8y1rfA4hEWK8ZAGXm79yI0eJGFV2u+fgE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mantas Pucka <mantas@8devices.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/532] clk: qcom: gcc-ipq6018: Use floor ops for sdcc clocks
-Date:   Fri, 21 Jul 2023 18:02:55 +0200
-Message-ID: <20230721160629.044159755@linuxfoundation.org>
+Subject: [PATCH 5.15 272/532] media: usb: Check az6007_read() return value
+Date:   Fri, 21 Jul 2023 18:02:56 +0200
+Message-ID: <20230721160629.109537437@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -56,35 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mantas Pucka <mantas@8devices.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 56e5ae0116aef87273cf1812d608645b076e4f02 ]
+[ Upstream commit fdaca63186f59fc664b346c45b76576624b48e57 ]
 
-SDCC clocks must be rounded down to avoid overclocking the controller.
+If az6007_read() returns error, there is no sence to continue.
 
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Mantas Pucka <mantas@8devices.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/1682413909-24927-1-git-send-email-mantas@8devices.com
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 3af2f4f15a61 ("[media] az6007: Change the az6007 read/write routine parameter")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb-v2/az6007.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index 3f9c2f61a5d93..5c5d1b04ea7af 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -1654,7 +1654,7 @@ static struct clk_rcg2 sdcc1_apps_clk_src = {
- 		.name = "sdcc1_apps_clk_src",
- 		.parent_data = gcc_xo_gpll0_gpll2_gpll0_out_main_div2,
- 		.num_parents = 4,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_floor_ops,
- 	},
- };
+diff --git a/drivers/media/usb/dvb-usb-v2/az6007.c b/drivers/media/usb/dvb-usb-v2/az6007.c
+index 62ee09f28a0bc..7524c90f5da61 100644
+--- a/drivers/media/usb/dvb-usb-v2/az6007.c
++++ b/drivers/media/usb/dvb-usb-v2/az6007.c
+@@ -202,7 +202,8 @@ static int az6007_rc_query(struct dvb_usb_device *d)
+ 	unsigned code;
+ 	enum rc_proto proto;
  
+-	az6007_read(d, AZ6007_READ_IR, 0, 0, st->data, 10);
++	if (az6007_read(d, AZ6007_READ_IR, 0, 0, st->data, 10) < 0)
++		return -EIO;
+ 
+ 	if (st->data[1] == 0x44)
+ 		return 0;
 -- 
 2.39.2
 
