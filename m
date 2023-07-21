@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95FC875BFD9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3761875BFDD
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbjGUHfy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:35:54 -0400
+        id S229885AbjGUHge (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:36:34 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230344AbjGUHfv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:35:51 -0400
+        with ESMTP id S230340AbjGUHgb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:36:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92CA12D7E
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:35:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B2B93AAD
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:36:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2DB561335
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:35:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C77C433C9;
-        Fri, 21 Jul 2023 07:35:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CD77610A6
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:35:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BFEC433C9;
+        Fri, 21 Jul 2023 07:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689924944;
-        bh=hKhjwoNTFFrDMlr4EV6N/xpHu/qFFk23VH1lQpo3Thc=;
+        s=korg; t=1689924958;
+        bh=8/EUE2fjaAHwCHz7kDU856nkgwYLcs7A+00o1R272Os=;
         h=Subject:To:Cc:From:Date:From;
-        b=ZcEiASmJZu3YFDrkhelxgfA0soD80FM/Z4KoUdsMRkguXv2Huc2O9um+wWZoECD9/
-         qCKWQaf8v7gbAyehcs8h1qz5+ZVbYHwIw+qkz46vTevVfcANKk1cNPnXXjedrQb6Ve
-         aoe4K4HfBOYHMNJDoHzI0ZfUoE01F+DlwQfVR7U0=
-Subject: FAILED: patch "[PATCH] drm/amd/pm: fix smu i2c data read risk" failed to apply to 6.1-stable tree
-To:     kevinyang.wang@amd.com, alexander.deucher@amd.com,
-        lijo.lazar@amd.com
+        b=l8M24Nr7o4LPWJnk52lObuJn6ublsPqCk5RBPmSwWX9F+5Ot67Sf7Bm8bxxMn/5gb
+         QPN1mGc5/PhErnQtpJFlIuS5p6LxVAlMPTXQ1qd0vuIfpa45qNjo1JFD+B7n7KdLFr
+         OQlLZAvLWuDvGuS9IeqkfmN8MyfthACb/HbwYXrI=
+Subject: FAILED: patch "[PATCH] drm/amd: Move helper for dynamic speed switch check out of" failed to apply to 6.1-stable tree
+To:     mario.limonciello@amd.com, alexander.deucher@amd.com,
+        evan.quan@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:35:41 +0200
-Message-ID: <2023072141-deluxe-zips-9820@gregkh>
+Date:   Fri, 21 Jul 2023 09:35:55 +0200
+Message-ID: <2023072155-sculptor-untoasted-d8ce@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -59,23 +59,16 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x d934e537c14bfe1227ced6341472571f354383e8
+git cherry-pick -x 188623076d0f1a500583d392b6187056bf7cc71a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072141-deluxe-zips-9820@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072155-sculptor-untoasted-d8ce@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-d934e537c14b ("drm/amd/pm: fix smu i2c data read risk")
-511a95552ec8 ("drm/amd/pm: Add SMU 13.0.6 support")
-230dd6bb6117 ("drm/amd/amdgpu: implement mode2 reset on smu_v13_0_10")
-e1dd28fc5bef ("drm/amd/pm: drop unused SMU v13 API")
-1794f6a9535b ("drm/amd/pm: enable GPO dynamic control support for SMU13.0.0")
-48aa62f07467 ("drm/amd/pm: Enable bad memory page/channel recording support for smu v13_0_0")
-8ae5a38c8cb3 ("drm/amd/pm: enable runpm support over BACO for SMU13.0.0")
-60cfad329ab8 ("drm/amd/pm: enable mode1 reset on smu_v13_0_10")
-7e5632cdf68b ("drm/amd/pm: update driver-if header for smu_v13_0_10")
-c6863be23179 ("drm/amd/pm: fulfill SMU13.0.0 cstate control interface")
+188623076d0f ("drm/amd: Move helper for dynamic speed switch check out of smu13")
+31c7a3b378a1 ("drm/amd/pm: conditionally disable pcie lane/speed switching for SMU13")
+dcb489bae65d ("drm/amd/pm: share the code around SMU13 pcie parameters update")
 
 thanks,
 
@@ -83,140 +76,100 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d934e537c14bfe1227ced6341472571f354383e8 Mon Sep 17 00:00:00 2001
-From: Yang Wang <kevinyang.wang@amd.com>
-Date: Tue, 20 Jun 2023 17:05:25 +0800
-Subject: [PATCH] drm/amd/pm: fix smu i2c data read risk
+From 188623076d0f1a500583d392b6187056bf7cc71a Mon Sep 17 00:00:00 2001
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Fri, 7 Jul 2023 21:26:08 -0500
+Subject: [PATCH] drm/amd: Move helper for dynamic speed switch check out of
+ smu13
 
-the smu driver_table is used for all types of smu
-tables data transcation (e.g: PPtable, Metrics, i2c, Ecc..).
+This helper is used for checking if the connected host supports
+the feature, it can be moved into generic code to be used by other
+smu implementations as well.
 
-it is necessary to hold this lock to avoiding data tampering
-during the i2c read operation.
-
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Evan Quan <evan.quan@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Cc: stable@vger.kernel.org # 6.1.x
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-index 9cd005131f56..3bb18396d2f9 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-@@ -2113,7 +2113,6 @@ static int arcturus_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 2f9c14aca73c..a3b86b86dc47 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1296,6 +1296,7 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ void amdgpu_device_pci_config_reset(struct amdgpu_device *adev);
+ int amdgpu_device_pci_reset(struct amdgpu_device *adev);
+ bool amdgpu_device_need_post(struct amdgpu_device *adev);
++bool amdgpu_device_pcie_dynamic_switching_supported(void);
+ bool amdgpu_device_should_use_aspm(struct amdgpu_device *adev);
+ bool amdgpu_device_aspm_support_quirk(void);
  
-@@ -2130,6 +2129,7 @@ static int arcturus_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index a92c6189b4b6..a2cdde0ca0a7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1458,6 +1458,25 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
+ 	return true;
  }
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-index c94d825a871b..95f6d821bacb 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-@@ -3021,7 +3021,6 @@ static int navi10_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
  
-@@ -3038,6 +3037,7 @@ static int navi10_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
++/*
++ * Intel hosts such as Raptor Lake and Sapphire Rapids don't support dynamic
++ * speed switching. Until we have confirmation from Intel that a specific host
++ * supports it, it's safer that we keep it disabled for all.
++ *
++ * https://edc.intel.com/content/www/us/en/design/products/platforms/details/raptor-lake-s/13th-generation-core-processors-datasheet-volume-1-of-2/005/pci-express-support/
++ * https://gitlab.freedesktop.org/drm/amd/-/issues/2663
++ */
++bool amdgpu_device_pcie_dynamic_switching_supported(void)
++{
++#if IS_ENABLED(CONFIG_X86)
++	struct cpuinfo_x86 *c = &cpu_data(0);
++
++	if (c->x86_vendor == X86_VENDOR_INTEL)
++		return false;
++#endif
++	return true;
++}
++
+ /**
+  * amdgpu_device_should_use_aspm - check if the device should program ASPM
+  *
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index cf7e729020ab..9b62b45ebb7f 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -2425,25 +2425,6 @@ int smu_v13_0_mode1_reset(struct smu_context *smu)
+ 	return ret;
  }
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-index f7ed3e655e39..8fe2e1716da4 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -3842,7 +3842,6 @@ static int sienna_cichlid_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
  
-@@ -3859,6 +3858,7 @@ static int sienna_cichlid_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-index e80f122d8aec..ce50ef46e73f 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-@@ -1525,7 +1525,6 @@ static int aldebaran_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
+-/*
+- * Intel hosts such as Raptor Lake and Sapphire Rapids don't support dynamic
+- * speed switching. Until we have confirmation from Intel that a specific host
+- * supports it, it's safer that we keep it disabled for all.
+- *
+- * https://edc.intel.com/content/www/us/en/design/products/platforms/details/raptor-lake-s/13th-generation-core-processors-datasheet-volume-1-of-2/005/pci-express-support/
+- * https://gitlab.freedesktop.org/drm/amd/-/issues/2663
+- */
+-static bool smu_v13_0_is_pcie_dynamic_switching_supported(void)
+-{
+-#if IS_ENABLED(CONFIG_X86)
+-	struct cpuinfo_x86 *c = &cpu_data(0);
+-
+-	if (c->x86_vendor == X86_VENDOR_INTEL)
+-		return false;
+-#endif
+-	return true;
+-}
+-
+ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
+ 				     uint32_t pcie_gen_cap,
+ 				     uint32_t pcie_width_cap)
+@@ -2455,7 +2436,7 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
+ 	uint32_t smu_pcie_arg;
+ 	int ret, i;
  
-@@ -1542,6 +1541,7 @@ static int aldebaran_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index 124287cbbff8..1d995f53aaab 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2320,7 +2320,6 @@ static int smu_v13_0_0_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
+-	if (!smu_v13_0_is_pcie_dynamic_switching_supported()) {
++	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
+ 		if (pcie_table->pcie_gen[num_of_levels - 1] < pcie_gen_cap)
+ 			pcie_gen_cap = pcie_table->pcie_gen[num_of_levels - 1];
  
-@@ -2337,6 +2336,7 @@ static int smu_v13_0_0_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-index 6ef12252beb5..1ac552142763 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-@@ -1763,7 +1763,6 @@ static int smu_v13_0_6_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_v13_0_6_request_i2c_xfer(smu, req);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
- 
-@@ -1780,6 +1779,7 @@ static int smu_v13_0_6_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
 
