@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6355F75D1AE
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 443C875D1D2
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjGUSvo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45384 "EHLO
+        id S231251AbjGUSxL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjGUSvl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:51:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA8B30CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:51:40 -0700 (PDT)
+        with ESMTP id S231245AbjGUSxJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:53:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9496630E4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:53:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3583761D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:51:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E6DC433CA;
-        Fri, 21 Jul 2023 18:51:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3040161D79
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:53:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43045C433C8;
+        Fri, 21 Jul 2023 18:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965499;
-        bh=bBjZTCUHuvtwSrJRP8pj4kMi+QGNDwQvnDWuAxaEq6U=;
+        s=korg; t=1689965587;
+        bh=EW2MzCrcZAK1Y6vIrVu7Q5GCJOjzxO0nqXhehQT22cE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yVHF0J18qxvHGoh5JzAtgbZzANd/Nexhx3KwtXYFSyGj5uaykUWNc+eBnQEkceGvf
-         Uu25qXRPRJbWixq3vx71m+LT6znwalMBuJ1n1OPehZkLwiMziciJkwJZn5fQkMcbi4
-         yE4p2gLOvMRd8j1np9eQo0cG+XvPHGNjqyBiyEI0=
+        b=EL1Uhe/5thBM0k6ll0LG+thp7j+S6AIkvFRxJrWE5MZVhQ/xBVirJl4Mp6MpxYTYa
+         AKvOy+gdlcSKIRI58MxJtiook97Ij+o0E4Rt7kaUDtcR9nViPFfmg3FIIEb7Dj75ak
+         H6pDVqa3tO819J63FFXJ2FSqDJfvZuj34OwpUZvs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/532] md/raid10: check slab-out-of-bounds in md_bitmap_get_counter
-Date:   Fri, 21 Jul 2023 17:58:29 +0200
-Message-ID: <20230721160614.978882631@linuxfoundation.org>
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 006/532] md/raid10: fix overflow of md/safe_mode_delay
+Date:   Fri, 21 Jul 2023 17:58:30 +0200
+Message-ID: <20230721160615.031871146@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -45,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,61 +56,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 301867b1c16805aebbc306aafa6ecdc68b73c7e5 ]
+[ Upstream commit 6beb489b2eed25978523f379a605073f99240c50 ]
 
-If we write a large number to md/bitmap_set_bits, md_bitmap_checkpage()
-will return -EINVAL because 'page >= bitmap->pages', but the return value
-was not checked immediately in md_bitmap_get_counter() in order to set
-*blocks value and slab-out-of-bounds occurs.
+There is no input check when echo md/safe_mode_delay in safe_delay_store().
+And msec might also overflow when HZ < 1000 in safe_delay_show(), Fix it by
+checking overflow in safe_delay_store() and use unsigned long conversion in
+safe_delay_show().
 
-Move check of 'page >= bitmap->pages' to md_bitmap_get_counter() and
-return directly if true.
-
-Fixes: ef4256733506 ("md/bitmap: optimise scanning of empty bitmaps.")
+Fixes: 72e02075a33f ("md: factor out parsing of fixed-point numbers")
 Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230515134808.3936750-2-linan666@huaweicloud.com
+Link: https://lore.kernel.org/r/20230522072535.1523740-2-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/md/md.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 062142559caa3..adada558a1b09 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -54,14 +54,7 @@ __acquires(bitmap->lock)
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index bd0c9dfac9815..9648801e7910a 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -3872,8 +3872,9 @@ int strict_strtoul_scaled(const char *cp, unsigned long *res, int scale)
+ static ssize_t
+ safe_delay_show(struct mddev *mddev, char *page)
  {
- 	unsigned char *mappage;
+-	int msec = (mddev->safemode_delay*1000)/HZ;
+-	return sprintf(page, "%d.%03d\n", msec/1000, msec%1000);
++	unsigned int msec = ((unsigned long)mddev->safemode_delay*1000)/HZ;
++
++	return sprintf(page, "%u.%03u\n", msec/1000, msec%1000);
+ }
+ static ssize_t
+ safe_delay_store(struct mddev *mddev, const char *cbuf, size_t len)
+@@ -3885,7 +3886,7 @@ safe_delay_store(struct mddev *mddev, const char *cbuf, size_t len)
+ 		return -EINVAL;
+ 	}
  
--	if (page >= bitmap->pages) {
--		/* This can happen if bitmap_start_sync goes beyond
--		 * End-of-device while looking for a whole page.
--		 * It is harmless.
--		 */
--		return -EINVAL;
--	}
--
-+	WARN_ON_ONCE(page >= bitmap->pages);
- 	if (bitmap->bp[page].hijacked) /* it's hijacked, don't try to alloc */
- 		return 0;
- 
-@@ -1365,6 +1358,14 @@ __acquires(bitmap->lock)
- 	sector_t csize;
- 	int err;
- 
-+	if (page >= bitmap->pages) {
-+		/*
-+		 * This can happen if bitmap_start_sync goes beyond
-+		 * End-of-device while looking for a whole page or
-+		 * user set a huge number to sysfs bitmap_set_bits.
-+		 */
-+		return NULL;
-+	}
- 	err = md_bitmap_checkpage(bitmap, page, create, 0);
- 
- 	if (bitmap->bp[page].hijacked ||
+-	if (strict_strtoul_scaled(cbuf, &msec, 3) < 0)
++	if (strict_strtoul_scaled(cbuf, &msec, 3) < 0 || msec > UINT_MAX / HZ)
+ 		return -EINVAL;
+ 	if (msec == 0)
+ 		mddev->safemode_delay = 0;
 -- 
 2.39.2
 
