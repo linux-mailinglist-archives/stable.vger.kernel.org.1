@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E40275BE87
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D678375BE89
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:14:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230506AbjGUGOI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:14:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
+        id S231151AbjGUGOO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230512AbjGUGNm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:13:42 -0400
+        with ESMTP id S230201AbjGUGNs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:13:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED044209
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:11:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9AF4217
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:11:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70C46610A6
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:10:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476FBC433C8;
-        Fri, 21 Jul 2023 06:10:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A41A6112C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C61C433C7;
+        Fri, 21 Jul 2023 06:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919847;
-        bh=+8BuHNqZTZR4DqfiE9RvHWWP+QPjzukP4cAB1AZBwIU=;
+        s=korg; t=1689919855;
+        bh=BsFxgS0aDcWpYsKcPHCrGoEL2IeHcMXYZOpjB3GJwwk=;
         h=Subject:To:Cc:From:Date:From;
-        b=XTNqqq8qGRStjrI5R1lxqQqPp6ROy8FyKRDW8X8nogzaBpLEb84YDeP/LDxz4poRR
-         YtNVo6eHv7pEK7dkFXJ+XKXC51hmfZpFD9GLB9aNIeCxWStINVwRBrTWK4BfS2ZIg2
-         By+yLUzda4ttfpd4yjeILldi56COdBN85fcdrpdU=
-Subject: FAILED: patch "[PATCH] PCI/ASPM: Avoid link retraining race" failed to apply to all-stable tree
+        b=YlA8GVuTx9bDX4vij8pMmyo6sN2tBri+8oeS0Sr2BU7YWjFQHRkxGdSZ/BFcvRACQ
+         xpj1IV8+l1XXxaEq6khgAoWtJa/8qIO5YSJdnzX0HYK8lK3yD8Vo0AaMLBVgfnU7nE
+         1zndtgCTSXyg0hkrUU8VQi2LKeMZ1gUqcNt3gUFM=
+Subject: FAILED: patch "[PATCH] PCI/ASPM: Avoid link retraining race" failed to apply to 6.4-stable tree
 To:     ilpo.jarvinen@linux.intel.com, bhelgaas@google.com, lukas@wunner.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:10:45 +0200
-Message-ID: <2023072144-matchbook-obliged-a0e8@gregkh>
+Date:   Fri, 21 Jul 2023 08:10:53 +0200
+Message-ID: <2023072152-pretzel-balsamic-a0af@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the all-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-all.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x e7e39756363ad5bd83ddeae1063193d0f13870fd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072144-matchbook-obliged-a0e8@gregkh' --subject-prefix 'PATCH all.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072152-pretzel-balsamic-a0af@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
