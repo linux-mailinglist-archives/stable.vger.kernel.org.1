@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95EB675D27A
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E6F375D2A2
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:01:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231499AbjGUTAE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:00:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53722 "EHLO
+        id S231549AbjGUTB4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:01:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231508AbjGUTAE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:00:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 875A030E1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:00:02 -0700 (PDT)
+        with ESMTP id S231548AbjGUTB4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:01:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4CD30ED
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:01:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B18E61D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:00:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27DACC433C7;
-        Fri, 21 Jul 2023 19:00:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56EBB61D90
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:01:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698D6C433CA;
+        Fri, 21 Jul 2023 19:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966001;
-        bh=4qeVGfiu3HEHsZINfor1TDsMfxYVrmPF6s0XHR7JebI=;
+        s=korg; t=1689966111;
+        bh=FUFFdcCihAjREY5om8AcQbPVKkGfZjVw9bcZOKkN7Gc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S2pPGrv7m70D9hAx8MIoimNLm3qv+mzZpHREvgnloN4QVQgmGa2+vedmDntjgvUdt
-         /gnyGVhuwqUrSOfVJLVpntd/DoUEG30a88Zw80AWPMruE71QHdjzMKDnBiNJa2Cl5c
-         sB87QZN5RQ3lA49KLYvAt7vXGwetXPZYXc46qelY=
+        b=GuiwjOVBgdnL81Dn5+qmdNlN3j6yr31XBUlouryOvbHkByYUP4zc0f1xjMAjjaP6a
+         I+VJVsnzFIRj5Z8ano9kpgxJxjwr21Y3SQj3efOiXtazn4hU2/7Mghk7hQwg8iJTKx
+         OycPvbanMj+sLj48XZcWtBxBcPSgNlUMN1oz0DDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexey Romanov <avromanov@sberdevices.ru>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
+        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 189/532] drivers: meson: secure-pwrc: always enable DMA domain
-Date:   Fri, 21 Jul 2023 18:01:33 +0200
-Message-ID: <20230721160624.661924793@linuxfoundation.org>
+Subject: [PATCH 5.15 190/532] ovl: update of dentry revalidate flags after copy up
+Date:   Fri, 21 Jul 2023 18:01:34 +0200
+Message-ID: <20230721160624.716341640@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -45,50 +46,171 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey Romanov <avromanov@sberdevices.ru>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 0bb4644d583789c97e74d3e3047189f0c59c4742 ]
+[ Upstream commit b07d5cc93e1b28df47a72c519d09d0a836043613 ]
 
-Starting from commit e45f243409db ("firmware: meson_sm:
-populate platform devices from sm device tree data") pwrc
-is probed successfully and disables unused pwr domains.
-By A1 SoC family design, any TEE requires DMA pwr domain
-always enabled.
+After copy up, we may need to update d_flags if upper dentry is on a
+remote fs and lower dentries are not.
 
-Fixes: b3dde5013e13 ("soc: amlogic: Add support for Secure power domains controller")
-Signed-off-by: Alexey Romanov <avromanov@sberdevices.ru>
-Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230610090414.90529-1-avromanov@sberdevices.ru
-[narmstrong: added fixes tag]
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Add helpers to allow incremental update of the revalidate flags.
+
+Fixes: bccece1ead36 ("ovl: allow remote upper")
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/amlogic/meson-secure-pwrc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/copy_up.c   |  2 ++
+ fs/overlayfs/dir.c       |  3 +--
+ fs/overlayfs/export.c    |  3 +--
+ fs/overlayfs/namei.c     |  3 +--
+ fs/overlayfs/overlayfs.h |  6 ++++--
+ fs/overlayfs/super.c     |  2 +-
+ fs/overlayfs/util.c      | 24 ++++++++++++++++++++----
+ 7 files changed, 30 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/soc/amlogic/meson-secure-pwrc.c b/drivers/soc/amlogic/meson-secure-pwrc.c
-index 2eeea5e1b3b7f..2f3ca5531fa96 100644
---- a/drivers/soc/amlogic/meson-secure-pwrc.c
-+++ b/drivers/soc/amlogic/meson-secure-pwrc.c
-@@ -104,7 +104,7 @@ static struct meson_secure_pwrc_domain_desc a1_pwrc_domains[] = {
- 	SEC_PD(ACODEC,	0),
- 	SEC_PD(AUDIO,	0),
- 	SEC_PD(OTP,	0),
--	SEC_PD(DMA,	0),
-+	SEC_PD(DMA,	GENPD_FLAG_ALWAYS_ON | GENPD_FLAG_IRQ_SAFE),
- 	SEC_PD(SD_EMMC,	0),
- 	SEC_PD(RAMA,	0),
- 	/* SRAMB is used as ATF runtime memory, and should be always on */
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index ef0bf98b620d7..46cc429c44f7e 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -542,6 +542,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
+ 			/* Restore timestamps on parent (best effort) */
+ 			ovl_set_timestamps(upperdir, &c->pstat);
+ 			ovl_dentry_set_upper_alias(c->dentry);
++			ovl_dentry_update_reval(c->dentry, upper);
+ 		}
+ 	}
+ 	inode_unlock(udir);
+@@ -840,6 +841,7 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx *c)
+ 		inode_unlock(udir);
+ 
+ 		ovl_dentry_set_upper_alias(c->dentry);
++		ovl_dentry_update_reval(c->dentry, ovl_dentry_upper(c->dentry));
+ 	}
+ 
+ out:
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index eca984d6484d1..519193ce7d575 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -267,8 +267,7 @@ static int ovl_instantiate(struct dentry *dentry, struct inode *inode,
+ 
+ 	ovl_dir_modified(dentry->d_parent, false);
+ 	ovl_dentry_set_upper_alias(dentry);
+-	ovl_dentry_update_reval(dentry, newdentry,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, newdentry);
+ 
+ 	if (!hardlink) {
+ 		/*
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index 0cc14ce8c7e83..baa50ece0bc53 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -326,8 +326,7 @@ static struct dentry *ovl_obtain_alias(struct super_block *sb,
+ 	if (upper_alias)
+ 		ovl_dentry_set_upper_alias(dentry);
+ 
+-	ovl_dentry_update_reval(dentry, upper,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, upper);
+ 
+ 	return d_instantiate_anon(dentry, inode);
+ 
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index 1a9b515fc45d4..9c055d11a95de 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -1103,8 +1103,7 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
+ 			ovl_set_flag(OVL_UPPERDATA, inode);
+ 	}
+ 
+-	ovl_dentry_update_reval(dentry, upperdentry,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, upperdentry);
+ 
+ 	revert_creds(old_cred);
+ 	if (origin_path) {
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index ae4876da2ced2..a96b67586f817 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -286,8 +286,10 @@ bool ovl_index_all(struct super_block *sb);
+ bool ovl_verify_lower(struct super_block *sb);
+ struct ovl_entry *ovl_alloc_entry(unsigned int numlower);
+ bool ovl_dentry_remote(struct dentry *dentry);
+-void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
+-			     unsigned int mask);
++void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry);
++void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry);
++void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
++			   unsigned int mask);
+ bool ovl_dentry_weird(struct dentry *dentry);
+ enum ovl_path_type ovl_path_type(struct dentry *dentry);
+ void ovl_path_upper(struct dentry *dentry, struct path *path);
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index b3675d13c1ac2..5310271cf2e38 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1965,7 +1965,7 @@ static struct dentry *ovl_get_root(struct super_block *sb,
+ 	ovl_dentry_set_flag(OVL_E_CONNECTED, root);
+ 	ovl_set_upperdata(d_inode(root));
+ 	ovl_inode_init(d_inode(root), &oip, ino, fsid);
+-	ovl_dentry_update_reval(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_flags(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
+ 
+ 	return root;
+ }
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 9d33ce385bef0..d62d5ede60dfd 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -94,14 +94,30 @@ struct ovl_entry *ovl_alloc_entry(unsigned int numlower)
+ 	return oe;
+ }
+ 
++#define OVL_D_REVALIDATE (DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE)
++
+ bool ovl_dentry_remote(struct dentry *dentry)
+ {
+-	return dentry->d_flags &
+-		(DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	return dentry->d_flags & OVL_D_REVALIDATE;
++}
++
++void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry)
++{
++	if (!ovl_dentry_remote(realdentry))
++		return;
++
++	spin_lock(&dentry->d_lock);
++	dentry->d_flags |= realdentry->d_flags & OVL_D_REVALIDATE;
++	spin_unlock(&dentry->d_lock);
++}
++
++void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry)
++{
++	return ovl_dentry_init_flags(dentry, upperdentry, OVL_D_REVALIDATE);
+ }
+ 
+-void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
+-			     unsigned int mask)
++void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
++			   unsigned int mask)
+ {
+ 	struct ovl_entry *oe = OVL_E(dentry);
+ 	unsigned int i, flags = 0;
 -- 
 2.39.2
 
