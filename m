@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A099E75D3B5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 988EA75D490
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231910AbjGUTNo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:13:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36530 "EHLO
+        id S232168AbjGUTWb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231909AbjGUTNn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:13:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89DAA30E4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:13:42 -0700 (PDT)
+        with ESMTP id S232157AbjGUTWb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:22:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F04189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:22:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E78261D02
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB4FC433C8;
-        Fri, 21 Jul 2023 19:13:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28D6C61D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1ADC433C8;
+        Fri, 21 Jul 2023 19:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966821;
+        s=korg; t=1689967349;
         bh=4OOsQUp3bPzcAklVGfXwhL/65/jhre1NfMusWXH1HiE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aB2yX2IcjU4xnLzylXX0ioevN67ewplkhvf4vDpW9k4W1EXWNhICbI1aexSuxNF+u
-         HCB/dj1sWbe8Co9JyKts0n/2ef1QoBkhXCGwNEZBig9PRg6aS5Y8pvWPyLJF01LkE0
-         /hJlMEF9iQ9HDbsv6AnPkbClCHhDJDsvjSPRn36Y=
+        b=yEMhCx+c3IbFXm1VJL2kRKDDZjMdZaC2GFllb+W+wCBP2nZl39F5blzbUkmLt2dRh
+         Yy4yEPAOzyCPvULbb/sRsbUUJ8cT7Vm4AVMGaLVc5D/jt8cA1OB04MPXIcRhE/RlU0
+         8EXdkACIez3XB+axPFV6UJOye3h8EMkS5D5r9FJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
         Rick Wertenbroek <rick.wertenbroek@gmail.com>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.15 480/532] PCI: rockchip: Set address alignment for endpoint mode
+Subject: [PATCH 6.1 131/223] PCI: rockchip: Set address alignment for endpoint mode
 Date:   Fri, 21 Jul 2023 18:06:24 +0200
-Message-ID: <20230721160640.544264046@linuxfoundation.org>
+Message-ID: <20230721160526.461626836@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
