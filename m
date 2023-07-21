@@ -2,153 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B2B575C9FA
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6151675CA16
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:34:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230243AbjGUO0m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:26:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47196 "EHLO
+        id S231305AbjGUOeP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:34:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230393AbjGUO0l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:26:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5514510FC
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:26:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF79061CB8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:26:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32CAC433C7;
-        Fri, 21 Jul 2023 14:26:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689949599;
-        bh=aziOfRLKzs49xgS+NgcM1X6Xr7UGdW5cG0nipoafh5g=;
-        h=Subject:To:Cc:From:Date:From;
-        b=qqaBjcLfWTTg2z2fShub83HcIXJXFw6unD3nuf9Dyx+wjfOEbL4wd3krSWMjZftHB
-         an45h88EYxEiqh5/NSbweUk4kXL3qvyKPqFY6ZI+3/IaRpO3N3nosRelewpY9prpaN
-         LdcDJoBmMawrI0eqQoKbwI0B9xXK718TUPzWpLj0=
-Subject: FAILED: patch "[PATCH] pwm: meson: fix handling of period/duty if greater than" failed to apply to 5.4-stable tree
-To:     hkallweit1@gmail.com, martin.blumenstingl@googlemail.com,
-        thierry.reding@gmail.com, u.kleine-koenig@pengutronix.de
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:26:33 +0200
-Message-ID: <2023072133-plank-glorified-2d3f@gregkh>
+        with ESMTP id S230027AbjGUOeO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:34:14 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A4E4269F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:34:12 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4fb5bcb9a28so3320548e87.3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689950051; x=1690554851;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qfahRnOSaxHuC4uuvPzhv2/ZD/mZunNuT4Wpt04q0ng=;
+        b=D1Sb0BY7G+QlXTWN+dHrYmhw908FHAHphJFVcF7uqJ7TPhIx5YoLTZq3mY8XYKtxA5
+         dT3hdjqiKANt9FW7SoL/reI2e9DeBIlEpJH0Ma4j875eDEQcEb7+aYMjizQnfZJ/Pttm
+         36ydR4JQEDAqfDma+13groZ0i3Ol31a9pNajWszIxENWw34d92jPzTF2G6fzAkBqivOe
+         CwIsvy/51jLgzC/j7y69CXtGAYxL9l4nRlb3C7dSwI/ChDqkMf3RQVJObz48HnF5UizZ
+         2RSL48jOQ5V0hRWvx1KXwnm0kklgewfPfVcfyLHUBB1S2cPuLcKaDOdHQQ27aiLuGmcJ
+         pXPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689950051; x=1690554851;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qfahRnOSaxHuC4uuvPzhv2/ZD/mZunNuT4Wpt04q0ng=;
+        b=l1pKHvHXUzHuKvksWnHtTSsDoW3J5xKyT4LRbWEMiEeXQ2jxI6gTyfOOIN++0aigai
+         HlPKJ3JjnSXTmm3x4Fx5Mt7N+o6qfWPnkT/BaiilOkR026w4gTMzkUfm4dJBcGX4sszA
+         7I3b05jnrM7neS4wh+wD/JjDhxZv2hyCASWsVhJYOODfRBGjuIzQuMedf2mnGRnDxDi7
+         Ix1gY4AWPXwlZLXN4eQPdgOqfpI+DOBZS9JEVr/VWkizKa21zSWDXLlG6NCL3zH2B67G
+         fiTIwRyqzT8b5tJUNlE4cS4A+QKkeG6Gpuk8mE71VZ0foHa3xc2lItoUD7nwNTKGr2KD
+         sj8w==
+X-Gm-Message-State: ABy/qLZIuE65udULqZRxIn9uaBhFKVUA03n9WM5Q9BvvZ66+DwyNMGz4
+        ttm62+dqD4Fodkmv2qrJq8A=
+X-Google-Smtp-Source: APBJJlG7LP9ACc/SAWHBmoWPVcMSrhISL3pncD4/jZaapF9bM8liKL9VWhGeeBVJNVLXb3tW/fya4A==
+X-Received: by 2002:a05:6512:3e11:b0:4fb:8939:d95c with SMTP id i17-20020a0565123e1100b004fb8939d95cmr1796603lfv.30.1689950050438;
+        Fri, 21 Jul 2023 07:34:10 -0700 (PDT)
+Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
+        by smtp.gmail.com with ESMTPSA id z1-20020a056512376100b004eb12329053sm757763lft.256.2023.07.21.07.34.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jul 2023 07:34:09 -0700 (PDT)
+Message-ID: <f551563c93f3a1c80d0182ac9b2e9873db9eaad4.camel@gmail.com>
+Subject: Re: [5.10, 5.15] New bpf kselftest failure
+From:   Eduard Zingerman <eddyz87@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Luiz Capitulino <luizcap@amazon.com>
+Cc:     "sashal@kernel.org" <sashal@kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>, ast@kernel.org,
+        gilad.reti@gmail.com, Mykola Lysenko <mykolal@fb.com>,
+        andrii <andrii@kernel.org>
+Date:   Fri, 21 Jul 2023 17:34:08 +0300
+In-Reply-To: <2023072139-shriek-ranging-bd9e@gregkh>
+References: <935c4751-d368-df29-33a6-9f4fcae720fa@amazon.com>
+         <76dfe02eea69141b662a3a399126dba9e00e5abe.camel@gmail.com>
+         <9c7fc5ab-1c06-8452-2747-aa89e7a1dfb6@amazon.com>
+         <c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com>
+         <bc521a2f24c416a658ab50685fbf647d4e069c8c.camel@gmail.com>
+         <2023071846-manlike-drool-d4e2@gregkh>
+         <595804fa4937179d83e2317e406f7175ca8c3ec9.camel@gmail.com>
+         <96204082-4cb8-038c-ac83-6b1a9f367f3b@amazon.com>
+         <2023072139-shriek-ranging-bd9e@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, 2023-07-21 at 07:30 +0200, Greg KH wrote:
+[...]
+>=20
+> backporting the mentioned patches is best, can someone send them to us
+> in email so that we can apply them?
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I'm investigating 5.15 test failures at the moment.
+Will send patches for linux-6.1.y by the end of the day.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 87a2cbf02d7701255f9fcca7e5bd864a7bb397cf
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072133-plank-glorified-2d3f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-87a2cbf02d77 ("pwm: meson: fix handling of period/duty if greater than UINT_MAX")
-5f97f18feac9 ("pwm: meson: Simplify duplicated per-channel tracking")
-437fb760d046 ("pwm: meson: Remove redundant assignment to variable fin_freq")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 87a2cbf02d7701255f9fcca7e5bd864a7bb397cf Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Date: Wed, 24 May 2023 21:48:36 +0200
-Subject: [PATCH] pwm: meson: fix handling of period/duty if greater than
- UINT_MAX
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-state->period/duty are of type u64, and if their value is greater than
-UINT_MAX, then the cast to uint will cause problems. Fix this by
-changing the type of the respective local variables to u64.
-
-Fixes: b79c3670e120 ("pwm: meson: Don't duplicate the polarity internally")
-Cc: stable@vger.kernel.org
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-
-diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
-index 3865538dd2d6..33107204a951 100644
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -156,8 +156,9 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
- 			  const struct pwm_state *state)
- {
- 	struct meson_pwm_channel *channel = &meson->channels[pwm->hwpwm];
--	unsigned int duty, period, pre_div, cnt, duty_cnt;
-+	unsigned int pre_div, cnt, duty_cnt;
- 	unsigned long fin_freq;
-+	u64 duty, period;
- 
- 	duty = state->duty_cycle;
- 	period = state->period;
-@@ -179,19 +180,19 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
- 
- 	dev_dbg(meson->chip.dev, "fin_freq: %lu Hz\n", fin_freq);
- 
--	pre_div = div64_u64(fin_freq * (u64)period, NSEC_PER_SEC * 0xffffLL);
-+	pre_div = div64_u64(fin_freq * period, NSEC_PER_SEC * 0xffffLL);
- 	if (pre_div > MISC_CLK_DIV_MASK) {
- 		dev_err(meson->chip.dev, "unable to get period pre_div\n");
- 		return -EINVAL;
- 	}
- 
--	cnt = div64_u64(fin_freq * (u64)period, NSEC_PER_SEC * (pre_div + 1));
-+	cnt = div64_u64(fin_freq * period, NSEC_PER_SEC * (pre_div + 1));
- 	if (cnt > 0xffff) {
- 		dev_err(meson->chip.dev, "unable to get period cnt\n");
- 		return -EINVAL;
- 	}
- 
--	dev_dbg(meson->chip.dev, "period=%u pre_div=%u cnt=%u\n", period,
-+	dev_dbg(meson->chip.dev, "period=%llu pre_div=%u cnt=%u\n", period,
- 		pre_div, cnt);
- 
- 	if (duty == period) {
-@@ -204,14 +205,13 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
- 		channel->lo = cnt;
- 	} else {
- 		/* Then check is we can have the duty with the same pre_div */
--		duty_cnt = div64_u64(fin_freq * (u64)duty,
--				     NSEC_PER_SEC * (pre_div + 1));
-+		duty_cnt = div64_u64(fin_freq * duty, NSEC_PER_SEC * (pre_div + 1));
- 		if (duty_cnt > 0xffff) {
- 			dev_err(meson->chip.dev, "unable to get duty cycle\n");
- 			return -EINVAL;
- 		}
- 
--		dev_dbg(meson->chip.dev, "duty=%u pre_div=%u duty_cnt=%u\n",
-+		dev_dbg(meson->chip.dev, "duty=%llu pre_div=%u duty_cnt=%u\n",
- 			duty, pre_div, duty_cnt);
- 
- 		channel->pre_div = pre_div;
-
+Thanks,
+Eduard
