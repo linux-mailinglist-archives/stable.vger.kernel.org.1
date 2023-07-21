@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5B6D75D261
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7243275D242
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:57:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231475AbjGUS7A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
+        id S231268AbjGUS55 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:57:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231461AbjGUS7A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:59:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F6730E7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:58:56 -0700 (PDT)
+        with ESMTP id S231415AbjGUS54 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:57:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F503A96
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:57:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7927161D82
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:58:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA05C433C7;
-        Fri, 21 Jul 2023 18:58:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85CA261D8F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:57:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919F5C433C7;
+        Fri, 21 Jul 2023 18:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965935;
-        bh=O4mZPwiSeatEmG+fnIeo4SKqNoNH1/GXruhu+Rd5/DQ=;
+        s=korg; t=1689965856;
+        bh=vyNGbMg9qCwTb3T2v/kXkqodhozj29sCOnIDiuv0FJo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZMu4l+zY2UfYthSOtnOvc+x9cRej3W7YB1yxTR1wQjxZdkNdb/oIrSx5wzUPBPg2C
-         6sINyE1O8DpajJPm67/YWjf2UGDKkHnPf2HzrgYvtJInEm4q+2JyPyaUxLRxhYPxUB
-         6gRZ6jqheBCh7oovZPDVyFmmVqqo5bX+jQ+UfrAU=
+        b=W0temeTUFyeHLe+f7RvxHryIcpVyJ6sZCPw7PtFfS/dK3e6bPOnMH9J1qgDed1Iee
+         VIFbaMkkNtCUYbqYovQfPEFZs0330rrVz8ESt29Ode/vnY0rDayp1qifiaWx9jT36l
+         MHyFLcrkQvF7jSB6qzsZoJT88MdVF8OkwS489F9o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/532] arm64: dts: qcom: apq8016-sbc: Fix 1.8V power rail on LS expansion
-Date:   Fri, 21 Jul 2023 18:00:42 +0200
-Message-ID: <20230721160621.946024551@linuxfoundation.org>
+Subject: [PATCH 5.15 139/532] drm/panel: simple: fix active size for Ampire AM-480272H3TMQW-T01H
+Date:   Fri, 21 Jul 2023 18:00:43 +0200
+Message-ID: <20230721160621.999575049@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -47,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,79 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 5500f823db38db073d30557af159b77fb1f2bf26 ]
+[ Upstream commit f24b49550814fdee4a98b9552e35e243ccafd4a8 ]
 
-The 96Boards specification expects a 1.8V power rail on the low-speed
-expansion connector that is able to provide at least 0.18W / 100 mA.
-According to the DB410c hardware user manual this is done by connecting
-both L15 and L16 in parallel with up to 55mA each (for 110 mA total) [1].
+The previous setting was related to the overall dimension and not to the
+active display area.
+In the "PHYSICAL SPECIFICATIONS" section, the datasheet shows the
+following parameters:
 
-Unfortunately the current regulator setup in the DB410c device tree
-does not implement the specification correctly and only provides 5 mA:
+ ----------------------------------------------------------
+|       Item        |         Specifications        | unit |
+ ----------------------------------------------------------
+| Display area      | 98.7 (W) x 57.5 (H)           |  mm  |
+ ----------------------------------------------------------
+| Overall dimension | 105.5(W) x 67.2(H) x 4.96(D)  |  mm  |
+ ----------------------------------------------------------
 
-  - Only L15 is marked always-on, so L16 is never enabled.
-  - Without specifying a load the regulator is put into LPM where
-    it can only provide 5 mA.
-
-Fix this by:
-
-  - Adding proper voltage constraints for L16.
-  - Making L16 always-on.
-  - Adding regulator-system-load for both L15 and L16. 100 mA should be
-    available in total, so specify 50 mA for each. (The regulator
-    hardware can only be in normal (55 mA) or low-power mode (5 mA) so
-    this will actually result in the expected 110 mA total...)
-
-[1]: https://www.96boards.org/documentation/consumer/dragonboard/dragonboard410c/hardware-docs/hardware-user-manual.md.html#power-supplies
-
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Fixes: 828dd5d66f0f ("arm64: dts: apq8016-sbc: make 1.8v available on LS expansion")
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230510-msm8916-regulators-v1-2-54d4960a05fc@gerhold.net
+Fixes: 966fea78adf2 ("drm/panel: simple: Add support for Ampire AM-480272H3TMQW-T01H")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+[narmstrong: fixed Fixes commit id length]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230516085039.3797303-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index 528138af24f09..c6e8bf18defc6 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -519,19 +519,27 @@ l14 {
- 		regulator-max-microvolt = <3300000>;
- 	};
- 
--	/**
--	 * 1.8v required on LS expansion
--	 * for mezzanine boards
-+	/*
-+	 * The 96Boards specification expects a 1.8V power rail on the low-speed
-+	 * expansion connector that is able to provide at least 0.18W / 100 mA.
-+	 * L15/L16 are connected in parallel to provide 55 mA each. A minimum load
-+	 * must be specified to ensure the regulators are not put in LPM where they
-+	 * would only provide 5 mA.
- 	 */
- 	l15 {
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
-+		regulator-system-load = <50000>;
-+		regulator-allow-set-load;
- 		regulator-always-on;
- 	};
- 
- 	l16 {
- 		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <3300000>;
-+		regulator-max-microvolt = <1800000>;
-+		regulator-system-load = <50000>;
-+		regulator-allow-set-load;
-+		regulator-always-on;
- 	};
- 
- 	l17 {
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index fb785f5a106ac..2f85266cdb2e3 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -890,8 +890,8 @@ static const struct panel_desc ampire_am_480272h3tmqw_t01h = {
+ 	.num_modes = 1,
+ 	.bpc = 8,
+ 	.size = {
+-		.width = 105,
+-		.height = 67,
++		.width = 99,
++		.height = 58,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ };
 -- 
 2.39.2
 
