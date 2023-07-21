@@ -2,176 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0278375CC54
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 17:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 597C875CCFE
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232204AbjGUPq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 11:46:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
+        id S232356AbjGUQCj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:02:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjGUPq0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 11:46:26 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCA719A1;
-        Fri, 21 Jul 2023 08:46:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=caZK6tlKMYDjoChjRf3/YaaMhrXB3cGT2x0pWytJ9sA=; b=o9FFDc2yKHFeISWdWqyCokcLZ2
-        bCCUlg0EsXpHj1uDWCUvVKG9caQqncWHkwq83P8u+Yb/pieL8aWi7cEPOB/9GOIXPgFMc3vnR2zIb
-        CgNXI06O8QAH1LiS7BEKxx4MGT5vruKUXuVEl76olNxD01fiKGfaJohZNRYIxfzWNzWQ=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:54554 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1qMsKb-0002l2-OU; Fri, 21 Jul 2023 11:46:15 -0400
-Date:   Fri, 21 Jul 2023 11:46:12 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org
-Message-Id: <20230721114612.e1b4fa2398f2915aef08c0b1@hugovil.com>
-In-Reply-To: <2023072152-traffic-skype-8765@gregkh>
-References: <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
-        <20230620113312.882d8f0c7d5603b1c93f33fb@hugovil.com>
-        <CAHp75VfGm6=ULW6kMjsg2OgB1z1T0YdmzvCTa3DFXXX-q_RnfA@mail.gmail.com>
-        <20230620114209.fb5272ad8cf5c5e2895d68b1@hugovil.com>
-        <CAHp75VcieuYqxWrO7rknx2ROYz=rnWnKV6s9eXZ5Zd1BKc6YMg@mail.gmail.com>
-        <20230620121645.512b31a872306b43a276bbac@hugovil.com>
-        <20230719144048.4f340b8aa0a29ab65a274273@hugovil.com>
-        <2023071922-rigor-collage-804e@gregkh>
-        <2023072040-clock-waltz-a5f2@gregkh>
-        <20230721112517.38ab9a40cdf6a0eddf074615@hugovil.com>
-        <2023072152-traffic-skype-8765@gregkh>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S232434AbjGUQCX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:02:23 -0400
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2323A90;
+        Fri, 21 Jul 2023 09:02:16 -0700 (PDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1b8a462e0b0so13399065ad.3;
+        Fri, 21 Jul 2023 09:02:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689955336; x=1690560136;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zyAlTrXUN+hI+1p5Q65ZUZ9TvfaGx2yL/aNs/62Y+S8=;
+        b=VsyDJtBVVf8M6+oKkRXevXwgk0DSTTowOpz7Nd1HQ8qy+GgGSRqNdcfugOdNeNgMnt
+         fFir+txJB7nFcp6ZXv+1t9Z6imbuOtxM6OlnkgplIBmpw1FlraDeYOfWyn7Yw9XPyBbK
+         m7QVjF3eNOexmYMN3umSU/upGhyMbmL21y1C+k1XW+VOarrfoqsvWwtkGcMZU6xAH/Id
+         AuadLp91YZoZDY3TYO37mJFSLVGDBSsu5xGER+IrOW2ziEP7JJXo8oXL+gOB6hMZ+vji
+         ZEUPpZqacv6+zlzKZ6Dw3FaM3krspcqSwXJRiJLTxMvkBmcUQ1cjiru/N3kxT1EN5bA1
+         FBBg==
+X-Gm-Message-State: ABy/qLa2jXYlI8UXoAHfi+tBROu9cLeQkTZ4l1oJshvTDd6meH6amUYS
+        kYyW1IzQEF89H4KtlEnTyRI=
+X-Google-Smtp-Source: APBJJlHODPzNU/VamsP21G56Ht8TKok12UYA9F2N0pHodabwqW+/xlg4SiSl6pqamACm87q8TlqRzw==
+X-Received: by 2002:a17:902:ce84:b0:1b8:6b17:9093 with SMTP id f4-20020a170902ce8400b001b86b179093mr2002048plg.1.1689955336125;
+        Fri, 21 Jul 2023 09:02:16 -0700 (PDT)
+Received: from bvanassche-linux.mtv.corp.google.com ([2620:15c:211:201:5043:9124:70cb:43f9])
+        by smtp.gmail.com with ESMTPSA id s24-20020a170902a51800b001b890b3bbb1sm3652298plq.211.2023.07.21.09.02.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jul 2023 09:02:15 -0700 (PDT)
+From:   Bart Van Assche <bvanassche@acm.org>
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc:     linux-scsi@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Douglas Gilbert <dgilbert@interlog.com>,
+        stable@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        John Garry <john.g.garry@oracle.com>,
+        Benjamin Block <bblock@linux.ibm.com>
+Subject: [PATCH 1/3] scsi: core: Fix the scsi_set_resid() documentation
+Date:   Fri, 21 Jul 2023 09:01:32 -0700
+Message-ID: <20230721160154.874010-2-bvanassche@acm.org>
+X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
+In-Reply-To: <20230721160154.874010-1-bvanassche@acm.org>
+References: <20230721160154.874010-1-bvanassche@acm.org>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
- configuration
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 21 Jul 2023 17:40:18 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+Because scsi_finish_command() subtracts the residual from the buffer
+length, residual overflows must not be reported. Reflect this in the
+SCSI documentation. See also commit 9237f04e12cc ("scsi: core: Fix
+scsi_get/set_resid() interface")
 
-> On Fri, Jul 21, 2023 at 11:25:17AM -0400, Hugo Villeneuve wrote:
-> > On Thu, 20 Jul 2023 21:38:21 +0200
-> > Greg KH <gregkh@linuxfoundation.org> wrote:
-> > 
-> > > On Wed, Jul 19, 2023 at 09:14:23PM +0200, Greg KH wrote:
-> > > > On Wed, Jul 19, 2023 at 02:40:48PM -0400, Hugo Villeneuve wrote:
-> > > > > On Tue, 20 Jun 2023 12:16:45 -0400
-> > > > > Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > > 
-> > > > > > On Tue, 20 Jun 2023 18:45:51 +0300
-> > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > > 
-> > > > > > > On Tue, Jun 20, 2023 at 6:42 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > > > > > On Tue, 20 Jun 2023 18:35:48 +0300
-> > > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > > > > > On Tue, Jun 20, 2023 at 6:33 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > > > > > > > On Tue, 20 Jun 2023 18:18:12 +0300
-> > > > > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > > > > > > > On Tue, Jun 20, 2023 at 5:08 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > > > > > > > > > On Sun, 4 Jun 2023 22:31:04 +0300
-> > > > > > > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > > > 
-> > > > > > > ...
-> > > > > > > 
-> > > > > > > > > > > > did you have a chance to look at V8 (sent two weks ago) which fixed all
-> > > > > > > > > > > > of what we discussed?
-> > > > > > > > > > >
-> > > > > > > > > > > The patch 6 already has my tag, anything specific you want me to do?
-> > > > > > > > > >
-> > > > > > > > > > Hi Andy,
-> > > > > > > > > > I forgot to remove your "Reviewed-by: Andy..." tag before sending V8
-> > > > > > > > > > since there were some changes involved in patch 6 and I wanted you to
-> > > > > > > > > > review them. Can you confirm if the changes are correct?
-> > > > > > > > > >
-> > > > > > > > > > I also added a new patch "remove obsolete out_thread label". It has no
-> > > > > > > > > > real impact on the code generation itself, but maybe you can review and
-> > > > > > > > > > confirm if tags are ok or not, based on commit message and also
-> > > > > > > > > > additional commit message.
-> > > > > > > > >
-> > > > > > > > > Both are fine to me.
-> > > > > > > >
-> > > > > > > > Hi,
-> > > > > > > > Ok, thank you for reviewing this.
-> > > > > > > >
-> > > > > > > > I guess now we are good to go with this series if the stable tags and
-> > > > > > > > patches order are good after Greg's review?
-> > > > > > > 
-> > > > > > > Taking into account that we are at rc7, and even with Fixes tags in
-> > > > > > > your series I think Greg might take this after v6.5-0rc1 is out. It's
-> > > > > > > up to him how to proceed with that. Note, he usually has thousands of
-> > > > > > > patches in backlog, you might need to respin it after the above
-> > > > > > > mentioned rc1.
-> > > > > > 
-> > > > > > Ok, understood.
-> > > > > > 
-> > > > > > Let's wait then.
-> > > > > 
-> > > > > Hi Andy/Greg,
-> > > > > we are now at v6.5-rc2 and I still do not see any of our patches in
-> > > > > linus or gregkh_tty repos.
-> > > > > 
-> > > > > Is there something missing from my part (or someone else) to go forward
-> > > > > with integrating these patches (v8) for v6.5?
-> > > > 
-> > > > My queue is huge right now, please be patient, I want to have them all
-> > > > handled by the end of next week...
-> > > > 
-> > > > You can always help out by reviewing other patches on the mailing list
-> > > > to reduce my review load.
-> > > 
-> > > Wait, no, this series was superseeded by v8, and in there you said you
-> > > were going to send a new series.  So please, fix it up and send the
-> > > updated version of the series, this one isn't going to be applied for
-> > > obvious reasons.
-> > 
-> > Hi Greg,
-> > I never said that I would resend another update for this current
-> > serie (unless of course if it was to address a new comment). Re-reading
-> > that email made me realise that it was maybe not perfectly clear the
-> > way I wrote it.
-> > 
-> > What I said was that, once V8 was finally applied and
-> > incorporated in the kernel, then I would send a completely new and
-> > different serie to address issues/concerns/improvements/suggestions
-> > noted during the review of this serie (example: conversion of bindings
-> > to YAML and improve DTS node names, etc). We already agreed with some
-> > maintainers (ex: Conor Dooley) that it was reasonnable to do so.
-> > 
-> > That is why I asked Andy if we were good to go with V8 and he
-> > confirmed that, and that it was now up to you to integrate it if your
-> > review was satisfactory.
-> > 
-> > Hope this clears things and we can integrate it soon.
-> 
-> I don't have any of your series in my review queue at all, so please
-> resend them.
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Douglas Gilbert <dgilbert@interlog.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ Documentation/scsi/scsi_mid_low_api.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-OK, I will resend V8 then.
-
-Hugo.
+diff --git a/Documentation/scsi/scsi_mid_low_api.rst b/Documentation/scsi/scsi_mid_low_api.rst
+index 6fa3a6279501..022198c51350 100644
+--- a/Documentation/scsi/scsi_mid_low_api.rst
++++ b/Documentation/scsi/scsi_mid_low_api.rst
+@@ -1190,11 +1190,11 @@ Members of interest:
+ 		 - pointer to scsi_device object that this command is
+                    associated with.
+     resid
+-		 - an LLD should set this signed integer to the requested
++		 - an LLD should set this unsigned integer to the requested
+                    transfer length (i.e. 'request_bufflen') less the number
+                    of bytes that are actually transferred. 'resid' is
+                    preset to 0 so an LLD can ignore it if it cannot detect
+-                   underruns (overruns should be rare). If possible an LLD
++                   underruns (overruns should not be reported). An LLD
+                    should set 'resid' prior to invoking 'done'. The most
+                    interesting case is data transfers from a SCSI target
+                    device (e.g. READs) that underrun.
