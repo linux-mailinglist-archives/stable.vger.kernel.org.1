@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34BAF75D4C7
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD4275D3F0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232238AbjGUTYy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45918 "EHLO
+        id S231963AbjGUTQH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232239AbjGUTYw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:52 -0400
+        with ESMTP id S231965AbjGUTQG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F4C30E1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9965130E1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 511E061D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63173C433C8;
-        Fri, 21 Jul 2023 19:24:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3829961D7B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4848EC433C8;
+        Fri, 21 Jul 2023 19:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967486;
-        bh=ETcLymgxzLQXn26PND6ImJaxZ2zQ1tSbxzdIkZ0y2iA=;
+        s=korg; t=1689966963;
+        bh=w6iWPnh/1Xbuu1/r8j3Ks4DZgcoMTO+xXfF5PLtY0p4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oIjtn9DInvHXp5Pw2xmBwNh9/UjZXacNfXceVRosV1hHSW4sSvDBgOXxzfLNbnElv
-         9xUcbsZ9hpDchiG3s8P5qXv2ob18SI3526NNTqpRc6kImMUZrhjTq/O65W4uRI8Nf2
-         b7wRk6IO9UvDbxgsVs5jVgqHad/+gylnupRoOaVw=
+        b=Sqfuo2Jn4OoM5/QfD4P/97vvpCs4sCOYnCXiakZD5fgdMdDzkdOUy0dJkHCR9iRM2
+         VRKaodMn+xfqFwaEj1J9mX8h37CzjNz+cEvEF9IbBLG2A7sI2Gcq/6ch68+MNYlFA8
+         oICzPH8OQkygFnL9MSYkERWzp+GyP711/TIA/Z98=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Lin <eric.lin@sifive.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 180/223] perf: RISC-V: Remove PERF_HES_STOPPED flag checking in riscv_pmu_start()
+        patches@lists.linux.dev, Shreyas Deodhar <sdeodhar@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 529/532] scsi: qla2xxx: Pointer may be dereferenced
 Date:   Fri, 21 Jul 2023 18:07:13 +0200
-Message-ID: <20230721160528.554309652@linuxfoundation.org>
+Message-ID: <20230721160643.320930652@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,90 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Lin <eric.lin@sifive.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 66843b14fb71825fdd73ab12f6594f2243b402be upstream.
+commit 00eca15319d9ce8c31cdf22f32a3467775423df4 upstream.
 
-Since commit 096b52fd2bb4 ("perf: RISC-V: throttle perf events") the
-perf_sample_event_took() function was added to report time spent in
-overflow interrupts. If the interrupt takes too long, the perf framework
-will lower the sysctl_perf_event_sample_rate and max_samples_per_tick.
-When hwc->interrupts is larger than max_samples_per_tick, the
-hwc->interrupts will be set to MAX_INTERRUPTS, and events will be
-throttled within the __perf_event_account_interrupt() function.
+Klocwork tool reported pointer 'rport' returned from call to function
+fc_bsg_to_rport() may be NULL and will be dereferenced.
 
-However, the RISC-V PMU driver doesn't call riscv_pmu_stop() to update the
-PERF_HES_STOPPED flag after perf_event_overflow() in pmu_sbi_ovf_handler()
-function to avoid throttling. When the perf framework unthrottled the event
-in the timer interrupt handler, it triggers riscv_pmu_start() function
-and causes a WARN_ON_ONCE() warning, as shown below:
+Add a fix to validate rport before dereferencing.
 
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 240 at drivers/perf/riscv_pmu.c:184 riscv_pmu_start+0x7c/0x8e
- Modules linked in:
- CPU: 0 PID: 240 Comm: ls Not tainted 6.4-rc4-g19d0788e9ef2 #1
- Hardware name: SiFive (DT)
- epc : riscv_pmu_start+0x7c/0x8e
-  ra : riscv_pmu_start+0x28/0x8e
- epc : ffffffff80aef864 ra : ffffffff80aef810 sp : ffff8f80004db6f0
-  gp : ffffffff81c83750 tp : ffffaf80069f9bc0 t0 : ffff8f80004db6c0
-  t1 : 0000000000000000 t2 : 000000000000001f s0 : ffff8f80004db720
-  s1 : ffffaf8008ca1068 a0 : 0000ffffffffffff a1 : 0000000000000000
-  a2 : 0000000000000001 a3 : 0000000000000870 a4 : 0000000000000000
-  a5 : 0000000000000000 a6 : 0000000000000840 a7 : 0000000000000030
-  s2 : 0000000000000000 s3 : ffffaf8005165800 s4 : ffffaf800424da00
-  s5 : ffffffffffffffff s6 : ffffffff81cc7590 s7 : 0000000000000000
-  s8 : 0000000000000006 s9 : 0000000000000001 s10: ffffaf807efbc340
-  s11: ffffaf807efbbf00 t3 : ffffaf8006a16028 t4 : 00000000dbfbb796
-  t5 : 0000000700000000 t6 : ffffaf8005269870
- status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
- [<ffffffff80aef864>] riscv_pmu_start+0x7c/0x8e
- [<ffffffff80185b56>] perf_adjust_freq_unthr_context+0x15e/0x174
- [<ffffffff80188642>] perf_event_task_tick+0x88/0x9c
- [<ffffffff800626a8>] scheduler_tick+0xfe/0x27c
- [<ffffffff800b5640>] update_process_times+0x9a/0xba
- [<ffffffff800c5bd4>] tick_sched_handle+0x32/0x66
- [<ffffffff800c5e0c>] tick_sched_timer+0x64/0xb0
- [<ffffffff800b5e50>] __hrtimer_run_queues+0x156/0x2f4
- [<ffffffff800b6bdc>] hrtimer_interrupt+0xe2/0x1fe
- [<ffffffff80acc9e8>] riscv_timer_interrupt+0x38/0x42
- [<ffffffff80090a16>] handle_percpu_devid_irq+0x90/0x1d2
- [<ffffffff8008a9f4>] generic_handle_domain_irq+0x28/0x36
-
-After referring other PMU drivers like Arm, Loongarch, Csky, and Mips,
-they don't call *_pmu_stop() to update with PERF_HES_STOPPED flag
-after perf_event_overflow() function nor do they add PERF_HES_STOPPED
-flag checking in *_pmu_start() which don't cause this warning.
-
-Thus, it's recommended to remove this unnecessary check in
-riscv_pmu_start() function to prevent this warning.
-
-Signed-off-by: Eric Lin <eric.lin@sifive.com>
-Link: https://lore.kernel.org/r/20230710154328.19574-1-eric.lin@sifive.com
-Fixes: 096b52fd2bb4 ("perf: RISC-V: throttle perf events")
 Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230607113843.37185-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/riscv_pmu.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_bsg.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
-index ebca5eab9c9b..56897d4d4fd3 100644
---- a/drivers/perf/riscv_pmu.c
-+++ b/drivers/perf/riscv_pmu.c
-@@ -181,9 +181,6 @@ void riscv_pmu_start(struct perf_event *event, int flags)
- 	uint64_t max_period = riscv_pmu_ctr_get_width_mask(event);
- 	u64 init_val;
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -2903,6 +2903,8 @@ qla24xx_bsg_request(struct bsg_job *bsg_
  
--	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
--		return;
--
- 	if (flags & PERF_EF_RELOAD)
- 		WARN_ON_ONCE(!(event->hw.state & PERF_HES_UPTODATE));
- 
--- 
-2.41.0
-
+ 	if (bsg_request->msgcode == FC_BSG_RPT_ELS) {
+ 		rport = fc_bsg_to_rport(bsg_job);
++		if (!rport)
++			return ret;
+ 		host = rport_to_shost(rport);
+ 		vha = shost_priv(host);
+ 	} else {
 
 
