@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E8475CD87
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8725975CD99
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231974AbjGUQMe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:12:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39368 "EHLO
+        id S232471AbjGUQNQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:13:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232045AbjGUQMO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:12:14 -0400
+        with ESMTP id S232563AbjGUQMz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:12:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074E5359D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:11:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 090F33AB6
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:12:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA79061CF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:11:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA4AC433C8;
-        Fri, 21 Jul 2023 16:11:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9B4E61D25
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:11:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB96C433C8;
+        Fri, 21 Jul 2023 16:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689955909;
-        bh=K5Q8LuXtV60lEE3DQknT0iAKwqbcXNrVjqM7CKWwELI=;
+        s=korg; t=1689955912;
+        bh=Whbn013/NEUil63IwgdOcjQqM2wI5A1WO5rWNCKC340=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OR8xdqOjK2+pzOlSvpd6HYK6r9uJINdV2oqKZSe59ybhr9Nuj72bjUuR+A/SiOMbh
-         XPv7vOdzwNktsLsl8zLxxgxIxiAUCmV5ZRdbyvx4bYjy9YiniZCxGC//7V4HbflIr/
-         +vLTVVMR0DzHvMnLLuaaXFdTqMV8D1WFyVjB/SEI=
+        b=2InlRfHsk43Drq3gKQukt5tWbBywtkHM7pr6hsunUaQlkR0s6zfPjv31OWvv7F9il
+         KEmUsMb0P+35s6xRC5f434h4O9gIinSUL8d0iYHUGJa8/e+kxdOc8MADXCiFjYAs4i
+         TVmky9AIe9/x6X++DlJpdkLG1PlDTsenZlXDKggc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, M A Ramdhan <ramdhan@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
+        patches@lists.linux.dev, Junfeng Guo <junfeng.guo@intel.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 045/292] net/sched: cls_fw: Fix improper refcount update leads to use-after-free
-Date:   Fri, 21 Jul 2023 18:02:34 +0200
-Message-ID: <20230721160530.738697516@linuxfoundation.org>
+Subject: [PATCH 6.4 046/292] gve: Set default duplex configuration to full
+Date:   Fri, 21 Jul 2023 18:02:35 +0200
+Message-ID: <20230721160530.780641412@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -57,57 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: M A Ramdhan <ramdhan@starlabs.sg>
+From: Junfeng Guo <junfeng.guo@intel.com>
 
-[ Upstream commit 0323bce598eea038714f941ce2b22541c46d488f ]
+[ Upstream commit 0503efeadbf6bb8bf24397613a73b67e665eac5f ]
 
-In the event of a failure in tcf_change_indev(), fw_set_parms() will
-immediately return an error after incrementing or decrementing
-reference counter in tcf_bind_filter().  If attacker can control
-reference counter to zero and make reference freed, leading to
-use after free.
+Current duplex mode was unset in the driver, resulting in the default
+parameter being set to 0, which corresponds to half duplex. It might
+mislead users to have incorrect expectation about the driver's
+transmission capabilities.
+Set the default duplex configuration to full, as the driver runs in
+full duplex mode at this point.
 
-In order to prevent this, move the point of possible failure above the
-point where the TC_FW_CLASSID is handled.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
-Signed-off-by: M A Ramdhan <ramdhan@starlabs.sg>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Message-ID: <20230705161530.52003-1-ramdhan@starlabs.sg>
+Fixes: 7e074d5a76ca ("gve: Enable Link Speed Reporting in the driver.")
+Signed-off-by: Junfeng Guo <junfeng.guo@intel.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Message-ID: <20230706044128.2726747-1-junfeng.guo@intel.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_fw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/google/gve/gve_ethtool.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index ae9439a6c56c9..8641f80593179 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -212,11 +212,6 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
- 	if (err < 0)
- 		return err;
+diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
+index cfd4b8d284d12..50162ec9424df 100644
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -590,6 +590,9 @@ static int gve_get_link_ksettings(struct net_device *netdev,
+ 		err = gve_adminq_report_link_speed(priv);
  
--	if (tb[TCA_FW_CLASSID]) {
--		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
--		tcf_bind_filter(tp, &f->res, base);
--	}
--
- 	if (tb[TCA_FW_INDEV]) {
- 		int ret;
- 		ret = tcf_change_indev(net, tb[TCA_FW_INDEV], extack);
-@@ -233,6 +228,11 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
- 	} else if (head->mask != 0xFFFFFFFF)
- 		return err;
- 
-+	if (tb[TCA_FW_CLASSID]) {
-+		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
-+		tcf_bind_filter(tp, &f->res, base);
-+	}
+ 	cmd->base.speed = priv->link_speed;
 +
- 	return 0;
++	cmd->base.duplex = DUPLEX_FULL;
++
+ 	return err;
  }
  
 -- 
