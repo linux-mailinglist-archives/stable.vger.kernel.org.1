@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB16475D4AB
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA01075D3C1
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232208AbjGUTXq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:23:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
+        id S231918AbjGUTOP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232197AbjGUTXp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:23:45 -0400
+        with ESMTP id S231921AbjGUTOO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D582D47
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EBB930E1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A63B61D2F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CF9C433CA;
-        Fri, 21 Jul 2023 19:23:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD6F361D7F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7E3C433C7;
+        Fri, 21 Jul 2023 19:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967423;
-        bh=zqZ3ixhmer7ENNUnvbJjiC69Y6ScGtQwX9Vczqv5CFI=;
+        s=korg; t=1689966852;
+        bh=YMQi+V8kzPx22SqAD5qXjHSuWxRKhWXiHIVoE5q060o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i3rbv9+opxCAt0fwfyj71YmbCGyMFOPFV1OdK/urdzKNCHdUZ00wypJiQ9LlwRyUl
-         mbUOKWidkpJptVwpPE7kD418k2C5q1UVSzJukCNpJSZx/xmLhMA2YfCiwCNvi0BTGF
-         e01iwg/iTgIMdUFe+Mjuy3qxGddgBQA87MU/7ep0=
+        b=jGmeu63X4SusqO3ku0KV/AojCscu74qbNbQeL828oOOt5kPVMcl0kRVXgf2awmWaq
+         s6kgnSR1KyWndvozBeA4k3tbhCTlEWxXtxTipiy026Kix52bIYaT4JlWxneo8B1/lK
+         LLe2hG5AoJv9Ivd68IbFZdoPH+g13jYUeDnmAQ4o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>
-Subject: [PATCH 6.1 140/223] fs: dlm: make F_SETLK use unkillable wait_event
-Date:   Fri, 21 Jul 2023 18:06:33 +0200
-Message-ID: <20230721160526.841616620@linuxfoundation.org>
+        patches@lists.linux.dev, Sean Wang <sean.ns.wang@amd.com>,
+        Marc Rossi <Marc.Rossi@amd.com>,
+        Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
+        "Tsung-hua (Ryan) Lin" <Tsung-hua.Lin@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 490/532] drm/amd/display: Correct `DMUB_FW_VERSION` macro
+Date:   Fri, 21 Jul 2023 18:06:34 +0200
+Message-ID: <20230721160641.116720799@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,72 +59,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 0f2b1cb89ccdbdcedf7143f4153a4da700a05f48 upstream.
+commit 274d205cb59f43815542e04b42a9e6d0b9b95eff upstream.
 
-While a non-waiting posix lock request (F_SETLK) is waiting for
-user space processing (in dlm_controld), wait for that processing
-to complete with an unkillable wait_event(). This makes F_SETLK
-behave the same way for F_RDLCK, F_WRLCK and F_UNLCK. F_SETLKW
-continues to use wait_event_killable().
+The `DMUB_FW_VERSION` macro has a mistake in that the revision field
+is off by one byte. The last byte is typically used for other purposes
+and not a revision.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Cc: Sean Wang <sean.ns.wang@amd.com>
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Cc: Tsung-hua (Ryan) Lin <Tsung-hua.Lin@amd.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/plock.c |   38 +++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/display/dmub/dmub_srv.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -154,25 +154,29 @@ int dlm_posix_lock(dlm_lockspace_t *lock
+--- a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
++++ b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
+@@ -445,7 +445,7 @@ struct dmub_notification {
+  * of a firmware to know if feature or functionality is supported or present.
+  */
+ #define DMUB_FW_VERSION(major, minor, revision) \
+-	((((major) & 0xFF) << 24) | (((minor) & 0xFF) << 16) | ((revision) & 0xFFFF))
++	((((major) & 0xFF) << 24) | (((minor) & 0xFF) << 16) | (((revision) & 0xFF) << 8))
  
- 	send_op(op);
- 
--	rv = wait_event_killable(recv_wq, (op->done != 0));
--	if (rv == -ERESTARTSYS) {
--		spin_lock(&ops_lock);
--		/* recheck under ops_lock if we got a done != 0,
--		 * if so this interrupt case should be ignored
--		 */
--		if (op->done != 0) {
-+	if (op->info.wait) {
-+		rv = wait_event_killable(recv_wq, (op->done != 0));
-+		if (rv == -ERESTARTSYS) {
-+			spin_lock(&ops_lock);
-+			/* recheck under ops_lock if we got a done != 0,
-+			 * if so this interrupt case should be ignored
-+			 */
-+			if (op->done != 0) {
-+				spin_unlock(&ops_lock);
-+				goto do_lock_wait;
-+			}
-+			list_del(&op->list);
- 			spin_unlock(&ops_lock);
--			goto do_lock_wait;
--		}
--		list_del(&op->list);
--		spin_unlock(&ops_lock);
- 
--		log_debug(ls, "%s: wait interrupted %x %llx pid %d",
--			  __func__, ls->ls_global_id,
--			  (unsigned long long)number, op->info.pid);
--		do_unlock_close(&op->info);
--		dlm_release_plock_op(op);
--		goto out;
-+			log_debug(ls, "%s: wait interrupted %x %llx pid %d",
-+				  __func__, ls->ls_global_id,
-+				  (unsigned long long)number, op->info.pid);
-+			do_unlock_close(&op->info);
-+			dlm_release_plock_op(op);
-+			goto out;
-+		}
-+	} else {
-+		wait_event(recv_wq, (op->done != 0));
- 	}
- 
- do_lock_wait:
+ /**
+  * dmub_srv_create() - creates the DMUB service.
 
 
