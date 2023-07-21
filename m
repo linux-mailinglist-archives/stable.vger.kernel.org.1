@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D4DE75D493
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6241B75D3B8
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:13:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232157AbjGUTWm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:22:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44224 "EHLO
+        id S231915AbjGUTNw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:13:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232169AbjGUTWm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:22:42 -0400
+        with ESMTP id S231909AbjGUTNv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:13:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24EDDE75
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:22:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F74189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:13:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E3FE61D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:22:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A919BC433C8;
-        Fri, 21 Jul 2023 19:22:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C7E861D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:13:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90177C433C7;
+        Fri, 21 Jul 2023 19:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967358;
+        s=korg; t=1689966829;
         bh=xJtnsLagXBick59RQTp7gYVHQmcOHr2GmEyZKpcrdmI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nHsc8dMUEHmKSjif66HZajqdvEfeHZ5f6yrK6sXeC+gwJblkEuoOi7zh39yUIi2Yr
-         URM1Nc1pVdXvTG/mt/DbrsZzRHcXrZPzpIChdnIDpmsQOEF1anlQkFxQ2xeF2RyBpO
-         uykvEKglD+GMYBtLG8cb7NEJVr1UZACUCUib9tJw=
+        b=M0iQMAXhNLshmLyMCqtLMlkGjom9jL7tw81eHR13ZC7BUWBwiJX7sMr1i3lIdrjJy
+         V0Lw2oqnKq5aM0u2JdPPktrKmu993BoqiJlcZAf+iwoPZW0PsZkyTUl78OU1l95rEe
+         ksTdzGB+ZajcmRvVCUl9zDEPvroXOtrcovRKwshg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 134/223] mfd: pm8008: Fix module autoloading
+Subject: [PATCH 5.15 483/532] mfd: pm8008: Fix module autoloading
 Date:   Fri, 21 Jul 2023 18:06:27 +0200
-Message-ID: <20230721160526.587731975@linuxfoundation.org>
+Message-ID: <20230721160640.680524881@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
