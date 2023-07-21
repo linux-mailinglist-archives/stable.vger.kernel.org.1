@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C140A75D2DF
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC7ED75D2E0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbjGUTEl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57214 "EHLO
+        id S231648AbjGUTEm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:04:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231648AbjGUTEi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:04:38 -0400
+        with ESMTP id S231641AbjGUTEl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:04:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBE030D7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36DA330CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E060E61D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:04:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2036C433C9;
-        Fri, 21 Jul 2023 19:04:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBFE261D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:04:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0AF7C433C8;
+        Fri, 21 Jul 2023 19:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966276;
-        bh=ivr2jvwgr3pYbhSlBA0UEb770Q7FFEKnE4JLEJI0p/c=;
+        s=korg; t=1689966279;
+        bh=g+3ruqFHovZ8MFFYXii+O9VihbOq6uqSxPTrEf1wkks=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=URZyfl6Y0t7jR6lK/shsVpF5a61QukgrhQVUp3b9AtfaXTjCVQAzvs2vWHajg2Gyf
-         edjLW7aqncfo7ka+DhyqZLnbQPJ8xRc10iu2hKtM6CjxLD4sLJFxMaG+pGDm8rBeBu
-         QXzqRyWW4EAIsaXFWBThnMoDVxdh41dtH6Yp1cDU=
+        b=18uTz2wxhG3wurFLUnvWrvLUOuXtAztvzCBMUJC5jDg/qY++q8uBjS0rDIO7vQFwl
+         H3ZAqTsUW49tZ+Nw/gPLep8dXXTkfyuoS9HVQubNtARdBGCWiKK8/bgjXinkxIRseV
+         7MhCXFae5zxcbc/kl+qNlGfTsZ5B226KGjn/Zm1Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>, Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 258/532] ALSA: jack: Fix mutex call in snd_jack_report()
-Date:   Fri, 21 Jul 2023 18:02:42 +0200
-Message-ID: <20230721160628.333664028@linuxfoundation.org>
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 259/532] block: fix signed int overflow in Amiga partition support
+Date:   Fri, 21 Jul 2023 18:02:43 +0200
+Message-ID: <20230721160628.385394267@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -55,84 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-commit 89dbb335cb6a627a4067bc42caa09c8bc3326d40 upstream.
+commit fc3d092c6bb48d5865fec15ed5b333c12f36288c upstream.
 
-snd_jack_report() is supposed to be callable from an IRQ context, too,
-and it's indeed used in that way from virtsnd driver.  The fix for
-input_dev race in commit 1b6a6fc5280e ("ALSA: jack: Access input_dev
-under mutex"), however, introduced a mutex lock in snd_jack_report(),
-and this resulted in a potential sleep-in-atomic.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-For addressing that problem, this patch changes the relevant code to
-use the object get/put and removes the mutex usage.  That is,
-snd_jack_report(), it takes input_get_device() and leaves with
-input_put_device() for assuring the input_dev being assigned.
+Use sector_t as type for sector address and size to allow using disks
+up to 2 TB without LBD support, and disks larger than 2 TB with LBD.
 
-Although the whole mutex could be reduced, we keep it because it can
-be still a protection for potential races between creation and
-deletion.
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted. This patch differs from Joanne's patch only in its use of
+sector_t instead of unsigned int. No checking for overflows is done
+(see patch 3 of this series for that).
 
-Fixes: 1b6a6fc5280e ("ALSA: jack: Access input_dev under mutex")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/cf95f7fe-a748-4990-8378-000491b40329@moroto.mountain
-Tested-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230706155357.3470-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Tested-by: Martin Steigerwald <Martin@lichtvoll.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230620201725.7020-2-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/jack.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ block/partitions/amiga.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/sound/core/jack.c
-+++ b/sound/core/jack.c
-@@ -654,6 +654,7 @@ void snd_jack_report(struct snd_jack *ja
- 	struct snd_jack_kctl *jack_kctl;
- 	unsigned int mask_bits = 0;
- #ifdef CONFIG_SND_JACK_INPUT_DEV
-+	struct input_dev *idev;
- 	int i;
- #endif
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -31,7 +31,8 @@ int amiga_partition(struct parsed_partit
+ 	unsigned char *data;
+ 	struct RigidDiskBlock *rdb;
+ 	struct PartitionBlock *pb;
+-	int start_sect, nr_sects, blk, part, res = 0;
++	sector_t start_sect, nr_sects;
++	int blk, part, res = 0;
+ 	int blksize = 1;	/* Multiplier for disk block size */
+ 	int slot = 1;
  
-@@ -670,17 +671,15 @@ void snd_jack_report(struct snd_jack *ja
- 					     status & jack_kctl->mask_bits);
+@@ -96,14 +97,14 @@ int amiga_partition(struct parsed_partit
  
- #ifdef CONFIG_SND_JACK_INPUT_DEV
--	mutex_lock(&jack->input_dev_lock);
--	if (!jack->input_dev) {
--		mutex_unlock(&jack->input_dev_lock);
-+	idev = input_get_device(jack->input_dev);
-+	if (!idev)
- 		return;
--	}
+ 		/* Tell Kernel about it */
  
- 	for (i = 0; i < ARRAY_SIZE(jack->key); i++) {
- 		int testbit = ((SND_JACK_BTN_0 >> i) & ~mask_bits);
- 
- 		if (jack->type & testbit)
--			input_report_key(jack->input_dev, jack->key[i],
-+			input_report_key(idev, jack->key[i],
- 					 status & testbit);
- 	}
- 
-@@ -688,13 +687,13 @@ void snd_jack_report(struct snd_jack *ja
- 		int testbit = ((1 << i) & ~mask_bits);
- 
- 		if (jack->type & testbit)
--			input_report_switch(jack->input_dev,
-+			input_report_switch(idev,
- 					    jack_switch_types[i],
- 					    status & testbit);
- 	}
- 
--	input_sync(jack->input_dev);
--	mutex_unlock(&jack->input_dev_lock);
-+	input_sync(idev);
-+	input_put_device(idev);
- #endif /* CONFIG_SND_JACK_INPUT_DEV */
- }
- EXPORT_SYMBOL(snd_jack_report);
+-		nr_sects = (be32_to_cpu(pb->pb_Environment[10]) + 1 -
+-			    be32_to_cpu(pb->pb_Environment[9])) *
++		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
++			   be32_to_cpu(pb->pb_Environment[9])) *
+ 			   be32_to_cpu(pb->pb_Environment[3]) *
+ 			   be32_to_cpu(pb->pb_Environment[5]) *
+ 			   blksize;
+ 		if (!nr_sects)
+ 			continue;
+-		start_sect = be32_to_cpu(pb->pb_Environment[9]) *
++		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
+ 			     be32_to_cpu(pb->pb_Environment[3]) *
+ 			     be32_to_cpu(pb->pb_Environment[5]) *
+ 			     blksize;
 
 
