@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9AAE75CD6C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CA3575CD7E
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231357AbjGUQLA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38954 "EHLO
+        id S231518AbjGUQMJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231956AbjGUQKw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:10:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D40430F1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:10:47 -0700 (PDT)
+        with ESMTP id S231793AbjGUQLu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:11:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B8444490
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:11:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DE9B61D33
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:10:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC99C433C8;
-        Fri, 21 Jul 2023 16:10:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A49CC61D3C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:11:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22F4C433C9;
+        Fri, 21 Jul 2023 16:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689955846;
-        bh=yyuFDYs1JsTwP6q0nZ5Si+Ydn7Eor8DqseQU5w+MJvU=;
+        s=korg; t=1689955878;
+        bh=nfYiD4PG/YSJPhWjOHwimzWGBMu6q3Q8TzklgDeScLc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EX5PtrGz5MLdTonH+G/aU3liNdRuOabq3gDwVDm2eXrGpAtYg1pBpMqEfLDIx2I3b
-         lxchzqtvASGxWBA+Rt+IK4IDyxwAwaIYxI5N1Zzemkd6uslfg2xoXEeLUMHqP3Kc4/
-         1Jm5c00CyQgQqMZq6g1FYKTNUBjbRSxsUryils8s=
+        b=cRGPPoSsiet2U63XKI7c6BzAAdNk8/ZQajkd+zYyJFKXzKRY58avt9cwHN3pZLkwO
+         zKwwGf63tnFwUskuH3OH+kX+ihBzotSSaAHg4YpX9rYrOG0HF1HPExF0b3RxWwG0rp
+         B74Q5IWDb8gjrK36Ci9++K+tEze6Vk1DTlZjBimw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 043/292] net: dsa: felix: make vsc9959_tas_guard_bands_update() visible to ocelot->ops
-Date:   Fri, 21 Jul 2023 18:02:32 +0200
-Message-ID: <20230721160530.654425233@linuxfoundation.org>
+Subject: [PATCH 6.4 044/292] net: mscc: ocelot: fix oversize frame dropping for preemptible TCs
+Date:   Fri, 21 Jul 2023 18:02:33 +0200
+Message-ID: <20230721160530.695654455@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -57,95 +57,129 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit c60819149b637d0f9f7f66e110d2a0d90a3993ea ]
+[ Upstream commit c6efb4ae387c79bf0d4da286108c810b7b40de3c ]
 
-In a future change we will need to make
-ocelot_port_update_active_preemptible_tcs() call
-vsc9959_tas_guard_bands_update(), but that is currently not possible,
-since the ocelot switch lib does not have access to functions private to
-the DSA wrapper.
+This switch implements Hold/Release in a strange way, with no control
+from the user as required by IEEE 802.1Q-2018 through Set-And-Hold-MAC
+and Set-And-Release-MAC, but rather, it emits HOLD requests implicitly
+based on the schedule.
 
-Move the pointer to vsc9959_tas_guard_bands_update() from felix->info
-(which is private to the DSA driver) to ocelot->ops (which is also
-visible to the ocelot switch lib).
+Namely, when the gate of a preemptible TC is about to close (actually
+QSYS::PREEMPTION_CFG.HOLD_ADVANCE octet times in advance of this event),
+the QSYS seems to emit a HOLD request pulse towards the MAC which
+preempts the currently transmitted packet, and further packets are held
+back in the queue system.
 
+This allows large frames to be squeezed through small time slots,
+because HOLD requests initiated by the gate events result in the frame
+being segmented in multiple fragments, the bit time of which is equal to
+the size of the time slot.
+
+It has been reported that the vsc9959_tas_guard_bands_update() logic
+breaks this, because it doesn't take preemptible TCs into account, and
+enables oversized frame dropping when the time slot doesn't allow a full
+MTU to be sent, but it does allow 2*minFragSize to be sent (128B).
+Packets larger than 128B are dropped instead of being sent in multiple
+fragments.
+
+Confusingly, the manual says:
+
+| For guard band, SDU calculation of a traffic class of a port, if
+| preemption is enabled (through 'QSYS::PREEMPTION_CFG.P_QUEUES') then
+| QSYS::PREEMPTION_CFG.HOLD_ADVANCE is used, otherwise
+| QSYS::QMAXSDU_CFG_*.QMAXSDU_* is used.
+
+but this only refers to the static guard band durations, and the
+QMAXSDU_CFG_* registers have dual purpose - the other being oversized
+frame dropping, which takes place irrespective of whether frames are
+preemptible or express.
+
+So, to fix the problem, we need to call vsc9959_tas_guard_bands_update()
+from ocelot_port_update_active_preemptible_tcs(), and modify the guard
+band logic to consider a different (lower) oversize limit for
+preemptible traffic classes.
+
+Fixes: 403ffc2c34de ("net: mscc: ocelot: add support for preemptible traffic classes")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Message-ID: <20230705104422.49025-3-vladimir.oltean@nxp.com>
+Message-ID: <20230705104422.49025-4-vladimir.oltean@nxp.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c6efb4ae387c ("net: mscc: ocelot: fix oversize frame dropping for preemptible TCs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/ocelot/felix.c         | 5 ++---
- drivers/net/dsa/ocelot/felix.h         | 1 -
- drivers/net/dsa/ocelot/felix_vsc9959.c | 2 +-
- include/soc/mscc/ocelot.h              | 1 +
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/dsa/ocelot/felix_vsc9959.c | 21 +++++++++++++++++----
+ drivers/net/ethernet/mscc/ocelot_mm.c  |  7 +++++--
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-index 70c0e2b1936b3..8348da2b3c97a 100644
---- a/drivers/net/dsa/ocelot/felix.c
-+++ b/drivers/net/dsa/ocelot/felix.c
-@@ -1786,14 +1786,13 @@ static int felix_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
- {
- 	struct ocelot *ocelot = ds->priv;
- 	struct ocelot_port *ocelot_port = ocelot->ports[port];
--	struct felix *felix = ocelot_to_felix(ocelot);
- 
- 	ocelot_port_set_maxlen(ocelot, port, new_mtu);
- 
- 	mutex_lock(&ocelot->tas_lock);
- 
--	if (ocelot_port->taprio && felix->info->tas_guard_bands_update)
--		felix->info->tas_guard_bands_update(ocelot, port);
-+	if (ocelot_port->taprio && ocelot->ops->tas_guard_bands_update)
-+		ocelot->ops->tas_guard_bands_update(ocelot, port);
- 
- 	mutex_unlock(&ocelot->tas_lock);
- 
-diff --git a/drivers/net/dsa/ocelot/felix.h b/drivers/net/dsa/ocelot/felix.h
-index 96008c046da53..1d4befe7cfe8e 100644
---- a/drivers/net/dsa/ocelot/felix.h
-+++ b/drivers/net/dsa/ocelot/felix.h
-@@ -57,7 +57,6 @@ struct felix_info {
- 	void	(*mdio_bus_free)(struct ocelot *ocelot);
- 	int	(*port_setup_tc)(struct dsa_switch *ds, int port,
- 				 enum tc_setup_type type, void *type_data);
--	void	(*tas_guard_bands_update)(struct ocelot *ocelot, int port);
- 	void	(*port_sched_speed_set)(struct ocelot *ocelot, int port,
- 					u32 speed);
- 	void	(*phylink_mac_config)(struct ocelot *ocelot, int port,
 diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-index d172a3e9736c4..219fb672a68d7 100644
+index 219fb672a68d7..bd11f9fb95e54 100644
 --- a/drivers/net/dsa/ocelot/felix_vsc9959.c
 +++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-@@ -2600,6 +2600,7 @@ static const struct ocelot_ops vsc9959_ops = {
- 	.cut_through_fwd	= vsc9959_cut_through_fwd,
- 	.tas_clock_adjust	= vsc9959_tas_clock_adjust,
- 	.update_stats		= vsc9959_update_stats,
-+	.tas_guard_bands_update	= vsc9959_tas_guard_bands_update,
- };
+@@ -1221,11 +1221,13 @@ static u32 vsc9959_tas_tc_max_sdu(struct tc_taprio_qopt_offload *taprio, int tc)
+ static void vsc9959_tas_guard_bands_update(struct ocelot *ocelot, int port)
+ {
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
++	struct ocelot_mm_state *mm = &ocelot->mm[port];
+ 	struct tc_taprio_qopt_offload *taprio;
+ 	u64 min_gate_len[OCELOT_NUM_TC];
++	u32 val, maxlen, add_frag_size;
++	u64 needed_min_frag_time_ps;
+ 	int speed, picos_per_byte;
+ 	u64 needed_bit_time_ps;
+-	u32 val, maxlen;
+ 	u8 tas_speed;
+ 	int tc;
  
- static const struct felix_info felix_info_vsc9959 = {
-@@ -2625,7 +2626,6 @@ static const struct felix_info felix_info_vsc9959 = {
- 	.port_modes		= vsc9959_port_modes,
- 	.port_setup_tc		= vsc9959_port_setup_tc,
- 	.port_sched_speed_set	= vsc9959_sched_speed_set,
--	.tas_guard_bands_update	= vsc9959_tas_guard_bands_update,
- };
+@@ -1265,9 +1267,18 @@ static void vsc9959_tas_guard_bands_update(struct ocelot *ocelot, int port)
+ 	 */
+ 	needed_bit_time_ps = (u64)(maxlen + 24) * picos_per_byte;
  
- /* The INTB interrupt is shared between for PTP TX timestamp availability
-diff --git a/include/soc/mscc/ocelot.h b/include/soc/mscc/ocelot.h
-index 22aae505c813b..85a726fb006ca 100644
---- a/include/soc/mscc/ocelot.h
-+++ b/include/soc/mscc/ocelot.h
-@@ -663,6 +663,7 @@ struct ocelot_ops {
- 			      struct flow_stats *stats);
- 	void (*cut_through_fwd)(struct ocelot *ocelot);
- 	void (*tas_clock_adjust)(struct ocelot *ocelot);
-+	void (*tas_guard_bands_update)(struct ocelot *ocelot, int port);
- 	void (*update_stats)(struct ocelot *ocelot);
- };
++	/* Preemptible TCs don't need to pass a full MTU, the port will
++	 * automatically emit a HOLD request when a preemptible TC gate closes
++	 */
++	val = ocelot_read_rix(ocelot, QSYS_PREEMPTION_CFG, port);
++	add_frag_size = QSYS_PREEMPTION_CFG_MM_ADD_FRAG_SIZE_X(val);
++	needed_min_frag_time_ps = picos_per_byte *
++		(u64)(24 + 2 * ethtool_mm_frag_size_add_to_min(add_frag_size));
++
+ 	dev_dbg(ocelot->dev,
+-		"port %d: max frame size %d needs %llu ps at speed %d\n",
+-		port, maxlen, needed_bit_time_ps, speed);
++		"port %d: max frame size %d needs %llu ps, %llu ps for mPackets at speed %d\n",
++		port, maxlen, needed_bit_time_ps, needed_min_frag_time_ps,
++		speed);
  
+ 	vsc9959_tas_min_gate_lengths(taprio, min_gate_len);
+ 
+@@ -1281,7 +1292,9 @@ static void vsc9959_tas_guard_bands_update(struct ocelot *ocelot, int port)
+ 		remaining_gate_len_ps =
+ 			vsc9959_tas_remaining_gate_len_ps(min_gate_len[tc]);
+ 
+-		if (remaining_gate_len_ps > needed_bit_time_ps) {
++		if ((mm->active_preemptible_tcs & BIT(tc)) ?
++		    remaining_gate_len_ps > needed_min_frag_time_ps :
++		    remaining_gate_len_ps > needed_bit_time_ps) {
+ 			/* Setting QMAXSDU_CFG to 0 disables oversized frame
+ 			 * dropping.
+ 			 */
+diff --git a/drivers/net/ethernet/mscc/ocelot_mm.c b/drivers/net/ethernet/mscc/ocelot_mm.c
+index fb3145118d686..99b29d1e62449 100644
+--- a/drivers/net/ethernet/mscc/ocelot_mm.c
++++ b/drivers/net/ethernet/mscc/ocelot_mm.c
+@@ -67,10 +67,13 @@ void ocelot_port_update_active_preemptible_tcs(struct ocelot *ocelot, int port)
+ 		val = mm->preemptible_tcs;
+ 
+ 	/* Cut through switching doesn't work for preemptible priorities,
+-	 * so first make sure it is disabled.
++	 * so first make sure it is disabled. Also, changing the preemptible
++	 * TCs affects the oversized frame dropping logic, so that needs to be
++	 * re-triggered. And since tas_guard_bands_update() also implicitly
++	 * calls cut_through_fwd(), we don't need to explicitly call it.
+ 	 */
+ 	mm->active_preemptible_tcs = val;
+-	ocelot->ops->cut_through_fwd(ocelot);
++	ocelot->ops->tas_guard_bands_update(ocelot, port);
+ 
+ 	dev_dbg(ocelot->dev,
+ 		"port %d %s/%s, MM TX %s, preemptible TCs 0x%x, active 0x%x\n",
 -- 
 2.39.2
 
