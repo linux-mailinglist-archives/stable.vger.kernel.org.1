@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80FFE75BE3B
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF9D975BE3C
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbjGUGGH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:06:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41218 "EHLO
+        id S230078AbjGUGGk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:06:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjGUGFc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:05:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3E83583
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:04:16 -0700 (PDT)
+        with ESMTP id S230082AbjGUGGP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:06:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF941BDC
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:05:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57533612C4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:04:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8E2C433C8;
-        Fri, 21 Jul 2023 06:04:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EA5C61083
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:05:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B89C433C7;
+        Fri, 21 Jul 2023 06:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919455;
-        bh=hi7GsBjSyuCVIsilIVZzmBn7YZr09HjNpf6PXtxstBU=;
+        s=korg; t=1689919523;
+        bh=H6AvRxbLm0BH18ZdH+/nHPfDW7pj92Z5quV8K5Be/nA=;
         h=Subject:To:Cc:From:Date:From;
-        b=eBu8wQ+Fteey3wYcmqdRrXmZWChqPYrDReBRyUvh21uI+sy6M5wIuzaXk6PqAH2X8
-         jcj6Bp/hKqHGflFV2GlMSd/NMMGNP+eGaABuvvURLe5nI0atVrsxphQElNa/GZ12RR
-         jikroQ4JHE8ZhGZbm+3XMvm+XkGRQj4PLOAgg+AA=
-Subject: FAILED: patch "[PATCH] ext4: Fix reusing stale buffer heads from last failed" failed to apply to 4.14-stable tree
-To:     chengzhihao1@huawei.com, jack@suse.cz, tytso@mit.edu
+        b=WcC/Wj4ADe4awIlMtM29uok05pDRhjWbQB7sKpYP6edIvYt1jcsSwu8xDurmYPsk2
+         NtoAviFFGxXYHIJgjfqrElZqX1Nt5lAJCZ0Nud7bFJUxNnhrT/WjSgrBVjerUI6f6/
+         dI2B26t52Dhq24gjfyBMTS/KG9VUmey/QJRKA4Xs=
+Subject: FAILED: patch "[PATCH] ext4: turn quotas off if mount failed after enabling quotas" failed to apply to 5.10-stable tree
+To:     libaokun1@huawei.com, jack@suse.cz, tytso@mit.edu,
+        yi.zhang@huawei.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:04:09 +0200
-Message-ID: <2023072109-anemia-unaltered-2936@gregkh>
+Date:   Fri, 21 Jul 2023 08:05:20 +0200
+Message-ID: <2023072120-vocalist-unfold-d697@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,42 +50,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b
+git cherry-pick -x d13f99632748462c32fc95d729f5e754bab06064
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072109-anemia-unaltered-2936@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072120-vocalist-unfold-d697@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-26fb5290240d ("ext4: Fix reusing stale buffer heads from last failed mounting")
-ee7ed3aa0f08 ("ext4: rename journal_dev to s_journal_dev inside ext4_sb_info")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
-4dc5794cf207 ("gpio: pca9570: Add DT bindings for NXP PCA9570")
+d13f99632748 ("ext4: turn quotas off if mount failed after enabling quotas")
+a5fc51193507 ("ext4: remove cantfind_ext4 error handler")
+02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
+25c6d98fc4c2 ("ext4: Move orphan inode handling into a separate file")
+188c299e2a26 ("ext4: Support for checksumming from journal triggers")
+bd2c38cf1726 ("ext4: Make sure quota files are not grabbed accidentally")
+b9a037b7f3c4 ("ext4: cleanup in-core orphan list if ext4_truncate() failed to get a transaction handle")
+72ffb49a7b62 ("ext4: do not set SB_ACTIVE in ext4_orphan_cleanup()")
+c915fb80eaa6 ("ext4: fix bh ref count on error paths")
+a3f5cf14ff91 ("ext4: drop ext4_handle_dirty_super()")
+05c2c00f3769 ("ext4: protect superblock modifications with a buffer lock")
+4392fbc4bab5 ("ext4: drop sync argument of ext4_commit_super()")
+c92dc856848f ("ext4: defer saving error info from atomic context")
+02a7780e4d2f ("ext4: simplify ext4 error translation")
+4067662388f9 ("ext4: move functions in super.c")
+014c9caa29d3 ("ext4: make ext4_abort() use __ext4_error()")
+b08070eca9e2 ("ext4: don't remount read-only with errors=continue on reboot")
+837c23fbc1b8 ("ext4: use ASSERT() to replace J_ASSERT()")
+ca9b404ff137 ("ext4: print quota journalling mode on (re-)mount")
+f177ee0882af ("ext4: add helpers for checking whether quota can be enabled/is journalled")
 
 thanks,
 
@@ -92,120 +93,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b Mon Sep 17 00:00:00 2001
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Date: Wed, 15 Mar 2023 09:31:23 +0800
-Subject: [PATCH] ext4: Fix reusing stale buffer heads from last failed
- mounting
+From d13f99632748462c32fc95d729f5e754bab06064 Mon Sep 17 00:00:00 2001
+From: Baokun Li <libaokun1@huawei.com>
+Date: Mon, 27 Mar 2023 22:16:29 +0800
+Subject: [PATCH] ext4: turn quotas off if mount failed after enabling quotas
 
-Following process makes ext4 load stale buffer heads from last failed
-mounting in a new mounting operation:
-mount_bdev
- ext4_fill_super
- | ext4_load_and_init_journal
- |  ext4_load_journal
- |   jbd2_journal_load
- |    load_superblock
- |     journal_get_superblock
- |      set_buffer_verified(bh) // buffer head is verified
- |   jbd2_journal_recover // failed caused by EIO
- | goto failed_mount3a // skip 'sb->s_root' initialization
- deactivate_locked_super
-  kill_block_super
-   generic_shutdown_super
-    if (sb->s_root)
-    // false, skip ext4_put_super->invalidate_bdev->
-    // invalidate_mapping_pages->mapping_evict_folio->
-    // filemap_release_folio->try_to_free_buffers, which
-    // cannot drop buffer head.
-   blkdev_put
-    blkdev_put_whole
-     if (atomic_dec_and_test(&bdev->bd_openers))
-     // false, systemd-udev happens to open the device. Then
-     // blkdev_flush_mapping->kill_bdev->truncate_inode_pages->
-     // truncate_inode_folio->truncate_cleanup_folio->
-     // folio_invalidate->block_invalidate_folio->
-     // filemap_release_folio->try_to_free_buffers will be skipped,
-     // dropping buffer head is missed again.
+Yi found during a review of the patch "ext4: don't BUG on inconsistent
+journal feature" that when ext4_mark_recovery_complete() returns an error
+value, the error handling path does not turn off the enabled quotas,
+which triggers the following kmemleak:
 
-Second mount:
-ext4_fill_super
- ext4_load_and_init_journal
-  ext4_load_journal
-   ext4_get_journal
-    jbd2_journal_init_inode
-     journal_init_common
-      bh = getblk_unmovable
-       bh = __find_get_block // Found stale bh in last failed mounting
-      journal->j_sb_buffer = bh
-   jbd2_journal_load
-    load_superblock
-     journal_get_superblock
-      if (buffer_verified(bh))
-      // true, skip journal->j_format_version = 2, value is 0
-    jbd2_journal_recover
-     do_one_pass
-      next_log_block += count_tags(journal, bh)
-      // According to journal_tag_bytes(), 'tag_bytes' calculating is
-      // affected by jbd2_has_feature_csum3(), jbd2_has_feature_csum3()
-      // returns false because 'j->j_format_version >= 2' is not true,
-      // then we get wrong next_log_block. The do_one_pass may exit
-      // early whenoccuring non JBD2_MAGIC_NUMBER in 'next_log_block'.
+================================================================
+unreferenced object 0xffff8cf68678e7c0 (size 64):
+comm "mount", pid 746, jiffies 4294871231 (age 11.540s)
+hex dump (first 32 bytes):
+00 90 ef 82 f6 8c ff ff 00 00 00 00 41 01 00 00  ............A...
+c7 00 00 00 bd 00 00 00 0a 00 00 00 48 00 00 00  ............H...
+backtrace:
+[<00000000c561ef24>] __kmem_cache_alloc_node+0x4d4/0x880
+[<00000000d4e621d7>] kmalloc_trace+0x39/0x140
+[<00000000837eee74>] v2_read_file_info+0x18a/0x3a0
+[<0000000088f6c877>] dquot_load_quota_sb+0x2ed/0x770
+[<00000000340a4782>] dquot_load_quota_inode+0xc6/0x1c0
+[<0000000089a18bd5>] ext4_enable_quotas+0x17e/0x3a0 [ext4]
+[<000000003a0268fa>] __ext4_fill_super+0x3448/0x3910 [ext4]
+[<00000000b0f2a8a8>] ext4_fill_super+0x13d/0x340 [ext4]
+[<000000004a9489c4>] get_tree_bdev+0x1dc/0x370
+[<000000006e723bf1>] ext4_get_tree+0x1d/0x30 [ext4]
+[<00000000c7cb663d>] vfs_get_tree+0x31/0x160
+[<00000000320e1bed>] do_new_mount+0x1d5/0x480
+[<00000000c074654c>] path_mount+0x22e/0xbe0
+[<0000000003e97a8e>] do_mount+0x95/0xc0
+[<000000002f3d3736>] __x64_sys_mount+0xc4/0x160
+[<0000000027d2140c>] do_syscall_64+0x3f/0x90
+================================================================
 
-The filesystem is corrupted here, journal is partially replayed, and
-new journal sequence number actually is already used by last mounting.
+To solve this problem, we add a "failed_mount10" tag, and call
+ext4_quota_off_umount() in this tag to release the enabled qoutas.
 
-The invalidate_bdev() can drop all buffer heads even racing with bare
-reading block device(eg. systemd-udev), so we can fix it by invalidating
-bdev in error handling path in __ext4_fill_super().
-
-Fetch a reproducer in [Link].
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217171
-Fixes: 25ed6e8a54df ("jbd2: enable journal clients to enable v2 checksumming")
-Cc: stable@vger.kernel.org # v3.5
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Fixes: 11215630aada ("ext4: don't BUG on inconsistent journal feature")
+Cc: stable@kernel.org
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230315013128.3911115-2-chengzhihao1@huawei.com
+Link: https://lore.kernel.org/r/20230327141630.156875-2-libaokun1@huawei.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
 diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 7f9b087b9b20..6a8c5c3c9126 100644
+index 433550e93561..1cc60a7ae4aa 100644
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -1128,6 +1128,12 @@ static void ext4_blkdev_remove(struct ext4_sb_info *sbi)
- 	struct block_device *bdev;
- 	bdev = sbi->s_journal_bdev;
- 	if (bdev) {
-+		/*
-+		 * Invalidate the journal device's buffers.  We don't want them
-+		 * floating about in memory - the physical journal device may
-+		 * hotswapped, and it breaks the `ro-after' testing code.
-+		 */
-+		invalidate_bdev(bdev);
- 		ext4_blkdev_put(bdev);
- 		sbi->s_journal_bdev = NULL;
- 	}
-@@ -1328,13 +1334,7 @@ static void ext4_put_super(struct super_block *sb)
- 	sync_blockdev(sb->s_bdev);
- 	invalidate_bdev(sb->s_bdev);
- 	if (sbi->s_journal_bdev && sbi->s_journal_bdev != sb->s_bdev) {
--		/*
--		 * Invalidate the journal device's buffers.  We don't want them
--		 * floating about in memory - the physical journal device may
--		 * hotswapped, and it breaks the `ro-after' testing code.
--		 */
- 		sync_blockdev(sbi->s_journal_bdev);
--		invalidate_bdev(sbi->s_journal_bdev);
- 		ext4_blkdev_remove(sbi);
+@@ -5577,7 +5577,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 		ext4_msg(sb, KERN_INFO, "recovery complete");
+ 		err = ext4_mark_recovery_complete(sb, es);
+ 		if (err)
+-			goto failed_mount9;
++			goto failed_mount10;
  	}
  
-@@ -5655,6 +5655,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 	brelse(sbi->s_sbh);
- 	ext4_blkdev_remove(sbi);
- out_fail:
-+	invalidate_bdev(sb->s_bdev);
- 	sb->s_fs_info = NULL;
- 	return err;
- }
+ 	if (test_opt(sb, DISCARD) && !bdev_max_discard_sectors(sb->s_bdev))
+@@ -5596,7 +5596,9 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 
+ 	return 0;
+ 
+-failed_mount9:
++failed_mount10:
++	ext4_quota_off_umount(sb);
++failed_mount9: __maybe_unused
+ 	ext4_release_orphan_info(sb);
+ failed_mount8:
+ 	ext4_unregister_sysfs(sb);
 
