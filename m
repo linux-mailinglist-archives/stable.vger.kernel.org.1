@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4869975C6CF
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 059FC75C6D0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231516AbjGUMUx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 08:20:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
+        id S229902AbjGUMVE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 08:21:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbjGUMUw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:20:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C62D172A
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:20:51 -0700 (PDT)
+        with ESMTP id S229983AbjGUMVC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:21:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5F6430E7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:20:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9891161A1D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BFBC433C9;
-        Fri, 21 Jul 2023 12:20:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C99F61A78
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4383CC433C8;
+        Fri, 21 Jul 2023 12:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689942049;
-        bh=X/S3XPMzx/V5k2+dJyYBD8jaJWaGojn7A1QVBBYo+gs=;
+        s=korg; t=1689942058;
+        bh=5xSK0vavlAeDfDfV8ugTMxTLDTL4lsxaQl5zD0n4Hw0=;
         h=Subject:To:Cc:From:Date:From;
-        b=x/oCtozpQG37hUydi47QKATibRSfTSXTa8DsOu809XiwdvT7cUEDOnZGv1KS1I66S
-         pKfazDZTQDN9/eaHOuTIVJRFotHfZvNBhy6cKiikHfB4FtaMG6HsQghI0nalPCi1Cz
-         SAWZQJmaYXGXjgBk/pivubz02g7tyQywfhet2u+w=
-Subject: FAILED: patch "[PATCH] drm/ttm: fix bulk_move corruption when adding a entry" failed to apply to 6.4-stable tree
+        b=b96PBB6mV1iV+o08XTECzWhgdLUmnBNzCOV1ys50+D8Tb/Q/6DiPTUSRQ0vVN00El
+         Y1GUcVOnKHxa1SqCkpK2BsNASF1+znBlDVhd2qd8tb3qiY3lSfyNB5WE9ukpXr3nyW
+         JAl96yLJaz0KtTcXEPErTfnL97YKVYFXceV3Rstw=
+Subject: FAILED: patch "[PATCH] drm/ttm: fix bulk_move corruption when adding a entry" failed to apply to 6.1-stable tree
 To:     Yunxiang.Li@amd.com, christian.koenig@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Fri, 21 Jul 2023 14:20:47 +0200
-Message-ID: <2023072146-sports-deluge-22a1@gregkh>
+Message-ID: <2023072147-outfit-hermit-0f79@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,23 +49,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4481913607e58196c48a4fef5e6f45350684ec3c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072146-sports-deluge-22a1@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072147-outfit-hermit-0f79@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+4481913607e5 ("drm/ttm: fix bulk_move corruption when adding a entry")
 
 thanks,
 
