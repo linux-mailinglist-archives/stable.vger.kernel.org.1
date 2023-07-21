@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B837175CA62
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0431775CA63
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbjGUOnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56022 "EHLO
+        id S230343AbjGUOnm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:43:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230001AbjGUOnY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:43:24 -0400
+        with ESMTP id S229707AbjGUOnl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:43:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F2663A8D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:43:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD1A30DB
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:43:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E84AD61CB7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:43:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A45C433C8;
-        Fri, 21 Jul 2023 14:43:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29F5261CBC
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:43:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3FBC433C8;
+        Fri, 21 Jul 2023 14:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950594;
-        bh=y6D6K07VASZ3zstqYccPLi8ax2D9vpBQvNm1Yia5eL4=;
+        s=korg; t=1689950606;
+        bh=YMOUSIfRzHkXsl1F5me1+QiS00jTbSKdvaTXYuzAjiI=;
         h=Subject:To:Cc:From:Date:From;
-        b=mzEIVqizeF36CZHkwKG1sQ1IOSGD4Jh2WDfGBaIwptRZCNgaCvO6bP5sC40BKEX/C
-         UrDAljdr0QSsYRM/1wt84szyWMrGZ53MN+FBW4r9hfH0RwNqYWDCZaf31dyybr44bG
-         urSSWXPKVd4Cx43WrBKKGIrowEwy2jTh9YDd9R2c=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Avoid fcport pointer dereference" failed to apply to 4.14-stable tree
-To:     njavali@marvell.com, himanshu.madhani@oracle.com,
-        martin.petersen@oracle.com
+        b=SVPMbg6MatFafa8XT5HXwb58IWzalB+tc2cXgIKJonzpGO87oA6GucuJqeYdjOsRo
+         rwkKAbPNhyvZ7/MpktzT/UNCoOXXERHzGlG48nheBg2+nNrp5HvrwUkjcy3ABuiAaN
+         cAbYen/X2EUL1SPdQxxF8UFcCSpiH80665KHrTcM=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix buffer overrun" failed to apply to 5.4-stable tree
+To:     qutran@marvell.com, himanshu.madhani@oracle.com,
+        martin.petersen@oracle.com, njavali@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:43:06 +0200
-Message-ID: <2023072105-poking-wasp-4610@gregkh>
+Date:   Fri, 21 Jul 2023 16:43:23 +0200
+Message-ID: <2023072123-oink-gains-2382@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,42 +50,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6b504d06976fe4a61cc05dedc68b84fadb397f77
+git cherry-pick -x b68710a8094fdffe8dd4f7a82c82649f479bb453
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072105-poking-wasp-4610@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072123-oink-gains-2382@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-6b504d06976f ("scsi: qla2xxx: Avoid fcport pointer dereference")
-e0fb8ce2bb9e ("scsi: qla2xxx: edif: Fix potential stuck session in sa update")
-31e6cdbe0eae ("scsi: qla2xxx: Implement ref count for SRB")
-d4523bd6fd5d ("scsi: qla2xxx: Refactor asynchronous command initialization")
-2cabf10dbbe3 ("scsi: qla2xxx: Fix hang on NVMe command timeouts")
-e3d2612f583b ("scsi: qla2xxx: Fix use after free in debug code")
-9efea843a906 ("scsi: qla2xxx: edif: Add detection of secure device")
-dd30706e73b7 ("scsi: qla2xxx: edif: Add key update")
-fac2807946c1 ("scsi: qla2xxx: edif: Add extraction of auth_els from the wire")
-84318a9f01ce ("scsi: qla2xxx: edif: Add send, receive, and accept for auth_els")
-7878f22a2e03 ("scsi: qla2xxx: edif: Add getfcinfo and statistic bsgs")
-7ebb336e45ef ("scsi: qla2xxx: edif: Add start + stop bsgs")
-d94d8158e184 ("scsi: qla2xxx: Add heartbeat check")
-f7a0ed479e66 ("scsi: qla2xxx: Fix crash in PCIe error handling")
-2ce35c0821af ("scsi: qla2xxx: Fix use after free in bsg")
-5777fef788a5 ("scsi: qla2xxx: Consolidate zio threshold setting for both FCP & NVMe")
-960204ecca5e ("scsi: qla2xxx: Simplify if statement")
-a04658594399 ("scsi: qla2xxx: Wait for ABTS response on I/O timeouts for NVMe")
-dbf1f53cfd23 ("scsi: qla2xxx: Implementation to get and manage host, target stats and initiator port")
-707531bc2626 ("scsi: qla2xxx: If fcport is undergoing deletion complete I/O with retry")
+b68710a8094f ("scsi: qla2xxx: Fix buffer overrun")
+44f5a37d1e3e ("scsi: qla2xxx: Fix buffer-buffer credit extraction error")
+897d68eb816b ("scsi: qla2xxx: Fix WARN_ON in qla_nvme_register_hba")
+9f2475fe7406 ("scsi: qla2xxx: SAN congestion management implementation")
+62e9dd177732 ("scsi: qla2xxx: Change in PUREX to handle FPIN ELS requests")
+818dbde78e0f ("Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi")
 
 thanks,
 
@@ -93,36 +79,36 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6b504d06976fe4a61cc05dedc68b84fadb397f77 Mon Sep 17 00:00:00 2001
-From: Nilesh Javali <njavali@marvell.com>
-Date: Wed, 7 Jun 2023 17:08:38 +0530
-Subject: [PATCH] scsi: qla2xxx: Avoid fcport pointer dereference
+From b68710a8094fdffe8dd4f7a82c82649f479bb453 Mon Sep 17 00:00:00 2001
+From: Quinn Tran <qutran@marvell.com>
+Date: Wed, 7 Jun 2023 17:08:40 +0530
+Subject: [PATCH] scsi: qla2xxx: Fix buffer overrun
 
-Klocwork reported warning of NULL pointer may be dereferenced.  The routine
-exits when sa_ctl is NULL and fcport is allocated after the exit call thus
-causing NULL fcport pointer to dereference at the time of exit.
+Klocwork warning: Buffer Overflow - Array Index Out of Bounds
 
-To avoid fcport pointer dereference, exit the routine when sa_ctl is NULL.
+Driver uses fc_els_flogi to calculate size of buffer.  The actual buffer is
+nested inside of fc_els_flogi which is smaller.
+
+Replace structure name to allow proper size calculation.
 
 Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
 Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-4-njavali@marvell.com
+Link: https://lore.kernel.org/r/20230607113843.37185-6-njavali@marvell.com
 Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
-index ec0e20255bd3..26e6b3e3af43 100644
---- a/drivers/scsi/qla2xxx/qla_edif.c
-+++ b/drivers/scsi/qla2xxx/qla_edif.c
-@@ -2361,8 +2361,8 @@ qla24xx_issue_sa_replace_iocb(scsi_qla_host_t *vha, struct qla_work_evt *e)
- 	if (!sa_ctl) {
- 		ql_dbg(ql_dbg_edif, vha, 0x70e6,
- 		    "sa_ctl allocation failed\n");
--		rval =  -ENOMEM;
--		goto done;
-+		rval = -ENOMEM;
-+		return rval;
- 	}
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 0df6eae7324e..b0225f6f3221 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -5549,7 +5549,7 @@ static void qla_get_login_template(scsi_qla_host_t *vha)
+ 	__be32 *q;
  
- 	fcport = sa_ctl->fcport;
+ 	memset(ha->init_cb, 0, ha->init_cb_size);
+-	sz = min_t(int, sizeof(struct fc_els_flogi), ha->init_cb_size);
++	sz = min_t(int, sizeof(struct fc_els_csp), ha->init_cb_size);
+ 	rval = qla24xx_get_port_login_templ(vha, ha->init_cb_dma,
+ 					    ha->init_cb, sz);
+ 	if (rval != QLA_SUCCESS) {
 
