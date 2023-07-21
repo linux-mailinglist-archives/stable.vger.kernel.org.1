@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C6875D48C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 361FC75D3D4
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232151AbjGUTWV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:22:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44016 "EHLO
+        id S231939AbjGUTO4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:14:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232157AbjGUTWU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:22:20 -0400
+        with ESMTP id S231942AbjGUTOy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806092737
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:22:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C873530E1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06C9161D94
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:22:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18027C433C9;
-        Fri, 21 Jul 2023 19:22:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F04B61D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F931C433C7;
+        Fri, 21 Jul 2023 19:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967338;
-        bh=mNu5QaphbBnivVKW+01oDsYHM/eLvSgHeT48q0NBm28=;
+        s=korg; t=1689966892;
+        bh=zlzS9VZd/1Pb/srnlGe6ZK5AW6b50LjY05WU9rstM7I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XupDT8JhbIcYJYxRy1RBtvWPlkldIek5l4eWd7P+Mpqbwy9KHRUh1UQm3sQxPXVeg
-         xUwhqigHuMr9UfqcoAbSh+cBwLmFJkqJQBzAoZoZIMnoOH2jcpVp7aPL87/usfTaDF
-         vAP+9MMjaR7XdxRWCT3Sw7ZUFSy1watL/UiFvVvA=
+        b=DvUmuXRfu8mb/Uon/VlcUa30EluDASFHK41XjmPDOVyZRM59O4yBVpnGjlTVqMocY
+         8Xh9dKvssO1x1YgNtY+Xnnj9rZU3e1VnGSCpeA7v53YEJJPjDJHBJiRaAkqrKAE4h8
+         Jjyli7kTLps3TDMqcanXe+TQJPx4z5ene9c8yEXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
         Rick Wertenbroek <rick.wertenbroek@gmail.com>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 6.1 127/223] PCI: rockchip: Write PCI Device ID to correct register
+Subject: [PATCH 5.15 476/532] PCI: rockchip: Write PCI Device ID to correct register
 Date:   Fri, 21 Jul 2023 18:06:20 +0200
-Message-ID: <20230721160526.293324669@linuxfoundation.org>
+Message-ID: <20230721160640.339277043@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -108,7 +108,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +#define PCIE_EP_CONFIG_BASE		0xa00000
 +#define PCIE_EP_CONFIG_DID_VID		(PCIE_EP_CONFIG_BASE + 0x00)
  #define PCIE_RC_CONFIG_RID_CCR		(PCIE_RC_CONFIG_BASE + 0x08)
+ #define   PCIE_RC_CONFIG_SCC_SHIFT		16
  #define PCIE_RC_CONFIG_DCR		(PCIE_RC_CONFIG_BASE + 0xc4)
- #define   PCIE_RC_CONFIG_DCR_CSPL_SHIFT		18
 
 
