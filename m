@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE3975D4B9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB46475D4BB
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232212AbjGUTY0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45542 "EHLO
+        id S232220AbjGUTY3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:24:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232216AbjGUTYZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B900F189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:24 -0700 (PDT)
+        with ESMTP id S232218AbjGUTY2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87CF0273F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E32761B24
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62373C433C8;
-        Fri, 21 Jul 2023 19:24:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2321C61D54
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3520AC433C7;
+        Fri, 21 Jul 2023 19:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967463;
-        bh=dfgWCzmH0ATO4jwOaKJCO5+xQYS/fnXoYRUyKTiP8fc=;
+        s=korg; t=1689967466;
+        bh=Xhz2wT/9ZzyTENKCVFwgr4pTd+XLLsgr1CmAmxrI1uM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bLjh5BPgGJaF3ulNHNBBVrfdZ+mnY2TRQlGhb1v5xVltuL1XIr3ejOicDmrTJ0sNz
-         /Ha3VnCF5icWXQJ0Jq6nJzCW8PoAF3jpgi/T/qMk7o4EYBG5rzhFpT3UeBTZH/78IJ
-         SMy/drpU+6pAJND7VCi3+uSZWbpvRfaM66cdxPC8=
+        b=tyC0h/4R3PfkzMsfS5GvG0dHt6/4emXvu/4msXdHkY+CnxF/YdDsc6KicF5XyzKV2
+         1GYcTsRqlAXS46ATCCKKn8XPBHmObVMcL9KyniBzuvj+UE6jkvSETRyQ7pseMMgm2m
+         ocoXuQ1ltK1v8VlRLrd3JmyhK1UCoYwbBlrTML20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Sean Paul <seanpaul@chromium.org>
-Subject: [PATCH 6.1 144/223] drm/rockchip: vop: Leave vblank enabled in self-refresh
-Date:   Fri, 21 Jul 2023 18:06:37 +0200
-Message-ID: <20230721160527.011896650@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
+        Charlene Liu <Charlene.Liu@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.1 145/223] drm/amd/display: fix seamless odm transitions
+Date:   Fri, 21 Jul 2023 18:06:38 +0200
+Message-ID: <20230721160527.054094455@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
 References: <20230721160520.865493356@linuxfoundation.org>
@@ -45,104 +49,76 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Brian Norris <briannorris@chromium.org>
+From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
 
-commit 2bdba9d4a3baa758c2ca7f5b37b35c7b3391dc42 upstream.
+commit 75c2b7ed080d7421157c03064be82275364136e7 upstream.
 
-If we disable vblank when entering self-refresh, vblank APIs (like
-DRM_IOCTL_WAIT_VBLANK) no longer work. But user space is not aware when
-we enter self-refresh, so this appears to be an API violation -- that
-DRM_IOCTL_WAIT_VBLANK fails with EINVAL whenever the display is idle and
-enters self-refresh.
+Add missing programming and function pointers
 
-The downstream driver used by many of these systems never used to
-disable vblank for PSR, and in fact, even upstream, we didn't do that
-until radically redesigning the state machine in commit 6c836d965bad
-("drm/rockchip: Use the helpers for PSR").
-
-Thus, it seems like a reasonable API fix to simply restore that
-behavior, and leave vblank enabled.
-
-Note that this appears to potentially unbalance the
-drm_crtc_vblank_{off,on}() calls in some cases, but:
-(a) drm_crtc_vblank_on() documents this as OK and
-(b) if I do the naive balancing, I find state machine issues such that
-    we're not in sync properly; so it's easier to take advantage of (a).
-
-This issue was exposed by IGT's kms_vblank tests, and reported by
-KernelCI. The bug has been around a while (longer than KernelCI
-noticed), but was only exposed once self-refresh was bugfixed more
-recently, and so KernelCI could properly test it. Some other notes in:
-
-  https://lore.kernel.org/dri-devel/Y6OCg9BPnJvimQLT@google.com/
-  Re: renesas/master bisection: igt-kms-rockchip.kms_vblank.pipe-A-wait-forked on rk3399-gru-kevin
-
-== Backporting notes: ==
-
-Marking as 'Fixes' commit 6c836d965bad ("drm/rockchip: Use the helpers
-for PSR"), but it probably depends on commit bed030a49f3e
-("drm/rockchip: Don't fully disable vop on self refresh") as well.
-
-We also need the previous patch ("drm/atomic: Allow vblank-enabled +
-self-refresh "disable""), of course.
-
-v3:
- * no update
-
-v2:
- * skip unnecessary lock/unlock
-
-Fixes: 6c836d965bad ("drm/rockchip: Use the helpers for PSR")
-Cc: <stable@vger.kernel.org>
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Link: https://lore.kernel.org/dri-devel/Y5itf0+yNIQa6fU4@sirena.org.uk/
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Sean Paul <seanpaul@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230109171809.v3.2.Ic07cba4ab9a7bd3618a9e4258b8f92ea7d10ae5a@changeid
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c |   11 +++++++++++
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c  |    2 +-
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.h  |    1 +
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -717,13 +717,13 @@ static void vop_crtc_atomic_disable(stru
- 	if (crtc->state->self_refresh_active)
- 		rockchip_drm_set_win_enabled(crtc, false);
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -1678,6 +1678,17 @@ static void dcn20_program_pipe(
  
-+	if (crtc->state->self_refresh_active)
-+		goto out;
+ 		if (hws->funcs.setup_vupdate_interrupt)
+ 			hws->funcs.setup_vupdate_interrupt(dc, pipe_ctx);
 +
- 	mutex_lock(&vop->vop_lock);
++		if (hws->funcs.calculate_dccg_k1_k2_values && dc->res_pool->dccg->funcs->set_pixel_rate_div) {
++			unsigned int k1_div, k2_div;
++
++			hws->funcs.calculate_dccg_k1_k2_values(pipe_ctx, &k1_div, &k2_div);
++
++			dc->res_pool->dccg->funcs->set_pixel_rate_div(
++				dc->res_pool->dccg,
++				pipe_ctx->stream_res.tg->inst,
++				k1_div, k2_div);
++		}
+ 	}
  
- 	drm_crtc_vblank_off(crtc);
+ 	if (pipe_ctx->update_flags.bits.odm)
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+@@ -98,7 +98,7 @@ static void optc32_set_odm_combine(struc
+ 	optc1->opp_count = opp_cnt;
+ }
  
--	if (crtc->state->self_refresh_active)
--		goto out;
--
- 	/*
- 	 * Vop standby will take effect at end of current frame,
- 	 * if dsp hold valid irq happen, it means standby complete.
-@@ -757,9 +757,9 @@ static void vop_crtc_atomic_disable(stru
- 	vop_core_clks_disable(vop);
- 	pm_runtime_put(vop->dev);
+-static void optc32_set_h_timing_div_manual_mode(struct timing_generator *optc, bool manual_mode)
++void optc32_set_h_timing_div_manual_mode(struct timing_generator *optc, bool manual_mode)
+ {
+ 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
  
--out:
- 	mutex_unlock(&vop->vop_lock);
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.h
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.h
+@@ -250,5 +250,6 @@
+ 	SF(OTG0_OTG_DRR_CONTROL, OTG_V_TOTAL_LAST_USED_BY_DRR, mask_sh)
  
-+out:
- 	if (crtc->state->event && !crtc->state->active) {
- 		spin_lock_irq(&crtc->dev->event_lock);
- 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
+ void dcn32_timing_generator_init(struct optc *optc1);
++void optc32_set_h_timing_div_manual_mode(struct timing_generator *optc, bool manual_mode);
+ 
+ #endif /* __DC_OPTC_DCN32_H__ */
 
 
