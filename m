@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D41D875D32A
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7089675D32B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231719AbjGUTHq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:07:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59856 "EHLO
+        id S231751AbjGUTHu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:07:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231720AbjGUTHq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:07:46 -0400
+        with ESMTP id S231741AbjGUTHt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:07:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19C330D7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:07:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9108730DF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:07:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6426361D8E
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:07:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AC0C433C9;
-        Fri, 21 Jul 2023 19:07:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30D8D61D90
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:07:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4164CC433C7;
+        Fri, 21 Jul 2023 19:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966453;
-        bh=sKYlMLsiPZLKz6MnVG7d5+mkAsVXs1QOjMl8ahFxA0M=;
+        s=korg; t=1689966456;
+        bh=klay/In8JNkSFYJRJMsMEe37l+sPLxSN2CYS8ynkM7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Y5VwvH8u+GklT8xyBnWl3zU27A3bWOEF0zOxHw4zDBb05hBGIuNi/Q4/KqB1Us4C
-         7MCi/6oFKM41Y8Awnwq5Bg/tTYEv5yaJSxhOgXH/Gxe+5Q7to9pCAkvkQX5kxgS8uW
-         cedXRxUkVDCRxH1H+wDdhBSAWdCakAius36HblSY=
+        b=vTduNsSD90+cR0oTNmqltA8Bq1F8XYQK+XnrxRsDZW2gZMAwYIX+J7mo24gOk6o5z
+         m1DEH5insmVkX9epqSg15yCswVnH43S5vL6xoA1v1PFN60ppKLj0i5ifp3lGj0+roA
+         Ewim0mjruvQvcNiUYnccAbWR4Ujm/0sfvQWEvrJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
-        Kamal Dasu <kamal.dasu@broadcom.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 321/532] spi: bcm-qspi: return error if neither hif_mspi nor mspi is available
-Date:   Fri, 21 Jul 2023 18:03:45 +0200
-Message-ID: <20230721160631.832746916@linuxfoundation.org>
+Subject: [PATCH 5.15 322/532] mailbox: ti-msgmgr: Fill non-message tx data fields with 0x0
+Date:   Fri, 21 Jul 2023 18:03:46 +0200
+Message-ID: <20230721160631.886526988@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -56,56 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 7c1f23ad34fcdace50275a6aa1e1969b41c6233f ]
+[ Upstream commit 1b712f18c461bd75f018033a15cf381e712806b5 ]
 
-If neither a "hif_mspi" nor "mspi" resource is present, the driver will
-just early exit in probe but still return success. Apart from not doing
-anything meaningful, this would then also lead to a null pointer access
-on removal, as platform_get_drvdata() would return NULL, which it would
-then try to dereference when trying to unregister the spi master.
+Sec proxy/message manager data buffer is 60 bytes with the last of the
+registers indicating transmission completion. This however poses a bit
+of a challenge.
 
-Fix this by unconditionally calling devm_ioremap_resource(), as it can
-handle a NULL res and will then return a viable ERR_PTR() if we get one.
+The backing memory for sec_proxy / message manager is regular memory,
+and all sec proxy does is to trigger a burst of all 60 bytes of data
+over to the target thread backing ring accelerator. It doesn't do a
+memory scrub when it moves data out in the burst. When we transmit
+multiple messages, remnants of previous message is also transmitted
+which results in some random data being set in TISCI fields of
+messages that have been expanded forward.
 
-The "return 0;" was previously a "goto qspi_resource_err;" where then
-ret was returned, but since ret was still initialized to 0 at this place
-this was a valid conversion in 63c5395bb7a9 ("spi: bcm-qspi: Fix
-use-after-free on unbind"). The issue was not introduced by this commit,
-only made more obvious.
+The entire concept of backward compatibility hinges on the fact that
+the unused message fields remain 0x0 allowing for 0x0 value to be
+specially considered when backward compatibility of message extension
+is done.
 
-Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Link: https://lore.kernel.org/r/20230629134306.95823-1-jonas.gorski@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+So, instead of just writing the completion register, we continue
+to fill the message buffer up with 0x0 (note: for partial message
+involving completion, we already do this).
+
+This allows us to scale and introduce ABI changes back also work with
+other boot stages that may have left data in the internal memory.
+
+While at this, be consistent and explicit with the data_reg pointer
+increment.
+
+Fixes: aace66b170ce ("mailbox: Introduce TI message manager driver")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/mailbox/ti-msgmgr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index bd7c7fc739610..c79797c06cda1 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1370,13 +1370,9 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
- 						   "mspi");
+diff --git a/drivers/mailbox/ti-msgmgr.c b/drivers/mailbox/ti-msgmgr.c
+index efb43b0385960..fa71ae837d235 100644
+--- a/drivers/mailbox/ti-msgmgr.c
++++ b/drivers/mailbox/ti-msgmgr.c
+@@ -385,14 +385,20 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
+ 		/* Ensure all unused data is 0 */
+ 		data_trail &= 0xFFFFFFFF >> (8 * (sizeof(u32) - trail_bytes));
+ 		writel(data_trail, data_reg);
+-		data_reg++;
++		data_reg += sizeof(u32);
+ 	}
++
+ 	/*
+ 	 * 'data_reg' indicates next register to write. If we did not already
+ 	 * write on tx complete reg(last reg), we must do so for transmit
++	 * In addition, we also need to make sure all intermediate data
++	 * registers(if any required), are reset to 0 for TISCI backward
++	 * compatibility to be maintained.
+ 	 */
+-	if (data_reg <= qinst->queue_buff_end)
+-		writel(0, qinst->queue_buff_end);
++	while (data_reg <= qinst->queue_buff_end) {
++		writel(0, data_reg);
++		data_reg += sizeof(u32);
++	}
  
--	if (res) {
--		qspi->base[MSPI]  = devm_ioremap_resource(dev, res);
--		if (IS_ERR(qspi->base[MSPI]))
--			return PTR_ERR(qspi->base[MSPI]);
--	} else {
--		return 0;
--	}
-+	qspi->base[MSPI]  = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(qspi->base[MSPI]))
-+		return PTR_ERR(qspi->base[MSPI]);
- 
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "bspi");
- 	if (res) {
+ 	return 0;
+ }
 -- 
 2.39.2
 
