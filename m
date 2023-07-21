@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F4A75D3B9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72C5675D494
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjGUTNz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36708 "EHLO
+        id S232169AbjGUTWo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:22:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231909AbjGUTNy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:13:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B239F189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:13:53 -0700 (PDT)
+        with ESMTP id S232171AbjGUTWn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:22:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7C81727
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:22:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A5AE61D02
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D540C433C9;
-        Fri, 21 Jul 2023 19:13:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7083F61D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:22:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831F4C433C8;
+        Fri, 21 Jul 2023 19:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966832;
-        bh=NjwQNRkT2Pj1EuXVcPHuTVZ/fJOSuDJJrE3P9tiMMJg=;
+        s=korg; t=1689967360;
+        bh=nOeD4hQSPR+l5fTQnpz2Wat5fKmRHM6ZUc2LrwDoQ1U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t7NRqCJC0ioVT/7bBj0LD85cCe7jJX1nf2xjrDEGnAtzM0/atnvunoxSHkf7krfSS
-         PNT6Z98POk6vCzckl33bxnU6FTOeYQeRNaJe1llG9m6va7v3kegIMFkQm6cnNuODrT
-         4C5P4245YarWRRpD2W9kCseiafpMk6wygjY12AKw=
+        b=bMFsJUjFxN0KZtOQy5OOHf1Ny0+zSUZzInMT61zyqNSpzymO9/vk2tS6r29gceZXY
+         jHfGVaP4962CQo9PUB7oka/Jb9Q5U650ceivO60xosaq6YRWpTZuO3Tolqm4CqDmhv
+         7itk55oOetS5mn2C/NHvL7m/tvKBa+CCYLjMMIDg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
         Song Liu <song@kernel.org>, Jason Baron <jbaron@akamai.com>
-Subject: [PATCH 5.15 484/532] md/raid0: add discard support for the original layout
+Subject: [PATCH 6.1 135/223] md/raid0: add discard support for the original layout
 Date:   Fri, 21 Jul 2023 18:06:28 +0200
-Message-ID: <20230721160640.740471085@linuxfoundation.org>
+Message-ID: <20230721160526.632144311@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -126,7 +126,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/md/raid0.c
 +++ b/drivers/md/raid0.c
-@@ -274,6 +274,18 @@ static int create_strip_zones(struct mdd
+@@ -270,6 +270,18 @@ static int create_strip_zones(struct mdd
  		goto abort;
  	}
  
@@ -145,7 +145,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	pr_debug("md/raid0:%s: done.\n", mdname(mddev));
  	*private_conf = conf;
  
-@@ -444,6 +456,20 @@ exit_acct_set:
+@@ -431,6 +443,20 @@ exit_acct_set:
  	return ret;
  }
  
@@ -166,7 +166,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
  {
  	struct r0conf *conf = mddev->private;
-@@ -457,7 +483,9 @@ static void raid0_handle_discard(struct
+@@ -444,7 +470,9 @@ static void raid0_handle_discard(struct
  	sector_t end_disk_offset;
  	unsigned int end_disk_index;
  	unsigned int disk;
@@ -176,7 +176,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	zone = find_zone(conf, &start);
  
  	if (bio_end_sector(bio) > zone->zone_end) {
-@@ -471,6 +499,7 @@ static void raid0_handle_discard(struct
+@@ -458,6 +486,7 @@ static void raid0_handle_discard(struct
  	} else
  		end = bio_end_sector(bio);
  
@@ -184,7 +184,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (zone != conf->strip_zone)
  		end = end - zone[-1].zone_end;
  
-@@ -482,13 +511,26 @@ static void raid0_handle_discard(struct
+@@ -469,13 +498,26 @@ static void raid0_handle_discard(struct
  	last_stripe_index = end;
  	sector_div(last_stripe_index, stripe_size);
  
@@ -215,7 +215,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	end_disk_offset = ((int)(end - last_stripe_index * stripe_size) %
  		mddev->chunk_sectors) +
  		last_stripe_index * mddev->chunk_sectors;
-@@ -496,18 +538,22 @@ static void raid0_handle_discard(struct
+@@ -483,18 +525,22 @@ static void raid0_handle_discard(struct
  	for (disk = 0; disk < zone->nb_dev; disk++) {
  		sector_t dev_start, dev_end;
  		struct md_rdev *rdev;
