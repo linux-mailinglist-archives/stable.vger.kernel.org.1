@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E52975D2EC
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A19F375D2EE
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:05:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231631AbjGUTFQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:05:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57600 "EHLO
+        id S231654AbjGUTFV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:05:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231654AbjGUTFP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:05:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AAF930CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:05:14 -0700 (PDT)
+        with ESMTP id S231656AbjGUTFU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:05:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4FC30CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:05:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91D9361D8E
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:05:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADF6C433C8;
-        Fri, 21 Jul 2023 19:05:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51AAE61D79
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:05:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BB7C433CA;
+        Fri, 21 Jul 2023 19:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966313;
-        bh=w/y9tb2lQ1ew5uriU0ahHKP/27LdKVIXQ95/qAgOcB8=;
+        s=korg; t=1689966315;
+        bh=J2lDcGqvpfLrSAW3RkTH9qO3IByZ+BTwfVAiaR7rBE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rY6gJr5vOJ47TaD13rFENXzLfgbsMU962paGHoK39mL1JWVmnJl4mm/+vPz4J0uMv
-         Svsw2kSnnRav3ydvWzjId/OYc+HJ4fL78JwR0pfc1XGj9tuARd4v9pDU+NlDgAf5eY
-         vzZzZTJi4pxKIrfqk7VDwi+d7Crwt9u2nYrHP4pA=
+        b=z2vqfqCxTxDvvwLGEL2eDaii8+8f+0kYrvGZkahKoGMWQGVwjvfuaGcA/BQ9o6l1k
+         kezmmIU73GBUuXPgYSIknVdwVS7eilPlj+llhDyAh0sCsZQhH2+RqHXqsDtT8dY5PX
+         6RyDgSKvi/QkIhIcfTas4u3rtD04E7PeN1prnQTg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>,
-        Scott Branden <sbranden@broadcom.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
+        patches@lists.linux.dev, Phil Elwell <phil@raspberrypi.com>,
+        "Ivan T. Ivanov" <iivanov@suse.de>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 300/532] test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
-Date:   Fri, 21 Jul 2023 18:03:24 +0200
-Message-ID: <20230721160630.668952292@linuxfoundation.org>
+Subject: [PATCH 5.15 301/532] nvmem: rmem: Use NVMEM_DEVID_AUTO
+Date:   Fri, 21 Jul 2023 18:03:25 +0200
+Message-ID: <20230721160630.724973843@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -52,9 +47,9 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,108 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
+[ Upstream commit 09dd7b993eddb3b48634fd5ddf27aa799785a9ee ]
 
-In a couple of situations like
+It is reasonable to declare multiple nvmem blocks. Unless a unique 'id'
+is passed in for each block there may be name clashes.
 
-	name = kstrndup(buf, count, GFP_KERNEL);
-	if (!name)
-		return -ENOSPC;
+Avoid this by using the magic token NVMEM_DEVID_AUTO.
 
-the error is not actually "No space left on device", but "Out of memory".
-
-It is semantically correct to return -ENOMEM in all failed kstrndup()
-and kzalloc() cases in this driver, as it is not a problem with disk
-space, but with kernel memory allocator failing allocation.
-
-The semantically correct should be:
-
-        name = kstrndup(buf, count, GFP_KERNEL);
-        if (!name)
-                return -ENOMEM;
-
-Cc: Dan Carpenter <error27@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Brian Norris <briannorris@chromium.org>
-Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
-Fixes: 0a8adf584759c ("test: add firmware_class loader test")
-Fixes: 548193cba2a7d ("test_firmware: add support for firmware_request_platform")
-Fixes: eb910947c82f9 ("test: firmware_class: add asynchronous request trigger")
-Fixes: 061132d2b9c95 ("test_firmware: add test custom fallback trigger")
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <20230606070808.9300-1-mirsad.todorovac@alu.unizg.hr>
+Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nvmem")
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Ivan T. Ivanov <iivanov@suse.de>
+Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Message-ID: <20230611140330.154222-6-srinivas.kandagatla@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_firmware.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/nvmem/rmem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 2a4078946a3fd..b64f87f4f2284 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -183,7 +183,7 @@ static int __kstrncpy(char **dst, const char *name, size_t count, gfp_t gfp)
- {
- 	*dst = kstrndup(name, count, gfp);
- 	if (!*dst)
--		return -ENOSPC;
-+		return -ENOMEM;
- 	return count;
- }
+diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+index 80cb187f14817..752d0bf4445ee 100644
+--- a/drivers/nvmem/rmem.c
++++ b/drivers/nvmem/rmem.c
+@@ -71,6 +71,7 @@ static int rmem_probe(struct platform_device *pdev)
+ 	config.dev = dev;
+ 	config.priv = priv;
+ 	config.name = "rmem";
++	config.id = NVMEM_DEVID_AUTO;
+ 	config.size = mem->size;
+ 	config.reg_read = rmem_read;
  
-@@ -606,7 +606,7 @@ static ssize_t trigger_request_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s'\n", name);
- 
-@@ -654,7 +654,7 @@ static ssize_t trigger_request_platform_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("inserting test platform fw '%s'\n", name);
- 	efi_embedded_fw.name = name;
-@@ -707,7 +707,7 @@ static ssize_t trigger_async_request_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s'\n", name);
- 
-@@ -752,7 +752,7 @@ static ssize_t trigger_custom_fallback_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s' using custom fallback mechanism\n", name);
- 
-@@ -803,7 +803,7 @@ static int test_fw_run_batch_request(void *data)
- 
- 		test_buf = kzalloc(TEST_FIRMWARE_BUF_SIZE, GFP_KERNEL);
- 		if (!test_buf)
--			return -ENOSPC;
-+			return -ENOMEM;
- 
- 		if (test_fw_config->partial)
- 			req->rc = request_partial_firmware_into_buf
 -- 
 2.39.2
 
