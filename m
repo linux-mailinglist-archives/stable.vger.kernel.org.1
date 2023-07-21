@@ -2,93 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07B9575D197
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3DC75D3A1
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbjGUSuj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:50:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44896 "EHLO
+        id S231887AbjGUTMr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbjGUSui (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:38 -0400
+        with ESMTP id S231881AbjGUTMq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE2F30CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 895EF30ED
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E52961D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6367AC433C7;
-        Fri, 21 Jul 2023 18:50:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28EA861D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3998AC433C8;
+        Fri, 21 Jul 2023 19:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965434;
-        bh=fYypAZVeI8mYnK+mqgKmp+IrxnpJmAzOR7qYomiiEig=;
+        s=korg; t=1689966764;
+        bh=PnbHQ55voEiC0I6O2eBTnbKYYREITkufZENkPfVCBr4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uKEU8Aouii7t49/NOLAVn6UG1nqXn39qN+saRMXkQstjuosYnIeKzTcVA5NAehCtF
-         FbHBBhKn1/oAFrPS2BWcd9WnuhGswDq5lWchksI/QwcboWT1kwDR4RkW+C2PUYTi5n
-         c0/xZnRmm8jYCaP5Fa/ZYgUTDXzeTk/+966qSlDQ=
+        b=VcO+TdScSvCs/hC2kWrTRL4CD4JMPo50NoJk5dN7KXpxRHB7UM79kzzWawRHR/vmD
+         Mq8a5gNBLWqYCrCgfFRL8YBNNvkMe8khQGQGxOVJNrPwDjhHbJEqrdUo053SEJI/au
+         6IDwBjGl5bZ0m6sVebUOnfMkLI3aTiVZFVXGSOaE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Karol Wachowski <karol.wachowski@linux.intel.com>,
-        Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Subject: [PATCH 6.4 254/292] accel/ivpu: Fix VPU register access in irq disable
+        patches@lists.linux.dev, Huang Pei <huangpei@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 459/532] MIPS: Loongson: Fix cpu_probe_loongson() again
 Date:   Fri, 21 Jul 2023 18:06:03 +0200
-Message-ID: <20230721160539.849988908@linuxfoundation.org>
+Message-ID: <20230721160639.428812252@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-References: <20230721160528.800311148@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 020b527b556a35cf636015c1c3cbdfe7c7acd5f0 upstream.
+commit 65fee014dc41a774bcd94896f3fb380bc39d8dda upstream.
 
-Incorrect REGB_WR32() macro was used to access VPUIP register.
-Use correct REGV_WR32().
+Commit 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
+move decode_configs() from the beginning of cpu_probe_loongson() to the
+end in order to fix FTLB configuration. However, it breaks the CPUCFG
+decoding because decode_configs() use "c->options = xxxx" rather than
+"c->options |= xxxx", all information get from CPUCFG by decode_cpucfg()
+is lost.
 
-Fixes: 35b137630f08 ("accel/ivpu: Introduce a new DRM driver for Intel VPU")
-Cc: stable@vger.kernel.org # 6.3.x
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230703080725.2065635-1-stanislaw.gruszka@linux.intel.com
+This causes error when creating a KVM guest on Loongson-3A4000:
+Exception Code: 4 not handled @ PC: 0000000087ad5981, inst: 0xcb7a1898 BadVaddr: 0x0 Status: 0x0
+
+Fix this by moving the c->cputype setting to the beginning and moving
+decode_configs() after that.
+
+Fixes: 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
+Cc: stable@vger.kernel.org
+Cc: Huang Pei <huangpei@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_hw_mtl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/cpu-probe.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_mtl.c b/drivers/accel/ivpu/ivpu_hw_mtl.c
-index fef35422c6f0..3485be27138a 100644
---- a/drivers/accel/ivpu/ivpu_hw_mtl.c
-+++ b/drivers/accel/ivpu/ivpu_hw_mtl.c
-@@ -885,7 +885,7 @@ static void ivpu_hw_mtl_irq_disable(struct ivpu_device *vdev)
- 	REGB_WR32(MTL_BUTTRESS_GLOBAL_INT_MASK, 0x1);
- 	REGB_WR32(MTL_BUTTRESS_LOCAL_INT_MASK, BUTTRESS_IRQ_DISABLE_MASK);
- 	REGV_WR64(MTL_VPU_HOST_SS_ICB_ENABLE_0, 0x0ull);
--	REGB_WR32(MTL_VPU_HOST_SS_FW_SOC_IRQ_EN, 0x0);
-+	REGV_WR32(MTL_VPU_HOST_SS_FW_SOC_IRQ_EN, 0x0);
- }
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1734,7 +1734,10 @@ static inline void decode_cpucfg(struct
  
- static void ivpu_hw_mtl_irq_wdt_nce_handler(struct ivpu_device *vdev)
--- 
-2.41.0
-
+ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ {
++	c->cputype = CPU_LOONGSON64;
++
+ 	/* All Loongson processors covered here define ExcCode 16 as GSExc. */
++	decode_configs(c);
+ 	c->options |= MIPS_CPU_GSEXCEX;
+ 
+ 	switch (c->processor_id & PRID_IMP_MASK) {
+@@ -1744,7 +1747,6 @@ static inline void cpu_probe_loongson(st
+ 		case PRID_REV_LOONGSON2K_R1_1:
+ 		case PRID_REV_LOONGSON2K_R1_2:
+ 		case PRID_REV_LOONGSON2K_R1_3:
+-			c->cputype = CPU_LOONGSON64;
+ 			__cpu_name[cpu] = "Loongson-2K";
+ 			set_elf_platform(cpu, "gs264e");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+@@ -1757,14 +1759,12 @@ static inline void cpu_probe_loongson(st
+ 		switch (c->processor_id & PRID_REV_MASK) {
+ 		case PRID_REV_LOONGSON3A_R2_0:
+ 		case PRID_REV_LOONGSON3A_R2_1:
+-			c->cputype = CPU_LOONGSON64;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R3_0:
+ 		case PRID_REV_LOONGSON3A_R3_1:
+-			c->cputype = CPU_LOONGSON64;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+@@ -1784,7 +1784,6 @@ static inline void cpu_probe_loongson(st
+ 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
+ 		break;
+ 	case PRID_IMP_LOONGSON_64G:
+-		c->cputype = CPU_LOONGSON64;
+ 		__cpu_name[cpu] = "ICT Loongson-3";
+ 		set_elf_platform(cpu, "loongson3a");
+ 		set_isa(c, MIPS_CPU_ISA_M64R2);
+@@ -1794,8 +1793,6 @@ static inline void cpu_probe_loongson(st
+ 		panic("Unknown Loongson Processor ID!");
+ 		break;
+ 	}
+-
+-	decode_configs(c);
+ }
+ #else
+ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu) { }
 
 
