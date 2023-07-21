@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 884C375D307
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24A9D75D2E5
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230517AbjGUTGX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
+        id S231650AbjGUTE4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:04:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231545AbjGUTGU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:06:20 -0400
+        with ESMTP id S231631AbjGUTEy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:04:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079E030E1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:06:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31FD030D6
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AB7761D90
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7DBC433CA;
-        Fri, 21 Jul 2023 19:06:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4E5561D84
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:04:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD888C433C7;
+        Fri, 21 Jul 2023 19:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966372;
-        bh=it/RG/xdRioghciBxJzvRHPsWpY4/YtNlbQIZWYLv0w=;
+        s=korg; t=1689966293;
+        bh=sMotszu4g2KgmmksN+Q8aH2gCIGHcws4HNDBywHplO0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SZ2SpH7kRzIVR9kPbFQQ7Dcbf7fpQv2FiJYhkPf4RWVgCC4bjritr4yTEmIchjRDw
-         KlnmdRK1HPzEfAMZo4Bcu8DzDFX8/SdeBZwTbwpwfDaxVKO9OYllYI9v5rWXMeMxeO
-         PYcDH6e2a3WNwxUynNFtteWdfuH/lwam83SrlhtY=
+        b=rgd408RF3rJowxcek21ehpTcYd2mwShMhrZR3P/lz/aOYvHZlejXCvnWtqD6UBtD8
+         ITmZ9TtSz9jMxcXGX1PRV67gaSbMSeReBElF6K5f4keLSJc6twImCNd2gtrhd02iDC
+         omIRnvYJKulP3nnncZnpjmOvHOD7/4gFhFKsnyRg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nico Boehr <nrb@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Andrew Halaney <ahalaney@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 292/532] KVM: s390: fix KVM_S390_GET_CMMA_BITS for GFNs in memslot holes
-Date:   Fri, 21 Jul 2023 18:03:16 +0200
-Message-ID: <20230721160630.243037869@linuxfoundation.org>
+Subject: [PATCH 5.15 293/532] usb: dwc3: qcom: Release the correct resources in dwc3_qcom_remove()
+Date:   Fri, 21 Jul 2023 18:03:17 +0200
+Message-ID: <20230721160630.294973375@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -56,72 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nico Boehr <nrb@linux.ibm.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 285cff4c0454340a4dc53f46e67f2cb1c293bd74 ]
+[ Upstream commit 8fd95da2cfb5046c4bb5a3cdc9eb7963ba8b10dd ]
 
-The KVM_S390_GET_CMMA_BITS ioctl may return incorrect values when userspace
-specifies a start_gfn outside of memslots.
+In the probe, some resources are allocated with
+dwc3_qcom_of_register_core() or dwc3_qcom_acpi_register_core(). The
+corresponding resources are already coorectly freed in the error handling
+path of the probe, but not in the remove function.
 
-This can occur when a VM has multiple memslots with a hole in between:
+Fix it.
 
-+-----+----------+--------+--------+
-| ... | Slot N-1 | <hole> | Slot N |
-+-----+----------+--------+--------+
-      ^          ^        ^        ^
-      |          |        |        |
-GFN   A          A+B      |        |
-                          A+B+C    |
-			           A+B+C+D
-
-When userspace specifies a GFN in [A+B, A+B+C), it would expect to get the
-CMMA values of the first dirty page in Slot N. However, userspace may get a
-start_gfn of A+B+C+D with a count of 0, hence completely skipping over any
-dirty pages in slot N.
-
-The error is in kvm_s390_next_dirty_cmma(), which assumes
-gfn_to_memslot_approx() will return the memslot _below_ the specified GFN
-when the specified GFN lies outside a memslot. In reality it may return
-either the memslot below or above the specified GFN.
-
-When a memslot above the specified GFN is returned this happens:
-
-- ofs is calculated, but since the memslot's base_gfn is larger than the
-  specified cur_gfn, ofs will underflow to a huge number.
-- ofs is passed to find_next_bit(). Since ofs will exceed the memslot's
-  number of pages, the number of pages in the memslot is returned,
-  completely skipping over all bits in the memslot userspace would be
-  interested in.
-
-Fix this by resetting ofs to zero when a memslot _above_ cur_gfn is
-returned (cur_gfn < ms->base_gfn).
-
-Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Fixes: afdad61615cc ("KVM: s390: Fix storage attributes migration with memory slots")
-Message-Id: <20230324145424.293889-2-nrb@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Message-ID: <c0215a84cdf18fb3514c81842783ec53cf149deb.1685891059.git.christophe.jaillet@wanadoo.fr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/kvm-s390.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/dwc3/dwc3-qcom.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index d7aa442ceaf1c..eb97db59b2365 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -2030,6 +2030,10 @@ static unsigned long kvm_s390_next_dirty_cmma(struct kvm_memslots *slots,
- 		ms = slots->memslots + slotidx;
- 		ofs = 0;
- 	}
-+
-+	if (cur_gfn < ms->base_gfn)
-+		ofs = 0;
-+
- 	ofs = find_next_bit(kvm_second_dirty_bitmap(ms), ms->npages, ofs);
- 	while ((slotidx > 0) && (ofs >= ms->npages)) {
- 		slotidx--;
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index c55f939168fce..3a81b95accdf4 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -873,11 +873,15 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ static int dwc3_qcom_remove(struct platform_device *pdev)
+ {
+ 	struct dwc3_qcom *qcom = platform_get_drvdata(pdev);
++	struct device_node *np = pdev->dev.of_node;
+ 	struct device *dev = &pdev->dev;
+ 	int i;
+ 
+ 	device_remove_software_node(&qcom->dwc3->dev);
+-	of_platform_depopulate(dev);
++	if (np)
++		of_platform_depopulate(&pdev->dev);
++	else
++		platform_device_put(pdev);
+ 
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
 -- 
 2.39.2
 
