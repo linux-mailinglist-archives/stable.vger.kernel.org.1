@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A31975D308
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C7D375D2E4
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230178AbjGUTGY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:06:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58560 "EHLO
+        id S231636AbjGUTEx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:04:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231694AbjGUTGV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:06:21 -0400
+        with ESMTP id S231633AbjGUTEw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:04:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9DF30EF
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:06:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5185830CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CCAC61D5F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:06:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAF7C433C8;
-        Fri, 21 Jul 2023 19:06:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E472C61D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:04:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BD9C433CB;
+        Fri, 21 Jul 2023 19:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966374;
-        bh=6ElYaEWY4zATLDUsCxHfuSlAzzeJ3YypEbToYLLYaSU=;
+        s=korg; t=1689966290;
+        bh=n5XLZFzWVntRmT/3jjB39hsfqreFoRQ037OVWUVq/eY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rncM72/rJIn1C7kjbp8+85PJgF/0z/e4WEVM/ObVDAaHSbXLpL4h0CQkRejWObiLG
-         hamwx3ftp6nq641Hdiw2zgWKnWPuHLvu+NdXzAi99B0M1cvd3Vsamv/xZ433hfaMq6
-         S8rp1m3OZZkEDkE8q/Bg0FbFuze74LlueLuzuRNw=
+        b=BHGqRFL0o6HO4l4b4FA03/8V/wvruwnd8V+LqR6Q/KhZ4dmUHWzn+hkpXcdMuE9c6
+         qiCzSA2EAKPCFB6oI3I7v1PeMZhmldGIoUqkkE8bKdEZ0tfxhjz6uOUg9kT4qY0Byu
+         qfY1+vN9+SW11FoW24Tq0ubRS6NlHCA2lsyzhdKY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Yang <lidaxian@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 283/532] usb: phy: phy-tahvo: fix memory leak in tahvo_usb_probe()
-Date:   Fri, 21 Jul 2023 18:03:07 +0200
-Message-ID: <20230721160629.773787384@linuxfoundation.org>
+Subject: [PATCH 5.15 284/532] usb: hide unused usbfs_notify_suspend/resume functions
+Date:   Fri, 21 Jul 2023 18:03:08 +0200
+Message-ID: <20230721160629.828789379@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -55,41 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Yang <lidaxian@hust.edu.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 342161c11403ea00e9febc16baab1d883d589d04 ]
+[ Upstream commit 8e6bd945e6dde64fbc60ec3fe252164493a8d3a2 ]
 
-Smatch reports:
-drivers/usb/phy/phy-tahvo.c: tahvo_usb_probe()
-warn: missing unwind goto?
+The declaration is in an #ifdef, which causes warnings when building
+with 'make W=1' and without CONFIG_PM:
 
-After geting irq, if ret < 0, it will return without error handling to
-free memory.
-Just add error handling to fix this problem.
+drivers/usb/core/devio.c:742:6: error: no previous prototype for 'usbfs_notify_suspend'
+drivers/usb/core/devio.c:747:6: error: no previous prototype for 'usbfs_notify_resume'
 
-Fixes: 0d45a1373e66 ("usb: phy: tahvo: add IRQ check")
-Signed-off-by: Li Yang <lidaxian@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230420140832.9110-1-lidaxian@hust.edu.cn
+Use the same #ifdef check around the function definitions to avoid
+the warnings and slightly shrink the USB core.
+
+Fixes: 7794f486ed0b ("usbfs: Add ioctls for runtime power management")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230516202103.558301-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-tahvo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/devio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/phy/phy-tahvo.c b/drivers/usb/phy/phy-tahvo.c
-index a3e043e3e4aae..d0672b6712985 100644
---- a/drivers/usb/phy/phy-tahvo.c
-+++ b/drivers/usb/phy/phy-tahvo.c
-@@ -395,7 +395,7 @@ static int tahvo_usb_probe(struct platform_device *pdev)
+diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
+index 5e34986fac96f..5cd0a724b425e 100644
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -735,6 +735,7 @@ static int driver_resume(struct usb_interface *intf)
+ 	return 0;
+ }
  
- 	tu->irq = ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		return ret;
-+		goto err_remove_phy;
- 	ret = request_threaded_irq(tu->irq, NULL, tahvo_usb_vbus_interrupt,
- 				   IRQF_ONESHOT,
- 				   "tahvo-vbus", tu);
++#ifdef CONFIG_PM
+ /* The following routines apply to the entire device, not interfaces */
+ void usbfs_notify_suspend(struct usb_device *udev)
+ {
+@@ -753,6 +754,7 @@ void usbfs_notify_resume(struct usb_device *udev)
+ 	}
+ 	mutex_unlock(&usbfs_mutex);
+ }
++#endif
+ 
+ struct usb_driver usbfs_driver = {
+ 	.name =		"usbfs",
 -- 
 2.39.2
 
