@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBFF75CE39
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D5F275CE48
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231739AbjGUQSu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45672 "EHLO
+        id S232597AbjGUQTX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:19:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231919AbjGUQS3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:18:29 -0400
+        with ESMTP id S232618AbjGUQTK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:19:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E4974236
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:17:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427EE46BA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:17:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C79D661D14
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB00C433C7;
-        Fri, 21 Jul 2023 16:17:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2FBB61D2B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:17:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34D5C433C7;
+        Fri, 21 Jul 2023 16:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956235;
-        bh=GLTQt0lda/Teb+p8X1CkaAhLrrs6az1NUrKQOvjwkzA=;
+        s=korg; t=1689956266;
+        bh=mx4Z5PQmJNkjYRaxPQVDdqKbSlF8xVCrPF/3qQmbo1s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Iwp71t1UwrQz+Fl+nCnnwCRcqE0lreiBibebXCdyEXZp7u97qDHCFD/XdEh03Jfvy
-         Q7UCUdABpgQO6L5Gm64bOmhGcGYSMXTydedHxUE4Yw6bQckClfROxUljW4NyueM8h9
-         bDT32GsinFvHEYU3thaR7a4WotJ+8vOiz2F3LaL4=
+        b=r6f0MGYnpm/tc66Cot5r1Y9Fae7KUOgO6f/XFrRprzOMoqvPx1IDvsgwFZWHEIQJS
+         larlHThOYuGnnwwC8fHvB3120fWzlJ0Pew7J7J/tx2GEFVF/ONItX9L1P8g9g36jv2
+         4w+z4JyIs625ZcTPd+N74NheI/6NqTQevKSs8yZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, roubro1991@gmail.com,
-        Christian Hesse <mail@eworm.de>,
+        patches@lists.linux.dev, kernel test robot <yujie.liu@intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
         Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.4 130/292] tpm/tpm_tis: Disable interrupts for Framework Laptop Intel 13th gen
-Date:   Fri, 21 Jul 2023 18:03:59 +0200
-Message-ID: <20230721160534.411920399@linuxfoundation.org>
+Subject: [PATCH 6.4 131/292] tpm,tpm_tis: Disable interrupts after 1000 unhandled IRQs
+Date:   Fri, 21 Jul 2023 18:04:00 +0200
+Message-ID: <20230721160534.454997287@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -46,7 +47,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_OTHER_BAD_TLD,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,44 +56,266 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Hesse <mail@eworm.de>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-commit bc825e851c2fe89c127cac1e0e5cf344c4940619 upstream.
+commit 481c2d14627de8ecbb54dd125466e4b4a5069b47 upstream.
 
-This device suffer an irq storm, so add it in tpm_tis_dmi_table to
-force polling.
+After activation of interrupts for TPM TIS drivers 0-day reports an
+interrupt storm on an Inspur NF5180M6 server.
+
+Fix this by detecting the storm and falling back to polling:
+Count the number of unhandled interrupts within a 10 ms time interval. In
+case that more than 1000 were unhandled deactivate interrupts entirely,
+deregister the handler and use polling instead.
+
+Also print a note to point to the tpm_tis_dmi_table.
+
+Since the interrupt deregistration function devm_free_irq() waits for all
+interrupt handlers to finish, only trigger a worker in the interrupt
+handler and do the unregistration in the worker to avoid a deadlock.
+
+Note: the storm detection logic equals the implementation in
+note_interrupt() which uses timestamps and counters stored in struct
+irq_desc. Since this structure is private to the generic interrupt core
+the TPM TIS core uses its own timestamps and counters. Furthermore the TPM
+interrupt handler always returns IRQ_HANDLED to prevent the generic
+interrupt core from processing the interrupt storm.
 
 Cc: stable@vger.kernel.org # v6.4+
-Link: https://community.frame.work/t/boot-and-shutdown-hangs-with-arch-linux-kernel-6-4-1-mainline-and-arch/33118
 Fixes: e644b2f498d2 ("tpm, tpm_tis: Enable interrupt test")
-Reported-by: <roubro1991@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217631
-Signed-off-by: Christian Hesse <mail@eworm.de>
+Reported-by: kernel test robot <yujie.liu@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202305041325.ae8b0c43-yujie.liu@intel.com/
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/char/tpm/tpm_tis_core.c | 103 +++++++++++++++++++++++++++-----
+ drivers/char/tpm/tpm_tis_core.h |   4 ++
+ 2 files changed, 92 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
-index 5dd391ed3320..4e4426965cd0 100644
---- a/drivers/char/tpm/tpm_tis.c
-+++ b/drivers/char/tpm/tpm_tis.c
-@@ -122,6 +122,14 @@ static const struct dmi_system_id tpm_tis_dmi_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Laptop (12th Gen Intel Core)"),
- 		},
- 	},
-+	{
-+		.callback = tpm_tis_disable_irq,
-+		.ident = "Framework Laptop (13th Gen Intel Core)",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Laptop (13th Gen Intel Core)"),
-+		},
-+	},
- 	{
- 		.callback = tpm_tis_disable_irq,
- 		.ident = "ThinkPad T490s",
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 558144fa707a..88a5384c09c0 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -24,9 +24,12 @@
+ #include <linux/wait.h>
+ #include <linux/acpi.h>
+ #include <linux/freezer.h>
++#include <linux/dmi.h>
+ #include "tpm.h"
+ #include "tpm_tis_core.h"
+ 
++#define TPM_TIS_MAX_UNHANDLED_IRQS	1000
++
+ static void tpm_tis_clkrun_enable(struct tpm_chip *chip, bool value);
+ 
+ static bool wait_for_tpm_stat_cond(struct tpm_chip *chip, u8 mask,
+@@ -468,25 +471,29 @@ static int tpm_tis_send_data(struct tpm_chip *chip, const u8 *buf, size_t len)
+ 	return rc;
+ }
+ 
+-static void disable_interrupts(struct tpm_chip *chip)
++static void __tpm_tis_disable_interrupts(struct tpm_chip *chip)
++{
++	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
++	u32 int_mask = 0;
++
++	tpm_tis_read32(priv, TPM_INT_ENABLE(priv->locality), &int_mask);
++	int_mask &= ~TPM_GLOBAL_INT_ENABLE;
++	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), int_mask);
++
++	chip->flags &= ~TPM_CHIP_FLAG_IRQ;
++}
++
++static void tpm_tis_disable_interrupts(struct tpm_chip *chip)
+ {
+ 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
+-	u32 intmask;
+-	int rc;
+ 
+ 	if (priv->irq == 0)
+ 		return;
+ 
+-	rc = tpm_tis_read32(priv, TPM_INT_ENABLE(priv->locality), &intmask);
+-	if (rc < 0)
+-		intmask = 0;
+-
+-	intmask &= ~TPM_GLOBAL_INT_ENABLE;
+-	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
++	__tpm_tis_disable_interrupts(chip);
+ 
+ 	devm_free_irq(chip->dev.parent, priv->irq, chip);
+ 	priv->irq = 0;
+-	chip->flags &= ~TPM_CHIP_FLAG_IRQ;
+ }
+ 
+ /*
+@@ -552,7 +559,7 @@ static int tpm_tis_send(struct tpm_chip *chip, u8 *buf, size_t len)
+ 	if (!test_bit(TPM_TIS_IRQ_TESTED, &priv->flags))
+ 		tpm_msleep(1);
+ 	if (!test_bit(TPM_TIS_IRQ_TESTED, &priv->flags))
+-		disable_interrupts(chip);
++		tpm_tis_disable_interrupts(chip);
+ 	set_bit(TPM_TIS_IRQ_TESTED, &priv->flags);
+ 	return rc;
+ }
+@@ -752,6 +759,57 @@ static bool tpm_tis_req_canceled(struct tpm_chip *chip, u8 status)
+ 	return status == TPM_STS_COMMAND_READY;
+ }
+ 
++static irqreturn_t tpm_tis_revert_interrupts(struct tpm_chip *chip)
++{
++	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
++	const char *product;
++	const char *vendor;
++
++	dev_warn(&chip->dev, FW_BUG
++		 "TPM interrupt storm detected, polling instead\n");
++
++	vendor = dmi_get_system_info(DMI_SYS_VENDOR);
++	product = dmi_get_system_info(DMI_PRODUCT_VERSION);
++
++	if (vendor && product) {
++		dev_info(&chip->dev,
++			"Consider adding the following entry to tpm_tis_dmi_table:\n");
++		dev_info(&chip->dev, "\tDMI_SYS_VENDOR: %s\n", vendor);
++		dev_info(&chip->dev, "\tDMI_PRODUCT_VERSION: %s\n", product);
++	}
++
++	if (tpm_tis_request_locality(chip, 0) != 0)
++		return IRQ_NONE;
++
++	__tpm_tis_disable_interrupts(chip);
++	tpm_tis_relinquish_locality(chip, 0);
++
++	schedule_work(&priv->free_irq_work);
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t tpm_tis_update_unhandled_irqs(struct tpm_chip *chip)
++{
++	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
++	irqreturn_t irqret = IRQ_HANDLED;
++
++	if (!(chip->flags & TPM_CHIP_FLAG_IRQ))
++		return IRQ_HANDLED;
++
++	if (time_after(jiffies, priv->last_unhandled_irq + HZ/10))
++		priv->unhandled_irqs = 1;
++	else
++		priv->unhandled_irqs++;
++
++	priv->last_unhandled_irq = jiffies;
++
++	if (priv->unhandled_irqs > TPM_TIS_MAX_UNHANDLED_IRQS)
++		irqret = tpm_tis_revert_interrupts(chip);
++
++	return irqret;
++}
++
+ static irqreturn_t tis_int_handler(int dummy, void *dev_id)
+ {
+ 	struct tpm_chip *chip = dev_id;
+@@ -761,10 +819,10 @@ static irqreturn_t tis_int_handler(int dummy, void *dev_id)
+ 
+ 	rc = tpm_tis_read32(priv, TPM_INT_STATUS(priv->locality), &interrupt);
+ 	if (rc < 0)
+-		return IRQ_NONE;
++		goto err;
+ 
+ 	if (interrupt == 0)
+-		return IRQ_NONE;
++		goto err;
+ 
+ 	set_bit(TPM_TIS_IRQ_TESTED, &priv->flags);
+ 	if (interrupt & TPM_INTF_DATA_AVAIL_INT)
+@@ -780,10 +838,13 @@ static irqreturn_t tis_int_handler(int dummy, void *dev_id)
+ 	rc = tpm_tis_write32(priv, TPM_INT_STATUS(priv->locality), interrupt);
+ 	tpm_tis_relinquish_locality(chip, 0);
+ 	if (rc < 0)
+-		return IRQ_NONE;
++		goto err;
+ 
+ 	tpm_tis_read32(priv, TPM_INT_STATUS(priv->locality), &interrupt);
+ 	return IRQ_HANDLED;
++
++err:
++	return tpm_tis_update_unhandled_irqs(chip);
+ }
+ 
+ static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
+@@ -804,6 +865,15 @@ static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 		chip->flags &= ~TPM_CHIP_FLAG_IRQ;
+ }
+ 
++static void tpm_tis_free_irq_func(struct work_struct *work)
++{
++	struct tpm_tis_data *priv = container_of(work, typeof(*priv), free_irq_work);
++	struct tpm_chip *chip = priv->chip;
++
++	devm_free_irq(chip->dev.parent, priv->irq, chip);
++	priv->irq = 0;
++}
++
+ /* Register the IRQ and issue a command that will cause an interrupt. If an
+  * irq is seen then leave the chip setup for IRQ operation, otherwise reverse
+  * everything and leave in polling mode. Returns 0 on success.
+@@ -816,6 +886,7 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	int rc;
+ 	u32 int_status;
+ 
++	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+ 
+ 	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
+ 				       tis_int_handler, IRQF_ONESHOT | flags,
+@@ -918,6 +989,7 @@ void tpm_tis_remove(struct tpm_chip *chip)
+ 		interrupt = 0;
+ 
+ 	tpm_tis_write32(priv, reg, ~TPM_GLOBAL_INT_ENABLE & interrupt);
++	flush_work(&priv->free_irq_work);
+ 
+ 	tpm_tis_clkrun_enable(chip, false);
+ 
+@@ -1021,6 +1093,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 	chip->timeout_b = msecs_to_jiffies(TIS_TIMEOUT_B_MAX);
+ 	chip->timeout_c = msecs_to_jiffies(TIS_TIMEOUT_C_MAX);
+ 	chip->timeout_d = msecs_to_jiffies(TIS_TIMEOUT_D_MAX);
++	priv->chip = chip;
+ 	priv->timeout_min = TPM_TIMEOUT_USECS_MIN;
+ 	priv->timeout_max = TPM_TIMEOUT_USECS_MAX;
+ 	priv->phy_ops = phy_ops;
+@@ -1179,7 +1252,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 			rc = tpm_tis_request_locality(chip, 0);
+ 			if (rc < 0)
+ 				goto out_err;
+-			disable_interrupts(chip);
++			tpm_tis_disable_interrupts(chip);
+ 			tpm_tis_relinquish_locality(chip, 0);
+ 		}
+ 	}
+diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
+index 610bfadb6acf..b1a169d7d1ca 100644
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
+@@ -91,11 +91,15 @@ enum tpm_tis_flags {
+ };
+ 
+ struct tpm_tis_data {
++	struct tpm_chip *chip;
+ 	u16 manufacturer_id;
+ 	struct mutex locality_count_mutex;
+ 	unsigned int locality_count;
+ 	int locality;
+ 	int irq;
++	struct work_struct free_irq_work;
++	unsigned long last_unhandled_irq;
++	unsigned int unhandled_irqs;
+ 	unsigned int int_mask;
+ 	unsigned long flags;
+ 	void __iomem *ilb_base_addr;
 -- 
 2.41.0
 
