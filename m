@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97AEC75C669
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B147175C67A
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230482AbjGUMDp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 08:03:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55854 "EHLO
+        id S231172AbjGUMFW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 08:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230218AbjGUMDo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:03:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6332830DB
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:03:22 -0700 (PDT)
+        with ESMTP id S231426AbjGUMFD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:05:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E22E30C0
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:04:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53AE460BA6
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFFFC433D9;
-        Fri, 21 Jul 2023 12:03:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBFBE61A5F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AC5C433C8;
+        Fri, 21 Jul 2023 12:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689940999;
-        bh=uqQQuMAk27TIY5Lsqd33fKjcUdUY2I36r/j2unmOqDA=;
+        s=korg; t=1689941090;
+        bh=bGd7MZm1JbkLC1kMQw2U76egguuMSrV3YWwpPxKzlDo=;
         h=Subject:To:Cc:From:Date:From;
-        b=08we5EVNgQCD6fsknTzx132r/rNdYbKVOY+kHibzxJFUk8Nt6k5Zd+t4cW2ZXyuyk
-         aa5HTmjDMq5qI2+vUxgBdN7NnVX/aO3bgUTAJQvxKzGmzo4WF7bSuybEXQ1XCUuqTb
-         pU7l6pVlDN+vD/PMQJRziAbmJrP9i/dHRsivCtV4=
-Subject: FAILED: patch "[PATCH] drm/ttm: never consider pinned BOs for eviction&swap" failed to apply to 5.4-stable tree
-To:     christian.koenig@amd.com, Pierre-eric.Pelloux-prayer@amd.com,
-        alexander.deucher@amd.com
+        b=zkQxj4fhW6/gjVmBvazJlQvJPBA5nzKba5vfKkG/Ku6P0cqgjqnWPEfHN8mHoCJls
+         NIhBz97nVWqVWnQ+cj87MvTEK06DZ/CROySTVixBA64nrQyZAH4vIP8touSMiXIsqC
+         a59PZKDxJ2ATeDJvj1Jg9eSU3O0L0zYKb9/Bq5xU=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: fix clearing mappings for BOs that are always" failed to apply to 5.10-stable tree
+To:     samuel.pitoiset@gmail.com, alexander.deucher@amd.com,
+        christian.koenig@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 14:03:16 +0200
-Message-ID: <2023072116-underwent-bartender-da8d@gregkh>
+Date:   Fri, 21 Jul 2023 14:04:47 +0200
+Message-ID: <2023072146-landscape-vendetta-a711@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,23 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x a2848d08742c8e8494675892c02c0d22acbe3cf8
+git cherry-pick -x ea2c3c08554601b051d91403a241266e1cf490a5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072116-underwent-bartender-da8d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072146-landscape-vendetta-a711@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-a2848d08742c ("drm/ttm: never consider pinned BOs for eviction&swap")
+ea2c3c085546 ("drm/amdgpu: fix clearing mappings for BOs that are always valid in VM")
 
 thanks,
 
@@ -74,39 +74,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a2848d08742c8e8494675892c02c0d22acbe3cf8 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Date: Fri, 7 Jul 2023 11:25:00 +0200
-Subject: [PATCH] drm/ttm: never consider pinned BOs for eviction&swap
+From ea2c3c08554601b051d91403a241266e1cf490a5 Mon Sep 17 00:00:00 2001
+From: Samuel Pitoiset <samuel.pitoiset@gmail.com>
+Date: Fri, 16 Jun 2023 15:14:07 +0200
+Subject: [PATCH] drm/amdgpu: fix clearing mappings for BOs that are always
+ valid in VM
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-There is a small window where we have already incremented the pin count
-but not yet moved the bo from the lru to the pinned list.
+Per VM BOs must be marked as moved or otherwise their ranges are not
+updated on use which might be necessary when the replace operation
+splits mappings.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reported-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
-Tested-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+This fixes random GPU hangs when replacing sparse mappings from the
+userspace, while OP_MAP/OP_UNMAP works fine because always valid BOs
+are correctly handled there.
+
 Cc: stable@vger.kernel.org
-Link: https://patchwork.freedesktop.org/patch/msgid/20230707120826.3701-1-christian.koenig@amd.com
+Signed-off-by: Samuel Pitoiset <samuel.pitoiset@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
-index 1a1cfd675cc4..7139a522b2f3 100644
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -517,6 +517,12 @@ static bool ttm_bo_evict_swapout_allowable(struct ttm_buffer_object *bo,
- {
- 	bool ret = false;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 143d11afe0e5..eff73c428b12 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1771,18 +1771,30 @@ int amdgpu_vm_bo_clear_mappings(struct amdgpu_device *adev,
  
-+	if (bo->pin_count) {
-+		*locked = false;
-+		*busy = false;
-+		return false;
-+	}
+ 	/* Insert partial mapping before the range */
+ 	if (!list_empty(&before->list)) {
++		struct amdgpu_bo *bo = before->bo_va->base.bo;
 +
- 	if (bo->base.resv == ctx->resv) {
- 		dma_resv_assert_held(bo->base.resv);
- 		if (ctx->allow_res_evict)
+ 		amdgpu_vm_it_insert(before, &vm->va);
+ 		if (before->flags & AMDGPU_PTE_PRT)
+ 			amdgpu_vm_prt_get(adev);
++
++		if (bo && bo->tbo.base.resv == vm->root.bo->tbo.base.resv &&
++		    !before->bo_va->base.moved)
++			amdgpu_vm_bo_moved(&before->bo_va->base);
+ 	} else {
+ 		kfree(before);
+ 	}
+ 
+ 	/* Insert partial mapping after the range */
+ 	if (!list_empty(&after->list)) {
++		struct amdgpu_bo *bo = after->bo_va->base.bo;
++
+ 		amdgpu_vm_it_insert(after, &vm->va);
+ 		if (after->flags & AMDGPU_PTE_PRT)
+ 			amdgpu_vm_prt_get(adev);
++
++		if (bo && bo->tbo.base.resv == vm->root.bo->tbo.base.resv &&
++		    !after->bo_va->base.moved)
++			amdgpu_vm_bo_moved(&after->bo_va->base);
+ 	} else {
+ 		kfree(after);
+ 	}
 
