@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD2775BF7C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 393C275BF81
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbjGUHWB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52068 "EHLO
+        id S230060AbjGUHWT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:22:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbjGUHWA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:22:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0FE10DB
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:21:58 -0700 (PDT)
+        with ESMTP id S230037AbjGUHWP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:22:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671ED30D4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:22:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFBF461376
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:21:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26CFC433CA;
-        Fri, 21 Jul 2023 07:21:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF7656144C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:22:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EF6C4339A;
+        Fri, 21 Jul 2023 07:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689924117;
-        bh=T6ohKvTWz8HHZWnEfnkQ23QOpYagKC7sqvze6rIw/+Q=;
+        s=korg; t=1689924129;
+        bh=VJ9LVvw4PCz1fjy2c7tf59tnqr+YinrQmMeYyqIRj9s=;
         h=Subject:To:Cc:From:Date:From;
-        b=cgslpB3Rr6jEYzWI+lI0FtVYb88ng1WumA6iKwA8IdKSED+ZRaEM0B0KJ2sWLb+EM
-         hgbUcyLhUtfsjbg1+wGRwpUS3paZhOYBJfG1d/gW9fAOtZ9l9KAVgxMSpEEFj4q/T+
-         B40BLdXZB978GSuQm+cmoU+BpbhZEeUtB5WcQu6M=
-Subject: FAILED: patch "[PATCH] drm/dp_mst: Clear MSG_RDY flag before sending new message" failed to apply to 6.1-stable tree
-To:     Wayne.Lin@amd.com, alexander.deucher@amd.com,
-        jani.nikula@intel.com, lyude@redhat.com
+        b=eCogJHMn+TegBoGCF2xlhOylMCFIxt77Q/AkSjSqOomBwW3CrTqoh14dSg8Ym9vdC
+         kksQRktE2ifpHZTpG/GglyQjHFEck2YIp84SPWuWHxeepOEVCtTH4zCIos7d06qocy
+         L56MRz0R7/RAEz0hoPeo1Exf/reP8Ity3Gi1afeY=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: change reserved vram info print" failed to apply to 6.4-stable tree
+To:     YiPeng.Chai@amd.com, Arunpravin.PaneerSelvam@amd.com,
+        alexander.deucher@amd.com, christian.koenig@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:21:44 +0200
-Message-ID: <2023072144-crunching-elongated-08d7@gregkh>
+Date:   Fri, 21 Jul 2023 09:22:06 +0200
+Message-ID: <2023072106-dentist-stagnate-1b4f@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,26 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 72f1de49ffb90b29748284f27f1d6b829ab1de95
+git cherry-pick -x 869bcf59fd64382e3b23b219e791e6e5ebf1114e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072144-crunching-elongated-08d7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072106-dentist-stagnate-1b4f@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-72f1de49ffb9 ("drm/dp_mst: Clear MSG_RDY flag before sending new message")
-ae67558be712 ("drm/amd/display: fix some coding style issues")
-30ebe41582d1 ("drm/amd/display: add FB_DAMAGE_CLIPS support")
-6e5abe94c6eb ("drm/amd/display: use max_dsc_bpp in amdgpu_dm")
+
 
 thanks,
 
@@ -77,285 +74,47 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 72f1de49ffb90b29748284f27f1d6b829ab1de95 Mon Sep 17 00:00:00 2001
-From: Wayne Lin <Wayne.Lin@amd.com>
-Date: Mon, 17 Apr 2023 17:08:12 +0800
-Subject: [PATCH] drm/dp_mst: Clear MSG_RDY flag before sending new message
+From 869bcf59fd64382e3b23b219e791e6e5ebf1114e Mon Sep 17 00:00:00 2001
+From: YiPeng Chai <YiPeng.Chai@amd.com>
+Date: Wed, 24 May 2023 17:14:15 +0800
+Subject: [PATCH] drm/amdgpu: change reserved vram info print
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-[Why]
-The sequence for collecting down_reply from source perspective should
-be:
+The link object of mgr->reserved_pages is the blocks
+variable in struct amdgpu_vram_reservation, not the
+link variable in struct drm_buddy_block.
 
-Request_n->repeat (get partial reply of Request_n->clear message ready
-flag to ack DPRX that the message is received) till all partial
-replies for Request_n are received->new Request_n+1.
-
-Now there is chance that drm_dp_mst_hpd_irq() will fire new down
-request in the tx queue when the down reply is incomplete. Source is
-restricted to generate interveleaved message transactions so we should
-avoid it.
-
-Also, while assembling partial reply packets, reading out DPCD DOWN_REP
-Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
-wrapped up as a complete operation for reading out a reply packet.
-Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
-be risky. e.g. If the reply of the new request has overwritten the
-DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
-DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
-for the new request. Should handle the up request in the same way.
-
-[How]
-Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
-event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
-trigger drm_dp_mst_kick_tx() only when there is no on going message
-transaction.
-
-Changes since v1:
-* Reworked on review comments received
--> Adjust the fix to let driver explicitly kick off new down request
-when mst irq event is handled and acked
--> Adjust the commit message
-
-Changes since v2:
-* Adjust the commit message
-* Adjust the naming of the divided 2 functions and add a new input
-  parameter "ack".
-* Adjust code flow as per review comments.
-
-Changes since v3:
-* Update the function description of drm_dp_mst_hpd_irq_handle_event
-
-Changes since v4:
-* Change ack of drm_dp_mst_hpd_irq_handle_event() to be an array align
-  the size of esi[]
-
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: YiPeng Chai <YiPeng.Chai@amd.com>
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8964bb87e0d5..514f6785a020 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3267,6 +3267,7 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 89d35d194f2c..c7085a747b03 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -839,7 +839,7 @@ static void amdgpu_vram_mgr_debug(struct ttm_resource_manager *man,
+ {
+ 	struct amdgpu_vram_mgr *mgr = to_vram_mgr(man);
+ 	struct drm_buddy *mm = &mgr->mm;
+-	struct drm_buddy_block *block;
++	struct amdgpu_vram_reservation *rsv;
  
- 	while (dret == dpcd_bytes_to_read &&
- 		process_count < max_process_count) {
-+		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
- 		u8 retry;
- 		dret = 0;
+ 	drm_printf(printer, "  vis usage:%llu\n",
+ 		   amdgpu_vram_mgr_vis_usage(mgr));
+@@ -851,8 +851,9 @@ static void amdgpu_vram_mgr_debug(struct ttm_resource_manager *man,
+ 	drm_buddy_print(mm, printer);
  
-@@ -3275,28 +3276,29 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
- 		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
- 		/* handle HPD short pulse irq */
- 		if (aconnector->mst_mgr.mst_state)
--			drm_dp_mst_hpd_irq(
--				&aconnector->mst_mgr,
--				esi,
--				&new_irq_handled);
-+			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
-+							esi,
-+							ack,
-+							&new_irq_handled);
- 
- 		if (new_irq_handled) {
- 			/* ACK at DPCD to notify down stream */
--			const int ack_dpcd_bytes_to_write =
--				dpcd_bytes_to_read - 1;
--
- 			for (retry = 0; retry < 3; retry++) {
--				u8 wret;
--
--				wret = drm_dp_dpcd_write(
--					&aconnector->dm_dp_aux.aux,
--					dpcd_addr + 1,
--					&esi[1],
--					ack_dpcd_bytes_to_write);
--				if (wret == ack_dpcd_bytes_to_write)
-+				ssize_t wret;
-+
-+				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
-+							  dpcd_addr + 1,
-+							  ack[1]);
-+				if (wret == 1)
- 					break;
- 			}
- 
-+			if (retry == 3) {
-+				DRM_ERROR("Failed to ack MST event.\n");
-+				return;
-+			}
-+
-+			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
- 			/* check if there is new irq to be handled */
- 			dret = drm_dp_dpcd_read(
- 				&aconnector->dm_dp_aux.aux,
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index be71be95b706..8fe7b635e5bb 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -4053,17 +4053,28 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 	drm_printf(printer, "reserved:\n");
+-	list_for_each_entry(block, &mgr->reserved_pages, link)
+-		drm_buddy_block_print(mm, block, printer);
++	list_for_each_entry(rsv, &mgr->reserved_pages, blocks)
++		drm_printf(printer, "%#018llx-%#018llx: %llu\n",
++			rsv->start, rsv->start + rsv->size, rsv->size);
+ 	mutex_unlock(&mgr->lock);
  }
  
- /**
-- * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
-+ * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
-  * @mgr: manager to notify irq for.
-  * @esi: 4 bytes from SINK_COUNT_ESI
-+ * @ack: 4 bytes used to ack events starting from SINK_COUNT_ESI
-  * @handled: whether the hpd interrupt was consumed or not
-  *
-- * This should be called from the driver when it detects a short IRQ,
-+ * This should be called from the driver when it detects a HPD IRQ,
-  * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
-- * topology manager will process the sideband messages received as a result
-- * of this.
-+ * topology manager will process the sideband messages received
-+ * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
-+ * corresponding flags that Driver has to ack the DP receiver later.
-+ *
-+ * Note that driver shall also call
-+ * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
-+ * after calling this function, to try to kick off a new request in
-+ * the queue if the previous message transaction is completed.
-+ *
-+ * See also:
-+ * drm_dp_mst_hpd_irq_send_new_request()
-  */
--int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled)
-+int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u8 *esi,
-+				    u8 *ack, bool *handled)
- {
- 	int ret = 0;
- 	int sc;
-@@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handl
- 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
- 		ret = drm_dp_mst_handle_down_rep(mgr);
- 		*handled = true;
-+		ack[1] |= DP_DOWN_REP_MSG_RDY;
- 	}
- 
- 	if (esi[1] & DP_UP_REQ_MSG_RDY) {
- 		ret |= drm_dp_mst_handle_up_req(mgr);
- 		*handled = true;
-+		ack[1] |= DP_UP_REQ_MSG_RDY;
- 	}
- 
--	drm_dp_mst_kick_tx(mgr);
- 	return ret;
- }
--EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
-+EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
- 
-+/**
-+ * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new request
-+ * @mgr: manager to notify irq for.
-+ *
-+ * This should be called from the driver when mst irq event is handled
-+ * and acked. Note that new down request should only be sent when
-+ * previous message transaction is completed. Source is not supposed to generate
-+ * interleaved message transactions.
-+ */
-+void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr)
-+{
-+	struct drm_dp_sideband_msg_tx *txmsg;
-+	bool kick = true;
-+
-+	mutex_lock(&mgr->qlock);
-+	txmsg = list_first_entry_or_null(&mgr->tx_msg_downq,
-+					 struct drm_dp_sideband_msg_tx, next);
-+	/* If last transaction is not completed yet*/
-+	if (!txmsg ||
-+	    txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
-+	    txmsg->state == DRM_DP_SIDEBAND_TX_SENT)
-+		kick = false;
-+	mutex_unlock(&mgr->qlock);
-+
-+	if (kick)
-+		drm_dp_mst_kick_tx(mgr);
-+}
-+EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
- /**
-  * drm_dp_mst_detect_port() - get connection status for an MST port
-  * @connector: DRM connector for this port
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index f4192fda1a76..c4593d025154 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -4069,9 +4069,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *intel_dp, u8 *esi, u8 *ack)
- {
- 	bool handled = false;
- 
--	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
--	if (handled)
--		ack[1] |= esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
-+	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, ack, &handled);
- 
- 	if (esi[1] & DP_CP_IRQ) {
- 		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
-@@ -4146,6 +4144,9 @@ intel_dp_check_mst_status(struct intel_dp *intel_dp)
- 
- 		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
- 			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
-+
-+		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
-+			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
- 	}
- 
- 	return link_ok;
-diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-index 9b6824f6b9e4..42e1665ba11a 100644
---- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-@@ -1359,22 +1359,26 @@ nv50_mstm_service(struct nouveau_drm *drm,
- 	u8 esi[8] = {};
- 
- 	while (handled) {
-+		u8 ack[8] = {};
-+
- 		rc = drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
- 		if (rc != 8) {
- 			ret = false;
- 			break;
- 		}
- 
--		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
-+		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, ack, &handled);
- 		if (!handled)
- 			break;
- 
--		rc = drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
--				       3);
--		if (rc != 3) {
-+		rc = drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack[1]);
-+
-+		if (rc != 1) {
- 			ret = false;
- 			break;
- 		}
-+
-+		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
- 	}
- 
- 	if (!ret)
-diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
-index f962e97880b4..ed5c9660563c 100644
---- a/include/drm/display/drm_dp_mst_helper.h
-+++ b/include/drm/display/drm_dp_mst_helper.h
-@@ -810,8 +810,11 @@ void drm_dp_mst_topology_mgr_destroy(struct drm_dp_mst_topology_mgr *mgr);
- bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);
- int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool mst_state);
- 
--int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled);
--
-+int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
-+				    const u8 *esi,
-+				    u8 *ack,
-+				    bool *handled);
-+void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr);
- 
- int
- drm_dp_mst_detect_port(struct drm_connector *connector,
 
