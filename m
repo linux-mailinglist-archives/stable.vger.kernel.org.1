@@ -2,167 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDFA875D397
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B6275D472
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231874AbjGUTM1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:12:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35068 "EHLO
+        id S232119AbjGUTVX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231871AbjGUTM1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:27 -0400
+        with ESMTP id S232135AbjGUTVV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:21:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3E4E4C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 834933A84
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:21:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42D7A61D7C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C8FC433CB;
-        Fri, 21 Jul 2023 19:12:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1902361D94
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:21:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26266C433C7;
+        Fri, 21 Jul 2023 19:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966744;
-        bh=6GGXTQ9muik6pDc4jpUit5pJjAdyxFU9aGvn4wKDsE4=;
+        s=korg; t=1689967272;
+        bh=KUB15FBDN7ybrPTcWcRuXjSpDRH8LTbFMhZ+Vr7+hVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2ngtlGf9e2msouO4V1kyWbHQu4CBmkLH2aINE3pRJqUc1KBIBAWk31xNyCCmIFx6t
-         kO6ZLwhuikacMwy+KPpMhzIKME5oJiJulFk/R35Rmwlrkiua0m5ToJB6VcWTowKxz4
-         CG3M1uj6IaOTJZ9hUvpJMlT1TdFK/PzBMXelbJOU=
+        b=UodIULnhc/1evEYhfWuiJdMtgNZghhzXSS5Am9pasgZ1pvHLLR/U16g8XDZB6wGIP
+         EOxrUJdMw+AvRwssP2i+rhnQDB7ibdeVFNyZddjMWnGrk3i57PfgkFcQcBmAVyz9Wf
+         u0GFi48eowpKfI0M1Vx7Qn8fSuZWbATKL2Tnzbic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryan Roberts <ryan.roberts@arm.com>,
-        Zi Yan <ziy@nvidia.com>, SeongJae Park <sj@kernel.org>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        Yu Zhao <yuzhao@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 453/532] mm/damon/ops-common: atomically test and clear young on ptes and pmds
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 104/223] ext4: Fix reusing stale buffer heads from last failed mounting
 Date:   Fri, 21 Jul 2023 18:05:57 +0200
-Message-ID: <20230721160639.111033639@linuxfoundation.org>
+Message-ID: <20230721160525.301665759@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit c11d34fa139e4b0fb4249a30f37b178353533fa1 upstream.
+commit 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b upstream.
 
-It is racy to non-atomically read a pte, then clear the young bit, then
-write it back as this could discard dirty information.  Further, it is bad
-practice to directly set a pte entry within a table.  Instead clearing
-young must go through the arch-provided helper,
-ptep_test_and_clear_young() to ensure it is modified atomically and to
-give the arch code visibility and allow it to check (and potentially
-modify) the operation.
+Following process makes ext4 load stale buffer heads from last failed
+mounting in a new mounting operation:
+mount_bdev
+ ext4_fill_super
+ | ext4_load_and_init_journal
+ |  ext4_load_journal
+ |   jbd2_journal_load
+ |    load_superblock
+ |     journal_get_superblock
+ |      set_buffer_verified(bh) // buffer head is verified
+ |   jbd2_journal_recover // failed caused by EIO
+ | goto failed_mount3a // skip 'sb->s_root' initialization
+ deactivate_locked_super
+  kill_block_super
+   generic_shutdown_super
+    if (sb->s_root)
+    // false, skip ext4_put_super->invalidate_bdev->
+    // invalidate_mapping_pages->mapping_evict_folio->
+    // filemap_release_folio->try_to_free_buffers, which
+    // cannot drop buffer head.
+   blkdev_put
+    blkdev_put_whole
+     if (atomic_dec_and_test(&bdev->bd_openers))
+     // false, systemd-udev happens to open the device. Then
+     // blkdev_flush_mapping->kill_bdev->truncate_inode_pages->
+     // truncate_inode_folio->truncate_cleanup_folio->
+     // folio_invalidate->block_invalidate_folio->
+     // filemap_release_folio->try_to_free_buffers will be skipped,
+     // dropping buffer head is missed again.
 
-Link: https://lkml.kernel.org/r/20230602092949.545577-3-ryan.roberts@arm.com
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces").
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Second mount:
+ext4_fill_super
+ ext4_load_and_init_journal
+  ext4_load_journal
+   ext4_get_journal
+    jbd2_journal_init_inode
+     journal_init_common
+      bh = getblk_unmovable
+       bh = __find_get_block // Found stale bh in last failed mounting
+      journal->j_sb_buffer = bh
+   jbd2_journal_load
+    load_superblock
+     journal_get_superblock
+      if (buffer_verified(bh))
+      // true, skip journal->j_format_version = 2, value is 0
+    jbd2_journal_recover
+     do_one_pass
+      next_log_block += count_tags(journal, bh)
+      // According to journal_tag_bytes(), 'tag_bytes' calculating is
+      // affected by jbd2_has_feature_csum3(), jbd2_has_feature_csum3()
+      // returns false because 'j->j_format_version >= 2' is not true,
+      // then we get wrong next_log_block. The do_one_pass may exit
+      // early whenoccuring non JBD2_MAGIC_NUMBER in 'next_log_block'.
+
+The filesystem is corrupted here, journal is partially replayed, and
+new journal sequence number actually is already used by last mounting.
+
+The invalidate_bdev() can drop all buffer heads even racing with bare
+reading block device(eg. systemd-udev), so we can fix it by invalidating
+bdev in error handling path in __ext4_fill_super().
+
+Fetch a reproducer in [Link].
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217171
+Fixes: 25ed6e8a54df ("jbd2: enable journal clients to enable v2 checksumming")
+Cc: stable@vger.kernel.org # v3.5
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230315013128.3911115-2-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr.c |   20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ fs/ext4/super.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -393,7 +393,7 @@ static struct page *damon_get_page(unsig
- 	return page;
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1129,6 +1129,12 @@ static void ext4_blkdev_remove(struct ex
+ 	struct block_device *bdev;
+ 	bdev = sbi->s_journal_bdev;
+ 	if (bdev) {
++		/*
++		 * Invalidate the journal device's buffers.  We don't want them
++		 * floating about in memory - the physical journal device may
++		 * hotswapped, and it breaks the `ro-after' testing code.
++		 */
++		invalidate_bdev(bdev);
+ 		ext4_blkdev_put(bdev);
+ 		sbi->s_journal_bdev = NULL;
+ 	}
+@@ -1274,13 +1280,7 @@ static void ext4_put_super(struct super_
+ 	sync_blockdev(sb->s_bdev);
+ 	invalidate_bdev(sb->s_bdev);
+ 	if (sbi->s_journal_bdev && sbi->s_journal_bdev != sb->s_bdev) {
+-		/*
+-		 * Invalidate the journal device's buffers.  We don't want them
+-		 * floating about in memory - the physical journal device may
+-		 * hotswapped, and it breaks the `ro-after' testing code.
+-		 */
+ 		sync_blockdev(sbi->s_journal_bdev);
+-		invalidate_bdev(sbi->s_journal_bdev);
+ 		ext4_blkdev_remove(sbi);
+ 	}
+ 
+@@ -5634,6 +5634,7 @@ failed_mount:
+ 	brelse(sbi->s_sbh);
+ 	ext4_blkdev_remove(sbi);
+ out_fail:
++	invalidate_bdev(sb->s_bdev);
+ 	sb->s_fs_info = NULL;
+ 	return err ? err : ret;
  }
- 
--static void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm,
-+static void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma,
- 			     unsigned long addr)
- {
- 	bool referenced = false;
-@@ -402,13 +402,11 @@ static void damon_ptep_mkold(pte_t *pte,
- 	if (!page)
- 		return;
- 
--	if (pte_young(*pte)) {
-+	if (ptep_test_and_clear_young(vma, addr, pte))
- 		referenced = true;
--		*pte = pte_mkold(*pte);
--	}
- 
- #ifdef CONFIG_MMU_NOTIFIER
--	if (mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE))
-+	if (mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE))
- 		referenced = true;
- #endif /* CONFIG_MMU_NOTIFIER */
- 
-@@ -419,7 +417,7 @@ static void damon_ptep_mkold(pte_t *pte,
- 	put_page(page);
- }
- 
--static void damon_pmdp_mkold(pmd_t *pmd, struct mm_struct *mm,
-+static void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma,
- 			     unsigned long addr)
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-@@ -429,13 +427,11 @@ static void damon_pmdp_mkold(pmd_t *pmd,
- 	if (!page)
- 		return;
- 
--	if (pmd_young(*pmd)) {
-+	if (pmdp_test_and_clear_young(vma, addr, pmd))
- 		referenced = true;
--		*pmd = pmd_mkold(*pmd);
--	}
- 
- #ifdef CONFIG_MMU_NOTIFIER
--	if (mmu_notifier_clear_young(mm, addr,
-+	if (mmu_notifier_clear_young(vma->vm_mm, addr,
- 				addr + ((1UL) << HPAGE_PMD_SHIFT)))
- 		referenced = true;
- #endif /* CONFIG_MMU_NOTIFIER */
-@@ -462,7 +458,7 @@ static int damon_mkold_pmd_entry(pmd_t *
- 		}
- 
- 		if (pmd_huge(*pmd)) {
--			damon_pmdp_mkold(pmd, walk->mm, addr);
-+			damon_pmdp_mkold(pmd, walk->vma, addr);
- 			spin_unlock(ptl);
- 			return 0;
- 		}
-@@ -474,7 +470,7 @@ static int damon_mkold_pmd_entry(pmd_t *
- 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
- 	if (!pte_present(*pte))
- 		goto out;
--	damon_ptep_mkold(pte, walk->mm, addr);
-+	damon_ptep_mkold(pte, walk->vma, addr);
- out:
- 	pte_unmap_unlock(pte, ptl);
- 	return 0;
 
 
