@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA3A675C9F8
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB07A75C9FB
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjGUO0f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47090 "EHLO
+        id S231187AbjGUO0o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:26:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231187AbjGUO0e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:26:34 -0400
+        with ESMTP id S229651AbjGUO0o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:26:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C52E6F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:26:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F47410FC
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:26:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74C3B61CB8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:26:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BEDC433C9;
-        Fri, 21 Jul 2023 14:26:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F38261CB8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:26:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CDFC433C7;
+        Fri, 21 Jul 2023 14:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689949592;
-        bh=t+rl9K6rA7/z+asqYLcKCSn7cIzFUXMHhksPRB+Q4ws=;
+        s=korg; t=1689949602;
+        bh=AhgmEPbEDB43MnLHjCi50U4gDqEsU6QIDQCiBIouWNs=;
         h=Subject:To:Cc:From:Date:From;
-        b=pCqlTNqRLT+hpqbE38Bm7AZYPzvrDVx8E9Pz3icNr655vhA8mL4FYwWSS11CuvYgY
-         EUrZJ7R+OHZyMXOr9rYlOlPTKaNhBveqfsIDooXonxaWIyCvTR8oQ75o7ZkvYvkdQb
-         RA8ZbwIQRALIHmYp5/rdjbHUa2VObcQm6D9n1VW8=
-Subject: FAILED: patch "[PATCH] pwm: meson: modify and simplify calculation in" failed to apply to 5.4-stable tree
-To:     hkallweit1@gmail.com, ddrokosov@sberdevices.ru,
-        martin.blumenstingl@googlemail.com, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de
+        b=1B/vqzqY8L4a1gau/MvFfb9eZaYMhyemCxhtRMupGalsiE3EL1rfiaSj2kSy8+o4t
+         KmKMXNyB6f98UCTzxJtsUjHBHwhe6vVSSQ36E5ERq+gpUL3CTdZ164vtbcGaelSptQ
+         SnjcptfmLamU2fLGVhdNnP6gOha9fkYJDdUM7QnY=
+Subject: FAILED: patch "[PATCH] pwm: meson: fix handling of period/duty if greater than" failed to apply to 5.10-stable tree
+To:     hkallweit1@gmail.com, martin.blumenstingl@googlemail.com,
+        thierry.reding@gmail.com, u.kleine-koenig@pengutronix.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:26:20 +0200
-Message-ID: <2023072120-spectrum-handyman-51b8@gregkh>
+Date:   Fri, 21 Jul 2023 16:26:32 +0200
+Message-ID: <2023072132-basket-kinetic-8fdf@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -51,25 +50,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6b9352f3f8a1a35faf0efc1ad1807ee303467796
+git cherry-pick -x 87a2cbf02d7701255f9fcca7e5bd864a7bb397cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072120-spectrum-handyman-51b8@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072132-basket-kinetic-8fdf@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-6b9352f3f8a1 ("pwm: meson: modify and simplify calculation in meson_pwm_get_state")
-6c452cff79f8 ("pwm: Make .get_state() callback return an error code")
-8eca6b0a647a ("Merge tag 'pwm/for-5.19-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/thierry.reding/linux-pwm")
+87a2cbf02d77 ("pwm: meson: fix handling of period/duty if greater than UINT_MAX")
+5f97f18feac9 ("pwm: meson: Simplify duplicated per-channel tracking")
 
 thanks,
 
@@ -77,54 +75,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6b9352f3f8a1a35faf0efc1ad1807ee303467796 Mon Sep 17 00:00:00 2001
+From 87a2cbf02d7701255f9fcca7e5bd864a7bb397cf Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1@gmail.com>
-Date: Wed, 24 May 2023 21:47:43 +0200
-Subject: [PATCH] pwm: meson: modify and simplify calculation in
- meson_pwm_get_state
+Date: Wed, 24 May 2023 21:48:36 +0200
+Subject: [PATCH] pwm: meson: fix handling of period/duty if greater than
+ UINT_MAX
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-I don't see a reason why we should treat the case lo < hi differently
-and return 0 as period and duty_cycle. The current logic was added with
-c375bcbaabdb ("pwm: meson: Read the full hardware state in
-meson_pwm_get_state()"), Martin as original author doesn't remember why
-it was implemented this way back then.
-So let's handle it as normal use case and also remove the optimization
-for lo == 0. I think the improved readability is worth it.
+state->period/duty are of type u64, and if their value is greater than
+UINT_MAX, then the cast to uint will cause problems. Fix this by
+changing the type of the respective local variables to u64.
 
-Fixes: c375bcbaabdb ("pwm: meson: Read the full hardware state in meson_pwm_get_state()")
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fixes: b79c3670e120 ("pwm: meson: Don't duplicate the polarity internally")
 Cc: stable@vger.kernel.org
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 
 diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
-index 5732300eb004..3865538dd2d6 100644
+index 3865538dd2d6..33107204a951 100644
 --- a/drivers/pwm/pwm-meson.c
 +++ b/drivers/pwm/pwm-meson.c
-@@ -351,18 +351,8 @@ static int meson_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 	channel->lo = FIELD_GET(PWM_LOW_MASK, value);
- 	channel->hi = FIELD_GET(PWM_HIGH_MASK, value);
+@@ -156,8 +156,9 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
+ 			  const struct pwm_state *state)
+ {
+ 	struct meson_pwm_channel *channel = &meson->channels[pwm->hwpwm];
+-	unsigned int duty, period, pre_div, cnt, duty_cnt;
++	unsigned int pre_div, cnt, duty_cnt;
+ 	unsigned long fin_freq;
++	u64 duty, period;
  
--	if (channel->lo == 0) {
--		state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
--		state->duty_cycle = state->period;
--	} else if (channel->lo >= channel->hi) {
--		state->period = meson_pwm_cnt_to_ns(chip, pwm,
--						    channel->lo + channel->hi);
--		state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm,
--							channel->hi);
--	} else {
--		state->period = 0;
--		state->duty_cycle = 0;
--	}
-+	state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->lo + channel->hi);
-+	state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
+ 	duty = state->duty_cycle;
+ 	period = state->period;
+@@ -179,19 +180,19 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
  
- 	state->polarity = PWM_POLARITY_NORMAL;
+ 	dev_dbg(meson->chip.dev, "fin_freq: %lu Hz\n", fin_freq);
  
+-	pre_div = div64_u64(fin_freq * (u64)period, NSEC_PER_SEC * 0xffffLL);
++	pre_div = div64_u64(fin_freq * period, NSEC_PER_SEC * 0xffffLL);
+ 	if (pre_div > MISC_CLK_DIV_MASK) {
+ 		dev_err(meson->chip.dev, "unable to get period pre_div\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	cnt = div64_u64(fin_freq * (u64)period, NSEC_PER_SEC * (pre_div + 1));
++	cnt = div64_u64(fin_freq * period, NSEC_PER_SEC * (pre_div + 1));
+ 	if (cnt > 0xffff) {
+ 		dev_err(meson->chip.dev, "unable to get period cnt\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	dev_dbg(meson->chip.dev, "period=%u pre_div=%u cnt=%u\n", period,
++	dev_dbg(meson->chip.dev, "period=%llu pre_div=%u cnt=%u\n", period,
+ 		pre_div, cnt);
+ 
+ 	if (duty == period) {
+@@ -204,14 +205,13 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
+ 		channel->lo = cnt;
+ 	} else {
+ 		/* Then check is we can have the duty with the same pre_div */
+-		duty_cnt = div64_u64(fin_freq * (u64)duty,
+-				     NSEC_PER_SEC * (pre_div + 1));
++		duty_cnt = div64_u64(fin_freq * duty, NSEC_PER_SEC * (pre_div + 1));
+ 		if (duty_cnt > 0xffff) {
+ 			dev_err(meson->chip.dev, "unable to get duty cycle\n");
+ 			return -EINVAL;
+ 		}
+ 
+-		dev_dbg(meson->chip.dev, "duty=%u pre_div=%u duty_cnt=%u\n",
++		dev_dbg(meson->chip.dev, "duty=%llu pre_div=%u duty_cnt=%u\n",
+ 			duty, pre_div, duty_cnt);
+ 
+ 		channel->pre_div = pre_div;
 
