@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B165775CDBF
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EB1175CDD4
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231707AbjGUQOP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:14:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39258 "EHLO
+        id S232541AbjGUQPI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:15:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232300AbjGUQNw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:13:52 -0400
+        with ESMTP id S232564AbjGUQOq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:14:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A81A3C14
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:13:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 188D13C32
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:14:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 474AD61D25
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:13:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52974C433C9;
-        Fri, 21 Jul 2023 16:13:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A43FF61D2B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:14:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C405C433C7;
+        Fri, 21 Jul 2023 16:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956004;
-        bh=fcJKqd2+Lm0CxymUN4dde9zVyvViQfmRIZmeB3lW6G8=;
+        s=korg; t=1689956056;
+        bh=oytDSgUuT7xYCf3cXJP0kRhgXITYLduCI35TG+iGW8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VfRVpHvxoinXm/ayvbaYBYb75ZYVVnajoK2YQrv9RgK/iTPL952nyWWcl+hSc0kHE
-         gG6NMOJt83EM5hSVqT5uhnlES2nDHaq2ddg2LvhIpx9QR530guFQAsWFQ3jaz+ZPVO
-         fjSJSGd7g/QY9jc7ul4PdVstHtzkVVIIyDOdzqJI=
+        b=p42NZ8d1XsX1QBd5J1uI+j2MEzPJN03H9e2CN/hqkTbV6+NgRgxg+dTcf3+yfLRLx
+         IadGZEjJCI/024RUTUNV+Um2JS6WbeWaOYhcHxGlAro/SKU2M7VmonfVWyiKUkS1D0
+         YzvGYL1Cn5PiZNdIVY0CdLgUwJyORiQHLmNiJqRw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Karol Herbst <kherbst@redhat.com>,
+        Dave Airlie <airlied@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 099/292] netdevsim: fix uninitialized data in nsim_dev_trap_fa_cookie_write()
-Date:   Fri, 21 Jul 2023 18:03:28 +0200
-Message-ID: <20230721160533.049239401@linuxfoundation.org>
+Subject: [PATCH 6.4 100/292] drm/nouveau/acr: Abort loading ACR if no firmware was found
+Date:   Fri, 21 Jul 2023 18:03:29 +0200
+Message-ID: <20230721160533.091378955@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -57,53 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Karol Herbst <kherbst@redhat.com>
 
-[ Upstream commit f72207a5c0dbaaf6921cf9a6c0d2fd0bc249ea78 ]
+[ Upstream commit 938a06c8b7913455073506c33ae3bff029c3c4ef ]
 
-The simple_write_to_buffer() function is designed to handle partial
-writes.  It returns negatives on error, otherwise it returns the number
-of bytes that were able to be copied.  This code doesn't check the
-return properly.  We only know that the first byte is written, the rest
-of the buffer might be uninitialized.
+This fixes a NULL pointer access inside nvkm_acr_oneinit in case necessary
+firmware files couldn't be loaded.
 
-There is no need to use the simple_write_to_buffer() function.
-Partial writes are prohibited by the "if (*ppos != 0)" check at the
-start of the function.  Just use memdup_user() and copy the whole
-buffer.
-
-Fixes: d3cbb907ae57 ("netdevsim: add ACL trap reporting cookie as a metadata")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/7c1f950b-3a7d-4252-82a6-876e53078ef7@moroto.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/212
+Fixes: 4b569ded09fd ("drm/nouveau/acr/ga102: initial support")
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230522201838.1496622-1-kherbst@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 6045bece2654d..b4d3b9cde8bd6 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -184,13 +184,10 @@ static ssize_t nsim_dev_trap_fa_cookie_write(struct file *file,
- 	cookie_len = (count - 1) / 2;
- 	if ((count - 1) % 2)
- 		return -EINVAL;
--	buf = kmalloc(count, GFP_KERNEL | __GFP_NOWARN);
--	if (!buf)
--		return -ENOMEM;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c
+index 795f3a649b122..9b8ca4e898f90 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c
+@@ -224,7 +224,7 @@ nvkm_acr_oneinit(struct nvkm_subdev *subdev)
+ 	u64 falcons;
+ 	int ret, i;
  
--	ret = simple_write_to_buffer(buf, count, ppos, data, count);
--	if (ret < 0)
--		goto free_buf;
-+	buf = memdup_user(data, count);
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
- 
- 	fa_cookie = kmalloc(sizeof(*fa_cookie) + cookie_len,
- 			    GFP_KERNEL | __GFP_NOWARN);
+-	if (list_empty(&acr->hsfw)) {
++	if (list_empty(&acr->hsfw) || !acr->func || !acr->func->wpr_layout) {
+ 		nvkm_debug(subdev, "No HSFW(s)\n");
+ 		nvkm_acr_cleanup(acr);
+ 		return 0;
 -- 
 2.39.2
 
