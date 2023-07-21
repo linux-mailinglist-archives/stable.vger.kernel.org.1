@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8434D75BE44
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B13375BE49
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbjGUGIM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
+        id S229656AbjGUGIc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbjGUGH5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:07:57 -0400
+        with ESMTP id S229531AbjGUGIb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:08:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A51F81BF7
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:07:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5AC92
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:08:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D1496112C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:07:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220A5C433C9;
-        Fri, 21 Jul 2023 06:07:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F703612D7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E20C433CA;
+        Fri, 21 Jul 2023 06:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919675;
-        bh=0xXxYoVMIPSm4PRQpop3kShkRMp6sm48oAZRRqdLw/4=;
+        s=korg; t=1689919708;
+        bh=sTGdZ0NLSaI0FcsLQoRZPgtU683QLhJzj8OyVajGeQk=;
         h=Subject:To:Cc:From:Date:From;
-        b=TrlmeNccNC+6/Oeh7SguScsksGKdqtN6rLkl29ZiSFOmWwfpl0BFgtXXyv6/dBalw
-         lFvAm5XgTR/GaqXqgVU65um18FdyZJd0NTSvqzGG5eRfrTXu7XnsLuPsGt3DlnMAhV
-         6TufAc74v8jNyOi3ktLNURs0+DkuiAJmWvGX9vfo=
-Subject: FAILED: patch "[PATCH] hwrng: imx-rngc - fix the timeout for init and self check" failed to apply to 4.14-stable tree
-To:     martin@kaiser.cx, herbert@gondor.apana.org.au
+        b=daUVPF+m7RPkUGkTT3E5p5QvKX7wIGbmozpAHZJO2lmuQsv92lNHaBHQTXlvbBlLY
+         ZHHJAozswch3BxWQM6GmqRUlYS4SwRkzkFrN1EleWMrHbMIFoKUJVf05cFCaESo9JB
+         2q89UfLZ8drMMR20OPYcKaI7ZgrwUUpHOQoP8dVQ=
+Subject: FAILED: patch "[PATCH] dm thin metadata: Fix ABBA deadlock by resetting" failed to apply to 6.4-stable tree
+To:     lilingfeng3@huawei.com, snitzer@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:07:42 +0200
-Message-ID: <2023072142-childless-postbox-af6e@gregkh>
+Date:   Fri, 21 Jul 2023 08:08:25 +0200
+Message-ID: <2023072125-crinkle-untoasted-91a2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,26 +49,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x d744ae7477190967a3ddc289e2cd4ae59e8b1237
+git cherry-pick -x d48300120627a1cb98914738fff38b424625b8ad
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072142-childless-postbox-af6e@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072125-crinkle-untoasted-91a2@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-d744ae747719 ("hwrng: imx-rngc - fix the timeout for init and self check")
-f086fd1e4344 ("hwrng: imx-rngc - simplify interrupt mask/unmask")
-3acd9ea9331c ("hwrng: imx-rngc - use automatic seeding")
-47a1f8e8b363 ("hwrng: imx-rngc - fix an error path")
+
 
 thanks,
 
@@ -76,43 +73,342 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d744ae7477190967a3ddc289e2cd4ae59e8b1237 Mon Sep 17 00:00:00 2001
-From: Martin Kaiser <martin@kaiser.cx>
-Date: Thu, 15 Jun 2023 15:49:59 +0100
-Subject: [PATCH] hwrng: imx-rngc - fix the timeout for init and self check
+From d48300120627a1cb98914738fff38b424625b8ad Mon Sep 17 00:00:00 2001
+From: Li Lingfeng <lilingfeng3@huawei.com>
+Date: Mon, 5 Jun 2023 15:03:16 +0800
+Subject: [PATCH] dm thin metadata: Fix ABBA deadlock by resetting
+ dm_bufio_client
 
-Fix the timeout that is used for the initialisation and for the self
-test. wait_for_completion_timeout expects a timeout in jiffies, but
-RNGC_TIMEOUT is in milliseconds. Call msecs_to_jiffies to do the
-conversion.
+As described in commit 8111964f1b85 ("dm thin: Fix ABBA deadlock between
+shrink_slab and dm_pool_abort_metadata"), ABBA deadlocks will be
+triggered because shrinker_rwsem currently needs to held by
+dm_pool_abort_metadata() as a side-effect of thin-pool metadata
+operation failure.
 
+The following three problem scenarios have been noticed:
+
+1) Described by commit 8111964f1b85 ("dm thin: Fix ABBA deadlock between
+   shrink_slab and dm_pool_abort_metadata")
+
+2) shrinker_rwsem and throttle->lock
+          P1(drop cache)                        P2(kworker)
+drop_caches_sysctl_handler
+ drop_slab
+  shrink_slab
+   down_read(&shrinker_rwsem)  - LOCK A
+   do_shrink_slab
+    super_cache_scan
+     prune_icache_sb
+      dispose_list
+       evict
+        ext4_evict_inode
+         ext4_clear_inode
+          ext4_discard_preallocations
+           ext4_mb_load_buddy_gfp
+            ext4_mb_init_cache
+             ext4_wait_block_bitmap
+              __ext4_error
+               ext4_handle_error
+                ext4_commit_super
+                 ...
+                 dm_submit_bio
+                                     do_worker
+                                      throttle_work_update
+                                       down_write(&t->lock) -- LOCK B
+                                      process_deferred_bios
+                                       commit
+                                        metadata_operation_failed
+                                         dm_pool_abort_metadata
+                                          dm_block_manager_create
+                                           dm_bufio_client_create
+                                            register_shrinker
+                                             down_write(&shrinker_rwsem)
+                                             -- LOCK A
+                 thin_map
+                  thin_bio_map
+                   thin_defer_bio_with_throttle
+                    throttle_lock
+                     down_read(&t->lock)  - LOCK B
+
+3) shrinker_rwsem and wait_on_buffer
+          P1(drop cache)                            P2(kworker)
+drop_caches_sysctl_handler
+ drop_slab
+  shrink_slab
+   down_read(&shrinker_rwsem)  - LOCK A
+   do_shrink_slab
+   ...
+    ext4_wait_block_bitmap
+     __ext4_error
+      ext4_handle_error
+       jbd2_journal_abort
+        jbd2_journal_update_sb_errno
+         jbd2_write_superblock
+          submit_bh
+           // LOCK B
+           // RELEASE B
+                             do_worker
+                              throttle_work_update
+                               down_write(&t->lock) - LOCK B
+                              process_deferred_bios
+                               process_bio
+                               commit
+                                metadata_operation_failed
+                                 dm_pool_abort_metadata
+                                  dm_block_manager_create
+                                   dm_bufio_client_create
+                                    register_shrinker
+                                     register_shrinker_prepared
+                                      down_write(&shrinker_rwsem)  - LOCK A
+                               bio_endio
+      wait_on_buffer
+       __wait_on_buffer
+
+Fix these by resetting dm_bufio_client without holding shrinker_rwsem.
+
+Fixes: 8111964f1b85 ("dm thin: Fix ABBA deadlock between shrink_slab and dm_pool_abort_metadata")
 Cc: stable@vger.kernel.org
-Fixes: 1d5449445bd0 ("hwrng: mx-rngc - add a driver for Freescale RNGC")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 
-diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/imx-rngc.c
-index 1a6a5dd0a5a1..e5a9dee615c8 100644
---- a/drivers/char/hw_random/imx-rngc.c
-+++ b/drivers/char/hw_random/imx-rngc.c
-@@ -110,7 +110,7 @@ static int imx_rngc_self_test(struct imx_rngc *rngc)
- 	cmd = readl(rngc->base + RNGC_COMMAND);
- 	writel(cmd | RNGC_CMD_SELF_TEST, rngc->base + RNGC_COMMAND);
+diff --git a/drivers/md/dm-bufio.c b/drivers/md/dm-bufio.c
+index eea977662e81..a7079b38756a 100644
+--- a/drivers/md/dm-bufio.c
++++ b/drivers/md/dm-bufio.c
+@@ -2592,6 +2592,13 @@ void dm_bufio_client_destroy(struct dm_bufio_client *c)
+ }
+ EXPORT_SYMBOL_GPL(dm_bufio_client_destroy);
  
--	ret = wait_for_completion_timeout(&rngc->rng_op_done, RNGC_TIMEOUT);
-+	ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
- 	imx_rngc_irq_mask_clear(rngc);
- 	if (!ret)
- 		return -ETIMEDOUT;
-@@ -182,9 +182,7 @@ static int imx_rngc_init(struct hwrng *rng)
- 		cmd = readl(rngc->base + RNGC_COMMAND);
- 		writel(cmd | RNGC_CMD_SEED, rngc->base + RNGC_COMMAND);
++void dm_bufio_client_reset(struct dm_bufio_client *c)
++{
++	drop_buffers(c);
++	flush_work(&c->shrink_work);
++}
++EXPORT_SYMBOL_GPL(dm_bufio_client_reset);
++
+ void dm_bufio_set_sector_offset(struct dm_bufio_client *c, sector_t start)
+ {
+ 	c->start = start;
+diff --git a/drivers/md/dm-thin-metadata.c b/drivers/md/dm-thin-metadata.c
+index 9f5cb52c5763..63d92d388ee6 100644
+--- a/drivers/md/dm-thin-metadata.c
++++ b/drivers/md/dm-thin-metadata.c
+@@ -603,6 +603,8 @@ static int __format_metadata(struct dm_pool_metadata *pmd)
+ 	r = dm_tm_create_with_sm(pmd->bm, THIN_SUPERBLOCK_LOCATION,
+ 				 &pmd->tm, &pmd->metadata_sm);
+ 	if (r < 0) {
++		pmd->tm = NULL;
++		pmd->metadata_sm = NULL;
+ 		DMERR("tm_create_with_sm failed");
+ 		return r;
+ 	}
+@@ -611,6 +613,7 @@ static int __format_metadata(struct dm_pool_metadata *pmd)
+ 	if (IS_ERR(pmd->data_sm)) {
+ 		DMERR("sm_disk_create failed");
+ 		r = PTR_ERR(pmd->data_sm);
++		pmd->data_sm = NULL;
+ 		goto bad_cleanup_tm;
+ 	}
  
--		ret = wait_for_completion_timeout(&rngc->rng_op_done,
--				RNGC_TIMEOUT);
+@@ -641,11 +644,15 @@ static int __format_metadata(struct dm_pool_metadata *pmd)
+ 
+ bad_cleanup_nb_tm:
+ 	dm_tm_destroy(pmd->nb_tm);
++	pmd->nb_tm = NULL;
+ bad_cleanup_data_sm:
+ 	dm_sm_destroy(pmd->data_sm);
++	pmd->data_sm = NULL;
+ bad_cleanup_tm:
+ 	dm_tm_destroy(pmd->tm);
++	pmd->tm = NULL;
+ 	dm_sm_destroy(pmd->metadata_sm);
++	pmd->metadata_sm = NULL;
+ 
+ 	return r;
+ }
+@@ -711,6 +718,8 @@ static int __open_metadata(struct dm_pool_metadata *pmd)
+ 			       sizeof(disk_super->metadata_space_map_root),
+ 			       &pmd->tm, &pmd->metadata_sm);
+ 	if (r < 0) {
++		pmd->tm = NULL;
++		pmd->metadata_sm = NULL;
+ 		DMERR("tm_open_with_sm failed");
+ 		goto bad_unlock_sblock;
+ 	}
+@@ -720,6 +729,7 @@ static int __open_metadata(struct dm_pool_metadata *pmd)
+ 	if (IS_ERR(pmd->data_sm)) {
+ 		DMERR("sm_disk_open failed");
+ 		r = PTR_ERR(pmd->data_sm);
++		pmd->data_sm = NULL;
+ 		goto bad_cleanup_tm;
+ 	}
+ 
+@@ -746,9 +756,12 @@ static int __open_metadata(struct dm_pool_metadata *pmd)
+ 
+ bad_cleanup_data_sm:
+ 	dm_sm_destroy(pmd->data_sm);
++	pmd->data_sm = NULL;
+ bad_cleanup_tm:
+ 	dm_tm_destroy(pmd->tm);
++	pmd->tm = NULL;
+ 	dm_sm_destroy(pmd->metadata_sm);
++	pmd->metadata_sm = NULL;
+ bad_unlock_sblock:
+ 	dm_bm_unlock(sblock);
+ 
+@@ -795,9 +808,13 @@ static void __destroy_persistent_data_objects(struct dm_pool_metadata *pmd,
+ 					      bool destroy_bm)
+ {
+ 	dm_sm_destroy(pmd->data_sm);
++	pmd->data_sm = NULL;
+ 	dm_sm_destroy(pmd->metadata_sm);
++	pmd->metadata_sm = NULL;
+ 	dm_tm_destroy(pmd->nb_tm);
++	pmd->nb_tm = NULL;
+ 	dm_tm_destroy(pmd->tm);
++	pmd->tm = NULL;
+ 	if (destroy_bm)
+ 		dm_block_manager_destroy(pmd->bm);
+ }
+@@ -1005,8 +1022,7 @@ int dm_pool_metadata_close(struct dm_pool_metadata *pmd)
+ 			       __func__, r);
+ 	}
+ 	pmd_write_unlock(pmd);
+-	if (!pmd->fail_io)
+-		__destroy_persistent_data_objects(pmd, true);
++	__destroy_persistent_data_objects(pmd, true);
+ 
+ 	kfree(pmd);
+ 	return 0;
+@@ -1877,53 +1893,29 @@ static void __set_abort_with_changes_flags(struct dm_pool_metadata *pmd)
+ int dm_pool_abort_metadata(struct dm_pool_metadata *pmd)
+ {
+ 	int r = -EINVAL;
+-	struct dm_block_manager *old_bm = NULL, *new_bm = NULL;
+ 
+ 	/* fail_io is double-checked with pmd->root_lock held below */
+ 	if (unlikely(pmd->fail_io))
+ 		return r;
+ 
+-	/*
+-	 * Replacement block manager (new_bm) is created and old_bm destroyed outside of
+-	 * pmd root_lock to avoid ABBA deadlock that would result (due to life-cycle of
+-	 * shrinker associated with the block manager's bufio client vs pmd root_lock).
+-	 * - must take shrinker_mutex without holding pmd->root_lock
+-	 */
+-	new_bm = dm_block_manager_create(pmd->bdev, THIN_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
+-					 THIN_MAX_CONCURRENT_LOCKS);
 -
-+		ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
- 		if (!ret) {
- 			ret = -ETIMEDOUT;
- 			goto err;
+ 	pmd_write_lock(pmd);
+ 	if (pmd->fail_io) {
+ 		pmd_write_unlock(pmd);
+-		goto out;
++		return r;
+ 	}
+-
+ 	__set_abort_with_changes_flags(pmd);
++
++	/* destroy data_sm/metadata_sm/nb_tm/tm */
+ 	__destroy_persistent_data_objects(pmd, false);
+-	old_bm = pmd->bm;
+-	if (IS_ERR(new_bm)) {
+-		DMERR("could not create block manager during abort");
+-		pmd->bm = NULL;
+-		r = PTR_ERR(new_bm);
+-		goto out_unlock;
+-	}
+ 
+-	pmd->bm = new_bm;
++	/* reset bm */
++	dm_block_manager_reset(pmd->bm);
++
++	/* rebuild data_sm/metadata_sm/nb_tm/tm */
+ 	r = __open_or_format_metadata(pmd, false);
+-	if (r) {
+-		pmd->bm = NULL;
+-		goto out_unlock;
+-	}
+-	new_bm = NULL;
+-out_unlock:
+ 	if (r)
+ 		pmd->fail_io = true;
+ 	pmd_write_unlock(pmd);
+-	dm_block_manager_destroy(old_bm);
+-out:
+-	if (new_bm && !IS_ERR(new_bm))
+-		dm_block_manager_destroy(new_bm);
+-
+ 	return r;
+ }
+ 
+diff --git a/drivers/md/persistent-data/dm-block-manager.c b/drivers/md/persistent-data/dm-block-manager.c
+index 7bdfc23f758a..0e010e1204aa 100644
+--- a/drivers/md/persistent-data/dm-block-manager.c
++++ b/drivers/md/persistent-data/dm-block-manager.c
+@@ -421,6 +421,12 @@ void dm_block_manager_destroy(struct dm_block_manager *bm)
+ }
+ EXPORT_SYMBOL_GPL(dm_block_manager_destroy);
+ 
++void dm_block_manager_reset(struct dm_block_manager *bm)
++{
++	dm_bufio_client_reset(bm->bufio);
++}
++EXPORT_SYMBOL_GPL(dm_block_manager_reset);
++
+ unsigned int dm_bm_block_size(struct dm_block_manager *bm)
+ {
+ 	return dm_bufio_get_block_size(bm->bufio);
+diff --git a/drivers/md/persistent-data/dm-block-manager.h b/drivers/md/persistent-data/dm-block-manager.h
+index 5746b0f82a03..f706d3de8d5a 100644
+--- a/drivers/md/persistent-data/dm-block-manager.h
++++ b/drivers/md/persistent-data/dm-block-manager.h
+@@ -36,6 +36,7 @@ struct dm_block_manager *dm_block_manager_create(
+ 	struct block_device *bdev, unsigned int block_size,
+ 	unsigned int max_held_per_thread);
+ void dm_block_manager_destroy(struct dm_block_manager *bm);
++void dm_block_manager_reset(struct dm_block_manager *bm);
+ 
+ unsigned int dm_bm_block_size(struct dm_block_manager *bm);
+ dm_block_t dm_bm_nr_blocks(struct dm_block_manager *bm);
+diff --git a/drivers/md/persistent-data/dm-space-map.h b/drivers/md/persistent-data/dm-space-map.h
+index dab490353781..6bf69922b5ad 100644
+--- a/drivers/md/persistent-data/dm-space-map.h
++++ b/drivers/md/persistent-data/dm-space-map.h
+@@ -77,7 +77,8 @@ struct dm_space_map {
+ 
+ static inline void dm_sm_destroy(struct dm_space_map *sm)
+ {
+-	sm->destroy(sm);
++	if (sm)
++		sm->destroy(sm);
+ }
+ 
+ static inline int dm_sm_extend(struct dm_space_map *sm, dm_block_t extra_blocks)
+diff --git a/drivers/md/persistent-data/dm-transaction-manager.c b/drivers/md/persistent-data/dm-transaction-manager.c
+index 6dc016248baf..c88fa6266203 100644
+--- a/drivers/md/persistent-data/dm-transaction-manager.c
++++ b/drivers/md/persistent-data/dm-transaction-manager.c
+@@ -199,6 +199,9 @@ EXPORT_SYMBOL_GPL(dm_tm_create_non_blocking_clone);
+ 
+ void dm_tm_destroy(struct dm_transaction_manager *tm)
+ {
++	if (!tm)
++		return;
++
+ 	if (!tm->is_clone)
+ 		wipe_shadow_table(tm);
+ 
+diff --git a/include/linux/dm-bufio.h b/include/linux/dm-bufio.h
+index 681656a1c03d..75e7d8cbb532 100644
+--- a/include/linux/dm-bufio.h
++++ b/include/linux/dm-bufio.h
+@@ -38,6 +38,8 @@ dm_bufio_client_create(struct block_device *bdev, unsigned int block_size,
+  */
+ void dm_bufio_client_destroy(struct dm_bufio_client *c);
+ 
++void dm_bufio_client_reset(struct dm_bufio_client *c);
++
+ /*
+  * Set the sector range.
+  * When this function is called, there must be no I/O in progress on the bufio
 
