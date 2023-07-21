@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B211F75D41F
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C01975D351
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232020AbjGUTSM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:18:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
+        id S231783AbjGUTJV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:09:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232021AbjGUTSL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:11 -0400
+        with ESMTP id S231782AbjGUTJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:09:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ABC61FD7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E85230E2;
+        Fri, 21 Jul 2023 12:09:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D2D261D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E7CC433C8;
-        Fri, 21 Jul 2023 19:18:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E294061D76;
+        Fri, 21 Jul 2023 19:09:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD18C433C8;
+        Fri, 21 Jul 2023 19:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967081;
-        bh=7Zh4UMXAdLAK1GlRpiffl2cLRRBp+VopQ6CZRr+PVu0=;
+        s=korg; t=1689966558;
+        bh=EdI7fGRw+9RtkPzgYW2VysuSJKvBTQQ/+BHVsl+k9Xg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N3kOYfY7SnKVc9Zi8qUcJ0t2T0b7kzCBqrUsXTeUrf2eokKSCxvtrvmkkuVI0lWpA
-         k5JUVVVuMuGwAwvNpZ7UCp2XH71XG9NOiOXSPyFXuQLWJv6yz34v7NZ1bW1vK8Hnxo
-         9MLwEP5aIc07Eb5GTKiro/MyFegollft/QbS/ld4=
+        b=WoWUk4CLqfJ0XSbg8w8K7LF/xaYogSg6ZvfyINkJJX63ql/f8pEqZth2ym9HTeMVi
+         h64f/LD22geBdEJ+RbZf3p5VGNBJr3yF5kRBnFa13plcdygLKL0ytgd0U+pcnt7oex
+         u0CXNHREwaAcSiV7J+k19Zzr8R4s1OqhuBpPaFh0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/223] NTB: amd: Fix error handling in amd_ntb_pci_driver_init()
-Date:   Fri, 21 Jul 2023 18:04:50 +0200
-Message-ID: <20230721160522.446630811@linuxfoundation.org>
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andres Freund <andres@anarazel.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 387/532] io_uring: Use io_schedule* in cqring wait
+Date:   Fri, 21 Jul 2023 18:04:51 +0200
+Message-ID: <20230721160635.467197216@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,64 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Andres Freund <andres@anarazel.de>
 
-[ Upstream commit 98af0a33c1101c29b3ce4f0cf4715fd927c717f9 ]
+Commit 8a796565cec3601071cbbd27d6304e202019d014 upstream.
 
-A problem about ntb_hw_amd create debugfs failed is triggered with the
-following log given:
+I observed poor performance of io_uring compared to synchronous IO. That
+turns out to be caused by deeper CPU idle states entered with io_uring,
+due to io_uring using plain schedule(), whereas synchronous IO uses
+io_schedule().
 
- [  618.431232] AMD(R) PCI-E Non-Transparent Bridge Driver 1.0
- [  618.433284] debugfs: Directory 'ntb_hw_amd' with parent '/' already present!
+The losses due to this are substantial. On my cascade lake workstation,
+t/io_uring from the fio repository e.g. yields regressions between 20%
+and 40% with the following command:
+./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
 
-The reason is that amd_ntb_pci_driver_init() returns pci_register_driver()
-directly without checking its return value, if pci_register_driver()
-failed, it returns without destroy the newly created debugfs, resulting
-the debugfs of ntb_hw_amd can never be created later.
+This is repeatable with different filesystems, using raw block devices
+and using different block devices.
 
- amd_ntb_pci_driver_init()
-   debugfs_create_dir() # create debugfs directory
-   pci_register_driver()
-     driver_register()
-       bus_add_driver()
-         priv = kzalloc(...) # OOM happened
-   # return without destroy debugfs directory
+Use io_schedule_prepare() / io_schedule_finish() in
+io_cqring_wait_schedule() to address the difference.
 
-Fix by removing debugfs when pci_register_driver() returns error.
+After that using io_uring is on par or surpassing synchronous IO (using
+registered files etc makes it reliably win, but arguably is a less fair
+comparison).
 
-Fixes: a1b3695820aa ("NTB: Add support for AMD PCI-Express Non-Transparent Bridge")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There are other calls to schedule() in io_uring/, but none immediately
+jump out to be similarly situated, so I did not touch them. Similarly,
+it's possible that mutex_lock_io() should be used, but it's not clear if
+there are cases where that matters.
+
+Cc: stable@vger.kernel.org # 5.10+
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Andres Freund <andres@anarazel.de>
+Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
+[axboe: minor style fixup]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/amd/ntb_hw_amd.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ntb/hw/amd/ntb_hw_amd.c b/drivers/ntb/hw/amd/ntb_hw_amd.c
-index 04550b1f984c6..730f2103b91d1 100644
---- a/drivers/ntb/hw/amd/ntb_hw_amd.c
-+++ b/drivers/ntb/hw/amd/ntb_hw_amd.c
-@@ -1338,12 +1338,17 @@ static struct pci_driver amd_ntb_pci_driver = {
- 
- static int __init amd_ntb_pci_driver_init(void)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -7796,7 +7796,7 @@ static inline int io_cqring_wait_schedul
+ 					  struct io_wait_queue *iowq,
+ 					  ktime_t *timeout)
  {
-+	int ret;
- 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
+-	int ret;
++	int token, ret;
  
- 	if (debugfs_initialized())
- 		debugfs_dir = debugfs_create_dir(KBUILD_MODNAME, NULL);
+ 	/* make sure we run task_work before checking for signals */
+ 	ret = io_run_task_work_sig();
+@@ -7806,9 +7806,17 @@ static inline int io_cqring_wait_schedul
+ 	if (test_bit(0, &ctx->check_cq_overflow))
+ 		return 1;
  
--	return pci_register_driver(&amd_ntb_pci_driver);
-+	ret = pci_register_driver(&amd_ntb_pci_driver);
-+	if (ret)
-+		debugfs_remove_recursive(debugfs_dir);
-+
++	/*
++	 * Use io_schedule_prepare/finish, so cpufreq can take into account
++	 * that the task is waiting for IO - turns out to be important for low
++	 * QD IO.
++	 */
++	token = io_schedule_prepare();
++	ret = 1;
+ 	if (!schedule_hrtimeout(timeout, HRTIMER_MODE_ABS))
+-		return -ETIME;
+-	return 1;
++		ret = -ETIME;
++	io_schedule_finish(token);
 +	return ret;
  }
- module_init(amd_ntb_pci_driver_init);
  
--- 
-2.39.2
-
+ /*
 
 
