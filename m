@@ -2,442 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E534675D3A2
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593AD75D498
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:22:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231877AbjGUTMz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:12:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35504 "EHLO
+        id S232171AbjGUTW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231879AbjGUTMv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A4E30ED
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:48 -0700 (PDT)
+        with ESMTP id S232114AbjGUTWz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:22:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CF6E75
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:22:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00BA561D7C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11093C433C8;
-        Fri, 21 Jul 2023 19:12:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5BDE61D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:22:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4FBC433C8;
+        Fri, 21 Jul 2023 19:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966767;
-        bh=kP2J+X53hjiOpOGwunbqsnHX4BbdvVkUhCx4xx2XVjU=;
+        s=korg; t=1689967372;
+        bh=m4xvG7VFHe0Lw5vYmCBDncicCFG0EE9jzmO8pylEd78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zWjCsyEHECoZo6e8DjO5gCxkOElAJjrRRZDtRAI4y7jdcnXWvA64wTVlwIuqQRBfy
-         RKLDxnPOC6xxkeiF9g3ggGhqg6M1cZqm6BEFXZgHtYmCAVmuLaoy490Hqx5GbuqYfE
-         zDAI/lfT7afmame3jgZW5DeqGmmaYpQmLNRZRiTE=
+        b=dHAOAVGVct7e2ZEoPuCgBSv7t15IwVrq9yDY9q+JmyttsbBDBQ8RbLYzkqz2BBY2R
+         bFCLwuYI4sMOWE8MDNXLT5nnBieF3K6EG08pZuXPaRPrl0Ve/eYS9yo/UnctLibihZ
+         +V4f/yloIv93lg5xtZ0yRuY87Rteze6vI65cgWT8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Zhao <yuzhao@google.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 5.15 460/532] MIPS: KVM: Fix NULL pointer dereference
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>
+Subject: [PATCH 6.1 111/223] fs: dlm: revert check required context while close
 Date:   Fri, 21 Jul 2023 18:06:04 +0200
-Message-ID: <20230721160639.481191090@linuxfoundation.org>
+Message-ID: <20230721160525.601103162@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        LOTS_OF_MONEY,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit e4de2057698636c0ee709e545d19b169d2069fa3 upstream.
+commit c6b6d6dcc7f32767d57740e0552337c8de40610b upstream.
 
-After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support") we
-get a NULL pointer dereference when creating a KVM guest:
+This patch reverts commit 2c3fa6ae4d52 ("dlm: check required context
+while close"). The function dlm_midcomms_close(), which will call later
+dlm_lowcomms_close(), is called when the cluster manager tells the node
+got fenced which means on midcomms/lowcomms layer to disconnect the node
+from the cluster communication. The node can rejoin the cluster later.
+This patch was ensuring no new message were able to be triggered when we
+are in the close() function context. This was done by checking if the
+lockspace has been stopped. However there is a missing check that we
+only need to check specific lockspaces where the fenced node is member
+of. This is currently complicated because there is no way to easily
+check if a node is part of a specific lockspace without stopping the
+recovery. For now we just revert this commit as it is just a check to
+finding possible leaks of stopping lockspaces before close() is called.
 
-[  146.243409] Starting KVM with MIPS VZ extensions
-[  149.849151] CPU 3 Unable to handle kernel paging request at virtual address 0000000000000300, epc == ffffffffc06356ec, ra == ffffffffc063568c
-[  149.849177] Oops[#1]:
-[  149.849182] CPU: 3 PID: 2265 Comm: qemu-system-mip Not tainted 6.4.0-rc3+ #1671
-[  149.849188] Hardware name: THTF CX TL630 Series/THTF-LS3A4000-7A1000-ML4A, BIOS KL4.1F.TF.D.166.201225.R 12/25/2020
-[  149.849192] $ 0   : 0000000000000000 000000007400cce0 0000000000400004 ffffffff8119c740
-[  149.849209] $ 4   : 000000007400cce1 000000007400cce1 0000000000000000 0000000000000000
-[  149.849221] $ 8   : 000000240058bb36 ffffffff81421ac0 0000000000000000 0000000000400dc0
-[  149.849233] $12   : 9800000102a07cc8 ffffffff80e40e38 0000000000000001 0000000000400dc0
-[  149.849245] $16   : 0000000000000000 9800000106cd0000 9800000106cd0000 9800000100cce000
-[  149.849257] $20   : ffffffffc0632b28 ffffffffc05b31b0 9800000100ccca00 0000000000400000
-[  149.849269] $24   : 9800000106cd09ce ffffffff802f69d0
-[  149.849281] $28   : 9800000102a04000 9800000102a07cd0 98000001106a8000 ffffffffc063568c
-[  149.849293] Hi    : 00000335b2111e66
-[  149.849295] Lo    : 6668d90061ae0ae9
-[  149.849298] epc   : ffffffffc06356ec kvm_vz_vcpu_setup+0xc4/0x328 [kvm]
-[  149.849324] ra    : ffffffffc063568c kvm_vz_vcpu_setup+0x64/0x328 [kvm]
-[  149.849336] Status: 7400cce3 KX SX UX KERNEL EXL IE
-[  149.849351] Cause : 1000000c (ExcCode 03)
-[  149.849354] BadVA : 0000000000000300
-[  149.849357] PrId  : 0014c004 (ICT Loongson-3)
-[  149.849360] Modules linked in: kvm nfnetlink_queue nfnetlink_log nfnetlink fuse sha256_generic libsha256 cfg80211 rfkill binfmt_misc vfat fat snd_hda_codec_hdmi input_leds led_class snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hda_core snd_pcm snd_timer snd serio_raw xhci_pci radeon drm_suballoc_helper drm_display_helper xhci_hcd ip_tables x_tables
-[  149.849432] Process qemu-system-mip (pid: 2265, threadinfo=00000000ae2982d2, task=0000000038e09ad4, tls=000000ffeba16030)
-[  149.849439] Stack : 9800000000000003 9800000100ccca00 9800000100ccc000 ffffffffc062cef4
-[  149.849453]         9800000102a07d18 c89b63a7ab338e00 0000000000000000 ffffffff811a0000
-[  149.849465]         0000000000000000 9800000106cd0000 ffffffff80e59938 98000001106a8920
-[  149.849476]         ffffffff80e57f30 ffffffffc062854c ffffffff811a0000 9800000102bf4240
-[  149.849488]         ffffffffc05b0000 ffffffff80e3a798 000000ff78000000 000000ff78000010
-[  149.849500]         0000000000000255 98000001021f7de0 98000001023f0078 ffffffff81434000
-[  149.849511]         0000000000000000 0000000000000000 9800000102ae0000 980000025e92ae28
-[  149.849523]         0000000000000000 c89b63a7ab338e00 0000000000000001 ffffffff8119dce0
-[  149.849535]         000000ff78000010 ffffffff804f3d3c 9800000102a07eb0 0000000000000255
-[  149.849546]         0000000000000000 ffffffff8049460c 000000ff78000010 0000000000000255
-[  149.849558]         ...
-[  149.849565] Call Trace:
-[  149.849567] [<ffffffffc06356ec>] kvm_vz_vcpu_setup+0xc4/0x328 [kvm]
-[  149.849586] [<ffffffffc062cef4>] kvm_arch_vcpu_create+0x184/0x228 [kvm]
-[  149.849605] [<ffffffffc062854c>] kvm_vm_ioctl+0x64c/0xf28 [kvm]
-[  149.849623] [<ffffffff805209c0>] sys_ioctl+0xc8/0x118
-[  149.849631] [<ffffffff80219eb0>] syscall_common+0x34/0x58
-
-The root cause is the deletion of kvm_mips_commpage_init() leaves vcpu
-->arch.cop0 NULL. So fix it by making cop0 from a pointer to an embedded
-object.
-
-Fixes: 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")
 Cc: stable@vger.kernel.org
-Reported-by: Yu Zhao <yuzhao@google.com>
-Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 2c3fa6ae4d52 ("dlm: check required context while close")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/kvm_host.h |    6 +++---
- arch/mips/kvm/emulate.c          |   22 +++++++++++-----------
- arch/mips/kvm/mips.c             |   16 ++++++++--------
- arch/mips/kvm/trace.h            |    8 ++++----
- arch/mips/kvm/vz.c               |   20 ++++++++++----------
- 5 files changed, 36 insertions(+), 36 deletions(-)
+ fs/dlm/lockspace.c |   12 ------------
+ fs/dlm/lockspace.h |    1 -
+ fs/dlm/midcomms.c  |    3 ---
+ 3 files changed, 16 deletions(-)
 
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -318,7 +318,7 @@ struct kvm_vcpu_arch {
- 	unsigned int aux_inuse;
- 
- 	/* COP0 State */
--	struct mips_coproc *cop0;
-+	struct mips_coproc cop0;
- 
- 	/* Resume PC after MMIO completion */
- 	unsigned long io_pc;
-@@ -699,7 +699,7 @@ static inline bool kvm_mips_guest_can_ha
- static inline bool kvm_mips_guest_has_fpu(struct kvm_vcpu_arch *vcpu)
- {
- 	return kvm_mips_guest_can_have_fpu(vcpu) &&
--		kvm_read_c0_guest_config1(vcpu->cop0) & MIPS_CONF1_FP;
-+		kvm_read_c0_guest_config1(&vcpu->cop0) & MIPS_CONF1_FP;
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -958,15 +958,3 @@ void dlm_stop_lockspaces(void)
+ 		log_print("dlm user daemon left %d lockspaces", count);
  }
  
- static inline bool kvm_mips_guest_can_have_msa(struct kvm_vcpu_arch *vcpu)
-@@ -711,7 +711,7 @@ static inline bool kvm_mips_guest_can_ha
- static inline bool kvm_mips_guest_has_msa(struct kvm_vcpu_arch *vcpu)
- {
- 	return kvm_mips_guest_can_have_msa(vcpu) &&
--		kvm_read_c0_guest_config3(vcpu->cop0) & MIPS_CONF3_MSA;
-+		kvm_read_c0_guest_config3(&vcpu->cop0) & MIPS_CONF3_MSA;
- }
+-void dlm_stop_lockspaces_check(void)
+-{
+-	struct dlm_ls *ls;
+-
+-	spin_lock(&lslist_lock);
+-	list_for_each_entry(ls, &lslist, ls_list) {
+-		if (WARN_ON(!rwsem_is_locked(&ls->ls_in_recovery) ||
+-			    !dlm_locking_stopped(ls)))
+-			break;
+-	}
+-	spin_unlock(&lslist_lock);
+-}
+--- a/fs/dlm/lockspace.h
++++ b/fs/dlm/lockspace.h
+@@ -27,7 +27,6 @@ struct dlm_ls *dlm_find_lockspace_local(
+ struct dlm_ls *dlm_find_lockspace_device(int minor);
+ void dlm_put_lockspace(struct dlm_ls *ls);
+ void dlm_stop_lockspaces(void);
+-void dlm_stop_lockspaces_check(void);
+ int dlm_new_user_lockspace(const char *name, const char *cluster,
+ 			   uint32_t flags, int lvblen,
+ 			   const struct dlm_lockspace_ops *ops,
+--- a/fs/dlm/midcomms.c
++++ b/fs/dlm/midcomms.c
+@@ -136,7 +136,6 @@
+ #include <net/tcp.h>
  
- struct kvm_mips_callbacks {
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -312,7 +312,7 @@ int kvm_get_badinstrp(u32 *opc, struct k
-  */
- int kvm_mips_count_disabled(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
+ #include "dlm_internal.h"
+-#include "lockspace.h"
+ #include "lowcomms.h"
+ #include "config.h"
+ #include "memory.h"
+@@ -1458,8 +1457,6 @@ int dlm_midcomms_close(int nodeid)
+ 	if (nodeid == dlm_our_nodeid())
+ 		return 0;
  
- 	return	(vcpu->arch.count_ctl & KVM_REG_MIPS_COUNT_CTL_DC) ||
- 		(kvm_read_c0_guest_cause(cop0) & CAUSEF_DC);
-@@ -384,7 +384,7 @@ static inline ktime_t kvm_mips_count_tim
-  */
- static u32 kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	ktime_t expires, threshold;
- 	u32 count, compare;
- 	int running;
-@@ -444,7 +444,7 @@ static u32 kvm_mips_read_count_running(s
-  */
- u32 kvm_mips_read_count(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 
- 	/* If count disabled just read static copy of count */
- 	if (kvm_mips_count_disabled(vcpu))
-@@ -502,7 +502,7 @@ ktime_t kvm_mips_freeze_hrtimer(struct k
- static void kvm_mips_resume_hrtimer(struct kvm_vcpu *vcpu,
- 				    ktime_t now, u32 count)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	u32 compare;
- 	u64 delta;
- 	ktime_t expire;
-@@ -603,7 +603,7 @@ resume:
-  */
- void kvm_mips_write_count(struct kvm_vcpu *vcpu, u32 count)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	ktime_t now;
- 
- 	/* Calculate bias */
-@@ -649,7 +649,7 @@ void kvm_mips_init_count(struct kvm_vcpu
-  */
- int kvm_mips_set_count_hz(struct kvm_vcpu *vcpu, s64 count_hz)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	int dc;
- 	ktime_t now;
- 	u32 count;
-@@ -696,7 +696,7 @@ int kvm_mips_set_count_hz(struct kvm_vcp
-  */
- void kvm_mips_write_compare(struct kvm_vcpu *vcpu, u32 compare, bool ack)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	int dc;
- 	u32 old_compare = kvm_read_c0_guest_compare(cop0);
- 	s32 delta = compare - old_compare;
-@@ -779,7 +779,7 @@ void kvm_mips_write_compare(struct kvm_v
-  */
- static ktime_t kvm_mips_count_disable(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	u32 count;
- 	ktime_t now;
- 
-@@ -806,7 +806,7 @@ static ktime_t kvm_mips_count_disable(st
-  */
- void kvm_mips_count_disable_cause(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 
- 	kvm_set_c0_guest_cause(cop0, CAUSEF_DC);
- 	if (!(vcpu->arch.count_ctl & KVM_REG_MIPS_COUNT_CTL_DC))
-@@ -826,7 +826,7 @@ void kvm_mips_count_disable_cause(struct
-  */
- void kvm_mips_count_enable_cause(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	u32 count;
- 
- 	kvm_clear_c0_guest_cause(cop0, CAUSEF_DC);
-@@ -852,7 +852,7 @@ void kvm_mips_count_enable_cause(struct
-  */
- int kvm_mips_set_count_ctl(struct kvm_vcpu *vcpu, s64 count_ctl)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	s64 changed = count_ctl ^ vcpu->arch.count_ctl;
- 	s64 delta;
- 	ktime_t expire, now;
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -652,7 +652,7 @@ static int kvm_mips_copy_reg_indices(str
- static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
- 			    const struct kvm_one_reg *reg)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	struct mips_fpu_struct *fpu = &vcpu->arch.fpu;
- 	int ret;
- 	s64 v;
-@@ -764,7 +764,7 @@ static int kvm_mips_get_reg(struct kvm_v
- static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
- 			    const struct kvm_one_reg *reg)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	struct mips_fpu_struct *fpu = &vcpu->arch.fpu;
- 	s64 v;
- 	s64 vs[2];
-@@ -1104,7 +1104,7 @@ int kvm_vm_ioctl_check_extension(struct
- int kvm_cpu_has_pending_timer(struct kvm_vcpu *vcpu)
- {
- 	return kvm_mips_pending_timer(vcpu) ||
--		kvm_read_c0_guest_cause(vcpu->arch.cop0) & C_TI;
-+		kvm_read_c0_guest_cause(&vcpu->arch.cop0) & C_TI;
- }
- 
- int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vcpu)
-@@ -1128,7 +1128,7 @@ int kvm_arch_vcpu_dump_regs(struct kvm_v
- 	kvm_debug("\thi: 0x%08lx\n", vcpu->arch.hi);
- 	kvm_debug("\tlo: 0x%08lx\n", vcpu->arch.lo);
- 
--	cop0 = vcpu->arch.cop0;
-+	cop0 = &vcpu->arch.cop0;
- 	kvm_debug("\tStatus: 0x%08x, Cause: 0x%08x\n",
- 		  kvm_read_c0_guest_status(cop0),
- 		  kvm_read_c0_guest_cause(cop0));
-@@ -1250,7 +1250,7 @@ int kvm_mips_handle_exit(struct kvm_vcpu
- 
- 	case EXCCODE_TLBS:
- 		kvm_debug("TLB ST fault:  cause %#x, status %#x, PC: %p, BadVaddr: %#lx\n",
--			  cause, kvm_read_c0_guest_status(vcpu->arch.cop0), opc,
-+			  cause, kvm_read_c0_guest_status(&vcpu->arch.cop0), opc,
- 			  badvaddr);
- 
- 		++vcpu->stat.tlbmiss_st_exits;
-@@ -1322,7 +1322,7 @@ int kvm_mips_handle_exit(struct kvm_vcpu
- 		kvm_get_badinstr(opc, vcpu, &inst);
- 		kvm_err("Exception Code: %d, not yet handled, @ PC: %p, inst: 0x%08x  BadVaddr: %#lx Status: %#x\n",
- 			exccode, opc, inst, badvaddr,
--			kvm_read_c0_guest_status(vcpu->arch.cop0));
-+			kvm_read_c0_guest_status(&vcpu->arch.cop0));
- 		kvm_arch_vcpu_dump_regs(vcpu);
- 		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		ret = RESUME_HOST;
-@@ -1384,7 +1384,7 @@ int kvm_mips_handle_exit(struct kvm_vcpu
- /* Enable FPU for guest and restore context */
- void kvm_own_fpu(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	unsigned int sr, cfg5;
- 
- 	preempt_disable();
-@@ -1428,7 +1428,7 @@ void kvm_own_fpu(struct kvm_vcpu *vcpu)
- /* Enable MSA for guest and restore context */
- void kvm_own_msa(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	unsigned int sr, cfg5;
- 
- 	preempt_disable();
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -322,11 +322,11 @@ TRACE_EVENT_FN(kvm_guest_mode_change,
- 	    ),
- 
- 	    TP_fast_assign(
--			__entry->epc = kvm_read_c0_guest_epc(vcpu->arch.cop0);
-+			__entry->epc = kvm_read_c0_guest_epc(&vcpu->arch.cop0);
- 			__entry->pc = vcpu->arch.pc;
--			__entry->badvaddr = kvm_read_c0_guest_badvaddr(vcpu->arch.cop0);
--			__entry->status = kvm_read_c0_guest_status(vcpu->arch.cop0);
--			__entry->cause = kvm_read_c0_guest_cause(vcpu->arch.cop0);
-+			__entry->badvaddr = kvm_read_c0_guest_badvaddr(&vcpu->arch.cop0);
-+			__entry->status = kvm_read_c0_guest_status(&vcpu->arch.cop0);
-+			__entry->cause = kvm_read_c0_guest_cause(&vcpu->arch.cop0);
- 	    ),
- 
- 	    TP_printk("EPC: 0x%08lx PC: 0x%08lx Status: 0x%08x Cause: 0x%08x BadVAddr: 0x%08lx",
---- a/arch/mips/kvm/vz.c
-+++ b/arch/mips/kvm/vz.c
-@@ -422,7 +422,7 @@ static void _kvm_vz_restore_htimer(struc
-  */
- static void kvm_vz_restore_timer(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	u32 cause, compare;
- 
- 	compare = kvm_read_sw_gc0_compare(cop0);
-@@ -517,7 +517,7 @@ static void _kvm_vz_save_htimer(struct k
-  */
- static void kvm_vz_save_timer(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	u32 gctl0, compare, cause;
- 
- 	gctl0 = read_c0_guestctl0();
-@@ -863,7 +863,7 @@ static unsigned long mips_process_maar(u
- 
- static void kvm_write_maari(struct kvm_vcpu *vcpu, unsigned long val)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 
- 	val &= MIPS_MAARI_INDEX;
- 	if (val == MIPS_MAARI_INDEX)
-@@ -876,7 +876,7 @@ static enum emulation_result kvm_vz_gpsi
- 					      u32 *opc, u32 cause,
- 					      struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	enum emulation_result er = EMULATE_DONE;
- 	u32 rt, rd, sel;
- 	unsigned long curr_pc;
-@@ -1905,7 +1905,7 @@ static int kvm_vz_get_one_reg(struct kvm
- 			      const struct kvm_one_reg *reg,
- 			      s64 *v)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	unsigned int idx;
- 
- 	switch (reg->id) {
-@@ -2075,7 +2075,7 @@ static int kvm_vz_get_one_reg(struct kvm
- 	case KVM_REG_MIPS_CP0_MAARI:
- 		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
- 			return -EINVAL;
--		*v = kvm_read_sw_gc0_maari(vcpu->arch.cop0);
-+		*v = kvm_read_sw_gc0_maari(&vcpu->arch.cop0);
- 		break;
- #ifdef CONFIG_64BIT
- 	case KVM_REG_MIPS_CP0_XCONTEXT:
-@@ -2129,7 +2129,7 @@ static int kvm_vz_set_one_reg(struct kvm
- 			      const struct kvm_one_reg *reg,
- 			      s64 v)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	unsigned int idx;
- 	int ret = 0;
- 	unsigned int cur, change;
-@@ -2556,7 +2556,7 @@ static void kvm_vz_vcpu_load_tlb(struct
- 
- static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	bool migrated, all;
- 
- 	/*
-@@ -2698,7 +2698,7 @@ static int kvm_vz_vcpu_load(struct kvm_v
- 
- static int kvm_vz_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 
- 	if (current->flags & PF_VCPU)
- 		kvm_vz_vcpu_save_wired(vcpu);
-@@ -3070,7 +3070,7 @@ static void kvm_vz_vcpu_uninit(struct kv
- 
- static int kvm_vz_vcpu_setup(struct kvm_vcpu *vcpu)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct mips_coproc *cop0 = &vcpu->arch.cop0;
- 	unsigned long count_hz = 100*1000*1000; /* default to 100 MHz */
- 
- 	/*
+-	dlm_stop_lockspaces_check();
+-
+ 	idx = srcu_read_lock(&nodes_srcu);
+ 	/* Abort pending close/remove operation */
+ 	node = nodeid2node(nodeid, 0);
 
 
