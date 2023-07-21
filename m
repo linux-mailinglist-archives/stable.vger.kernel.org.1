@@ -2,56 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90E6175D41D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B1BC75D36D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232018AbjGUTSH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40122 "EHLO
+        id S231821AbjGUTKc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:10:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232020AbjGUTSH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD324273E
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:56 -0700 (PDT)
+        with ESMTP id S231823AbjGUTKb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71FF11BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C4B861D6D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70111C433C7;
-        Fri, 21 Jul 2023 19:17:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F342661D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D763C433C7;
+        Fri, 21 Jul 2023 19:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967075;
-        bh=HWRFJ3XkNz1VfdjMuFUzPXdciVm7PKG5YNggZJtILxI=;
+        s=korg; t=1689966629;
+        bh=dKi6yeEg+AEVKwezsYdxwD7jHXbMT4mYBYn61WdLx1o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yhHL9NIuDhX1QHjhjFqyNjxn8Btx3P93aOW+QKBTqc3Gh3hnmAloS5t53aIDHwnTW
-         kS98aGlW09m0dTXeE3WDzXxGZXiGSHwyMm/gvSEdDyN8rJI8GUbiwl401a1pf6vaGt
-         hXe9sdY10HwWjL0UBTgbf+mD+f5znl77FIxoE97o=
+        b=173jpOxs8w63nhoiYIGPjacS7YO2Oa1QSsE5f9oHpseCIiq8lO63Xc440Sfjnj/FA
+         4wdTxlVfq3XpxZ5Z7cWwinARzHZt224jz0HkHnkUZYyp0KZH64APEWUven8oKotlsq
+         wIhofaeQuf/LYxhi9gs74RwUoUE12ZIPHwwQ/2cE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Amit Klein <aksecurity@gmail.com>,
-        Eric Dumazet <edumazet@google.com>, Willy Tarreau <w@1wt.eu>,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        David Ahern <dsahern@kernel.org>,
-        Hannes Frederic Sowa <hannes@stressinduktion.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/223] udp6: fix udp6_ehashfn() typo
+        patches@lists.linux.dev,
+        Maxim Cournoyer <maxim.cournoyer@gmail.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 384/532] wireguard: netlink: send staged packets when setting initial private key
 Date:   Fri, 21 Jul 2023 18:04:48 +0200
-Message-ID: <20230721160522.363035796@linuxfoundation.org>
+Message-ID: <20230721160635.308554887@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,40 +56,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit 51d03e2f2203e76ed02d33fb5ffbb5fc85ffaf54 ]
+commit f58d0a9b4c6a7a5199c3af967e43cc8b654604d4 upstream.
 
-Amit Klein reported that udp6_ehash_secret was initialized but never used.
+Packets bound for peers can queue up prior to the device private key
+being set. For example, if persistent keepalive is set, a packet is
+queued up to be sent as soon as the device comes up. However, if the
+private key hasn't been set yet, the handshake message never sends, and
+no timer is armed to retry, since that would be pointless.
 
-Fixes: 1bbdceef1e53 ("inet: convert inet_ehash_secret and ipv6_hash_secret to net_get_random_once")
-Reported-by: Amit Klein <aksecurity@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willy Tarreau <w@1wt.eu>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: Hannes Frederic Sowa <hannes@stressinduktion.org>
+But, if a user later sets a private key, the expectation is that those
+queued packets, such as a persistent keepalive, are actually sent. So
+adjust the configuration logic to account for this edge case, and add a
+test case to make sure this works.
+
+Maxim noticed this with a wg-quick(8) config to the tune of:
+
+    [Interface]
+    PostUp = wg set %i private-key somefile
+
+    [Peer]
+    PublicKey = ...
+    Endpoint = ...
+    PersistentKeepalive = 25
+
+Here, the private key gets set after the device comes up using a PostUp
+script, triggering the bug.
+
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Cc: stable@vger.kernel.org
+Reported-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
+Tested-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
+Link: https://lore.kernel.org/wireguard/87fs7xtqrv.fsf@gmail.com/
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/udp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireguard/netlink.c            |   14 ++++++++-----
+ tools/testing/selftests/wireguard/netns.sh |   30 +++++++++++++++++++++++++----
+ 2 files changed, 35 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index c029222ce46b0..04f1d696503cd 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -90,7 +90,7 @@ static u32 udp6_ehashfn(const struct net *net,
- 	fhash = __ipv6_addr_jhash(faddr, udp_ipv6_hash_secret);
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -546,6 +546,7 @@ static int wg_set_device(struct sk_buff
+ 		u8 *private_key = nla_data(info->attrs[WGDEVICE_A_PRIVATE_KEY]);
+ 		u8 public_key[NOISE_PUBLIC_KEY_LEN];
+ 		struct wg_peer *peer, *temp;
++		bool send_staged_packets;
  
- 	return __inet6_ehashfn(lhash, lport, fhash, fport,
--			       udp_ipv6_hash_secret + net_hash_mix(net));
-+			       udp6_ehash_secret + net_hash_mix(net));
- }
+ 		if (!crypto_memneq(wg->static_identity.static_private,
+ 				   private_key, NOISE_PUBLIC_KEY_LEN))
+@@ -564,14 +565,17 @@ static int wg_set_device(struct sk_buff
+ 		}
  
- int udp_v6_get_port(struct sock *sk, unsigned short snum)
--- 
-2.39.2
-
+ 		down_write(&wg->static_identity.lock);
+-		wg_noise_set_static_identity_private_key(&wg->static_identity,
+-							 private_key);
+-		list_for_each_entry_safe(peer, temp, &wg->peer_list,
+-					 peer_list) {
++		send_staged_packets = !wg->static_identity.has_identity && netif_running(wg->dev);
++		wg_noise_set_static_identity_private_key(&wg->static_identity, private_key);
++		send_staged_packets = send_staged_packets && wg->static_identity.has_identity;
++
++		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
++		list_for_each_entry_safe(peer, temp, &wg->peer_list, peer_list) {
+ 			wg_noise_precompute_static_static(peer);
+ 			wg_noise_expire_current_peer_keypairs(peer);
++			if (send_staged_packets)
++				wg_packet_send_staged_packets(peer);
+ 		}
+-		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
+ 		up_write(&wg->static_identity.lock);
+ 	}
+ skip_set_private_key:
+--- a/tools/testing/selftests/wireguard/netns.sh
++++ b/tools/testing/selftests/wireguard/netns.sh
+@@ -502,10 +502,32 @@ n2 bash -c 'printf 0 > /proc/sys/net/ipv
+ n1 ping -W 1 -c 1 192.168.241.2
+ [[ $(n2 wg show wg0 endpoints) == "$pub1	10.0.0.3:1" ]]
+ 
+-ip1 link del veth1
+-ip1 link del veth3
+-ip1 link del wg0
+-ip2 link del wg0
++ip1 link del dev veth3
++ip1 link del dev wg0
++ip2 link del dev wg0
++
++# Make sure persistent keep alives are sent when an adapter comes up
++ip1 link add dev wg0 type wireguard
++n1 wg set wg0 private-key <(echo "$key1") peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -eq 0 ]]
++ip1 link set dev wg0 up
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -gt 0 ]]
++ip1 link del dev wg0
++# This should also happen even if the private key is set later
++ip1 link add dev wg0 type wireguard
++n1 wg set wg0 peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -eq 0 ]]
++ip1 link set dev wg0 up
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -eq 0 ]]
++n1 wg set wg0 private-key <(echo "$key1")
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -gt 0 ]]
++ip1 link del dev veth1
++ip1 link del dev wg0
+ 
+ # We test that Netlink/IPC is working properly by doing things that usually cause split responses
+ ip0 link add dev wg0 type wireguard
 
 
