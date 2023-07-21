@@ -2,85 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7112175D19C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5645975D39A
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbjGUSuv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:50:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45044 "EHLO
+        id S231871AbjGUTMb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230223AbjGUSuu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:50 -0400
+        with ESMTP id S231875AbjGUTMa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9C830CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E811BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 96270619FD
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0028C433C7;
-        Fri, 21 Jul 2023 18:50:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 099ED61D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C367C433C8;
+        Fri, 21 Jul 2023 19:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965449;
-        bh=EjewOMFgqtIdvNOu1km6Tffffy+X6G1QaFapHl6hHcU=;
+        s=korg; t=1689966747;
+        bh=Tu9WlaPPxqDCd7RqGck7SfREXo1fL67aIp4fGt8GOWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=behHJoQHq3PGgwbUiqGFg0ms6qmy3LCA3mFJ7G1teKZhxWlxALPxoGP3CbSWUeBgX
-         PK1QzRXocSZrBIi1N4WQ3/1UTEXzJKrFLk+jT8/YMT7cE80Ym7IRzRzgFF5+N6ALjO
-         SwqHEZu472c6k2r5WjZsA8E7Nd9j6AuXw1FVHKr4=
+        b=hU5OTBJ8azrJsb3p0JwOaFe8YwXghBmG6OIC0K5mhrcE6W+jODP8zGOdzq+0jWTdx
+         9wJJBS6M6RQmfpiAvYUABwM8r225yZikW+S+WJtGtUJrs5g21F4XqHNlOQ0DgYKfSk
+         0zKA0fedvLym1dObzbBNcFB3FtnTK9/fLugm1iMM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 6.4 249/292] xtensa: ISS: fix call to split_if_spec
+        patches@lists.linux.dev, Joel Stanley <joel@jms.id.au>,
+        Naveen N Rao <naveen@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.15 454/532] powerpc: Fail build if using recordmcount with binutils v2.37
 Date:   Fri, 21 Jul 2023 18:05:58 +0200
-Message-ID: <20230721160539.616552320@linuxfoundation.org>
+Message-ID: <20230721160639.163865277@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-References: <20230721160528.800311148@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Naveen N Rao <naveen@kernel.org>
 
-commit bc8d5916541fa19ca5bc598eb51a5f78eb891a36 upstream.
+commit 25ea739ea1d4d3de41acc4f4eb2d1a97eee0eb75 upstream.
 
-split_if_spec expects a NULL-pointer as an end marker for the argument
-list, but tuntap_probe never supplied that terminating NULL. As a result
-incorrectly formatted interface specification string may cause a crash
-because of the random memory access. Fix that by adding NULL terminator
-to the split_if_spec argument list.
+binutils v2.37 drops unused section symbols, which prevents recordmcount
+from capturing mcount locations in sections that have no non-weak
+symbols. This results in a build failure with a message such as:
+	Cannot find symbol for section 12: .text.perf_callchain_kernel.
+	kernel/events/callchain.o: failed
+
+The change to binutils was reverted for v2.38, so this behavior is
+specific to binutils v2.37:
+https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=c09c8b42021180eee9495bd50d8b35e683d3901b
+
+Objtool is able to cope with such sections, so this issue is specific to
+recordmcount.
+
+Fail the build and print a warning if binutils v2.37 is detected and if
+we are using recordmcount.
 
 Cc: stable@vger.kernel.org
-Fixes: 7282bee78798 ("[PATCH] xtensa: Architecture support for Tensilica Xtensa Part 8")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Suggested-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230530061436.56925-1-naveen@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/xtensa/platforms/iss/network.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/Makefile |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/xtensa/platforms/iss/network.c
-+++ b/arch/xtensa/platforms/iss/network.c
-@@ -237,7 +237,7 @@ static int tuntap_probe(struct iss_net_p
- 
- 	init += sizeof(TRANSPORT_TUNTAP_NAME) - 1;
- 	if (*init == ',') {
--		rem = split_if_spec(init + 1, &mac_str, &dev_name);
-+		rem = split_if_spec(init + 1, &mac_str, &dev_name, NULL);
- 		if (rem != NULL) {
- 			pr_err("%s: extra garbage on specification : '%s'\n",
- 			       dev->name, rem);
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -444,3 +444,11 @@ checkbin:
+ 		echo -n '*** Please use a different binutils version.' ; \
+ 		false ; \
+ 	fi
++	@if test "x${CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT}" = "xy" -a \
++		"x${CONFIG_LD_IS_BFD}" = "xy" -a \
++		"${CONFIG_LD_VERSION}" = "23700" ; then \
++		echo -n '*** binutils 2.37 drops unused section symbols, which recordmcount ' ; \
++		echo 'is unable to handle.' ; \
++		echo '*** Please use a different binutils version.' ; \
++		false ; \
++	fi
 
 
