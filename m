@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9991375D3F5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3468B75D4AA
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231972AbjGUTQU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:16:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38490 "EHLO
+        id S232203AbjGUTXn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:23:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231964AbjGUTQT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:19 -0400
+        with ESMTP id S232201AbjGUTXm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:23:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B435189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A65F1727
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E64C61D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DD3C433C7;
-        Fri, 21 Jul 2023 19:16:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3996761D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4665AC433C7;
+        Fri, 21 Jul 2023 19:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966978;
-        bh=N8bOEh2CpjC1JuYdnz16n+/MjIzhAw5dBuxV/GDoDt8=;
+        s=korg; t=1689967420;
+        bh=L1TlVn4C1VjOVh+p4h9n+05O+Ujr4u6lU34wr/AMEb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mOdIC+RM+kIMdf89c0WTH/bmwsuvAFMXPjSUuRkD7oFPKyOP74mvr2ZXS1XrukuYs
-         i4rEX4W6oaW8RDGfLyXrqdhmNG34SseHqBVOKpIE7HyXY5WcnkWLOZR2vOSt/1EvLV
-         7z8akzQGiumUKMPmIT32hP0yG+2iZFtvj/ZwtvHg=
+        b=gTjwbNO8z8mRE9q5jb+OsKC9PuBicWexn6pjlbaXJ5POkS4EakWlacOZ5pfxbPZRX
+         Tve/7oTmSuNKYluL1v4EeK/CYZMOI1hbNRVDTDZMGu0ZKW6TN69zVt6pf5JHdgdWVL
+         oFUAWelkHZ2jNQL4AfuYBh0E3ceDusokZ8qSxUHs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Viresh Kumar <viresh.kumar@linaro.org>,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Subject: [PATCH 5.15 505/532] opp: Fix use-after-free in lazy_opp_tables after probe deferral
-Date:   Fri, 21 Jul 2023 18:06:49 +0200
-Message-ID: <20230721160642.004947202@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.1 157/223] serial: atmel: dont enable IRQs prematurely
+Date:   Fri, 21 Jul 2023 18:06:50 +0200
+Message-ID: <20230721160527.571454264@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit b2a2ab039bd58f51355e33d7d3fc64605d7f870d upstream.
+commit 27a826837ec9a3e94cc44bd9328b8289b0fcecd7 upstream.
 
-When dev_pm_opp_of_find_icc_paths() in _allocate_opp_table() returns
--EPROBE_DEFER, the opp_table is freed again, to wait until all the
-interconnect paths are available.
+The atmel_complete_tx_dma() function disables IRQs at the start
+of the function by calling spin_lock_irqsave(&port->lock, flags);
+There is no need to disable them a second time using the
+spin_lock_irq() function and, in fact, doing so is a bug because
+it will enable IRQs prematurely when we call spin_unlock_irq().
 
-However, if the OPP table is using required-opps then it may already
-have been added to the global lazy_opp_tables list. The error path
-does not remove the opp_table from the list again.
+Just use spin_lock/unlock() instead without disabling or enabling
+IRQs.
 
-This can cause crashes later when the provider of the required-opps
-is added, since we will iterate over OPP tables that have already been
-freed. E.g.:
-
-  Unable to handle kernel NULL pointer dereference when read
-  CPU: 0 PID: 7 Comm: kworker/0:0 Not tainted 6.4.0-rc3
-  PC is at _of_add_opp_table_v2 (include/linux/of.h:949
-  drivers/opp/of.c:98 drivers/opp/of.c:344 drivers/opp/of.c:404
-  drivers/opp/of.c:1032) -> lazy_link_required_opp_table()
-
-Fix this by calling _of_clear_opp_table() to remove the opp_table from
-the list and clear other allocated resources. While at it, also add the
-missing mutex_destroy() calls in the error path.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Viresh Kumar <viresh.kumar@linaro.org>
-Fixes: 7eba0c7641b0 ("opp: Allow lazy-linking of required-opps")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 08f738be88bb ("serial: at91: add tx dma support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Acked-by: Richard Genoud <richard.genoud@gmail.com>
+Link: https://lore.kernel.org/r/cb7c39a9-c004-4673-92e1-be4e34b85368@moroto.mountain
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/opp/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/atmel_serial.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -1249,7 +1249,10 @@ static struct opp_table *_allocate_opp_t
- 	return opp_table;
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -880,11 +880,11 @@ static void atmel_complete_tx_dma(void *
  
- remove_opp_dev:
-+	_of_clear_opp_table(opp_table);
- 	_remove_opp_dev(opp_dev, opp_table);
-+	mutex_destroy(&opp_table->genpd_virt_dev_lock);
-+	mutex_destroy(&opp_table->lock);
- err:
- 	kfree(opp_table);
- 	return ERR_PTR(ret);
+ 	port->icount.tx += atmel_port->tx_len;
+ 
+-	spin_lock_irq(&atmel_port->lock_tx);
++	spin_lock(&atmel_port->lock_tx);
+ 	async_tx_ack(atmel_port->desc_tx);
+ 	atmel_port->cookie_tx = -EINVAL;
+ 	atmel_port->desc_tx = NULL;
+-	spin_unlock_irq(&atmel_port->lock_tx);
++	spin_unlock(&atmel_port->lock_tx);
+ 
+ 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
+ 		uart_write_wakeup(port);
 
 
