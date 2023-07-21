@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6950F75BE4D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E40275BE87
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbjGUGIp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46074 "EHLO
+        id S230506AbjGUGOI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:14:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbjGUGIn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:08:43 -0400
+        with ESMTP id S230512AbjGUGNm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:13:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25037E65
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:08:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED044209
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:11:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 597DF61083
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:08:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF7CC433C7;
-        Fri, 21 Jul 2023 06:08:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70C46610A6
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:10:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476FBC433C8;
+        Fri, 21 Jul 2023 06:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919720;
-        bh=KCUEiM20ExKoVaJ8BMqFtINS2gklvu42p+yOspqC2Is=;
+        s=korg; t=1689919847;
+        bh=+8BuHNqZTZR4DqfiE9RvHWWP+QPjzukP4cAB1AZBwIU=;
         h=Subject:To:Cc:From:Date:From;
-        b=yA2QJPB+wuQB76useXd+YIMYfj3jWupdrUQws/IPXTdLrDl2ZJvAXbXy/75Rl4Ioo
-         VHqWiyoeyVqoIoGDteTPmqzGf8wal8Bl+HMd8n15KQfnAGFALgkj6FX7VPnmkQMYE9
-         uD/89DW+tzYZdWuo5uLCiNL3S8JeFeS0Vqn96S6g=
-Subject: FAILED: patch "[PATCH] dm thin metadata: Fix ABBA deadlock by resetting" failed to apply to 5.4-stable tree
-To:     lilingfeng3@huawei.com, snitzer@kernel.org
+        b=XTNqqq8qGRStjrI5R1lxqQqPp6ROy8FyKRDW8X8nogzaBpLEb84YDeP/LDxz4poRR
+         YtNVo6eHv7pEK7dkFXJ+XKXC51hmfZpFD9GLB9aNIeCxWStINVwRBrTWK4BfS2ZIg2
+         By+yLUzda4ttfpd4yjeILldi56COdBN85fcdrpdU=
+Subject: FAILED: patch "[PATCH] PCI/ASPM: Avoid link retraining race" failed to apply to all-stable tree
+To:     ilpo.jarvinen@linux.intel.com, bhelgaas@google.com, lukas@wunner.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:08:32 +0200
-Message-ID: <2023072131-connector-hatchet-a240@gregkh>
+Date:   Fri, 21 Jul 2023 08:10:45 +0200
+Message-ID: <2023072144-matchbook-obliged-a0e8@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,29 +49,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the all-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-all.y
 git checkout FETCH_HEAD
-git cherry-pick -x d48300120627a1cb98914738fff38b424625b8ad
+git cherry-pick -x e7e39756363ad5bd83ddeae1063193d0f13870fd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072131-connector-hatchet-a240@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072144-matchbook-obliged-a0e8@gregkh' --subject-prefix 'PATCH all.y' HEAD^..
 
 Possible dependencies:
 
-d48300120627 ("dm thin metadata: Fix ABBA deadlock by resetting dm_bufio_client")
-cf2e309ebca7 ("mm: shrinkers: convert shrinker_rwsem to mutex")
-b3cabea3c915 ("mm: vmscan: hold write lock to reparent shrinker nr_deferred")
-caa05325c912 ("mm: vmscan: make memcg slab shrink lockless")
-f95bdb700bc6 ("mm: vmscan: make global slab shrink lockless")
-42c9db397048 ("mm: vmscan: add a map_nr_max field to shrinker_info")
-3822a7c40997 ("Merge tag 'mm-stable-2023-02-20-13-37' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
+
 
 thanks,
 
@@ -79,342 +73,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d48300120627a1cb98914738fff38b424625b8ad Mon Sep 17 00:00:00 2001
-From: Li Lingfeng <lilingfeng3@huawei.com>
-Date: Mon, 5 Jun 2023 15:03:16 +0800
-Subject: [PATCH] dm thin metadata: Fix ABBA deadlock by resetting
- dm_bufio_client
+From e7e39756363ad5bd83ddeae1063193d0f13870fd Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 2 May 2023 11:39:23 +0300
+Subject: [PATCH] PCI/ASPM: Avoid link retraining race
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-As described in commit 8111964f1b85 ("dm thin: Fix ABBA deadlock between
-shrink_slab and dm_pool_abort_metadata"), ABBA deadlocks will be
-triggered because shrinker_rwsem currently needs to held by
-dm_pool_abort_metadata() as a side-effect of thin-pool metadata
-operation failure.
+PCIe r6.0.1, sec 7.5.3.7, recommends setting the link control parameters,
+then waiting for the Link Training bit to be clear before setting the
+Retrain Link bit.
 
-The following three problem scenarios have been noticed:
+This avoids a race where the LTSSM may not use the updated parameters if it
+is already in the midst of link training because of other normal link
+activity.
 
-1) Described by commit 8111964f1b85 ("dm thin: Fix ABBA deadlock between
-   shrink_slab and dm_pool_abort_metadata")
+Wait for the Link Training bit to be clear before toggling the Retrain Link
+bit to ensure that the LTSSM uses the updated link control parameters.
 
-2) shrinker_rwsem and throttle->lock
-          P1(drop cache)                        P2(kworker)
-drop_caches_sysctl_handler
- drop_slab
-  shrink_slab
-   down_read(&shrinker_rwsem)  - LOCK A
-   do_shrink_slab
-    super_cache_scan
-     prune_icache_sb
-      dispose_list
-       evict
-        ext4_evict_inode
-         ext4_clear_inode
-          ext4_discard_preallocations
-           ext4_mb_load_buddy_gfp
-            ext4_mb_init_cache
-             ext4_wait_block_bitmap
-              __ext4_error
-               ext4_handle_error
-                ext4_commit_super
-                 ...
-                 dm_submit_bio
-                                     do_worker
-                                      throttle_work_update
-                                       down_write(&t->lock) -- LOCK B
-                                      process_deferred_bios
-                                       commit
-                                        metadata_operation_failed
-                                         dm_pool_abort_metadata
-                                          dm_block_manager_create
-                                           dm_bufio_client_create
-                                            register_shrinker
-                                             down_write(&shrinker_rwsem)
-                                             -- LOCK A
-                 thin_map
-                  thin_bio_map
-                   thin_defer_bio_with_throttle
-                    throttle_lock
-                     down_read(&t->lock)  - LOCK B
-
-3) shrinker_rwsem and wait_on_buffer
-          P1(drop cache)                            P2(kworker)
-drop_caches_sysctl_handler
- drop_slab
-  shrink_slab
-   down_read(&shrinker_rwsem)  - LOCK A
-   do_shrink_slab
-   ...
-    ext4_wait_block_bitmap
-     __ext4_error
-      ext4_handle_error
-       jbd2_journal_abort
-        jbd2_journal_update_sb_errno
-         jbd2_write_superblock
-          submit_bh
-           // LOCK B
-           // RELEASE B
-                             do_worker
-                              throttle_work_update
-                               down_write(&t->lock) - LOCK B
-                              process_deferred_bios
-                               process_bio
-                               commit
-                                metadata_operation_failed
-                                 dm_pool_abort_metadata
-                                  dm_block_manager_create
-                                   dm_bufio_client_create
-                                    register_shrinker
-                                     register_shrinker_prepared
-                                      down_write(&shrinker_rwsem)  - LOCK A
-                               bio_endio
-      wait_on_buffer
-       __wait_on_buffer
-
-Fix these by resetting dm_bufio_client without holding shrinker_rwsem.
-
-Fixes: 8111964f1b85 ("dm thin: Fix ABBA deadlock between shrink_slab and dm_pool_abort_metadata")
+[bhelgaas: commit log, return 0 (success)/-ETIMEDOUT instead of bool for
+both pcie_wait_for_retrain() and the existing pcie_retrain_link()]
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 
-diff --git a/drivers/md/dm-bufio.c b/drivers/md/dm-bufio.c
-index eea977662e81..a7079b38756a 100644
---- a/drivers/md/dm-bufio.c
-+++ b/drivers/md/dm-bufio.c
-@@ -2592,6 +2592,13 @@ void dm_bufio_client_destroy(struct dm_bufio_client *c)
- }
- EXPORT_SYMBOL_GPL(dm_bufio_client_destroy);
- 
-+void dm_bufio_client_reset(struct dm_bufio_client *c)
-+{
-+	drop_buffers(c);
-+	flush_work(&c->shrink_work);
-+}
-+EXPORT_SYMBOL_GPL(dm_bufio_client_reset);
-+
- void dm_bufio_set_sector_offset(struct dm_bufio_client *c, sector_t start)
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 954717d7033f..3aa73ecdf86f 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -213,8 +213,19 @@ static int pcie_wait_for_retrain(struct pci_dev *pdev)
+ static int pcie_retrain_link(struct pcie_link_state *link)
  {
- 	c->start = start;
-diff --git a/drivers/md/dm-thin-metadata.c b/drivers/md/dm-thin-metadata.c
-index 9f5cb52c5763..63d92d388ee6 100644
---- a/drivers/md/dm-thin-metadata.c
-+++ b/drivers/md/dm-thin-metadata.c
-@@ -603,6 +603,8 @@ static int __format_metadata(struct dm_pool_metadata *pmd)
- 	r = dm_tm_create_with_sm(pmd->bm, THIN_SUPERBLOCK_LOCATION,
- 				 &pmd->tm, &pmd->metadata_sm);
- 	if (r < 0) {
-+		pmd->tm = NULL;
-+		pmd->metadata_sm = NULL;
- 		DMERR("tm_create_with_sm failed");
- 		return r;
- 	}
-@@ -611,6 +613,7 @@ static int __format_metadata(struct dm_pool_metadata *pmd)
- 	if (IS_ERR(pmd->data_sm)) {
- 		DMERR("sm_disk_create failed");
- 		r = PTR_ERR(pmd->data_sm);
-+		pmd->data_sm = NULL;
- 		goto bad_cleanup_tm;
- 	}
+ 	struct pci_dev *parent = link->pdev;
++	int rc;
+ 	u16 reg16;
  
-@@ -641,11 +644,15 @@ static int __format_metadata(struct dm_pool_metadata *pmd)
- 
- bad_cleanup_nb_tm:
- 	dm_tm_destroy(pmd->nb_tm);
-+	pmd->nb_tm = NULL;
- bad_cleanup_data_sm:
- 	dm_sm_destroy(pmd->data_sm);
-+	pmd->data_sm = NULL;
- bad_cleanup_tm:
- 	dm_tm_destroy(pmd->tm);
-+	pmd->tm = NULL;
- 	dm_sm_destroy(pmd->metadata_sm);
-+	pmd->metadata_sm = NULL;
- 
- 	return r;
- }
-@@ -711,6 +718,8 @@ static int __open_metadata(struct dm_pool_metadata *pmd)
- 			       sizeof(disk_super->metadata_space_map_root),
- 			       &pmd->tm, &pmd->metadata_sm);
- 	if (r < 0) {
-+		pmd->tm = NULL;
-+		pmd->metadata_sm = NULL;
- 		DMERR("tm_open_with_sm failed");
- 		goto bad_unlock_sblock;
- 	}
-@@ -720,6 +729,7 @@ static int __open_metadata(struct dm_pool_metadata *pmd)
- 	if (IS_ERR(pmd->data_sm)) {
- 		DMERR("sm_disk_open failed");
- 		r = PTR_ERR(pmd->data_sm);
-+		pmd->data_sm = NULL;
- 		goto bad_cleanup_tm;
- 	}
- 
-@@ -746,9 +756,12 @@ static int __open_metadata(struct dm_pool_metadata *pmd)
- 
- bad_cleanup_data_sm:
- 	dm_sm_destroy(pmd->data_sm);
-+	pmd->data_sm = NULL;
- bad_cleanup_tm:
- 	dm_tm_destroy(pmd->tm);
-+	pmd->tm = NULL;
- 	dm_sm_destroy(pmd->metadata_sm);
-+	pmd->metadata_sm = NULL;
- bad_unlock_sblock:
- 	dm_bm_unlock(sblock);
- 
-@@ -795,9 +808,13 @@ static void __destroy_persistent_data_objects(struct dm_pool_metadata *pmd,
- 					      bool destroy_bm)
- {
- 	dm_sm_destroy(pmd->data_sm);
-+	pmd->data_sm = NULL;
- 	dm_sm_destroy(pmd->metadata_sm);
-+	pmd->metadata_sm = NULL;
- 	dm_tm_destroy(pmd->nb_tm);
-+	pmd->nb_tm = NULL;
- 	dm_tm_destroy(pmd->tm);
-+	pmd->tm = NULL;
- 	if (destroy_bm)
- 		dm_block_manager_destroy(pmd->bm);
- }
-@@ -1005,8 +1022,7 @@ int dm_pool_metadata_close(struct dm_pool_metadata *pmd)
- 			       __func__, r);
- 	}
- 	pmd_write_unlock(pmd);
--	if (!pmd->fail_io)
--		__destroy_persistent_data_objects(pmd, true);
-+	__destroy_persistent_data_objects(pmd, true);
- 
- 	kfree(pmd);
- 	return 0;
-@@ -1877,53 +1893,29 @@ static void __set_abort_with_changes_flags(struct dm_pool_metadata *pmd)
- int dm_pool_abort_metadata(struct dm_pool_metadata *pmd)
- {
- 	int r = -EINVAL;
--	struct dm_block_manager *old_bm = NULL, *new_bm = NULL;
- 
- 	/* fail_io is double-checked with pmd->root_lock held below */
- 	if (unlikely(pmd->fail_io))
- 		return r;
- 
--	/*
--	 * Replacement block manager (new_bm) is created and old_bm destroyed outside of
--	 * pmd root_lock to avoid ABBA deadlock that would result (due to life-cycle of
--	 * shrinker associated with the block manager's bufio client vs pmd root_lock).
--	 * - must take shrinker_mutex without holding pmd->root_lock
--	 */
--	new_bm = dm_block_manager_create(pmd->bdev, THIN_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
--					 THIN_MAX_CONCURRENT_LOCKS);
--
- 	pmd_write_lock(pmd);
- 	if (pmd->fail_io) {
- 		pmd_write_unlock(pmd);
--		goto out;
-+		return r;
- 	}
--
- 	__set_abort_with_changes_flags(pmd);
++	/*
++	 * Ensure the updated LNKCTL parameters are used during link
++	 * training by checking that there is no ongoing link training to
++	 * avoid LTSSM race as recommended in Implementation Note at the
++	 * end of PCIe r6.0.1 sec 7.5.3.7.
++	 */
++	rc = pcie_wait_for_retrain(parent);
++	if (rc)
++		return rc;
 +
-+	/* destroy data_sm/metadata_sm/nb_tm/tm */
- 	__destroy_persistent_data_objects(pmd, false);
--	old_bm = pmd->bm;
--	if (IS_ERR(new_bm)) {
--		DMERR("could not create block manager during abort");
--		pmd->bm = NULL;
--		r = PTR_ERR(new_bm);
--		goto out_unlock;
--	}
- 
--	pmd->bm = new_bm;
-+	/* reset bm */
-+	dm_block_manager_reset(pmd->bm);
-+
-+	/* rebuild data_sm/metadata_sm/nb_tm/tm */
- 	r = __open_or_format_metadata(pmd, false);
--	if (r) {
--		pmd->bm = NULL;
--		goto out_unlock;
--	}
--	new_bm = NULL;
--out_unlock:
- 	if (r)
- 		pmd->fail_io = true;
- 	pmd_write_unlock(pmd);
--	dm_block_manager_destroy(old_bm);
--out:
--	if (new_bm && !IS_ERR(new_bm))
--		dm_block_manager_destroy(new_bm);
--
- 	return r;
- }
- 
-diff --git a/drivers/md/persistent-data/dm-block-manager.c b/drivers/md/persistent-data/dm-block-manager.c
-index 7bdfc23f758a..0e010e1204aa 100644
---- a/drivers/md/persistent-data/dm-block-manager.c
-+++ b/drivers/md/persistent-data/dm-block-manager.c
-@@ -421,6 +421,12 @@ void dm_block_manager_destroy(struct dm_block_manager *bm)
- }
- EXPORT_SYMBOL_GPL(dm_block_manager_destroy);
- 
-+void dm_block_manager_reset(struct dm_block_manager *bm)
-+{
-+	dm_bufio_client_reset(bm->bufio);
-+}
-+EXPORT_SYMBOL_GPL(dm_block_manager_reset);
-+
- unsigned int dm_bm_block_size(struct dm_block_manager *bm)
- {
- 	return dm_bufio_get_block_size(bm->bufio);
-diff --git a/drivers/md/persistent-data/dm-block-manager.h b/drivers/md/persistent-data/dm-block-manager.h
-index 5746b0f82a03..f706d3de8d5a 100644
---- a/drivers/md/persistent-data/dm-block-manager.h
-+++ b/drivers/md/persistent-data/dm-block-manager.h
-@@ -36,6 +36,7 @@ struct dm_block_manager *dm_block_manager_create(
- 	struct block_device *bdev, unsigned int block_size,
- 	unsigned int max_held_per_thread);
- void dm_block_manager_destroy(struct dm_block_manager *bm);
-+void dm_block_manager_reset(struct dm_block_manager *bm);
- 
- unsigned int dm_bm_block_size(struct dm_block_manager *bm);
- dm_block_t dm_bm_nr_blocks(struct dm_block_manager *bm);
-diff --git a/drivers/md/persistent-data/dm-space-map.h b/drivers/md/persistent-data/dm-space-map.h
-index dab490353781..6bf69922b5ad 100644
---- a/drivers/md/persistent-data/dm-space-map.h
-+++ b/drivers/md/persistent-data/dm-space-map.h
-@@ -77,7 +77,8 @@ struct dm_space_map {
- 
- static inline void dm_sm_destroy(struct dm_space_map *sm)
- {
--	sm->destroy(sm);
-+	if (sm)
-+		sm->destroy(sm);
- }
- 
- static inline int dm_sm_extend(struct dm_space_map *sm, dm_block_t extra_blocks)
-diff --git a/drivers/md/persistent-data/dm-transaction-manager.c b/drivers/md/persistent-data/dm-transaction-manager.c
-index 6dc016248baf..c88fa6266203 100644
---- a/drivers/md/persistent-data/dm-transaction-manager.c
-+++ b/drivers/md/persistent-data/dm-transaction-manager.c
-@@ -199,6 +199,9 @@ EXPORT_SYMBOL_GPL(dm_tm_create_non_blocking_clone);
- 
- void dm_tm_destroy(struct dm_transaction_manager *tm)
- {
-+	if (!tm)
-+		return;
-+
- 	if (!tm->is_clone)
- 		wipe_shadow_table(tm);
- 
-diff --git a/include/linux/dm-bufio.h b/include/linux/dm-bufio.h
-index 681656a1c03d..75e7d8cbb532 100644
---- a/include/linux/dm-bufio.h
-+++ b/include/linux/dm-bufio.h
-@@ -38,6 +38,8 @@ dm_bufio_client_create(struct block_device *bdev, unsigned int block_size,
-  */
- void dm_bufio_client_destroy(struct dm_bufio_client *c);
- 
-+void dm_bufio_client_reset(struct dm_bufio_client *c);
-+
- /*
-  * Set the sector range.
-  * When this function is called, there must be no I/O in progress on the bufio
+ 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
+ 	reg16 |= PCI_EXP_LNKCTL_RL;
+ 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
 
