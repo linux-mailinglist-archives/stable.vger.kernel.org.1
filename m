@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D80A975C9D8
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ABE275C9E0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229727AbjGUOYg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:24:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45066 "EHLO
+        id S229684AbjGUOZT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:25:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjGUOYf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:24:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B10D02D6D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:27 -0700 (PDT)
+        with ESMTP id S230027AbjGUOZS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:25:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ADB530E8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:25:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E06E61CDE
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:24:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A27C433C7;
-        Fri, 21 Jul 2023 14:24:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D334461CD4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:25:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E541DC433C8;
+        Fri, 21 Jul 2023 14:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689949466;
-        bh=+eEYQGcDg+EPatDjjIX3i26Zsdlx9Vd22gjqYduFF8k=;
+        s=korg; t=1689949508;
+        bh=YDZHM7H4BQNnvYgN5N0o929RsBJlD79jiCnLPFLqMgo=;
         h=Subject:To:Cc:From:Date:From;
-        b=BgheMSHYgnGHtJHMVvbAIEzEv1MkBiRZJyYsudCkSZUuVTmJXXDDiMozqxrEfGHmr
-         t2AypF+ynY4Af5sykR16bhWovUkKLtuVid0jdpEF03OzSKOONTpXbbuLBUnvjQjyxb
-         j4TFwtRfhUWyPk+AjRXr0EfUCEC7YQg6bxhiOQpM=
-Subject: FAILED: patch "[PATCH] ftrace: Fix possible warning on checking all pages used in" failed to apply to 4.14-stable tree
-To:     zhengyejian1@huawei.com, rostedt@goodmis.org
+        b=gdTr9AtJYb3YKaBZFRF3ezOoLGm0VQfLyKWbcay3qZNlaeen3QZyMBEsfWMafmfSU
+         Y7+/fIIhVvyFgYkEcIZAR928ohASriW4vh7OHG4WYw09Nj6wVFZCjL/OxMigkFDdzk
+         Eo2lqqHPr3QWLmw10oJ06MhuppygWrcPlX0ZLrFw=
+Subject: FAILED: patch "[PATCH] cifs: if deferred close is disabled then close files" failed to apply to 5.15-stable tree
+To:     bharathsm@microsoft.com, sprasad@microsoft.com,
+        stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:24:18 +0200
-Message-ID: <2023072118-grudge-activity-104d@gregkh>
+Date:   Fri, 21 Jul 2023 16:25:05 +0200
+Message-ID: <2023072105-collapse-errand-9354@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,30 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 26efd79c4624294e553aeaa3439c646729bad084
+git cherry-pick -x df9d70c18616760c6504b97fec66b6379c172dbb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072118-grudge-activity-104d@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072105-collapse-errand-9354@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-26efd79c4624 ("ftrace: Fix possible warning on checking all pages used in ftrace_process_locs()")
-db42523b4f3e ("ftrace: Store the order of pages allocated in ftrace_page")
-59300b36f85f ("ftrace: Check if pages were allocated before calling free_pages()")
-da537f0aef13 ("ftrace: Add information on number of page groups allocated")
-8715b108cd75 ("ftrace: Clear hashes of stale ips of init memory")
-aba4b5c22cba ("ftrace: Save module init functions kallsyms symbols for tracing")
-3e234289f86b ("ftrace: Allow module init functions to be traced")
-6cafbe159416 ("ftrace: Add a ftrace_free_mem() function for modules to use")
+df9d70c18616 ("cifs: if deferred close is disabled then close files immediately")
 
 thanks,
 
@@ -80,130 +74,35 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26efd79c4624294e553aeaa3439c646729bad084 Mon Sep 17 00:00:00 2001
-From: Zheng Yejian <zhengyejian1@huawei.com>
-Date: Wed, 12 Jul 2023 14:04:52 +0800
-Subject: [PATCH] ftrace: Fix possible warning on checking all pages used in
- ftrace_process_locs()
+From df9d70c18616760c6504b97fec66b6379c172dbb Mon Sep 17 00:00:00 2001
+From: Bharath SM <bharathsm@microsoft.com>
+Date: Fri, 7 Jul 2023 15:29:01 +0000
+Subject: [PATCH] cifs: if deferred close is disabled then close files
+ immediately
 
-As comments in ftrace_process_locs(), there may be NULL pointers in
-mcount_loc section:
- > Some architecture linkers will pad between
- > the different mcount_loc sections of different
- > object files to satisfy alignments.
- > Skip any NULL pointers.
+If defer close timeout value is set to 0, then there is no
+need to include files in the deferred close list and utilize
+the delayed worker for closing. Instead, we can close them
+immediately.
 
-After commit 20e5227e9f55 ("ftrace: allow NULL pointers in mcount_loc"),
-NULL pointers will be accounted when allocating ftrace pages but skipped
-before adding into ftrace pages, this may result in some pages not being
-used. Then after commit 706c81f87f84 ("ftrace: Remove extra helper
-functions"), warning may occur at:
-  WARN_ON(pg->next);
-
-To fix it, only warn for case that no pointers skipped but pages not used
-up, then free those unused pages after releasing ftrace_lock.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230712060452.3175675-1-zhengyejian1@huawei.com
-
+Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
 Cc: stable@vger.kernel.org
-Fixes: 706c81f87f84 ("ftrace: Remove extra helper functions")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 3740aca79fe7..05c0024815bf 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -3305,6 +3305,22 @@ static int ftrace_allocate_records(struct ftrace_page *pg, int count)
- 	return cnt;
- }
- 
-+static void ftrace_free_pages(struct ftrace_page *pages)
-+{
-+	struct ftrace_page *pg = pages;
-+
-+	while (pg) {
-+		if (pg->records) {
-+			free_pages((unsigned long)pg->records, pg->order);
-+			ftrace_number_of_pages -= 1 << pg->order;
-+		}
-+		pages = pg->next;
-+		kfree(pg);
-+		pg = pages;
-+		ftrace_number_of_groups--;
-+	}
-+}
-+
- static struct ftrace_page *
- ftrace_allocate_pages(unsigned long num_to_init)
- {
-@@ -3343,17 +3359,7 @@ ftrace_allocate_pages(unsigned long num_to_init)
- 	return start_pg;
- 
-  free_pages:
--	pg = start_pg;
--	while (pg) {
--		if (pg->records) {
--			free_pages((unsigned long)pg->records, pg->order);
--			ftrace_number_of_pages -= 1 << pg->order;
--		}
--		start_pg = pg->next;
--		kfree(pg);
--		pg = start_pg;
--		ftrace_number_of_groups--;
--	}
-+	ftrace_free_pages(start_pg);
- 	pr_info("ftrace: FAILED to allocate memory for functions\n");
- 	return NULL;
- }
-@@ -6471,9 +6477,11 @@ static int ftrace_process_locs(struct module *mod,
- 			       unsigned long *start,
- 			       unsigned long *end)
- {
-+	struct ftrace_page *pg_unuse = NULL;
- 	struct ftrace_page *start_pg;
- 	struct ftrace_page *pg;
- 	struct dyn_ftrace *rec;
-+	unsigned long skipped = 0;
- 	unsigned long count;
- 	unsigned long *p;
- 	unsigned long addr;
-@@ -6536,8 +6544,10 @@ static int ftrace_process_locs(struct module *mod,
- 		 * object files to satisfy alignments.
- 		 * Skip any NULL pointers.
- 		 */
--		if (!addr)
-+		if (!addr) {
-+			skipped++;
- 			continue;
-+		}
- 
- 		end_offset = (pg->index+1) * sizeof(pg->records[0]);
- 		if (end_offset > PAGE_SIZE << pg->order) {
-@@ -6551,8 +6561,10 @@ static int ftrace_process_locs(struct module *mod,
- 		rec->ip = addr;
- 	}
- 
--	/* We should have used all pages */
--	WARN_ON(pg->next);
-+	if (pg->next) {
-+		pg_unuse = pg->next;
-+		pg->next = NULL;
-+	}
- 
- 	/* Assign the last page to ftrace_pages */
- 	ftrace_pages = pg;
-@@ -6574,6 +6586,11 @@ static int ftrace_process_locs(struct module *mod,
-  out:
- 	mutex_unlock(&ftrace_lock);
- 
-+	/* We should have used all pages unless we skipped some */
-+	if (pg_unuse) {
-+		WARN_ON(!skipped);
-+		ftrace_free_pages(pg_unuse);
-+	}
- 	return ret;
- }
- 
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 879bc8e6555c..fc5acc95cd13 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -1080,8 +1080,8 @@ int cifs_close(struct inode *inode, struct file *file)
+ 		cfile = file->private_data;
+ 		file->private_data = NULL;
+ 		dclose = kmalloc(sizeof(struct cifs_deferred_close), GFP_KERNEL);
+-		if ((cinode->oplock == CIFS_CACHE_RHW_FLG) &&
+-		    cinode->lease_granted &&
++		if ((cifs_sb->ctx->closetimeo && cinode->oplock == CIFS_CACHE_RHW_FLG)
++		    && cinode->lease_granted &&
+ 		    !test_bit(CIFS_INO_CLOSE_ON_LOCK, &cinode->flags) &&
+ 		    dclose) {
+ 			if (test_and_clear_bit(CIFS_INO_MODIFIED_ATTR, &cinode->flags)) {
 
