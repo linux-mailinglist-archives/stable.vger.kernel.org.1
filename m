@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34BEB75D1F5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5C575D1D3
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231277AbjGUSyk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:54:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47956 "EHLO
+        id S231235AbjGUSxN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:53:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231273AbjGUSyi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:54:38 -0400
+        with ESMTP id S231247AbjGUSxM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:53:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8F2E30DB
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:54:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6063130CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:53:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2360A61D79
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:54:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A95C433C7;
-        Fri, 21 Jul 2023 18:54:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFCF461D9D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:53:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9F2C433C8;
+        Fri, 21 Jul 2023 18:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965675;
-        bh=5dAIn7Nr+d7M9/hyO4N8LiqjnNv8Yzt4wctCtt/euJg=;
+        s=korg; t=1689965590;
+        bh=T3CP3c/6hU+Z65u7+NMSW6vLl83T4trGRTFBPR51A9U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HEM3yWRhCj+5CxKX4XhFJaibwQAQ81SJclimqu6/PK7SawBk+af28LTvabRo2hwhf
-         sFa/b0O2RinON9l2xjKMVCHKBtoY2m23U7tmW+4eSlVfVgHNppSxSR6BjClfBMrpLg
-         OTgqvO5gnFOIYFtxjjd2CgRXq8OzdfCrqSbpF34Y=
+        b=MrrAOuWzYSozqlhFGDbQf2zjdVAHDtrNpnUrOT/vlNyfbhpp6bk5UzIEjtcr8QXqx
+         UNYv/WKEXC5BIBVZAxTbgfOMchaaQ0X+cfm1L77rJstWcwdMe+SdbOFNdnnPaPM4pP
+         CF1sX0D0+wnqRp2vuViVN9TCafhCM5rt1yEsFzho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 036/532] wifi: ath9k: avoid referencing uninit memory in ath9k_wmi_ctrl_rx
-Date:   Fri, 21 Jul 2023 17:59:00 +0200
-Message-ID: <20230721160616.615620424@linuxfoundation.org>
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Yonghong Song <yhs@fb.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 037/532] libbpf: btf_dump_type_data_check_overflow needs to consider BTF_MEMBER_BITFIELD_SIZE
+Date:   Fri, 21 Jul 2023 17:59:01 +0200
+Message-ID: <20230721160616.667710082@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -57,53 +55,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit f24292e827088bba8de7158501ac25a59b064953 ]
+[ Upstream commit c39028b333f3a3a765c5c0b9726b8e38aedf0ba1 ]
 
-For the reasons also described in commit b383e8abed41 ("wifi: ath9k: avoid
-uninit memory read in ath9k_htc_rx_msg()"), ath9k_htc_rx_msg() should
-validate pkt_len before accessing the SKB.
+The btf_dump/struct_data selftest is failing with:
 
-For example, the obtained SKB may have been badly constructed with
-pkt_len = 8. In this case, the SKB can only contain a valid htc_frame_hdr
-but after being processed in ath9k_htc_rx_msg() and passed to
-ath9k_wmi_ctrl_rx() endpoint RX handler, it is expected to have a WMI
-command header which should be located inside its data payload.
+  [...]
+  test_btf_dump_struct_data:FAIL:unexpected return value dumping fs_context unexpected unexpected return value dumping fs_context: actual -7 != expected 264
+  [...]
 
-Implement sanity checking inside ath9k_wmi_ctrl_rx(). Otherwise, uninit
-memory can be referenced.
+The reason is in btf_dump_type_data_check_overflow(). It does not use
+BTF_MEMBER_BITFIELD_SIZE from the struct's member (btf_member). Instead,
+it is using the enum size which is 4. It had been working till the recent
+commit 4e04143c869c ("fs_context: drop the unused lsm_flags member")
+removed an integer member which also removed the 4 bytes padding at the
+end of the fs_context. Missing this 4 bytes padding exposed this bug. In
+particular, when btf_dump_type_data_check_overflow() reaches the member
+'phase', -E2BIG is returned.
 
-Tested on Qualcomm Atheros Communications AR9271 802.11n .
+The fix is to pass bit_sz to btf_dump_type_data_check_overflow(). In
+btf_dump_type_data_check_overflow(), it does a different size check when
+bit_sz is not zero.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+The current fs_context:
 
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Reported-and-tested-by: syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230424183348.111355-1-pchelkin@ispras.ru
+[3600] ENUM 'fs_context_purpose' encoding=UNSIGNED size=4 vlen=3
+	'FS_CONTEXT_FOR_MOUNT' val=0
+	'FS_CONTEXT_FOR_SUBMOUNT' val=1
+	'FS_CONTEXT_FOR_RECONFIGURE' val=2
+[3601] ENUM 'fs_context_phase' encoding=UNSIGNED size=4 vlen=7
+	'FS_CONTEXT_CREATE_PARAMS' val=0
+	'FS_CONTEXT_CREATING' val=1
+	'FS_CONTEXT_AWAITING_MOUNT' val=2
+	'FS_CONTEXT_AWAITING_RECONF' val=3
+	'FS_CONTEXT_RECONF_PARAMS' val=4
+	'FS_CONTEXT_RECONFIGURING' val=5
+	'FS_CONTEXT_FAILED' val=6
+[3602] STRUCT 'fs_context' size=264 vlen=21
+	'ops' type_id=3603 bits_offset=0
+	'uapi_mutex' type_id=235 bits_offset=64
+	'fs_type' type_id=872 bits_offset=1216
+	'fs_private' type_id=21 bits_offset=1280
+	'sget_key' type_id=21 bits_offset=1344
+	'root' type_id=781 bits_offset=1408
+	'user_ns' type_id=251 bits_offset=1472
+	'net_ns' type_id=984 bits_offset=1536
+	'cred' type_id=1785 bits_offset=1600
+	'log' type_id=3621 bits_offset=1664
+	'source' type_id=42 bits_offset=1792
+	'security' type_id=21 bits_offset=1856
+	's_fs_info' type_id=21 bits_offset=1920
+	'sb_flags' type_id=20 bits_offset=1984
+	'sb_flags_mask' type_id=20 bits_offset=2016
+	's_iflags' type_id=20 bits_offset=2048
+	'purpose' type_id=3600 bits_offset=2080 bitfield_size=8
+	'phase' type_id=3601 bits_offset=2088 bitfield_size=8
+	'need_free' type_id=67 bits_offset=2096 bitfield_size=1
+	'global' type_id=67 bits_offset=2097 bitfield_size=1
+	'oldapi' type_id=67 bits_offset=2098 bitfield_size=1
+
+Fixes: 920d16af9b42 ("libbpf: BTF dumper support for typed data")
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/bpf/20230428013638.1581263-1-martin.lau@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/lib/bpf/btf_dump.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
-index 19345b8f7bfd5..d652c647d56b5 100644
---- a/drivers/net/wireless/ath/ath9k/wmi.c
-+++ b/drivers/net/wireless/ath/ath9k/wmi.c
-@@ -221,6 +221,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
- 	if (unlikely(wmi->stopped))
- 		goto free_skb;
- 
-+	/* Validate the obtained SKB. */
-+	if (unlikely(skb->len < sizeof(struct wmi_cmd_hdr)))
-+		goto free_skb;
+diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
+index 98cb3831aa18c..b91dd7cd4ffb0 100644
+--- a/tools/lib/bpf/btf_dump.c
++++ b/tools/lib/bpf/btf_dump.c
+@@ -2126,9 +2126,25 @@ static int btf_dump_type_data_check_overflow(struct btf_dump *d,
+ 					     const struct btf_type *t,
+ 					     __u32 id,
+ 					     const void *data,
+-					     __u8 bits_offset)
++					     __u8 bits_offset,
++					     __u8 bit_sz)
+ {
+-	__s64 size = btf__resolve_size(d->btf, id);
++	__s64 size;
 +
- 	hdr = (struct wmi_cmd_hdr *) skb->data;
- 	cmd_id = be16_to_cpu(hdr->command_id);
++	if (bit_sz) {
++		/* bits_offset is at most 7. bit_sz is at most 128. */
++		__u8 nr_bytes = (bits_offset + bit_sz + 7) / 8;
++
++		/* When bit_sz is non zero, it is called from
++		 * btf_dump_struct_data() where it only cares about
++		 * negative error value.
++		 * Return nr_bytes in success case to make it
++		 * consistent as the regular integer case below.
++		 */
++		return data + nr_bytes > d->typed_dump->data_end ? -E2BIG : nr_bytes;
++	}
++
++	size = btf__resolve_size(d->btf, id);
  
+ 	if (size < 0 || size >= INT_MAX) {
+ 		pr_warn("unexpected size [%zu] for id [%u]\n",
+@@ -2281,7 +2297,7 @@ static int btf_dump_dump_type_data(struct btf_dump *d,
+ {
+ 	int size, err = 0;
+ 
+-	size = btf_dump_type_data_check_overflow(d, t, id, data, bits_offset);
++	size = btf_dump_type_data_check_overflow(d, t, id, data, bits_offset, bit_sz);
+ 	if (size < 0)
+ 		return size;
+ 	err = btf_dump_type_data_check_zero(d, t, id, data, bits_offset, bit_sz);
 -- 
 2.39.2
 
