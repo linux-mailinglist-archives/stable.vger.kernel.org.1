@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8796975D306
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 884C375D307
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:06:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbjGUTGW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:06:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58562 "EHLO
+        id S230517AbjGUTGX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:06:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbjGUTGS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:06:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9B030E4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:06:09 -0700 (PDT)
+        with ESMTP id S231545AbjGUTGU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:06:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079E030E1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:06:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD5C161D93
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:06:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0943C433C8;
-        Fri, 21 Jul 2023 19:06:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AB7761D90
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:06:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7DBC433CA;
+        Fri, 21 Jul 2023 19:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966369;
-        bh=QK5GDbPaSlsDZ1GpnEKuXg0mYlNg9LGnw3yOBR7Attw=;
+        s=korg; t=1689966372;
+        bh=it/RG/xdRioghciBxJzvRHPsWpY4/YtNlbQIZWYLv0w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V8t3g1dhF13KMWUIUtsu/uktZ9ssIxyah4+z/ZmQ/l6lkf5NdkRq1i0TpIvzwMKiI
-         Aa2MMGIQ3j8ETweFZBZgIM5/67Iiv0cYCX+TSyNBCPqtMKWWC+2uyQ+4ik4nTpEsy0
-         Tg26lLZ2VzJNxU/vVJGlSgP/dj/i4WByBslA8A9w=
+        b=SZ2SpH7kRzIVR9kPbFQQ7Dcbf7fpQv2FiJYhkPf4RWVgCC4bjritr4yTEmIchjRDw
+         KlnmdRK1HPzEfAMZo4Bcu8DzDFX8/SdeBZwTbwpwfDaxVKO9OYllYI9v5rWXMeMxeO
+         PYcDH6e2a3WNwxUynNFtteWdfuH/lwam83SrlhtY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Nico Boehr <nrb@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 291/532] media: atomisp: gmin_platform: fix out_len in gmin_get_config_dsm_var()
-Date:   Fri, 21 Jul 2023 18:03:15 +0200
-Message-ID: <20230721160630.191186588@linuxfoundation.org>
+Subject: [PATCH 5.15 292/532] KVM: s390: fix KVM_S390_GET_CMMA_BITS for GFNs in memslot holes
+Date:   Fri, 21 Jul 2023 18:03:16 +0200
+Message-ID: <20230721160630.243037869@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -46,9 +46,9 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,39 +56,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Nico Boehr <nrb@linux.ibm.com>
 
-[ Upstream commit 1657f2934daf89e8d9fa4b2697008909eb22c73e ]
+[ Upstream commit 285cff4c0454340a4dc53f46e67f2cb1c293bd74 ]
 
-Ideally, strlen(cur->string.pointer) and strlen(out) would be the same.
-But this code is using strscpy() to avoid a potential buffer overflow.
-So in the same way we should take the strlen() of the smaller string to
-avoid a buffer overflow in the caller, gmin_get_var_int().
+The KVM_S390_GET_CMMA_BITS ioctl may return incorrect values when userspace
+specifies a start_gfn outside of memslots.
 
-Link: https://lore.kernel.org/r/26124bcd-8132-4483-9d67-225c87d424e8@kili.mountain
+This can occur when a VM has multiple memslots with a hole in between:
 
-Fixes: 387041cda44e ("media: atomisp: improve sensor detection code to use _DSM table")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
++-----+----------+--------+--------+
+| ... | Slot N-1 | <hole> | Slot N |
++-----+----------+--------+--------+
+      ^          ^        ^        ^
+      |          |        |        |
+GFN   A          A+B      |        |
+                          A+B+C    |
+			           A+B+C+D
+
+When userspace specifies a GFN in [A+B, A+B+C), it would expect to get the
+CMMA values of the first dirty page in Slot N. However, userspace may get a
+start_gfn of A+B+C+D with a count of 0, hence completely skipping over any
+dirty pages in slot N.
+
+The error is in kvm_s390_next_dirty_cmma(), which assumes
+gfn_to_memslot_approx() will return the memslot _below_ the specified GFN
+when the specified GFN lies outside a memslot. In reality it may return
+either the memslot below or above the specified GFN.
+
+When a memslot above the specified GFN is returned this happens:
+
+- ofs is calculated, but since the memslot's base_gfn is larger than the
+  specified cur_gfn, ofs will underflow to a huge number.
+- ofs is passed to find_next_bit(). Since ofs will exceed the memslot's
+  number of pages, the number of pages in the memslot is returned,
+  completely skipping over all bits in the memslot userspace would be
+  interested in.
+
+Fix this by resetting ofs to zero when a memslot _above_ cur_gfn is
+returned (cur_gfn < ms->base_gfn).
+
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Fixes: afdad61615cc ("KVM: s390: Fix storage attributes migration with memory slots")
+Message-Id: <20230324145424.293889-2-nrb@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kvm/kvm-s390.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c b/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
-index cd0a771454da4..2a8ef766b25a4 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
-@@ -1198,7 +1198,7 @@ static int gmin_get_config_dsm_var(struct device *dev,
- 	dev_info(dev, "found _DSM entry for '%s': %s\n", var,
- 		 cur->string.pointer);
- 	strscpy(out, cur->string.pointer, *out_len);
--	*out_len = strlen(cur->string.pointer);
-+	*out_len = strlen(out);
- 
- 	ACPI_FREE(obj);
- 	return 0;
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index d7aa442ceaf1c..eb97db59b2365 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -2030,6 +2030,10 @@ static unsigned long kvm_s390_next_dirty_cmma(struct kvm_memslots *slots,
+ 		ms = slots->memslots + slotidx;
+ 		ofs = 0;
+ 	}
++
++	if (cur_gfn < ms->base_gfn)
++		ofs = 0;
++
+ 	ofs = find_next_bit(kvm_second_dirty_bitmap(ms), ms->npages, ofs);
+ 	while ((slotidx > 0) && (ofs >= ms->npages)) {
+ 		slotidx--;
 -- 
 2.39.2
 
