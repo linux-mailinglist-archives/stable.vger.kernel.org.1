@@ -2,69 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D567575C6B1
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4869975C6CF
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229708AbjGUMQX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 08:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37612 "EHLO
+        id S231516AbjGUMUx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 08:20:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjGUMQW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:16:22 -0400
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C9B1722;
-        Fri, 21 Jul 2023 05:16:21 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.153])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4R6pSG1VZ1z4f3kFc;
-        Fri, 21 Jul 2023 20:16:14 +0800 (CST)
-Received: from [10.174.176.117] (unknown [10.174.176.117])
-        by APP1 (Coremail) with SMTP id cCh0CgCHGDMOd7pkEEXZNg--.21603S2;
-        Fri, 21 Jul 2023 20:16:16 +0800 (CST)
-Subject: Re: [PATCHv2 bpf 2/2] bpf: Disable preemption in bpf_event_output
-To:     Jiri Olsa <jolsa@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>
-Cc:     stable@vger.kernel.org, bpf@vger.kernel.org,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>
-References: <20230720085704.190592-1-jolsa@kernel.org>
- <20230720085704.190592-3-jolsa@kernel.org>
-From:   Hou Tao <houtao@huaweicloud.com>
-Message-ID: <0b963b18-4933-3b70-3dc6-6c7150bcf7bb@huaweicloud.com>
-Date:   Fri, 21 Jul 2023 20:16:14 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        with ESMTP id S229605AbjGUMUw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:20:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C62D172A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:20:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9891161A1D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BFBC433C9;
+        Fri, 21 Jul 2023 12:20:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689942049;
+        bh=X/S3XPMzx/V5k2+dJyYBD8jaJWaGojn7A1QVBBYo+gs=;
+        h=Subject:To:Cc:From:Date:From;
+        b=x/oCtozpQG37hUydi47QKATibRSfTSXTa8DsOu809XiwdvT7cUEDOnZGv1KS1I66S
+         pKfazDZTQDN9/eaHOuTIVJRFotHfZvNBhy6cKiikHfB4FtaMG6HsQghI0nalPCi1Cz
+         SAWZQJmaYXGXjgBk/pivubz02g7tyQywfhet2u+w=
+Subject: FAILED: patch "[PATCH] drm/ttm: fix bulk_move corruption when adding a entry" failed to apply to 6.4-stable tree
+To:     Yunxiang.Li@amd.com, christian.koenig@amd.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 21 Jul 2023 14:20:47 +0200
+Message-ID: <2023072146-sports-deluge-22a1@gregkh>
 MIME-Version: 1.0
-In-Reply-To: <20230720085704.190592-3-jolsa@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-CM-TRANSID: cCh0CgCHGDMOd7pkEEXZNg--.21603S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF1rWFyxKF47JrWkJw13Jwb_yoW8Zry7pr
-        93GayxGr48Jw1jqa1Dtry0g3W0yanrZF9xGr4kWFW5Zw43WrZ5CFyIyrsYgF98urWUZaya
-        qayktw42y3Z5Aa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7I2V7IY0VAS
-        07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
-        02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_
-        GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
-        CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv67AK
-        xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
-        xUOyCJDUUUU
-X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -72,53 +49,71 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+The patch below does not apply to the 6.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On 7/20/2023 4:57 PM, Jiri Olsa wrote:
-> We received report [1] of kernel crash, which is caused by
-> using nesting protection without disabled preemption.
->
-> The bpf_event_output can be called by programs executed by
-> bpf_prog_run_array_cg function that disabled migration but
-> keeps preemption enabled.
->
-> This can cause task to be preempted by another one inside the
-> nesting protection and lead eventually to two tasks using same
-> perf_sample_data buffer and cause crashes like:
->
->   BUG: kernel NULL pointer dereference, address: 0000000000000001
->   #PF: supervisor instruction fetch in kernel mode
->   #PF: error_code(0x0010) - not-present page
->   ...
->   ? perf_output_sample+0x12a/0x9a0
->   ? finish_task_switch.isra.0+0x81/0x280
->   ? perf_event_output+0x66/0xa0
->   ? bpf_event_output+0x13a/0x190
->   ? bpf_event_output_data+0x22/0x40
->   ? bpf_prog_dfc84bbde731b257_cil_sock4_connect+0x40a/0xacb
->   ? xa_load+0x87/0xe0
->   ? __cgroup_bpf_run_filter_sock_addr+0xc1/0x1a0
->   ? release_sock+0x3e/0x90
->   ? sk_setsockopt+0x1a1/0x12f0
->   ? udp_pre_connect+0x36/0x50
->   ? inet_dgram_connect+0x93/0xa0
->   ? __sys_connect+0xb4/0xe0
->   ? udp_setsockopt+0x27/0x40
->   ? __pfx_udp_push_pending_frames+0x10/0x10
->   ? __sys_setsockopt+0xdf/0x1a0
->   ? __x64_sys_connect+0xf/0x20
->   ? do_syscall_64+0x3a/0x90
->   ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
->
-> Fixing this by disabling preemption in bpf_event_output.
->
-> [1] https://github.com/cilium/cilium/issues/26756
-> Cc: stable@vger.kernel.org
-> Reported-by:  Oleg "livelace" Popov <o.popov@livelace.ru>
-> Fixes: 2a916f2f546c bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Acked-by: Hou Tao <houtao1@huawei.com>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4481913607e58196c48a4fef5e6f45350684ec3c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072146-sports-deluge-22a1@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
-With one nit above. The format of the Fixes tags should be 2a916f2f546c
-("bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.")
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4481913607e58196c48a4fef5e6f45350684ec3c Mon Sep 17 00:00:00 2001
+From: Yunxiang Li <Yunxiang.Li@amd.com>
+Date: Thu, 22 Jun 2023 10:18:03 -0400
+Subject: [PATCH] drm/ttm: fix bulk_move corruption when adding a entry
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+When the resource is the first in the bulk_move range, adding it again
+(thus moving it to the tail) will corrupt the list since the first
+pointer is not moved. This eventually lead to null pointer deref in
+ttm_lru_bulk_move_del()
+
+Fixes: fee2ede15542 ("drm/ttm: rework bulk move handling v5")
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+CC: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230622141902.28718-3-Yunxiang.Li@amd.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+
+diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+index 7333f7a87a2f..e51dbc7a2d53 100644
+--- a/drivers/gpu/drm/ttm/ttm_resource.c
++++ b/drivers/gpu/drm/ttm/ttm_resource.c
+@@ -86,6 +86,8 @@ static void ttm_lru_bulk_move_pos_tail(struct ttm_lru_bulk_move_pos *pos,
+ 				       struct ttm_resource *res)
+ {
+ 	if (pos->last != res) {
++		if (pos->first == res)
++			pos->first = list_next_entry(res, lru);
+ 		list_move(&res->lru, &pos->last->lru);
+ 		pos->last = res;
+ 	}
+@@ -111,7 +113,8 @@ static void ttm_lru_bulk_move_del(struct ttm_lru_bulk_move *bulk,
+ {
+ 	struct ttm_lru_bulk_move_pos *pos = ttm_lru_bulk_move_pos(bulk, res);
+ 
+-	if (unlikely(pos->first == res && pos->last == res)) {
++	if (unlikely(WARN_ON(!pos->first || !pos->last) ||
++		     pos->first == res && pos->last == res)) {
+ 		pos->first = NULL;
+ 		pos->last = NULL;
+ 	} else if (pos->first == res) {
 
