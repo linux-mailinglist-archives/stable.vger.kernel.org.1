@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F73075D1EB
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513CC75D21B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjGUSyW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:54:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
+        id S231327AbjGUS4G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230443AbjGUSyS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:54:18 -0400
+        with ESMTP id S231312AbjGUS4F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:56:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 535653588
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:54:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7475C3586
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:56:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E558D61D7C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:54:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030B0C433C7;
-        Fri, 21 Jul 2023 18:54:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 12CCE61D85
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:56:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25384C433C8;
+        Fri, 21 Jul 2023 18:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965655;
-        bh=jc80VETf+0UWx+sxVqpbkrcn3oRHduFHlLlsCzDLocY=;
+        s=korg; t=1689965763;
+        bh=5UWzVjExUpaguz9sjkC+Hv6zH81y76mv5ZV5XtxkQok=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0TaS3mEdxpO76NJRWvKNDYDTzbDLURKoH3dqWQ1P9wgyRxWiqLpfwjCS2SYu2QPbf
-         EtDNHYOwqxeBgkh6JInp77MSBbLOwe1vOe0r+/rztpiSOkPTQYets4kDqTSSGErVZa
-         ogBTuVU51VIMZkKSFbF1Lf1vSLcuD33ywQSx4XPs=
+        b=jXMIGl0BE8a9oVStNXrysjeAL4ApPReS5KmW/6QyG7JmmmsdiXvGdn1xfhvgm7V0D
+         +wDSz8lTfuLR0cyt75UK4umdI/ajZ7Esioyl7Bj1zhFQO9cUspjcTDC3+dS3aImenJ
+         m4fBVnCbCD+Sl6VQWhN2+r54XZrLeGwC032vmInQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Nicolas Escande <nico.escande@gmail.com>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Edwin Peer <edwin.peer@broadcom.com>,
+        Edwin Peer <espeer@gmail.com>, Gal Pressman <gal@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 066/532] wifi: ath9k: Fix possible stall on ath9k_txq_list_has_key()
-Date:   Fri, 21 Jul 2023 17:59:30 +0200
-Message-ID: <20230721160618.205935615@linuxfoundation.org>
+Subject: [PATCH 5.15 067/532] rtnetlink: extend RTEXT_FILTER_SKIP_STATS to IFLA_VF_INFO
+Date:   Fri, 21 Jul 2023 17:59:31 +0200
+Message-ID: <20230721160618.257118012@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -57,106 +56,165 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Edwin Peer <edwin.peer@broadcom.com>
 
-[ Upstream commit 75086cc6dee046e3fbb3dba148b376d8802f83bc ]
+[ Upstream commit fa0e21fa44438a0e856d42224bfa24641d37b979 ]
 
-On EDMA capable hardware, ath9k_txq_list_has_key() can enter infinite
-loop if it is called while all txq_fifos have packets that use different
-key that the one we are looking for. Fix it by exiting the loop if all
-txq_fifos have been checked already.
+This filter already exists for excluding IPv6 SNMP stats. Extend its
+definition to also exclude IFLA_VF_INFO stats in RTM_GETLINK.
 
-Because this loop is called under spin_lock_bh() (see ath_txq_lock) it
-causes the following rcu stall:
+This patch constitutes a partial fix for a netlink attribute nesting
+overflow bug in IFLA_VFINFO_LIST. By excluding the stats when the
+requester doesn't need them, the truncation of the VF list is avoided.
 
-rcu: INFO: rcu_sched self-detected stall on CPU
-ath10k_pci 0000:01:00.0: failed to read temperature -11
-rcu:    1-....: (5254 ticks this GP) idle=189/1/0x4000000000000002 softirq=8442983/8442984 fqs=2579
-        (t=5257 jiffies g=17983297 q=334)
-Task dump for CPU 1:
-task:hostapd         state:R  running task     stack:    0 pid:  297 ppid:   289 flags:0x0000000a
-Call trace:
- dump_backtrace+0x0/0x170
- show_stack+0x1c/0x24
- sched_show_task+0x140/0x170
- dump_cpu_task+0x48/0x54
- rcu_dump_cpu_stacks+0xf0/0x134
- rcu_sched_clock_irq+0x8d8/0x9fc
- update_process_times+0xa0/0xec
- tick_sched_timer+0x5c/0xd0
- __hrtimer_run_queues+0x154/0x320
- hrtimer_interrupt+0x120/0x2f0
- arch_timer_handler_virt+0x38/0x44
- handle_percpu_devid_irq+0x9c/0x1e0
- handle_domain_irq+0x64/0x90
- gic_handle_irq+0x78/0xb0
- call_on_irq_stack+0x28/0x38
- do_interrupt_handler+0x54/0x5c
- el1_interrupt+0x2c/0x4c
- el1h_64_irq_handler+0x14/0x1c
- el1h_64_irq+0x74/0x78
- ath9k_txq_has_key+0x1bc/0x250 [ath9k]
- ath9k_set_key+0x1cc/0x3dc [ath9k]
- drv_set_key+0x78/0x170
- ieee80211_key_replace+0x564/0x6cc
- ieee80211_key_link+0x174/0x220
- ieee80211_add_key+0x11c/0x300
- nl80211_new_key+0x12c/0x330
- genl_family_rcv_msg_doit+0xbc/0x11c
- genl_rcv_msg+0xd8/0x1c4
- netlink_rcv_skb+0x40/0x100
- genl_rcv+0x3c/0x50
- netlink_unicast+0x1ec/0x2c0
- netlink_sendmsg+0x198/0x3c0
- ____sys_sendmsg+0x210/0x250
- ___sys_sendmsg+0x78/0xc4
- __sys_sendmsg+0x4c/0x90
- __arm64_sys_sendmsg+0x28/0x30
- invoke_syscall.constprop.0+0x60/0x100
- do_el0_svc+0x48/0xd0
- el0_svc+0x14/0x50
- el0t_64_sync_handler+0xa8/0xb0
- el0t_64_sync+0x158/0x15c
+While it was technically only the stats added in commit c5a9f6f0ab40
+("net/core: Add drop counters to VF statistics") breaking the camel's
+back, the appreciable size of the stats data should never have been
+included without due consideration for the maximum number of VFs
+supported by PCI.
 
-This rcu stall is hard to reproduce as is, but changing ATH_TXFIFO_DEPTH
-from 8 to 2 makes it reasonably easy to reproduce.
-
-Fixes: ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Tested-by: Nicolas Escande <nico.escande@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230609093744.1985-1-repk@triplefau.lt
+Fixes: 3b766cd83232 ("net/core: Add reading VF statistics through the PF netdevice")
+Fixes: c5a9f6f0ab40 ("net/core: Add drop counters to VF statistics")
+Signed-off-by: Edwin Peer <edwin.peer@broadcom.com>
+Cc: Edwin Peer <espeer@gmail.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://lore.kernel.org/r/20230611105108.122586-1-gal@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/core/rtnetlink.c | 96 +++++++++++++++++++++++---------------------
+ 1 file changed, 51 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index e2791d45f5f59..98868f60a8c2f 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -850,7 +850,7 @@ static bool ath9k_txq_list_has_key(struct list_head *txq_list, u32 keyix)
- static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index bc187289bf64b..0ab558501290b 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -922,24 +922,27 @@ static inline int rtnl_vfinfo_size(const struct net_device *dev,
+ 			 nla_total_size(sizeof(struct ifla_vf_rate)) +
+ 			 nla_total_size(sizeof(struct ifla_vf_link_state)) +
+ 			 nla_total_size(sizeof(struct ifla_vf_rss_query_en)) +
+-			 nla_total_size(0) + /* nest IFLA_VF_STATS */
+-			 /* IFLA_VF_STATS_RX_PACKETS */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+-			 /* IFLA_VF_STATS_TX_PACKETS */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+-			 /* IFLA_VF_STATS_RX_BYTES */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+-			 /* IFLA_VF_STATS_TX_BYTES */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+-			 /* IFLA_VF_STATS_BROADCAST */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+-			 /* IFLA_VF_STATS_MULTICAST */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+-			 /* IFLA_VF_STATS_RX_DROPPED */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+-			 /* IFLA_VF_STATS_TX_DROPPED */
+-			 nla_total_size_64bit(sizeof(__u64)) +
+ 			 nla_total_size(sizeof(struct ifla_vf_trust)));
++		if (~ext_filter_mask & RTEXT_FILTER_SKIP_STATS) {
++			size += num_vfs *
++				(nla_total_size(0) + /* nest IFLA_VF_STATS */
++				 /* IFLA_VF_STATS_RX_PACKETS */
++				 nla_total_size_64bit(sizeof(__u64)) +
++				 /* IFLA_VF_STATS_TX_PACKETS */
++				 nla_total_size_64bit(sizeof(__u64)) +
++				 /* IFLA_VF_STATS_RX_BYTES */
++				 nla_total_size_64bit(sizeof(__u64)) +
++				 /* IFLA_VF_STATS_TX_BYTES */
++				 nla_total_size_64bit(sizeof(__u64)) +
++				 /* IFLA_VF_STATS_BROADCAST */
++				 nla_total_size_64bit(sizeof(__u64)) +
++				 /* IFLA_VF_STATS_MULTICAST */
++				 nla_total_size_64bit(sizeof(__u64)) +
++				 /* IFLA_VF_STATS_RX_DROPPED */
++				 nla_total_size_64bit(sizeof(__u64)) +
++				 /* IFLA_VF_STATS_TX_DROPPED */
++				 nla_total_size_64bit(sizeof(__u64)));
++		}
+ 		return size;
+ 	} else
+ 		return 0;
+@@ -1214,7 +1217,8 @@ static noinline_for_stack int rtnl_fill_stats(struct sk_buff *skb,
+ static noinline_for_stack int rtnl_fill_vfinfo(struct sk_buff *skb,
+ 					       struct net_device *dev,
+ 					       int vfs_num,
+-					       struct nlattr *vfinfo)
++					       struct nlattr *vfinfo,
++					       u32 ext_filter_mask)
  {
- 	struct ath_hw *ah = sc->sc_ah;
--	int i;
-+	int i, j;
- 	struct ath_txq *txq;
- 	bool key_in_use = false;
+ 	struct ifla_vf_rss_query_en vf_rss_query_en;
+ 	struct nlattr *vf, *vfstats, *vfvlanlist;
+@@ -1320,33 +1324,35 @@ static noinline_for_stack int rtnl_fill_vfinfo(struct sk_buff *skb,
+ 		goto nla_put_vf_failure;
+ 	}
+ 	nla_nest_end(skb, vfvlanlist);
+-	memset(&vf_stats, 0, sizeof(vf_stats));
+-	if (dev->netdev_ops->ndo_get_vf_stats)
+-		dev->netdev_ops->ndo_get_vf_stats(dev, vfs_num,
+-						&vf_stats);
+-	vfstats = nla_nest_start_noflag(skb, IFLA_VF_STATS);
+-	if (!vfstats)
+-		goto nla_put_vf_failure;
+-	if (nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_PACKETS,
+-			      vf_stats.rx_packets, IFLA_VF_STATS_PAD) ||
+-	    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_PACKETS,
+-			      vf_stats.tx_packets, IFLA_VF_STATS_PAD) ||
+-	    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_BYTES,
+-			      vf_stats.rx_bytes, IFLA_VF_STATS_PAD) ||
+-	    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_BYTES,
+-			      vf_stats.tx_bytes, IFLA_VF_STATS_PAD) ||
+-	    nla_put_u64_64bit(skb, IFLA_VF_STATS_BROADCAST,
+-			      vf_stats.broadcast, IFLA_VF_STATS_PAD) ||
+-	    nla_put_u64_64bit(skb, IFLA_VF_STATS_MULTICAST,
+-			      vf_stats.multicast, IFLA_VF_STATS_PAD) ||
+-	    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_DROPPED,
+-			      vf_stats.rx_dropped, IFLA_VF_STATS_PAD) ||
+-	    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_DROPPED,
+-			      vf_stats.tx_dropped, IFLA_VF_STATS_PAD)) {
+-		nla_nest_cancel(skb, vfstats);
+-		goto nla_put_vf_failure;
++	if (~ext_filter_mask & RTEXT_FILTER_SKIP_STATS) {
++		memset(&vf_stats, 0, sizeof(vf_stats));
++		if (dev->netdev_ops->ndo_get_vf_stats)
++			dev->netdev_ops->ndo_get_vf_stats(dev, vfs_num,
++							  &vf_stats);
++		vfstats = nla_nest_start_noflag(skb, IFLA_VF_STATS);
++		if (!vfstats)
++			goto nla_put_vf_failure;
++		if (nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_PACKETS,
++				      vf_stats.rx_packets, IFLA_VF_STATS_PAD) ||
++		    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_PACKETS,
++				      vf_stats.tx_packets, IFLA_VF_STATS_PAD) ||
++		    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_BYTES,
++				      vf_stats.rx_bytes, IFLA_VF_STATS_PAD) ||
++		    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_BYTES,
++				      vf_stats.tx_bytes, IFLA_VF_STATS_PAD) ||
++		    nla_put_u64_64bit(skb, IFLA_VF_STATS_BROADCAST,
++				      vf_stats.broadcast, IFLA_VF_STATS_PAD) ||
++		    nla_put_u64_64bit(skb, IFLA_VF_STATS_MULTICAST,
++				      vf_stats.multicast, IFLA_VF_STATS_PAD) ||
++		    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_DROPPED,
++				      vf_stats.rx_dropped, IFLA_VF_STATS_PAD) ||
++		    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_DROPPED,
++				      vf_stats.tx_dropped, IFLA_VF_STATS_PAD)) {
++			nla_nest_cancel(skb, vfstats);
++			goto nla_put_vf_failure;
++		}
++		nla_nest_end(skb, vfstats);
+ 	}
+-	nla_nest_end(skb, vfstats);
+ 	nla_nest_end(skb, vf);
+ 	return 0;
  
-@@ -868,8 +868,9 @@ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
- 		if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) {
- 			int idx = txq->txq_tailidx;
+@@ -1379,7 +1385,7 @@ static noinline_for_stack int rtnl_fill_vf(struct sk_buff *skb,
+ 		return -EMSGSIZE;
  
--			while (!key_in_use &&
--			       !list_empty(&txq->txq_fifo[idx])) {
-+			for (j = 0; !key_in_use &&
-+			     !list_empty(&txq->txq_fifo[idx]) &&
-+			     j < ATH_TXFIFO_DEPTH; j++) {
- 				key_in_use = ath9k_txq_list_has_key(
- 					&txq->txq_fifo[idx], keyix);
- 				INCR(idx, ATH_TXFIFO_DEPTH);
+ 	for (i = 0; i < num_vfs; i++) {
+-		if (rtnl_fill_vfinfo(skb, dev, i, vfinfo))
++		if (rtnl_fill_vfinfo(skb, dev, i, vfinfo, ext_filter_mask))
+ 			return -EMSGSIZE;
+ 	}
+ 
 -- 
 2.39.2
 
