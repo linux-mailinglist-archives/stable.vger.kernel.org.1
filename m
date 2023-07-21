@@ -2,214 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F0775D3FB
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B074675D438
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231978AbjGUTQg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:16:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38686 "EHLO
+        id S232069AbjGUTTR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:19:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231980AbjGUTQe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:34 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D55A30E8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689966993; x=1721502993;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=zJOXHbnaEEkQOSpPlmpZEdWukegI35a7OY3lf49wSZk=;
-  b=eerjPIwwH12ZMDo7NbxzGN5H3ChRz80XL11XL/aR5BWz1Jn13u5olHO4
-   KraZACBQOebjff127ZrE157aNuOVlJSzhom/YgSyLRp3fD2t1uDKoWq6p
-   x/AOmNnJIFRnuz6Q/gwl11L1fMMLEIY1a4ZgHyT/f4hfqYShbH+judWka
-   B4Kj9qnDcmyIqg0QKmwJMfTVvGkI7Fyu+r6+8vxpzi4j2HWJQwNcWazNg
-   BPZ5zphR9FWai1S/Rm7I4IsBu6pWMt8rBFcvHT/UHBNsZZsK/SU7lFF+C
-   IrTYZ3/9mxplUQXfCrqyiD5dRbxqgsZaqJAwiNOb171afC757FreDq7/2
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="351985005"
-X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
-   d="scan'208";a="351985005"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 12:16:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="702135702"
-X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
-   d="scan'208";a="702135702"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga006.jf.intel.com with ESMTP; 21 Jul 2023 12:16:32 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 21 Jul 2023 12:16:31 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 21 Jul 2023 12:16:31 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Fri, 21 Jul 2023 12:16:31 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Fri, 21 Jul 2023 12:16:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aITxlKznh5FefhPUQBH/+vsA0TF9L+WUBCCkodLFluqtZ3NbAQLsl+/S36hzWEeuiaC3X9QcbTFy+/qXMJZpZUDJ1ENc3UTPoTx9svtTs4ygY80oPB9lCUpltGJMZR2XTy9a32PR22wuYGqX8NxaBIsrS+ZXDprMQI8G6Ttxzwb+KqDWmNS40O9AUJPNELg355/TrdhUpSMdve6rtB8O+ZSviGrFKshwe5qdX6pCVLIqp9ePzZ7FBs5w2kpjO1P6S8CHYMD07KfMEM1FQ8p72xTDHUlgqfV5ypDAdf716ag25lL9qJeHZydnEunFj6CdaKVYgAAf02qxMJt6hb6Bdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2HdfaWSgS7eqXhJPtlHLR8kmolZpGVpMiUuCqmsLH+c=;
- b=Ssb1sPswjkY775hedzcq8gweug16Sn1JAl5dQ9EWtc8UZfuNE1He1L91yLbD2kVXn6s8rJ9dlgZo0zjN2N5NoeR1/FZaP22A9XlUGbPFITogDWzv6I8ElvQJwfpVt3e/ERcYf4MhhQYw70oJJRSrvNXK95ElMwdlQLre8uTttScFUeJTi5Gri4FCUCTZVumaKTHn6p2+ja6OaKzpE/OeBI9wZ/DrD2/QcHEdg1xu6qPbPX9qdJ+mG+PKP9ZJTvu/50xj8oQoIK92Z/TDbGOnJub43zu5vRyWOYAit530DxD91oFgG39x01DjA1i7YxDKXYs/1qYW6meF2tQgdMT67w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB7859.namprd11.prod.outlook.com (2603:10b6:8:da::22) by
- MN0PR11MB6184.namprd11.prod.outlook.com (2603:10b6:208:3c4::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.25; Fri, 21 Jul
- 2023 19:16:23 +0000
-Received: from DS7PR11MB7859.namprd11.prod.outlook.com
- ([fe80::de6b:b5a9:e542:b41]) by DS7PR11MB7859.namprd11.prod.outlook.com
- ([fe80::de6b:b5a9:e542:b41%5]) with mapi id 15.20.6609.024; Fri, 21 Jul 2023
- 19:16:23 +0000
-Date:   Fri, 21 Jul 2023 12:16:20 -0700
-From:   Matt Roper <matthew.d.roper@intel.com>
-To:     Andi Shyti <andi.shyti@linux.intel.com>
-CC:     Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-evel <dri-devel@lists.freedesktop.org>,
-        linux-stable <stable@vger.kernel.org>
-Subject: Re: [PATCH v8 5/9] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe
- control
-Message-ID: <20230721191620.GC138014@mdroper-desk1.amr.corp.intel.com>
-References: <20230721161514.818895-1-andi.shyti@linux.intel.com>
- <20230721161514.818895-6-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230721161514.818895-6-andi.shyti@linux.intel.com>
-X-ClientProxiedBy: SJ0PR05CA0172.namprd05.prod.outlook.com
- (2603:10b6:a03:339::27) To DS7PR11MB7859.namprd11.prod.outlook.com
- (2603:10b6:8:da::22)
+        with ESMTP id S232108AbjGUTTI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:08 -0400
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C37E3AAA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:57 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3a3df1ee4a3so1391502b6e.3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689967136; x=1690571936;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=YnaW2N2yVrnTEe6hUMIRb9wxbXeaqtFKVL+sKMepVVU=;
+        b=Tg5u0BLZTshmn4SR/nZtP5n5w83+nI6Yyjr3TQuPvzHPbQq1xd68LemVPkUHseQhKN
+         ytgjguXlibhhOsRkRi4t4GO8TAFZfjJ9Hez4QKeVjn8ETMBV3VmQp//vLMLsf61byRJ6
+         suiC3ZCUrd96BAt6yBNhkJd0Rfd/CD9MKwxdUmzlK5q4y78AFXV65WNry6/WXlRQrRYi
+         m/kt9oFMvh2X3dz2k9uw/fzYAs3X6uSNikWsDHcNJFMkQgbu6MPX0AjPT5Ip7ELVTK4Q
+         aQXQUGxvrCM/C/CmoTF3pUXlMjmy4UuAYjW8Qe8JQ2iHf+UMcXX+RXufIBbR9YqaJ8ZV
+         pE6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689967136; x=1690571936;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YnaW2N2yVrnTEe6hUMIRb9wxbXeaqtFKVL+sKMepVVU=;
+        b=VlgEQAV5lJPILOZhYs4q98o0eEcGqNJCHUiqrxwOuz3NrdiEa1i21XEB7oY3YgGjU1
+         sZizj6xjA+D+w4v24Zbe9dD3iqVsvzdTElDTTJL3yB7TFq6frfQYHHhG3G/DeLmBdKkI
+         tFXV7UyD1M9+JLHj/GdENECSShWnUdaHgtMF0TbXmOJY22nwosyoEQvIjmeTX9GgYLBh
+         rG0K8o1XMDucxtgoxsAimm6Tfd/xuaQgRsP3K1zH5SAV3yEhVmU+gUQdk0MAOnMHYb1d
+         zQBvi8SP/f6Cuu4r51ercmuS8rlqgr8eL6IFVQt4KJ1O4m94LPAVS96zTJNC2J3vzFEo
+         yBbg==
+X-Gm-Message-State: ABy/qLbIwjnHXERJlsnwp5wNNjUdU0q+K9+hzmiOa4AYNpfgx74IMz/i
+        /RzOWZ6yHU+CUjmv0wu9iwdUcCv0c6uF9k27lns=
+X-Google-Smtp-Source: APBJJlHIvSqqL647O54LebWnK2blKLQixgwhMESDVaxTHWTzp3hcYJI7oN9nGmKbuu4NYZVzZJBgBQ==
+X-Received: by 2002:a05:6358:723:b0:139:55de:329 with SMTP id e35-20020a056358072300b0013955de0329mr711614rwj.27.1689967135954;
+        Fri, 21 Jul 2023 12:18:55 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id x27-20020a656abb000000b0054f9936accesm3179345pgu.55.2023.07.21.12.18.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jul 2023 12:18:55 -0700 (PDT)
+Message-ID: <64bada1f.650a0220.4dfc3.5f2c@mx.google.com>
+Date:   Fri, 21 Jul 2023 12:18:55 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB7859:EE_|MN0PR11MB6184:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5a2964c-ac55-4e71-860b-08db8a1ef908
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: s61W4uQqKVGRHtjLFA+/3a3ltReHdEjmbEVJWY9/OMaf5r+1gFHT7CfmvDn1SE51nrqxGsfBYincHFMZ0e9j8ksEN3zkFjsKLdJwjvH7qP2QnAApgs9iRYr0oQAaB7nUjycU6NU1NjbfTGjAKwtJUR5wGm+KfKHJK81mBJw7+FqeabSuyPyU3EPwEGMxsgURKvcQPURZBsillz81jrDmMrdgVdkxjWPfFb2vig2DzTnvsrf1mr7taos8/n3WK3fK0teZo9h5c6McNbKjC5jJG3iViD/STWDv55gsk0LXHg1mBqUSLewYRWb45WrtJiehYQ8LvYF6skYs/EWMFebvEwRj7dmzAlIKAQGPR5sN2HBYQif5NexFRavyWzo+fmCgIcHpJG9XxKQvECzAIVwd4ecdsDJ7Fv60LsU4y38x8bUG9rKVwnKdusezBniYkwmqq2pYNHXjPu1JwkzUTO5LUFIA7zgsE5CrejqY7+8KYMiwi8vbEtV+d+V3UruWlYPEgc/U1J32UOIO3mhlg2vPAyrBB7Nqvl3wEULX+ZxZQn8q/5EGJQTQbzn/oVQfy8B1
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB7859.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(39860400002)(396003)(136003)(366004)(346002)(451199021)(2906002)(83380400001)(82960400001)(33656002)(86362001)(38100700002)(4326008)(6916009)(66476007)(66556008)(66946007)(1076003)(186003)(26005)(6506007)(41300700001)(316002)(478600001)(6486002)(6512007)(54906003)(8676002)(8936002)(5660300002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?st4rmYHy/YWTSeVuQZfFhhtnmw3pPnbkfsFbLYpVmaqljDxmDFiFLL4EMm2C?=
- =?us-ascii?Q?FNELLvWIYfiRE8c59TIBg47DialwzIHhYpyf/XM/Bdla7fKxMK1gGZVwXF7P?=
- =?us-ascii?Q?S4NcifmXou1RpVyjgNx+fgTjXNUymcqJgEbV28gNCz0gpbgaOYGGD+RQfLLg?=
- =?us-ascii?Q?4GtAN53qhkznG5fckCQtuEYKNmPJ67z08VyHS6t0jaPTJtaR7/0P2aGVRHHg?=
- =?us-ascii?Q?koAYkq4ND0a2kPXviTG8Uivw4OcEpGvT7sScoJEFocS/ySon94CScK8FaOBL?=
- =?us-ascii?Q?ukIavbqBYVP3dBcceQZEVF38ENToEd5w0loHZZNAeUQKrXNI4QzBReNcn8Wm?=
- =?us-ascii?Q?Tz3/JtKE6UH5Yc8NY0K0JJYt0KfqFGoNrYWoCIcRUlw0U2usOn3NoNBbnz3h?=
- =?us-ascii?Q?xpBeSJCvdB74i4cnsz1JwPRPAwfzmE2NSJAtDF1Zc33YsA5rtvvBZLGR2KyX?=
- =?us-ascii?Q?gwW7H0LekYtgMqhFsk0EQDBn2QLiuvSQl4ddaGaW4QYAJc5AmRiTaspbvQuj?=
- =?us-ascii?Q?QrN0BDHjEzxdfP6qPcOk/ALJ6vXnhsHbOXWoi5hAxlUfZMZPvyFZTjPx7nyE?=
- =?us-ascii?Q?mAQeTvjmaaiR8R6SDqgyPgTdiyNtPTQASfxiRlDddD7uVEU3URc0yc5ooyOd?=
- =?us-ascii?Q?QzzIYGWBmFApkiOF49Ax0jlAzoOZgEMbiJPkhiI1Oj2oesHcKWk7IIztpa6/?=
- =?us-ascii?Q?wUT6UzAEciP8uTVu/I+c95H74HTNtfq/a/oS2su+i9QXbZJc33ZDneDGFqQw?=
- =?us-ascii?Q?iBJR+1GpstOqir8ABeBlsjVpvWLjYNJKdPTKxG/rH0/YRPjmz02pASXqEpts?=
- =?us-ascii?Q?uhTTQ12OAwfQvGXNA0Obp17H43yuYqsy0gL4/inCieOkXGQI9XJaS8WfEUpr?=
- =?us-ascii?Q?zYZfUmlOO4tFieBy3MzK0ejre0fd9BP+UDMTYHydlmt7qoTFOzLm/JMfFmeP?=
- =?us-ascii?Q?I4HkENfitn92GPibLBKx6ue8pqgcDpb7f7yYb/f3E3N+YXFVY6K/JVbejQKX?=
- =?us-ascii?Q?6BbDteUp0XAIDXOI/M4clJFBiHgT1Mcrqhap8iP+vZKn2+jG2E9EY4G829qT?=
- =?us-ascii?Q?Re66zY1dzgG2vW8UBHwTEeWUJe9v9X+RaWAWAaK6kYUHFzy8F/0WB1QUgXgH?=
- =?us-ascii?Q?ecK6aVk0DPobkcfrQYPkMphGFEWu+Tf11DriBSS9xyIoUaM9k/TG9qM90nfT?=
- =?us-ascii?Q?YZi+eZmeBhgjLX7C8+rmRekxmEyEcEOPzICR37seCQ0MErcVcuYkKCmTaU6O?=
- =?us-ascii?Q?z0Df+63oYIv6Q6zaeMxTVwywd6K7/qv9EuIBj31SVKt9pKJzY5K+WY91wmBb?=
- =?us-ascii?Q?aptKsX6eTBUy5rWH+RbFuiX882E6PAhTxYrp2ShL54syb4lvYVaMIXKjhR4C?=
- =?us-ascii?Q?pwwPKPgA6PPYYU6aLvNlqgshZUytvGw01q3VXNA8xBgFfBtEnApldt7Ynyx/?=
- =?us-ascii?Q?h2luwpaDtCOWwKtsqL0bmJE+QAkSYCIEWMNdf6QbXfqTD84Z8slIltynDeOs?=
- =?us-ascii?Q?UCPHgM5Wm28Dp0wbYcug3AA7s6+1FStPb/zLGDHa0Jp0v4sqfDBcOIvRMBi6?=
- =?us-ascii?Q?AyjBTETh5AkTx/Xobj3B2d8CCEM14v8QiGrIuzB4QyqGFDcopMawf4SLQzuK?=
- =?us-ascii?Q?eg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5a2964c-ac55-4e71-860b-08db8a1ef908
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB7859.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2023 19:16:23.6039
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yLLqzCuuLuXFPIxy1R4nVvU4558xbnYu0e/UtjyOSYqX42014IStXvoxJXRS/wjNCufVLtXWNWj1hJNvByoczdji+bYgI0YezMkp65Cg6uc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6184
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Kernel: v5.10.186-441-g2f0e20469d5f
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.10.y build: 2 builds: 0 failed, 2 passed,
+ 1 warning (v5.10.186-441-g2f0e20469d5f)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 06:15:10PM +0200, Andi Shyti wrote:
-> Enable the CCS_FLUSH bit 13 in the control pipe for render and
-> compute engines in platforms starting from Meteor Lake (BSPEC
-> 43904 and 47112).
-> 
-> Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> Cc: <stable@vger.kernel.org> # v5.8+
+stable-rc/linux-5.10.y build: 2 builds: 0 failed, 2 passed, 1 warning (v5.1=
+0.186-441-g2f0e20469d5f)
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.186-441-g2f0e20469d5f/
 
-> ---
->  drivers/gpu/drm/i915/gt/gen8_engine_cs.c     | 7 +++++++
->  drivers/gpu/drm/i915/gt/intel_gpu_commands.h | 1 +
->  2 files changed, 8 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> index 5d2175e918dd2..139a7e69f5c4d 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> @@ -230,6 +230,13 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->  
->  		bit_group_0 |= PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
->  
-> +		/*
-> +		 * When required, in MTL and beyond platforms we
-> +		 * need to set the CCS_FLUSH bit in the pipe control
-> +		 */
-> +		if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
-> +			bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
-> +
->  		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
->  		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
->  		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-> index 5d143e2a8db03..5df7cce23197c 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-> +++ b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-> @@ -299,6 +299,7 @@
->  #define   PIPE_CONTROL_QW_WRITE				(1<<14)
->  #define   PIPE_CONTROL_POST_SYNC_OP_MASK                (3<<14)
->  #define   PIPE_CONTROL_DEPTH_STALL			(1<<13)
-> +#define   PIPE_CONTROL_CCS_FLUSH			(1<<13) /* MTL+ */
->  #define   PIPE_CONTROL_WRITE_FLUSH			(1<<12)
->  #define   PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH	(1<<12) /* gen6+ */
->  #define   PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE	(1<<11) /* MBZ on ILK */
-> -- 
-> 2.40.1
-> 
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.186-441-g2f0e20469d5f
+Git Commit: 2f0e20469d5f1c35ef084c4c84db0fd7bbfb0d2d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 2 unique architectures
 
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+Warnings Detected:
+
+arc:
+
+arm:
+    vexpress_defconfig (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    1    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=
+=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
+without a cast [-Wint-conversion]
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---
+For more info write to <info@kernelci.org>
