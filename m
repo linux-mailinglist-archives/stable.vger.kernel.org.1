@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C82FA75D417
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C30E75D369
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232008AbjGUTRr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
+        id S231822AbjGUTKU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232005AbjGUTRq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:17:46 -0400
+        with ESMTP id S231819AbjGUTKT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1962737
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336982D4A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6BC461D7C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BC9C433D9;
-        Fri, 21 Jul 2023 19:17:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4DBF61D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8132C433C7;
+        Fri, 21 Jul 2023 19:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967061;
-        bh=FikZU/UiE6Epn8Bq35ecz+4S6NsnxwlAwh6akol+NNI=;
+        s=korg; t=1689966618;
+        bh=MJ8HLrCDxprasW1LpGoGY00A/Ud1Pxcfoh+1wfxwNHo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=majwEGLEU9KuWyDZ6c6985eWpLNPjpycUqverv9jiweCrccSC0APOSpsoDOyRjcdI
-         sOocVIGoGZao3tbhD4RqzCDhxTomBzcqIludy5EEnGqWWhRBJb9cu3E4D3V06a66yo
-         61UPwQ0wfDjVgUg/52R9wFYCJdSVFZZqhGdWunok=
+        b=2OK49ntPcfjI5dFM2bOB9LtvgoxtnCOIetH5hyctnTQLc3/kJ88eqYBUvWb1//5//
+         +dbkHozwl8InlCPzIN+mTlFRZX6zv+QuLlzOWP7xnDmEY897inS68L/g5HD2tiGEFz
+         XqIlinxGtj0UhKozTttwClbzxIx7rP0m9kbeKdsU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nitya Sunkad <nitya.sunkad@amd.com>,
-        Shannon Nelson <shannon.nelson@amd.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/223] ionic: remove WARN_ON to prevent panic_on_warn
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 380/532] netfilter: conntrack: Avoid nf_ct_helper_hash uses after free
 Date:   Fri, 21 Jul 2023 18:04:44 +0200
-Message-ID: <20230721160522.195454190@linuxfoundation.org>
+Message-ID: <20230721160635.100180420@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nitya Sunkad <nitya.sunkad@amd.com>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit abfb2a58a5377ebab717d4362d6180f901b6e5c1 ]
+commit 6eef7a2b933885a17679eb8ed0796ddf0ee5309b upstream.
 
-Remove unnecessary early code development check and the WARN_ON
-that it uses.  The irq alloc and free paths have long been
-cleaned up and this check shouldn't have stuck around so long.
+If nf_conntrack_init_start() fails (for example due to a
+register_nf_conntrack_bpf() failure), the nf_conntrack_helper_fini()
+clean-up path frees the nf_ct_helper_hash map.
 
-Fixes: 77ceb68e29cc ("ionic: Add notifyq support")
-Signed-off-by: Nitya Sunkad <nitya.sunkad@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When built with NF_CONNTRACK=y, further netfilter modules (e.g:
+netfilter_conntrack_ftp) can still be loaded and call
+nf_conntrack_helpers_register(), independently of whether nf_conntrack
+initialized correctly. This accesses the nf_ct_helper_hash dangling
+pointer and causes a uaf, possibly leading to random memory corruption.
+
+This patch guards nf_conntrack_helper_register() from accessing a freed
+or uninitialized nf_ct_helper_hash pointer and fixes possible
+uses-after-free when loading a conntrack module.
+
+Cc: stable@vger.kernel.org
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 -----
- 1 file changed, 5 deletions(-)
+ net/netfilter/nf_conntrack_helper.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 159bfcc76498c..a89ab455af67d 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -462,11 +462,6 @@ static void ionic_qcqs_free(struct ionic_lif *lif)
- static void ionic_link_qcq_interrupts(struct ionic_qcq *src_qcq,
- 				      struct ionic_qcq *n_qcq)
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -405,6 +405,9 @@ int nf_conntrack_helper_register(struct
+ 	BUG_ON(me->expect_class_max >= NF_CT_MAX_EXPECT_CLASSES);
+ 	BUG_ON(strlen(me->name) > NF_CT_HELPER_NAME_LEN - 1);
+ 
++	if (!nf_ct_helper_hash)
++		return -ENOENT;
++
+ 	if (me->expect_policy->max_expected > NF_CT_EXPECT_MAX_CNT)
+ 		return -EINVAL;
+ 
+@@ -595,4 +598,5 @@ void nf_conntrack_helper_fini(void)
  {
--	if (WARN_ON(n_qcq->flags & IONIC_QCQ_F_INTR)) {
--		ionic_intr_free(n_qcq->cq.lif->ionic, n_qcq->intr.index);
--		n_qcq->flags &= ~IONIC_QCQ_F_INTR;
--	}
--
- 	n_qcq->intr.vector = src_qcq->intr.vector;
- 	n_qcq->intr.index = src_qcq->intr.index;
- 	n_qcq->napi_qcq = src_qcq->napi_qcq;
--- 
-2.39.2
-
+ 	nf_ct_extend_unregister(&helper_extend);
+ 	kvfree(nf_ct_helper_hash);
++	nf_ct_helper_hash = NULL;
+ }
 
 
