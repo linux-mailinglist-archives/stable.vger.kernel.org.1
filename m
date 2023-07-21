@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 699A975BFAC
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5AB75BFAD
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjGUHZ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:25:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
+        id S230029AbjGUH0D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbjGUHZ6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:25:58 -0400
+        with ESMTP id S229947AbjGUH0C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:26:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1F84189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:25:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 715E8FC
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:26:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D7806112C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:25:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F000C433C7;
-        Fri, 21 Jul 2023 07:25:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F24676112C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:26:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A72C433C8;
+        Fri, 21 Jul 2023 07:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689924356;
-        bh=MPahdXHmRtbn0Gls/jnbQ/NnJdaE060So4/JmPqm9BA=;
+        s=korg; t=1689924360;
+        bh=Jr0uBuY5uV5AoksnfbS8yeKD2W1kpn6ZkaCe33rTwT0=;
         h=Subject:To:Cc:From:Date:From;
-        b=xnlf1IYvOfnTe+StisLXQU2+1QKpRkGCbUpMSkXFwWrmHdilfBQiyXCJgllaFEOZ0
-         B5Ytpi8GNkju0K1tx0uGpVOzds3WmrmrjYm8+HPnVEyw2drLpX47ZTVgleXjDweNQi
-         LNwcZNgkN7fPvcK9xjrL2UAC6lhSNv8h07ddDQRQ=
-Subject: FAILED: patch "[PATCH] drm/amd/display: limit DPIA link rate to HBR3" failed to apply to 6.4-stable tree
-To:     peichen.huang@amd.com, Mustapha.Ghaddar@amd.com,
+        b=PPX3D8EwstILZVQCbV1dvsoptSsSKWn80oGx0997ijWMN2tCctAcY5tub8CCYqMsy
+         K51zGZ6yFlZBrGt0D6sBGogMnuIudREudMwJRC9sq0+o1dVTi6SpObGWYxafBIQew5
+         0jMhmP1QnlqyIN8HY0c2kTPIerg90HLm+qkJ0x+s=
+Subject: FAILED: patch "[PATCH] drm/amd/display: fix the system hang while disable PSR" failed to apply to 6.1-stable tree
+To:     chiahsuan.chung@amd.com, Wayne.Lin@amd.com,
         alexander.deucher@amd.com, daniel.wheeler@amd.com,
         mario.limonciello@amd.com, stylon.wang@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:25:46 +0200
-Message-ID: <2023072145-rekindle-plunder-7bd0@gregkh>
+Date:   Fri, 21 Jul 2023 09:25:56 +0200
+Message-ID: <2023072156-uncoiled-unchanged-3b6b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,23 +51,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0e69ef6ea82e8eece7d2b2b45a0da9670eaaefff
+git cherry-pick -x f308116676566b555ec3bab4c3f9eb20c1c9a5cb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072145-rekindle-plunder-7bd0@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072156-uncoiled-unchanged-3b6b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+f30811667656 ("drm/amd/display: fix the system hang while disable PSR")
+81f743a08f3b ("drm/amd/display: Add wrapper to call planes and stream update")
+f7511289821f ("drm/amd/display: Use dc_update_planes_and_stream")
 
 thanks,
 
@@ -75,41 +77,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0e69ef6ea82e8eece7d2b2b45a0da9670eaaefff Mon Sep 17 00:00:00 2001
-From: Peichen Huang <peichen.huang@amd.com>
-Date: Wed, 31 May 2023 13:36:14 +0800
-Subject: [PATCH] drm/amd/display: limit DPIA link rate to HBR3
+From f308116676566b555ec3bab4c3f9eb20c1c9a5cb Mon Sep 17 00:00:00 2001
+From: Tom Chung <chiahsuan.chung@amd.com>
+Date: Mon, 29 May 2023 18:00:09 +0800
+Subject: [PATCH] drm/amd/display: fix the system hang while disable PSR
 
 [Why]
-DPIA doesn't support UHBR, driver should not enable UHBR
-for dp tunneling
+When the PSR enabled. If you try to adjust the timing parameters,
+it may cause system hang. Because the timing mismatch with the
+DMCUB settings.
 
 [How]
-limit DPIA link rate to HBR3
+Disable the PSR before adjusting timing parameters.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Peichen Huang <peichen.huang@amd.com>
-Reviewed-by: Mustapha Ghaddar <Mustapha.Ghaddar@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-index 17904de4f155..8041b8369e45 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -984,6 +984,11 @@ static bool detect_link_and_local_sink(struct dc_link *link,
- 					(link->dpcd_caps.dongle_type !=
- 							DISPLAY_DONGLE_DP_HDMI_CONVERTER))
- 				converter_disable_audio = true;
-+
-+			/* limited link rate to HBR3 for DPIA until we implement USB4 V2 */
-+			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA &&
-+					link->reported_link_cap.link_rate > LINK_RATE_HIGH3)
-+				link->reported_link_cap.link_rate = LINK_RATE_HIGH3;
- 			break;
- 		}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 2f3f579efe30..c6a1014e0e89 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8279,6 +8279,12 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 		if (acrtc_state->abm_level != dm_old_crtc_state->abm_level)
+ 			bundle->stream_update.abm_level = &acrtc_state->abm_level;
  
++		mutex_lock(&dm->dc_lock);
++		if ((acrtc_state->update_type > UPDATE_TYPE_FAST) &&
++				acrtc_state->stream->link->psr_settings.psr_allow_active)
++			amdgpu_dm_psr_disable(acrtc_state->stream);
++		mutex_unlock(&dm->dc_lock);
++
+ 		/*
+ 		 * If FreeSync state on the stream has changed then we need to
+ 		 * re-adjust the min/max bounds now that DC doesn't handle this
+@@ -8292,10 +8298,6 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 			spin_unlock_irqrestore(&pcrtc->dev->event_lock, flags);
+ 		}
+ 		mutex_lock(&dm->dc_lock);
+-		if ((acrtc_state->update_type > UPDATE_TYPE_FAST) &&
+-				acrtc_state->stream->link->psr_settings.psr_allow_active)
+-			amdgpu_dm_psr_disable(acrtc_state->stream);
+-
+ 		update_planes_and_stream_adapter(dm->dc,
+ 					 acrtc_state->update_type,
+ 					 planes_count,
 
