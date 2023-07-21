@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A7F75D26A
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABFF075D26B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:59:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231470AbjGUS7V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:59:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53158 "EHLO
+        id S231480AbjGUS7X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:59:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231472AbjGUS7U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:59:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C40030D0
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:59:19 -0700 (PDT)
+        with ESMTP id S231472AbjGUS7X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:59:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CD1530CF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:59:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 124A161D80
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:59:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F4DC433C7;
-        Fri, 21 Jul 2023 18:59:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEAF261D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:59:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F298CC433C7;
+        Fri, 21 Jul 2023 18:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965958;
-        bh=bWAkDfDK2FZoit3t0CvM1Fh5j1tQCps5OwpjAk4ySL4=;
+        s=korg; t=1689965961;
+        bh=2f1mDZaPCVIep0BxXdNZPeekjlv/oElBRFQ5P+U2C3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gTDyjOlEkWu55uiedg4geXUKAlX4eeZwDjpe10HsSWUJjUiucJIR3VG0Hh05//MHc
-         7Dqz8IBQFQPwkeB7cN05fP1Woz5e0fdVW7ALK693VX+3kKnTiTXSjSm8Pd3fNHzjKu
-         UURDxwEB3qZMVgX9mOkp8UCBfYmGspbhkILs9ZaY=
+        b=NQDxV69cGr0Imyb2/KaQjpDH/cHCfJCf+9ZG5fJTGCTTCbVcdKc28xjfZGtveLZEm
+         YdvGd/cbVNqCtBPqDuUujfpjSpZZnc7Bs8UcmRtCZ12gwYyaXD8ug1xX5nCaL9F/wh
+         o+WySEpwj0f67qx1wm1zGPWI5YMJ3M4UH+fBsFxQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 175/532] clk: tegra: tegra124-emc: Fix potential memory leak
-Date:   Fri, 21 Jul 2023 18:01:19 +0200
-Message-ID: <20230721160623.884520677@linuxfoundation.org>
+        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 176/532] ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer
+Date:   Fri, 21 Jul 2023 18:01:20 +0200
+Message-ID: <20230721160623.935545628@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -46,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,43 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 53a06e5924c0d43c11379a08c5a78529c3e61595 ]
+[ Upstream commit 79597c8bf64ca99eab385115743131d260339da5 ]
 
-The tegra and tegra needs to be freed in the error handling path, otherwise
-it will be leaked.
+smatch error:
+sound/pci/ac97/ac97_codec.c:2354 snd_ac97_mixer() error:
+we previously assumed 'rac97' could be null (see line 2072)
 
-Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Link: https://lore.kernel.org/r/20221209094124.71043-1-yuancan@huawei.com
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+remove redundant assignment, return error if rac97 is NULL.
+
+Fixes: da3cec35dd3c ("ALSA: Kill snd_assert() in sound/pci/*")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20230615021732.1972194-1-suhui@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-tegra124-emc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/ac97/ac97_codec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
-index 219c80653dbdb..2a6db04342815 100644
---- a/drivers/clk/tegra/clk-tegra124-emc.c
-+++ b/drivers/clk/tegra/clk-tegra124-emc.c
-@@ -464,6 +464,7 @@ static int load_timings_from_dt(struct tegra_clk_emc *tegra,
- 		err = load_one_timing_from_dt(tegra, timing, child);
- 		if (err) {
- 			of_node_put(child);
-+			kfree(tegra->timings);
- 			return err;
- 		}
+diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
+index ceead55f13ab1..58ae0c3ce1e49 100644
+--- a/sound/pci/ac97/ac97_codec.c
++++ b/sound/pci/ac97/ac97_codec.c
+@@ -2070,8 +2070,8 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
+ 		.dev_disconnect =	snd_ac97_dev_disconnect,
+ 	};
  
-@@ -515,6 +516,7 @@ struct clk *tegra124_clk_register_emc(void __iomem *base, struct device_node *np
- 		err = load_timings_from_dt(tegra, node, node_ram_code);
- 		if (err) {
- 			of_node_put(node);
-+			kfree(tegra);
- 			return ERR_PTR(err);
- 		}
- 	}
+-	if (rac97)
+-		*rac97 = NULL;
++	if (!rac97)
++		return -EINVAL;
+ 	if (snd_BUG_ON(!bus || !template))
+ 		return -EINVAL;
+ 	if (snd_BUG_ON(template->num >= 4))
 -- 
 2.39.2
 
