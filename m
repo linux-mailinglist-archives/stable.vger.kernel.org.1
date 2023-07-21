@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FACE75C962
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99E3D75C970
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbjGUOOM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:14:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38732 "EHLO
+        id S231847AbjGUOOc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231673AbjGUOOG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:14:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0A34273C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:14:04 -0700 (PDT)
+        with ESMTP id S231750AbjGUOOb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:14:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D26E30C2
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:14:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EB6761C3C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:14:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D99BC433CC;
-        Fri, 21 Jul 2023 14:14:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 977DC61CD7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:14:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CC1C433C8;
+        Fri, 21 Jul 2023 14:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689948843;
-        bh=Rt1u+5SjpPI1sl8K2eAFMSeQfyAn55Y2TpZbU9N+J3Y=;
+        s=korg; t=1689948863;
+        bh=N5bE98KdRH34w+marfYebmdkpoo3sXjMqlkdwGXeRC8=;
         h=Subject:To:Cc:From:Date:From;
-        b=O714OerdRlj8VFnulbdCX0sV44a8Yt0IHJZqvdCjBshMqCnIXiQ9yu4bDAbr96N7A
-         vfF6IJrdgyoo2zfHqU8jjk5rRAn/k4YrxBR5QvWTRACePZs9Vm/t25SYZ4YwoILl4p
-         Qf3Qhw78ZqzcSBvh2AC9kdzFS0Dkbl123SzcllMQ=
-Subject: FAILED: patch "[PATCH] arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at" failed to apply to 4.14-stable tree
-To:     oliver.upton@linux.dev, catalin.marinas@arm.com,
-        darren@os.amperecomputing.com, scott@os.amperecomputing.com
+        b=jWwiPd23fcCljAr0Mf90WKtcXTO0ORx/nrJszTxmHfyx3KDn9zAjYe0XrixghiB8f
+         Gr6Qj5WyCxZbibGqIxdOCOm3FePcirKe/0aQYutOJu+qUHLggPGD6Mxp4bIQusume3
+         DesxU9L8YSvhroCR1WHMigNiu7VW2wPKS8OyqSTc=
+Subject: FAILED: patch "[PATCH] xhci: Show ZHAOXIN xHCI root hub speed correctly" failed to apply to 6.4-stable tree
+To:     WeitaoWang-oc@zhaoxin.com, gregkh@linuxfoundation.org,
+        mathias.nyman@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:13:53 +0200
-Message-ID: <2023072152-brunette-grudging-6225@gregkh>
+Date:   Fri, 21 Jul 2023 16:14:20 +0200
+Message-ID: <2023072120-sworn-childlike-42f7@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,35 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6df696cd9bc1ceed0e92e36908f88bbd16d18255
+git cherry-pick -x d9b0328d0b8b8298dfdc97cd8e0e2371d4bcc97b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072152-brunette-grudging-6225@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072120-sworn-childlike-42f7@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-6df696cd9bc1 ("arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at stage-2")
-1dfc3e905089 ("KVM: arm64: Condition HW AF updates on config option")
-1bdb0fbb2e27 ("arm64: errata: remove BF16 HWCAP due to incorrect result on Cortex-A510")
-e89d120c4b72 ("arm64: errata: add detection for AMEVCNTR01 incrementing incorrectly")
-44b3834b2eed ("arm64: errata: Remove AES hwcap for COMPAT tasks")
-39fdb65f52e9 ("arm64: errata: Add Cortex-A510 to the repeat tlbi list")
-1dd498e5e26a ("KVM: arm64: Workaround Cortex-A510's single-step and PAC trap errata")
-297ae1eb23b0 ("arm64: cpufeature: List early Cortex-A510 parts as having broken dbm")
-708e8af4924e ("arm64: errata: Add detection for TRBE trace data corruption")
-3bd94a8759de ("arm64: errata: Add detection for TRBE invalid prohibited states")
-607a9afaae09 ("arm64: errata: Add detection for TRBE ignored system register writes")
-83bb2c1a01d7 ("KVM: arm64: Save PSTATE early on exit")
-d7e0a795bf37 ("Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm")
+
 
 thanks,
 
@@ -86,131 +74,127 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6df696cd9bc1ceed0e92e36908f88bbd16d18255 Mon Sep 17 00:00:00 2001
-From: Oliver Upton <oliver.upton@linux.dev>
-Date: Fri, 9 Jun 2023 22:01:02 +0000
-Subject: [PATCH] arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at
- stage-2
+From d9b0328d0b8b8298dfdc97cd8e0e2371d4bcc97b Mon Sep 17 00:00:00 2001
+From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Date: Fri, 2 Jun 2023 17:40:08 +0300
+Subject: [PATCH] xhci: Show ZHAOXIN xHCI root hub speed correctly
 
-AmpereOne has an erratum in its implementation of FEAT_HAFDBS that
-required disabling the feature on the design. This was done by reporting
-the feature as not implemented in the ID register, although the
-corresponding control bits were not actually RES0. This does not align
-well with the requirements of the architecture, which mandates these
-bits be RES0 if HAFDBS isn't implemented.
+Some ZHAOXIN xHCI controllers follow usb3.1 spec, but only support
+gen1 speed 5Gbps. While in Linux kernel, if xHCI suspport usb3.1,
+root hub speed will show on 10Gbps.
+To fix this issue of ZHAOXIN xHCI platforms, read usb speed ID
+supported by xHCI to determine root hub speed. And add a quirk
+XHCI_ZHAOXIN_HOST for this issue.
 
-The kernel's use of stage-1 is unaffected, as the HA and HD bits are
-only set if HAFDBS is detected in the ID register. KVM, on the other
-hand, relies on the RES0 behavior at stage-2 to use the same value for
-VTCR_EL2 on any cpu in the system. Mitigate the non-RES0 behavior by
-leaving VTCR_EL2.HA clear on affected systems.
+[fix warning about uninitialized symbol -Mathias]
 
+Suggested-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 Cc: stable@vger.kernel.org
-Cc: D Scott Phillips <scott@os.amperecomputing.com>
-Cc: Darren Hart <darren@os.amperecomputing.com>
-Acked-by: D Scott Phillips <scott@os.amperecomputing.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20230609220104.1836988-2-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Message-ID: <20230602144009.1225632-11-mathias.nyman@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index 9e311bc43e05..cd46e2b20a81 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -52,6 +52,9 @@ stable kernels.
- | Allwinner      | A64/R18         | UNKNOWN1        | SUN50I_ERRATUM_UNKNOWN1     |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
-+| Ampere         | AmpereOne       | AC03_CPU_38     | AMPERE_ERRATUM_AC03_CPU_38  |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2064142        | ARM64_ERRATUM_2064142       |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index b1201d25a8a4..0987c637fbf2 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -406,6 +406,25 @@ menu "Kernel Features"
- 
- menu "ARM errata workarounds via the alternatives framework"
- 
-+config AMPERE_ERRATUM_AC03_CPU_38
-+        bool "AmpereOne: AC03_CPU_38: Certain bits in the Virtualization Translation Control Register and Translation Control Registers do not follow RES0 semantics"
-+	default y
-+	help
-+	  This option adds an alternative code sequence to work around Ampere
-+	  erratum AC03_CPU_38 on AmpereOne.
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index c4170421bc9c..19a402123de0 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1961,7 +1961,7 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+ {
+ 	u32 temp, port_offset, port_count;
+ 	int i;
+-	u8 major_revision, minor_revision;
++	u8 major_revision, minor_revision, tmp_minor_revision;
+ 	struct xhci_hub *rhub;
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_port_cap *port_cap;
+@@ -1981,6 +1981,15 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+ 		 */
+ 		if (minor_revision > 0x00 && minor_revision < 0x10)
+ 			minor_revision <<= 4;
++		/*
++		 * Some zhaoxin's xHCI controller that follow usb3.1 spec
++		 * but only support Gen1.
++		 */
++		if (xhci->quirks & XHCI_ZHAOXIN_HOST) {
++			tmp_minor_revision = minor_revision;
++			minor_revision = 0;
++		}
 +
-+	  The affected design reports FEAT_HAFDBS as not implemented in
-+	  ID_AA64MMFR1_EL1.HAFDBS, but (V)TCR_ELx.{HA,HD} are not RES0
-+	  as required by the architecture. The unadvertised HAFDBS
-+	  implementation suffers from an additional erratum where hardware
-+	  A/D updates can occur after a PTE has been marked invalid.
-+
-+	  The workaround forces KVM to explicitly set VTCR_EL2.HA to 0,
-+	  which avoids enabling unadvertised hardware Access Flag management
-+	  at stage-2.
-+
-+	  If unsure, say Y.
-+
- config ARM64_WORKAROUND_CLEAN_CACHE
- 	bool
- 
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 307faa2b4395..be66e94a21bd 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -729,6 +729,13 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- 		MIDR_FIXED(MIDR_CPU_VAR_REV(1,1), BIT(25)),
- 		.cpu_enable = cpu_clear_bf16_from_user_emulation,
- 	},
-+#endif
-+#ifdef CONFIG_AMPERE_ERRATUM_AC03_CPU_38
-+	{
-+		.desc = "AmpereOne erratum AC03_CPU_38",
-+		.capability = ARM64_WORKAROUND_AMPERE_AC03_CPU_38,
-+		ERRATA_MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-+	},
- #endif
- 	{
+ 	} else if (major_revision <= 0x02) {
+ 		rhub = &xhci->usb2_rhub;
+ 	} else {
+@@ -1989,10 +1998,6 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+ 		/* Ignoring port protocol we can't understand. FIXME */
+ 		return;
  	}
-diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-index 5282cb9ca4cf..32d92ce4bae5 100644
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -611,10 +611,18 @@ u64 kvm_get_vtcr(u64 mmfr0, u64 mmfr1, u32 phys_shift)
- #ifdef CONFIG_ARM64_HW_AFDBM
- 	/*
- 	 * Enable the Hardware Access Flag management, unconditionally
--	 * on all CPUs. The features is RES0 on CPUs without the support
--	 * and must be ignored by the CPUs.
-+	 * on all CPUs. In systems that have asymmetric support for the feature
-+	 * this allows KVM to leverage hardware support on the subset of cores
-+	 * that implement the feature.
-+	 *
-+	 * The architecture requires VTCR_EL2.HA to be RES0 (thus ignored by
-+	 * hardware) on implementations that do not advertise support for the
-+	 * feature. As such, setting HA unconditionally is safe, unless you
-+	 * happen to be running on a design that has unadvertised support for
-+	 * HAFDBS. Here be dragons.
- 	 */
--	vtcr |= VTCR_EL2_HA;
-+	if (!cpus_have_final_cap(ARM64_WORKAROUND_AMPERE_AC03_CPU_38))
-+		vtcr |= VTCR_EL2_HA;
- #endif /* CONFIG_ARM64_HW_AFDBM */
+-	rhub->maj_rev = XHCI_EXT_PORT_MAJOR(temp);
+-
+-	if (rhub->min_rev < minor_revision)
+-		rhub->min_rev = minor_revision;
  
- 	/* Set the vmid bits */
-diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-index 40ba95472594..9f9a2d6652eb 100644
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -77,6 +77,7 @@ WORKAROUND_2077057
- WORKAROUND_2457168
- WORKAROUND_2645198
- WORKAROUND_2658417
-+WORKAROUND_AMPERE_AC03_CPU_38
- WORKAROUND_TRBE_OVERWRITE_FILL_MODE
- WORKAROUND_TSB_FLUSH_FAILURE
- WORKAROUND_TRBE_WRITE_OUT_OF_RANGE
+ 	/* Port offset and count in the third dword, see section 7.2 */
+ 	temp = readl(addr + 2);
+@@ -2010,8 +2015,6 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+ 	if (xhci->num_port_caps > max_caps)
+ 		return;
+ 
+-	port_cap->maj_rev = major_revision;
+-	port_cap->min_rev = minor_revision;
+ 	port_cap->psi_count = XHCI_EXT_PORT_PSIC(temp);
+ 
+ 	if (port_cap->psi_count) {
+@@ -2032,6 +2035,11 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+ 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i - 1])))
+ 				port_cap->psi_uid_count++;
+ 
++			if (xhci->quirks & XHCI_ZHAOXIN_HOST &&
++			    major_revision == 0x03 &&
++			    XHCI_EXT_PORT_PSIV(port_cap->psi[i]) >= 5)
++				minor_revision = tmp_minor_revision;
++
+ 			xhci_dbg(xhci, "PSIV:%d PSIE:%d PLT:%d PFD:%d LP:%d PSIM:%d\n",
+ 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i]),
+ 				  XHCI_EXT_PORT_PSIE(port_cap->psi[i]),
+@@ -2041,6 +2049,15 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+ 				  XHCI_EXT_PORT_PSIM(port_cap->psi[i]));
+ 		}
+ 	}
++
++	rhub->maj_rev = major_revision;
++
++	if (rhub->min_rev < minor_revision)
++		rhub->min_rev = minor_revision;
++
++	port_cap->maj_rev = major_revision;
++	port_cap->min_rev = minor_revision;
++
+ 	/* cache usb2 port capabilities */
+ 	if (major_revision < 0x03 && xhci->num_ext_caps < max_caps)
+ 		xhci->ext_caps[xhci->num_ext_caps++] = temp;
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 3aad946bab68..88c16d91fb69 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -522,6 +522,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
++		xhci->quirks |= XHCI_ZHAOXIN_HOST;
++
+ 		if (pdev->device == 0x9202) {
+ 			xhci->quirks |= XHCI_RESET_ON_RESUME;
+ 			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 5a495126c8ba..7e282b4522c0 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1905,6 +1905,7 @@ struct xhci_hcd {
+ #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
+ #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
+ #define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
++#define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 
