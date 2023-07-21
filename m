@@ -2,238 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05FE175D39E
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C99C75D194
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231880AbjGUTMm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:12:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35218 "EHLO
+        id S229785AbjGUSug (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:50:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231879AbjGUTMj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231BF30F1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:37 -0700 (PDT)
+        with ESMTP id S230118AbjGUSue (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3AC359D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6AB261D7B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B820BC433C8;
-        Fri, 21 Jul 2023 19:12:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 069F7619FD
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A689C433C8;
+        Fri, 21 Jul 2023 18:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966756;
-        bh=TRKjKs4nqXhKurfhQ5a4INCqFzv5v21emRKql7uqQIg=;
+        s=korg; t=1689965426;
+        bh=P2nzFaOh88wi6SizWl8zl/ryn8FlEmXuddHIQ3YIDAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BesMX/VXh7WGeKqiKNmNm5qmvFlki2WvNW2miUm4HcBWYoaYuIF6nfrqiJX2uwhlU
-         3Sg2eRCb+4ve7UkhAFteDSlqJsbxtkEs99mJyQ6pAp9aTOjy39LIsbJ97/zq7RjtXg
-         b5l8lQzoP/S8FgFYN2itUjNKu74QCZ46a21No2lI=
+        b=ZyLV0neJkXuYwPe7UvomNM8bfn8qzbXqF75AJWXQOdKWpWZ6ba7bp1IXYRkHBLwXX
+         tMXWQgqRdolVnGNUBBeDv0MkwLb8gV7AGadPAEdGgDI8BlTBtWPwBmPuPPiUwl+h+c
+         JHzWeWP3hH9+LFYbrvODuE8UrqEmrmbQgF3RlBC0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Easwar Hariharan <eahariha@linux.microsoft.com>
-Subject: [PATCH 5.15 457/532] arm64: errata: Add detection for TRBE overwrite in FILL mode
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>
+Subject: [PATCH 6.4 252/292] pwm: meson: modify and simplify calculation in meson_pwm_get_state
 Date:   Fri, 21 Jul 2023 18:06:01 +0200
-Message-ID: <20230721160639.321179253@linuxfoundation.org>
+Message-ID: <20230721160539.750182725@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
+References: <20230721160528.800311148@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit b9d216fcef4298de76519e2baeed69ba482467bd upstream
+commit 6b9352f3f8a1a35faf0efc1ad1807ee303467796 upstream.
 
-Arm Neoverse-N2 and the Cortex-A710 cores are affected
-by a CPU erratum where the TRBE will overwrite the trace buffer
-in FILL mode. The TRBE doesn't stop (as expected in FILL mode)
-when it reaches the limit and wraps to the base to continue
-writing upto 3 cache lines. This will overwrite any trace that
-was written previously.
+I don't see a reason why we should treat the case lo < hi differently
+and return 0 as period and duty_cycle. The current logic was added with
+c375bcbaabdb ("pwm: meson: Read the full hardware state in
+meson_pwm_get_state()"), Martin as original author doesn't remember why
+it was implemented this way back then.
+So let's handle it as normal use case and also remove the optimization
+for lo == 0. I think the improved readability is worth it.
 
-Add the Neoverse-N2 erratum(#2139208) and Cortex-A710 erratum
-(#2119858) to the detection logic.
-
-This will be used by the TRBE driver in later patches to work
-around the issue. The detection has been kept with the core
-arm64 errata framework list to make sure :
-  - We don't duplicate the framework in TRBE driver
-  - The errata detection is advertised like the rest
-    of the CPU errata.
-
-Note that the Kconfig entries are not fully active until the
-TRBE driver implements the work around.
-
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Mike Leach <mike.leach@linaro.org>
-cc: Leo Yan <leo.yan@linaro.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20211019163153.3692640-3-suzuki.poulose@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Fixes: c375bcbaabdb ("pwm: meson: Read the full hardware state in meson_pwm_get_state()")
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arm64/silicon-errata.rst |    4 +++
- arch/arm64/Kconfig                     |   41 +++++++++++++++++++++++++++++++++
- arch/arm64/kernel/cpu_errata.c         |   26 ++++++++++++++++++++
- arch/arm64/tools/cpucaps               |    1 
- 4 files changed, 72 insertions(+)
+ drivers/pwm/pwm-meson.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -102,12 +102,16 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A710     | #2119858        | ARM64_ERRATUM_2119858       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1349291        | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N2     | #2139208        | ARM64_ERRATUM_2139208       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -733,6 +733,47 @@ config ARM64_ERRATUM_2457168
+--- a/drivers/pwm/pwm-meson.c
++++ b/drivers/pwm/pwm-meson.c
+@@ -351,18 +351,8 @@ static int meson_pwm_get_state(struct pw
+ 	channel->lo = FIELD_GET(PWM_LOW_MASK, value);
+ 	channel->hi = FIELD_GET(PWM_HIGH_MASK, value);
  
- 	  If unsure, say Y.
+-	if (channel->lo == 0) {
+-		state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
+-		state->duty_cycle = state->period;
+-	} else if (channel->lo >= channel->hi) {
+-		state->period = meson_pwm_cnt_to_ns(chip, pwm,
+-						    channel->lo + channel->hi);
+-		state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm,
+-							channel->hi);
+-	} else {
+-		state->period = 0;
+-		state->duty_cycle = 0;
+-	}
++	state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->lo + channel->hi);
++	state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
  
-+config ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE
-+	bool
-+
-+config ARM64_ERRATUM_2119858
-+	bool "Cortex-A710: 2119858: workaround TRBE overwriting trace data in FILL mode"
-+	default y
-+	depends on COMPILE_TEST # Until the CoreSight TRBE driver changes are in
-+	depends on CORESIGHT_TRBE
-+	select ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE
-+	help
-+	  This option adds the workaround for ARM Cortex-A710 erratum 2119858.
-+
-+	  Affected Cortex-A710 cores could overwrite up to 3 cache lines of trace
-+	  data at the base of the buffer (pointed to by TRBASER_EL1) in FILL mode in
-+	  the event of a WRAP event.
-+
-+	  Work around the issue by always making sure we move the TRBPTR_EL1 by
-+	  256 bytes before enabling the buffer and filling the first 256 bytes of
-+	  the buffer with ETM ignore packets upon disabling.
-+
-+	  If unsure, say Y.
-+
-+config ARM64_ERRATUM_2139208
-+	bool "Neoverse-N2: 2139208: workaround TRBE overwriting trace data in FILL mode"
-+	default y
-+	depends on COMPILE_TEST # Until the CoreSight TRBE driver changes are in
-+	depends on CORESIGHT_TRBE
-+	select ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE
-+	help
-+	  This option adds the workaround for ARM Neoverse-N2 erratum 2139208.
-+
-+	  Affected Neoverse-N2 cores could overwrite up to 3 cache lines of trace
-+	  data at the base of the buffer (pointed to by TRBASER_EL1) in FILL mode in
-+	  the event of a WRAP event.
-+
-+	  Work around the issue by always making sure we move the TRBPTR_EL1 by
-+	  256 bytes before enabling the buffer and filling the first 256 bytes of
-+	  the buffer with ETM ignore packets upon disabling.
-+
-+	  If unsure, say Y.
-+
- config CAVIUM_ERRATUM_22375
- 	bool "Cavium erratum 22375, 24313"
- 	default y
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -363,6 +363,18 @@ static struct midr_range broken_aarch32_
- };
- #endif
+ 	state->polarity = PWM_POLARITY_NORMAL;
  
-+#ifdef CONFIG_ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE
-+static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
-+#ifdef CONFIG_ARM64_ERRATUM_2139208
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+#endif
-+#ifdef CONFIG_ARM64_ERRATUM_2119858
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-+#endif
-+	{},
-+};
-+#endif	/* CONFIG_ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE */
-+
- const struct arm64_cpu_capabilities arm64_errata[] = {
- #ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
- 	{
-@@ -564,6 +576,7 @@ const struct arm64_cpu_capabilities arm6
- 		ERRATA_MIDR_ALL_VERSIONS(MIDR_NVIDIA_CARMEL),
- 	},
- #endif
-+
- #ifdef CONFIG_ARM64_ERRATUM_2457168
- 	{
- 		.desc = "ARM erratum 2457168",
-@@ -581,6 +594,19 @@ const struct arm64_cpu_capabilities arm6
- 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
- 	},
- #endif
-+#ifdef CONFIG_ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE
-+	{
-+		/*
-+		 * The erratum work around is handled within the TRBE
-+		 * driver and can be applied per-cpu. So, we can allow
-+		 * a late CPU to come online with this erratum.
-+		 */
-+		.desc = "ARM erratum 2119858 or 2139208",
-+		.capability = ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE,
-+		.type = ARM64_CPUCAP_WEAK_LOCAL_CPU_FEATURE,
-+		CAP_MIDR_RANGE_LIST(trbe_overwrite_fill_mode_cpus),
-+	},
-+#endif
- 	{
- 	}
- };
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -56,6 +56,7 @@ WORKAROUND_1508412
- WORKAROUND_1542419
- WORKAROUND_1742098
- WORKAROUND_2457168
-+WORKAROUND_TRBE_OVERWRITE_FILL_MODE
- WORKAROUND_CAVIUM_23154
- WORKAROUND_CAVIUM_27456
- WORKAROUND_CAVIUM_30115
 
 
