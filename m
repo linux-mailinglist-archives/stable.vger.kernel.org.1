@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68DFE75BFAB
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 699A975BFAC
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbjGUHZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
+        id S230038AbjGUHZ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:25:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbjGUHZu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:25:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E465189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:25:49 -0700 (PDT)
+        with ESMTP id S229947AbjGUHZ6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:25:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1F84189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:25:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9A7F61070
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:25:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0285C433C9;
-        Fri, 21 Jul 2023 07:25:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D7806112C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:25:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F000C433C7;
+        Fri, 21 Jul 2023 07:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689924348;
-        bh=/J5OuMNKBnUi5a0KzLJnd1tITtLhzJp3S9zDWnJD5U0=;
+        s=korg; t=1689924356;
+        bh=MPahdXHmRtbn0Gls/jnbQ/NnJdaE060So4/JmPqm9BA=;
         h=Subject:To:Cc:From:Date:From;
-        b=UKhGtRXUz6kMsRgkauWzNjM+VkQTJ7znw/pLna/Z1Fn7uOJ9FfBwZdosrUTp+E2Ot
-         Y7WquC82qCzobE1StdCZsJtjxoqciA3YQyxGnUr9BUPS+k+Ro1PtQ1jvtXiuH5wytP
-         dE7L4gO/vWjhX8Exi7XE4OZnQjBCVEocv70sciIU=
-Subject: FAILED: patch "[PATCH] drm/amd/display: limit DPIA link rate to HBR3" failed to apply to 6.1-stable tree
+        b=xnlf1IYvOfnTe+StisLXQU2+1QKpRkGCbUpMSkXFwWrmHdilfBQiyXCJgllaFEOZ0
+         B5Ytpi8GNkju0K1tx0uGpVOzds3WmrmrjYm8+HPnVEyw2drLpX47ZTVgleXjDweNQi
+         LNwcZNgkN7fPvcK9xjrL2UAC6lhSNv8h07ddDQRQ=
+Subject: FAILED: patch "[PATCH] drm/amd/display: limit DPIA link rate to HBR3" failed to apply to 6.4-stable tree
 To:     peichen.huang@amd.com, Mustapha.Ghaddar@amd.com,
         alexander.deucher@amd.com, daniel.wheeler@amd.com,
         mario.limonciello@amd.com, stylon.wang@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:25:45 +0200
-Message-ID: <2023072145-absently-snort-b3b9@gregkh>
+Date:   Fri, 21 Jul 2023 09:25:46 +0200
+Message-ID: <2023072145-rekindle-plunder-7bd0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -51,42 +51,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0e69ef6ea82e8eece7d2b2b45a0da9670eaaefff
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072145-absently-snort-b3b9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072145-rekindle-plunder-7bd0@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-0e69ef6ea82e ("drm/amd/display: limit DPIA link rate to HBR3")
-54618888d1ea ("drm/amd/display: break down dc_link.c")
-71d7e8904d54 ("drm/amd/display: Add HDMI manufacturer OUI and device id read")
-65a4cfb45e0e ("drm/amdgpu/display: remove duplicate include header in files")
-e322843e5e33 ("drm/amd/display: fix linux dp link lost handled only one time")
-0c2bfcc338eb ("drm/amd/display: Add Function declaration in dc_link")
-6ca7415f11af ("drm/amd/display: merge dc_link_dp into dc_link")
-de3fb390175b ("drm/amd/display: move dp cts functions from dc_link_dp to link_dp_cts")
-c5a31f178e35 ("drm/amd/display: move dp irq handler functions from dc_link_dp to link_dp_irq_handler")
-0078c924e733 ("drm/amd/display: move eDP panel control logic to link_edp_panel_control")
-bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
-2daeb74b7d66 ("drm/amdgpu/display/mst: update mst_mgr relevant variable when long HPD")
-028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
-603a521ec279 ("drm/amd/display: remove duplicate included header files")
-bd3149014dff ("drm/amd/display: Decrease messaging about DP alt mode state to debug")
-d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
-94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
-630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
-d144b40a4833 ("drm/amd/display: move dc_link_dpia logic to link_dp_dpia")
-a28d0bac0956 ("drm/amd/display: move dpcd logic from dc_link_dpcd to link_dpcd")
+
 
 thanks,
 
