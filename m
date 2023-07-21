@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB29275D2DD
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E16275D2DE
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231643AbjGUTEe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57174 "EHLO
+        id S231640AbjGUTEk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:04:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231641AbjGUTEc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:04:32 -0400
+        with ESMTP id S231639AbjGUTEf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:04:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79FA930D6
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE4B30D6
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 121C361D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:04:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C17C433C9;
-        Fri, 21 Jul 2023 19:04:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 265F461D7F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:04:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35619C433C8;
+        Fri, 21 Jul 2023 19:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966270;
-        bh=O1lYQPx+/r9tSAiOW6Wy1ShJrAzu+S1Eg8VEPkIQAGo=;
+        s=korg; t=1689966273;
+        bh=26Gkp/AZKnDuFFXxpuYjZsZpjmKRauFTyWbOgAXpazw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bf5ZF84xkFSHNOKQ68nVxAIkTe7nlHcxk3rmRhPq5qh92wc+dFzY5U7iawdbIj6dK
-         +Tm9gB6NXMTbkiH5sKYleFfJzydO2DTguQqYKvqTW+9QdD/FRQt/LGeQuQkjZ8Wo3s
-         1Tm0Fv+OsmV+0NqwGKaeGgzpegETpE3rgJ+OX1Y8=
+        b=eLXOdEr1lDO5kkLe3oBusQ3y3MR2cexYgffmcOvs4hJQjq8IR5Yi3HRyEKTlXZiQk
+         NOZvLdlWm7oLCM6LJ4vLcC0LPjxmNsl7hEevKmdI7Xr1vKP8z3xsDmCJmuL/vgveki
+         ccyTLH1bEes03baI80qhHlZF8vqewCKgURtJINyM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Nyekjaer <sean@geanix.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 256/532] iio: accel: fxls8962af: fixup buffer scan element type
-Date:   Fri, 21 Jul 2023 18:02:40 +0200
-Message-ID: <20230721160628.229636121@linuxfoundation.org>
+        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 257/532] ALSA: hda/realtek: Add quirk for Clevo NPx0SNx
+Date:   Fri, 21 Jul 2023 18:02:41 +0200
+Message-ID: <20230721160628.281187247@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -54,35 +54,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit d1cfbd52ede5e5fabc09992894c5733b4057f159 upstream.
+commit 22065e4214c1196b54fc164892c2e193a743caf3 upstream.
 
-Scan elements for x,y,z channels is little endian and requires no bit shifts.
-LE vs. BE is controlled in register SENS_CONFIG2 and bit LE_BE, default
-value is LE.
+This applies a SND_PCI_QUIRK(...) to the Clevo NPx0SNx barebones fixing the
+microphone not being detected on the headset combo port.
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230605103223.1400980-1-sean@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230628155434.584159-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -486,8 +486,7 @@ static int fxls8962af_set_watermark(stru
- 		.sign = 's', \
- 		.realbits = 12, \
- 		.storagebits = 16, \
--		.shift = 4, \
--		.endianness = IIO_BE, \
-+		.endianness = IIO_LE, \
- 	}, \
- }
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9242,6 +9242,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1558, 0x971d, "Clevo N970T[CDF]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa500, "Clevo NL5[03]RU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa600, "Clevo NL50NU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0xa650, "Clevo NP[567]0SN[CD]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa671, "Clevo NP70SN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb018, "Clevo NP50D[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb019, "Clevo NH77D[BE]Q", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 
 
