@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A142A75D37D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5C075D467
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231843AbjGUTLT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:11:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34224 "EHLO
+        id S232118AbjGUTU4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231837AbjGUTLT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:11:19 -0400
+        with ESMTP id S232119AbjGUTUu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:20:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD33C30E1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:11:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FDCF2D45
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C1A961D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69981C433C7;
-        Fri, 21 Jul 2023 19:11:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A23A461D54
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:20:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF500C433C8;
+        Fri, 21 Jul 2023 19:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966674;
-        bh=7Bg/hFRHrGEOwe9+xfZkJBxtBSSoWuGmCYi0/+j7hp8=;
+        s=korg; t=1689967247;
+        bh=jzLWWHc7xTJ2XkJrLS8uNpnBTKOp1HB5GDhHbN3jPPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pLFjCWUzX2cWoyOj/0w/wxcvcv9kDLxur13ktiWLVz25SKHdpo1psA1mqRSo4SQkH
-         kxsAfbzG7UCOqbPDSryl7fx5PFx7TyeJYcKZ6yRhEp3EBWneD+AR1yeTyFiSxStLq+
-         AIzeO+G12lnB4TBwopaC6wpJdGbuW0qHRBOhUFN4=
+        b=PHYElsCBNiNi/jIKPEjQvjzGzG+ZfzA5LGVh3mSJxR8LCGRLwqU/5aCRKhb7pT8PB
+         G93GphGTAMRgEhoZnmjv6P7Ry8wR/6GFYMrk8vlaDipkeZPuaPxKxDHsZ9T0nhs3J7
+         6wmI4Wg9kPwxmYurVaZ/aRoHHkC/y6CrQtC7gtYg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pu Lehui <pulehui@huawei.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 427/532] bpf, riscv: Support riscv jit to provide bpf_line_info
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 078/223] pinctrl: amd: Adjust debugfs output
 Date:   Fri, 21 Jul 2023 18:05:31 +0200
-Message-ID: <20230721160637.732370868@linuxfoundation.org>
+Message-ID: <20230721160524.188874591@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,75 +55,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 3cb70413041fdf028fa1ba3986fd0c6aec9e3dcb ]
+commit 75358cf3319d5fed595946019deda5c2c26a203d upstream.
 
-Add support for riscv jit to provide bpf_line_info. We need to
-consider the prologue offset in ctx->offset, but unlike x86 and
-arm64, ctx->offset of riscv does not provide an extra slot for
-the prologue, so here we just calculate the len of prologue and
-add it to ctx->offset at the end. Both RV64 and RV32 have been
-tested.
+More fields are to be added, so to keep the display from being
+too busy, adjust it.
 
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20220530092815.1112406-3-pulehui@huawei.com
-Stable-dep-of: c56fb2aab235 ("riscv, bpf: Fix inconsistent JIT image generation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) Add a header to all columns
+2) Except for interrupt, when fields have no data show empty
+3) Remove otherwise blank whitespace
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230328174231.8924-2-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/net/bpf_jit.h      | 1 +
- arch/riscv/net/bpf_jit_core.c | 8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-amd.c |   76 ++++++++++++++++--------------------------
+ 1 file changed, 30 insertions(+), 46 deletions(-)
 
-diff --git a/arch/riscv/net/bpf_jit.h b/arch/riscv/net/bpf_jit.h
-index 75c1e99968675..ab0cd6d10ccf3 100644
---- a/arch/riscv/net/bpf_jit.h
-+++ b/arch/riscv/net/bpf_jit.h
-@@ -69,6 +69,7 @@ struct rv_jit_context {
- 	struct bpf_prog *prog;
- 	u16 *insns;		/* RV insns */
- 	int ninsns;
-+	int body_len;
- 	int epilogue_offset;
- 	int *offset;		/* BPF to RV */
- 	unsigned long flags;
-diff --git a/arch/riscv/net/bpf_jit_core.c b/arch/riscv/net/bpf_jit_core.c
-index 753d85bdfad07..ff644452b88db 100644
---- a/arch/riscv/net/bpf_jit_core.c
-+++ b/arch/riscv/net/bpf_jit_core.c
-@@ -43,7 +43,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- {
- 	bool tmp_blinded = false, extra_pass = false;
- 	struct bpf_prog *tmp, *orig_prog = prog;
--	int pass = 0, prev_ninsns = 0, i;
-+	int pass = 0, prev_ninsns = 0, prologue_len, i;
- 	struct rv_jit_data *jit_data;
- 	struct rv_jit_context *ctx;
- 	unsigned int image_size = 0;
-@@ -95,6 +95,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 			prog = orig_prog;
- 			goto out_offset;
- 		}
-+		ctx->body_len = ctx->ninsns;
- 		bpf_jit_build_prologue(ctx);
- 		ctx->epilogue_offset = ctx->ninsns;
- 		bpf_jit_build_epilogue(ctx);
-@@ -154,6 +155,11 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -206,15 +206,12 @@ static void amd_gpio_dbg_show(struct seq
  
- 	if (!prog->is_func || extra_pass) {
- 		bpf_jit_binary_lock_ro(jit_data->header);
-+		prologue_len = ctx->epilogue_offset - ctx->body_len;
-+		for (i = 0; i < prog->len; i++)
-+			ctx->offset[i] = ninsns_rvoff(prologue_len +
-+						      ctx->offset[i]);
-+		bpf_prog_fill_jited_linfo(prog, ctx->offset);
- out_offset:
- 		kfree(ctx->offset);
- 		kfree(jit_data);
--- 
-2.39.2
-
+ 	char *level_trig;
+ 	char *active_level;
+-	char *interrupt_enable;
+ 	char *interrupt_mask;
+ 	char *wake_cntrl0;
+ 	char *wake_cntrl1;
+ 	char *wake_cntrl2;
+ 	char *pin_sts;
+ 	char *pull_up_sel;
+-	char *pull_up_enable;
+-	char *pull_down_enable;
+ 	char *orientation;
+ 	char debounce_value[40];
+ 	char *debounce_enable;
+@@ -246,6 +243,7 @@ static void amd_gpio_dbg_show(struct seq
+ 			continue;
+ 		}
+ 		seq_printf(s, "GPIO bank%d\n", bank);
++		seq_puts(s, "gpio\tint|active|trigger|S0i3| S3|S4/S5| Z|wake|pull|  orient|       debounce|reg\n");
+ 		for (; i < pin_num; i++) {
+ 			seq_printf(s, "#%d\t", i);
+ 			raw_spin_lock_irqsave(&gpio_dev->lock, flags);
+@@ -255,7 +253,6 @@ static void amd_gpio_dbg_show(struct seq
+ 			if (pin_reg & BIT(INTERRUPT_ENABLE_OFF)) {
+ 				u8 level = (pin_reg >> ACTIVE_LEVEL_OFF) &
+ 						ACTIVE_LEVEL_MASK;
+-				interrupt_enable = "+";
+ 
+ 				if (level == ACTIVE_LEVEL_HIGH)
+ 					active_level = "↑";
+@@ -272,65 +269,54 @@ static void amd_gpio_dbg_show(struct seq
+ 				else
+ 					level_trig = " edge";
+ 
+-			} else {
+-				interrupt_enable = "∅";
+-				active_level = "∅";
+-				level_trig = "    ∅";
+-			}
++				if (pin_reg & BIT(INTERRUPT_MASK_OFF))
++					interrupt_mask = "😛";
++				else
++					interrupt_mask = "😷";
+ 
+-			if (pin_reg & BIT(INTERRUPT_MASK_OFF))
+-				interrupt_mask = "😛";
+-			else
+-				interrupt_mask = "😷";
+-			seq_printf(s, "int %s (%s)| active-%s| %s-⚡| ",
+-				   interrupt_enable,
++				seq_printf(s, "%s|     %s|  %s|",
+ 				   interrupt_mask,
+ 				   active_level,
+ 				   level_trig);
++			} else
++				seq_puts(s, "  ∅|      |       |");
+ 
+ 			if (pin_reg & BIT(WAKE_CNTRL_OFF_S0I3))
+ 				wake_cntrl0 = "⏰";
+ 			else
+-				wake_cntrl0 = " ∅";
+-			seq_printf(s, "S0i3 %s| ", wake_cntrl0);
++				wake_cntrl0 = "  ";
++			seq_printf(s, "  %s| ", wake_cntrl0);
+ 
+ 			if (pin_reg & BIT(WAKE_CNTRL_OFF_S3))
+ 				wake_cntrl1 = "⏰";
+ 			else
+-				wake_cntrl1 = " ∅";
+-			seq_printf(s, "S3 %s| ", wake_cntrl1);
++				wake_cntrl1 = "  ";
++			seq_printf(s, "%s|", wake_cntrl1);
+ 
+ 			if (pin_reg & BIT(WAKE_CNTRL_OFF_S4))
+ 				wake_cntrl2 = "⏰";
+ 			else
+-				wake_cntrl2 = " ∅";
+-			seq_printf(s, "S4/S5 %s| ", wake_cntrl2);
++				wake_cntrl2 = "  ";
++			seq_printf(s, "   %s|", wake_cntrl2);
+ 
+ 			if (pin_reg & BIT(WAKECNTRL_Z_OFF))
+ 				wake_cntrlz = "⏰";
+ 			else
+-				wake_cntrlz = " ∅";
+-			seq_printf(s, "Z %s| ", wake_cntrlz);
++				wake_cntrlz = "  ";
++			seq_printf(s, "%s|", wake_cntrlz);
+ 
+ 			if (pin_reg & BIT(PULL_UP_ENABLE_OFF)) {
+-				pull_up_enable = "+";
+ 				if (pin_reg & BIT(PULL_UP_SEL_OFF))
+ 					pull_up_sel = "8k";
+ 				else
+ 					pull_up_sel = "4k";
+-			} else {
+-				pull_up_enable = "∅";
+-				pull_up_sel = "  ";
++				seq_printf(s, "%s ↑|",
++					   pull_up_sel);
++			} else if (pin_reg & BIT(PULL_DOWN_ENABLE_OFF)) {
++				seq_puts(s, "   ↓|");
++			} else  {
++				seq_puts(s, "    |");
+ 			}
+-			seq_printf(s, "pull-↑ %s (%s)| ",
+-				   pull_up_enable,
+-				   pull_up_sel);
+-
+-			if (pin_reg & BIT(PULL_DOWN_ENABLE_OFF))
+-				pull_down_enable = "+";
+-			else
+-				pull_down_enable = "∅";
+-			seq_printf(s, "pull-↓ %s| ", pull_down_enable);
+ 
+ 			if (pin_reg & BIT(OUTPUT_ENABLE_OFF)) {
+ 				pin_sts = "output";
+@@ -345,7 +331,7 @@ static void amd_gpio_dbg_show(struct seq
+ 				else
+ 					orientation = "↓";
+ 			}
+-			seq_printf(s, "%s %s| ", pin_sts, orientation);
++			seq_printf(s, "%s %s|", pin_sts, orientation);
+ 
+ 			db_cntrl = (DB_CNTRl_MASK << DB_CNTRL_OFF) & pin_reg;
+ 			if (db_cntrl) {
+@@ -364,19 +350,17 @@ static void amd_gpio_dbg_show(struct seq
+ 						unit = 61;
+ 				}
+ 				if ((DB_TYPE_REMOVE_GLITCH << DB_CNTRL_OFF) == db_cntrl)
+-					debounce_enable = "b +";
++					debounce_enable = "b";
+ 				else if ((DB_TYPE_PRESERVE_LOW_GLITCH << DB_CNTRL_OFF) == db_cntrl)
+-					debounce_enable = "↓ +";
++					debounce_enable = "↓";
+ 				else
+-					debounce_enable = "↑ +";
+-
++					debounce_enable = "↑";
++				snprintf(debounce_value, sizeof(debounce_value), "%06u", time * unit);
++				seq_printf(s, "%s (🕑 %sus)|", debounce_enable, debounce_value);
+ 			} else {
+-				debounce_enable = "  ∅";
+-				time = 0;
++				seq_puts(s, "               |");
+ 			}
+-			snprintf(debounce_value, sizeof(debounce_value), "%u", time * unit);
+-			seq_printf(s, "debounce %s (🕑 %sus)| ", debounce_enable, debounce_value);
+-			seq_printf(s, " 0x%x\n", pin_reg);
++			seq_printf(s, "0x%x\n", pin_reg);
+ 		}
+ 	}
+ }
 
 
