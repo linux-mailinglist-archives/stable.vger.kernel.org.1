@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E220675D477
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0977B75D381
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:11:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232136AbjGUTVf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43402 "EHLO
+        id S231849AbjGUTL2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:11:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232151AbjGUTVd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:21:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF1F5189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:21:27 -0700 (PDT)
+        with ESMTP id S231840AbjGUTL2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:11:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27FEE30E3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:11:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A0EBC61D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:21:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD54C433CA;
-        Fri, 21 Jul 2023 19:21:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DA4A61D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:11:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D41DC433C7;
+        Fri, 21 Jul 2023 19:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967287;
-        bh=5TfMpsNO7wFX4j5DzdZIqwozieroYAMDbWSNwTlM0y0=;
+        s=korg; t=1689966685;
+        bh=IHlKxgpKj0V/qygCdICbHFoQq6hU6twhCfxP2OmUNFw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NjInSkm0+DToAQKYBcrhOf0UemH0q4JekAfXzZKBnO6KaMqcrZhDzgsRHz9/vSr+Q
-         JOTIezyOP3LyNoXpF/9pPoYhegVZc66Rkp+QSPM10fQt7JRo4OCMfncLtKlxpztVJL
-         sAX9jal1pARPQH73XR4bGr0QJ9yA1s2UqpyurJwM=
+        b=f+32N6pKBfHLuE3iVNAhvcnCFSPtAzNJOOQLws2zWQi/n6v8n4J5DQvKWV+TYk0kf
+         MCX1rUqp3WZzo0fjoqMM+b4b31M5tXVcJxBVMPG/rHmGpoLwSaseuzZNNgogwB8tLr
+         FL8R8UPb3ZP4WaHye56i3AaqEVrR88f/9X2RsCqk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 081/223] pinctrl: amd: Fix mistake in handling clearing pins at startup
-Date:   Fri, 21 Jul 2023 18:05:34 +0200
-Message-ID: <20230721160524.315441731@linuxfoundation.org>
+        patches@lists.linux.dev, Chunhai Guo <guochunhai@vivo.com>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Chao Yu <chao@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 431/532] erofs: avoid infinite loop in z_erofs_do_read_page() when reading beyond EOF
+Date:   Fri, 21 Jul 2023 18:05:35 +0200
+Message-ID: <20230721160637.947935516@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,39 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Chunhai Guo <guochunhai@vivo.com>
 
-commit a855724dc08b8cb0c13ab1e065a4922f1e5a7552 upstream.
+[ Upstream commit 8191213a5835b0317c5e4d0d337ae1ae00c75253 ]
 
-commit 4e5a04be88fe ("pinctrl: amd: disable and mask interrupts on probe")
-had a mistake in loop iteration 63 that it would clear offset 0xFC instead
-of 0x100.  Offset 0xFC is actually `WAKE_INT_MASTER_REG`.  This was
-clearing bits 13 and 15 from the register which significantly changed the
-expected handling for some platforms for GPIO0.
+z_erofs_do_read_page() may loop infinitely due to the inappropriate
+truncation in the below statement. Since the offset is 64 bits and min_t()
+truncates the result to 32 bits. The solution is to replace unsigned int
+with a 64-bit type, such as erofs_off_t.
+    cur = end - min_t(unsigned int, offset + end - map->m_la, end);
 
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217315
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230421120625.3366-3-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    - For example:
+        - offset = 0x400160000
+        - end = 0x370
+        - map->m_la = 0x160370
+        - offset + end - map->m_la = 0x400000000
+        - offset + end - map->m_la = 0x00000000 (truncated as unsigned int)
+    - Expected result:
+        - cur = 0
+    - Actual result:
+        - cur = 0x370
+
+Signed-off-by: Chunhai Guo <guochunhai@vivo.com>
+Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20230710093410.44071-1-guochunhai@vivo.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/zdata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -897,9 +897,9 @@ static void amd_gpio_irq_init(struct amd
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index eb51df4a9f770..3fd91a0efdbb7 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -713,7 +713,7 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
+ 	tight &= (clt->mode >= COLLECT_PRIMARY_HOOKED &&
+ 		  clt->mode != COLLECT_PRIMARY_FOLLOWED_NOINPLACE);
  
- 		raw_spin_lock_irqsave(&gpio_dev->lock, flags);
- 
--		pin_reg = readl(gpio_dev->base + i * 4);
-+		pin_reg = readl(gpio_dev->base + pin * 4);
- 		pin_reg &= ~mask;
--		writel(pin_reg, gpio_dev->base + i * 4);
-+		writel(pin_reg, gpio_dev->base + pin * 4);
- 
- 		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
- 	}
+-	cur = end - min_t(unsigned int, offset + end - map->m_la, end);
++	cur = end - min_t(erofs_off_t, offset + end - map->m_la, end);
+ 	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
+ 		zero_user_segment(page, cur, end);
+ 		goto next_part;
+-- 
+2.39.2
+
 
 
