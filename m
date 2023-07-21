@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A95AE75CA59
+	by mail.lfdr.de (Postfix) with ESMTP id 1ACB175CA57
 	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:43:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230035AbjGUOnE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S229566AbjGUOnE (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 21 Jul 2023 10:43:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55140 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231337AbjGUOmc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:42:32 -0400
+        with ESMTP id S231622AbjGUOmg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:42:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664782D7B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:42:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7B530C8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:42:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF66761CB8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:42:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC61C433C8;
-        Fri, 21 Jul 2023 14:42:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6ED761CE8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:42:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C502EC00443;
+        Fri, 21 Jul 2023 14:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950550;
-        bh=h0NCSq3y8LV2l3lQ0a2evImZ6DzR9Ws4D1m0r1h63II=;
+        s=korg; t=1689950553;
+        bh=UhtHDj3zm/L52YndMt9rZUu6kiQWQjoNoQrOSk32ROY=;
         h=Subject:To:Cc:From:Date:From;
-        b=o/5srGJbAaz3GaSfAa3rCv8jdXlU+toWDT/U1po0utDzH78iqSPXKoKqspD+91z51
-         aCO2QrIZiV7MIRBMfwVH2WEIedZ3GHd3Ul/DV3Cj1EI7Uyq69KdWkWhBVbEQzQxX0A
-         b+Hy8DtzPCjYk7kM4CE5Ly9YTUSzRqk+dAcTAMxU=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix mem access after free" failed to apply to 5.4-stable tree
+        b=LW/W7DdzN4M2/uYlwjSInhTr5S5XEJMjZyGxCYvnYKZqCWxwyAfOWc1D6gi5PDnR8
+         oILwQvCxsk+KU4jj4uJi1xcE3Ig/UYf59zFUlgrXoGRwQiDhO9E2IFtmmjmIkZV3mA
+         N2+3GwhWHGxkCh9PzPT7jexxyPtMcIgZeTkGEpGA=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix mem access after free" failed to apply to 4.19-stable tree
 To:     qutran@marvell.com, himanshu.madhani@oracle.com,
         martin.petersen@oracle.com, njavali@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:42:26 +0200
-Message-ID: <2023072125-educator-unroll-251d@gregkh>
+Date:   Fri, 21 Jul 2023 16:42:27 +0200
+Message-ID: <2023072127-overhead-scorer-c4f4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x b843adde8d490934d042fbe9e3e46697cb3a64d2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072125-educator-unroll-251d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072127-overhead-scorer-c4f4@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,14 @@ c39587bc0aba ("scsi: qla2xxx: Fix crash due to stale SRB access around I/O timeo
 e56b2234ab64 ("scsi: qla2xxx: Open-code qla2xxx_eh_target_reset()")
 622299f16f33 ("scsi: qla2xxx: Simplify return value logic in qla2x00_get_sp_from_handle()")
 f45bca8c5052 ("scsi: qla2xxx: Fix double scsi_done for abort path")
+dd93b143706c ("scsi: qla2xxx: Fix a recently introduced kernel warning")
+88263208dd23 ("scsi: qla2xxx: Complain if sp->done() is not called from the completion path")
+85cffefa09e4 ("scsi: qla2xxx: Fix a race condition between aborting and completing a SCSI command")
+fcef08932db7 ("scsi: qla2xxx: Complain if waiting for pending commands times out")
+8dd9593cc07a ("scsi: qla2xxx: Really fix qla2xxx_eh_abort()")
+3a4b6cc73321 ("scsi: qla2xxx: Fix premature timer expiration")
+7f4374e67b30 ("scsi: qla2xxx: Reject EH_{abort|device_reset|target_request}")
+ba6d10ab8014 ("Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi")
 
 thanks,
 
