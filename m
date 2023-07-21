@@ -2,46 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4ECB75D402
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E40B75D337
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbjGUTQv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:16:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38944 "EHLO
+        id S229902AbjGUTIL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231986AbjGUTQu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:50 -0400
+        with ESMTP id S231758AbjGUTIJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02EC630F1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE6BE0
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 645C961D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752E5C433C8;
-        Fri, 21 Jul 2023 19:16:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C6E661D7B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB90C433C7;
+        Fri, 21 Jul 2023 19:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967006;
-        bh=I3O+u2ID4nlzmr8kaoxZOdL0uKc+BNvrS4PvIqd6RoQ=;
+        s=korg; t=1689966487;
+        bh=CZNTdOr0qThjqT/wf9+TGGciE3frlEIOaIt1tsNMhY8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B8YRRAjSbDYnLqLYRlgpseALgks6E/swFyzmOF/GHA7XJHA3NMzGVhOxyNWIsdYHO
-         uDKmdDaQ9xppROdw1tdCnWqjFK6rvoQCX2CGu2zHu+3KGqN6q4bM+ZAAs6tMFzoUtc
-         GdyGut/VUee8ldXr+IblWPIxAHm/gl0BJf0D+5qA=
+        b=uQp5W+D0Kd+VxYVJfDSGm/vfq5T1lvydX53IkI0QaAeYz6jteYExyZ7hMfHkDaXUp
+         8YqYCmk67m8xzp16/kRXhF3kCnBRmvdKcGMPsdNWRkwuAFudndkW6ODuGGOPWYnyfj
+         3SgQtwv5fPToVzxU6NJZb7U4Hv6BCLILIfcmwEVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Petr Tesarik <petr.tesarik.ext@huawei.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/223] swiotlb: reduce the number of areas to match actual memory pool size
-Date:   Fri, 21 Jul 2023 18:04:25 +0200
-Message-ID: <20230721160521.398600483@linuxfoundation.org>
+        patches@lists.linux.dev, Tim Gardner <tim.gardner@canonical.com>,
+        kernel test robot <lkp@intel.com>,
+        Ron Economos <re@w6rz.net>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Fabian Frederick <fabf@skynet.be>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 362/532] jffs2: reduce stack usage in jffs2_build_xattr_subsystem()
+Date:   Fri, 21 Jul 2023 18:04:26 +0200
+Message-ID: <20230721160634.091029781@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,114 +60,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Tesarik <petr.tesarik.ext@huawei.com>
+From: Fabian Frederick <fabf@skynet.be>
 
-[ Upstream commit 8ac04063354a01a484d2e55d20ed1958aa0d3392 ]
+commit 1168f095417643f663caa341211e117db552989f upstream.
 
-Although the desired size of the SWIOTLB memory pool is increased in
-swiotlb_adjust_nareas() to match the number of areas, the actual allocation
-may be smaller, which may require reducing the number of areas.
+Use kcalloc() for allocation/flush of 128 pointers table to
+reduce stack usage.
 
-For example, Xen uses swiotlb_init_late(), which in turn uses the page
-allocator. On x86, page size is 4 KiB and MAX_ORDER is 10 (1024 pages),
-resulting in a maximum memory pool size of 4 MiB. This corresponds to 2048
-slots of 2 KiB each. The minimum area size is 128 (IO_TLB_SEGSIZE),
-allowing at most 2048 / 128 = 16 areas.
+Function now returns -ENOMEM or 0 on success.
 
-If num_possible_cpus() is greater than the maximum number of areas, areas
-are smaller than IO_TLB_SEGSIZE and contiguous groups of free slots will
-span multiple areas. When allocating and freeing slots, only one area will
-be properly locked, causing race conditions on the unlocked slots and
-ultimately data corruption, kernel hangs and crashes.
+stackusage
+Before:
+./fs/jffs2/xattr.c:775  jffs2_build_xattr_subsystem     1208
+dynamic,bounded
 
-Fixes: 20347fca71a3 ("swiotlb: split up the global swiotlb lock")
-Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After:
+./fs/jffs2/xattr.c:775  jffs2_build_xattr_subsystem     192
+dynamic,bounded
+
+Also update definition when CONFIG_JFFS2_FS_XATTR is not enabled
+
+Tested with an MTD mount point and some user set/getfattr.
+
+Many current target on OpenWRT also suffer from a compilation warning
+(that become an error with CONFIG_WERROR) with the following output:
+
+fs/jffs2/xattr.c: In function 'jffs2_build_xattr_subsystem':
+fs/jffs2/xattr.c:887:1: error: the frame size of 1088 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+  887 | }
+      | ^
+
+Using dynamic allocation fix this compilation warning.
+
+Fixes: c9f700f840bd ("[JFFS2][XATTR] using 'delete marker' for xdatum/xref deletion")
+Reported-by: Tim Gardner <tim.gardner@canonical.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Ron Economos <re@w6rz.net>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Fabian Frederick <fabf@skynet.be>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org
+Message-Id: <20230506045612.16616-1-ansuelsmth@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/swiotlb.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ fs/jffs2/build.c |    5 ++++-
+ fs/jffs2/xattr.c |   13 +++++++++----
+ fs/jffs2/xattr.h |    4 ++--
+ 3 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index cc0c55ed20429..491d3c86c2280 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -140,6 +140,23 @@ static void swiotlb_adjust_nareas(unsigned int nareas)
- 			(default_nslabs << IO_TLB_SHIFT) >> 20);
+--- a/fs/jffs2/build.c
++++ b/fs/jffs2/build.c
+@@ -211,7 +211,10 @@ static int jffs2_build_filesystem(struct
+ 		ic->scan_dents = NULL;
+ 		cond_resched();
+ 	}
+-	jffs2_build_xattr_subsystem(c);
++	ret = jffs2_build_xattr_subsystem(c);
++	if (ret)
++		goto exit;
++
+ 	c->flags &= ~JFFS2_SB_FLAG_BUILDING;
+ 
+ 	dbg_fsbuild("FS build complete\n");
+--- a/fs/jffs2/xattr.c
++++ b/fs/jffs2/xattr.c
+@@ -772,10 +772,10 @@ void jffs2_clear_xattr_subsystem(struct
  }
  
-+/**
-+ * limit_nareas() - get the maximum number of areas for a given memory pool size
-+ * @nareas:	Desired number of areas.
-+ * @nslots:	Total number of slots in the memory pool.
-+ *
-+ * Limit the number of areas to the maximum possible number of areas in
-+ * a memory pool of the given size.
-+ *
-+ * Return: Maximum possible number of areas.
-+ */
-+static unsigned int limit_nareas(unsigned int nareas, unsigned long nslots)
-+{
-+	if (nslots < nareas * IO_TLB_SEGSIZE)
-+		return nslots / IO_TLB_SEGSIZE;
-+	return nareas;
-+}
+ #define XREF_TMPHASH_SIZE	(128)
+-void jffs2_build_xattr_subsystem(struct jffs2_sb_info *c)
++int jffs2_build_xattr_subsystem(struct jffs2_sb_info *c)
+ {
+ 	struct jffs2_xattr_ref *ref, *_ref;
+-	struct jffs2_xattr_ref *xref_tmphash[XREF_TMPHASH_SIZE];
++	struct jffs2_xattr_ref **xref_tmphash;
+ 	struct jffs2_xattr_datum *xd, *_xd;
+ 	struct jffs2_inode_cache *ic;
+ 	struct jffs2_raw_node_ref *raw;
+@@ -784,9 +784,12 @@ void jffs2_build_xattr_subsystem(struct
+ 
+ 	BUG_ON(!(c->flags & JFFS2_SB_FLAG_BUILDING));
+ 
++	xref_tmphash = kcalloc(XREF_TMPHASH_SIZE,
++			       sizeof(struct jffs2_xattr_ref *), GFP_KERNEL);
++	if (!xref_tmphash)
++		return -ENOMEM;
 +
- static int __init
- setup_io_tlb_npages(char *str)
- {
-@@ -347,6 +364,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- {
- 	struct io_tlb_mem *mem = &io_tlb_default_mem;
- 	unsigned long nslabs;
-+	unsigned int nareas;
- 	size_t alloc_size;
- 	void *tlb;
+ 	/* Phase.1 : Merge same xref */
+-	for (i=0; i < XREF_TMPHASH_SIZE; i++)
+-		xref_tmphash[i] = NULL;
+ 	for (ref=c->xref_temp; ref; ref=_ref) {
+ 		struct jffs2_xattr_ref *tmp;
  
-@@ -359,10 +377,12 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- 		swiotlb_adjust_nareas(num_possible_cpus());
+@@ -884,6 +887,8 @@ void jffs2_build_xattr_subsystem(struct
+ 		     "%u of xref (%u dead, %u orphan) found.\n",
+ 		     xdatum_count, xdatum_unchecked_count, xdatum_orphan_count,
+ 		     xref_count, xref_dead_count, xref_orphan_count);
++	kfree(xref_tmphash);
++	return 0;
+ }
  
- 	nslabs = default_nslabs;
-+	nareas = limit_nareas(default_nareas, nslabs);
- 	while ((tlb = swiotlb_memblock_alloc(nslabs, flags, remap)) == NULL) {
- 		if (nslabs <= IO_TLB_MIN_SLABS)
- 			return;
- 		nslabs = ALIGN(nslabs >> 1, IO_TLB_SEGSIZE);
-+		nareas = limit_nareas(nareas, nslabs);
- 	}
+ struct jffs2_xattr_datum *jffs2_setup_xattr_datum(struct jffs2_sb_info *c,
+--- a/fs/jffs2/xattr.h
++++ b/fs/jffs2/xattr.h
+@@ -71,7 +71,7 @@ static inline int is_xattr_ref_dead(stru
+ #ifdef CONFIG_JFFS2_FS_XATTR
  
- 	if (default_nslabs != nslabs) {
-@@ -408,6 +428,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- {
- 	struct io_tlb_mem *mem = &io_tlb_default_mem;
- 	unsigned long nslabs = ALIGN(size >> IO_TLB_SHIFT, IO_TLB_SEGSIZE);
-+	unsigned int nareas;
- 	unsigned char *vstart = NULL;
- 	unsigned int order, area_order;
- 	bool retried = false;
-@@ -453,8 +474,8 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- 			(PAGE_SIZE << order) >> 20);
- 	}
+ extern void jffs2_init_xattr_subsystem(struct jffs2_sb_info *c);
+-extern void jffs2_build_xattr_subsystem(struct jffs2_sb_info *c);
++extern int jffs2_build_xattr_subsystem(struct jffs2_sb_info *c);
+ extern void jffs2_clear_xattr_subsystem(struct jffs2_sb_info *c);
  
--	area_order = get_order(array_size(sizeof(*mem->areas),
--		default_nareas));
-+	nareas = limit_nareas(default_nareas, nslabs);
-+	area_order = get_order(array_size(sizeof(*mem->areas), nareas));
- 	mem->areas = (struct io_tlb_area *)
- 		__get_free_pages(GFP_KERNEL | __GFP_ZERO, area_order);
- 	if (!mem->areas)
-@@ -468,7 +489,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- 	set_memory_decrypted((unsigned long)vstart,
- 			     (nslabs << IO_TLB_SHIFT) >> PAGE_SHIFT);
- 	swiotlb_init_io_tlb_mem(mem, virt_to_phys(vstart), nslabs, 0, true,
--				default_nareas);
-+				nareas);
+ extern struct jffs2_xattr_datum *jffs2_setup_xattr_datum(struct jffs2_sb_info *c,
+@@ -103,7 +103,7 @@ extern ssize_t jffs2_listxattr(struct de
+ #else
  
- 	swiotlb_print_info();
- 	return 0;
--- 
-2.39.2
-
+ #define jffs2_init_xattr_subsystem(c)
+-#define jffs2_build_xattr_subsystem(c)
++#define jffs2_build_xattr_subsystem(c)		(0)
+ #define jffs2_clear_xattr_subsystem(c)
+ 
+ #define jffs2_xattr_do_crccheck_inode(c, ic)
 
 
