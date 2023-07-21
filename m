@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2455D75D359
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A81BA75D425
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231801AbjGUTJh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:09:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33076 "EHLO
+        id S232022AbjGUTS2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:18:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231799AbjGUTJf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:09:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC1C30F1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:09:33 -0700 (PDT)
+        with ESMTP id S232023AbjGUTS0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33FE21BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 356C961D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:09:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4405DC433C7;
-        Fri, 21 Jul 2023 19:09:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14C6561D7B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519FAC433C8;
+        Fri, 21 Jul 2023 19:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966572;
-        bh=HvZUa077giHemqNzcSICA/4gLZG1ZBMbr9f7lLX6Sg4=;
+        s=korg; t=1689967098;
+        bh=OYV9dKC7grPHCqzLcFhzM+miQWQlXbaLgVPCnSxk1y8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fH0f8+9S7yJ+TEoEhpZPjXbeeWSaoU1sEYfXnASNm78HubQ+uGS/TQxVrUsE5Hkcn
-         dAJcg+GvC0izPfT5/bx7vOrSTzKEXrzLaRJhRVsvSXJ/3AwI17gnHVM1ZVdtIcr7HG
-         nL6LLLbKbSSHcsnl2wJkqjp95OGD+AslHw5orrgs=
+        b=t8F2vPQyuDNt7Nh3GEn4pKQebJoaXoJG+FjvTbdzY76Bwx8ndorRKjdlkryJtfBKB
+         bLiwSxcWh4yLkJ/VVjUcSqXKcLGzYgpWSvOXpgMIE2gE1gyXng5nPntBOyrVDy1Ynv
+         i7aXA1j5gs4dBf2HDz1DPkLPRkS/S0S1WLRNwLJA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chih-Yen Chang <cc85nod@gmail.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 392/532] ksmbd: validate command payload size
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Armin Wolf <W_Armin@gmx.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 043/223] platform/x86: wmi: Break possible infinite loop when parsing GUID
 Date:   Fri, 21 Jul 2023 18:04:56 +0200
-Message-ID: <20230721160635.740534714@linuxfoundation.org>
+Message-ID: <20230721160522.695029175@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,86 +57,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 2b9b8f3b68edb3d67d79962f02e26dbb5ae3808d upstream.
+[ Upstream commit 028e6e204ace1f080cfeacd72c50397eb8ae8883 ]
 
-->StructureSize2 indicates command payload size. ksmbd should validate
-this size with rfc1002 length before accessing it.
-This patch remove unneeded check and add the validation for this.
+The while-loop may break on one of the two conditions, either ID string
+is empty or GUID matches. The second one, may never be reached if the
+parsed string is not correct GUID. In such a case the loop will never
+advance to check the next ID.
 
-[    8.912583] BUG: KASAN: slab-out-of-bounds in ksmbd_smb2_check_message+0x12a/0xc50
-[    8.913051] Read of size 2 at addr ffff88800ac7d92c by task kworker/0:0/7
-...
-[    8.914967] Call Trace:
-[    8.915126]  <TASK>
-[    8.915267]  dump_stack_lvl+0x33/0x50
-[    8.915506]  print_report+0xcc/0x620
-[    8.916558]  kasan_report+0xae/0xe0
-[    8.917080]  kasan_check_range+0x35/0x1b0
-[    8.917334]  ksmbd_smb2_check_message+0x12a/0xc50
-[    8.917935]  ksmbd_verify_smb_message+0xae/0xd0
-[    8.918223]  handle_ksmbd_work+0x192/0x820
-[    8.918478]  process_one_work+0x419/0x760
-[    8.918727]  worker_thread+0x2a2/0x6f0
-[    8.919222]  kthread+0x187/0x1d0
-[    8.919723]  ret_from_fork+0x1f/0x30
-[    8.919954]  </TASK>
+Break possible infinite loop by factoring out guid_parse_and_compare()
+helper which may be moved to the generic header for everyone later on
+and preventing from similar mistake in the future.
 
-Cc: stable@vger.kernel.org
-Reported-by: Chih-Yen Chang <cc85nod@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Interestingly that firstly it appeared when WMI was turned into a bus
+driver, but later when duplicated GUIDs were checked, the while-loop
+has been replaced by for-loop and hence no mistake made again.
+
+Fixes: a48e23385fcf ("platform/x86: wmi: add context pointer field to struct wmi_device_id")
+Fixes: 844af950da94 ("platform/x86: wmi: Turn WMI into a bus driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230621151155.78279-1-andriy.shevchenko@linux.intel.com
+Tested-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb2misc.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/platform/x86/wmi.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
---- a/fs/ksmbd/smb2misc.c
-+++ b/fs/ksmbd/smb2misc.c
-@@ -352,6 +352,7 @@ int ksmbd_smb2_check_message(struct ksmb
- 	int command;
- 	__u32 clc_len;  /* calculated length */
- 	__u32 len = get_rfc1002_len(work->request_buf);
-+	__u32 req_struct_size;
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 223550a10d4dd..2fe6e147785e4 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -135,6 +135,16 @@ static acpi_status find_guid(const char *guid_string, struct wmi_block **out)
+ 	return AE_NOT_FOUND;
+ }
  
- 	if (le32_to_cpu(hdr->NextCommand) > 0)
- 		len = le32_to_cpu(hdr->NextCommand);
-@@ -374,17 +375,9 @@ int ksmbd_smb2_check_message(struct ksmb
- 	}
- 
- 	if (smb2_req_struct_sizes[command] != pdu->StructureSize2) {
--		if (command != SMB2_OPLOCK_BREAK_HE &&
--		    (hdr->Status == 0 || pdu->StructureSize2 != SMB2_ERROR_STRUCTURE_SIZE2_LE)) {
--			/* error packets have 9 byte structure size */
--			ksmbd_debug(SMB,
--				    "Illegal request size %u for command %d\n",
--				    le16_to_cpu(pdu->StructureSize2), command);
--			return 1;
--		} else if (command == SMB2_OPLOCK_BREAK_HE &&
--			   hdr->Status == 0 &&
--			   le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_20 &&
--			   le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_21) {
-+		if (command == SMB2_OPLOCK_BREAK_HE &&
-+		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_20 &&
-+		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_21) {
- 			/* special case for SMB2.1 lease break message */
- 			ksmbd_debug(SMB,
- 				    "Illegal request size %d for oplock break\n",
-@@ -393,6 +386,14 @@ int ksmbd_smb2_check_message(struct ksmb
- 		}
- 	}
- 
-+	req_struct_size = le16_to_cpu(pdu->StructureSize2) +
-+		__SMB2_HEADER_STRUCTURE_SIZE;
-+	if (command == SMB2_LOCK_HE)
-+		req_struct_size -= sizeof(struct smb2_lock_element);
++static bool guid_parse_and_compare(const char *string, const guid_t *guid)
++{
++	guid_t guid_input;
 +
-+	if (req_struct_size > len + 1)
-+		return 1;
++	if (guid_parse(string, &guid_input))
++		return false;
 +
- 	if (smb2_calc_size(hdr, &clc_len))
- 		return 1;
++	return guid_equal(&guid_input, guid);
++}
++
+ static const void *find_guid_context(struct wmi_block *wblock,
+ 				     struct wmi_driver *wdriver)
+ {
+@@ -145,11 +155,7 @@ static const void *find_guid_context(struct wmi_block *wblock,
+ 		return NULL;
  
+ 	while (*id->guid_string) {
+-		guid_t guid_input;
+-
+-		if (guid_parse(id->guid_string, &guid_input))
+-			continue;
+-		if (guid_equal(&wblock->gblock.guid, &guid_input))
++		if (guid_parse_and_compare(id->guid_string, &wblock->gblock.guid))
+ 			return id->context;
+ 		id++;
+ 	}
+@@ -833,11 +839,7 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
+ 		return 0;
+ 
+ 	while (*id->guid_string) {
+-		guid_t driver_guid;
+-
+-		if (WARN_ON(guid_parse(id->guid_string, &driver_guid)))
+-			continue;
+-		if (guid_equal(&driver_guid, &wblock->gblock.guid))
++		if (guid_parse_and_compare(id->guid_string, &wblock->gblock.guid))
+ 			return 1;
+ 
+ 		id++;
+-- 
+2.39.2
+
 
 
