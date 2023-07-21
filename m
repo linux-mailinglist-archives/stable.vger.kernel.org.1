@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D8C75D44D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B17C675D375
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232038AbjGUTTo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41020 "EHLO
+        id S231834AbjGUTK7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232059AbjGUTTl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:41 -0400
+        with ESMTP id S231836AbjGUTKy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFDAC189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:19:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E13AD30E2
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 76E1961D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E350C433C8;
-        Fri, 21 Jul 2023 19:19:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CD8A61D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80892C433C8;
+        Fri, 21 Jul 2023 19:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967178;
-        bh=BixtcL6TFBoy08m+p0ROADkjm3qjQJUK65MIl1WjP+M=;
+        s=korg; t=1689966651;
+        bh=TwIdimlUYYyx1sR21VeQvqWmA+H0+AqEXcQuVxZIcwY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZncMknmjFN6Ogx16PLeVM/lORptn8uF3sh+6O1lnie29JBTmfHLSIJY3dE4nRgCOv
-         ldZpNpAgz59a7inIuAvlpHE2oHvUH6MPzKU1X8K6cT1Nopv7QzCigUYclZ3u2oH3IL
-         jO54Yn14YCY3yqnqmkF1X4Mday/zihO/RMxGm3jI=
+        b=D1AzicfUfRMr0nYs70GCAawojpRiUS130mp31twCAbj//853A8g8TuU1BfQHhpsOh
+         jTm7jKG+jNf2xuCf00uuj6lhkLg5XVlA0tEWNXqyvftCkEE9ot4qMApV7IKBRKbHUn
+         nSKkeEUm4sIbAOuPwZvCDRzzohyIxrJqbyuo2jcU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 071/223] drm/amd/pm: revise the ASPM settings for thunderbolt attached scenario
+        patches@lists.linux.dev,
+        =?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 420/532] platform/x86: wmi: remove unnecessary argument
 Date:   Fri, 21 Jul 2023 18:05:24 +0200
-Message-ID: <20230721160523.891940720@linuxfoundation.org>
+Message-ID: <20230721160637.308021984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,47 +56,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Evan Quan <evan.quan@amd.com>
+From: Barnabás Pőcze <pobrn@protonmail.com>
 
-commit fd21987274463a439c074b8f3c93d3b132e4c031 upstream.
+[ Upstream commit 84eacf7e6413d5e2d2f4f9dddf9216c18a3631cf ]
 
-Also, correct the comment for NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT
-as 0x0000000E stands for 400ms instead of 4ms.
+The GUID block is available for `wmi_create_device()`
+through `wblock->gblock`. Use that consistently in
+the function instead of using a mix of `gblock` and
+`wblock->gblock`.
 
-Signed-off-by: Evan Quan <evan.quan@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Barnabás Pőcze <pobrn@protonmail.com>
+Link: https://lore.kernel.org/r/20210904175450.156801-8-pobrn@protonmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: 028e6e204ace ("platform/x86: wmi: Break possible infinite loop when parsing GUID")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nbio_v2_3.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/platform/x86/wmi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v2_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v2_3.c
-@@ -346,7 +346,7 @@ static void nbio_v2_3_init_registers(str
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index c4f917d45b51d..529f725271e99 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -1046,7 +1046,6 @@ static const struct device_type wmi_type_data = {
+ };
  
- #define NAVI10_PCIE__LC_L0S_INACTIVITY_DEFAULT		0x00000000 // off by default, no gains over L1
- #define NAVI10_PCIE__LC_L1_INACTIVITY_DEFAULT		0x00000009 // 1=1us, 9=1ms
--#define NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT	0x0000000E // 4ms
-+#define NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT	0x0000000E // 400ms
+ static int wmi_create_device(struct device *wmi_bus_dev,
+-			     const struct guid_block *gblock,
+ 			     struct wmi_block *wblock,
+ 			     struct acpi_device *device)
+ {
+@@ -1054,12 +1053,12 @@ static int wmi_create_device(struct device *wmi_bus_dev,
+ 	char method[5];
+ 	int result;
  
- static void nbio_v2_3_enable_aspm(struct amdgpu_device *adev,
- 				  bool enable)
-@@ -479,9 +479,12 @@ static void nbio_v2_3_program_aspm(struc
- 		WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5, data);
+-	if (gblock->flags & ACPI_WMI_EVENT) {
++	if (wblock->gblock.flags & ACPI_WMI_EVENT) {
+ 		wblock->dev.dev.type = &wmi_type_event;
+ 		goto out_init;
+ 	}
  
- 	def = data = RREG32_PCIE(smnPCIE_LC_CNTL);
--	data &= ~PCIE_LC_CNTL__LC_L0S_INACTIVITY_MASK;
--	data |= 0x9 << PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;
--	data |= 0x1 << PCIE_LC_CNTL__LC_PMI_TO_L1_DIS__SHIFT;
-+	data |= NAVI10_PCIE__LC_L0S_INACTIVITY_DEFAULT << PCIE_LC_CNTL__LC_L0S_INACTIVITY__SHIFT;
-+	if (pci_is_thunderbolt_attached(adev->pdev))
-+		data |= NAVI10_PCIE__LC_L1_INACTIVITY_TBT_DEFAULT  << PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;
-+	else
-+		data |= NAVI10_PCIE__LC_L1_INACTIVITY_DEFAULT << PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;
-+	data &= ~PCIE_LC_CNTL__LC_PMI_TO_L1_DIS_MASK;
- 	if (def != data)
- 		WREG32_PCIE(smnPCIE_LC_CNTL, data);
+-	if (gblock->flags & ACPI_WMI_METHOD) {
++	if (wblock->gblock.flags & ACPI_WMI_METHOD) {
+ 		wblock->dev.dev.type = &wmi_type_method;
+ 		mutex_init(&wblock->char_mutex);
+ 		goto out_init;
+@@ -1109,7 +1108,7 @@ static int wmi_create_device(struct device *wmi_bus_dev,
+ 	wblock->dev.dev.bus = &wmi_bus_type;
+ 	wblock->dev.dev.parent = wmi_bus_dev;
  
+-	dev_set_name(&wblock->dev.dev, "%pUL", gblock->guid);
++	dev_set_name(&wblock->dev.dev, "%pUL", wblock->gblock.guid);
+ 
+ 	device_initialize(&wblock->dev.dev);
+ 
+@@ -1201,7 +1200,7 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		wblock->acpi_device = device;
+ 		wblock->gblock = gblock[i];
+ 
+-		retval = wmi_create_device(wmi_bus_dev, &gblock[i], wblock, device);
++		retval = wmi_create_device(wmi_bus_dev, wblock, device);
+ 		if (retval) {
+ 			kfree(wblock);
+ 			continue;
+-- 
+2.39.2
+
 
 
