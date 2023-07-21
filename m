@@ -2,139 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4AD75C709
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CD4D75C70C
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230249AbjGUMpR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 08:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46432 "EHLO
+        id S229782AbjGUMpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 08:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229782AbjGUMpP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:45:15 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96C8B1FD2;
-        Fri, 21 Jul 2023 05:45:14 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-51de9c2bc77so2570155a12.3;
-        Fri, 21 Jul 2023 05:45:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689943513; x=1690548313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nc0AVA69BpamHsOI9Kdi8d5CRGWiKK10b/CD70sRVDE=;
-        b=enlaeyNAA786yYcEyhxBZlYvXYSZh6Qp++INv5mS5Y8I523pM8Yh4A3G/BzGj1xGBf
-         3BKCzJG30VkItZ7SpZfTu6AE+QKlcxUPfJXq5J7GQJ8qeAC34fCPdZEBUC0y3ko0iLmq
-         l2m1DO54VtXLuAhxz5QFT49noPSXBSXSBslfY96OTtc/u3W0s9oZIkk0vRt29C1IK+gj
-         I2QFwfxIU6Y0pdEvUA/fgLY8DLqXdiRDwzhPIApZ//qZHbSOP2Np9GSFdbJQcFYiSRVC
-         1H7K/9426FNGlx9lte6nW2c+9zWZDyctAmAhL+LGiSF9iHVqbNz/qownJgJ/h8OurwMy
-         rbyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689943513; x=1690548313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nc0AVA69BpamHsOI9Kdi8d5CRGWiKK10b/CD70sRVDE=;
-        b=VfLrOTjEt/JW4t+i9hYYNfR7kA5sdHijZxuhE15mJ5xUnSGx4z1lhJoZ1c9a9c7X30
-         furrizKK9p9/YmMYei6xRrg4/7L1A7oqy+tbcXXo8j33vVXAY3i8wNM2Mau0u+TNUiCZ
-         lZurh2RtzDNLQFenSsXEYSrSlpmOJAeNIWbHaAcGzxT5CUTlwRBbuXE9WHuc9VDNs/E6
-         D3mpe6tmZjBGWSlzmrR9GzVtwKf/nIFlno/bWjpXRVdkLnvEgrRwL9BG+cVGYG+1Vf5B
-         vzZdKn1/ChhQylx26yKNYFjBLjAXOfWe82aWmciDik2q2cZYamLbSoEtPxfpW8+Pt8vr
-         BB7Q==
-X-Gm-Message-State: ABy/qLbXdpz3c8/++sRVspKuvrhXOlUMbMd0CVkksJjCe2IIcaFCfu7g
-        tLoqMa8GOc8aUr9uUyq8ouA=
-X-Google-Smtp-Source: APBJJlHnZS9Cj/96OFnxY100gU6WfZW4hObnWX4sr3Ar5u9IuxLDr2avizCNTANiyjVIEIGjpcssHQ==
-X-Received: by 2002:aa7:dc0f:0:b0:51e:2cdb:ed1f with SMTP id b15-20020aa7dc0f000000b0051e2cdbed1fmr1373985edu.9.1689943512934;
-        Fri, 21 Jul 2023 05:45:12 -0700 (PDT)
-Received: from krava (ip-94-113-247-30.net.vodafone.cz. [94.113.247.30])
-        by smtp.gmail.com with ESMTPSA id n12-20020aa7c44c000000b0051bed21a635sm2079430edr.74.2023.07.21.05.45.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 05:45:12 -0700 (PDT)
-From:   Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date:   Fri, 21 Jul 2023 14:45:10 +0200
-To:     Hou Tao <houtao@huaweicloud.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org,
-        bpf@vger.kernel.org, Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>
-Subject: Re: [PATCHv2 bpf 2/2] bpf: Disable preemption in bpf_event_output
-Message-ID: <ZLp91s9kuOp7kEEA@krava>
-References: <20230720085704.190592-1-jolsa@kernel.org>
- <20230720085704.190592-3-jolsa@kernel.org>
- <0b963b18-4933-3b70-3dc6-6c7150bcf7bb@huaweicloud.com>
+        with ESMTP id S230212AbjGUMpY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:45:24 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF94530C0
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:45:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689943520; x=1721479520;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1ywFgKtUbH+wD6Lt8cjDXh1JtExA8Tc0v2vAW2ZA8Ho=;
+  b=ioOsSOol7ixLr+XR++rB/vsml39YhBnDsTJWxllXULZJkFmN3IcCnG67
+   ancm4lIcHX/QW88BBFNuv3CVUZtbULRnqz46qpKamv1m1zpmb5CJwFCLB
+   m7cLU35+tGoT0kYEaVP0SqxpWJ7MF9v/Kygqs+yOiZzvqMzUOVtkx2Z7E
+   28vUwMsAkyrfZ25Wn042wBabfB/rJ0mtORP/hrQfJesCza6CUOiT0k3JU
+   ljaVRYPYYW/D+LVOLlAj1h6Q86MSLvPrslSfOZAZTuiWxuGZLtvckjUJj
+   S/Jn44gvDAI4pekNspuSl1/yPdwAcLEozzw/3GOfI/uoJ3Gxz32nzTN1W
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="370618313"
+X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
+   d="scan'208";a="370618313"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 05:45:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="868235335"
+Received: from hbockhor-mobl.ger.corp.intel.com (HELO intel.com) ([10.252.54.104])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 05:45:16 -0700
+Date:   Fri, 21 Jul 2023 14:45:12 +0200
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     "Krzysztofik, Janusz" <janusz.krzysztofik@intel.com>
+Cc:     "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+        "Roper, Matthew D" <matthew.d.roper@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        "Das, Nirmoy" <nirmoy.das@intel.com>,
+        "Hajda, Andrzej" <andrzej.hajda@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        linux-stable <stable@vger.kernel.org>,
+        dri-evel <dri-devel@lists.freedesktop.org>
+Subject: Re: [v7,7/9] drm/i915/gt: Ensure memory quiesced before invalidation
+ for all engines
+Message-ID: <ZLp92B6lpao5HCYQ@ashyti-mobl2.lan>
+References: <20230720210737.761400-8-andi.shyti@linux.intel.com>
+ <2614817.k3LOHGUjKi@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0b963b18-4933-3b70-3dc6-6c7150bcf7bb@huaweicloud.com>
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+In-Reply-To: <2614817.k3LOHGUjKi@jkrzyszt-mobl2.ger.corp.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 08:16:14PM +0800, Hou Tao wrote:
-> 
-> 
-> On 7/20/2023 4:57 PM, Jiri Olsa wrote:
-> > We received report [1] of kernel crash, which is caused by
-> > using nesting protection without disabled preemption.
-> >
-> > The bpf_event_output can be called by programs executed by
-> > bpf_prog_run_array_cg function that disabled migration but
-> > keeps preemption enabled.
-> >
-> > This can cause task to be preempted by another one inside the
-> > nesting protection and lead eventually to two tasks using same
-> > perf_sample_data buffer and cause crashes like:
-> >
-> >   BUG: kernel NULL pointer dereference, address: 0000000000000001
-> >   #PF: supervisor instruction fetch in kernel mode
-> >   #PF: error_code(0x0010) - not-present page
-> >   ...
-> >   ? perf_output_sample+0x12a/0x9a0
-> >   ? finish_task_switch.isra.0+0x81/0x280
-> >   ? perf_event_output+0x66/0xa0
-> >   ? bpf_event_output+0x13a/0x190
-> >   ? bpf_event_output_data+0x22/0x40
-> >   ? bpf_prog_dfc84bbde731b257_cil_sock4_connect+0x40a/0xacb
-> >   ? xa_load+0x87/0xe0
-> >   ? __cgroup_bpf_run_filter_sock_addr+0xc1/0x1a0
-> >   ? release_sock+0x3e/0x90
-> >   ? sk_setsockopt+0x1a1/0x12f0
-> >   ? udp_pre_connect+0x36/0x50
-> >   ? inet_dgram_connect+0x93/0xa0
-> >   ? __sys_connect+0xb4/0xe0
-> >   ? udp_setsockopt+0x27/0x40
-> >   ? __pfx_udp_push_pending_frames+0x10/0x10
-> >   ? __sys_setsockopt+0xdf/0x1a0
-> >   ? __x64_sys_connect+0xf/0x20
-> >   ? do_syscall_64+0x3a/0x90
-> >   ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> >
-> > Fixing this by disabling preemption in bpf_event_output.
-> >
-> > [1] https://github.com/cilium/cilium/issues/26756
-> > Cc: stable@vger.kernel.org
-> > Reported-by:  Oleg "livelace" Popov <o.popov@livelace.ru>
-> > Fixes: 2a916f2f546c bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.
-> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> 
-> Acked-by: Hou Tao <houtao1@huawei.com>
-> 
-> With one nit above. The format of the Fixes tags should be 2a916f2f546c
-> ("bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.")
-> 
+Hi Janusz,
 
-right, sorry about that.. should I resend?
+On Fri, Jul 21, 2023 at 12:10:22PM +0000, Krzysztofik, Janusz wrote:
+> Hi Andi,
+> 
+> On Thursday, 20 July 2023 23:07:35 CEST Andi Shyti wrote:
+> > Commit af9e423a8aae 
+> 
+> You can't use this commit ID, it is invalid (the patch you are referring to 
+> belongs to your series, then is not available in any official repository, 
+> hence no stable commit ID yet).
 
-thanks,
-jirka
+yes, I need to update it, I know... this has changed at every
+revision, but I was lazy and decided to do it at the end after
+the whole review process was done. I didn't think that anyone
+would go and check it :-D
+
+It's good to know that there is a thorough review here! Thanks!
+
+> > ("drm/i915/gt: Ensure memory quiesced before
+> > invalidation") has made sure that the memory is quiesced before
+> > invalidating the AUX CCS table. Do it for all the other engines
+> > and not just RCS.
+> 
+> Why do we need that now for other engines, while that former patch seemed to 
+> suggest we didn't?
+
+This whole work started from a a couple of patches from Jonathan
+and slowly exploded in this series of 9 patches. I tried to
+preserve his work and just add things around them.
+
+What Jonathan originally did was to add aux invalidation support
+only for RCS and Compute engines, but then hardware guys updated
+the docs asking to do it for basically all the engines.
+
+Thank you,
+Andi
