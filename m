@@ -2,48 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C78F75BF9F
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E569F75BFA0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbjGUHYS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54040 "EHLO
+        id S230019AbjGUHYV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbjGUHYS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:24:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BFD1E53
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:24:16 -0700 (PDT)
+        with ESMTP id S229824AbjGUHYV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:24:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C0F189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:24:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2549A61136
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C5BC433C7;
-        Fri, 21 Jul 2023 07:24:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 971386112C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8122DC433C7;
+        Fri, 21 Jul 2023 07:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689924255;
-        bh=p7X5F7kfJxeNZCcC5PY6c1uYeUQ0yaK2bV9OV7+v5iE=;
+        s=korg; t=1689924258;
+        bh=Lt33QFAcT6pqeqGK3HK4v3BkkUERfr4V5ZVf++PgY4w=;
         h=Subject:To:Cc:From:Date:From;
-        b=D+/SOo/M1SkA05uR/1s8xm1yrz620O/laIpwiaY1EH9Bwg8M38zb175ZFmooeBrQ1
-         i992iv1t4wJW2qicGx85vmUDK/0vO494IuLFZQlVgJLQjLuV8A35kqnIJp1jJ0fg93
-         TXnFMSKJdMJvytawnXJMI4oSYqehT9aQl0iPRkYQ=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Block SubVP on displays that have pixclk >" failed to apply to 6.4-stable tree
+        b=b+NBtFXtOc/PMG44vdF3WISnFp405t8uyc89SFUkhVwrAx6Ht+U9ahEmPDYFooLAK
+         nDp8flywjqmhqmnp3QxQetpitWApnuPxgbusrHRQRsAgaWxEnGBjOJ04hCEY7u2uq3
+         XzV+bzeF5m+uBCcoojoSfdyZMPcvvNDWPBCYdKv0=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Enforce 60us prefetch for 200Mhz DCFCLK" failed to apply to 6.1-stable tree
 To:     Alvin.Lee2@amd.com, Jun.Lei@amd.com, Nevenko.Stupar@amd.com,
         alex.hung@amd.com, alexander.deucher@amd.com,
         daniel.wheeler@amd.com, mario.limonciello@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:24:04 +0200
-Message-ID: <2023072104-froth-subduing-32a6@gregkh>
+Date:   Fri, 21 Jul 2023 09:24:16 +0200
+Message-ID: <2023072116-tattling-thermal-68fb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -51,23 +52,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 807a1c14276b6ba6dc7efb4784ac35bceea1413f
+git cherry-pick -x 84f14428b1e0d1f61776c5fcfdef181129533e0b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072104-froth-subduing-32a6@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072116-tattling-thermal-68fb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+84f14428b1e0 ("drm/amd/display: Enforce 60us prefetch for 200Mhz DCFCLK modes")
 
 thanks,
 
@@ -75,22 +76,23 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 807a1c14276b6ba6dc7efb4784ac35bceea1413f Mon Sep 17 00:00:00 2001
+From 84f14428b1e0d1f61776c5fcfdef181129533e0b Mon Sep 17 00:00:00 2001
 From: Alvin Lee <Alvin.Lee2@amd.com>
-Date: Fri, 28 Apr 2023 17:29:02 -0400
-Subject: [PATCH] drm/amd/display: Block SubVP on displays that have pixclk >
- 1800Mhz
+Date: Thu, 27 Apr 2023 15:10:13 -0400
+Subject: [PATCH] drm/amd/display: Enforce 60us prefetch for 200Mhz DCFCLK
+ modes
 
 [Description]
-- Enabling SubVP on high refresh rate displays had a side effect
-  of also enabling on high bandwidth displays such as 8K60
-- However, these are not validated and should be blocked for
-  the time being
-- Block SubVP on displays that have pix rate > 1800Mhz (includes
-  8K60 displays)
+- Due to bandwidth / arbitration issues at 200Mhz DCFCLK,
+  we want to enforce minimum 60us of prefetch to avoid
+  intermittent underflow issues
+- Since 60us prefetch is already enforced for UCLK DPM0,
+  and many DCFCLK's > 200Mhz are mapped to UCLK DPM1, in
+  theory there should not be any UCLK DPM regressions by
+  enforcing greater prefetch
 
-Reviewed-by: Jun Lei <Jun.Lei@amd.com>
 Reviewed-by: Nevenko Stupar <Nevenko.Stupar@amd.com>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
@@ -99,28 +101,39 @@ Signed-off-by: Alvin Lee <Alvin.Lee2@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-index 04be01ae1ecf..42ccfd13a37c 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-@@ -41,6 +41,7 @@
- #define DCN3_2_DCFCLK_DS_INIT_KHZ 10000 // Choose 10Mhz for init DCFCLK DS freq
- #define DCN3_2_MIN_ACTIVE_SWITCH_MARGIN_FPO_US 100 // Only allow FPO + Vactive if active margin >= 100
- #define SUBVP_HIGH_REFRESH_LIST_LEN 3
-+#define DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ 1800
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+index 66f44a013fe5..958d27224f64 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+@@ -810,7 +810,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
+ 					v->SwathHeightY[k],
+ 					v->SwathHeightC[k],
+ 					TWait,
+-					v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ?
++					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
++						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= MIN_DCFCLK_FREQ_MHZ) ?
+ 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
+ 					/* Output */
+ 					&v->DSTXAfterScaler[k],
+@@ -3314,7 +3315,7 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
+ 							v->swath_width_chroma_ub_this_state[k],
+ 							v->SwathHeightYThisState[k],
+ 							v->SwathHeightCThisState[k], v->TWait,
+-							v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ ?
++							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= MIN_DCFCLK_FREQ_MHZ) ?
+ 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
  
- #define TO_DCN32_RES_POOL(pool)\
- 	container_of(pool, struct dcn32_resource_pool, base)
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index cd28980b2b56..f7e45d935a29 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -703,6 +703,7 @@ static bool dcn32_assign_subvp_pipe(struct dc *dc,
- 		 * - Not TMZ surface
- 		 */
- 		if (pipe->plane_state && !pipe->top_pipe && !dcn32_is_center_timing(pipe) &&
-+				!(pipe->stream->timing.pix_clk_100hz / 10000 > DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ) &&
- 				(!dcn32_is_psr_capable(pipe) || (context->stream_count == 1 && dc->caps.dmub_caps.subvp_psr)) &&
- 				pipe->stream->mall_stream_config.type == SUBVP_NONE &&
- 				(refresh_rate < 120 || dcn32_allow_subvp_high_refresh_rate(dc, context, pipe)) &&
+ 							/* Output */
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
+index 500b3dd6052d..d98e36a9a09c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
+@@ -53,6 +53,7 @@
+ #define BPP_BLENDED_PIPE 0xffffffff
+ 
+ #define MEM_STROBE_FREQ_MHZ 1600
++#define MIN_DCFCLK_FREQ_MHZ 200
+ #define MEM_STROBE_MAX_DELIVERY_TIME_US 60.0
+ 
+ struct display_mode_lib;
 
