@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEFFD75C9D5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77CF475C9D6
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbjGUOY1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44924 "EHLO
+        id S229887AbjGUOYb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:24:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbjGUOY0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:24:26 -0400
+        with ESMTP id S230249AbjGUOYa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:24:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0B72D56
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B3861BD
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE39B61CC2
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:24:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1275C433CA;
-        Fri, 21 Jul 2023 14:24:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A67A661CD7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:24:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B670CC433C8;
+        Fri, 21 Jul 2023 14:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689949457;
-        bh=cAsG7rbnIfn7SeX40iQBeXtbQOUYP2mahUR3JUcnhNk=;
+        s=korg; t=1689949461;
+        bh=2+/AzwX7BlcRiNRHh0j3H0LsC3EWQGB2jhW0b2ULkg0=;
         h=Subject:To:Cc:From:Date:From;
-        b=jW/M4dcEhjkNztT//4peslbU4RlOq1N6fqe2IYCAZCyoFAT5ccQrtufRFs9djp6ur
-         7wARM5md7R9zzFJ0DmH4rCoQrJa7aFW8V2o00/7WgmUsKsYOo21cuik1345cddW41k
-         /GQoMdFSBxT8pa9XNlBhlPHdyrxT+g5vf1gBQfYM=
-Subject: FAILED: patch "[PATCH] ftrace: Fix possible warning on checking all pages used in" failed to apply to 5.10-stable tree
+        b=skrTVYQoLUexezcgL0xjw+T7W4lEN3xhvGFx0WZK/yTr6lBbZD9Bf6mnf5pe0fQp1
+         80llaWYmkSqWEOvA2ya0hMoVGxb02y3a/Vh8FFZE8GiB6IYiZOrTiOtK4bqVfZQaVJ
+         vbRJ90hi6rwwKVez8mE2SXkGy93lkyu2q2VOnEuY=
+Subject: FAILED: patch "[PATCH] ftrace: Fix possible warning on checking all pages used in" failed to apply to 5.4-stable tree
 To:     zhengyejian1@huawei.com, rostedt@goodmis.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:24:14 +0200
-Message-ID: <2023072114-giblet-unzip-f1db@gregkh>
+Date:   Fri, 21 Jul 2023 16:24:15 +0200
+Message-ID: <2023072115-connector-retouch-3c20@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,25 +49,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 26efd79c4624294e553aeaa3439c646729bad084
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072114-giblet-unzip-f1db@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072115-connector-retouch-3c20@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 26efd79c4624 ("ftrace: Fix possible warning on checking all pages used in ftrace_process_locs()")
 db42523b4f3e ("ftrace: Store the order of pages allocated in ftrace_page")
 59300b36f85f ("ftrace: Check if pages were allocated before calling free_pages()")
+da537f0aef13 ("ftrace: Add information on number of page groups allocated")
 
 thanks,
 
