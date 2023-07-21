@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 647D975D3A3
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBDFA75D49A
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231879AbjGUTM4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35552 "EHLO
+        id S232180AbjGUTXA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:23:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231902AbjGUTMx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:53 -0400
+        with ESMTP id S232179AbjGUTW7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:22:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8460630EA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE0C31727
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:22:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7DA461D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FD1C433C7;
-        Fri, 21 Jul 2023 19:12:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AE6461D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:22:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E712C433C9;
+        Fri, 21 Jul 2023 19:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966770;
-        bh=gR0UuzEL7MF1LC4l+ehYTsAWvYBneRxN+0nxSNbIjC0=;
+        s=korg; t=1689967377;
+        bh=i8UTBl3mjBQ0/x6L3xSnQkIlQSHH35Ae/pt/60VrIPE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wTkcZ6mmyqPi3rpH2HFoYT6AMsFCWOOLGMd+bdvjTlh2QG3I1C8aQaCY66+jb8Hsz
-         Vnd2UHmhhoT8onKmZoFJr/ghmHVBlOPKVxkyahaqV1AN5T6lql57ASY4ZBGrZQZ18X
-         s3mxCRQdi8aqfoczd6x+eoxUjtoskn0TrgBBknmg=
+        b=PeR2WlqxBiMHmxVrmi/MjdrNk4trcCOO6H3Ta5vaSLMqkcGVszZiF6iLgrbwztxLj
+         CtiP5n8YHcsoyoo2uNhKRKeesuj4DUCUlfEDLv07VbhgU8cVKVACd6+dty00/hFXq1
+         Nblixqw8qlY8ciexfS4jiszvUi7GmGkbp46nRLfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 461/532] ext4: Fix reusing stale buffer heads from last failed mounting
-Date:   Fri, 21 Jul 2023 18:06:05 +0200
-Message-ID: <20230721160639.534415710@linuxfoundation.org>
+        patches@lists.linux.dev, "Darrick J. Wong" <djwong@kernel.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 113/223] ext2/dax: Fix ext2_setsize when len is page aligned
+Date:   Fri, 21 Jul 2023 18:06:06 +0200
+Message-ID: <20230721160525.689090100@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,121 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b upstream.
+commit fcced95b6ba2a507a83b8b3e0358a8ac16b13e35 upstream.
 
-Following process makes ext4 load stale buffer heads from last failed
-mounting in a new mounting operation:
-mount_bdev
- ext4_fill_super
- | ext4_load_and_init_journal
- |  ext4_load_journal
- |   jbd2_journal_load
- |    load_superblock
- |     journal_get_superblock
- |      set_buffer_verified(bh) // buffer head is verified
- |   jbd2_journal_recover // failed caused by EIO
- | goto failed_mount3a // skip 'sb->s_root' initialization
- deactivate_locked_super
-  kill_block_super
-   generic_shutdown_super
-    if (sb->s_root)
-    // false, skip ext4_put_super->invalidate_bdev->
-    // invalidate_mapping_pages->mapping_evict_folio->
-    // filemap_release_folio->try_to_free_buffers, which
-    // cannot drop buffer head.
-   blkdev_put
-    blkdev_put_whole
-     if (atomic_dec_and_test(&bdev->bd_openers))
-     // false, systemd-udev happens to open the device. Then
-     // blkdev_flush_mapping->kill_bdev->truncate_inode_pages->
-     // truncate_inode_folio->truncate_cleanup_folio->
-     // folio_invalidate->block_invalidate_folio->
-     // filemap_release_folio->try_to_free_buffers will be skipped,
-     // dropping buffer head is missed again.
+PAGE_ALIGN(x) macro gives the next highest value which is multiple of
+pagesize. But if x is already page aligned then it simply returns x.
+So, if x passed is 0 in dax_zero_range() function, that means the
+length gets passed as 0 to ->iomap_begin().
 
-Second mount:
-ext4_fill_super
- ext4_load_and_init_journal
-  ext4_load_journal
-   ext4_get_journal
-    jbd2_journal_init_inode
-     journal_init_common
-      bh = getblk_unmovable
-       bh = __find_get_block // Found stale bh in last failed mounting
-      journal->j_sb_buffer = bh
-   jbd2_journal_load
-    load_superblock
-     journal_get_superblock
-      if (buffer_verified(bh))
-      // true, skip journal->j_format_version = 2, value is 0
-    jbd2_journal_recover
-     do_one_pass
-      next_log_block += count_tags(journal, bh)
-      // According to journal_tag_bytes(), 'tag_bytes' calculating is
-      // affected by jbd2_has_feature_csum3(), jbd2_has_feature_csum3()
-      // returns false because 'j->j_format_version >= 2' is not true,
-      // then we get wrong next_log_block. The do_one_pass may exit
-      // early whenoccuring non JBD2_MAGIC_NUMBER in 'next_log_block'.
+In ext2 it then calls ext2_get_blocks -> max_blocks as 0 and hits bug_on
+here in ext2_get_blocks().
+	BUG_ON(maxblocks == 0);
 
-The filesystem is corrupted here, journal is partially replayed, and
-new journal sequence number actually is already used by last mounting.
+Instead we should be calling dax_truncate_page() here which takes
+care of it. i.e. it only calls dax_zero_range if the offset is not
+page/block aligned.
 
-The invalidate_bdev() can drop all buffer heads even racing with bare
-reading block device(eg. systemd-udev), so we can fix it by invalidating
-bdev in error handling path in __ext4_fill_super().
+This can be easily triggered with following on fsdax mounted pmem
+device.
 
-Fetch a reproducer in [Link].
+dd if=/dev/zero of=file count=1 bs=512
+truncate -s 0 file
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217171
-Fixes: 25ed6e8a54df ("jbd2: enable journal clients to enable v2 checksumming")
-Cc: stable@vger.kernel.org # v3.5
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230315013128.3911115-2-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[79.525838] EXT2-fs (pmem0): DAX enabled. Warning: EXPERIMENTAL, use at your own risk
+[79.529376] ext2 filesystem being mounted at /mnt1/test supports timestamps until 2038 (0x7fffffff)
+[93.793207] ------------[ cut here ]------------
+[93.795102] kernel BUG at fs/ext2/inode.c:637!
+[93.796904] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+[93.798659] CPU: 0 PID: 1192 Comm: truncate Not tainted 6.3.0-rc2-xfstests-00056-g131086faa369 #139
+[93.806459] RIP: 0010:ext2_get_blocks.constprop.0+0x524/0x610
+<...>
+[93.835298] Call Trace:
+[93.836253]  <TASK>
+[93.837103]  ? lock_acquire+0xf8/0x110
+[93.838479]  ? d_lookup+0x69/0xd0
+[93.839779]  ext2_iomap_begin+0xa7/0x1c0
+[93.841154]  iomap_iter+0xc7/0x150
+[93.842425]  dax_zero_range+0x6e/0xa0
+[93.843813]  ext2_setsize+0x176/0x1b0
+[93.845164]  ext2_setattr+0x151/0x200
+[93.846467]  notify_change+0x341/0x4e0
+[93.847805]  ? lock_acquire+0xf8/0x110
+[93.849143]  ? do_truncate+0x74/0xe0
+[93.850452]  ? do_truncate+0x84/0xe0
+[93.851739]  do_truncate+0x84/0xe0
+[93.852974]  do_sys_ftruncate+0x2b4/0x2f0
+[93.854404]  do_syscall_64+0x3f/0x90
+[93.855789]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+CC: stable@vger.kernel.org
+Fixes: 2aa3048e03d3 ("iomap: switch iomap_zero_range to use iomap_iter")
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <046a58317f29d9603d1068b2bbae47c2332c17ae.1682069716.git.ritesh.list@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/ext2/inode.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1097,6 +1097,12 @@ static void ext4_blkdev_remove(struct ex
- 	struct block_device *bdev;
- 	bdev = sbi->s_journal_bdev;
- 	if (bdev) {
-+		/*
-+		 * Invalidate the journal device's buffers.  We don't want them
-+		 * floating about in memory - the physical journal device may
-+		 * hotswapped, and it breaks the `ro-after' testing code.
-+		 */
-+		invalidate_bdev(bdev);
- 		ext4_blkdev_put(bdev);
- 		sbi->s_journal_bdev = NULL;
- 	}
-@@ -1239,13 +1245,7 @@ static void ext4_put_super(struct super_
- 	sync_blockdev(sb->s_bdev);
- 	invalidate_bdev(sb->s_bdev);
- 	if (sbi->s_journal_bdev && sbi->s_journal_bdev != sb->s_bdev) {
--		/*
--		 * Invalidate the journal device's buffers.  We don't want them
--		 * floating about in memory - the physical journal device may
--		 * hotswapped, and it breaks the `ro-after' testing code.
--		 */
- 		sync_blockdev(sbi->s_journal_bdev);
--		invalidate_bdev(sbi->s_journal_bdev);
- 		ext4_blkdev_remove(sbi);
- 	}
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -1265,9 +1265,8 @@ static int ext2_setsize(struct inode *in
+ 	inode_dio_wait(inode);
  
-@@ -5100,6 +5100,7 @@ failed_mount:
- 	brelse(bh);
- 	ext4_blkdev_remove(sbi);
- out_fail:
-+	invalidate_bdev(sb->s_bdev);
- 	sb->s_fs_info = NULL;
- 	kfree(sbi->s_blockgroup_lock);
- out_free_base:
+ 	if (IS_DAX(inode))
+-		error = dax_zero_range(inode, newsize,
+-				       PAGE_ALIGN(newsize) - newsize, NULL,
+-				       &ext2_iomap_ops);
++		error = dax_truncate_page(inode, newsize, NULL,
++					  &ext2_iomap_ops);
+ 	else
+ 		error = block_truncate_page(inode->i_mapping,
+ 				newsize, ext2_get_block);
 
 
