@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A53DF75BE4C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6950F75BE4D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:08:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbjGUGIl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46062 "EHLO
+        id S229707AbjGUGIp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:08:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbjGUGIk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:08:40 -0400
+        with ESMTP id S229699AbjGUGIn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:08:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3462B92
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:08:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25037E65
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:08:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 955A46112C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:08:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF35C433C9;
-        Fri, 21 Jul 2023 06:08:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 597DF61083
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:08:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF7CC433C7;
+        Fri, 21 Jul 2023 06:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919717;
-        bh=FqqEEgbKLTF4YrVBADQZ4Xt8lGmLjeqHcwJjEn0zNZs=;
+        s=korg; t=1689919720;
+        bh=KCUEiM20ExKoVaJ8BMqFtINS2gklvu42p+yOspqC2Is=;
         h=Subject:To:Cc:From:Date:From;
-        b=xAwbbKjp9FVr0h/e9RM69QrF/ECqqPT8pdE6Pfis9jc/ClTTJk9TH0qOVUzuGo7wg
-         kRJhl3j6YR5vCebyWF+EDBzX/0cMxX3kl9Hr+2i5rcF55+20ZYLN6vKGVHN9zqcEDQ
-         t4wGJW9pUvU6VLYjmNz6tAP6IJXdOx3M4bzC4/w8=
-Subject: FAILED: patch "[PATCH] dm thin metadata: Fix ABBA deadlock by resetting" failed to apply to 5.10-stable tree
+        b=yA2QJPB+wuQB76useXd+YIMYfj3jWupdrUQws/IPXTdLrDl2ZJvAXbXy/75Rl4Ioo
+         VHqWiyoeyVqoIoGDteTPmqzGf8wal8Bl+HMd8n15KQfnAGFALgkj6FX7VPnmkQMYE9
+         uD/89DW+tzYZdWuo5uLCiNL3S8JeFeS0Vqn96S6g=
+Subject: FAILED: patch "[PATCH] dm thin metadata: Fix ABBA deadlock by resetting" failed to apply to 5.4-stable tree
 To:     lilingfeng3@huawei.com, snitzer@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:08:30 +0200
-Message-ID: <2023072130-lugged-eating-d661@gregkh>
+Date:   Fri, 21 Jul 2023 08:08:32 +0200
+Message-ID: <2023072131-connector-hatchet-a240@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x d48300120627a1cb98914738fff38b424625b8ad
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072130-lugged-eating-d661@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072131-connector-hatchet-a240@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
