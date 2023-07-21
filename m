@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C5975CA49
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D7275CA4B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbjGUOmH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230352AbjGUOmH (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 21 Jul 2023 10:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55014 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231557AbjGUOlu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:41:50 -0400
+        with ESMTP id S231613AbjGUOly (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:41:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B1F82D7B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:41:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E6430C7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:41:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11CEC61CB7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:41:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C7CC433C9;
-        Fri, 21 Jul 2023 14:41:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3380A61CB8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4013CC433C8;
+        Fri, 21 Jul 2023 14:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950508;
-        bh=yktwTwtMfIyPHut1RrrDGm7hEViqLn1IiX3NWm++br0=;
+        s=korg; t=1689950511;
+        bh=QTqsWy4dq1+7LFjJ/nHQb4V2R0Muvf5sC4jAhwKol/U=;
         h=Subject:To:Cc:From:Date:From;
-        b=0SLkFgs1hLnqkBu3kg2o0IAdgwqgV/lLEtQ+4C4T3DUxTtEveQ3uUAoBkYT1umgJl
-         wD8/6itKL1IOvJSHY19IKafetpD+R8joml04Os9Rucxmu4OIKZxLKZi3sE/jBZLPC3
-         dJF/p/3bKXuXk6kLwJ4EhL1+dztsT81W/BJ2r1JY=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix task management cmd fail due to" failed to apply to 4.19-stable tree
+        b=yS1wLETf5rcdHzoy+Ck0jd3zJuzpvcMW7Bvi2BhRrKEc6e5X9TgCcd/utuQK4H2VC
+         F9PB7M3Z+yrOAVdXUAAlKJ5mZOwoxOap/6cEb9ak858IiuD8hS/UPJcCiF6SY2SFl4
+         QHkbw/ozb2yZxe0+lh3TNdAceOS1f9v7402uRd2E=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix task management cmd fail due to" failed to apply to 4.14-stable tree
 To:     qutran@marvell.com, himanshu.madhani@oracle.com, lkp@intel.com,
         martin.petersen@oracle.com, njavali@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:41:36 +0200
-Message-ID: <2023072136-twisted-uncoated-0034@gregkh>
+Date:   Fri, 21 Jul 2023 16:41:37 +0200
+Message-ID: <2023072137-fit-armless-e4a1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6a87679626b51b53fbb6be417ad8eb083030b617
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072136-twisted-uncoated-0034@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072137-fit-armless-e4a1@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
