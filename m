@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B5375CEE9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D899275CEEB
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:25:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232898AbjGUQZl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:25:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51464 "EHLO
+        id S232473AbjGUQZp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:25:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232897AbjGUQZ2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:25:28 -0400
+        with ESMTP id S232417AbjGUQZd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:25:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C48A65B8B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:22:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ABC25B9E
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:22:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3A4B61D41
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:22:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1877C433C9;
-        Fri, 21 Jul 2023 16:22:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B5AA61D1E
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:22:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68521C433B9;
+        Fri, 21 Jul 2023 16:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956527;
-        bh=C/7PE3lTUQqXGIBmi8qxzOjX7fOp1NVRE9IdJxn3L/g=;
+        s=korg; t=1689956532;
+        bh=VxNAr8KE+XRhG0USEkaBq+76wxeRGQGp1aF0Op8RwUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BpPuiWuW8clKTq2XlAfB/OTUAu9zMWhydGtm5ZsiwoNwj2dkIZPYQBdpDygRNNOoH
-         cQ5YnhrCv1F08YFtgb50J20Gh1sqQGXbs0OtMuwn0a7HZLONFAoF6KI5dgGzWrKC+F
-         PJHYi6TA21f1geoyxto+HEjQO/aoPLxVYzAcB90Q=
+        b=XwRW+1Xo4sZ9iMVAoONeVS9aw9820ER7wZmRv8ide3jtKTHOpF1g6iuEfhNS9xkr/
+         Ep+95Ndsv+bIF7MoI0Cft+WiRfetxAha35Y8s/5KRhTOzq5D0PKN10Tejgqsa/EwOz
+         LsrEhysduui5ZeLoB12cXaHECUexILeytXEFYYSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>
-Subject: [PATCH 6.4 192/292] fs: dlm: fix missing pending to false
-Date:   Fri, 21 Jul 2023 18:05:01 +0200
-Message-ID: <20230721160537.138422396@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Justin Tee <justin.tee@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.4 193/292] scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc() caused by lpfc_nlp_not_used()
+Date:   Fri, 21 Jul 2023 18:05:02 +0200
+Message-ID: <20230721160537.180489812@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -54,38 +55,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit f68bb23cad1f128198074ed7b3a4c5fb03dbd9d2 upstream.
+commit 97f975823f8196d970bd795087b514271214677a upstream.
 
-This patch sets the process_dlm_messages_pending boolean to false when
-there was no message to process. It is a case which should not happen
-but if we are prepared to recover from this situation by setting pending
-boolean to false.
+Smatch detected a double free path because lpfc_nlp_not_used() releases an
+ndlp object before reaching lpfc_nlp_put() at the end of
+lpfc_cmpl_els_logo_acc().
 
-Cc: stable@vger.kernel.org
-Fixes: dbb751ffab0b ("fs: dlm: parallelize lowcomms socket handling")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Remove the outdated lpfc_nlp_not_used() routine.  In
+lpfc_mbx_cmpl_ns_reg_login(), replace the call with lpfc_nlp_put().  In
+lpfc_cmpl_els_logo_acc(), replace the call with lpfc_unreg_rpi() and keep
+the lpfc_nlp_put() at the end of the routine.  If ndlp's rpi was
+registered, then lpfc_unreg_rpi()'s completion routine performs the final
+ndlp clean up after lpfc_nlp_put() is called from lpfc_cmpl_els_logo_acc().
+Otherwise if ndlp has no rpi registered, the lpfc_nlp_put() at the end of
+lpfc_cmpl_els_logo_acc() is the final ndlp clean up.
+
+Fixes: 4430f7fd09ec ("scsi: lpfc: Rework locations of ndlp reference taking")
+Cc: <stable@vger.kernel.org> # v5.11+
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/all/Y3OefhyyJNKH%2Fiaf@kili/
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20230417191558.83100-3-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lowcomms.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/lpfc/lpfc_crtn.h    |    1 -
+ drivers/scsi/lpfc/lpfc_els.c     |   30 +++++++-----------------------
+ drivers/scsi/lpfc/lpfc_hbadisc.c |   24 +++---------------------
+ 3 files changed, 10 insertions(+), 45 deletions(-)
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 3d3802c47b8b..5aad4d4842eb 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -898,6 +898,7 @@ static void process_dlm_messages(struct work_struct *work)
- 	pentry = list_first_entry_or_null(&processqueue,
- 					  struct processqueue_entry, list);
- 	if (WARN_ON_ONCE(!pentry)) {
-+		process_dlm_messages_pending = false;
- 		spin_unlock(&processqueue_lock);
- 		return;
+--- a/drivers/scsi/lpfc/lpfc_crtn.h
++++ b/drivers/scsi/lpfc/lpfc_crtn.h
+@@ -134,7 +134,6 @@ void lpfc_check_nlp_post_devloss(struct
+ 				 struct lpfc_nodelist *ndlp);
+ void lpfc_ignore_els_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 			  struct lpfc_iocbq *rspiocb);
+-int  lpfc_nlp_not_used(struct lpfc_nodelist *ndlp);
+ struct lpfc_nodelist *lpfc_setup_disc_node(struct lpfc_vport *, uint32_t);
+ void lpfc_disc_list_loopmap(struct lpfc_vport *);
+ void lpfc_disc_start(struct lpfc_vport *);
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -5205,14 +5205,9 @@ lpfc_els_free_iocb(struct lpfc_hba *phba
+  *
+  * This routine is the completion callback function to the Logout (LOGO)
+  * Accept (ACC) Response ELS command. This routine is invoked to indicate
+- * the completion of the LOGO process. It invokes the lpfc_nlp_not_used() to
+- * release the ndlp if it has the last reference remaining (reference count
+- * is 1). If succeeded (meaning ndlp released), it sets the iocb ndlp
+- * field to NULL to inform the following lpfc_els_free_iocb() routine no
+- * ndlp reference count needs to be decremented. Otherwise, the ndlp
+- * reference use-count shall be decremented by the lpfc_els_free_iocb()
+- * routine. Finally, the lpfc_els_free_iocb() is invoked to release the
+- * IOCB data structure.
++ * the completion of the LOGO process. If the node has transitioned to NPR,
++ * this routine unregisters the RPI if it is still registered. The
++ * lpfc_els_free_iocb() is invoked to release the IOCB data structure.
+  **/
+ static void
+ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+@@ -5253,19 +5248,9 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *
+ 		    (ndlp->nlp_last_elscmd == ELS_CMD_PLOGI))
+ 			goto out;
+ 
+-		/* NPort Recovery mode or node is just allocated */
+-		if (!lpfc_nlp_not_used(ndlp)) {
+-			/* A LOGO is completing and the node is in NPR state.
+-			 * Just unregister the RPI because the node is still
+-			 * required.
+-			 */
++		if (ndlp->nlp_flag & NLP_RPI_REGISTERED)
+ 			lpfc_unreg_rpi(vport, ndlp);
+-		} else {
+-			/* Indicate the node has already released, should
+-			 * not reference to it from within lpfc_els_free_iocb.
+-			 */
+-			cmdiocb->ndlp = NULL;
+-		}
++
  	}
--- 
-2.41.0
-
+  out:
+ 	/*
+@@ -5285,9 +5270,8 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *
+  * RPI (Remote Port Index) mailbox command to the @phba. It simply releases
+  * the associated lpfc Direct Memory Access (DMA) buffer back to the pool and
+  * decrements the ndlp reference count held for this completion callback
+- * function. After that, it invokes the lpfc_nlp_not_used() to check
+- * whether there is only one reference left on the ndlp. If so, it will
+- * perform one more decrement and trigger the release of the ndlp.
++ * function. After that, it invokes the lpfc_drop_node to check
++ * whether it is appropriate to release the node.
+  **/
+ void
+ lpfc_mbx_cmpl_dflt_rpi(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -4333,13 +4333,14 @@ out:
+ 
+ 		/* If the node is not registered with the scsi or nvme
+ 		 * transport, remove the fabric node.  The failed reg_login
+-		 * is terminal.
++		 * is terminal and forces the removal of the last node
++		 * reference.
+ 		 */
+ 		if (!(ndlp->fc4_xpt_flags & (SCSI_XPT_REGD | NVME_XPT_REGD))) {
+ 			spin_lock_irq(&ndlp->lock);
+ 			ndlp->nlp_flag &= ~NLP_NPR_2B_DISC;
+ 			spin_unlock_irq(&ndlp->lock);
+-			lpfc_nlp_not_used(ndlp);
++			lpfc_nlp_put(ndlp);
+ 		}
+ 
+ 		if (phba->fc_topology == LPFC_TOPOLOGY_LOOP) {
+@@ -6704,25 +6705,6 @@ lpfc_nlp_put(struct lpfc_nodelist *ndlp)
+ 	return ndlp ? kref_put(&ndlp->kref, lpfc_nlp_release) : 0;
+ }
+ 
+-/* This routine free's the specified nodelist if it is not in use
+- * by any other discovery thread. This routine returns 1 if the
+- * ndlp has been freed. A return value of 0 indicates the ndlp is
+- * not yet been released.
+- */
+-int
+-lpfc_nlp_not_used(struct lpfc_nodelist *ndlp)
+-{
+-	lpfc_debugfs_disc_trc(ndlp->vport, LPFC_DISC_TRC_NODE,
+-		"node not used:   did:x%x flg:x%x refcnt:x%x",
+-		ndlp->nlp_DID, ndlp->nlp_flag,
+-		kref_read(&ndlp->kref));
+-
+-	if (kref_read(&ndlp->kref) == 1)
+-		if (lpfc_nlp_put(ndlp))
+-			return 1;
+-	return 0;
+-}
+-
+ /**
+  * lpfc_fcf_inuse - Check if FCF can be unregistered.
+  * @phba: Pointer to hba context object.
 
 
