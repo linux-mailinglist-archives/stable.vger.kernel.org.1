@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ABE275C9E0
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B7B75C9ED
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjGUOZT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:25:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45924 "EHLO
+        id S230149AbjGUOZX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:25:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbjGUOZS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:25:18 -0400
+        with ESMTP id S231279AbjGUOZU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:25:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ADB530E8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:25:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54CA3E6F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:25:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D334461CD4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:25:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E541DC433C8;
-        Fri, 21 Jul 2023 14:25:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A721761CD5
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C64C433C8;
+        Fri, 21 Jul 2023 14:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689949508;
-        bh=YDZHM7H4BQNnvYgN5N0o929RsBJlD79jiCnLPFLqMgo=;
+        s=korg; t=1689949512;
+        bh=5v74pVkNimRWO8D2VazaqG7pazcrN4V/qZ7x1n3QpGk=;
         h=Subject:To:Cc:From:Date:From;
-        b=gdTr9AtJYb3YKaBZFRF3ezOoLGm0VQfLyKWbcay3qZNlaeen3QZyMBEsfWMafmfSU
-         Y7+/fIIhVvyFgYkEcIZAR928ohASriW4vh7OHG4WYw09Nj6wVFZCjL/OxMigkFDdzk
-         Eo2lqqHPr3QWLmw10oJ06MhuppygWrcPlX0ZLrFw=
-Subject: FAILED: patch "[PATCH] cifs: if deferred close is disabled then close files" failed to apply to 5.15-stable tree
+        b=LtMfTXMnjQOC8I0nJFy52yPkOI6YZ0vfI+1fTdMXHrkTS2KIwnbhRyJDAxgYA64ip
+         kke/TMKEB4dfh9vzmOUcJA2TG7W6oiWn9pK6HWiBK9khyKZPPOdHOZz4ELD2HAPRyW
+         kMie/ZTcZXzrAeyByTApUBPnyEerF9ExoMGzaq/Q=
+Subject: FAILED: patch "[PATCH] cifs: if deferred close is disabled then close files" failed to apply to 5.10-stable tree
 To:     bharathsm@microsoft.com, sprasad@microsoft.com,
         stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:25:05 +0200
-Message-ID: <2023072105-collapse-errand-9354@gregkh>
+Date:   Fri, 21 Jul 2023 16:25:06 +0200
+Message-ID: <2023072106-yoga-rage-f811@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,23 +50,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x df9d70c18616760c6504b97fec66b6379c172dbb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072105-collapse-errand-9354@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072106-yoga-rage-f811@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 df9d70c18616 ("cifs: if deferred close is disabled then close files immediately")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
+5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
+332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
 thanks,
 
