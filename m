@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14FBE75D3D2
+	by mail.lfdr.de (Postfix) with ESMTP id D143575D3D3
 	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230362AbjGUTOx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:14:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37514 "EHLO
+        id S231940AbjGUTOy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231938AbjGUTOv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:51 -0400
+        with ESMTP id S231937AbjGUTOw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228E230E4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85F630E3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2FA261D2F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC4BC433C8;
-        Fri, 21 Jul 2023 19:14:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87B6961D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981FEC433C7;
+        Fri, 21 Jul 2023 19:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966887;
-        bh=1p7n331KiUYPbTmEB4zBJQTSpxFqwCB1H6h/eV6QxWg=;
+        s=korg; t=1689966890;
+        bh=YAsICtfXFfPotbgmsYNMsV3bJgh3ZWlp+EjzFQI6H54=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fr1iNgoWAhKtqQyXMCWEzRqBLyOEtoscoA/6zTskGXJ+pvt0omrI1nPg0oo5ugass
-         uXjEezPwWWtrCrMg/Z5XgSfGqmwWkoDTCNjMXXtf8CruinWqbvSOkZFmm01zgzW+DT
-         aV70hL8iug5vR5369D8aFFT5QTDDh1GeAN3FSXdg=
+        b=Wlrl2BeIpyPvSAHQ6vDi1uEVCDiXlQ9KaUq6ZjcgKHdM6K8quaGzm0YRTliZKT8fE
+         OzvvEjKUlbScmQELmMo5PKolypWW7dsWzdlkrsq/WU+W9YI+qxtOpCInUUY/8hrqNK
+         WVscl/mTkOa0yQcGekbQ9quwm6SAHEYLHWO89feA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.15 474/532] PCI: qcom: Disable write access to read only registers for IP v2.3.3
-Date:   Fri, 21 Jul 2023 18:06:18 +0200
-Message-ID: <20230721160640.224289645@linuxfoundation.org>
+Subject: [PATCH 5.15 475/532] PCI: rockchip: Assert PCI Configuration Enable bit after probe
+Date:   Fri, 21 Jul 2023 18:06:19 +0200
+Message-ID: <20230721160640.280984685@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -55,34 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-commit a33d700e8eea76c62120cb3dbf5e01328f18319a upstream.
+commit f397fd4ac1fa3afcabd8cee030f953ccaed2a364 upstream.
 
-In the post init sequence of v2.9.0, write access to read only registers
-are not disabled after updating the registers. Fix it by disabling the
-access after register update.
+Assert PCI Configuration Enable bit after probe. When this bit is left to
+0 in the endpoint mode, the RK3399 PCIe endpoint core will generate
+configuration request retry status (CRS) messages back to the root complex.
+Assert this bit after probe to allow the RK3399 PCIe endpoint core to reply
+to configuration requests from the root complex.
+This is documented in section 17.5.8.1.2 of the RK3399 TRM.
 
-Link: https://lore.kernel.org/r/20230619150408.8468-2-manivannan.sadhasivam@linaro.org
-Fixes: 5d76117f070d ("PCI: qcom: Add support for IPQ8074 PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20230418074700.1083505-4-rick.wertenbroek@gmail.com
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: <stable@vger.kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/pcie-rockchip-ep.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1134,6 +1134,8 @@ static int qcom_pcie_post_init_2_3_3(str
- 	writel(PCI_EXP_DEVCTL2_COMP_TMOUT_DIS, pci->dbi_base + offset +
- 		PCI_EXP_DEVCTL2);
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -631,6 +631,9 @@ static int rockchip_pcie_ep_probe(struct
  
-+	dw_pcie_dbi_ro_wr_dis(pci);
+ 	ep->irq_pci_addr = ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR;
+ 
++	rockchip_pcie_write(rockchip, PCIE_CLIENT_CONF_ENABLE,
++			    PCIE_CLIENT_CONFIG);
 +
  	return 0;
- }
- 
+ err_epc_mem_exit:
+ 	pci_epc_mem_exit(epc);
 
 
