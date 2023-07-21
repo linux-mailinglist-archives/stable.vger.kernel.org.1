@@ -2,42 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 522FA75CEE5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45A3A75CEF5
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:26:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232941AbjGUQZf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:25:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51208 "EHLO
+        id S232876AbjGUQ0N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:26:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232661AbjGUQZO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:25:14 -0400
+        with ESMTP id S232875AbjGUQ0A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:26:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B4F059DE
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:21:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0620946A5
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:22:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B814C6108F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:21:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC36C433C8;
-        Fri, 21 Jul 2023 16:21:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9987361D2B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:21:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88F8C433C8;
+        Fri, 21 Jul 2023 16:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956490;
-        bh=CmvkcYQglLiid8Jo3TWlBQLHoY53n2v2ywKXcWqJs4U=;
+        s=korg; t=1689956493;
+        bh=3JP2PPgNam4Rbk6weOxxRG79dW7F7oiC6ZvU1qqU8iw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZfyNIr85+vdU4tsW0JJX5Epq+HvL60sfdjUV+1rHpDmAxmfgNYUPxgVFUg4c5FB2m
-         /lujNvMWs+3vOoT/697HQ5tiZi84JoeemAT5fhdJQc3ldx4YV3cgOZ5gzaJbg0+67N
-         2rA5TMNmglreA+log3LdHKm3JQE2DrCspcRtl4P0=
+        b=2bCxYAp8rRmcW0ePe3hIeOXIFPPXLl+Ywx6tCoIDVyohhu/GF/XNmc0RqKNfo4D+k
+         lrxPSVWaC2boKAnSgHFSEJuRTQYuge3ImVy0tQZpDFWYu8Gi4e/OgKsDqAn3oL4bhr
+         d3+Ia+BI3rPPGH8GubVg09YC2wHxINeIoPO9MTdY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Wang <kevinyang.wang@amd.com>,
-        Lijo Lazar <lijo.lazar@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.4 210/292] drm/amd/pm: fix smu i2c data read risk
-Date:   Fri, 21 Jul 2023 18:05:19 +0200
-Message-ID: <20230721160537.898987958@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Huang Rui <ray.huang@amd.com>, dri-devel@lists.freedesktop.org,
+        =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH 6.4 211/292] drm/ttm: Dont leak a resource on eviction error
+Date:   Fri, 21 Jul 2023 18:05:20 +0200
+Message-ID: <20230721160537.940301209@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -55,137 +60,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit d934e537c14bfe1227ced6341472571f354383e8 upstream.
+commit e8188c461ee015ba0b9ab2fc82dbd5ebca5a5532 upstream.
 
-the smu driver_table is used for all types of smu
-tables data transcation (e.g: PPtable, Metrics, i2c, Ecc..).
+On eviction errors other than -EMULTIHOP we were leaking a resource.
+Fix.
 
-it is necessary to hold this lock to avoiding data tampering
-during the i2c read operation.
+v2:
+- Avoid yet another goto (Andi Shyti)
 
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: 403797925768 ("drm/ttm: Fix multihop assert on eviction.")
+Cc: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com> #v1
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230626091450.14757-4-thomas.hellstrom@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c       |    2 +-
- drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c         |    2 +-
- drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c |    2 +-
- drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c      |    2 +-
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c    |    2 +-
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c    |    2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/ttm/ttm_bo.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-@@ -2113,7 +2113,6 @@ static int arcturus_i2c_xfer(struct i2c_
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -458,18 +458,18 @@ static int ttm_bo_evict(struct ttm_buffe
+ 		goto out;
  	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
  
-@@ -2130,6 +2129,7 @@ static int arcturus_i2c_xfer(struct i2c_
+-bounce:
+-	ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+-	if (ret == -EMULTIHOP) {
++	do {
++		ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
++		if (ret != -EMULTIHOP)
++			break;
++
+ 		ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem, ctx, &hop);
+-		if (ret) {
+-			if (ret != -ERESTARTSYS && ret != -EINTR)
+-				pr_err("Buffer eviction failed\n");
+-			ttm_resource_free(bo, &evict_mem);
+-			goto out;
+-		}
+-		/* try and move to final place now. */
+-		goto bounce;
++	} while (!ret);
++
++	if (ret) {
++		ttm_resource_free(bo, &evict_mem);
++		if (ret != -ERESTARTSYS && ret != -EINTR)
++			pr_err("Buffer eviction failed\n");
  	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-@@ -3021,7 +3021,6 @@ static int navi10_i2c_xfer(struct i2c_ad
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
- 
-@@ -3038,6 +3037,7 @@ static int navi10_i2c_xfer(struct i2c_ad
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -3842,7 +3842,6 @@ static int sienna_cichlid_i2c_xfer(struc
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
- 
-@@ -3859,6 +3858,7 @@ static int sienna_cichlid_i2c_xfer(struc
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-@@ -1525,7 +1525,6 @@ static int aldebaran_i2c_xfer(struct i2c
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
- 
-@@ -1542,6 +1541,7 @@ static int aldebaran_i2c_xfer(struct i2c
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -1838,7 +1838,6 @@ static int smu_v13_0_0_i2c_xfer(struct i
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_cmn_update_table(smu, SMU_TABLE_I2C_COMMANDS, 0, req, true);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
- 
-@@ -1855,6 +1854,7 @@ static int smu_v13_0_0_i2c_xfer(struct i
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-@@ -1639,7 +1639,6 @@ static int smu_v13_0_6_i2c_xfer(struct i
- 	}
- 	mutex_lock(&adev->pm.mutex);
- 	r = smu_v13_0_6_request_i2c_xfer(smu, req);
--	mutex_unlock(&adev->pm.mutex);
- 	if (r)
- 		goto fail;
- 
-@@ -1656,6 +1655,7 @@ static int smu_v13_0_6_i2c_xfer(struct i
- 	}
- 	r = num_msgs;
- fail:
-+	mutex_unlock(&adev->pm.mutex);
- 	kfree(req);
- 	return r;
- }
+ out:
+ 	return ret;
 
 
