@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3311375BEA7
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7EAB75BEA8
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231172AbjGUGTM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51798 "EHLO
+        id S230027AbjGUGTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231561AbjGUGSp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:18:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F98930F0
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:15:32 -0700 (PDT)
+        with ESMTP id S229925AbjGUGSr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:18:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A4B30F2
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:15:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C6026124F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:15:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54597C433C8;
-        Fri, 21 Jul 2023 06:15:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62CA66112C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:15:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FD3C433C7;
+        Fri, 21 Jul 2023 06:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689920130;
-        bh=M1j7C0nI24gGN+IGXLTshVcEETaJ1t+/VERXfNQV1AU=;
+        s=korg; t=1689920133;
+        bh=MWT3hRRxFRlsy6gK4DAZLjt+Vqif6DXKY4wZDQI/wVk=;
         h=Subject:To:Cc:From:Date:From;
-        b=GAHYR9FDNQUiX7RREa9kZpYSPNAiPehthJTbhUuR6ZgSjhLXmPFm20YW9oAxCjIvS
-         2vRquR7OSohrnnM6XHuEq0WPF7J1r2GhYfo3AhGf33K5ngsFiu1saGaD8RYVrfLeeM
-         Tvy2V/4/RLilz2plwAETO0lyrkbZsbAWPZI2V57w=
-Subject: FAILED: patch "[PATCH] PCI: rockchip: Fix window mapping and address translation for" failed to apply to 5.15-stable tree
+        b=xBA0g2Tqm89QnBkQV7mni4SSr3B2T5pRY659CAiqw0JDS+lKBqjJ66W4exsSXOSWA
+         wpxXL1ub8Gfgm2lL6cuVOEQgv3hXv1loHHv+YQq9CpLX9GlAMgQ47UyrOiwe2VVT7n
+         2b6J4jzRTcEfQ67miBKtTROeKdBWgKzkd+GWMdMw=
+Subject: FAILED: patch "[PATCH] PCI: rockchip: Fix window mapping and address translation for" failed to apply to 5.10-stable tree
 To:     rick.wertenbroek@gmail.com, dlemoal@kernel.org,
         lpieralisi@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:15:23 +0200
-Message-ID: <2023072123-plethora-donut-b142@gregkh>
+Date:   Fri, 21 Jul 2023 08:15:25 +0200
+Message-ID: <2023072125-clamor-unbolted-0cb4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x dc73ed0f1b8bddd7f2bf70d123e68ffc99ad71ce
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072123-plethora-donut-b142@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072125-clamor-unbolted-0cb4@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,19 @@ dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for end
 9dd3c7c4c8c3 ("PCI: rockchip: Add poll and timeout to wait for PHY PLLs to be locked")
 92a9c57c325d ("PCI: rockchip: Remove writes to unused registers")
 096950e230b8 ("PCI: rockchip: Fix find_first_zero_bit() limit")
+53fd3cbe5e9d ("PCI: endpoint: Add virtual function number in pci_epc ops")
+1cf362e907f3 ("PCI: endpoint: Add support to add virtual function in endpoint core")
+347269c113f1 ("PCI: Fix kernel-doc formatting")
+6613bc2301ba ("PCI: endpoint: Fix NULL pointer dereference for ->get_features()")
+8b821cf76150 ("PCI: endpoint: Add EP function driver to provide NTB functionality")
+dbcc542f3608 ("PCI: cadence: Implement ->msi_map_irq() ops")
+38ad827e3bc0 ("PCI: endpoint: Allow user to create sub-directory of 'EPF Device' directory")
+256ae475201b ("PCI: endpoint: Add pci_epf_ops to expose function-specific attrs")
+87d5972e476f ("PCI: endpoint: Add pci_epc_ops to map MSI IRQ")
+63840ff53223 ("PCI: endpoint: Add support to associate secondary EPC with EPF")
+0e27aeccfa3d ("PCI: endpoint: Make *_free_bar() to return error codes on failure")
+fa8fef0e104a ("PCI: endpoint: Add helper API to get the 'next' unreserved BAR")
+959a48d0eac0 ("PCI: endpoint: Make *_get_first_free_bar() take into account 64 bit BAR")
 
 thanks,
 
