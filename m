@@ -2,54 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6734E75CB1C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 17:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC0275CB2F
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 17:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231747AbjGUPM2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 11:12:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47960 "EHLO
+        id S231887AbjGUPOS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 11:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231691AbjGUPMW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 11:12:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 397353A86;
-        Fri, 21 Jul 2023 08:11:53 -0700 (PDT)
+        with ESMTP id S231892AbjGUPOK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 11:14:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D523A98;
+        Fri, 21 Jul 2023 08:14:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE04861CE8;
-        Fri, 21 Jul 2023 15:11:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B21C433C8;
-        Fri, 21 Jul 2023 15:11:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 956F161CEC;
+        Fri, 21 Jul 2023 15:13:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02E1C433CB;
+        Fri, 21 Jul 2023 15:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689952302;
-        bh=R0NhFhytJ7ntKMBnmoZsaLDFPS7OOg0XwxgrSgryfZs=;
+        s=k20201202; t=1689952439;
+        bh=YwIOYtjQQopxqVMGwCdqHddpY/KN/9YTvyayY+0BD+o=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IaY/CC9CHcS0AKIP12EvojQB3JHtnnHgSo6sS6QBUtZq/2bcEF/2S2QFUJdksYy5p
-         /gBv+ubGoXqxgeNnfCYkon4nZV13JjnP10+m8w3tYLnUzWo3at4qcoE8XkKL+SvfwA
-         mTwKzbFbkaBvVc8NOWhRgKHGPy450gaygZFm0xwmuUv+djG9zOjZ2CdY2Y5slc8C1Q
-         PIBg59QZy0jRH94b6jAg67YEwOjULAhlj2iXshb0/PxIOV2aGW9mywMRDsK5hN1pvm
-         nXGwvQdeTyTEkXdcr+6eAXhpw5nBLWkeNcoebRRz8KQ60P7/Zsb7e44V/vYiX7/Dqz
-         PXfL5fldCah9w==
-Date:   Fri, 21 Jul 2023 11:11:40 -0400
+        b=VQfnyRYr4kKWHYGElr6wSyLotg6sRZVYAkK0I0g0P2DMhZLfXuWgmSoPAyFcvoGTP
+         GDnUx36TIC1Qk4W8U8EqE1wpbYlzi7sarJWz7X2A+kxTqIdXLyWSZypoW7syHyERN1
+         4UaaGhrBAOq6mH6H92vZrEOscjX+ytF3wgYfDYphZ0jPryd6ZB1PElESLAmWlxyfNd
+         hX2H+7u6iJ/GnptmNJ5pfOklROZeROVZ5X0EfbmtDCvHjnnWi9kTcMuXPf+Ey0YBDw
+         29batj/P5YdkKkhZJeUqnt7s8cJnJf1VpOxpXbLDvY/e0AMTA8dWb19O/Zp2yUApI8
+         XUZA7I+pCsSUw==
+Date:   Fri, 21 Jul 2023 11:13:57 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Brian Norris <briannorris@chromium.org>
+To:     Mark Rutland <mark.rutland@arm.com>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Rob Barnes <robbarnes@google.com>,
-        Prashant Malani <pmalani@chromium.org>,
-        Tzung-Bi Shih <tzungbi@kernel.org>, bleung@chromium.org,
-        chrome-platform@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 6.4 01/12] platform/chrome: cros_ec: Report EC
- panic as uevent
-Message-ID: <ZLqgLDwKN+KngEAf@sashalap>
+        Junhao He <hejunhao3@huawei.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Yicong Yang <yangyicong@hisilicon.com>,
+        Will Deacon <will@kernel.org>, zhangshaokun@hisilicon.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.4 11/12] drivers/perf: hisi: Add support for
+ HiSilicon H60PA and PAv3 PMU driver
+Message-ID: <ZLqgtRcgGqmHUXFM@sashalap>
 References: <20230702195057.1787686-1-sashal@kernel.org>
- <CA+ASDXMZ_ZnJfpsY-8ZRByiox8HCSZeY08MvGSpznLYBtVR1bw@mail.gmail.com>
+ <20230702195057.1787686-11-sashal@kernel.org>
+ <ZKKfjW6Ix9dg11QZ@FVFF77S0Q05N>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+ASDXMZ_ZnJfpsY-8ZRByiox8HCSZeY08MvGSpznLYBtVR1bw@mail.gmail.com>
+In-Reply-To: <ZKKfjW6Ix9dg11QZ@FVFF77S0Q05N>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -60,32 +61,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 03:46:21PM -0700, Brian Norris wrote:
->On Sun, Jul 2, 2023 at 12:51 PM Sasha Levin <sashal@kernel.org> wrote:
+On Mon, Jul 03, 2023 at 11:14:37AM +0100, Mark Rutland wrote:
+>On Sun, Jul 02, 2023 at 03:50:56PM -0400, Sasha Levin wrote:
+>> From: Junhao He <hejunhao3@huawei.com>
 >>
->> From: Rob Barnes <robbarnes@google.com>
+>> [ Upstream commit 1a51688474c0d395b864e98236335fba712e29bf ]
 >>
->> [ Upstream commit 2cbf475a04b2ae3d722bbe41742e5d874a027fc3 ]
+>> Compared to the original PA device, H60PA offers higher bandwidth.
+>> The H60PA is a new device and we use HID to differentiate them.
 >>
->> Create a uevent when an EC panic is detected. This will allow udev rules
->> to trigger when a panic occurs. For example, a udev rule could be added to
->> capture an EC coredump. This approach avoids the need to stuff all the
->> processing into the driver.
+>> The events supported by PAv3 and PAv2 are different. The PAv3 PMU
+>> removed some events which are supported by PAv2 PMU. The older PA
+>> PMU driver will probe v3 as v2. Therefore PA events displayed by
+>> "perf list" cannot work properly. We add the HISI0275 HID for PAv3
+>> PMU to distinguish different.
 >>
->> Signed-off-by: Rob Barnes <robbarnes@google.com>
->> Reviewed-by: Prashant Malani <pmalani@chromium.org>
->> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
->> Link: https://lore.kernel.org/r/20230509232624.3120347-1-robbarnes@google.com
+>> For each H60PA PMU, except for the overflow interrupt register, other
+>> functions of the H60PA PMU are the same as the original PA PMU module.
+>> It has 8-programable counters and each counter is free-running.
+>> Interrupt is supported to handle counter (64-bits) overflow.
+>>
+>> Signed-off-by: Junhao He <hejunhao3@huawei.com>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+>> Acked-by: Mark Rutland <mark.rutland@arm.com>
+>> Link: https://lore.kernel.org/r/20230615125926.29832-2-hejunhao3@huawei.com
+>> Signed-off-by: Will Deacon <will@kernel.org>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
 >> ---
->>  drivers/platform/chrome/cros_ec_lpc.c | 3 +++
->>  1 file changed, 3 insertions(+)
+>>  drivers/perf/hisilicon/hisi_uncore_pa_pmu.c | 127 +++++++++++++++++---
+>>  drivers/perf/hisilicon/hisi_uncore_pmu.h    |   8 ++
+>>  2 files changed, 120 insertions(+), 15 deletions(-)
 >
->What sorcery determined this was a valid for-linux-stable patch? It's
->a new feature, and definitely not a for-stable candidate. Please
->remove this from the queue.
+>Why is this being backported to stable?
+>
+>This patch adds supoprt for new HW, and is clearly not a fix, so it's not clear
+>to me why it has been selected.
 
-Dropped, thanks.
+I'll drop it, thanks.
 
 -- 
 Thanks,
