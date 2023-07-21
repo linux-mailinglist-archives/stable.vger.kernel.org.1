@@ -2,139 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F7B75D3CC
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC87A75D1A0
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:51:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjGUTOg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:14:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37206 "EHLO
+        id S230223AbjGUSvD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:51:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbjGUTOf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF49830E1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:33 -0700 (PDT)
+        with ESMTP id S229994AbjGUSvC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:51:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71EEF30CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:51:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 468F561D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58443C433C8;
-        Fri, 21 Jul 2023 19:14:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10C0861D5E
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:51:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B38C433C8;
+        Fri, 21 Jul 2023 18:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966872;
-        bh=sdyKtshus89Fsr84p1ciHlLynRzSGXCSAw40pN5S9d4=;
+        s=korg; t=1689965460;
+        bh=Doll1Y7F/5/srrB7VRQS5YRY1jME9rb1fWNcFQqoUzQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0ZOm4N3fczwpmA6KoXXSG9MI6PapbqvM7wJYvHL+WcEpDH+S2Wuy09vMXZ91UGiHD
-         YLmg7QVelwl91GnRfFxDhT8JstFW5ySCcsad0d/jdQDGyJpXUgbDOxLfF9dvo03Zwl
-         M/zqK2fHnHtCbSs8S6jRR38gaGKM4pGT/vLgwuhU=
+        b=AkM6XhBH4ES1cB5gZvWGLGvuTYPUlj77EB5EJ3QoQDkxD8lzeKBgKOlzBPtvyfyoR
+         S3BQq/EGjeDBdOyEL07N0kqzhSkBjI1UsWNQnh+oxuGXLe+otfeZH4HgGp10B1906w
+         RSueDPsWwYxWXUcgf1Nx3V510eCb3Kh+w1bjkzTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 497/532] tty: serial: imx: fix rs485 rx after tx
+        patches@lists.linux.dev, Sean Wang <sean.ns.wang@amd.com>,
+        Marc Rossi <Marc.Rossi@amd.com>,
+        Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
+        "Tsung-hua (Ryan) Lin" <Tsung-hua.Lin@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.4 292/292] Revert "drm/amd: Disable PSR-SU on Parade 0803 TCON"
 Date:   Fri, 21 Jul 2023 18:06:41 +0200
-Message-ID: <20230721160641.529158433@linuxfoundation.org>
+Message-ID: <20230721160541.505230954@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
+References: <20230721160528.800311148@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Fuzzey <martin.fuzzey@flowbird.group>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 639949a7031e04c59ec91614eceb9543e9120f43 upstream.
+commit 1e66a17ce546eabad753178bbd4175cb52bafca8 upstream.
 
-Since commit 79d0224f6bf2 ("tty: serial: imx: Handle RS485 DE signal
-active high") RS485 reception no longer works after a transmission.
+This reverts commit 072030b1783056b5de8b0fac5303a5e9dbc6cfde.
+This is no longer necessary when using newer DMUB F/W.
 
-The following scenario shows the problem:
-	1) Open a port in RS485 mode
-	2) Receive data from remote (OK)
-	3) Transmit data to remote (OK)
-	4) Receive data from remote (Nothing received)
-
-In RS485 mode, imx_uart_start_tx() calls imx_uart_stop_rx() and, when the
-transmission is complete, imx_uart_stop_tx() calls imx_uart_start_rx().
-
-Since the above commit imx_uart_stop_rx() now sets the loopback bit but
-imx_uart_start_rx() does not clear it causing the hardware to remain in
-loopback mode and not receive external data.
-
-Fix this by moving the existing loopback disable code to a helper function
-and calling it from imx_uart_start_rx() too.
-
-Fixes: 79d0224f6bf2 ("tty: serial: imx: Handle RS485 DE signal active high")
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230616104838.2729694-1-martin.fuzzey@flowbird.group
+Cc: Sean Wang <sean.ns.wang@amd.com>
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Cc: Tsung-hua (Ryan) Lin <Tsung-hua.Lin@amd.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -397,6 +397,16 @@ static void start_hrtimer_ms(struct hrti
-        hrtimer_start(hrt, ms_to_ktime(msec), HRTIMER_MODE_REL);
- }
- 
-+static void imx_uart_disable_loopback_rs485(struct imx_port *sport)
-+{
-+	unsigned int uts;
-+
-+	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
-+	uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
-+	uts &= ~UTS_LOOP;
-+	imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-+}
-+
- /* called with port.lock taken and irqs off */
- static void imx_uart_start_rx(struct uart_port *port)
- {
-@@ -418,6 +428,7 @@ static void imx_uart_start_rx(struct uar
- 	/* Write UCR2 first as it includes RXEN */
- 	imx_uart_writel(sport, ucr2, UCR2);
- 	imx_uart_writel(sport, ucr1, UCR1);
-+	imx_uart_disable_loopback_rs485(sport);
- }
- 
- /* called with port.lock taken and irqs off */
-@@ -1394,7 +1405,7 @@ static int imx_uart_startup(struct uart_
- 	int retval, i;
- 	unsigned long flags;
- 	int dma_is_inited = 0;
--	u32 ucr1, ucr2, ucr3, ucr4, uts;
-+	u32 ucr1, ucr2, ucr3, ucr4;
- 
- 	retval = clk_prepare_enable(sport->clk_per);
- 	if (retval)
-@@ -1499,10 +1510,7 @@ static int imx_uart_startup(struct uart_
- 		imx_uart_writel(sport, ucr2, UCR2);
- 	}
- 
--	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
--	uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
--	uts &= ~UTS_LOOP;
--	imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-+	imx_uart_disable_loopback_rs485(sport);
- 
- 	spin_unlock_irqrestore(&sport->port.lock, flags);
- 
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -818,8 +818,6 @@ bool is_psr_su_specific_panel(struct dc_
+ 				((dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x08) ||
+ 				(dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x07)))
+ 				isPSRSUSupported = false;
+-			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
+-				isPSRSUSupported = false;
+ 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
+ 				isPSRSUSupported = true;
+ 		}
 
 
