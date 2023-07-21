@@ -2,166 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1AD75D3D6
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4206C75D190
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230257AbjGUTPC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37686 "EHLO
+        id S230071AbjGUSuO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231944AbjGUTPB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:15:01 -0400
+        with ESMTP id S229684AbjGUSuN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEAA30F1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0176530CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E7AE61D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BF2C433C8;
-        Fri, 21 Jul 2023 19:14:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 944DD61D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A502EC433C7;
+        Fri, 21 Jul 2023 18:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966898;
-        bh=XwLpsfSt4DfnlGKdMlCLkW535+hO5l5sLbgJA5kaJUo=;
+        s=korg; t=1689965412;
+        bh=feYMWgQ6hmqnIpf9xz6ddBfNzTOy4Q7lLVEwF7oy/2Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GCJYjajvOezf+tDq1c4Y+T3ek7QTgvcN4Rl45h4hZQavKAZeTLObAJAd3mljyPNUH
-         NkWuJROmVlx0VobC9fplq+trXIMoJVk09p8E/KmSzPvZlXDO/vbHQftC6+p27/dOfd
-         b2cg7uaR4p6glXTQEeLtuI2YXteTWDZ0iK/elmoI=
+        b=0DqmgZzNwv8bl57/6GKNf2S1LycItikLzuy/zOlCyjUZsxP8kA75JpjqPo3fK9suI
+         Hse2TlkHNahGYhTnuQoJ5bMSzZ8+yFEpCVCzinDRFaB54nzyeksUQp+MU4T1SXLGLz
+         rXoIK/kPh5EPjoKKHoDue9ysBvlLgXNo8miH+gwc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.15 478/532] PCI: rockchip: Fix legacy IRQ generation for RK3399 PCIe endpoint core
-Date:   Fri, 21 Jul 2023 18:06:22 +0200
-Message-ID: <20230721160640.447172429@linuxfoundation.org>
+        patches@lists.linux.dev, Beau Belgrave <beaub@linux.microsoft.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.4 274/292] tracing/user_events: Fix struct arg size match check
+Date:   Fri, 21 Jul 2023 18:06:23 +0200
+Message-ID: <20230721160540.706505889@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
+References: <20230721160528.800311148@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Beau Belgrave <beaub@linux.microsoft.com>
 
-commit 166e89d99dd85a856343cca51eee781b793801f2 upstream.
+commit d0a3022f30629a208e5944022caeca3568add9e7 upstream.
 
-Fix legacy IRQ generation for RK3399 PCIe endpoint core according to
-the technical reference manual (TRM). Assert and deassert legacy
-interrupt (INTx) through the legacy interrupt control register
-("PCIE_CLIENT_LEGACY_INT_CTRL") instead of manually generating a PCIe
-message. The generation of the legacy interrupt was tested and validated
-with the PCIe endpoint test driver.
+When users register an event the name of the event and it's argument are
+checked to ensure they match if the event already exists. Normally all
+arguments are in the form of "type name", except for when the type
+starts with "struct ". In those cases, the size of the struct is passed
+in addition to the name, IE: "struct my_struct a 20" for an argument
+that is of type "struct my_struct" with a field name of "a" and has the
+size of 20 bytes.
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-8-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+The current code does not honor the above case properly when comparing
+a match. This causes the event register to fail even when the same
+string was used for events that contain a struct argument within them.
+The example above "struct my_struct a 20" generates a match string of
+"struct my_struct a" omitting the size field.
+
+Add the struct size of the existing field when generating a comparison
+string for a struct field to ensure proper match checking.
+
+Link: https://lkml.kernel.org/r/20230629235049.581-2-beaub@linux.microsoft.com
+
 Cc: stable@vger.kernel.org
+Fixes: e6f89a149872 ("tracing/user_events: Ensure user provided strings are safely formatted")
+Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |   45 +++++++-----------------------
- drivers/pci/controller/pcie-rockchip.h    |    6 +++-
- 2 files changed, 16 insertions(+), 35 deletions(-)
+ kernel/trace/trace_events_user.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -347,48 +347,25 @@ static int rockchip_pcie_ep_get_msi(stru
- }
+--- a/kernel/trace/trace_events_user.c
++++ b/kernel/trace/trace_events_user.c
+@@ -1317,6 +1317,9 @@ static int user_field_set_string(struct
+ 	pos += snprintf(buf + pos, LEN_OR_ZERO, " ");
+ 	pos += snprintf(buf + pos, LEN_OR_ZERO, "%s", field->name);
  
- static void rockchip_pcie_ep_assert_intx(struct rockchip_pcie_ep *ep, u8 fn,
--					 u8 intx, bool is_asserted)
-+					 u8 intx, bool do_assert)
- {
- 	struct rockchip_pcie *rockchip = &ep->rockchip;
--	u32 r = ep->max_regions - 1;
--	u32 offset;
--	u32 status;
--	u8 msg_code;
--
--	if (unlikely(ep->irq_pci_addr != ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR ||
--		     ep->irq_pci_fn != fn)) {
--		rockchip_pcie_prog_ep_ob_atu(rockchip, fn, r,
--					     AXI_WRAPPER_NOR_MSG,
--					     ep->irq_phys_addr, 0, 0);
--		ep->irq_pci_addr = ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR;
--		ep->irq_pci_fn = fn;
--	}
- 
- 	intx &= 3;
--	if (is_asserted) {
++	if (str_has_prefix(field->type, "struct "))
++		pos += snprintf(buf + pos, LEN_OR_ZERO, " %d", field->size);
 +
-+	if (do_assert) {
- 		ep->irq_pending |= BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_ASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_ASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_PEND,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	} else {
- 		ep->irq_pending &= ~BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_DEASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_DEASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_NORMAL,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	}
--
--	status = rockchip_pcie_read(rockchip,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	status &= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--
--	if ((status != 0) ^ (ep->irq_pending != 0)) {
--		status ^= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--		rockchip_pcie_write(rockchip, status,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	}
--
--	offset =
--	   ROCKCHIP_PCIE_MSG_ROUTING(ROCKCHIP_PCIE_MSG_ROUTING_LOCAL_INTX) |
--	   ROCKCHIP_PCIE_MSG_CODE(msg_code) | ROCKCHIP_PCIE_MSG_NO_DATA;
--	writel(0, ep->irq_cpu_addr + offset);
- }
+ 	if (colon)
+ 		pos += snprintf(buf + pos, LEN_OR_ZERO, ";");
  
- static int rockchip_pcie_ep_send_legacy_irq(struct rockchip_pcie_ep *ep, u8 fn,
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -38,6 +38,11 @@
- #define   PCIE_CLIENT_MODE_EP            HIWORD_UPDATE(0x0040, 0)
- #define   PCIE_CLIENT_GEN_SEL_1		  HIWORD_UPDATE(0x0080, 0)
- #define   PCIE_CLIENT_GEN_SEL_2		  HIWORD_UPDATE_BIT(0x0080)
-+#define PCIE_CLIENT_LEGACY_INT_CTRL	(PCIE_CLIENT_BASE + 0x0c)
-+#define   PCIE_CLIENT_INT_IN_ASSERT		HIWORD_UPDATE_BIT(0x0002)
-+#define   PCIE_CLIENT_INT_IN_DEASSERT		HIWORD_UPDATE(0x0002, 0)
-+#define   PCIE_CLIENT_INT_PEND_ST_PEND		HIWORD_UPDATE_BIT(0x0001)
-+#define   PCIE_CLIENT_INT_PEND_ST_NORMAL	HIWORD_UPDATE(0x0001, 0)
- #define PCIE_CLIENT_SIDE_BAND_STATUS	(PCIE_CLIENT_BASE + 0x20)
- #define   PCIE_CLIENT_PHY_ST			BIT(12)
- #define PCIE_CLIENT_DEBUG_OUT_0		(PCIE_CLIENT_BASE + 0x3c)
-@@ -228,7 +233,6 @@
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_ME				BIT(16)
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP	BIT(24)
- #define ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR				0x1
--#define ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR		0x3
- #define ROCKCHIP_PCIE_EP_FUNC_BASE(fn)	(((fn) << 12) & GENMASK(19, 12))
- #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR0(fn, bar) \
- 	(PCIE_RC_RP_ATS_BASE + 0x0840 + (fn) * 0x0040 + (bar) * 0x0008)
 
 
