@@ -2,58 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E81775D3C5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D57C75D4B8
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjGUTOV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:14:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36996 "EHLO
+        id S232215AbjGUTYY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:24:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231933AbjGUTOU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587A8189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:19 -0700 (PDT)
+        with ESMTP id S232212AbjGUTYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C186189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1A1661D82
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE51CC433CB;
-        Fri, 21 Jul 2023 19:14:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ACA661B24
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC97C433C7;
+        Fri, 21 Jul 2023 19:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966858;
-        bh=YPrzQdZ6fOVgAYx+lrH9bQYV4H1Fbb25CNx8G/zWtZA=;
+        s=korg; t=1689967460;
+        bh=rKUqpJ30khBaAMAt25p8tOzX3nuj7xySXrfB+ctqZQ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FqJy+4bwG0u0OzjElVpPtS8w+OoiW+HjWs5TTLTNoleT/6+a7NtbQ6BNsvLTfcBqT
-         Veym7UshG4Jt87cWS4j3g9PBcg7887y190BTyPBeS1tq8QQ1vLQ6V7JL6ZPLLwrgXq
-         GFn+t5q7p0ql0PuciTrz0RWXjaAdpwo6M6Ect2v8=
+        b=eswGZPFnHo86KXed1FaHZohFLafulEfQa6Ixx2pqVnj9thrb/ZTnuyNf9u89hMVgC
+         uOLjoFkmJoCxWXtRVhW6OGzteG5OawXYHrBTezLmAVpNZ14B2Hg03Mnq52QXPcr41N
+         IFMLRDJOeIn0C0e6XMmxIbNSTgoKl+GDdWXBNXsU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= 
-        <ckoenig.leichtzumerken@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
-        <thomas.hellstrom@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH 5.15 492/532] drm/ttm: Dont leak a resource on swapout move error
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Sean Paul <seanpaul@chromium.org>
+Subject: [PATCH 6.1 143/223] drm/atomic: Allow vblank-enabled + self-refresh "disable"
 Date:   Fri, 21 Jul 2023 18:06:36 +0200
-Message-ID: <20230721160641.239324914@linuxfoundation.org>
+Message-ID: <20230721160526.968475130@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,37 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Brian Norris <briannorris@chromium.org>
 
-commit a590f03d8de7c4cb7ce4916dc7f2fd10711faabe upstream.
+commit 9d0e3cac3517942a6e00eeecfe583a98715edb16 upstream.
 
-If moving the bo to system for swapout failed, we were leaking
-a resource. Fix.
+The self-refresh helper framework overloads "disable" to sometimes mean
+"go into self-refresh mode," and this mode activates automatically
+(e.g., after some period of unchanging display output). In such cases,
+the display pipe is still considered "on", and user-space is not aware
+that we went into self-refresh mode. Thus, users may expect that
+vblank-related features (such as DRM_IOCTL_WAIT_VBLANK) still work
+properly.
 
-Fixes: bfa3357ef9ab ("drm/ttm: allocate resource object instead of embedding it v2")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: "Christian König" <ckoenig.leichtzumerken@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.14+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230626091450.14757-5-thomas.hellstrom@linux.intel.com
+However, we trigger the WARN_ONCE() here if a CRTC driver tries to leave
+vblank enabled.
+
+Add a different expectation: that CRTCs *should* leave vblank enabled
+when going into self-refresh.
+
+This patch is preparation for another patch -- "drm/rockchip: vop: Leave
+vblank enabled in self-refresh" -- which resolves conflicts between the
+above self-refresh behavior and the API tests in IGT's kms_vblank test
+module.
+
+== Some alternatives discussed: ==
+
+It's likely that on many display controllers, vblank interrupts will
+turn off when the CRTC is disabled, and so in some cases, self-refresh
+may not support vblank. To support such cases, we might consider
+additions to the generic helpers such that we fire vblank events based
+on a timer.
+
+However, there is currently only one driver using the common
+self-refresh helpers (i.e., rockchip), and at least as of commit
+bed030a49f3e ("drm/rockchip: Don't fully disable vop on self refresh"),
+the CRTC hardware is powered enough to continue to generate vblank
+interrupts.
+
+So we chose the simpler option of leaving vblank interrupts enabled. We
+can reevaluate this decision and perhaps augment the helpers if/when we
+gain a second driver that has different requirements.
+
+v3:
+ * include discussion summary
+
+v2:
+ * add 'ret != 0' warning case for self-refresh
+ * describe failing test case and relation to drm/rockchip patch better
+
+Cc: <stable@vger.kernel.org> # dependency for "drm/rockchip: vop: Leave
+                             # vblank enabled in self-refresh"
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230109171809.v3.1.I3904f697863649eb1be540ecca147a66e42bfad7@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_atomic_helper.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -1187,6 +1187,7 @@ int ttm_bo_swapout(struct ttm_buffer_obj
- 		ret = ttm_bo_handle_move_mem(bo, evict_mem, true, &ctx, &hop);
- 		if (unlikely(ret != 0)) {
- 			WARN(ret == -EMULTIHOP, "Unexpected multihop in swaput - likely driver bug.\n");
-+			ttm_resource_free(bo, &evict_mem);
- 			goto out;
- 		}
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -1225,7 +1225,16 @@ disable_outputs(struct drm_device *dev,
+ 			continue;
+ 
+ 		ret = drm_crtc_vblank_get(crtc);
+-		WARN_ONCE(ret != -EINVAL, "driver forgot to call drm_crtc_vblank_off()\n");
++		/*
++		 * Self-refresh is not a true "disable"; ensure vblank remains
++		 * enabled.
++		 */
++		if (new_crtc_state->self_refresh_active)
++			WARN_ONCE(ret != 0,
++				  "driver disabled vblank in self-refresh\n");
++		else
++			WARN_ONCE(ret != -EINVAL,
++				  "driver forgot to call drm_crtc_vblank_off()\n");
+ 		if (ret == 0)
+ 			drm_crtc_vblank_put(crtc);
  	}
 
 
