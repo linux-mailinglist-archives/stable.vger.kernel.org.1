@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EDF775BE4A
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E624D75BE4B
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbjGUGIf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46034 "EHLO
+        id S229688AbjGUGIi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbjGUGIf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:08:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC68792
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:08:32 -0700 (PDT)
+        with ESMTP id S229531AbjGUGIh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:08:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9960B10E5
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:08:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FF5A612C4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:08:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34836C433C7;
-        Fri, 21 Jul 2023 06:08:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2068C612B3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:08:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1C6C433C7;
+        Fri, 21 Jul 2023 06:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919711;
-        bh=XBw1LHEKFIUfBfeTG26DRjkBqV5OO+kp4PBOycme6DU=;
+        s=korg; t=1689919714;
+        bh=u/hrr0wCpHGYH7Q6u8Q2sZv2t2kpNAdTtICEbiKyCzg=;
         h=Subject:To:Cc:From:Date:From;
-        b=SU/39OGlMAT1f9f0CznvAKwIT7jYooXV2jjy70MPpcTz3QdV4I5niE3MdAtuHl283
-         XyluLHD3zyq7TmWwvBZUYYz3GrUPH+loqdAkhPNjaf8CH8XH5iUwoGvQYTlfoDLm22
-         xM6VOUiG8HiYSzb4ietHzan0eXaCGgQYnFaVjCp8=
-Subject: FAILED: patch "[PATCH] dm thin metadata: Fix ABBA deadlock by resetting" failed to apply to 6.1-stable tree
+        b=lJmMhlr+MrGTSuKONZ1cOT+EVGMdcJT3usjBpwmiv2G1z6o3qxr5hE7eMhwA0tLZf
+         zsxNPEhwdkcg2EkxzqPKqIJswiyfqBpuW5oDO6FfSEA22uuOEWtYaT3Z2Ys8qN+2Oo
+         vpc3XSuhXa1g0gGRIBW0rKXg3ehY3cJheGGnc824=
+Subject: FAILED: patch "[PATCH] dm thin metadata: Fix ABBA deadlock by resetting" failed to apply to 5.15-stable tree
 To:     lilingfeng3@huawei.com, snitzer@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:08:27 +0200
-Message-ID: <2023072127-renewably-landless-0789@gregkh>
+Date:   Fri, 21 Jul 2023 08:08:28 +0200
+Message-ID: <2023072128-verdict-thinner-97f6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x d48300120627a1cb98914738fff38b424625b8ad
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072127-renewably-landless-0789@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072128-verdict-thinner-97f6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
