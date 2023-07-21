@@ -2,47 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC12575D343
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C69375D431
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231767AbjGUTIo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:08:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60616 "EHLO
+        id S232068AbjGUTS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231769AbjGUTIn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:43 -0400
+        with ESMTP id S232066AbjGUTSo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A1F2D4A
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700A93A85;
+        Fri, 21 Jul 2023 12:18:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E6A861D5F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECABC433C7;
-        Fri, 21 Jul 2023 19:08:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EC1061D76;
+        Fri, 21 Jul 2023 19:18:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE95C433C8;
+        Fri, 21 Jul 2023 19:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966521;
-        bh=CHUmsZj+D7+iH6WWNsabthQ41BTDLVjoxVPKlaUQK88=;
+        s=korg; t=1689967121;
+        bh=4oolcSgpC5itJ5tUhjvjyvMGkMXzH6EhKOTc2yhRQ7U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JOsmA9l5+zfQFH4RRQuoSo0H0/9FmuBw7XALUz9p8H/9+pEp0ht5ThgNp7b2biZgv
-         H68Z+XsgHq5+GtueLTrF5hlNyYYMNEqsXV10EtgMirr8hwLji0kBDYZ4ypTofu2zUx
-         ewgZPrIi+7Yjy554h+8YsgpwHhL1fhMuPTGCgkgo=
+        b=TVCNGcYEcS2YTxWCIqgMVz9M6oR/6Eq/7vqfmhjPHc1vXEI0vGU1zSL5SewDf5v+T
+         tfGKjux777BR0kYfdZNWldPbdf7kq6TG2u4etBz0D8UWxGVZr8RHF7SOjFYgho55/0
+         BYuqFYHRFsEj1IibEiuULKR90zGpQiFj7pu6DWiM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 373/532] ARM: dts: qcom: ipq4019: fix broken NAND controller properties override
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Stanley Chu <stanley.chu@mediatek.com>,
+        Peter Wang <peter.wang@mediatek.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+        linux-scsi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        kernel test robot <lkp@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 024/223] scsi: ufs: ufs-mediatek: Add dependency for RESET_CONTROLLER
 Date:   Fri, 21 Jul 2023 18:04:37 +0200
-Message-ID: <20230721160634.711964606@linuxfoundation.org>
+Message-ID: <20230721160521.903534222@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,82 +63,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit edcbdd57de499305e2a3737d4a73fe387f71d84c upstream.
+[ Upstream commit 89f7ef7f2b23b2a7b8ce346c23161916eae5b15c ]
 
-After renaming NAND controller node name from "qpic-nand" to
-"nand-controller", the board DTS/DTSI also have to be updated:
+When RESET_CONTROLLER is not set, kconfig complains about missing
+dependencies for RESET_TI_SYSCON, so add the missing dependency just as is
+done above for SCSI_UFS_QCOM.
 
-  Warning (unit_address_vs_reg): /soc/qpic-nand@79b0000: node has a unit name, but no reg or ranges property
+Silences this kconfig warning:
 
-Cc: <stable@vger.kernel.org>
-Fixes: 9e1e00f18afc ("ARM: dts: qcom: Fix node name for NAND controller node")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230420072811.36947-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: unmet direct dependencies detected for RESET_TI_SYSCON
+  Depends on [n]: RESET_CONTROLLER [=n] && HAS_IOMEM [=y]
+  Selected by [m]:
+  - SCSI_UFS_MEDIATEK [=m] && SCSI_UFSHCD [=y] && SCSI_UFSHCD_PLATFORM [=y] && ARCH_MEDIATEK [=y]
+
+Fixes: de48898d0cb6 ("scsi: ufs-mediatek: Create reset control device_link")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: lore.kernel.org/r/202306020859.1wHg9AaT-lkp@intel.com
+Link: https://lore.kernel.org/r/20230701052348.28046-1-rdunlap@infradead.org
+Cc: Stanley Chu <stanley.chu@mediatek.com>
+Cc: Peter Wang <peter.wang@mediatek.com>
+Cc: Paul Gazzillo <paul@pgazz.com>
+Cc: Necip Fazil Yildiran <fazilyildiran@gmail.com>
+Cc: linux-scsi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1-c1.dts |    8 ++++----
- arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi   |   10 +++++-----
- arch/arm/boot/dts/qcom-ipq4019-ap.dk07.1.dtsi   |   12 ++++++------
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/ufs/host/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1-c1.dts
-+++ b/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1-c1.dts
-@@ -11,9 +11,9 @@
- 		dma@7984000 {
- 			status = "okay";
- 		};
--
--		qpic-nand@79b0000 {
--			status = "okay";
--		};
- 	};
- };
-+
-+&nand {
-+	status = "okay";
-+};
---- a/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
-+++ b/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
-@@ -102,10 +102,10 @@
- 			status = "okay";
- 			perst-gpio = <&tlmm 38 0x1>;
- 		};
--
--		qpic-nand@79b0000 {
--			pinctrl-0 = <&nand_pins>;
--			pinctrl-names = "default";
--		};
- 	};
- };
-+
-+&nand {
-+	pinctrl-0 = <&nand_pins>;
-+	pinctrl-names = "default";
-+};
---- a/arch/arm/boot/dts/qcom-ipq4019-ap.dk07.1.dtsi
-+++ b/arch/arm/boot/dts/qcom-ipq4019-ap.dk07.1.dtsi
-@@ -65,11 +65,11 @@
- 		dma@7984000 {
- 			status = "okay";
- 		};
--
--		qpic-nand@79b0000 {
--			pinctrl-0 = <&nand_pins>;
--			pinctrl-names = "default";
--			status = "okay";
--		};
- 	};
- };
-+
-+&nand {
-+	pinctrl-0 = <&nand_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
+diff --git a/drivers/ufs/host/Kconfig b/drivers/ufs/host/Kconfig
+index 4cc2dbd79ed0e..9b39fd76031be 100644
+--- a/drivers/ufs/host/Kconfig
++++ b/drivers/ufs/host/Kconfig
+@@ -71,6 +71,7 @@ config SCSI_UFS_QCOM
+ config SCSI_UFS_MEDIATEK
+ 	tristate "Mediatek specific hooks to UFS controller platform driver"
+ 	depends on SCSI_UFSHCD_PLATFORM && ARCH_MEDIATEK
++	depends on RESET_CONTROLLER
+ 	select PHY_MTK_UFS
+ 	select RESET_TI_SYSCON
+ 	help
+-- 
+2.39.2
+
 
 
