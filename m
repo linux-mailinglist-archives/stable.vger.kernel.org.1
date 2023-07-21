@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A083A75D36E
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C7B275D41E
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231823AbjGUTKe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:10:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33842 "EHLO
+        id S232014AbjGUTSK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:18:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231825AbjGUTKd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:33 -0400
+        with ESMTP id S232010AbjGUTSJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45CD31BF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9614E3A85
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C85E461D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC18CC433C8;
-        Fri, 21 Jul 2023 19:10:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35D7161D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F86C433C9;
+        Fri, 21 Jul 2023 19:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966632;
-        bh=v3q6iOFd57LN3peKlvR/MEs4hnm9JuTc+dUi2cn6GtI=;
+        s=korg; t=1689967078;
+        bh=valDxcbwD86q6Dqhmgsn3bQ61zmpH5uEzL+jpcukp3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z0FSXivzeyZ5AETNRQff+lmXn+4cKBlFVIATDZUKmZqYKK0Ds707zDXjLyjjwJyzy
-         6zpMvN+/ey2liaqTlymm+X3eVYIPAeST6+ga7KC5GY4IbITH7YryxsHIH8nAMouw6U
-         C1ER4CzTwIN6YVWplZePvov9pViUmjHMz9FSg0o8=
+        b=W1iF4Qes2ZvyfymKyt8AxEumcrNnuyPr/WmEkqeh9zQCUUERiSiUn6Q8CFRchDmIw
+         o7qfLon2IrYqOw/hoRrU/CiGBzEG0N+eoNLHIprharKFUBIn5CarVh6M8J1OiWHDx4
+         4ZKbkVsHNM1Fur3wAvIqMvr5eJakpRh1oRSZ2/o8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sherry Sun <sherry.sun@nxp.com>,
-        stable <stable@kernel.org>
-Subject: [PATCH 5.15 385/532] tty: serial: fsl_lpuart: add earlycon for imx8ulp platform
+        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
+        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/223] ntb: idt: Fix error handling in idt_pci_driver_init()
 Date:   Fri, 21 Jul 2023 18:04:49 +0200
-Message-ID: <20230721160635.362530413@linuxfoundation.org>
+Message-ID: <20230721160522.405033086@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,29 +54,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit e0edfdc15863ec80a1d9ac6e174dbccc00206dd0 upstream.
+[ Upstream commit c012968259b451dc4db407f2310fe131eaefd800 ]
 
-Add earlycon support for imx8ulp platform.
+A problem about ntb_hw_idt create debugfs failed is triggered with the
+following log given:
 
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230619080613.16522-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ [ 1236.637636] IDT PCI-E Non-Transparent Bridge Driver 2.0
+ [ 1236.639292] debugfs: Directory 'ntb_hw_idt' with parent '/' already present!
+
+The reason is that idt_pci_driver_init() returns pci_register_driver()
+directly without checking its return value, if pci_register_driver()
+failed, it returns without destroy the newly created debugfs, resulting
+the debugfs of ntb_hw_idt can never be created later.
+
+ idt_pci_driver_init()
+   debugfs_create_dir() # create debugfs directory
+   pci_register_driver()
+     driver_register()
+       bus_add_driver()
+         priv = kzalloc(...) # OOM happened
+   # return without destroy debugfs directory
+
+Fix by removing debugfs when pci_register_driver() returns error.
+
+Fixes: bf2a952d31d2 ("NTB: Add IDT 89HPESxNTx PCIe-switches support")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2632,6 +2632,7 @@ OF_EARLYCON_DECLARE(lpuart, "fsl,vf610-l
- OF_EARLYCON_DECLARE(lpuart32, "fsl,ls1021a-lpuart", lpuart32_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,ls1028a-lpuart", ls1028a_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,imx7ulp-lpuart", lpuart32_imx_early_console_setup);
-+OF_EARLYCON_DECLARE(lpuart32, "fsl,imx8ulp-lpuart", lpuart32_imx_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,imx8qxp-lpuart", lpuart32_imx_early_console_setup);
- EARLYCON_DECLARE(lpuart, lpuart_early_console_setup);
- EARLYCON_DECLARE(lpuart32, lpuart32_early_console_setup);
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index 0ed6f809ff2ee..51799fccf8404 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -2891,6 +2891,7 @@ static struct pci_driver idt_pci_driver = {
+ 
+ static int __init idt_pci_driver_init(void)
+ {
++	int ret;
+ 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
+ 
+ 	/* Create the top DebugFS directory if the FS is initialized */
+@@ -2898,7 +2899,11 @@ static int __init idt_pci_driver_init(void)
+ 		dbgfs_topdir = debugfs_create_dir(KBUILD_MODNAME, NULL);
+ 
+ 	/* Register the NTB hardware driver to handle the PCI device */
+-	return pci_register_driver(&idt_pci_driver);
++	ret = pci_register_driver(&idt_pci_driver);
++	if (ret)
++		debugfs_remove_recursive(dbgfs_topdir);
++
++	return ret;
+ }
+ module_init(idt_pci_driver_init);
+ 
+-- 
+2.39.2
+
 
 
