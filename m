@@ -2,75 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D836575BCB9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 05:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFB0875BCBE
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 05:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229751AbjGUDTG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 23:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52462 "EHLO
+        id S229883AbjGUDU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 23:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbjGUDTF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 23:19:05 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A135A272A;
-        Thu, 20 Jul 2023 20:19:04 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-55b5a3915f5so835565a12.0;
-        Thu, 20 Jul 2023 20:19:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689909544; x=1690514344;
-        h=content-transfer-encoding:subject:cc:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JnZZLXKopoPDJZvlIe8Qkn79tGnv8EjnYImRJi/CMeQ=;
-        b=OKJCRsLgzRojvIEOd+G+WO6qOOPYlbEGMnAA3etxOJ15TH8pVpZ91Uj+HLI/eEZM9N
-         rsHdmVRWR+lyRyX0XgGoDL5M1HzdfQu2QDsny/+w5kPr/w4UjuSLdt6dFEhYHH4vKRbd
-         jeXA62nQZc/vierDW5+n+WlSEswqA76E6yILexTMvg/h/qimCtJA5xlqJFOqm4CBCDrB
-         vW7zS5AFR+Han2K8UuYA68AQX/RY7WDkWGaXjcGRjfEE2A+KTQlmBfGU00CLGQ/Ac6KT
-         4cWf4FNF8v1MkoryWoTEHDT8Imh5EICCkKl8QfGy01M5V+Bc9+5H3uW/IwOhVJ1VS94D
-         HBhg==
+        with ESMTP id S229531AbjGUDUz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 23:20:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C891F2737
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 20:20:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689909603;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FYC8NzIvQBfwMzCN4Y1JOBLQ6XrEE/2B7fUpOXrUmEI=;
+        b=UOou8QTfjxXTcno8FoKmJcG0BQpk9GOfcU4bKaKsjYjMqHecL4M2mgy+YZRCRlwJvOKk8u
+        yObIxoix7UNvhgiw460+kD+R3ZzFYTdtgNO9KRsaFuX2+huQLDAHYNCuRUXo7l3n2nGofN
+        XegKuHysKOv9chbWP++B9yWOcKlFrnE=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-148-rjIt131FOt-s2BXL25b6qA-1; Thu, 20 Jul 2023 23:20:02 -0400
+X-MC-Unique: rjIt131FOt-s2BXL25b6qA-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-9932e8e76b9so108227866b.3
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 20:20:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689909544; x=1690514344;
-        h=content-transfer-encoding:subject:cc:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JnZZLXKopoPDJZvlIe8Qkn79tGnv8EjnYImRJi/CMeQ=;
-        b=Pj4uQqVpDrS7Hmb5IBJQQCvrN4A0/qU6n0ZR8+H0XOSKctHoYnQpTkBNpxiDB72k5e
-         M7fsI9IlrugIpqh6It5X8v45amRwq1nvcvq+B3kBxj1laixIPw3JIF/UKLYTK8adT/ic
-         ziQ/iED22ICjCaIE5U7sVw2nJdDu1YxyNHjeudn3CI7VV8YYe0/tFiDC3l/niey4o8h8
-         sH1XNF2A2XokeKqNMk8FDyjpR3sLYwZnUdaqE1yt/5uNmpMEM1xxWwy5G4mGzUiWwD7S
-         UyEZrWTDtm36eXURF+IEFq2Q5AgR+7VlipAtl20UgU0nWTXpCR9avtOF6AruEgJFwD5E
-         j9MQ==
-X-Gm-Message-State: ABy/qLZ1SwmuKG1BXBAsXsbwg6Yw8gA490mFK3EtAcqWxF9C3EDLaYd3
-        xtFPn+T9afhn79vgG8+3f+w=
-X-Google-Smtp-Source: APBJJlFSH473ZQlUiP9jUwhRDcbaBihfrQY+6GdViIe2H0d4aBUC/ywhBHN9DLxYCIocDhOIlYvVcg==
-X-Received: by 2002:a05:6a20:748b:b0:134:e14c:851b with SMTP id p11-20020a056a20748b00b00134e14c851bmr695853pzd.23.1689909543853;
-        Thu, 20 Jul 2023 20:19:03 -0700 (PDT)
-Received: from [192.168.0.104] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id c7-20020a170902d48700b001b80b342f61sm2134066plg.268.2023.07.20.20.19.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jul 2023 20:19:03 -0700 (PDT)
-Message-ID: <e7292802-e517-6469-6fbd-a4d30887c99b@gmail.com>
-Date:   Fri, 21 Jul 2023 10:18:56 +0700
+        d=1e100.net; s=20221208; t=1689909601; x=1690514401;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FYC8NzIvQBfwMzCN4Y1JOBLQ6XrEE/2B7fUpOXrUmEI=;
+        b=AYiwFZKPxXhopw51BeS5dzGTUJNP6vqZRVaCoZ7cJMEG2NjGj9Gn6WE3Zcr4p+Mvnl
+         /PMzBwrs93NqDDUiG1a/4luHhy1wKAsZYYYw0QTQCOKr8chg1tT1FiNYL9tmRpcmGr9Z
+         luQhnhwAhAP5AEb/OAvVUJF8Ft9Sa582VWX6FA+l4WAlgFB0aurAGIucq/f6olSDyfmL
+         qsKvshMcRUyRbDrO/hSnPIiZ0s7yxir0A85Bc7sBfN+h13sXCbAMItcZWZb45zwQmPGn
+         g5U2Uxdx3sh6RF+hzg615N5jMI+fo1DpIzp094gL7mVkAIMaD2oPY1mn8fmRwBPtLncY
+         QpLA==
+X-Gm-Message-State: ABy/qLbSHJRkR82i28IlR7V8AYK7fQNaQnJPXy+lcB5Fvp/xyG8fjVb7
+        79y3vbGyg8HCq9l0WcJS9L189UDbEMMur66n53UC8g3j8YZ4tPjiXd7bgCYoMrQA88dwhwMmiyU
+        ZJfmI1tEvUmq4j7tfbpohj06EUA22MWuH
+X-Received: by 2002:a17:907:2cd0:b0:997:e7d9:50f7 with SMTP id hg16-20020a1709072cd000b00997e7d950f7mr524602ejc.66.1689909601021;
+        Thu, 20 Jul 2023 20:20:01 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGxZ/7dmQ0ACW+P/oCGilRh3gbPCGWZCS1cQlobNnvAlXPulCfJCA6v70a4Rl8/p73DNoW7OzSpxKuezbFoMUo=
+X-Received: by 2002:a17:907:2cd0:b0:997:e7d9:50f7 with SMTP id
+ hg16-20020a1709072cd000b00997e7d950f7mr524588ejc.66.1689909600689; Thu, 20
+ Jul 2023 20:20:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To:     Josh Triplett <josh@joshtriplett.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Brian Lindholm <brian_lindholm@users.sourceforge.net>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Kernel Build System <linux-kbuild@vger.kernel.org>
-Subject: Fwd: 6.4.4 breaks module-free builds of Debian kernel packages
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+References: <20230629033533.270535-1-xiubli@redhat.com>
+In-Reply-To: <20230629033533.270535-1-xiubli@redhat.com>
+From:   Milind Changire <mchangir@redhat.com>
+Date:   Fri, 21 Jul 2023 08:49:24 +0530
+Message-ID: <CAED=hWCkMMjina5q1VhygNnkHD+nqLfeNKVp8Oof623K6iEwbw@mail.gmail.com>
+Subject: Re: [PATCH] ceph: defer stopping the mdsc delayed_work
+To:     xiubli@redhat.com
+Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,45 +75,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Looks good to me.
 
-I notice a regression report on Bugzilla [1]. Quoting from it:
+nit: typo for perioudically in commit message
 
-> I'm on AMD64 with Debian testing (trixie), where I build my own kernels (with CONFIG_MODULES unset) using "make bindeb-pkg". The build proceeds through 99% of the process, but fails here:
-> 
-> Kernel: arch/x86/boot/bzImage is ready  (#2)
-> make -f ./Makefile ARCH=x86     KERNELRELEASE=6.4.4-i5 intdeb-pkg
-> sh ./scripts/package/builddeb
-> ***
-> *** The present kernel configuration has modules disabled.
-> *** To use the module feature, please run "make menuconfig" etc.
-> *** to enable CONFIG_MODULES.
-> ***
-> make[5]: *** [Makefile:1969: modules_install] Error 1
-> make[4]: *** [scripts/Makefile.package:150: intdeb-pkg] Error 2
-> make[3]: *** [Makefile:1657: intdeb-pkg] Error 2
-> make[2]: *** [debian/rules:16: binary-arch] Error 2
-> dpkg-buildpackage: error: debian/rules binary subprocess returned exit status 2
-> make[1]: *** [scripts/Makefile.package:139: bindeb-pkg] Error 2
-> make: *** [Makefile:1657: bindeb-pkg] Error 2
-> 
-> 6.3.13 contained the same error, but I "fixed" that by moving to 6.4.3.  But alas, 6.4.4 now has the same issue.
-> 
-> I worked around the issue by changing "exit 1" to "exit 0" in the main Makefile (at "modules module_install", per the attached patch), but I don't know if this is a true fix or something that simply happens to work for my particular configuration.
+Reviewed-by: Milind Changire <mchangir@redhat.com>
 
-See Bugzilla for the full thread and attached patch that ignores the error.
 
-Josh: It looks like this regression is caused by a commit of yours
-(and also 1240dabe8d58b4). Would you like to take a look on it?
+On Thu, Jun 29, 2023 at 9:07=E2=80=AFAM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> Flushing the dirty buffer may take a long time if the Rados is
+> overloaded or if there is network issue. So we should ping the
+> MDSs perioudically to keep alive, else the MDS will blocklist
+> the kclient.
+>
+> Cc: stable@vger.kernel.org
+> Cc: Venky Shankar <vshankar@redhat.com>
+> URL: https://tracker.ceph.com/issues/61843
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>  fs/ceph/mds_client.c | 2 +-
+>  fs/ceph/mds_client.h | 3 ++-
+>  fs/ceph/super.c      | 7 ++++---
+>  3 files changed, 7 insertions(+), 5 deletions(-)
+>
+> diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+> index 65230ebefd51..70987b3c198a 100644
+> --- a/fs/ceph/mds_client.c
+> +++ b/fs/ceph/mds_client.c
+> @@ -5192,7 +5192,7 @@ static void delayed_work(struct work_struct *work)
+>
+>         doutc(mdsc->fsc->client, "mdsc delayed_work\n");
+>
+> -       if (mdsc->stopping)
+> +       if (mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHED)
+>                 return;
+>
+>         mutex_lock(&mdsc->mutex);
+> diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
+> index 5d02c8c582fd..befbd384428e 100644
+> --- a/fs/ceph/mds_client.h
+> +++ b/fs/ceph/mds_client.h
+> @@ -400,7 +400,8 @@ struct cap_wait {
+>
+>  enum {
+>         CEPH_MDSC_STOPPING_BEGIN =3D 1,
+> -       CEPH_MDSC_STOPPING_FLUSHED =3D 2,
+> +       CEPH_MDSC_STOPPING_FLUSHING =3D 2,
+> +       CEPH_MDSC_STOPPING_FLUSHED =3D 3,
+>  };
+>
+>  /*
+> diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+> index 8e1e517a45db..fb694ba72955 100644
+> --- a/fs/ceph/super.c
+> +++ b/fs/ceph/super.c
+> @@ -1488,7 +1488,7 @@ static int ceph_init_fs_context(struct fs_context *=
+fc)
+>  static bool __inc_stopping_blocker(struct ceph_mds_client *mdsc)
+>  {
+>         spin_lock(&mdsc->stopping_lock);
+> -       if (mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHED) {
+> +       if (mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHING) {
+>                 spin_unlock(&mdsc->stopping_lock);
+>                 return false;
+>         }
+> @@ -1501,7 +1501,7 @@ static void __dec_stopping_blocker(struct ceph_mds_=
+client *mdsc)
+>  {
+>         spin_lock(&mdsc->stopping_lock);
+>         if (!atomic_dec_return(&mdsc->stopping_blockers) &&
+> -           mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHED)
+> +           mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHING)
+>                 complete_all(&mdsc->stopping_waiter);
+>         spin_unlock(&mdsc->stopping_lock);
+>  }
+> @@ -1562,7 +1562,7 @@ static void ceph_kill_sb(struct super_block *s)
+>         sync_filesystem(s);
+>
+>         spin_lock(&mdsc->stopping_lock);
+> -       mdsc->stopping =3D CEPH_MDSC_STOPPING_FLUSHED;
+> +       mdsc->stopping =3D CEPH_MDSC_STOPPING_FLUSHING;
+>         wait =3D !!atomic_read(&mdsc->stopping_blockers);
+>         spin_unlock(&mdsc->stopping_lock);
+>
+> @@ -1576,6 +1576,7 @@ static void ceph_kill_sb(struct super_block *s)
+>                         pr_warn_client(cl, "umount was killed, %ld\n", ti=
+meleft);
+>         }
+>
+> +       mdsc->stopping =3D CEPH_MDSC_STOPPING_FLUSHED;
+>         kill_anon_super(s);
+>
+>         fsc->client->extra_mon_dispatch =3D NULL;
+> --
+> 2.40.1
+>
 
-Anyway, I'm adding this regression to be tracked by regzbot:
 
-#regzbot introduced: 4243afdb932677 https://bugzilla.kernel.org/show_bug.cgi?id=217689
-#regzbot title: always doing modules_install breaks CONFIG_MODULES=n builds
+--=20
+Milind
 
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217689
-
--- 
-An old man doll... just what I always wanted! - Clara
