@@ -2,128 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DAE375D475
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8173075D37F
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232152AbjGUTVd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:21:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43322 "EHLO
+        id S231844AbjGUTLX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:11:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232140AbjGUTV2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:21:28 -0400
+        with ESMTP id S231840AbjGUTLW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:11:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70FC71727
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:21:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617911BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:11:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC20661D6D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:21:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D7FC433C8;
-        Fri, 21 Jul 2023 19:21:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EBE0B61D7C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:11:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6ECC433C8;
+        Fri, 21 Jul 2023 19:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967278;
-        bh=hlxwbAxZHnNv3G2CKMRV4ejAE0sEv3+SY+Nix9/tL7Q=;
+        s=korg; t=1689966680;
+        bh=TVfaeV+ks4o3miTCbPXHXe1/1XS5YoK7MAOAL3l2Njo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z8N92/K9Ir8v8BoZ1CdEWEg8qK9cbz3pNQ2zloipb4SCmAyByAns3pbaTciyK1zhF
-         ipWB4xUhC+v+GEWbhG4sCnX6Z8SAO7OKl8e7rxN+EdzTCAqqfoyFJXzawIYfdJFTml
-         zaAS/AtA/gRKyELag3Uree+PTyK4ziqkG3YfhDv8=
+        b=Hi6tZAVSsPBusTlDkZ7buqRpxZx3fH9sGy8GDuQGXO4KeB896D4ABXdRaV2V1nNO6
+         05OVI1uepS+X203O1GeFK0+r6RhA4aR8KiK187oWolUTFe69muSdIdEwjE4UARctaY
+         UBTwGGKOYc5+hXt5+EDFsnyH2+4QIBysQoYRQnE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 079/223] pinctrl: amd: Add fields for interrupt status and wake status
-Date:   Fri, 21 Jul 2023 18:05:32 +0200
-Message-ID: <20230721160524.230930854@linuxfoundation.org>
+        patches@lists.linux.dev, Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+        Tejas Upadhyay <tejas.upadhyay@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 429/532] drm/i915: Fix one wrong caching mode enum usage
+Date:   Fri, 21 Jul 2023 18:05:33 +0200
+Message-ID: <20230721160637.840956454@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-commit 010f493d90ee1dbc32fa1ce51398f20d494c20c2 upstream.
+[ Upstream commit 113899c2669dff148b2a5bea4780123811aecc13 ]
 
-If the firmware has misconfigured a GPIO it may cause interrupt
-status or wake status bits to be set and not asserted. Add these
-to debug output to catch this case.
+Commit a4d86249c773 ("drm/i915/gt: Provide a utility to create a scratch
+buffer") mistakenly passed in uapi I915_CACHING_CACHED as argument to
+i915_gem_object_set_cache_coherency(), which actually takes internal
+enum i915_cache_level.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230328174231.8924-3-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+No functional issue since the value matches I915_CACHE_LLC (1 == 1), which
+is the intended caching mode, but lets clean it up nevertheless.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Fixes: a4d86249c773 ("drm/i915/gt: Provide a utility to create a scratch buffer")
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230707125503.3965817-1-tvrtko.ursulin@linux.intel.com
+(cherry picked from commit 49c60b2f0867ac36fd54d513882a48431aeccae7)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_gtt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -211,6 +211,8 @@ static void amd_gpio_dbg_show(struct seq
- 	char *wake_cntrl1;
- 	char *wake_cntrl2;
- 	char *pin_sts;
-+	char *interrupt_sts;
-+	char *wake_sts;
- 	char *pull_up_sel;
- 	char *orientation;
- 	char debounce_value[40];
-@@ -243,7 +245,7 @@ static void amd_gpio_dbg_show(struct seq
- 			continue;
- 		}
- 		seq_printf(s, "GPIO bank%d\n", bank);
--		seq_puts(s, "gpio\tint|active|trigger|S0i3| S3|S4/S5| Z|wake|pull|  orient|       debounce|reg\n");
-+		seq_puts(s, "gpio\t  int|active|trigger|S0i3| S3|S4/S5| Z|wake|pull|  orient|       debounce|reg\n");
- 		for (; i < pin_num; i++) {
- 			seq_printf(s, "#%d\t", i);
- 			raw_spin_lock_irqsave(&gpio_dev->lock, flags);
-@@ -274,12 +276,18 @@ static void amd_gpio_dbg_show(struct seq
- 				else
- 					interrupt_mask = "😷";
+diff --git a/drivers/gpu/drm/i915/gt/intel_gtt.c b/drivers/gpu/drm/i915/gt/intel_gtt.c
+index 2d3a979736cc1..f9d4094916e3d 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gtt.c
++++ b/drivers/gpu/drm/i915/gt/intel_gtt.c
+@@ -547,7 +547,7 @@ __vm_create_scratch_for_read(struct i915_address_space *vm, unsigned long size)
+ 	if (IS_ERR(obj))
+ 		return ERR_CAST(obj);
  
--				seq_printf(s, "%s|     %s|  %s|",
-+				if (pin_reg & BIT(INTERRUPT_STS_OFF))
-+					interrupt_sts = "🔥";
-+				else
-+					interrupt_sts = "  ";
-+
-+				seq_printf(s, "%s %s|     %s|  %s|",
-+				   interrupt_sts,
- 				   interrupt_mask,
- 				   active_level,
- 				   level_trig);
- 			} else
--				seq_puts(s, "  ∅|      |       |");
-+				seq_puts(s, "    ∅|      |       |");
+-	i915_gem_object_set_cache_coherency(obj, I915_CACHING_CACHED);
++	i915_gem_object_set_cache_coherency(obj, I915_CACHE_LLC);
  
- 			if (pin_reg & BIT(WAKE_CNTRL_OFF_S0I3))
- 				wake_cntrl0 = "⏰";
-@@ -305,6 +313,12 @@ static void amd_gpio_dbg_show(struct seq
- 				wake_cntrlz = "  ";
- 			seq_printf(s, "%s|", wake_cntrlz);
- 
-+			if (pin_reg & BIT(WAKE_STS_OFF))
-+				wake_sts = "🔥";
-+			else
-+				wake_sts = " ";
-+			seq_printf(s, "   %s|", wake_sts);
-+
- 			if (pin_reg & BIT(PULL_UP_ENABLE_OFF)) {
- 				if (pin_reg & BIT(PULL_UP_SEL_OFF))
- 					pull_up_sel = "8k";
+ 	vma = i915_vma_instance(obj, vm, NULL);
+ 	if (IS_ERR(vma)) {
+-- 
+2.39.2
+
 
 
