@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B71675D2BB
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C58CB75D2E3
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:04:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231594AbjGUTDE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:03:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56116 "EHLO
+        id S231652AbjGUTEu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231719AbjGUTDB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:03:01 -0400
+        with ESMTP id S231650AbjGUTEt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:04:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D442B30D6
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:03:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94EA230CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:04:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6846D61D85
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:03:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F64C433C8;
-        Fri, 21 Jul 2023 19:02:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D6A761D7F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:04:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4000AC433C8;
+        Fri, 21 Jul 2023 19:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966179;
-        bh=Emp9mvaD/c7n2S01WqXCpGFOSilggKT6T+FuqgaQSIY=;
+        s=korg; t=1689966287;
+        bh=Jz5Alhiv4qmFyNu5GmlaTP+nsdGPkRJoOTwi9Jf2ens=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rEutzd3JcEvLwUxiU6UikFs0tk20XvD2inPXUvaNUL7VAYRdWyO9IBnmmW7I2egOf
-         k8e9AAInbzbZKEsgmEpnBNPpqFUlPfsc8IN8ob4efYzddanj8RU5KNu8gyyfLymTNY
-         LeMRa63S6bwcZSXBvsSa59/IOGY2yOeNIRazw2cs=
+        b=hh+0K4KWZ9yYawdqpFnWwmjmQRSSGidTMpYrGAJwNale5Nz4Hih9Jn0YxNjGm4dnt
+         lFi2oM3Mw+IZH93zC7PYXkEEru3AMqz4GaYGijIH9x4BQuOjoQSRkZwMk428Xq0i8q
+         wqp4afpn1UNfN4Ak72I7Ht+ZhgA1NWuUVv2l3Ew0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 251/532] usb: dwc3: gadget: Propagate core init errors to UDC during pullup
-Date:   Fri, 21 Jul 2023 18:02:35 +0200
-Message-ID: <20230721160627.972147311@linuxfoundation.org>
+        patches@lists.linux.dev, EJ Hsu <ejh@nvidia.com>,
+        Haotien Hsu <haotienh@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 252/532] phy: tegra: xusb: Clear the driver reference in usb-phy dev
+Date:   Fri, 21 Jul 2023 18:02:36 +0200
+Message-ID: <20230721160628.023499125@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -55,52 +57,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: EJ Hsu <ejh@nvidia.com>
 
-commit c0aabed9cabe057309779a9e26fe86a113d24dad upstream.
+commit c0c2fcb1325d0d4f3b322b5ee49385f8eca2560d upstream.
 
-In scenarios where pullup relies on resume (get sync) to initialize
-the controller and set the run stop bit, then core_init is followed by
-gadget_resume which will eventually set run stop bit.
+For the dual-role port, it will assign the phy dev to usb-phy dev and
+use the port dev driver as the dev driver of usb-phy.
 
-But in cases where the core_init fails, the return value is not sent
-back to udc appropriately. So according to UDC the controller has
-started but in reality we never set the run stop bit.
+When we try to destroy the port dev, it will destroy its dev driver
+as well. But we did not remove the reference from usb-phy dev. This
+might cause the use-after-free issue in KASAN.
 
-On systems like Android, there are uevents sent to HAL depending on
-whether the configfs_bind / configfs_disconnect were invoked. In the
-above mentioned scnenario, if the core init fails, the run stop won't
-be set and the cable plug-out won't result in generation of any
-disconnect event and userspace would never get any uevent regarding
-cable plug out and we never call pullup(0) again. Furthermore none of
-the next Plug-In/Plug-Out's would be known to configfs.
+Fixes: e8f7d2f409a1 ("phy: tegra: xusb: Add usb-phy support")
+Cc: stable@vger.kernel.org
 
-Return back the appropriate result to UDC to let the userspace/
-configfs know that the pullup failed so they can take appropriate
-action.
-
-Fixes: 77adb8bdf422 ("usb: dwc3: gadget: Allow runtime suspend if UDC unbinded")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Message-ID: <20230618120949.14868-1-quic_kriskura@quicinc.com>
+Signed-off-by: EJ Hsu <ejh@nvidia.com>
+Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20230609062932.3276509-1-haotienh@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/phy/tegra/xusb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2530,7 +2530,9 @@ static int dwc3_gadget_pullup(struct usb
- 	ret = pm_runtime_get_sync(dwc->dev);
- 	if (!ret || ret < 0) {
- 		pm_runtime_put(dwc->dev);
--		return 0;
-+		if (ret < 0)
-+			pm_runtime_set_suspended(dwc->dev);
-+		return ret;
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -562,6 +562,7 @@ static void tegra_xusb_port_unregister(s
+ 		usb_role_switch_unregister(port->usb_role_sw);
+ 		cancel_work_sync(&port->usb_phy_work);
+ 		usb_remove_phy(&port->usb_phy);
++		port->usb_phy.dev->driver = NULL;
  	}
  
- 	if (dwc->pullups_connected == is_on) {
+ 	if (port->ops->remove)
 
 
