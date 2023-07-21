@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E1575C9F9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B2B575C9FA
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:26:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230347AbjGUO0l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:26:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47182 "EHLO
+        id S230243AbjGUO0m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231228AbjGUO0k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:26:40 -0400
+        with ESMTP id S230393AbjGUO0l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:26:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14032D7B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:26:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5514510FC
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:26:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2830D61C77
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:26:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2BBC433C7;
-        Fri, 21 Jul 2023 14:26:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF79061CB8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:26:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32CAC433C7;
+        Fri, 21 Jul 2023 14:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689949596;
-        bh=G7EP3PAPH9zvw9nK7sPpj4o5+fEuSaUCEwVG53Hihq8=;
+        s=korg; t=1689949599;
+        bh=aziOfRLKzs49xgS+NgcM1X6Xr7UGdW5cG0nipoafh5g=;
         h=Subject:To:Cc:From:Date:From;
-        b=EV8sGhlKhEPLCgIDxeeqa7ZDm7OEub9sbmgvPOM1PsgSgBjKrPsIXx9RLNJrYbeFe
-         b33OheYGPODHtcKM8bejVa1COJ/TnnHDvP5z9pGW+knRZB3o7a+4CevFRjKEXUkync
-         Y49ZjBAiwLHZCtM1Rp+PIvTrc2yHWItR3eIEgkQs=
-Subject: FAILED: patch "[PATCH] pwm: meson: fix handling of period/duty if greater than" failed to apply to 5.15-stable tree
+        b=qqaBjcLfWTTg2z2fShub83HcIXJXFw6unD3nuf9Dyx+wjfOEbL4wd3krSWMjZftHB
+         an45h88EYxEiqh5/NSbweUk4kXL3qvyKPqFY6ZI+3/IaRpO3N3nosRelewpY9prpaN
+         LdcDJoBmMawrI0eqQoKbwI0B9xXK718TUPzWpLj0=
+Subject: FAILED: patch "[PATCH] pwm: meson: fix handling of period/duty if greater than" failed to apply to 5.4-stable tree
 To:     hkallweit1@gmail.com, martin.blumenstingl@googlemail.com,
         thierry.reding@gmail.com, u.kleine-koenig@pengutronix.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:26:32 +0200
-Message-ID: <2023072131-widely-ploy-5798@gregkh>
+Date:   Fri, 21 Jul 2023 16:26:33 +0200
+Message-ID: <2023072133-plank-glorified-2d3f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -50,24 +50,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 87a2cbf02d7701255f9fcca7e5bd864a7bb397cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072131-widely-ploy-5798@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072133-plank-glorified-2d3f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 87a2cbf02d77 ("pwm: meson: fix handling of period/duty if greater than UINT_MAX")
 5f97f18feac9 ("pwm: meson: Simplify duplicated per-channel tracking")
+437fb760d046 ("pwm: meson: Remove redundant assignment to variable fin_freq")
 
 thanks,
 
