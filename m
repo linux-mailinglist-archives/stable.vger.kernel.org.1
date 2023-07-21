@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6D575D3DE
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A6FF75D4B3
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231947AbjGUTPV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:15:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37906 "EHLO
+        id S232206AbjGUTYJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:24:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231938AbjGUTPU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:15:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494E6189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:15:19 -0700 (PDT)
+        with ESMTP id S232211AbjGUTYI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C484AE75
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D42D561D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2902C433C7;
-        Fri, 21 Jul 2023 19:15:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6410361D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780DDC433C9;
+        Fri, 21 Jul 2023 19:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966918;
-        bh=J6l1VI58mMDClyQXsuGCiYrnZOAhyPHceffLm5OqdrQ=;
+        s=korg; t=1689967446;
+        bh=1i2FOhYFo2yxVMwN7eIXPosGo0H08fgwxF877f2JEfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lHYWwQc6vYpifOk1L6ncGtnoUUl5Mj7RbtYYtKMXT71qx8GjtsyONbtMMxSGJ7LMc
-         SmUPgjfhWJh9OArUvPF8PnXEZYQIKQ9sR1bekG5vsOOPj2oJs2LyZ9ekiAi/QBOv+n
-         JJRtvwOKWR6qEBiY8y3HgAt5si+mL4wG3QX3Xp5E=
+        b=yhPez6dOqWbe3GyKVnbH0HNt4hL2192fZQBXl/WRTnGCya2kB+8V8QNJhMnWakDhp
+         IuT7cOJN3Xm9pI4fNrbIobeaAjSFNeQ4O+N5EPi4TmHtUpw02sWvY5pYUpTF875vsv
+         GTcePCXHxO/p3ebu7rG6yUq+xyPFiUR6zrZmRDXI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 514/532] ring-buffer: Fix deadloop issue on reading trace_pipe
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Patrick Donnelly <pdonnell@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 165/223] ceph: dont let check_caps skip sending responses for revoke msgs
 Date:   Fri, 21 Jul 2023 18:06:58 +0200
-Message-ID: <20230721160642.537249397@linuxfoundation.org>
+Message-ID: <20230721160527.912109359@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,128 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 7e42907f3a7b4ce3a2d1757f6d78336984daf8f5 upstream.
+commit 257e6172ab36ebbe295a6c9ee9a9dd0fe54c1dc2 upstream.
 
-Soft lockup occurs when reading file 'trace_pipe':
+If a client sends out a cap update dropping caps with the prior 'seq'
+just before an incoming cap revoke request, then the client may drop
+the revoke because it believes it's already released the requested
+capabilities.
 
-  watchdog: BUG: soft lockup - CPU#6 stuck for 22s! [cat:4488]
-  [...]
-  RIP: 0010:ring_buffer_empty_cpu+0xed/0x170
-  RSP: 0018:ffff88810dd6fc48 EFLAGS: 00000246
-  RAX: 0000000000000000 RBX: 0000000000000246 RCX: ffffffff93d1aaeb
-  RDX: ffff88810a280040 RSI: 0000000000000008 RDI: ffff88811164b218
-  RBP: ffff88811164b218 R08: 0000000000000000 R09: ffff88815156600f
-  R10: ffffed102a2acc01 R11: 0000000000000001 R12: 0000000051651901
-  R13: 0000000000000000 R14: ffff888115e49500 R15: 0000000000000000
-  [...]
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f8d853c2000 CR3: 000000010dcd8000 CR4: 00000000000006e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   __find_next_entry+0x1a8/0x4b0
-   ? peek_next_entry+0x250/0x250
-   ? down_write+0xa5/0x120
-   ? down_write_killable+0x130/0x130
-   trace_find_next_entry_inc+0x3b/0x1d0
-   tracing_read_pipe+0x423/0xae0
-   ? tracing_splice_read_pipe+0xcb0/0xcb0
-   vfs_read+0x16b/0x490
-   ksys_read+0x105/0x210
-   ? __ia32_sys_pwrite64+0x200/0x200
-   ? switch_fpu_return+0x108/0x220
-   do_syscall_64+0x33/0x40
-   entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-Through the vmcore, I found it's because in tracing_read_pipe(),
-ring_buffer_empty_cpu() found some buffer is not empty but then it
-cannot read anything due to "rb_num_of_entries() == 0" always true,
-Then it infinitely loop the procedure due to user buffer not been
-filled, see following code path:
-
-  tracing_read_pipe() {
-    ... ...
-    waitagain:
-      tracing_wait_pipe() // 1. find non-empty buffer here
-      trace_find_next_entry_inc()  // 2. loop here try to find an entry
-        __find_next_entry()
-          ring_buffer_empty_cpu();  // 3. find non-empty buffer
-          peek_next_entry()  // 4. but peek always return NULL
-            ring_buffer_peek()
-              rb_buffer_peek()
-                rb_get_reader_page()
-                  // 5. because rb_num_of_entries() == 0 always true here
-                  //    then return NULL
-      // 6. user buffer not been filled so goto 'waitgain'
-      //    and eventually leads to an deadloop in kernel!!!
-  }
-
-By some analyzing, I found that when resetting ringbuffer, the 'entries'
-of its pages are not all cleared (see rb_reset_cpu()). Then when reducing
-the ringbuffer, and if some reduced pages exist dirty 'entries' data, they
-will be added into 'cpu_buffer->overrun' (see rb_remove_pages()), which
-cause wrong 'overrun' count and eventually cause the deadloop issue.
-
-To fix it, we need to clear every pages in rb_reset_cpu().
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230708225144.3785600-1-zhengyejian1@huawei.com
+This causes the MDS to wait indefinitely for the client to respond
+to the revoke. It's therefore always a good idea to ack the cap
+revoke request with the bumped up 'seq'.
 
 Cc: stable@vger.kernel.org
-Fixes: a5fb833172eca ("ring-buffer: Fix uninitialized read_stamp")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://tracker.ceph.com/issues/61782
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ fs/ceph/caps.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -5196,28 +5196,34 @@ unsigned long ring_buffer_size(struct tr
- }
- EXPORT_SYMBOL_GPL(ring_buffer_size);
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -3561,6 +3561,15 @@ static void handle_cap_grant(struct inod
+ 	}
+ 	BUG_ON(cap->issued & ~cap->implemented);
  
-+static void rb_clear_buffer_page(struct buffer_page *page)
-+{
-+	local_set(&page->write, 0);
-+	local_set(&page->entries, 0);
-+	rb_init_page(page->page);
-+	page->read = 0;
-+}
-+
- static void
- rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
- {
-+	struct buffer_page *page;
-+
- 	rb_head_page_deactivate(cpu_buffer);
- 
- 	cpu_buffer->head_page
- 		= list_entry(cpu_buffer->pages, struct buffer_page, list);
--	local_set(&cpu_buffer->head_page->write, 0);
--	local_set(&cpu_buffer->head_page->entries, 0);
--	local_set(&cpu_buffer->head_page->page->commit, 0);
--
--	cpu_buffer->head_page->read = 0;
-+	rb_clear_buffer_page(cpu_buffer->head_page);
-+	list_for_each_entry(page, cpu_buffer->pages, list) {
-+		rb_clear_buffer_page(page);
++	/* don't let check_caps skip sending a response to MDS for revoke msgs */
++	if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
++		cap->mds_wanted = 0;
++		if (cap == ci->i_auth_cap)
++			check_caps = 1; /* check auth cap only */
++		else
++			check_caps = 2; /* check all caps */
 +	}
- 
- 	cpu_buffer->tail_page = cpu_buffer->head_page;
- 	cpu_buffer->commit_page = cpu_buffer->head_page;
- 
- 	INIT_LIST_HEAD(&cpu_buffer->reader_page->list);
- 	INIT_LIST_HEAD(&cpu_buffer->new_pages);
--	local_set(&cpu_buffer->reader_page->write, 0);
--	local_set(&cpu_buffer->reader_page->entries, 0);
--	local_set(&cpu_buffer->reader_page->page->commit, 0);
--	cpu_buffer->reader_page->read = 0;
-+	rb_clear_buffer_page(cpu_buffer->reader_page);
- 
- 	local_set(&cpu_buffer->entries_bytes, 0);
- 	local_set(&cpu_buffer->overrun, 0);
++
+ 	if (extra_info->inline_version > 0 &&
+ 	    extra_info->inline_version >= ci->i_inline_version) {
+ 		ci->i_inline_version = extra_info->inline_version;
 
 
