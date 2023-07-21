@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0106575D4EE
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D18775D4EF
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbjGUT0d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:26:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47678 "EHLO
+        id S232286AbjGUT0m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231406AbjGUT0c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:26:32 -0400
+        with ESMTP id S231406AbjGUT0g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:26:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480B62D45
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:26:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF26E30F0
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:26:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA58061D5C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:26:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61E2C433CB;
-        Fri, 21 Jul 2023 19:26:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B0CE861D54
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C9EC433C7;
+        Fri, 21 Jul 2023 19:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967580;
-        bh=Rr6D4KMG8zVHor8MqsIkJPxW6vXPdo/+gmQ7RAgmais=;
+        s=korg; t=1689967583;
+        bh=uaIbwgGTIwlDkwrwNfOQpJkRm4Y2mcnvNXXyprB9IeE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nz9y6/m3ZYRxqHQVuP+69s6U9WnXngvYAts9th2DpFspGyEEsLyTxOhHOmXv/m1sw
-         HFkUzx4Y4ymDjkXo7gL78uCQDS1QGwv9GzFtp0ZdazK2qrcjbtQlhi1B3Ek9Bpk1sQ
-         CqoN1FQ/jAWYtg5zAYyXLhWx73bLp0HOzmfqFHgU=
+        b=SUtIvdHneCYdxEGdq1TzxygLsfAaToxqfsXc/sFgy0R+R6krVOuCuxdvaOhZkvYbi
+         dFk9pZSIB2/ATzJnDp+bCL+Fpiof1FiCltAias/YV6Kl+lx7PXDbhT1V46QfxmKs/J
+         ucEerSuXQRXrXcs4GB6BHK/EvT4bTg8KjeWXXRmc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        patches@lists.linux.dev, Bikash Hazarika <bhazarika@marvell.com>,
         Nilesh Javali <njavali@marvell.com>,
         Himanshu Madhani <himanshu.madhani@oracle.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 213/223] scsi: qla2xxx: Fix buffer overrun
-Date:   Fri, 21 Jul 2023 18:07:46 +0200
-Message-ID: <20230721160529.955850262@linuxfoundation.org>
+Subject: [PATCH 6.1 214/223] scsi: qla2xxx: Fix potential NULL pointer dereference
+Date:   Fri, 21 Jul 2023 18:07:47 +0200
+Message-ID: <20230721160529.997677620@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
 References: <20230721160520.865493356@linuxfoundation.org>
@@ -56,38 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quinn Tran <qutran@marvell.com>
+From: Bikash Hazarika <bhazarika@marvell.com>
 
-commit b68710a8094fdffe8dd4f7a82c82649f479bb453 upstream.
+commit 464ea494a40c6e3e0e8f91dd325408aaf21515ba upstream.
 
-Klocwork warning: Buffer Overflow - Array Index Out of Bounds
-
-Driver uses fc_els_flogi to calculate size of buffer.  The actual buffer is
-nested inside of fc_els_flogi which is smaller.
-
-Replace structure name to allow proper size calculation.
+Klocwork tool reported 'cur_dsd' may be dereferenced.  Add fix to validate
+pointer before dereferencing the pointer.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
 Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-6-njavali@marvell.com
+Link: https://lore.kernel.org/r/20230607113843.37185-3-njavali@marvell.com
 Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_iocb.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -5571,7 +5571,7 @@ static void qla_get_login_template(scsi_
- 	__be32 *q;
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -607,7 +607,8 @@ qla24xx_build_scsi_type_6_iocbs(srb_t *s
+ 	put_unaligned_le32(COMMAND_TYPE_6, &cmd_pkt->entry_type);
  
- 	memset(ha->init_cb, 0, ha->init_cb_size);
--	sz = min_t(int, sizeof(struct fc_els_flogi), ha->init_cb_size);
-+	sz = min_t(int, sizeof(struct fc_els_csp), ha->init_cb_size);
- 	rval = qla24xx_get_port_login_templ(vha, ha->init_cb_dma,
- 					    ha->init_cb, sz);
- 	if (rval != QLA_SUCCESS) {
+ 	/* No data transfer */
+-	if (!scsi_bufflen(cmd) || cmd->sc_data_direction == DMA_NONE) {
++	if (!scsi_bufflen(cmd) || cmd->sc_data_direction == DMA_NONE ||
++	    tot_dsds == 0) {
+ 		cmd_pkt->byte_count = cpu_to_le32(0);
+ 		return 0;
+ 	}
 
 
