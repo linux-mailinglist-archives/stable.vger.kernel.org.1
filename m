@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 160B675BF4E
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD2775BF7C
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229719AbjGUHFc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:05:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45930 "EHLO
+        id S229534AbjGUHWB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:22:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230090AbjGUHFa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:05:30 -0400
+        with ESMTP id S229953AbjGUHWA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:22:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931F02D54
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:05:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0FE10DB
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:21:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E628D61337
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:05:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA372C433C7;
-        Fri, 21 Jul 2023 07:05:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFBF461376
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:21:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26CFC433CA;
+        Fri, 21 Jul 2023 07:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689923125;
-        bh=ylkVOvK7r0BfymA82t8Vtsh+buUG337Crqjcnh/ZxXo=;
+        s=korg; t=1689924117;
+        bh=T6ohKvTWz8HHZWnEfnkQ23QOpYagKC7sqvze6rIw/+Q=;
         h=Subject:To:Cc:From:Date:From;
-        b=2iS8SGc9R+IdBNoOf6lErr8/wMJD6fBKYgXL/OFKvFUjzjt2JKShI25gDkAeKrZ6E
-         m0DtEk0/YqOJiWj+JcDBI+SxFEh0M9azvGBpx4IifwocziGu/Y3kuIvNLaZykxzhb6
-         bHkgi/Vpq7SmE/nqV88PY8HeK08qmtvxL6/Hdz28=
-Subject: FAILED: patch "[PATCH] scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc()" failed to apply to 5.15-stable tree
-To:     justin.tee@broadcom.com, error27@gmail.com,
-        martin.petersen@oracle.com, stable@vger.kernel.org
+        b=cgslpB3Rr6jEYzWI+lI0FtVYb88ng1WumA6iKwA8IdKSED+ZRaEM0B0KJ2sWLb+EM
+         hgbUcyLhUtfsjbg1+wGRwpUS3paZhOYBJfG1d/gW9fAOtZ9l9KAVgxMSpEEFj4q/T+
+         B40BLdXZB978GSuQm+cmoU+BpbhZEeUtB5WcQu6M=
+Subject: FAILED: patch "[PATCH] drm/dp_mst: Clear MSG_RDY flag before sending new message" failed to apply to 6.1-stable tree
+To:     Wayne.Lin@amd.com, alexander.deucher@amd.com,
+        jani.nikula@intel.com, lyude@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:05:22 +0200
-Message-ID: <2023072122-stumbling-unproven-d06f@gregkh>
+Date:   Fri, 21 Jul 2023 09:21:44 +0200
+Message-ID: <2023072144-crunching-elongated-08d7@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,42 +50,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 97f975823f8196d970bd795087b514271214677a
+git cherry-pick -x 72f1de49ffb90b29748284f27f1d6b829ab1de95
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072122-stumbling-unproven-d06f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072144-crunching-elongated-08d7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-97f975823f81 ("scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc() caused by lpfc_nlp_not_used()")
-d51cf5bd926c ("scsi: lpfc: Fix field overload in lpfc_iocbq data structure")
-0e082d926f59 ("scsi: lpfc: SLI path split: Refactor BSG paths")
-31a59f75702f ("scsi: lpfc: SLI path split: Refactor Abort paths")
-3512ac094293 ("scsi: lpfc: SLI path split: Refactor SCSI paths")
-61910d6a5243 ("scsi: lpfc: SLI path split: Refactor CT paths")
-2d1928c57df6 ("scsi: lpfc: SLI path split: Refactor misc ELS paths")
-351849800157 ("scsi: lpfc: SLI path split: Refactor VMID paths")
-9d41f08aa2eb ("scsi: lpfc: SLI path split: Refactor FDISC paths")
-e0367dfe90d6 ("scsi: lpfc: SLI path split: Refactor LS_RJT paths")
-3f607dcb43f1 ("scsi: lpfc: SLI path split: Refactor LS_ACC paths")
-3bea83b68d54 ("scsi: lpfc: SLI path split: Refactor the RSCN/SCR/RDF/EDC/FARPR paths")
-cad93a089031 ("scsi: lpfc: SLI path split: Refactor PLOGI/PRLI/ADISC/LOGO paths")
-6831ce129f19 ("scsi: lpfc: SLI path split: Refactor base ELS paths and the FLOGI path")
-561341425bcc ("scsi: lpfc: SLI path split: Introduce lpfc_prep_wqe")
-1b64aa9eae28 ("scsi: lpfc: SLI path split: Refactor fast and slow paths to native SLI4")
-a680a9298e7b ("scsi: lpfc: SLI path split: Refactor lpfc_iocbq")
-0956ba63bd94 ("scsi: lpfc: Fix non-recovery of remote ports following an unsolicited LOGO")
-1854f53ccd88 ("scsi: lpfc: Fix link down processing to address NULL pointer dereference")
-ec65e6beb02e ("Merge branch '5.15/scsi-fixes' into 5.16/scsi-staging")
+72f1de49ffb9 ("drm/dp_mst: Clear MSG_RDY flag before sending new message")
+ae67558be712 ("drm/amd/display: fix some coding style issues")
+30ebe41582d1 ("drm/amd/display: add FB_DAMAGE_CLIPS support")
+6e5abe94c6eb ("drm/amd/display: use max_dsc_bpp in amdgpu_dm")
 
 thanks,
 
@@ -93,146 +77,285 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 97f975823f8196d970bd795087b514271214677a Mon Sep 17 00:00:00 2001
-From: Justin Tee <justin.tee@broadcom.com>
-Date: Mon, 17 Apr 2023 12:15:53 -0700
-Subject: [PATCH] scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc()
- caused by lpfc_nlp_not_used()
+From 72f1de49ffb90b29748284f27f1d6b829ab1de95 Mon Sep 17 00:00:00 2001
+From: Wayne Lin <Wayne.Lin@amd.com>
+Date: Mon, 17 Apr 2023 17:08:12 +0800
+Subject: [PATCH] drm/dp_mst: Clear MSG_RDY flag before sending new message
 
-Smatch detected a double free path because lpfc_nlp_not_used() releases an
-ndlp object before reaching lpfc_nlp_put() at the end of
-lpfc_cmpl_els_logo_acc().
+[Why]
+The sequence for collecting down_reply from source perspective should
+be:
 
-Remove the outdated lpfc_nlp_not_used() routine.  In
-lpfc_mbx_cmpl_ns_reg_login(), replace the call with lpfc_nlp_put().  In
-lpfc_cmpl_els_logo_acc(), replace the call with lpfc_unreg_rpi() and keep
-the lpfc_nlp_put() at the end of the routine.  If ndlp's rpi was
-registered, then lpfc_unreg_rpi()'s completion routine performs the final
-ndlp clean up after lpfc_nlp_put() is called from lpfc_cmpl_els_logo_acc().
-Otherwise if ndlp has no rpi registered, the lpfc_nlp_put() at the end of
-lpfc_cmpl_els_logo_acc() is the final ndlp clean up.
+Request_n->repeat (get partial reply of Request_n->clear message ready
+flag to ack DPRX that the message is received) till all partial
+replies for Request_n are received->new Request_n+1.
 
-Fixes: 4430f7fd09ec ("scsi: lpfc: Rework locations of ndlp reference taking")
-Cc: <stable@vger.kernel.org> # v5.11+
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/all/Y3OefhyyJNKH%2Fiaf@kili/
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20230417191558.83100-3-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Now there is chance that drm_dp_mst_hpd_irq() will fire new down
+request in the tx queue when the down reply is incomplete. Source is
+restricted to generate interveleaved message transactions so we should
+avoid it.
 
-diff --git a/drivers/scsi/lpfc/lpfc_crtn.h b/drivers/scsi/lpfc/lpfc_crtn.h
-index b833b983e69d..0b9edde26abd 100644
---- a/drivers/scsi/lpfc/lpfc_crtn.h
-+++ b/drivers/scsi/lpfc/lpfc_crtn.h
-@@ -134,7 +134,6 @@ void lpfc_check_nlp_post_devloss(struct lpfc_vport *vport,
- 				 struct lpfc_nodelist *ndlp);
- void lpfc_ignore_els_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 			  struct lpfc_iocbq *rspiocb);
--int  lpfc_nlp_not_used(struct lpfc_nodelist *ndlp);
- struct lpfc_nodelist *lpfc_setup_disc_node(struct lpfc_vport *, uint32_t);
- void lpfc_disc_list_loopmap(struct lpfc_vport *);
- void lpfc_disc_start(struct lpfc_vport *);
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index 6a15f879e517..a3c8550e9985 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -5205,14 +5205,9 @@ lpfc_els_free_iocb(struct lpfc_hba *phba, struct lpfc_iocbq *elsiocb)
-  *
-  * This routine is the completion callback function to the Logout (LOGO)
-  * Accept (ACC) Response ELS command. This routine is invoked to indicate
-- * the completion of the LOGO process. It invokes the lpfc_nlp_not_used() to
-- * release the ndlp if it has the last reference remaining (reference count
-- * is 1). If succeeded (meaning ndlp released), it sets the iocb ndlp
-- * field to NULL to inform the following lpfc_els_free_iocb() routine no
-- * ndlp reference count needs to be decremented. Otherwise, the ndlp
-- * reference use-count shall be decremented by the lpfc_els_free_iocb()
-- * routine. Finally, the lpfc_els_free_iocb() is invoked to release the
-- * IOCB data structure.
-+ * the completion of the LOGO process. If the node has transitioned to NPR,
-+ * this routine unregisters the RPI if it is still registered. The
-+ * lpfc_els_free_iocb() is invoked to release the IOCB data structure.
-  **/
- static void
- lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
-@@ -5253,19 +5248,9 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 		    (ndlp->nlp_last_elscmd == ELS_CMD_PLOGI))
- 			goto out;
+Also, while assembling partial reply packets, reading out DPCD DOWN_REP
+Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
+wrapped up as a complete operation for reading out a reply packet.
+Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
+be risky. e.g. If the reply of the new request has overwritten the
+DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
+DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
+for the new request. Should handle the up request in the same way.
+
+[How]
+Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
+event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
+trigger drm_dp_mst_kick_tx() only when there is no on going message
+transaction.
+
+Changes since v1:
+* Reworked on review comments received
+-> Adjust the fix to let driver explicitly kick off new down request
+when mst irq event is handled and acked
+-> Adjust the commit message
+
+Changes since v2:
+* Adjust the commit message
+* Adjust the naming of the divided 2 functions and add a new input
+  parameter "ack".
+* Adjust code flow as per review comments.
+
+Changes since v3:
+* Update the function description of drm_dp_mst_hpd_irq_handle_event
+
+Changes since v4:
+* Change ack of drm_dp_mst_hpd_irq_handle_event() to be an array align
+  the size of esi[]
+
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 8964bb87e0d5..514f6785a020 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3267,6 +3267,7 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
  
--		/* NPort Recovery mode or node is just allocated */
--		if (!lpfc_nlp_not_used(ndlp)) {
--			/* A LOGO is completing and the node is in NPR state.
--			 * Just unregister the RPI because the node is still
--			 * required.
--			 */
-+		if (ndlp->nlp_flag & NLP_RPI_REGISTERED)
- 			lpfc_unreg_rpi(vport, ndlp);
--		} else {
--			/* Indicate the node has already released, should
--			 * not reference to it from within lpfc_els_free_iocb.
--			 */
--			cmdiocb->ndlp = NULL;
--		}
+ 	while (dret == dpcd_bytes_to_read &&
+ 		process_count < max_process_count) {
++		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
+ 		u8 retry;
+ 		dret = 0;
+ 
+@@ -3275,28 +3276,29 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
+ 		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
+ 		/* handle HPD short pulse irq */
+ 		if (aconnector->mst_mgr.mst_state)
+-			drm_dp_mst_hpd_irq(
+-				&aconnector->mst_mgr,
+-				esi,
+-				&new_irq_handled);
++			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
++							esi,
++							ack,
++							&new_irq_handled);
+ 
+ 		if (new_irq_handled) {
+ 			/* ACK at DPCD to notify down stream */
+-			const int ack_dpcd_bytes_to_write =
+-				dpcd_bytes_to_read - 1;
+-
+ 			for (retry = 0; retry < 3; retry++) {
+-				u8 wret;
+-
+-				wret = drm_dp_dpcd_write(
+-					&aconnector->dm_dp_aux.aux,
+-					dpcd_addr + 1,
+-					&esi[1],
+-					ack_dpcd_bytes_to_write);
+-				if (wret == ack_dpcd_bytes_to_write)
++				ssize_t wret;
 +
- 	}
-  out:
- 	/*
-@@ -5285,9 +5270,8 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
-  * RPI (Remote Port Index) mailbox command to the @phba. It simply releases
-  * the associated lpfc Direct Memory Access (DMA) buffer back to the pool and
-  * decrements the ndlp reference count held for this completion callback
-- * function. After that, it invokes the lpfc_nlp_not_used() to check
-- * whether there is only one reference left on the ndlp. If so, it will
-- * perform one more decrement and trigger the release of the ndlp.
-+ * function. After that, it invokes the lpfc_drop_node to check
-+ * whether it is appropriate to release the node.
-  **/
- void
- lpfc_mbx_cmpl_dflt_rpi(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 5ba3a9ad9501..67bfdddb897c 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -4333,13 +4333,14 @@ lpfc_mbx_cmpl_ns_reg_login(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
++				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
++							  dpcd_addr + 1,
++							  ack[1]);
++				if (wret == 1)
+ 					break;
+ 			}
  
- 		/* If the node is not registered with the scsi or nvme
- 		 * transport, remove the fabric node.  The failed reg_login
--		 * is terminal.
-+		 * is terminal and forces the removal of the last node
-+		 * reference.
- 		 */
- 		if (!(ndlp->fc4_xpt_flags & (SCSI_XPT_REGD | NVME_XPT_REGD))) {
- 			spin_lock_irq(&ndlp->lock);
- 			ndlp->nlp_flag &= ~NLP_NPR_2B_DISC;
- 			spin_unlock_irq(&ndlp->lock);
--			lpfc_nlp_not_used(ndlp);
-+			lpfc_nlp_put(ndlp);
- 		}
- 
- 		if (phba->fc_topology == LPFC_TOPOLOGY_LOOP) {
-@@ -6704,25 +6705,6 @@ lpfc_nlp_put(struct lpfc_nodelist *ndlp)
- 	return ndlp ? kref_put(&ndlp->kref, lpfc_nlp_release) : 0;
++			if (retry == 3) {
++				DRM_ERROR("Failed to ack MST event.\n");
++				return;
++			}
++
++			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
+ 			/* check if there is new irq to be handled */
+ 			dret = drm_dp_dpcd_read(
+ 				&aconnector->dm_dp_aux.aux,
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index be71be95b706..8fe7b635e5bb 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4053,17 +4053,28 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
  }
  
--/* This routine free's the specified nodelist if it is not in use
-- * by any other discovery thread. This routine returns 1 if the
-- * ndlp has been freed. A return value of 0 indicates the ndlp is
-- * not yet been released.
-- */
--int
--lpfc_nlp_not_used(struct lpfc_nodelist *ndlp)
--{
--	lpfc_debugfs_disc_trc(ndlp->vport, LPFC_DISC_TRC_NODE,
--		"node not used:   did:x%x flg:x%x refcnt:x%x",
--		ndlp->nlp_DID, ndlp->nlp_flag,
--		kref_read(&ndlp->kref));
--
--	if (kref_read(&ndlp->kref) == 1)
--		if (lpfc_nlp_put(ndlp))
--			return 1;
--	return 0;
--}
--
  /**
-  * lpfc_fcf_inuse - Check if FCF can be unregistered.
-  * @phba: Pointer to hba context object.
+- * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
++ * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
+  * @mgr: manager to notify irq for.
+  * @esi: 4 bytes from SINK_COUNT_ESI
++ * @ack: 4 bytes used to ack events starting from SINK_COUNT_ESI
+  * @handled: whether the hpd interrupt was consumed or not
+  *
+- * This should be called from the driver when it detects a short IRQ,
++ * This should be called from the driver when it detects a HPD IRQ,
+  * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
+- * topology manager will process the sideband messages received as a result
+- * of this.
++ * topology manager will process the sideband messages received
++ * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
++ * corresponding flags that Driver has to ack the DP receiver later.
++ *
++ * Note that driver shall also call
++ * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
++ * after calling this function, to try to kick off a new request in
++ * the queue if the previous message transaction is completed.
++ *
++ * See also:
++ * drm_dp_mst_hpd_irq_send_new_request()
+  */
+-int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled)
++int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u8 *esi,
++				    u8 *ack, bool *handled)
+ {
+ 	int ret = 0;
+ 	int sc;
+@@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handl
+ 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
+ 		ret = drm_dp_mst_handle_down_rep(mgr);
+ 		*handled = true;
++		ack[1] |= DP_DOWN_REP_MSG_RDY;
+ 	}
+ 
+ 	if (esi[1] & DP_UP_REQ_MSG_RDY) {
+ 		ret |= drm_dp_mst_handle_up_req(mgr);
+ 		*handled = true;
++		ack[1] |= DP_UP_REQ_MSG_RDY;
+ 	}
+ 
+-	drm_dp_mst_kick_tx(mgr);
+ 	return ret;
+ }
+-EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
++EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
+ 
++/**
++ * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new request
++ * @mgr: manager to notify irq for.
++ *
++ * This should be called from the driver when mst irq event is handled
++ * and acked. Note that new down request should only be sent when
++ * previous message transaction is completed. Source is not supposed to generate
++ * interleaved message transactions.
++ */
++void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr)
++{
++	struct drm_dp_sideband_msg_tx *txmsg;
++	bool kick = true;
++
++	mutex_lock(&mgr->qlock);
++	txmsg = list_first_entry_or_null(&mgr->tx_msg_downq,
++					 struct drm_dp_sideband_msg_tx, next);
++	/* If last transaction is not completed yet*/
++	if (!txmsg ||
++	    txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
++	    txmsg->state == DRM_DP_SIDEBAND_TX_SENT)
++		kick = false;
++	mutex_unlock(&mgr->qlock);
++
++	if (kick)
++		drm_dp_mst_kick_tx(mgr);
++}
++EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
+ /**
+  * drm_dp_mst_detect_port() - get connection status for an MST port
+  * @connector: DRM connector for this port
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index f4192fda1a76..c4593d025154 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4069,9 +4069,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *intel_dp, u8 *esi, u8 *ack)
+ {
+ 	bool handled = false;
+ 
+-	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
+-	if (handled)
+-		ack[1] |= esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
++	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, ack, &handled);
+ 
+ 	if (esi[1] & DP_CP_IRQ) {
+ 		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
+@@ -4146,6 +4144,9 @@ intel_dp_check_mst_status(struct intel_dp *intel_dp)
+ 
+ 		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
+ 			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
++
++		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
++			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
+ 	}
+ 
+ 	return link_ok;
+diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+index 9b6824f6b9e4..42e1665ba11a 100644
+--- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+@@ -1359,22 +1359,26 @@ nv50_mstm_service(struct nouveau_drm *drm,
+ 	u8 esi[8] = {};
+ 
+ 	while (handled) {
++		u8 ack[8] = {};
++
+ 		rc = drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
+ 		if (rc != 8) {
+ 			ret = false;
+ 			break;
+ 		}
+ 
+-		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
++		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, ack, &handled);
+ 		if (!handled)
+ 			break;
+ 
+-		rc = drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
+-				       3);
+-		if (rc != 3) {
++		rc = drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack[1]);
++
++		if (rc != 1) {
+ 			ret = false;
+ 			break;
+ 		}
++
++		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
+ 	}
+ 
+ 	if (!ret)
+diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
+index f962e97880b4..ed5c9660563c 100644
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -810,8 +810,11 @@ void drm_dp_mst_topology_mgr_destroy(struct drm_dp_mst_topology_mgr *mgr);
+ bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);
+ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool mst_state);
+ 
+-int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled);
+-
++int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
++				    const u8 *esi,
++				    u8 *ack,
++				    bool *handled);
++void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr);
+ 
+ int
+ drm_dp_mst_detect_port(struct drm_connector *connector,
 
