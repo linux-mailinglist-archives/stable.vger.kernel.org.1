@@ -2,51 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5686A75BE93
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D749075BE8C
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:14:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231129AbjGUGP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51466 "EHLO
+        id S230020AbjGUGOi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:14:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbjGUGPf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:15:35 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A0749E2;
-        Thu, 20 Jul 2023 23:13:15 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qMjM0-0000FE-Vr; Fri, 21 Jul 2023 08:11:05 +0200
-Message-ID: <421602e6-0fe0-34c4-12bb-d805f2a282f4@leemhuis.info>
-Date:   Fri, 21 Jul 2023 08:11:02 +0200
+        with ESMTP id S230027AbjGUGOQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:14:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3ABA44A7
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:12:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9753061331
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:11:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB00C433C7;
+        Fri, 21 Jul 2023 06:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689919906;
+        bh=tMOJH1t8rd/UlumD9MZowbD9L2ypWucpJidMm2bUKiI=;
+        h=Subject:To:Cc:From:Date:From;
+        b=gzhrfY3172/3ioGZThA9TQXxrAzLBZwkLySOAQ8X660/4QNhmCjulZdloXKSvdFMd
+         Ob+vhS6+yQAVQfrJ1Hi3Xsmto9Mim4B0N9jPk2gGGWY7ukWumo23pvZA5rfcj0cZH9
+         oKpUXyVHTi99voYzCP9rBhQZtGy13pGDxm6zNalA=
+Subject: FAILED: patch "[PATCH] PCI: qcom: Disable write access to read only registers for IP" failed to apply to 4.14-stable tree
+To:     mani@kernel.org, lpieralisi@kernel.org,
+        manivannan.sadhasivam@linaro.org, stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 21 Jul 2023 08:11:44 +0200
+Message-ID: <2023072143-slam-trickery-68af@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Fwd: 6.4.4 breaks module-free builds of Debian kernel packages
-Content-Language: en-US, de-DE
-To:     Randy Dunlap <rdunlap@infradead.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Brian Lindholm <brian_lindholm@users.sourceforge.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Kernel Build System <linux-kbuild@vger.kernel.org>
-References: <e7292802-e517-6469-6fbd-a4d30887c99b@gmail.com>
- <63a46a4e-53d4-6d18-7f6e-fee1c9890c79@infradead.org>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <63a46a4e-53d4-6d18-7f6e-fee1c9890c79@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1689919995;b90addbf;
-X-HE-SMSGID: 1qMjM0-0000FE-Vr
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,54 +49,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 21.07.23 06:13, Randy Dunlap wrote:
-> On 7/20/23 20:18, Bagas Sanjaya wrote:
->>
->>> I'm on AMD64 with Debian testing (trixie), where I build my own kernels (with CONFIG_MODULES unset) using "make bindeb-pkg". The build proceeds through 99% of the process, but fails here:
->>>
-> [...]
->>>
->>> 6.3.13 contained the same error, but I "fixed" that by moving to 6.4.3.  But alas, 6.4.4 now has the same issue.
->>>
->>> I worked around the issue by changing "exit 1" to "exit 0" in the main Makefile (at "modules module_install", per the attached patch), but I don't know if this is a true fix or something that simply happens to work for my particular configuration.
->>
->> See Bugzilla for the full thread and attached patch that ignores the error.
->>
->> Josh: It looks like this regression is caused by a commit of yours
->> (and also 1240dabe8d58b4). Would you like to take a look on it?
->>
->> Anyway, I'm adding this regression to be tracked by regzbot:
->>
->> #regzbot introduced: 4243afdb932677 https://bugzilla.kernel.org/show_bug.cgi?id=217689
->> #regzbot title: always doing modules_install breaks CONFIG_MODULES=n builds
 
-Masahiro Yamada: thx for taking care of this and Greg for picking the
-fix up.
+The patch below does not apply to the 4.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-BTW, Bagas, this apparently is a regression that only affected stable.
-In that case please tell rezbot about the stable commit-id of the
-change, as otherwise it will consider the problem a regression in
-mainline (and there it's was never a problem or already solved [didn't
-look]).
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Let me fix this up and tell regzbot about the incoming fix while at it:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x a33d700e8eea76c62120cb3dbf5e01328f18319a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072143-slam-trickery-68af@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
-#regzbot introduced: 6061ac50f1e04
-#regzbot fix: kbuild: make modules_install copy modules.builtin(.modinfo)
+Possible dependencies:
 
->> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217689
-> 
-> Do you also take care of marking the bugzilla entries as completed/fixed/solved
-> etc.?
+a33d700e8eea ("PCI: qcom: Disable write access to read only registers for IP v2.3.3")
+6e0832fa432e ("PCI: Collect all native drivers under drivers/pci/controller/")
+e52d38f4abf4 ("Merge branch 'lorenzo/pci/rockchip'")
 
-I don't known if Bagas does, but I do not and have no plans to do so.
+thanks,
 
-I consider my work on looking at bugzilla for regressions a courtesy I
-perform in the interest of the "no regressions" rule, as some or many of
-those report otherwise will be ignored. And that's bad for our reputation.
+greg k-h
 
-But that is where my courtesy stops. Those that think having a bugzilla
-around should take care of maintaining the state. Bugbot might soon
-solve part of the problem. But I guess it won't handle this case.
+------------------ original commit in Linus's tree ------------------
 
-Ciao, Thorsten
+From a33d700e8eea76c62120cb3dbf5e01328f18319a Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <mani@kernel.org>
+Date: Mon, 19 Jun 2023 20:34:00 +0530
+Subject: [PATCH] PCI: qcom: Disable write access to read only registers for IP
+ v2.3.3
+
+In the post init sequence of v2.9.0, write access to read only registers
+are not disabled after updating the registers. Fix it by disabling the
+access after register update.
+
+Link: https://lore.kernel.org/r/20230619150408.8468-2-manivannan.sadhasivam@linaro.org
+Fixes: 5d76117f070d ("PCI: qcom: Add support for IPQ8074 PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: <stable@vger.kernel.org>
+
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 4ab30892f6ef..ef385d36d653 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -836,6 +836,8 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
+ 	writel(PCI_EXP_DEVCTL2_COMP_TMOUT_DIS, pci->dbi_base + offset +
+ 		PCI_EXP_DEVCTL2);
+ 
++	dw_pcie_dbi_ro_wr_dis(pci);
++
+ 	return 0;
+ }
+ 
+
