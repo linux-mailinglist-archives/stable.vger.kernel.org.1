@@ -2,116 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8BE75D187
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1207F75D47E
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:21:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229846AbjGUSt5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:49:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44378 "EHLO
+        id S231700AbjGUTVr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230149AbjGUSt4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:49:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC9930CF
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:49:55 -0700 (PDT)
+        with ESMTP id S232146AbjGUTVq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:21:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4637A1727
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:21:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C6F061D79
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:49:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA7CC433C8;
-        Fri, 21 Jul 2023 18:49:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CEC9E61D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:21:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3699C433CA;
+        Fri, 21 Jul 2023 19:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965394;
-        bh=+UOsnBcpgKz9xa4EYyJ+aRlxF8GlBzUf+ZuVWmMAcDA=;
+        s=korg; t=1689967304;
+        bh=Ij3guzWuR5zhjAcKtqawVZrPABOE2c4qt7iQXyH4+lI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f8DOvuDc6V2OMMDZNm9sMDBXW77Sj8Qxfml38dQJpOvYqOZN5FipcEoKJtbL7+hcD
-         WLxImOLqDOGBQMbK2Sr48dztYdgLrVcYd2sH4tV4stFid8Z4EOxlZarnBcqx5fbNKp
-         XuSqe4GX0q7ivQ44pyVko/+ZwWEXhbKh3/cuaKUU=
+        b=if+7wdN2CoXrZ3c8VPaiV82pnap9nDotMHRLh7J/N5avRE1NbFeV40AE+ZWmtSywv
+         f3Eguv32+6dDEK2ADTvOjxnTp5lig0u8fkU/ByktX5adDbl9frjofYO7Lxd+CPX8lh
+         qkUnFR3FuBK6dIoFKYu+CAanBY3L8XNkQe4wYkbM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chungkai Yang <Chung-kai.Yang@mediatek.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.4 251/292] PM: QoS: Restore support for default value on frequency QoS
-Date:   Fri, 21 Jul 2023 18:06:00 +0200
-Message-ID: <20230721160539.700723476@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        Chao Yu <chao@kernel.org>, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 108/223] ext4: fix to check return value of freeze_bdev() in ext4_shutdown()
+Date:   Fri, 21 Jul 2023 18:06:01 +0200
+Message-ID: <20230721160525.475623850@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-References: <20230721160528.800311148@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chungkai Yang <Chung-kai.Yang@mediatek.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 3a8395b565b5b4f019b3dc182be4c4541eb35ac8 upstream.
+commit c4d13222afd8a64bf11bc7ec68645496ee8b54b9 upstream.
 
-Commit 8d36694245f2 ("PM: QoS: Add check to make sure CPU freq is
-non-negative") makes sure CPU freq is non-negative to avoid negative
-value converting to unsigned data type. However, when the value is
-PM_QOS_DEFAULT_VALUE, pm_qos_update_target specifically uses
-c->default_value which is set to FREQ_QOS_MIN/MAX_DEFAULT_VALUE when
-cpufreq_policy_alloc is executed, for this case handling.
+freeze_bdev() can fail due to a lot of reasons, it needs to check its
+reason before later process.
 
-Adding check for PM_QOS_DEFAULT_VALUE to let default setting work will
-fix this problem.
-
-Fixes: 8d36694245f2 ("PM: QoS: Add check to make sure CPU freq is non-negative")
-Link: https://lore.kernel.org/lkml/20230626035144.19717-1-Chung-kai.Yang@mediatek.com/
-Link: https://lore.kernel.org/lkml/20230627071727.16646-1-Chung-kai.Yang@mediatek.com/
-Link: https://lore.kernel.org/lkml/CAJZ5v0gxNOWhC58PHeUhW_tgf6d1fGJVZ1x91zkDdht11yUv-A@mail.gmail.com/
-Signed-off-by: Chungkai Yang <Chung-kai.Yang@mediatek.com>
-Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 783d94854499 ("ext4: add EXT4_IOC_GOINGDOWN ioctl")
+Cc: stable@kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20230606073203.1310389-1-chao@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/qos.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/ext4/ioctl.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/power/qos.c
-+++ b/kernel/power/qos.c
-@@ -426,6 +426,11 @@ late_initcall(cpu_latency_qos_init);
- 
- /* Definitions related to the frequency QoS below. */
- 
-+static inline bool freq_qos_value_invalid(s32 value)
-+{
-+	return value < 0 && value != PM_QOS_DEFAULT_VALUE;
-+}
-+
- /**
-  * freq_constraints_init - Initialize frequency QoS constraints.
-  * @qos: Frequency QoS constraints to initialize.
-@@ -531,7 +536,7 @@ int freq_qos_add_request(struct freq_con
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -800,6 +800,7 @@ static int ext4_shutdown(struct super_bl
  {
- 	int ret;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	__u32 flags;
++	int ret;
  
--	if (IS_ERR_OR_NULL(qos) || !req || value < 0)
-+	if (IS_ERR_OR_NULL(qos) || !req || freq_qos_value_invalid(value))
- 		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+@@ -818,7 +819,9 @@ static int ext4_shutdown(struct super_bl
  
- 	if (WARN(freq_qos_request_active(req),
-@@ -563,7 +568,7 @@ EXPORT_SYMBOL_GPL(freq_qos_add_request);
-  */
- int freq_qos_update_request(struct freq_qos_request *req, s32 new_value)
- {
--	if (!req || new_value < 0)
-+	if (!req || freq_qos_value_invalid(new_value))
- 		return -EINVAL;
- 
- 	if (WARN(!freq_qos_request_active(req),
+ 	switch (flags) {
+ 	case EXT4_GOING_FLAGS_DEFAULT:
+-		freeze_bdev(sb->s_bdev);
++		ret = freeze_bdev(sb->s_bdev);
++		if (ret)
++			return ret;
+ 		set_bit(EXT4_FLAGS_SHUTDOWN, &sbi->s_ext4_flags);
+ 		thaw_bdev(sb->s_bdev);
+ 		break;
 
 
