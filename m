@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF78375D49F
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F129475D3BD
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232183AbjGUTXO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44744 "EHLO
+        id S231912AbjGUTOH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:14:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232191AbjGUTXN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:23:13 -0400
+        with ESMTP id S231919AbjGUTOG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0559E189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0041430E4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98FF761D2F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AFBC433C7;
-        Fri, 21 Jul 2023 19:23:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 851CF61D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C5AC433C8;
+        Fri, 21 Jul 2023 19:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967392;
-        bh=6eVy0EbYVCgrDkkFnLXetWVeIMLRjP2W20dwNm95z+o=;
+        s=korg; t=1689966844;
+        bh=7AAy/zsIGWhDsGyaCGsrrIAYvAvWdZ43Qi0IoHN7vwk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d4P0VgnDzIqDRcHn0oFRqTVKOlZPynnDM7pyqYMM7nfQLwamvjlTT38gl2nAOFWVd
-         JuZ+5sMWVeMh8Ydlatp2mTvtbHe51bEHtS2YgPS5iXtJMIkR+T3EX8Q8sDLAo4VGZV
-         c0UlO/A/6NplE3oQ5I8NJV2p2VieEEFNFa0iuZkI=
+        b=aILBafmN31q2VB3RcCxCnCFG2NXr2qhHQYOsqRTfowxyxZHoTCyydEKn5iNpOeKoE
+         ACZnOneEcQmy+/mm8TqJZESqtoi97IxaWk6kqiTag+UWd7WLc65KKZ5OwZfDLTyhrH
+         IFVO/NFiax/Y+zpVdvEUodA89ph7nFRt4qOM42/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>
-Subject: [PATCH 6.1 139/223] fs: dlm: interrupt posix locks only when process is killed
+        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Sean Paul <seanpaul@chromium.org>
+Subject: [PATCH 5.15 488/532] drm/rockchip: vop: Leave vblank enabled in self-refresh
 Date:   Fri, 21 Jul 2023 18:06:32 +0200
-Message-ID: <20230721160526.800216372@linuxfoundation.org>
+Message-ID: <20230721160640.993296184@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +55,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Brian Norris <briannorris@chromium.org>
 
-commit 59e45c758ca1b9893ac923dd63536da946ac333b upstream.
+commit 2bdba9d4a3baa758c2ca7f5b37b35c7b3391dc42 upstream.
 
-If a posix lock request is waiting for a result from user space
-(dlm_controld), do not let it be interrupted unless the process
-is killed. This reverts commit a6b1533e9a57 ("dlm: make posix locks
-interruptible"). The problem with the interruptible change is
-that all locks were cleared on any signal interrupt. If a signal
-was received that did not terminate the process, the process
-could continue running after all its dlm posix locks had been
-cleared. A future patch will add cancelation to allow proper
-interruption.
+If we disable vblank when entering self-refresh, vblank APIs (like
+DRM_IOCTL_WAIT_VBLANK) no longer work. But user space is not aware when
+we enter self-refresh, so this appears to be an API violation -- that
+DRM_IOCTL_WAIT_VBLANK fails with EINVAL whenever the display is idle and
+enters self-refresh.
 
-Cc: stable@vger.kernel.org
-Fixes: a6b1533e9a57 ("dlm: make posix locks interruptible")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+The downstream driver used by many of these systems never used to
+disable vblank for PSR, and in fact, even upstream, we didn't do that
+until radically redesigning the state machine in commit 6c836d965bad
+("drm/rockchip: Use the helpers for PSR").
+
+Thus, it seems like a reasonable API fix to simply restore that
+behavior, and leave vblank enabled.
+
+Note that this appears to potentially unbalance the
+drm_crtc_vblank_{off,on}() calls in some cases, but:
+(a) drm_crtc_vblank_on() documents this as OK and
+(b) if I do the naive balancing, I find state machine issues such that
+    we're not in sync properly; so it's easier to take advantage of (a).
+
+This issue was exposed by IGT's kms_vblank tests, and reported by
+KernelCI. The bug has been around a while (longer than KernelCI
+noticed), but was only exposed once self-refresh was bugfixed more
+recently, and so KernelCI could properly test it. Some other notes in:
+
+  https://lore.kernel.org/dri-devel/Y6OCg9BPnJvimQLT@google.com/
+  Re: renesas/master bisection: igt-kms-rockchip.kms_vblank.pipe-A-wait-forked on rk3399-gru-kevin
+
+== Backporting notes: ==
+
+Marking as 'Fixes' commit 6c836d965bad ("drm/rockchip: Use the helpers
+for PSR"), but it probably depends on commit bed030a49f3e
+("drm/rockchip: Don't fully disable vop on self refresh") as well.
+
+We also need the previous patch ("drm/atomic: Allow vblank-enabled +
+self-refresh "disable""), of course.
+
+v3:
+ * no update
+
+v2:
+ * skip unnecessary lock/unlock
+
+Fixes: 6c836d965bad ("drm/rockchip: Use the helpers for PSR")
+Cc: <stable@vger.kernel.org>
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Link: https://lore.kernel.org/dri-devel/Y5itf0+yNIQa6fU4@sirena.org.uk/
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230109171809.v3.2.Ic07cba4ab9a7bd3618a9e4258b8f92ea7d10ae5a@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/plock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -154,7 +154,7 @@ int dlm_posix_lock(dlm_lockspace_t *lock
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -703,13 +703,13 @@ static void vop_crtc_atomic_disable(stru
+ 	if (crtc->state->self_refresh_active)
+ 		rockchip_drm_set_win_enabled(crtc, false);
  
- 	send_op(op);
++	if (crtc->state->self_refresh_active)
++		goto out;
++
+ 	mutex_lock(&vop->vop_lock);
  
--	rv = wait_event_interruptible(recv_wq, (op->done != 0));
-+	rv = wait_event_killable(recv_wq, (op->done != 0));
- 	if (rv == -ERESTARTSYS) {
- 		spin_lock(&ops_lock);
- 		/* recheck under ops_lock if we got a done != 0,
+ 	drm_crtc_vblank_off(crtc);
+ 
+-	if (crtc->state->self_refresh_active)
+-		goto out;
+-
+ 	/*
+ 	 * Vop standby will take effect at end of current frame,
+ 	 * if dsp hold valid irq happen, it means standby complete.
+@@ -741,9 +741,9 @@ static void vop_crtc_atomic_disable(stru
+ 	vop_core_clks_disable(vop);
+ 	pm_runtime_put(vop->dev);
+ 
+-out:
+ 	mutex_unlock(&vop->vop_lock);
+ 
++out:
+ 	if (crtc->state->event && !crtc->state->active) {
+ 		spin_lock_irq(&crtc->dev->event_lock);
+ 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
 
 
