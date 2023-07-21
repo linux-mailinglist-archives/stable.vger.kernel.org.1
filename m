@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F31D75BF48
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 160B675BF4E
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbjGUHEm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:04:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45526 "EHLO
+        id S229719AbjGUHFc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:05:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbjGUHEk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:04:40 -0400
+        with ESMTP id S230090AbjGUHFa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:05:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF087270B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:04:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931F02D54
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:05:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DEB861040
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CD3C433C8;
-        Fri, 21 Jul 2023 07:04:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E628D61337
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:05:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA372C433C7;
+        Fri, 21 Jul 2023 07:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689923078;
-        bh=KPt9hdDvEdUohYmRuUh4yRfoOQICNGWwMMmvNbzWolQ=;
+        s=korg; t=1689923125;
+        bh=ylkVOvK7r0BfymA82t8Vtsh+buUG337Crqjcnh/ZxXo=;
         h=Subject:To:Cc:From:Date:From;
-        b=D8OcrkFXN/hUwMxqvFQ6StZ/Sqm7zrJ+LP9uLyhjkEJ1DzfCVg9US7vHv2cIs8tpe
-         h4lMpN/YH+fCze4/wmifCyPEDqH68fqEUA18l1PmGk3NXLqgchG2vOfpy0t+31VPcL
-         ExtJIlaRxmRMDFhIqrc20tfNpP8PIW+UR/fkQoYE=
-Subject: FAILED: patch "[PATCH] fs: dlm: fix mismatch of plock results from userspace" failed to apply to 4.14-stable tree
-To:     aahringo@redhat.com, teigland@redhat.com
+        b=2iS8SGc9R+IdBNoOf6lErr8/wMJD6fBKYgXL/OFKvFUjzjt2JKShI25gDkAeKrZ6E
+         m0DtEk0/YqOJiWj+JcDBI+SxFEh0M9azvGBpx4IifwocziGu/Y3kuIvNLaZykxzhb6
+         bHkgi/Vpq7SmE/nqV88PY8HeK08qmtvxL6/Hdz28=
+Subject: FAILED: patch "[PATCH] scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc()" failed to apply to 5.15-stable tree
+To:     justin.tee@broadcom.com, error27@gmail.com,
+        martin.petersen@oracle.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:04:28 +0200
-Message-ID: <2023072127-siding-rug-9a7b@gregkh>
+Date:   Fri, 21 Jul 2023 09:05:22 +0200
+Message-ID: <2023072122-stumbling-unproven-d06f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,42 +50,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 57e2c2f2d94cfd551af91cedfa1af6d972487197
+git cherry-pick -x 97f975823f8196d970bd795087b514271214677a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072127-siding-rug-9a7b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072122-stumbling-unproven-d06f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
-c847f4e20304 ("fs: dlm: fix cleanup pending ops when interrupted")
-b92a4e3f86b1 ("fs: dlm: change posix lock sigint handling")
-4d413ae9ced4 ("fs: dlm: use dlm_plock_info for do_unlock_close")
-ea06d4cabf52 ("fs: dlm: change plock interrupted message to debug again")
-19d7ca051d30 ("fs: dlm: add pid to debug log")
-dc1acd5c9469 ("dlm: replace usage of found with dedicated list iterator variable")
-bcfad4265ced ("dlm: improve plock logging if interrupted")
-a800ba77fd28 ("dlm: rearrange async condition return")
-bcbb4ba6c9ba ("dlm: cleanup plock_op vs plock_xop")
-a559790caa1c ("dlm: replace sanity checks with WARN_ON")
-42252d0d2aa9 ("dlm: fix plock invalid read")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
-b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+97f975823f81 ("scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc() caused by lpfc_nlp_not_used()")
+d51cf5bd926c ("scsi: lpfc: Fix field overload in lpfc_iocbq data structure")
+0e082d926f59 ("scsi: lpfc: SLI path split: Refactor BSG paths")
+31a59f75702f ("scsi: lpfc: SLI path split: Refactor Abort paths")
+3512ac094293 ("scsi: lpfc: SLI path split: Refactor SCSI paths")
+61910d6a5243 ("scsi: lpfc: SLI path split: Refactor CT paths")
+2d1928c57df6 ("scsi: lpfc: SLI path split: Refactor misc ELS paths")
+351849800157 ("scsi: lpfc: SLI path split: Refactor VMID paths")
+9d41f08aa2eb ("scsi: lpfc: SLI path split: Refactor FDISC paths")
+e0367dfe90d6 ("scsi: lpfc: SLI path split: Refactor LS_RJT paths")
+3f607dcb43f1 ("scsi: lpfc: SLI path split: Refactor LS_ACC paths")
+3bea83b68d54 ("scsi: lpfc: SLI path split: Refactor the RSCN/SCR/RDF/EDC/FARPR paths")
+cad93a089031 ("scsi: lpfc: SLI path split: Refactor PLOGI/PRLI/ADISC/LOGO paths")
+6831ce129f19 ("scsi: lpfc: SLI path split: Refactor base ELS paths and the FLOGI path")
+561341425bcc ("scsi: lpfc: SLI path split: Introduce lpfc_prep_wqe")
+1b64aa9eae28 ("scsi: lpfc: SLI path split: Refactor fast and slow paths to native SLI4")
+a680a9298e7b ("scsi: lpfc: SLI path split: Refactor lpfc_iocbq")
+0956ba63bd94 ("scsi: lpfc: Fix non-recovery of remote ports following an unsolicited LOGO")
+1854f53ccd88 ("scsi: lpfc: Fix link down processing to address NULL pointer dereference")
+ec65e6beb02e ("Merge branch '5.15/scsi-fixes' into 5.16/scsi-staging")
 
 thanks,
 
@@ -92,102 +93,146 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 57e2c2f2d94cfd551af91cedfa1af6d972487197 Mon Sep 17 00:00:00 2001
-From: Alexander Aring <aahringo@redhat.com>
-Date: Wed, 24 May 2023 12:02:04 -0400
-Subject: [PATCH] fs: dlm: fix mismatch of plock results from userspace
+From 97f975823f8196d970bd795087b514271214677a Mon Sep 17 00:00:00 2001
+From: Justin Tee <justin.tee@broadcom.com>
+Date: Mon, 17 Apr 2023 12:15:53 -0700
+Subject: [PATCH] scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc()
+ caused by lpfc_nlp_not_used()
 
-When a waiting plock request (F_SETLKW) is sent to userspace
-for processing (dlm_controld), the result is returned at a
-later time. That result could be incorrectly matched to a
-different waiting request in cases where the owner field is
-the same (e.g. different threads in a process.) This is fixed
-by comparing all the properties in the request and reply.
+Smatch detected a double free path because lpfc_nlp_not_used() releases an
+ndlp object before reaching lpfc_nlp_put() at the end of
+lpfc_cmpl_els_logo_acc().
 
-The results for non-waiting plock requests are now matched
-based on list order because the results are returned in the
-same order they were sent.
+Remove the outdated lpfc_nlp_not_used() routine.  In
+lpfc_mbx_cmpl_ns_reg_login(), replace the call with lpfc_nlp_put().  In
+lpfc_cmpl_els_logo_acc(), replace the call with lpfc_unreg_rpi() and keep
+the lpfc_nlp_put() at the end of the routine.  If ndlp's rpi was
+registered, then lpfc_unreg_rpi()'s completion routine performs the final
+ndlp clean up after lpfc_nlp_put() is called from lpfc_cmpl_els_logo_acc().
+Otherwise if ndlp has no rpi registered, the lpfc_nlp_put() at the end of
+lpfc_cmpl_els_logo_acc() is the final ndlp clean up.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Fixes: 4430f7fd09ec ("scsi: lpfc: Rework locations of ndlp reference taking")
+Cc: <stable@vger.kernel.org> # v5.11+
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/all/Y3OefhyyJNKH%2Fiaf@kili/
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20230417191558.83100-3-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index c9e1d5f54194..70a4752ed913 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -395,7 +395,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
- 		if (op->info.flags & DLM_PLOCK_FL_CLOSE)
- 			list_del(&op->list);
- 		else
--			list_move(&op->list, &recv_list);
-+			list_move_tail(&op->list, &recv_list);
- 		memcpy(&info, &op->info, sizeof(info));
- 	}
- 	spin_unlock(&ops_lock);
-@@ -433,20 +433,52 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
- 	if (check_version(&info))
- 		return -EINVAL;
+diff --git a/drivers/scsi/lpfc/lpfc_crtn.h b/drivers/scsi/lpfc/lpfc_crtn.h
+index b833b983e69d..0b9edde26abd 100644
+--- a/drivers/scsi/lpfc/lpfc_crtn.h
++++ b/drivers/scsi/lpfc/lpfc_crtn.h
+@@ -134,7 +134,6 @@ void lpfc_check_nlp_post_devloss(struct lpfc_vport *vport,
+ 				 struct lpfc_nodelist *ndlp);
+ void lpfc_ignore_els_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 			  struct lpfc_iocbq *rspiocb);
+-int  lpfc_nlp_not_used(struct lpfc_nodelist *ndlp);
+ struct lpfc_nodelist *lpfc_setup_disc_node(struct lpfc_vport *, uint32_t);
+ void lpfc_disc_list_loopmap(struct lpfc_vport *);
+ void lpfc_disc_start(struct lpfc_vport *);
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 6a15f879e517..a3c8550e9985 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -5205,14 +5205,9 @@ lpfc_els_free_iocb(struct lpfc_hba *phba, struct lpfc_iocbq *elsiocb)
+  *
+  * This routine is the completion callback function to the Logout (LOGO)
+  * Accept (ACC) Response ELS command. This routine is invoked to indicate
+- * the completion of the LOGO process. It invokes the lpfc_nlp_not_used() to
+- * release the ndlp if it has the last reference remaining (reference count
+- * is 1). If succeeded (meaning ndlp released), it sets the iocb ndlp
+- * field to NULL to inform the following lpfc_els_free_iocb() routine no
+- * ndlp reference count needs to be decremented. Otherwise, the ndlp
+- * reference use-count shall be decremented by the lpfc_els_free_iocb()
+- * routine. Finally, the lpfc_els_free_iocb() is invoked to release the
+- * IOCB data structure.
++ * the completion of the LOGO process. If the node has transitioned to NPR,
++ * this routine unregisters the RPI if it is still registered. The
++ * lpfc_els_free_iocb() is invoked to release the IOCB data structure.
+  **/
+ static void
+ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+@@ -5253,19 +5248,9 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 		    (ndlp->nlp_last_elscmd == ELS_CMD_PLOGI))
+ 			goto out;
  
-+	/*
-+	 * The results for waiting ops (SETLKW) can be returned in any
-+	 * order, so match all fields to find the op.  The results for
-+	 * non-waiting ops are returned in the order that they were sent
-+	 * to userspace, so match the result with the first non-waiting op.
-+	 */
- 	spin_lock(&ops_lock);
--	list_for_each_entry(iter, &recv_list, list) {
--		if (iter->info.fsid == info.fsid &&
--		    iter->info.number == info.number &&
--		    iter->info.owner == info.owner) {
--			list_del_init(&iter->list);
--			memcpy(&iter->info, &info, sizeof(info));
--			if (iter->data)
--				do_callback = 1;
--			else
--				iter->done = 1;
--			op = iter;
--			break;
-+	if (info.wait) {
-+		list_for_each_entry(iter, &recv_list, list) {
-+			if (iter->info.fsid == info.fsid &&
-+			    iter->info.number == info.number &&
-+			    iter->info.owner == info.owner &&
-+			    iter->info.pid == info.pid &&
-+			    iter->info.start == info.start &&
-+			    iter->info.end == info.end &&
-+			    iter->info.ex == info.ex &&
-+			    iter->info.wait) {
-+				op = iter;
-+				break;
-+			}
+-		/* NPort Recovery mode or node is just allocated */
+-		if (!lpfc_nlp_not_used(ndlp)) {
+-			/* A LOGO is completing and the node is in NPR state.
+-			 * Just unregister the RPI because the node is still
+-			 * required.
+-			 */
++		if (ndlp->nlp_flag & NLP_RPI_REGISTERED)
+ 			lpfc_unreg_rpi(vport, ndlp);
+-		} else {
+-			/* Indicate the node has already released, should
+-			 * not reference to it from within lpfc_els_free_iocb.
+-			 */
+-			cmdiocb->ndlp = NULL;
+-		}
++
+ 	}
+  out:
+ 	/*
+@@ -5285,9 +5270,8 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+  * RPI (Remote Port Index) mailbox command to the @phba. It simply releases
+  * the associated lpfc Direct Memory Access (DMA) buffer back to the pool and
+  * decrements the ndlp reference count held for this completion callback
+- * function. After that, it invokes the lpfc_nlp_not_used() to check
+- * whether there is only one reference left on the ndlp. If so, it will
+- * perform one more decrement and trigger the release of the ndlp.
++ * function. After that, it invokes the lpfc_drop_node to check
++ * whether it is appropriate to release the node.
+  **/
+ void
+ lpfc_mbx_cmpl_dflt_rpi(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 5ba3a9ad9501..67bfdddb897c 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -4333,13 +4333,14 @@ lpfc_mbx_cmpl_ns_reg_login(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
+ 
+ 		/* If the node is not registered with the scsi or nvme
+ 		 * transport, remove the fabric node.  The failed reg_login
+-		 * is terminal.
++		 * is terminal and forces the removal of the last node
++		 * reference.
+ 		 */
+ 		if (!(ndlp->fc4_xpt_flags & (SCSI_XPT_REGD | NVME_XPT_REGD))) {
+ 			spin_lock_irq(&ndlp->lock);
+ 			ndlp->nlp_flag &= ~NLP_NPR_2B_DISC;
+ 			spin_unlock_irq(&ndlp->lock);
+-			lpfc_nlp_not_used(ndlp);
++			lpfc_nlp_put(ndlp);
  		}
-+	} else {
-+		list_for_each_entry(iter, &recv_list, list) {
-+			if (!iter->info.wait) {
-+				op = iter;
-+				break;
-+			}
-+		}
-+	}
-+
-+	if (op) {
-+		/* Sanity check that op and info match. */
-+		if (info.wait)
-+			WARN_ON(op->info.optype != DLM_PLOCK_OP_LOCK);
-+		else
-+			WARN_ON(op->info.fsid != info.fsid ||
-+				op->info.number != info.number ||
-+				op->info.owner != info.owner ||
-+				op->info.optype != info.optype);
-+
-+		list_del_init(&op->list);
-+		memcpy(&op->info, &info, sizeof(info));
-+		if (op->data)
-+			do_callback = 1;
-+		else
-+			op->done = 1;
- 	}
- 	spin_unlock(&ops_lock);
  
+ 		if (phba->fc_topology == LPFC_TOPOLOGY_LOOP) {
+@@ -6704,25 +6705,6 @@ lpfc_nlp_put(struct lpfc_nodelist *ndlp)
+ 	return ndlp ? kref_put(&ndlp->kref, lpfc_nlp_release) : 0;
+ }
+ 
+-/* This routine free's the specified nodelist if it is not in use
+- * by any other discovery thread. This routine returns 1 if the
+- * ndlp has been freed. A return value of 0 indicates the ndlp is
+- * not yet been released.
+- */
+-int
+-lpfc_nlp_not_used(struct lpfc_nodelist *ndlp)
+-{
+-	lpfc_debugfs_disc_trc(ndlp->vport, LPFC_DISC_TRC_NODE,
+-		"node not used:   did:x%x flg:x%x refcnt:x%x",
+-		ndlp->nlp_DID, ndlp->nlp_flag,
+-		kref_read(&ndlp->kref));
+-
+-	if (kref_read(&ndlp->kref) == 1)
+-		if (lpfc_nlp_put(ndlp))
+-			return 1;
+-	return 0;
+-}
+-
+ /**
+  * lpfc_fcf_inuse - Check if FCF can be unregistered.
+  * @phba: Pointer to hba context object.
 
