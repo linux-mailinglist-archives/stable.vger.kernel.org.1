@@ -2,184 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8FBF75D165
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B0A75D18A
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230406AbjGUS2f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:28:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38898 "EHLO
+        id S231148AbjGUSuE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:50:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230018AbjGUS2e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:28:34 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA58530C7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:28:33 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-668709767b1so1592919b3a.2
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:28:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689964113; x=1690568913;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=k9J/Ki0iNowQXsTmQsI166jzwihICLM56acy/tldx3o=;
-        b=ILW6kimF3q4UFRZNyeitkQhIgm9Vt1s99zxUvvi2RFU0ZGt3mth1/wo10Em4YlVAfW
-         S3W+5L6+XlX0mmI17K/N7iD3DHwGxxYnst91fD6HcIKY1Np2me2jVTgp0uep+2hE87bf
-         3uJGZNZ02e7EzMvoSx5b59YL3jZus93vraqJsnk3NMrTAvi/SD+Jvfb85YkkBTveP53I
-         hsThpIQq/dm1DnNoNEUhhu6MXC2t140LdjUUq8NKOlSUBOhj85U1q24Dx78hvPhw2iNg
-         f8FUql0idUsOnH0+lczda0O2GmhM+e7yTJU0b8sZmQ0hjCPT+tnzIWxp3yEPp5a5Oq3R
-         Zdvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689964113; x=1690568913;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k9J/Ki0iNowQXsTmQsI166jzwihICLM56acy/tldx3o=;
-        b=PAfrPbPehcFUqSWRGvxycQdlD8gqQpABxgEb06P1DQRYzISjd+QvnywLqs532mvm67
-         cHsRUlmm7oTXy0EKpd4225J6L78LVV811+rhqFvoyDLz6EprykkQ3DsuUOG0oy5NVjtt
-         BlfArypPBG6cUWp6YU5Fe5UG32TnY9EOOxcqMcQ6vqfzDZ6EgSTrOe9Z7ApOTC6cSOJL
-         yS8nEvHpclJksKj6VnVn0+309mkL8gUHVHnmWf/e21BN+/7M3na3SdFqLiE1tqVaikbg
-         Kv0oFkxYW07izuPC5I0Yul3Zf0JL/UjMtWKC3IfuCYrA4y7um0ILtNN6c6gRWDz8Bctp
-         SEHQ==
-X-Gm-Message-State: ABy/qLb79RMLL1tRhZUAH/9mx94AgCNoWvnF2x7WeACeXpZh4pSNiCiS
-        GyK4NRF3KOn6DJDaRSVWZg64aRxRC6/hOprF978=
-X-Google-Smtp-Source: APBJJlGSwwVVr3UI8ZnwxMqni3RGkNNbDRX810rleU803ua/D9GQQ5yeOEmcY28/247eSr/QA8lG+Q==
-X-Received: by 2002:a05:6a20:3a88:b0:12d:f1ac:e2cd with SMTP id d8-20020a056a203a8800b0012df1ace2cdmr1811164pzh.32.1689964112958;
-        Fri, 21 Jul 2023 11:28:32 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id e9-20020a170902d38900b001b8b2fb52d4sm301596pld.203.2023.07.21.11.28.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 11:28:32 -0700 (PDT)
-Message-ID: <64bace50.170a0220.5a93f.1180@mx.google.com>
-Date:   Fri, 21 Jul 2023 11:28:32 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230149AbjGUSuD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:03 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3035530DB;
+        Fri, 21 Jul 2023 11:50:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=dRVad3AdlNBuQFcE3VkpuVa4kjKo5sqvv2omBkEJAhk=; b=RICVyA8m/ElTSsoZyZAcWPzqpg
+        NltaEFXLBwX3vHwLI8klmtRcEBIV3YKouDLDORAqNIIca4Jyb7P7ZytuVs60AnkRxThqqNXX3aMrS
+        T71Jkwq5a4R3HNeABMHrJpHykLhSKEb/BA4ARSsvSppepe++3Bxo8eSKqMxPwFwKGpQlCCWTtYFF5
+        viu65DcntLnT/dEbnzS6xpQccS2ndNSkPwMXNg4RSvo0YvShFkHqt1JsKXgDn0utjMIr5tUSBy5ts
+        OtU6jkC+cU94Ype7/Ju+8qEf67NRDJGjpQHtCZGY2ikiKJvWqbca01VreLYPpygwpGNlkFA95B8HD
+        j4GodREg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qMvCD-001N7w-8w; Fri, 21 Jul 2023 18:49:45 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 47790300095;
+        Fri, 21 Jul 2023 20:49:44 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 27EBD3157E621; Fri, 21 Jul 2023 20:49:44 +0200 (CEST)
+Date:   Fri, 21 Jul 2023 20:49:44 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+Cc:     KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "hpa@zytor.com" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/1] x86/hyperv: Disable IBT when hypercall page lacks
+ ENDBR instruction
+Message-ID: <20230721184944.GP4253@hirez.programming.kicks-ass.net>
+References: <1689885237-32662-1-git-send-email-mikelley@microsoft.com>
+ <20230720211553.GA3615208@hirez.programming.kicks-ass.net>
+ <SN6PR2101MB16933FAC4E09E15D824EB2FDD73FA@SN6PR2101MB1693.namprd21.prod.outlook.com>
+ <20230721075848.GA3630545@hirez.programming.kicks-ass.net>
+ <BYAPR21MB168878CCD076762A1EA58635D73FA@BYAPR21MB1688.namprd21.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Kernel: v5.4.249-278-g78f9a3d1c959
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.4.y build: 5 builds: 0 failed, 5 passed,
- 11 warnings (v5.4.249-278-g78f9a3d1c959)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BYAPR21MB168878CCD076762A1EA58635D73FA@BYAPR21MB1688.namprd21.prod.outlook.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y build: 5 builds: 0 failed, 5 passed, 11 warnings (v5.=
-4.249-278-g78f9a3d1c959)
+On Fri, Jul 21, 2023 at 02:00:35PM +0000, Michael Kelley (LINUX) wrote:
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
-/kernel/v5.4.249-278-g78f9a3d1c959/
+> > Well, we have a lot of infrastructure for this already. Specifically
+> > this is very like the paravirt patching.
+> > 
+> > Also, direct calls are both faster and have less speculation issues, so
+> > it might still be worth looking at.
+> > 
+> > The way to do something like this would be:
+> > 
+> > 
+> > 	asm volatile ("   ANNOTATE_RETPOLINE_SAFE	\n\t"
+> > 		      "1: call *hv_hypercall_page	\n\t"
+> > 		      ".pushsection .hv_call_sites	\n\t"
+> > 		      ".long 1b - .			\n\t"
+> > 		      ".popsection			\n\t");
+> > 
+> > 
+> > And then (see alternative.c for many other examples):
+> > 
+> > 
+> > patch_hypercalls()
+> > {
+> > 	s32 *s;
+> > 
+> > 	for (s = __hv_call_sites_begin; s < __hv_call_sites_end; s++) {
+> > 		void *addr = (void *)s + *s;
+> > 		struct insn insn;
+> > 
+> > 		ret = insn_decode_kernel(&insn, addr);
+> > 		if (WARN_ON_ONCE(ret < 0))
+> > 			continue;
+> > 
+> > 		/*
+> > 		 * indirect call: ff 15 disp32
+> > 		 * direct call:   2e e8 disp32
+> > 		 */
+> > 		if (insn.length == 6 &&
+> > 		    insn.opcode.bytes[0] == 0xFF &&
+> > 		    X86_MODRM_REG(insn.modrm.bytes[0]) == 2) {
+> > 
+> > 			/* verify it was calling hy_hypercall_page */
+> > 			if (WARN_ON_ONCE(addr + 6 + insn.displacement.value != &hv_hypercall_page))
+> > 				continue;
+> > 
+> > 			/*
+> > 			 * write a CS padded direct call -- assumes the
+> > 			 * hypercall page is in the 2G immediate range
+> > 			 * of the kernel text
+> 
+> Probably not true -- the hypercall page has a vmalloc address.
 
-Tree: stable-rc
-Branch: linux-5.4.y
-Git Describe: v5.4.249-278-g78f9a3d1c959
-Git Commit: 78f9a3d1c959657b597bceaaf963b5d918b642a4
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 3 unique architectures
+See module_alloc(), that uses vmalloc but constrains the address to stay
+within the 2G immediate address limit.
 
-Warnings Detected:
+> > 			 */
+> > 			addr[0] = 0x2e; /* CS prefix */
+> > 			addr[1] = CALL_INSN_OPCODE;
+> > 			(s32 *)&Addr[2] = *hv_hypercall_page - (addr + 6);
+			*(s32 *)...
+> > 		}
+> > 	}
+> > }
+> > 
+> > 
+> > See, easy :-)
+> 
+> OK, worth looking into.  This is a corner of the Linux kernel code that
+> I've never looked at before.  I appreciate the pointers.
 
-arm:
-    imx_v6_v7_defconfig (gcc-10): 1 warning
-    multi_v7_defconfig (gcc-10): 1 warning
+No problem, I've been doing too much of this the past few years :-)
 
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+> Hypercall sites also exist in loadable modules, so would need to hook
+> into module_finalize() as well.  Processing a new section type looks
+> straightforward.
 
-x86_64:
-    x86_64_defconfig+x86-chromebook (gcc-10): 5 warnings
+Yep,
 
+> But altogether, this feels like more change than should go as a bug
+> fix to be backported to stable kernels.  It's something to look at for a
+> future kernel release.
 
-Warnings summary:
-
-    3    ld: warning: creating DT_TEXTREL in a PIE
-    3    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=
-=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
-without a cast [-Wint-conversion]
-    2    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    1    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    1    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    1    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-5 warnings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+Agreed!
