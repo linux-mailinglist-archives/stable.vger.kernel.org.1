@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE0375CF23
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E8675CF31
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232949AbjGUQ1r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:27:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56814 "EHLO
+        id S232856AbjGUQ2k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:28:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232919AbjGUQ1b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:27:31 -0400
+        with ESMTP id S233014AbjGUQ1p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:27:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D12E44A8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:24:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47BB44BE
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:24:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AE9961D2E
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B62C433C8;
-        Fri, 21 Jul 2023 16:24:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0C1061D53
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:24:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A8FC433C9;
+        Fri, 21 Jul 2023 16:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956643;
-        bh=bl9aHcecXnQkcti9pLlVMZc1TJclwkOWWv7e+lH1zSk=;
+        s=korg; t=1689956669;
+        bh=/3SoltwMI42/XF05RtByg7qawtRF9zbf4jhmkfdSWeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MC1YHxoIIVyudUcZtig8Y7QoB3yXcXFju46Mr6f+D1xKPHCRg7QxVfLgaBSY/NW5S
-         gNHelKOJhDO6EQGrKTVfTn08AJAmqioCLaLWNxgHu/vhb8IkopwQMDQHfGiL5Wz5P8
-         RHte/Z3q7nRBhz6pFM69A+9aXS1gjSSjfPAP1q9E=
+        b=eNFdb/QQ+eZQ1Zk3XGwWMYU4ejCum/BzASKBn613BL/WBTbMyDEllnP9shlYm8bnH
+         +alaiEMKb+USrwHB+2AEn0w8JDqQwNcWmfeMdLCptoaSJtAcOsgvblYi3EQuCTaMY3
+         q4llwMub2CDF0QdLqsWRpitd+egluS+cWGtXYr24=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.4 248/292] cifs: if deferred close is disabled then close files immediately
-Date:   Fri, 21 Jul 2023 18:05:57 +0200
-Message-ID: <20230721160539.575661002@linuxfoundation.org>
+        patches@lists.linux.dev, Greg Thelen <gthelen@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.4 250/292] perf/x86: Fix lockdep warning in for_each_sibling_event() on SPR
+Date:   Fri, 21 Jul 2023 18:05:59 +0200
+Message-ID: <20230721160539.657762091@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -55,36 +55,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit df9d70c18616760c6504b97fec66b6379c172dbb upstream.
+commit 27c68c216ee1f1b086e789a64486e6511e380b8a upstream.
 
-If defer close timeout value is set to 0, then there is no
-need to include files in the deferred close list and utilize
-the delayed worker for closing. Instead, we can close them
-immediately.
+On SPR, the load latency event needs an auxiliary event in the same
+group to work properly.  There's a check in intel_pmu_hw_config()
+for this to iterate sibling events and find a mem-loads-aux event.
 
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+The for_each_sibling_event() has a lockdep assert to make sure if it
+disabled hardirq or hold leader->ctx->mutex.  This works well if the
+given event has a separate leader event since perf_try_init_event()
+grabs the leader->ctx->mutex to protect the sibling list.  But it can
+cause a problem when the event itself is a leader since the event is
+not initialized yet and there's no ctx for the event.
+
+Actually I got a lockdep warning when I run the below command on SPR,
+but I guess it could be a NULL pointer dereference.
+
+  $ perf record -d -e cpu/mem-loads/uP true
+
+The code path to the warning is:
+
+  sys_perf_event_open()
+    perf_event_alloc()
+      perf_init_event()
+        perf_try_init_event()
+          x86_pmu_event_init()
+            hsw_hw_config()
+              intel_pmu_hw_config()
+                for_each_sibling_event()
+                  lockdep_assert_event_ctx()
+
+We don't need for_each_sibling_event() when it's a standalone event.
+Let's return the error code directly.
+
+Fixes: f3c0eba28704 ("perf: Add a few assertions")
+Reported-by: Greg Thelen <gthelen@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lkml.kernel.org/r/20230704181516.3293665-1-namhyung@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/file.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -1080,8 +1080,8 @@ int cifs_close(struct inode *inode, stru
- 		cfile = file->private_data;
- 		file->private_data = NULL;
- 		dclose = kmalloc(sizeof(struct cifs_deferred_close), GFP_KERNEL);
--		if ((cinode->oplock == CIFS_CACHE_RHW_FLG) &&
--		    cinode->lease_granted &&
-+		if ((cifs_sb->ctx->closetimeo && cinode->oplock == CIFS_CACHE_RHW_FLG)
-+		    && cinode->lease_granted &&
- 		    !test_bit(CIFS_INO_CLOSE_ON_LOCK, &cinode->flags) &&
- 		    dclose) {
- 			if (test_and_clear_bit(CIFS_INO_MODIFIED_ATTR, &cinode->flags)) {
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3993,6 +3993,13 @@ static int intel_pmu_hw_config(struct pe
+ 		struct perf_event *leader = event->group_leader;
+ 		struct perf_event *sibling = NULL;
+ 
++		/*
++		 * When this memload event is also the first event (no group
++		 * exists yet), then there is no aux event before it.
++		 */
++		if (leader == event)
++			return -ENODATA;
++
+ 		if (!is_mem_loads_aux_event(leader)) {
+ 			for_each_sibling_event(sibling, leader) {
+ 				if (is_mem_loads_aux_event(sibling))
 
 
