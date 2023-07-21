@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1F5075CE04
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B165775CDBF
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231624AbjGUQQr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45908 "EHLO
+        id S231707AbjGUQOP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232045AbjGUQQ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:16:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F5743599
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:15:34 -0700 (PDT)
+        with ESMTP id S232300AbjGUQNw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:13:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A81A3C14
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:13:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D8D861D2F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:15:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30412C433C7;
-        Fri, 21 Jul 2023 16:15:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 474AD61D25
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:13:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52974C433C9;
+        Fri, 21 Jul 2023 16:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956132;
-        bh=UOC4YaUSp80zDPImaHYO9dyBUubaKOKNwNkGhjaZnds=;
+        s=korg; t=1689956004;
+        bh=fcJKqd2+Lm0CxymUN4dde9zVyvViQfmRIZmeB3lW6G8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1ktCm3Hjam9NblzJ3hQH7OxhFZyTW4vlMEWjjYOb0ddvkyHW9D2eaIOH1zvM5J3va
-         xEWjuuYT0x1o5K2rmzqGMN/DDe/wAgRwzp+ISlrsDyhSuhcqO49T9aX0svLYYzwGg3
-         J6uItrbUBCk+l8me7DzEnrKNVYyxWLl75l2a5qPA=
+        b=VfRVpHvxoinXm/ayvbaYBYb75ZYVVnajoK2YQrv9RgK/iTPL952nyWWcl+hSc0kHE
+         gG6NMOJt83EM5hSVqT5uhnlES2nDHaq2ddg2LvhIpx9QR530guFQAsWFQ3jaz+ZPVO
+         fjSJSGd7g/QY9jc7ul4PdVstHtzkVVIIyDOdzqJI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Skeggs <bskeggs@redhat.com>,
-        Lyude Paul <lyude@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 098/292] drm/nouveau/disp/g94: enable HDMI
-Date:   Fri, 21 Jul 2023 18:03:27 +0200
-Message-ID: <20230721160533.008045537@linuxfoundation.org>
+Subject: [PATCH 6.4 099/292] netdevsim: fix uninitialized data in nsim_dev_trap_fa_cookie_write()
+Date:   Fri, 21 Jul 2023 18:03:28 +0200
+Message-ID: <20230721160533.049239401@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -56,34 +57,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Karol Herbst <kherbst@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c177872cb056e0b499af4717d8d1977017fd53df ]
+[ Upstream commit f72207a5c0dbaaf6921cf9a6c0d2fd0bc249ea78 ]
 
-Cc: Ben Skeggs <bskeggs@redhat.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Fixes: f530bc60a30b ("drm/nouveau/disp: move HDMI config into acquire + infoframe methods")
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
-Reviewed-by: Ben Skeggs <bskeggs@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230630160645.3984596-1-kherbst@redhat.com
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
+The simple_write_to_buffer() function is designed to handle partial
+writes.  It returns negatives on error, otherwise it returns the number
+of bytes that were able to be copied.  This code doesn't check the
+return properly.  We only know that the first byte is written, the rest
+of the buffer might be uninitialized.
+
+There is no need to use the simple_write_to_buffer() function.
+Partial writes are prohibited by the "if (*ppos != 0)" check at the
+start of the function.  Just use memdup_user() and copy the whole
+buffer.
+
+Fixes: d3cbb907ae57 ("netdevsim: add ACL trap reporting cookie as a metadata")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/7c1f950b-3a7d-4252-82a6-876e53078ef7@moroto.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/netdevsim/dev.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c
-index a4853c4e5ee3a..67ef889a0c5f4 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c
-@@ -295,6 +295,7 @@ g94_sor = {
- 	.clock = nv50_sor_clock,
- 	.war_2 = g94_sor_war_2,
- 	.war_3 = g94_sor_war_3,
-+	.hdmi = &g84_sor_hdmi,
- 	.dp = &g94_sor_dp,
- };
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index 6045bece2654d..b4d3b9cde8bd6 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -184,13 +184,10 @@ static ssize_t nsim_dev_trap_fa_cookie_write(struct file *file,
+ 	cookie_len = (count - 1) / 2;
+ 	if ((count - 1) % 2)
+ 		return -EINVAL;
+-	buf = kmalloc(count, GFP_KERNEL | __GFP_NOWARN);
+-	if (!buf)
+-		return -ENOMEM;
  
+-	ret = simple_write_to_buffer(buf, count, ppos, data, count);
+-	if (ret < 0)
+-		goto free_buf;
++	buf = memdup_user(data, count);
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
+ 
+ 	fa_cookie = kmalloc(sizeof(*fa_cookie) + cookie_len,
+ 			    GFP_KERNEL | __GFP_NOWARN);
 -- 
 2.39.2
 
