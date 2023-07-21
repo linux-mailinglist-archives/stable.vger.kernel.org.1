@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B45F275CEEA
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7947875CF2F
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232909AbjGUQZn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:25:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51742 "EHLO
+        id S232713AbjGUQ2j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232913AbjGUQZb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:25:31 -0400
+        with ESMTP id S232859AbjGUQ1n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:27:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4895B92
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:22:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27FEC44BF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:24:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F35E61D43
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:22:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917EEC433C8;
-        Fri, 21 Jul 2023 16:22:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2F3861D4A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:24:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF3FC433C8;
+        Fri, 21 Jul 2023 16:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956529;
-        bh=qPhXzeDrUw+iAb7ELdNp/Qpnul0bMA+TXX4bF33OMrE=;
+        s=korg; t=1689956666;
+        bh=8kb1Y7EZC3A2SX2lHu4hFXa2Y5W3q45OguU46MGspDQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=plQN1x1XNdGJfezgxblxQKbd39UXTS05F4D0rn/Nj3FpKlwtjPxYESstoHM7MfDFX
-         7lnbVsSx564/3ubz0MpRKh0RTlKp3XihHv8COCh2r2XpvE7UKpOPBXcvQSRFPeqEZQ
-         uOPYuQKurSbBqm7s6o65T7edcg1JWb/9UZlONHQU=
+        b=Bkv94EXd5D5TRCYJKvHRireaWKrKLdS6xuTBXuzCf19uBe4yuaOOrjeMnqHBeyt31
+         VbOmac5rRXNeBJVF5UV3Iw620iNdoABDE5UVmAECfEiJSr2tv9TlNKkcTBw4hJS/gF
+         TIIaDzmdsv9XUmgxpxmd3sLOFHeQnbU7BqMpnQmI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.4 219/292] firmware: stratix10-svc: Fix a potential resource leak in svc_create_memory_pool()
-Date:   Fri, 21 Jul 2023 18:05:28 +0200
-Message-ID: <20230721160538.280988183@linuxfoundation.org>
+        patches@lists.linux.dev, Thelford Williams <thelford@google.com>,
+        Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>
+Subject: [PATCH 6.4 220/292] libceph: harden msgr2.1 frame segment length checks
+Date:   Fri, 21 Jul 2023 18:05:29 +0200
+Message-ID: <20230721160538.323168034@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -55,44 +54,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 1995f15590ca222f91193ed11461862b450abfd6 upstream.
+commit a282a2f10539dce2aa619e71e1817570d557fc97 upstream.
 
-svc_create_memory_pool() is only called from stratix10_svc_drv_probe().
-Most of resources in the probe are managed, but not this memremap() call.
-
-There is also no memunmap() call in the file.
-
-So switch to devm_memremap() to avoid a resource leak.
+ceph_frame_desc::fd_lens is an int array.  decode_preamble() thus
+effectively casts u32 -> int but the checks for segment lengths are
+written as if on unsigned values.  While reading in HELLO or one of the
+AUTH frames (before authentication is completed), arithmetic in
+head_onwire_len() can get duped by negative ctrl_len and produce
+head_len which is less than CEPH_PREAMBLE_LEN but still positive.
+This would lead to a buffer overrun in prepare_read_control() as the
+preamble gets copied to the newly allocated buffer of size head_len.
 
 Cc: stable@vger.kernel.org
-Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
-Link: https://lore.kernel.org/all/783e9dfbba34e28505c9efa8bba41f97fd0fa1dc.1686109400.git.christophe.jaillet@wanadoo.fr/
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Message-ID: <20230613211521.16366-1-dinguyen@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cd1a677cad99 ("libceph, ceph: implement msgr2.1 protocol (crc and secure modes)")
+Reported-by: Thelford Williams <thelford@google.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/stratix10-svc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ceph/messenger_v2.c |   41 ++++++++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 80f4e2d14e04..2d674126160f 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -755,7 +755,7 @@ svc_create_memory_pool(struct platform_device *pdev,
- 	end = rounddown(sh_memory->addr + sh_memory->size, PAGE_SIZE);
- 	paddr = begin;
- 	size = end - begin;
--	va = memremap(paddr, size, MEMREMAP_WC);
-+	va = devm_memremap(dev, paddr, size, MEMREMAP_WC);
- 	if (!va) {
- 		dev_err(dev, "fail to remap shared memory\n");
- 		return ERR_PTR(-EINVAL);
--- 
-2.41.0
-
+--- a/net/ceph/messenger_v2.c
++++ b/net/ceph/messenger_v2.c
+@@ -391,6 +391,8 @@ static int head_onwire_len(int ctrl_len,
+ 	int head_len;
+ 	int rem_len;
+ 
++	BUG_ON(ctrl_len < 0 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
++
+ 	if (secure) {
+ 		head_len = CEPH_PREAMBLE_SECURE_LEN;
+ 		if (ctrl_len > CEPH_PREAMBLE_INLINE_LEN) {
+@@ -409,6 +411,10 @@ static int head_onwire_len(int ctrl_len,
+ static int __tail_onwire_len(int front_len, int middle_len, int data_len,
+ 			     bool secure)
+ {
++	BUG_ON(front_len < 0 || front_len > CEPH_MSG_MAX_FRONT_LEN ||
++	       middle_len < 0 || middle_len > CEPH_MSG_MAX_MIDDLE_LEN ||
++	       data_len < 0 || data_len > CEPH_MSG_MAX_DATA_LEN);
++
+ 	if (!front_len && !middle_len && !data_len)
+ 		return 0;
+ 
+@@ -521,29 +527,34 @@ static int decode_preamble(void *p, stru
+ 		desc->fd_aligns[i] = ceph_decode_16(&p);
+ 	}
+ 
+-	/*
+-	 * This would fire for FRAME_TAG_WAIT (it has one empty
+-	 * segment), but we should never get it as client.
+-	 */
+-	if (!desc->fd_lens[desc->fd_seg_cnt - 1]) {
+-		pr_err("last segment empty\n");
++	if (desc->fd_lens[0] < 0 ||
++	    desc->fd_lens[0] > CEPH_MSG_MAX_CONTROL_LEN) {
++		pr_err("bad control segment length %d\n", desc->fd_lens[0]);
+ 		return -EINVAL;
+ 	}
+-
+-	if (desc->fd_lens[0] > CEPH_MSG_MAX_CONTROL_LEN) {
+-		pr_err("control segment too big %d\n", desc->fd_lens[0]);
++	if (desc->fd_lens[1] < 0 ||
++	    desc->fd_lens[1] > CEPH_MSG_MAX_FRONT_LEN) {
++		pr_err("bad front segment length %d\n", desc->fd_lens[1]);
+ 		return -EINVAL;
+ 	}
+-	if (desc->fd_lens[1] > CEPH_MSG_MAX_FRONT_LEN) {
+-		pr_err("front segment too big %d\n", desc->fd_lens[1]);
++	if (desc->fd_lens[2] < 0 ||
++	    desc->fd_lens[2] > CEPH_MSG_MAX_MIDDLE_LEN) {
++		pr_err("bad middle segment length %d\n", desc->fd_lens[2]);
+ 		return -EINVAL;
+ 	}
+-	if (desc->fd_lens[2] > CEPH_MSG_MAX_MIDDLE_LEN) {
+-		pr_err("middle segment too big %d\n", desc->fd_lens[2]);
++	if (desc->fd_lens[3] < 0 ||
++	    desc->fd_lens[3] > CEPH_MSG_MAX_DATA_LEN) {
++		pr_err("bad data segment length %d\n", desc->fd_lens[3]);
+ 		return -EINVAL;
+ 	}
+-	if (desc->fd_lens[3] > CEPH_MSG_MAX_DATA_LEN) {
+-		pr_err("data segment too big %d\n", desc->fd_lens[3]);
++
++	/*
++	 * This would fire for FRAME_TAG_WAIT (it has one empty
++	 * segment), but we should never get it as client.
++	 */
++	if (!desc->fd_lens[desc->fd_seg_cnt - 1]) {
++		pr_err("last segment empty, segment count %d\n",
++		       desc->fd_seg_cnt);
+ 		return -EINVAL;
+ 	}
+ 
 
 
