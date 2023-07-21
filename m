@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3440C75CA40
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8290F75CA46
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:42:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjGUOk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:40:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
+        id S231396AbjGUOmF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:42:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231622AbjGUOkR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:40:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3638C2D7B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:40:16 -0700 (PDT)
+        with ESMTP id S231411AbjGUOlm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:41:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14DAE30C4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:41:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C031A61B41
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6240C433C7;
-        Fri, 21 Jul 2023 14:40:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A80D161B27
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC25BC433C7;
+        Fri, 21 Jul 2023 14:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950415;
-        bh=EZlxazG0hO4fT+kSHJzU6iAo9vJITibm8GMuU18/nOo=;
+        s=korg; t=1689950500;
+        bh=c6l922EXCC4ZW8wb6mrk+6A0sQYWnb2g/iiAdia/BWI=;
         h=Subject:To:Cc:From:Date:From;
-        b=vbV54IQ8+Eu3E/7+66Z+Qq/6PN00FfJBfcs+btZ6MXaNBKEyD2NUpp1enEef00k0S
-         sCXWn6JnDWzP2R7SA/dK8udvNm0oGjjDJ4rmcCjsisQdUntF5xbtBjWp2B6heNeci0
-         KEaxuKfSrdACcadXO4BswMC8pN5GYv/BU21IoUGk=
-Subject: FAILED: patch "[PATCH] tracing/probes: Fix to record 0-length data_loc in" failed to apply to 5.4-stable tree
-To:     mhiramat@kernel.org, rostedt@goodmis.org
+        b=Vi+8RLDL14IPIXZNhQP8ygeQy48GuspEOQ4decy2xYGr9qTlZK1sgdbWqJwL9MgNS
+         nA38pBrD0OdHyCrCFc9KI4gWtVPLV1+LKdJJw41Ku8z02w8m4y/F45INq6SCNtEb9S
+         nOd7VK2VKxWLaO5dJOy+TwC3h016D/DbH51EU7l8=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix task management cmd fail due to" failed to apply to 5.15-stable tree
+To:     qutran@marvell.com, himanshu.madhani@oracle.com, lkp@intel.com,
+        martin.petersen@oracle.com, njavali@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:40:06 +0200
-Message-ID: <2023072106-theme-headache-d3ba@gregkh>
+Date:   Fri, 21 Jul 2023 16:41:33 +0200
+Message-ID: <2023072133-cartel-depth-3014@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,40 +50,32 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 797311bce5c2ac90b8d65e357603cfd410d36ebb
+git cherry-pick -x 6a87679626b51b53fbb6be417ad8eb083030b617
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072106-theme-headache-d3ba@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072133-cartel-depth-3014@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-797311bce5c2 ("tracing/probes: Fix to record 0-length data_loc in fetch_store_string*() if fails")
-4ed8f337dee3 ("Revert "tracing: Add "(fault)" name injection to kernel probes"")
-e38e2c6a9efc ("tracing/probes: Fix to update dynamic data counter if fetcharg uses it")
-00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
-f1d3cbfaafc1 ("tracing: Move duplicate code of trace_kprobe/eprobe.c into header")
-7491e2c44278 ("tracing: Add a probe that attaches to trace events")
-8565a45d0858 ("tracing/probes: Have process_fetch_insn() take a void * instead of pt_regs")
-007517a01995 ("tracing/probe: Change traceprobe_set_print_fmt() to take a type")
-3b13911a2fd0 ("tracing: Synthetic event field_pos is an index not a boolean")
-bc87cf0a08d4 ("trace: Add a generic function to read/write u64 values from tracefs")
-d262271d0483 ("tracing/dynevent: Delegate parsing to create function")
-d4d704637d93 ("tracing: Add synthetic event error logging")
-9bbb33291f8e ("tracing: Check that the synthetic event and field names are legal")
-42d120e2dda5 ("tracing: Move is_good_name() from trace_probe.h to trace.h")
-8db4d6bfbbf9 ("tracing: Change synthetic event string format to limit printed length")
-bd82631d7ccd ("tracing: Add support for dynamic strings to synthetic events")
-8fbeb52a598c ("tracing: Fix parse_synth_field() error handling")
-8b6ddd10d678 ("Merge tag 'trace-v5.8-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace")
+6a87679626b5 ("scsi: qla2xxx: Fix task management cmd fail due to unavailable resource")
+9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
+d90171dd0da5 ("scsi: qla2xxx: Multi-que support for TMF")
+5f63a163ed2f ("scsi: qla2xxx: Fix exchange oversubscription for management commands")
+41e5afe51f75 ("scsi: qla2xxx: Fix exchange oversubscription")
+68ad83188d78 ("scsi: qla2xxx: Fix crash when I/O abort times out")
+1b80addaae09 ("scsi: qla2xxx: Remove unused declarations for qla2xxx")
+63ab6cb582fa ("scsi: qla2xxx: edif: Fix I/O timeout due to over-subscription")
+31e6cdbe0eae ("scsi: qla2xxx: Implement ref count for SRB")
+d4523bd6fd5d ("scsi: qla2xxx: Refactor asynchronous command initialization")
 
 thanks,
 
@@ -90,100 +83,147 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 797311bce5c2ac90b8d65e357603cfd410d36ebb Mon Sep 17 00:00:00 2001
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Date: Tue, 11 Jul 2023 23:16:07 +0900
-Subject: [PATCH] tracing/probes: Fix to record 0-length data_loc in
- fetch_store_string*() if fails
+From 6a87679626b51b53fbb6be417ad8eb083030b617 Mon Sep 17 00:00:00 2001
+From: Quinn Tran <qutran@marvell.com>
+Date: Fri, 28 Apr 2023 00:53:35 -0700
+Subject: [PATCH] scsi: qla2xxx: Fix task management cmd fail due to
+ unavailable resource
 
-Fix to record 0-length data to data_loc in fetch_store_string*() if it fails
-to get the string data.
-Currently those expect that the data_loc is updated by store_trace_args() if
-it returns the error code. However, that does not work correctly if the
-argument is an array of strings. In that case, store_trace_args() only clears
-the first entry of the array (which may have no error) and leaves other
-entries. So it should be cleared by fetch_store_string*() itself.
-Also, 'dyndata' and 'maxlen' in store_trace_args() should be updated
-only if it is used (ret > 0 and argument is a dynamic data.)
+Task management command failed with status 2Ch which is
+a result of too many task management commands sent
+to the same target. Hence limit task management commands
+to 8 per target.
 
-Link: https://lore.kernel.org/all/168908496683.123124.4761206188794205601.stgit@devnote2/
-
-Fixes: 40b53b771806 ("tracing: probeevent: Add array type support")
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202304271952.NKNmoFzv-lkp@intel.com/
 Cc: stable@vger.kernel.org
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230428075339.32551-4-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/kernel/trace/trace_probe_kernel.h b/kernel/trace/trace_probe_kernel.h
-index 6deae2ce34f8..bb723eefd7b7 100644
---- a/kernel/trace/trace_probe_kernel.h
-+++ b/kernel/trace/trace_probe_kernel.h
-@@ -37,6 +37,13 @@ fetch_store_strlen(unsigned long addr)
- 	return (ret < 0) ? ret : len;
+diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
+index 02287205ca2e..e345ccbff807 100644
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -2542,6 +2542,7 @@ enum rscn_addr_format {
+ typedef struct fc_port {
+ 	struct list_head list;
+ 	struct scsi_qla_host *vha;
++	struct list_head tmf_pending;
+ 
+ 	unsigned int conf_compl_supported:1;
+ 	unsigned int deleted:2;
+@@ -2562,6 +2563,8 @@ typedef struct fc_port {
+ 	unsigned int do_prli_nvme:1;
+ 
+ 	uint8_t nvme_flag;
++	uint8_t active_tmf;
++#define MAX_ACTIVE_TMF 8
+ 
+ 	uint8_t node_name[WWN_SIZE];
+ 	uint8_t port_name[WWN_SIZE];
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index bc4600bd5765..84841edcd1b5 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2149,6 +2149,54 @@ __qla2x00_async_tm_cmd(struct tmf_arg *arg)
+ 	return rval;
  }
  
-+static nokprobe_inline void set_data_loc(int ret, void *dest, void *__dest, void *base)
++static void qla_put_tmf(fc_port_t *fcport)
 +{
-+	if (ret < 0)
-+		ret = 0;
-+	*(u32 *)dest = make_data_loc(ret, __dest - base);
++	struct scsi_qla_host *vha = fcport->vha;
++	struct qla_hw_data *ha = vha->hw;
++	unsigned long flags;
++
++	spin_lock_irqsave(&ha->tgt.sess_lock, flags);
++	fcport->active_tmf--;
++	spin_unlock_irqrestore(&ha->tgt.sess_lock, flags);
 +}
 +
- /*
-  * Fetch a null-terminated string from user. Caller MUST set *(u32 *)buf
-  * with max length and relative data location.
-@@ -55,8 +62,7 @@ fetch_store_string_user(unsigned long addr, void *dest, void *base)
- 	__dest = get_loc_data(dest, base);
++static
++int qla_get_tmf(fc_port_t *fcport)
++{
++	struct scsi_qla_host *vha = fcport->vha;
++	struct qla_hw_data *ha = vha->hw;
++	unsigned long flags;
++	int rc = 0;
++	LIST_HEAD(tmf_elem);
++
++	spin_lock_irqsave(&ha->tgt.sess_lock, flags);
++	list_add_tail(&tmf_elem, &fcport->tmf_pending);
++
++	while (fcport->active_tmf >= MAX_ACTIVE_TMF) {
++		spin_unlock_irqrestore(&ha->tgt.sess_lock, flags);
++
++		msleep(1);
++
++		spin_lock_irqsave(&ha->tgt.sess_lock, flags);
++		if (fcport->deleted) {
++			rc = EIO;
++			break;
++		}
++		if (fcport->active_tmf < MAX_ACTIVE_TMF &&
++		    list_is_first(&tmf_elem, &fcport->tmf_pending))
++			break;
++	}
++
++	list_del(&tmf_elem);
++
++	if (!rc)
++		fcport->active_tmf++;
++
++	spin_unlock_irqrestore(&ha->tgt.sess_lock, flags);
++
++	return rc;
++}
++
+ int
+ qla2x00_async_tm_cmd(fc_port_t *fcport, uint32_t flags, uint64_t lun,
+ 		     uint32_t tag)
+@@ -2156,18 +2204,19 @@ qla2x00_async_tm_cmd(fc_port_t *fcport, uint32_t flags, uint64_t lun,
+ 	struct scsi_qla_host *vha = fcport->vha;
+ 	struct qla_qpair *qpair;
+ 	struct tmf_arg a;
+-	struct completion comp;
+ 	int i, rval;
  
- 	ret = strncpy_from_user_nofault(__dest, uaddr, maxlen);
--	if (ret >= 0)
--		*(u32 *)dest = make_data_loc(ret, __dest - base);
-+	set_data_loc(ret, dest, __dest, base);
+-	init_completion(&comp);
+ 	a.vha = fcport->vha;
+ 	a.fcport = fcport;
+ 	a.lun = lun;
+-
+-	if (flags & (TCF_LUN_RESET|TCF_ABORT_TASK_SET|TCF_CLEAR_TASK_SET|TCF_CLEAR_ACA))
++	if (flags & (TCF_LUN_RESET|TCF_ABORT_TASK_SET|TCF_CLEAR_TASK_SET|TCF_CLEAR_ACA)) {
+ 		a.modifier = MK_SYNC_ID_LUN;
+-	else
++
++		if (qla_get_tmf(fcport))
++			return QLA_FUNCTION_FAILED;
++	} else {
+ 		a.modifier = MK_SYNC_ID;
++	}
  
- 	return ret;
- }
-@@ -87,8 +93,7 @@ fetch_store_string(unsigned long addr, void *dest, void *base)
- 	 * probing.
- 	 */
- 	ret = strncpy_from_kernel_nofault(__dest, (void *)addr, maxlen);
--	if (ret >= 0)
--		*(u32 *)dest = make_data_loc(ret, __dest - base);
-+	set_data_loc(ret, dest, __dest, base);
+ 	if (vha->hw->mqenable) {
+ 		for (i = 0; i < vha->hw->num_qpairs; i++) {
+@@ -2186,6 +2235,9 @@ qla2x00_async_tm_cmd(fc_port_t *fcport, uint32_t flags, uint64_t lun,
+ 	a.flags = flags;
+ 	rval = __qla2x00_async_tm_cmd(&a);
  
- 	return ret;
++	if (a.modifier == MK_SYNC_ID_LUN)
++		qla_put_tmf(fcport);
++
+ 	return rval;
  }
-diff --git a/kernel/trace/trace_probe_tmpl.h b/kernel/trace/trace_probe_tmpl.h
-index 185da001f4c3..3935b347f874 100644
---- a/kernel/trace/trace_probe_tmpl.h
-+++ b/kernel/trace/trace_probe_tmpl.h
-@@ -267,13 +267,9 @@ store_trace_args(void *data, struct trace_probe *tp, void *rec,
- 		if (unlikely(arg->dynamic))
- 			*dl = make_data_loc(maxlen, dyndata - base);
- 		ret = process_fetch_insn(arg->code, rec, dl, base);
--		if (arg->dynamic) {
--			if (unlikely(ret < 0)) {
--				*dl = make_data_loc(0, dyndata - base);
--			} else {
--				dyndata += ret;
--				maxlen -= ret;
--			}
-+		if (arg->dynamic && likely(ret > 0)) {
-+			dyndata += ret;
-+			maxlen -= ret;
- 		}
- 	}
- }
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 8b92e34ff0c8..7b47e9a2c010 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -170,7 +170,8 @@ fetch_store_string(unsigned long addr, void *dest, void *base)
- 			 */
- 			ret++;
- 		*(u32 *)dest = make_data_loc(ret, (void *)dst - base);
--	}
-+	} else
-+		*(u32 *)dest = make_data_loc(0, (void *)dst - base);
  
- 	return ret;
- }
+@@ -5400,6 +5452,7 @@ qla2x00_alloc_fcport(scsi_qla_host_t *vha, gfp_t flags)
+ 	INIT_WORK(&fcport->reg_work, qla_register_fcport_fn);
+ 	INIT_LIST_HEAD(&fcport->gnl_entry);
+ 	INIT_LIST_HEAD(&fcport->list);
++	INIT_LIST_HEAD(&fcport->tmf_pending);
+ 
+ 	INIT_LIST_HEAD(&fcport->sess_cmd_list);
+ 	spin_lock_init(&fcport->sess_cmd_lock);
 
