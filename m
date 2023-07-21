@@ -2,88 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6349A75D19F
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 206CB75D3CB
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230383AbjGUSvA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45122 "EHLO
+        id S231936AbjGUTOd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230223AbjGUSu7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A358930CF
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:58 -0700 (PDT)
+        with ESMTP id S230324AbjGUTOb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83FF1FD7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 417A161D5E
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534FBC433C7;
-        Fri, 21 Jul 2023 18:50:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CC6561D89
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8750CC433CA;
+        Fri, 21 Jul 2023 19:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965457;
-        bh=FUvP6rMKOTXHGMi3/QsWtxDR24XoV2zguEGGI8mDKT0=;
+        s=korg; t=1689966869;
+        bh=EQexQZUecC9KCq249OQUh9Qzb4gZ5l2iiRAgFOMoIyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WmLUshJSdlxQPtZp7Ac13CEPk9tPPbB8Iv8kuTc3eFeNXJ2QeaC/7Kcxs/VJ+yPz4
-         Q2KOmLfC6UiIp39D1v+D1XfYWUeTrM23YgjKj8J9guT21UrzIKMQmJ69QPuF14F0u5
-         qjQgaK6MS5HjuZzbY04waq0LfBdAtFYhDUC3UUj0=
+        b=r24K3Lz0txVi9aDb6Mc2PuRb6fUxJTlsKCDQwEMnwUAXxKWZFvD/aAaaxL4tLpxTh
+         mj2/gx3GPZ20ZIzsh51EgPKtbo4EIne5lpTyFUo5d5wqfSISdQLwr9LHJro8GB30ss
+         VRdlkpDzeDc1Pw6+vk2fWaI1d4+nIT4vjTEcB4CA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 6.4 291/292] MIPS: kvm: Fix build error with KVM_MIPS_DEBUG_COP0_COUNTERS enabled
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 5.15 496/532] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() when iterating clk
 Date:   Fri, 21 Jul 2023 18:06:40 +0200
-Message-ID: <20230721160541.464078644@linuxfoundation.org>
+Message-ID: <20230721160641.465668079@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-References: <20230721160528.800311148@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 3a6dbb691782e88e07e5c70b327495dbd58a2e7f upstream.
+commit 832e231cff476102e8204a9e7bddfe5c6154a375 upstream.
 
-Commit e4de20576986 ("MIPS: KVM: Fix NULL pointer dereference") missed
-converting one place accessing cop0 registers, which results in a build
-error, if KVM_MIPS_DEBUG_COP0_COUNTERS is enabled.
+When the best clk is searched, we iterate over all possible clk.
 
-Fixes: e4de20576986 ("MIPS: KVM: Fix NULL pointer dereference")
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+If we find a better match, the previous one, if any, needs to be freed.
+If a better match has already been found, we still need to free the new
+one, otherwise it leaks.
+
+Cc: <stable@vger.kernel.org> # v3.3+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <cf3e0053d2fc7391b2d906a86cd01a5ef15fb9dc.1686412569.git.christophe.jaillet@wanadoo.fr>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kvm/stats.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/samsung_tty.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/mips/kvm/stats.c
-+++ b/arch/mips/kvm/stats.c
-@@ -54,9 +54,9 @@ void kvm_mips_dump_stats(struct kvm_vcpu
- 	kvm_info("\nKVM VCPU[%d] COP0 Access Profile:\n", vcpu->vcpu_id);
- 	for (i = 0; i < N_MIPS_COPROC_REGS; i++) {
- 		for (j = 0; j < N_MIPS_COPROC_SEL; j++) {
--			if (vcpu->arch.cop0->stat[i][j])
-+			if (vcpu->arch.cop0.stat[i][j])
- 				kvm_info("%s[%d]: %lu\n", kvm_cop0_str[i], j,
--					 vcpu->arch.cop0->stat[i][j]);
-+					 vcpu->arch.cop0.stat[i][j]);
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -1509,10 +1509,18 @@ static unsigned int s3c24xx_serial_getcl
+ 			calc_deviation = -calc_deviation;
+ 
+ 		if (calc_deviation < deviation) {
++			/*
++			 * If we find a better clk, release the previous one, if
++			 * any.
++			 */
++			if (!IS_ERR(*best_clk))
++				clk_put(*best_clk);
+ 			*best_clk = clk;
+ 			best_quot = quot;
+ 			*clk_num = cnt;
+ 			deviation = calc_deviation;
++		} else {
++			clk_put(clk);
  		}
  	}
- #endif
+ 
 
 
