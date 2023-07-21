@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5640F75D4D6
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 548A875D4D7
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232249AbjGUTZb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S232255AbjGUTZb (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 21 Jul 2023 15:25:31 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232254AbjGUTZ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:25:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575E130E2
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:25:27 -0700 (PDT)
+        with ESMTP id S232252AbjGUTZb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:25:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48E42189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:25:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE62361D6D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:25:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27EFC433C9;
-        Fri, 21 Jul 2023 19:25:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA02E61D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDD5C433C8;
+        Fri, 21 Jul 2023 19:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967526;
-        bh=W+SxhyQ/lc4vWwTT8Ky+kalmGv8L7EwNzoykiwTCfbw=;
+        s=korg; t=1689967529;
+        bh=5i9kiCk8TDfUKL36m3HOkdT/dr+K+/NrZSQ7g9ejV7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JZkQsgfdZLXB4nWrPxcsF7b4GRRvWrJmW19zay3WRWpAnOYfd7Zii40cDcC9CCLtm
-         X97tpG4Aq4JuEjoosOEnQ+MumheQEMnA/jZUYXF1K1wihIWfmYBNaHqHFSXqzPvMni
-         Z+OxbQ7TDGbifbUh3PNNmBZz9GF2Ql3tPV+TIbYw=
+        b=RqODkb9XSd6Zcprjo+TLDChUQeZ754ejOgIeMHrsDT52W6FF503CCKyd/COGFP5jV
+         V13p41LDkhPueovxuDvTjP5+/UGR7SuboHYj0FdPNExMpxNxWufsPUhToLFcqcHcap
+         8ZtDQ7t7DxjvP+OEpgLKGOtpiTCzTQ3tVP0BSk7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.1 193/223] fprobe: Release rethook after the ftrace_ops is unregistered
-Date:   Fri, 21 Jul 2023 18:07:26 +0200
-Message-ID: <20230721160529.113510867@linuxfoundation.org>
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 194/223] fprobe: Ensure running fprobe_exit_handler() finished before calling rethook_free()
+Date:   Fri, 21 Jul 2023 18:07:27 +0200
+Message-ID: <20230721160529.154964344@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
 References: <20230721160520.865493356@linuxfoundation.org>
@@ -46,85 +45,128 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 5f81018753dfd4989e33ece1f0cb6b8aae498b82 upstream.
+commit 195b9cb5b288fec1c871ef89f78cc9a7461aad3a upstream.
 
-While running bpf selftests it's possible to get following fault:
+Ensure running fprobe_exit_handler() has finished before
+calling rethook_free() in the unregister_fprobe() so that caller can free
+the fprobe right after unregister_fprobe().
 
-  general protection fault, probably for non-canonical address \
-  0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
-  ...
-  Call Trace:
-   <TASK>
-   fprobe_handler+0xc1/0x270
-   ? __pfx_bpf_testmod_init+0x10/0x10
-   ? __pfx_bpf_testmod_init+0x10/0x10
-   ? bpf_fentry_test1+0x5/0x10
-   ? bpf_fentry_test1+0x5/0x10
-   ? bpf_testmod_init+0x22/0x80
-   ? do_one_initcall+0x63/0x2e0
-   ? rcu_is_watching+0xd/0x40
-   ? kmalloc_trace+0xaf/0xc0
-   ? do_init_module+0x60/0x250
-   ? __do_sys_finit_module+0xac/0x120
-   ? do_syscall_64+0x37/0x90
-   ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-   </TASK>
+unregister_fprobe() ensured that all running fprobe_entry/exit_handler()
+have finished by calling unregister_ftrace_function() which synchronizes
+RCU. But commit 5f81018753df ("fprobe: Release rethook after the ftrace_ops
+is unregistered") changed to call rethook_free() after
+unregister_ftrace_function(). So call rethook_stop() to make rethook
+disabled before unregister_ftrace_function() and ensure it again.
 
-In unregister_fprobe function we can't release fp->rethook while it's
-possible there are some of its users still running on another cpu.
+Here is the possible code flow that can call the exit handler after
+unregister_fprobe().
 
-Moving rethook_free call after fp->ops is unregistered with
-unregister_ftrace_function call.
+------
+ CPU1                              CPU2
+ call unregister_fprobe(fp)
+ ...
+                                   __fprobe_handler()
+                                   rethook_hook() on probed function
+ unregister_ftrace_function()
+                                   return from probed function
+                                   rethook hooks
+                                   find rh->handler == fprobe_exit_handler
+                                   call fprobe_exit_handler()
+ rethook_free():
+   set rh->handler = NULL;
+ return from unreigster_fprobe;
+                                   call fp->exit_handler() <- (*)
+------
 
-Link: https://lore.kernel.org/all/20230615115236.3476617-1-jolsa@kernel.org/
+(*) At this point, the exit handler is called after returning from
+unregister_fprobe().
 
-Fixes: 5b0ab78998e3 ("fprobe: Add exit_handler support")
+This fixes it as following;
+------
+ CPU1                              CPU2
+ call unregister_fprobe()
+ ...
+ rethook_stop():
+   set rh->handler = NULL;
+                                   __fprobe_handler()
+                                   rethook_hook() on probed function
+ unregister_ftrace_function()
+                                   return from probed function
+                                   rethook hooks
+                                   find rh->handler == NULL
+                                   return from rethook
+ rethook_free()
+ return from unreigster_fprobe;
+------
+
+Link: https://lore.kernel.org/all/168873859949.156157.13039240432299335849.stgit@devnote2/
+
+Fixes: 5f81018753df ("fprobe: Release rethook after the ftrace_ops is unregistered")
 Cc: stable@vger.kernel.org
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fprobe.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ include/linux/rethook.h |    1 +
+ kernel/trace/fprobe.c   |    3 +++
+ kernel/trace/rethook.c  |   13 +++++++++++++
+ 3 files changed, 17 insertions(+)
 
+--- a/include/linux/rethook.h
++++ b/include/linux/rethook.h
+@@ -59,6 +59,7 @@ struct rethook_node {
+ };
+ 
+ struct rethook *rethook_alloc(void *data, rethook_handler_t handler);
++void rethook_stop(struct rethook *rh);
+ void rethook_free(struct rethook *rh);
+ void rethook_add_node(struct rethook *rh, struct rethook_node *node);
+ struct rethook_node *rethook_try_get(struct rethook *rh);
 --- a/kernel/trace/fprobe.c
 +++ b/kernel/trace/fprobe.c
-@@ -307,19 +307,13 @@ int unregister_fprobe(struct fprobe *fp)
+@@ -307,6 +307,9 @@ int unregister_fprobe(struct fprobe *fp)
  		    fp->ops.saved_func != fprobe_kprobe_handler))
  		return -EINVAL;
  
--	/*
--	 * rethook_free() starts disabling the rethook, but the rethook handlers
--	 * may be running on other processors at this point. To make sure that all
--	 * current running handlers are finished, call unregister_ftrace_function()
--	 * after this.
--	 */
--	if (fp->rethook)
--		rethook_free(fp->rethook);
--
++	if (fp->rethook)
++		rethook_stop(fp->rethook);
++
  	ret = unregister_ftrace_function(&fp->ops);
  	if (ret < 0)
  		return ret;
+--- a/kernel/trace/rethook.c
++++ b/kernel/trace/rethook.c
+@@ -54,6 +54,19 @@ static void rethook_free_rcu(struct rcu_
+ }
  
-+	if (fp->rethook)
-+		rethook_free(fp->rethook);
+ /**
++ * rethook_stop() - Stop using a rethook.
++ * @rh: the struct rethook to stop.
++ *
++ * Stop using a rethook to prepare for freeing it. If you want to wait for
++ * all running rethook handler before calling rethook_free(), you need to
++ * call this first and wait RCU, and call rethook_free().
++ */
++void rethook_stop(struct rethook *rh)
++{
++	WRITE_ONCE(rh->handler, NULL);
++}
 +
- 	ftrace_free_filter(&fp->ops);
- 
- 	return ret;
++/**
+  * rethook_free() - Free struct rethook.
+  * @rh: the struct rethook to be freed.
+  *
 
 
