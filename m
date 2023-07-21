@@ -2,44 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB4175D24B
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B50B75D24D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:58:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231433AbjGUS6O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52138 "EHLO
+        id S231405AbjGUS6R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:58:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbjGUS6N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:58:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D9F30D0
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:58:02 -0700 (PDT)
+        with ESMTP id S231431AbjGUS6Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:58:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155C730CF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:58:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 082BA61D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:58:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188A1C433C8;
-        Fri, 21 Jul 2023 18:58:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9D9461D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:58:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDEEC433C8;
+        Fri, 21 Jul 2023 18:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965881;
-        bh=zfsHr/cGv/2WuIrYt9rGKpQxsABV8+8FTgrPDYKhuKg=;
+        s=korg; t=1689965887;
+        bh=TsMM2clemeACUsTCzTeJUymJha9TsDKJPtDWybjLNVg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JRG2kZ7nKJ0h57yC1HGIwbCPEH+0Xv0ltz9q1D69I96tRXuelf8LUpYN+P1rT3FTR
-         0eUOb7DDH8BBcvCj/utrdKa6eBIVrizbUFcarcK3voMmJ/leGRG+I6MQ7JXubBAHDQ
-         aK6inX9/iXG082ZxlHWVYZA8DwqkI5VJM/PbbS+s=
+        b=DUUK9qXXNnk+7PWGdY2+EMhxvcl+rtNHIVbI5P8D/baoMGFIkckx+EjLsGL0A/EwF
+         QcuNLQ25h6Q0yULElGoGs3tQ++jK6TnuhIMUYTmZq1sxLIIFy6ezAH/fxMJlHS/WkU
+         ZlSTwzLEHeRdpuW3mkT0DlYn6AjEUh4lwYPqTuGU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Hans-Frieder Vogt <hfdevel@gmx.net>
-Subject: [PATCH 5.15 148/532] ARM: dts: meson8: correct uart_B and uart_C clock references
-Date:   Fri, 21 Jul 2023 18:00:52 +0200
-Message-ID: <20230721160622.468690382@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Leo Li <leoyang.li@nxp.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Qiang Zhao <qiang.zhao@nxp.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Kumar Gala <galak@kernel.crashing.org>,
+        Nicolas Schier <nicolas@jasle.eu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 149/532] soc/fsl/qe: fix usb.c build errors
+Date:   Fri, 21 Jul 2023 18:00:53 +0200
+Message-ID: <20230721160622.521959157@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -47,8 +55,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,49 +65,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 98b503c7fb13a17a47d8ebf15fa8f7c10118e75c ]
+[ Upstream commit 7b1a78babd0d2cd27aa07255dee0c2d7ac0f31e3 ]
 
-On Meson8 uart_B and uart_C do not work, because they are relying on
-incorrect clocks. Change the references of pclk to the correct CLKID
-(UART1 for uart_B and UART2 for uart_C), to allow use of the two uarts.
+Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
+This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
+When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
+being set. When USB_FSL_QE is set, QE_USB deafults to y, which
+causes build errors when QUICC_ENGINE is not set. Making
+QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
 
-This was originally reported by Hans-Frieder Vogt for Meson8b [0], but
-the same bug is also present in meson8.dtsi
+Fixes these build errors:
 
-[0] https://lore.kernel.org/linux-amlogic/trinity-bf20bcb9-790b-4ab9-99e3-0831ef8257f4-1680878185420@3c-app-gmx-bap55/
+drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+usb.c:(.text+0x1e): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
 
-Fixes: 57007bfb5469 ("ARM: dts: meson8: Fix the UART device-tree schema validation")
-Reported-by: Hans-Frieder Vogt <hfdevel@gmx.net> # for meson8b.dtsi
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20230516203029.1031174-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Leo Li <leoyang.li@nxp.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Kumar Gala <galak@kernel.crashing.org>
+Acked-by: Nicolas Schier <nicolas@jasle.eu>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/meson8.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/fsl/qe/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/meson8.dtsi b/arch/arm/boot/dts/meson8.dtsi
-index 9997a5d0333a3..72828b9d4281d 100644
---- a/arch/arm/boot/dts/meson8.dtsi
-+++ b/arch/arm/boot/dts/meson8.dtsi
-@@ -749,13 +749,13 @@ &uart_A {
+diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+index 357c5800b112f..7afa796dbbb89 100644
+--- a/drivers/soc/fsl/qe/Kconfig
++++ b/drivers/soc/fsl/qe/Kconfig
+@@ -39,6 +39,7 @@ config QE_TDM
  
- &uart_B {
- 	compatible = "amlogic,meson8-uart";
--	clocks = <&xtal>, <&clkc CLKID_UART0>, <&clkc CLKID_CLK81>;
-+	clocks = <&xtal>, <&clkc CLKID_UART1>, <&clkc CLKID_CLK81>;
- 	clock-names = "xtal", "pclk", "baud";
- };
- 
- &uart_C {
- 	compatible = "amlogic,meson8-uart";
--	clocks = <&xtal>, <&clkc CLKID_UART0>, <&clkc CLKID_CLK81>;
-+	clocks = <&xtal>, <&clkc CLKID_UART2>, <&clkc CLKID_CLK81>;
- 	clock-names = "xtal", "pclk", "baud";
- };
- 
+ config QE_USB
+ 	bool
++	depends on QUICC_ENGINE
+ 	default y if USB_FSL_QE
+ 	help
+ 	  QE USB Controller support
 -- 
 2.39.2
 
