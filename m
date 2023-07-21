@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C9775D338
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5586375D404
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230309AbjGUTIN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60354 "EHLO
+        id S231987AbjGUTQz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:16:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjGUTIM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6657B1BF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:11 -0700 (PDT)
+        with ESMTP id S231984AbjGUTQy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9311FD7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFFE861D95
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E312C433C7;
-        Fri, 21 Jul 2023 19:08:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F069C61D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1152EC433C7;
+        Fri, 21 Jul 2023 19:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966490;
-        bh=e/erS0Qtrc5BnQazcB/s7JaCf9/gvGHjAnjvLvqbeRs=;
+        s=korg; t=1689967012;
+        bh=WOXTcPDKFZM097Ql6o+F/PEkDaOaIS6IXAxVgpEDrMs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yFq5kKo+cJ1fA505fS2wtjmXBVpS8qBYbHHiT4aeYLZFtkq+FdVJ29T2xOWMhXpcJ
-         T0j0IuG1arPb/Um2BkIDPk0XYh/VZe4+YJmbXA3iQh2FfZ8+4/d7nMOUMFWVnW/Ilr
-         ClsZ7vTIlG6viwg9e3cLGCP9pFVMRcihJIFyMiQY=
+        b=2cmSf6rnL/OM0qkJkXjKOdCHi2pjY7dPGcCYC8lWmLjj8U9+vi4imukfRrS2LsFYf
+         fwYReNY8qolFLhAntmwqTwjpMcc+s4ZDir2gFwHMB7k6CxeHXRq8HDkXkuSpluKupj
+         n0ed+hzt0H1HV6pTmSXk689ktCsS/QUX8ubqYCc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 363/532] fs: avoid empty option when generating legacy mount string
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
+        Bharathi Sreenivas <bharathi.sreenivas@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 014/223] ice: Fix max_rate check while configuring TX rate limits
 Date:   Fri, 21 Jul 2023 18:04:27 +0200
-Message-ID: <20230721160634.145778087@linuxfoundation.org>
+Message-ID: <20230721160521.482848510@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,40 +58,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Sridhar Samudrala <sridhar.samudrala@intel.com>
 
-commit 62176420274db5b5127cd7a0083a9aeb461756ee upstream.
+[ Upstream commit 5f16da6ee6ac32e6c8098bc4cfcc4f170694f9da ]
 
-As each option string fragment is always prepended with a comma it would
-happen that the whole string always starts with a comma. This could be
-interpreted by filesystem drivers as an empty option and may produce
-errors.
+Remove incorrect check in ice_validate_mqprio_opt() that limits
+filter configuration when sum of max_rates of all TCs exceeds
+the link speed. The max rate of each TC is unrelated to value
+used by other TCs and is valid as long as it is less than link
+speed.
 
-For example the NTFS driver from ntfs.ko behaves like this and fails
-when mounted via the new API.
-
-Link: https://github.com/util-linux/util-linux/issues/2298
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Fixes: 3e1aeb00e6d1 ("vfs: Implement a filesystem superblock creation/configuration context")
-Cc: stable@vger.kernel.org
-Message-Id: <20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fbc7b27af0f9 ("ice: enable ndo_setup_tc support for mqprio_qdisc")
+Signed-off-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+Tested-by: Bharathi Sreenivas <bharathi.sreenivas@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs_context.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/fs_context.c
-+++ b/fs/fs_context.c
-@@ -561,7 +561,8 @@ static int legacy_parse_param(struct fs_
- 			return -ENOMEM;
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 7a5ec3ce3407a..8f77088900e94 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -7852,10 +7852,10 @@ static int
+ ice_validate_mqprio_qopt(struct ice_vsi *vsi,
+ 			 struct tc_mqprio_qopt_offload *mqprio_qopt)
+ {
+-	u64 sum_max_rate = 0, sum_min_rate = 0;
+ 	int non_power_of_2_qcount = 0;
+ 	struct ice_pf *pf = vsi->back;
+ 	int max_rss_q_cnt = 0;
++	u64 sum_min_rate = 0;
+ 	struct device *dev;
+ 	int i, speed;
+ 	u8 num_tc;
+@@ -7871,6 +7871,7 @@ ice_validate_mqprio_qopt(struct ice_vsi *vsi,
+ 	dev = ice_pf_to_dev(pf);
+ 	vsi->ch_rss_size = 0;
+ 	num_tc = mqprio_qopt->qopt.num_tc;
++	speed = ice_get_link_speed_kbps(vsi);
  
--	ctx->legacy_data[size++] = ',';
-+	if (size)
-+		ctx->legacy_data[size++] = ',';
- 	len = strlen(param->key);
- 	memcpy(ctx->legacy_data + size, param->key, len);
- 	size += len;
+ 	for (i = 0; num_tc; i++) {
+ 		int qcount = mqprio_qopt->qopt.count[i];
+@@ -7911,7 +7912,6 @@ ice_validate_mqprio_qopt(struct ice_vsi *vsi,
+ 		 */
+ 		max_rate = mqprio_qopt->max_rate[i];
+ 		max_rate = div_u64(max_rate, ICE_BW_KBPS_DIVISOR);
+-		sum_max_rate += max_rate;
+ 
+ 		/* min_rate is minimum guaranteed rate and it can't be zero */
+ 		min_rate = mqprio_qopt->min_rate[i];
+@@ -7924,6 +7924,12 @@ ice_validate_mqprio_qopt(struct ice_vsi *vsi,
+ 			return -EINVAL;
+ 		}
+ 
++		if (max_rate && max_rate > speed) {
++			dev_err(dev, "TC%d: max_rate(%llu Kbps) > link speed of %u Kbps\n",
++				i, max_rate, speed);
++			return -EINVAL;
++		}
++
+ 		iter_div_u64_rem(min_rate, ICE_MIN_BW_LIMIT, &rem);
+ 		if (rem) {
+ 			dev_err(dev, "TC%d: Min Rate not multiple of %u Kbps",
+@@ -7961,12 +7967,6 @@ ice_validate_mqprio_qopt(struct ice_vsi *vsi,
+ 	    (mqprio_qopt->qopt.offset[i] + mqprio_qopt->qopt.count[i]))
+ 		return -EINVAL;
+ 
+-	speed = ice_get_link_speed_kbps(vsi);
+-	if (sum_max_rate && sum_max_rate > (u64)speed) {
+-		dev_err(dev, "Invalid max Tx rate(%llu) Kbps > speed(%u) Kbps specified\n",
+-			sum_max_rate, speed);
+-		return -EINVAL;
+-	}
+ 	if (sum_min_rate && sum_min_rate > (u64)speed) {
+ 		dev_err(dev, "Invalid min Tx rate(%llu) Kbps > speed (%u) Kbps specified\n",
+ 			sum_min_rate, speed);
+-- 
+2.39.2
+
 
 
