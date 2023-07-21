@@ -2,180 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33CAF75D4CB
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D3EE75D3FD
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbjGUTZM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:25:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46292 "EHLO
+        id S231975AbjGUTQi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:16:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232237AbjGUTZL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:25:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47A43AB2
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:56 -0700 (PDT)
+        with ESMTP id S231985AbjGUTQg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1045E1BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 108D261D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243A7C433C7;
-        Fri, 21 Jul 2023 19:24:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EB0061D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04E0C433C8;
+        Fri, 21 Jul 2023 19:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967495;
-        bh=aLIliHYp+relMdY6LlZU2HQZrxY5umwJFLMbf2F5dOw=;
+        s=korg; t=1689966995;
+        bh=ElAdtHySEFrLacSBSTpAbBVBu8ZxFEA9lWL3++5Ezrk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NJqvbj3XiLO+qf2E69yL+Z4I77xqOV1svCDGwiapIwvlyRw4jbu5dCal+uwbz1qHS
-         3FehNVlFuJJcgoo2JfwUrh4Cy/5lA5tymgMqAB2znGSE5PT97N0R0Le5HqyOh1oUPU
-         Gi2jFL9MOAJ5SVnr+6ngQHYqWfQFXMqyBmP/RLxQ=
+        b=OHpzFencMf5hCjKGUrM8my2ZXke+LWlFMa8zm0bnhsCNleDRrIn4HkmhjwAEL+rSQ
+         zsA3yKom/F4qXSyhazpCjiXwB8s+P5K4Xh/pKgM5elYnFSVWN0kYkhBlMEn05RMQCw
+         kHBl6zCYKvdGNJy17FEi/nZqpaMU+YUJoBmp/D7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 183/223] ring-buffer: Fix deadloop issue on reading trace_pipe
+        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 532/532] net/sched: sch_qfq: reintroduce lmax bound check for MTU
 Date:   Fri, 21 Jul 2023 18:07:16 +0200
-Message-ID: <20230721160528.683623848@linuxfoundation.org>
+Message-ID: <20230721160643.463604601@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit 7e42907f3a7b4ce3a2d1757f6d78336984daf8f5 upstream.
+commit 158810b261d02fc7dd92ca9c392d8f8a211a2401 upstream.
 
-Soft lockup occurs when reading file 'trace_pipe':
+25369891fcef deletes a check for the case where no 'lmax' is
+specified which 3037933448f6 previously fixed as 'lmax'
+could be set to the device's MTU without any bound checking
+for QFQ_LMAX_MIN and QFQ_LMAX_MAX. Therefore, reintroduce the check.
 
-  watchdog: BUG: soft lockup - CPU#6 stuck for 22s! [cat:4488]
-  [...]
-  RIP: 0010:ring_buffer_empty_cpu+0xed/0x170
-  RSP: 0018:ffff88810dd6fc48 EFLAGS: 00000246
-  RAX: 0000000000000000 RBX: 0000000000000246 RCX: ffffffff93d1aaeb
-  RDX: ffff88810a280040 RSI: 0000000000000008 RDI: ffff88811164b218
-  RBP: ffff88811164b218 R08: 0000000000000000 R09: ffff88815156600f
-  R10: ffffed102a2acc01 R11: 0000000000000001 R12: 0000000051651901
-  R13: 0000000000000000 R14: ffff888115e49500 R15: 0000000000000000
-  [...]
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f8d853c2000 CR3: 000000010dcd8000 CR4: 00000000000006e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   __find_next_entry+0x1a8/0x4b0
-   ? peek_next_entry+0x250/0x250
-   ? down_write+0xa5/0x120
-   ? down_write_killable+0x130/0x130
-   trace_find_next_entry_inc+0x3b/0x1d0
-   tracing_read_pipe+0x423/0xae0
-   ? tracing_splice_read_pipe+0xcb0/0xcb0
-   vfs_read+0x16b/0x490
-   ksys_read+0x105/0x210
-   ? __ia32_sys_pwrite64+0x200/0x200
-   ? switch_fpu_return+0x108/0x220
-   do_syscall_64+0x33/0x40
-   entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-Through the vmcore, I found it's because in tracing_read_pipe(),
-ring_buffer_empty_cpu() found some buffer is not empty but then it
-cannot read anything due to "rb_num_of_entries() == 0" always true,
-Then it infinitely loop the procedure due to user buffer not been
-filled, see following code path:
-
-  tracing_read_pipe() {
-    ... ...
-    waitagain:
-      tracing_wait_pipe() // 1. find non-empty buffer here
-      trace_find_next_entry_inc()  // 2. loop here try to find an entry
-        __find_next_entry()
-          ring_buffer_empty_cpu();  // 3. find non-empty buffer
-          peek_next_entry()  // 4. but peek always return NULL
-            ring_buffer_peek()
-              rb_buffer_peek()
-                rb_get_reader_page()
-                  // 5. because rb_num_of_entries() == 0 always true here
-                  //    then return NULL
-      // 6. user buffer not been filled so goto 'waitgain'
-      //    and eventually leads to an deadloop in kernel!!!
-  }
-
-By some analyzing, I found that when resetting ringbuffer, the 'entries'
-of its pages are not all cleared (see rb_reset_cpu()). Then when reducing
-the ringbuffer, and if some reduced pages exist dirty 'entries' data, they
-will be added into 'cpu_buffer->overrun' (see rb_remove_pages()), which
-cause wrong 'overrun' count and eventually cause the deadloop issue.
-
-To fix it, we need to clear every pages in rb_reset_cpu().
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230708225144.3785600-1-zhengyejian1@huawei.com
-
-Cc: stable@vger.kernel.org
-Fixes: a5fb833172eca ("ring-buffer: Fix uninitialized read_stamp")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 25369891fcef ("net/sched: sch_qfq: refactor parsing of netlink parameters")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ net/sched/sch_qfq.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -5238,28 +5238,34 @@ unsigned long ring_buffer_size(struct tr
- }
- EXPORT_SYMBOL_GPL(ring_buffer_size);
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -428,10 +428,17 @@ static int qfq_change_class(struct Qdisc
+ 	else
+ 		weight = 1;
  
-+static void rb_clear_buffer_page(struct buffer_page *page)
-+{
-+	local_set(&page->write, 0);
-+	local_set(&page->entries, 0);
-+	rb_init_page(page->page);
-+	page->read = 0;
-+}
-+
- static void
- rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
- {
-+	struct buffer_page *page;
-+
- 	rb_head_page_deactivate(cpu_buffer);
- 
- 	cpu_buffer->head_page
- 		= list_entry(cpu_buffer->pages, struct buffer_page, list);
--	local_set(&cpu_buffer->head_page->write, 0);
--	local_set(&cpu_buffer->head_page->entries, 0);
--	local_set(&cpu_buffer->head_page->page->commit, 0);
--
--	cpu_buffer->head_page->read = 0;
-+	rb_clear_buffer_page(cpu_buffer->head_page);
-+	list_for_each_entry(page, cpu_buffer->pages, list) {
-+		rb_clear_buffer_page(page);
+-	if (tb[TCA_QFQ_LMAX])
++	if (tb[TCA_QFQ_LMAX]) {
+ 		lmax = nla_get_u32(tb[TCA_QFQ_LMAX]);
+-	else
++	} else {
++		/* MTU size is user controlled */
+ 		lmax = psched_mtu(qdisc_dev(sch));
++		if (lmax < QFQ_MIN_LMAX || lmax > QFQ_MAX_LMAX) {
++			NL_SET_ERR_MSG_MOD(extack,
++					   "MTU size out of bounds for qfq");
++			return -EINVAL;
++		}
 +	}
  
- 	cpu_buffer->tail_page = cpu_buffer->head_page;
- 	cpu_buffer->commit_page = cpu_buffer->head_page;
- 
- 	INIT_LIST_HEAD(&cpu_buffer->reader_page->list);
- 	INIT_LIST_HEAD(&cpu_buffer->new_pages);
--	local_set(&cpu_buffer->reader_page->write, 0);
--	local_set(&cpu_buffer->reader_page->entries, 0);
--	local_set(&cpu_buffer->reader_page->page->commit, 0);
--	cpu_buffer->reader_page->read = 0;
-+	rb_clear_buffer_page(cpu_buffer->reader_page);
- 
- 	local_set(&cpu_buffer->entries_bytes, 0);
- 	local_set(&cpu_buffer->overrun, 0);
+ 	inv_w = ONE_FP / weight;
+ 	weight = ONE_FP / inv_w;
 
 
