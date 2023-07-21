@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F016B75D1C9
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A021175D1CA
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231224AbjGUSw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230521AbjGUSw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 21 Jul 2023 14:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46384 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231252AbjGUSww (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:52:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B44C30CA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:52:51 -0700 (PDT)
+        with ESMTP id S231286AbjGUSwz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:52:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C2430CF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:52:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3192261D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:52:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43085C433C7;
-        Fri, 21 Jul 2023 18:52:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06ACD619FD
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:52:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A73C433C7;
+        Fri, 21 Jul 2023 18:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965570;
-        bh=+SoqVG6RoguNPN15+w6YkeW507traoDvh9eGkjN/N3Y=;
+        s=korg; t=1689965573;
+        bh=6yHG8+LKgqiU7Rqk/4lT9ZqUOSLhS76dUidiJa1XynA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RmRhFhwt7P0HxzBTj//uVb+Q+jdU7TKwKXNN24uV6u6Erc+2+SCvhSAEB77WwMUVT
-         dafp0XZI2ulZ128gDfduXtWffvuBJA3esn9vp70geUr1ulxo9z5AzBUIDk8NBeayn2
-         wdJhjWSl4uklWvK/UvGuRIeRHcEeK8RqrxR5A5EM=
+        b=EEDr5kEMMwGtq+7BnPcXYVKJM4Zv3YzuVD6u3lwltoq6MQBO2/wPgyeuwQjMDTsgX
+         srD+C00AvXwwhTCLgftpWEwjNf3RB38xMf7PfY56orSd1v/RW5Zu/FoXb27Ybo/iL1
+         Td8DmRxXpJPKxmtki7cF39OX1xnTO8ZriC2cZm/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Rob Landley <rob@landley.net>, Marc Zyngier <maz@kernel.org>,
+        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/532] irqchip/jcore-aic: Fix missing allocation of IRQ descriptors
-Date:   Fri, 21 Jul 2023 17:58:34 +0200
-Message-ID: <20230721160615.239224325@linuxfoundation.org>
+Subject: [PATCH 5.15 011/532] svcrdma: Prevent page release when nothing was received
+Date:   Fri, 21 Jul 2023 17:58:35 +0200
+Message-ID: <20230721160615.290616315@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -46,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,51 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 4848229494a323eeaab62eee5574ef9f7de80374 ]
+[ Upstream commit baf6d18b116b7dc84ed5e212c3a89f17cdc3f28c ]
 
-The initialization function for the J-Core AIC aic_irq_of_init() is
-currently missing the call to irq_alloc_descs() which allocates and
-initializes all the IRQ descriptors. Add missing function call and
-return the error code from irq_alloc_descs() in case the allocation
-fails.
+I noticed that svc_rqst_release_pages() was still unnecessarily
+releasing a page when svc_rdma_recvfrom() returns zero.
 
-Fixes: 981b58f66cfc ("irqchip/jcore-aic: Add J-Core AIC driver")
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Tested-by: Rob Landley <rob@landley.net>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230510163343.43090-1-glaubitz@physik.fu-berlin.de
+Fixes: a53d5cb0646a ("svcrdma: Avoid releasing a page in svc_xprt_release()")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-jcore-aic.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/sunrpc/xprtrdma/svc_rdma_recvfrom.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
-index 5f47d8ee4ae39..b9dcc8e78c750 100644
---- a/drivers/irqchip/irq-jcore-aic.c
-+++ b/drivers/irqchip/irq-jcore-aic.c
-@@ -68,6 +68,7 @@ static int __init aic_irq_of_init(struct device_node *node,
- 	unsigned min_irq = JCORE_AIC2_MIN_HWIRQ;
- 	unsigned dom_sz = JCORE_AIC_MAX_HWIRQ+1;
- 	struct irq_domain *domain;
-+	int ret;
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+index 3ad4291148a68..0377679678f93 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+@@ -791,6 +791,12 @@ int svc_rdma_recvfrom(struct svc_rqst *rqstp)
+ 	struct svc_rdma_recv_ctxt *ctxt;
+ 	int ret;
  
- 	pr_info("Initializing J-Core AIC\n");
- 
-@@ -100,6 +101,12 @@ static int __init aic_irq_of_init(struct device_node *node,
- 	jcore_aic.irq_unmask = noop;
- 	jcore_aic.name = "AIC";
- 
-+	ret = irq_alloc_descs(-1, min_irq, dom_sz - min_irq,
-+			      of_node_to_nid(node));
++	/* Prevent svc_xprt_release() from releasing pages in rq_pages
++	 * when returning 0 or an error.
++	 */
++	rqstp->rq_respages = rqstp->rq_pages;
++	rqstp->rq_next_page = rqstp->rq_respages;
 +
-+	if (ret < 0)
-+		return ret;
-+
- 	domain = irq_domain_add_legacy(node, dom_sz - min_irq, min_irq, min_irq,
- 				       &jcore_aic_irqdomain_ops,
- 				       &jcore_aic);
+ 	rqstp->rq_xprt_ctxt = NULL;
+ 
+ 	ctxt = NULL;
+@@ -814,12 +820,6 @@ int svc_rdma_recvfrom(struct svc_rqst *rqstp)
+ 				   DMA_FROM_DEVICE);
+ 	svc_rdma_build_arg_xdr(rqstp, ctxt);
+ 
+-	/* Prevent svc_xprt_release from releasing pages in rq_pages
+-	 * if we return 0 or an error.
+-	 */
+-	rqstp->rq_respages = rqstp->rq_pages;
+-	rqstp->rq_next_page = rqstp->rq_respages;
+-
+ 	ret = svc_rdma_xdr_decode_req(&rqstp->rq_arg, ctxt);
+ 	if (ret < 0)
+ 		goto out_err;
 -- 
 2.39.2
 
