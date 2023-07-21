@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24BF75D346
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B84E775D413
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231769AbjGUTIx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:08:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60764 "EHLO
+        id S231744AbjGUTRi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231775AbjGUTIw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:52 -0400
+        with ESMTP id S232004AbjGUTRh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:17:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1979A30E2
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B228230EA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CE1F61D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E029C433CA;
-        Fri, 21 Jul 2023 19:08:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4866C61D82
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D0BC433C9;
+        Fri, 21 Jul 2023 19:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966529;
-        bh=01jCrS5B+z6Nw4qJZ5yxfHzFJ9JmhhnKwbAGUAnjkPo=;
+        s=korg; t=1689967049;
+        bh=NWlWgoLsOFbCCbUF/LVNKigqGJsIicxFB6WLovR0iQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DkHWx0F3Xnht/SJkezDOFXIUZ2W9GL8GewBHbWub31qXCBRAHOANekyeZv1+lSVhf
-         0tS9CXuCbOYIGFq9FDcDytxRi5mnRhPZasJ+rMl8hSfaEIcGKSWrOJ3WAV+jKdWcdP
-         h9BES+enPUfA9f9My3eqmvoPjgUrcuF2F51eM0YQ=
+        b=WejRVBtndhYOY0veI3aJtgE34o26Ez6dFTAFmfLL/fT5hUj2UVAOZzOnkomnAC/wO
+         Tp5I0DdNhR501xy+iet7BYnZiVfBftYjM8jVfexwQWV0a+EJdaXpvrtzFiK4c86ma0
+         MeYPehcBHeCJt9Q3Yp37U+qI7oxMb0YXetrlPKqE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 375/532] leds: trigger: netdev: Recheck NETDEV_LED_MODE_LINKUP on dev rename
-Date:   Fri, 21 Jul 2023 18:04:39 +0200
-Message-ID: <20230721160634.835260166@linuxfoundation.org>
+        patches@lists.linux.dev, M A Ramdhan <ramdhan@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/223] net/sched: cls_fw: Fix improper refcount update leads to use-after-free
+Date:   Fri, 21 Jul 2023 18:04:40 +0200
+Message-ID: <20230721160522.028658688@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +57,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: M A Ramdhan <ramdhan@starlabs.sg>
 
-commit cee4bd16c3195a701be683f7da9e88c6e11acb73 upstream.
+[ Upstream commit 0323bce598eea038714f941ce2b22541c46d488f ]
 
-Dev can be renamed also while up for supported device. We currently
-wrongly clear the NETDEV_LED_MODE_LINKUP flag on NETDEV_CHANGENAME
-event.
+In the event of a failure in tcf_change_indev(), fw_set_parms() will
+immediately return an error after incrementing or decrementing
+reference counter in tcf_bind_filter().  If attacker can control
+reference counter to zero and make reference freed, leading to
+use after free.
 
-Fix this by rechecking if the carrier is ok on NETDEV_CHANGENAME and
-correctly set the NETDEV_LED_MODE_LINKUP bit.
+In order to prevent this, move the point of possible failure above the
+point where the TC_FW_CLASSID is handled.
 
-Fixes: 5f820ed52371 ("leds: trigger: netdev: fix handling on interface rename")
-Cc: stable@vger.kernel.org # v5.5+
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230419210743.3594-2-ansuelsmth@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
+Signed-off-by: M A Ramdhan <ramdhan@starlabs.sg>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Message-ID: <20230705161530.52003-1-ramdhan@starlabs.sg>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-netdev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/cls_fw.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -318,6 +318,9 @@ static int netdev_trig_notify(struct not
- 	clear_bit(NETDEV_LED_MODE_LINKUP, &trigger_data->mode);
- 	switch (evt) {
- 	case NETDEV_CHANGENAME:
-+		if (netif_carrier_ok(dev))
-+			set_bit(NETDEV_LED_MODE_LINKUP, &trigger_data->mode);
-+		fallthrough;
- 	case NETDEV_REGISTER:
- 		if (trigger_data->net_dev)
- 			dev_put(trigger_data->net_dev);
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index a32351da968cd..1212b057b129c 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -210,11 +210,6 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (tb[TCA_FW_CLASSID]) {
+-		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
+-		tcf_bind_filter(tp, &f->res, base);
+-	}
+-
+ 	if (tb[TCA_FW_INDEV]) {
+ 		int ret;
+ 		ret = tcf_change_indev(net, tb[TCA_FW_INDEV], extack);
+@@ -231,6 +226,11 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
+ 	} else if (head->mask != 0xFFFFFFFF)
+ 		return err;
+ 
++	if (tb[TCA_FW_CLASSID]) {
++		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
++		tcf_bind_filter(tp, &f->res, base);
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.39.2
+
 
 
