@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25C2875D332
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75ED175D40D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231720AbjGUTIF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:08:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
+        id S231996AbjGUTRS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:17:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231771AbjGUTH6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:07:58 -0400
+        with ESMTP id S231992AbjGUTRR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:17:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D2130EA
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:07:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B39D1BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFCE261D79
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:07:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100B0C433C7;
-        Fri, 21 Jul 2023 19:07:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EEDD61D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7F3C433C8;
+        Fri, 21 Jul 2023 19:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966476;
-        bh=3AHE5zK76oVCkDYqN9+bywSsmT54enXpXYNuKywYX1I=;
+        s=korg; t=1689967035;
+        bh=Be8t/y5FCYER+ihA77EkbOVokf2zSSkimbGV2Vgbjyk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RbBzg9qystf7eYOgTTPsn2xMfCQqOthikbiV5wRd6f+dWXaVkm5u6fHwUJUbes+++
-         a0BPQnPO+2umzta5mDyylYkHM6A2peLcBuVk9+o1XxKqqR12tO4QkgEAg+tf++2OaI
-         ls+PftOKCfxgokP98Kg2yvgNjXhOoEmOPuSOKuIE=
+        b=WOMqNbHQk1UcgbW0koblocOPDYUa3AhaeYc4rSXqkHxIp35MU4qIspoR5Voq1AHi1
+         KBuAY8nFusdzWJ0owwmi6JdJcBlvl1px1G/2wKRll8+m2SFEkl80ELY+qE0E1Gc+Yn
+         YXOSiWeVZLRnwp1XvxgwyOWUkqI9lbZWk6oDQl4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>,
-        Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 358/532] Revert "f2fs: fix potential corruption when moving a directory"
+        patches@lists.linux.dev, Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 009/223] drm/bridge: ti-sn65dsi86: Fix auxiliary bus lifetime
 Date:   Fri, 21 Jul 2023 18:04:22 +0200
-Message-ID: <20230721160633.883371520@linuxfoundation.org>
+Message-ID: <20230721160521.271404350@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,66 +55,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit cde3c9d7e2a359e337216855dcb333a19daaa436 upstream.
+[ Upstream commit 7aa83fbd712a6f08ffa67890061f26d140c2a84f ]
 
-This reverts commit d94772154e524b329a168678836745d2773a6e02. The
-locking is going to be provided by VFS.
+Memory for the "struct device" for any given device isn't supposed to
+be released until the device's release() is called. This is important
+because someone might be holding a kobject reference to the "struct
+device" and might try to access one of its members even after any
+other cleanup/uninitialization has happened.
 
-CC: Jaegeuk Kim <jaegeuk@kernel.org>
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230601105830.13168-3-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Code analysis of ti-sn65dsi86 shows that this isn't quite right. When
+the code was written, it was believed that we could rely on the fact
+that the child devices would all be freed before the parent devices
+and thus we didn't need to worry about a release() function. While I
+still believe that the parent's "struct device" is guaranteed to
+outlive the child's "struct device" (because the child holds a kobject
+reference to the parent), the parent's "devm" allocated memory is a
+different story. That appears to be freed much earlier.
+
+Let's make this better for ti-sn65dsi86 by allocating each auxiliary
+with kzalloc and then free that memory in the release().
+
+Fixes: bf73537f411b ("drm/bridge: ti-sn65dsi86: Break GPIO and MIPI-to-eDP bridge into sub-drivers")
+Suggested-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613065812.v2.1.I24b838a5b4151fb32bccd6f36397998ea2df9fbb@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c |   16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 35 +++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -991,20 +991,12 @@ static int f2fs_rename(struct inode *old
- 			goto out;
- 	}
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index d16775c973c4e..b89f7f7ca1885 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -170,10 +170,10 @@
+  * @pwm_refclk_freq: Cache for the reference clock input to the PWM.
+  */
+ struct ti_sn65dsi86 {
+-	struct auxiliary_device		bridge_aux;
+-	struct auxiliary_device		gpio_aux;
+-	struct auxiliary_device		aux_aux;
+-	struct auxiliary_device		pwm_aux;
++	struct auxiliary_device		*bridge_aux;
++	struct auxiliary_device		*gpio_aux;
++	struct auxiliary_device		*aux_aux;
++	struct auxiliary_device		*pwm_aux;
  
--	/*
--	 * Copied from ext4_rename: we need to protect against old.inode
--	 * directory getting converted from inline directory format into
--	 * a normal one.
--	 */
--	if (S_ISDIR(old_inode->i_mode))
--		inode_lock_nested(old_inode, I_MUTEX_NONDIR2);
--
- 	err = -ENOENT;
- 	old_entry = f2fs_find_entry(old_dir, &old_dentry->d_name, &old_page);
- 	if (!old_entry) {
- 		if (IS_ERR(old_page))
- 			err = PTR_ERR(old_page);
--		goto out_unlock_old;
-+		goto out;
- 	}
+ 	struct device			*dev;
+ 	struct regmap			*regmap;
+@@ -468,27 +468,34 @@ static void ti_sn65dsi86_delete_aux(void *data)
+ 	auxiliary_device_delete(data);
+ }
  
- 	if (S_ISDIR(old_inode->i_mode)) {
-@@ -1112,9 +1104,6 @@ static int f2fs_rename(struct inode *old
+-/*
+- * AUX bus docs say that a non-NULL release is mandatory, but it makes no
+- * sense for the model used here where all of the aux devices are allocated
+- * in the single shared structure. We'll use this noop as a workaround.
+- */
+-static void ti_sn65dsi86_noop(struct device *dev) {}
++static void ti_sn65dsi86_aux_device_release(struct device *dev)
++{
++	struct auxiliary_device *aux = container_of(dev, struct auxiliary_device, dev);
++
++	kfree(aux);
++}
  
- 	f2fs_unlock_op(sbi);
+ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
+-				       struct auxiliary_device *aux,
++				       struct auxiliary_device **aux_out,
+ 				       const char *name)
+ {
+ 	struct device *dev = pdata->dev;
++	struct auxiliary_device *aux;
+ 	int ret;
  
--	if (S_ISDIR(old_inode->i_mode))
--		inode_unlock(old_inode);
--
- 	if (IS_DIRSYNC(old_dir) || IS_DIRSYNC(new_dir))
- 		f2fs_sync_fs(sbi->sb, 1);
++	aux = kzalloc(sizeof(*aux), GFP_KERNEL);
++	if (!aux)
++		return -ENOMEM;
++
+ 	aux->name = name;
+ 	aux->dev.parent = dev;
+-	aux->dev.release = ti_sn65dsi86_noop;
++	aux->dev.release = ti_sn65dsi86_aux_device_release;
+ 	device_set_of_node_from_dev(&aux->dev, dev);
+ 	ret = auxiliary_device_init(aux);
+-	if (ret)
++	if (ret) {
++		kfree(aux);
+ 		return ret;
++	}
+ 	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_uninit_aux, aux);
+ 	if (ret)
+ 		return ret;
+@@ -497,6 +504,8 @@ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
+ 	if (ret)
+ 		return ret;
+ 	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_delete_aux, aux);
++	if (!ret)
++		*aux_out = aux;
  
-@@ -1129,9 +1118,6 @@ out_dir:
- 		f2fs_put_page(old_dir_page, 0);
- out_old:
- 	f2fs_put_page(old_page, 0);
--out_unlock_old:
--	if (S_ISDIR(old_inode->i_mode))
--		inode_unlock(old_inode);
- out:
- 	if (whiteout)
- 		iput(whiteout);
+ 	return ret;
+ }
+-- 
+2.39.2
+
 
 
