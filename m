@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D890375D4AD
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FBD075D3F8
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232197AbjGUTXv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
+        id S231969AbjGUTQa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232201AbjGUTXv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:23:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 362732D47
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:50 -0700 (PDT)
+        with ESMTP id S231976AbjGUTQ2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B941FD7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C964961D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9E2C433C7;
-        Fri, 21 Jul 2023 19:23:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E83F61D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1ECC433C8;
+        Fri, 21 Jul 2023 19:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967429;
-        bh=wz1wKL+CF07D53eDBImdyxMugTFOhit5WSTz+ud1zJA=;
+        s=korg; t=1689966986;
+        bh=ngsIzsPzrzMX6YbLTUvq4x0WrC59CFbmiljbnGdU1TI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u6KCAL7fBHC6g6IfZk58/Cj9L56Z+J8hj1o2q3jjXHLAKK3nQ+nwfbt6T5jFwVkMQ
-         d/ODidIBvo03qLNb+8Ed2NtPfrcp3dYQgNC7xJ3R5P7CSblY99ZiouZQmrZU72AM78
-         mYT51BvXRgapVJY5NtGcB8+HU7ZYJ2PaTwbFTrB4=
+        b=ftZ7Fnr9K7JWjO3Fp3d8OFt8pU68JEEqi2qQVmIEQCfYLGxqqZzTv6I1tutGOYSPE
+         I26rnw3JpnLBQiJB+Ges6EKps1hZezkIjz3s6k4uRD8pT764plPELAj4V3u3Yk7TtL
+         +0mh1Fpg5C9nEsCh+hlmmiXZFnRfUw+bE1UBnkRI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.1 159/223] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() when iterating clk
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.15 508/532] bus: ixp4xx: fix IXP4XX_EXP_T1_MASK
 Date:   Fri, 21 Jul 2023 18:06:52 +0200
-Message-ID: <20230721160527.656857835@linuxfoundation.org>
+Message-ID: <20230721160642.196620640@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,48 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 832e231cff476102e8204a9e7bddfe5c6154a375 upstream.
+commit 6722e46513e0af8e2fff4698f7cb78bc50a9f13f upstream.
 
-When the best clk is searched, we iterate over all possible clk.
+The IXP4XX_EXP_T1_MASK was shifted one bit to the right, overlapping
+IXP4XX_EXP_T2_MASK and leaving bit 29 unused. The offset being wrong is
+also confirmed at least by the datasheet of IXP45X/46X [1].
 
-If we find a better match, the previous one, if any, needs to be freed.
-If a better match has already been found, we still need to free the new
-one, otherwise it leaks.
+Fix this by aligning it to IXP4XX_EXP_T1_SHIFT.
 
-Cc: <stable@vger.kernel.org> # v3.3+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <cf3e0053d2fc7391b2d906a86cd01a5ef15fb9dc.1686412569.git.christophe.jaillet@wanadoo.fr>
+[1] https://www.intel.com/content/dam/www/public/us/en/documents/manuals/ixp45x-ixp46x-developers-manual.pdf
+
+Cc: stable@vger.kernel.org
+Fixes: 1c953bda90ca ("bus: ixp4xx: Add a driver for IXP4xx expansion bus")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://lore.kernel.org/r/20230624112958.27727-1-jonas.gorski@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20230624122139.3229642-1-linus.walleij@linaro.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung_tty.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/bus/intel-ixp4xx-eb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -1498,10 +1498,18 @@ static unsigned int s3c24xx_serial_getcl
- 			calc_deviation = -calc_deviation;
- 
- 		if (calc_deviation < deviation) {
-+			/*
-+			 * If we find a better clk, release the previous one, if
-+			 * any.
-+			 */
-+			if (!IS_ERR(*best_clk))
-+				clk_put(*best_clk);
- 			*best_clk = clk;
- 			best_quot = quot;
- 			*clk_num = cnt;
- 			deviation = calc_deviation;
-+		} else {
-+			clk_put(clk);
- 		}
- 	}
- 
+diff --git a/drivers/bus/intel-ixp4xx-eb.c b/drivers/bus/intel-ixp4xx-eb.c
+index f5ba6bee6fd8..320cf307db05 100644
+--- a/drivers/bus/intel-ixp4xx-eb.c
++++ b/drivers/bus/intel-ixp4xx-eb.c
+@@ -33,7 +33,7 @@
+ #define IXP4XX_EXP_TIMING_STRIDE	0x04
+ #define IXP4XX_EXP_CS_EN		BIT(31)
+ #define IXP456_EXP_PAR_EN		BIT(30) /* Only on IXP45x and IXP46x */
+-#define IXP4XX_EXP_T1_MASK		GENMASK(28, 27)
++#define IXP4XX_EXP_T1_MASK		GENMASK(29, 28)
+ #define IXP4XX_EXP_T1_SHIFT		28
+ #define IXP4XX_EXP_T2_MASK		GENMASK(27, 26)
+ #define IXP4XX_EXP_T2_SHIFT		26
+-- 
+2.41.0
+
 
 
