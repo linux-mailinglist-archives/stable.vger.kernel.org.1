@@ -2,93 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F06A75D3F3
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0816175D4CA
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231966AbjGUTQO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:16:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38442 "EHLO
+        id S232242AbjGUTZH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:25:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231964AbjGUTQN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29EA41BF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:13 -0700 (PDT)
+        with ESMTP id S232223AbjGUTZG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:25:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE1F03AA3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA44361D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C889FC433C9;
-        Fri, 21 Jul 2023 19:16:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EBED61D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5071DC433C8;
+        Fri, 21 Jul 2023 19:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966972;
-        bh=fmv0643ko+EClKdwiKENopOTvYCTwpTIGx8A3KHE9PQ=;
+        s=korg; t=1689967492;
+        bh=WjA1bGH1z7X+onK7YlGAUrilWkzEXOrdXbWPhLZn5e4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N/q2klRXuCSJcVIFWQoA61fbD+n5T7maOXGakYku8IeL2UD6Zr1cE/lHHLe48eDac
-         6Y3YfoT0jhNz/ZefSQwpgeWMZPQHJywQc2soCJkw/us7g2BeqBziDZNf+Lw2lxN2PQ
-         KLo+UbR/UNFBofZiKWUG7kYLZVCIZbR+HJZQl09s=
+        b=EiYA5c90PfllOcSgHJah6x9kE7KBn7/5F/cPNoAZzntKaLgcTT8+9H1d0A03IFDCF
+         xx1lRLU5risjDIKNo3/Lcmm1S9GswS4bbu009ZY4eyDOG51ydArQoCb77ca4iPGEz3
+         a643/+McqarTUgBy9pJiMYZT9SRJVKwXa82r8ml4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5.15 531/532] MIPS: kvm: Fix build error with KVM_MIPS_DEBUG_COP0_COUNTERS enabled
+        Krister Johansen <kjlx@templeofstupid.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Shay Agroskin <shayagr@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 182/223] net: ena: fix shift-out-of-bounds in exponential backoff
 Date:   Fri, 21 Jul 2023 18:07:15 +0200
-Message-ID: <20230721160643.416461142@linuxfoundation.org>
+Message-ID: <20230721160528.640771857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-commit 3a6dbb691782e88e07e5c70b327495dbd58a2e7f upstream.
+commit 1e9cb763e9bacf0c932aa948f50dcfca6f519a26 upstream.
 
-Commit e4de20576986 ("MIPS: KVM: Fix NULL pointer dereference") missed
-converting one place accessing cop0 registers, which results in a build
-error, if KVM_MIPS_DEBUG_COP0_COUNTERS is enabled.
+The ENA adapters on our instances occasionally reset.  Once recently
+logged a UBSAN failure to console in the process:
 
-Fixes: e4de20576986 ("MIPS: KVM: Fix NULL pointer dereference")
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  UBSAN: shift-out-of-bounds in build/linux/drivers/net/ethernet/amazon/ena/ena_com.c:540:13
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+  CPU: 28 PID: 70012 Comm: kworker/u72:2 Kdump: loaded not tainted 5.15.117
+  Hardware name: Amazon EC2 c5d.9xlarge/, BIOS 1.0 10/16/2017
+  Workqueue: ena ena_fw_reset_device [ena]
+  Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4a/0x63
+  dump_stack+0x10/0x16
+  ubsan_epilogue+0x9/0x36
+  __ubsan_handle_shift_out_of_bounds.cold+0x61/0x10e
+  ? __const_udelay+0x43/0x50
+  ena_delay_exponential_backoff_us.cold+0x16/0x1e [ena]
+  wait_for_reset_state+0x54/0xa0 [ena]
+  ena_com_dev_reset+0xc8/0x110 [ena]
+  ena_down+0x3fe/0x480 [ena]
+  ena_destroy_device+0xeb/0xf0 [ena]
+  ena_fw_reset_device+0x30/0x50 [ena]
+  process_one_work+0x22b/0x3d0
+  worker_thread+0x4d/0x3f0
+  ? process_one_work+0x3d0/0x3d0
+  kthread+0x12a/0x150
+  ? set_kthread_struct+0x50/0x50
+  ret_from_fork+0x22/0x30
+  </TASK>
+
+Apparently, the reset delays are getting so large they can trigger a
+UBSAN panic.
+
+Looking at the code, the current timeout is capped at 5000us.  Using a
+base value of 100us, the current code will overflow after (1<<29).  Even
+at values before 32, this function wraps around, perhaps
+unintentionally.
+
+Cap the value of the exponent used for this backoff at (1<<16) which is
+larger than currently necessary, but large enough to support bigger
+values in the future.
+
+Cc: stable@vger.kernel.org
+Fixes: 4bb7f4cf60e3 ("net: ena: reduce driver load time")
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Shay Agroskin <shayagr@amazon.com>
+Link: https://lore.kernel.org/r/20230711013621.GE1926@templeofstupid.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kvm/stats.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_com.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/kvm/stats.c b/arch/mips/kvm/stats.c
-index 53f851a61554..3e6682018fbe 100644
---- a/arch/mips/kvm/stats.c
-+++ b/arch/mips/kvm/stats.c
-@@ -54,9 +54,9 @@ void kvm_mips_dump_stats(struct kvm_vcpu *vcpu)
- 	kvm_info("\nKVM VCPU[%d] COP0 Access Profile:\n", vcpu->vcpu_id);
- 	for (i = 0; i < N_MIPS_COPROC_REGS; i++) {
- 		for (j = 0; j < N_MIPS_COPROC_SEL; j++) {
--			if (vcpu->arch.cop0->stat[i][j])
-+			if (vcpu->arch.cop0.stat[i][j])
- 				kvm_info("%s[%d]: %lu\n", kvm_cop0_str[i], j,
--					 vcpu->arch.cop0->stat[i][j]);
-+					 vcpu->arch.cop0.stat[i][j]);
- 		}
- 	}
- #endif
--- 
-2.41.0
-
+--- a/drivers/net/ethernet/amazon/ena/ena_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+@@ -35,6 +35,8 @@
+ 
+ #define ENA_REGS_ADMIN_INTR_MASK 1
+ 
++#define ENA_MAX_BACKOFF_DELAY_EXP 16U
++
+ #define ENA_MIN_ADMIN_POLL_US 100
+ 
+ #define ENA_MAX_ADMIN_POLL_US 5000
+@@ -536,6 +538,7 @@ static int ena_com_comp_status_to_errno(
+ 
+ static void ena_delay_exponential_backoff_us(u32 exp, u32 delay_us)
+ {
++	exp = min_t(u32, exp, ENA_MAX_BACKOFF_DELAY_EXP);
+ 	delay_us = max_t(u32, ENA_MIN_ADMIN_POLL_US, delay_us);
+ 	delay_us = min_t(u32, delay_us * (1U << exp), ENA_MAX_ADMIN_POLL_US);
+ 	usleep_range(delay_us, 2 * delay_us);
 
 
