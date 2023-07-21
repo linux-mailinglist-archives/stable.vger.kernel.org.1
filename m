@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A0675CD85
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2CF375CD80
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231712AbjGUQMb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:12:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39984 "EHLO
+        id S232494AbjGUQMP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:12:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231543AbjGUQML (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:12:11 -0400
+        with ESMTP id S232363AbjGUQL5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:11:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F393C04
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:11:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42B5A3A82
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:11:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C3BE61D3D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:11:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BCFC433C7;
-        Fri, 21 Jul 2023 16:11:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB7A061D2A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:11:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE76C433C7;
+        Fri, 21 Jul 2023 16:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689955886;
-        bh=58dp7sY0aS9MKjRjQbfa6+xHaV/2QSvfNNYteMtSJvs=;
+        s=korg; t=1689955889;
+        bh=HKBEmBd27pcF6D8aceliQSWbvgzbOnfwvtRzJVyaHd0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xe2SzElY0sRPRHwN8WbsT/oCuYpQw4si7IVxKqyaFP8FvSmqTin0CVbFlg5QT7FSR
-         jGLYyPblhKkyga9ZiNOW9sHp5YfpPDC9Y+i7VMqZ6QBOZfYFP6L5Cs4y1Oapw9jNUH
-         yvdnhpvz5q60Wwyg27v7R7iXYWPo1B9vVamwFkMc=
+        b=CwsP6k92KDzudaEHhEVRATtqByG6/RcgD5hkTz/TnkcmUTCtDo05FglmXT7b4ddDv
+         pQRMnSLDhMvfZZByXzDJjNrLppC1qfHctHstZB2EvNq+0NutISGq00HuWkEHuU336O
+         sBMr57/0ztCbs4v2h6dFUvj3HkDnXRVylqXz9XCg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Benjamin Tissoires <bentiss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 064/292] ipv6/addrconf: fix a potential refcount underflow for idev
-Date:   Fri, 21 Jul 2023 18:02:53 +0200
-Message-ID: <20230721160531.540922421@linuxfoundation.org>
+Subject: [PATCH 6.4 065/292] HID: hyperv: avoid struct memcpy overrun warning
+Date:   Fri, 21 Jul 2023 18:02:54 +0200
+Message-ID: <20230721160531.583982861@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -56,51 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
+[ Upstream commit 5f151364b1da6bd217632fd4ee8cc24eaf66a497 ]
 
-Now in addrconf_mod_rs_timer(), reference idev depends on whether
-rs_timer is not pending. Then modify rs_timer timeout.
+A previous patch addressed the fortified memcpy warning for most
+builds, but I still see this one with gcc-9:
 
-There is a time gap in [1], during which if the pending rs_timer
-becomes not pending. It will miss to hold idev, but the rs_timer
-is activated. Thus rs_timer callback function addrconf_rs_timer()
-will be executed and put idev later without holding idev. A refcount
-underflow issue for idev can be caused by this.
+In file included from include/linux/string.h:254,
+                 from drivers/hid/hid-hyperv.c:8:
+In function 'fortify_memcpy_chk',
+    inlined from 'mousevsc_on_receive' at drivers/hid/hid-hyperv.c:272:3:
+include/linux/fortify-string.h:583:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  583 |    __write_overflow_field(p_size_field, size);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	if (!timer_pending(&idev->rs_timer))
-		in6_dev_hold(idev);
-		  <--------------[1]
-	mod_timer(&idev->rs_timer, jiffies + when);
+My guess is that the WARN_ON() itself is what confuses gcc, so it no
+longer sees that there is a correct range check. Rework the code in a
+way that helps readability and avoids the warning.
 
-To fix the issue, hold idev if mod_timer() return 0.
-
-Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 542f25a94471 ("HID: hyperv: Replace one-element array with flexible-array member")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/20230705140242.844167-1-arnd@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/hid/hid-hyperv.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 3797917237d03..5affca8e2f53a 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -318,9 +318,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
- static void addrconf_mod_rs_timer(struct inet6_dev *idev,
- 				  unsigned long when)
- {
--	if (!timer_pending(&idev->rs_timer))
-+	if (!mod_timer(&idev->rs_timer, jiffies + when))
- 		in6_dev_hold(idev);
--	mod_timer(&idev->rs_timer, jiffies + when);
- }
+diff --git a/drivers/hid/hid-hyperv.c b/drivers/hid/hid-hyperv.c
+index 49d4a26895e76..f33485d83d24f 100644
+--- a/drivers/hid/hid-hyperv.c
++++ b/drivers/hid/hid-hyperv.c
+@@ -258,19 +258,17 @@ static void mousevsc_on_receive(struct hv_device *device,
  
- static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
+ 	switch (hid_msg_hdr->type) {
+ 	case SYNTH_HID_PROTOCOL_RESPONSE:
++		len = struct_size(pipe_msg, data, pipe_msg->size);
++
+ 		/*
+ 		 * While it will be impossible for us to protect against
+ 		 * malicious/buggy hypervisor/host, add a check here to
+ 		 * ensure we don't corrupt memory.
+ 		 */
+-		if (struct_size(pipe_msg, data, pipe_msg->size)
+-			> sizeof(struct mousevsc_prt_msg)) {
+-			WARN_ON(1);
++		if (WARN_ON(len > sizeof(struct mousevsc_prt_msg)))
+ 			break;
+-		}
+ 
+-		memcpy(&input_dev->protocol_resp, pipe_msg,
+-				struct_size(pipe_msg, data, pipe_msg->size));
++		memcpy(&input_dev->protocol_resp, pipe_msg, len);
+ 		complete(&input_dev->wait_event);
+ 		break;
+ 
 -- 
 2.39.2
 
