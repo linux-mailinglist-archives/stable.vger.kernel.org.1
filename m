@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 142FB75D484
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38CA375D3B3
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232155AbjGUTV5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43684 "EHLO
+        id S231906AbjGUTNi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:13:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232156AbjGUTV5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:21:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87213189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:21:56 -0700 (PDT)
+        with ESMTP id S231892AbjGUTNh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:13:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA41B30E1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:13:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 273DB61D6D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:21:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B9FC433C7;
-        Fri, 21 Jul 2023 19:21:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F86B61D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:13:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8BCC433C8;
+        Fri, 21 Jul 2023 19:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967315;
-        bh=wtOxTZ8UwHiWCbs/cEXo98uwcpGVQJFZLYmbTyHXHww=;
+        s=korg; t=1689966815;
+        bh=u40zzgv33+1v8ZivzQCTf4Snh0Zms/0SyS1Cmm4BLE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X3cjbAa/eqe0Byevru/J7h09z1e+gLgiM5NQFHrDMsGkp3SGyUBIx00iibCj3JZqZ
-         S0wLF+aigyso6eTV0Rm7F8GkYSnJBjW2XDrQ8boYx5iPMiDqhT0GaxklxChjVQZm25
-         ohNCIeq88ceFx9fwK7TTuC5q/sneIwU8t9xMvWRQ=
+        b=K4Esp2dhiNdx0nKkt+dDBASMb4oi5qQBNSKiZw8uEzSqRE1I6kf8jQGgEsXXOeoQa
+         BErZo+3p0RX3bZlukT+T1WtsG0/IjGIv33MUb8zb1uNzQIcNfsIF0wMRINbgwOgx7H
+         CnruMCja7+YtEwoTJirEDkhOYzJJviSIX4VgTdO4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ross Lagerwall <ross.lagerwall@citrix.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.1 120/223] PCI: Release resource invalidated by coalescing
-Date:   Fri, 21 Jul 2023 18:06:13 +0200
-Message-ID: <20230721160525.994452202@linuxfoundation.org>
+        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.15 470/532] dm integrity: reduce vmalloc space footprint on 32-bit architectures
+Date:   Fri, 21 Jul 2023 18:06:14 +0200
+Message-ID: <20230721160640.019094161@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,55 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit e54223275ba1bc6f704a6bab015fcd2ae4f72572 upstream.
+commit 6d50eb4725934fd22f5eeccb401000687c790fd0 upstream.
 
-When contiguous windows are coalesced by pci_register_host_bridge(), the
-second resource is expanded to include the first, and the first is
-invalidated and consequently not added to the bus. However, it remains in
-the resource hierarchy.  For example, these windows:
+It was reported that dm-integrity runs out of vmalloc space on 32-bit
+architectures. On x86, there is only 128MiB vmalloc space and dm-integrity
+consumes it quickly because it has a 64MiB journal and 8MiB recalculate
+buffer.
 
-  fec00000-fec7ffff : PCI Bus 0000:00
-  fec80000-fecbffff : PCI Bus 0000:00
+Fix this by reducing the size of the journal to 4MiB and the size of
+the recalculate buffer to 1MiB, so that multiple dm-integrity devices
+can be created and activated on 32-bit architectures.
 
-are coalesced into this, where the first resource remains in the tree with
-start/end zeroed out:
-
-  00000000-00000000 : PCI Bus 0000:00
-  fec00000-fecbffff : PCI Bus 0000:00
-
-In some cases (e.g. the Xen scratch region), this causes future calls to
-allocate_resource() to choose an inappropriate location which the caller
-cannot handle.
-
-Fix by releasing the zeroed-out resource and removing it from the resource
-hierarchy.
-
-[bhelgaas: commit log]
-Fixes: 7c3855c423b1 ("PCI: Coalesce host bridge contiguous apertures")
-Link: https://lore.kernel.org/r/20230525153248.712779-1-ross.lagerwall@citrix.com
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org	# v5.16+
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/dm-integrity.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -994,8 +994,10 @@ static int pci_register_host_bridge(stru
- 	resource_list_for_each_entry_safe(window, n, &resources) {
- 		offset = window->offset;
- 		res = window->res;
--		if (!res->flags && !res->start && !res->end)
-+		if (!res->flags && !res->start && !res->end) {
-+			release_resource(res);
- 			continue;
-+		}
- 
- 		list_move_tail(&window->node, &bridge->windows);
- 
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -31,11 +31,11 @@
+ #define DEFAULT_BUFFER_SECTORS		128
+ #define DEFAULT_JOURNAL_WATERMARK	50
+ #define DEFAULT_SYNC_MSEC		10000
+-#define DEFAULT_MAX_JOURNAL_SECTORS	131072
++#define DEFAULT_MAX_JOURNAL_SECTORS	(IS_ENABLED(CONFIG_64BIT) ? 131072 : 8192)
+ #define MIN_LOG2_INTERLEAVE_SECTORS	3
+ #define MAX_LOG2_INTERLEAVE_SECTORS	31
+ #define METADATA_WORKQUEUE_MAX_ACTIVE	16
+-#define RECALC_SECTORS			32768
++#define RECALC_SECTORS			(IS_ENABLED(CONFIG_64BIT) ? 32768 : 2048)
+ #define RECALC_WRITE_SUPER		16
+ #define BITMAP_BLOCK_SIZE		4096	/* don't change it */
+ #define BITMAP_FLUSH_INTERVAL		(10 * HZ)
 
 
