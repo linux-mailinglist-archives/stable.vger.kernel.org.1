@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2254A75BFA4
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8576075BFA3
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbjGUHYn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:24:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54256 "EHLO
+        id S229902AbjGUHYk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:24:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229824AbjGUHYm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:24:42 -0400
+        with ESMTP id S229653AbjGUHYj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:24:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6045E53
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:24:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3CF9FC
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:24:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 586DC61059
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DA0C433C8;
-        Fri, 21 Jul 2023 07:24:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F18361059
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E79C433C8;
+        Fri, 21 Jul 2023 07:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689924280;
-        bh=Tu5/sk6tuy/8N2byrp0DkCRWT/xjbukHeVlIDi5gDsQ=;
+        s=korg; t=1689924277;
+        bh=UF1FSda01v/C9Sdjh1nukvYwfWOV5CDzI7zZi7NhmH4=;
         h=Subject:To:Cc:From:Date:From;
-        b=jflMpQ5RBnrBAPOyf6WXL4rh5/rZwL+X/J4RF3K3NaL6EbiIHgGPXbwxqzLR0iZ/g
-         eYTll+XtB4Utu+bdY0Pm+RIOSfcsgboEFcuUnkzgd9Jfh0rl/BTVkMvlnTPrnvBfky
-         HOECu/Ht48+uz78i9K6NabXSI0UydVmoyzznViqU=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Reduce sdp bw after urgent to 90%" failed to apply to 6.4-stable tree
+        b=nYUEAYFWm/4E/QBkzlCVK7AthU9MSiVlclwVqg+A1IhoT8DGAZP1/n2/yK+2GeUf3
+         nCipfbr6auXItxA0ay4U+aAp+TRirh9+cG6kQCaeE08QZBBoi1a6q6+dwKHWE67B6J
+         1Y/eYFspV5n0lbB4pw7qB8Af+iyOA9HWVZYNqxyU=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Reduce sdp bw after urgent to 90%" failed to apply to 6.1-stable tree
 To:     alvin.lee2@amd.com, Nevenko.Stupar@amd.com,
         alexander.deucher@amd.com, daniel.wheeler@amd.com,
         mario.limonciello@amd.com, stylon.wang@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Fri, 21 Jul 2023 09:24:27 +0200
-Message-ID: <2023072127-overstay-dynasty-743f@gregkh>
+Message-ID: <2023072127-agonizing-eardrum-f3f9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,23 +51,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x bbd069a860b78a087d20d91656a5026c0196586b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072127-overstay-dynasty-743f@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072127-agonizing-eardrum-f3f9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+bbd069a860b7 ("drm/amd/display: Reduce sdp bw after urgent to 90%")
 
 thanks,
 
