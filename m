@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0005575BEAF
+	by mail.lfdr.de (Postfix) with ESMTP id 5B80975BEAE
 	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:19:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230442AbjGUGT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51262 "EHLO
+        id S230427AbjGUGTZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:19:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230450AbjGUGS6 (ORCPT
+        with ESMTP id S230436AbjGUGS6 (ORCPT
         <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:18:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B601135BF
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90BB635BB
         for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:15:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65E3B61337
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:15:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315CCC433C7;
-        Fri, 21 Jul 2023 06:15:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 42DF361136
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F7CC433C7;
+        Fri, 21 Jul 2023 06:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689920145;
-        bh=gURvtGBgYsTqCXTZv1OcyOlCTzFgrWsMMxj3TcP4hVk=;
+        s=korg; t=1689920148;
+        bh=ABH3iIm6AD9ZpNA0Zo4BDfbihIGRlO9JvRJjpr0gsJw=;
         h=Subject:To:Cc:From:Date:From;
-        b=M9tCOcRC6S4xE7xppfXRauS25BU7pktQmApff9VUNE4ll2hqq5v1yQDtgtniFOlJK
-         Nbi+H6B5ZUdpL9tElxYK4HTBcYvXvhbVwWi28/rEGD0azAs9MdtoWRsqRHcMdcyYak
-         GCnrELytbvQt4bW7GOmAiGcBxKlOY7MDOB5RsOUk=
-Subject: FAILED: patch "[PATCH] PCI: rockchip: Don't advertise MSI-X in PCIe capabilities" failed to apply to 6.1-stable tree
+        b=spUwj6VhlegGCGxF6lyvWcpCdb2Fy2/VCQLSJBC4P9NHO/w3JuJpAlfAc1vkue3OO
+         Ch3BTXj3ogprNIp/8wOI88o9S0iG/Y0XDj/mpkRh/r6FcA+TPhPuYu9ZuZ8NlxILxc
+         lseqk9OVA/lK+qPw+xClxc8+OYRF455TcvmGbtLQ=
+Subject: FAILED: patch "[PATCH] PCI: rockchip: Don't advertise MSI-X in PCIe capabilities" failed to apply to 5.15-stable tree
 To:     rick.wertenbroek@gmail.com, dlemoal@kernel.org,
         lpieralisi@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:15:31 +0200
-Message-ID: <2023072131-glamour-blade-59aa@gregkh>
+Date:   Fri, 21 Jul 2023 08:15:33 +0200
+Message-ID: <2023072133-onto-maroon-ba75@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x a52587e0bee14cbeeadf48a24013828cb04b8df8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072131-glamour-blade-59aa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072133-onto-maroon-ba75@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,7 @@ dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for end
 9dd3c7c4c8c3 ("PCI: rockchip: Add poll and timeout to wait for PHY PLLs to be locked")
 f397fd4ac1fa ("PCI: rockchip: Assert PCI Configuration Enable bit after probe")
 92a9c57c325d ("PCI: rockchip: Remove writes to unused registers")
+096950e230b8 ("PCI: rockchip: Fix find_first_zero_bit() limit")
 
 thanks,
 
