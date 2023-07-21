@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EBA875CD84
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D95A75CD86
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231761AbjGUQMa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:12:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39108 "EHLO
+        id S232502AbjGUQMb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231956AbjGUQMK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:12:10 -0400
+        with ESMTP id S231949AbjGUQML (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:12:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094CB3C03
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:11:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 400A93599
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:11:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCF3E61D26
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA49C433CC;
-        Fri, 21 Jul 2023 16:11:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 202C861D3B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:11:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FEDC433C7;
+        Fri, 21 Jul 2023 16:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689955903;
-        bh=yacQzkXHOY+IvlEM1cFr+pYxbpPAiF/zLXUqiAfOlss=;
+        s=korg; t=1689955906;
+        bh=1k1rj6ao/M0yfx+MSZqarVW7yMSM0G+uXm51tSCCIMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HMAgNrgVVmxWcKwte5nDAF0BX4vJWAyAO+LOKpZs03krb6sOBmoMEhxL69JiEsYnr
-         NO5w687mMw9ZtAe91bOzNeyLtsybm8iI70/RWGnpOxJEQGG4e3qxZhE10+xh+ZkfAp
-         eFJ+lpm1C1/B8e0kwg+Qu5IFFwthHbmQp3UR9c/w=
+        b=QyNgWKGb1/ThHKSeR+nqmiQ4oeFEWm4GcHlRfIlQVSOE+hueQAm8k+rJ7iiemaZwg
+         9jQwI9MsYSFnElJO04wZHztF8BF6uqFfY6QpVvbKZOnG0zNdCqfsWUqAQtz/miMB4R
+         QTMem17z+5JWt8V4RlO7tn2AS4SD95hEcVXPgJnA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,9 +38,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Naama Meir <naamax.meir@linux.intel.com>,
         Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 070/292] igc: Rename qbv_enable to taprio_offload_enable
-Date:   Fri, 21 Jul 2023 18:02:59 +0200
-Message-ID: <20230721160531.807714683@linuxfoundation.org>
+Subject: [PATCH 6.4 071/292] igc: Do not enable taprio offload for invalid arguments
+Date:   Fri, 21 Jul 2023 18:03:00 +0200
+Message-ID: <20230721160531.851379818@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -60,20 +60,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Florian Kauer <florian.kauer@linutronix.de>
 
-[ Upstream commit 8046063df887bee35c002224267ba46f41be7cf6 ]
+[ Upstream commit 82ff5f29b7377d614f0c01fd74b5d0cb225f0adc ]
 
-In the current implementation the flags adapter->qbv_enable
-and IGC_FLAG_TSN_QBV_ENABLED have a similar name, but do not
-have the same meaning. The first one is used only to indicate
-taprio offload (i.e. when igc_save_qbv_schedule was called),
-while the second one corresponds to the Qbv mode of the hardware.
-However, the second one is also used to support the TX launchtime
-feature, i.e. ETF qdisc offload. This leads to situations where
-adapter->qbv_enable is false, but the flag IGC_FLAG_TSN_QBV_ENABLED
-is set. This is prone to confusion.
+Only set adapter->taprio_offload_enable after validating the arguments.
+Otherwise, it stays set even if the offload was not enabled.
+Since the subsequent code does not get executed in case of invalid
+arguments, it will not be read at first.
+However, by activating and then deactivating another offload
+(e.g. ETF/TX launchtime offload), taprio_offload_enable is read
+and erroneously keeps the offload feature of the NIC enabled.
 
-The rename should reduce this confusion. Since it is a pure
-rename, it has no impact on functionality.
+This can be reproduced as follows:
+
+    # TAPRIO offload (flags == 0x2) and negative base-time leading to expected -ERANGE
+    sudo tc qdisc replace dev enp1s0 parent root handle 100 stab overhead 24 taprio \
+	    num_tc 1 \
+	    map 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \
+	    queues 1@0 \
+	    base-time -1000 \
+	    sched-entry S 01 300000 \
+	    flags 0x2
+
+    # IGC_TQAVCTRL is 0x0 as expected (iomem=relaxed for reading register)
+    sudo pcimem /sys/bus/pci/devices/0000:01:00.0/resource0 0x3570 w*1
+
+    # Activate ETF offload
+    sudo tc qdisc replace dev enp1s0 parent root handle 6666 mqprio \
+	    num_tc 3 \
+	    map 2 2 1 0 2 2 2 2 2 2 2 2 2 2 2 2 \
+	    queues 1@0 1@1 2@2 \
+	    hw 0
+    sudo tc qdisc add dev enp1s0 parent 6666:1 etf \
+	    clockid CLOCK_TAI \
+	    delta 500000 \
+	    offload
+
+    # IGC_TQAVCTRL is 0x9 as expected
+    sudo pcimem /sys/bus/pci/devices/0000:01:00.0/resource0 0x3570 w*1
+
+    # Deactivate ETF offload again
+    sudo tc qdisc delete dev enp1s0 parent 6666:1
+
+    # IGC_TQAVCTRL should now be 0x0 again, but is observed as 0x9
+    sudo pcimem /sys/bus/pci/devices/0000:01:00.0/resource0 0x3570 w*1
 
 Fixes: e17090eb2494 ("igc: allow BaseTime 0 enrollment for Qbv")
 Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
@@ -82,61 +111,54 @@ Tested-by: Naama Meir <naamax.meir@linux.intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc.h      | 2 +-
- drivers/net/ethernet/intel/igc/igc_main.c | 6 +++---
- drivers/net/ethernet/intel/igc/igc_tsn.c  | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index c0a07af36cb23..345d3a4e8ed44 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -191,7 +191,7 @@ struct igc_adapter {
- 	int tc_setup_type;
- 	ktime_t base_time;
- 	ktime_t cycle_time;
--	bool qbv_enable;
-+	bool taprio_offload_enable;
- 	u32 qbv_config_change_errors;
- 	bool qbv_transition;
- 	unsigned int qbv_count;
 diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index ae986e44a4718..6bed12224120f 100644
+index 6bed12224120f..f051ca733af1b 100644
 --- a/drivers/net/ethernet/intel/igc/igc_main.c
 +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6119,16 +6119,16 @@ static int igc_save_qbv_schedule(struct igc_adapter *adapter,
+@@ -6090,6 +6090,7 @@ static int igc_tsn_clear_schedule(struct igc_adapter *adapter)
  
- 	switch (qopt->cmd) {
- 	case TAPRIO_CMD_REPLACE:
--		adapter->qbv_enable = true;
-+		adapter->taprio_offload_enable = true;
- 		break;
- 	case TAPRIO_CMD_DESTROY:
--		adapter->qbv_enable = false;
-+		adapter->taprio_offload_enable = false;
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
+ 	adapter->base_time = 0;
+ 	adapter->cycle_time = NSEC_PER_SEC;
++	adapter->taprio_offload_enable = false;
+ 	adapter->qbv_config_change_errors = 0;
+ 	adapter->qbv_transition = false;
+ 	adapter->qbv_count = 0;
+@@ -6117,20 +6118,12 @@ static int igc_save_qbv_schedule(struct igc_adapter *adapter,
+ 	size_t n;
+ 	int i;
  
--	if (!adapter->qbv_enable)
-+	if (!adapter->taprio_offload_enable)
+-	switch (qopt->cmd) {
+-	case TAPRIO_CMD_REPLACE:
+-		adapter->taprio_offload_enable = true;
+-		break;
+-	case TAPRIO_CMD_DESTROY:
+-		adapter->taprio_offload_enable = false;
+-		break;
+-	default:
+-		return -EOPNOTSUPP;
+-	}
+-
+-	if (!adapter->taprio_offload_enable)
++	if (qopt->cmd == TAPRIO_CMD_DESTROY)
  		return igc_tsn_clear_schedule(adapter);
  
++	if (qopt->cmd != TAPRIO_CMD_REPLACE)
++		return -EOPNOTSUPP;
++
  	if (qopt->base_time < 0)
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 3cdb0c9887283..b76ebfc10b1d5 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -37,7 +37,7 @@ static unsigned int igc_tsn_new_flags(struct igc_adapter *adapter)
- {
- 	unsigned int new_flags = adapter->flags & ~IGC_FLAG_TSN_ANY_ENABLED;
+ 		return -ERANGE;
  
--	if (adapter->qbv_enable)
-+	if (adapter->taprio_offload_enable)
- 		new_flags |= IGC_FLAG_TSN_QBV_ENABLED;
+@@ -6142,6 +6135,7 @@ static int igc_save_qbv_schedule(struct igc_adapter *adapter,
  
- 	if (is_any_launchtime(adapter))
+ 	adapter->cycle_time = qopt->cycle_time;
+ 	adapter->base_time = qopt->base_time;
++	adapter->taprio_offload_enable = true;
+ 
+ 	igc_ptp_read(adapter, &now);
+ 
 -- 
 2.39.2
 
