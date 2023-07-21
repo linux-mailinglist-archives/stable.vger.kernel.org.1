@@ -2,87 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40AC275D49E
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F6B075D39D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232185AbjGUTXM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:23:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44710 "EHLO
+        id S231875AbjGUTMl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232183AbjGUTXL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:23:11 -0400
+        with ESMTP id S231888AbjGUTMi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 498DC273F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61EBF30ED
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCA3E61D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF37C433CA;
-        Fri, 21 Jul 2023 19:23:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7F3561D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EB6C433C8;
+        Fri, 21 Jul 2023 19:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967389;
-        bh=3S9jrISaPrsRJmfff4zWgNjYFcvFwb9J+fTiUCmerQ8=;
+        s=korg; t=1689966753;
+        bh=3QHIuDzI0N/QJ0Fd+PwMz9iDWJPWp+70K1IhadJC0kE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tumX66LBtOqu/fgCuyRy4BLuX7QTmWp4yp+UfzKSOuTx02kj+JBJ+FA++6fZ6WEu0
-         tVWiTdVrvh5xwW8+Z3jA8uLsaT1ipPaz1FE4nl/r4wHnpnB8lKusQBdD6nm2YoesiZ
-         HBjP42S/IG3+vlclDoX183gJiv8ANnnrPkSpbk0c=
+        b=gMPqLrTv/fdztYJ/dzbMRkWgsr8Zi6TKowmcBerTZVcySZn+ps1XixzqMifstJwby
+         LD6/XvgUa4FwzUyJYrMOeCMsi+l8fD+1JJJOmH9Rm6+uej5w3tgK9GgRaFnjvcpjkq
+         NtAI4AK6sCxlZZeoYMcUCK4P2XArbTA8azhhXZuo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        stable@kernel.org, Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 107/223] ext4: fix wrong unit use in ext4_mb_new_blocks
+        patches@lists.linux.dev,
+        Nageswara R Sastry <rnsastry@linux.ibm.com>,
+        Russell Currey <ruscur@russell.cc>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.15 456/532] powerpc/security: Fix Speculation_Store_Bypass reporting on Power10
 Date:   Fri, 21 Jul 2023 18:06:00 +0200
-Message-ID: <20230721160525.433391891@linuxfoundation.org>
+Message-ID: <20230721160639.267094224@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 2ec6d0a5ea72689a79e6f725fd8b443a788ae279 upstream.
+commit 5bcedc5931e7bd6928a2d8207078d4cb476b3b55 upstream.
 
-Function ext4_free_blocks_simple needs count in cluster. Function
-ext4_free_blocks accepts count in block. Convert count to cluster
-to fix the mismatch.
+Nageswara reported that /proc/self/status was showing "vulnerable" for
+the Speculation_Store_Bypass feature on Power10, eg:
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: stable@kernel.org
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-12-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+  $ grep Speculation_Store_Bypass: /proc/self/status
+  Speculation_Store_Bypass:       vulnerable
+
+But at the same time the sysfs files, and lscpu, were showing "Not
+affected".
+
+This turns out to simply be a bug in the reporting of the
+Speculation_Store_Bypass, aka. PR_SPEC_STORE_BYPASS, case.
+
+When SEC_FTR_STF_BARRIER was added, so that firmware could communicate
+the vulnerability was not present, the code in ssb_prctl_get() was not
+updated to check the new flag.
+
+So add the check for SEC_FTR_STF_BARRIER being disabled. Rather than
+adding the new check to the existing if block and expanding the comment
+to cover both cases, rewrite the three cases to be separate so they can
+be commented separately for clarity.
+
+Fixes: 84ed26fd00c5 ("powerpc/security: Add a security feature for STF barrier")
+Cc: stable@vger.kernel.org # v5.14+
+Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230517074945.53188-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/security.c |   35 ++++++++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6166,7 +6166,7 @@ void ext4_free_blocks(handle_t *handle,
- 	}
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -363,26 +363,27 @@ ssize_t cpu_show_spec_store_bypass(struc
  
- 	if (sbi->s_mount_state & EXT4_FC_REPLAY) {
--		ext4_free_blocks_simple(inode, block, count);
-+		ext4_free_blocks_simple(inode, block, EXT4_NUM_B2C(sbi, count));
- 		return;
- 	}
+ static int ssb_prctl_get(struct task_struct *task)
+ {
++	/*
++	 * The STF_BARRIER feature is on by default, so if it's off that means
++	 * firmware has explicitly said the CPU is not vulnerable via either
++	 * the hypercall or device tree.
++	 */
++	if (!security_ftr_enabled(SEC_FTR_STF_BARRIER))
++		return PR_SPEC_NOT_AFFECTED;
++
++	/*
++	 * If the system's CPU has no known barrier (see setup_stf_barrier())
++	 * then assume that the CPU is not vulnerable.
++	 */
+ 	if (stf_enabled_flush_types == STF_BARRIER_NONE)
+-		/*
+-		 * We don't have an explicit signal from firmware that we're
+-		 * vulnerable or not, we only have certain CPU revisions that
+-		 * are known to be vulnerable.
+-		 *
+-		 * We assume that if we're on another CPU, where the barrier is
+-		 * NONE, then we are not vulnerable.
+-		 */
+ 		return PR_SPEC_NOT_AFFECTED;
+-	else
+-		/*
+-		 * If we do have a barrier type then we are vulnerable. The
+-		 * barrier is not a global or per-process mitigation, so the
+-		 * only value we can report here is PR_SPEC_ENABLE, which
+-		 * appears as "vulnerable" in /proc.
+-		 */
+-		return PR_SPEC_ENABLE;
  
+-	return -EINVAL;
++	/*
++	 * Otherwise the CPU is vulnerable. The barrier is not a global or
++	 * per-process mitigation, so the only value that can be reported here
++	 * is PR_SPEC_ENABLE, which appears as "vulnerable" in /proc.
++	 */
++	return PR_SPEC_ENABLE;
+ }
+ 
+ int arch_prctl_spec_ctrl_get(struct task_struct *task, unsigned long which)
 
 
