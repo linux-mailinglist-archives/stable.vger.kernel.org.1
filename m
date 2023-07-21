@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6744775D33A
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6303775D345
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjGUTIS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:08:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
+        id S231771AbjGUTIu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:08:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231138AbjGUTIR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:17 -0400
+        with ESMTP id S231772AbjGUTIt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16009E4C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FED430E1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8C3861D7B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49D6C433C7;
-        Fri, 21 Jul 2023 19:08:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3D8D61D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7702C433C8;
+        Fri, 21 Jul 2023 19:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966496;
-        bh=ncm47kN3BwJFRAHE6jPJSDPvZdoJEvavTY6EptC6jg0=;
+        s=korg; t=1689966527;
+        bh=6ubGanwdd15hvv0IMK/4jq73YUCYhGOUZo3qKAyn4bA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M4EazBs45oojAGOOUtZUhVpBVXOWGPGgiNiMbYedBAlAYbjrGOZnOpwAA8zvxYA01
-         wjl9+PUnWJO87VqfJgocEACwHzsYhqIrGvHitmqpni0/RUW8He8ap5CUlO2obs+KDz
-         oCDUePrEPgOWYuXdvvsr4V/OdEL/Xs32IYOOQWMk=
+        b=ofpJeZexXnEvp0BsJCzfavBvyIFnWTHRcMaQB9iRZ0YXC3Bt/ootvY8HbfkOEhHI7
+         VOkN4jcKmcNCZmfJt18OFaZRXTDlrM5CU3znTGcDEUIJz1ACSIjnTxW6AAs2UY1/Mn
+         PUHJ8973fIYV6gbmmgYzAPQVjoBKfQiub/nRGM6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 347/532] mmc: core: disable TRIM on Micron MTFC4GACAJCN-1M
-Date:   Fri, 21 Jul 2023 18:04:11 +0200
-Message-ID: <20230721160633.262104837@linuxfoundation.org>
+        patches@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Yann Gautier <yann.gautier@foss.st.com>
+Subject: [PATCH 5.15 348/532] mmc: mmci: Set PROBE_PREFER_ASYNCHRONOUS
+Date:   Fri, 21 Jul 2023 18:04:12 +0200
+Message-ID: <20230721160633.317906481@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -54,44 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robert Marko <robimarko@gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit dbfbddcddcebc9ce8a08757708d4e4a99d238e44 upstream.
+commit 3108eb2e8aa7e955a9dd3a4c1bf19a7898961822 upstream.
 
-It seems that Micron MTFC4GACAJCN-1M despite advertising TRIM support does
-not work when the core is trying to use REQ_OP_WRITE_ZEROES.
+All mmc host drivers should have the asynchronous probe option enabled, but
+it seems like we failed to set it for mmci, so let's do that now.
 
-We are seeing the following errors in OpenWrt under 6.1 on Qnap Qhora 301W
-that we did not previously have and tracked it down to REQ_OP_WRITE_ZEROES:
-[   18.085950] I/O error, dev loop0, sector 596 op 0x9:(WRITE_ZEROES) flags 0x800 phys_seg 0 prio class 2
-
-Disabling TRIM makes the error go away, so lets add a quirk for this eMMC
-to disable TRIM.
-
-Signed-off-by: Robert Marko <robimarko@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230530213259.1776512-1-robimarko@gmail.com
+Fixes: 21b2cec61c04 ("mmc: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in v4.4")
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Yann Gautier <yann.gautier@foss.st.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230612143730.210390-1-ulf.hansson@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/quirks.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mmc/host/mmci.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -107,6 +107,13 @@ static const struct mmc_fixup __maybe_un
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
- 	/*
-+	 * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
-+	 * support being used to offload WRITE_ZEROES.
-+	 */
-+	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
-+		  MMC_QUIRK_TRIM_BROKEN),
-+
-+	/*
- 	 * Some SD cards reports discard support while they don't
- 	 */
- 	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -2449,6 +2449,7 @@ static struct amba_driver mmci_driver =
+ 	.drv		= {
+ 		.name	= DRIVER_NAME,
+ 		.pm	= &mmci_dev_pm_ops,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ 	.probe		= mmci_probe,
+ 	.remove		= mmci_remove,
 
 
