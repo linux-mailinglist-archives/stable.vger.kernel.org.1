@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F3B075D420
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FAE175D354
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232050AbjGUTST (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40258 "EHLO
+        id S231782AbjGUTJX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:09:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232029AbjGUTSN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58AF035AB
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:05 -0700 (PDT)
+        with ESMTP id S231795AbjGUTJW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:09:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A192D4A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:09:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0108361D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14199C433C8;
-        Fri, 21 Jul 2023 19:18:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A16F061D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45F3C433C7;
+        Fri, 21 Jul 2023 19:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967084;
-        bh=oINC+a82KR7RUUD6nNEIQt27HVaahwuweoxLWwzWoCQ=;
+        s=korg; t=1689966561;
+        bh=OQdQvAb7hCOmNWcaw0QmnPzNIfGtuQI1dErEXONoe0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d1EM7jSDIHfpkNn8lSKS/ycacK3s0k38O0uo/RFNSD0i57R3Ymb7s8VxIwPI4dwQ7
-         3dNz2Kqxq7a2jSxCkGuX3hzewr0Fhw26ywtIOi39/QCMuenhdiS6uwC91WTbILhVGP
-         bTwKv8QAhvOwpmBpfCCoYfoj679CkeqT1QcLaqL8=
+        b=PvKbH4gOOnV7cD6D6Q24b5R6t0zlgktigMGk5sdWHo0vS0tK0CaQE9wMLlAGkDZwz
+         L6bmz/3Ic6Rcydq8M+fj0POClEPdGZ5wl92g43MlOBDI+3p3+7zmrvO/TZ9coVTmqj
+         aH9zzlxa6lpSEw845WyTrwUrWlCD/+1d+e/tkcKY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/223] ntb: intel: Fix error handling in intel_ntb_pci_driver_init()
-Date:   Fri, 21 Jul 2023 18:04:51 +0200
-Message-ID: <20230721160522.488090774@linuxfoundation.org>
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 388/532] io_uring: add reschedule point to handle_tw_list()
+Date:   Fri, 21 Jul 2023 18:04:52 +0200
+Message-ID: <20230721160635.522262155@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,65 +53,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 4c3c796aca02883ad35bb117468938cc4022ca41 ]
+Commit f58680085478dd292435727210122960d38e8014 upstream.
 
-A problem about ntb_hw_intel create debugfs failed is triggered with the
-following log given:
+If CONFIG_PREEMPT_NONE is set and the task_work chains are long, we
+could be running into issues blocking others for too long. Add a
+reschedule check in handle_tw_list(), and flush the ctx if we need to
+reschedule.
 
- [  273.112733] Intel(R) PCI-E Non-Transparent Bridge Driver 2.0
- [  273.115342] debugfs: Directory 'ntb_hw_intel' with parent '/' already present!
-
-The reason is that intel_ntb_pci_driver_init() returns
-pci_register_driver() directly without checking its return value, if
-pci_register_driver() failed, it returns without destroy the newly created
-debugfs, resulting the debugfs of ntb_hw_intel can never be created later.
-
- intel_ntb_pci_driver_init()
-   debugfs_create_dir() # create debugfs directory
-   pci_register_driver()
-     driver_register()
-       bus_add_driver()
-         priv = kzalloc(...) # OOM happened
-   # return without destroy debugfs directory
-
-Fix by removing debugfs when pci_register_driver() returns error.
-
-Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen1.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-index 84772013812bf..60a4ebc7bf35a 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-@@ -2064,12 +2064,17 @@ static struct pci_driver intel_ntb_pci_driver = {
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2217,9 +2217,12 @@ static void tctx_task_work(struct callba
+ 			}
+ 			req->io_task_work.func(req, &locked);
+ 			node = next;
++			if (unlikely(need_resched())) {
++				ctx_flush_and_put(ctx, &locked);
++				ctx = NULL;
++				cond_resched();
++			}
+ 		} while (node);
+-
+-		cond_resched();
+ 	}
  
- static int __init intel_ntb_pci_driver_init(void)
- {
-+	int ret;
- 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
- 
- 	if (debugfs_initialized())
- 		debugfs_dir = debugfs_create_dir(KBUILD_MODNAME, NULL);
- 
--	return pci_register_driver(&intel_ntb_pci_driver);
-+	ret = pci_register_driver(&intel_ntb_pci_driver);
-+	if (ret)
-+		debugfs_remove_recursive(debugfs_dir);
-+
-+	return ret;
- }
- module_init(intel_ntb_pci_driver_init);
- 
--- 
-2.39.2
-
+ 	ctx_flush_and_put(ctx, &locked);
 
 
