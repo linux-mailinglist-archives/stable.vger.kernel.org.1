@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E6F375D2A2
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BBAA75D284
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231549AbjGUTB4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:01:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
+        id S231364AbjGUTA3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:00:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231548AbjGUTB4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:01:56 -0400
+        with ESMTP id S231511AbjGUTA2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:00:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4CD30ED
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:01:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A8A30CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:00:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56EBB61D90
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:01:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698D6C433CA;
-        Fri, 21 Jul 2023 19:01:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 854B061D85
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:00:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977DFC433C7;
+        Fri, 21 Jul 2023 19:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966111;
-        bh=FUFFdcCihAjREY5om8AcQbPVKkGfZjVw9bcZOKkN7Gc=;
+        s=korg; t=1689966027;
+        bh=j7hs9kLr0wrnq1imMUgfeZx++DjoJBKsKrOc/w5Oyns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GuiwjOVBgdnL81Dn5+qmdNlN3j6yr31XBUlouryOvbHkByYUP4zc0f1xjMAjjaP6a
-         I+VJVsnzFIRj5Z8ano9kpgxJxjwr21Y3SQj3efOiXtazn4hU2/7Mghk7hQwg8iJTKx
-         OycPvbanMj+sLj48XZcWtBxBcPSgNlUMN1oz0DDE=
+        b=vDVeTFPxv8JU/SQy47pb+s6Dj0LX8YfeegXxpX/4Z/5d+UxusKFgAi1nWj1zlITNs
+         0YuPtcL8qRcljTMfXLSxAnGSEoPc4DQRVJxESt8yId35AEUUHRCHGC0RsYsOWCrdLK
+         K51w9MqarKWSqfh2oxJ45t9b/40BJejpnrLU/WEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 190/532] ovl: update of dentry revalidate flags after copy up
-Date:   Fri, 21 Jul 2023 18:01:34 +0200
-Message-ID: <20230721160624.716341640@linuxfoundation.org>
+Subject: [PATCH 5.15 191/532] ASoC: imx-audmix: check return value of devm_kasprintf()
+Date:   Fri, 21 Jul 2023 18:01:35 +0200
+Message-ID: <20230721160624.770226138@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -46,171 +46,74 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit b07d5cc93e1b28df47a72c519d09d0a836043613 ]
+[ Upstream commit 2f76e1d6ca524a888d29aafe29f2ad2003857971 ]
 
-After copy up, we may need to update d_flags if upper dentry is on a
-remote fs and lower dentries are not.
+devm_kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-Add helpers to allow incremental update of the revalidate flags.
-
-Fixes: bccece1ead36 ("ovl: allow remote upper")
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230614121509.443926-1-claudiu.beznea@microchip.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/copy_up.c   |  2 ++
- fs/overlayfs/dir.c       |  3 +--
- fs/overlayfs/export.c    |  3 +--
- fs/overlayfs/namei.c     |  3 +--
- fs/overlayfs/overlayfs.h |  6 ++++--
- fs/overlayfs/super.c     |  2 +-
- fs/overlayfs/util.c      | 24 ++++++++++++++++++++----
- 7 files changed, 30 insertions(+), 13 deletions(-)
+ sound/soc/fsl/imx-audmix.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index ef0bf98b620d7..46cc429c44f7e 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -542,6 +542,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 			/* Restore timestamps on parent (best effort) */
- 			ovl_set_timestamps(upperdir, &c->pstat);
- 			ovl_dentry_set_upper_alias(c->dentry);
-+			ovl_dentry_update_reval(c->dentry, upper);
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index a364e2415de02..d991e457060c7 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -228,6 +228,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 
+ 		dai_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s%s",
+ 					  fe_name_pref, args.np->full_name + 1);
++		if (!dai_name)
++			return -ENOMEM;
+ 
+ 		dev_info(pdev->dev.parent, "DAI FE name:%s\n", dai_name);
+ 
+@@ -236,6 +238,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 			capture_dai_name =
+ 				devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
+ 					       dai_name, "CPU-Capture");
++			if (!capture_dai_name)
++				return -ENOMEM;
  		}
- 	}
- 	inode_unlock(udir);
-@@ -840,6 +841,7 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx *c)
- 		inode_unlock(udir);
  
- 		ovl_dentry_set_upper_alias(c->dentry);
-+		ovl_dentry_update_reval(c->dentry, ovl_dentry_upper(c->dentry));
- 	}
+ 		priv->dai[i].cpus = &dlc[0];
+@@ -266,6 +270,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 				       "AUDMIX-Playback-%d", i);
+ 		be_cp = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 				       "AUDMIX-Capture-%d", i);
++		if (!be_name || !be_pb || !be_cp)
++			return -ENOMEM;
  
- out:
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index eca984d6484d1..519193ce7d575 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -267,8 +267,7 @@ static int ovl_instantiate(struct dentry *dentry, struct inode *inode,
- 
- 	ovl_dir_modified(dentry->d_parent, false);
- 	ovl_dentry_set_upper_alias(dentry);
--	ovl_dentry_update_reval(dentry, newdentry,
--			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
-+	ovl_dentry_init_reval(dentry, newdentry);
- 
- 	if (!hardlink) {
- 		/*
-diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-index 0cc14ce8c7e83..baa50ece0bc53 100644
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -326,8 +326,7 @@ static struct dentry *ovl_obtain_alias(struct super_block *sb,
- 	if (upper_alias)
- 		ovl_dentry_set_upper_alias(dentry);
- 
--	ovl_dentry_update_reval(dentry, upper,
--			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
-+	ovl_dentry_init_reval(dentry, upper);
- 
- 	return d_instantiate_anon(dentry, inode);
- 
-diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index 1a9b515fc45d4..9c055d11a95de 100644
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -1103,8 +1103,7 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
- 			ovl_set_flag(OVL_UPPERDATA, inode);
- 	}
- 
--	ovl_dentry_update_reval(dentry, upperdentry,
--			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
-+	ovl_dentry_init_reval(dentry, upperdentry);
- 
- 	revert_creds(old_cred);
- 	if (origin_path) {
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index ae4876da2ced2..a96b67586f817 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -286,8 +286,10 @@ bool ovl_index_all(struct super_block *sb);
- bool ovl_verify_lower(struct super_block *sb);
- struct ovl_entry *ovl_alloc_entry(unsigned int numlower);
- bool ovl_dentry_remote(struct dentry *dentry);
--void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
--			     unsigned int mask);
-+void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry);
-+void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry);
-+void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
-+			   unsigned int mask);
- bool ovl_dentry_weird(struct dentry *dentry);
- enum ovl_path_type ovl_path_type(struct dentry *dentry);
- void ovl_path_upper(struct dentry *dentry, struct path *path);
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index b3675d13c1ac2..5310271cf2e38 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1965,7 +1965,7 @@ static struct dentry *ovl_get_root(struct super_block *sb,
- 	ovl_dentry_set_flag(OVL_E_CONNECTED, root);
- 	ovl_set_upperdata(d_inode(root));
- 	ovl_inode_init(d_inode(root), &oip, ino, fsid);
--	ovl_dentry_update_reval(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
-+	ovl_dentry_init_flags(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
- 
- 	return root;
- }
-diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-index 9d33ce385bef0..d62d5ede60dfd 100644
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -94,14 +94,30 @@ struct ovl_entry *ovl_alloc_entry(unsigned int numlower)
- 	return oe;
- }
- 
-+#define OVL_D_REVALIDATE (DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE)
+ 		priv->dai[num_dai + i].cpus = &dlc[3];
+ 		priv->dai[num_dai + i].codecs = &dlc[4];
+@@ -293,6 +299,9 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 		priv->dapm_routes[i].source =
+ 			devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
+ 				       dai_name, "CPU-Playback");
++		if (!priv->dapm_routes[i].source)
++			return -ENOMEM;
 +
- bool ovl_dentry_remote(struct dentry *dentry)
- {
--	return dentry->d_flags &
--		(DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
-+	return dentry->d_flags & OVL_D_REVALIDATE;
-+}
-+
-+void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry)
-+{
-+	if (!ovl_dentry_remote(realdentry))
-+		return;
-+
-+	spin_lock(&dentry->d_lock);
-+	dentry->d_flags |= realdentry->d_flags & OVL_D_REVALIDATE;
-+	spin_unlock(&dentry->d_lock);
-+}
-+
-+void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry)
-+{
-+	return ovl_dentry_init_flags(dentry, upperdentry, OVL_D_REVALIDATE);
- }
- 
--void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
--			     unsigned int mask)
-+void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
-+			   unsigned int mask)
- {
- 	struct ovl_entry *oe = OVL_E(dentry);
- 	unsigned int i, flags = 0;
+ 		priv->dapm_routes[i].sink = be_pb;
+ 		priv->dapm_routes[num_dai + i].source   = be_pb;
+ 		priv->dapm_routes[num_dai + i].sink     = be_cp;
 -- 
 2.39.2
 
