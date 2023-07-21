@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88B8875CA5E
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4421075CA5D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbjGUOnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55490 "EHLO
+        id S229835AbjGUOnH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231859AbjGUOmz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:42:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550FC30C8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:42:52 -0700 (PDT)
+        with ESMTP id S231860AbjGUOm4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:42:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F3E30C7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:42:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E551661CB8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:42:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F422DC433C9;
-        Fri, 21 Jul 2023 14:42:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B05F761CC7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:42:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F56C433C7;
+        Fri, 21 Jul 2023 14:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950571;
-        bh=wMC038u7YatDRzO3glal1C79Vp0FxjC14c6pFItE8mY=;
+        s=korg; t=1689950574;
+        bh=ZHtWEenhzcxhnffYuWhlyAyrCVpp0SdGHpqHhzz9NPE=;
         h=Subject:To:Cc:From:Date:From;
-        b=ZFDL8vdi+f9WrpLlDKDmDPyKgnNBEzn8nA1zclv83HC30NykGDU7JhP6bWHtRK4+C
-         Nb2uO2QRUi3HPqApSoYM9AgPN4Hip04lsvPrGsGrtnwmtX5pUHz83I5w9RPYBYczPi
-         tSBR5j8qATouRgQ9eKjrMmd9hMuswAkEW51CzlQc=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Array index may go out of bound" failed to apply to 4.19-stable tree
+        b=U1/6USH5K/4JQ8lHVqgLkfyS1VV70itnlvfyJ4URGJwT6+1fJf0Zymer78ReTS80x
+         QqPl9M3TgwCaiLzWHJXZJ55ep2iUjzgs85sPWaJMM2eg582Ry6gYD4uxdNkC0dfn0y
+         q8Y4ZMDYn86VWX2x1ViklfGdxZJWi1CJRuMsDeVw=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Array index may go out of bound" failed to apply to 4.14-stable tree
 To:     njavali@marvell.com, bhazarika@marvell.com,
         himanshu.madhani@oracle.com, martin.petersen@oracle.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:42:40 +0200
-Message-ID: <2023072140-dilute-stood-1935@gregkh>
+Date:   Fri, 21 Jul 2023 16:42:41 +0200
+Message-ID: <2023072141-freezable-tactical-2c4a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,24 +50,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x d721b591b95cf3f290f8a7cbe90aa2ee0368388d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072140-dilute-stood-1935@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072141-freezable-tactical-2c4a@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
 d721b591b95c ("scsi: qla2xxx: Array index may go out of bound")
 250bd00923c7 ("scsi: qla2xxx: Fix inconsistent format argument type in qla_os.c")
+a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
+9cd883f07a54 ("scsi: qla2xxx: Fix session cleanup for N2N")
+82abdcaf3ede ("scsi: qla2xxx: Allow target mode to accept PRLI in dual mode")
+11aea16ab3f5 ("scsi: qla2xxx: Add ability to send PRLO")
+9b3e0f4d4147 ("scsi: qla2xxx: Move work element processing out of DPC thread")
+f13515acdcb5 ("scsi: qla2xxx: Replace GPDB with async ADISC command")
+2853192e154b ("scsi: qla2xxx: Use IOCB path to submit Control VP MBX command")
+4005a995668b ("scsi: qla2xxx: Fix Relogin being triggered too fast")
+5ef696aa9f3c ("scsi: qla2xxx: Relogin to target port on a cable swap")
+414d9ff3f803 ("scsi: qla2xxx: Fix login state machine stuck at GPDB")
+2d73ac6102d9 ("scsi: qla2xxx: Serialize GPNID for multiple RSCN")
+25ad76b703d9 ("scsi: qla2xxx: Retry switch command on time out")
+a084fd68e1d2 ("scsi: qla2xxx: Fix re-login for Nport Handle in use")
+a01c77d2cbc4 ("scsi: qla2xxx: Move session delete to driver work queue")
+2d57b5efda51 ("scsi: qla2xxx: Query FC4 type during RSCN processing")
+edd05de19759 ("scsi: qla2xxx: Changes to support N2N logins")
+c0c462c8a061 ("scsi: qla2xxx: Allow MBC_GET_PORT_DATABASE to query and save the port states")
+08eb7f45de61 ("scsi: qla2xxx: Cocci spatch "pool_zalloc-simple"")
 
 thanks,
 
