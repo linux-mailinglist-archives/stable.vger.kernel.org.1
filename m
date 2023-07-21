@@ -2,43 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B35FD75D1ED
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C2075D1EF
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:54:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbjGUSyY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:54:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47710 "EHLO
+        id S231256AbjGUSy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230443AbjGUSyX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:54:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B0730CF
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:54:22 -0700 (PDT)
+        with ESMTP id S229665AbjGUSy0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:54:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126BC30CA;
+        Fri, 21 Jul 2023 11:54:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95C9761D8F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:54:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99591C433C8;
-        Fri, 21 Jul 2023 18:54:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1E2061D82;
+        Fri, 21 Jul 2023 18:54:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6487CC433C7;
+        Fri, 21 Jul 2023 18:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965661;
-        bh=zEcUuxoLGWHeIX84F4ce/oI97JJIJ+5sPhIHlSNW7iM=;
+        s=korg; t=1689965664;
+        bh=zALDhhySGfyIUT3OC9NQC7z1i6nfr0e+GfPKJzNbJYM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S/Ms9ubJvfjLGKbRyCVQXsiB7aOOPZPzZJfo0qv0fFjbJ6G335cx5lr1REjRlSjIW
-         CY+Fa3+2gaBAmCtxNNzUkP0UsGQmwlJWAcipJrQKso5bXVXYsr2qsYwOpYOnD0z9bG
-         4H/IQ+R1cHACuEVNtQ/ACpiJzVUpdgjaqRX6asCc=
+        b=VaTfxityQRMjDTGuByuiUJrpEaUNks9HMVTBz6oIQvj6Gip8p8Hu7BLYhmbMoXzQb
+         AqAZf2X/WwrGUAAP4xovtJZkCjoDOaiX2VBygkT++z3jV/H+qKiEOwnxWZPsIWB451
+         zK8oUzG62l7dZCeCNio/K+4z5IrCciep7NiJq+BE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 041/532] wifi: mwifiex: Fix the size of a memory allocation in mwifiex_ret_802_11_scan()
-Date:   Fri, 21 Jul 2023 17:59:05 +0200
-Message-ID: <20230721160616.876020233@linuxfoundation.org>
+        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
+        Christian Brauner <brauner@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Xin Long <lucien.xin@gmail.com>, linux-sctp@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 042/532] sctp: add bpf_bypass_getsockopt proto callback
+Date:   Fri, 21 Jul 2023 17:59:06 +0200
+Message-ID: <20230721160616.927524288@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -46,8 +52,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,45 +62,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
 
-[ Upstream commit d9aef04fcfa81ee4fb2804a21a3712b7bbd936af ]
+[ Upstream commit 2598619e012cee5273a2821441b9a051ad931249 ]
 
-The type of "mwifiex_adapter->nd_info" is "struct cfg80211_wowlan_nd_info",
-not "struct cfg80211_wowlan_nd_match".
+Implement ->bpf_bypass_getsockopt proto callback and filter out
+SCTP_SOCKOPT_PEELOFF, SCTP_SOCKOPT_PEELOFF_FLAGS and SCTP_SOCKOPT_CONNECTX3
+socket options from running eBPF hook on them.
 
-Use struct_size() to ease the computation of the needed size.
+SCTP_SOCKOPT_PEELOFF and SCTP_SOCKOPT_PEELOFF_FLAGS options do fd_install(),
+and if BPF_CGROUP_RUN_PROG_GETSOCKOPT hook returns an error after success of
+the original handler sctp_getsockopt(...), userspace will receive an error
+from getsockopt syscall and will be not aware that fd was successfully
+installed into a fdtable.
 
-The current code over-allocates some memory, so is safe.
-But it wastes 32 bytes.
+As pointed by Marcelo Ricardo Leitner it seems reasonable to skip
+bpf getsockopt hook for SCTP_SOCKOPT_CONNECTX3 sockopt too.
+Because internaly, it triggers connect() and if error is masked
+then userspace will be confused.
 
-Fixes: 7d7f07d8c5d3 ("mwifiex: add wowlan net-detect support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/7a6074fb056d2181e058a3cc6048d8155c20aec7.1683371982.git.christophe.jaillet@wanadoo.fr
+This patch was born as a result of discussion around a new SCM_PIDFD interface:
+https://lore.kernel.org/all/20230413133355.350571-3-aleksandr.mikhalitsyn@canonical.com/
+
+Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Stanislav Fomichev <sdf@google.com>
+Cc: Neil Horman <nhorman@tuxdriver.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: linux-sctp@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Suggested-by: Stanislav Fomichev <sdf@google.com>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/scan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sctp/socket.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 0b877f3f6b974..5ec8a42e7150a 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2199,9 +2199,9 @@ int mwifiex_ret_802_11_scan(struct mwifiex_private *priv,
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 2bbc81ddb9e08..ed35d4a4c5253 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -8287,6 +8287,22 @@ static int sctp_getsockopt(struct sock *sk, int level, int optname,
+ 	return retval;
+ }
  
- 	if (nd_config) {
- 		adapter->nd_info =
--			kzalloc(sizeof(struct cfg80211_wowlan_nd_match) +
--				sizeof(struct cfg80211_wowlan_nd_match *) *
--				scan_rsp->number_of_sets, GFP_ATOMIC);
-+			kzalloc(struct_size(adapter->nd_info, matches,
-+					    scan_rsp->number_of_sets),
-+				GFP_ATOMIC);
- 
- 		if (adapter->nd_info)
- 			adapter->nd_info->n_matches = scan_rsp->number_of_sets;
++static bool sctp_bpf_bypass_getsockopt(int level, int optname)
++{
++	if (level == SOL_SCTP) {
++		switch (optname) {
++		case SCTP_SOCKOPT_PEELOFF:
++		case SCTP_SOCKOPT_PEELOFF_FLAGS:
++		case SCTP_SOCKOPT_CONNECTX3:
++			return true;
++		default:
++			return false;
++		}
++	}
++
++	return false;
++}
++
+ static int sctp_hash(struct sock *sk)
+ {
+ 	/* STUB */
+@@ -9655,6 +9671,7 @@ struct proto sctp_prot = {
+ 	.shutdown    =	sctp_shutdown,
+ 	.setsockopt  =	sctp_setsockopt,
+ 	.getsockopt  =	sctp_getsockopt,
++	.bpf_bypass_getsockopt	= sctp_bpf_bypass_getsockopt,
+ 	.sendmsg     =	sctp_sendmsg,
+ 	.recvmsg     =	sctp_recvmsg,
+ 	.bind        =	sctp_bind,
+@@ -9707,6 +9724,7 @@ struct proto sctpv6_prot = {
+ 	.shutdown	= sctp_shutdown,
+ 	.setsockopt	= sctp_setsockopt,
+ 	.getsockopt	= sctp_getsockopt,
++	.bpf_bypass_getsockopt	= sctp_bpf_bypass_getsockopt,
+ 	.sendmsg	= sctp_sendmsg,
+ 	.recvmsg	= sctp_recvmsg,
+ 	.bind		= sctp_bind,
 -- 
 2.39.2
 
