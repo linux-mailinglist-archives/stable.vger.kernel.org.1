@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8290F75CA46
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 253C075CA48
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231396AbjGUOmF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230479AbjGUOmF (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 21 Jul 2023 10:42:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54978 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231411AbjGUOlm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:41:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14DAE30C4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:41:41 -0700 (PDT)
+        with ESMTP id S231533AbjGUOlp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:41:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E697130C4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:41:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A80D161B27
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:41:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC25BC433C7;
-        Fri, 21 Jul 2023 14:41:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E90B61CB7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:41:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCF8C433C9;
+        Fri, 21 Jul 2023 14:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689950500;
-        bh=c6l922EXCC4ZW8wb6mrk+6A0sQYWnb2g/iiAdia/BWI=;
+        s=korg; t=1689950502;
+        bh=F9BtaXzxVcioN7GMUEZkgJtR0cO2KsIDtUvGolAzOCQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=Vi+8RLDL14IPIXZNhQP8ygeQy48GuspEOQ4decy2xYGr9qTlZK1sgdbWqJwL9MgNS
-         nA38pBrD0OdHyCrCFc9KI4gWtVPLV1+LKdJJw41Ku8z02w8m4y/F45INq6SCNtEb9S
-         nOd7VK2VKxWLaO5dJOy+TwC3h016D/DbH51EU7l8=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix task management cmd fail due to" failed to apply to 5.15-stable tree
+        b=0JOIZsI8Bwxd65EXdSWzp3YPfCUs2oldon+WUXXcBnTPMvQi16ggMZso+QhQAwV63
+         rPQ8Z3WWKdMCMRQ77KEeasG6CEr1L3Tz0JVXxtKePbVvWUut3fajE1sts2E4+schFg
+         KHE6b04CWU4/m3OEJ3Pod9gjMebU14EwvblWdjX4=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix task management cmd fail due to" failed to apply to 5.10-stable tree
 To:     qutran@marvell.com, himanshu.madhani@oracle.com, lkp@intel.com,
         martin.petersen@oracle.com, njavali@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 16:41:33 +0200
-Message-ID: <2023072133-cartel-depth-3014@gregkh>
+Date:   Fri, 21 Jul 2023 16:41:34 +0200
+Message-ID: <2023072134-fiddling-barbecue-b038@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6a87679626b51b53fbb6be417ad8eb083030b617
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072133-cartel-depth-3014@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072134-fiddling-barbecue-b038@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,16 @@ d90171dd0da5 ("scsi: qla2xxx: Multi-que support for TMF")
 63ab6cb582fa ("scsi: qla2xxx: edif: Fix I/O timeout due to over-subscription")
 31e6cdbe0eae ("scsi: qla2xxx: Implement ref count for SRB")
 d4523bd6fd5d ("scsi: qla2xxx: Refactor asynchronous command initialization")
+2cabf10dbbe3 ("scsi: qla2xxx: Fix hang on NVMe command timeouts")
+e3d2612f583b ("scsi: qla2xxx: Fix use after free in debug code")
+44d018577f17 ("scsi: qla2xxx: edif: Add encryption to I/O path")
+7a09e8d92c6d ("scsi: qla2xxx: edif: Add doorbell notification for app")
+9efea843a906 ("scsi: qla2xxx: edif: Add detection of secure device")
+dd30706e73b7 ("scsi: qla2xxx: edif: Add key update")
+fac2807946c1 ("scsi: qla2xxx: edif: Add extraction of auth_els from the wire")
+84318a9f01ce ("scsi: qla2xxx: edif: Add send, receive, and accept for auth_els")
+7878f22a2e03 ("scsi: qla2xxx: edif: Add getfcinfo and statistic bsgs")
+7ebb336e45ef ("scsi: qla2xxx: edif: Add start + stop bsgs")
 
 thanks,
 
