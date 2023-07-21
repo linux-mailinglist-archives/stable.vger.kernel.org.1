@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8040C75D401
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBCDA75D336
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231989AbjGUTQs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38906 "EHLO
+        id S229675AbjGUTIK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231981AbjGUTQr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:16:47 -0400
+        with ESMTP id S231138AbjGUTIH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 844DD1BF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:16:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10662FD
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A852D61D76
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:16:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA106C433C9;
-        Fri, 21 Jul 2023 19:16:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6980B61D76
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F4EC433C7;
+        Fri, 21 Jul 2023 19:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967004;
-        bh=a4PgXN//rlm5y+8RxnIoDDKJPqNpn3SX4h8K3CaHvik=;
+        s=korg; t=1689966484;
+        bh=PdVtJUaHa3Drk5Mew/Yk8w70V32OPhXvOfdVLBN6Lzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qwg5VbpCr8Z23iVZmCX/cOUOE3u1KB5h9yEOXcR9aJFDdKmIuBvZOJxNip6+DJbpy
-         xs6iJ00Mq/IzJXVpbX74UUr8WkIBR0reoWCTiaiSu8LiaLNsP9mtvZHt7MTGYPiQSW
-         gABfNkJthoWRpQasSG7uSoCfyhEaM0uT2GL0S9lk=
+        b=YKui2eTr2OsdS88Rw9jYmGeFnw15G7aPhVCQ+vfS8q5npHcoIco1MaIx2lHMMRitc
+         VfPStlf1wS9VIo8GcM+l1JLc2qnqK/70MHgP/Chw9HLNpbjeKQbuSPHG6ZDmY9y00c
+         mwi7gheU0KSY5E1HPMVrcoCpdHuNDlB4N8XrI3WQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexey Kardashevskiy <aik@amd.com>,
-        Pankaj Gupta <pankaj.gupta@amd.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/223] swiotlb: reduce the swiotlb buffer size on allocation failure
-Date:   Fri, 21 Jul 2023 18:04:24 +0200
-Message-ID: <20230721160521.356466644@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Abhijeet Rastogi <abhijeet.1989@gmail.com>,
+        Julian Anastasov <ja@ssi.bg>, Simon Horman <horms@kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Allen Pais <apais@linux.microsoft.com>
+Subject: [PATCH 5.15 361/532] ipvs: increase ip_vs_conn_tab_bits range for 64BIT
+Date:   Fri, 21 Jul 2023 18:04:25 +0200
+Message-ID: <20230721160634.040084429@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,123 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey Kardashevskiy <aik@amd.com>
+From: Abhijeet Rastogi <abhijeet.1989@gmail.com>
 
-[ Upstream commit 8d58aa484920c4f9be4834a7aeb446cdced21a37 ]
+commit 04292c695f82b6cf0d25dd5ae494f16ddbb621f6 upstream.
 
-At the moment the AMD encrypted platform reserves 6% of RAM for SWIOTLB
-or 1GB, whichever is less. However it is possible that there is no block
-big enough in the low memory which make SWIOTLB allocation fail and
-the kernel continues without DMA. In such case a VM hangs on DMA.
+Current range [8, 20] is set purely due to historical reasons
+because at the time, ~1M (2^20) was considered sufficient.
+With this change, 27 is the upper limit for 64-bit, 20 otherwise.
 
-This moves alloc+remap to a helper and calls it from a loop where
-the size is halved on each iteration.
+Previous change regarding this limit is here.
 
-This updates default_nslabs on successful allocation which looks like
-an oversight as not doing so should have broken callers of
-swiotlb_size_or_default().
+Link: https://lore.kernel.org/all/86eabeb9dd62aebf1e2533926fdd13fed48bab1f.1631289960.git.aclaudi@redhat.com/T/#u
 
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Stable-dep-of: 8ac04063354a ("swiotlb: reduce the number of areas to match actual memory pool size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Abhijeet Rastogi <abhijeet.1989@gmail.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Allen Pais <apais@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/swiotlb.c | 63 +++++++++++++++++++++++++++-----------------
- 1 file changed, 39 insertions(+), 24 deletions(-)
+ net/netfilter/ipvs/Kconfig      |   27 ++++++++++++++-------------
+ net/netfilter/ipvs/ip_vs_conn.c |    4 ++--
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 3961065412542..cc0c55ed20429 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -307,6 +307,37 @@ static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
- 	return;
- }
+--- a/net/netfilter/ipvs/Kconfig
++++ b/net/netfilter/ipvs/Kconfig
+@@ -44,7 +44,8 @@ config	IP_VS_DEBUG
  
-+static void *swiotlb_memblock_alloc(unsigned long nslabs, unsigned int flags,
-+		int (*remap)(void *tlb, unsigned long nslabs))
-+{
-+	size_t bytes = PAGE_ALIGN(nslabs << IO_TLB_SHIFT);
-+	void *tlb;
-+
-+	/*
-+	 * By default allocate the bounce buffer memory from low memory, but
-+	 * allow to pick a location everywhere for hypervisors with guest
-+	 * memory encryption.
-+	 */
-+	if (flags & SWIOTLB_ANY)
-+		tlb = memblock_alloc(bytes, PAGE_SIZE);
-+	else
-+		tlb = memblock_alloc_low(bytes, PAGE_SIZE);
-+
-+	if (!tlb) {
-+		pr_warn("%s: Failed to allocate %zu bytes tlb structure\n",
-+			__func__, bytes);
-+		return NULL;
-+	}
-+
-+	if (remap && remap(tlb, nslabs) < 0) {
-+		memblock_free(tlb, PAGE_ALIGN(bytes));
-+		pr_warn("%s: Failed to remap %zu bytes\n", __func__, bytes);
-+		return NULL;
-+	}
-+
-+	return tlb;
-+}
-+
- /*
-  * Statically reserve bounce buffer space and initialize bounce buffer data
-  * structures for the software IO TLB used to implement the DMA API.
-@@ -317,7 +348,6 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- 	struct io_tlb_mem *mem = &io_tlb_default_mem;
- 	unsigned long nslabs;
- 	size_t alloc_size;
--	size_t bytes;
- 	void *tlb;
+ config	IP_VS_TAB_BITS
+ 	int "IPVS connection table size (the Nth power of 2)"
+-	range 8 20
++	range 8 20 if !64BIT
++	range 8 27 if 64BIT
+ 	default 12
+ 	help
+ 	  The IPVS connection hash table uses the chaining scheme to handle
+@@ -54,24 +55,24 @@ config	IP_VS_TAB_BITS
  
- 	if (!addressing_limit && !swiotlb_force_bounce)
-@@ -329,31 +359,16 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- 		swiotlb_adjust_nareas(num_possible_cpus());
+ 	  Note the table size must be power of 2. The table size will be the
+ 	  value of 2 to the your input number power. The number to choose is
+-	  from 8 to 20, the default number is 12, which means the table size
+-	  is 4096. Don't input the number too small, otherwise you will lose
+-	  performance on it. You can adapt the table size yourself, according
+-	  to your virtual server application. It is good to set the table size
+-	  not far less than the number of connections per second multiplying
+-	  average lasting time of connection in the table.  For example, your
+-	  virtual server gets 200 connections per second, the connection lasts
+-	  for 200 seconds in average in the connection table, the table size
+-	  should be not far less than 200x200, it is good to set the table
+-	  size 32768 (2**15).
++	  from 8 to 27 for 64BIT(20 otherwise), the default number is 12,
++	  which means the table size is 4096. Don't input the number too
++	  small, otherwise you will lose performance on it. You can adapt the
++	  table size yourself, according to your virtual server application.
++	  It is good to set the table size not far less than the number of
++	  connections per second multiplying average lasting time of
++	  connection in the table.  For example, your virtual server gets 200
++	  connections per second, the connection lasts for 200 seconds in
++	  average in the connection table, the table size should be not far
++	  less than 200x200, it is good to set the table size 32768 (2**15).
  
- 	nslabs = default_nslabs;
--	/*
--	 * By default allocate the bounce buffer memory from low memory, but
--	 * allow to pick a location everywhere for hypervisors with guest
--	 * memory encryption.
--	 */
--retry:
--	bytes = PAGE_ALIGN(nslabs << IO_TLB_SHIFT);
--	if (flags & SWIOTLB_ANY)
--		tlb = memblock_alloc(bytes, PAGE_SIZE);
--	else
--		tlb = memblock_alloc_low(bytes, PAGE_SIZE);
--	if (!tlb) {
--		pr_warn("%s: failed to allocate tlb structure\n", __func__);
--		return;
--	}
--
--	if (remap && remap(tlb, nslabs) < 0) {
--		memblock_free(tlb, PAGE_ALIGN(bytes));
--
-+	while ((tlb = swiotlb_memblock_alloc(nslabs, flags, remap)) == NULL) {
-+		if (nslabs <= IO_TLB_MIN_SLABS)
-+			return;
- 		nslabs = ALIGN(nslabs >> 1, IO_TLB_SEGSIZE);
--		if (nslabs >= IO_TLB_MIN_SLABS)
--			goto retry;
-+	}
+ 	  Another note that each connection occupies 128 bytes effectively and
+ 	  each hash entry uses 8 bytes, so you can estimate how much memory is
+ 	  needed for your box.
  
--		pr_warn("%s: Failed to remap %zu bytes\n", __func__, bytes);
--		return;
-+	if (default_nslabs != nslabs) {
-+		pr_info("SWIOTLB bounce buffer size adjusted %lu -> %lu slabs",
-+			default_nslabs, nslabs);
-+		default_nslabs = nslabs;
+ 	  You can overwrite this number setting conn_tab_bits module parameter
+-	  or by appending ip_vs.conn_tab_bits=? to the kernel command line
+-	  if IP VS was compiled built-in.
++	  or by appending ip_vs.conn_tab_bits=? to the kernel command line if
++	  IP VS was compiled built-in.
+ 
+ comment "IPVS transport protocol load balancing support"
+ 
+--- a/net/netfilter/ipvs/ip_vs_conn.c
++++ b/net/netfilter/ipvs/ip_vs_conn.c
+@@ -1484,8 +1484,8 @@ int __init ip_vs_conn_init(void)
+ 	int idx;
+ 
+ 	/* Compute size and mask */
+-	if (ip_vs_conn_tab_bits < 8 || ip_vs_conn_tab_bits > 20) {
+-		pr_info("conn_tab_bits not in [8, 20]. Using default value\n");
++	if (ip_vs_conn_tab_bits < 8 || ip_vs_conn_tab_bits > 27) {
++		pr_info("conn_tab_bits not in [8, 27]. Using default value\n");
+ 		ip_vs_conn_tab_bits = CONFIG_IP_VS_TAB_BITS;
  	}
- 
- 	alloc_size = PAGE_ALIGN(array_size(sizeof(*mem->slots), nslabs));
--- 
-2.39.2
-
+ 	ip_vs_conn_tab_size = 1 << ip_vs_conn_tab_bits;
 
 
