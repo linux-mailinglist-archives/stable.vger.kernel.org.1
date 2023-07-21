@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A7B75D3E5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8963A75D4A5
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:23:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231953AbjGUTPi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38050 "EHLO
+        id S232195AbjGUTXb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:23:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231946AbjGUTPh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:15:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F3D530E2
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:15:36 -0700 (PDT)
+        with ESMTP id S232190AbjGUTXa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:23:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E770F1727
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E641C61D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:15:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0357DC433C8;
-        Fri, 21 Jul 2023 19:15:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8559D61D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960FEC433C7;
+        Fri, 21 Jul 2023 19:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966935;
-        bh=SW3JGuU/ABh/sNBYLBadGN7yeDT7WrSMLJkX0aKlaII=;
+        s=korg; t=1689967409;
+        bh=YRIYtT+4ORyc2g1Z7ZBtk1TOy85sC+64nOpEjdKDULY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tb+2aq3LaDh+5k5NVh+e4q9Ws0bxUZG+m5icBgYiZST99bj9Qdju8vnvroV26fBfC
-         PdL6V8JJGf1e53LHcT0dr6GTpRrjjoNEg7f/UMYZ6mzlQB/O+mdEYsz0n0Dw0FWm7U
-         rdhZ0+VhP7UQl8q87eR9wjJpVv5MXPURltXeJavg=
+        b=Z6CtYhqSA7m+c0tRiudtYmjswgSNJ29pXn+cGpZFuqFBnPRrV7LFqIS5qVwohaDl+
+         5Buzmx10GxF1Yl9RPt0gXo3YZ2Cz/RgC9a5BOiWruw1LhPo0kaohE45CEM2QNp9hp+
+         QZhfgGR89Sr+MMoYyLPif8G7bFYw8BtekwvI/RhA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 502/532] xhci: Fix TRB prefetch issue of ZHAOXIN hosts
+        patches@lists.linux.dev,
+        Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 153/223] drm/amd/display: Add monitor specific edid quirk
 Date:   Fri, 21 Jul 2023 18:06:46 +0200
-Message-ID: <20230721160641.826167735@linuxfoundation.org>
+Message-ID: <20230721160527.394579997@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,71 +57,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-commit 2a865a652299f5666f3b785cbe758c5f57453036 upstream.
+commit 613a7956deb3b1ffa2810c6d4c90ee9c3d743dbb upstream.
 
-On some ZHAOXIN hosts, xHCI will prefetch TRB for performance
-improvement. However this TRB prefetch mechanism may cross page boundary,
-which may access memory not allocated by xHCI driver. In order to fix
-this issue, two pages was allocated for a segment and only the first
-page will be used. And add a quirk XHCI_ZHAOXIN_TRB_FETCH for this issue.
+Disable FAMS on a Samsung Odyssey G9 monitor. Experiments show that this
+monitor does not work well under some use cases, and is likely
+implementation specific bug on the monitor's firmware.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Message-ID: <20230602144009.1225632-10-mathias.nyman@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c |    8 ++++++--
- drivers/usb/host/xhci-pci.c |    7 ++++++-
- drivers/usb/host/xhci.h     |    1 +
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |   26 ++++++++++++++
+ 1 file changed, 26 insertions(+)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2454,8 +2454,12 @@ int xhci_mem_init(struct xhci_hcd *xhci,
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
--			TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
-+	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
-+				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
-+	else
-+		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
-+				TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -42,6 +42,30 @@
+ #include "dm_helpers.h"
+ #include "ddc_service_types.h"
  
- 	/* See Table 46 and Note on Figure 55 */
- 	xhci->device_pool = dma_pool_create("xHCI input/output contexts", dev,
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -337,8 +337,13 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
--		if (pdev->device == 0x9202)
-+		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
-+			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+		}
++static u32 edid_extract_panel_id(struct edid *edid)
++{
++	return (u32)edid->mfg_id[0] << 24   |
++	       (u32)edid->mfg_id[1] << 16   |
++	       (u32)EDID_PRODUCT_ID(edid);
++}
 +
-+		if (pdev->device == 0x9203)
-+			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
- 	}
++static void apply_edid_quirks(struct edid *edid, struct dc_edid_caps *edid_caps)
++{
++	uint32_t panel_id = edid_extract_panel_id(edid);
++
++	switch (panel_id) {
++	/* Workaround for some monitors which does not work well with FAMS */
++	case drm_edid_encode_panel_id('S', 'A', 'M', 0x0E5E):
++	case drm_edid_encode_panel_id('S', 'A', 'M', 0x7053):
++	case drm_edid_encode_panel_id('S', 'A', 'M', 0x71AC):
++		DRM_DEBUG_DRIVER("Disabling FAMS on monitor with panel id %X\n", panel_id);
++		edid_caps->panel_patch.disable_fams = true;
++		break;
++	default:
++		return;
++	}
++}
++
+ /* dm_helpers_parse_edid_caps
+  *
+  * Parse edid caps
+@@ -113,6 +137,8 @@ enum dc_edid_status dm_helpers_parse_edi
+ 	else
+ 		edid_caps->speaker_flags = DEFAULT_SPEAKER_LOCATION;
  
- 	/* xHC spec requires PCI devices to support D3hot and D3cold */
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1906,6 +1906,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
-+#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
++	apply_edid_quirks(edid_buf, edid_caps);
++
+ 	kfree(sads);
+ 	kfree(sadb);
  
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
 
 
