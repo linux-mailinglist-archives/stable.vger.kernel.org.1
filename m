@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF9D975BE3C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09A0775BE3D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbjGUGGk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45176 "EHLO
+        id S230097AbjGUGGn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:06:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230082AbjGUGGP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:06:15 -0400
+        with ESMTP id S230100AbjGUGGS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:06:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF941BDC
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:05:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D15F53A9F
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:05:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EA5C61083
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:05:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B89C433C7;
-        Fri, 21 Jul 2023 06:05:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3784861083
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:05:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A56EC433C7;
+        Fri, 21 Jul 2023 06:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919523;
-        bh=H6AvRxbLm0BH18ZdH+/nHPfDW7pj92Z5quV8K5Be/nA=;
+        s=korg; t=1689919527;
+        bh=AoZWX7LErUaDgvhmAShgFD5I8vxy0SX474PY+1X62AA=;
         h=Subject:To:Cc:From:Date:From;
-        b=WcC/Wj4ADe4awIlMtM29uok05pDRhjWbQB7sKpYP6edIvYt1jcsSwu8xDurmYPsk2
-         NtoAviFFGxXYHIJgjfqrElZqX1Nt5lAJCZ0Nud7bFJUxNnhrT/WjSgrBVjerUI6f6/
-         dI2B26t52Dhq24gjfyBMTS/KG9VUmey/QJRKA4Xs=
-Subject: FAILED: patch "[PATCH] ext4: turn quotas off if mount failed after enabling quotas" failed to apply to 5.10-stable tree
+        b=sbMdGAxHUY0u7Fhg74RXDJr5oyLF5VJ8vD7u/PdyzKcKYy8IL2yXAKpGoIKAffvg7
+         xyuiP2o1YWGpAchwGZ/bCsD4AQoLNqKE+5mqlpt1I5O3IZZMwCs9iqov1h6mJFzK7M
+         4QaH0lUmXKLHsK3cOGyEwoe4yfOEYBLWDmQq58rw=
+Subject: FAILED: patch "[PATCH] ext4: turn quotas off if mount failed after enabling quotas" failed to apply to 5.4-stable tree
 To:     libaokun1@huawei.com, jack@suse.cz, tytso@mit.edu,
         yi.zhang@huawei.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:05:20 +0200
-Message-ID: <2023072120-vocalist-unfold-d697@gregkh>
+Date:   Fri, 21 Jul 2023 08:05:22 +0200
+Message-ID: <2023072121-ferris-mundane-97b7@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x d13f99632748462c32fc95d729f5e754bab06064
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072120-vocalist-unfold-d697@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072121-ferris-mundane-97b7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
