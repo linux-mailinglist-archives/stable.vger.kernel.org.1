@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1233175D436
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B4175D368
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232070AbjGUTTO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41034 "EHLO
+        id S231818AbjGUTKS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232039AbjGUTS7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:59 -0400
+        with ESMTP id S231815AbjGUTKR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047303A97
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFBA1BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CE9461D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7B1C433C7;
-        Fri, 21 Jul 2023 19:18:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F07E761D02
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C80BC433C8;
+        Fri, 21 Jul 2023 19:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967132;
-        bh=FQJQKm8hs8WYMNipejlJ77j77cZKNmuD5C5fJ6GE7mI=;
+        s=korg; t=1689966615;
+        bh=zI1p02K+PSAkTWWyxC/hspYjyeaGvotusTpg1Xgy2Rk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=adRgkn01dZPk6hqBJC6LFi/nsOYVhcVUmSppaS/VCmVnEEFXVk8OfBcZJx5ZlsUil
-         gNTxJPczFtmRX79W2oAkx7hIDySkx9Izh/JcdGIDvZThk+lP1873hoofi9p53kWyZy
-         QqkKhCqgKaGJjoX9R2fegcPnBZvvBxXfjmOCUta0=
+        b=AMC0qUM3/0+Tob9tzC6GSXGruphq1yH3WLGEgbIdW/EeGqIPE4dfo/f5stOl5toBq
+         0knLV0C/CSHN/qbk+DxiCAHjIvzazeYD/eML9mhX5W1lTMMGaGmnKt3Bw3rjUsPTwA
+         dU2thr5X3iLQ1YZVjMCqXiGWBU/fZ2qhguA+D41Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pu Lehui <pulehui@huawei.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Hou Tao <houtao1@huawei.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Klaus Kudielka <klaus.kudielka@gmail.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/223] bpf: cpumap: Fix memory leak in cpu_map_update_elem
-Date:   Fri, 21 Jul 2023 18:05:09 +0200
-Message-ID: <20230721160523.239625991@linuxfoundation.org>
+Subject: [PATCH 5.15 406/532] net: mvneta: fix txq_map in case of txq_number==1
+Date:   Fri, 21 Jul 2023 18:05:10 +0200
+Message-ID: <20230721160636.486247257@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,136 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Klaus Kudielka <klaus.kudielka@gmail.com>
 
-[ Upstream commit 4369016497319a9635702da010d02af1ebb1849d ]
+[ Upstream commit 21327f81db6337c8843ce755b01523c7d3df715b ]
 
-Syzkaller reported a memory leak as follows:
+If we boot with mvneta.txq_number=1, the txq_map is set incorrectly:
+MVNETA_CPU_TXQ_ACCESS(1) refers to TX queue 1, but only TX queue 0 is
+initialized. Fix this.
 
-BUG: memory leak
-unreferenced object 0xff110001198ef748 (size 192):
-  comm "syz-executor.3", pid 17672, jiffies 4298118891 (age 9.906s)
-  hex dump (first 32 bytes):
-    00 00 00 00 4a 19 00 00 80 ad e3 e4 fe ff c0 00  ....J...........
-    00 b2 d3 0c 01 00 11 ff 28 f5 8e 19 01 00 11 ff  ........(.......
-  backtrace:
-    [<ffffffffadd28087>] __cpu_map_entry_alloc+0xf7/0xb00
-    [<ffffffffadd28d8e>] cpu_map_update_elem+0x2fe/0x3d0
-    [<ffffffffadc6d0fd>] bpf_map_update_value.isra.0+0x2bd/0x520
-    [<ffffffffadc7349b>] map_update_elem+0x4cb/0x720
-    [<ffffffffadc7d983>] __se_sys_bpf+0x8c3/0xb90
-    [<ffffffffb029cc80>] do_syscall_64+0x30/0x40
-    [<ffffffffb0400099>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-BUG: memory leak
-unreferenced object 0xff110001198ef528 (size 192):
-  comm "syz-executor.3", pid 17672, jiffies 4298118891 (age 9.906s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffffadd281f0>] __cpu_map_entry_alloc+0x260/0xb00
-    [<ffffffffadd28d8e>] cpu_map_update_elem+0x2fe/0x3d0
-    [<ffffffffadc6d0fd>] bpf_map_update_value.isra.0+0x2bd/0x520
-    [<ffffffffadc7349b>] map_update_elem+0x4cb/0x720
-    [<ffffffffadc7d983>] __se_sys_bpf+0x8c3/0xb90
-    [<ffffffffb029cc80>] do_syscall_64+0x30/0x40
-    [<ffffffffb0400099>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-BUG: memory leak
-unreferenced object 0xff1100010fd93d68 (size 8):
-  comm "syz-executor.3", pid 17672, jiffies 4298118891 (age 9.906s)
-  hex dump (first 8 bytes):
-    00 00 00 00 00 00 00 00                          ........
-  backtrace:
-    [<ffffffffade5db3e>] kvmalloc_node+0x11e/0x170
-    [<ffffffffadd28280>] __cpu_map_entry_alloc+0x2f0/0xb00
-    [<ffffffffadd28d8e>] cpu_map_update_elem+0x2fe/0x3d0
-    [<ffffffffadc6d0fd>] bpf_map_update_value.isra.0+0x2bd/0x520
-    [<ffffffffadc7349b>] map_update_elem+0x4cb/0x720
-    [<ffffffffadc7d983>] __se_sys_bpf+0x8c3/0xb90
-    [<ffffffffb029cc80>] do_syscall_64+0x30/0x40
-    [<ffffffffb0400099>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-In the cpu_map_update_elem flow, when kthread_stop is called before
-calling the threadfn of rcpu->kthread, since the KTHREAD_SHOULD_STOP bit
-of kthread has been set by kthread_stop, the threadfn of rcpu->kthread
-will never be executed, and rcpu->refcnt will never be 0, which will
-lead to the allocated rcpu, rcpu->queue and rcpu->queue->queue cannot be
-released.
-
-Calling kthread_stop before executing kthread's threadfn will return
--EINTR. We can complete the release of memory resources in this state.
-
-Fixes: 6710e1126934 ("bpf: introduce new bpf cpu map type BPF_MAP_TYPE_CPUMAP")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20230711115848.2701559-1-pulehui@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 50bf8cb6fc9c ("net: mvneta: Configure XPS support")
+Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://lore.kernel.org/r/20230705053712.3914-1-klaus.kudielka@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cpumap.c | 40 ++++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/marvell/mvneta.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
-index b5ba34ddd4b64..09141351d5457 100644
---- a/kernel/bpf/cpumap.c
-+++ b/kernel/bpf/cpumap.c
-@@ -127,22 +127,6 @@ static void get_cpu_map_entry(struct bpf_cpu_map_entry *rcpu)
- 	atomic_inc(&rcpu->refcnt);
- }
+diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+index 5c431a3697622..f5b5ae58c2691 100644
+--- a/drivers/net/ethernet/marvell/mvneta.c
++++ b/drivers/net/ethernet/marvell/mvneta.c
+@@ -1474,7 +1474,7 @@ static void mvneta_defaults_set(struct mvneta_port *pp)
+ 			 */
+ 			if (txq_number == 1)
+ 				txq_map = (cpu == pp->rxq_def) ?
+-					MVNETA_CPU_TXQ_ACCESS(1) : 0;
++					MVNETA_CPU_TXQ_ACCESS(0) : 0;
  
--/* called from workqueue, to workaround syscall using preempt_disable */
--static void cpu_map_kthread_stop(struct work_struct *work)
--{
--	struct bpf_cpu_map_entry *rcpu;
--
--	rcpu = container_of(work, struct bpf_cpu_map_entry, kthread_stop_wq);
--
--	/* Wait for flush in __cpu_map_entry_free(), via full RCU barrier,
--	 * as it waits until all in-flight call_rcu() callbacks complete.
--	 */
--	rcu_barrier();
--
--	/* kthread_stop will wake_up_process and wait for it to complete */
--	kthread_stop(rcpu->kthread);
--}
--
- static void __cpu_map_ring_cleanup(struct ptr_ring *ring)
- {
- 	/* The tear-down procedure should have made sure that queue is
-@@ -170,6 +154,30 @@ static void put_cpu_map_entry(struct bpf_cpu_map_entry *rcpu)
- 	}
- }
- 
-+/* called from workqueue, to workaround syscall using preempt_disable */
-+static void cpu_map_kthread_stop(struct work_struct *work)
-+{
-+	struct bpf_cpu_map_entry *rcpu;
-+	int err;
-+
-+	rcpu = container_of(work, struct bpf_cpu_map_entry, kthread_stop_wq);
-+
-+	/* Wait for flush in __cpu_map_entry_free(), via full RCU barrier,
-+	 * as it waits until all in-flight call_rcu() callbacks complete.
-+	 */
-+	rcu_barrier();
-+
-+	/* kthread_stop will wake_up_process and wait for it to complete */
-+	err = kthread_stop(rcpu->kthread);
-+	if (err) {
-+		/* kthread_stop may be called before cpu_map_kthread_run
-+		 * is executed, so we need to release the memory related
-+		 * to rcpu.
-+		 */
-+		put_cpu_map_entry(rcpu);
-+	}
-+}
-+
- static void cpu_map_bpf_prog_run_skb(struct bpf_cpu_map_entry *rcpu,
- 				     struct list_head *listp,
- 				     struct xdp_cpumap_stats *stats)
+ 		} else {
+ 			txq_map = MVNETA_CPU_TXQ_ACCESS_ALL_MASK;
+@@ -4185,7 +4185,7 @@ static void mvneta_percpu_elect(struct mvneta_port *pp)
+ 		 */
+ 		if (txq_number == 1)
+ 			txq_map = (cpu == elected_cpu) ?
+-				MVNETA_CPU_TXQ_ACCESS(1) : 0;
++				MVNETA_CPU_TXQ_ACCESS(0) : 0;
+ 		else
+ 			txq_map = mvreg_read(pp, MVNETA_CPU_MAP(cpu)) &
+ 				MVNETA_CPU_TXQ_ACCESS_ALL_MASK;
 -- 
 2.39.2
 
