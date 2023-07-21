@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9F175D3DC
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A0075D4B1
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231945AbjGUTPP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37850 "EHLO
+        id S232201AbjGUTYD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:24:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231938AbjGUTPO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:15:14 -0400
+        with ESMTP id S229503AbjGUTYC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958FA1BF4
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:15:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE392189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3459261D6D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:15:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45333C433C8;
-        Fri, 21 Jul 2023 19:15:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D10461D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A43C433C8;
+        Fri, 21 Jul 2023 19:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966912;
-        bh=yBASZaA9Lmmv8N12sFN4uW04pUiniD6BAOi9EbNojTw=;
+        s=korg; t=1689967440;
+        bh=YPBLTson+rYGv2YUpGQRUUbx4VYOWGuIgOlB0875Vv8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tj1snrDS4g8yqN9PvtCg4mOMsDB5qCwAhc3QhF5I3BUWpmbo6ej1O4OIBReHsaqnA
-         aEWOvLMQAAlQlmOJLoK1HZ5pm69rLDdu7b5Dgy4i8k29hquoNNA6koKo0qKMNVHWfB
-         8yH+CtOWJ8H0Yve/28uAu6MeLaWdFPkF8UMfT+Y8=
+        b=lPtpd3KTs2pHCBjuaggDfvBn0sb5SVb289xQZWJOzC/QXcvmQKhvr9nhojNUFbojo
+         /4B+vl7nkURQBvh0IzRq1JyjoPpbx3FjmzRBkyRCmvaC8IbRWUR6ut4yqoYd26FBC4
+         Dh9a1lLSra8Zr7gvsPxJJYKo9NRvyjWEFo+Y32vM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Florent Revest <revest@chromium.org>
-Subject: [PATCH 5.15 512/532] samples: ftrace: Save required argument registers in sample trampolines
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Hu Weiwen <sehuww@mail.scut.edu.cn>
+Subject: [PATCH 6.1 163/223] ceph: add a dedicated private data for netfs rreq
 Date:   Fri, 21 Jul 2023 18:06:56 +0200
-Message-ID: <20230721160642.425349362@linuxfoundation.org>
+Message-ID: <20230721160527.826363295@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,68 +56,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florent Revest <revest@chromium.org>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 8564c315876ab86fcaf8e7f558d6a84cb2ce5590 upstream.
+commit 23ee27dce30e7d3091d6c3143b79f48dab6f9a3e upstream.
 
-The ftrace-direct-too sample traces the handle_mm_fault function whose
-signature changed since the introduction of the sample. Since:
-commit bce617edecad ("mm: do page fault accounting in handle_mm_fault")
-handle_mm_fault now has 4 arguments. Therefore, the sample trampoline
-should save 4 argument registers.
-
-s390 saves all argument registers already so it does not need a change
-but x86_64 needs an extra push and pop.
-
-This also evolves the signature of the tracing function to make it
-mirror the signature of the traced function.
-
-Link: https://lkml.kernel.org/r/20230427140700.625241-2-revest@chromium.org
+We need to save the 'f_ra.ra_pages' to expand the readahead window
+later.
 
 Cc: stable@vger.kernel.org
-Fixes: bce617edecad ("mm: do page fault accounting in handle_mm_fault")
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
+Link: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
+Link: https://www.spinics.net/lists/ceph-users/msg76183.html
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-and-tested-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/ftrace/ftrace-direct-too.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/ceph/addr.c  |   45 ++++++++++++++++++++++++++++++++++-----------
+ fs/ceph/super.h |   13 +++++++++++++
+ 2 files changed, 47 insertions(+), 11 deletions(-)
 
---- a/samples/ftrace/ftrace-direct-too.c
-+++ b/samples/ftrace/ftrace-direct-too.c
-@@ -4,14 +4,14 @@
- #include <linux/mm.h> /* for handle_mm_fault() */
- #include <linux/ftrace.h>
- 
--extern void my_direct_func(struct vm_area_struct *vma,
--			   unsigned long address, unsigned int flags);
-+extern void my_direct_func(struct vm_area_struct *vma, unsigned long address,
-+			   unsigned int flags, struct pt_regs *regs);
- 
--void my_direct_func(struct vm_area_struct *vma,
--			unsigned long address, unsigned int flags)
-+void my_direct_func(struct vm_area_struct *vma, unsigned long address,
-+		    unsigned int flags, struct pt_regs *regs)
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -362,18 +362,28 @@ static int ceph_init_request(struct netf
  {
--	trace_printk("handle mm fault vma=%p address=%lx flags=%x\n",
--		     vma, address, flags);
-+	trace_printk("handle mm fault vma=%p address=%lx flags=%x regs=%p\n",
-+		     vma, address, flags, regs);
+ 	struct inode *inode = rreq->inode;
+ 	int got = 0, want = CEPH_CAP_FILE_CACHE;
++	struct ceph_netfs_request_data *priv;
+ 	int ret = 0;
+ 
+ 	if (rreq->origin != NETFS_READAHEAD)
+ 		return 0;
+ 
++	priv = kzalloc(sizeof(*priv), GFP_NOFS);
++	if (!priv)
++		return -ENOMEM;
++
+ 	if (file) {
+ 		struct ceph_rw_context *rw_ctx;
+ 		struct ceph_file_info *fi = file->private_data;
+ 
++		priv->file_ra_pages = file->f_ra.ra_pages;
++		priv->file_ra_disabled = file->f_mode & FMODE_RANDOM;
++
+ 		rw_ctx = ceph_find_rw_context(fi);
+-		if (rw_ctx)
++		if (rw_ctx) {
++			rreq->netfs_priv = priv;
+ 			return 0;
++		}
+ 	}
+ 
+ 	/*
+@@ -383,27 +393,40 @@ static int ceph_init_request(struct netf
+ 	ret = ceph_try_get_caps(inode, CEPH_CAP_FILE_RD, want, true, &got);
+ 	if (ret < 0) {
+ 		dout("start_read %p, error getting cap\n", inode);
+-		return ret;
++		goto out;
+ 	}
+ 
+ 	if (!(got & want)) {
+ 		dout("start_read %p, no cache cap\n", inode);
+-		return -EACCES;
++		ret = -EACCES;
++		goto out;
++	}
++	if (ret == 0) {
++		ret = -EACCES;
++		goto out;
+ 	}
+-	if (ret == 0)
+-		return -EACCES;
+ 
+-	rreq->netfs_priv = (void *)(uintptr_t)got;
+-	return 0;
++	priv->caps = got;
++	rreq->netfs_priv = priv;
++
++out:
++	if (ret < 0)
++		kfree(priv);
++
++	return ret;
  }
  
- extern void my_tramp(void *);
-@@ -26,7 +26,9 @@ asm (
- "	pushq %rdi\n"
- "	pushq %rsi\n"
- "	pushq %rdx\n"
-+"	pushq %rcx\n"
- "	call my_direct_func\n"
-+"	popq %rcx\n"
- "	popq %rdx\n"
- "	popq %rsi\n"
- "	popq %rdi\n"
+ static void ceph_netfs_free_request(struct netfs_io_request *rreq)
+ {
+-	struct ceph_inode_info *ci = ceph_inode(rreq->inode);
+-	int got = (uintptr_t)rreq->netfs_priv;
++	struct ceph_netfs_request_data *priv = rreq->netfs_priv;
++
++	if (!priv)
++		return;
+ 
+-	if (got)
+-		ceph_put_cap_refs(ci, got);
++	if (priv->caps)
++		ceph_put_cap_refs(ceph_inode(rreq->inode), priv->caps);
++	kfree(priv);
++	rreq->netfs_priv = NULL;
+ }
+ 
+ const struct netfs_request_ops ceph_netfs_ops = {
+--- a/fs/ceph/super.h
++++ b/fs/ceph/super.h
+@@ -451,6 +451,19 @@ struct ceph_inode_info {
+ 	unsigned long  i_work_mask;
+ };
+ 
++struct ceph_netfs_request_data {
++	int caps;
++
++	/*
++	 * Maximum size of a file readahead request.
++	 * The fadvise could update the bdi's default ra_pages.
++	 */
++	unsigned int file_ra_pages;
++
++	/* Set it if fadvise disables file readahead entirely */
++	bool file_ra_disabled;
++};
++
+ static inline struct ceph_inode_info *
+ ceph_inode(const struct inode *inode)
+ {
 
 
