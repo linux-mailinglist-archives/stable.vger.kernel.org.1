@@ -2,133 +2,172 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89A4175D393
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 005A575D46F
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231872AbjGUTMT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:12:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35002 "EHLO
+        id S232110AbjGUTVI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231859AbjGUTMS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:12:18 -0400
+        with ESMTP id S232144AbjGUTVG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:21:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3269BE4C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:12:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 316CD30E7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:21:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B186961D02
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:12:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8048C433C8;
-        Fri, 21 Jul 2023 19:12:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CD3D61B24
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:21:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7ECC433C8;
+        Fri, 21 Jul 2023 19:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966736;
-        bh=6UA4hZAMCAhify68Xgy63LXOEN6KZ/j/YhyOZbo334I=;
+        s=korg; t=1689967264;
+        bh=TUhUFKLrrhnUuSGQxaBFeYSPyZCzeYC5iVMggf0LJaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q11Ha6zngfY3JW3dILYhxu7QcNj/y+NWi3+DewQB0gZWtnvEX+aD+4vTe6DewnamT
-         1YXy3WUubLXfLPROdJndBTNrcQkalSUDXuENYlCC2xwdAsrF6zZP2s0+s/sTBxshle
-         a9oYP6YGQEvy0tCOZqEAcw6qkF+5865f5P92/GWI=
+        b=FKgqqoNWU3ciPFH1c6uqjQ6FmlInlH25YbWdH8zSMtP0hEKGl9zIbOzwKDJ6AI3yO
+         4gtZCElhWB/e/BFTSRQkgGQdXHFCZJjrauaxWuAlscp+dCktSIz7ld6rj4p8D853Ji
+         pywu2y2hNhOP8hgdtbHB+IuEWL47pWQ2n1LPQvZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Berger <stefanb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.15 450/532] tpm: tpm_vtpm_proxy: fix a race condition in /dev/vtpmx creation
+        patches@lists.linux.dev, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 101/223] powerpc/64s: Fix native_hpte_remove() to be irq-safe
 Date:   Fri, 21 Jul 2023 18:05:54 +0200
-Message-ID: <20230721160638.951154135@linuxfoundation.org>
+Message-ID: <20230721160525.171124303@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit f4032d615f90970d6c3ac1d9c0bce3351eb4445c upstream.
+commit 8bbe9fee5848371d4af101be445303cac8d880c5 upstream.
 
-/dev/vtpmx is made visible before 'workqueue' is initialized, which can
-lead to a memory corruption in the worst case scenario.
+Lockdep warns that the use of the hpte_lock in native_hpte_remove() is
+not safe against an IRQ coming in:
 
-Address this by initializing 'workqueue' as the very first step of the
-driver initialization.
+  ================================
+  WARNING: inconsistent lock state
+  6.4.0-rc2-g0c54f4d30ecc #1 Not tainted
+  --------------------------------
+  inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+  qemu-system-ppc/93865 [HC0[0]:SC0[0]:HE1:SE1] takes:
+  c0000000021f5180 (hpte_lock){+.?.}-{0:0}, at: native_lock_hpte+0x8/0xd0
+  {IN-SOFTIRQ-W} state was registered at:
+    lock_acquire+0x134/0x3f0
+    native_lock_hpte+0x44/0xd0
+    native_hpte_insert+0xd4/0x2a0
+    __hash_page_64K+0x218/0x4f0
+    hash_page_mm+0x464/0x840
+    do_hash_fault+0x11c/0x260
+    data_access_common_virt+0x210/0x220
+    __ip_select_ident+0x140/0x150
+    ...
+    net_rx_action+0x3bc/0x440
+    __do_softirq+0x180/0x534
+    ...
+    sys_sendmmsg+0x34/0x50
+    system_call_exception+0x128/0x320
+    system_call_common+0x160/0x2e4
+  ...
+   Possible unsafe locking scenario:
 
-Cc: stable@vger.kernel.org
-Fixes: 6f99612e2500 ("tpm: Proxy driver for supporting multiple emulated TPMs")
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+         CPU0
+         ----
+    lock(hpte_lock);
+    <Interrupt>
+      lock(hpte_lock);
+
+   *** DEADLOCK ***
+  ...
+  Call Trace:
+    dump_stack_lvl+0x98/0xe0 (unreliable)
+    print_usage_bug.part.0+0x250/0x278
+    mark_lock+0xc9c/0xd30
+    __lock_acquire+0x440/0x1ca0
+    lock_acquire+0x134/0x3f0
+    native_lock_hpte+0x44/0xd0
+    native_hpte_remove+0xb0/0x190
+    kvmppc_mmu_map_page+0x650/0x698 [kvm_pr]
+    kvmppc_handle_pagefault+0x534/0x6e8 [kvm_pr]
+    kvmppc_handle_exit_pr+0x6d8/0xe90 [kvm_pr]
+    after_sprg3_load+0x80/0x90 [kvm_pr]
+    kvmppc_vcpu_run_pr+0x108/0x270 [kvm_pr]
+    kvmppc_vcpu_run+0x34/0x48 [kvm]
+    kvm_arch_vcpu_ioctl_run+0x340/0x470 [kvm]
+    kvm_vcpu_ioctl+0x338/0x8b8 [kvm]
+    sys_ioctl+0x7c4/0x13e0
+    system_call_exception+0x128/0x320
+    system_call_common+0x160/0x2e4
+
+I suspect kvm_pr is the only caller that doesn't already have IRQs
+disabled, which is why this hasn't been reported previously.
+
+Fix it by disabling IRQs in native_hpte_remove().
+
+Fixes: 35159b5717fa ("powerpc/64s: make HPTE lock and native_tlbie_lock irq-safe")
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230517123033.18430-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_vtpm_proxy.c |   30 +++++++-----------------------
- 1 file changed, 7 insertions(+), 23 deletions(-)
+ arch/powerpc/mm/book3s64/hash_native.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/char/tpm/tpm_vtpm_proxy.c
-+++ b/drivers/char/tpm/tpm_vtpm_proxy.c
-@@ -683,37 +683,21 @@ static struct miscdevice vtpmx_miscdev =
- 	.fops = &vtpmx_fops,
- };
+diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
+index 9342e79870df..430d1d935a7c 100644
+--- a/arch/powerpc/mm/book3s64/hash_native.c
++++ b/arch/powerpc/mm/book3s64/hash_native.c
+@@ -328,10 +328,12 @@ static long native_hpte_insert(unsigned long hpte_group, unsigned long vpn,
  
--static int vtpmx_init(void)
--{
--	return misc_register(&vtpmx_miscdev);
--}
--
--static void vtpmx_cleanup(void)
--{
--	misc_deregister(&vtpmx_miscdev);
--}
--
- static int __init vtpm_module_init(void)
+ static long native_hpte_remove(unsigned long hpte_group)
  {
- 	int rc;
++	unsigned long hpte_v, flags;
+ 	struct hash_pte *hptep;
+ 	int i;
+ 	int slot_offset;
+-	unsigned long hpte_v;
++
++	local_irq_save(flags);
  
--	rc = vtpmx_init();
--	if (rc) {
--		pr_err("couldn't create vtpmx device\n");
--		return rc;
--	}
--
- 	workqueue = create_workqueue("tpm-vtpm");
- 	if (!workqueue) {
- 		pr_err("couldn't create workqueue\n");
--		rc = -ENOMEM;
--		goto err_vtpmx_cleanup;
-+		return -ENOMEM;
+ 	DBG_LOW("    remove(group=%lx)\n", hpte_group);
+ 
+@@ -356,13 +358,16 @@ static long native_hpte_remove(unsigned long hpte_group)
+ 		slot_offset &= 0x7;
  	}
  
--	return 0;
--
--err_vtpmx_cleanup:
--	vtpmx_cleanup();
-+	rc = misc_register(&vtpmx_miscdev);
-+	if (rc) {
-+		pr_err("couldn't create vtpmx device\n");
-+		destroy_workqueue(workqueue);
+-	if (i == HPTES_PER_GROUP)
+-		return -1;
++	if (i == HPTES_PER_GROUP) {
++		i = -1;
++		goto out;
 +	}
  
- 	return rc;
- }
-@@ -721,7 +705,7 @@ err_vtpmx_cleanup:
- static void __exit vtpm_module_exit(void)
- {
- 	destroy_workqueue(workqueue);
--	vtpmx_cleanup();
-+	misc_deregister(&vtpmx_miscdev);
+ 	/* Invalidate the hpte. NOTE: this also unlocks it */
+ 	release_hpte_lock();
+ 	hptep->v = 0;
+-
++out:
++	local_irq_restore(flags);
+ 	return i;
  }
  
- module_init(vtpm_module_init);
+-- 
+2.41.0
+
 
 
