@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C7B275D41E
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 901EA75D36F
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232014AbjGUTSK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:18:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40186 "EHLO
+        id S231825AbjGUTKh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:10:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232010AbjGUTSJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9614E3A85
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:17:59 -0700 (PDT)
+        with ESMTP id S231826AbjGUTKh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:10:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B99F2D4A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:10:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35D7161D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:17:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F86C433C9;
-        Fri, 21 Jul 2023 19:17:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F3AD61D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:10:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF713C433C7;
+        Fri, 21 Jul 2023 19:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967078;
-        bh=valDxcbwD86q6Dqhmgsn3bQ61zmpH5uEzL+jpcukp3Y=;
+        s=korg; t=1689966635;
+        bh=kbJcNiaKMhoG4keMWgFaWj7Tf7oLEeAdWsHOJdN5rYU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W1iF4Qes2ZvyfymKyt8AxEumcrNnuyPr/WmEkqeh9zQCUUERiSiUn6Q8CFRchDmIw
-         o7qfLon2IrYqOw/hoRrU/CiGBzEG0N+eoNLHIprharKFUBIn5CarVh6M8J1OiWHDx4
-         4ZKbkVsHNM1Fur3wAvIqMvr5eJakpRh1oRSZ2/o8=
+        b=E8+qBbX/w1xCsjrL1RDK+YZXJcuASB7anq943HIxxaUmZs+74j00tPLMv8Uxu1lMc
+         hIclWtiS+hT/qLLiw6ksQCP4K3+H1xnp6OqLCWTPRmHJ0Hi4r+RgKQ3AwYh7ux7NPP
+         jDS74OPAs1VKlCh6LTNcLS4XoYg/7yqVG92JM/9g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/223] ntb: idt: Fix error handling in idt_pci_driver_init()
-Date:   Fri, 21 Jul 2023 18:04:49 +0200
-Message-ID: <20230721160522.405033086@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Martin Steigerwald <martin@lichtvoll.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 386/532] block/partition: fix signedness issue for Amiga partitions
+Date:   Fri, 21 Jul 2023 18:04:50 +0200
+Message-ID: <20230721160635.414421423@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,66 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit c012968259b451dc4db407f2310fe131eaefd800 ]
+commit 7eb1e47696aa231b1a567846bbe3a1e1befe1854 upstream.
 
-A problem about ntb_hw_idt create debugfs failed is triggered with the
-following log given:
+Making 'blk' sector_t (i.e. 64 bit if LBD support is active) fails the
+'blk>0' test in the partition block loop if a value of (signed int) -1 is
+used to mark the end of the partition block list.
 
- [ 1236.637636] IDT PCI-E Non-Transparent Bridge Driver 2.0
- [ 1236.639292] debugfs: Directory 'ntb_hw_idt' with parent '/' already present!
+Explicitly cast 'blk' to signed int to allow use of -1 to terminate the
+partition block linked list.
 
-The reason is that idt_pci_driver_init() returns pci_register_driver()
-directly without checking its return value, if pci_register_driver()
-failed, it returns without destroy the newly created debugfs, resulting
-the debugfs of ntb_hw_idt can never be created later.
-
- idt_pci_driver_init()
-   debugfs_create_dir() # create debugfs directory
-   pci_register_driver()
-     driver_register()
-       bus_add_driver()
-         priv = kzalloc(...) # OOM happened
-   # return without destroy debugfs directory
-
-Fix by removing debugfs when pci_register_driver() returns error.
-
-Fixes: bf2a952d31d2 ("NTB: Add IDT 89HPESxNTx PCIe-switches support")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b6f3f28f604b ("block: add overflow checks for Amiga partition support")
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Martin Steigerwald <martin@lichtvoll.de>
+Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/idt/ntb_hw_idt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ block/partitions/amiga.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
-index 0ed6f809ff2ee..51799fccf8404 100644
---- a/drivers/ntb/hw/idt/ntb_hw_idt.c
-+++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
-@@ -2891,6 +2891,7 @@ static struct pci_driver idt_pci_driver = {
- 
- static int __init idt_pci_driver_init(void)
- {
-+	int ret;
- 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
- 
- 	/* Create the top DebugFS directory if the FS is initialized */
-@@ -2898,7 +2899,11 @@ static int __init idt_pci_driver_init(void)
- 		dbgfs_topdir = debugfs_create_dir(KBUILD_MODNAME, NULL);
- 
- 	/* Register the NTB hardware driver to handle the PCI device */
--	return pci_register_driver(&idt_pci_driver);
-+	ret = pci_register_driver(&idt_pci_driver);
-+	if (ret)
-+		debugfs_remove_recursive(dbgfs_topdir);
-+
-+	return ret;
- }
- module_init(idt_pci_driver_init);
- 
--- 
-2.39.2
-
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partit
+ 	}
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+-	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
++	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
+ 		/* Read in terms partition table understands */
+ 		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+ 			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
 
 
