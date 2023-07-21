@@ -2,92 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9250275D3B0
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E0A75D46A
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231905AbjGUTNa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36334 "EHLO
+        id S232130AbjGUTU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:20:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231897AbjGUTN3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:13:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20231189
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:13:28 -0700 (PDT)
+        with ESMTP id S232136AbjGUTUz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:20:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3B8C30F1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:20:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A783861D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:13:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94DBC433C8;
-        Fri, 21 Jul 2023 19:13:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 31B5961B24
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405DFC433C8;
+        Fri, 21 Jul 2023 19:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966807;
-        bh=efBcQLbZYoA1fZv/ttUC/jlasDtUU+pAKkI2eEiLh7E=;
+        s=korg; t=1689967252;
+        bh=n2cmZDKxFRU5721MQgRaF/SZcBv9QhljQdZd53m0sZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lObuD0B1Rcoh7aiILc7NvB+dSxFlY09d4SDw9wzMQNHwRvR0Z/K1VrU536PjbjnoQ
-         ZSH+7HGrQVA2IFNqYeibCMhPNWWC6fpbe52f19/tHFj3+scRam8jjAb/zJvmb9WK0a
-         eerrHsfTwjc1FPrqIlRSLdgaOt9UUGBSn1AVXiUI=
+        b=07VDELuLg4HmRKG8evVfA/lxaXQhEkHJMn+s08qwDBRbQK67jw3p3HSan2NG7qS69
+         7g9m6A84zrNcTpCY/A3jTE8RracRsIN472gVJ01TgfjlpyuE2kkJmXmTPBUfpqH6R4
+         nLA5ZGWR7AGoa0rPoZd9S/xCEIXkEI3VgrBM3/Ic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.15 446/532] pinctrl: amd: Fix mistake in handling clearing pins at startup
+        patches@lists.linux.dev, Beau Belgrave <beaub@linux.microsoft.com>,
+        sunliming <sunliming@kylinos.cn>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 097/223] tracing/user_events: Fix incorrect return value for writing operation when events are disabled
 Date:   Fri, 21 Jul 2023 18:05:50 +0200
-Message-ID: <20230721160638.738029413@linuxfoundation.org>
+Message-ID: <20230721160524.998807656@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: sunliming <sunliming@kylinos.cn>
 
-commit a855724dc08b8cb0c13ab1e065a4922f1e5a7552 upstream.
+commit f6d026eea390d59787a6cdc2ef5c983d02e029d0 upstream.
 
-commit 4e5a04be88fe ("pinctrl: amd: disable and mask interrupts on probe")
-had a mistake in loop iteration 63 that it would clear offset 0xFC instead
-of 0x100.  Offset 0xFC is actually `WAKE_INT_MASTER_REG`.  This was
-clearing bits 13 and 15 from the register which significantly changed the
-expected handling for some platforms for GPIO0.
+The writing operation return the count of writes regardless of whether events
+are enabled or disabled. Switch it to return -EBADF to indicates that the event
+is disabled.
+
+Link: https://lkml.kernel.org/r/20230626111344.19136-2-sunliming@kylinos.cn
 
 Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217315
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230421120625.3366-3-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+7f5a08c79df35 ("user_events: Add minimal support for trace_event into ftrace")
+Acked-by: Beau Belgrave <beaub@linux.microsoft.com>
+Signed-off-by: sunliming <sunliming@kylinos.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_user.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -883,9 +883,9 @@ static void amd_gpio_irq_init(struct amd
+--- a/kernel/trace/trace_events_user.c
++++ b/kernel/trace/trace_events_user.c
+@@ -1456,7 +1456,8 @@ static ssize_t user_events_write_core(st
  
- 		raw_spin_lock_irqsave(&gpio_dev->lock, flags);
+ 		if (unlikely(faulted))
+ 			return -EFAULT;
+-	}
++	} else
++		return -EBADF;
  
--		pin_reg = readl(gpio_dev->base + i * 4);
-+		pin_reg = readl(gpio_dev->base + pin * 4);
- 		pin_reg &= ~mask;
--		writel(pin_reg, gpio_dev->base + i * 4);
-+		writel(pin_reg, gpio_dev->base + pin * 4);
- 
- 		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
- 	}
+ 	return ret;
+ }
 
 
