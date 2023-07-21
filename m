@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6522775D433
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC7D75D35D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:09:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232087AbjGUTTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40704 "EHLO
+        id S231814AbjGUTJu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232096AbjGUTSw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:52 -0400
+        with ESMTP id S231817AbjGUTJs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:09:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67EB330FF
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D3130E8
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:09:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFFE161D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B7BC433C8;
-        Fri, 21 Jul 2023 19:18:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36F8561D95
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:09:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46308C433C8;
+        Fri, 21 Jul 2023 19:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967127;
-        bh=sP7ZwaOaeRcEdvxFfZEzGvLhEOCiKCiV0DxanswpZAI=;
+        s=korg; t=1689966584;
+        bh=WzGV3XMmNHknqp3yEaKwhcYUn4VctfG6/sKfRBk6HxY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eyFaIXQxFRTEp3RawGt6jqcsFj1N5HLay+WpTNBDVWdGDfnX5EtUnUIaKHKyU62CG
-         0QIZLGCT8iZtUh+Vt//GuxyrcPwMKVpZRIeUJlyESeZb3Dgpbc/oYLB5pJLUj/95/6
-         DwqxqHPK+4QsyTFe3bLX4QsQbJPvmLpi1/J3J8Ys=
+        b=XiMUrMq1voDq/dm4zFsBaIfAlTmJF2DppB6rZXXGmJ6+I6CT0RFzL0xq4pwMR/nHG
+         EQwGKOZhS/T7kfFeEL0unrgcicJS0c36XbrnythRmr6EwZJEYCPTSdHP2Fd1/QiOkS
+         W1bQhx4GjEimji+A4Lf3PjbHAZCLM/1ASjXStuBg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Florian Kauer <florian.kauer@linutronix.de>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/223] igc: Fix inserting of empty frame for launchtime
-Date:   Fri, 21 Jul 2023 18:04:59 +0200
-Message-ID: <20230721160522.820495815@linuxfoundation.org>
+Subject: [PATCH 5.15 396/532] drm/bridge: ti-sn65dsi86: Fix auxiliary bus lifetime
+Date:   Fri, 21 Jul 2023 18:05:00 +0200
+Message-ID: <20230721160635.951395479@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,126 +55,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Kauer <florian.kauer@linutronix.de>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 0bcc62858d6ba62cbade957d69745e6adeed5f3d ]
+[ Upstream commit 7aa83fbd712a6f08ffa67890061f26d140c2a84f ]
 
-The insertion of an empty frame was introduced with
-commit db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
-in order to ensure that the current cycle has at least one packet if
-there is some packet to be scheduled for the next cycle.
+Memory for the "struct device" for any given device isn't supposed to
+be released until the device's release() is called. This is important
+because someone might be holding a kobject reference to the "struct
+device" and might try to access one of its members even after any
+other cleanup/uninitialization has happened.
 
-However, the current implementation does not properly check if
-a packet is already scheduled for the current cycle. Currently,
-an empty packet is always inserted if and only if
-txtime >= end_of_cycle && txtime > last_tx_cycle
-but since last_tx_cycle is always either the end of the current
-cycle (end_of_cycle) or the end of a previous cycle, the
-second part (txtime > last_tx_cycle) is always true unless
-txtime == last_tx_cycle.
+Code analysis of ti-sn65dsi86 shows that this isn't quite right. When
+the code was written, it was believed that we could rely on the fact
+that the child devices would all be freed before the parent devices
+and thus we didn't need to worry about a release() function. While I
+still believe that the parent's "struct device" is guaranteed to
+outlive the child's "struct device" (because the child holds a kobject
+reference to the parent), the parent's "devm" allocated memory is a
+different story. That appears to be freed much earlier.
 
-What actually needs to be checked here is if the last_tx_cycle
-was already written within the current cycle, so an empty frame
-should only be inserted if and only if
-txtime >= end_of_cycle && end_of_cycle > last_tx_cycle.
+Let's make this better for ti-sn65dsi86 by allocating each auxiliary
+with kzalloc and then free that memory in the release().
 
-This patch does not only avoid an unnecessary insertion, but it
-can actually be harmful to insert an empty packet if packets
-are already scheduled in the current cycle, because it can lead
-to a situation where the empty packet is actually processed
-as the first packet in the upcoming cycle shifting the packet
-with the first_flag even one cycle into the future, finally leading
-to a TX hang.
-
-The TX hang can be reproduced on a i225 with:
-
-    sudo tc qdisc replace dev enp1s0 parent root handle 100 taprio \
-	    num_tc 1 \
-	    map 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \
-	    queues 1@0 \
-	    base-time 0 \
-	    sched-entry S 01 300000 \
-	    flags 0x1 \
-	    txtime-delay 500000 \
-	    clockid CLOCK_TAI
-    sudo tc qdisc replace dev enp1s0 parent 100:1 etf \
-	    clockid CLOCK_TAI \
-	    delta 500000 \
-	    offload \
-	    skip_sock_check
-
-and traffic generator
-
-    sudo trafgen -i traffic.cfg -o enp1s0 --cpp -n0 -q -t1400ns
-
-with traffic.cfg
-
-    #define ETH_P_IP        0x0800
-
-    {
-      /* Ethernet Header */
-      0x30, 0x1f, 0x9a, 0xd0, 0xf0, 0x0e,  # MAC Dest - adapt as needed
-      0x24, 0x5e, 0xbe, 0x57, 0x2e, 0x36,  # MAC Src  - adapt as needed
-      const16(ETH_P_IP),
-
-      /* IPv4 Header */
-      0b01000101, 0,   # IPv4 version, IHL, TOS
-      const16(1028),   # IPv4 total length (UDP length + 20 bytes (IP header))
-      const16(2),      # IPv4 ident
-      0b01000000, 0,   # IPv4 flags, fragmentation off
-      64,              # IPv4 TTL
-      17,              # Protocol UDP
-      csumip(14, 33),  # IPv4 checksum
-
-      /* UDP Header */
-      10,  0, 48, 1,   # IP Src - adapt as needed
-      10,  0, 48, 10,  # IP Dest - adapt as needed
-      const16(5555),   # UDP Src Port
-      const16(6666),   # UDP Dest Port
-      const16(1008),   # UDP length (UDP header 8 bytes + payload length)
-      csumudp(14, 34), # UDP checksum
-
-      /* Payload */
-      fill('W', 1000),
-    }
-
-and the observed message with that is for example
-
- igc 0000:01:00.0 enp1s0: Detected Tx Unit Hang
-   Tx Queue             <0>
-   TDH                  <32>
-   TDT                  <3c>
-   next_to_use          <3c>
-   next_to_clean        <32>
- buffer_info[next_to_clean]
-   time_stamp           <ffff26a8>
-   next_to_watch        <00000000632a1828>
-   jiffies              <ffff27f8>
-   desc.status          <1048000>
-
-Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
-Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
-Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: bf73537f411b ("drm/bridge: ti-sn65dsi86: Break GPIO and MIPI-to-eDP bridge into sub-drivers")
+Suggested-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613065812.v2.1.I24b838a5b4151fb32bccd6f36397998ea2df9fbb@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 33 +++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 743d277896792..273941f90f066 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -1027,7 +1027,7 @@ static __le32 igc_tx_launchtime(struct igc_ring *ring, ktime_t txtime,
- 			*first_flag = true;
- 			ring->last_ff_cycle = baset_est;
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index bbedce0eeddae..22c2ff5272c60 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -147,9 +147,9 @@
+  *                each other's read-modify-write.
+  */
+ struct ti_sn65dsi86 {
+-	struct auxiliary_device		bridge_aux;
+-	struct auxiliary_device		gpio_aux;
+-	struct auxiliary_device		aux_aux;
++	struct auxiliary_device		*bridge_aux;
++	struct auxiliary_device		*gpio_aux;
++	struct auxiliary_device		*aux_aux;
  
--			if (ktime_compare(txtime, ring->last_tx_cycle) > 0)
-+			if (ktime_compare(end_of_cycle, ring->last_tx_cycle) > 0)
- 				*insert_empty = true;
- 		}
- 	}
+ 	struct device			*dev;
+ 	struct regmap			*regmap;
+@@ -412,27 +412,34 @@ static void ti_sn65dsi86_delete_aux(void *data)
+ 	auxiliary_device_delete(data);
+ }
+ 
+-/*
+- * AUX bus docs say that a non-NULL release is mandatory, but it makes no
+- * sense for the model used here where all of the aux devices are allocated
+- * in the single shared structure. We'll use this noop as a workaround.
+- */
+-static void ti_sn65dsi86_noop(struct device *dev) {}
++static void ti_sn65dsi86_aux_device_release(struct device *dev)
++{
++	struct auxiliary_device *aux = container_of(dev, struct auxiliary_device, dev);
++
++	kfree(aux);
++}
+ 
+ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
+-				       struct auxiliary_device *aux,
++				       struct auxiliary_device **aux_out,
+ 				       const char *name)
+ {
+ 	struct device *dev = pdata->dev;
++	struct auxiliary_device *aux;
+ 	int ret;
+ 
++	aux = kzalloc(sizeof(*aux), GFP_KERNEL);
++	if (!aux)
++		return -ENOMEM;
++
+ 	aux->name = name;
+ 	aux->dev.parent = dev;
+-	aux->dev.release = ti_sn65dsi86_noop;
++	aux->dev.release = ti_sn65dsi86_aux_device_release;
+ 	device_set_of_node_from_dev(&aux->dev, dev);
+ 	ret = auxiliary_device_init(aux);
+-	if (ret)
++	if (ret) {
++		kfree(aux);
+ 		return ret;
++	}
+ 	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_uninit_aux, aux);
+ 	if (ret)
+ 		return ret;
+@@ -441,6 +448,8 @@ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
+ 	if (ret)
+ 		return ret;
+ 	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_delete_aux, aux);
++	if (!ret)
++		*aux_out = aux;
+ 
+ 	return ret;
+ }
 -- 
 2.39.2
 
