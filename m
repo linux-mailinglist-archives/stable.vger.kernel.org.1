@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81C0275BF46
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F7D75BF47
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 09:04:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229911AbjGUHEg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 03:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45496 "EHLO
+        id S229983AbjGUHEi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 03:04:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbjGUHEf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:04:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044FC270B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:04:34 -0700 (PDT)
+        with ESMTP id S229616AbjGUHEh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 03:04:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C87270B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 00:04:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 913F661335
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:04:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B60C433C8;
-        Fri, 21 Jul 2023 07:04:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46F5C61335
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:04:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405E9C433C7;
+        Fri, 21 Jul 2023 07:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689923072;
-        bh=ydn8hz8QZZCxThPOP70Rp7YMqcF9xyYI37Le3dFmE7M=;
+        s=korg; t=1689923075;
+        bh=/vTq7pxWyk8IEe4LLT2jq1u9lB0VyjUgOeLYJE9SL/k=;
         h=Subject:To:Cc:From:Date:From;
-        b=N69Kr/thyEIAYV8Oc6UPm4OHc27nH3VRP+A3m+hioY40l8d9waQC+PZoNx2YYG/j5
-         +y/oixt+k+yueHk/GPb/emblL4WkJQzOQAkHemoUe1SJl6YF/1pZ7TxLlx4eWWRH/k
-         SGy5HaJM824UMmeqRQzvj0d26Ez3Mmp+2hI3+iqM=
-Subject: FAILED: patch "[PATCH] fs: dlm: fix mismatch of plock results from userspace" failed to apply to 5.4-stable tree
+        b=omeoV/K5ZX3kM1X0/jnLrQLMcxM2pZt1QtqEqyi3kdod32whDXPj5qXJvnUqUOHJ1
+         a9RdsWWUfkKRA4gfcFKWeL5NmhD1QQu9T2UPzEabUCWGueogbYq8UTUHIZUqro5T9s
+         huUWHPviT/bFAJ8p9OZPDiDNKtTLcXSaEjZjhGrk=
+Subject: FAILED: patch "[PATCH] fs: dlm: fix mismatch of plock results from userspace" failed to apply to 4.19-stable tree
 To:     aahringo@redhat.com, teigland@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 09:04:26 +0200
-Message-ID: <2023072125-irk-garbage-a1fb@gregkh>
+Date:   Fri, 21 Jul 2023 09:04:27 +0200
+Message-ID: <2023072126-unread-chokehold-f312@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 57e2c2f2d94cfd551af91cedfa1af6d972487197
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072125-irk-garbage-a1fb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072126-unread-chokehold-f312@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,14 @@ a800ba77fd28 ("dlm: rearrange async condition return")
 bcbb4ba6c9ba ("dlm: cleanup plock_op vs plock_xop")
 a559790caa1c ("dlm: replace sanity checks with WARN_ON")
 42252d0d2aa9 ("dlm: fix plock invalid read")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
+b065b23d3c3b ("dt-bindings: clock: Add ipq9574 clock and reset definitions")
 
 thanks,
 
