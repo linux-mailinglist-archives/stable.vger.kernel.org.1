@@ -2,104 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADC0275CB2F
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 17:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7512F75CBA6
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 17:25:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231887AbjGUPOS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 11:14:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
+        id S231754AbjGUPZo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 11:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231892AbjGUPOK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 11:14:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D523A98;
-        Fri, 21 Jul 2023 08:14:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 956F161CEC;
-        Fri, 21 Jul 2023 15:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02E1C433CB;
-        Fri, 21 Jul 2023 15:13:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689952439;
-        bh=YwIOYtjQQopxqVMGwCdqHddpY/KN/9YTvyayY+0BD+o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VQfnyRYr4kKWHYGElr6wSyLotg6sRZVYAkK0I0g0P2DMhZLfXuWgmSoPAyFcvoGTP
-         GDnUx36TIC1Qk4W8U8EqE1wpbYlzi7sarJWz7X2A+kxTqIdXLyWSZypoW7syHyERN1
-         4UaaGhrBAOq6mH6H92vZrEOscjX+ytF3wgYfDYphZ0jPryd6ZB1PElESLAmWlxyfNd
-         hX2H+7u6iJ/GnptmNJ5pfOklROZeROVZ5X0EfbmtDCvHjnnWi9kTcMuXPf+Ey0YBDw
-         29batj/P5YdkKkhZJeUqnt7s8cJnJf1VpOxpXbLDvY/e0AMTA8dWb19O/Zp2yUApI8
-         XUZA7I+pCsSUw==
-Date:   Fri, 21 Jul 2023 11:13:57 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Junhao He <hejunhao3@huawei.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Will Deacon <will@kernel.org>, zhangshaokun@hisilicon.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.4 11/12] drivers/perf: hisi: Add support for
- HiSilicon H60PA and PAv3 PMU driver
-Message-ID: <ZLqgtRcgGqmHUXFM@sashalap>
-References: <20230702195057.1787686-1-sashal@kernel.org>
- <20230702195057.1787686-11-sashal@kernel.org>
- <ZKKfjW6Ix9dg11QZ@FVFF77S0Q05N>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <ZKKfjW6Ix9dg11QZ@FVFF77S0Q05N>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231549AbjGUPZl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 11:25:41 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65AF3599;
+        Fri, 21 Jul 2023 08:25:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=oXfy01pAFvoIyGHeuZzy5+Yl52G6bm9FeN2XpUUZ5O0=; b=leT7Sj6Auzl/lnVXWJj20rSp3H
+        ihZHugGiPx2N+iXkFfhJdWNOGro6u0fPoC5/Hf0GGQgCCyEY0InBIXwqYOG88Bxf1avof2gYC8Ebb
+        olAfctVBFLY80yMdtxjxFeKYICLKp3wJ0ZZ/CvXO5qupe0FZYhUMSmtXp5MQiz4ZvBeo=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:33064 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qMs0N-0002TV-Bx; Fri, 21 Jul 2023 11:25:20 -0400
+Date:   Fri, 21 Jul 2023 11:25:17 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org
+Message-Id: <20230721112517.38ab9a40cdf6a0eddf074615@hugovil.com>
+In-Reply-To: <2023072040-clock-waltz-a5f2@gregkh>
+References: <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+        <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
+        <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
+        <20230620113312.882d8f0c7d5603b1c93f33fb@hugovil.com>
+        <CAHp75VfGm6=ULW6kMjsg2OgB1z1T0YdmzvCTa3DFXXX-q_RnfA@mail.gmail.com>
+        <20230620114209.fb5272ad8cf5c5e2895d68b1@hugovil.com>
+        <CAHp75VcieuYqxWrO7rknx2ROYz=rnWnKV6s9eXZ5Zd1BKc6YMg@mail.gmail.com>
+        <20230620121645.512b31a872306b43a276bbac@hugovil.com>
+        <20230719144048.4f340b8aa0a29ab65a274273@hugovil.com>
+        <2023071922-rigor-collage-804e@gregkh>
+        <2023072040-clock-waltz-a5f2@gregkh>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
+ configuration
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 03, 2023 at 11:14:37AM +0100, Mark Rutland wrote:
->On Sun, Jul 02, 2023 at 03:50:56PM -0400, Sasha Levin wrote:
->> From: Junhao He <hejunhao3@huawei.com>
->>
->> [ Upstream commit 1a51688474c0d395b864e98236335fba712e29bf ]
->>
->> Compared to the original PA device, H60PA offers higher bandwidth.
->> The H60PA is a new device and we use HID to differentiate them.
->>
->> The events supported by PAv3 and PAv2 are different. The PAv3 PMU
->> removed some events which are supported by PAv2 PMU. The older PA
->> PMU driver will probe v3 as v2. Therefore PA events displayed by
->> "perf list" cannot work properly. We add the HISI0275 HID for PAv3
->> PMU to distinguish different.
->>
->> For each H60PA PMU, except for the overflow interrupt register, other
->> functions of the H60PA PMU are the same as the original PA PMU module.
->> It has 8-programable counters and each counter is free-running.
->> Interrupt is supported to handle counter (64-bits) overflow.
->>
->> Signed-off-by: Junhao He <hejunhao3@huawei.com>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
->> Acked-by: Mark Rutland <mark.rutland@arm.com>
->> Link: https://lore.kernel.org/r/20230615125926.29832-2-hejunhao3@huawei.com
->> Signed-off-by: Will Deacon <will@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  drivers/perf/hisilicon/hisi_uncore_pa_pmu.c | 127 +++++++++++++++++---
->>  drivers/perf/hisilicon/hisi_uncore_pmu.h    |   8 ++
->>  2 files changed, 120 insertions(+), 15 deletions(-)
->
->Why is this being backported to stable?
->
->This patch adds supoprt for new HW, and is clearly not a fix, so it's not clear
->to me why it has been selected.
+On Thu, 20 Jul 2023 21:38:21 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-I'll drop it, thanks.
+> On Wed, Jul 19, 2023 at 09:14:23PM +0200, Greg KH wrote:
+> > On Wed, Jul 19, 2023 at 02:40:48PM -0400, Hugo Villeneuve wrote:
+> > > On Tue, 20 Jun 2023 12:16:45 -0400
+> > > Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > 
+> > > > On Tue, 20 Jun 2023 18:45:51 +0300
+> > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > 
+> > > > > On Tue, Jun 20, 2023 at 6:42 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > > On Tue, 20 Jun 2023 18:35:48 +0300
+> > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > > > > On Tue, Jun 20, 2023 at 6:33 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > > > > On Tue, 20 Jun 2023 18:18:12 +0300
+> > > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > > > > > > On Tue, Jun 20, 2023 at 5:08 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > > > > > > On Sun, 4 Jun 2023 22:31:04 +0300
+> > > > > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > > 
+> > > > > ...
+> > > > > 
+> > > > > > > > > > did you have a chance to look at V8 (sent two weks ago) which fixed all
+> > > > > > > > > > of what we discussed?
+> > > > > > > > >
+> > > > > > > > > The patch 6 already has my tag, anything specific you want me to do?
+> > > > > > > >
+> > > > > > > > Hi Andy,
+> > > > > > > > I forgot to remove your "Reviewed-by: Andy..." tag before sending V8
+> > > > > > > > since there were some changes involved in patch 6 and I wanted you to
+> > > > > > > > review them. Can you confirm if the changes are correct?
+> > > > > > > >
+> > > > > > > > I also added a new patch "remove obsolete out_thread label". It has no
+> > > > > > > > real impact on the code generation itself, but maybe you can review and
+> > > > > > > > confirm if tags are ok or not, based on commit message and also
+> > > > > > > > additional commit message.
+> > > > > > >
+> > > > > > > Both are fine to me.
+> > > > > >
+> > > > > > Hi,
+> > > > > > Ok, thank you for reviewing this.
+> > > > > >
+> > > > > > I guess now we are good to go with this series if the stable tags and
+> > > > > > patches order are good after Greg's review?
+> > > > > 
+> > > > > Taking into account that we are at rc7, and even with Fixes tags in
+> > > > > your series I think Greg might take this after v6.5-0rc1 is out. It's
+> > > > > up to him how to proceed with that. Note, he usually has thousands of
+> > > > > patches in backlog, you might need to respin it after the above
+> > > > > mentioned rc1.
+> > > > 
+> > > > Ok, understood.
+> > > > 
+> > > > Let's wait then.
+> > > 
+> > > Hi Andy/Greg,
+> > > we are now at v6.5-rc2 and I still do not see any of our patches in
+> > > linus or gregkh_tty repos.
+> > > 
+> > > Is there something missing from my part (or someone else) to go forward
+> > > with integrating these patches (v8) for v6.5?
+> > 
+> > My queue is huge right now, please be patient, I want to have them all
+> > handled by the end of next week...
+> > 
+> > You can always help out by reviewing other patches on the mailing list
+> > to reduce my review load.
+> 
+> Wait, no, this series was superseeded by v8, and in there you said you
+> were going to send a new series.  So please, fix it up and send the
+> updated version of the series, this one isn't going to be applied for
+> obvious reasons.
 
--- 
-Thanks,
-Sasha
+Hi Greg,
+I never said that I would resend another update for this current
+serie (unless of course if it was to address a new comment). Re-reading
+that email made me realise that it was maybe not perfectly clear the
+way I wrote it.
+
+What I said was that, once V8 was finally applied and
+incorporated in the kernel, then I would send a completely new and
+different serie to address issues/concerns/improvements/suggestions
+noted during the review of this serie (example: conversion of bindings
+to YAML and improve DTS node names, etc). We already agreed with some
+maintainers (ex: Conor Dooley) that it was reasonnable to do so.
+
+That is why I asked Andy if we were good to go with V8 and he
+confirmed that, and that it was now up to you to integrate it if your
+review was satisfactory.
+
+Hope this clears things and we can integrate it soon.
+
+Thank you, Hugo.
