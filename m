@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD5F75D42D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 410CE75D341
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbjGUTSt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:18:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40678 "EHLO
+        id S231765AbjGUTIi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232046AbjGUTSn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:18:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8DF330E8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:18:36 -0700 (PDT)
+        with ESMTP id S231761AbjGUTIh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:08:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E512D4A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:08:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8787F61D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:18:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C88C433C7;
-        Fri, 21 Jul 2023 19:18:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 599BC61D7B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:08:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DA5C433C7;
+        Fri, 21 Jul 2023 19:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967116;
-        bh=UQx8SAWk/fgroSmg50IBhpRzWH+Un8K2E901e2gS/Lk=;
+        s=korg; t=1689966515;
+        bh=/qWJng5jEq1NWC8v/HXTW4fqXz0ACcuIAK+LqHxErho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gpCOyhAvtbFyAV2GGlB0inp1CrBe4dNQ4pmYkvIdNdhnT2xzzPPojtQVmK7+N0guf
-         tApRgUcRgpwCWbmZkWaTWzHQQo6AUn8eWkFRDq1S5BC3AM1oe9etlELaQyZU0A+ncS
-         Y2jyY36gl2joce5Z4cNa4uwCCvjfzbHe+uNizoGY=
+        b=WD1AUui+KtLInMWZ2VXyObMW5Y+xUz/9SxieqV0YuN8Db0R70m+X5PeRYWrRATzKl
+         LYm44N0Tp08+SNDIcY3iqe4ug11gP1NvUx620pA3mSEa0XCcHH+fWrVJTy3YqqNE9L
+         8Uy+HPl4tsmawEep4TpK5Zl04lUvL/IbylXpnD2s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bart Van Assche <bvanassche@acm.org>,
-        Eric Biggers <ebiggers@google.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/223] blk-crypto: use dynamic lock class for blk_crypto_profile::lock
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        stable@kernel.org, Ricardo Ribalda Delgado <ribalda@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 371/532] ASoC: mediatek: mt8173: Fix irq error path
 Date:   Fri, 21 Jul 2023 18:04:35 +0200
-Message-ID: <20230721160521.820503228@linuxfoundation.org>
+Message-ID: <20230721160634.606691897@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,110 +57,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+From: Ricardo Ribalda Delgado <ribalda@chromium.org>
 
-[ Upstream commit 2fb48d88e77f29bf9d278f25bcfe82cf59a0e09b ]
+commit f9c058d14f4fe23ef523a7ff73734d51c151683c upstream.
 
-When a device-mapper device is passing through the inline encryption
-support of an underlying device, calls to blk_crypto_evict_key() take
-the blk_crypto_profile::lock of the device-mapper device, then take the
-blk_crypto_profile::lock of the underlying device (nested).  This isn't
-a real deadlock, but it causes a lockdep report because there is only
-one lock class for all instances of this lock.
+After reordering the irq probe, the error path was not properly done.
+Lets fix it.
 
-Lockdep subclasses don't really work here because the hierarchy of block
-devices is dynamic and could have more than 2 levels.
-
-Instead, register a dynamic lock class for each blk_crypto_profile, and
-associate that with the lock.
-
-This avoids false-positive lockdep reports like the following:
-
-    ============================================
-    WARNING: possible recursive locking detected
-    6.4.0-rc5 #2 Not tainted
-    --------------------------------------------
-    fscryptctl/1421 is trying to acquire lock:
-    ffffff80829ca418 (&profile->lock){++++}-{3:3}, at: __blk_crypto_evict_key+0x44/0x1c0
-
-                   but task is already holding lock:
-    ffffff8086b68ca8 (&profile->lock){++++}-{3:3}, at: __blk_crypto_evict_key+0xc8/0x1c0
-
-                   other info that might help us debug this:
-     Possible unsafe locking scenario:
-
-           CPU0
-           ----
-      lock(&profile->lock);
-      lock(&profile->lock);
-
-                    *** DEADLOCK ***
-
-     May be due to missing lock nesting notation
-
-Fixes: 1b2628397058 ("block: Keyslot Manager for Inline Encryption")
-Reported-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230610061139.212085-1-ebiggers@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@kernel.org
+Fixes: 4cbb264d4e91 ("ASoC: mediatek: mt8173: Enable IRQ when pdata is ready")
+Signed-off-by: Ricardo Ribalda Delgado <ribalda@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230612-mt8173-fixup-v2-2-432aa99ce24d@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-crypto-profile.c         | 12 ++++++++++--
- include/linux/blk-crypto-profile.h |  1 +
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ sound/soc/mediatek/mt8173/mt8173-afe-pcm.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-crypto-profile.c b/block/blk-crypto-profile.c
-index 3290c03c9918d..aa7fc1436893c 100644
---- a/block/blk-crypto-profile.c
-+++ b/block/blk-crypto-profile.c
-@@ -79,7 +79,14 @@ int blk_crypto_profile_init(struct blk_crypto_profile *profile,
- 	unsigned int slot_hashtable_size;
+--- a/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
++++ b/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
+@@ -1072,6 +1072,10 @@ static int mt8173_afe_pcm_dev_probe(stru
  
- 	memset(profile, 0, sizeof(*profile));
--	init_rwsem(&profile->lock);
+ 	afe->dev = &pdev->dev;
+ 
++	irq_id = platform_get_irq(pdev, 0);
++	if (irq_id <= 0)
++		return irq_id < 0 ? irq_id : -ENXIO;
 +
-+	/*
-+	 * profile->lock of an underlying device can nest inside profile->lock
-+	 * of a device-mapper device, so use a dynamic lock class to avoid
-+	 * false-positive lockdep reports.
-+	 */
-+	lockdep_register_key(&profile->lockdep_key);
-+	__init_rwsem(&profile->lock, "&profile->lock", &profile->lockdep_key);
+ 	afe->base_addr = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(afe->base_addr))
+ 		return PTR_ERR(afe->base_addr);
+@@ -1177,14 +1181,11 @@ static int mt8173_afe_pcm_dev_probe(stru
+ 	if (ret)
+ 		goto err_cleanup_components;
  
- 	if (num_slots == 0)
- 		return 0;
-@@ -89,7 +96,7 @@ int blk_crypto_profile_init(struct blk_crypto_profile *profile,
- 	profile->slots = kvcalloc(num_slots, sizeof(profile->slots[0]),
- 				  GFP_KERNEL);
- 	if (!profile->slots)
--		return -ENOMEM;
-+		goto err_destroy;
+-	irq_id = platform_get_irq(pdev, 0);
+-	if (irq_id <= 0)
+-		return irq_id < 0 ? irq_id : -ENXIO;
+ 	ret = devm_request_irq(afe->dev, irq_id, mt8173_afe_irq_handler,
+ 			       0, "Afe_ISR_Handle", (void *)afe);
+ 	if (ret) {
+ 		dev_err(afe->dev, "could not request_irq\n");
+-		goto err_pm_disable;
++		goto err_cleanup_components;
+ 	}
  
- 	profile->num_slots = num_slots;
- 
-@@ -441,6 +448,7 @@ void blk_crypto_profile_destroy(struct blk_crypto_profile *profile)
- {
- 	if (!profile)
- 		return;
-+	lockdep_unregister_key(&profile->lockdep_key);
- 	kvfree(profile->slot_hashtable);
- 	kvfree_sensitive(profile->slots,
- 			 sizeof(profile->slots[0]) * profile->num_slots);
-diff --git a/include/linux/blk-crypto-profile.h b/include/linux/blk-crypto-profile.h
-index e6802b69cdd64..90ab33cb5d0ef 100644
---- a/include/linux/blk-crypto-profile.h
-+++ b/include/linux/blk-crypto-profile.h
-@@ -111,6 +111,7 @@ struct blk_crypto_profile {
- 	 * keyslots while ensuring that they can't be changed concurrently.
- 	 */
- 	struct rw_semaphore lock;
-+	struct lock_class_key lockdep_key;
- 
- 	/* List of idle slots, with least recently used slot at front */
- 	wait_queue_head_t idle_slots_wait_queue;
--- 
-2.39.2
-
+ 	dev_info(&pdev->dev, "MT8173 AFE driver initialized.\n");
 
 
