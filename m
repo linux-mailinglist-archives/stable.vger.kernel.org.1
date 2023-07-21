@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE9C975D4B0
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4FE875D3DB
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232210AbjGUTYA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45298 "EHLO
+        id S231941AbjGUTPM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:15:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232201AbjGUTYA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:00 -0400
+        with ESMTP id S231938AbjGUTPL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:15:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFA62D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:23:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDAD4189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:15:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 591F861D2F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:23:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C005C433C8;
-        Fri, 21 Jul 2023 19:23:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 633E161D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C28C433C7;
+        Fri, 21 Jul 2023 19:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967437;
-        bh=tHXjsyYxD3MMFPz7pn7OcWuIgEpRIzmvUYOE1wVu2Nw=;
+        s=korg; t=1689966909;
+        bh=dWj4YWfGZOKQXJ4rLB/bWRUijeFzPybqJ5hZkydtvo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M56KEzbHTqnsnhkxcfwafVku5NIV8ErSB0eub8LRCI+jpNLu78r56LkGjLEbfB3FH
-         RXaFobspBjBKKZp28ZvzpKaqeXa5obSgIdRTmyE+xnc+x9uX66d/TUGTTIgBkVM+wt
-         +bbnW2hTzQJFqJjFl9Yh7bJ8gb9rOywMOZmOrNqc=
+        b=iiAuM0kMsh9jEMuXldukFbunxBJgiikG7zVmMQPHcgBw+p27zD+Wdh9CeA/KHOL/N
+         dM7dcITJIlvkZHSV2GLYDkukgTX2R6gqRE9Ju16GiIIlU4WnN7D6xa9iwvdpfwK3Kz
+         fmYqLi/A44visqGck/IHQ16NSlozfzEomPJVyAr0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thelford Williams <thelford@google.com>,
-        Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>
-Subject: [PATCH 6.1 162/223] libceph: harden msgr2.1 frame segment length checks
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 511/532] tracing: Fix memory leak of iter->temp when reading trace_pipe
 Date:   Fri, 21 Jul 2023 18:06:55 +0200
-Message-ID: <20230721160527.785296263@linuxfoundation.org>
+Message-ID: <20230721160642.377328500@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,100 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-commit a282a2f10539dce2aa619e71e1817570d557fc97 upstream.
+commit d5a821896360cc8b93a15bd888fabc858c038dc0 upstream.
 
-ceph_frame_desc::fd_lens is an int array.  decode_preamble() thus
-effectively casts u32 -> int but the checks for segment lengths are
-written as if on unsigned values.  While reading in HELLO or one of the
-AUTH frames (before authentication is completed), arithmetic in
-head_onwire_len() can get duped by negative ctrl_len and produce
-head_len which is less than CEPH_PREAMBLE_LEN but still positive.
-This would lead to a buffer overrun in prepare_read_control() as the
-preamble gets copied to the newly allocated buffer of size head_len.
+kmemleak reports:
+  unreferenced object 0xffff88814d14e200 (size 256):
+    comm "cat", pid 336, jiffies 4294871818 (age 779.490s)
+    hex dump (first 32 bytes):
+      04 00 01 03 00 00 00 00 08 00 00 00 00 00 00 00  ................
+      0c d8 c8 9b ff ff ff ff 04 5a ca 9b ff ff ff ff  .........Z......
+    backtrace:
+      [<ffffffff9bdff18f>] __kmalloc+0x4f/0x140
+      [<ffffffff9bc9238b>] trace_find_next_entry+0xbb/0x1d0
+      [<ffffffff9bc9caef>] trace_print_lat_context+0xaf/0x4e0
+      [<ffffffff9bc94490>] print_trace_line+0x3e0/0x950
+      [<ffffffff9bc95499>] tracing_read_pipe+0x2d9/0x5a0
+      [<ffffffff9bf03a43>] vfs_read+0x143/0x520
+      [<ffffffff9bf04c2d>] ksys_read+0xbd/0x160
+      [<ffffffff9d0f0edf>] do_syscall_64+0x3f/0x90
+      [<ffffffff9d2000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+when reading file 'trace_pipe', 'iter->temp' is allocated or relocated
+in trace_find_next_entry() but not freed before 'trace_pipe' is closed.
+
+To fix it, free 'iter->temp' in tracing_release_pipe().
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230713141435.1133021-1-zhengyejian1@huawei.com
 
 Cc: stable@vger.kernel.org
-Fixes: cd1a677cad99 ("libceph, ceph: implement msgr2.1 protocol (crc and secure modes)")
-Reported-by: Thelford Williams <thelford@google.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Fixes: ff895103a84ab ("tracing: Save off entry when peeking at next entry")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/messenger_v2.c |   41 ++++++++++++++++++++++++++---------------
- 1 file changed, 26 insertions(+), 15 deletions(-)
+ kernel/trace/trace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/ceph/messenger_v2.c
-+++ b/net/ceph/messenger_v2.c
-@@ -392,6 +392,8 @@ static int head_onwire_len(int ctrl_len,
- 	int head_len;
- 	int rem_len;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6650,6 +6650,7 @@ static int tracing_release_pipe(struct i
  
-+	BUG_ON(ctrl_len < 0 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
-+
- 	if (secure) {
- 		head_len = CEPH_PREAMBLE_SECURE_LEN;
- 		if (ctrl_len > CEPH_PREAMBLE_INLINE_LEN) {
-@@ -410,6 +412,10 @@ static int head_onwire_len(int ctrl_len,
- static int __tail_onwire_len(int front_len, int middle_len, int data_len,
- 			     bool secure)
- {
-+	BUG_ON(front_len < 0 || front_len > CEPH_MSG_MAX_FRONT_LEN ||
-+	       middle_len < 0 || middle_len > CEPH_MSG_MAX_MIDDLE_LEN ||
-+	       data_len < 0 || data_len > CEPH_MSG_MAX_DATA_LEN);
-+
- 	if (!front_len && !middle_len && !data_len)
- 		return 0;
- 
-@@ -522,29 +528,34 @@ static int decode_preamble(void *p, stru
- 		desc->fd_aligns[i] = ceph_decode_16(&p);
- 	}
- 
--	/*
--	 * This would fire for FRAME_TAG_WAIT (it has one empty
--	 * segment), but we should never get it as client.
--	 */
--	if (!desc->fd_lens[desc->fd_seg_cnt - 1]) {
--		pr_err("last segment empty\n");
-+	if (desc->fd_lens[0] < 0 ||
-+	    desc->fd_lens[0] > CEPH_MSG_MAX_CONTROL_LEN) {
-+		pr_err("bad control segment length %d\n", desc->fd_lens[0]);
- 		return -EINVAL;
- 	}
--
--	if (desc->fd_lens[0] > CEPH_MSG_MAX_CONTROL_LEN) {
--		pr_err("control segment too big %d\n", desc->fd_lens[0]);
-+	if (desc->fd_lens[1] < 0 ||
-+	    desc->fd_lens[1] > CEPH_MSG_MAX_FRONT_LEN) {
-+		pr_err("bad front segment length %d\n", desc->fd_lens[1]);
- 		return -EINVAL;
- 	}
--	if (desc->fd_lens[1] > CEPH_MSG_MAX_FRONT_LEN) {
--		pr_err("front segment too big %d\n", desc->fd_lens[1]);
-+	if (desc->fd_lens[2] < 0 ||
-+	    desc->fd_lens[2] > CEPH_MSG_MAX_MIDDLE_LEN) {
-+		pr_err("bad middle segment length %d\n", desc->fd_lens[2]);
- 		return -EINVAL;
- 	}
--	if (desc->fd_lens[2] > CEPH_MSG_MAX_MIDDLE_LEN) {
--		pr_err("middle segment too big %d\n", desc->fd_lens[2]);
-+	if (desc->fd_lens[3] < 0 ||
-+	    desc->fd_lens[3] > CEPH_MSG_MAX_DATA_LEN) {
-+		pr_err("bad data segment length %d\n", desc->fd_lens[3]);
- 		return -EINVAL;
- 	}
--	if (desc->fd_lens[3] > CEPH_MSG_MAX_DATA_LEN) {
--		pr_err("data segment too big %d\n", desc->fd_lens[3]);
-+
-+	/*
-+	 * This would fire for FRAME_TAG_WAIT (it has one empty
-+	 * segment), but we should never get it as client.
-+	 */
-+	if (!desc->fd_lens[desc->fd_seg_cnt - 1]) {
-+		pr_err("last segment empty, segment count %d\n",
-+		       desc->fd_seg_cnt);
- 		return -EINVAL;
- 	}
+ 	free_cpumask_var(iter->started);
+ 	kfree(iter->fmt);
++	kfree(iter->temp);
+ 	mutex_destroy(&iter->mutex);
+ 	kfree(iter);
  
 
 
