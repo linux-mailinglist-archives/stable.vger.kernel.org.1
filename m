@@ -2,229 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42D0775BBFF
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 03:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D6F475BC0C
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 03:59:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjGUBv4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 21:51:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54536 "EHLO
+        id S230056AbjGUB72 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 21:59:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjGUBvz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 21:51:55 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A66270D;
-        Thu, 20 Jul 2023 18:51:53 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5774098f16eso15156977b3.0;
-        Thu, 20 Jul 2023 18:51:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689904313; x=1690509113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KTDmOEm4mA9XRGO4lE7YTkgO5ZAT3mA0rEEKhTrRvPc=;
-        b=cnH4y90cXhLSXISiwylzqmfToN/dBqTDI2nYAfvuCmBgfj+Iabm4+MvaJ5sjR/4D0K
-         JSURBtgytk3ygQDfVhMYh6iuvCSyXbZ12bKJe0yRROYhoQXXePvn7pM1ZGvGY7jK+iCl
-         TJ6+NtzBeAwWjT4MRNKhlR/gDZGcTqmvpn+zYLm4gv+Qne8QJLVQNCMTs9PvW9S2wtDA
-         Fu9T9fmFcs6U8Os+sVPQsI6iLceADfaxdX5JoqGAl0UrSIk1esxV0dDSKU2NJqJi1ZJK
-         GC9fBoZY85L3HTMMQt2/A0EAQhowxnkr3kHJiIk6hcdfjryU1UprqWalTdW0l0/6eURU
-         EfWA==
+        with ESMTP id S229484AbjGUB71 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 21:59:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9136E47
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 18:58:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689904722;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hhGna8U3AbjXTK0GfHupfBmw9y8F8MsICtVmYYEO33w=;
+        b=GP4XLbt5cvl0czhwCNdUNGR7NmIAiETdcI5KdQMK9h/olGsvhZH+Jpq7yMb44Fb8qwg33y
+        BWijMnDBxSW3ZgqX8a9b/AYo977EilXLjNWf8L+Tt14ducjZF+uzhKw/u3diSZDl/QXUNo
+        +p4bYfb4uf6MOpb7qXPI/9IYA9DR4jI=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-78sEgGxjMPGNhyLhhSeBNg-1; Thu, 20 Jul 2023 21:58:40 -0400
+X-MC-Unique: 78sEgGxjMPGNhyLhhSeBNg-1
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-262f7a3bc80so1022848a91.3
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 18:58:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689904313; x=1690509113;
+        d=1e100.net; s=20221208; t=1689904719; x=1690509519;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KTDmOEm4mA9XRGO4lE7YTkgO5ZAT3mA0rEEKhTrRvPc=;
-        b=i5adkpWI4y+Vo45gJTefgvGxNJwoWXCjU67BKhRVxkzx4l8f7gOTYTJW2fA4gWcT1K
-         JFzy1YbE4D/Vmc82MUOEtPgpcYf2mPnKjS3FrcDWWvsprNfzp02XIoqvfBQ7yVxCTg2w
-         6I7JxXxvc7jSsu5p7XbkBOYrcXffU1Bn9MoRl+gYveuE+ft3p+vMPEcjVlRwOTbSNyZR
-         tdOQHJjAZWJg5LfxoBsK+sEJo7Q/EB1vGWUvRbS1ucm2o8pA0FtndCyMTP8IOIRjLsa6
-         Z1E9slIPWlWfrI6cEwumd9U6bF0THd8PWmPze04LtYCmZE+rG/QJEv71WD/0s17N7Gvq
-         mvWw==
-X-Gm-Message-State: ABy/qLZA8H/GcFFCTRrMYYPAyRgw2pm/KTAANLd3QTUBkVucxtklHBKM
-        7lsPSrnvIbEXP6mfG2YdoFxxXBJzG3GeXY5SHbs=
-X-Google-Smtp-Source: APBJJlG2/BMKB7AvWTT03N84VuviMayMrk7JTWEav2C8ogei6jsni1OSPZaYVcjs0lngAgsqQqAJZvjmjACBCEL22vM=
-X-Received: by 2002:a0d:dbca:0:b0:577:228f:4687 with SMTP id
- d193-20020a0ddbca000000b00577228f4687mr702720ywe.6.1689904312786; Thu, 20 Jul
- 2023 18:51:52 -0700 (PDT)
+        bh=hhGna8U3AbjXTK0GfHupfBmw9y8F8MsICtVmYYEO33w=;
+        b=dfJu3l4n1gfZiBVNKJVlNVxJJ2Zq5kRBoTbEFAXkt6ppeHTTfivNOh0zy+jCpUmBbr
+         Xv5vuWnln00cOiwENVJ35sf4m55Kl0DZP0uvw363Iyu1yrMZJpD7fm3ejmOzQNlWvXGu
+         UgIaKDk4EGroJphA401cMkdnCpYT1lnOk4HKxm0/Ek+Cz/hZAyalKKdTSvCZ2quM5k4T
+         YWRc4l8vA88mwu2x3k9YKC4UgcRYTZZchkTEnKopsRWbieFbVnpftRRezR9UMdHPBONJ
+         2q6gWpWfXTX6QnEtTiNBbDflSVYICUUftgbjO4QFqN8dW7C9d1oQXTOIRQYq/w2wtYqM
+         wV+A==
+X-Gm-Message-State: ABy/qLZlFLtfPrbb50/xsEjOXjrU69tecOVpeux5CCbYWsMV43Ps7tlG
+        j93JQYQzfU7KCDXVX+CtO0fS9cXYZz1ot4rfiTNYtd+F4j+X63HkHGKTgkB+orh7avNz6gVNq/o
+        kNEe4xFJJzPe7bXwSNTJvac7OhSe7dz3D
+X-Received: by 2002:a17:90b:4a09:b0:263:f8e3:5a2a with SMTP id kk9-20020a17090b4a0900b00263f8e35a2amr412035pjb.36.1689904719613;
+        Thu, 20 Jul 2023 18:58:39 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHmx7gzkmzHO8hdH2sBhDw+aAQB8z1c9a31bsYownTohBa6EDZtW882rjYQyue4CMwbuhLM5a3unc3+zyFdoOE=
+X-Received: by 2002:a17:90b:4a09:b0:263:f8e3:5a2a with SMTP id
+ kk9-20020a17090b4a0900b00263f8e35a2amr412026pjb.36.1689904719352; Thu, 20 Jul
+ 2023 18:58:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <2023071940-suspect-ominous-4a6a@gregkh> <20230720132714.GA3726096@google.com>
-In-Reply-To: <20230720132714.GA3726096@google.com>
-From:   Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date:   Fri, 21 Jul 2023 09:51:41 +0800
-Message-ID: <CAABZP2xrLRTVM6te22RFTYCpFB6CnyZ1ASjq=vsGuhpnRfU-OA@mail.gmail.com>
-Subject: Re: [BUG] Re: Linux 6.4.4
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz, rcu@vger.kernel.org
+References: <20230711094041.1819102-1-ming.lei@redhat.com> <20230711094041.1819102-3-ming.lei@redhat.com>
+In-Reply-To: <20230711094041.1819102-3-ming.lei@redhat.com>
+From:   Yi Zhang <yi.zhang@redhat.com>
+Date:   Fri, 21 Jul 2023 09:58:27 +0800
+Message-ID: <CAHj4cs9FfHRRJSQz=SPFJuMj_u9hSL5AaN3EyTdTdXkBSiqJ3Q@mail.gmail.com>
+Subject: Re: [PATCH V2 2/3] nvme-tcp: fix potential unbalanced freeze & unfreeze
+To:     Ming Lei <ming.lei@redhat.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+        Keith Busch <kbusch@kernel.org>,
+        linux-nvme@lists.infradead.org,
+        Chunguang Xu <brookxu.cn@gmail.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 20, 2023 at 9:31=E2=80=AFPM Joel Fernandes <joel@joelfernandes.=
-org> wrote:
->
-> On Wed, Jul 19, 2023 at 05:06:39PM +0200, Greg Kroah-Hartman wrote:
-> > I'm announcing the release of the 6.4.4 kernel.
-> >
-> > All users of the 6.4 kernel series must upgrade.
-> >
-> > The updated 6.4.y git tree can be found at:
-> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
-.git linux-6.4.y
-> > and can be browsed at the normal kernel.org git web browser:
-> >       https://git.kernel.org/?p=3Dlinux/kernel/git/stable/linux-stable.=
-git;a=3Dsummary
->
-> I have been consistently hitting the following splat with rcutorture's TR=
-EE03
-> test on 6.4.4. This happened with 6.4.4-rc3 as well.
-Hi, I am also interested in this topic , I am going to test 6.4.4 on my lap=
-top
+Verified it with the nvme/tcp scenario, Thanks Ming
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
 
-Thanks, Zhouyi
+On Tue, Jul 11, 2023 at 5:41=E2=80=AFPM Ming Lei <ming.lei@redhat.com> wrot=
+e:
 >
-> Happens at:
->                 WARN_ON_ONCE(n_rcu_torture_boost_failure); // boost faile=
-d (TIMER_SOFTIRQ RT prio?)
+> Move start_freeze into nvme_tcp_configure_io_queues(), and there is
+> at least two benefits:
 >
-> So likely RCU boosting is failing:
+> 1) fix unbalanced freeze and unfreeze, since re-connection work may
+> fail or be broken by removal
 >
-> The full TREE03 splat:
-> [   54.243588] ------------[ cut here ]------------
-> [   54.244547] rcu-torture: rcu_torture_boost started
-> [   54.247643] WARNING: CPU: 12 PID: 166 at kernel/rcu/rcutorture.c:2227 =
-rcu_torture_stats_print+0x5b2/0x620
-> [   54.273082] Modules linked in:
-> [   54.278336] CPU: 12 PID: 166 Comm: rcu_torture_sta Not tainted 6.4.4-g=
-62813c2d2a36 #1
-> [   54.288540] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1=
-.16.2-debian-1.16.2-1 04/01/2014
-> [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
-> [   54.307525] Code: 00 00 48 8b 05 3f 6c 46 02 e9 4a fe ff ff 0f 0b e9 0=
-2 fd ff ff 0f 0b e9 09 fd ff ff 0f 0b e9 10 fd ff ff 0f 0b e9 17 fd ff ff <=
-0f> 0b e9 1e fd ff ff 0f 0b e9 21 fd ff ff e8 0b 54 ff ff 84 c0 0f
-> [   54.331276] RSP: 0000:ffff9fef805efe08 EFLAGS: 00010202
-> [   54.338374] RAX: 0000000000000000 RBX: ffff9fef805efe88 RCX: 00000000f=
-fffdfff
-> [   54.347738] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 000000000=
-0000001
-> [   54.358923] RBP: ffff9fef805efe30 R08: 00000000ffffdfff R09: 00000000f=
-fffdfff
-> [   54.368209] R10: ffffffff94e59280 R11: ffffffff94e59280 R12: 000000000=
-0000001
-> [   54.377367] R13: 0000000000000000 R14: 00000000000002fc R15: ffffffff9=
-3514000
-> [   54.386739] FS:  0000000000000000(0000) GS:ffff9c901f500000(0000) knlG=
-S:0000000000000000
-> [   54.397130] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   54.404585] CR2: 0000000000000000 CR3: 000000000308e000 CR4: 000000000=
-00006e0
-> [   54.413884] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 000000000=
-0000000
-> [   54.423118] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 000000000=
-0000400
-> [   54.432192] Call Trace:
-> [   54.435634]  <TASK>
-> [   54.438512]  ? rcu_torture_stats_print+0x5b2/0x620
-> [   54.444904]  ? __warn+0x7c/0x130
-> [   54.449221]  ? rcu_torture_stats_print+0x5b2/0x620
-> [   54.455737]  ? report_bug+0x171/0x1a0
-> [   54.460935]  ? handle_bug+0x3c/0x70
-> [   54.465874]  ? exc_invalid_op+0x17/0x70
-> [   54.471336]  ? asm_exc_invalid_op+0x1a/0x20
-> [   54.477092]  ? __pfx_rcu_torture_stats+0x10/0x10
-> [   54.483472]  ? rcu_torture_stats_print+0x5b2/0x620
-> [   54.490029]  ? rcu_torture_stats_print+0x28a/0x620
-> [   54.496565]  ? finish_task_switch.isra.0+0x7e/0x240
-> [   54.503261]  rcu_torture_stats+0x25/0x70
-> [   54.508686]  kthread+0xe3/0x110
-> [   54.513141]  ? __pfx_kthread+0x10/0x10
-> [   54.518330]  ret_from_fork+0x2c/0x50
-> [   54.523356]  </TASK>
-> [   54.526500] ---[ end trace 0000000000000000 ]---
+> 2) IO during error recovery can be failfast quickly because nvme fabrics
+> unquiesces queues after teardown.
 >
-> Also other issues in 6.4.4, I am seeing RCU failures with TREE07 about 40
-> minutes into the test. This warning indicates that an rcu_torture object =
-from
-> the rcu_torture pool is still allocated which is an indiciation that RCU =
-is
-> not working.
+> One side-effect is that !mpath request may timeout during connecting
+> because of queue topo change, but that looks not one big deal:
 >
-> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+> 1) same problem exists with current code base
 >
-> However, if we are to believe the '9', it appears the object did made it
-> quite some till the end of the pipe array but not until the free pool.
+> 2) compared with !mpath, mpath use case is dominant
 >
-> The full TREE07 splat:
-> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
-> [ 2169.489413] WARNING: CPU: 4 PID: 130 at kernel/rcu/rcutorture.c:1584 r=
-cu_torture_writer+0x7f2/0xd80
-> [ 2169.504064] Modules linked in:
-> [ 2169.508957] CPU: 4 PID: 130 Comm: rcu_torture_wri Not tainted 6.4.4-g6=
-2813c2d2a36 #2
-> [ 2169.521735] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1=
-.16.2-debian-1.16.2-1 04/01/2014
-> [ 2169.540908] RIP: 0010:rcu_torture_writer+0x7f2/0xd80
-> [ 2169.548542] Code: 15 8b 62 45 02 49 8d 45 e8 48 39 c2 74 bf e8 85 03 0=
-8 00 41 8b 55 f8 48 c7 c6 d0 f7 e0 9d 48 c7 c7 d7 7b 28 9e e8 ce 29 f7 ff <=
-0f> 0b 8b 05 9a 48 45 02 85 c0 75 97 89 d8 87 05 8e 48 45 02 85 c0
-> [ 2169.578445] RSP: 0000:ffffa645804cfe20 EFLAGS: 00010282
-> [ 2169.586793] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000f=
-fffdfff
-> [ 2169.598069] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 000000000=
-0009ffb
-> [ 2169.609359] RBP: ffffa645804cff10 R08: 00000000ffffdfff R09: 00000000f=
-fffdfff
-> [ 2169.620717] R10: ffffffff9e659220 R11: ffffffff9e659220 R12: 000000000=
-0000017
-> [ 2169.631918] R13: ffffffff9f166b60 R14: 0000000000000000 R15: 000000000=
-0000001
-> [ 2169.643365] FS:  0000000000000000(0000) GS:ffff8b3a5f300000(0000) knlG=
-S:0000000000000000
-> [ 2169.655249] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 2169.663207] CR2: 0000000000000000 CR3: 000000001562e000 CR4: 000000000=
-00006e0
-> [ 2169.672806] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 000000000=
-0000000
-> [ 2169.682194] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 000000000=
-0000400
-> [ 2169.693530] Call Trace:
-> [ 2169.698054]  <TASK>
-> [ 2169.701786]  ? rcu_torture_writer+0x7f2/0xd80
-> [ 2169.708853]  ? __warn+0x7c/0x120
-> [ 2169.714088]  ? rcu_torture_writer+0x7f2/0xd80
-> [ 2169.721066]  ? report_bug+0x15d/0x180
-> [ 2169.726125]  ? handle_bug+0x3c/0x70
-> [ 2169.730948]  ? exc_invalid_op+0x17/0x70
-> [ 2169.736238]  ? asm_exc_invalid_op+0x1a/0x20
-> [ 2169.742047]  ? rcu_torture_writer+0x7f2/0xd80
-> [ 2169.747907]  ? __pfx_rcu_torture_writer+0x10/0x10
-> [ 2169.754175]  kthread+0xcb/0xf0
-> [ 2169.758407]  ? __pfx_kthread+0x10/0x10
-> [ 2169.763501]  ret_from_fork+0x2c/0x50
-> [ 2169.768420]  </TASK>
-> [ 2169.771445] ---[ end trace 0000000000000000 ]---
-> [ 2169.777698] Dumping ftrace buffer:
-> [ 2169.782470]    (ftrace buffer empty)
-> [ 2169.787241] ------------[ cut here ]------------
+> Fixes: 2875b0aecabe ("nvme-tcp: fix controller reset hang during traffic"=
+)
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> ---
+>  drivers/nvme/host/tcp.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
+> diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+> index 3e7dd6f91832..fb24cd8ac46c 100644
+> --- a/drivers/nvme/host/tcp.c
+> +++ b/drivers/nvme/host/tcp.c
+> @@ -1868,6 +1868,7 @@ static int nvme_tcp_configure_io_queues(struct nvme=
+_ctrl *ctrl, bool new)
+>                 goto out_cleanup_connect_q;
 >
-> I will continue to monitor and debug these but since I recently re-starte=
-d
-> testing stable (my infra was down for a long time), I don't have any
-> reference for when these started happening.
+>         if (!new) {
+> +               nvme_start_freeze(ctrl);
+>                 nvme_unquiesce_io_queues(ctrl);
+>                 if (!nvme_wait_freeze_timeout(ctrl, NVME_IO_TIMEOUT)) {
+>                         /*
+> @@ -1876,6 +1877,7 @@ static int nvme_tcp_configure_io_queues(struct nvme=
+_ctrl *ctrl, bool new)
+>                          * to be safe.
+>                          */
+>                         ret =3D -ENODEV;
+> +                       nvme_unfreeze(ctrl);
+>                         goto out_wait_freeze_timed_out;
+>                 }
+>                 blk_mq_update_nr_hw_queues(ctrl->tagset,
+> @@ -1980,7 +1982,6 @@ static void nvme_tcp_teardown_io_queues(struct nvme=
+_ctrl *ctrl,
+>         if (ctrl->queue_count <=3D 1)
+>                 return;
+>         nvme_quiesce_admin_queue(ctrl);
+> -       nvme_start_freeze(ctrl);
+>         nvme_quiesce_io_queues(ctrl);
+>         nvme_sync_io_queues(ctrl);
+>         nvme_tcp_stop_io_queues(ctrl);
+> --
+> 2.40.1
 >
-> thanks,
->
->  - Joel
->
+
+
+--=20
+Best Regards,
+  Yi Zhang
+
