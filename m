@@ -2,152 +2,207 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C14AA75C9B2
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71DF75C9BC
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 16:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229914AbjGUOVr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 10:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42582 "EHLO
+        id S230181AbjGUOWa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 10:22:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229884AbjGUOVq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:21:46 -0400
-Received: from DM5PR00CU002.outbound.protection.outlook.com (mail-centralusazon11021020.outbound.protection.outlook.com [52.101.62.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6713B10FC;
-        Fri, 21 Jul 2023 07:21:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nUHnUwfiDbTokbY19UKd/RRbv9crBTo9GHHzvGgsrd+K2PcHpDQMcRyS0qlCQ7FDS6W1/rdfgK1ibxJdBOS59Zhjdy6XAk3fX5XfQXKqT+GCrofxdvecOQManOgRvTgHTsPJ6Ho0Pb4oYyUPcm6kvvdIt6b9jRKPgrw8iMFnTNifOk6IqA+Cf7JzKwg4bEOMYfMNv4W5OlrDBmS9xCBz1esQnzQsTTZNV3YPMsBXi+r1tubgILpH3uy+Thn+3NANBvlT7yDDTDoQWvfd+fgYZec1lcGz5mOyssQiZuLn1bAkzAm+1MdmlG1Xr+1Cv41H/vLcX0TLsivKIwWA+2v1rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2TFXLsWLP5RCcpNH+JfYpCsc2TAE2f1UjcRiwOOzSoo=;
- b=mzNES5ORJsGZG4TMoKsODpjUd0lX9P1hVVymrsAT9i14VUjGXAzpuFWm/6LJMAinKvwBJGNkMbYcOnvjjs8nUrEEcFzrley7Rs0B4vzmkJcmI62lZ1WIC0Nu/88FZ5/jmo3V5bQh/c7t1lwGV37GQf3qfF0j7fPS1aFu/3CUAic+/OexhuP5Wr7/RpZ8B6bP5lCgdY2mH+KiYkelyvNr194pavb4daWA+JmUaPejRNoMJot615SdAYbwRpLTU3prJVpmG9EwaDIX6IFwlNvNDboR/xyYGTBpZ1MsLmqnIl0AKk5tGgsUOnXSu7wy9Vo/dsqzeWaCe+myNXO4WpPjTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2TFXLsWLP5RCcpNH+JfYpCsc2TAE2f1UjcRiwOOzSoo=;
- b=LnXr6GiwQMMAwbhMAII1czAjQWDBYUwihjEyuIsnCuBY11Y9uc8O9M4RQbRifqGl1LUlvRtWH+KfEz2P/XbbMTcdefdBb6K8UKIXMIzSmvKNY58NcMGiDvAf4/LW25fFdRkQtAopygkIzrDP4zbDtLhmHULzY192Ul+aJT1TBGA=
-Received: from BYAPR21MB1688.namprd21.prod.outlook.com (2603:10b6:a02:bf::26)
- by BY5PR21MB1507.namprd21.prod.outlook.com (2603:10b6:a03:231::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.16; Fri, 21 Jul
- 2023 14:21:41 +0000
-Received: from BYAPR21MB1688.namprd21.prod.outlook.com
- ([fe80::c164:97f6:174e:4136]) by BYAPR21MB1688.namprd21.prod.outlook.com
- ([fe80::c164:97f6:174e:4136%4]) with mapi id 15.20.6631.014; Fri, 21 Jul 2023
- 14:21:42 +0000
-From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-To:     David Laight <David.Laight@ACULAB.COM>,
-        Peter Zijlstra <peterz@infradead.org>
-CC:     KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "hpa@zytor.com" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH 1/1] x86/hyperv: Disable IBT when hypercall page lacks
- ENDBR instruction
-Thread-Topic: [PATCH 1/1] x86/hyperv: Disable IBT when hypercall page lacks
- ENDBR instruction
-Thread-Index: AQHZu0mXUyEtW9eyqkWnVGF605KOSq/DKCeAgAAzncCAAOUgwIAAAcAwgAADCIA=
-Date:   Fri, 21 Jul 2023 14:21:42 +0000
-Message-ID: <BYAPR21MB16883A15812E1D20FC28DF76D73FA@BYAPR21MB1688.namprd21.prod.outlook.com>
-References: <1689885237-32662-1-git-send-email-mikelley@microsoft.com>
- <20230720211553.GA3615208@hirez.programming.kicks-ass.net>
- <SN6PR2101MB16933FAC4E09E15D824EB2FDD73FA@SN6PR2101MB1693.namprd21.prod.outlook.com>
- <BYAPR21MB16889A4BD21DA1F8357008FFD73FA@BYAPR21MB1688.namprd21.prod.outlook.com>
- <533c3cae084f4c2aaf7227e113029d9f@AcuMS.aculab.com>
-In-Reply-To: <533c3cae084f4c2aaf7227e113029d9f@AcuMS.aculab.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=b52301eb-604c-44e1-bf56-29beb984d9b4;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-07-21T00:20:36Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR21MB1688:EE_|BY5PR21MB1507:EE_
-x-ms-office365-filtering-correlation-id: 617b7e72-852e-488d-30a3-08db89f5ce39
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 5kgPBr7ng2MnLduMb2399y7tl/+ByC6wdD/PryGVg6EoWWNOhMfGQIHJwvh5mjZm2TorQExzNtdKCpTMQa7uZqWWxiXdojK9RDUNzo4BLZs87qYcGcR7d3BLR8id+kKuq13g7zhfVcAjRO09p+PJyTUFofwfRdZQslFqCZ6Jaj/M6Ah2fE711wzTQNhqsmi9SOFQhbrU7v2FoTVv7i/+YmBDQCfcuxf20h4n/kfX7ENMuPXLr7lr7hCZ5Sv7aVVIHHpv+kBCcV+UXEd87Xrw6ch1EqE6+cv/Xde2TXJ2QXsrLH8b/BlRGG0A1g0IgFs3zXmhgMOZ/UTymd9r3QzQLB7aK6x0l+wi4HEou9l4e8KQ5/c2a6i36sFWnBmvFUZpgXm7Atr8C9Xvxy3hSsGd7y33kkR+XhWwVYwPVm0ck2cxCs6d/YSr0yGKGfIL9BuwCEeNkt6SXiahS+74jxAUkpjxZ9Eh7B31ub0/0mmnvTKnzJ3PSE1lZChQyavyFe1bqjfmWrpe3nDWL1CQCdmmWiPn7jazqEA/ABIlbG3c2THqQB659rPMSPBbUzbIAv9zORtbWx78I6UCHXNpConkUC+ELbX1hdDsy56B2/WQdI9y4KMqq5C5pqEBTEC0JV8Z9LlHHKp2/RoF7xq9LQA2UpRDOlHf6wLoKYPWUqRC2tQ=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR21MB1688.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(366004)(376002)(396003)(39860400002)(451199021)(6506007)(38100700002)(82960400001)(26005)(122000001)(8990500004)(66446008)(478600001)(8936002)(10290500003)(33656002)(86362001)(7416002)(8676002)(52536014)(4326008)(41300700001)(66476007)(76116006)(66946007)(64756008)(5660300002)(54906003)(110136005)(55016003)(316002)(66556008)(71200400001)(7696005)(82950400001)(186003)(38070700005)(2906002)(4744005)(9686003)(83380400001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VUVuRGhoWWc3bEhaeTUySWtlZUNXN3Q3NE00Z215U2FZU0JmYm5mQVF0Z2lu?=
- =?utf-8?B?cGZkajdjQlFWdWh5UzJ1K091N2NqckEvWVBFYXU3djFDTTRPNEJGSTI3Mld2?=
- =?utf-8?B?NHB1UXBqL1hjc0pVZjNBZ2dYMFlEYXFnSzJpN2QyVTB6YTF6ZGMrOHZyMDFL?=
- =?utf-8?B?Q2tMNGlac3dkbWQxamx5L2tWMkZUa2xlK1FSVWpWTnlaMWhzOWhEdjg3TDBI?=
- =?utf-8?B?clVXSHJtT3RWMk9TZGh3ZU9pZDRuNW5JTXNMQnVIR3NIMXN2Tld3V2x3Vkpa?=
- =?utf-8?B?Um4zSnVsMzVSbU8zZjFrbURQRk1wSklsalE5V0x4TE93VmpCdk1HSzIrY3Mw?=
- =?utf-8?B?ZXRiaUNoWXVjbHo3ZHpOQnczWmdUQ1JiUEF1NUpRd2Nxc0NNQm13TVdJSWVZ?=
- =?utf-8?B?eHpsQlJVQ0hxNTczVXZOYzdJd3VwOWZGL3hocEc2dkZyT0ZRajlyM2pmUG9k?=
- =?utf-8?B?L2R0clZPSEk5OU1qRGJ4L0VXdysyZWNDUkh1TnpOZmw2dlJ2NlM2REdTUWJG?=
- =?utf-8?B?ZnEzdHZjRmFTYXVOOXE5eG9NeTU2UzJyL2VUYWlRZDZLeXJoais1bmlsVVN5?=
- =?utf-8?B?cTlxUnRsWkU0czRGdkg4djVMVXZzWkVMWXNoa09ucGdmOEl2T3JkRnltNDFT?=
- =?utf-8?B?dU1XWTlkbFoyM1BKcHR5TkFWdUxyY256U3o5QlFaRDVCUEc3S3M4UktMY3pE?=
- =?utf-8?B?QVZ6a2o5eVdBU1RXemlaN3FVbGVXT0ZiUVV1ajYyTUZSZ2NtdDhhdDJ2ems4?=
- =?utf-8?B?YVNlQVFHUkNGekpENVY2U1Z0cmt1TjJqVE1ETUFpTEpDVlhEZDFhNG9lWHp2?=
- =?utf-8?B?Z1BNYzBwcFJ0d1lkQ0pSRHJjWmJPaHZsYXRrN1orN3BXM1dVeE5Ra1J1N1dG?=
- =?utf-8?B?bkNmOWZVenozdnozc0FRREE1aXBLbU1NK0J1TkI4TG9ib3hnYk5nT0RYZi9Q?=
- =?utf-8?B?blZtRElrYURwaDZkSXBlOTh6S0c5OWdZcVhsem1ITkQ1MCtMUTdSSTJCc1ZG?=
- =?utf-8?B?S0p0VCtLUEE0YjhFenk1cmRpMytKTURwei9oMGVVQ2pxeXdCbWZzNStNRGQ5?=
- =?utf-8?B?QTRPVWVDTHU2VHNaQmhnMVhvOGM1dHlSTUU4NnFJbDJiOGxueTJTZW5veDlZ?=
- =?utf-8?B?Q0J1aTZEVjVkNWF1YWJVa0JLVEhocXRVdTRjZnR2cG4xKzJqQ2Jja01HVVRX?=
- =?utf-8?B?YWdHWHlsWU54cmJ3MVNiaFkyQWp0VUVVbk5GM3Vsc0lGdGcxREYraTVGMVZL?=
- =?utf-8?B?c0NBdVByTXp6MHlIWENJSGM5N09LS0QzeDUwQTR3YmF4dFFNUUI2bUJDMkc1?=
- =?utf-8?B?L3pPb0NOV2RhQmx6Mjd3Uy9DSUFhTERkY2dUNGRJaTlFQ2N1WGxuQXAwM2tO?=
- =?utf-8?B?SXlFTzgwR3QreFVSMFI4VWFud3prR3V2NzVNM0ppVEpNUXJsUWJXcE1VKzNK?=
- =?utf-8?B?NkN3K2MxMHpJTkZmWkwvSGVIOGIrblhHL1JnZzRoMGVIUjdCZ21USnNJWWpy?=
- =?utf-8?B?VkNaMy9NOW8wVzBleGZiM3NsaGYvSUxkb2p6RndoOUt4WngrQ0wzWHVBY0lY?=
- =?utf-8?B?dFY3N2wzbVJlaGZPZFppbGk5UGpSWHErTHpUQmlWOWRVUXNVb3VqWXF0VFVy?=
- =?utf-8?B?QkRwdWRPNGZ1eGh5V2VIb3lyVkJnSWhRd0NwK0ozSW9rNjd6djVmNE9pOVNm?=
- =?utf-8?B?ZTcrcCs4bnF0UTN5cVVxZ3Y2VUw3cndoN054SlFNUWd1SmVzOUFRNDBxZUJ6?=
- =?utf-8?B?OGY3MUR3UHlBWGkweTYzUStxa0djbGZMQnZ3M290WFQ1Uko5UnlmTUdKS1NU?=
- =?utf-8?B?aWZoVm1kanZVSmlDVCsvWUhWRFE5aU9ldEJmT3JYV0dpSjk1MU1lK2pWK0Nm?=
- =?utf-8?B?WWFYaWNWR3BtRkQycTU4MENKQUYrMHJoeXBkWGlzdzdjNFhtdTJPZmRubzI1?=
- =?utf-8?B?WEZObUpsVEw2RHFYV0hpS2V3U1BaVDVIT3dMR3FRdDA2NlpuMDJTb0Z4Mzdm?=
- =?utf-8?B?YU1mWW9wLzJHUUtkb3Yyd0RQeStPS1M3c1pZbnZkYlVnSkxPUHZhdEJhTVJq?=
- =?utf-8?B?bXpsVnJKZ2QzMGtoOUZHNTlkc0dQYWZmZzZONXEvWGtWdlM2bXhEaWxDYTJn?=
- =?utf-8?B?NlduaE1oWkVKazU0VEE1Uzdya2xJVERtOWhXVnRaM044dkJ3OHZJYkZ4TmFZ?=
- =?utf-8?B?Vnc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S231882AbjGUOWT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 10:22:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB8D10FC
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 07:22:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9530B61CB7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 14:22:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9497C433C8;
+        Fri, 21 Jul 2023 14:22:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689949337;
+        bh=yE+HW6VYQ+21KYxM2wJ2G+MTMNL3ptDIJoLRDF6y9TM=;
+        h=Subject:To:Cc:From:Date:From;
+        b=lfRavljUWQOAvpn5QOx15mm7Wxx4OFvayPd3MBHvardjAGGen4wU4+Ckeu4kc6Sy9
+         QdmpacPqnO1sQuyXu2kx6fzOG31uXphg2IrkDhWDVN+J7/VT2QfV89BFLHq9P5avDW
+         xINfZbB9R42cBxIVUgHYPEyrZnMaG6hf8Rw/mJYU=
+Subject: FAILED: patch "[PATCH] tracing/histograms: Add histograms to hist_vars if they have" failed to apply to 4.19-stable tree
+To:     mkhalfella@purestorage.com, rostedt@goodmis.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 21 Jul 2023 16:22:14 +0200
+Message-ID: <2023072114-radiantly-gilled-72c0@gregkh>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR21MB1688.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 617b7e72-852e-488d-30a3-08db89f5ce39
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jul 2023 14:21:42.2687
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CpJvpHkOYBZFEyb4kp0gNRq0rlBy6LNb2Sub5X7Jt89NYfLX53e+L1HzRHaFeixt1U3W06E7ncX0J+claN466uofCtw0A6CT7J0783GtcPY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR21MB1507
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-RnJvbTogRGF2aWQgTGFpZ2h0IDxEYXZpZC5MYWlnaHRAQUNVTEFCLkNPTT4gU2VudDogRnJpZGF5
-LCBKdWx5IDIxLCAyMDIzIDc6MDcgQU0NCj4gDQo+IC4uLg0KPiA+IEkgcmVhbGl6ZWQgaW4gdGhl
-IG1pZGRsZSBvZiB0aGUgbmlnaHQgdGhhdCBteSByZXBseSB3YXMgbm9uc2Vuc2UuIDotKA0KPiA+
-IHByX3dhcm4oKSBtYWtlcyB0aGUgbWVzc2FnZSB2aXNpYmxlIHdoZW4gcHJfaW5mbygpIG1pZ2h0
-IG5vdC4gIEknbQ0KPiA+IGhhcHB5IHRvIGNoYW5nZSB0byBwcl93YXJuKCkuDQo+IA0KPiBQQU5J
-Q19PTl9XQVJOPz8NCj4gDQoNCnBhbmljX29uX3dhcm4gYXBwbGllcyB0byBXQVJOKCkgYW5kIHZh
-cmlhbnRzLiAgcHJfd2FybigpIGlzIHVucmVsYXRlZDsNCml0J3MganVzdCBrZXJuZWwgbG9nZ2lu
-ZyBsZXZlbCA0IHZzLiBsb2dnaW5nIGxldmVsIDYgZm9yIHByX2luZm8oKS4NCg0KTWljaGFlbA0K
+
+The patch below does not apply to the 4.19-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6018b585e8c6fa7d85d4b38d9ce49a5b67be7078
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072114-radiantly-gilled-72c0@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+
+Possible dependencies:
+
+6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if they have referenced variables")
+7d18a10c3167 ("tracing: Refactor hist trigger action code")
+036876fa5620 ("tracing: Have the historgram use the result of str_has_prefix() for len of prefix")
+754481e6954c ("tracing: Use str_has_prefix() helper for histogram code")
+de40f033d4e8 ("tracing: Remove open-coding of hist trigger var_ref management")
+2f31ed9308cc ("tracing: Change strlen to sizeof for hist trigger static strings")
+0e2b81f7b52a ("tracing: Remove unneeded synth_event_mutex")
+7bbab38d07f3 ("tracing: Use dyn_event framework for synthetic events")
+faacb361f271 ("tracing: Simplify creation and deletion of synthetic events")
+fc800a10be26 ("tracing: Lock event_mutex before synth_event_mutex")
+343a9f35409b ("Merge tag 'trace-v4.20' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6018b585e8c6fa7d85d4b38d9ce49a5b67be7078 Mon Sep 17 00:00:00 2001
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
+Date: Wed, 12 Jul 2023 22:30:21 +0000
+Subject: [PATCH] tracing/histograms: Add histograms to hist_vars if they have
+ referenced variables
+
+Hist triggers can have referenced variables without having direct
+variables fields. This can be the case if referenced variables are added
+for trigger actions. In this case the newly added references will not
+have field variables. Not taking such referenced variables into
+consideration can result in a bug where it would be possible to remove
+hist trigger with variables being refenced. This will result in a bug
+that is easily reproducable like so
+
+$ cd /sys/kernel/tracing
+$ echo 'synthetic_sys_enter char[] comm; long id' >> synthetic_events
+$ echo 'hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
+$ echo 'hist:keys=common_pid.execname,id.syscall:onmatch(raw_syscalls.sys_enter).synthetic_sys_enter($comm, id)' >> events/raw_syscalls/sys_enter/trigger
+$ echo '!hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
+
+[  100.263533] ==================================================================
+[  100.264634] BUG: KASAN: slab-use-after-free in resolve_var_refs+0xc7/0x180
+[  100.265520] Read of size 8 at addr ffff88810375d0f0 by task bash/439
+[  100.266320]
+[  100.266533] CPU: 2 PID: 439 Comm: bash Not tainted 6.5.0-rc1 #4
+[  100.267277] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
+[  100.268561] Call Trace:
+[  100.268902]  <TASK>
+[  100.269189]  dump_stack_lvl+0x4c/0x70
+[  100.269680]  print_report+0xc5/0x600
+[  100.270165]  ? resolve_var_refs+0xc7/0x180
+[  100.270697]  ? kasan_complete_mode_report_info+0x80/0x1f0
+[  100.271389]  ? resolve_var_refs+0xc7/0x180
+[  100.271913]  kasan_report+0xbd/0x100
+[  100.272380]  ? resolve_var_refs+0xc7/0x180
+[  100.272920]  __asan_load8+0x71/0xa0
+[  100.273377]  resolve_var_refs+0xc7/0x180
+[  100.273888]  event_hist_trigger+0x749/0x860
+[  100.274505]  ? kasan_save_stack+0x2a/0x50
+[  100.275024]  ? kasan_set_track+0x29/0x40
+[  100.275536]  ? __pfx_event_hist_trigger+0x10/0x10
+[  100.276138]  ? ksys_write+0xd1/0x170
+[  100.276607]  ? do_syscall_64+0x3c/0x90
+[  100.277099]  ? entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  100.277771]  ? destroy_hist_data+0x446/0x470
+[  100.278324]  ? event_hist_trigger_parse+0xa6c/0x3860
+[  100.278962]  ? __pfx_event_hist_trigger_parse+0x10/0x10
+[  100.279627]  ? __kasan_check_write+0x18/0x20
+[  100.280177]  ? mutex_unlock+0x85/0xd0
+[  100.280660]  ? __pfx_mutex_unlock+0x10/0x10
+[  100.281200]  ? kfree+0x7b/0x120
+[  100.281619]  ? ____kasan_slab_free+0x15d/0x1d0
+[  100.282197]  ? event_trigger_write+0xac/0x100
+[  100.282764]  ? __kasan_slab_free+0x16/0x20
+[  100.283293]  ? __kmem_cache_free+0x153/0x2f0
+[  100.283844]  ? sched_mm_cid_remote_clear+0xb1/0x250
+[  100.284550]  ? __pfx_sched_mm_cid_remote_clear+0x10/0x10
+[  100.285221]  ? event_trigger_write+0xbc/0x100
+[  100.285781]  ? __kasan_check_read+0x15/0x20
+[  100.286321]  ? __bitmap_weight+0x66/0xa0
+[  100.286833]  ? _find_next_bit+0x46/0xe0
+[  100.287334]  ? task_mm_cid_work+0x37f/0x450
+[  100.287872]  event_triggers_call+0x84/0x150
+[  100.288408]  trace_event_buffer_commit+0x339/0x430
+[  100.289073]  ? ring_buffer_event_data+0x3f/0x60
+[  100.292189]  trace_event_raw_event_sys_enter+0x8b/0xe0
+[  100.295434]  syscall_trace_enter.constprop.0+0x18f/0x1b0
+[  100.298653]  syscall_enter_from_user_mode+0x32/0x40
+[  100.301808]  do_syscall_64+0x1a/0x90
+[  100.304748]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  100.307775] RIP: 0033:0x7f686c75c1cb
+[  100.310617] Code: 73 01 c3 48 8b 0d 65 3c 10 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 21 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 35 3c 10 00 f7 d8 64 89 01 48
+[  100.317847] RSP: 002b:00007ffc60137a38 EFLAGS: 00000246 ORIG_RAX: 0000000000000021
+[  100.321200] RAX: ffffffffffffffda RBX: 000055f566469ea0 RCX: 00007f686c75c1cb
+[  100.324631] RDX: 0000000000000001 RSI: 0000000000000001 RDI: 000000000000000a
+[  100.328104] RBP: 00007ffc60137ac0 R08: 00007f686c818460 R09: 000000000000000a
+[  100.331509] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+[  100.334992] R13: 0000000000000007 R14: 000000000000000a R15: 0000000000000007
+[  100.338381]  </TASK>
+
+We hit the bug because when second hist trigger has was created
+has_hist_vars() returned false because hist trigger did not have
+variables. As a result of that save_hist_vars() was not called to add
+the trigger to trace_array->hist_vars. Later on when we attempted to
+remove the first histogram find_any_var_ref() failed to detect it is
+being used because it did not find the second trigger in hist_vars list.
+
+With this change we wait until trigger actions are created so we can take
+into consideration if hist trigger has variable references. Also, now we
+check the return value of save_hist_vars() and fail trigger creation if
+save_hist_vars() fails.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230712223021.636335-1-mkhalfella@purestorage.com
+
+Cc: stable@vger.kernel.org
+Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index b97d3ad832f1..c8c61381eba4 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -6663,13 +6663,15 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
+ 	if (get_named_trigger_data(trigger_data))
+ 		goto enable;
+ 
+-	if (has_hist_vars(hist_data))
+-		save_hist_vars(hist_data);
+-
+ 	ret = create_actions(hist_data);
+ 	if (ret)
+ 		goto out_unreg;
+ 
++	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
++		if (save_hist_vars(hist_data))
++			goto out_unreg;
++	}
++
+ 	ret = tracing_map_init(hist_data->map);
+ 	if (ret)
+ 		goto out_unreg;
+
