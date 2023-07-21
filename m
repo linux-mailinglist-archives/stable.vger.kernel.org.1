@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A6FF75D4B3
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 460FF75D3DF
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232206AbjGUTYJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:24:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
+        id S231948AbjGUTPY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232211AbjGUTYI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C484AE75
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:07 -0700 (PDT)
+        with ESMTP id S231938AbjGUTPX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:15:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 324B7189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:15:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6410361D2F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780DDC433C9;
-        Fri, 21 Jul 2023 19:24:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBBE561D7B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:15:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFE6C433C8;
+        Fri, 21 Jul 2023 19:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967446;
-        bh=1i2FOhYFo2yxVMwN7eIXPosGo0H08fgwxF877f2JEfI=;
+        s=korg; t=1689966921;
+        bh=khSIIYbhuy8PA/utIzHISJiWPC+EaRhatyuCXTvhmSs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yhPez6dOqWbe3GyKVnbH0HNt4hL2192fZQBXl/WRTnGCya2kB+8V8QNJhMnWakDhp
-         IuT7cOJN3Xm9pI4fNrbIobeaAjSFNeQ4O+N5EPi4TmHtUpw02sWvY5pYUpTF875vsv
-         GTcePCXHxO/p3ebu7rG6yUq+xyPFiUR6zrZmRDXI=
+        b=qqqhMDK0o9VRThLYub591+L7IJeYcEMS8JbHCnDX5OE75ji65uKMpN7psE63Y5iA2
+         DJY1l5/gTsvHKFDwFPUq4BZ3qin746iTMqORK++yOHjjWVsk4+jpK4WKRkhxK79xe1
+         OMmyXvdWjBDDxywD5p8KbZtkrrtYwOwpAm99SV90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
-        Milind Changire <mchangir@redhat.com>,
-        Patrick Donnelly <pdonnell@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.1 165/223] ceph: dont let check_caps skip sending responses for revoke msgs
-Date:   Fri, 21 Jul 2023 18:06:58 +0200
-Message-ID: <20230721160527.912109359@linuxfoundation.org>
+        patches@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>
+Subject: [PATCH 5.15 515/532] ftrace: Fix possible warning on checking all pages used in ftrace_process_locs()
+Date:   Fri, 21 Jul 2023 18:06:59 +0200
+Message-ID: <20230721160642.597201146@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,47 +54,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-commit 257e6172ab36ebbe295a6c9ee9a9dd0fe54c1dc2 upstream.
+commit 26efd79c4624294e553aeaa3439c646729bad084 upstream.
 
-If a client sends out a cap update dropping caps with the prior 'seq'
-just before an incoming cap revoke request, then the client may drop
-the revoke because it believes it's already released the requested
-capabilities.
+As comments in ftrace_process_locs(), there may be NULL pointers in
+mcount_loc section:
+ > Some architecture linkers will pad between
+ > the different mcount_loc sections of different
+ > object files to satisfy alignments.
+ > Skip any NULL pointers.
 
-This causes the MDS to wait indefinitely for the client to respond
-to the revoke. It's therefore always a good idea to ack the cap
-revoke request with the bumped up 'seq'.
+After commit 20e5227e9f55 ("ftrace: allow NULL pointers in mcount_loc"),
+NULL pointers will be accounted when allocating ftrace pages but skipped
+before adding into ftrace pages, this may result in some pages not being
+used. Then after commit 706c81f87f84 ("ftrace: Remove extra helper
+functions"), warning may occur at:
+  WARN_ON(pg->next);
+
+To fix it, only warn for case that no pointers skipped but pages not used
+up, then free those unused pages after releasing ftrace_lock.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230712060452.3175675-1-zhengyejian1@huawei.com
 
 Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/61782
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 706c81f87f84 ("ftrace: Remove extra helper functions")
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/caps.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/trace/ftrace.c |   45 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 31 insertions(+), 14 deletions(-)
 
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -3561,6 +3561,15 @@ static void handle_cap_grant(struct inod
- 	}
- 	BUG_ON(cap->issued & ~cap->implemented);
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -3192,6 +3192,22 @@ static int ftrace_allocate_records(struc
+ 	return cnt;
+ }
  
-+	/* don't let check_caps skip sending a response to MDS for revoke msgs */
-+	if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
-+		cap->mds_wanted = 0;
-+		if (cap == ci->i_auth_cap)
-+			check_caps = 1; /* check auth cap only */
-+		else
-+			check_caps = 2; /* check all caps */
-+	}
++static void ftrace_free_pages(struct ftrace_page *pages)
++{
++	struct ftrace_page *pg = pages;
 +
- 	if (extra_info->inline_version > 0 &&
- 	    extra_info->inline_version >= ci->i_inline_version) {
- 		ci->i_inline_version = extra_info->inline_version;
++	while (pg) {
++		if (pg->records) {
++			free_pages((unsigned long)pg->records, pg->order);
++			ftrace_number_of_pages -= 1 << pg->order;
++		}
++		pages = pg->next;
++		kfree(pg);
++		pg = pages;
++		ftrace_number_of_groups--;
++	}
++}
++
+ static struct ftrace_page *
+ ftrace_allocate_pages(unsigned long num_to_init)
+ {
+@@ -3230,17 +3246,7 @@ ftrace_allocate_pages(unsigned long num_
+ 	return start_pg;
+ 
+  free_pages:
+-	pg = start_pg;
+-	while (pg) {
+-		if (pg->records) {
+-			free_pages((unsigned long)pg->records, pg->order);
+-			ftrace_number_of_pages -= 1 << pg->order;
+-		}
+-		start_pg = pg->next;
+-		kfree(pg);
+-		pg = start_pg;
+-		ftrace_number_of_groups--;
+-	}
++	ftrace_free_pages(start_pg);
+ 	pr_info("ftrace: FAILED to allocate memory for functions\n");
+ 	return NULL;
+ }
+@@ -6184,9 +6190,11 @@ static int ftrace_process_locs(struct mo
+ 			       unsigned long *start,
+ 			       unsigned long *end)
+ {
++	struct ftrace_page *pg_unuse = NULL;
+ 	struct ftrace_page *start_pg;
+ 	struct ftrace_page *pg;
+ 	struct dyn_ftrace *rec;
++	unsigned long skipped = 0;
+ 	unsigned long count;
+ 	unsigned long *p;
+ 	unsigned long addr;
+@@ -6240,8 +6248,10 @@ static int ftrace_process_locs(struct mo
+ 		 * object files to satisfy alignments.
+ 		 * Skip any NULL pointers.
+ 		 */
+-		if (!addr)
++		if (!addr) {
++			skipped++;
+ 			continue;
++		}
+ 
+ 		end_offset = (pg->index+1) * sizeof(pg->records[0]);
+ 		if (end_offset > PAGE_SIZE << pg->order) {
+@@ -6255,8 +6265,10 @@ static int ftrace_process_locs(struct mo
+ 		rec->ip = addr;
+ 	}
+ 
+-	/* We should have used all pages */
+-	WARN_ON(pg->next);
++	if (pg->next) {
++		pg_unuse = pg->next;
++		pg->next = NULL;
++	}
+ 
+ 	/* Assign the last page to ftrace_pages */
+ 	ftrace_pages = pg;
+@@ -6278,6 +6290,11 @@ static int ftrace_process_locs(struct mo
+  out:
+ 	mutex_unlock(&ftrace_lock);
+ 
++	/* We should have used all pages unless we skipped some */
++	if (pg_unuse) {
++		WARN_ON(!skipped);
++		ftrace_free_pages(pg_unuse);
++	}
+ 	return ret;
+ }
+ 
 
 
