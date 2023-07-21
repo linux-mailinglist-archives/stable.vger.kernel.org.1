@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95F2F75D27B
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CBFE75D27C
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231503AbjGUTAH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:00:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53764 "EHLO
+        id S231497AbjGUTAN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:00:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231500AbjGUTAG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:00:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8D930D7
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:00:05 -0700 (PDT)
+        with ESMTP id S231511AbjGUTAJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:00:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1338630DF
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:00:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3D1C61D5F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:00:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E31C433C8;
-        Fri, 21 Jul 2023 19:00:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C21161D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:00:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02BBC433C7;
+        Fri, 21 Jul 2023 19:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966004;
-        bh=LEdffPMU1XOW/eLMvFHLdP/lvTHAhsAN/JRfak7SEfo=;
+        s=korg; t=1689966007;
+        bh=hS+Xg/DrKR6EKh5yzc07Atl0E0hgpsvMw4Yrj/Ymimo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0t01xDpyJ1yx7rxDM3eGJ7RMwnUsn76czpFJPfv1MNOEv80vT2BvfmKdq/+KymQkv
-         q4mSIpw78rdYwJRbuliiMU+xpNYRJN2roIBw++LosZ8fK2g3UFanTZMfTAk5wgxXww
-         ksnEt9u2ECZ4u4rfzEVOTaZURJqUIJ+egAYL/yYw=
+        b=RmUkJld/JUMhN3SHW0P82g3Ahqn2fBKvgl8migjm0hfv8oeaL1WDUe0Tn4FJ/r8XI
+         meO7mk1SPAodhXQsvrWs7w1k8i6pVoDPhMISj6Wkopn/MveeutjIkKpBsE/GDgr4Cm
+         bGXDaoctfjRqm6gDH4bEocIecHXAF2lsHhAZZe0s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Lamparter <chunkeey@gmail.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
+        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 163/532] ARM: dts: BCM5301X: fix duplex-full => full-duplex
-Date:   Fri, 21 Jul 2023 18:01:07 +0200
-Message-ID: <20230721160623.246360531@linuxfoundation.org>
+Subject: [PATCH 5.15 164/532] drm/amdkfd: Fix potential deallocation of previously deallocated memory.
+Date:   Fri, 21 Jul 2023 18:01:08 +0200
+Message-ID: <20230721160623.298395483@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -45,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Lamparter <chunkeey@gmail.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit fd274b733bfdde3ca72f0fa2a37f032f3a8c402c ]
+[ Upstream commit cabbdea1f1861098991768d7bbf5a49ed1608213 ]
 
-this typo was found by the dtbs_check
-| ports:port@5:fixed-link: 'oneOf' conditional failed,
-|  {'speed': [[1000]], 'duplex-full': True} is not of type 'array'
-| 'duplex-full' does not match any of the regexes: 'pinctrl-[0-]..."
+Pointer mqd_mem_obj can be deallocated in kfd_gtt_sa_allocate().
+The function then returns non-zero value, which causes the second deallocation.
 
-this should have been full-duplex;
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 935327a73553 ("ARM: dts: BCM5301X: Add DT for Meraki MR26")
-Fixes: ec88a9c344d9 ("ARM: BCM5301X: Add DT for Meraki MR32")
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://lore.kernel.org/r/50522f45566951a9eabd22820647924cc6b4a264.1686238550.git.chunkeey@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: d1f8f0d17d40 ("drm/amdkfd: Move non-sdma mqd allocation out of init_mqd")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm53015-meraki-mr26.dts | 2 +-
- arch/arm/boot/dts/bcm53016-meraki-mr32.dts | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm53015-meraki-mr26.dts b/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
-index 14f58033efeb9..ca2266b936ee2 100644
---- a/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
-+++ b/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
-@@ -128,7 +128,7 @@ port@5 {
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+index 7f4e102ff4bd3..ddaafcd7b8256 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+@@ -113,18 +113,19 @@ static struct kfd_mem_obj *allocate_mqd(struct kfd_dev *kfd,
+ 			&(mqd_mem_obj->gtt_mem),
+ 			&(mqd_mem_obj->gpu_addr),
+ 			(void *)&(mqd_mem_obj->cpu_ptr), true);
++
++		if (retval) {
++			kfree(mqd_mem_obj);
++			return NULL;
++		}
+ 	} else {
+ 		retval = kfd_gtt_sa_allocate(kfd, sizeof(struct v9_mqd),
+ 				&mqd_mem_obj);
+-	}
+-
+-	if (retval) {
+-		kfree(mqd_mem_obj);
+-		return NULL;
++		if (retval)
++			return NULL;
+ 	}
  
- 			fixed-link {
- 				speed = <1000>;
--				duplex-full;
-+				full-duplex;
- 			};
- 		};
- 	};
-diff --git a/arch/arm/boot/dts/bcm53016-meraki-mr32.dts b/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
-index 577a4dc604d93..edf9910100b02 100644
---- a/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
-+++ b/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
-@@ -212,7 +212,7 @@ port@5 {
+ 	return mqd_mem_obj;
+-
+ }
  
- 			fixed-link {
- 				speed = <1000>;
--				duplex-full;
-+				full-duplex;
- 			};
- 		};
- 	};
+ static void init_mqd(struct mqd_manager *mm, void **mqd,
 -- 
 2.39.2
 
