@@ -2,45 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BD7075BE92
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5686A75BE93
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230522AbjGUGPz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:15:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47972 "EHLO
+        id S231129AbjGUGP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230499AbjGUGPb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:15:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC6713A92
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:13:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6107F6124F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:11:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A029C433C7;
-        Fri, 21 Jul 2023 06:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919873;
-        bh=V8LtZNYUks1gF6EWSp/5sZI4p9TcbzftnTKGbzQzTOQ=;
-        h=Subject:To:Cc:From:Date:From;
-        b=fPdqDKBtSTf8nU/N51CU/+EDXyuly1Y14YdBVaHorKzFy6dURJBMCTDEzQxnsnUBL
-         t25OSLZsa321L8UgzadhQrl/QepO0WSe6qVQAxIvJqgYQ50/of+n91taaij2I2LV9X
-         mXq5o94psg4IpzZB8nS26A7CWbET9JYPmiDUDaRs=
-Subject: FAILED: patch "[PATCH] PCI/ASPM: Avoid link retraining race" failed to apply to 4.14-stable tree
-To:     ilpo.jarvinen@linux.intel.com, bhelgaas@google.com, lukas@wunner.de
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:10:59 +0200
-Message-ID: <2023072159-crumpled-pastel-dba0@gregkh>
+        with ESMTP id S229786AbjGUGPf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:15:35 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A0749E2;
+        Thu, 20 Jul 2023 23:13:15 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qMjM0-0000FE-Vr; Fri, 21 Jul 2023 08:11:05 +0200
+Message-ID: <421602e6-0fe0-34c4-12bb-d805f2a282f4@leemhuis.info>
+Date:   Fri, 21 Jul 2023 08:11:02 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: Fwd: 6.4.4 breaks module-free builds of Debian kernel packages
+Content-Language: en-US, de-DE
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Brian Lindholm <brian_lindholm@users.sourceforge.net>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Kernel Build System <linux-kbuild@vger.kernel.org>
+References: <e7292802-e517-6469-6fbd-a4d30887c99b@gmail.com>
+ <63a46a4e-53d4-6d18-7f6e-fee1c9890c79@infradead.org>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <63a46a4e-53d4-6d18-7f6e-fee1c9890c79@infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1689919995;b90addbf;
+X-HE-SMSGID: 1qMjM0-0000FE-Vr
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,88 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 21.07.23 06:13, Randy Dunlap wrote:
+> On 7/20/23 20:18, Bagas Sanjaya wrote:
+>>
+>>> I'm on AMD64 with Debian testing (trixie), where I build my own kernels (with CONFIG_MODULES unset) using "make bindeb-pkg". The build proceeds through 99% of the process, but fails here:
+>>>
+> [...]
+>>>
+>>> 6.3.13 contained the same error, but I "fixed" that by moving to 6.4.3.  But alas, 6.4.4 now has the same issue.
+>>>
+>>> I worked around the issue by changing "exit 1" to "exit 0" in the main Makefile (at "modules module_install", per the attached patch), but I don't know if this is a true fix or something that simply happens to work for my particular configuration.
+>>
+>> See Bugzilla for the full thread and attached patch that ignores the error.
+>>
+>> Josh: It looks like this regression is caused by a commit of yours
+>> (and also 1240dabe8d58b4). Would you like to take a look on it?
+>>
+>> Anyway, I'm adding this regression to be tracked by regzbot:
+>>
+>> #regzbot introduced: 4243afdb932677 https://bugzilla.kernel.org/show_bug.cgi?id=217689
+>> #regzbot title: always doing modules_install breaks CONFIG_MODULES=n builds
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Masahiro Yamada: thx for taking care of this and Greg for picking the
+fix up.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+BTW, Bagas, this apparently is a regression that only affected stable.
+In that case please tell rezbot about the stable commit-id of the
+change, as otherwise it will consider the problem a regression in
+mainline (and there it's was never a problem or already solved [didn't
+look]).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x e7e39756363ad5bd83ddeae1063193d0f13870fd
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072159-crumpled-pastel-dba0@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Let me fix this up and tell regzbot about the incoming fix while at it:
 
-Possible dependencies:
+#regzbot introduced: 6061ac50f1e04
+#regzbot fix: kbuild: make modules_install copy modules.builtin(.modinfo)
 
-e7e39756363a ("PCI/ASPM: Avoid link retraining race")
-9c7f136433d2 ("PCI/ASPM: Factor out pcie_wait_for_retrain()")
-f5297a01ee80 ("PCI/ASPM: Return 0 or -ETIMEDOUT from  pcie_retrain_link()")
-658eec837b11 ("PCI: Rework pcie_retrain_link() wait loop")
-86fa6a344209 ("PCI: Factor out pcie_retrain_link() function")
-7506dc798993 ("PCI: Add wrappers for dev_printk()")
-104d1e40cfcd ("Merge branch 'pci/resource' into next")
+>> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217689
+> 
+> Do you also take care of marking the bugzilla entries as completed/fixed/solved
+> etc.?
 
-thanks,
+I don't known if Bagas does, but I do not and have no plans to do so.
 
-greg k-h
+I consider my work on looking at bugzilla for regressions a courtesy I
+perform in the interest of the "no regressions" rule, as some or many of
+those report otherwise will be ignored. And that's bad for our reputation.
 
------------------- original commit in Linus's tree ------------------
+But that is where my courtesy stops. Those that think having a bugzilla
+around should take care of maintaining the state. Bugbot might soon
+solve part of the problem. But I guess it won't handle this case.
 
-From e7e39756363ad5bd83ddeae1063193d0f13870fd Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 2 May 2023 11:39:23 +0300
-Subject: [PATCH] PCI/ASPM: Avoid link retraining race
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-PCIe r6.0.1, sec 7.5.3.7, recommends setting the link control parameters,
-then waiting for the Link Training bit to be clear before setting the
-Retrain Link bit.
-
-This avoids a race where the LTSSM may not use the updated parameters if it
-is already in the midst of link training because of other normal link
-activity.
-
-Wait for the Link Training bit to be clear before toggling the Retrain Link
-bit to ensure that the LTSSM uses the updated link control parameters.
-
-[bhelgaas: commit log, return 0 (success)/-ETIMEDOUT instead of bool for
-both pcie_wait_for_retrain() and the existing pcie_retrain_link()]
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
-Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 954717d7033f..3aa73ecdf86f 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -213,8 +213,19 @@ static int pcie_wait_for_retrain(struct pci_dev *pdev)
- static int pcie_retrain_link(struct pcie_link_state *link)
- {
- 	struct pci_dev *parent = link->pdev;
-+	int rc;
- 	u16 reg16;
- 
-+	/*
-+	 * Ensure the updated LNKCTL parameters are used during link
-+	 * training by checking that there is no ongoing link training to
-+	 * avoid LTSSM race as recommended in Implementation Note at the
-+	 * end of PCIe r6.0.1 sec 7.5.3.7.
-+	 */
-+	rc = pcie_wait_for_retrain(parent);
-+	if (rc)
-+		return rc;
-+
- 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
- 	reg16 |= PCI_EXP_LNKCTL_RL;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
-
+Ciao, Thorsten
