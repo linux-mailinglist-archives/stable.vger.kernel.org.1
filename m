@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D22875D258
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4085875D25A
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:58:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231465AbjGUS6j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52544 "EHLO
+        id S231467AbjGUS6o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:58:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231444AbjGUS6i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:58:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9986E30CF
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:58:36 -0700 (PDT)
+        with ESMTP id S231431AbjGUS6n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:58:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B6A230D7
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:58:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3097D61D82
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:58:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42773C433C8;
-        Fri, 21 Jul 2023 18:58:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E3FDE61D7C
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:58:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F245EC433C8;
+        Fri, 21 Jul 2023 18:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965915;
-        bh=PMBJsMkFykAf6X8rTs8rOCsR1p+vlUCBEtCBWalm45U=;
+        s=korg; t=1689965921;
+        bh=86dVskVF+/bSNt6LlVE6M1up3Ni+JO+m3+MbUsGPmd0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bWv7anmenes1Yq19+qcyTs8WRK+umn+zRxu/lbBzxMVp8Tx4JpWGKRxeq9ldfi8K8
-         D6RhK9lwrKls7kICFkoIb4lEEvm91YZKGmv868SmQDngZTXVYykGzkq+RsLLXlxjAx
-         owaPpIwb1rBb4AtYhT1PGHZYn44nt9FLZPUr448s=
+        b=jllY6YOLikxQ9cQ9obtdqRwqBvD3Vk4e6crJBO/h3lWUSpI6GQ13TJkrnRi0q+Zv4
+         miN0p8ez0dfXWYRGRFvgbzEXQsNAqRhvllgATMPxG8Dw7zyS+z3MjztdflFG+z9EN/
+         Yl2iYQzcxcucdo1LFGGNysDgkLRm70yegB2B/Vdg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Yassine Oudjana <y.oudjana@protonmail.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/532] arm64: dts: qcom: db820c: Move blsp1_uart2 pin states to msm8996.dtsi
-Date:   Fri, 21 Jul 2023 18:00:36 +0200
-Message-ID: <20230721160621.626858712@linuxfoundation.org>
+Subject: [PATCH 5.15 133/532] arm64: dts: qcom: apq8016-sbc: Update modem and WiFi firmware path
+Date:   Fri, 21 Jul 2023 18:00:37 +0200
+Message-ID: <20230721160621.680378860@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
 References: <20230721160614.695323302@linuxfoundation.org>
@@ -46,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,105 +56,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-[ Upstream commit c57b4247faaf6d17a319c91d5eb736c3bc65aca2 ]
+[ Upstream commit 0f6b380d580cd081d5e385d349f55dfc52e3d68c ]
 
-Move blsp1_uart2_default and blsp1_uart2_sleep to the SoC device tree to
-avoid duplicating them in other device trees.
+The firmware for the modem and WiFi subsystems platform specific and is
+signed with a OEM specific key (or a test key). In order to support more
+than a single device it is therefor not possible to rely on the default
+path and stash these files directly in the firmware directory.
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+This has already been addressed for other platforms, but the APQ8016 SBC
+(aka db410c) was never finished upstream.
+
 Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/20210901193214.250375-2-y.oudjana@protonmail.com
+Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+Tested-by: Stephan Gerhold <stephan@gerhold.net>
+Link: https://lore.kernel.org/r/20210531224453.783218-1-bjorn.andersson@linaro.org
 Stable-dep-of: e27654df20d7 ("arm64: dts: qcom: apq8016-sbc: Fix regulator constraints")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi | 29 --------------------
- arch/arm64/boot/dts/qcom/msm8996.dtsi        | 17 ++++++++++++
- 2 files changed, 17 insertions(+), 29 deletions(-)
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi | 12 ++++++++++++
+ arch/arm64/boot/dts/qcom/msm8916.dtsi     |  2 +-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi b/arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi
-index 51e17094d7b18..eca428ab2517a 100644
---- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi
-+++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi
-@@ -148,9 +148,6 @@ &blsp1_spi1 {
- &blsp1_uart2 {
- 	label = "BT-UART";
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+index f8d8f3e3664ec..351c68d29afb7 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+@@ -305,6 +305,12 @@ &mdss {
  	status = "okay";
--	pinctrl-names = "default", "sleep";
--	pinctrl-0 = <&blsp1_uart2_default>;
--	pinctrl-1 = <&blsp1_uart2_sleep>;
+ };
  
- 	bluetooth {
- 		compatible = "qcom,qca6174-bt";
-@@ -437,32 +434,6 @@ config {
- 		};
- 	};
- 
--	blsp1_uart2_default: blsp1_uart2_default {
--		mux {
--			pins = "gpio41", "gpio42", "gpio43", "gpio44";
--			function = "blsp_uart2";
--		};
--
--		config {
--			pins = "gpio41", "gpio42", "gpio43", "gpio44";
--			drive-strength = <16>;
--			bias-disable;
--		};
--	};
--
--	blsp1_uart2_sleep: blsp1_uart2_sleep {
--		mux {
--			pins = "gpio41", "gpio42", "gpio43", "gpio44";
--			function = "gpio";
--		};
--
--		config {
--			pins = "gpio41", "gpio42", "gpio43", "gpio44";
--			drive-strength = <2>;
--			bias-disable;
--		};
--	};
--
- 	hdmi_hpd_active: hdmi_hpd_active {
- 		mux {
- 			pins = "gpio34";
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index 893c241f72030..ec3ef14048cc0 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -1228,6 +1228,20 @@ wake {
- 				};
- 			};
- 
-+			blsp1_uart2_default: blsp1-uart2-default {
-+				pins = "gpio41", "gpio42", "gpio43", "gpio44";
-+				function = "blsp_uart2";
-+				drive-strength = <16>;
-+				bias-disable;
-+			};
++&mpss {
++	status = "okay";
 +
-+			blsp1_uart2_sleep: blsp1-uart2-sleep {
-+				pins = "gpio41", "gpio42", "gpio43", "gpio44";
-+				function = "gpio";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
++	firmware-name = "qcom/msm8916/mba.mbn", "qcom/msm8916/modem.mbn";
++};
 +
- 			blsp1_i2c3_default: blsp1-i2c2-default {
- 				pins = "gpio47", "gpio48";
- 				function = "blsp_i2c3";
-@@ -2724,6 +2738,9 @@ blsp1_uart2: serial@7570000 {
- 			clocks = <&gcc GCC_BLSP1_UART2_APPS_CLK>,
- 				 <&gcc GCC_BLSP1_AHB_CLK>;
- 			clock-names = "core", "iface";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp1_uart2_default>;
-+			pinctrl-1 = <&blsp1_uart2_sleep>;
- 			dmas = <&blsp1_dma 2>, <&blsp1_dma 3>;
- 			dma-names = "tx", "rx";
- 			status = "disabled";
+ &pm8916_resin {
+ 	status = "okay";
+ 	linux,code = <KEY_VOLUMEDOWN>;
+@@ -312,6 +318,8 @@ &pm8916_resin {
+ 
+ &pronto {
+ 	status = "okay";
++
++	firmware-name = "qcom/msm8916/wcnss.mbn";
+ };
+ 
+ &sdhc_1 {
+@@ -394,6 +402,10 @@ &wcd_codec {
+ 	qcom,mbhc-vthreshold-high = <75 150 237 450 500>;
+ };
+ 
++&wcnss_ctrl {
++	firmware-name = "qcom/msm8916/WCNSS_qcom_wlan_nv.bin";
++};
++
+ /* Enable CoreSight */
+ &cti0 { status = "okay"; };
+ &cti1 { status = "okay"; };
+diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+index aa79e08075ea7..fcc9f757c9e14 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1771,7 +1771,7 @@ smd-edge {
+ 
+ 				label = "pronto";
+ 
+-				wcnss {
++				wcnss_ctrl: wcnss {
+ 					compatible = "qcom,wcnss";
+ 					qcom,smd-channels = "WCNSS_CTRL";
+ 
 -- 
 2.39.2
 
