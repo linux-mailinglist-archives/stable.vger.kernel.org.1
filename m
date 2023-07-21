@@ -2,137 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9541875C68A
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7693C75C694
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:09:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230004AbjGUMHr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 08:07:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60474 "EHLO
+        id S231375AbjGUMJ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 08:09:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231145AbjGUMHq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:07:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26222171B
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:07:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6AFD61934
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:07:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32CBC433C8;
-        Fri, 21 Jul 2023 12:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689941220;
-        bh=TIW6wGn8a/t228byR+uHmdUD6LPxQFddGpYuGsiDZbo=;
-        h=Subject:To:Cc:From:Date:From;
-        b=2hxJC5O2TnC0mtNENvRnBjYqyxYBe7dmju0AAtngfpBdBka6ToVZ2pXul5aGBVopk
-         biTsLh5BraMYKZNEukKlKIm/y0y3fDDI2OcaP0WACSDVPs9k/nyi6k/SXpysF55XaR
-         4lViXJvX896+RMYSDIOu4s2xFBnhT0zb+YtCGjG4=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Add monitor specific edid quirk" failed to apply to 5.15-stable tree
-To:     aurabindo.pillai@amd.com, alexander.deucher@amd.com,
-        daniel.wheeler@amd.com, rodrigo.siqueira@amd.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 14:06:57 +0200
-Message-ID: <2023072157-anyone-pavilion-c76b@gregkh>
+        with ESMTP id S230475AbjGUMJZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:09:25 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7875E19B3
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:09:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689941361; x=1721477361;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SwrcA9sTJRVaDzGBUug5hrRnJ4Kkdw2wtJDmFY8ttGA=;
+  b=bLG/5hiYRzk92Md9B7T08l9ZVL8LgJTvOgyin6dvngxS1lAY5bNGLPI8
+   k5YsND207E0ad9U79dOG0Jhv7DyZ606BriyiNkRjySrQZoZTwDHukjkLl
+   0/HYZhQSXM6rhVGkI9QqVc6bWnn3nBDW8Y+z21Dyij36Ym+BcphAcx8OQ
+   0/NQiU9e7meu+9P8hpWzS56zarh1NRlf5DOE9Yscaw2JgtsCuoU6cjoJO
+   0p32HKAc/XRjVZ28ugKBwr5NAa68QQGEQ1CjEUZeE+ARlukl5HuwpqSFw
+   CMhA1rHcZRFX2Cs5LMpOCv2gDWdZydti+FnP+9e1nPxZIOOGmVXljWGMA
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="433238524"
+X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
+   d="scan'208";a="433238524"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 05:09:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="814924617"
+X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
+   d="scan'208";a="814924617"
+Received: from hbockhor-mobl.ger.corp.intel.com (HELO intel.com) ([10.252.54.104])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 05:09:16 -0700
+Date:   Fri, 21 Jul 2023 14:09:13 +0200
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     "Krzysztofik, Janusz" <janusz.krzysztofik@intel.com>
+Cc:     "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+        "Roper, Matthew D" <matthew.d.roper@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        "Das, Nirmoy" <nirmoy.das@intel.com>,
+        "Hajda, Andrzej" <andrzej.hajda@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        linux-stable <stable@vger.kernel.org>,
+        dri-evel <dri-devel@lists.freedesktop.org>
+Subject: Re: [v7,5/9] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe
+ control
+Message-ID: <ZLp1aa2lbM3abmBG@ashyti-mobl2.lan>
+References: <20230720210737.761400-6-andi.shyti@linux.intel.com>
+ <4155037.1IzOArtZ34@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4155037.1IzOArtZ34@jkrzyszt-mobl2.ger.corp.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Janusz,
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> > Enable the CCS_FLUSH bit 13 in the control pipe for render and
+> > compute engines in platforms starting from Meteor Lake (BSPEC
+> > 43904 and 47112).
+> > 
+> > Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
+> 
+> I'm not sure why you think that your change fixes that commit.  Can you please 
+> explain?
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hardware folks have provided a new sequence for performing the
+quiescing of the engines... that's how it is :)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 613a7956deb3b1ffa2810c6d4c90ee9c3d743dbb
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072157-anyone-pavilion-c76b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-613a7956deb3 ("drm/amd/display: Add monitor specific edid quirk")
-6803dfd3a69c ("Revert "drm/amd/display: Limit max DSC target bpp for specific monitors"")
-55eea8ef9864 ("drm/amd/display: Limit max DSC target bpp for specific monitors")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 613a7956deb3b1ffa2810c6d4c90ee9c3d743dbb Mon Sep 17 00:00:00 2001
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Date: Mon, 12 Jun 2023 12:44:00 -0400
-Subject: [PATCH] drm/amd/display: Add monitor specific edid quirk
-
-Disable FAMS on a Samsung Odyssey G9 monitor. Experiments show that this
-monitor does not work well under some use cases, and is likely
-implementation specific bug on the monitor's firmware.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-index cd20cfc04996..d9a482908380 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -44,6 +44,30 @@
- #include "dm_helpers.h"
- #include "ddc_service_types.h"
- 
-+static u32 edid_extract_panel_id(struct edid *edid)
-+{
-+	return (u32)edid->mfg_id[0] << 24   |
-+	       (u32)edid->mfg_id[1] << 16   |
-+	       (u32)EDID_PRODUCT_ID(edid);
-+}
-+
-+static void apply_edid_quirks(struct edid *edid, struct dc_edid_caps *edid_caps)
-+{
-+	uint32_t panel_id = edid_extract_panel_id(edid);
-+
-+	switch (panel_id) {
-+	/* Workaround for some monitors which does not work well with FAMS */
-+	case drm_edid_encode_panel_id('S', 'A', 'M', 0x0E5E):
-+	case drm_edid_encode_panel_id('S', 'A', 'M', 0x7053):
-+	case drm_edid_encode_panel_id('S', 'A', 'M', 0x71AC):
-+		DRM_DEBUG_DRIVER("Disabling FAMS on monitor with panel id %X\n", panel_id);
-+		edid_caps->panel_patch.disable_fams = true;
-+		break;
-+	default:
-+		return;
-+	}
-+}
-+
- /* dm_helpers_parse_edid_caps
-  *
-  * Parse edid caps
-@@ -115,6 +139,8 @@ enum dc_edid_status dm_helpers_parse_edid_caps(
- 	else
- 		edid_caps->speaker_flags = DEFAULT_SPEAKER_LOCATION;
- 
-+	apply_edid_quirks(edid_buf, edid_caps);
-+
- 	kfree(sads);
- 	kfree(sadb);
- 
-
+Thanks,
+Andi
