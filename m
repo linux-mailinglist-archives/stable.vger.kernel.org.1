@@ -2,93 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D143575D3D3
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C24875D189
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231940AbjGUTOy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:14:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37458 "EHLO
+        id S231145AbjGUSuD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 14:50:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231937AbjGUTOw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:14:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85F630E3
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:14:50 -0700 (PDT)
+        with ESMTP id S230149AbjGUSuC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3411730CA
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87B6961D70
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:14:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981FEC433C7;
-        Fri, 21 Jul 2023 19:14:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC7AC61D79
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC3BC433C8;
+        Fri, 21 Jul 2023 18:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966890;
-        bh=YAsICtfXFfPotbgmsYNMsV3bJgh3ZWlp+EjzFQI6H54=;
+        s=korg; t=1689965400;
+        bh=WsmBUdyI0dqLhBR8ZpFMzmgIPm5B4DFwPzqsK/2CcT8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wlrl2BeIpyPvSAHQ6vDi1uEVCDiXlQ9KaUq6ZjcgKHdM6K8quaGzm0YRTliZKT8fE
-         OzvvEjKUlbScmQELmMo5PKolypWW7dsWzdlkrsq/WU+W9YI+qxtOpCInUUY/8hrqNK
-         WVscl/mTkOa0yQcGekbQ9quwm6SAHEYLHWO89feA=
+        b=ljIRnq9SEoT0tiBdTF7XPxqhalR5C237cwV2yUnBosyF+Sc5HKEbKShr71BQgMcCC
+         DkH54yA2UW4VlgmjVnVSX1hsqEhZUS7qG3ktE/wTDYAQBFqrv8s2WJnDc7130CMFKk
+         x7pu4B3iMY+bvWtknyeF/y8H0SbRfacyg60g0GBA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.15 475/532] PCI: rockchip: Assert PCI Configuration Enable bit after probe
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.4 270/292] tracing/probes: Fix not to count error code to total length
 Date:   Fri, 21 Jul 2023 18:06:19 +0200
-Message-ID: <20230721160640.280984685@linuxfoundation.org>
+Message-ID: <20230721160540.540584032@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
+References: <20230721160528.800311148@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit f397fd4ac1fa3afcabd8cee030f953ccaed2a364 upstream.
+commit b41326b5e0f82e93592c4366359917b5d67b529f upstream.
 
-Assert PCI Configuration Enable bit after probe. When this bit is left to
-0 in the endpoint mode, the RK3399 PCIe endpoint core will generate
-configuration request retry status (CRS) messages back to the root complex.
-Assert this bit after probe to allow the RK3399 PCIe endpoint core to reply
-to configuration requests from the root complex.
-This is documented in section 17.5.8.1.2 of the RK3399 TRM.
+Fix not to count the error code (which is minus value) to the total
+used length of array, because it can mess up the return code of
+process_fetch_insn_bottom(). Also clear the 'ret' value because it
+will be used for calculating next data_loc entry.
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-4-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/all/168908493827.123124.2175257289106364229.stgit@devnote2/
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/8819b154-2ba1-43c3-98a2-cbde20892023@moroto.mountain/
+Fixes: 9b960a38835f ("tracing: probeevent: Unify fetch_insn processing common part")
 Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace_probe_tmpl.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -631,6 +631,9 @@ static int rockchip_pcie_ep_probe(struct
- 
- 	ep->irq_pci_addr = ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR;
- 
-+	rockchip_pcie_write(rockchip, PCIE_CLIENT_CONF_ENABLE,
-+			    PCIE_CLIENT_CONFIG);
-+
- 	return 0;
- err_epc_mem_exit:
- 	pci_epc_mem_exit(epc);
+--- a/kernel/trace/trace_probe_tmpl.h
++++ b/kernel/trace/trace_probe_tmpl.h
+@@ -204,6 +204,8 @@ stage3:
+ array:
+ 	/* the last stage: Loop on array */
+ 	if (code->op == FETCH_OP_LP_ARRAY) {
++		if (ret < 0)
++			ret = 0;
+ 		total += ret;
+ 		if (++i < code->param) {
+ 			code = s3;
 
 
