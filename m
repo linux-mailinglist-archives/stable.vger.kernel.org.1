@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF4875CD8D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A51475CD6E
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:11:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231852AbjGUQMs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:12:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39352 "EHLO
+        id S231611AbjGUQLG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:11:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231814AbjGUQMb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:12:31 -0400
+        with ESMTP id S231386AbjGUQKz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:10:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA03F421C
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:12:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8E1359B
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:10:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BBBDF61D1D
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:12:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE3CC433CB;
-        Fri, 21 Jul 2023 16:12:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 345DA61D25
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:10:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455D5C433C7;
+        Fri, 21 Jul 2023 16:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689955926;
-        bh=4xEtw08rc/2nHWBBHKlJLz2lOPBGeT06VfD0bBd/KSI=;
+        s=korg; t=1689955849;
+        bh=jEEiw9tp2dEgWuB+uUbQEz3b3QSTWfB5sIFAnUlSxcU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RMTMCZm4qdrqe/6BPk/JQFXHnaKIBAjZX8Hq8fUmpmeR4TT3B0s7QMgbitmm2SfP1
-         lCHUCgkmA8E4YnqSys+MKUmXvdOfZZmbICUt8VGsy9W5vjsMMDFiJDLZTBcmaY0xFR
-         Ir+0rcNT9s/sXaMGoAQYTAo3IlowEx26lNLAM6LM=
+        b=cMToON+ZbW80OI82Z8+lrSet8Hsf2oZcD7oCWBVWMzFLhNo7Wi8+ra1aP96/1DB/5
+         0WWb6WJtUR5eLU0kceb5cHQ6vparUF6V45na+gVtbkzzxitNUGwtxR9T6jP42zzKa7
+         SfeXBSUPWmNXUPg5CTJZ2pLobMLfQEm8Qh3YEyqk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Babrou <ivan@cloudflare.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Michal Kubiak <michal.kubiak@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 051/292] udp6: add a missing call into udp_fail_queue_rcv_skb tracepoint
-Date:   Fri, 21 Jul 2023 18:02:40 +0200
-Message-ID: <20230721160530.994492935@linuxfoundation.org>
+Subject: [PATCH 6.4 052/292] net: bgmac: postpone turning IRQs off to avoid SoC hangs
+Date:   Fri, 21 Jul 2023 18:02:41 +0200
+Message-ID: <20230721160531.037142379@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -56,55 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ivan Babrou <ivan@cloudflare.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 8139dccd464aaee4a2c351506ff883733c6ca5a3 ]
+[ Upstream commit e7731194fdf085f46d58b1adccfddbd0dfee4873 ]
 
-The tracepoint has existed for 12 years, but it only covered udp
-over the legacy IPv4 protocol. Having it enabled for udp6 removes
-the unnecessary difference in error visibility.
+Turning IRQs off is done by accessing Ethernet controller registers.
+That can't be done until device's clock is enabled. It results in a SoC
+hang otherwise.
 
-Signed-off-by: Ivan Babrou <ivan@cloudflare.com>
-Fixes: 296f7ea75b45 ("udp: add tracepoints for queueing skb to rcvbuf")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+This bug remained unnoticed for years as most bootloaders keep all
+Ethernet interfaces turned on. It seems to only affect a niche SoC
+family BCM47189. It has two Ethernet controllers but CFE bootloader uses
+only the first one.
+
+Fixes: 34322615cbaa ("net: bgmac: Mask interrupts during probe")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net-traces.c | 2 ++
- net/ipv6/udp.c        | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/net/ethernet/broadcom/bgmac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/net-traces.c b/net/core/net-traces.c
-index 805b7385dd8da..6aef976bc1da2 100644
---- a/net/core/net-traces.c
-+++ b/net/core/net-traces.c
-@@ -63,4 +63,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(napi_poll);
- EXPORT_TRACEPOINT_SYMBOL_GPL(tcp_send_reset);
- EXPORT_TRACEPOINT_SYMBOL_GPL(tcp_bad_csum);
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index 1761df8fb7f96..10c7c232cc4ec 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -1492,8 +1492,6 @@ int bgmac_enet_probe(struct bgmac *bgmac)
  
-+EXPORT_TRACEPOINT_SYMBOL_GPL(udp_fail_queue_rcv_skb);
+ 	bgmac->in_init = true;
+ 
+-	bgmac_chip_intrs_off(bgmac);
+-
+ 	net_dev->irq = bgmac->irq;
+ 	SET_NETDEV_DEV(net_dev, bgmac->dev);
+ 	dev_set_drvdata(bgmac->dev, bgmac);
+@@ -1511,6 +1509,8 @@ int bgmac_enet_probe(struct bgmac *bgmac)
+ 	 */
+ 	bgmac_clk_enable(bgmac, 0);
+ 
++	bgmac_chip_intrs_off(bgmac);
 +
- EXPORT_TRACEPOINT_SYMBOL_GPL(sk_data_ready);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index e5a337e6b9705..debb98fb23c0b 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -45,6 +45,7 @@
- #include <net/tcp_states.h>
- #include <net/ip6_checksum.h>
- #include <net/ip6_tunnel.h>
-+#include <trace/events/udp.h>
- #include <net/xfrm.h>
- #include <net/inet_hashtables.h>
- #include <net/inet6_hashtables.h>
-@@ -680,6 +681,7 @@ static int __udpv6_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
- 		}
- 		UDP6_INC_STATS(sock_net(sk), UDP_MIB_INERRORS, is_udplite);
- 		kfree_skb_reason(skb, drop_reason);
-+		trace_udp_fail_queue_rcv_skb(rc, sk);
- 		return -1;
- 	}
- 
+ 	/* This seems to be fixing IRQ by assigning OOB #6 to the core */
+ 	if (!(bgmac->feature_flags & BGMAC_FEAT_IDM_MASK)) {
+ 		if (bgmac->feature_flags & BGMAC_FEAT_IRQ_ID_OOB_6)
 -- 
 2.39.2
 
