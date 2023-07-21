@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B99775BE42
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC4575BE43
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 08:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229898AbjGUGHb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 02:07:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45498 "EHLO
+        id S229927AbjGUGHq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 02:07:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbjGUGG6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:06:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A22A2D45
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:06:44 -0700 (PDT)
+        with ESMTP id S230160AbjGUGH2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 02:07:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60D730D4
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:07:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA688610A6
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:06:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63207C433C9;
-        Fri, 21 Jul 2023 06:06:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF0C7612C4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 06:07:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5646C433C9;
+        Fri, 21 Jul 2023 06:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689919602;
-        bh=I95HTumpfCwzg0VawN0ZVJRac8jf2Xh176zoK7z6xi8=;
+        s=korg; t=1689919643;
+        bh=gbfw116Zbc/DlG5A4ecop30OyaX+D1v7aiWAEWBtr/k=;
         h=Subject:To:Cc:From:Date:From;
-        b=AQ5LPvgrLIzrM1y4yLnaIE+8A/gDB7WgsB3go+KGrsx2o8ho7mBBAVeSW5/DIerNb
-         THAaBtg34bFOq+Z3s1QLcn8EHJYqj6WJPL2R9NWLfvjHRVHgIdPpGDp2m+2OuFf2op
-         j9Jhz3fqbW4lumuC3xYcIcDP27KTH4JCjY2fc9CA=
-Subject: FAILED: patch "[PATCH] ext2/dax: Fix ext2_setsize when len is page aligned" failed to apply to 5.15-stable tree
-To:     ritesh.list@gmail.com, djwong@kernel.org, jack@suse.cz
+        b=ReZYRZ2HC8yBHpsjvA2cachW58bvE2N3HrzvR5giYKZQeY5taqgCLXQbM+qzbA1qc
+         qnV7pycmJmD+eAVKH2tBpM6lkOehmglr3jYoBtZa/dWx1HhWiKqOiNJp3dQf8M6szS
+         npxZiUEqfSlHvFbbQ+HSG6Bs9nxu2wVMc2rajoB4=
+Subject: FAILED: patch "[PATCH] arm64: dts: ti: k3-j721s2: Fix wkup pinmux range" failed to apply to 6.1-stable tree
+To:     sinthu.raja@ti.com, nm@ti.com, stable@vger.kernel.org,
+        t-konduru@ti.com, u-kumar1@ti.com, vigneshr@ti.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Jul 2023 08:06:40 +0200
-Message-ID: <2023072139-gently-poster-a61c@gregkh>
+Date:   Fri, 21 Jul 2023 08:07:20 +0200
+Message-ID: <2023072120-census-stoplight-e62e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,34 +50,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x fcced95b6ba2a507a83b8b3e0358a8ac16b13e35
+git cherry-pick -x 6bc829ceea4158c7aeb3a9e73d5c52634d78fb6f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072139-gently-poster-a61c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072120-census-stoplight-e62e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-fcced95b6ba2 ("ext2/dax: Fix ext2_setsize when len is page aligned")
-0cc5b4ce7a37 ("ext2: remove nobh support")
-67235182a41c ("mm/migrate: Convert buffer_migrate_page() to buffer_migrate_folio()")
-eca66389744d ("ocfs2: Convert to release_folio")
-f132ab7d3ab0 ("fs: Convert mpage_readpage to mpage_read_folio")
-9d6b0cd75798 ("fs: Remove flags parameter from aops->write_begin")
-8371f30cf774 ("fs: Remove aop flags parameter from nobh_write_begin()")
-e621900ad28b ("fs: Convert __set_page_dirty_buffers to block_dirty_folio")
-7ba13abbd31e ("fs: Turn block_invalidatepage into block_invalidate_folio")
-128d1f8241d6 ("fs: Add invalidate_folio() aops method")
-5ad6b2bdaaea ("fs: Turn do_invalidatepage() into folio_invalidate()")
-3acbdbf42e94 ("Merge tag 'libnvdimm-for-5.17' of git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm")
+6bc829ceea41 ("arm64: dts: ti: k3-j721s2: Fix wkup pinmux range")
+cf2aacfe5f48 ("arm64: dts: ti: k3-j721s2-common-proc-board: Add pinmux information for ADC")
+a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
+fae14a1cb8dd ("arm64: dts: ti: Add k3-j721e-beagleboneai64")
+06639b8ae0e9 ("arm64: dts: ti: k3-j721s2: Enable MCAN nodes at the board level")
 
 thanks,
 
@@ -84,77 +78,267 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fcced95b6ba2a507a83b8b3e0358a8ac16b13e35 Mon Sep 17 00:00:00 2001
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Date: Fri, 21 Apr 2023 15:16:11 +0530
-Subject: [PATCH] ext2/dax: Fix ext2_setsize when len is page aligned
+From 6bc829ceea4158c7aeb3a9e73d5c52634d78fb6f Mon Sep 17 00:00:00 2001
+From: Sinthu Raja <sinthu.raja@ti.com>
+Date: Fri, 2 Jun 2023 10:35:49 -0500
+Subject: [PATCH] arm64: dts: ti: k3-j721s2: Fix wkup pinmux range
 
-PAGE_ALIGN(x) macro gives the next highest value which is multiple of
-pagesize. But if x is already page aligned then it simply returns x.
-So, if x passed is 0 in dax_zero_range() function, that means the
-length gets passed as 0 to ->iomap_begin().
+The WKUP_PADCONFIG register region in J721S2 has multiple non-addressable
+regions, accordingly split the existing wkup_pmx region as follows to avoid
+the non-addressable regions and include the rest of valid WKUP_PADCONFIG
+registers. Also update references to old nodes with new ones.
 
-In ext2 it then calls ext2_get_blocks -> max_blocks as 0 and hits bug_on
-here in ext2_get_blocks().
-	BUG_ON(maxblocks == 0);
+wkup_pmx0 -> 13 pins (WKUP_PADCONFIG 0 - 12)
+wkup_pmx1 -> 11 pins (WKUP_PADCONFIG 14 - 24)
+wkup_pmx2 -> 72 pins (WKUP_PADCONFIG 26 - 97)
+wkup_pmx3 -> 1 pin (WKUP_PADCONFIG 100)
 
-Instead we should be calling dax_truncate_page() here which takes
-care of it. i.e. it only calls dax_zero_range if the offset is not
-page/block aligned.
+Fixes: b8545f9d3a54 ("arm64: dts: ti: Add initial support for J721S2 SoC")
+Cc: <stable@vger.kernel.org> # 6.3
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Thejasvi Konduru <t-konduru@ti.com>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20230602153554.1571128-2-nm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 
-This can be easily triggered with following on fsdax mounted pmem
-device.
-
-dd if=/dev/zero of=file count=1 bs=512
-truncate -s 0 file
-
-[79.525838] EXT2-fs (pmem0): DAX enabled. Warning: EXPERIMENTAL, use at your own risk
-[79.529376] ext2 filesystem being mounted at /mnt1/test supports timestamps until 2038 (0x7fffffff)
-[93.793207] ------------[ cut here ]------------
-[93.795102] kernel BUG at fs/ext2/inode.c:637!
-[93.796904] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-[93.798659] CPU: 0 PID: 1192 Comm: truncate Not tainted 6.3.0-rc2-xfstests-00056-g131086faa369 #139
-[93.806459] RIP: 0010:ext2_get_blocks.constprop.0+0x524/0x610
-<...>
-[93.835298] Call Trace:
-[93.836253]  <TASK>
-[93.837103]  ? lock_acquire+0xf8/0x110
-[93.838479]  ? d_lookup+0x69/0xd0
-[93.839779]  ext2_iomap_begin+0xa7/0x1c0
-[93.841154]  iomap_iter+0xc7/0x150
-[93.842425]  dax_zero_range+0x6e/0xa0
-[93.843813]  ext2_setsize+0x176/0x1b0
-[93.845164]  ext2_setattr+0x151/0x200
-[93.846467]  notify_change+0x341/0x4e0
-[93.847805]  ? lock_acquire+0xf8/0x110
-[93.849143]  ? do_truncate+0x74/0xe0
-[93.850452]  ? do_truncate+0x84/0xe0
-[93.851739]  do_truncate+0x84/0xe0
-[93.852974]  do_sys_ftruncate+0x2b4/0x2f0
-[93.854404]  do_syscall_64+0x3f/0x90
-[93.855789]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-CC: stable@vger.kernel.org
-Fixes: 2aa3048e03d3 ("iomap: switch iomap_zero_range to use iomap_iter")
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <046a58317f29d9603d1068b2bbae47c2332c17ae.1682069716.git.ritesh.list@gmail.com>
-
-diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-index 26f135e7ffce..dc76147e7b07 100644
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -1259,9 +1259,8 @@ static int ext2_setsize(struct inode *inode, loff_t newsize)
- 	inode_dio_wait(inode);
+diff --git a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+index ae9116655a83..37b598e98f8b 100644
+--- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+@@ -175,49 +175,49 @@ J721S2_IOPAD(0x09c, PIN_INPUT, 0) /* (T24) MCASP0_AXR11.MCAN7_TX */
+ 	};
+ };
  
- 	if (IS_DAX(inode))
--		error = dax_zero_range(inode, newsize,
--				       PAGE_ALIGN(newsize) - newsize, NULL,
--				       &ext2_iomap_ops);
-+		error = dax_truncate_page(inode, newsize, NULL,
-+					  &ext2_iomap_ops);
- 	else
- 		error = block_truncate_page(inode->i_mapping,
- 				newsize, ext2_get_block);
+-&wkup_pmx0 {
++&wkup_pmx2 {
+ 	mcu_cpsw_pins_default: mcu-cpsw-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x094, PIN_INPUT, 0) /* (B22) MCU_RGMII1_RD0 */
+-			J721S2_WKUP_IOPAD(0x090, PIN_INPUT, 0) /* (B21) MCU_RGMII1_RD1 */
+-			J721S2_WKUP_IOPAD(0x08c, PIN_INPUT, 0) /* (C22) MCU_RGMII1_RD2 */
+-			J721S2_WKUP_IOPAD(0x088, PIN_INPUT, 0) /* (D23) MCU_RGMII1_RD3 */
+-			J721S2_WKUP_IOPAD(0x084, PIN_INPUT, 0) /* (D22) MCU_RGMII1_RXC */
+-			J721S2_WKUP_IOPAD(0x06c, PIN_INPUT, 0) /* (E23) MCU_RGMII1_RX_CTL */
+-			J721S2_WKUP_IOPAD(0x07c, PIN_OUTPUT, 0) /* (F23) MCU_RGMII1_TD0 */
+-			J721S2_WKUP_IOPAD(0x078, PIN_OUTPUT, 0) /* (G22) MCU_RGMII1_TD1 */
+-			J721S2_WKUP_IOPAD(0x074, PIN_OUTPUT, 0) /* (E21) MCU_RGMII1_TD2 */
+-			J721S2_WKUP_IOPAD(0x070, PIN_OUTPUT, 0) /* (E22) MCU_RGMII1_TD3 */
+-			J721S2_WKUP_IOPAD(0x080, PIN_OUTPUT, 0) /* (F21) MCU_RGMII1_TXC */
+-			J721S2_WKUP_IOPAD(0x068, PIN_OUTPUT, 0) /* (F22) MCU_RGMII1_TX_CTL */
++			J721S2_WKUP_IOPAD(0x02C, PIN_INPUT, 0) /* (B22) MCU_RGMII1_RD0 */
++			J721S2_WKUP_IOPAD(0x028, PIN_INPUT, 0) /* (B21) MCU_RGMII1_RD1 */
++			J721S2_WKUP_IOPAD(0x024, PIN_INPUT, 0) /* (C22) MCU_RGMII1_RD2 */
++			J721S2_WKUP_IOPAD(0x020, PIN_INPUT, 0) /* (D23) MCU_RGMII1_RD3 */
++			J721S2_WKUP_IOPAD(0x01C, PIN_INPUT, 0) /* (D22) MCU_RGMII1_RXC */
++			J721S2_WKUP_IOPAD(0x004, PIN_INPUT, 0) /* (E23) MCU_RGMII1_RX_CTL */
++			J721S2_WKUP_IOPAD(0x014, PIN_OUTPUT, 0) /* (F23) MCU_RGMII1_TD0 */
++			J721S2_WKUP_IOPAD(0x010, PIN_OUTPUT, 0) /* (G22) MCU_RGMII1_TD1 */
++			J721S2_WKUP_IOPAD(0x00C, PIN_OUTPUT, 0) /* (E21) MCU_RGMII1_TD2 */
++			J721S2_WKUP_IOPAD(0x008, PIN_OUTPUT, 0) /* (E22) MCU_RGMII1_TD3 */
++			J721S2_WKUP_IOPAD(0x018, PIN_OUTPUT, 0) /* (F21) MCU_RGMII1_TXC */
++			J721S2_WKUP_IOPAD(0x000, PIN_OUTPUT, 0) /* (F22) MCU_RGMII1_TX_CTL */
+ 		>;
+ 	};
+ 
+ 	mcu_mdio_pins_default: mcu-mdio-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x09c, PIN_OUTPUT, 0) /* (A21) MCU_MDIO0_MDC */
+-			J721S2_WKUP_IOPAD(0x098, PIN_INPUT, 0) /* (A22) MCU_MDIO0_MDIO */
++			J721S2_WKUP_IOPAD(0x034, PIN_OUTPUT, 0) /* (A21) MCU_MDIO0_MDC */
++			J721S2_WKUP_IOPAD(0x030, PIN_INPUT, 0) /* (A22) MCU_MDIO0_MDIO */
+ 		>;
+ 	};
+ 
+ 	mcu_mcan0_pins_default: mcu-mcan0-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x0bc, PIN_INPUT, 0) /* (E28) MCU_MCAN0_RX */
+-			J721S2_WKUP_IOPAD(0x0b8, PIN_OUTPUT, 0) /* (E27) MCU_MCAN0_TX */
++			J721S2_WKUP_IOPAD(0x054, PIN_INPUT, 0) /* (E28) MCU_MCAN0_RX */
++			J721S2_WKUP_IOPAD(0x050, PIN_OUTPUT, 0) /* (E27) MCU_MCAN0_TX */
+ 		>;
+ 	};
+ 
+ 	mcu_mcan1_pins_default: mcu-mcan1-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x0d4, PIN_INPUT, 0) /* (F26) WKUP_GPIO0_5.MCU_MCAN1_RX */
+-			J721S2_WKUP_IOPAD(0x0d0, PIN_OUTPUT, 0) /* (C23) WKUP_GPIO0_4.MCU_MCAN1_TX*/
++			J721S2_WKUP_IOPAD(0x06C, PIN_INPUT, 0) /* (F26) WKUP_GPIO0_5.MCU_MCAN1_RX */
++			J721S2_WKUP_IOPAD(0x068, PIN_OUTPUT, 0) /* (C23) WKUP_GPIO0_4.MCU_MCAN1_TX*/
+ 		>;
+ 	};
+ 
+ 	mcu_i2c1_pins_default: mcu-i2c1-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x0e0, PIN_INPUT, 0) /* (F24) WKUP_GPIO0_8.MCU_I2C1_SCL */
+-			J721S2_WKUP_IOPAD(0x0e4, PIN_INPUT, 0) /* (H26) WKUP_GPIO0_9.MCU_I2C1_SDA */
++			J721S2_WKUP_IOPAD(0x078, PIN_INPUT, 0) /* (F24) WKUP_GPIO0_8.MCU_I2C1_SCL */
++			J721S2_WKUP_IOPAD(0x07c, PIN_INPUT, 0) /* (H26) WKUP_GPIO0_9.MCU_I2C1_SDA */
+ 		>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts
+index a5ba2945c35f..aef62ac9b689 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts
+@@ -154,81 +154,81 @@ J721S2_IOPAD(0x0ec, PIN_OUTPUT, 6) /* (AG25) TIMER_IO1.USB0_DRVVBUS */
+ 	};
+ };
+ 
+-&wkup_pmx0 {
++&wkup_pmx2 {
+ 	mcu_cpsw_pins_default: mcu-cpsw-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x094, PIN_INPUT, 0) /* (B22) MCU_RGMII1_RD0 */
+-			J721S2_WKUP_IOPAD(0x090, PIN_INPUT, 0) /* (B21) MCU_RGMII1_RD1 */
+-			J721S2_WKUP_IOPAD(0x08c, PIN_INPUT, 0) /* (C22) MCU_RGMII1_RD2 */
+-			J721S2_WKUP_IOPAD(0x088, PIN_INPUT, 0) /* (D23) MCU_RGMII1_RD3 */
+-			J721S2_WKUP_IOPAD(0x084, PIN_INPUT, 0) /* (D22) MCU_RGMII1_RXC */
+-			J721S2_WKUP_IOPAD(0x06c, PIN_INPUT, 0) /* (E23) MCU_RGMII1_RX_CTL */
+-			J721S2_WKUP_IOPAD(0x07c, PIN_OUTPUT, 0) /* (F23) MCU_RGMII1_TD0 */
+-			J721S2_WKUP_IOPAD(0x078, PIN_OUTPUT, 0) /* (G22) MCU_RGMII1_TD1 */
+-			J721S2_WKUP_IOPAD(0x074, PIN_OUTPUT, 0) /* (E21) MCU_RGMII1_TD2 */
+-			J721S2_WKUP_IOPAD(0x070, PIN_OUTPUT, 0) /* (E22) MCU_RGMII1_TD3 */
+-			J721S2_WKUP_IOPAD(0x080, PIN_OUTPUT, 0) /* (F21) MCU_RGMII1_TXC */
+-			J721S2_WKUP_IOPAD(0x068, PIN_OUTPUT, 0) /* (F22) MCU_RGMII1_TX_CTL */
++			J721S2_WKUP_IOPAD(0x02c, PIN_INPUT, 0) /* (B22) MCU_RGMII1_RD0 */
++			J721S2_WKUP_IOPAD(0x028, PIN_INPUT, 0) /* (B21) MCU_RGMII1_RD1 */
++			J721S2_WKUP_IOPAD(0x024, PIN_INPUT, 0) /* (C22) MCU_RGMII1_RD2 */
++			J721S2_WKUP_IOPAD(0x020, PIN_INPUT, 0) /* (D23) MCU_RGMII1_RD3 */
++			J721S2_WKUP_IOPAD(0x01c, PIN_INPUT, 0) /* (D22) MCU_RGMII1_RXC */
++			J721S2_WKUP_IOPAD(0x004, PIN_INPUT, 0) /* (E23) MCU_RGMII1_RX_CTL */
++			J721S2_WKUP_IOPAD(0x014, PIN_OUTPUT, 0) /* (F23) MCU_RGMII1_TD0 */
++			J721S2_WKUP_IOPAD(0x010, PIN_OUTPUT, 0) /* (G22) MCU_RGMII1_TD1 */
++			J721S2_WKUP_IOPAD(0x00c, PIN_OUTPUT, 0) /* (E21) MCU_RGMII1_TD2 */
++			J721S2_WKUP_IOPAD(0x008, PIN_OUTPUT, 0) /* (E22) MCU_RGMII1_TD3 */
++			J721S2_WKUP_IOPAD(0x018, PIN_OUTPUT, 0) /* (F21) MCU_RGMII1_TXC */
++			J721S2_WKUP_IOPAD(0x000, PIN_OUTPUT, 0) /* (F22) MCU_RGMII1_TX_CTL */
+ 		>;
+ 	};
+ 
+ 	mcu_mdio_pins_default: mcu-mdio-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x09c, PIN_OUTPUT, 0) /* (A21) MCU_MDIO0_MDC */
+-			J721S2_WKUP_IOPAD(0x098, PIN_INPUT, 0) /* (A22) MCU_MDIO0_MDIO */
++			J721S2_WKUP_IOPAD(0x034, PIN_OUTPUT, 0) /* (A21) MCU_MDIO0_MDC */
++			J721S2_WKUP_IOPAD(0x030, PIN_INPUT, 0) /* (A22) MCU_MDIO0_MDIO */
+ 		>;
+ 	};
+ 
+ 	mcu_mcan0_pins_default: mcu-mcan0-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x0bc, PIN_INPUT, 0) /* (E28) MCU_MCAN0_RX */
+-			J721S2_WKUP_IOPAD(0x0b8, PIN_OUTPUT, 0) /* (E27) MCU_MCAN0_TX */
++			J721S2_WKUP_IOPAD(0x054, PIN_INPUT, 0) /* (E28) MCU_MCAN0_RX */
++			J721S2_WKUP_IOPAD(0x050, PIN_OUTPUT, 0) /* (E27) MCU_MCAN0_TX */
+ 		>;
+ 	};
+ 
+ 	mcu_mcan1_pins_default: mcu-mcan1-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x0d4, PIN_INPUT, 0) /* (F26) WKUP_GPIO0_5.MCU_MCAN1_RX */
+-			J721S2_WKUP_IOPAD(0x0d0, PIN_OUTPUT, 0) /* (C23) WKUP_GPIO0_4.MCU_MCAN1_TX */
++			J721S2_WKUP_IOPAD(0x06c, PIN_INPUT, 0) /* (F26) WKUP_GPIO0_5.MCU_MCAN1_RX */
++			J721S2_WKUP_IOPAD(0x068, PIN_OUTPUT, 0) /*(C23) WKUP_GPIO0_4.MCU_MCAN1_TX */
+ 		>;
+ 	};
+ 
+ 	mcu_mcan0_gpio_pins_default: mcu-mcan0-gpio-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x0c0, PIN_INPUT, 7) /* (D26) WKUP_GPIO0_0 */
+-			J721S2_WKUP_IOPAD(0x0a8, PIN_INPUT, 7) /* (B25) MCU_SPI0_D1.WKUP_GPIO0_69 */
++			J721S2_WKUP_IOPAD(0x058, PIN_INPUT, 7) /* (D26) WKUP_GPIO0_0 */
++			J721S2_WKUP_IOPAD(0x040, PIN_INPUT, 7) /* (B25) MCU_SPI0_D1.WKUP_GPIO0_69 */
+ 		>;
+ 	};
+ 
+ 	mcu_mcan1_gpio_pins_default: mcu-mcan1-gpio-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x0c8, PIN_INPUT, 7) /* (C28) WKUP_GPIO0_2 */
++			J721S2_WKUP_IOPAD(0x060, PIN_INPUT, 7) /* (C28) WKUP_GPIO0_2 */
+ 		>;
+ 	};
+ 
+ 	mcu_adc0_pins_default: mcu-adc0-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x134, PIN_INPUT, 0) /* (L25) MCU_ADC0_AIN0 */
+-			J721S2_WKUP_IOPAD(0x138, PIN_INPUT, 0) /* (K25) MCU_ADC0_AIN1 */
+-			J721S2_WKUP_IOPAD(0x13c, PIN_INPUT, 0) /* (M24) MCU_ADC0_AIN2 */
+-			J721S2_WKUP_IOPAD(0x140, PIN_INPUT, 0) /* (L24) MCU_ADC0_AIN3 */
+-			J721S2_WKUP_IOPAD(0x144, PIN_INPUT, 0) /* (L27) MCU_ADC0_AIN4 */
+-			J721S2_WKUP_IOPAD(0x148, PIN_INPUT, 0) /* (K24) MCU_ADC0_AIN5 */
+-			J721S2_WKUP_IOPAD(0x14c, PIN_INPUT, 0) /* (M27) MCU_ADC0_AIN6 */
+-			J721S2_WKUP_IOPAD(0x150, PIN_INPUT, 0) /* (M26) MCU_ADC0_AIN7 */
++			J721S2_WKUP_IOPAD(0x0cc, PIN_INPUT, 0) /* (L25) MCU_ADC0_AIN0 */
++			J721S2_WKUP_IOPAD(0x0d0, PIN_INPUT, 0) /* (K25) MCU_ADC0_AIN1 */
++			J721S2_WKUP_IOPAD(0x0d4, PIN_INPUT, 0) /* (M24) MCU_ADC0_AIN2 */
++			J721S2_WKUP_IOPAD(0x0d8, PIN_INPUT, 0) /* (L24) MCU_ADC0_AIN3 */
++			J721S2_WKUP_IOPAD(0x0dc, PIN_INPUT, 0) /* (L27) MCU_ADC0_AIN4 */
++			J721S2_WKUP_IOPAD(0x0e0, PIN_INPUT, 0) /* (K24) MCU_ADC0_AIN5 */
++			J721S2_WKUP_IOPAD(0x0e4, PIN_INPUT, 0) /* (M27) MCU_ADC0_AIN6 */
++			J721S2_WKUP_IOPAD(0x0e8, PIN_INPUT, 0) /* (M26) MCU_ADC0_AIN7 */
+ 		>;
+ 	};
+ 
+ 	mcu_adc1_pins_default: mcu-adc1-pins-default {
+ 		pinctrl-single,pins = <
+-			J721S2_WKUP_IOPAD(0x154, PIN_INPUT, 0) /* (P25) MCU_ADC1_AIN0 */
+-			J721S2_WKUP_IOPAD(0x158, PIN_INPUT, 0) /* (R25) MCU_ADC1_AIN1 */
+-			J721S2_WKUP_IOPAD(0x15c, PIN_INPUT, 0) /* (P28) MCU_ADC1_AIN2 */
+-			J721S2_WKUP_IOPAD(0x160, PIN_INPUT, 0) /* (P27) MCU_ADC1_AIN3 */
+-			J721S2_WKUP_IOPAD(0x164, PIN_INPUT, 0) /* (N25) MCU_ADC1_AIN4 */
+-			J721S2_WKUP_IOPAD(0x168, PIN_INPUT, 0) /* (P26) MCU_ADC1_AIN5 */
+-			J721S2_WKUP_IOPAD(0x16c, PIN_INPUT, 0) /* (N26) MCU_ADC1_AIN6 */
+-			J721S2_WKUP_IOPAD(0x170, PIN_INPUT, 0) /* (N27) MCU_ADC1_AIN7 */
++			J721S2_WKUP_IOPAD(0x0ec, PIN_INPUT, 0) /* (P25) MCU_ADC1_AIN0 */
++			J721S2_WKUP_IOPAD(0x0f0, PIN_INPUT, 0) /* (R25) MCU_ADC1_AIN1 */
++			J721S2_WKUP_IOPAD(0x0f4, PIN_INPUT, 0) /* (P28) MCU_ADC1_AIN2 */
++			J721S2_WKUP_IOPAD(0x0f8, PIN_INPUT, 0) /* (P27) MCU_ADC1_AIN3 */
++			J721S2_WKUP_IOPAD(0x0fc, PIN_INPUT, 0) /* (N25) MCU_ADC1_AIN4 */
++			J721S2_WKUP_IOPAD(0x100, PIN_INPUT, 0) /* (P26) MCU_ADC1_AIN5 */
++			J721S2_WKUP_IOPAD(0x104, PIN_INPUT, 0) /* (N26) MCU_ADC1_AIN6 */
++			J721S2_WKUP_IOPAD(0x108, PIN_INPUT, 0) /* (N27) MCU_ADC1_AIN7 */
+ 		>;
+ 	};
+ 
+diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
+index 5734c67b6763..e7dd947a1814 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
+@@ -65,7 +65,34 @@ mcu_ram: sram@41c00000 {
+ 	wkup_pmx0: pinctrl@4301c000 {
+ 		compatible = "pinctrl-single";
+ 		/* Proxy 0 addressing */
+-		reg = <0x00 0x4301c000 0x00 0x178>;
++		reg = <0x00 0x4301c000 0x00 0x034>;
++		#pinctrl-cells = <1>;
++		pinctrl-single,register-width = <32>;
++		pinctrl-single,function-mask = <0xffffffff>;
++	};
++
++	wkup_pmx1: pinctrl@4301c038 {
++		compatible = "pinctrl-single";
++		/* Proxy 0 addressing */
++		reg = <0x00 0x4301c038 0x00 0x02C>;
++		#pinctrl-cells = <1>;
++		pinctrl-single,register-width = <32>;
++		pinctrl-single,function-mask = <0xffffffff>;
++	};
++
++	wkup_pmx2: pinctrl@4301c068 {
++		compatible = "pinctrl-single";
++		/* Proxy 0 addressing */
++		reg = <0x00 0x4301c068 0x00 0x120>;
++		#pinctrl-cells = <1>;
++		pinctrl-single,register-width = <32>;
++		pinctrl-single,function-mask = <0xffffffff>;
++	};
++
++	wkup_pmx3: pinctrl@4301c190 {
++		compatible = "pinctrl-single";
++		/* Proxy 0 addressing */
++		reg = <0x00 0x4301c190 0x00 0x004>;
+ 		#pinctrl-cells = <1>;
+ 		pinctrl-single,register-width = <32>;
+ 		pinctrl-single,function-mask = <0xffffffff>;
 
