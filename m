@@ -2,123 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7776C75D4B5
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD7B575D3E2
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232209AbjGUTYP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:24:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
+        id S231949AbjGUTP3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232213AbjGUTYO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:24:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9B61727
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:24:13 -0700 (PDT)
+        with ESMTP id S231946AbjGUTP2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:15:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FBB1BF4
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:15:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEE1661D54
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:24:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C517C433C7;
-        Fri, 21 Jul 2023 19:24:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71FB761D70
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:15:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FBBC433C9;
+        Fri, 21 Jul 2023 19:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689967452;
-        bh=SMTAppfj/r0OY9yqMV5R0quq6ukbQG+AriRPkhYqBDE=;
+        s=korg; t=1689966926;
+        bh=Dv3Sa7qctz+UUZS5CPwDgCzaDM79EbEwbBPSyohKMYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DZPmlfaciOo1p7+oPUGvg7xgTtWNzcyE4vkzTZMKHXGPzQ7cLh9/IiHbahFK5B5ON
-         /W4ce7dcHGwVFg3JXO9kJCk6iu59rxjKIfdGLnABm01XIFPx/8kMvsgnZyGBetLRGH
-         yvNYrmtSyPTmtlJT4ukubs3wOoUD0NfVOsgNnhRA=
+        b=BbK84Zf2n2n2mJUYzNW8Mis5PFiKQMAm6zZ9Sun0mAaVZnb/xJyZzLT/1N0ALntVf
+         PfXuSOf3Rk4FeSF7NBu2gWkWK+ASt/Bmdu/1RuFaKEPhd4YXh9kX1khaRWsXcZjqUW
+         cMSwCWiD9Hr2BMUy/RFAZx1OuYV632jLFVQD9W8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 167/223] xhci: Fix TRB prefetch issue of ZHAOXIN hosts
-Date:   Fri, 21 Jul 2023 18:07:00 +0200
-Message-ID: <20230721160527.996293409@linuxfoundation.org>
+        patches@lists.linux.dev, Mateusz Stachyra <m.stachyra@samsung.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 5.15 517/532] tracing: Fix null pointer dereference in tracing_err_log_open()
+Date:   Fri, 21 Jul 2023 18:07:01 +0200
+Message-ID: <20230721160642.703036205@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
-References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+From: Mateusz Stachyra <m.stachyra@samsung.com>
 
-commit 2a865a652299f5666f3b785cbe758c5f57453036 upstream.
+commit 02b0095e2fbbc060560c1065f86a211d91e27b26 upstream.
 
-On some ZHAOXIN hosts, xHCI will prefetch TRB for performance
-improvement. However this TRB prefetch mechanism may cross page boundary,
-which may access memory not allocated by xHCI driver. In order to fix
-this issue, two pages was allocated for a segment and only the first
-page will be used. And add a quirk XHCI_ZHAOXIN_TRB_FETCH for this issue.
+Fix an issue in function 'tracing_err_log_open'.
+The function doesn't call 'seq_open' if the file is opened only with
+write permissions, which results in 'file->private_data' being left as null.
+If we then use 'lseek' on that opened file, 'seq_lseek' dereferences
+'file->private_data' in 'mutex_lock(&m->lock)', resulting in a kernel panic.
+Writing to this node requires root privileges, therefore this bug
+has very little security impact.
+
+Tracefs node: /sys/kernel/tracing/error_log
+
+Example Kernel panic:
+
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000038
+Call trace:
+ mutex_lock+0x30/0x110
+ seq_lseek+0x34/0xb8
+ __arm64_sys_lseek+0x6c/0xb8
+ invoke_syscall+0x58/0x13c
+ el0_svc_common+0xc4/0x10c
+ do_el0_svc+0x24/0x98
+ el0_svc+0x24/0x88
+ el0t_64_sync_handler+0x84/0xe4
+ el0t_64_sync+0x1b4/0x1b8
+Code: d503201f aa0803e0 aa1f03e1 aa0103e9 (c8e97d02)
+---[ end trace 561d1b49c12cf8a5 ]---
+Kernel panic - not syncing: Oops: Fatal exception
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230703155237eucms1p4dfb6a19caa14c79eb6c823d127b39024@eucms1p4
+Link: https://lore.kernel.org/linux-trace-kernel/20230704102706eucms1p30d7ecdcc287f46ad67679fc8491b2e0f@eucms1p3
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Message-ID: <20230602144009.1225632-10-mathias.nyman@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8a062902be725 ("tracing: Add tracing error log")
+Signed-off-by: Mateusz Stachyra <m.stachyra@samsung.com>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c |    8 ++++++--
- drivers/usb/host/xhci-pci.c |    7 ++++++-
- drivers/usb/host/xhci.h     |    1 +
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ kernel/trace/trace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2439,8 +2439,12 @@ int xhci_mem_init(struct xhci_hcd *xhci,
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
--			TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
-+	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
-+				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
-+	else
-+		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
-+				TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8014,7 +8014,7 @@ static const struct file_operations trac
+ 	.open           = tracing_err_log_open,
+ 	.write		= tracing_err_log_write,
+ 	.read           = seq_read,
+-	.llseek         = seq_lseek,
++	.llseek         = tracing_lseek,
+ 	.release        = tracing_err_log_release,
+ };
  
- 	/* See Table 46 and Note on Figure 55 */
- 	xhci->device_pool = dma_pool_create("xHCI input/output contexts", dev,
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -336,8 +336,13 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
--		if (pdev->device == 0x9202)
-+		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
-+			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+		}
-+
-+		if (pdev->device == 0x9203)
-+			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
- 	}
- 
- 	/* xHC spec requires PCI devices to support D3hot and D3cold */
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1899,6 +1899,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
-+#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
 
 
