@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2698E75CDA7
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F5075CE04
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231949AbjGUQNu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39502 "EHLO
+        id S231624AbjGUQQr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231962AbjGUQNa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:13:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C204228
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:13:01 -0700 (PDT)
+        with ESMTP id S232045AbjGUQQ3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:16:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F5743599
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:15:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A706961D2A
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:12:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5240C433C7;
-        Fri, 21 Jul 2023 16:12:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D8D861D2F
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:15:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30412C433C7;
+        Fri, 21 Jul 2023 16:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689955979;
-        bh=CS2SUpJ/ngDLi/pnKdsX8S9b4bO9oH6TKFS2jvJgbQs=;
+        s=korg; t=1689956132;
+        bh=UOC4YaUSp80zDPImaHYO9dyBUubaKOKNwNkGhjaZnds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r6FqbriVW8rqjTUbo51PKojiAjnAITOdJ+w/Zsy+1DmMmyAcNk8+TMuyuvjyMcGZS
-         vyQuN5evsslDLY8TVL4Yubgn7SDz0UWGMW60qvlt/Rxahx7BFMdq4qNRWo+mnHU9DZ
-         dcUga+A1tyBU3Nnkfj4NVsjVkhICRQM7+Ws8d4sM=
+        b=1ktCm3Hjam9NblzJ3hQH7OxhFZyTW4vlMEWjjYOb0ddvkyHW9D2eaIOH1zvM5J3va
+         xEWjuuYT0x1o5K2rmzqGMN/DDe/wAgRwzp+ISlrsDyhSuhcqO49T9aX0svLYYzwGg3
+         J6uItrbUBCk+l8me7DzEnrKNVYyxWLl75l2a5qPA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Lyude Paul <lyude@redhat.com>,
         Karol Herbst <kherbst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 097/292] drm/nouveau/disp: fix HDMI on gt215+
-Date:   Fri, 21 Jul 2023 18:03:26 +0200
-Message-ID: <20230721160532.965978332@linuxfoundation.org>
+Subject: [PATCH 6.4 098/292] drm/nouveau/disp/g94: enable HDMI
+Date:   Fri, 21 Jul 2023 18:03:27 +0200
+Message-ID: <20230721160533.008045537@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -58,33 +58,32 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Karol Herbst <kherbst@redhat.com>
 
-[ Upstream commit d94303699921bda8141ad33554ae55b615ddd149 ]
+[ Upstream commit c177872cb056e0b499af4717d8d1977017fd53df ]
 
 Cc: Ben Skeggs <bskeggs@redhat.com>
 Cc: Lyude Paul <lyude@redhat.com>
 Fixes: f530bc60a30b ("drm/nouveau/disp: move HDMI config into acquire + infoframe methods")
 Signed-off-by: Karol Herbst <kherbst@redhat.com>
 Reviewed-by: Ben Skeggs <bskeggs@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230628212248.3798605-1-kherbst@redhat.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20230630160645.3984596-1-kherbst@redhat.com
 Signed-off-by: Karol Herbst <kherbst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/engine/disp/gt215.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/gt215.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/gt215.c
-index a2c7c6f83dcdb..506ffbe7b8421 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/gt215.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/gt215.c
-@@ -125,7 +125,7 @@ gt215_sor_hdmi_infoframe_avi(struct nvkm_ior *ior, int head, void *data, u32 siz
- 	pack_hdmi_infoframe(&avi, data, size);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c
+index a4853c4e5ee3a..67ef889a0c5f4 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/g94.c
+@@ -295,6 +295,7 @@ g94_sor = {
+ 	.clock = nv50_sor_clock,
+ 	.war_2 = g94_sor_war_2,
+ 	.war_3 = g94_sor_war_3,
++	.hdmi = &g84_sor_hdmi,
+ 	.dp = &g94_sor_dp,
+ };
  
- 	nvkm_mask(device, 0x61c520 + soff, 0x00000001, 0x00000000);
--	if (size)
-+	if (!size)
- 		return;
- 
- 	nvkm_wr32(device, 0x61c528 + soff, avi.header);
 -- 
 2.39.2
 
