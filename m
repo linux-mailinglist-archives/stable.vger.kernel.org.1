@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2FC275CE5C
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1CF975CE65
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 18:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232675AbjGUQU2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 12:20:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
+        id S232530AbjGUQUa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 12:20:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232535AbjGUQUG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:20:06 -0400
+        with ESMTP id S232564AbjGUQUI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 12:20:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8E6F4493
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:18:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77EA044A1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 09:18:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38C0D61D26
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:18:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E5BC433CA;
-        Fri, 21 Jul 2023 16:18:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE85261D2A
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 16:18:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAEDC433C9;
+        Fri, 21 Jul 2023 16:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689956333;
-        bh=iAoqKB9WFuX1v43fLLa5o//KLBmgW7TcxCgo7buNeb0=;
+        s=korg; t=1689956336;
+        bh=kV7ijnH/EfWaO64KRdEcA+E0ApCo/dnvMC6xWOOuxFQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fmvJXrs2xeJ6mttuc7+mobvwej3PE+EkRfjf30NNFp5skqcHi15AfTWwPLA5EzHFN
-         uEcHUpNtnAEyb9n48MR6suWjUnXCjIahRdnpsydJVMPML7taZjZEfJ/5xsiSgTKfJB
-         NDqXp4etIZ96J6BrY7Og/4dvzWSzoJ9TeBeEYWDg=
+        b=cIc/PoHQohRWns7cRP6BUo+g3WJ5m1kRkGxpNsR7CbDybAHEjhX7TCm/rBPdL2zCh
+         IzJ2bHvhfNG3toKNjwV3gdczDpePLSw/T/apSUPgsOZEDus3DZ+GZu5gSDvXD+5sk5
+         nUp3X1sz7q3ID4FciMVCP2ySWwgzAEJMRQ2CigxQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ross Lagerwall <ross.lagerwall@citrix.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.4 170/292] PCI: Release resource invalidated by coalescing
-Date:   Fri, 21 Jul 2023 18:04:39 +0200
-Message-ID: <20230721160536.209433422@linuxfoundation.org>
+        patches@lists.linux.dev, Jason Adriaanse <jason_a69@yahoo.co.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.4 171/292] PCI: Add function 1 DMA alias quirk for Marvell 88SE9235
+Date:   Fri, 21 Jul 2023 18:04:40 +0200
+Message-ID: <20230721160536.252206805@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
 References: <20230721160528.800311148@linuxfoundation.org>
@@ -55,55 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-commit e54223275ba1bc6f704a6bab015fcd2ae4f72572 upstream.
+commit 88d341716b83abd355558523186ca488918627ee upstream.
 
-When contiguous windows are coalesced by pci_register_host_bridge(), the
-second resource is expanded to include the first, and the first is
-invalidated and consequently not added to the bus. However, it remains in
-the resource hierarchy.  For example, these windows:
+Marvell's own product brief implies the 92xx series are a closely related
+family, and sure enough it turns out that 9235 seems to need the same quirk
+as the other three, although possibly only when certain ports are used.
 
-  fec00000-fec7ffff : PCI Bus 0000:00
-  fec80000-fecbffff : PCI Bus 0000:00
-
-are coalesced into this, where the first resource remains in the tree with
-start/end zeroed out:
-
-  00000000-00000000 : PCI Bus 0000:00
-  fec00000-fecbffff : PCI Bus 0000:00
-
-In some cases (e.g. the Xen scratch region), this causes future calls to
-allocate_resource() to choose an inappropriate location which the caller
-cannot handle.
-
-Fix by releasing the zeroed-out resource and removing it from the resource
-hierarchy.
-
-[bhelgaas: commit log]
-Fixes: 7c3855c423b1 ("PCI: Coalesce host bridge contiguous apertures")
-Link: https://lore.kernel.org/r/20230525153248.712779-1-ross.lagerwall@citrix.com
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Link: https://lore.kernel.org/linux-iommu/2a699a99-545c-1324-e052-7d2f41fed1ae@yahoo.co.uk/
+Link: https://lore.kernel.org/r/731507e05d70239aec96fcbfab6e65d8ce00edd2.1686157165.git.robin.murphy@arm.com
+Reported-by: Jason Adriaanse <jason_a69@yahoo.co.uk>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org	# v5.16+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -997,8 +997,10 @@ static int pci_register_host_bridge(stru
- 	resource_list_for_each_entry_safe(window, n, &resources) {
- 		offset = window->offset;
- 		res = window->res;
--		if (!res->flags && !res->start && !res->end)
-+		if (!res->flags && !res->start && !res->end) {
-+			release_resource(res);
- 			continue;
-+		}
- 
- 		list_move_tail(&window->node, &bridge->windows);
- 
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4174,6 +4174,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_M
+ /* https://bugzilla.kernel.org/show_bug.cgi?id=42679#c49 */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9230,
+ 			 quirk_dma_func1_alias);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9235,
++			 quirk_dma_func1_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0642,
+ 			 quirk_dma_func1_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0645,
 
 
