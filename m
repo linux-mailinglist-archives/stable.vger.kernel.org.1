@@ -2,134 +2,299 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E85875DB0C
-	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 10:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 949B875DBBE
+	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 12:30:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjGVIkY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 22 Jul 2023 04:40:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43190 "EHLO
+        id S229805AbjGVKao (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 22 Jul 2023 06:30:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbjGVIkX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 04:40:23 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE08269F
-        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 01:40:21 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-992b27e1c55so415665266b.2
-        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 01:40:21 -0700 (PDT)
+        with ESMTP id S229529AbjGVKan (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 06:30:43 -0400
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA354270B
+        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 03:30:41 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6b9c90527a0so2299406a34.1
+        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 03:30:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690015220; x=1690620020;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1690021841; x=1690626641;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v9TJeEMNRCv2DgCOuJM1bBGc8b3D58xXpaHuqfHRQK8=;
-        b=n4seZDY0bMuh9xp7Iuhq3UR77wpwNEpdbqlB0BPZwZI8sMBJ7tv7TzP8yy1rqhAe3J
-         ZrRDdwZm1S+TLt7bVhibZWUffxysVi6BrgZRB+zkLUX5rO9t8DdMj1yfnWCilZyt6909
-         1eg86o2EY0sxMgwzCFY/YMYlPmLARJT6UXdfKn3eNU7pdkQB1E7QVIarwst9Nlws2MBO
-         QhupPqkXQdHZpM23yiyXDVwfOMuSzJ++tLcDXlxmaIQwRmeR9ZAg0X7TBLv/VsOL5XAa
-         yNFKB6K6yxorxL4i1PUNiEy6YzYEBc64stVXvvz2yHasPWkiM7BouprLqk7h/EItfP7d
-         I3QQ==
+        bh=OOKl5MdBmvMSYXKLCi5t49QAL09Br/Pxi868eSGFh84=;
+        b=VVu7q7ucD2XFv5rZNuZA8D/e0dguqQKpujw+u6Qu9i5hDemofQ2rfD30TWZi0SZWnl
+         m0nwUPMmN1ZV4NxEGWzW0KzS0YFB2L9Uie+xNlXoJen7/coHvNw/Q2bo4eyHP9DAJmin
+         676XUuKib8GAnB/Q2bgRB5QeQlXEJB3JAnKHFhL6hzjVjS0/paE/lC9gyTkUhiIVWXZM
+         HKj5zVuTVAf2d/C7vUhsPowFUn8hdTa/82Fr6fbLTMbdVGlcAjxabmMlKSjunIk/VR+9
+         DyAODGiVMQksGs/XQ1m48U/fbSq2tLmN4Q96+kwO4MV/cdA5COxbC1ZHDEpimUN9ZN93
+         9zmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690015220; x=1690620020;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1690021841; x=1690626641;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=v9TJeEMNRCv2DgCOuJM1bBGc8b3D58xXpaHuqfHRQK8=;
-        b=VuxiTGGJ64j4oKzWNGgPCgi5ry5HHS8De0/xFxc6d+/5rd7/xfjskYUHvAX7y++w9k
-         SEi6fZOePT9LH4zaUOnXnTqmpj7Reqr+glbGq7oY4rspKYTKa+e2twRzIPxt6mau0twE
-         WEIgYiyBWbZNNBHLrQVMg2GAwpfnIsItQbMB9UtMJGjPXX7MA3+PpFIMaeo3FHR/WYQ0
-         lo/3iYqe43oTGob3PiXc84hhk9d5gmnUvZq23w+74Pz3PoMS1cdfXKLttDzZZfFlb8Vc
-         xQpje86OTykhrllgskS7tu3WOMeAABwpc8IGCg1eQ1zkbu55jcrrdwB6yBFki7EDQiaq
-         +ZnA==
-X-Gm-Message-State: ABy/qLYREHKWTP8t+OyWx2ErD07npqJczFzCzaUfPUO+NH0XFu6krZ47
-        hMrUcRLfU8ev81+MGPMMUPU28w==
-X-Google-Smtp-Source: APBJJlF4lMl5iWQYQ/4JO4kw+zAmtEy7Y8ZV+haXiFSDaQ5Vdtk6DJHqYZ/wuPRGiL+IpYJYL/0U4g==
-X-Received: by 2002:a17:906:3059:b0:994:673:8afa with SMTP id d25-20020a170906305900b0099406738afamr3849246ejd.28.1690015220231;
-        Sat, 22 Jul 2023 01:40:20 -0700 (PDT)
-Received: from 1.. ([79.115.63.16])
-        by smtp.gmail.com with ESMTPSA id w8-20020a170906130800b00992b510089asm3253861ejb.84.2023.07.22.01.40.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Jul 2023 01:40:17 -0700 (PDT)
-From:   Tudor Ambarus <tudor.ambarus@linaro.org>
-To:     tkuw584924@gmail.com, takahiro.kuwano@infineon.com,
-        michael@walle.cc
-Cc:     pratyush@kernel.org, linux-mtd@lists.infradead.org,
-        linux-kernel@vger.kernel.org, bacem.daassi@infineon.com,
-        miquel.raynal@bootlin.com, richard@nod.at,
-        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v3 02/11] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT
-Date:   Sat, 22 Jul 2023 11:39:57 +0300
-Message-Id: <20230722084004.21857-3-tudor.ambarus@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230722084004.21857-1-tudor.ambarus@linaro.org>
-References: <20230722084004.21857-1-tudor.ambarus@linaro.org>
+        bh=OOKl5MdBmvMSYXKLCi5t49QAL09Br/Pxi868eSGFh84=;
+        b=RF+c+Vr1jCG491JEWSaOISl1TQgIwFYF3sOuGbfOEqxL2PnRASYKe4wofx3rEzvoDL
+         ufpMJPB86eYHP7UCn7ELt4QyqbznlP1xm0DHMJ+bNNasdep6/uJX2J8k4pAZf4wiEcTN
+         u3scKJitdNIbdwVwi8XS86TtQYUqB+urjmjYn0pEbD6wRnp3tTZ6rJnPIPGu+ZEvHeXU
+         G4dKWkKtuO+E37/Uq+1W5H8GTCDX0wpcFGoptLbDKzHk0DAuNhWj4xMU2+g6ifwnV0V3
+         Cez+4IOYeq2zcmWfeItKQeKdyzyQl86QyxiG+seLroGwSjm+nR/+n8HKXD8hthRdl3L+
+         hlJQ==
+X-Gm-Message-State: ABy/qLbF59nBguvFTGoKacnxjBICoOQhYSHM1jjKaKoBswa0B79FIE5Z
+        3+92rmTsBkGxFZkYLyhLAh1ZwyuOuc1UtM7Enei/DA==
+X-Google-Smtp-Source: APBJJlHxGRblosjMH4p2+lBC0j3tCcLuo+BldGrVBQsh613zaQjS0djs0GLvvduIJXDNq2dWqwjVUicaWzgXrmoBc6M=
+X-Received: by 2002:a05:6358:5e05:b0:134:ed9b:15a7 with SMTP id
+ q5-20020a0563585e0500b00134ed9b15a7mr1648429rwn.30.1690021840866; Sat, 22 Jul
+ 2023 03:30:40 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1944; i=tudor.ambarus@linaro.org; h=from:subject; bh=kVZ7aQId7ERSbIGrhSxOKuGFZinAOtskWkM0179Q9K8=; b=owEBbQGS/pANAwAKAUtVT0eljRTpAcsmYgBku5XjSIacWrtM6rqggQL3xW9NW3MgQizA9VFwu e+IRxfckVyJATMEAAEKAB0WIQQdQirKzw7IbV4d/t9LVU9HpY0U6QUCZLuV4wAKCRBLVU9HpY0U 6YbLB/45qZNj8nqPWcNS3Itsu5FdKDrhjLuejWXdzdmPSETVdxeQz58b4LPfXz+sOF1aqcEOUSL LOg0Lb3Od7CYJMV99JDgS8ABw5FOUFIi5KGBoniJ+fnuS9F8VSHsU+QT59CQ/RE7J4t4DZO2Lv0 WGAjIEzRmnPNJTeN5eOJEmgb62EJ8spSGmwuFgZmB2EBAb7fOlEVhqQ9HMGs/o438ixCJKD6Fwa xJmD1c6Gjy/uMn15C5yq72c8GHsHHmQ6YcN6u+MnJ+CDtQl5806ib/dfeoAprNBYazjB82cP8Xn FnfEVTsgxAH/DnIBtVBhEYNoROepT57/DyxonpJISVr4mWnq
-X-Developer-Key: i=tudor.ambarus@linaro.org; a=openpgp; fpr=280B06FD4CAAD2980C46DDDF4DB1B079AD29CF3D
-Content-Transfer-Encoding: 8bit
+References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Sat, 22 Jul 2023 16:00:29 +0530
+Message-ID: <CA+G9fYuoo8OPNGemxxcWjaGeO3U+xm2+aGOiC=8DiyzETG+1Jg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/223] 6.1.40-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Arnd Bergmann <arnd@arndb.de>, Vlad Buslov <vladbu@nvidia.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+On Sat, 22 Jul 2023 at 00:47, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.40 release.
+> There are 223 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 23 Jul 2023 16:04:33 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.40-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-CFR2V[7] is assigned to Flash's address mode (3- or 4-ybte) and must not
-be changed when writing MEMLAT (CFR2V[3:0]). CFR2V shall be used in a read,
-update, write back fashion.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Cc: stable@vger.kernel.org
----
- drivers/mtd/spi-nor/spansion.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index 6b2532ed053c..6460d2247bdf 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2014, Freescale Semiconductor, Inc.
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/mtd/spi-nor.h>
- 
-@@ -28,6 +29,7 @@
- #define SPINOR_REG_CYPRESS_CFR2			0x3
- #define SPINOR_REG_CYPRESS_CFR2V					\
- 	(SPINOR_REG_CYPRESS_VREG + SPINOR_REG_CYPRESS_CFR2)
-+#define SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK	GENMASK(3, 0)
- #define SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24	0xb
- #define SPINOR_REG_CYPRESS_CFR2_ADRBYT		BIT(7)
- #define SPINOR_REG_CYPRESS_CFR3			0x4
-@@ -161,8 +163,18 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
- 	int ret;
- 	u8 addr_mode_nbytes = nor->params->addr_mode_nbytes;
- 
-+	op = (struct spi_mem_op)
-+		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
-+					  SPINOR_REG_CYPRESS_CFR2V, 0, buf);
-+
-+	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
-+	if (ret)
-+		return ret;
-+
- 	/* Use 24 dummy cycles for memory array reads. */
--	*buf = SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24;
-+	*buf &= ~SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK;
-+	*buf |= FIELD_PREP(SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK,
-+			   SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24);
- 	op = (struct spi_mem_op)
- 		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
- 					  SPINOR_REG_CYPRESS_CFR2V, 1, buf);
--- 
-2.34.1
+NOTES:
+These are not kernel regressions as per the review,
 
+Following kselfest build regressions noticed on stable-rc 6.1 and 6.4
+The selftests sources are from stable tree 6.4.y branch and version 6.4.4
+
+selftest build errors:
+---------------------
+
+1)
+aarch64-linux-gnu-gcc -Wall -O2 -Wno-unused-function -D_GNU_SOURCE
+-pthread   proc-empty-vm.c  -o kselftest/proc/proc-empty-vm
+proc-empty-vm.c: In function 'main':
+proc-empty-vm.c:350:2: error: #error "implement 'unmap everything'"
+  350 | #error "implement 'unmap everything'"
+      |  ^~~~~
+make[3]: *** [../lib.mk:147: kselftest/proc/proc-empty-vm] Error 1
+
+
+2)
+
+make[3]: Entering directory 'tools/testing/selftests/tc-testing'
+/bin/sh: 1: llc: not found
+clang -I. -I/include/uapi  -Wno-compare-distinct-pointer-types \
+-O2 -target bpf -emit-llvm -c action.c -o - |      \
+llc -march=3Dbpf -mcpu=3Dprobe  -filetype=3Dobj -o kselftest/tc-testing/act=
+ion.o
+/bin/sh: 1: clang: not found
+/bin/sh: 3: llc: not found
+make[3]: *** [Makefile:26: kselftest/tc-testing/action.o] Error 127
+
+
+## Build
+* kernel: 6.1.40-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: e54fe15e179b2cc0f0587e2ef1549295ae7bc3be
+* git describe: v6.1.39-224-ge54fe15e179b
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.3=
+9-224-ge54fe15e179b
+
+## Test Regressions (compared to v6.1.39)
+* bcm2711-rpi-4-b, kselftest-proc
+  - shardfile-proc
+
+* bcm2711-rpi-4-b, kselftest-tc-testing
+  - shardfile-tc-testing
+
+* dragonboard-410c, kselftest-proc
+  - shardfile-proc
+
+* dragonboard-410c, kselftest-tc-testing
+  - shardfile-tc-testing
+
+* juno-r2, kselftest-proc
+  - shardfile-proc
+
+* juno-r2, kselftest-tc-testing
+  - shardfile-tc-testing
+
+
+## Metric Regressions (compared to v6.1.39)
+
+## Test Fixes (compared to v6.1.39)
+
+## Metric Fixes (compared to v6.1.39)
+
+## Test result summary
+total: 149107, pass: 126633, fail: 2237, skip: 20065, xfail: 172
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 151 total, 150 passed, 1 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 41 total, 38 passed, 3 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 16 total, 15 passed, 1 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesytems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
