@@ -2,372 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6783C75DC92
-	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 14:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8933175DCFF
+	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 16:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbjGVMiI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 22 Jul 2023 08:38:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49242 "EHLO
+        id S229779AbjGVOrh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 22 Jul 2023 10:47:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjGVMiH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 08:38:07 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E4910DE
-        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 05:38:05 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-7672073e7b9so220673385a.0
-        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 05:38:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1690029485; x=1690634285;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=V2juWSz6t/8p6tXecBiY3aft3meJRr24apRAI1wBlKc=;
-        b=Yjk/R9WVmfNIOu8DkRnngunjRPklAjUbjQmeDP2I6x//lXl4qY/pnBfyoNCbI74tLY
-         vEx5ntjMj2WNLlNuOfOiZEiGLUagbRHgsCPcMUaZbKs0xtAxF2HD+JLu3eV7xL5Smcln
-         elWKVrw5bpd7HYE/tvQz8PmvvaVCMlMAfWbLk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690029485; x=1690634285;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V2juWSz6t/8p6tXecBiY3aft3meJRr24apRAI1wBlKc=;
-        b=TUWM8ZpNlZhrxx03qoQPnwcsu9BCvprf4PsNwfJRKdjjGrenkYnPJSEEn895881uYn
-         Ehnm216SW3IdpC/IlbmYzR+ktFp/UK5yJf6bY5gBE6JwOZzMBC2aCvzXKEkLJJJw7Q+H
-         fiKtmvy4uBuL4mBFm5TDnQcVJmeC09sAsVM9RMv1j02pQbITRdbaMxER2R0ncTd6V2YX
-         E50o5zV5BDwZC2rg0TSQ5m0fV2Qb7HAzJTUMMBk1SEx36nVt4ibmOXEnydoKblACL+q8
-         fnn8FsbuqtCnXpL0JpyIjsHdSNrnYBwyDJhgcshBSc6a286nja1QyFHZQ5sG6CrEAUUT
-         cL3g==
-X-Gm-Message-State: ABy/qLYK1B+OJgfT9H47kjt0BlKKA5NTEMI2tQkXnDL5+lqCMextUldS
-        4Yny//hvfQVOqHtW7YnJJQYNnQ==
-X-Google-Smtp-Source: APBJJlGw2/IwLcoVXjm4BA02re31AQ+ZWXJzV3EcwA5Je+mXcfKPUhBVSEFg2k2Cjl00OIeC52Iiyw==
-X-Received: by 2002:a05:620a:e9b:b0:767:100e:4cbd with SMTP id w27-20020a05620a0e9b00b00767100e4cbdmr2407817qkm.0.1690029484629;
-        Sat, 22 Jul 2023 05:38:04 -0700 (PDT)
-Received: from [192.168.0.198] (c-98-249-43-138.hsd1.va.comcast.net. [98.249.43.138])
-        by smtp.gmail.com with ESMTPSA id s17-20020a05620a031100b00767f5c70b3dsm1789432qkm.96.2023.07.22.05.38.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jul 2023 05:38:03 -0700 (PDT)
-Message-ID: <7bfde9f4-2bd6-7337-b9ca-94a9253d847f@joelfernandes.org>
-Date:   Sat, 22 Jul 2023 08:38:02 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [BUG] Re: Linux 6.4.4
-Content-Language: en-US
-To:     paulmck@kernel.org
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-References: <2023071940-suspect-ominous-4a6a@gregkh>
- <20230720132714.GA3726096@google.com>
- <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
- <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
- <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
- <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
- <eb04b7d0-2f49-4e01-be09-9062d9f08404@paulmck-laptop>
- <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
- <9b42cb38-8375-fc41-475a-2bd26c60a7b9@joelfernandes.org>
- <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
-From:   Joel Fernandes <joel@joelfernandes.org>
-In-Reply-To: <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
+        with ESMTP id S229533AbjGVOrg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 10:47:36 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7AA9B;
+        Sat, 22 Jul 2023 07:47:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=Rlks42DJIbvbP4GaY64MedUDc2SnRkg1IXYiOZGnH9o=; b=QTeVsrHgVvhLXJc8V/qMU2F3FN
+        BRlwx7QAQGCxjbpTDdN1e7/VA1IB5XvBejJPha5nZRHL9oyojSWteb2OYG+EWNJBTAPf+GHsqulKW
+        tVncSZ5DXZqbP7pOh0FilEo0JsCJghdmrhAP7b4M4P7YWuhahUl8A04t+asyqDEdJtUk=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:57666 helo=debian-acer)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qNDtF-000361-Jv; Sat, 22 Jul 2023 10:47:26 -0400
+Date:   Sat, 22 Jul 2023 10:47:24 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     gregkh@linuxfoundation.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Message-Id: <20230722104724.ef0c5896c239e721794b9fe9@hugovil.com>
+In-Reply-To: <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
+References: <20230721161840.1393996-1-hugo@hugovil.com>
+        <20230721161840.1393996-7-hugo@hugovil.com>
+        <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [RESEND PATCH v8 06/10] serial: sc16is7xx: fix regression with
+ GPIO configuration
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, 21 Jul 2023 13:24:19 -0600
+Rob Herring <robh+dt@kernel.org> wrote:
 
-
-On 7/21/23 18:08, Paul E. McKenney wrote:
-> On Fri, Jul 21, 2023 at 03:20:48PM -0400, Joel Fernandes wrote:
->> (Trimming the CC list a bit)
->> On 7/21/23 08:13, Joel Fernandes wrote:
->>> On 7/20/23 15:47, Paul E. McKenney wrote:
->>>> On Thu, Jul 20, 2023 at 03:32:35PM -0400, Joel Fernandes wrote:
->>>>> On 7/20/23 15:04, Paul E. McKenney wrote:
->>>>>> On Thu, Jul 20, 2023 at 12:31:13PM -0400, Joel Fernandes wrote:
->>>>>>> Hi Paul,
->>>>>>>
->>>>>>> On Thu, Jul 20, 2023 at 11:55 AM Paul E. McKenney
->>>>>>> <paulmck@kernel.org> wrote:
->>>>>>>>
->>>>>>>> On Thu, Jul 20, 2023 at 01:27:14PM +0000, Joel Fernandes wrote:
->>>>> [...]
->>>>>>>>>
->>>>>>>>> So likely RCU boosting is failing:
->>>>>>>>>
->>>>>>>>> The full TREE03 splat:
->>>>>>>>> [   54.243588] ------------[ cut here ]------------
->>>>>>>>> [   54.244547] rcu-torture: rcu_torture_boost started
->>>>> [...]
->>>>>>>>> [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
->>>>> [...]
->>>>>>>>> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
->>>>>>>>>
->>>>>>>>> However, if we are to believe the '9', it appears the object did
->>>>>>>>> made it
->>>>>>>>> quite some till the end of the pipe array but not until the free
->>>>>>>>> pool.
->>>>>>>>
->>>>>>>> This is from this if/for statement, correct?
->>>>>>>>
->>>>>>>>                   stutter_waited =
->>>>>>>> stutter_wait("rcu_torture_writer");
->>>>>>>>                   if (stutter_waited &&
->>>>>>>>                       !atomic_read(&rcu_fwd_cb_nodelay) &&
->>>>>>>>                       !cur_ops->slow_gps &&
->>>>>>>>                       !torture_must_stop() &&
->>>>>>>>                       boot_ended)
->>>>>>>>                           for (i = 0; i <
->>>>>>>> ARRAY_SIZE(rcu_tortures); i++)
->>>>>>>>                                   if
->>>>>>>> (list_empty(&rcu_tortures[i].rtort_free) &&
->>>>>>>>                                      
->>>>>>>> rcu_access_pointer(rcu_torture_current) !=
->>>>>>>>                                       &rcu_tortures[i]) {
->>>>>>>>                                           tracing_off();
->>>>>>>>                                           show_rcu_gp_kthreads();
->>>>>>>>                                           WARN(1, "%s:
->>>>>>>> rtort_pipe_count:
->>>>>>>>                                           rcu_ftrace_dump(DUMP_ALL);
->>>>>>>>                                   }
->>>>>>>
->>>>>>> Yes, that's right.
->>>>>>>
->>>>>>>> If so, this happens when there was a stutter wait, but RCU grace
->>>>>>>> periods failed to clear out the backlog during the several seconds
->>>>>>>> that
->>>>>>>> rcutorture was forced idle.  This might be related to the RCU
->>>>>>>> priority
->>>>>>>> boosting failure, in which a preempted reader persisted across the
->>>>>>>> stutter interval.
->>>>>>>
->>>>>>> When RCU is operating normally, shouldn't the check
->>>>>>> "(list_empty(&rcu_tortures[i].rtort_free)" not run until the preempted
->>>>>>> reader unblocks and exits its RCU read-side critical section?
->>>>>>
->>>>>> Yes, but not just "until", but rather "long after".  If RCU is doing
->>>>>> grace periods correctly, an active reader on a given rcu_tortures[]
->>>>>> element will prevent .rtort_pipe_count from exceeding the value 2.
->>>>>
->>>>> Ah ok, so the rtort_pipe_count being 9 is a sign RCU isn't making
->>>>> progress
->>>>> thus making it absent from the free list.
->>>>
->>>> Yes, though RCU is -just- -barely- too slow, as one more grace period
->>>> would have done it.
->>>>
->>>>>> The element will not be put on a list until .rtort_pipe_count is equal
->>>>>> to RCU_TORTURE_PIPE_LEN, which is 10.
->>>>>>
->>>>>> This warning usually appears when something is holding up the
->>>>>> grace-period
->>>>>> kthread.  Historically, this has included deadlocks, missed timers,
->>>>>> and whatever else can prevent the grace-period kthread from running.
->>>>>
->>>>> Makes sense.
->>>>>
->>>>>>> One thing that confuses me, in the case of
->>>>>>> "cur_ops->deferred_free(old_rp);" , the earlier do-while loop may exit
->>>>>>> before the async callbacks can finish. So what prevents the
->>>>>>> "(list_empty(&rcu_tortures[i].rtort_free)" check from happening before
->>>>>>> grace periods happen? Thanks for any clarification.
->>>>>>
->>>>>> We only enter this code if the stutter_wait() actually waited, and by
->>>>>> default this function will wait about five seconds.  Since the
->>>>>> rcutorture
->>>>>> testing goes idle during this time period (or is supposed to!), if
->>>>>> things
->>>>>> are working properly, knocking off ten grace periods during that time
->>>>>> should be pretty much a given.
->>>>>
->>>>> Sure, makes sense. And this is not Lazy-RCU so 5 seconds should be
->>>>> plenty
->>>>> ;). I think I was subconsciously expecting an rcu_barrier() somewhere
->>>>> in the
->>>>> code before those checks, but that's not needed as you pointed that the
->>>>> stutter should be giving enough time for RCU to make progress.
->>>>
->>>> And there might need to be a call_rcu_hurry() in there somewhere,
->>>> now that you mention it.  Which would pretty much defeat any sort of
->>>> lazy-RCU-callback testing in rcutorture, but testing of laziness might
->>>> need to be separate anyway.
->>>>
->>>>> So hmm, the count being 9 means that not enough RCU grace periods have
->>>>> passed for the rcu_torture object in question thus keeping it always
->>>>> allocated. The GP thread not getting CPU can do that indeed, or perhaps
->>>>> something else stalling RCU like a preempted reader, length preemption
->>>>> disabling on a CPU and so forth..  I'll try to collect a trace when it
->>>>> happens.
->>>>
->>>> Looking forward to seeing what you come up with!
->>>
->>> So far I found this. Before the crash, GPs took about 50ms, during the
->>> crash it took 5 seconds before the warning which aligns with what you
->>> mentioned about stutter.
->>>
->>>
->>> The GP that never completed is at this line:
->>>
->>> [ 2816.041082]    <...>-13       13d.... 1237016139us :
->>> rcu_grace_period: rcu_sched 144681 start
->>>
->>> And fqs loop got a "dti" for CPUs:
->>> 1
->>> 2
->>> 12
->>>
->>> And I see cpuqs for:
->>> 13
->>> 6
->>> 10
->>> 5
->>> 4
->>> 11
->>>
->>> No idea what happened to 3, 8, 9, 14, 15. Maybe the "dti" for those did
->>> not show in the trace?
->>>
->>> However, I see that CPU 7 did this:
->>> [ 2816.205277]   <idle>-0         7d.... 1237016284us : sched_switch:
->>> prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==>
->>> next_comm=rcu_torture_rea next_pid=149 next_prio=139
->>>
->>>
->>> and then did this about 3 seconds later:
->>> [ 2819.394111] rcu_tort-149       7dNs.. 1237025699us :
->>> rcu_grace_period: rcu_sched 144677 cpuend
->>> [ 2819.412745] rcu_tort-149       7dNs.. 1237025699us :
->>> rcu_grace_period: rcu_sched 144681 cpustart
->>>
->>>
->>> Which means it never switched out from the CPU all this while. Neither
->>> did it report cpuqs. Ok it did notice the new GP started, welcome to the
->>> party mate ;)
->>>
->>> That points the issue I think. I wonder if the emergency provisions for
->>> forcing quiescent states on NOHZ_FULL CPUs kicked in. ISTR, we had
->>> issues with that in the past where we had to fix the tick path to report
->>> a QS.
->>>
->>> I'll add some more traces. Especially around preempted readers, the
->>> emergency provisions for forcing a QS and so forth and see if I can dig
->>> more information.
->>
->> In another instance, I caught a stack trace of CPU5 when it did not
->> check-in with RCU for 3 seconds or so:
->>
->> [ 1127.067889]  kmalloc_trace+0x25/0x90
->> [ 1127.072823]  rcu_torture_fwd_prog+0x3d8/0xa60
->> [ 1127.078749]  ? __pfx_rcu_torture_fwd_prog+0x10/0x10
->> [ 1127.085468]  ? kthread+0xcb/0xf0
->> [ 1127.090040]  ? __pfx_rcu_torture_fwd_prog+0x10/0x10
->> [ 1127.096626]  kthread+0xcb/0xf0
->> [ 1127.100803]  ? __pfx_kthread+0x10/0x10
->> [ 1127.107207]  ret_from_fork+0x2c/0x50
->> [ 1127.113662]  </TASK>
->> [ 1127.117818] Kernel panic - not syncing: kernel: panic_on_warn set ...
->>
->> It appears it was in "rcu_torture_fwd_prog" at the time. It got stuck
->> there for 2 seconds.
->>
->> Interestingly, I did find the scheduler tick was trying to get in touch
->> with the CPU and it was running code on it even:
->> [ 5858.463102] rcu_tort-174       5d.h.. 1131149320us : rcu_utilization:
->> Start scheduler-tick
->> [ 5858.472903] rcu_tort-174       5d.h.. 1131149320us : rcu_utilization:
->> End scheduler-tick
->>
->> So I could add some traces there to figure out what is it upto. ISTR, we
->> also send IPIs to these CPUs? So maybe adding some traces there too is
->> in order.
->>
->> Also earlier in dmesg it did this:
->> [ 1124.825504] rcu_torture_fwd_prog n_max_cbs: 44181
->> [ 1124.832158] rcu_torture_fwd_prog: Starting forward-progress test 0
->> [ 1124.840977] rcu_torture_fwd_prog_cr: Starting forward-progress test 0
->> [ 1126.726621] ------------[ cut here ]------------
->> [ 1126.733296] rcutorture_oom_notify invoked upon OOM during
->> forward-progress testing.
->>
->> Before that "cut here", there is a 2 second gap which tells me it got
->> stuck there.
->>
->> So this function rcu_torture_fwd_prog() is keeping the CPU unresponsive
->> from an RCU perspective for some reason? Because I never saw the
->> "rcu_torture_fwd_prog_cr: Waiting for CBs" message before it panicked.
+> On Fri, Jul 21, 2023 at 10:19 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> >
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> >
+> > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
+> > and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
+> > changed the function of the GPIOs pins to act as modem control
+> > lines without any possibility of selecting GPIO function.
 > 
-> Thank you for digging into this!
+> Requiring a new DT property is not fixing a kernel regression. You
+> should be returning the kernel to original behavior and then have a
+> new DT property for new behavior.
+
+Hi Rob,
+please read the entire patch history starting from V1
+ and you will understand why this course of action was
+ not selected.
+
+ 
+> > As a consequence, applications that depends on GPIO lines configured
+> > by default as GPIO pins no longer work as expected.
+> >
+> > Also, the change to select modem control lines function was done only
+> > for channel A of dual UART variants (752/762). This was not documented
+> > in the log message.
+> >
+> > Allow to specify GPIO or modem control line function in the device
+> > tree, and for each of the ports (A or B).
+> >
+> > Do so by using the new device-tree property named
+> > "modem-control-line-ports" (property added in separate patch).
 > 
-> Yes, rcu_torture_fwd_prog() is supposed to monopolize CPUs.  But it
-> is supposed to respect stuttering.  It is quite possible that the
-> synchronization is insufficient.  Or that the "supposed to" never
-> made it into the code.
+> That's not the name in the patch.
+
+We added a "nxp," prefix at some point.
+
+Do you want me to send a V9 only with this change?
+
+Hugo.
+
+
+> > When registering GPIO chip controller, mask-out GPIO pins declared as
+> > modem control lines according to this new "modem-control-line-ports"
+> > DT property.
+> >
+> > Boards that need to have GPIOS configured as modem control lines
+> > should add that property to their device tree. Here is a list of
+> > boards using the sc16is7xx driver in their device tree and that may
+> > need to be modified:
+> >     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+> >     mips/boot/dts/ingenic/cu1830-neo.dts
+> >     mips/boot/dts/ingenic/cu1000-neo.dts
 > 
->> Collecting traces again.. ;) thanks,
+> Then again, if no one cares about those boards needing a change then
+> it can be okay.
 > 
-> ;-) ;-) ;-)
+> 
+> Rob
+> 
 
-I narrowed it down to the timer softirq taking too long and doing this
-for 4 seconds:
 
-[ 6781.411834] ksoftirq-12        0dNs.. 206231531us : sched_wakeup:
-comm=rcu_torture_rea pid=153 prio=139 target_cpu=000
-[ 6781.424854] ksoftirq-12        0dNs.. 206231531us : sched_waking:
-comm=rcu_torture_rea pid=164 prio=139 target_cpu=006
-[ 6781.437650] ksoftirq-12        0dNs.. 206231533us : sched_wakeup:
-comm=rcu_torture_rea pid=164 prio=139 target_cpu=000
-[ 6781.451019] ksoftirq-12        0dNs.. 206231533us : sched_waking:
-comm=rcu_torture_rea pid=162 prio=139 target_cpu=002
-[ 6781.463825] ksoftirq-12        0dNs.. 206231535us : sched_wakeup:
-comm=rcu_torture_rea pid=162 prio=139 target_cpu=000
-[ 6781.476290] ksoftirq-12        0dNs.. 206231535us : sched_waking:
-comm=rcu_torture_wri pid=143 prio=139 target_cpu=004
-[ 6781.489257] ksoftirq-12        0dNs.. 206231537us : sched_wakeup:
-comm=rcu_torture_wri pid=143 prio=139 target_cpu=000
-[ 6781.502559] ksoftirq-12        0dNs.. 206231538us : sched_waking:
-comm=rcu_torture_rea pid=154 prio=139 target_cpu=006
-[ 6781.515093] ksoftirq-12        0dNs.. 206231539us : sched_wakeup:
-comm=rcu_torture_rea pid=154 prio=139 target_cpu=000
-[ 6781.527622] ksoftirq-12        0dNs.. 206231539us : sched_waking:
-comm=rcu_torture_fak pid=149 prio=139 target_cpu=003
-[ 6781.539979] ksoftirq-12        0dNs.. 206231541us : sched_wakeup:
-comm=rcu_torture_fak pid=149 prio=139 target_cpu=000
-[ 6781.552717] ksoftirq-12        0dNs.. 206231541us : sched_waking:
-comm=rcu_torture_fak pid=145 prio=139 target_cpu=005
-[ 6781.565074] ksoftirq-12        0dNs.. 206231543us : sched_wakeup:
-comm=rcu_torture_fak pid=145 prio=139 target_cpu=000
-[ 6781.577580] ksoftirq-12        0dNs.. 206231543us : sched_waking:
-comm=rcu_torture_rea pid=166 prio=139 target_cpu=003
-[ 6781.590211] ksoftirq-12        0dNs.. 206231547us : sched_wakeup:
-comm=rcu_torture_rea pid=166 prio=139 target_cpu=000
-
-And I caught the softirq exit which told me it is coming from timer softirq:
-[ 6781.603150] ksoftirq-12        0.Ns.. 206231552us : __do_softirq:
-softirq exit: name: TIMER, action handler: run_timer_softirq
-
-Maybe something to do with calls to stuttering or lack of cond_resched()
-in the torture code somewhere? Unfortunately I was not able to get a
-stack trace and what is doing the wake ups.
-
-This is at least one of the issues. I do believe the fwd prog functions
-taking too long in the kernel without doing a cond_resched() is another
-issue but I need to reduce the RCU stall timeout to 2 seconds to see
-those happen otherwise I think those just get "hidden".
-
-Both these issues appear to be threads spending too much time in kernel
-mode in non-preemptible kernels. The RCU GP thread was able to get CPU
-so that wasn't the issue in these instances.
-
-Thoughts?
-
-Next plan of action is to get sched_waking stack traces since I have a
-very reliable repro of this now.
-
-thanks,
-
- - Joel
+-- 
+Hugo Villeneuve <hugo@hugovil.com>
