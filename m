@@ -2,211 +2,372 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F048575DC00
-	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 13:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6783C75DC92
+	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 14:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbjGVLvI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 22 Jul 2023 07:51:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
+        id S229834AbjGVMiI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 22 Jul 2023 08:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjGVLvH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 07:51:07 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EB12D47
-        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 04:51:05 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id A4084320084E;
-        Sat, 22 Jul 2023 07:51:00 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Sat, 22 Jul 2023 07:51:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1690026660; x=1690113060; bh=KI
-        Z5JYrEXhvZZQyDG2wOlSZyD8b1CDF5O2rvxi8AyKI=; b=KlKr3H7GBvBZ59QVoo
-        iDp8YsEde9ORqbIaxsLQq8zfhd+PEGBISFRYlCpz+60WvRDz4az2xXN+zDD/Ixdl
-        tXZgdZN1FgrgVPpQa7isQazIBhNuCafFbI5YB4gH9GDgf7teRfhQ5l3AiS0g+OAN
-        EvLUlT/5huioLu+Usf7m0Ke1s8+cYTpNxOd3V/J37IepG4W8wuydUcGC+aOpa8Vs
-        Sd6cACPfzVm73e9t5hPD1qyMcTshG2KansB5Y4R0TT/HnTluohEuvPtGRUP7RY5C
-        t3oqLlq+as3bPGFAoDHcCCKrLXtsKXPjODQIZ/eh7io1K34VuIoigr4TNJNkIGUA
-        vFnw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1690026660; x=1690113060; bh=KIZ5JYrEXhvZZ
-        QyDG2wOlSZyD8b1CDF5O2rvxi8AyKI=; b=VQLMFlFulJX5BYDnaEryB60a9XpNo
-        eFZJnxYTOIeLkRZOA/OEbmiOXNI7wx3WDj+SlpYLPEeVRKT+giX87pkIQXAzl/l+
-        kb4EXtmjGpERjTtcXyKZk0LWPwXmyVtMSHhpXY/xOxE945dGjOJCNuXpZ2gIcmYO
-        0+FNKvOLgejaucn+l9rbkPRDmOppsm5T3/XMf9D7F+jNK8MZJ59OWA0Gfy6aSEN2
-        Bbw632zeHBt8EbrQJvruEG4ELpcaAOM8y1rliweAZkv8ZUEdpW3QSzaZJbcJV9hF
-        0lJLdLnq+2vYz72QQVGmnj/IJPYBXCVz5JZ8cUvqNv8yaWPHYXRrMZL2A==
-X-ME-Sender: <xms:o8K7ZIZyFnXsExvL37pxafOgYmgixk8E6bm2A__AZeZbRnlhm43OLg>
-    <xme:o8K7ZDZD8RREmz_ztMyp6zpWE-hFwxGsdYgJSwJEakFzozOwZBKDVfQ1ODQBCM2Uc
-    hyHe7mE6QWfag>
-X-ME-Received: <xmr:o8K7ZC96RG6HMIswn6NCCO4gN_kxpwuCDYzJokNVieJE-R_-hRiwQYHRjRooBrKE-YFS5zs-RrCMoXWU1fOLucKvxPz-3nC3CMWgVg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrheeggdeggecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
-    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:o8K7ZCqsJSN1iK0tTei0nnH8QKdW2cJcxN21Mr3OSC1WYqgGE09VWw>
-    <xmx:o8K7ZDrOsy4b7gw6v43AxbmGpxY3KTqJ30SSC6wgGWdq5mJ9jOZ6yg>
-    <xmx:o8K7ZASHNVhzDcS_v7lCa5ILlWPYVw_VjZdVUSgVZSzfotd03t607g>
-    <xmx:pMK7ZEkCrJja-LONio9v5UvQbbPZJVwF6uavuq8nvd4KWCZJSjHQzw>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 22 Jul 2023 07:50:59 -0400 (EDT)
-Date:   Sat, 22 Jul 2023 13:50:57 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Mohamed Khalfella <mkhalfella@purestorage.com>
-Cc:     stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH 4.19.y] tracing/histograms: Add histograms to hist_vars
- if they have referenced variables
-Message-ID: <2023072220-distinct-radial-fbab@gregkh>
-References: <2023072114-radiantly-gilled-72c0@gregkh>
- <20230721194426.144050-1-mkhalfella@purestorage.com>
+        with ESMTP id S229493AbjGVMiH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 08:38:07 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E4910DE
+        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 05:38:05 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-7672073e7b9so220673385a.0
+        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 05:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1690029485; x=1690634285;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=V2juWSz6t/8p6tXecBiY3aft3meJRr24apRAI1wBlKc=;
+        b=Yjk/R9WVmfNIOu8DkRnngunjRPklAjUbjQmeDP2I6x//lXl4qY/pnBfyoNCbI74tLY
+         vEx5ntjMj2WNLlNuOfOiZEiGLUagbRHgsCPcMUaZbKs0xtAxF2HD+JLu3eV7xL5Smcln
+         elWKVrw5bpd7HYE/tvQz8PmvvaVCMlMAfWbLk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690029485; x=1690634285;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V2juWSz6t/8p6tXecBiY3aft3meJRr24apRAI1wBlKc=;
+        b=TUWM8ZpNlZhrxx03qoQPnwcsu9BCvprf4PsNwfJRKdjjGrenkYnPJSEEn895881uYn
+         Ehnm216SW3IdpC/IlbmYzR+ktFp/UK5yJf6bY5gBE6JwOZzMBC2aCvzXKEkLJJJw7Q+H
+         fiKtmvy4uBuL4mBFm5TDnQcVJmeC09sAsVM9RMv1j02pQbITRdbaMxER2R0ncTd6V2YX
+         E50o5zV5BDwZC2rg0TSQ5m0fV2Qb7HAzJTUMMBk1SEx36nVt4ibmOXEnydoKblACL+q8
+         fnn8FsbuqtCnXpL0JpyIjsHdSNrnYBwyDJhgcshBSc6a286nja1QyFHZQ5sG6CrEAUUT
+         cL3g==
+X-Gm-Message-State: ABy/qLYK1B+OJgfT9H47kjt0BlKKA5NTEMI2tQkXnDL5+lqCMextUldS
+        4Yny//hvfQVOqHtW7YnJJQYNnQ==
+X-Google-Smtp-Source: APBJJlGw2/IwLcoVXjm4BA02re31AQ+ZWXJzV3EcwA5Je+mXcfKPUhBVSEFg2k2Cjl00OIeC52Iiyw==
+X-Received: by 2002:a05:620a:e9b:b0:767:100e:4cbd with SMTP id w27-20020a05620a0e9b00b00767100e4cbdmr2407817qkm.0.1690029484629;
+        Sat, 22 Jul 2023 05:38:04 -0700 (PDT)
+Received: from [192.168.0.198] (c-98-249-43-138.hsd1.va.comcast.net. [98.249.43.138])
+        by smtp.gmail.com with ESMTPSA id s17-20020a05620a031100b00767f5c70b3dsm1789432qkm.96.2023.07.22.05.38.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Jul 2023 05:38:03 -0700 (PDT)
+Message-ID: <7bfde9f4-2bd6-7337-b9ca-94a9253d847f@joelfernandes.org>
+Date:   Sat, 22 Jul 2023 08:38:02 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230721194426.144050-1-mkhalfella@purestorage.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [BUG] Re: Linux 6.4.4
+Content-Language: en-US
+To:     paulmck@kernel.org
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+References: <2023071940-suspect-ominous-4a6a@gregkh>
+ <20230720132714.GA3726096@google.com>
+ <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
+ <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
+ <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
+ <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
+ <eb04b7d0-2f49-4e01-be09-9062d9f08404@paulmck-laptop>
+ <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
+ <9b42cb38-8375-fc41-475a-2bd26c60a7b9@joelfernandes.org>
+ <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
+From:   Joel Fernandes <joel@joelfernandes.org>
+In-Reply-To: <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 07:44:26PM +0000, Mohamed Khalfella wrote:
-> Hist triggers can have referenced variables without having direct
-> variables fields. This can be the case if referenced variables are added
-> for trigger actions. In this case the newly added references will not
-> have field variables. Not taking such referenced variables into
-> consideration can result in a bug where it would be possible to remove
-> hist trigger with variables being refenced. This will result in a bug
-> that is easily reproducable like so
-> 
-> $ cd /sys/kernel/tracing
-> $ echo 'synthetic_sys_enter char[] comm; long id' >> synthetic_events
-> $ echo 'hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
-> $ echo 'hist:keys=common_pid.execname,id.syscall:onmatch(raw_syscalls.sys_enter).synthetic_sys_enter($comm, id)' >> events/raw_syscalls/sys_enter/trigger
-> $ echo '!hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
-> 
-> [  100.263533] ==================================================================
-> [  100.264634] BUG: KASAN: slab-use-after-free in resolve_var_refs+0xc7/0x180
-> [  100.265520] Read of size 8 at addr ffff88810375d0f0 by task bash/439
-> [  100.266320]
-> [  100.266533] CPU: 2 PID: 439 Comm: bash Not tainted 6.5.0-rc1 #4
-> [  100.267277] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
-> [  100.268561] Call Trace:
-> [  100.268902]  <TASK>
-> [  100.269189]  dump_stack_lvl+0x4c/0x70
-> [  100.269680]  print_report+0xc5/0x600
-> [  100.270165]  ? resolve_var_refs+0xc7/0x180
-> [  100.270697]  ? kasan_complete_mode_report_info+0x80/0x1f0
-> [  100.271389]  ? resolve_var_refs+0xc7/0x180
-> [  100.271913]  kasan_report+0xbd/0x100
-> [  100.272380]  ? resolve_var_refs+0xc7/0x180
-> [  100.272920]  __asan_load8+0x71/0xa0
-> [  100.273377]  resolve_var_refs+0xc7/0x180
-> [  100.273888]  event_hist_trigger+0x749/0x860
-> [  100.274505]  ? kasan_save_stack+0x2a/0x50
-> [  100.275024]  ? kasan_set_track+0x29/0x40
-> [  100.275536]  ? __pfx_event_hist_trigger+0x10/0x10
-> [  100.276138]  ? ksys_write+0xd1/0x170
-> [  100.276607]  ? do_syscall_64+0x3c/0x90
-> [  100.277099]  ? entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-> [  100.277771]  ? destroy_hist_data+0x446/0x470
-> [  100.278324]  ? event_hist_trigger_parse+0xa6c/0x3860
-> [  100.278962]  ? __pfx_event_hist_trigger_parse+0x10/0x10
-> [  100.279627]  ? __kasan_check_write+0x18/0x20
-> [  100.280177]  ? mutex_unlock+0x85/0xd0
-> [  100.280660]  ? __pfx_mutex_unlock+0x10/0x10
-> [  100.281200]  ? kfree+0x7b/0x120
-> [  100.281619]  ? ____kasan_slab_free+0x15d/0x1d0
-> [  100.282197]  ? event_trigger_write+0xac/0x100
-> [  100.282764]  ? __kasan_slab_free+0x16/0x20
-> [  100.283293]  ? __kmem_cache_free+0x153/0x2f0
-> [  100.283844]  ? sched_mm_cid_remote_clear+0xb1/0x250
-> [  100.284550]  ? __pfx_sched_mm_cid_remote_clear+0x10/0x10
-> [  100.285221]  ? event_trigger_write+0xbc/0x100
-> [  100.285781]  ? __kasan_check_read+0x15/0x20
-> [  100.286321]  ? __bitmap_weight+0x66/0xa0
-> [  100.286833]  ? _find_next_bit+0x46/0xe0
-> [  100.287334]  ? task_mm_cid_work+0x37f/0x450
-> [  100.287872]  event_triggers_call+0x84/0x150
-> [  100.288408]  trace_event_buffer_commit+0x339/0x430
-> [  100.289073]  ? ring_buffer_event_data+0x3f/0x60
-> [  100.292189]  trace_event_raw_event_sys_enter+0x8b/0xe0
-> [  100.295434]  syscall_trace_enter.constprop.0+0x18f/0x1b0
-> [  100.298653]  syscall_enter_from_user_mode+0x32/0x40
-> [  100.301808]  do_syscall_64+0x1a/0x90
-> [  100.304748]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-> [  100.307775] RIP: 0033:0x7f686c75c1cb
-> [  100.310617] Code: 73 01 c3 48 8b 0d 65 3c 10 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 21 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 35 3c 10 00 f7 d8 64 89 01 48
-> [  100.317847] RSP: 002b:00007ffc60137a38 EFLAGS: 00000246 ORIG_RAX: 0000000000000021
-> [  100.321200] RAX: ffffffffffffffda RBX: 000055f566469ea0 RCX: 00007f686c75c1cb
-> [  100.324631] RDX: 0000000000000001 RSI: 0000000000000001 RDI: 000000000000000a
-> [  100.328104] RBP: 00007ffc60137ac0 R08: 00007f686c818460 R09: 000000000000000a
-> [  100.331509] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-> [  100.334992] R13: 0000000000000007 R14: 000000000000000a R15: 0000000000000007
-> [  100.338381]  </TASK>
-> 
-> We hit the bug because when second hist trigger has was created
-> has_hist_vars() returned false because hist trigger did not have
-> variables. As a result of that save_hist_vars() was not called to add
-> the trigger to trace_array->hist_vars. Later on when we attempted to
-> remove the first histogram find_any_var_ref() failed to detect it is
-> being used because it did not find the second trigger in hist_vars list.
-> 
-> With this change we wait until trigger actions are created so we can take
-> into consideration if hist trigger has variable references. Also, now we
-> check the return value of save_hist_vars() and fail trigger creation if
-> save_hist_vars() fails.
-> 
-> Link: https://lore.kernel.org/linux-trace-kernel/20230712223021.636335-1-mkhalfella@purestorage.com
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
-> Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> (cherry picked from commit 6018b585e8c6fa7d85d4b38d9ce49a5b67be7078)
-> ---
->  kernel/trace/trace_events_hist.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-> index 455cf41aedbb..892dd7085365 100644
-> --- a/kernel/trace/trace_events_hist.c
-> +++ b/kernel/trace/trace_events_hist.c
-> @@ -5787,13 +5787,15 @@ static int event_hist_trigger_func(struct event_command *cmd_ops,
->  	if (get_named_trigger_data(trigger_data))
->  		goto enable;
->  
-> -	if (has_hist_vars(hist_data))
-> -		save_hist_vars(hist_data);
-> -
->  	ret = create_actions(hist_data, file);
->  	if (ret)
->  		goto out_unreg;
->  
-> +	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
-> +		if (save_hist_vars(hist_data))
-> +			goto out_unreg;
-> +	}
-> +
->  	ret = tracing_map_init(hist_data->map);
->  	if (ret)
->  		goto out_unreg;
 
-Now queued up, thanks.
 
-greg k-h
+On 7/21/23 18:08, Paul E. McKenney wrote:
+> On Fri, Jul 21, 2023 at 03:20:48PM -0400, Joel Fernandes wrote:
+>> (Trimming the CC list a bit)
+>> On 7/21/23 08:13, Joel Fernandes wrote:
+>>> On 7/20/23 15:47, Paul E. McKenney wrote:
+>>>> On Thu, Jul 20, 2023 at 03:32:35PM -0400, Joel Fernandes wrote:
+>>>>> On 7/20/23 15:04, Paul E. McKenney wrote:
+>>>>>> On Thu, Jul 20, 2023 at 12:31:13PM -0400, Joel Fernandes wrote:
+>>>>>>> Hi Paul,
+>>>>>>>
+>>>>>>> On Thu, Jul 20, 2023 at 11:55 AM Paul E. McKenney
+>>>>>>> <paulmck@kernel.org> wrote:
+>>>>>>>>
+>>>>>>>> On Thu, Jul 20, 2023 at 01:27:14PM +0000, Joel Fernandes wrote:
+>>>>> [...]
+>>>>>>>>>
+>>>>>>>>> So likely RCU boosting is failing:
+>>>>>>>>>
+>>>>>>>>> The full TREE03 splat:
+>>>>>>>>> [   54.243588] ------------[ cut here ]------------
+>>>>>>>>> [   54.244547] rcu-torture: rcu_torture_boost started
+>>>>> [...]
+>>>>>>>>> [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
+>>>>> [...]
+>>>>>>>>> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+>>>>>>>>>
+>>>>>>>>> However, if we are to believe the '9', it appears the object did
+>>>>>>>>> made it
+>>>>>>>>> quite some till the end of the pipe array but not until the free
+>>>>>>>>> pool.
+>>>>>>>>
+>>>>>>>> This is from this if/for statement, correct?
+>>>>>>>>
+>>>>>>>>                   stutter_waited =
+>>>>>>>> stutter_wait("rcu_torture_writer");
+>>>>>>>>                   if (stutter_waited &&
+>>>>>>>>                       !atomic_read(&rcu_fwd_cb_nodelay) &&
+>>>>>>>>                       !cur_ops->slow_gps &&
+>>>>>>>>                       !torture_must_stop() &&
+>>>>>>>>                       boot_ended)
+>>>>>>>>                           for (i = 0; i <
+>>>>>>>> ARRAY_SIZE(rcu_tortures); i++)
+>>>>>>>>                                   if
+>>>>>>>> (list_empty(&rcu_tortures[i].rtort_free) &&
+>>>>>>>>                                      
+>>>>>>>> rcu_access_pointer(rcu_torture_current) !=
+>>>>>>>>                                       &rcu_tortures[i]) {
+>>>>>>>>                                           tracing_off();
+>>>>>>>>                                           show_rcu_gp_kthreads();
+>>>>>>>>                                           WARN(1, "%s:
+>>>>>>>> rtort_pipe_count:
+>>>>>>>>                                           rcu_ftrace_dump(DUMP_ALL);
+>>>>>>>>                                   }
+>>>>>>>
+>>>>>>> Yes, that's right.
+>>>>>>>
+>>>>>>>> If so, this happens when there was a stutter wait, but RCU grace
+>>>>>>>> periods failed to clear out the backlog during the several seconds
+>>>>>>>> that
+>>>>>>>> rcutorture was forced idle.  This might be related to the RCU
+>>>>>>>> priority
+>>>>>>>> boosting failure, in which a preempted reader persisted across the
+>>>>>>>> stutter interval.
+>>>>>>>
+>>>>>>> When RCU is operating normally, shouldn't the check
+>>>>>>> "(list_empty(&rcu_tortures[i].rtort_free)" not run until the preempted
+>>>>>>> reader unblocks and exits its RCU read-side critical section?
+>>>>>>
+>>>>>> Yes, but not just "until", but rather "long after".  If RCU is doing
+>>>>>> grace periods correctly, an active reader on a given rcu_tortures[]
+>>>>>> element will prevent .rtort_pipe_count from exceeding the value 2.
+>>>>>
+>>>>> Ah ok, so the rtort_pipe_count being 9 is a sign RCU isn't making
+>>>>> progress
+>>>>> thus making it absent from the free list.
+>>>>
+>>>> Yes, though RCU is -just- -barely- too slow, as one more grace period
+>>>> would have done it.
+>>>>
+>>>>>> The element will not be put on a list until .rtort_pipe_count is equal
+>>>>>> to RCU_TORTURE_PIPE_LEN, which is 10.
+>>>>>>
+>>>>>> This warning usually appears when something is holding up the
+>>>>>> grace-period
+>>>>>> kthread.  Historically, this has included deadlocks, missed timers,
+>>>>>> and whatever else can prevent the grace-period kthread from running.
+>>>>>
+>>>>> Makes sense.
+>>>>>
+>>>>>>> One thing that confuses me, in the case of
+>>>>>>> "cur_ops->deferred_free(old_rp);" , the earlier do-while loop may exit
+>>>>>>> before the async callbacks can finish. So what prevents the
+>>>>>>> "(list_empty(&rcu_tortures[i].rtort_free)" check from happening before
+>>>>>>> grace periods happen? Thanks for any clarification.
+>>>>>>
+>>>>>> We only enter this code if the stutter_wait() actually waited, and by
+>>>>>> default this function will wait about five seconds.  Since the
+>>>>>> rcutorture
+>>>>>> testing goes idle during this time period (or is supposed to!), if
+>>>>>> things
+>>>>>> are working properly, knocking off ten grace periods during that time
+>>>>>> should be pretty much a given.
+>>>>>
+>>>>> Sure, makes sense. And this is not Lazy-RCU so 5 seconds should be
+>>>>> plenty
+>>>>> ;). I think I was subconsciously expecting an rcu_barrier() somewhere
+>>>>> in the
+>>>>> code before those checks, but that's not needed as you pointed that the
+>>>>> stutter should be giving enough time for RCU to make progress.
+>>>>
+>>>> And there might need to be a call_rcu_hurry() in there somewhere,
+>>>> now that you mention it.  Which would pretty much defeat any sort of
+>>>> lazy-RCU-callback testing in rcutorture, but testing of laziness might
+>>>> need to be separate anyway.
+>>>>
+>>>>> So hmm, the count being 9 means that not enough RCU grace periods have
+>>>>> passed for the rcu_torture object in question thus keeping it always
+>>>>> allocated. The GP thread not getting CPU can do that indeed, or perhaps
+>>>>> something else stalling RCU like a preempted reader, length preemption
+>>>>> disabling on a CPU and so forth..  I'll try to collect a trace when it
+>>>>> happens.
+>>>>
+>>>> Looking forward to seeing what you come up with!
+>>>
+>>> So far I found this. Before the crash, GPs took about 50ms, during the
+>>> crash it took 5 seconds before the warning which aligns with what you
+>>> mentioned about stutter.
+>>>
+>>>
+>>> The GP that never completed is at this line:
+>>>
+>>> [ 2816.041082]    <...>-13       13d.... 1237016139us :
+>>> rcu_grace_period: rcu_sched 144681 start
+>>>
+>>> And fqs loop got a "dti" for CPUs:
+>>> 1
+>>> 2
+>>> 12
+>>>
+>>> And I see cpuqs for:
+>>> 13
+>>> 6
+>>> 10
+>>> 5
+>>> 4
+>>> 11
+>>>
+>>> No idea what happened to 3, 8, 9, 14, 15. Maybe the "dti" for those did
+>>> not show in the trace?
+>>>
+>>> However, I see that CPU 7 did this:
+>>> [ 2816.205277]   <idle>-0         7d.... 1237016284us : sched_switch:
+>>> prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==>
+>>> next_comm=rcu_torture_rea next_pid=149 next_prio=139
+>>>
+>>>
+>>> and then did this about 3 seconds later:
+>>> [ 2819.394111] rcu_tort-149       7dNs.. 1237025699us :
+>>> rcu_grace_period: rcu_sched 144677 cpuend
+>>> [ 2819.412745] rcu_tort-149       7dNs.. 1237025699us :
+>>> rcu_grace_period: rcu_sched 144681 cpustart
+>>>
+>>>
+>>> Which means it never switched out from the CPU all this while. Neither
+>>> did it report cpuqs. Ok it did notice the new GP started, welcome to the
+>>> party mate ;)
+>>>
+>>> That points the issue I think. I wonder if the emergency provisions for
+>>> forcing quiescent states on NOHZ_FULL CPUs kicked in. ISTR, we had
+>>> issues with that in the past where we had to fix the tick path to report
+>>> a QS.
+>>>
+>>> I'll add some more traces. Especially around preempted readers, the
+>>> emergency provisions for forcing a QS and so forth and see if I can dig
+>>> more information.
+>>
+>> In another instance, I caught a stack trace of CPU5 when it did not
+>> check-in with RCU for 3 seconds or so:
+>>
+>> [ 1127.067889]  kmalloc_trace+0x25/0x90
+>> [ 1127.072823]  rcu_torture_fwd_prog+0x3d8/0xa60
+>> [ 1127.078749]  ? __pfx_rcu_torture_fwd_prog+0x10/0x10
+>> [ 1127.085468]  ? kthread+0xcb/0xf0
+>> [ 1127.090040]  ? __pfx_rcu_torture_fwd_prog+0x10/0x10
+>> [ 1127.096626]  kthread+0xcb/0xf0
+>> [ 1127.100803]  ? __pfx_kthread+0x10/0x10
+>> [ 1127.107207]  ret_from_fork+0x2c/0x50
+>> [ 1127.113662]  </TASK>
+>> [ 1127.117818] Kernel panic - not syncing: kernel: panic_on_warn set ...
+>>
+>> It appears it was in "rcu_torture_fwd_prog" at the time. It got stuck
+>> there for 2 seconds.
+>>
+>> Interestingly, I did find the scheduler tick was trying to get in touch
+>> with the CPU and it was running code on it even:
+>> [ 5858.463102] rcu_tort-174       5d.h.. 1131149320us : rcu_utilization:
+>> Start scheduler-tick
+>> [ 5858.472903] rcu_tort-174       5d.h.. 1131149320us : rcu_utilization:
+>> End scheduler-tick
+>>
+>> So I could add some traces there to figure out what is it upto. ISTR, we
+>> also send IPIs to these CPUs? So maybe adding some traces there too is
+>> in order.
+>>
+>> Also earlier in dmesg it did this:
+>> [ 1124.825504] rcu_torture_fwd_prog n_max_cbs: 44181
+>> [ 1124.832158] rcu_torture_fwd_prog: Starting forward-progress test 0
+>> [ 1124.840977] rcu_torture_fwd_prog_cr: Starting forward-progress test 0
+>> [ 1126.726621] ------------[ cut here ]------------
+>> [ 1126.733296] rcutorture_oom_notify invoked upon OOM during
+>> forward-progress testing.
+>>
+>> Before that "cut here", there is a 2 second gap which tells me it got
+>> stuck there.
+>>
+>> So this function rcu_torture_fwd_prog() is keeping the CPU unresponsive
+>> from an RCU perspective for some reason? Because I never saw the
+>> "rcu_torture_fwd_prog_cr: Waiting for CBs" message before it panicked.
+> 
+> Thank you for digging into this!
+> 
+> Yes, rcu_torture_fwd_prog() is supposed to monopolize CPUs.  But it
+> is supposed to respect stuttering.  It is quite possible that the
+> synchronization is insufficient.  Or that the "supposed to" never
+> made it into the code.
+> 
+>> Collecting traces again.. ;) thanks,
+> 
+> ;-) ;-) ;-)
+
+I narrowed it down to the timer softirq taking too long and doing this
+for 4 seconds:
+
+[ 6781.411834] ksoftirq-12        0dNs.. 206231531us : sched_wakeup:
+comm=rcu_torture_rea pid=153 prio=139 target_cpu=000
+[ 6781.424854] ksoftirq-12        0dNs.. 206231531us : sched_waking:
+comm=rcu_torture_rea pid=164 prio=139 target_cpu=006
+[ 6781.437650] ksoftirq-12        0dNs.. 206231533us : sched_wakeup:
+comm=rcu_torture_rea pid=164 prio=139 target_cpu=000
+[ 6781.451019] ksoftirq-12        0dNs.. 206231533us : sched_waking:
+comm=rcu_torture_rea pid=162 prio=139 target_cpu=002
+[ 6781.463825] ksoftirq-12        0dNs.. 206231535us : sched_wakeup:
+comm=rcu_torture_rea pid=162 prio=139 target_cpu=000
+[ 6781.476290] ksoftirq-12        0dNs.. 206231535us : sched_waking:
+comm=rcu_torture_wri pid=143 prio=139 target_cpu=004
+[ 6781.489257] ksoftirq-12        0dNs.. 206231537us : sched_wakeup:
+comm=rcu_torture_wri pid=143 prio=139 target_cpu=000
+[ 6781.502559] ksoftirq-12        0dNs.. 206231538us : sched_waking:
+comm=rcu_torture_rea pid=154 prio=139 target_cpu=006
+[ 6781.515093] ksoftirq-12        0dNs.. 206231539us : sched_wakeup:
+comm=rcu_torture_rea pid=154 prio=139 target_cpu=000
+[ 6781.527622] ksoftirq-12        0dNs.. 206231539us : sched_waking:
+comm=rcu_torture_fak pid=149 prio=139 target_cpu=003
+[ 6781.539979] ksoftirq-12        0dNs.. 206231541us : sched_wakeup:
+comm=rcu_torture_fak pid=149 prio=139 target_cpu=000
+[ 6781.552717] ksoftirq-12        0dNs.. 206231541us : sched_waking:
+comm=rcu_torture_fak pid=145 prio=139 target_cpu=005
+[ 6781.565074] ksoftirq-12        0dNs.. 206231543us : sched_wakeup:
+comm=rcu_torture_fak pid=145 prio=139 target_cpu=000
+[ 6781.577580] ksoftirq-12        0dNs.. 206231543us : sched_waking:
+comm=rcu_torture_rea pid=166 prio=139 target_cpu=003
+[ 6781.590211] ksoftirq-12        0dNs.. 206231547us : sched_wakeup:
+comm=rcu_torture_rea pid=166 prio=139 target_cpu=000
+
+And I caught the softirq exit which told me it is coming from timer softirq:
+[ 6781.603150] ksoftirq-12        0.Ns.. 206231552us : __do_softirq:
+softirq exit: name: TIMER, action handler: run_timer_softirq
+
+Maybe something to do with calls to stuttering or lack of cond_resched()
+in the torture code somewhere? Unfortunately I was not able to get a
+stack trace and what is doing the wake ups.
+
+This is at least one of the issues. I do believe the fwd prog functions
+taking too long in the kernel without doing a cond_resched() is another
+issue but I need to reduce the RCU stall timeout to 2 seconds to see
+those happen otherwise I think those just get "hidden".
+
+Both these issues appear to be threads spending too much time in kernel
+mode in non-preemptible kernels. The RCU GP thread was able to get CPU
+so that wasn't the issue in these instances.
+
+Thoughts?
+
+Next plan of action is to get sched_waking stack traces since I have a
+very reliable repro of this now.
+
+thanks,
+
+ - Joel
