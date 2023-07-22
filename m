@@ -2,80 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44C1875DD3D
-	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 17:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 485E275DD41
+	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 17:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229914AbjGVPfb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 22 Jul 2023 11:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47442 "EHLO
+        id S230076AbjGVPo0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 22 Jul 2023 11:44:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbjGVPfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 11:35:30 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D72E60
-        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 08:35:26 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b8c81e36c0so17862075ad.0
-        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 08:35:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690040125; x=1690644925;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=em7jBiZPm3GAT4I2G7ExzbgtIjtZJ5kckW42+zL7afI=;
-        b=nitm0bsVwDQO0c+0yUxlswgPQncC8uNepdh2qXrBbLmCW0/tFx70KFfTTBUBCoDaYw
-         D7R1IQRGy4SzM56T4lzPj+po5tc5IgPz8tAVCeybbrmVQTnkTOfc4eU6iK2ng1Q9RoF6
-         uVZAjfKRZFT00PVAWgu6ld9v7lAjXnBWLst8ZVkI+7gfgGLBikNZ2Zhy8mVGf+R8s/I5
-         JslxgGY0NzRrZrgnrCAmbGSRzQUH/CUgmKIktphovVV1gmFqqYzOjJ4kjscW9tLkj9qv
-         d3T34wLB+s1koGmJb7BGmkc+9EChsYhTgBLp/O1pUzCXkSltI3gJKCSX1Rbrut6dljgi
-         4eNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690040125; x=1690644925;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=em7jBiZPm3GAT4I2G7ExzbgtIjtZJ5kckW42+zL7afI=;
-        b=Lp1Ma9WEQBbnTqaVQX9iNKj1ZuRJfx7kkZUs8ovpl2GAnXEZdgy5DTDrtqbTh7oV0z
-         TvlRYZpMF5yJMogLjrZFdA7WWTD7q2FLFPtvztao5yM7NSB+Hp3r6UUHtlDaaaseMbpV
-         qfQB5KJBNnoX1GEp5/RGIUeMGLXwjWhN4PUVdI9E/XblOZTy4sTgiJ4m4mZPpFppTVZY
-         9wbd/8ho303OdgmjTRs8OGeXaKLanEBXtQF6eJF9ZYsVzvt8UQFjP7NdR1NQf1cg3cOy
-         z9H0NBf/4wOD+WTvAV94g3/nrxdEW2EXNBO492N6H+7kqfzOTLckxuRTTrJiLUv4xZ7F
-         ZnUQ==
-X-Gm-Message-State: ABy/qLYi+JtC8oFtfw26TMO638EF2h2B/NBNWlpOAlBiBhC2GzB2a8uP
-        uJsAT+LIge9N3kc0eNYAAINXNwVoFiU=
-X-Google-Smtp-Source: APBJJlElHE3veUwgbzutvQN90tZBFa665DMS8e5aBvsOPbkMZOT0Y9ksX2Ry9hu+bg7D1c/cNIbQdA==
-X-Received: by 2002:a17:902:e995:b0:1b8:a328:c1e6 with SMTP id f21-20020a170902e99500b001b8a328c1e6mr4728333plb.63.1690040125508;
-        Sat, 22 Jul 2023 08:35:25 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u19-20020a170902a61300b001b830d8bc40sm5568504plq.74.2023.07.22.08.35.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jul 2023 08:35:24 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <b54030b3-9cb2-5c31-cc3f-45a4ac8f41f9@roeck-us.net>
-Date:   Sat, 22 Jul 2023 08:35:23 -0700
+        with ESMTP id S229483AbjGVPoZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 11:44:25 -0400
+Received: from gproxy4-pub.mail.unifiedlayer.com (gproxy4-pub.mail.unifiedlayer.com [69.89.23.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C451A7
+        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 08:44:24 -0700 (PDT)
+Received: from cmgw10.mail.unifiedlayer.com (unknown [10.0.90.125])
+        by progateway6.mail.pro1.eigbox.com (Postfix) with ESMTP id 1354810047D69
+        for <stable@vger.kernel.org>; Sat, 22 Jul 2023 15:44:24 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id NEmOq9GQi3S70NEmOqJlIk; Sat, 22 Jul 2023 15:44:24 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=YL5adTKx c=1 sm=1 tr=0 ts=64bbf958
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10:nop_charset_1 a=ws7JD89P4LkA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=w8XLtf1FCvVzD2GCVTUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=JbFYm2kyNE7xR3TA60Rup6fMtPvix2w6RbrfLGUUkso=; b=rEpvQIqaFZgw0yDEycOpf3Wv1O
+        0t1f2m5UkDjuW7V477WciKNbIcysd4ymgF+NQ35Ia6wDEiZ2QGmUDygNjF76fxG/YLlnp9A8pzIlw
+        eq/QXoqZekN/Lzl501VC216mK2pe7lKE8HhLlBL27vVVblYu9VYVqdAl6UhOLSXkljUaZ529qHXDO
+        gsVswfkFWMDXaqWx7N/NDgQuF1clJfpAyWcW/rexH9CLDmSbKihFKlQRt1rU5pPB0+TrIGSPCc27X
+        uyL9PVCdGQPNDzlONZOPgYxBQoQga71qslESWx9U8m77jqwUmvPxcJBIC3kHVGWifYZD2FNQqXEhe
+        Ba2CtutQ==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:48908 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qNEmN-002igT-0q;
+        Sat, 22 Jul 2023 09:44:23 -0600
+Subject: Re: [PATCH 6.1 000/223] 6.1.40-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230721160520.865493356@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <1cd40a0f-748b-91bc-311f-6598da5e813c@w6rz.net>
+Date:   Sat, 22 Jul 2023 08:44:21 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To:     stable <stable@vger.kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Build error in v5.4.y-queue
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qNEmN-002igT-0q
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:48908
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Seen in arm:allmodconfig and arm64:allmodconfig builds with v5.4.249-278-g78f9a3d1c959.
+On 7/21/23 9:04 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.40 release.
+> There are 223 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 23 Jul 2023 16:04:33 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.40-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-sound/soc/mediatek/mt8173/mt8173-afe-pcm.c: In function 'mt8173_afe_pcm_dev_probe':
-sound/soc/mediatek/mt8173/mt8173-afe-pcm.c:1159:17: error: label 'err_cleanup_components' used but not defined
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Guenter
+Tested-by: Ron Economos <re@w6rz.net>
+
