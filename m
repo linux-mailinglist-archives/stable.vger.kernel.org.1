@@ -2,60 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4069275D86D
+	by mail.lfdr.de (Postfix) with ESMTP id E356675D86E
 	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 02:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbjGVAqI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 20:46:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56548 "EHLO
+        id S230242AbjGVAqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 20:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230010AbjGVAqH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 20:46:07 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39311E0
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 17:46:06 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b700e85950so35994861fa.3
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 17:46:06 -0700 (PDT)
+        with ESMTP id S230239AbjGVAqI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 20:46:08 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 349DE1FCB
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 17:46:07 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b703caf344so36171471fa.1
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 17:46:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689986764; x=1690591564;
+        d=gmail.com; s=20221208; t=1689986765; x=1690591565;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=goYljPtd9v7gauXSTi0Rm5GCr4F7UWetlAeeeGfKqtE=;
-        b=qu4M0RpzJnCZiTN+9+H7pZHqYFaArJp3TJFEwfxKxnE/R5mqKRyvVCYrhrHD817DNt
-         5JIUqUzLPEcQxT16ui3V+5FtcJlbRoIufb45eFDYMwsfW8m6g3gj5HCfmoAdqf/UK/pE
-         hXU6lX6dBedixaRSnMwlMT3P0JFxMTf5S9IJN3Xc8CfgJTcgVGWUQkDhK41vJClKv4Zi
-         fJGPivXy9JmEmtG7XbdtU7TdONSgLT0evTdmm6ChQKtbvf0VWHzcq5P7FCKEtMNGXer/
-         /SxgSL+w2cohcBMSZmSCoOfkCk1WdoaMk3jXfmqjvT+dU/MBaJwbw5niaT1YOxojo3Q9
-         noug==
+        bh=CiMv/DqXyMU0T5XJGTVrsRNjjYWgHT5nqe7rNKmDMBs=;
+        b=sxlUtBHgjoRglbjjwmjfttUpvg3TxYhz8DO24CKgFebz3w98UCtFNmX6QaIqGX1yZs
+         IXUzoRwoDgRhTxlU/bLXfRFd8RwaBi0n0KKm+8n7ei67nA+g2AVip5+QaMiBS/ITvcka
+         4eEFiely999yOssVoZqeTBQUe141cg9X84NUUGpOLSdFzAP9NjH2alM8dgG9cicvdzV9
+         OcHdHuYMeEygyfwUig0k+X0R9I5FFhIABVUL11dfmuvlTqHgCwncrl+LrvSOue1wn/cu
+         jhsnRbo4AUR9CFD41v6i1PQjMaVrEJAQ7fDoSXJDHoCBHuQ/oLRqlyF8fTuVrDJHNYww
+         tnCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689986764; x=1690591564;
+        d=1e100.net; s=20221208; t=1689986765; x=1690591565;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=goYljPtd9v7gauXSTi0Rm5GCr4F7UWetlAeeeGfKqtE=;
-        b=SCvguYBks0+Ya5tOxoHqT8zCY6jjIlKStaZ34BIOhjw4whM82pSMURLPYmb6GJ2/CW
-         oCHAggPQSL6kd08EHUmKFZcQMSWsLbptXMmTGd7op86Vz+zozkUBGLY6/x7LIt44AyDl
-         V8Vn0LPd8VFpnd/IgVkvPvKzxczisAaSt30CLNG/JGJKg6lE5B+CjuXAWmH7ZK/r3rWD
-         rKiA6qpgVJiu2uLCHIOnNJxThTOz9xCOWk8Nkc3AzxoAkukemOsBR6UToAItPHIgkaxU
-         ZXr7h5kKVbnGL6YZP/UZk1JQ2GJkPvk+kwKdejS8G87Ak9t7j/gYx5vzZZXjyrAJKnq2
-         TB5w==
-X-Gm-Message-State: ABy/qLaV1aO9xh84gaw71ryb/IjeViFiRMxu5yJS42tsgAmD7cjHOWA5
-        hrSgihAj04cxPJx+siKbkHOAqYbMXCg=
-X-Google-Smtp-Source: APBJJlG/ZqhW73Dn8fInm+SqJPBFH64f+TeAAIdp+i3IdOD0O8cJx7RAFps+wc46zmXMzrtdTOrxgA==
-X-Received: by 2002:a2e:850d:0:b0:2b4:7380:230 with SMTP id j13-20020a2e850d000000b002b473800230mr2846953lji.13.1689986764187;
-        Fri, 21 Jul 2023 17:46:04 -0700 (PDT)
+        bh=CiMv/DqXyMU0T5XJGTVrsRNjjYWgHT5nqe7rNKmDMBs=;
+        b=M1L1UPwtAStBF3kS7iw8172c+kE7kZ45TqnoeuFUr0ulWvbKYixnGT02QpmleqATDs
+         HPvQBnmiJ64GEElU2w4V1N369p2pqjLfGbOf1/Zv+GRpAKodh5dhZIQZQWko/OkCI+ka
+         Z23U9/iFOA5v/+lT9IY0yBjja0LZnyTOv1f0qvXB1ZRPCQLBtHoUmIwZVj/+/DAEe1q+
+         aOg8BE+vlOXtEVPvP0l+M3cbwJBIKq1SH7NWAWpM21W4pxV/viesuuMFaWuF0gPh7/cf
+         BxtIavVUXpel6A+sn9718NVqyhS4gw/1r9iFChcenp8zSduGLRXu/LXUJHRnFTA5lelW
+         /HtQ==
+X-Gm-Message-State: ABy/qLbBHGj6n6V4KwvKyUt+d6thhL8rt8ECvif1gHQ9ZsKkthq4FErE
+        DAuPhS8NWKXXNJUsJ/4RiUijjEiKOf0gRQ==
+X-Google-Smtp-Source: APBJJlFpumN7xuAKmAgrZhq+05NNOiKZ9z8llYM0SNj3lIuM+PwGYHTKEJqe9J4cmHzFnfYthz37RQ==
+X-Received: by 2002:a2e:3316:0:b0:2b6:e6ad:25c4 with SMTP id d22-20020a2e3316000000b002b6e6ad25c4mr2914961ljc.45.1689986765203;
+        Fri, 21 Jul 2023 17:46:05 -0700 (PDT)
 Received: from bigfoot.. (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
-        by smtp.gmail.com with ESMTPSA id j2-20020a2e8002000000b002b69febf515sm1224585ljg.125.2023.07.21.17.46.03
+        by smtp.gmail.com with ESMTPSA id j2-20020a2e8002000000b002b69febf515sm1224585ljg.125.2023.07.21.17.46.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 17:46:03 -0700 (PDT)
+        Fri, 21 Jul 2023 17:46:04 -0700 (PDT)
 From:   Eduard Zingerman <eddyz87@gmail.com>
 To:     stable@vger.kernel.org, ast@kernel.org
 Cc:     andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
-        yhs@fb.com, mykolal@fb.com, luizcap@amazon.com
-Subject: [PATCH 6.1.y 5/6] selftests/bpf: Workaround verification failure for fexit_bpf2bpf/func_replace_return_code
-Date:   Sat, 22 Jul 2023 03:45:13 +0300
-Message-ID: <20230722004514.767618-6-eddyz87@gmail.com>
+        yhs@fb.com, mykolal@fb.com, luizcap@amazon.com,
+        Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 6.1.y 6/6] selftests/bpf: Fix sk_assign on s390x
+Date:   Sat, 22 Jul 2023 03:45:14 +0300
+Message-ID: <20230722004514.767618-7-eddyz87@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230722004514.767618-1-eddyz87@gmail.com>
 References: <20230722004514.767618-1-eddyz87@gmail.com>
@@ -71,93 +72,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yonghong Song <yhs@fb.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 63d78b7e8ca2d0eb8c687a355fa19d01b6fcc723 ]
+[ Upstream commit 7ce878ca81bca7811e669db4c394b86780e0dbe4 ]
 
-With latest llvm17, selftest fexit_bpf2bpf/func_replace_return_code
-has the following verification failure:
+sk_assign is failing on an s390x machine running Debian "bookworm" for
+2 reasons: legacy server_map definition and uninitialized addrlen in
+recvfrom() call.
 
-  0: R1=ctx(off=0,imm=0) R10=fp0
-  ; int connect_v4_prog(struct bpf_sock_addr *ctx)
-  0: (bf) r7 = r1                       ; R1=ctx(off=0,imm=0) R7_w=ctx(off=0,imm=0)
-  1: (b4) w6 = 0                        ; R6_w=0
-  ; memset(&tuple.ipv4.saddr, 0, sizeof(tuple.ipv4.saddr));
-  ...
-  ; return do_bind(ctx) ? 1 : 0;
-  179: (bf) r1 = r7                     ; R1=ctx(off=0,imm=0) R7=ctx(off=0,imm=0)
-  180: (85) call pc+147
-  Func#3 is global and valid. Skipping.
-  181: R0_w=scalar()
-  181: (bc) w6 = w0                     ; R0_w=scalar() R6_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff))
-  182: (05) goto pc-129
-  ; }
-  54: (bc) w0 = w6                      ; R0_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff)) R6_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff))
-  55: (95) exit
-  At program exit the register R0 has value (0x0; 0xffffffff) should have been in (0x0; 0x1)
-  processed 281 insns (limit 1000000) max_states_per_insn 1 total_states 26 peak_states 26 mark_read 13
-  -- END PROG LOAD LOG --
-  libbpf: prog 'connect_v4_prog': failed to load: -22
+Fix by adding a new-style server_map definition and dropping addrlen
+(recvfrom() allows NULL values for src_addr and addrlen).
 
-The corresponding source code:
+Since the test should support tc built without libbpf, build the prog
+twice: with the old-style definition and with the new-style definition,
+then select the right one at runtime. This could be done at compile
+time too, but this would not be cross-compilation friendly.
 
-  __attribute__ ((noinline))
-  int do_bind(struct bpf_sock_addr *ctx)
-  {
-        struct sockaddr_in sa = {};
-
-        sa.sin_family = AF_INET;
-        sa.sin_port = bpf_htons(0);
-        sa.sin_addr.s_addr = bpf_htonl(SRC_REWRITE_IP4);
-
-        if (bpf_bind(ctx, (struct sockaddr *)&sa, sizeof(sa)) != 0)
-                return 0;
-
-        return 1;
-  }
-  ...
-  SEC("cgroup/connect4")
-  int connect_v4_prog(struct bpf_sock_addr *ctx)
-  {
-  ...
-        return do_bind(ctx) ? 1 : 0;
-  }
-
-Insn 180 is a call to 'do_bind'. The call's return value is also the return value
-for the program. Since do_bind() returns 0/1, so it is legitimate for compiler to
-optimize 'return do_bind(ctx) ? 1 : 0' to 'return do_bind(ctx)'. However, such
-optimization breaks verifier as the return value of 'do_bind()' is marked as any
-scalar which violates the requirement of prog return value 0/1.
-
-There are two ways to fix this problem, (1) changing 'return 1' in do_bind() to
-e.g. 'return 10' so the compiler has to do 'do_bind(ctx) ? 1 :0', or (2)
-suggested by Andrii, marking do_bind() with __weak attribute so the compiler
-cannot make any assumption on do_bind() return value.
-
-This patch adopted adding __weak approach which is simpler and more resistant
-to potential compiler optimizations.
-
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Yonghong Song <yhs@fb.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230310012410.2920570-1-yhs@fb.com
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230129190501.1624747-2-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/connect4_prog.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/sk_assign.c      | 25 ++++++++++++++-----
+ .../selftests/bpf/progs/test_sk_assign.c      | 11 ++++++++
+ .../bpf/progs/test_sk_assign_libbpf.c         |  3 +++
+ 3 files changed, 33 insertions(+), 6 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
 
-diff --git a/tools/testing/selftests/bpf/progs/connect4_prog.c b/tools/testing/selftests/bpf/progs/connect4_prog.c
-index ec25371de789..7ef49ec04838 100644
---- a/tools/testing/selftests/bpf/progs/connect4_prog.c
-+++ b/tools/testing/selftests/bpf/progs/connect4_prog.c
-@@ -32,7 +32,7 @@
- #define IFNAMSIZ 16
- #endif
- 
--__attribute__ ((noinline))
-+__attribute__ ((noinline)) __weak
- int do_bind(struct bpf_sock_addr *ctx)
+diff --git a/tools/testing/selftests/bpf/prog_tests/sk_assign.c b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
+index 3e190ed63976..1374b626a985 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sk_assign.c
++++ b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
+@@ -29,7 +29,23 @@ static int stop, duration;
+ static bool
+ configure_stack(void)
  {
- 	struct sockaddr_in sa = {};
++	char tc_version[128];
+ 	char tc_cmd[BUFSIZ];
++	char *prog;
++	FILE *tc;
++
++	/* Check whether tc is built with libbpf. */
++	tc = popen("tc -V", "r");
++	if (CHECK_FAIL(!tc))
++		return false;
++	if (CHECK_FAIL(!fgets(tc_version, sizeof(tc_version), tc)))
++		return false;
++	if (strstr(tc_version, ", libbpf "))
++		prog = "test_sk_assign_libbpf.bpf.o";
++	else
++		prog = "test_sk_assign.bpf.o";
++	if (CHECK_FAIL(pclose(tc)))
++		return false;
+ 
+ 	/* Move to a new networking namespace */
+ 	if (CHECK_FAIL(unshare(CLONE_NEWNET)))
+@@ -46,8 +62,8 @@ configure_stack(void)
+ 	/* Load qdisc, BPF program */
+ 	if (CHECK_FAIL(system("tc qdisc add dev lo clsact")))
+ 		return false;
+-	sprintf(tc_cmd, "%s %s %s %s", "tc filter add dev lo ingress bpf",
+-		       "direct-action object-file ./test_sk_assign.bpf.o",
++	sprintf(tc_cmd, "%s %s %s %s %s", "tc filter add dev lo ingress bpf",
++		       "direct-action object-file", prog,
+ 		       "section tc",
+ 		       (env.verbosity < VERBOSE_VERY) ? " 2>/dev/null" : "verbose");
+ 	if (CHECK(system(tc_cmd), "BPF load failed;",
+@@ -129,15 +145,12 @@ get_port(int fd)
+ static ssize_t
+ rcv_msg(int srv_client, int type)
+ {
+-	struct sockaddr_storage ss;
+ 	char buf[BUFSIZ];
+-	socklen_t slen;
+ 
+ 	if (type == SOCK_STREAM)
+ 		return read(srv_client, &buf, sizeof(buf));
+ 	else
+-		return recvfrom(srv_client, &buf, sizeof(buf), 0,
+-				(struct sockaddr *)&ss, &slen);
++		return recvfrom(srv_client, &buf, sizeof(buf), 0, NULL, NULL);
+ }
+ 
+ static int
+diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign.c b/tools/testing/selftests/bpf/progs/test_sk_assign.c
+index 98c6493d9b91..21b19b758c4e 100644
+--- a/tools/testing/selftests/bpf/progs/test_sk_assign.c
++++ b/tools/testing/selftests/bpf/progs/test_sk_assign.c
+@@ -16,6 +16,16 @@
+ #include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_endian.h>
+ 
++#if defined(IPROUTE2_HAVE_LIBBPF)
++/* Use a new-style map definition. */
++struct {
++	__uint(type, BPF_MAP_TYPE_SOCKMAP);
++	__type(key, int);
++	__type(value, __u64);
++	__uint(pinning, LIBBPF_PIN_BY_NAME);
++	__uint(max_entries, 1);
++} server_map SEC(".maps");
++#else
+ /* Pin map under /sys/fs/bpf/tc/globals/<map name> */
+ #define PIN_GLOBAL_NS 2
+ 
+@@ -35,6 +45,7 @@ struct {
+ 	.max_elem = 1,
+ 	.pinning = PIN_GLOBAL_NS,
+ };
++#endif
+ 
+ char _license[] SEC("license") = "GPL";
+ 
+diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+new file mode 100644
+index 000000000000..dcf46adfda04
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+@@ -0,0 +1,3 @@
++// SPDX-License-Identifier: GPL-2.0
++#define IPROUTE2_HAVE_LIBBPF
++#include "test_sk_assign.c"
 -- 
 2.41.0
 
