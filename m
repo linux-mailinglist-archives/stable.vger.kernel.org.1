@@ -2,196 +2,241 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E356675D86E
-	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 02:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A51F75D87B
+	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 03:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230242AbjGVAqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 20:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56558 "EHLO
+        id S229727AbjGVBA3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 21:00:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbjGVAqI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 20:46:08 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 349DE1FCB
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 17:46:07 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b703caf344so36171471fa.1
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 17:46:07 -0700 (PDT)
+        with ESMTP id S229487AbjGVBA3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 21:00:29 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB2B30E2;
+        Fri, 21 Jul 2023 18:00:27 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-55b1238a013so1642716a12.3;
+        Fri, 21 Jul 2023 18:00:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689986765; x=1690591565;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1689987627; x=1690592427;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CiMv/DqXyMU0T5XJGTVrsRNjjYWgHT5nqe7rNKmDMBs=;
-        b=sxlUtBHgjoRglbjjwmjfttUpvg3TxYhz8DO24CKgFebz3w98UCtFNmX6QaIqGX1yZs
-         IXUzoRwoDgRhTxlU/bLXfRFd8RwaBi0n0KKm+8n7ei67nA+g2AVip5+QaMiBS/ITvcka
-         4eEFiely999yOssVoZqeTBQUe141cg9X84NUUGpOLSdFzAP9NjH2alM8dgG9cicvdzV9
-         OcHdHuYMeEygyfwUig0k+X0R9I5FFhIABVUL11dfmuvlTqHgCwncrl+LrvSOue1wn/cu
-         jhsnRbo4AUR9CFD41v6i1PQjMaVrEJAQ7fDoSXJDHoCBHuQ/oLRqlyF8fTuVrDJHNYww
-         tnCA==
+        bh=kt0L4P+NzBcsq1EI6gbREXBo3crNA7JQvLXOnGryS3A=;
+        b=Q5SLPPrraqwPzMqgDS9A6HVHNilC+mrMvIeEymDFq5eDRMMcunbFym10hZ4ciU4Zmx
+         LzMRTu6bZBy0yV89Od8oQkMUgUvHqi8Uy5F1RSSAvomIkaXHvwr9krcdp73Jwxwcqer9
+         UuYrOrUPH8r028tuaUz8pLnBJQjosrXQHla++Te+jOU9SY4OkYD967SSX/U8Dpohel1A
+         JvgM9bBmL4MIOKlczLvwa+iuAgzYme69CsV90DGyp8PWkxyEXnBT3ZPBNMFdk7cwgEnc
+         gacXcrJz1te0wOVJsmMhW7LSqh8HX9aOH//iYLjIvGlEETaZ4EWOXHJofIu5lQz0bClE
+         MjVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689986765; x=1690591565;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1689987627; x=1690592427;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CiMv/DqXyMU0T5XJGTVrsRNjjYWgHT5nqe7rNKmDMBs=;
-        b=M1L1UPwtAStBF3kS7iw8172c+kE7kZ45TqnoeuFUr0ulWvbKYixnGT02QpmleqATDs
-         HPvQBnmiJ64GEElU2w4V1N369p2pqjLfGbOf1/Zv+GRpAKodh5dhZIQZQWko/OkCI+ka
-         Z23U9/iFOA5v/+lT9IY0yBjja0LZnyTOv1f0qvXB1ZRPCQLBtHoUmIwZVj/+/DAEe1q+
-         aOg8BE+vlOXtEVPvP0l+M3cbwJBIKq1SH7NWAWpM21W4pxV/viesuuMFaWuF0gPh7/cf
-         BxtIavVUXpel6A+sn9718NVqyhS4gw/1r9iFChcenp8zSduGLRXu/LXUJHRnFTA5lelW
-         /HtQ==
-X-Gm-Message-State: ABy/qLbBHGj6n6V4KwvKyUt+d6thhL8rt8ECvif1gHQ9ZsKkthq4FErE
-        DAuPhS8NWKXXNJUsJ/4RiUijjEiKOf0gRQ==
-X-Google-Smtp-Source: APBJJlFpumN7xuAKmAgrZhq+05NNOiKZ9z8llYM0SNj3lIuM+PwGYHTKEJqe9J4cmHzFnfYthz37RQ==
-X-Received: by 2002:a2e:3316:0:b0:2b6:e6ad:25c4 with SMTP id d22-20020a2e3316000000b002b6e6ad25c4mr2914961ljc.45.1689986765203;
-        Fri, 21 Jul 2023 17:46:05 -0700 (PDT)
-Received: from bigfoot.. (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
-        by smtp.gmail.com with ESMTPSA id j2-20020a2e8002000000b002b69febf515sm1224585ljg.125.2023.07.21.17.46.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 17:46:04 -0700 (PDT)
-From:   Eduard Zingerman <eddyz87@gmail.com>
-To:     stable@vger.kernel.org, ast@kernel.org
-Cc:     andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
-        yhs@fb.com, mykolal@fb.com, luizcap@amazon.com,
-        Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 6.1.y 6/6] selftests/bpf: Fix sk_assign on s390x
-Date:   Sat, 22 Jul 2023 03:45:14 +0300
-Message-ID: <20230722004514.767618-7-eddyz87@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230722004514.767618-1-eddyz87@gmail.com>
-References: <20230722004514.767618-1-eddyz87@gmail.com>
+        bh=kt0L4P+NzBcsq1EI6gbREXBo3crNA7JQvLXOnGryS3A=;
+        b=IBeOMLSOh2x1v+duLGV5d+Xmo+WtlQpYGV8/bvPjbLOE+o95BlfMxth7N4calAy6on
+         sX9nTEPmaKErZoNjYTdt3ErNgK8rhlnMWKWfkE3C5EQrSwdIbv2eQkOMcgd/QW+ot00w
+         mAuuwuprU7K7WJbgPhykoXAsLskLynXcKRKG8BMVMsQqzMbYgVDBNdfmY2gljW8dU/88
+         6Wd34GBq4zu3Z7CC0X/1Vr87BcOR1h9pJX69zyyQVvW2tUbHJBh2hNwz2L4bVaQeRmXm
+         c/RlUHN07zVWZhJWCLonW0VtnbRGhBtgFxMur/jfV1Gc1HbNi50KUW8eMEkvGFq3Bwbl
+         DchQ==
+X-Gm-Message-State: ABy/qLbpAqgjmfbQ5mO3IZ6Y3cTS/vYMGaYTQ26ng4c1Vg4BufTOdJT1
+        ioUlW3HCOcBRIGN5F7R0en/DQE6MDtGayPBC0RA=
+X-Google-Smtp-Source: APBJJlErQDKC2spyVvLJo0TWM2uNcJFI1HXF/BgIiiNW2LTRbaUdthOL1NCqdDVYAp0tn2xTS2TpaXRl7fkBBNZf5Vo=
+X-Received: by 2002:a17:903:258b:b0:1b8:1c9e:444e with SMTP id
+ jb11-20020a170903258b00b001b81c9e444emr2888360plb.25.1689987627037; Fri, 21
+ Jul 2023 18:00:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <2023071940-suspect-ominous-4a6a@gregkh> <20230720132714.GA3726096@google.com>
+ <CAABZP2xrLRTVM6te22RFTYCpFB6CnyZ1ASjq=vsGuhpnRfU-OA@mail.gmail.com>
+In-Reply-To: <CAABZP2xrLRTVM6te22RFTYCpFB6CnyZ1ASjq=vsGuhpnRfU-OA@mail.gmail.com>
+From:   Zhouyi Zhou <zhouzhouyi@gmail.com>
+Date:   Sat, 22 Jul 2023 09:00:16 +0800
+Message-ID: <CAABZP2xwBczWqpPv09JWT+GrJ5oKjeBO7VV1O23yCX7AsbxGBw@mail.gmail.com>
+Subject: Re: [BUG] Re: Linux 6.4.4
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
+        jslaby@suse.cz, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+On Fri, Jul 21, 2023 at 9:51=E2=80=AFAM Zhouyi Zhou <zhouzhouyi@gmail.com> =
+wrote:
+>
+> On Thu, Jul 20, 2023 at 9:31=E2=80=AFPM Joel Fernandes <joel@joelfernande=
+s.org> wrote:
+> >
+> > On Wed, Jul 19, 2023 at 05:06:39PM +0200, Greg Kroah-Hartman wrote:
+> > > I'm announcing the release of the 6.4.4 kernel.
+> > >
+> > > All users of the 6.4 kernel series must upgrade.
+> > >
+> > > The updated 6.4.y git tree can be found at:
+> > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le.git linux-6.4.y
+> > > and can be browsed at the normal kernel.org git web browser:
+> > >       https://git.kernel.org/?p=3Dlinux/kernel/git/stable/linux-stabl=
+e.git;a=3Dsummary
+> >
+> > I have been consistently hitting the following splat with rcutorture's =
+TREE03
+> > test on 6.4.4. This happened with 6.4.4-rc3 as well.
+> Hi, I am also interested in this topic , I am going to test 6.4.4 on my l=
+aptop
+I rcu tortured 6.4.4 on my Intel(R) Core(TM) i7-11800H laptop for 2
+rounds each of which lasting 7 hours.
+all of them report:
+Summary: Successes: 55 Failures: 0.
 
-[ Upstream commit 7ce878ca81bca7811e669db4c394b86780e0dbe4 ]
-
-sk_assign is failing on an s390x machine running Debian "bookworm" for
-2 reasons: legacy server_map definition and uninitialized addrlen in
-recvfrom() call.
-
-Fix by adding a new-style server_map definition and dropping addrlen
-(recvfrom() allows NULL values for src_addr and addrlen).
-
-Since the test should support tc built without libbpf, build the prog
-twice: with the old-style definition and with the new-style definition,
-then select the right one at runtime. This could be done at compile
-time too, but this would not be cross-compilation friendly.
-
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230129190501.1624747-2-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
----
- .../selftests/bpf/prog_tests/sk_assign.c      | 25 ++++++++++++++-----
- .../selftests/bpf/progs/test_sk_assign.c      | 11 ++++++++
- .../bpf/progs/test_sk_assign_libbpf.c         |  3 +++
- 3 files changed, 33 insertions(+), 6 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/sk_assign.c b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
-index 3e190ed63976..1374b626a985 100644
---- a/tools/testing/selftests/bpf/prog_tests/sk_assign.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
-@@ -29,7 +29,23 @@ static int stop, duration;
- static bool
- configure_stack(void)
- {
-+	char tc_version[128];
- 	char tc_cmd[BUFSIZ];
-+	char *prog;
-+	FILE *tc;
-+
-+	/* Check whether tc is built with libbpf. */
-+	tc = popen("tc -V", "r");
-+	if (CHECK_FAIL(!tc))
-+		return false;
-+	if (CHECK_FAIL(!fgets(tc_version, sizeof(tc_version), tc)))
-+		return false;
-+	if (strstr(tc_version, ", libbpf "))
-+		prog = "test_sk_assign_libbpf.bpf.o";
-+	else
-+		prog = "test_sk_assign.bpf.o";
-+	if (CHECK_FAIL(pclose(tc)))
-+		return false;
- 
- 	/* Move to a new networking namespace */
- 	if (CHECK_FAIL(unshare(CLONE_NEWNET)))
-@@ -46,8 +62,8 @@ configure_stack(void)
- 	/* Load qdisc, BPF program */
- 	if (CHECK_FAIL(system("tc qdisc add dev lo clsact")))
- 		return false;
--	sprintf(tc_cmd, "%s %s %s %s", "tc filter add dev lo ingress bpf",
--		       "direct-action object-file ./test_sk_assign.bpf.o",
-+	sprintf(tc_cmd, "%s %s %s %s %s", "tc filter add dev lo ingress bpf",
-+		       "direct-action object-file", prog,
- 		       "section tc",
- 		       (env.verbosity < VERBOSE_VERY) ? " 2>/dev/null" : "verbose");
- 	if (CHECK(system(tc_cmd), "BPF load failed;",
-@@ -129,15 +145,12 @@ get_port(int fd)
- static ssize_t
- rcv_msg(int srv_client, int type)
- {
--	struct sockaddr_storage ss;
- 	char buf[BUFSIZ];
--	socklen_t slen;
- 
- 	if (type == SOCK_STREAM)
- 		return read(srv_client, &buf, sizeof(buf));
- 	else
--		return recvfrom(srv_client, &buf, sizeof(buf), 0,
--				(struct sockaddr *)&ss, &slen);
-+		return recvfrom(srv_client, &buf, sizeof(buf), 0, NULL, NULL);
- }
- 
- static int
-diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign.c b/tools/testing/selftests/bpf/progs/test_sk_assign.c
-index 98c6493d9b91..21b19b758c4e 100644
---- a/tools/testing/selftests/bpf/progs/test_sk_assign.c
-+++ b/tools/testing/selftests/bpf/progs/test_sk_assign.c
-@@ -16,6 +16,16 @@
- #include <bpf/bpf_helpers.h>
- #include <bpf/bpf_endian.h>
- 
-+#if defined(IPROUTE2_HAVE_LIBBPF)
-+/* Use a new-style map definition. */
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SOCKMAP);
-+	__type(key, int);
-+	__type(value, __u64);
-+	__uint(pinning, LIBBPF_PIN_BY_NAME);
-+	__uint(max_entries, 1);
-+} server_map SEC(".maps");
-+#else
- /* Pin map under /sys/fs/bpf/tc/globals/<map name> */
- #define PIN_GLOBAL_NS 2
- 
-@@ -35,6 +45,7 @@ struct {
- 	.max_elem = 1,
- 	.pinning = PIN_GLOBAL_NS,
- };
-+#endif
- 
- char _license[] SEC("license") = "GPL";
- 
-diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
-new file mode 100644
-index 000000000000..dcf46adfda04
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
-@@ -0,0 +1,3 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define IPROUTE2_HAVE_LIBBPF
-+#include "test_sk_assign.c"
--- 
-2.41.0
-
+Thanks, Zhouyi
+>
+> Thanks, Zhouyi
+> >
+> > Happens at:
+> >                 WARN_ON_ONCE(n_rcu_torture_boost_failure); // boost fai=
+led (TIMER_SOFTIRQ RT prio?)
+> >
+> > So likely RCU boosting is failing:
+> >
+> > The full TREE03 splat:
+> > [   54.243588] ------------[ cut here ]------------
+> > [   54.244547] rcu-torture: rcu_torture_boost started
+> > [   54.247643] WARNING: CPU: 12 PID: 166 at kernel/rcu/rcutorture.c:222=
+7 rcu_torture_stats_print+0x5b2/0x620
+> > [   54.273082] Modules linked in:
+> > [   54.278336] CPU: 12 PID: 166 Comm: rcu_torture_sta Not tainted 6.4.4=
+-g62813c2d2a36 #1
+> > [   54.288540] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS=
+ 1.16.2-debian-1.16.2-1 04/01/2014
+> > [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
+> > [   54.307525] Code: 00 00 48 8b 05 3f 6c 46 02 e9 4a fe ff ff 0f 0b e9=
+ 02 fd ff ff 0f 0b e9 09 fd ff ff 0f 0b e9 10 fd ff ff 0f 0b e9 17 fd ff ff=
+ <0f> 0b e9 1e fd ff ff 0f 0b e9 21 fd ff ff e8 0b 54 ff ff 84 c0 0f
+> > [   54.331276] RSP: 0000:ffff9fef805efe08 EFLAGS: 00010202
+> > [   54.338374] RAX: 0000000000000000 RBX: ffff9fef805efe88 RCX: 0000000=
+0ffffdfff
+> > [   54.347738] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000=
+000000001
+> > [   54.358923] RBP: ffff9fef805efe30 R08: 00000000ffffdfff R09: 0000000=
+0ffffdfff
+> > [   54.368209] R10: ffffffff94e59280 R11: ffffffff94e59280 R12: 0000000=
+000000001
+> > [   54.377367] R13: 0000000000000000 R14: 00000000000002fc R15: fffffff=
+f93514000
+> > [   54.386739] FS:  0000000000000000(0000) GS:ffff9c901f500000(0000) kn=
+lGS:0000000000000000
+> > [   54.397130] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [   54.404585] CR2: 0000000000000000 CR3: 000000000308e000 CR4: 0000000=
+0000006e0
+> > [   54.413884] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000=
+000000000
+> > [   54.423118] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000=
+000000400
+> > [   54.432192] Call Trace:
+> > [   54.435634]  <TASK>
+> > [   54.438512]  ? rcu_torture_stats_print+0x5b2/0x620
+> > [   54.444904]  ? __warn+0x7c/0x130
+> > [   54.449221]  ? rcu_torture_stats_print+0x5b2/0x620
+> > [   54.455737]  ? report_bug+0x171/0x1a0
+> > [   54.460935]  ? handle_bug+0x3c/0x70
+> > [   54.465874]  ? exc_invalid_op+0x17/0x70
+> > [   54.471336]  ? asm_exc_invalid_op+0x1a/0x20
+> > [   54.477092]  ? __pfx_rcu_torture_stats+0x10/0x10
+> > [   54.483472]  ? rcu_torture_stats_print+0x5b2/0x620
+> > [   54.490029]  ? rcu_torture_stats_print+0x28a/0x620
+> > [   54.496565]  ? finish_task_switch.isra.0+0x7e/0x240
+> > [   54.503261]  rcu_torture_stats+0x25/0x70
+> > [   54.508686]  kthread+0xe3/0x110
+> > [   54.513141]  ? __pfx_kthread+0x10/0x10
+> > [   54.518330]  ret_from_fork+0x2c/0x50
+> > [   54.523356]  </TASK>
+> > [   54.526500] ---[ end trace 0000000000000000 ]---
+> >
+> > Also other issues in 6.4.4, I am seeing RCU failures with TREE07 about =
+40
+> > minutes into the test. This warning indicates that an rcu_torture objec=
+t from
+> > the rcu_torture pool is still allocated which is an indiciation that RC=
+U is
+> > not working.
+> >
+> > [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+> >
+> > However, if we are to believe the '9', it appears the object did made i=
+t
+> > quite some till the end of the pipe array but not until the free pool.
+> >
+> > The full TREE07 splat:
+> > [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+> > [ 2169.489413] WARNING: CPU: 4 PID: 130 at kernel/rcu/rcutorture.c:1584=
+ rcu_torture_writer+0x7f2/0xd80
+> > [ 2169.504064] Modules linked in:
+> > [ 2169.508957] CPU: 4 PID: 130 Comm: rcu_torture_wri Not tainted 6.4.4-=
+g62813c2d2a36 #2
+> > [ 2169.521735] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS=
+ 1.16.2-debian-1.16.2-1 04/01/2014
+> > [ 2169.540908] RIP: 0010:rcu_torture_writer+0x7f2/0xd80
+> > [ 2169.548542] Code: 15 8b 62 45 02 49 8d 45 e8 48 39 c2 74 bf e8 85 03=
+ 08 00 41 8b 55 f8 48 c7 c6 d0 f7 e0 9d 48 c7 c7 d7 7b 28 9e e8 ce 29 f7 ff=
+ <0f> 0b 8b 05 9a 48 45 02 85 c0 75 97 89 d8 87 05 8e 48 45 02 85 c0
+> > [ 2169.578445] RSP: 0000:ffffa645804cfe20 EFLAGS: 00010282
+> > [ 2169.586793] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000=
+0ffffdfff
+> > [ 2169.598069] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000=
+000009ffb
+> > [ 2169.609359] RBP: ffffa645804cff10 R08: 00000000ffffdfff R09: 0000000=
+0ffffdfff
+> > [ 2169.620717] R10: ffffffff9e659220 R11: ffffffff9e659220 R12: 0000000=
+000000017
+> > [ 2169.631918] R13: ffffffff9f166b60 R14: 0000000000000000 R15: 0000000=
+000000001
+> > [ 2169.643365] FS:  0000000000000000(0000) GS:ffff8b3a5f300000(0000) kn=
+lGS:0000000000000000
+> > [ 2169.655249] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [ 2169.663207] CR2: 0000000000000000 CR3: 000000001562e000 CR4: 0000000=
+0000006e0
+> > [ 2169.672806] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000=
+000000000
+> > [ 2169.682194] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000=
+000000400
+> > [ 2169.693530] Call Trace:
+> > [ 2169.698054]  <TASK>
+> > [ 2169.701786]  ? rcu_torture_writer+0x7f2/0xd80
+> > [ 2169.708853]  ? __warn+0x7c/0x120
+> > [ 2169.714088]  ? rcu_torture_writer+0x7f2/0xd80
+> > [ 2169.721066]  ? report_bug+0x15d/0x180
+> > [ 2169.726125]  ? handle_bug+0x3c/0x70
+> > [ 2169.730948]  ? exc_invalid_op+0x17/0x70
+> > [ 2169.736238]  ? asm_exc_invalid_op+0x1a/0x20
+> > [ 2169.742047]  ? rcu_torture_writer+0x7f2/0xd80
+> > [ 2169.747907]  ? __pfx_rcu_torture_writer+0x10/0x10
+> > [ 2169.754175]  kthread+0xcb/0xf0
+> > [ 2169.758407]  ? __pfx_kthread+0x10/0x10
+> > [ 2169.763501]  ret_from_fork+0x2c/0x50
+> > [ 2169.768420]  </TASK>
+> > [ 2169.771445] ---[ end trace 0000000000000000 ]---
+> > [ 2169.777698] Dumping ftrace buffer:
+> > [ 2169.782470]    (ftrace buffer empty)
+> > [ 2169.787241] ------------[ cut here ]------------
+> >
+> >
+> > I will continue to monitor and debug these but since I recently re-star=
+ted
+> > testing stable (my infra was down for a long time), I don't have any
+> > reference for when these started happening.
+> >
+> > thanks,
+> >
+> >  - Joel
+> >
