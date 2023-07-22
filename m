@@ -2,96 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A528275DE94
-	for <lists+stable@lfdr.de>; Sat, 22 Jul 2023 22:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B192175DF52
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 01:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229909AbjGVUko (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 22 Jul 2023 16:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41330 "EHLO
+        id S229702AbjGVX11 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 22 Jul 2023 19:27:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229918AbjGVUkn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 16:40:43 -0400
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54662118;
-        Sat, 22 Jul 2023 13:40:42 -0700 (PDT)
-Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-786f25bcb40so169975139f.3;
-        Sat, 22 Jul 2023 13:40:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690058442; x=1690663242;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f4jiZ9yoW3nECNjmz012PrnX3Wx+24JFZES9eeuORWI=;
-        b=Kxoi6EkGhWxRwbYrfkf1yveF7rmC3iKrY15+WMk7IDcxN1mr7DXVltUadCHYAQapCu
-         KofhL7QNm/hWAdyMK0qty7FieDTtQ87F+yY7nLgGBLoYpdMI0xm77cg1huQq8PRrtRaK
-         Mrp9oKna4dCb78fcwg8atpG/xmD0f7qT4VEaCxzwg0Dy2I+lZAAtuQZd2f4ZU+1SHkao
-         y0/WSz7MLkBd3dznFVvmAy+5X+DS2x7ptmR0PBx75zzWsKvmSviajeC96qIzZKq8yDiN
-         zKib4Nrab9pG4SYKpxtDP3PQQAlOZ8vkHFXnECHRevUrk6OmPJII1b8vbbP6HZcXZAly
-         CzWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690058442; x=1690663242;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f4jiZ9yoW3nECNjmz012PrnX3Wx+24JFZES9eeuORWI=;
-        b=C7vELNxZRntk9nRTH34Ez4W5GdJAFzquXE0HatMk4mvKFqmdA6xSMPya4paPNN3RqF
-         RRrGFW8dRCZGCqEESE3CDY1T7oAjSUNyXRU00Bo6h1QYPI53jQYGwdS2u7fuRIpxz5Fb
-         W1TxDhsHTp8K3Tly5GrwYqja8/giN5aLHQrlLwKHyCd+BqR/5j7A3Dc2w2x7mDhq3ODB
-         bV3fGMXPpwwhhnGPoz1NiuCDypJqVKSTZvWo3I29aa90Dx7aN01QN/IMSjKg1ScErnKy
-         uFOK2f/Cyf7/xVm/Fsoxx4stNk3T3CIDWNSyYI9aP+0dVHkFfNadyEIsE2iKLZQsk/xk
-         jFGQ==
-X-Gm-Message-State: ABy/qLZUtGdl1nXtwQAiou6lwbGCoEJANtNEE1uL/SoCdfpR5i3SWBs3
-        WuBqajLPgRr8BpRFOFxGi1E=
-X-Google-Smtp-Source: APBJJlGWIX+Iz1P6gV2gbY8VEivFKVBjLhA0QbnZ4oheIoaoBLxznL42H4lz+aqrTw5s+M8zeWfb/w==
-X-Received: by 2002:a05:6e02:1090:b0:348:8b32:7ca3 with SMTP id r16-20020a056e02109000b003488b327ca3mr3642134ilj.5.1690058442087;
-        Sat, 22 Jul 2023 13:40:42 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id s25-20020a02cf39000000b0042b3bf0baacsm1849286jar.138.2023.07.22.13.40.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Jul 2023 13:40:41 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sat, 22 Jul 2023 13:40:40 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 000/292] 6.4.5-rc1 review
-Message-ID: <d1bcf006-3d4a-40cb-b0bc-fb499a37c5df@roeck-us.net>
-References: <20230721160528.800311148@linuxfoundation.org>
+        with ESMTP id S229625AbjGVX10 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 22 Jul 2023 19:27:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9A819A6;
+        Sat, 22 Jul 2023 16:27:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B67A60BD8;
+        Sat, 22 Jul 2023 23:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B7FC433C8;
+        Sat, 22 Jul 2023 23:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690068443;
+        bh=C5VTDtOqdmj6Bz6JgxfHCEKJHYyIn7v2H/pyJ1qHGCM=;
+        h=From:Date:Subject:To:Cc:From;
+        b=fumBeebR/fj9xdn8EzaaqJ9QKok8wxdstGCw6EiJin3k5PiQAkG2KkNz6Gz1Ds0LN
+         GDotCebW5AX3X2f+BFcvxqW1q1McAvTRUDK93mXtfZEIrLVfebrXeHyyjEb1ZyLFNv
+         uyYNrjOx1HH8Tpx1X62ur6o/H9HLwIVllLVbCd1EsZTQ6KrV09RJGrn38NucQtDdgn
+         5mdHBKFRU9R1009c0gEAMfbpcl0aQ+t7hhD1xcygkiiaAXMoP5zAnSR5rNtXKGFgKN
+         sWyuVPCRaJEvsu1UFB2vMYHFZIUDhb+AbpATIjlhnP429Ec8yeecDHpZcGQaDdrVNh
+         cp/5igG+AETrA==
+From:   Mark Brown <broonie@kernel.org>
+Date:   Sun, 23 Jul 2023 00:26:54 +0100
+Subject: [PATCH] thermal/of: Fix double free of params during
+ unregistration
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230723-thermal-fix-of-memory-corruption-v1-1-ed4fa16d199d@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAL1lvGQC/x2N0QqDMAxFf0XybKBG0LFfGT64mtrAaiV1YyL+u
+ 8HHA+eee0BhFS7wrA5Q/kmRvBg0dQU+jsvMKJMxkKPW9US4RdY0fjDIH3PAxCnrjj6rftfNxti
+ 33tzw6Bp6g2VWZXPvi9dwnheUwZCCcgAAAA==
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+        Icenowy Zheng <uwu@icenowy.me>, Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-099c9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2606; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=C5VTDtOqdmj6Bz6JgxfHCEKJHYyIn7v2H/pyJ1qHGCM=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBkvGXVA478VBnEpmpTCC3lkhtcVWQsWgJ581sVm
+ 3BnS4HC/CyJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZLxl1QAKCRAk1otyXVSH
+ 0JDuB/9a/lDjye3WC1siBtiAlqrJwcRmcgSVvUyChe5ZEPX/NPDNQV2sE4Y/pEBW9r7bEfVgWug
+ tqEcqEuB5WtxrvMT6cCbg3BEFKMjy+JCJFExYChP5N6bJMwqicSzBsfF0YDBC5Th4H6pGTLP9u8
+ ZHlsg4d/3wYEVC/quGwLSSWgn3CulLd/rFDMzIMkYCc5y6XOChONE8A6Su5Bl+G03bQbY7AIEdL
+ NS9IMolnTV9NYXaJImgQhjn1AhNHrCbosXp5PNQ6ya6ZK7B0OMWOB4Tee6EGDjJRuegJLqa4GhQ
+ pu96tBHNv4NrjuxjnhnBtIPamTSl7r0Yh03594DCXVyhBFVf
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 06:01:49PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.5 release.
-> There are 292 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 23 Jul 2023 16:04:29 +0000.
-> Anything received after that time might be too late.
-> 
+Unlike the other data structures provided during registration the
+thermal core takes a copy of the thermal_zone_params provided to it and
+stores that copy in the thermal_zone_device, taking care to free it on
+unregistration.  This is done because the parameters will be modified at
+runtime.
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 523 pass: 523 fail: 0
+Unfortunately the thermal_of code assumes that the params structure it
+provides will be used throughout the lifetime of the device and since
+the params are dynamically allocated based on the bindings it attempts
+to free it on unregistration.  This results in not only leaking the
+original params but also double freeing the copy the core made, leading
+to memory corruption.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Fix this by instead freeing the params parsed from the DT during
+registration.
 
-Guenter
+This issue causing instability on systems where thermal zones are
+unregistered, especially visble on those systems where some zones
+provided by a device have no trip points such as Allwinner systems.
+For example with current mainline an arm64 defconfig is unbootable on
+Pine64 Plus and LibreTech Tritium is massively unstable.  These issues
+have been there for a while and have been made more prominent by recent
+memory management changes.
+
+Fixes: 3fd6d6e2b4e80 ("thermal/of: Rework the thermal device tree initialization")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/thermal/thermal_of.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 6fb14e521197..0af11cdfa2c1 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -442,13 +442,11 @@ static int thermal_of_unbind(struct thermal_zone_device *tz,
+ static void thermal_of_zone_unregister(struct thermal_zone_device *tz)
+ {
+ 	struct thermal_trip *trips = tz->trips;
+-	struct thermal_zone_params *tzp = tz->tzp;
+ 	struct thermal_zone_device_ops *ops = tz->ops;
+ 
+ 	thermal_zone_device_disable(tz);
+ 	thermal_zone_device_unregister(tz);
+ 	kfree(trips);
+-	kfree(tzp);
+ 	kfree(ops);
+ }
+ 
+@@ -530,6 +528,9 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
+ 		goto out_kfree_tzp;
+ 	}
+ 
++	/* The core will take a copy of tzp, free our copy here. */
++	kfree(tzp);
++
+ 	ret = thermal_zone_device_enable(tz);
+ 	if (ret) {
+ 		pr_err("Failed to enabled thermal zone '%s', id=%d: %d\n",
+
+---
+base-commit: fdf0eaf11452d72945af31804e2a1048ee1b574c
+change-id: 20230722-thermal-fix-of-memory-corruption-73c023f8612b
+
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
+
