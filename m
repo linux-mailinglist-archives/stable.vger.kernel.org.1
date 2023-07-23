@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E33B75E231
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A23E975E232
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbjGWN6l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 09:58:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33064 "EHLO
+        id S229773AbjGWN6u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 09:58:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229829AbjGWN6l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:58:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD67310FA
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:58:38 -0700 (PDT)
+        with ESMTP id S229837AbjGWN6u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:58:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB20910F9
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:58:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D027E60CA3
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:58:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0454C433C8;
-        Sun, 23 Jul 2023 13:58:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCF7F60D32
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:58:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26EBC433C7;
+        Sun, 23 Jul 2023 13:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690120717;
-        bh=ZJuKgSZ/4CsMBKWerrMvxtiG4Acy2PuyzlbITDUoJpo=;
+        s=korg; t=1690120720;
+        bh=4xewhJmWv/izdgLC5hRzTHeR12fPKDBHzlITxyaiNS0=;
         h=Subject:To:Cc:From:Date:From;
-        b=SFs5jtBWB6cfTDC5rnTDhqzcmuJACp6Zf+3Mau7ra3n+CMafSLPW4b6xfDUF36lkM
-         QsWDAgGHrutS6d3i5P3QGJiWo7RoIgAwpns+LmQdoveUg8M4u87TX6K1Fxjyp0cxBK
-         R5mbNnyZTLsM6innZIaPEimFiHGoBJaPxYibK4vQ=
-Subject: FAILED: patch "[PATCH] btrfs: fix use-after-free of new block group that became" failed to apply to 6.1-stable tree
+        b=mL9Nw8j32moH3bwvndgtUclhJRcGvCqHYlexCNRLm9AeYOgbms9icj1mWJXCREmzU
+         jKRYGslqDkgNERmj/NH0RgqpOQbb0HFcJmCnG2oXSGbq5Nck3g98OqTdgZVhE7ZFgx
+         6WfHO2VSCjqIThfv/t8Ua8iO3EBTYNy20rz4YGTQ=
+Subject: FAILED: patch "[PATCH] btrfs: fix use-after-free of new block group that became" failed to apply to 5.15-stable tree
 To:     fdmanana@suse.com, dsterba@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 15:58:17 +0200
-Message-ID: <2023072317-grandkid-uncommon-ca27@gregkh>
+Date:   Sun, 23 Jul 2023 15:58:20 +0200
+Message-ID: <2023072320-veal-canopy-e2f5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0657b20c5a76c938612f8409735a8830d257866e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072317-grandkid-uncommon-ca27@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072320-veal-canopy-e2f5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,6 +69,22 @@ Possible dependencies:
 a9f189716cf1 ("btrfs: move out now unused BG from the reclaim list")
 961f5b8bf48a ("btrfs: convert btrfs_block_group::seq_zone to runtime flag")
 0d7764ff58b4 ("btrfs: convert btrfs_block_group::needs_free_space to runtime flag")
+3349b57fd47b ("btrfs: convert block group bit field to use bit helpers")
+9d4b0a129a0d ("btrfs: simplify arguments of btrfs_update_space_info and rename")
+6ca64ac27631 ("btrfs: zoned: fix mounting with conventional zones")
+ced8ecf026fd ("btrfs: fix space cache corruption and potential double allocations")
+b09315139136 ("btrfs: zoned: activate metadata block group on flush_space")
+6a921de58992 ("btrfs: zoned: introduce space_info->active_total_bytes")
+393f646e34c1 ("btrfs: zoned: finish least available block group on data bg allocation")
+bb9950d3df71 ("btrfs: let can_allocate_chunk return error")
+f6fca3917b4d ("btrfs: store chunk size in space-info struct")
+b3a3b0255797 ("btrfs: zoned: drop optimization of zone finish")
+343d8a30851c ("btrfs: zoned: prevent allocation from previous data relocation BG")
+56fbb0a4e8b3 ("btrfs: zoned: properly finish block group on metadata write")
+d70cbdda75da ("btrfs: zoned: consolidate zone finish functions")
+09022b14fafc ("btrfs: scrub: introduce dedicated helper to scrub simple-mirror based range")
+416bd7e7af60 ("btrfs: scrub: introduce a helper to locate an extent item")
+16b0c2581e3a ("btrfs: use a read/write lock for protecting the block groups tree")
 
 thanks,
 
