@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB4AE75E227
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C1BA75E228
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbjGWNyE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 09:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59854 "EHLO
+        id S229726AbjGWNyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 09:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjGWNyD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:54:03 -0400
+        with ESMTP id S229452AbjGWNyI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:54:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 022091B7
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:54:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1EDE40
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:54:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87DF760D29
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:54:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84926C433C9;
-        Sun, 23 Jul 2023 13:53:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 210BD60D2E
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDF2C433C8;
+        Sun, 23 Jul 2023 13:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690120439;
-        bh=cuyFTjWI9XmmiH0/UHgmrFVOmsmdq4DuoFGj/i3QZh4=;
+        s=korg; t=1690120446;
+        bh=8QMX+zbHcHtO5ZjZ0gMGiAb2OKFwvmQQq5XwEnZywa0=;
         h=Subject:To:Cc:From:Date:From;
-        b=AvKfXrJH91opngRQFM7ZxoiXunyArRRjCYX3zZkRwuQcYVq7CAp+zwbN/8B7iZkwC
-         41u0Z4mzSX5j/9xFLCGMsmzWmCWiNVVopBQzEghuBrSC8x6+TNfGsIteCvL1qI43iv
-         G0j8m4GdlEzVQiaVVQa2hoeKKvddNJlzHj4QrvCE=
-Subject: FAILED: patch "[PATCH] keys: Fix linking a duplicate key to a keyring's assoc_array" failed to apply to 5.4-stable tree
-To:     petr.pavlu@suse.com, jarkko@kernel.org, jlee@suse.com
+        b=DImsejDloCqZJ1ovhi+bdHqOdIbVz9oDogwZHR8ELEb/WZ73GaATCJH9GL2SzMCaE
+         gYN54lz5P6mXW261YDcTqsRqhsiZgq7hDxLzv70HpTZTq1v7t2g5IFsSAxkJCKehB9
+         spkBgCABRIwag8qldTeHvmC5Fn+B4O5IyPkaIGY0=
+Subject: FAILED: patch "[PATCH] maple_tree: fix 32 bit mas_next testing" failed to apply to 6.4-stable tree
+To:     Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+        geert@linux-m68k.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 15:53:56 +0200
-Message-ID: <2023072356-confirm-embezzle-c962@gregkh>
+Date:   Sun, 23 Jul 2023 15:54:03 +0200
+Message-ID: <2023072303-possible-backwash-4c0f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,25 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x d55901522f96082a43b9842d34867363c0cdbac5
+git cherry-pick -x 7a93c71a6714ca1a9c03d70432dac104b0cfb815
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072356-confirm-embezzle-c962@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072303-possible-backwash-4c0f@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-d55901522f96 ("keys: Fix linking a duplicate key to a keyring's assoc_array")
-f7e47677e39a ("watch_queue: Add a key/keyring notification facility")
-0858caa419e6 ("uapi: General notification queue definitions")
+
 
 thanks,
 
@@ -75,175 +74,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d55901522f96082a43b9842d34867363c0cdbac5 Mon Sep 17 00:00:00 2001
-From: Petr Pavlu <petr.pavlu@suse.com>
-Date: Thu, 23 Mar 2023 14:04:12 +0100
-Subject: [PATCH] keys: Fix linking a duplicate key to a keyring's assoc_array
+From 7a93c71a6714ca1a9c03d70432dac104b0cfb815 Mon Sep 17 00:00:00 2001
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Date: Wed, 12 Jul 2023 13:39:15 -0400
+Subject: [PATCH] maple_tree: fix 32 bit mas_next testing
 
-When making a DNS query inside the kernel using dns_query(), the request
-code can in rare cases end up creating a duplicate index key in the
-assoc_array of the destination keyring. It is eventually found by
-a BUG_ON() check in the assoc_array implementation and results in
-a crash.
+The test setup of mas_next is dependent on node entry size to create a 2
+level tree, but the tests did not account for this in the expected value
+when shifting beyond the scope of the tree.
 
-Example report:
-[2158499.700025] kernel BUG at ../lib/assoc_array.c:652!
-[2158499.700039] invalid opcode: 0000 [#1] SMP PTI
-[2158499.700065] CPU: 3 PID: 31985 Comm: kworker/3:1 Kdump: loaded Not tainted 5.3.18-150300.59.90-default #1 SLE15-SP3
-[2158499.700096] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-[2158499.700351] Workqueue: cifsiod cifs_resolve_server [cifs]
-[2158499.700380] RIP: 0010:assoc_array_insert+0x85f/0xa40
-[2158499.700401] Code: ff 74 2b 48 8b 3b 49 8b 45 18 4c 89 e6 48 83 e7 fe e8 95 ec 74 00 3b 45 88 7d db 85 c0 79 d4 0f 0b 0f 0b 0f 0b e8 41 f2 be ff <0f> 0b 0f 0b 81 7d 88 ff ff ff 7f 4c 89 eb 4c 8b ad 58 ff ff ff 0f
-[2158499.700448] RSP: 0018:ffffc0bd6187faf0 EFLAGS: 00010282
-[2158499.700470] RAX: ffff9f1ea7da2fe8 RBX: ffff9f1ea7da2fc1 RCX: 0000000000000005
-[2158499.700492] RDX: 0000000000000000 RSI: 0000000000000005 RDI: 0000000000000000
-[2158499.700515] RBP: ffffc0bd6187fbb0 R08: ffff9f185faf1100 R09: 0000000000000000
-[2158499.700538] R10: ffff9f1ea7da2cc0 R11: 000000005ed8cec8 R12: ffffc0bd6187fc28
-[2158499.700561] R13: ffff9f15feb8d000 R14: ffff9f1ea7da2fc0 R15: ffff9f168dc0d740
-[2158499.700585] FS:  0000000000000000(0000) GS:ffff9f185fac0000(0000) knlGS:0000000000000000
-[2158499.700610] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[2158499.700630] CR2: 00007fdd94fca238 CR3: 0000000809d8c006 CR4: 00000000003706e0
-[2158499.700702] Call Trace:
-[2158499.700741]  ? key_alloc+0x447/0x4b0
-[2158499.700768]  ? __key_link_begin+0x43/0xa0
-[2158499.700790]  __key_link_begin+0x43/0xa0
-[2158499.700814]  request_key_and_link+0x2c7/0x730
-[2158499.700847]  ? dns_resolver_read+0x20/0x20 [dns_resolver]
-[2158499.700873]  ? key_default_cmp+0x20/0x20
-[2158499.700898]  request_key_tag+0x43/0xa0
-[2158499.700926]  dns_query+0x114/0x2ca [dns_resolver]
-[2158499.701127]  dns_resolve_server_name_to_ip+0x194/0x310 [cifs]
-[2158499.701164]  ? scnprintf+0x49/0x90
-[2158499.701190]  ? __switch_to_asm+0x40/0x70
-[2158499.701211]  ? __switch_to_asm+0x34/0x70
-[2158499.701405]  reconn_set_ipaddr_from_hostname+0x81/0x2a0 [cifs]
-[2158499.701603]  cifs_resolve_server+0x4b/0xd0 [cifs]
-[2158499.701632]  process_one_work+0x1f8/0x3e0
-[2158499.701658]  worker_thread+0x2d/0x3f0
-[2158499.701682]  ? process_one_work+0x3e0/0x3e0
-[2158499.701703]  kthread+0x10d/0x130
-[2158499.701723]  ? kthread_park+0xb0/0xb0
-[2158499.701746]  ret_from_fork+0x1f/0x40
+Fix this by setting up the test to succeed depending on the node entries
+which is dependent on the 32/64 bit setup.
 
-The situation occurs as follows:
-* Some kernel facility invokes dns_query() to resolve a hostname, for
-  example, "abcdef". The function registers its global DNS resolver
-  cache as current->cred.thread_keyring and passes the query to
-  request_key_net() -> request_key_tag() -> request_key_and_link().
-* Function request_key_and_link() creates a keyring_search_context
-  object. Its match_data.cmp method gets set via a call to
-  type->match_preparse() (resolves to dns_resolver_match_preparse()) to
-  dns_resolver_cmp().
-* Function request_key_and_link() continues and invokes
-  search_process_keyrings_rcu() which returns that a given key was not
-  found. The control is then passed to request_key_and_link() ->
-  construct_alloc_key().
-* Concurrently to that, a second task similarly makes a DNS query for
-  "abcdef." and its result gets inserted into the DNS resolver cache.
-* Back on the first task, function construct_alloc_key() first runs
-  __key_link_begin() to determine an assoc_array_edit operation to
-  insert a new key. Index keys in the array are compared exactly as-is,
-  using keyring_compare_object(). The operation finds that "abcdef" is
-  not yet present in the destination keyring.
-* Function construct_alloc_key() continues and checks if a given key is
-  already present on some keyring by again calling
-  search_process_keyrings_rcu(). This search is done using
-  dns_resolver_cmp() and "abcdef" gets matched with now present key
-  "abcdef.".
-* The found key is linked on the destination keyring by calling
-  __key_link() and using the previously calculated assoc_array_edit
-  operation. This inserts the "abcdef." key in the array but creates
-  a duplicity because the same index key is already present.
+Link: https://lkml.kernel.org/r/20230712173916.168805-1-Liam.Howlett@oracle.com
+Fixes: 120b116208a0 ("maple_tree: reorganize testing to restore module testing")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+  Closes: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Fix the problem by postponing __key_link_begin() in
-construct_alloc_key() until an actual key which should be linked into
-the destination keyring is determined.
-
-[jarkko@kernel.org: added a fixes tag and cc to stable]
-Cc: stable@vger.kernel.org # v5.3+
-Fixes: df593ee23e05 ("keys: Hoist locking out of __key_link_begin()")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Joey Lee <jlee@suse.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-index 07a0ef2baacd..a7673ad86d18 100644
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -401,17 +401,21 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	set_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags);
+diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
+index 9939be34e516..8d4c92cbdd0c 100644
+--- a/lib/test_maple_tree.c
++++ b/lib/test_maple_tree.c
+@@ -1898,13 +1898,16 @@ static noinline void __init next_prev_test(struct maple_tree *mt)
+ 						   725};
+ 	static const unsigned long level2_32[] = { 1747, 2000, 1750, 1755,
+ 						   1760, 1765};
++	unsigned long last_index;
  
- 	if (dest_keyring) {
--		ret = __key_link_lock(dest_keyring, &ctx->index_key);
-+		ret = __key_link_lock(dest_keyring, &key->index_key);
- 		if (ret < 0)
- 			goto link_lock_failed;
--		ret = __key_link_begin(dest_keyring, &ctx->index_key, &edit);
--		if (ret < 0)
--			goto link_prealloc_failed;
+ 	if (MAPLE_32BIT) {
+ 		nr_entries = 500;
+ 		level2 = level2_32;
++		last_index = 0x138e;
+ 	} else {
+ 		nr_entries = 200;
+ 		level2 = level2_64;
++		last_index = 0x7d6;
  	}
  
--	/* attach the key to the destination keyring under lock, but we do need
-+	/*
-+	 * Attach the key to the destination keyring under lock, but we do need
- 	 * to do another check just in case someone beat us to it whilst we
--	 * waited for locks */
-+	 * waited for locks.
-+	 *
-+	 * The caller might specify a comparison function which looks for keys
-+	 * that do not exactly match but are still equivalent from the caller's
-+	 * perspective. The __key_link_begin() operation must be done only after
-+	 * an actual key is determined.
-+	 */
- 	mutex_lock(&key_construction_mutex);
+ 	for (i = 0; i <= nr_entries; i++)
+@@ -2011,7 +2014,7 @@ static noinline void __init next_prev_test(struct maple_tree *mt)
  
- 	rcu_read_lock();
-@@ -420,12 +424,16 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	if (!IS_ERR(key_ref))
- 		goto key_already_present;
+ 	val = mas_next(&mas, ULONG_MAX);
+ 	MT_BUG_ON(mt, val != NULL);
+-	MT_BUG_ON(mt, mas.index != 0x7d6);
++	MT_BUG_ON(mt, mas.index != last_index);
+ 	MT_BUG_ON(mt, mas.last != ULONG_MAX);
  
--	if (dest_keyring)
-+	if (dest_keyring) {
-+		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-+		if (ret < 0)
-+			goto link_alloc_failed;
- 		__key_link(dest_keyring, key, &edit);
-+	}
- 
- 	mutex_unlock(&key_construction_mutex);
- 	if (dest_keyring)
--		__key_link_end(dest_keyring, &ctx->index_key, edit);
-+		__key_link_end(dest_keyring, &key->index_key, edit);
- 	mutex_unlock(&user->cons_lock);
- 	*_key = key;
- 	kleave(" = 0 [%d]", key_serial(key));
-@@ -438,10 +446,13 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	mutex_unlock(&key_construction_mutex);
- 	key = key_ref_to_ptr(key_ref);
- 	if (dest_keyring) {
-+		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-+		if (ret < 0)
-+			goto link_alloc_failed_unlocked;
- 		ret = __key_link_check_live_key(dest_keyring, key);
- 		if (ret == 0)
- 			__key_link(dest_keyring, key, &edit);
--		__key_link_end(dest_keyring, &ctx->index_key, edit);
-+		__key_link_end(dest_keyring, &key->index_key, edit);
- 		if (ret < 0)
- 			goto link_check_failed;
- 	}
-@@ -456,8 +467,10 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	kleave(" = %d [linkcheck]", ret);
- 	return ret;
- 
--link_prealloc_failed:
--	__key_link_end(dest_keyring, &ctx->index_key, edit);
-+link_alloc_failed:
-+	mutex_unlock(&key_construction_mutex);
-+link_alloc_failed_unlocked:
-+	__key_link_end(dest_keyring, &key->index_key, edit);
- link_lock_failed:
- 	mutex_unlock(&user->cons_lock);
- 	key_put(key);
+ 	val = mas_prev(&mas, 0);
 
