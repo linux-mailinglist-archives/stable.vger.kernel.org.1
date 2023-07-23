@@ -2,75 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF70C75E2DC
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 17:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 714A475E3E8
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 18:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbjGWPbc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 11:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57814 "EHLO
+        id S229660AbjGWQpV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 12:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbjGWPbc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 11:31:32 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16C81A5
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 08:31:29 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6748a616e17so968731b3a.1
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 08:31:29 -0700 (PDT)
+        with ESMTP id S229452AbjGWQpS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 12:45:18 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4309EA
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 09:45:17 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-267ffa7e441so646132a91.1
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 09:45:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690126289; x=1690731089;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fDTMYwDqEgFqSn0Pl8eq3n9zy7vYWtdmW+PQbREAfGo=;
-        b=D2U81L0yay3s2CHGMfdTVZNe5ck5DZzVI4ZCXjD97LPBzeNxvTavVAl3j6LnswenH6
-         +7H9PoAx6BHp4l+/rCqF4P25FWANKbJMj1/0mgYFmzJPpEdY33k4LaEVJMrz6GveOr87
-         3jdu0Ti5zUA+cQm2oDAc219xPiHNyfgjbgJyVL+DvllJM+ZvoTQE7KOi9m5E6Oyjf7SN
-         SJoyz8cDv90JfR3V0RVuSZ4AnD9EDyqJDVHB7Tk10WKyRBG00iqe5152e2yzJofTE+UO
-         1h5T1WvomLTZpcbWml3CP5npLwhTZV6aSGXaGo/jdBQ4Z57KlUXyDpmDqNC8XEa6Uifr
-         XngA==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690130717; x=1690735517;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=gCrJ08qcPjsFh9FI3+YtwllSUMCh05sBNN6+wyG9DK4=;
+        b=PVtUeVAQzviiKRrvSuOQU6ka5slJRCvUpX9TMYRD+vMKeSihncMqbzE89IvjuZIQDi
+         40p9kLkMkrOoK+FRQCsidFzmUTy+deV7HZOkRSFRQaqmZpgjQCZjTmPn98njvY94f98O
+         Luale8MdzwC2FQnps9buKa/dQAhn4D0J1VCjqKdo5IgpTPos614+jDESsZqVN2Sml03H
+         wTZgonrJ7myNJ/VSz02yNHLCVT+jEsz0Iw45HYjbMmJtJULK6vOHB6/tdYUld4Dha2eT
+         FHe5hyyN58/5N+z92lv4HMDI032n/BJYqhQ2QONt8KUR2FfuJPlf2hbVxKCkPcvsb7Ta
+         wJnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690126289; x=1690731089;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fDTMYwDqEgFqSn0Pl8eq3n9zy7vYWtdmW+PQbREAfGo=;
-        b=PBAK66XMgK7AT4l3aYubEWm82op/mg9B8S0yFpsebZn4MixuwyQNcVHFEPg4aHikqS
-         ubliEWcQ4/oUAl66oLtTxbF5mEO3u3eNEBF0lKZDhh6d6AmbC5/5xhZPHPPgWQp3T4/v
-         G+/Jg8r1ej/d136sN9YKeI0M0Zzeaoi29bLvM4oWb9AeqJC+a5l4GwIxZu0LyGvYY95T
-         p1SlEHCfeUVi4FIvpf979oEFZEEaT/pF8+Qr3jkyBUM8FSaKMnbhCQ46+DLG294Xj5cz
-         gtVV4E5jAvAqiX/fADWighn3S5y+oTVVCMx4psti8CIak14dZauxxBJ6B40A6yh33/H5
-         P/8Q==
-X-Gm-Message-State: ABy/qLbAxOQCNy3bjq8frAWYgZeEr+NVUP5lD0elpYFNYxg1VPYxFviO
-        pP5njBsWoGUyrWcYBE4ybsrexg==
-X-Google-Smtp-Source: APBJJlHXouCZDH/+NNu1TfzsTLZtOP1XA/fWhsuSOrjvoTA5jn+cYnPSHKt7RkpkfKq2EWMJpz19Kg==
-X-Received: by 2002:a05:6a00:3993:b0:682:59aa:178d with SMTP id fi19-20020a056a00399300b0068259aa178dmr9063211pfb.1.1690126289030;
-        Sun, 23 Jul 2023 08:31:29 -0700 (PDT)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id a14-20020aa7864e000000b0064fe06fe712sm6074443pfo.129.2023.07.23.08.31.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Jul 2023 08:31:28 -0700 (PDT)
-Message-ID: <538065ee-4130-6a00-dcc8-f69fbc7d7ba0@kernel.dk>
-Date:   Sun, 23 Jul 2023 09:31:26 -0600
+        d=1e100.net; s=20221208; t=1690130717; x=1690735517;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gCrJ08qcPjsFh9FI3+YtwllSUMCh05sBNN6+wyG9DK4=;
+        b=G5zb3uZiBP2PKxrf7tZ7ddNv9sn0Wnbx3r494HFjEEQjP0iDg5xFyG7oTq9MjcQNlW
+         NFHhmdpvdaTpkHVpfjDX1qYQRcj+5KanTJts3SRGLY2R1EasOEEXgfmUbVycvdVFbbwp
+         Ze0Mc5nMUNCa2k1czRtdwrWKmnABl9upKH906uSnru9BvrlKt4hILnQtUQvPHwFllGf0
+         5rP4qZKPrlvROvT6COZjb4RLLazCQWH9zMO1Dvp9+DprYOgK6EkM2j53sxc80B6NMQtm
+         c1s9vFVGzWUkChpQzFQc1TXxOedXBm78m3RZ/pzwdLh6jQN5/DmrrzmaO8x2ZSxAWXBx
+         GSYA==
+X-Gm-Message-State: ABy/qLbAzhROb1JAPT9jmkKEI8Rf8QMRIuQlHVbMmD/MGUQeOKRZuUfi
+        sXWOxGzWa3Awv2CPd9vHoEZgCC73mTd3pWxZE24=
+X-Google-Smtp-Source: APBJJlFfwPfsZmsh6bq5UfbuEff6SaAUu6+QN+TyDx2k9JHMptHdU+jXzxbTh83HQqw8jMihweXKDA==
+X-Received: by 2002:a17:90a:e213:b0:261:685:95b6 with SMTP id a19-20020a17090ae21300b00261068595b6mr7927126pjz.13.1690130716785;
+        Sun, 23 Jul 2023 09:45:16 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id x1-20020a17090aa38100b00263f5ac814esm6743709pjp.38.2023.07.23.09.45.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Jul 2023 09:45:15 -0700 (PDT)
+Message-ID: <64bd591b.170a0220.c0546.c10b@mx.google.com>
+Date:   Sun, 23 Jul 2023 09:45:15 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 6.4 800/800] io_uring: Use io_schedule* in cqring wait
-Content-Language: en-US
-To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
-        stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andres Freund <andres@anarazel.de>
-References: <20230716194949.099592437@linuxfoundation.org>
- <20230716195007.731909670@linuxfoundation.org>
- <12251678.O9o76ZdvQC@natalenko.name>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <12251678.O9o76ZdvQC@natalenko.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Kernel: v5.15.121
+X-Kernelci-Report-Type: build
+Subject: stable/linux-5.15.y build: 9 builds: 0 failed, 9 passed (v5.15.121)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,104 +70,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/23/23 3:39?AM, Oleksandr Natalenko wrote:
-> Hello.
-> 
-> On ned?le 16. ?ervence 2023 21:50:53 CEST Greg Kroah-Hartman wrote:
->> From: Andres Freund <andres@anarazel.de>
->>
->> commit 8a796565cec3601071cbbd27d6304e202019d014 upstream.
->>
->> I observed poor performance of io_uring compared to synchronous IO. That
->> turns out to be caused by deeper CPU idle states entered with io_uring,
->> due to io_uring using plain schedule(), whereas synchronous IO uses
->> io_schedule().
->>
->> The losses due to this are substantial. On my cascade lake workstation,
->> t/io_uring from the fio repository e.g. yields regressions between 20%
->> and 40% with the following command:
->> ./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
->>
->> This is repeatable with different filesystems, using raw block devices
->> and using different block devices.
->>
->> Use io_schedule_prepare() / io_schedule_finish() in
->> io_cqring_wait_schedule() to address the difference.
->>
->> After that using io_uring is on par or surpassing synchronous IO (using
->> registered files etc makes it reliably win, but arguably is a less fair
->> comparison).
->>
->> There are other calls to schedule() in io_uring/, but none immediately
->> jump out to be similarly situated, so I did not touch them. Similarly,
->> it's possible that mutex_lock_io() should be used, but it's not clear if
->> there are cases where that matters.
->>
->> Cc: stable@vger.kernel.org # 5.10+
->> Cc: Pavel Begunkov <asml.silence@gmail.com>
->> Cc: io-uring@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Andres Freund <andres@anarazel.de>
->> Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
->> [axboe: minor style fixup]
->> Signed-off-by: Jens Axboe <axboe@kernel.dk>
->> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> ---
->>  io_uring/io_uring.c |   15 +++++++++++++--
->>  1 file changed, 13 insertions(+), 2 deletions(-)
->>
->> --- a/io_uring/io_uring.c
->> +++ b/io_uring/io_uring.c
->> @@ -2575,6 +2575,8 @@ int io_run_task_work_sig(struct io_ring_
->>  static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
->>  					  struct io_wait_queue *iowq)
->>  {
->> +	int token, ret;
->> +
->>  	if (unlikely(READ_ONCE(ctx->check_cq)))
->>  		return 1;
->>  	if (unlikely(!llist_empty(&ctx->work_llist)))
->> @@ -2585,11 +2587,20 @@ static inline int io_cqring_wait_schedul
->>  		return -EINTR;
->>  	if (unlikely(io_should_wake(iowq)))
->>  		return 0;
->> +
->> +	/*
->> +	 * Use io_schedule_prepare/finish, so cpufreq can take into account
->> +	 * that the task is waiting for IO - turns out to be important for low
->> +	 * QD IO.
->> +	 */
->> +	token = io_schedule_prepare();
->> +	ret = 0;
->>  	if (iowq->timeout == KTIME_MAX)
->>  		schedule();
->>  	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
->> -		return -ETIME;
->> -	return 0;
->> +		ret = -ETIME;
->> +	io_schedule_finish(token);
->> +	return ret;
->>  }
->>  
->>  /*
-> 
-> Reportedly, this caused a regression as reported in [1] [2] [3]. Not only v6.4.4 is affected, v6.1.39 is affected too.
-> 
-> Reverting this commit fixes the issue.
-> 
-> Please check.
-> 
-> Thanks.
-> 
-> [1] https://bbs.archlinux.org/viewtopic.php?id=287343
-> [2] https://bugzilla.kernel.org/show_bug.cgi?id=217700
-> [3] https://bugzilla.kernel.org/show_bug.cgi?id=217699
+stable/linux-5.15.y build: 9 builds: 0 failed, 9 passed (v5.15.121)
 
-Just read the first one, but this is very much expected. It's now just
-correctly reflecting that one thread is waiting on IO. IO wait being
-100% doesn't mean that one core is running 100% of the time, it just
-means it's WAITING on IO 100% of the time.
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.15.y/k=
+ernel/v5.15.121/
 
--- 
-Jens Axboe
+Tree: stable
+Branch: linux-5.15.y
+Git Describe: v5.15.121
+Git Commit: cdd3cdb682f4939aa1adeff025b97e75a9a0f5b3
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 1 unique architecture
 
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+colibri_pxa270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+h3600_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+h5000_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+milbeaut_m10v_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings,=
+ 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+mini2440_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mps2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+simpad_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+zeus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---
+For more info write to <info@kernelci.org>
