@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D2675E234
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA82A75E235
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbjGWOAB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:00:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33350 "EHLO
+        id S229546AbjGWOAE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:00:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjGWOAA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:00:00 -0400
+        with ESMTP id S229645AbjGWOAD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:00:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD5D1BE
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:59:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A422E70
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:00:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D96260C1F
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:59:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E29C433C8;
-        Sun, 23 Jul 2023 13:59:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBEE760D32
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:00:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB093C433C7;
+        Sun, 23 Jul 2023 14:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690120798;
-        bh=z3GmOLEYCpLoLdEfzhBERM55+S1nVhFgDg5pvg6ocDQ=;
+        s=korg; t=1690120801;
+        bh=RWHPXtBIXozXUnEg+SKt0+hsdwoebzUijVsP0pNsfZw=;
         h=Subject:To:Cc:From:Date:From;
-        b=iKMdNiYN9kSXV0efU2bfw7yM0IvKppzJ4c72NAlX3PK7d6L/YlBuicNHFcsqfEB+P
-         kjJiauRgFNx4xUUcJj5RrLQ3SmxC3GD7Qx+gIl+aLUcz73ZrRM3LegmKPCnFWzMCs+
-         X2vidQ+xdHtZK7ezO3yFH3FqgImdyqlAqOII/HdQ=
-Subject: FAILED: patch "[PATCH] can: raw: fix receiver memory leak" failed to apply to 5.10-stable tree
+        b=J9GedFmCtppzH/ACsR68b4tgB4ex6/dYPh60nBVo8Wf5Rh+m6rqE/3nimx8m5BVXz
+         emsZv3Sn7M0OFJjNcMq7YF0kO0fVJQAaKbzdKFYDfTNUA57vfayXOvxkz9qWi2gkAt
+         +00M0TZENNFyaoB03jHPOEnKPsrVoT2qoXvStffs=
+Subject: FAILED: patch "[PATCH] can: raw: fix receiver memory leak" failed to apply to 5.4-stable tree
 To:     william.xuanziyang@huawei.com, mkl@pengutronix.de,
         socketcan@hartkopp.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 15:59:55 +0200
-Message-ID: <2023072355-alongside-hatchet-2655@gregkh>
+Date:   Sun, 23 Jul 2023 15:59:56 +0200
+Message-ID: <2023072356-marlin-untrue-8b08@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x ee8b94c8510ce64afe0b87ef548d23e00915fb10
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072355-alongside-hatchet-2655@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072356-marlin-untrue-8b08@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,13 @@ d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
 eeff3000f240 ("netfilter: flowtable: add offload support for xmit path types")
 3d453f53c786 ("net/smc: Add diagnostic information to smc ib-device")
 ddc992866f13 ("net/smc: Add link counters for IB device ports")
+e057dd3fc20f ("can: add ISO 15765-2:2016 transport protocol")
+5855357cd40e ("drop_monitor: Prepare probe functions for devlink tracepoint")
+6a54dde843f7 ("can: raw: fix indention")
+504776be46cb ("nl80211: Simplify error handling path in 'nl80211_trigger_scan()'")
+63673597cca9 ("net/smc: protect smc ib device initialization")
+92f3cb0e11dd ("net/smc: fix sleep bug in smc_pnet_find_roce_resource()")
+242b23319809 ("Merge tag 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma")
 
 thanks,
 
