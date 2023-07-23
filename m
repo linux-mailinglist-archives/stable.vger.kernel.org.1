@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C2975E24E
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E988C75E24F
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbjGWOHQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:07:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34284 "EHLO
+        id S229560AbjGWOHT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjGWOHP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:07:15 -0400
+        with ESMTP id S229554AbjGWOHS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:07:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD9812B
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:07:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C588112B
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:07:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35BDF60D3E
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:07:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408F1C433C9;
-        Sun, 23 Jul 2023 14:07:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61C2260D38
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:07:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4EBC433C7;
+        Sun, 23 Jul 2023 14:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690121233;
-        bh=Skrq/Byhd7FryYeEdZrp9Xxtp2cwfREUL+iC0vqzN+s=;
+        s=korg; t=1690121236;
+        bh=KsrI6feKbYXGcClv1G1BNeVXqpLtRC51FBGRFB7nMzk=;
         h=Subject:To:Cc:From:Date:From;
-        b=TXbEKR943hO2h8T+BfF6GfNeG5l9s2AF5k0lje/CBIj3ugR37kqHxEn+IGUQL4QNI
-         aBuTNxHgYHYPDqCXKGgTapRgur+1sgK1+y3a3GywNxBSwzSjHLBm3ipzWTHydK5OU8
-         BnXSOkgsExHtWQ6BLsQighh0bQfdYlHMj3XFxYoE=
-Subject: FAILED: patch "[PATCH] ASoC: cs42l51: fix driver to properly autoload with automatic" failed to apply to 4.19-stable tree
+        b=YV3xOR/qmqLW3bDeAm3Q377KeCJdACNWldNuOif7q3O8OEEc5Zo+vKRQv8dXr0fR0
+         3a2+MpppeKj7hQyAzbfaqewMQKzMUrAp30BBv7N8IRhxazm9cHNADDFC//nVPWtfjH
+         xqy0cO+QblmSMrx4yDsK6iJ39DGmm5Ah5wpAQINE=
+Subject: FAILED: patch "[PATCH] ASoC: cs42l51: fix driver to properly autoload with automatic" failed to apply to 4.14-stable tree
 To:     thomas.petazzoni@bootlin.com, broonie@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:07:06 +0200
-Message-ID: <2023072306-polyester-reproach-45e3@gregkh>
+Date:   Sun, 23 Jul 2023 16:07:08 +0200
+Message-ID: <2023072307-art-revocable-bd1b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x e51df4f81b02bcdd828a04de7c1eb6a92988b61e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072306-polyester-reproach-45e3@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072307-art-revocable-bd1b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
