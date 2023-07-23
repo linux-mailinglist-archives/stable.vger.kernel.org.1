@@ -2,154 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8E8775E50C
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 23:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3575A75E5B4
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 01:08:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbjGWVxs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 17:53:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46492 "EHLO
+        id S229708AbjGWXIK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 19:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbjGWVxs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 17:53:48 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3DAE61
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:53:46 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-66869feb7d1so2124219b3a.3
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690149226; x=1690754026;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1YPobIwz6cImf/IKMbHNtF5aX6x+2W6rvGkBSIYVwmU=;
-        b=v8noFaSD3FDRxELjnwxQ34PSG7L7EvUUoWsILICc7SBQVPUluqgAykTIdLq6c1sDZh
-         Emb91SU87KbmE4FKG9IX0F5IHH2DDVqsq406p9zr8/wmFco9W5Tq2cGBlxoHDgRMBGv1
-         xPMNjjLEqz0NzfPv0BVbIb8kukkxaW07mbj5hsc5SeyIiAMrhq3v5P7gUsLWtL1Lq6Cv
-         M536gKFZlbmJH6lXtxGTxgG+p94GPERtzYQplABf0m2fOdvgKLzs+9cwzyWEtpXwyb4P
-         FRAveF6pN/9Qie3dGtr1AjOR1+eW9AaEegldA2TN4TPO6KOcrDL8wGxHQBQN0+jYKNl3
-         5tLQ==
+        with ESMTP id S229577AbjGWXIJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 19:08:09 -0400
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4092BA6;
+        Sun, 23 Jul 2023 16:08:09 -0700 (PDT)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1bba54f7eefso1655025ad.1;
+        Sun, 23 Jul 2023 16:08:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690149226; x=1690754026;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1YPobIwz6cImf/IKMbHNtF5aX6x+2W6rvGkBSIYVwmU=;
-        b=cdSkieC/L3wIzGK4kws2my26PWQzMS96Cf2QbMTGd/ESZYvdGe2eE8LZyw0vVUwMqc
-         IJ2oPzBoSFGC0ph9RYgo2hfrXZ+wo1v5kVx88rNUtdnmJ+YIwBIk7wGnEwWbAQTdmLsr
-         uyJRmxUAkZpaJ47kYj8bHqLW6wPC3n1IsOGVnb4Z88kc8AgwzkoSb+y+L1mmBdDEd8iK
-         91dl1BYHsE/b8sRKl5ONUamesx2I+tvqziTuTd3fLwQA4avBS4YNrMUustvoljF9b6Jc
-         qTUjBEOKJPxRtINw/35VYNSt60Npyap6LqQxzTo3aUonEWINiNo+0V1xoRMdjDL/k+6B
-         0p6Q==
-X-Gm-Message-State: ABy/qLZOhHFH+kA6ZnayiaasEMDGQbFRLRxcyc0qYSCnzoY2pfuU/m//
-        d9cE2/wAcGwLATuYkqFPUSJaBgzhrSTBs16AvWM=
-X-Google-Smtp-Source: APBJJlECmjZfc9ICotzZ0yT40YUrAtGaHbCscGG0F7aQ4RLJyyuErED9+k0GmJEjU+NlkN4283w6Vg==
-X-Received: by 2002:a05:6a00:1405:b0:668:8596:7524 with SMTP id l5-20020a056a00140500b0066885967524mr7271552pfu.20.1690149225730;
-        Sun, 23 Jul 2023 14:53:45 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 19-20020aa79153000000b00682af93093dsm6367050pfi.45.2023.07.23.14.53.44
+        d=1e100.net; s=20221208; t=1690153688; x=1690758488;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ejk+IkfG5HIe+hQjbA5510kpJD8rhXbCRXUBxtMfbVI=;
+        b=hRq6HwXB+GfLKQkkMMU7dPscLDa0JJW9+hKahdl7vetT9797uZFdsdobsNDf24yXUV
+         kZt/6+JwzV+iNV65CRAb6tIolayUrsheaj6GBZkn8I89SikhAAi2WdfKBF1S2LvZwbnp
+         4ZTWCLT3LLkEme4zGyMzJx09sfxGrophkCESZt4oiZMRHjH8j+fuIQjjfaR5G6h9tdgs
+         VVwkv+oiKHgYH00rbIva+WFeY5C7qUKx3FAiO7lr7jBhhl1Asdh9hQMQXGA1VjuKgpQp
+         ne35oED5QNLmxX9qnw0SwtAjbUM1e5y0yMx38OxFTu1zWuDvBQY2MXzSdTPTaP20BdVD
+         uWmQ==
+X-Gm-Message-State: ABy/qLay9kUz7jG7UYcHO8wVx4ztm7e2S32teyf+O/PK8H/EW589u82e
+        eZzCQkkQ9N+4FmYVYAsoDXw=
+X-Google-Smtp-Source: APBJJlFr8ysZfwUQa77PynVAKsPnJE7xdexUyBkakvwffPNWKm2eJFRhP2YEapD59k+0m/Atbuc5yw==
+X-Received: by 2002:a17:902:ecc9:b0:1b8:8702:1e7c with SMTP id a9-20020a170902ecc900b001b887021e7cmr13048563plh.33.1690153688428;
+        Sun, 23 Jul 2023 16:08:08 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
+        by smtp.gmail.com with ESMTPSA id d24-20020a170902b71800b001b9cea4e8a2sm7355186pls.293.2023.07.23.16.08.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jul 2023 14:53:44 -0700 (PDT)
-Message-ID: <64bda168.a70a0220.d2a7.acae@mx.google.com>
-Date:   Sun, 23 Jul 2023 14:53:44 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Sun, 23 Jul 2023 16:08:07 -0700 (PDT)
+Date:   Sun, 23 Jul 2023 23:08:06 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Michael Kelley <mikelley@microsoft.com>
+Cc:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+        peterz@infradead.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] x86/hyperv: Disable IBT when hypercall page lacks
+ ENDBR instruction
+Message-ID: <ZL2y1oaObNrnMHE8@liuwe-devbox-debian-v2>
+References: <1690001476-98594-1-git-send-email-mikelley@microsoft.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Kernel: v4.19.288-192-g80628ee9a6264
-X-Kernelci-Report-Type: test
-Subject: stable-rc/linux-4.19.y baseline: 37 runs,
- 1 regressions (v4.19.288-192-g80628ee9a6264)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1690001476-98594-1-git-send-email-mikelley@microsoft.com>
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.19.y baseline: 37 runs, 1 regressions (v4.19.288-192-g806=
-28ee9a6264)
+On Fri, Jul 21, 2023 at 09:51:16PM -0700, Michael Kelley wrote:
+> On hardware that supports Indirect Branch Tracking (IBT), Hyper-V VMs
+> with ConfigVersion 9.3 or later support IBT in the guest. However,
+> current versions of Hyper-V have a bug in that there's not an ENDBR64
+> instruction at the beginning of the hypercall page. Since hypercalls are
+> made with an indirect call to the hypercall page, all hypercall attempts
+> fail with an exception and Linux panics.
+> 
+> A Hyper-V fix is in progress to add ENDBR64. But guard against the Linux
+> panic by clearing X86_FEATURE_IBT if the hypercall page doesn't start
+> with ENDBR. The VM will boot and run without IBT.
+> 
+> If future Linux 32-bit kernels were to support IBT, additional hypercall
+> page hackery would be needed to make IBT work for such kernels in a
+> Hyper-V VM.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
 
-Regressions Summary
--------------------
-
-platform   | arch | lab          | compiler | defconfig          | regressi=
-ons
------------+------+--------------+----------+--------------------+---------=
----
-cubietruck | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1       =
-   =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-4.19.y/ker=
-nel/v4.19.288-192-g80628ee9a6264/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-4.19.y
-  Describe: v4.19.288-192-g80628ee9a6264
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      80628ee9a62647977364404e68af1133c7089be1 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform   | arch | lab          | compiler | defconfig          | regressi=
-ons
------------+------+--------------+----------+--------------------+---------=
----
-cubietruck | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1       =
-   =
-
-
-  Details:     https://kernelci.org/test/plan/id/64bd6a4684c718b9e08ace3e
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.2=
-88-192-g80628ee9a6264/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-c=
-ubietruck.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.2=
-88-192-g80628ee9a6264/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-c=
-ubietruck.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64bd6a4684c718b9e08ace43
-        failing since 187 days (last pass: v4.19.268-50-gbf741d1d7e6d, firs=
-t fail: v4.19.269-522-gc75d2b5524ab)
-
-    2023-07-23T17:58:10.633523  <8>[    7.357108] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3724284_1.5.2.4.1>
-    2023-07-23T17:58:10.744207  / # #
-    2023-07-23T17:58:10.847927  export SHELL=3D/bin/sh
-    2023-07-23T17:58:10.848970  #
-    2023-07-23T17:58:10.951100  / # export SHELL=3D/bin/sh. /lava-3724284/e=
-nvironment
-    2023-07-23T17:58:10.952240  =
-
-    2023-07-23T17:58:11.054945  / # . /lava-3724284/environment/lava-372428=
-4/bin/lava-test-runner /lava-3724284/1
-    2023-07-23T17:58:11.056888  =
-
-    2023-07-23T17:58:11.061889  / # /lava-3724284/bin/lava-test-runner /lav=
-a-3724284/1
-    2023-07-23T17:58:11.140622  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =20
+Applied to hyperv-fixes. Thanks.
