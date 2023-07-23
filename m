@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9BC875E243
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FAAC75E244
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjGWOEl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34066 "EHLO
+        id S229509AbjGWOF5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:05:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjGWOEk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:04:40 -0400
+        with ESMTP id S229452AbjGWOF5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:05:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA6112B
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:04:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF93E70
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:05:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AE3F60D33
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49545C433C8;
-        Sun, 23 Jul 2023 14:04:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B2E460D32
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:05:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573DDC433CA;
+        Sun, 23 Jul 2023 14:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690121078;
-        bh=d2RBSXdpPuDQ7V4wXDYBVmKqcYYUMlP3tC739x4LTb4=;
+        s=korg; t=1690121154;
+        bh=3cfUMyytGtoNnQey7GEouIddxM0pt50eG1P2bbvniLI=;
         h=Subject:To:Cc:From:Date:From;
-        b=wMh1a+PAZdnasUzrh5CERsFp9cpmEVSvV7oqOgvFXeQbCcyQcqqv3cX8WqzCyh9oo
-         UYlZEtfMj8a6tOFN6bQV8w5exAPKnlb4X0nJD0S/mknCI18LjVfzlKyK28/SVUGk5/
-         yE3X3I5BRv0KtbDdJh4jooEJ8mijdQbZp4E+gU7c=
-Subject: FAILED: patch "[PATCH] drm/client: Fix memory leak in drm_client_target_cloned" failed to apply to 4.14-stable tree
-To:     jfalempe@redhat.com, javierm@redhat.com, stable@vger.kernel.org,
-        tzimmermann@suse.de, yizhan@redhat.com
+        b=RpVmfZVSxPIigNYO/2tBhGJP7qiHuM7Xbw+hYKuaAOWyntMPjNnrpWjSx6qNVbDCB
+         g7iIS7YnCkK1lhU9J1GOEgG3/3pYZltMmhKrzrq3134Rczksbj7mpc88dcZaJ+a89t
+         Gui22bTR4MXTPphy6HnvD5Njx64l+72FB/SBJ8H8=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Add polling method to handle MST reply" failed to apply to 6.4-stable tree
+To:     wayne.lin@amd.com, alexander.deucher@amd.com,
+        daniel.wheeler@amd.com, haoping.liu@amd.com, jerry.zuo@amd.com,
+        mario.limonciello@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:04:27 +0200
-Message-ID: <2023072327-repost-magma-4171@gregkh>
+Date:   Sun, 23 Jul 2023 16:05:52 +0200
+Message-ID: <2023072351-darkish-negligee-d553@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,30 +51,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x c2a88e8bdf5f6239948d75283d0ae7e0c7945b03
+git cherry-pick -x 4f6d9e38c4d244ad106eb9ebd8c0e1215e866f35
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072327-repost-magma-4171@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072351-darkish-negligee-d553@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-c2a88e8bdf5f ("drm/client: Fix memory leak in drm_client_target_cloned")
-cf13909aee05 ("drm/fb-helper: Move out modeset config code")
-aafa9e066872 ("drm/fb-helper: Prepare to move out modeset config code")
-e5852bee90d6 ("drm/fb-helper: Remove drm_fb_helper_connector")
-aec3925f093d ("drm/fb-helper: Move out commit code")
-eade2a17ddc5 ("drm/fb-helper: Prepare to move out commit code")
-d81294afeecd ("drm/fb-helper: Remove drm_fb_helper_crtc")
-4672b1d65fc9 ("Merge remote-tracking branch 'drm/drm-next' into drm-misc-next")
+
 
 thanks,
 
@@ -81,66 +75,363 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c2a88e8bdf5f6239948d75283d0ae7e0c7945b03 Mon Sep 17 00:00:00 2001
-From: Jocelyn Falempe <jfalempe@redhat.com>
-Date: Tue, 11 Jul 2023 11:20:43 +0200
-Subject: [PATCH] drm/client: Fix memory leak in drm_client_target_cloned
+From 4f6d9e38c4d244ad106eb9ebd8c0e1215e866f35 Mon Sep 17 00:00:00 2001
+From: Wayne Lin <wayne.lin@amd.com>
+Date: Wed, 9 Mar 2022 17:05:05 +0800
+Subject: [PATCH] drm/amd/display: Add polling method to handle MST reply
+ packet
 
-dmt_mode is allocated and never freed in this function.
-It was found with the ast driver, but most drivers using generic fbdev
-setup are probably affected.
+[Why]
+Specific TBT4 dock doesn't send out short HPD to notify source
+that IRQ event DOWN_REP_MSG_RDY is set. Which violates the spec
+and cause source can't send out streams to mst sinks.
 
-This fixes the following kmemleak report:
-  backtrace:
-    [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
-    [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
-    [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
-    [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
-    [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
-    [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
-    [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
-    [<00000000987f19bb>] local_pci_probe+0xdc/0x180
-    [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
-    [<0000000000b85301>] process_one_work+0x8b7/0x1540
-    [<000000003375b17c>] worker_thread+0x70a/0xed0
-    [<00000000b0d43cd9>] kthread+0x29f/0x340
-    [<000000008d770833>] ret_from_fork+0x1f/0x30
-unreferenced object 0xff11000333089a00 (size 128):
+[How]
+To cover this misbehavior, add an additional polling method to detect
+DOWN_REP_MSG_RDY is set. HPD driven handling method is still kept.
+Just hook up our handler to drm mgr->cbs->poll_hpd_irq().
 
-cc: <stable@vger.kernel.org>
-Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
-Reported-by: Zhang Yi <yizhan@redhat.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Acked-by: Alan Liu <haoping.liu@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
-index 1b12a3c201a3..a4a62aa99984 100644
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -311,6 +311,9 @@ static bool drm_client_target_cloned(struct drm_device *dev,
- 	can_clone = true;
- 	dmt_mode = drm_mode_find_dmt(dev, 1024, 768, 60, false);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 948d61845efd..0fa739fd6a9c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1347,6 +1347,15 @@ static void dm_handle_hpd_rx_offload_work(struct work_struct *work)
+ 	if (amdgpu_in_reset(adev))
+ 		goto skip;
  
-+	if (!dmt_mode)
-+		goto fail;
++	if (offload_work->data.bytes.device_service_irq.bits.UP_REQ_MSG_RDY ||
++		offload_work->data.bytes.device_service_irq.bits.DOWN_REP_MSG_RDY) {
++		dm_handle_mst_sideband_msg_ready_event(&aconnector->mst_mgr, DOWN_OR_UP_MSG_RDY_EVENT);
++		spin_lock_irqsave(&offload_work->offload_wq->offload_lock, flags);
++		offload_work->offload_wq->is_handling_mst_msg_rdy_event = false;
++		spin_unlock_irqrestore(&offload_work->offload_wq->offload_lock, flags);
++		goto skip;
++	}
 +
- 	for (i = 0; i < connector_count; i++) {
- 		if (!enabled[i])
- 			continue;
-@@ -326,11 +329,13 @@ static bool drm_client_target_cloned(struct drm_device *dev,
- 		if (!modes[i])
- 			can_clone = false;
- 	}
-+	kfree(dmt_mode);
+ 	mutex_lock(&adev->dm.dc_lock);
+ 	if (offload_work->data.bytes.device_service_irq.bits.AUTOMATED_TEST) {
+ 		dc_link_dp_handle_automated_test(dc_link);
+@@ -3232,87 +3241,6 @@ static void handle_hpd_irq(void *param)
  
- 	if (can_clone) {
- 		DRM_DEBUG_KMS("can clone using 1024x768\n");
- 		return true;
- 	}
-+fail:
- 	DRM_INFO("kms: can't enable cloning when we probably wanted to.\n");
- 	return false;
  }
+ 
+-static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
+-{
+-	u8 esi[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = { 0 };
+-	u8 dret;
+-	bool new_irq_handled = false;
+-	int dpcd_addr;
+-	int dpcd_bytes_to_read;
+-
+-	const int max_process_count = 30;
+-	int process_count = 0;
+-
+-	const struct dc_link_status *link_status = dc_link_get_status(aconnector->dc_link);
+-
+-	if (link_status->dpcd_caps->dpcd_rev.raw < 0x12) {
+-		dpcd_bytes_to_read = DP_LANE0_1_STATUS - DP_SINK_COUNT;
+-		/* DPCD 0x200 - 0x201 for downstream IRQ */
+-		dpcd_addr = DP_SINK_COUNT;
+-	} else {
+-		dpcd_bytes_to_read = DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI;
+-		/* DPCD 0x2002 - 0x2005 for downstream IRQ */
+-		dpcd_addr = DP_SINK_COUNT_ESI;
+-	}
+-
+-	dret = drm_dp_dpcd_read(
+-		&aconnector->dm_dp_aux.aux,
+-		dpcd_addr,
+-		esi,
+-		dpcd_bytes_to_read);
+-
+-	while (dret == dpcd_bytes_to_read &&
+-		process_count < max_process_count) {
+-		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
+-		u8 retry;
+-
+-		dret = 0;
+-
+-		process_count++;
+-
+-		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
+-		/* handle HPD short pulse irq */
+-		if (aconnector->mst_mgr.mst_state)
+-			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
+-							esi,
+-							ack,
+-							&new_irq_handled);
+-
+-		if (new_irq_handled) {
+-			/* ACK at DPCD to notify down stream */
+-			for (retry = 0; retry < 3; retry++) {
+-				ssize_t wret;
+-
+-				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
+-							  dpcd_addr + 1,
+-							  ack[1]);
+-				if (wret == 1)
+-					break;
+-			}
+-
+-			if (retry == 3) {
+-				DRM_ERROR("Failed to ack MST event.\n");
+-				return;
+-			}
+-
+-			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
+-			/* check if there is new irq to be handled */
+-			dret = drm_dp_dpcd_read(
+-				&aconnector->dm_dp_aux.aux,
+-				dpcd_addr,
+-				esi,
+-				dpcd_bytes_to_read);
+-
+-			new_irq_handled = false;
+-		} else {
+-			break;
+-		}
+-	}
+-
+-	if (process_count == max_process_count)
+-		DRM_DEBUG_DRIVER("Loop exceeded max iterations\n");
+-}
+-
+ static void schedule_hpd_rx_offload_work(struct hpd_rx_irq_offload_work_queue *offload_wq,
+ 							union hpd_irq_data hpd_irq_data)
+ {
+@@ -3374,7 +3302,23 @@ static void handle_hpd_rx_irq(void *param)
+ 	if (dc_link_dp_allow_hpd_rx_irq(dc_link)) {
+ 		if (hpd_irq_data.bytes.device_service_irq.bits.UP_REQ_MSG_RDY ||
+ 			hpd_irq_data.bytes.device_service_irq.bits.DOWN_REP_MSG_RDY) {
+-			dm_handle_mst_sideband_msg(aconnector);
++			bool skip = false;
++
++			/*
++			 * DOWN_REP_MSG_RDY is also handled by polling method
++			 * mgr->cbs->poll_hpd_irq()
++			 */
++			spin_lock(&offload_wq->offload_lock);
++			skip = offload_wq->is_handling_mst_msg_rdy_event;
++
++			if (!skip)
++				offload_wq->is_handling_mst_msg_rdy_event = true;
++
++			spin_unlock(&offload_wq->offload_lock);
++
++			if (!skip)
++				schedule_hpd_rx_offload_work(offload_wq, hpd_irq_data);
++
+ 			goto out;
+ 		}
+ 
+@@ -3483,11 +3427,11 @@ static void register_hpd_handlers(struct amdgpu_device *adev)
+ 			amdgpu_dm_irq_register_interrupt(adev, &int_params,
+ 					handle_hpd_rx_irq,
+ 					(void *) aconnector);
+-
+-			if (adev->dm.hpd_rx_offload_wq)
+-				adev->dm.hpd_rx_offload_wq[dc_link->link_index].aconnector =
+-					aconnector;
+ 		}
++
++		if (adev->dm.hpd_rx_offload_wq)
++			adev->dm.hpd_rx_offload_wq[connector->index].aconnector =
++				aconnector;
+ 	}
+ }
+ 
+@@ -7296,6 +7240,7 @@ void amdgpu_dm_connector_init_helper(struct amdgpu_display_manager *dm,
+ 	aconnector->as_type = ADAPTIVE_SYNC_TYPE_NONE;
+ 	memset(&aconnector->vsdb_info, 0, sizeof(aconnector->vsdb_info));
+ 	mutex_init(&aconnector->hpd_lock);
++	mutex_init(&aconnector->handle_mst_msg_ready);
+ 
+ 	/*
+ 	 * configure support HPD hot plug connector_>polled default value is 0
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 4561f55afa99..9fb5bb3a75a7 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -194,6 +194,11 @@ struct hpd_rx_irq_offload_work_queue {
+ 	 * we're handling link loss
+ 	 */
+ 	bool is_handling_link_loss;
++	/**
++	 * @is_handling_mst_msg_rdy_event: Used to prevent inserting mst message
++	 * ready event when we're already handling mst message ready event
++	 */
++	bool is_handling_mst_msg_rdy_event;
+ 	/**
+ 	 * @aconnector: The aconnector that this work queue is attached to
+ 	 */
+@@ -638,6 +643,8 @@ struct amdgpu_dm_connector {
+ 	struct drm_dp_mst_port *mst_output_port;
+ 	struct amdgpu_dm_connector *mst_root;
+ 	struct drm_dp_aux *dsc_aux;
++	struct mutex handle_mst_msg_ready;
++
+ 	/* TODO see if we can merge with ddc_bus or make a dm_connector */
+ 	struct amdgpu_i2c_adapter *i2c;
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 46d0a8f57e55..888e80f498e9 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -619,8 +619,118 @@ dm_dp_add_mst_connector(struct drm_dp_mst_topology_mgr *mgr,
+ 	return connector;
+ }
+ 
++void dm_handle_mst_sideband_msg_ready_event(
++	struct drm_dp_mst_topology_mgr *mgr,
++	enum mst_msg_ready_type msg_rdy_type)
++{
++	uint8_t esi[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = { 0 };
++	uint8_t dret;
++	bool new_irq_handled = false;
++	int dpcd_addr;
++	uint8_t dpcd_bytes_to_read;
++	const uint8_t max_process_count = 30;
++	uint8_t process_count = 0;
++	u8 retry;
++	struct amdgpu_dm_connector *aconnector =
++			container_of(mgr, struct amdgpu_dm_connector, mst_mgr);
++
++
++	const struct dc_link_status *link_status = dc_link_get_status(aconnector->dc_link);
++
++	if (link_status->dpcd_caps->dpcd_rev.raw < 0x12) {
++		dpcd_bytes_to_read = DP_LANE0_1_STATUS - DP_SINK_COUNT;
++		/* DPCD 0x200 - 0x201 for downstream IRQ */
++		dpcd_addr = DP_SINK_COUNT;
++	} else {
++		dpcd_bytes_to_read = DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI;
++		/* DPCD 0x2002 - 0x2005 for downstream IRQ */
++		dpcd_addr = DP_SINK_COUNT_ESI;
++	}
++
++	mutex_lock(&aconnector->handle_mst_msg_ready);
++
++	while (process_count < max_process_count) {
++		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
++
++		process_count++;
++
++		dret = drm_dp_dpcd_read(
++			&aconnector->dm_dp_aux.aux,
++			dpcd_addr,
++			esi,
++			dpcd_bytes_to_read);
++
++		if (dret != dpcd_bytes_to_read) {
++			DRM_DEBUG_KMS("DPCD read and acked number is not as expected!");
++			break;
++		}
++
++		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
++
++		switch (msg_rdy_type) {
++		case DOWN_REP_MSG_RDY_EVENT:
++			/* Only handle DOWN_REP_MSG_RDY case*/
++			esi[1] &= DP_DOWN_REP_MSG_RDY;
++			break;
++		case UP_REQ_MSG_RDY_EVENT:
++			/* Only handle UP_REQ_MSG_RDY case*/
++			esi[1] &= DP_UP_REQ_MSG_RDY;
++			break;
++		default:
++			/* Handle both cases*/
++			esi[1] &= (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
++			break;
++		}
++
++		if (!esi[1])
++			break;
++
++		/* handle MST irq */
++		if (aconnector->mst_mgr.mst_state)
++			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
++						 esi,
++						 ack,
++						 &new_irq_handled);
++
++		if (new_irq_handled) {
++			/* ACK at DPCD to notify down stream */
++			for (retry = 0; retry < 3; retry++) {
++				ssize_t wret;
++
++				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
++							  dpcd_addr + 1,
++							  ack[1]);
++				if (wret == 1)
++					break;
++			}
++
++			if (retry == 3) {
++				DRM_ERROR("Failed to ack MST event.\n");
++				return;
++			}
++
++			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
++
++			new_irq_handled = false;
++		} else {
++			break;
++		}
++	}
++
++	mutex_unlock(&aconnector->handle_mst_msg_ready);
++
++	if (process_count == max_process_count)
++		DRM_DEBUG_DRIVER("Loop exceeded max iterations\n");
++}
++
++static void dm_handle_mst_down_rep_msg_ready(struct drm_dp_mst_topology_mgr *mgr)
++{
++	dm_handle_mst_sideband_msg_ready_event(mgr, DOWN_REP_MSG_RDY_EVENT);
++}
++
+ static const struct drm_dp_mst_topology_cbs dm_mst_cbs = {
+ 	.add_connector = dm_dp_add_mst_connector,
++	.poll_hpd_irq = dm_handle_mst_down_rep_msg_ready,
+ };
+ 
+ void amdgpu_dm_initialize_dp_connector(struct amdgpu_display_manager *dm,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
+index 1e4ede1e57ab..37c820ab0fdb 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
+@@ -49,6 +49,13 @@
+ #define PBN_FEC_OVERHEAD_MULTIPLIER_8B_10B	1031
+ #define PBN_FEC_OVERHEAD_MULTIPLIER_128B_132B	1000
+ 
++enum mst_msg_ready_type {
++	NONE_MSG_RDY_EVENT = 0,
++	DOWN_REP_MSG_RDY_EVENT = 1,
++	UP_REQ_MSG_RDY_EVENT = 2,
++	DOWN_OR_UP_MSG_RDY_EVENT = 3
++};
++
+ struct amdgpu_display_manager;
+ struct amdgpu_dm_connector;
+ 
+@@ -61,6 +68,10 @@ void amdgpu_dm_initialize_dp_connector(struct amdgpu_display_manager *dm,
+ void
+ dm_dp_create_fake_mst_encoders(struct amdgpu_device *adev);
+ 
++void dm_handle_mst_sideband_msg_ready_event(
++	struct drm_dp_mst_topology_mgr *mgr,
++	enum mst_msg_ready_type msg_rdy_type);
++
+ struct dsc_mst_fairness_vars {
+ 	int pbn;
+ 	bool dsc_enabled;
 
