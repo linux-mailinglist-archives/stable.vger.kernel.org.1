@@ -2,151 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F084F75E1A7
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 14:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A800575E1B8
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 14:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjGWMC1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 08:02:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39794 "EHLO
+        id S229571AbjGWMLg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 08:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjGWMC1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 08:02:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1EBAE59
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 05:02:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85A5160C79
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 12:02:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF58C433C7;
-        Sun, 23 Jul 2023 12:02:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690113744;
-        bh=T8FagJODFyp6Vnu0Nk6/qTSvnTyLfsRVAFCKSTrEZkg=;
-        h=Subject:To:Cc:From:Date:From;
-        b=w0P0p2FN+qLQ6cONFHDzG+IA9eB28WJRahewe4mUtzYJoVnkSGkzYkvBH2A5DZYGA
-         cUJVSKRbGYVHx9ZQnVtvqR2qh1ntEjCLNZvw0qlvx63wRUTjCFELN/37pYgA34WE7X
-         of3vJNPyN0KGw9Um3fnrF/gC8GgnGxIkxdFcD16A=
-Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - remove 3k pull low procedure" failed to apply to 4.19-stable tree
-To:     kailang@realtek.com, josephcsible@gmail.com,
-        stable@vger.kernel.org, tiwai@suse.de
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 14:02:09 +0200
-Message-ID: <2023072308-sandbox-blemish-85a3@gregkh>
+        with ESMTP id S229491AbjGWMLf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 08:11:35 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F9B1BF;
+        Sun, 23 Jul 2023 05:11:31 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qNXvt-0006o4-EM; Sun, 23 Jul 2023 14:11:29 +0200
+Message-ID: <03b96f88-559c-454a-702c-90b0ca50b3b6@leemhuis.info>
+Date:   Sun, 23 Jul 2023 14:11:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.4 800/800] io_uring: Use io_schedule* in cqring wait
+Content-Language: en-US, de-DE
+To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
+        stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pavel Begunkov <asml.silence@gmail.com>,
+        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andres Freund <andres@anarazel.de>,
+        Jens Axboe <axboe@kernel.dk>,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20230716194949.099592437@linuxfoundation.org>
+ <20230716195007.731909670@linuxfoundation.org>
+ <12251678.O9o76ZdvQC@natalenko.name>
+From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <12251678.O9o76ZdvQC@natalenko.name>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1690114291;ae7eaa41;
+X-HE-SMSGID: 1qNXvt-0006o4-EM
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+[CCing the regression list, as it should be in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[TLDR: I'm adding this report to the list of tracked Linux kernel
+regressions; the text you find below is based on a few templates
+paragraphs you might have encountered already in similar form.
+See link in footer if these mails annoy you.]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On 23.07.23 11:39, Oleksandr Natalenko wrote:
+> On neděle 16. července 2023 21:50:53 CEST Greg Kroah-Hartman wrote:
+>> From: Andres Freund <andres@anarazel.de>
+>>
+>> commit 8a796565cec3601071cbbd27d6304e202019d014 upstream.
+>>
+>> I observed poor performance of io_uring compared to synchronous IO. That
+>> turns out to be caused by deeper CPU idle states entered with io_uring,
+>> due to io_uring using plain schedule(), whereas synchronous IO uses
+>> io_schedule().
+>>
+>> The losses due to this are substantial. On my cascade lake workstation,
+>> t/io_uring from the fio repository e.g. yields regressions between 20%
+>> and 40% with the following command:
+>> ./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
+>>
+> 
+> Reportedly, this caused a regression as reported in [1] [2] [3]. Not only v6.4.4 is affected, v6.1.39 is affected too.
+> 
+> Reverting this commit fixes the issue.
+> 
+> Please check.
+> 
+> Thanks.
+> 
+> [1] https://bbs.archlinux.org/viewtopic.php?id=287343
+> [2] https://bugzilla.kernel.org/show_bug.cgi?id=217700
+> [3] https://bugzilla.kernel.org/show_bug.cgi?id=217699
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 69ea4c9d02b7947cdd612335a61cc1a02e544ccd
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072308-sandbox-blemish-85a3@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
 
-Possible dependencies:
+#regzbot introduced 8a796565cec360107 ^
+https://bbs.archlinux.org/viewtopic.php?id=287343
+https://bugzilla.kernel.org/show_bug.cgi?id=217700
+https://bugzilla.kernel.org/show_bug.cgi?id=217699
+#regzbot title block: io_uring: high iowait rates and stalls
+#regzbot ignore-activity
 
-69ea4c9d02b7 ("ALSA: hda/realtek - remove 3k pull low procedure")
-f30741cded62 ("ALSA: hda/realtek: Fix audio regression on Mi Notebook Pro 2020")
-5aec98913095 ("ALSA: hda/realtek - ALC236 headset MIC recording issue")
-92666d45adcf ("ALSA: hda/realtek - Fixed Dell AIO wrong sound tone")
-9e885770277d ("ALSA: hda/realtek - HP Headset Mic can't detect after boot")
-a0ccbc5319d5 ("ALSA: hda/realtek - Add supported mute Led for HP")
-446b8185f0c3 ("ALSA: hda/realtek - Add supported for Lenovo ThinkPad Headset Button")
-ef9ce66fab95 ("ALSA: hda/realtek - Enable headphone for ASUS TM420")
-8a8de09cb2ad ("ALSA: hda/realtek - Fixed HP headset Mic can't be detected")
-08befca40026 ("ALSA: hda/realtek - Add mute Led support for HP Elitebook 845 G7")
-13468bfa8c58 ("ALSA: hda/realtek - set mic to auto detect on a HP AIO machine")
-3f7424905782 ("ALSA: hda/realtek - Couldn't detect Mic if booting with headset plugged")
-fc19d559b0d3 ("ALSA: hda/realtek - The Mic on a RedmiBook doesn't work")
-23dc95868944 ("ALSA: hda/realtek: Add model alc298-samsung-headphone")
-e2d2fded6bdf ("ALSA: hda/realtek: Fix pin default on Intel NUC 8 Rugged")
-3b5d1afd1f13 ("Merge branch 'for-next' into for-linus")
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
 
-thanks,
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (the parent of this mail). See page linked in footer for
+details.
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 69ea4c9d02b7947cdd612335a61cc1a02e544ccd Mon Sep 17 00:00:00 2001
-From: Kailang Yang <kailang@realtek.com>
-Date: Thu, 13 Jul 2023 15:57:13 +0800
-Subject: [PATCH] ALSA: hda/realtek - remove 3k pull low procedure
-
-This was the ALC283 depop procedure.
-Maybe this procedure wasn't suitable with new codec.
-So, let us remove it. But HP 15z-fc000 must do 3k pull low. If it
-reboot with plugged headset,
-it will have errors show don't find codec error messages. Run 3k pull
-low will solve issues.
-So, let AMD chipset will run this for workarround.
-
-Fixes: 5aec98913095 ("ALSA: hda/realtek - ALC236 headset MIC recording issue")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Reported-by: Joseph C. Sible <josephcsible@gmail.com>
-Closes: https://lore.kernel.org/r/CABpewhE4REgn9RJZduuEU6Z_ijXNeQWnrxO1tg70Gkw=F8qNYg@mail.gmail.com/
-Link: https://lore.kernel.org/r/4678992299664babac4403d9978e7ba7@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index e2f8b608de82..afb4d82475b4 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -122,6 +122,7 @@ struct alc_spec {
- 	unsigned int ultra_low_power:1;
- 	unsigned int has_hs_key:1;
- 	unsigned int no_internal_mic_pin:1;
-+	unsigned int en_3kpull_low:1;
- 
- 	/* for PLL fix */
- 	hda_nid_t pll_nid;
-@@ -3622,6 +3623,7 @@ static void alc256_shutup(struct hda_codec *codec)
- 	if (!hp_pin)
- 		hp_pin = 0x21;
- 
-+	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
- 	if (hp_pin_sense)
-@@ -3638,8 +3640,7 @@ static void alc256_shutup(struct hda_codec *codec)
- 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
- 	 * when booting with headset plugged. So skip setting it for the codec alc257
- 	 */
--	if (codec->core.vendor_id != 0x10ec0236 &&
--	    codec->core.vendor_id != 0x10ec0257)
-+	if (spec->en_3kpull_low)
- 		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
- 
- 	if (!spec->no_shutup_pins)
-@@ -10682,6 +10683,8 @@ static int patch_alc269(struct hda_codec *codec)
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0; /* ALC256 does not have any loopback mixer path */
-+		if (codec->bus->pci->vendor == PCI_VENDOR_ID_AMD)
-+			spec->en_3kpull_low = true;
- 		break;
- 	case 0x10ec0257:
- 		spec->codec_variant = ALC269_TYPE_ALC257;
-
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
