@@ -2,113 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B2E575E2AF
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0926175E2B8
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjGWOfE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:35:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48034 "EHLO
+        id S229614AbjGWOua (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:50:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbjGWOfD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:35:03 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71C4610F4;
-        Sun, 23 Jul 2023 07:35:01 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3a4062577c0so2959337b6e.0;
-        Sun, 23 Jul 2023 07:35:01 -0700 (PDT)
+        with ESMTP id S229446AbjGWOua (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:50:30 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4039294
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:50:29 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-63c70dc7ed2so27118436d6.0
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:50:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690122900; x=1690727700;
+        d=joelfernandes.org; s=google; t=1690123828; x=1690728628;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6hVbV6PPK4bQ78C5FPPLzZso3da8dxH89LJc/QzUTSs=;
-        b=JWkEpKntYVBuB6E1XatdkZtXVt73rBdbJGE0d5xAPFTEdSwmf1jYbPKEAkJ5idN9vp
-         rOMBT5zkC+hVmjV9TjJgbwKTmp7UDHFUI9lUvYfO8lUVBuSiayofy8aYl37TXi8X0EKL
-         WLVmd+C8Vq99HWrh5qX7sEBbThTiQQLhrJ8fOvojX0WBR9DtDnHa4oNpR8oEphZg0/eL
-         7TrkmgyrCmaPcgunASu/NKKyV12TUOHmbv+BsHvMg04fCAFCuO8TwyeDa+6nlZwYsQ5s
-         zIXUVVwuEAAdsfPyuHZgq/A6XSg6O9ht63J+4nZY0QH6J+Lz3kbDsbecxAbpRXECwaxR
-         8sgQ==
+        bh=XbJYLMBE6yZWZtHXhUUqaRNiGofik3CcRLGI3pFqykE=;
+        b=YkO18S8ZdFq2T6J3xUhBXqe+9SNwwSJ7cixs31sAhRpASF13+CPFZHEg9o4u3AcqmB
+         OPYq3xPQttUC3SQG9ok2raOKj8pJyeZViQtwciZWZmuXPnEOIfTO8ZzgxqGcPGyFHime
+         4LLa1KOAt2Q/S+9VTxORf1n5OE8eFSWas9CGs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690122900; x=1690727700;
+        d=1e100.net; s=20221208; t=1690123828; x=1690728628;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6hVbV6PPK4bQ78C5FPPLzZso3da8dxH89LJc/QzUTSs=;
-        b=LlMt0f8h5m0M5N9x2FO0ltG9CDdK55AMIZz9sWCJjD8+LwQmleBD/3YZ48jWuo7DfE
-         xMH9NKdaTj8lE24Ln/Dw37C83iLZguh+UnTxEmOOokGKH0zWs/V3glp8+9vIPLKi2hFx
-         3SNZecBcL4eagBXtUs57t5QLb7jIPaM6ITLX/jNZdzv+pbQfZ4vdqnWnM6LHrI5el18P
-         hTb435xUkyWkKbFr1qwSRjf4YImWRAG9blcE181Z4wfiFwGTxqfYsiDDVuSAJg5VenWl
-         4p1FQFtzHr3z8mNMiqDjp0qPTcmSB+cq/fq+RdZKtQGWoRPX6FTtGSD82q7CA6FO1ppF
-         K4qg==
-X-Gm-Message-State: ABy/qLZLpprOVOP6BzbOkhEjzmtK6DWkwDPgt+DZGCP1+AmXm16YDwzx
-        hGTRRbcDTuwVhP0Qo83D7RQ=
-X-Google-Smtp-Source: APBJJlG0yD0GorNtcgbwNsnxx1O75lYChESB8+iiUX9xQbMDeKstYsQPW1OQLn7V8L5A70F1wbfuAg==
-X-Received: by 2002:a05:6808:1310:b0:3a1:f18d:2fe8 with SMTP id y16-20020a056808131000b003a1f18d2fe8mr6198281oiv.10.1690122900514;
-        Sun, 23 Jul 2023 07:35:00 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id o204-20020a4a2cd5000000b0055e3dd89c12sm3508157ooo.1.2023.07.23.07.34.56
+        bh=XbJYLMBE6yZWZtHXhUUqaRNiGofik3CcRLGI3pFqykE=;
+        b=XiSSMKXfpeOvmvWsEW/ckO7kYUvJdR7+mN6AaG0uAPU5cElAoQ6aPHp/D80DO0x6Qs
+         1xAhYw5uCas+b5n7aGtjprSWdw4eEL/Z0ea+9X6eLcSi5t+CZoPIab/lQeoXC5fcdpdc
+         zT08YjR6yz+TENG6GFQerp3tXotiCRLKCjXgQUpdixZMtpFyNTkzyoNxLwRzA4v7EUCZ
+         s96ueRcpYaR112euVGqXG4UOrABRNF0ny+2eFNnVaN0R4NeAVsPVBw4V1gzMPVjuJoCp
+         9ys6Kk6rX7D+oTGmid0VQTg514R0i9lfj7FWvYpHfdgG0sjPpe4RgSM1Wy5224tDwM7U
+         1zwg==
+X-Gm-Message-State: ABy/qLZavpxI2o1IucUjKqvtO7knm6X6TBOBqIdOrdyWSCNI+JbnvKbd
+        C0mXDhotJ8L89hD0XBK+SgIRVw==
+X-Google-Smtp-Source: APBJJlGtEhT2RjFcanL8kjdpwZNzyNf9eCcws/91q63UCpS2CEvwDCdEc5+8vWTKgA3nRM5sKEqpAw==
+X-Received: by 2002:a0c:b551:0:b0:63c:f999:ba83 with SMTP id w17-20020a0cb551000000b0063cf999ba83mr1757454qvd.32.1690123828250;
+        Sun, 23 Jul 2023 07:50:28 -0700 (PDT)
+Received: from [192.168.0.198] (c-98-249-43-138.hsd1.va.comcast.net. [98.249.43.138])
+        by smtp.gmail.com with ESMTPSA id s15-20020a0ce30f000000b00637abbfaac9sm97573qvl.98.2023.07.23.07.50.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Jul 2023 07:35:00 -0700 (PDT)
-Message-ID: <01d23a2c-1e30-b660-7997-6d9c29b9dcf1@gmail.com>
-Date:   Sun, 23 Jul 2023 11:34:54 -0300
+        Sun, 23 Jul 2023 07:50:27 -0700 (PDT)
+Message-ID: <a7bcbcf2-9b34-4326-822f-e1f2aa5c5668@joelfernandes.org>
+Date:   Sun, 23 Jul 2023 10:50:26 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] kbuild: rust: avoid creating temporary files
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [BUG] Re: Linux 6.4.4
 Content-Language: en-US
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Raphael Nestler <raphael.nestler@gmail.com>,
-        Andrea Righi <andrea.righi@canonical.com>,
-        stable@vger.kernel.org
-References: <20230723142128.194339-1-ojeda@kernel.org>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230723142128.194339-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     paulmck@kernel.org
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+References: <20230720132714.GA3726096@google.com>
+ <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
+ <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
+ <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
+ <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
+ <eb04b7d0-2f49-4e01-be09-9062d9f08404@paulmck-laptop>
+ <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
+ <9b42cb38-8375-fc41-475a-2bd26c60a7b9@joelfernandes.org>
+ <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
+ <7bfde9f4-2bd6-7337-b9ca-94a9253d847f@joelfernandes.org>
+ <ad82995c-061e-4f97-a972-c13a85ad0b72@paulmck-laptop>
+From:   Joel Fernandes <joel@joelfernandes.org>
+In-Reply-To: <ad82995c-061e-4f97-a972-c13a85ad0b72@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/23/23 11:21, Miguel Ojeda wrote:
-> `rustc` outputs by default the temporary files (i.e. the ones saved
-> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
-> directory when `-o` and `--out-dir` are not given (even if
-> `--emit=x=path` is given, i.e. it does not use those for temporaries).
+
+
+On 7/22/23 13:27, Paul E. McKenney wrote:
+[..]
 > 
-> Since out-of-tree modules are compiled from the `linux` tree,
-> `rustc` then tries to create them there, which may not be accessible.
+> OK, if this kernel is non-preemptible, you are not running TREE03,
+> correct?
 > 
-> Thus pass `--out-dir` explicitly, even if it is just for the temporary
-> files.
+>> Next plan of action is to get sched_waking stack traces since I have a
+>> very reliable repro of this now.
 > 
-> Similarly, do so for Rust host programs too.
-> 
-> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
-> Reported-by: Andrea Righi <andrea.righi@canonical.com>
-> Tested-by: Raphael Nestler <raphael.nestler@gmail.com> # non-hostprogs
-> Tested-by: Andrea Righi <andrea.righi@canonical.com> # non-hostprogs
-> Fixes: 295d8398c67e ("kbuild: specify output names separately for each emission type from rustc")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> [...]
-Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Too much fun!  ;-)
+
+For TREE07 issue, it is actually the schedule_timeout_interruptible(1)
+in stutter_wait() that is beating up the CPU0 for 4 seconds.
+
+This is very similar to the issue I fixed in New year in d52d3a2bf408
+("torture: Fix hang during kthread shutdown phase")
+
+Adding a cond_resched() there also did not help.
+
+I think the issue is the stutter thread fails to move spt forward
+because it does not get CPU time. But spt == 1 should be very brief
+AFAIU. I was wondering if we could set that to RT.
+
+But also maybe the following will cure it like it did for the shutdown
+issue, giving the stutter thread just enough CPU time to move spt forward.
+
+Now I am trying the following and will let it run while I go do other
+family related things. ;)
+
++++ b/kernel/torture.c
+@@ -733,6 +733,6 @@ bool stutter_wait(const char *title)
+                        ret = true;
+                }
+                if (spt == 1) {
+-                       schedule_timeout_interruptible(1);
++                       schedule_timeout_interruptible(HZ / 20);
+                        cond_resched();
+                } else if (spt == 2) {
+
