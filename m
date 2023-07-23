@@ -2,80 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32F1F75E113
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 11:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D77175E171
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 12:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbjGWJ56 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 05:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45160 "EHLO
+        id S229640AbjGWKlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 06:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjGWJ54 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 05:57:56 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D2E10FE
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 02:57:55 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fc02a92dcfso26346215e9.0
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 02:57:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690106274; x=1690711074;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wc6+ATb+qVfVkW0Ae346Tifz/LFJPnNALhIho4FW5hg=;
-        b=DDxcsAlsx37U+kaffhuM55XUaGeVs96s3crQetRLHW8PnIZeZMAype1m3wK/+V+dh7
-         dg8WphG8Q+EsnsO604DAfGkdJPjtYafULGQ3aGMxofj4YoJnSkECofLtCbu66mHca9Ft
-         UMWzRG/g3DM28zTIT+KFSyrxefMTlDGNVNdSaiJZGU3FlXQqzuyOk8ARRrnt1wQt+u2z
-         gLnqtNEtD7NE17dsybBGEwe99S5/KLmWmmvZRo9a5IOVE3HnvXUghmn653iFbJKJ2fKT
-         8+JmTfzHq2jk68syX11MiPjDruT5vPBe/6fSbW3wZdRDJcQQSX2eR2YSVpuhPBNlGCSE
-         vZyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690106274; x=1690711074;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wc6+ATb+qVfVkW0Ae346Tifz/LFJPnNALhIho4FW5hg=;
-        b=Jf9fymypwzdSA0APeiOXFdyTYU/yKlhcZGsGgGouDfZaRuhMzBR9oO2uS4apF3XKsg
-         FDRulLqIg1027sgluJNsIyUN8nlUf9Wjwzwc2tQ+NA7b6LLTwqZTahUaKHbVYXN0qfKi
-         IVHyVnUJHJhH1cjmXGNObZD/MbIVMxNoYPQsQXshOmykwVSxWnPDlroE+x1YGqcSV8ls
-         e3RK6EVx4usPe8rR/jEqE/XiX8EppwGit0cqZPpG51H5guM13hMPQT8nnQDnHtwUxHGu
-         Q8eGwgQDkiymOkdOE2jIEUDlRrOuRjYDhUOJ1lVpMOumLhOIyN3QDYQOPq/JfVftx1U5
-         UedQ==
-X-Gm-Message-State: ABy/qLbcYQ3nyZSPyRkvBxLprVsGMoAOJPWjr+yt587mIeisBDffAWDM
-        UyTzckaz8Shync+0Ve8wfWvH7w==
-X-Google-Smtp-Source: APBJJlHqy6wlA4DBzHx+V/jAXNo0ijXmnpA3LwNMOd9yV4i1dyEIxJgB1p8SDUDoWJd51ru85W2pGQ==
-X-Received: by 2002:a05:600c:2316:b0:3fc:5a3:367c with SMTP id 22-20020a05600c231600b003fc05a3367cmr5448263wmo.32.1690106273887;
-        Sun, 23 Jul 2023 02:57:53 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id bh17-20020a05600c3d1100b003fbb1ce274fsm25819673wmb.0.2023.07.23.02.57.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Jul 2023 02:57:53 -0700 (PDT)
-Message-ID: <f559a614-93d5-121a-8ff3-0da77bc85f44@linaro.org>
-Date:   Sun, 23 Jul 2023 11:57:52 +0200
+        with ESMTP id S229689AbjGWKlU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 06:41:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD280E50;
+        Sun, 23 Jul 2023 03:41:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 625BB60C79;
+        Sun, 23 Jul 2023 10:41:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2991C433C8;
+        Sun, 23 Jul 2023 10:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690108878;
+        bh=YSNr6NaJj/l3Zd8Zt+CzlpZ1+SDnbH+rJBsSmfHyXXI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hTQbwWA6nXDrsFbJGliqSuOXYmdyaKXc1jQEixqGfBC/WohhzBKFjc4vb/WREUIQY
+         Zt/A2OSsPoje6slwuM9DNZkPFXWyAU/bD44DDCMkS0eYGtEle+0+Gg7e2XgvpFIKOu
+         biQGkg1TgyJmiSNDR4feyMj1fGD5q8aAK00vTmuBcJyvjF/dn6Qqdlz0x3WaRbjrqF
+         OyuVly8WhbDW6qrmRJW3TJQ9BI8G5kMPZrFUQ1Bkopowyzl9D3GLhjeMGYKHk7HiYq
+         W730BpMUgjzezBLzdT1cTlw1c/Aul1E+lxM0VjSEoHUaphqFDyEdgkX1QlPQTUyHfM
+         /V01qXs09Lg2w==
+Date:   Sun, 23 Jul 2023 11:41:13 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.1 000/223] 6.1.40-rc1 review
+Message-ID: <20230723-slate-footman-c422002d6813@spud>
+References: <20230721160520.865493356@linuxfoundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] thermal/of: Fix double free of params during
- unregistration
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
-        Icenowy Zheng <uwu@icenowy.me>, Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230723-thermal-fix-of-memory-corruption-v1-1-ed4fa16d199d@kernel.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230723-thermal-fix-of-memory-corruption-v1-1-ed4fa16d199d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="4gp48Ds4lL0Dlq6T"
+Content-Disposition: inline
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -83,48 +60,30 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-Hi Mark,
+--4gp48Ds4lL0Dlq6T
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 23/07/2023 01:26, Mark Brown wrote:
-> Unlike the other data structures provided during registration the
-> thermal core takes a copy of the thermal_zone_params provided to it and
-> stores that copy in the thermal_zone_device, taking care to free it on
-> unregistration.  This is done because the parameters will be modified at
-> runtime.
-> 
-> Unfortunately the thermal_of code assumes that the params structure it
-> provides will be used throughout the lifetime of the device and since
-> the params are dynamically allocated based on the bindings it attempts
-> to free it on unregistration.  This results in not only leaking the
-> original params but also double freeing the copy the core made, leading
-> to memory corruption.
-> 
-> Fix this by instead freeing the params parsed from the DT during
-> registration.
-> 
-> This issue causing instability on systems where thermal zones are
-> unregistered, especially visble on those systems where some zones
-> provided by a device have no trip points such as Allwinner systems.
-> For example with current mainline an arm64 defconfig is unbootable on
-> Pine64 Plus and LibreTech Tritium is massively unstable.  These issues
-> have been there for a while and have been made more prominent by recent
-> memory management changes.
-> 
-> Fixes: 3fd6d6e2b4e80 ("thermal/of: Rework the thermal device tree initialization")
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
+On Fri, Jul 21, 2023 at 06:04:13PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.40 release.
+> There are 223 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-I think this issue has been fixed by:
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-https://lore.kernel.org/all/20230708112720.2897484-2-a.fatoum@pengutronix.de/
+Thanks,
+Conor.
 
-Rafael ? Did you pick it up ?
+--4gp48Ds4lL0Dlq6T
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZL0DyQAKCRB4tDGHoIJi
+0s58APoD0Z5dBGa9yOAu8Kd8iqSmEBAE9bREMpyU5mUZZiTvLAD+Nt26JhOWydir
+WlcchGlZJSO/CjVA8f73f+C7HEK/UA0=
+=frpn
+-----END PGP SIGNATURE-----
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+--4gp48Ds4lL0Dlq6T--
