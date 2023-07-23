@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CF7175E4E8
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 22:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 394CC75E4E9
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 22:41:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229853AbjGWUlA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 16:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39500 "EHLO
+        id S229870AbjGWUlE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 16:41:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGWUk7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 16:40:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E834E49
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:40:58 -0700 (PDT)
+        with ESMTP id S229468AbjGWUlD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 16:41:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 469C7E4A
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:41:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CE6160EA2
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 20:40:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5F4C433C8;
-        Sun, 23 Jul 2023 20:40:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A52D60EA2
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 20:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AC8C433C8;
+        Sun, 23 Jul 2023 20:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690144857;
-        bh=9GwygZBc8zfq90VPhiRPA1v60vthfOfHDTENkDxQMuk=;
+        s=korg; t=1690144860;
+        bh=YpJIwxOs6c7APojhD8LvBMF25ttzpemYNtzmVu0xP74=;
         h=Subject:To:Cc:From:Date:From;
-        b=ld7XLT6H8hglp+aegh7gEmZDyd+Ka+CyHxG6hHW5x03ztI8kPkHx2Ym8Y+WTX2nZV
-         5lndfcaz32HkzsR5nwzJna7zh6V0kZr1rRwBcMY1qVMMZQFmrma1t2hEaThSnsihgA
-         nqAsngZvXboSOaLL++rFl1T7jQsDQFJT9JmQeQpg=
-Subject: FAILED: patch "[PATCH] KVM: arm64: Correctly handle page aging notifiers for" failed to apply to 5.15-stable tree
+        b=pR+L+dp2N1JePZTUz+DSJn8lir3QfuSEfxBPB1vMlU0zRNWOX6GlVhn5R2Xb469zK
+         ZycZHcKPXM6KUyhQz/h76/iPU27mcmZcZDhbimt/8H+EYer/AlSo5+RjX8skoTvxwn
+         llSQ+v6jMT0C1ZXoNGq99na28dsWaOwWj74YyAY4=
+Subject: FAILED: patch "[PATCH] KVM: arm64: Correctly handle page aging notifiers for" failed to apply to 5.10-stable tree
 To:     oliver.upton@linux.dev, maz@kernel.org, reijiw@google.com,
         shahuang@redhat.com, yuzhao@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 22:40:53 +0200
-Message-ID: <2023072352-ooze-childcare-fd84@gregkh>
+Date:   Sun, 23 Jul 2023 22:40:54 +0200
+Message-ID: <2023072354-sublet-observing-2ff8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x df6556adf27b7372cfcd97e1c0afb0d516c8279f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072352-ooze-childcare-fd84@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072354-sublet-observing-2ff8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,7 @@ e82edcc75c4e ("KVM: arm64: Implement do_share() helper for sharing memory")
 82bb02445de5 ("KVM: arm64: Implement kvm_pgtable_hyp_unmap() at EL2")
 d6b4bd3f4897 ("KVM: arm64: Fixup hyp stage-1 refcount")
 2ea2ff91e822 ("KVM: arm64: Refcount hyp stage-1 pgtable pages")
+cf0c7125d578 ("Merge branch kvm-arm64/mmu/el2-tracking into kvmarm-master/next")
 
 thanks,
 
