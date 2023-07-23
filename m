@@ -2,190 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5218C75E109
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 11:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32F1F75E113
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 11:57:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbjGWJti (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 05:49:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43510 "EHLO
+        id S229925AbjGWJ56 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 05:57:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229917AbjGWJth (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 05:49:37 -0400
-X-Greylist: delayed 568 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Jul 2023 02:49:31 PDT
-Received: from vulcan.natalenko.name (vulcan.natalenko.name [IPv6:2001:19f0:6c00:8846:5400:ff:fe0c:dfa0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D3210D9;
-        Sun, 23 Jul 2023 02:49:31 -0700 (PDT)
-Received: from spock.localnet (unknown [94.142.239.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id B9F9314697E4;
-        Sun, 23 Jul 2023 11:39:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1690105196;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=dJFwaE+Wp4xXknQEEGSTLenwUzVW0tD9EFuQKBQb2hA=;
-        b=tDbhV6Iu6EzvMO9d9hGrN/M3BZJ+vwKqaMkNJvSNvJ1zEQxPbrw701hdYG7+R83ep5k1Ec
-        jxCDL+I/uD/rpi0aMzO3KvZPWa6YKD1lnA6aJEIHJ44RMSJ53VfmxLh35NhgEHUjNoaOCl
-        CZwsX4/QoEA7uCMpCKzKRrhHidHKEmI=
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andres Freund <andres@anarazel.de>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 6.4 800/800] io_uring: Use io_schedule* in cqring wait
-Date:   Sun, 23 Jul 2023 11:39:42 +0200
-Message-ID: <12251678.O9o76ZdvQC@natalenko.name>
-In-Reply-To: <20230716195007.731909670@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
- <20230716195007.731909670@linuxfoundation.org>
+        with ESMTP id S229546AbjGWJ54 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 05:57:56 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D2E10FE
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 02:57:55 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fc02a92dcfso26346215e9.0
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 02:57:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690106274; x=1690711074;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wc6+ATb+qVfVkW0Ae346Tifz/LFJPnNALhIho4FW5hg=;
+        b=DDxcsAlsx37U+kaffhuM55XUaGeVs96s3crQetRLHW8PnIZeZMAype1m3wK/+V+dh7
+         dg8WphG8Q+EsnsO604DAfGkdJPjtYafULGQ3aGMxofj4YoJnSkECofLtCbu66mHca9Ft
+         UMWzRG/g3DM28zTIT+KFSyrxefMTlDGNVNdSaiJZGU3FlXQqzuyOk8ARRrnt1wQt+u2z
+         gLnqtNEtD7NE17dsybBGEwe99S5/KLmWmmvZRo9a5IOVE3HnvXUghmn653iFbJKJ2fKT
+         8+JmTfzHq2jk68syX11MiPjDruT5vPBe/6fSbW3wZdRDJcQQSX2eR2YSVpuhPBNlGCSE
+         vZyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690106274; x=1690711074;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wc6+ATb+qVfVkW0Ae346Tifz/LFJPnNALhIho4FW5hg=;
+        b=Jf9fymypwzdSA0APeiOXFdyTYU/yKlhcZGsGgGouDfZaRuhMzBR9oO2uS4apF3XKsg
+         FDRulLqIg1027sgluJNsIyUN8nlUf9Wjwzwc2tQ+NA7b6LLTwqZTahUaKHbVYXN0qfKi
+         IVHyVnUJHJhH1cjmXGNObZD/MbIVMxNoYPQsQXshOmykwVSxWnPDlroE+x1YGqcSV8ls
+         e3RK6EVx4usPe8rR/jEqE/XiX8EppwGit0cqZPpG51H5guM13hMPQT8nnQDnHtwUxHGu
+         Q8eGwgQDkiymOkdOE2jIEUDlRrOuRjYDhUOJ1lVpMOumLhOIyN3QDYQOPq/JfVftx1U5
+         UedQ==
+X-Gm-Message-State: ABy/qLbcYQ3nyZSPyRkvBxLprVsGMoAOJPWjr+yt587mIeisBDffAWDM
+        UyTzckaz8Shync+0Ve8wfWvH7w==
+X-Google-Smtp-Source: APBJJlHqy6wlA4DBzHx+V/jAXNo0ijXmnpA3LwNMOd9yV4i1dyEIxJgB1p8SDUDoWJd51ru85W2pGQ==
+X-Received: by 2002:a05:600c:2316:b0:3fc:5a3:367c with SMTP id 22-20020a05600c231600b003fc05a3367cmr5448263wmo.32.1690106273887;
+        Sun, 23 Jul 2023 02:57:53 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id bh17-20020a05600c3d1100b003fbb1ce274fsm25819673wmb.0.2023.07.23.02.57.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 23 Jul 2023 02:57:53 -0700 (PDT)
+Message-ID: <f559a614-93d5-121a-8ff3-0da77bc85f44@linaro.org>
+Date:   Sun, 23 Jul 2023 11:57:52 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5695128.DvuYhMxLoT";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] thermal/of: Fix double free of params during
+ unregistration
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+        Icenowy Zheng <uwu@icenowy.me>, Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230723-thermal-fix-of-memory-corruption-v1-1-ed4fa16d199d@kernel.org>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20230723-thermal-fix-of-memory-corruption-v1-1-ed4fa16d199d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---nextPart5695128.DvuYhMxLoT
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: stable@vger.kernel.org
-Date: Sun, 23 Jul 2023 11:39:42 +0200
-Message-ID: <12251678.O9o76ZdvQC@natalenko.name>
-In-Reply-To: <20230716195007.731909670@linuxfoundation.org>
-MIME-Version: 1.0
 
-Hello.
+Hi Mark,
 
-On ned=C4=9Ble 16. =C4=8Dervence 2023 21:50:53 CEST Greg Kroah-Hartman wrot=
-e:
-> From: Andres Freund <andres@anarazel.de>
->=20
-> commit 8a796565cec3601071cbbd27d6304e202019d014 upstream.
->=20
-> I observed poor performance of io_uring compared to synchronous IO. That
-> turns out to be caused by deeper CPU idle states entered with io_uring,
-> due to io_uring using plain schedule(), whereas synchronous IO uses
-> io_schedule().
->=20
-> The losses due to this are substantial. On my cascade lake workstation,
-> t/io_uring from the fio repository e.g. yields regressions between 20%
-> and 40% with the following command:
-> ./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/wr=
-ite.0.0
->=20
-> This is repeatable with different filesystems, using raw block devices
-> and using different block devices.
->=20
-> Use io_schedule_prepare() / io_schedule_finish() in
-> io_cqring_wait_schedule() to address the difference.
->=20
-> After that using io_uring is on par or surpassing synchronous IO (using
-> registered files etc makes it reliably win, but arguably is a less fair
-> comparison).
->=20
-> There are other calls to schedule() in io_uring/, but none immediately
-> jump out to be similarly situated, so I did not touch them. Similarly,
-> it's possible that mutex_lock_io() should be used, but it's not clear if
-> there are cases where that matters.
->=20
-> Cc: stable@vger.kernel.org # 5.10+
-> Cc: Pavel Begunkov <asml.silence@gmail.com>
-> Cc: io-uring@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Andres Freund <andres@anarazel.de>
-> Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
-> [axboe: minor style fixup]
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  io_uring/io_uring.c |   15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
->=20
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -2575,6 +2575,8 @@ int io_run_task_work_sig(struct io_ring_
->  static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
->  					  struct io_wait_queue *iowq)
->  {
-> +	int token, ret;
-> +
->  	if (unlikely(READ_ONCE(ctx->check_cq)))
->  		return 1;
->  	if (unlikely(!llist_empty(&ctx->work_llist)))
-> @@ -2585,11 +2587,20 @@ static inline int io_cqring_wait_schedul
->  		return -EINTR;
->  	if (unlikely(io_should_wake(iowq)))
->  		return 0;
-> +
-> +	/*
-> +	 * Use io_schedule_prepare/finish, so cpufreq can take into account
-> +	 * that the task is waiting for IO - turns out to be important for low
-> +	 * QD IO.
-> +	 */
-> +	token =3D io_schedule_prepare();
-> +	ret =3D 0;
->  	if (iowq->timeout =3D=3D KTIME_MAX)
->  		schedule();
->  	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
-> -		return -ETIME;
-> -	return 0;
-> +		ret =3D -ETIME;
-> +	io_schedule_finish(token);
-> +	return ret;
->  }
-> =20
->  /*
+On 23/07/2023 01:26, Mark Brown wrote:
+> Unlike the other data structures provided during registration the
+> thermal core takes a copy of the thermal_zone_params provided to it and
+> stores that copy in the thermal_zone_device, taking care to free it on
+> unregistration.  This is done because the parameters will be modified at
+> runtime.
+> 
+> Unfortunately the thermal_of code assumes that the params structure it
+> provides will be used throughout the lifetime of the device and since
+> the params are dynamically allocated based on the bindings it attempts
+> to free it on unregistration.  This results in not only leaking the
+> original params but also double freeing the copy the core made, leading
+> to memory corruption.
+> 
+> Fix this by instead freeing the params parsed from the DT during
+> registration.
+> 
+> This issue causing instability on systems where thermal zones are
+> unregistered, especially visble on those systems where some zones
+> provided by a device have no trip points such as Allwinner systems.
+> For example with current mainline an arm64 defconfig is unbootable on
+> Pine64 Plus and LibreTech Tritium is massively unstable.  These issues
+> have been there for a while and have been made more prominent by recent
+> memory management changes.
+> 
+> Fixes: 3fd6d6e2b4e80 ("thermal/of: Rework the thermal device tree initialization")
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
 
-Reportedly, this caused a regression as reported in [1] [2] [3]. Not only v=
-6.4.4 is affected, v6.1.39 is affected too.
+I think this issue has been fixed by:
 
-Reverting this commit fixes the issue.
+https://lore.kernel.org/all/20230708112720.2897484-2-a.fatoum@pengutronix.de/
 
-Please check.
-
-Thanks.
-
-[1] https://bbs.archlinux.org/viewtopic.php?id=3D287343
-[2] https://bugzilla.kernel.org/show_bug.cgi?id=3D217700
-[3] https://bugzilla.kernel.org/show_bug.cgi?id=3D217699
-
-=2D-=20
-Oleksandr Natalenko (post-factum)
---nextPart5695128.DvuYhMxLoT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmS89V4ACgkQil/iNcg8
-M0vYLA//Rm/Cq4E6nAwj8QoHK0QmrWbP6Fv1g26ZBjR6cFS9rU7wHylkgdfQoEcV
-hVx7G8nkWrJfnPwD6j4X2kJE2dZmBLc8x/zWhbaM7Fhzvz/lGIQqc2LxdeWphVEO
-tLGEzrF7MUTYacH0NF6uzgdPXSz5ulKIQrKrJzhVOkSmTaJJvaWL+JAYWjcSCYNr
-x270YN705uQj5x8cWsb/vz68IPzMDzcQIv4v5ZBCCGVL1n++DG9MxhOzd8wFbfv0
-CW4z03dEu0OEmBmHBldvJWqNsa/Oc3DPfakBUe3T0kJxRCColZop9PQGgTebK4qz
-0Q5I49z8HXIuSZ48leAcGatwCPv5hBLpxvHAnRDn/GxYd/7XVgbwxHj6gyWyxeEe
-EhCcMTWo14ZKLMR8rqjXcagbaAQiRNNCJRuaZlZQjqR0BWKRC4oSlb9HhEqpXrJe
-rl9GXx03Hav2ACGnF1U7yatGEUdz3MPkMkBSRaKeY/S6DQKhfAVmhTy/I3lmi8n+
-pca+EFglQNyF0foIR51F2ERtQVpILM0JzHg1dvImn1Z09PRfiT5PwbgUOuVmT3NH
-gIlFxmdbTA/oxtIqWuxL7+ipC2zgq2H0Ggh9T45E8kUwbVAE/ZxO+/dTyFOo4pV1
-UM29CR2RJ8O0AcHKQKrM9D8+mnjwaYpIGWo+IL9XJ9GggFop6Qc=
-=H98+
------END PGP SIGNATURE-----
-
---nextPart5695128.DvuYhMxLoT--
+Rafael ? Did you pick it up ?
 
 
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
