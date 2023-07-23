@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE7F75E24B
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 174C075E24C
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229551AbjGWOHG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:07:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34246 "EHLO
+        id S229553AbjGWOHL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:07:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjGWOHG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:07:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37ED12B
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:07:04 -0700 (PDT)
+        with ESMTP id S229547AbjGWOHJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:07:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D83112B
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:07:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8ED3660BB8
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F6DC433C8;
-        Sun, 23 Jul 2023 14:07:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E634260D38
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34E2C433C8;
+        Sun, 23 Jul 2023 14:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690121224;
-        bh=w8DxSJCW6uW+wx12b/SyRtNKqj20ZsJGfEd4iYZ6xuQ=;
+        s=korg; t=1690121227;
+        bh=BbNYnAa7rMNim71DpMj24el5MEfgz0hrhI9IevwrRos=;
         h=Subject:To:Cc:From:Date:From;
-        b=aOwWFtMIZSckSwECMP7DyvVxYRrxl6oK08mnH3QXiaA/h+uZ+sLNWSsbkaQcwOCky
-         D8D2UFmGKtBXIEytjLlwrmcsGltir3VAgxC/NvgTaW/7PpmGjTC/r+nqE1LzGDiYYw
-         wsJ1Xq2aO+0yB2yP2nv2vSds2JXo9k360eiSFiOA=
-Subject: FAILED: patch "[PATCH] ASoC: cs42l51: fix driver to properly autoload with automatic" failed to apply to 5.15-stable tree
+        b=gEiskHXmTOZ2nWkX5bSX2nFzS/F4jRT5/7Q7dW4yl5LZlyIYipuFPXQyI+VfufWMA
+         M7+KMSBmem8Qqw6AW+8BH7dYht3pOE4THPrmk4uUoZs6DW+qpkgICM+2T5VWx/bpGz
+         ufFHu2bCLkMgbZMd1ZQ282Sy3XBmbSaBLeQM/Ygo=
+Subject: FAILED: patch "[PATCH] ASoC: cs42l51: fix driver to properly autoload with automatic" failed to apply to 5.10-stable tree
 To:     thomas.petazzoni@bootlin.com, broonie@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:07:01 +0200
-Message-ID: <2023072301-online-accent-4365@gregkh>
+Date:   Sun, 23 Jul 2023 16:07:02 +0200
+Message-ID: <2023072302-prancing-correct-152e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x e51df4f81b02bcdd828a04de7c1eb6a92988b61e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072301-online-accent-4365@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072302-prancing-correct-152e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,7 @@ f8593e885400 ("ASoC: cs42l42: Handle system suspend")
 a319cb32e7cf ("ASoC: cs4265: Add a remove() function")
 fdd535283779 ("ASoC: cs42l42: Report initial jack state")
 c778c01d3e66 ("ASoC: cs42l42: Remove unused runtime_suspend/runtime_resume callbacks")
+bfceb9c21601 ("Merge branch 'asoc-5.15' into asoc-5.16")
 
 thanks,
 
