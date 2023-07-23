@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EFCB75E23A
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A510E75E23B
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbjGWOA4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:00:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33530 "EHLO
+        id S229640AbjGWOA6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:00:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbjGWOAy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:00:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E44E10DE
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:00:53 -0700 (PDT)
+        with ESMTP id S229576AbjGWOA6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:00:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ADFCE70
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:00:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF55F60D30
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:00:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4499C433C8;
-        Sun, 23 Jul 2023 14:00:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A359460D30
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0C6C433C7;
+        Sun, 23 Jul 2023 14:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690120852;
-        bh=yTJhcupjrITF7KrYKA778G6y5P9N8co8k5P9ld+h6xE=;
+        s=korg; t=1690120856;
+        bh=vqnoNHneTkgUf4pXGMk0K8mJp2GuoFSYWxco55WOnJY=;
         h=Subject:To:Cc:From:Date:From;
-        b=AiQgl3bHmaGmtOGmch3GHvbiuiHfiDSpuCyKoNgN7KAfMpcEaAIUwC4wkp/uRjLmy
-         S0ZCWy/V9SdP+pc/ryY6WKrlmVFR8ACBav0WqIq7jjJBgZnN/3e8hkD+uhbtNBTVRU
-         dAXxno79igmzfP0G6QjUmR+wkWKnaurQN/R3HZuI=
-Subject: FAILED: patch "[PATCH] can: gs_usb: gs_can_open(): improve error handling" failed to apply to 5.15-stable tree
+        b=2OwqGQvaUMyiX1wjz7XmW8SRoctk81yKGhcTaJblkNSXjltptPGEFVahm+uyAbtvQ
+         7si3m/1SppphVfEHsonHSKGevN4HlIi8gOsQNOZ0Tm2dnBwfSrRYKoEtAJ83gpc/qU
+         wV9FJAxkqppjnMOtIdUa+S14CoQspfsB34GrLxHQ=
+Subject: FAILED: patch "[PATCH] can: gs_usb: gs_can_open(): improve error handling" failed to apply to 5.10-stable tree
 To:     mkl@pengutronix.de, git@jbrengineering.co.uk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:00:49 +0200
-Message-ID: <2023072349-capricorn-donor-f895@gregkh>
+Date:   Sun, 23 Jul 2023 16:00:50 +0200
+Message-ID: <2023072350-remorse-graduate-cd73@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2603be9e8167ddc7bea95dcfab9ffc33414215aa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072349-capricorn-donor-f895@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072350-remorse-graduate-cd73@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,7 @@ c359931d2545 ("can: gs_usb: use union and FLEX_ARRAY for data in struct gs_host_
 c1ee72690cdd ("can: gs_usb: rewrap usb_control_msg() and usb_fill_bulk_urb()")
 035b0fcf0270 ("can: gs_usb: change active_channels's type from atomic_t to u8")
 108194666a3f ("can: gs_usb: use %u to print unsigned values")
+5c39f26e67c9 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
