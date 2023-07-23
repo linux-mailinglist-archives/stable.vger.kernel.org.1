@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA5B175E22F
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E33B75E231
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbjGWN6h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 09:58:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32956 "EHLO
+        id S229554AbjGWN6l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 09:58:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229837AbjGWN6g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:58:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E5EA10E3
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:58:35 -0700 (PDT)
+        with ESMTP id S229829AbjGWN6l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:58:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD67310FA
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:58:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1981160D32
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:58:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224CEC433C8;
-        Sun, 23 Jul 2023 13:58:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D027E60CA3
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:58:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0454C433C8;
+        Sun, 23 Jul 2023 13:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690120714;
-        bh=w4CrqIEi3kzLnT7MRl18S7L17WSAuwl9ILOWhtlX1BY=;
+        s=korg; t=1690120717;
+        bh=ZJuKgSZ/4CsMBKWerrMvxtiG4Acy2PuyzlbITDUoJpo=;
         h=Subject:To:Cc:From:Date:From;
-        b=PpzuhbUkdqtPw1WB6NXl6o28iZtRQVlHeYOR6wLakjb92zfiNZsLnVpRt2q3IEgzK
-         hZrNMs33r9VX1qDvzEH9g2Tv+bcWn/qhe9kQHp1ObKlKSRpgPtDJlG71j91y1JsaV8
-         EcB0uvhd19dbka2uLqyNPrCLqqOHd4pcNGynKxY0=
-Subject: FAILED: patch "[PATCH] btrfs: fix use-after-free of new block group that became" failed to apply to 6.4-stable tree
+        b=SFs5jtBWB6cfTDC5rnTDhqzcmuJACp6Zf+3Mau7ra3n+CMafSLPW4b6xfDUF36lkM
+         QsWDAgGHrutS6d3i5P3QGJiWo7RoIgAwpns+LmQdoveUg8M4u87TX6K1Fxjyp0cxBK
+         R5mbNnyZTLsM6innZIaPEimFiHGoBJaPxYibK4vQ=
+Subject: FAILED: patch "[PATCH] btrfs: fix use-after-free of new block group that became" failed to apply to 6.1-stable tree
 To:     fdmanana@suse.com, dsterba@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 15:58:14 +0200
-Message-ID: <2023072313-onshore-immunize-bd55@gregkh>
+Date:   Sun, 23 Jul 2023 15:58:17 +0200
+Message-ID: <2023072317-grandkid-uncommon-ca27@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,23 +49,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0657b20c5a76c938612f8409735a8830d257866e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072313-onshore-immunize-bd55@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072317-grandkid-uncommon-ca27@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+0657b20c5a76 ("btrfs: fix use-after-free of new block group that became unused")
+a9f189716cf1 ("btrfs: move out now unused BG from the reclaim list")
+961f5b8bf48a ("btrfs: convert btrfs_block_group::seq_zone to runtime flag")
+0d7764ff58b4 ("btrfs: convert btrfs_block_group::needs_free_space to runtime flag")
 
 thanks,
 
