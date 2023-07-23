@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F180A75E23F
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E4A075E240
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:01:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbjGWOBN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33602 "EHLO
+        id S229567AbjGWOBn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjGWOBN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:01:13 -0400
+        with ESMTP id S229623AbjGWOBm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:01:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC2961BE
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:01:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9141BE
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:01:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5115260D29
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:01:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4B8C433C8;
-        Sun, 23 Jul 2023 14:01:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51A4E60D33
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:01:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0AFC433C7;
+        Sun, 23 Jul 2023 14:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690120870;
-        bh=q/P2z8JdgBMh4vCPVZgxxe7FrPRxlC1aHUXPRtwGF6Y=;
+        s=korg; t=1690120900;
+        bh=XibJCiglwZzVVCVyPH2zISEAfK+qWGHKY051RuNfl4g=;
         h=Subject:To:Cc:From:Date:From;
-        b=Hid3LDp/ElVglpIf4HAxuZS7R2vJyy+5bWftsdMg5jidY43paJYQYEher6rVKap3M
-         4NsNBc/5oZpXZwhBBHe5tBICWGQ9b77IK+8xi6A70eeCuNvB7qGTzemndg2RvMzGaB
-         wvevnFQFUG9ybqFRlqaGeJQwUKJwqdfIWDny5LfA=
-Subject: FAILED: patch "[PATCH] can: gs_usb: fix time stamp counter initialization" failed to apply to 6.1-stable tree
-To:     mkl@pengutronix.de, git@jbrengineering.co.uk
+        b=xdGozEwmS0lUKwfVq+wDuKjKdn9KaHckwyH0UckZp2wbsuXur8q/jDlJHmecUbqu3
+         OdkKOA9yjPyiC9pllb5E9QQWTr7xfCSMI4yUpak/fiEYsFXrOa+2ppuKQUnJgTrBJX
+         YshR+52qPMSSa3kHz0vtFZWzSpcS5KoA7YQhTAQ8=
+Subject: FAILED: patch "[PATCH] r8169: revert 2ab19de62d67 ("r8169: remove ASPM restrictions" failed to apply to 6.4-stable tree
+To:     hkallweit1@gmail.com, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:01:03 +0200
-Message-ID: <2023072302-hasty-mocker-848a@gregkh>
+Date:   Sun, 23 Jul 2023 16:01:38 +0200
+Message-ID: <2023072337-dreamlike-rewrite-a12e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,29 +49,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5886e4d5ecec3e22844efed90b2dd383ef804b3a
+git cherry-pick -x cf2ffdea0839398cb0551762af7f5efb0a6e0fea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072302-hasty-mocker-848a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072337-dreamlike-rewrite-a12e@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-5886e4d5ecec ("can: gs_usb: fix time stamp counter initialization")
-2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
-56c56a309e79 ("can: gs_usb: remove gs_can::iface")
-0c9f92a4b795 ("can: gs_usb: add support for reading error counters")
-2f3cdad1c616 ("can: gs_usb: add ability to enable / disable berr reporting")
-ac3f25824e4f ("can: gs_usb: gs_can_open(): merge setting of timestamp flags and init")
-f6adf410f70b ("can: gs_usb: gs_can_open(): sort checks for ctrlmode")
+
 
 thanks,
 
@@ -79,290 +73,82 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5886e4d5ecec3e22844efed90b2dd383ef804b3a Mon Sep 17 00:00:00 2001
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Fri, 7 Jul 2023 18:44:23 +0200
-Subject: [PATCH] can: gs_usb: fix time stamp counter initialization
+From cf2ffdea0839398cb0551762af7f5efb0a6e0fea Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Date: Tue, 18 Jul 2023 13:11:31 +0200
+Subject: [PATCH] r8169: revert 2ab19de62d67 ("r8169: remove ASPM restrictions
+ now that ASPM is disabled during NAPI poll")
 
-If the gs_usb device driver is unloaded (or unbound) before the
-interface is shut down, the USB stack first calls the struct
-usb_driver::disconnect and then the struct net_device_ops::ndo_stop
-callback.
+There have been reports that on a number of systems this change breaks
+network connectivity. Therefore effectively revert it. Mainly affected
+seem to be systems where BIOS denies ASPM access to OS.
+Due to later changes we can't do a direct revert.
 
-In gs_usb_disconnect() all pending bulk URBs are killed, i.e. no more
-RX'ed CAN frames are send from the USB device to the host. Later in
-gs_can_close() a reset control message is send to each CAN channel to
-remove the controller from the CAN bus. In this race window the USB
-device can still receive CAN frames from the bus and internally queue
-them to be send to the host.
-
-At least in the current version of the candlelight firmware, the queue
-of received CAN frames is not emptied during the reset command. After
-loading (or binding) the gs_usb driver, new URBs are submitted during
-the struct net_device_ops::ndo_open callback and the candlelight
-firmware starts sending its already queued CAN frames to the host.
-
-However, this scenario was not considered when implementing the
-hardware timestamp function. The cycle counter/time counter
-infrastructure is set up (gs_usb_timestamp_init()) after the USBs are
-submitted, resulting in a NULL pointer dereference if
-timecounter_cyc2time() (via the call chain:
-gs_usb_receive_bulk_callback() -> gs_usb_set_timestamp() ->
-gs_usb_skb_set_timestamp()) is called too early.
-
-Move the gs_usb_timestamp_init() function before the URBs are
-submitted to fix this problem.
-
-For a comprehensive solution, we need to consider gs_usb devices with
-more than 1 channel. The cycle counter/time counter infrastructure is
-setup per channel, but the RX URBs are per device. Once gs_can_open()
-of _a_ channel has been called, and URBs have been submitted, the
-gs_usb_receive_bulk_callback() can be called for _all_ available
-channels, even for channels that are not running, yet. As cycle
-counter/time counter has not set up, this will again lead to a NULL
-pointer dereference.
-
-Convert the cycle counter/time counter from a "per channel" to a "per
-device" functionality. Also set it up, before submitting any URBs to
-the device.
-
-Further in gs_usb_receive_bulk_callback(), don't process any URBs for
-not started CAN channels, only resubmit the URB.
-
-Fixes: 45dfa45f52e6 ("can: gs_usb: add RX and TX hardware timestamp support")
-Closes: https://github.com/candle-usb/candleLight_fw/issues/137#issuecomment-1623532076
+Fixes: 2ab19de62d67 ("r8169: remove ASPM restrictions now that ASPM is disabled during NAPI poll")
 Cc: stable@vger.kernel.org
-Cc: John Whittington <git@jbrengineering.co.uk>
-Link: https://lore.kernel.org/all/20230716-gs_usb-fix-time-stamp-counter-v1-2-9017cefcd9d5@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/netdev/e47bac0d-e802-65e1-b311-6acb26d5cf10@freenet.de/T/
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217596
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/57f13ec0-b216-d5d8-363d-5b05528ec5fb@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 85b7b59c8426..f418066569fc 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -303,12 +303,6 @@ struct gs_can {
- 	struct can_bittiming_const bt_const, data_bt_const;
- 	unsigned int channel;	/* channel number */
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index fce4a2b908c2..8a8b7d8a5c3f 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -623,6 +623,7 @@ struct rtl8169_private {
+ 	int cfg9346_usage_count;
  
--	/* time counter for hardware timestamps */
--	struct cyclecounter cc;
--	struct timecounter tc;
--	spinlock_t tc_lock; /* spinlock to guard access tc->cycle_last */
--	struct delayed_work timestamp;
--
- 	u32 feature;
- 	unsigned int hf_size_tx;
- 
-@@ -325,6 +319,13 @@ struct gs_usb {
- 	struct gs_can *canch[GS_MAX_INTF];
- 	struct usb_anchor rx_submitted;
- 	struct usb_device *udev;
-+
-+	/* time counter for hardware timestamps */
-+	struct cyclecounter cc;
-+	struct timecounter tc;
-+	spinlock_t tc_lock; /* spinlock to guard access tc->cycle_last */
-+	struct delayed_work timestamp;
-+
- 	unsigned int hf_size_rx;
- 	u8 active_channels;
- };
-@@ -388,15 +389,15 @@ static int gs_cmd_reset(struct gs_can *dev)
- 				    GFP_KERNEL);
- }
- 
--static inline int gs_usb_get_timestamp(const struct gs_can *dev,
-+static inline int gs_usb_get_timestamp(const struct gs_usb *parent,
- 				       u32 *timestamp_p)
- {
- 	__le32 timestamp;
- 	int rc;
- 
--	rc = usb_control_msg_recv(dev->udev, 0, GS_USB_BREQ_TIMESTAMP,
-+	rc = usb_control_msg_recv(parent->udev, 0, GS_USB_BREQ_TIMESTAMP,
- 				  USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_INTERFACE,
--				  dev->channel, 0,
-+				  0, 0,
- 				  &timestamp, sizeof(timestamp),
- 				  USB_CTRL_GET_TIMEOUT,
- 				  GFP_KERNEL);
-@@ -410,20 +411,20 @@ static inline int gs_usb_get_timestamp(const struct gs_can *dev,
- 
- static u64 gs_usb_timestamp_read(const struct cyclecounter *cc) __must_hold(&dev->tc_lock)
- {
--	struct gs_can *dev = container_of(cc, struct gs_can, cc);
-+	struct gs_usb *parent = container_of(cc, struct gs_usb, cc);
- 	u32 timestamp = 0;
- 	int err;
- 
--	lockdep_assert_held(&dev->tc_lock);
-+	lockdep_assert_held(&parent->tc_lock);
- 
- 	/* drop lock for synchronous USB transfer */
--	spin_unlock_bh(&dev->tc_lock);
--	err = gs_usb_get_timestamp(dev, &timestamp);
--	spin_lock_bh(&dev->tc_lock);
-+	spin_unlock_bh(&parent->tc_lock);
-+	err = gs_usb_get_timestamp(parent, &timestamp);
-+	spin_lock_bh(&parent->tc_lock);
- 	if (err)
--		netdev_err(dev->netdev,
--			   "Error %d while reading timestamp. HW timestamps may be inaccurate.",
--			   err);
-+		dev_err(&parent->udev->dev,
-+			"Error %d while reading timestamp. HW timestamps may be inaccurate.",
-+			err);
- 
- 	return timestamp;
- }
-@@ -431,14 +432,14 @@ static u64 gs_usb_timestamp_read(const struct cyclecounter *cc) __must_hold(&dev
- static void gs_usb_timestamp_work(struct work_struct *work)
- {
- 	struct delayed_work *delayed_work = to_delayed_work(work);
--	struct gs_can *dev;
-+	struct gs_usb *parent;
- 
--	dev = container_of(delayed_work, struct gs_can, timestamp);
--	spin_lock_bh(&dev->tc_lock);
--	timecounter_read(&dev->tc);
--	spin_unlock_bh(&dev->tc_lock);
-+	parent = container_of(delayed_work, struct gs_usb, timestamp);
-+	spin_lock_bh(&parent->tc_lock);
-+	timecounter_read(&parent->tc);
-+	spin_unlock_bh(&parent->tc_lock);
- 
--	schedule_delayed_work(&dev->timestamp,
-+	schedule_delayed_work(&parent->timestamp,
- 			      GS_USB_TIMESTAMP_WORK_DELAY_SEC * HZ);
- }
- 
-@@ -446,37 +447,38 @@ static void gs_usb_skb_set_timestamp(struct gs_can *dev,
- 				     struct sk_buff *skb, u32 timestamp)
- {
- 	struct skb_shared_hwtstamps *hwtstamps = skb_hwtstamps(skb);
-+	struct gs_usb *parent = dev->parent;
- 	u64 ns;
- 
--	spin_lock_bh(&dev->tc_lock);
--	ns = timecounter_cyc2time(&dev->tc, timestamp);
--	spin_unlock_bh(&dev->tc_lock);
-+	spin_lock_bh(&parent->tc_lock);
-+	ns = timecounter_cyc2time(&parent->tc, timestamp);
-+	spin_unlock_bh(&parent->tc_lock);
- 
- 	hwtstamps->hwtstamp = ns_to_ktime(ns);
- }
- 
--static void gs_usb_timestamp_init(struct gs_can *dev)
-+static void gs_usb_timestamp_init(struct gs_usb *parent)
- {
--	struct cyclecounter *cc = &dev->cc;
-+	struct cyclecounter *cc = &parent->cc;
- 
- 	cc->read = gs_usb_timestamp_read;
- 	cc->mask = CYCLECOUNTER_MASK(32);
- 	cc->shift = 32 - bits_per(NSEC_PER_SEC / GS_USB_TIMESTAMP_TIMER_HZ);
- 	cc->mult = clocksource_hz2mult(GS_USB_TIMESTAMP_TIMER_HZ, cc->shift);
- 
--	spin_lock_init(&dev->tc_lock);
--	spin_lock_bh(&dev->tc_lock);
--	timecounter_init(&dev->tc, &dev->cc, ktime_get_real_ns());
--	spin_unlock_bh(&dev->tc_lock);
-+	spin_lock_init(&parent->tc_lock);
-+	spin_lock_bh(&parent->tc_lock);
-+	timecounter_init(&parent->tc, &parent->cc, ktime_get_real_ns());
-+	spin_unlock_bh(&parent->tc_lock);
- 
--	INIT_DELAYED_WORK(&dev->timestamp, gs_usb_timestamp_work);
--	schedule_delayed_work(&dev->timestamp,
-+	INIT_DELAYED_WORK(&parent->timestamp, gs_usb_timestamp_work);
-+	schedule_delayed_work(&parent->timestamp,
- 			      GS_USB_TIMESTAMP_WORK_DELAY_SEC * HZ);
- }
- 
--static void gs_usb_timestamp_stop(struct gs_can *dev)
-+static void gs_usb_timestamp_stop(struct gs_usb *parent)
- {
--	cancel_delayed_work_sync(&dev->timestamp);
-+	cancel_delayed_work_sync(&parent->timestamp);
- }
- 
- static void gs_update_state(struct gs_can *dev, struct can_frame *cf)
-@@ -560,6 +562,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	if (!netif_device_present(netdev))
+ 	unsigned supports_gmii:1;
++	unsigned aspm_manageable:1;
+ 	dma_addr_t counters_phys_addr;
+ 	struct rtl8169_counters *counters;
+ 	struct rtl8169_tc_offsets tc_offset;
+@@ -2746,7 +2747,8 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+ 	if (tp->mac_version < RTL_GIGA_MAC_VER_32)
  		return;
  
-+	if (!netif_running(netdev))
-+		goto resubmit_urb;
+-	if (enable) {
++	/* Don't enable ASPM in the chip if OS can't control ASPM */
++	if (enable && tp->aspm_manageable) {
+ 		/* On these chip versions ASPM can even harm
+ 		 * bus communication of other PCI devices.
+ 		 */
+@@ -5165,6 +5167,16 @@ static void rtl_init_mac_address(struct rtl8169_private *tp)
+ 	rtl_rar_set(tp, mac_addr);
+ }
+ 
++/* register is set if system vendor successfully tested ASPM 1.2 */
++static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
++{
++	if (tp->mac_version >= RTL_GIGA_MAC_VER_61 &&
++	    r8168_mac_ocp_read(tp, 0xc0b2) & 0xf)
++		return true;
 +
- 	if (hf->echo_id == -1) { /* normal rx */
- 		if (hf->flags & GS_CAN_FLAG_FD) {
- 			skb = alloc_canfd_skb(dev->netdev, &cfd);
-@@ -856,6 +861,9 @@ static int gs_can_open(struct net_device *netdev)
- 	}
- 
- 	if (!parent->active_channels) {
-+		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
-+			gs_usb_timestamp_init(parent);
++	return false;
++}
 +
- 		for (i = 0; i < GS_MAX_RX_URBS; i++) {
- 			u8 *buf;
+ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	struct rtl8169_private *tp;
+@@ -5234,6 +5246,19 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 				     xid);
+ 	tp->mac_version = chipset;
  
-@@ -926,13 +934,9 @@ static int gs_can_open(struct net_device *netdev)
- 		flags |= GS_CAN_MODE_FD;
- 
- 	/* if hardware supports timestamps, enable it */
--	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP) {
-+	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
- 
--		/* start polling timestamp */
--		gs_usb_timestamp_init(dev);
--	}
--
- 	/* finally start device */
- 	dev->can.state = CAN_STATE_ERROR_ACTIVE;
- 	dm.flags = cpu_to_le32(flags);
-@@ -942,8 +946,6 @@ static int gs_can_open(struct net_device *netdev)
- 				  GFP_KERNEL);
- 	if (rc) {
- 		netdev_err(netdev, "Couldn't start device (err=%d)\n", rc);
--		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
--			gs_usb_timestamp_stop(dev);
- 		dev->can.state = CAN_STATE_STOPPED;
- 
- 		goto out_usb_kill_anchored_urbs;
-@@ -960,9 +962,13 @@ static int gs_can_open(struct net_device *netdev)
- out_usb_free_urb:
- 	usb_free_urb(urb);
- out_usb_kill_anchored_urbs:
--	if (!parent->active_channels)
-+	if (!parent->active_channels) {
- 		usb_kill_anchored_urbs(&dev->tx_submitted);
- 
-+		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
-+			gs_usb_timestamp_stop(parent);
-+	}
++	/* Disable ASPM L1 as that cause random device stop working
++	 * problems as well as full system hangs for some PCIe devices users.
++	 * Chips from RTL8168h partially have issues with L1.2, but seem
++	 * to work fine with L1 and L1.1.
++	 */
++	if (rtl_aspm_is_safe(tp))
++		rc = 0;
++	else if (tp->mac_version >= RTL_GIGA_MAC_VER_46)
++		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
++	else
++		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1);
++	tp->aspm_manageable = !rc;
 +
- 	close_candev(netdev);
+ 	tp->dash_type = rtl_check_dash(tp);
  
- 	return rc;
-@@ -1011,14 +1017,13 @@ static int gs_can_close(struct net_device *netdev)
- 
- 	netif_stop_queue(netdev);
- 
--	/* stop polling timestamp */
--	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
--		gs_usb_timestamp_stop(dev);
--
- 	/* Stop polling */
- 	parent->active_channels--;
- 	if (!parent->active_channels) {
- 		usb_kill_anchored_urbs(&parent->rx_submitted);
-+
-+		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
-+			gs_usb_timestamp_stop(parent);
- 	}
- 
- 	/* Stop sending URBs */
+ 	tp->cp_cmd = RTL_R16(tp, CPlusCmd) & CPCMD_MASK;
 
