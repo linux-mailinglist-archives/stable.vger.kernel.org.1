@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FAAC75E244
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C2075E245
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:06:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229509AbjGWOF5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:05:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
+        id S229456AbjGWOGG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:06:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjGWOF5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:05:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF93E70
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:05:55 -0700 (PDT)
+        with ESMTP id S229452AbjGWOGF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:06:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F83D12B
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:06:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B2E460D32
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:05:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573DDC433CA;
-        Sun, 23 Jul 2023 14:05:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8AB360BB8
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:06:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59E9C433C7;
+        Sun, 23 Jul 2023 14:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690121154;
-        bh=3cfUMyytGtoNnQey7GEouIddxM0pt50eG1P2bbvniLI=;
+        s=korg; t=1690121163;
+        bh=LYoejTGW++hMngU3JMMroNZ53ZuYQp/FiPYC9F9oU+U=;
         h=Subject:To:Cc:From:Date:From;
-        b=RpVmfZVSxPIigNYO/2tBhGJP7qiHuM7Xbw+hYKuaAOWyntMPjNnrpWjSx6qNVbDCB
-         g7iIS7YnCkK1lhU9J1GOEgG3/3pYZltMmhKrzrq3134Rczksbj7mpc88dcZaJ+a89t
-         Gui22bTR4MXTPphy6HnvD5Njx64l+72FB/SBJ8H8=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Add polling method to handle MST reply" failed to apply to 6.4-stable tree
+        b=AvparYkyRAVYXbk20ktfi94hazLU7cFRHshfeu/QkrU6mYuLxk9bfgXdy36dgNvkA
+         9x5acU9EI0+yskZ0IeITUKaeM/uTdz3ymNdNg4AIvCAc0zdvA8OWWIxt7bQK8/Fys8
+         YR3L20Lue7cLQKapoF2hgZKns008niX5YLyxh65Q=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Add polling method to handle MST reply" failed to apply to 6.1-stable tree
 To:     wayne.lin@amd.com, alexander.deucher@amd.com,
         daniel.wheeler@amd.com, haoping.liu@amd.com, jerry.zuo@amd.com,
         mario.limonciello@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:05:52 +0200
-Message-ID: <2023072351-darkish-negligee-d553@gregkh>
+Date:   Sun, 23 Jul 2023 16:05:53 +0200
+Message-ID: <2023072352-yen-rancidity-83a1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,23 +51,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4f6d9e38c4d244ad106eb9ebd8c0e1215e866f35
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072351-darkish-negligee-d553@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072352-yen-rancidity-83a1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+4f6d9e38c4d2 ("drm/amd/display: Add polling method to handle MST reply packet")
+87279fdf5ee0 ("drm/amd/display: Clean up errors & warnings in amdgpu_dm.c")
+72f1de49ffb9 ("drm/dp_mst: Clear MSG_RDY flag before sending new message")
+2792f98cdb1c ("drm/amd/display: Take FEC Overhead into Timeslot Calculation")
+54c7b715b5ef ("drm/amd/display: Add DSC Support for Synaptics Cascaded MST Hub")
+e322843e5e33 ("drm/amd/display: fix linux dp link lost handled only one time")
+c5a31f178e35 ("drm/amd/display: move dp irq handler functions from dc_link_dp to link_dp_irq_handler")
+0078c924e733 ("drm/amd/display: move eDP panel control logic to link_edp_panel_control")
+bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
+028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
+603a521ec279 ("drm/amd/display: remove duplicate included header files")
+d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
+94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
+630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
+d144b40a4833 ("drm/amd/display: move dc_link_dpia logic to link_dp_dpia")
+a28d0bac0956 ("drm/amd/display: move dpcd logic from dc_link_dpcd to link_dpcd")
+a98cdd8c4856 ("drm/amd/display: refactor ddc logic from dc_link_ddc to link_ddc")
+4370f72e3845 ("drm/amd/display: refactor hpd logic from dc_link to link_hpd")
+0e8cf83a2b47 ("drm/amd/display: allow hpo and dio encoder switching during dp retrain test")
+7462475e3a06 ("drm/amd/display: move dccg programming from link hwss hpo dp to hwss")
 
 thanks,
 
