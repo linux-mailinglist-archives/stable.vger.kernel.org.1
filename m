@@ -2,66 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1F2075E222
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4AE75E227
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbjGWNsj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 09:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59282 "EHLO
+        id S229470AbjGWNyE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 09:54:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjGWNsi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:48:38 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7CA183
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:48:37 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fbf1b82d9cso26478485e9.2
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:48:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1690120116; x=1690724916;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3PN0I3mx5kl04z6d12K45HEUmzw2YyaJKMPzfeHMS/0=;
-        b=IRFpxy3yCQOcujvFQiYo66FWbs1p+wUjTTQkvjVjq3Cwvsc7LeJ1vDoRY5cU/9iVlE
-         KSJUOArODalFiVubQuHjppIGW9Z16v+bnuU95XC6XvehH4dwjC5UVP+SHHKNoyGBF6u1
-         CiiYjQQnFqedUryLjnFbhs3Nt4KlJmLC3eFgw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690120116; x=1690724916;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3PN0I3mx5kl04z6d12K45HEUmzw2YyaJKMPzfeHMS/0=;
-        b=kv4nKq7wc8RSSAjWeDiFIPJJW5xsRFwGZ83YQsWefaT7Nfcvt+x2VLs3RmcmydegTq
-         CvWawgHDh1UAfkm7a1ZZBhRlFkPxUzNJFhpooN1KtgddK2TwvapeIC6odfaay3d12nD+
-         73/5/1PTdSWH18HmWoVvIUyWmkKkdxX9RsuBXkNt+UoKl6pz8s/EyHwFROyR87KRISBp
-         GyYs/+YfEhneSK768UKLn0L88X7EF7e3FYhvBpVkMGAMHDLoQki0tf+Hm3WMD6L7Fzp/
-         YsXIuk7D8r/yUgTug+fkvmqVGjHfMbGt9uuCu8KQe6iducFZt2lVDBj4zO4SjJFwAMQG
-         1RcQ==
-X-Gm-Message-State: ABy/qLZXurk+3r+3qSuIuW++b5u/vewrKhZFhEhQmA+3SCDFT6oE/iek
-        oNlPdt0LwcGWiGN4bCHtgv73fg==
-X-Google-Smtp-Source: APBJJlHcP7pcIybgBvAykQIxEsrxYu91K5BDP1h3nVdgLqIQdrKWEghLXIRhOuMyPvLCZ0lI428FTg==
-X-Received: by 2002:a1c:f702:0:b0:3fb:739d:27b2 with SMTP id v2-20020a1cf702000000b003fb739d27b2mr5118831wmh.8.1690120115585;
-        Sun, 23 Jul 2023 06:48:35 -0700 (PDT)
-Received: from tone.k.g (lan.nucleusys.com. [92.247.61.126])
-        by smtp.gmail.com with ESMTPSA id s18-20020a05600c045200b003fc01495383sm10348021wmb.6.2023.07.23.06.48.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jul 2023 06:48:35 -0700 (PDT)
-From:   Petko Manolov <petko.manolov@konsulko.com>
-To:     leon.anavi@konsulko.com
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Andrew Jones <ajones@ventanamicro.com>, stable@vger.kernel.org,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Petko Manolov <petko.manolov@konsulko.com>
-Subject: [PATCH] riscv: Implement missing huge_ptep_get
-Date:   Sun, 23 Jul 2023 16:48:22 +0300
-Message-Id: <20230723134822.617037-7-petko.manolov@konsulko.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230723134822.617037-1-petko.manolov@konsulko.com>
-References: <20230723134822.617037-1-petko.manolov@konsulko.com>
+        with ESMTP id S229452AbjGWNyD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:54:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 022091B7
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:54:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87DF760D29
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 13:54:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84926C433C9;
+        Sun, 23 Jul 2023 13:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690120439;
+        bh=cuyFTjWI9XmmiH0/UHgmrFVOmsmdq4DuoFGj/i3QZh4=;
+        h=Subject:To:Cc:From:Date:From;
+        b=AvKfXrJH91opngRQFM7ZxoiXunyArRRjCYX3zZkRwuQcYVq7CAp+zwbN/8B7iZkwC
+         41u0Z4mzSX5j/9xFLCGMsmzWmCWiNVVopBQzEghuBrSC8x6+TNfGsIteCvL1qI43iv
+         G0j8m4GdlEzVQiaVVQa2hoeKKvddNJlzHj4QrvCE=
+Subject: FAILED: patch "[PATCH] keys: Fix linking a duplicate key to a keyring's assoc_array" failed to apply to 5.4-stable tree
+To:     petr.pavlu@suse.com, jarkko@kernel.org, jlee@suse.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 23 Jul 2023 15:53:56 +0200
+Message-ID: <2023072356-confirm-embezzle-c962@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,73 +48,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-huge_ptep_get must be reimplemented in order to go through all the PTEs
-of a NAPOT region: this is needed because the HW can update the A/D bits
-of any of the PTE that constitutes the NAPOT region.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20230428120120.21620-2-alexghiti@rivosinc.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Petko Manolov <petko.manolov@konsulko.com>
----
- arch/riscv/include/asm/hugetlb.h |  3 +++
- arch/riscv/mm/hugetlbpage.c      | 24 ++++++++++++++++++++++++
- 2 files changed, 27 insertions(+)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hugetlb.h
-index fe6f23006641..ce1ebda1a49a 100644
---- a/arch/riscv/include/asm/hugetlb.h
-+++ b/arch/riscv/include/asm/hugetlb.h
-@@ -36,6 +36,9 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- 			       unsigned long addr, pte_t *ptep,
- 			       pte_t pte, int dirty);
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x d55901522f96082a43b9842d34867363c0cdbac5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072356-confirm-embezzle-c962@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+d55901522f96 ("keys: Fix linking a duplicate key to a keyring's assoc_array")
+f7e47677e39a ("watch_queue: Add a key/keyring notification facility")
+0858caa419e6 ("uapi: General notification queue definitions")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From d55901522f96082a43b9842d34867363c0cdbac5 Mon Sep 17 00:00:00 2001
+From: Petr Pavlu <petr.pavlu@suse.com>
+Date: Thu, 23 Mar 2023 14:04:12 +0100
+Subject: [PATCH] keys: Fix linking a duplicate key to a keyring's assoc_array
+
+When making a DNS query inside the kernel using dns_query(), the request
+code can in rare cases end up creating a duplicate index key in the
+assoc_array of the destination keyring. It is eventually found by
+a BUG_ON() check in the assoc_array implementation and results in
+a crash.
+
+Example report:
+[2158499.700025] kernel BUG at ../lib/assoc_array.c:652!
+[2158499.700039] invalid opcode: 0000 [#1] SMP PTI
+[2158499.700065] CPU: 3 PID: 31985 Comm: kworker/3:1 Kdump: loaded Not tainted 5.3.18-150300.59.90-default #1 SLE15-SP3
+[2158499.700096] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+[2158499.700351] Workqueue: cifsiod cifs_resolve_server [cifs]
+[2158499.700380] RIP: 0010:assoc_array_insert+0x85f/0xa40
+[2158499.700401] Code: ff 74 2b 48 8b 3b 49 8b 45 18 4c 89 e6 48 83 e7 fe e8 95 ec 74 00 3b 45 88 7d db 85 c0 79 d4 0f 0b 0f 0b 0f 0b e8 41 f2 be ff <0f> 0b 0f 0b 81 7d 88 ff ff ff 7f 4c 89 eb 4c 8b ad 58 ff ff ff 0f
+[2158499.700448] RSP: 0018:ffffc0bd6187faf0 EFLAGS: 00010282
+[2158499.700470] RAX: ffff9f1ea7da2fe8 RBX: ffff9f1ea7da2fc1 RCX: 0000000000000005
+[2158499.700492] RDX: 0000000000000000 RSI: 0000000000000005 RDI: 0000000000000000
+[2158499.700515] RBP: ffffc0bd6187fbb0 R08: ffff9f185faf1100 R09: 0000000000000000
+[2158499.700538] R10: ffff9f1ea7da2cc0 R11: 000000005ed8cec8 R12: ffffc0bd6187fc28
+[2158499.700561] R13: ffff9f15feb8d000 R14: ffff9f1ea7da2fc0 R15: ffff9f168dc0d740
+[2158499.700585] FS:  0000000000000000(0000) GS:ffff9f185fac0000(0000) knlGS:0000000000000000
+[2158499.700610] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[2158499.700630] CR2: 00007fdd94fca238 CR3: 0000000809d8c006 CR4: 00000000003706e0
+[2158499.700702] Call Trace:
+[2158499.700741]  ? key_alloc+0x447/0x4b0
+[2158499.700768]  ? __key_link_begin+0x43/0xa0
+[2158499.700790]  __key_link_begin+0x43/0xa0
+[2158499.700814]  request_key_and_link+0x2c7/0x730
+[2158499.700847]  ? dns_resolver_read+0x20/0x20 [dns_resolver]
+[2158499.700873]  ? key_default_cmp+0x20/0x20
+[2158499.700898]  request_key_tag+0x43/0xa0
+[2158499.700926]  dns_query+0x114/0x2ca [dns_resolver]
+[2158499.701127]  dns_resolve_server_name_to_ip+0x194/0x310 [cifs]
+[2158499.701164]  ? scnprintf+0x49/0x90
+[2158499.701190]  ? __switch_to_asm+0x40/0x70
+[2158499.701211]  ? __switch_to_asm+0x34/0x70
+[2158499.701405]  reconn_set_ipaddr_from_hostname+0x81/0x2a0 [cifs]
+[2158499.701603]  cifs_resolve_server+0x4b/0xd0 [cifs]
+[2158499.701632]  process_one_work+0x1f8/0x3e0
+[2158499.701658]  worker_thread+0x2d/0x3f0
+[2158499.701682]  ? process_one_work+0x3e0/0x3e0
+[2158499.701703]  kthread+0x10d/0x130
+[2158499.701723]  ? kthread_park+0xb0/0xb0
+[2158499.701746]  ret_from_fork+0x1f/0x40
+
+The situation occurs as follows:
+* Some kernel facility invokes dns_query() to resolve a hostname, for
+  example, "abcdef". The function registers its global DNS resolver
+  cache as current->cred.thread_keyring and passes the query to
+  request_key_net() -> request_key_tag() -> request_key_and_link().
+* Function request_key_and_link() creates a keyring_search_context
+  object. Its match_data.cmp method gets set via a call to
+  type->match_preparse() (resolves to dns_resolver_match_preparse()) to
+  dns_resolver_cmp().
+* Function request_key_and_link() continues and invokes
+  search_process_keyrings_rcu() which returns that a given key was not
+  found. The control is then passed to request_key_and_link() ->
+  construct_alloc_key().
+* Concurrently to that, a second task similarly makes a DNS query for
+  "abcdef." and its result gets inserted into the DNS resolver cache.
+* Back on the first task, function construct_alloc_key() first runs
+  __key_link_begin() to determine an assoc_array_edit operation to
+  insert a new key. Index keys in the array are compared exactly as-is,
+  using keyring_compare_object(). The operation finds that "abcdef" is
+  not yet present in the destination keyring.
+* Function construct_alloc_key() continues and checks if a given key is
+  already present on some keyring by again calling
+  search_process_keyrings_rcu(). This search is done using
+  dns_resolver_cmp() and "abcdef" gets matched with now present key
+  "abcdef.".
+* The found key is linked on the destination keyring by calling
+  __key_link() and using the previously calculated assoc_array_edit
+  operation. This inserts the "abcdef." key in the array but creates
+  a duplicity because the same index key is already present.
+
+Fix the problem by postponing __key_link_begin() in
+construct_alloc_key() until an actual key which should be linked into
+the destination keyring is determined.
+
+[jarkko@kernel.org: added a fixes tag and cc to stable]
+Cc: stable@vger.kernel.org # v5.3+
+Fixes: df593ee23e05 ("keys: Hoist locking out of __key_link_begin()")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Joey Lee <jlee@suse.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+diff --git a/security/keys/request_key.c b/security/keys/request_key.c
+index 07a0ef2baacd..a7673ad86d18 100644
+--- a/security/keys/request_key.c
++++ b/security/keys/request_key.c
+@@ -401,17 +401,21 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	set_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags);
  
-+#define __HAVE_ARCH_HUGE_PTEP_GET
-+pte_t huge_ptep_get(pte_t *ptep);
-+
- pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags);
- #define arch_make_huge_pte arch_make_huge_pte
+ 	if (dest_keyring) {
+-		ret = __key_link_lock(dest_keyring, &ctx->index_key);
++		ret = __key_link_lock(dest_keyring, &key->index_key);
+ 		if (ret < 0)
+ 			goto link_lock_failed;
+-		ret = __key_link_begin(dest_keyring, &ctx->index_key, &edit);
+-		if (ret < 0)
+-			goto link_prealloc_failed;
+ 	}
  
-diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
-index 238d00bdac14..e0ef56dc57b9 100644
---- a/arch/riscv/mm/hugetlbpage.c
-+++ b/arch/riscv/mm/hugetlbpage.c
-@@ -3,6 +3,30 @@
- #include <linux/err.h>
+-	/* attach the key to the destination keyring under lock, but we do need
++	/*
++	 * Attach the key to the destination keyring under lock, but we do need
+ 	 * to do another check just in case someone beat us to it whilst we
+-	 * waited for locks */
++	 * waited for locks.
++	 *
++	 * The caller might specify a comparison function which looks for keys
++	 * that do not exactly match but are still equivalent from the caller's
++	 * perspective. The __key_link_begin() operation must be done only after
++	 * an actual key is determined.
++	 */
+ 	mutex_lock(&key_construction_mutex);
  
- #ifdef CONFIG_RISCV_ISA_SVNAPOT
-+pte_t huge_ptep_get(pte_t *ptep)
-+{
-+	unsigned long pte_num;
-+	int i;
-+	pte_t orig_pte = ptep_get(ptep);
-+
-+	if (!pte_present(orig_pte) || !pte_napot(orig_pte))
-+		return orig_pte;
-+
-+	pte_num = napot_pte_num(napot_cont_order(orig_pte));
-+
-+	for (i = 0; i < pte_num; i++, ptep++) {
-+		pte_t pte = ptep_get(ptep);
-+
-+		if (pte_dirty(pte))
-+			orig_pte = pte_mkdirty(orig_pte);
-+
-+		if (pte_young(pte))
-+			orig_pte = pte_mkyoung(orig_pte);
+ 	rcu_read_lock();
+@@ -420,12 +424,16 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	if (!IS_ERR(key_ref))
+ 		goto key_already_present;
+ 
+-	if (dest_keyring)
++	if (dest_keyring) {
++		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
++		if (ret < 0)
++			goto link_alloc_failed;
+ 		__key_link(dest_keyring, key, &edit);
 +	}
-+
-+	return orig_pte;
-+}
-+
- pte_t *huge_pte_alloc(struct mm_struct *mm,
- 		      struct vm_area_struct *vma,
- 		      unsigned long addr,
--- 
-2.39.2
+ 
+ 	mutex_unlock(&key_construction_mutex);
+ 	if (dest_keyring)
+-		__key_link_end(dest_keyring, &ctx->index_key, edit);
++		__key_link_end(dest_keyring, &key->index_key, edit);
+ 	mutex_unlock(&user->cons_lock);
+ 	*_key = key;
+ 	kleave(" = 0 [%d]", key_serial(key));
+@@ -438,10 +446,13 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	mutex_unlock(&key_construction_mutex);
+ 	key = key_ref_to_ptr(key_ref);
+ 	if (dest_keyring) {
++		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
++		if (ret < 0)
++			goto link_alloc_failed_unlocked;
+ 		ret = __key_link_check_live_key(dest_keyring, key);
+ 		if (ret == 0)
+ 			__key_link(dest_keyring, key, &edit);
+-		__key_link_end(dest_keyring, &ctx->index_key, edit);
++		__key_link_end(dest_keyring, &key->index_key, edit);
+ 		if (ret < 0)
+ 			goto link_check_failed;
+ 	}
+@@ -456,8 +467,10 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	kleave(" = %d [linkcheck]", ret);
+ 	return ret;
+ 
+-link_prealloc_failed:
+-	__key_link_end(dest_keyring, &ctx->index_key, edit);
++link_alloc_failed:
++	mutex_unlock(&key_construction_mutex);
++link_alloc_failed_unlocked:
++	__key_link_end(dest_keyring, &key->index_key, edit);
+ link_lock_failed:
+ 	mutex_unlock(&user->cons_lock);
+ 	key_put(key);
 
