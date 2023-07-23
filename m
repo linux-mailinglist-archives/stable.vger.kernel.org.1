@@ -2,103 +2,165 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C61775E24A
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE7F75E24B
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjGWOGy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34220 "EHLO
+        id S229551AbjGWOHG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:07:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjGWOGy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:06:54 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB52A12B
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:06:51 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1bb9e6c2a90so2235945ad.1
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:06:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690121211; x=1690726011;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/z6SXHielA2i6fiAa6TWNgMAq5blz/tSPiWT/mrgkL4=;
-        b=leqj8kBd2chMEM13dgnuiyZ+ayEF5JQT/MInaDMPxpi8FcQHJhX5oM1sVQdXAmTyf2
-         kdKx3rZiCyxcjqc9ccvhYXdn4elhGq6AelMFeZI6yMKat0kBP3Geo7PkCNGtUOAJK3jM
-         g5jJPqWLxEECtT//+pdJggmPYUJ8+no8Kmr3b0TzURrDkqxSDB7vEAQUBLu/eHGNiqsg
-         9QjvJMPr7Jwyg+EERvoCaxzD35lHHtGPxfEwJX9tmRGHEIiAsOKtt9SHWydTN52M8LRX
-         6GkL1BQ1E66cumfWnema4PuFjRSUKGBXTXZHT3Xz7RZ/EyrJPwea8ylJsQ2jrG1Y/mr6
-         JLsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690121211; x=1690726011;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/z6SXHielA2i6fiAa6TWNgMAq5blz/tSPiWT/mrgkL4=;
-        b=N1bWlWw4jcciLjSWFZIKB78kgk/wkn/oIz6UR49w8QZKmSB8Lqi8lf/aNTFIxguvjA
-         N7ylGe3rqD7B8rtu6JXPtoXvNOWgCsRSc0OlNb2BTeuPx02a/yqcbmWkp4nkduKAA7zC
-         X2GTVXj8ZQFfQ7OkBxiM7VelXpTo7GSfyNVat+nQug4IjWdnySE9LBkV/1/kBrbFxZFd
-         KCCa5sX4ZZkwXU4ZpGnNjiCGg15BkHBnf41VkBXeB87xsXpj7bEvB2TyH3gJf+xn6FSp
-         g2leDcIJMJYTkypScXVHxvwRtQ6M66i/3VEokxOCG/AM8pVgakGOdx+NStGqaGTrlw1T
-         EYXA==
-X-Gm-Message-State: ABy/qLb4BS/nsBcwW4t9joyTPOfju318t42IJCRyg6m7+Hl34fnnJUV9
-        GNlztN3+x73vxFDokybcWjbOmo9EFhLSBXwmt+U=
-X-Google-Smtp-Source: APBJJlGVdoDuc1wvdu49ZAhU3GD5G5LF5xUZ8MTEYbwGflQNy84XeWeXZFOx8KJC09riRX0SHN2o+g==
-X-Received: by 2002:a17:902:dac9:b0:1b7:ffb9:ea85 with SMTP id q9-20020a170902dac900b001b7ffb9ea85mr9789695plx.29.1690121210810;
-        Sun, 23 Jul 2023 07:06:50 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id a20-20020a1709027d9400b001a5fccab02dsm6913152plm.177.2023.07.23.07.06.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jul 2023 07:06:50 -0700 (PDT)
-Message-ID: <64bd33fa.170a0220.4869c.bff3@mx.google.com>
-Date:   Sun, 23 Jul 2023 07:06:50 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229547AbjGWOHG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:07:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37ED12B
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:07:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8ED3660BB8
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:07:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F6DC433C8;
+        Sun, 23 Jul 2023 14:07:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690121224;
+        bh=w8DxSJCW6uW+wx12b/SyRtNKqj20ZsJGfEd4iYZ6xuQ=;
+        h=Subject:To:Cc:From:Date:From;
+        b=aOwWFtMIZSckSwECMP7DyvVxYRrxl6oK08mnH3QXiaA/h+uZ+sLNWSsbkaQcwOCky
+         D8D2UFmGKtBXIEytjLlwrmcsGltir3VAgxC/NvgTaW/7PpmGjTC/r+nqE1LzGDiYYw
+         wsJ1Xq2aO+0yB2yP2nv2vSds2JXo9k360eiSFiOA=
+Subject: FAILED: patch "[PATCH] ASoC: cs42l51: fix driver to properly autoload with automatic" failed to apply to 5.15-stable tree
+To:     thomas.petazzoni@bootlin.com, broonie@kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 23 Jul 2023 16:07:01 +0200
+Message-ID: <2023072301-online-accent-4365@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Kernel: v6.1.40
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-6.1.y build: 2 builds: 0 failed, 2 passed (v6.1.40)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 2 builds: 0 failed, 2 passed (v6.1.40)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.40/
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.40
-Git Commit: 75389113731bb629fa5e971baf58e422414c8d23
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 2 unique architectures
+To reproduce the conflict and resubmit, you may use the following commands:
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x e51df4f81b02bcdd828a04de7c1eb6a92988b61e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072301-online-accent-4365@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Detailed per-defconfig build reports:
+Possible dependencies:
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+e51df4f81b02 ("ASoC: cs42l51: fix driver to properly autoload with automatic module loading")
+4a4043456cb8 ("ASoC: cs*: use simple i2c probe function")
+f8593e885400 ("ASoC: cs42l42: Handle system suspend")
+5982b5a8ec7d ("ASoC: cs42l42: Change jack_detect_mutex to a lock of all IRQ handling")
+8d06f797f844 ("ASoC: cs42l42: Report full jack status when plug is detected")
+a319cb32e7cf ("ASoC: cs4265: Add a remove() function")
+fdd535283779 ("ASoC: cs42l42: Report initial jack state")
+c778c01d3e66 ("ASoC: cs42l42: Remove unused runtime_suspend/runtime_resume callbacks")
 
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
+thanks,
 
----
-For more info write to <info@kernelci.org>
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e51df4f81b02bcdd828a04de7c1eb6a92988b61e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Thu, 13 Jul 2023 13:21:12 +0200
+Subject: [PATCH] ASoC: cs42l51: fix driver to properly autoload with automatic
+ module loading
+
+In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
+pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
+split into a core part and an I2C part to properly match based on a
+Device Tree compatible string.
+
+However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
+....) is in the core part of the driver, not the I2C part. Therefore,
+automatic module loading based on module.alias, based on matching with
+the DT compatible string, loads the core part of the driver, but not
+the I2C part. And threfore, the i2c_driver is not registered, and the
+codec is not known to the system, nor matched with a DT node with the
+corresponding compatible string.
+
+In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
+the I2C part of the driver. The cs42l51_of_match[] array is also moved
+as well, as it is not possible to have this definition in one file,
+and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
+to how MODULE_DEVICE_TABLE works.
+
+Thanks to this commit, the I2C part of the driver now properly
+autoloads, and thanks to its dependency on the core part, the core
+part gets autoloaded as well, resulting in a functional sound card
+without having to manually load kernel modules.
+
+Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Link: https://lore.kernel.org/r/20230713112112.778576-1-thomas.petazzoni@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/sound/soc/codecs/cs42l51-i2c.c b/sound/soc/codecs/cs42l51-i2c.c
+index b2106ff6a7cb..e7db7bcd0296 100644
+--- a/sound/soc/codecs/cs42l51-i2c.c
++++ b/sound/soc/codecs/cs42l51-i2c.c
+@@ -19,6 +19,12 @@ static struct i2c_device_id cs42l51_i2c_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, cs42l51_i2c_id);
+ 
++const struct of_device_id cs42l51_of_match[] = {
++	{ .compatible = "cirrus,cs42l51", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, cs42l51_of_match);
++
+ static int cs42l51_i2c_probe(struct i2c_client *i2c)
+ {
+ 	struct regmap_config config;
+diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
+index a67cd3ee84e0..a7079ae0ca09 100644
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -823,13 +823,6 @@ int __maybe_unused cs42l51_resume(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(cs42l51_resume);
+ 
+-const struct of_device_id cs42l51_of_match[] = {
+-	{ .compatible = "cirrus,cs42l51", },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, cs42l51_of_match);
+-EXPORT_SYMBOL_GPL(cs42l51_of_match);
+-
+ MODULE_AUTHOR("Arnaud Patard <arnaud.patard@rtp-net.org>");
+ MODULE_DESCRIPTION("Cirrus Logic CS42L51 ALSA SoC Codec Driver");
+ MODULE_LICENSE("GPL");
+diff --git a/sound/soc/codecs/cs42l51.h b/sound/soc/codecs/cs42l51.h
+index a79343e8a54e..125703ede113 100644
+--- a/sound/soc/codecs/cs42l51.h
++++ b/sound/soc/codecs/cs42l51.h
+@@ -16,7 +16,6 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap);
+ void cs42l51_remove(struct device *dev);
+ int __maybe_unused cs42l51_suspend(struct device *dev);
+ int __maybe_unused cs42l51_resume(struct device *dev);
+-extern const struct of_device_id cs42l51_of_match[];
+ 
+ #define CS42L51_CHIP_ID			0x1B
+ #define CS42L51_CHIP_REV_A		0x00
+
