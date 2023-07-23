@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B200075E239
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EFCB75E23A
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:00:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229654AbjGWOAV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33446 "EHLO
+        id S229468AbjGWOA4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbjGWOAV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:00:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2598BE70
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:00:20 -0700 (PDT)
+        with ESMTP id S229640AbjGWOAy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:00:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E44E10DE
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:00:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B039060BB8
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF592C433C9;
-        Sun, 23 Jul 2023 14:00:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF55F60D30
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:00:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4499C433C8;
+        Sun, 23 Jul 2023 14:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690120819;
-        bh=q0ka98f2zeZI3XQU0yg9UWEB28dGtShAfXElc3sATSo=;
+        s=korg; t=1690120852;
+        bh=yTJhcupjrITF7KrYKA778G6y5P9N8co8k5P9ld+h6xE=;
         h=Subject:To:Cc:From:Date:From;
-        b=I7UjXUDdlnJyO6tu9CInuGBNbUfQMgQaiqufCAt5N6E2gNowuHfL5VIcpcQCcicDK
-         5Gbm6k1Az4VACHs/c0wOpC5iY2Vh5DRrArTzkL/9GEzfLfNPUZX2tc1xiVu1gsakHx
-         eWzEs4fjRhX1EaQVgSxoDO1m7EFIIk5lJ6iQcFZI=
-Subject: FAILED: patch "[PATCH] can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase poll" failed to apply to 5.10-stable tree
-To:     fedor.ross@ifm.com, marex@denx.de, mkl@pengutronix.de
+        b=AiQgl3bHmaGmtOGmch3GHvbiuiHfiDSpuCyKoNgN7KAfMpcEaAIUwC4wkp/uRjLmy
+         S0ZCWy/V9SdP+pc/ryY6WKrlmVFR8ACBav0WqIq7jjJBgZnN/3e8hkD+uhbtNBTVRU
+         dAXxno79igmzfP0G6QjUmR+wkWKnaurQN/R3HZuI=
+Subject: FAILED: patch "[PATCH] can: gs_usb: gs_can_open(): improve error handling" failed to apply to 5.15-stable tree
+To:     mkl@pengutronix.de, git@jbrengineering.co.uk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:00:14 +0200
-Message-ID: <2023072314-spent-tamper-2f00@gregkh>
+Date:   Sun, 23 Jul 2023 16:00:49 +0200
+Message-ID: <2023072349-capricorn-donor-f895@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,42 +49,31 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9efa1a5407e81265ea502cab83be4de503decc49
+git cherry-pick -x 2603be9e8167ddc7bea95dcfab9ffc33414215aa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072314-spent-tamper-2f00@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072349-capricorn-donor-f895@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-9efa1a5407e8 ("can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase poll timeout")
-c9e6b80dfd48 ("can: mcp251xfd: update macros describing ring, FIFO and RAM layout")
-0a1f2e6502a1 ("can: mcp251xfd: ring: prepare support for runtime configurable RX/TX ring parameters")
-aada74220f00 ("can: mcp251xfd: mcp251xfd_priv: introduce macros specifying the number of supported TEF/RX/TX rings")
-62713f0d9a38 ("can: mcp251xfd: ring: change order of TX and RX FIFOs")
-617283b9c4db ("can: mcp251xfd: ring: prepare to change order of TX and RX FIFOs")
-d2d5397fcae1 ("can: mcp251xfd: mcp251xfd_ring_init(): split ring_init into separate functions")
-c912f19ee382 ("can: mcp251xfd: introduce struct mcp251xfd_tx_ring::nr and ::fifo_nr and make use of it")
-2a68dd8663ea ("can: mcp251xfd: add support for internal PLL")
-e39ea1360ca7 ("can: mcp251xfd: mcp251xfd_chip_clock_init(): prepare for PLL support, wait for OSC ready")
-a10fd91e42e8 ("can: mcp251xfd: __mcp251xfd_chip_set_mode(): prepare for PLL support: improve error handling and diagnostics")
-14193ea2bfee ("can: mcp251xfd: mcp251xfd_chip_timestamp_init(): factor out into separate function")
-1ba3690fa2c6 ("can: mcp251xfd: mcp251xfd_chip_sleep(): introduce function to bring chip into sleep mode")
-3044a4f271d2 ("can: mcp251xfd: introduce and make use of mcp251xfd_is_fd_mode()")
-55bc37c85587 ("can: mcp251xfd: move ring init into separate function")
-335c818c5a7a ("can: mcp251xfd: move chip FIFO init into separate file")
-1e846c7aeb06 ("can: mcp251xfd: move TEF handling into separate file")
-319fdbc9433c ("can: mcp251xfd: move RX handling into separate file")
-cae9071bc5ea ("can: mcp251xfd: mcp251xfd.h: sort function prototypes")
-99e7cc3b3f85 ("can: mcp251xfd: mcp251xfd_tef_obj_read(): fix typo in error message")
+2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
+62f102c0d156 ("can: gs_usb: remove dma allocations")
+5440428b3da6 ("can: gs_usb: gs_can_open(): fix race dev->can.state condition")
+2bda24ef95c0 ("can: gs_usb: gs_usb_open/close(): fix memory leak")
+c359931d2545 ("can: gs_usb: use union and FLEX_ARRAY for data in struct gs_host_frame")
+5374d083117c ("can: gs_usb: gs_usb_probe(): introduce udev and make use of it")
+c1ee72690cdd ("can: gs_usb: rewrap usb_control_msg() and usb_fill_bulk_urb()")
+035b0fcf0270 ("can: gs_usb: change active_channels's type from atomic_t to u8")
+108194666a3f ("can: gs_usb: use %u to print unsigned values")
 
 thanks,
 
@@ -92,87 +81,115 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9efa1a5407e81265ea502cab83be4de503decc49 Mon Sep 17 00:00:00 2001
-From: Fedor Ross <fedor.ross@ifm.com>
-Date: Thu, 4 May 2023 21:50:59 +0200
-Subject: [PATCH] can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase poll
- timeout
+From 2603be9e8167ddc7bea95dcfab9ffc33414215aa Mon Sep 17 00:00:00 2001
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Fri, 7 Jul 2023 13:43:10 +0200
+Subject: [PATCH] can: gs_usb: gs_can_open(): improve error handling
 
-The mcp251xfd controller needs an idle bus to enter 'Normal CAN 2.0
-mode' or . The maximum length of a CAN frame is 736 bits (64 data
-bytes, CAN-FD, EFF mode, worst case bit stuffing and interframe
-spacing). For low bit rates like 10 kbit/s the arbitrarily chosen
-MCP251XFD_POLL_TIMEOUT_US of 1 ms is too small.
+The gs_usb driver handles USB devices with more than 1 CAN channel.
+The RX path for all channels share the same bulk endpoint (the
+transmitted bulk data encodes the channel number). These per-device
+resources are allocated and submitted by the first opened channel.
 
-Otherwise during polling for the CAN controller to enter 'Normal CAN
-2.0 mode' the timeout limit is exceeded and the configuration fails
-with:
+During this allocation, the resources are either released immediately
+in case of a failure or the URBs are anchored. All anchored URBs are
+finally killed with gs_usb_disconnect().
 
-| $ ip link set dev can1 up type can bitrate 10000
-| [  731.911072] mcp251xfd spi2.1 can1: Controller failed to enter mode CAN 2.0 Mode (6) and stays in Configuration Mode (4) (con=0x068b0760, osc=0x00000468).
-| [  731.927192] mcp251xfd spi2.1 can1: CRC read error at address 0x0e0c (length=4, data=00 00 00 00, CRC=0x0000) retrying.
-| [  731.938101] A link change request failed with some changes committed already. Interface can1 may have been left with an inconsistent configuration, please check.
-| RTNETLINK answers: Connection timed out
+Currently, gs_can_open() returns with an error if the allocation of a
+URB or a buffer fails. However, if usb_submit_urb() fails, the driver
+continues with the URBs submitted so far, even if no URBs were
+successfully submitted.
 
-Make MCP251XFD_POLL_TIMEOUT_US timeout calculation dynamic. Use
-maximum of 1ms and bit time of 1 full 64 data bytes CAN-FD frame in
-EFF mode, worst case bit stuffing and interframe spacing at the
-current bit rate.
+Treat every error as fatal and free all allocated resources
+immediately.
 
-For easier backporting define the macro MCP251XFD_FRAME_LEN_MAX_BITS
-that holds the max frame length in bits, which is 736. This can be
-replaced by can_frame_bits(true, true, true, true, CANFD_MAX_DLEN) in
-a cleanup patch later.
+Switch to goto-style error handling, to prepare the driver for more
+per-device resource allocation.
 
-Fixes: 55e5b97f003e8 ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-Signed-off-by: Fedor Ross <fedor.ross@ifm.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20230717-mcp251xfd-fix-increase-poll-timeout-v5-1-06600f34c684@pengutronix.de
+Cc: John Whittington <git@jbrengineering.co.uk>
+Link: https://lore.kernel.org/all/20230716-gs_usb-fix-time-stamp-counter-v1-1-9017cefcd9d5@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-index 68df6d4641b5..eebf967f4711 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -227,6 +227,8 @@ static int
- __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv *priv,
- 			  const u8 mode_req, bool nowait)
- {
-+	const struct can_bittiming *bt = &priv->can.bittiming;
-+	unsigned long timeout_us = MCP251XFD_POLL_TIMEOUT_US;
- 	u32 con = 0, con_reqop, osc = 0;
- 	u8 mode;
- 	int err;
-@@ -246,12 +248,16 @@ __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv *priv,
- 	if (mode_req == MCP251XFD_REG_CON_MODE_SLEEP || nowait)
- 		return 0;
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index d476c2884008..85b7b59c8426 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -833,6 +833,7 @@ static int gs_can_open(struct net_device *netdev)
+ 		.mode = cpu_to_le32(GS_CAN_MODE_START),
+ 	};
+ 	struct gs_host_frame *hf;
++	struct urb *urb = NULL;
+ 	u32 ctrlmode;
+ 	u32 flags = 0;
+ 	int rc, i;
+@@ -856,13 +857,14 @@ static int gs_can_open(struct net_device *netdev)
  
-+	if (bt->bitrate)
-+		timeout_us = max_t(unsigned long, timeout_us,
-+				   MCP251XFD_FRAME_LEN_MAX_BITS * USEC_PER_SEC /
-+				   bt->bitrate);
+ 	if (!parent->active_channels) {
+ 		for (i = 0; i < GS_MAX_RX_URBS; i++) {
+-			struct urb *urb;
+ 			u8 *buf;
+ 
+ 			/* alloc rx urb */
+ 			urb = usb_alloc_urb(0, GFP_KERNEL);
+-			if (!urb)
+-				return -ENOMEM;
++			if (!urb) {
++				rc = -ENOMEM;
++				goto out_usb_kill_anchored_urbs;
++			}
+ 
+ 			/* alloc rx buffer */
+ 			buf = kmalloc(dev->parent->hf_size_rx,
+@@ -870,8 +872,8 @@ static int gs_can_open(struct net_device *netdev)
+ 			if (!buf) {
+ 				netdev_err(netdev,
+ 					   "No memory left for USB buffer\n");
+-				usb_free_urb(urb);
+-				return -ENOMEM;
++				rc = -ENOMEM;
++				goto out_usb_free_urb;
+ 			}
+ 
+ 			/* fill, anchor, and submit rx urb */
+@@ -894,9 +896,7 @@ static int gs_can_open(struct net_device *netdev)
+ 				netdev_err(netdev,
+ 					   "usb_submit failed (err=%d)\n", rc);
+ 
+-				usb_unanchor_urb(urb);
+-				usb_free_urb(urb);
+-				break;
++				goto out_usb_unanchor_urb;
+ 			}
+ 
+ 			/* Drop reference,
+@@ -945,7 +945,8 @@ static int gs_can_open(struct net_device *netdev)
+ 		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 			gs_usb_timestamp_stop(dev);
+ 		dev->can.state = CAN_STATE_STOPPED;
+-		return rc;
 +
- 	err = regmap_read_poll_timeout(priv->map_reg, MCP251XFD_REG_CON, con,
- 				       !mcp251xfd_reg_invalid(con) &&
- 				       FIELD_GET(MCP251XFD_REG_CON_OPMOD_MASK,
- 						 con) == mode_req,
--				       MCP251XFD_POLL_SLEEP_US,
--				       MCP251XFD_POLL_TIMEOUT_US);
-+				       MCP251XFD_POLL_SLEEP_US, timeout_us);
- 	if (err != -ETIMEDOUT && err != -EBADMSG)
- 		return err;
++		goto out_usb_kill_anchored_urbs;
+ 	}
  
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index 7024ff0cc2c0..24510b3b8020 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -387,6 +387,7 @@ static_assert(MCP251XFD_TIMESTAMP_WORK_DELAY_SEC <
- #define MCP251XFD_OSC_STAB_TIMEOUT_US (10 * MCP251XFD_OSC_STAB_SLEEP_US)
- #define MCP251XFD_POLL_SLEEP_US (10)
- #define MCP251XFD_POLL_TIMEOUT_US (USEC_PER_MSEC)
-+#define MCP251XFD_FRAME_LEN_MAX_BITS (736)
+ 	parent->active_channels++;
+@@ -953,6 +954,18 @@ static int gs_can_open(struct net_device *netdev)
+ 		netif_start_queue(netdev);
  
- /* Misc */
- #define MCP251XFD_NAPI_WEIGHT 32
+ 	return 0;
++
++out_usb_unanchor_urb:
++	usb_unanchor_urb(urb);
++out_usb_free_urb:
++	usb_free_urb(urb);
++out_usb_kill_anchored_urbs:
++	if (!parent->active_channels)
++		usb_kill_anchored_urbs(&dev->tx_submitted);
++
++	close_candev(netdev);
++
++	return rc;
+ }
+ 
+ static int gs_usb_get_state(const struct net_device *netdev,
 
