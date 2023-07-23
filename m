@@ -2,95 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B11275E494
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 21:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D3E75E4B4
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 22:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbjGWTob (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 15:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55678 "EHLO
+        id S229842AbjGWUG5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 16:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGWToa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 15:44:30 -0400
-Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C74C9;
-        Sun, 23 Jul 2023 12:44:29 -0700 (PDT)
-Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
-   signature) header.d=sapience.com header.i=@sapience.com 
-   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
-   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
-Received: from srv8.prv.sapience.com (srv8.prv.sapience.com [x.x.x.x])
+        with ESMTP id S229775AbjGWUG4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 16:06:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A3AE5B;
+        Sun, 23 Jul 2023 13:06:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by s1.sapience.com (Postfix) with ESMTPS id E36F6480A2C;
-        Sun, 23 Jul 2023 15:44:28 -0400 (EDT)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1690141468;
- h=message-id : date : mime-version : subject : to : cc : references :
- from : in-reply-to : content-type : content-transfer-encoding : from;
- bh=RrAe0WNGCR1n2zOvU84i5qWzyH6QFsoG7N30U7+nsCA=;
- b=vTg+32a4erq+w35WlA3VOP1jwHVfO4iHZDcROFEqP6ak8RNXohNvR0GyB5O2AMkze6Yjf
- QsKxR6VHvKJw6NwAg==
-ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1690141468;
-        cv=none; b=O2myukFkkH6nhHwCL0cHnoxaiNoh/j/S/3kZfazli6K4qPtbVsP6I5rA7y7a0ujBlvliIQv4oce4S2Ly+3YCNODySO8Y1JnkuMQS8MLQe4g+XWMGzYiQro5bLvPViaxEkelVd2CyB4Bn734/NzypVg4DfA6Wckw98ZY8aJoaY/ZFBInV0SCoBJnxs+gdTHWthbMLGqad0iQAmGN3g0PTPNkqok4ADgWOPFZJrMdXlzZuC2JvinI5WzgTIpsCQaP5o2uS7WIdIqp1hGP983w8KtKiCJfDqbfIESYnJaS+SNCJE4c5ojnfUhAu7MIBB+Dgyo4jBqrpFl75WdHJtMUBFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
-        t=1690141468; c=relaxed/simple;
-        bh=aWQms/qjTalw5kN5DpevHM+wl9NgSm+xYtEpK/8acSU=;
-        h=DKIM-Signature:DKIM-Signature:Message-ID:Date:MIME-Version:
-         User-Agent:Subject:Content-Language:To:Cc:References:From:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding; b=KC2xLMpU+/gnQ7Ga7rMcF2DCUJgy69c0IUMJTXpS8Z69WG/F4gZPtHjBZmBAw124unlgyqKx1wS9uzl1/0S8sKdPD/7juKWEj4gaJgm6qeNZOHJRJhqSMWPbigecEW/5jOXzoh+obAxnahM33q+rt36DFh/k5htcrZQ8U4sYxuDxKxEKHARzZsVECto9HQ2ryonuxLpATEXpOX0X+j4XY4q1dvyqY6NAHrMuQPqYa0qY6m2tLTw3NF/LkrSXl2XqTJyRRiFKGdzSHCHytDLjNqL1ROtueGc6HjqLQvCsjjt7lHXHv0zlEJM/47Qki1Ont2kQzjOorSVnmllE8P58zQ==
-ARC-Authentication-Results: i=1; arc-srv8.sapience.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1690141468;
- h=message-id : date : mime-version : subject : to : cc : references :
- from : in-reply-to : content-type : content-transfer-encoding : from;
- bh=RrAe0WNGCR1n2zOvU84i5qWzyH6QFsoG7N30U7+nsCA=;
- b=mu6pH6DHjupUvBEy6+RvY8govRY3JZyJyZfS9tThRk3GxI0i7igzpTDqzOoBkN9WfA672
- L6g2jluey2mQ4sNK/rbGWHJbbnqjvTRhOTsa3mdmdKTnFNMmw5s4ZkcPWaxuLjtUerW1QzP
- maEv5uJWBN/zTfu32fZW3B4XLYJWmXWcjZYW39Z2EIlblg5hnpZ6xagn9FBEy3D8krn8tT5
- xQaEbT/ziGFihcL334F3bxh3IHvh1cmOODNXhFA4TEtc1GzINAX4CkhmVeX7eTs84GpOuGR
- 4nteZpKS9R98j9irCnxxtNg6+4nzgQmoy82nYlqYI/M1g9U9H95cBatHmPUQ==
-Message-ID: <0b738504-07af-4e81-2a9f-2b6f3754a2f0@sapience.com>
-Date:   Sun, 23 Jul 2023 15:44:28 -0400
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA7E460E9F;
+        Sun, 23 Jul 2023 20:06:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE37C433CD;
+        Sun, 23 Jul 2023 20:06:55 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1qNfLy-001c3I-0L;
+        Sun, 23 Jul 2023 16:06:54 -0400
+Message-ID: <20230723200653.918039652@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Sun, 23 Jul 2023 16:06:26 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org,
+        Mohamed Khalfella <mkhalfella@purestorage.com>
+Subject: [for-linus][PATCH 3/3] tracing/histograms: Return an error if we fail to add histogram to
+ hist_vars list
+References: <20230723200623.034313147@goodmis.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.4 800/800] io_uring: Use io_schedule* in cqring wait
-Content-Language: en-US
-To:     Andres Freund <andres@anarazel.de>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc:     Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230716194949.099592437@linuxfoundation.org>
- <538065ee-4130-6a00-dcc8-f69fbc7d7ba0@kernel.dk>
- <70e5349a-87af-a2ea-f871-95270f57c6e3@sapience.com>
- <2691683.mvXUDI8C0e@natalenko.name>
- <20230723185856.h6vjipo4rguf6emt@awork3.anarazel.de>
-From:   Genes Lists <lists@sapience.com>
-In-Reply-To: <20230723185856.h6vjipo4rguf6emt@awork3.anarazel.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/23/23 14:58, Andres Freund wrote:
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-> Just to confirm I understand: Your concern is how it looks in mpstat, not
-> performance or anything like that?
+Commit 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if
+they have referenced variables") added a check to fail histogram creation
+if save_hist_vars() failed to add histogram to hist_vars list. But the
+commit failed to set ret to failed return code before jumping to
+unregister histogram, fix it.
 
-Right - there is no performance issue or any other issue to my knowledge 
-and cores are idle.
+Link: https://lore.kernel.org/linux-trace-kernel/20230714203341.51396-1-mkhalfella@purestorage.com
 
-So, as you said, its just a small reporting item - which is now quite clear.
+Cc: stable@vger.kernel.org
+Fixes: 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if they have referenced variables")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_events_hist.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-thank you.
-
-gene
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index c8c61381eba4..d06938ae0717 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -6668,7 +6668,8 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
+ 		goto out_unreg;
+ 
+ 	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
+-		if (save_hist_vars(hist_data))
++		ret = save_hist_vars(hist_data);
++		if (ret)
+ 			goto out_unreg;
+ 	}
+ 
+-- 
+2.40.1
