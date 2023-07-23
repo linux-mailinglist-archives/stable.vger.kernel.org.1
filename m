@@ -2,76 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D03475E21B
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F2075E222
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 15:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbjGWNgF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 09:36:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57602 "EHLO
+        id S229468AbjGWNsj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 09:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjGWNgE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:36:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD46710DD;
-        Sun, 23 Jul 2023 06:36:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A9F960CFA;
-        Sun, 23 Jul 2023 13:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FE4C433CB;
-        Sun, 23 Jul 2023 13:36:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690119362;
-        bh=O1IIMN7Y1zRc3XOUmu8VPg3ACsmolQilL9wEXTaUfq0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bEohhuLUK1dSi12/IxXfSkxMEfJgOh0hOz+UucGXozkJpf7axqzuCpVb8Y+hXgCNX
-         SaPf2jkC52Lm1mk0xAnT9v0MwB1AWeT1fEIov9y7rQUG4fEkIlmHDNVR5dhSzy5CU8
-         sXpyAm/oSnTJAtfE5yzVxKS0Jca0FEXYP2mYBl+HfuyM9gjsltwEXfbjtEIRJ2PiO4
-         BE8vBu94NSSU4v8qXxvtB/S72Bh16bAakamyFA35uOLtrZTy3Xp0Ai7vsgXS3ij2aj
-         mx1S+a71fzn2Xa3D33cPycajyhSwu12mbW9UMKHoA4YbLhEUncOv1kBtnGCidfWSwA
-         sQ/j/u+2oigow==
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3a36b52b4a4so2217932b6e.1;
-        Sun, 23 Jul 2023 06:36:02 -0700 (PDT)
-X-Gm-Message-State: ABy/qLa0Y28e2mPMLHDyhmuWsYU8E0eEMyQvZmtmah9Udi2cc6+EK6Hw
-        ucuLhpQ8w1O6DVVsywJ14Emb9FZZk6+0WHNK6Jc=
-X-Google-Smtp-Source: APBJJlEtZ7vv6IbOH84SATHMJCAMxnz2YpuXNOI1/BwoW86mbx9Nm47dGyoVL7wZ1gh1ODC5aHD1JS0QWO0h/EoEPu8=
-X-Received: by 2002:a05:6808:302c:b0:39c:7f78:ba6d with SMTP id
- ay44-20020a056808302c00b0039c7f78ba6dmr6412590oib.19.1690119361932; Sun, 23
- Jul 2023 06:36:01 -0700 (PDT)
+        with ESMTP id S229452AbjGWNsi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 09:48:38 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7CA183
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:48:37 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fbf1b82d9cso26478485e9.2
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 06:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google; t=1690120116; x=1690724916;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3PN0I3mx5kl04z6d12K45HEUmzw2YyaJKMPzfeHMS/0=;
+        b=IRFpxy3yCQOcujvFQiYo66FWbs1p+wUjTTQkvjVjq3Cwvsc7LeJ1vDoRY5cU/9iVlE
+         KSJUOArODalFiVubQuHjppIGW9Z16v+bnuU95XC6XvehH4dwjC5UVP+SHHKNoyGBF6u1
+         CiiYjQQnFqedUryLjnFbhs3Nt4KlJmLC3eFgw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690120116; x=1690724916;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3PN0I3mx5kl04z6d12K45HEUmzw2YyaJKMPzfeHMS/0=;
+        b=kv4nKq7wc8RSSAjWeDiFIPJJW5xsRFwGZ83YQsWefaT7Nfcvt+x2VLs3RmcmydegTq
+         CvWawgHDh1UAfkm7a1ZZBhRlFkPxUzNJFhpooN1KtgddK2TwvapeIC6odfaay3d12nD+
+         73/5/1PTdSWH18HmWoVvIUyWmkKkdxX9RsuBXkNt+UoKl6pz8s/EyHwFROyR87KRISBp
+         GyYs/+YfEhneSK768UKLn0L88X7EF7e3FYhvBpVkMGAMHDLoQki0tf+Hm3WMD6L7Fzp/
+         YsXIuk7D8r/yUgTug+fkvmqVGjHfMbGt9uuCu8KQe6iducFZt2lVDBj4zO4SjJFwAMQG
+         1RcQ==
+X-Gm-Message-State: ABy/qLZXurk+3r+3qSuIuW++b5u/vewrKhZFhEhQmA+3SCDFT6oE/iek
+        oNlPdt0LwcGWiGN4bCHtgv73fg==
+X-Google-Smtp-Source: APBJJlHcP7pcIybgBvAykQIxEsrxYu91K5BDP1h3nVdgLqIQdrKWEghLXIRhOuMyPvLCZ0lI428FTg==
+X-Received: by 2002:a1c:f702:0:b0:3fb:739d:27b2 with SMTP id v2-20020a1cf702000000b003fb739d27b2mr5118831wmh.8.1690120115585;
+        Sun, 23 Jul 2023 06:48:35 -0700 (PDT)
+Received: from tone.k.g (lan.nucleusys.com. [92.247.61.126])
+        by smtp.gmail.com with ESMTPSA id s18-20020a05600c045200b003fc01495383sm10348021wmb.6.2023.07.23.06.48.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Jul 2023 06:48:35 -0700 (PDT)
+From:   Petko Manolov <petko.manolov@konsulko.com>
+To:     leon.anavi@konsulko.com
+Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Andrew Jones <ajones@ventanamicro.com>, stable@vger.kernel.org,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Petko Manolov <petko.manolov@konsulko.com>
+Subject: [PATCH] riscv: Implement missing huge_ptep_get
+Date:   Sun, 23 Jul 2023 16:48:22 +0300
+Message-Id: <20230723134822.617037-7-petko.manolov@konsulko.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230723134822.617037-1-petko.manolov@konsulko.com>
+References: <20230723134822.617037-1-petko.manolov@konsulko.com>
 MIME-Version: 1.0
-References: <20230718055235.1050223-1-ojeda@kernel.org> <CAK7LNAQ-hjW_19fjA+E-bQCrXcVPdN4-GvzAnEnYzna5KRVXew@mail.gmail.com>
- <CANiq72kZjOGvRKoRxtgG=2DhJnMJK9TCQtTmeef_B=nLcLQD6g@mail.gmail.com>
- <CAK7LNASqumGb0xvSa8n4Heasz9BKxgk4mvzNXsfFhZE1G+Bxbg@mail.gmail.com>
- <CANiq72kD2wxXy2ri8sBhVJ4y-JJiq+kYt_MRZwuwB9uGkX-_jQ@mail.gmail.com> <CAK7LNARm1LevTQVw1j5pQjp_gP=6-4CiwXLRDXbVH3bnC0OCxg@mail.gmail.com>
-In-Reply-To: <CAK7LNARm1LevTQVw1j5pQjp_gP=6-4CiwXLRDXbVH3bnC0OCxg@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sun, 23 Jul 2023 22:35:25 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARZaeJ4SzRFo-GUA4Q7DGHwrDshxEMuEDO_N+SPHvof3A@mail.gmail.com>
-Message-ID: <CAK7LNARZaeJ4SzRFo-GUA4Q7DGHwrDshxEMuEDO_N+SPHvof3A@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: avoid creating temporary files
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Raphael Nestler <raphael.nestler@gmail.com>,
-        Andrea Righi <andrea.righi@canonical.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,56 +70,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 23, 2023 at 2:05=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
-> On Sun, Jul 23, 2023 at 12:52=E2=80=AFAM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > On Thu, Jul 20, 2023 at 8:35=E2=80=AFPM Masahiro Yamada <masahiroy@kern=
-el.org> wrote:
-> > >
-> > > Maybe, the following was a breakage.
-> > >
-> > > commit 295d8398c67e314d99bb070f38883f83fe94a97a
-> > > Author: Masahiro Yamada <masahiroy@kernel.org>
-> > > Date:   Sat Jan 7 18:18:15 2023 +0900
-> > >
-> > >     kbuild: specify output names separately for each emission type fr=
-om rustc
-> > >
-> > > Before that, rust_common_cmd had --out-dir.
-> >
-> > That's right, good catch!
-> >
-> > > BTW, do we also need to fix scripts/Makefile.host
-> > > in case the external module Makefile creates host programs?
-> >
-> > Indeed, we need it too. [1] would fix it (tested it with a trivial
-> > out-of-tree Rust hostprog).
-> >
-> > Do you want me to send it separately? i.e. to avoid losing the
-> > `Tested-by`s etc. that we already got for this one, which is the
-> > important one since that actually has users.
-> >
-> > The hostprogs fix is not really critical for stable, since it is
-> > unlikely there are users at all (we just got the first in-tree real
-> > user in the Rust+KUnit integration coming into 6.6), but I guess it
-> > does not hurt for the same reason.
->
->
-> Can you send v2 with the following squashed?
->
->
-> I think it makes sense to fix both if we add
-> Fixes: 295d8398c67e ("kbuild: specify output names separately for each
-> emission type from rustc")
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
+huge_ptep_get must be reimplemented in order to go through all the PTEs
+of a NAPOT region: this is needed because the HW can update the A/D bits
+of any of the PTE that constitutes the NAPOT region.
 
-I dropped v1 for now,
-expecting to get v2 soon.
+Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20230428120120.21620-2-alexghiti@rivosinc.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Petko Manolov <petko.manolov@konsulko.com>
+---
+ arch/riscv/include/asm/hugetlb.h |  3 +++
+ arch/riscv/mm/hugetlbpage.c      | 24 ++++++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
 
+diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hugetlb.h
+index fe6f23006641..ce1ebda1a49a 100644
+--- a/arch/riscv/include/asm/hugetlb.h
++++ b/arch/riscv/include/asm/hugetlb.h
+@@ -36,6 +36,9 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 			       unsigned long addr, pte_t *ptep,
+ 			       pte_t pte, int dirty);
+ 
++#define __HAVE_ARCH_HUGE_PTEP_GET
++pte_t huge_ptep_get(pte_t *ptep);
++
+ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags);
+ #define arch_make_huge_pte arch_make_huge_pte
+ 
+diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+index 238d00bdac14..e0ef56dc57b9 100644
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -3,6 +3,30 @@
+ #include <linux/err.h>
+ 
+ #ifdef CONFIG_RISCV_ISA_SVNAPOT
++pte_t huge_ptep_get(pte_t *ptep)
++{
++	unsigned long pte_num;
++	int i;
++	pte_t orig_pte = ptep_get(ptep);
++
++	if (!pte_present(orig_pte) || !pte_napot(orig_pte))
++		return orig_pte;
++
++	pte_num = napot_pte_num(napot_cont_order(orig_pte));
++
++	for (i = 0; i < pte_num; i++, ptep++) {
++		pte_t pte = ptep_get(ptep);
++
++		if (pte_dirty(pte))
++			orig_pte = pte_mkdirty(orig_pte);
++
++		if (pte_young(pte))
++			orig_pte = pte_mkyoung(orig_pte);
++	}
++
++	return orig_pte;
++}
++
+ pte_t *huge_pte_alloc(struct mm_struct *mm,
+ 		      struct vm_area_struct *vma,
+ 		      unsigned long addr,
+-- 
+2.39.2
 
---=20
-Best Regards
-Masahiro Yamada
