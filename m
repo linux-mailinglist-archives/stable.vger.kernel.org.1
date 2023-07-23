@@ -2,88 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E1975E175
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 12:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36ED575E17C
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 12:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjGWKl4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 06:41:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59302 "EHLO
+        id S229865AbjGWKuj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 06:50:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbjGWKly (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 06:41:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06CEE50;
-        Sun, 23 Jul 2023 03:41:53 -0700 (PDT)
+        with ESMTP id S229862AbjGWKui (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 06:50:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE8AE64;
+        Sun, 23 Jul 2023 03:50:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5569D60C77;
-        Sun, 23 Jul 2023 10:41:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB07C433C8;
-        Sun, 23 Jul 2023 10:41:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690108912;
-        bh=6pfhjlPTOh6AOzRsJbAp4eRsQEhZQt7xA0hkoqbQ1Kg=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D1F460BFF;
+        Sun, 23 Jul 2023 10:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750E7C433CA;
+        Sun, 23 Jul 2023 10:50:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690109433;
+        bh=rpf1pzEGimfS+pD7lRpXpbhbCeda9Jos1hrb2yJB+3o=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BEa+xR13lmIu8EJRQUQjKqCDCGJv3scr1Mo85p1UgRRd0j0mOuMgZE7II8qVsLiM8
-         MMYN/bQZCKmAoWNyr9n36EaHRjBjlwPh+UKufXwkqA5zg4mevkT+ay5K7erd3zWdBX
-         xVMH2BOO6h9g+bO21+TFIyckaqp7QMgtryL6AwtrgkJmOA2FjHxp2I9v+AlsLmk4ys
-         Ffu17WQXZ8KqXFiUy/l6ZrHbMsHJjvJnKW/Rp/rgkJZRrteAtjMwBZTrIVpI4F8ePi
-         2ud+seIAlKqG9Yu0gCgllpFpLB3fl/NgQvLpYD55W93ivF4rrG3cle/oHZ6aES90DD
-         RzaSg8/Jy3xsg==
-Date:   Sun, 23 Jul 2023 11:41:47 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.4 000/292] 6.4.5-rc1 review
-Message-ID: <20230723-antics-disliking-e51f5f376820@spud>
-References: <20230721160528.800311148@linuxfoundation.org>
+        b=AgDxLM3+DwaT9S0gw6BQrgBgnyNIKBC/96qyekEg37ek2YIII/yUKhNVehnNayAkw
+         iGkanKS4hAJRD7NHnXSxf+6P18dlJy+xDjbVhEXKYmA0PwiYnVN7cyhMZCNHyq8Vq0
+         dqkXmgTF2tqJarZJLppEQJTJbkRkWgakaUSI4Wis=
+Date:   Sun, 23 Jul 2023 12:50:30 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc:     stable@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>,
+        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andres Freund <andres@anarazel.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 6.4 800/800] io_uring: Use io_schedule* in cqring wait
+Message-ID: <2023072310-superman-frosted-7321@gregkh>
+References: <20230716194949.099592437@linuxfoundation.org>
+ <20230716195007.731909670@linuxfoundation.org>
+ <12251678.O9o76ZdvQC@natalenko.name>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Y23Encm58GYXonbN"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <12251678.O9o76ZdvQC@natalenko.name>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Jul 23, 2023 at 11:39:42AM +0200, Oleksandr Natalenko wrote:
+> Hello.
+> 
+> On neděle 16. července 2023 21:50:53 CEST Greg Kroah-Hartman wrote:
+> > From: Andres Freund <andres@anarazel.de>
+> > 
+> > commit 8a796565cec3601071cbbd27d6304e202019d014 upstream.
+> > 
+> > I observed poor performance of io_uring compared to synchronous IO. That
+> > turns out to be caused by deeper CPU idle states entered with io_uring,
+> > due to io_uring using plain schedule(), whereas synchronous IO uses
+> > io_schedule().
+> > 
+> > The losses due to this are substantial. On my cascade lake workstation,
+> > t/io_uring from the fio repository e.g. yields regressions between 20%
+> > and 40% with the following command:
+> > ./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
+> > 
+> > This is repeatable with different filesystems, using raw block devices
+> > and using different block devices.
+> > 
+> > Use io_schedule_prepare() / io_schedule_finish() in
+> > io_cqring_wait_schedule() to address the difference.
+> > 
+> > After that using io_uring is on par or surpassing synchronous IO (using
+> > registered files etc makes it reliably win, but arguably is a less fair
+> > comparison).
+> > 
+> > There are other calls to schedule() in io_uring/, but none immediately
+> > jump out to be similarly situated, so I did not touch them. Similarly,
+> > it's possible that mutex_lock_io() should be used, but it's not clear if
+> > there are cases where that matters.
+> > 
+> > Cc: stable@vger.kernel.org # 5.10+
+> > Cc: Pavel Begunkov <asml.silence@gmail.com>
+> > Cc: io-uring@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Signed-off-by: Andres Freund <andres@anarazel.de>
+> > Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
+> > [axboe: minor style fixup]
+> > Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  io_uring/io_uring.c |   15 +++++++++++++--
+> >  1 file changed, 13 insertions(+), 2 deletions(-)
+> > 
+> > --- a/io_uring/io_uring.c
+> > +++ b/io_uring/io_uring.c
+> > @@ -2575,6 +2575,8 @@ int io_run_task_work_sig(struct io_ring_
+> >  static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+> >  					  struct io_wait_queue *iowq)
+> >  {
+> > +	int token, ret;
+> > +
+> >  	if (unlikely(READ_ONCE(ctx->check_cq)))
+> >  		return 1;
+> >  	if (unlikely(!llist_empty(&ctx->work_llist)))
+> > @@ -2585,11 +2587,20 @@ static inline int io_cqring_wait_schedul
+> >  		return -EINTR;
+> >  	if (unlikely(io_should_wake(iowq)))
+> >  		return 0;
+> > +
+> > +	/*
+> > +	 * Use io_schedule_prepare/finish, so cpufreq can take into account
+> > +	 * that the task is waiting for IO - turns out to be important for low
+> > +	 * QD IO.
+> > +	 */
+> > +	token = io_schedule_prepare();
+> > +	ret = 0;
+> >  	if (iowq->timeout == KTIME_MAX)
+> >  		schedule();
+> >  	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
+> > -		return -ETIME;
+> > -	return 0;
+> > +		ret = -ETIME;
+> > +	io_schedule_finish(token);
+> > +	return ret;
+> >  }
+> >  
+> >  /*
+> 
+> Reportedly, this caused a regression as reported in [1] [2] [3]. Not only v6.4.4 is affected, v6.1.39 is affected too.
+> 
+> Reverting this commit fixes the issue.
+> 
+> Please check.
 
---Y23Encm58GYXonbN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Is this also an issue in 6.5-rc2?
 
-On Fri, Jul 21, 2023 at 06:01:49PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.5 release.
-> There are 292 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+thanks,
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-
-Thanks,
-Conor.
-
---Y23Encm58GYXonbN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZL0D6wAKCRB4tDGHoIJi
-0nVYAQDmgO+AR8ya6jXYh0BedeWoIedGUWJHT3jqLbDuAiz1DQEAyP6dqAllOe8G
-tJ4PLfA7lJHSEZesgf0NmvY8o75i+wY=
-=AP5S
------END PGP SIGNATURE-----
-
---Y23Encm58GYXonbN--
+greg k-h
