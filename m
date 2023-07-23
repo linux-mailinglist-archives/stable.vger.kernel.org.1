@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DF5B75E248
-	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6A175E249
+	for <lists+stable@lfdr.de>; Sun, 23 Jul 2023 16:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbjGWOGO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 10:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34142 "EHLO
+        id S229541AbjGWOGR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 10:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjGWOGN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:06:13 -0400
+        with ESMTP id S229537AbjGWOGQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 10:06:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE77F12B
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:06:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B54CE70
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 07:06:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C76F60BB8
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDDBC433C8;
-        Sun, 23 Jul 2023 14:06:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 187A460BB8
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 14:06:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FBBC433C8;
+        Sun, 23 Jul 2023 14:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690121171;
-        bh=5Rvli9ZQPK4FLy3t0m522MKri6kS9mvqCyNPNtPNtpU=;
+        s=korg; t=1690121174;
+        bh=5d/jiIVh2nV1wI/pcgwFVLoma6dUncXnbcXkycSu0CI=;
         h=Subject:To:Cc:From:Date:From;
-        b=O0iRdzGjX5eHIbTqc+4iTdNHym04mRGd7Bm8U94pyX7PS7NFEi92ytLOlsjLwzZhd
-         bzm4lu+HrhDCMoUnO2Bqss15WCqRfl6H9Oro/j5x2BBLm6Rz1bVOLLF5OJY4sYq3ZD
-         CUkqW0g+Nlmly9ptMvXvJtF2yh+Si2aluF89g6xA=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Prevent vtotal from being set to 0" failed to apply to 6.1-stable tree
+        b=TgT8UhLtLh7RYN38oJYDiP/zljeeoSG0rFbp3/OGFUwNNBjAMkCTOW7cko+buZV2N
+         h36o97pwiZPubaXSc+TtU5DbA2BT3nDu6lBSMOLTg3pJDeaW1b9BTfDuR1WRWzzTaC
+         jrwvq2a8t7qNeo9MXYebcIi2KOIwkxzeRSx6huK0=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Prevent vtotal from being set to 0" failed to apply to 5.15-stable tree
 To:     daniel.miess@amd.com, alexander.deucher@amd.com,
         daniel.wheeler@amd.com, haoping.liu@amd.com,
         mario.limonciello@amd.com, nicholas.kazlauskas@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 23 Jul 2023 16:06:01 +0200
-Message-ID: <2023072301-urging-upheld-1851@gregkh>
+Date:   Sun, 23 Jul 2023 16:06:02 +0200
+Message-ID: <2023072302-unengaged-strum-b2ad@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2a9482e55968ed7368afaa9c2133404069117320
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072301-urging-upheld-1851@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072302-unengaged-strum-b2ad@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,15 @@ db4107e92a81 ("drm/amd/display: fix dc/core/dc.c kernel-doc")
 80676936805e ("drm/amd/display: Add Z8 allow states to z-state support list")
 e366f36958f6 ("drm/amd/display: Rework comments on dc file")
 bd829d570773 ("drm/amd/display: Refactor eDP PSR codes")
+6f4f8ff567c4 ("drm/amd/display: Display does not light up after S4 resume")
+4f5bdde386d3 ("drm/amd/display: Update PMFW z-state interface for DCN314")
+8cab4ef0ad95 ("drm/amd/display: Keep OTG on when Z10 is disable")
+1178ac68dc28 ("drm/amd/display: Refactor edp ILR caps codes")
+5d4b59146078 ("drm/amd/display: Add ABM control to panel_config struct.")
+936675464b1f ("drm/amd/display: Add debug option for exiting idle optimizations on cursor updates")
+eccff6cdde6f ("drm/amd/display: Refactor edp panel power sequencer(PPS) codes")
+9f6f6be163df ("drm/amd/display: Add comments.")
+c17a34e0526f ("drm/amd/display: Refactor edp dsc codes.")
 
 thanks,
 
