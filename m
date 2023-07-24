@@ -2,140 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D475575FEAE
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 20:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 418E075FEB0
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 20:02:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229486AbjGXSBX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 14:01:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
+        id S229464AbjGXSCM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 14:02:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbjGXSBW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 14:01:22 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18001E49;
-        Mon, 24 Jul 2023 11:01:21 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2b93fba1f62so66251981fa.1;
-        Mon, 24 Jul 2023 11:01:21 -0700 (PDT)
+        with ESMTP id S229527AbjGXSCL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 14:02:11 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5401E94
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 11:02:09 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-99313a34b2dso682032766b.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 11:02:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690221679; x=1690826479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=THEbzcx3xoXEvYlAjRKvBcVanBYYoQVNYXaib1QFZgY=;
-        b=S4ZsDsooAfiVuW6SIhRmX6Jzg5me/hpoTYcowI1a+YOD1gLtEYSNv+WQvJJR3kRMkh
-         lk/L2fUU7hqas8A7mcOuWvAhME5SUxFL5qcAvXNff3ovTKJHoBrPjmy2Vrx7H2xoRmb2
-         wu5NgQyU7RlmjUOa5R8m2FujkkIdUe8SHiRPZ5F1/aYTesU3yaGYZ3NLAdOHGuEX8c1G
-         Pe2vK0kIdbVWFJONQvKMeFX34yxSBwow68wTs43iKeCVDGk1WZP85EJpspKQG+z00nlJ
-         1hZbNpB914WkQbwtL7C8Vp8kWyMFEn1EqX2HGHKCckOzeN2/BGtQfvf29qOnoHyhvD9F
-         YkMQ==
+        d=linux-foundation.org; s=google; t=1690221727; x=1690826527;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ww9R2x3oxi/S1G/NZ/cLGz6L0X+/XG/qIDLCV0WBdOA=;
+        b=K7Qq68FAYgM/hMm5ZgyuTAqYhwWy2JS//vUqDtmSY3G8w5hSY2aewWXlJOYzhTjpHq
+         2qsqGERb8jtaTtUn9fJ73FnBKNCaP6q2WdnQEPX3IGHW2coj5XBBlBxY4qYatrQy3C0b
+         fOZkGrHmTsMqUtPEjCPesEnm/H5wTaO/Se8Wg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690221679; x=1690826479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=THEbzcx3xoXEvYlAjRKvBcVanBYYoQVNYXaib1QFZgY=;
-        b=XRxgq8xOXjCVHrdn9q5qlw/KT25O/vIKnVOGdyDr2rB3ohAPLrQ6Hhl32CEiKk2+7A
-         tos7+1GAO+e3CulG+YEVkApOhCio0SmDagnas3+HVuYHQeZWS9zAGZoEUzOLvQtgAw77
-         nXbZJodTdV7I6R7j9eGn2389gTTl+buBmYQI+rVZ4vSqE/VgiFqUxibP9ODeENlSP9FV
-         4Wo6VUM8FrvYeLpyJozDD0+7RgHy4u27IxsacqqJBtDU/zmqwlRDSKMjOCNiB8Lqi0qa
-         3+8A9F1zJv2FGjiRjXfIrfUJmzqAyIZBg374lY6/s93Cl7jcPKay3ENF+/SXrVzJguzG
-         5ozQ==
-X-Gm-Message-State: ABy/qLboR+AMb2Tplj9on1/ytKCEOMC1QedVjod1GTkBRttLZRysPdh1
-        DUPxdh7K8g88PIV8kBC9XGvXTRGokfk0TvQDfJDA2g/0
-X-Google-Smtp-Source: APBJJlFBD2oS1VJ5Yf0e+3TmKZzycugLFJ3BZomqEu/aJqn6J6keVWXnXu1FQ36IMm4aLPXpSnfo8szHcxSRSVyvrVE=
-X-Received: by 2002:a2e:9e88:0:b0:2b6:dc55:c3c7 with SMTP id
- f8-20020a2e9e88000000b002b6dc55c3c7mr6471944ljk.20.1690221679073; Mon, 24 Jul
- 2023 11:01:19 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690221727; x=1690826527;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ww9R2x3oxi/S1G/NZ/cLGz6L0X+/XG/qIDLCV0WBdOA=;
+        b=KsyvXD0ctUe0GuvD5OvQ1bkjpIga6qI0CaPZmxVxSpEKT3jha12zrxB9+Wvo6SqDPw
+         YkshAgcyXjEwEVhbYVn9LH+IA4AthNArv3DWtffSzeeig9mNyXZ1TLapDb0uHtqkMoQo
+         z1sBod0881ZNSZGa4HpLzXUaqb99RnuuCeKGixz0l4EoflWTRdHUiUe8KCJezaUoXEXP
+         7c2OMSuIyV9KpuPLxPBcrNf/rN6JmFaNZTQBIc0tLr/DyoN/YukFGlb9+b33mastBUUy
+         Z5AhB4JJWjgl8hVSFS2ymb7bGImSdDqf2/oJQt0VvLCWbWgT86W1a6S/59Zj65tNRHxw
+         6/hw==
+X-Gm-Message-State: ABy/qLaAaT/kyDqJR6qhEpchzSuhFFgExnsBhiAqiSTV1akqQG4EC2Dy
+        rVntP4F1xs8YNFXGyE7XyvyE+dU/vzPz7/QxVLf9N8Fn
+X-Google-Smtp-Source: APBJJlEyou6Hcpmd5/uaVeiMnBBbn90+t6FcQoEzffnjVSg45DL2Nnw2S9Fh3tsdlfk9cpeFnreUGw==
+X-Received: by 2002:a17:906:3147:b0:994:1844:c7d1 with SMTP id e7-20020a170906314700b009941844c7d1mr10795902eje.13.1690221727566;
+        Mon, 24 Jul 2023 11:02:07 -0700 (PDT)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id kk1-20020a170907766100b00997bd42d210sm6908463ejc.205.2023.07.24.11.02.06
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 11:02:06 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-51e99584a82so6607149a12.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 11:02:06 -0700 (PDT)
+X-Received: by 2002:aa7:d653:0:b0:521:7779:d918 with SMTP id
+ v19-20020aa7d653000000b005217779d918mr9172868edr.19.1690221726410; Mon, 24
+ Jul 2023 11:02:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230720085704.190592-1-jolsa@kernel.org> <20230720085704.190592-3-jolsa@kernel.org>
- <0b963b18-4933-3b70-3dc6-6c7150bcf7bb@huaweicloud.com> <ZLp91s9kuOp7kEEA@krava>
-In-Reply-To: <ZLp91s9kuOp7kEEA@krava>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Mon, 24 Jul 2023 11:01:07 -0700
-Message-ID: <CAADnVQ+sBYgDCBUsj8ShBQNYe39ZU=G8+f2XQP8M0fYx7Y34gQ@mail.gmail.com>
-Subject: Re: [PATCHv2 bpf 2/2] bpf: Disable preemption in bpf_event_output
-To:     Jiri Olsa <olsajiri@gmail.com>
-Cc:     Hou Tao <houtao@huaweicloud.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        stable <stable@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-scheren-absegnen-8c807c760ba1@brauner> <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
+ <20230724-gebessert-wortwahl-195daecce8f0@brauner> <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
+ <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
+In-Reply-To: <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 24 Jul 2023 11:01:49 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+Message-ID: <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+Subject: Re: [PATCH] file: always lock position
+To:     Christian Brauner <brauner@kernel.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 5:45=E2=80=AFAM Jiri Olsa <olsajiri@gmail.com> wrot=
-e:
+On Mon, 24 Jul 2023 at 10:46, Christian Brauner <brauner@kernel.org> wrote:
 >
-> On Fri, Jul 21, 2023 at 08:16:14PM +0800, Hou Tao wrote:
-> >
-> >
-> > On 7/20/2023 4:57 PM, Jiri Olsa wrote:
-> > > We received report [1] of kernel crash, which is caused by
-> > > using nesting protection without disabled preemption.
-> > >
-> > > The bpf_event_output can be called by programs executed by
-> > > bpf_prog_run_array_cg function that disabled migration but
-> > > keeps preemption enabled.
-> > >
-> > > This can cause task to be preempted by another one inside the
-> > > nesting protection and lead eventually to two tasks using same
-> > > perf_sample_data buffer and cause crashes like:
-> > >
-> > >   BUG: kernel NULL pointer dereference, address: 0000000000000001
-> > >   #PF: supervisor instruction fetch in kernel mode
-> > >   #PF: error_code(0x0010) - not-present page
-> > >   ...
-> > >   ? perf_output_sample+0x12a/0x9a0
-> > >   ? finish_task_switch.isra.0+0x81/0x280
-> > >   ? perf_event_output+0x66/0xa0
-> > >   ? bpf_event_output+0x13a/0x190
-> > >   ? bpf_event_output_data+0x22/0x40
-> > >   ? bpf_prog_dfc84bbde731b257_cil_sock4_connect+0x40a/0xacb
-> > >   ? xa_load+0x87/0xe0
-> > >   ? __cgroup_bpf_run_filter_sock_addr+0xc1/0x1a0
-> > >   ? release_sock+0x3e/0x90
-> > >   ? sk_setsockopt+0x1a1/0x12f0
-> > >   ? udp_pre_connect+0x36/0x50
-> > >   ? inet_dgram_connect+0x93/0xa0
-> > >   ? __sys_connect+0xb4/0xe0
-> > >   ? udp_setsockopt+0x27/0x40
-> > >   ? __pfx_udp_push_pending_frames+0x10/0x10
-> > >   ? __sys_setsockopt+0xdf/0x1a0
-> > >   ? __x64_sys_connect+0xf/0x20
-> > >   ? do_syscall_64+0x3a/0x90
-> > >   ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> > >
-> > > Fixing this by disabling preemption in bpf_event_output.
-> > >
-> > > [1] https://github.com/cilium/cilium/issues/26756
-> > > Cc: stable@vger.kernel.org
-> > > Reported-by:  Oleg "livelace" Popov <o.popov@livelace.ru>
-> > > Fixes: 2a916f2f546c bpf: Use migrate_disable/enable in array macros a=
-nd cgroup/lirc code.
-> > > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> >
-> > Acked-by: Hou Tao <houtao1@huawei.com>
-> >
-> > With one nit above. The format of the Fixes tags should be 2a916f2f546c
-> > ("bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.=
-")
-> >
->
-> right, sorry about that.. should I resend?
+> I don't think we do but it's something to keep in mind with async io
+> interfaces where the caller is free to create other threads after having
+> registered a request. Depending on how file references are done things
+> can get tricky easily.
 
-Please resend with fixes and acks.
+Honestly, by now, the io_uring code had *better* understand that it
+needs to act exactly like a user thread.
+
+Anything else is simply not acceptable. io_uring has been a huge pain,
+and the only thing that salvaged the horror was that the io_uring
+async code should now *always* be done as a real thread.
+
+If io_uring does something from truly async context (ie interrupts,
+not io_uring threads), then io_uring had better be very *very*
+careful.
+
+And any kind of "from kthread context" is not acceptable. We've been
+there, done that, and have the battle scars. Never again.
+
+So the absolutely *only* acceptable context is "I'm a real
+io_uringthread that looks exactly like a user thread in every which
+way, except I never return to user space".
+
+And if io_uring does absolutely _anything_ to file descriptors from
+any other context, it needs to be fixed *NOW*.
+
+No more games.
+
+And absolutely *nothing* like that disgusting pidfd_getfd().
+
+So the only reason io_uring can do open/close/etc is because from a
+file descriptor standpoint it looks just like any other threaded
+application would look, and all those optimizations like
+
+        if (atomic_read_acquire(&files->count) == 1) {
+
+JustWork(tm).
+
+I think that's the case right now, and it's all good.
+
+But if I'm unaware of some situation where io_uring does things like
+this in some workqueue or other context, people had better holler -
+and fix it.
+
+                   Linus
