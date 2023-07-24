@@ -2,173 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF87E76027C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 00:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F4417602D5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 00:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231262AbjGXWlN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 18:41:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58484 "EHLO
+        id S229557AbjGXW5H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 18:57:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231435AbjGXWlM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 18:41:12 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945611AA
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:41:10 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-78360f61ba0so257151539f.1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:41:10 -0700 (PDT)
+        with ESMTP id S229904AbjGXW5G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 18:57:06 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BC9E5A
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:57:00 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-682a5465e9eso1153580b3a.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:57:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690238470; x=1690843270;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KeP2Bpkp9J7OOE4sWn2E6NWLqeXa4peAEEdE+9mQzSs=;
-        b=uVBTiaICcqS0cbclHhojIy9A/rn1xLF2yWj0IT3eGwYot+z7UEEoFf8vl2QmbV5HZd
-         oZMhnIVX0R9vxalzBDfEdnRYeggfqAWPp4oZ9iIRiYDirNYDPry665l3xLJOv4w9ndoV
-         atAKzCpgip8LDAIXf6qHwji/s1g3JbuWcbuDNTbWkgkfmMoERf1A203T+0pmhikbtKdF
-         ftEXpPbfnz5Wvvbtbdb23i/4K0J3WvPEoAfxj+wRypNZFJmdRvo094Efvgx0Uz399ao+
-         kY/uZo+vG0RSD0FXczITHgWRFih72r4lLaRNLR1zaoxfD2RRB/VOQFv104/3q7VyvDCy
-         wRoA==
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690239420; x=1690844220;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UrBb13udC0Sw0lvgxVDSnhNAbZY+mi9v9znyZvL6wfM=;
+        b=lESGWgwKbHrD7eD+yo7IbzjvnFOa2AQYQC3b7uZhKvqkRZkfnvHzBeHSU0cqXVaXdD
+         AoGoLbgdHZgTvNgHg+Yh5M1cgNPkHBGMX320oz56TCM8ccJX7l1vSHlG9ApRg/Uy5dTS
+         En5mbnU/9wdkBUGFHYU5uHY6qk24AjK0o7+pxHxChhn1wu90qgXY0EH6/ubOvsyjf0F0
+         bCTSdN0Bg8kZLcHZUJRBPGPpQGMYiBuf/wjZ8pZzwPcp6AWo7zjA+gxRxEyrtwEFDnkN
+         pTsrwSB0T88vZpj4Q+w2in78yTsJiFqu/7iGDOBi6IHRa1AaPSTQN5gUZiN3Tz9fjKRk
+         HKJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690238470; x=1690843270;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KeP2Bpkp9J7OOE4sWn2E6NWLqeXa4peAEEdE+9mQzSs=;
-        b=hHMlsDbQHEkEGxCXGkSaL/oWp0wqQh+BAcSYx13A1pVc5Rv4ktkSeBO2PVyuHVHFaP
-         lxDAXIgQXFxIyz9bh9Gxo399skd4fj8V6bfPybbAdpwZtc6/DBqrNHEd6eL5jvDKOqs5
-         cax9rQHdylMXTYuxfxAZA78ZXoTDkpX1RyfcXJ0ec69yHi/rfdrBEIJ9D0Zsr6lx6EsC
-         9cvp2R006SFGa/oknAzvEneW3uaGAYoe/l2qOEPQPbCmJppfIBkfV6N2bI0yQo4zyvoS
-         FcO593cJFPvhwzoncD7tUbKr6JDdVUNJ/QwLdvuDeNTwN0QlEbXcAQh1P2Pnd9JHNZBQ
-         Nx5Q==
-X-Gm-Message-State: ABy/qLZc3xqNr8wwpFS15vdAdN4Iip05Nj4nACve+SL/On1Wufs3Apta
-        0DLdNyzGh3yuIYbZ5DV0AxhtQw==
-X-Google-Smtp-Source: APBJJlEhDUh7RSS2Z2tTSspy5ELCXvyGnC/B2CaIbRlOt16SjoWMnBbRRS+8HrDzVxydj5/qeS3lcg==
-X-Received: by 2002:a5d:9b8f:0:b0:783:5e20:768d with SMTP id r15-20020a5d9b8f000000b007835e20768dmr1134570iom.18.1690238469994;
-        Mon, 24 Jul 2023 15:41:09 -0700 (PDT)
-Received: from localhost.localdomain (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
-        by smtp.gmail.com with ESMTPSA id gv18-20020a0566382e5200b0042b1297468esm3103953jab.51.2023.07.24.15.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 15:41:08 -0700 (PDT)
-From:   Alex Elder <elder@linaro.org>
-To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Cc:     dianders@chromium.org, caleb.connolly@linaro.org, mka@chromium.org,
-        evgreen@chromium.org, andersson@kernel.org,
-        quic_cpratapa@quicinc.com, quic_avuyyuru@quicinc.com,
-        quic_jponduru@quicinc.com, quic_subashab@quicinc.com,
-        elder@kernel.org, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH net] net: ipa: only reset hashed tables when supported
-Date:   Mon, 24 Jul 2023 17:41:06 -0500
-Message-Id: <20230724224106.1688869-1-elder@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20221208; t=1690239420; x=1690844220;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UrBb13udC0Sw0lvgxVDSnhNAbZY+mi9v9znyZvL6wfM=;
+        b=eMaEDz5BCLvvVQ2vtGhoLe7cv+ffnEjuXEZM6ll6WdMYvMeyByVu2jl1t0Y03eaPof
+         ZAUq1cvXEUOEK/eqotZ6HZhle1p3MIo+Ywttmapdm1mWPYg4Zbk/k127+t+7N+vbb94z
+         Rhu1AuxA2lQk1rxsK+4tyw/VrAJu0PLwGkP2Gt/G1Wa4HV/Ty5hOEW641/LWBVmsj3LF
+         6l9VmLA+gxZdxuxsS8jfwmrAkXtYZn5s3rFk2h2s5+lX2kBbpL1cbfYZkok5OqM0NiPQ
+         dKEbwLVm6161Sm7JwOJqX1HoFUDbRR1Gu9xbVaQLifO/QKmYY/ACjUGoYYMGaT1UKcmV
+         55eA==
+X-Gm-Message-State: ABy/qLZfL7yApAyyjY0wS3SD0zzWCCuR2A+4OxvgIVr41EFazBargq5z
+        5iDAXbP/feo+uLMqijiZsmk0iQ==
+X-Google-Smtp-Source: APBJJlHzOj52nENWFGfKQ1Ibk02D3ClkkpbgfLa6YtnLuKXCpqfiTDI1LkP79vTn6z0iGFufaZh5Aw==
+X-Received: by 2002:a05:6a20:160d:b0:111:a0e5:d2b7 with SMTP id l13-20020a056a20160d00b00111a0e5d2b7mr14464498pzj.4.1690239420187;
+        Mon, 24 Jul 2023 15:57:00 -0700 (PDT)
+Received: from [192.168.1.136] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id g14-20020a62e30e000000b006579b062d5dsm8232945pfh.21.2023.07.24.15.56.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 15:56:59 -0700 (PDT)
+Message-ID: <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
+Date:   Mon, 24 Jul 2023 16:56:58 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] file: always lock position
+Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christian Brauner <brauner@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>, Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-scheren-absegnen-8c807c760ba1@brauner>
+ <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
+ <20230724-gebessert-wortwahl-195daecce8f0@brauner>
+ <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
+ <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
+ <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+ <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
+ <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
+ <20230724-geadelt-nachrangig-07e431a2f3a4@brauner>
+ <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Last year, the code that manages GSI channel transactions switched
-from using spinlock-protected linked lists to using indexes into the
-ring buffer used for a channel.  Recently, Google reported seeing
-transaction reference count underflows occasionally during shutdown.
+On 7/24/23 4:25?PM, Linus Torvalds wrote:
+> On Mon, 24 Jul 2023 at 11:48, Christian Brauner <brauner@kernel.org> wrote:
+>>
+>> It's really just keeping in mind that refcount rules change depending on
+>> whether fds or fixed files are used.
+> 
+> This sentence still worries me.
+> 
+> Those fixed files had better have their own refcounts from being
+> fixed. So the rules really shouldn't change in any way what-so-ever.
+> So what exactly are you alluding to?
 
-Doug Anderson found a way to reproduce the issue reliably, and
-bisected the issue to the commit that eliminated the linked lists
-and the lock.  The root cause was ultimately determined to be
-related to unused transactions being committed as part of the modem
-shutdown cleanup activity.  Unused transactions are not normally
-expected (except in error cases).
+They do, but they only have a single reference, which is what fixes them
+into the io_uring file table for fixed files. With the patch from the
+top of this thread, that should then be fine as we don't need to
+artificially elevator the ref count more than that.
 
-The modem uses some ranges of IPA-resident memory, and whenever it
-shuts down we zero those ranges.  In ipa_filter_reset_table() a
-transaction is allocated to zero modem filter table entries.  If
-hashing is not supported, hashed table memory should not be zeroed.
-But currently nothing prevents that, and the result is an unused
-transaction.  Something similar occurs when we zero routing table
-entries for the modem.
-
-By preventing any attempt to clear hashed tables when hashing is not
-supported, the reference count underflow is avoided in this case.
-
-Note that there likely remains an issue with properly freeing unused
-transactions (if they occur due to errors).  This patch addresses
-only the underflows that Google originally reported.
-
-Fixes: d338ae28d8a8 ("net: ipa: kill all other transaction lists")
-Cc: <stable@vger.kernel.org>    # 6.1.x
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Alex Elder <elder@linaro.org>
----
- drivers/net/ipa/ipa_table.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ipa/ipa_table.c b/drivers/net/ipa/ipa_table.c
-index 510ff2dc8999a..cd81dd916c29e 100644
---- a/drivers/net/ipa/ipa_table.c
-+++ b/drivers/net/ipa/ipa_table.c
-@@ -311,16 +311,15 @@ static int ipa_filter_reset(struct ipa *ipa, bool modem)
- 	if (ret)
- 		return ret;
- 
--	ret = ipa_filter_reset_table(ipa, IPA_MEM_V4_FILTER_HASHED, modem);
--	if (ret)
--		return ret;
--
- 	ret = ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER, modem);
-+	if (ret || !ipa_table_hash_support(ipa))
-+		return ret;
-+
-+	ret = ipa_filter_reset_table(ipa, IPA_MEM_V4_FILTER_HASHED, modem);
- 	if (ret)
- 		return ret;
--	ret = ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER_HASHED, modem);
- 
--	return ret;
-+	return ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER_HASHED, modem);
- }
- 
- /* The AP routes and modem routes are each contiguous within the
-@@ -329,11 +328,12 @@ static int ipa_filter_reset(struct ipa *ipa, bool modem)
-  * */
- static int ipa_route_reset(struct ipa *ipa, bool modem)
- {
-+	bool hash_support = ipa_table_hash_support(ipa);
- 	struct gsi_trans *trans;
- 	u16 first;
- 	u16 count;
- 
--	trans = ipa_cmd_trans_alloc(ipa, 4);
-+	trans = ipa_cmd_trans_alloc(ipa, hash_support ? 4 : 2);
- 	if (!trans) {
- 		dev_err(&ipa->pdev->dev,
- 			"no transaction for %s route reset\n",
-@@ -350,12 +350,14 @@ static int ipa_route_reset(struct ipa *ipa, bool modem)
- 	}
- 
- 	ipa_table_reset_add(trans, false, first, count, IPA_MEM_V4_ROUTE);
--	ipa_table_reset_add(trans, false, first, count,
--			    IPA_MEM_V4_ROUTE_HASHED);
--
- 	ipa_table_reset_add(trans, false, first, count, IPA_MEM_V6_ROUTE);
--	ipa_table_reset_add(trans, false, first, count,
--			    IPA_MEM_V6_ROUTE_HASHED);
-+
-+	if (hash_support) {
-+		ipa_table_reset_add(trans, false, first, count,
-+				    IPA_MEM_V4_ROUTE_HASHED);
-+		ipa_table_reset_add(trans, false, first, count,
-+				    IPA_MEM_V6_ROUTE_HASHED);
-+	}
- 
- 	gsi_trans_commit_wait(trans);
- 
 -- 
-2.34.1
+Jens Axboe
 
