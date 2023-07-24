@@ -2,61 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E15475FA97
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 17:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D17B75FADF
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 17:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230486AbjGXPTA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 11:19:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
+        id S231409AbjGXPf4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 11:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231131AbjGXPS5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 11:18:57 -0400
-Received: from frasgout11.his.huawei.com (unknown [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2DA10EC;
-        Mon, 24 Jul 2023 08:18:51 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4R8k6V1swTz9yGhH;
-        Mon, 24 Jul 2023 23:07:30 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-        by APP2 (Coremail) with SMTP id GxC2BwCHTlU3lr5kJcTzBA--.28220S4;
-        Mon, 24 Jul 2023 16:18:38 +0100 (CET)
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     casey@schaufler-ca.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com
-Cc:     linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v2 2/5] smack: Handle SMACK64TRANSMUTE in smack_inode_setsecurity()
-Date:   Mon, 24 Jul 2023 17:13:38 +0200
-Message-Id: <20230724151341.538889-3-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230724151341.538889-1-roberto.sassu@huaweicloud.com>
-References: <20230724151341.538889-1-roberto.sassu@huaweicloud.com>
+        with ESMTP id S229578AbjGXPfz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 11:35:55 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A779CF
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 08:35:54 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3a5ad21a1f9so887738b6e.2
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 08:35:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google; t=1690212953; x=1690817753;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oKZv/rBmUS8jYpb20v0bLOMjZtXNWMA7dW9EuTAoCFk=;
+        b=kXfW6CLF0OSdXza+/b10cNHYYi7dagRWPLZb23nfItK9QmOO0FcMPU1H66eUvcqi5m
+         bVsNXcfUT4MsQ6YXPWMS+dUmtY8E8GTiNz5KEBVJZMIF3LF/ruzurtduAsbiDsowpTGP
+         2d/VlfNHqamUE4ayamTMkT/jzy39DAKXe0idnmfQ8OhhqCRYoI8CQNDMtO2QY57bHYDb
+         RQ26AYVeyU+meLr02jrmMkgcpae0j3wVXw5OEriXC4X5Mz46RTCz+KAAWauCYacpIh0y
+         iHZe1DrQRBC9GJT8z2t89iuj1ihdutxQUec4Hqi4y1stF472GRok/pziJAu7mjqljp1T
+         FJLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690212953; x=1690817753;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oKZv/rBmUS8jYpb20v0bLOMjZtXNWMA7dW9EuTAoCFk=;
+        b=bT+5vB2U/Xep0ygXm3ZG5VVXZRMtKIs8KK3z3A49UsM+0pOcFgAZx/1TtBZslgfkF9
+         oMPFyO/K7AnPZUJhur0VhRlICw7jTejkN8IjhRc51EqypEngJvKzbyU0bkMTgU+Kefq6
+         YPw5HsEuxax/1gUpK1A1osh6X+Mm8p2DgAyS8wBoNo//0Yv+Dip59rTcWqi/9B3tHHlZ
+         FwCxgtYJsWpC14oeYFC0KdiKvzfi3MnBVUs/UOer4xTUUbxA0keBNjPHHmhnTlMYDVv9
+         ar/Kh2v99/uGDCNplVVj3woXR8L9i2EeMtbiNb59GFXrROOd3nODYX2F6S11BYGhZPGW
+         Q13g==
+X-Gm-Message-State: ABy/qLa0OXQzuyMTOvEusbEFkDtWMUJehgSJxEYiozB9XEiJXt5/RUSV
+        9uq+JoyoXhu2wegWxYCk5Q/L4AAxX5jipRwkqNCaZQ==
+X-Google-Smtp-Source: APBJJlFC27Fs2FQEX6/uDWYX3uVjauBNtGtTmosdOo0LpcFraWNWeDabeLTKObjIMXvb/cfgKzxEeXkoh90w1rflBig=
+X-Received: by 2002:a05:6808:f01:b0:398:34da:daad with SMTP id
+ m1-20020a0568080f0100b0039834dadaadmr13502844oiw.51.1690212953373; Mon, 24
+ Jul 2023 08:35:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GxC2BwCHTlU3lr5kJcTzBA--.28220S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7Wr15tF17uw4xtrWfZFyxXwb_yoWkZFg_Wr
-        1jya4kXrs8A3W3Wa97Ar1Fvr92g3y8Xr1rW3Wft343Za4rXr1kta15Jry5WFW5Zw1xJ397
-        CFn8WFyfJw12qjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbsAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
-        Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r15M2
-        8IrcIa0xkI8VCY1x0267AKxVW8JVW5JwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK
-        021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r
-        4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F4U
-        JVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7V
-        C0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j
-        6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-        x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-        UI43ZEXa7IU8fcTPUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAIBF1jj5DcNQAAsF
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        MAY_BE_FORGED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,RDNS_DYNAMIC,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+From:   Phil Elwell <phil@raspberrypi.com>
+Date:   Mon, 24 Jul 2023 16:35:43 +0100
+Message-ID: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
+Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
+To:     axboe@kernel.dk
+Cc:     andres@anarazel.de, asml.silence@gmail.com, david@fromorbit.com,
+        hch@lst.de, io-uring@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-xfs@vger.kernel.org,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,38 +65,17 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+Hi Andres,
 
-If the SMACK64TRANSMUTE xattr is provided, and the inode is a directory,
-update the in-memory inode flags by setting SMK_INODE_TRANSMUTE.
+With this commit applied to the 6.1 and later kernels (others not
+tested) the iowait time ("wa" field in top) in an ARM64 build running
+on a 4 core CPU (a Raspberry Pi 4 B) increases to 25%, as if one core
+is permanently blocked on I/O. The change can be observed after
+installing mariadb-server (no configuration or use is required). After
+reverting just this commit, "wa" drops to zero again.
 
-Cc: stable@vger.kernel.org
-Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- security/smack/smack_lsm.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+I can believe that this change hasn't negatively affected performance,
+but the result is misleading. I also think it's pushing the boundaries
+of what a back-port to stable should do.
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index e599ce9453c..9eae830527d 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -2804,6 +2804,15 @@ static int smack_inode_setsecurity(struct inode *inode, const char *name,
- 	if (value == NULL || size > SMK_LONGLABEL || size == 0)
- 		return -EINVAL;
- 
-+	if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
-+		if (!S_ISDIR(inode->i_mode) || size != TRANS_TRUE_SIZE ||
-+		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
-+			return -EINVAL;
-+
-+		nsp->smk_flags |= SMK_INODE_TRANSMUTE;
-+		return 0;
-+	}
-+
- 	skp = smk_import_entry(value, size);
- 	if (IS_ERR(skp))
- 		return PTR_ERR(skp);
--- 
-2.34.1
-
+Phil
