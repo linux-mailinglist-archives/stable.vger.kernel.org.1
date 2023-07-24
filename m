@@ -2,93 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CC2975E7A9
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 03:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E533475E7F0
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 03:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231347AbjGXB3m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 21:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58526 "EHLO
+        id S231531AbjGXBgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 21:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231335AbjGXB22 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 21:28:28 -0400
+        with ESMTP id S230472AbjGXBgR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 21:36:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A985E212E;
-        Sun, 23 Jul 2023 18:25:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E4C1994;
+        Sun, 23 Jul 2023 18:32:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62E9160F7B;
-        Mon, 24 Jul 2023 01:24:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5D3C433C9;
-        Mon, 24 Jul 2023 01:24:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1355060F5A;
+        Mon, 24 Jul 2023 01:31:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D1DC433C9;
+        Mon, 24 Jul 2023 01:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690161892;
-        bh=3ASJJggsxaos/WuiwhkJ0XLXgPLaNAuVAqbfvrCOV8A=;
+        s=k20201202; t=1690162303;
+        bh=ajbydh6J7RiNdqCXQT3mKx9KBNV0cMbI9Ija70sq5+g=;
         h=From:To:Cc:Subject:Date:From;
-        b=GwrV7vYKkI2+HIH58UjSlUNOuvTqKo/0R0UEbuZXIXLHaKbttjV3B4pFPjHIfehW6
-         R/PJn+WzFZt6JGKVoQrP88mzfKtClqNCNYmwLxQ34L79VDzb1agjxKNjqeYg+lyg1j
-         zYftE9hx+kpEASqYSjE3m8DWA/2JLVzWsnGh/NHMH8FGvzddV0ghnund+WcZbYhDOE
-         d0gsCyX/th2bXBZ3IbXfk2qZCJLYuyDBat08NMPA9OtW8l0m0L1b8h0ossAmXiXl7C
-         q9WaMNIKXeZ5pPKhxMGX3mvXX/Ka5gOYo+0EAJT2ug2hOaqxQx2RrYA7WgJ7i3U53D
-         foa6hOBbpoNkQ==
+        b=OLl6ozcZiKMZ8Qn5ZfnINaAd4ktJznJ2LUCTYgb6Z7CHwUZepdlMcQnu1B5N20O+E
+         6pz1ZDCmt5iGzGMZmLO1qL08SX+7HMLgBVH4nSzjrM0XdqlFGfhccz43z3cwVKPzmK
+         o5PiTf4iBxAu01Lbdu/wmztImaYcfCucT4ZiP4WdpV+LVm1qxhNMhZkUvTna9Pmplm
+         c6RxgBbiVttgMQYzRRLXzFQs+DDvNCRzId2QkMU3guRhCgMFZauYFw9HvvYJMU1Zm0
+         /i7g6AXIuAAipOkWDeorRGCCbFQl8UpdtOh+nimgzmqivScQ1V8fXIbRaw1eRPIxnj
+         Es6uqc4/KFl8A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     hackyzh002 <hackyzh002@gmail.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>, airlied@linux.ie,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.14 1/9] drm/radeon: Fix integer overflow in radeon_cs_parser_init
-Date:   Sun, 23 Jul 2023 21:24:35 -0400
-Message-Id: <20230724012450.2320077-1-sashal@kernel.org>
+Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>, jslaby@suse.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.4 01/40] serial: stm32: Ignore return value of uart_remove_one_port() in .remove()
+Date:   Sun, 23 Jul 2023 21:31:01 -0400
+Message-Id: <20230724013140.2327815-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.320
+X-stable-base: Linux 6.4.5
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: hackyzh002 <hackyzh002@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit f828b681d0cd566f86351c0b913e6cb6ed8c7b9c ]
+[ Upstream commit 6bd6cd29c92401a101993290051fa55078238a52 ]
 
-The type of size is unsigned, if size is 0x40000000, there will be an
-integer overflow, size will be zero after size *= sizeof(uint32_t),
-will cause uninitialized memory to be referenced later
+Returning early from stm32_usart_serial_remove() results in a resource
+leak as several cleanup functions are not called. The driver core ignores
+the return value and there is no possibility to clean up later.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: hackyzh002 <hackyzh002@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+uart_remove_one_port() only returns non-zero if there is some
+inconsistency (i.e. stm32_usart_driver.state[port->line].uart_port == NULL).
+This should never happen, and even if it does it's a bad idea to exit
+early in the remove callback without cleaning up.
+
+This prepares changing the prototype of struct platform_driver::remove to
+return void. See commit 5c5a7680e67b ("platform: Provide a remove callback
+that returns no value") for further details about this quest.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230512173810.131447-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_cs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/stm32-usart.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_cs.c b/drivers/gpu/drm/radeon/radeon_cs.c
-index 1ae31dbc61c64..5e61abb3dce5c 100644
---- a/drivers/gpu/drm/radeon/radeon_cs.c
-+++ b/drivers/gpu/drm/radeon/radeon_cs.c
-@@ -265,7 +265,8 @@ int radeon_cs_parser_init(struct radeon_cs_parser *p, void *data)
- {
- 	struct drm_radeon_cs *cs = data;
- 	uint64_t *chunk_array_ptr;
--	unsigned size, i;
-+	u64 size;
-+	unsigned i;
- 	u32 ring = RADEON_CS_RING_GFX;
- 	s32 priority = 0;
+diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
+index 1e38fc9b10c11..e9e11a2596211 100644
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -1755,13 +1755,10 @@ static int stm32_usart_serial_remove(struct platform_device *pdev)
+ 	struct uart_port *port = platform_get_drvdata(pdev);
+ 	struct stm32_port *stm32_port = to_stm32_port(port);
+ 	const struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+-	int err;
+ 	u32 cr3;
  
+ 	pm_runtime_get_sync(&pdev->dev);
+-	err = uart_remove_one_port(&stm32_usart_driver, port);
+-	if (err)
+-		return(err);
++	uart_remove_one_port(&stm32_usart_driver, port);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 -- 
 2.39.2
 
