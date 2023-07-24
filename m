@@ -2,55 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2043B75FC7D
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 18:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1AFF75FC88
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 18:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231680AbjGXQq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 12:46:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39790 "EHLO
+        id S229486AbjGXQtE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 12:49:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbjGXQqW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 12:46:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309DD10C3;
-        Mon, 24 Jul 2023 09:46:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AEB4F61299;
-        Mon, 24 Jul 2023 16:46:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495FBC433C8;
-        Mon, 24 Jul 2023 16:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690217169;
-        bh=viJrJM5gS3p8Ik0p/RNEGOXpE1eow1dw+HxX06Fwphs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k65dYZsip/x/uqx7HiaLEfE8TPWOHPKf98o9D0Pdmwq61dM+687rnsJCp9+zDdoX8
-         B1SNesz3mYecL/NoymCoXgMHuCZ+oJGL7kxaig082lQb7HKLvHYRRcqGF+r7pk20HP
-         SvUM9yGcXFbo1ud0xoYRvp9uueQq1oS8fHhfqLuCa92/kVkBGynmGovMTRDdPRj9zG
-         eh6+Jl03hVjaLF8avj1H9xL0x00f83+28snM3wQuumx9TXCQDZbAYs5oon0jmPJcgH
-         +5ok2yYmjJnELTd/llhhzvwWuY6qWacfDHhxg95Bbu8RO+bzf4gO7ti5G1CTK9gT8l
-         4pOiOrIDnFhTA==
-Date:   Mon, 24 Jul 2023 18:46:04 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] file: always lock position
-Message-ID: <20230724-pyjama-papier-9e4cdf5359cb@brauner>
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+        with ESMTP id S230083AbjGXQsz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 12:48:55 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B438A10E7
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:48:47 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-d167393b95aso285431276.0
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:48:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google; t=1690217327; x=1690822127;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uw+XohLghVtCiGSKeyi68igmJFzrXC/ki8Vbiy7Xrtc=;
+        b=BBex3Ly5/YN6q1aKSFxsy5pI6vMtkyehlBzSB6vAtLDKU1sJXbQfspIWohjXvRwuNE
+         Qp2UFjzxprgfAgJIZ3HzieJpFAxvylorM4IOmEb6goaVtkbrT61FVO/mgf/JsCsFVQ8A
+         O9RsLphxN0IfGAyKZIH9dPxoapCeM8Yd/2NtOeqkdtiRBWjMHpk6VBYKhUsAarSvfpME
+         UwEoFlUXyA3pArnmlvRn2ZzMEhLONBBwS8udbD+BMRFDdpvtGyN6Huuc1fY/6XKDggB2
+         trIS4+nB2QmQaTR5scBWjue2/6+xMjvE5zuFBgTVnOY0OEN6lTcv4zizOg8J36CsQNeB
+         exgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690217327; x=1690822127;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uw+XohLghVtCiGSKeyi68igmJFzrXC/ki8Vbiy7Xrtc=;
+        b=ELkJSEG2/oRFpyLljW8lMuQUyIHrH1S/UNkH5ERxyvaMJu+f3b3g5qeEUBU2GVWZ3z
+         no1cLWRB+nYX44u69pmRoI5R3E9ObvIv4W6NjvA5XqwZvtILYX0VLQiOPbFfPFgSvlMb
+         jHSLqxq5JWoWX0cGUlrw1BCJqW1EyYgIvNm8be+y1lHeI+1aHKwRnNdZGPNJvFrIVJgV
+         K1r2yC8nuM/ytAAAGmgeT5Vjz1GieAu8HpwJCDVR8hZE3SfyFPzNruQkjYXZU7MfCVU/
+         GETSGj06bdBmWFHH81rBVbb7DxhjLpQfqFkV4b6u+wWTsvthdk2zl7jS0W8oc+ysJmrO
+         g1IA==
+X-Gm-Message-State: ABy/qLYjT7svVU9SraONuAPjFW3S4dCSlYJ0HN/tKD3zkKrj+WT2Sm8J
+        cR2uwWdrHhrhagxrntEFzNN3yFQKg9RYtvGH4w6p3Gq5RjmBA+cCYy8=
+X-Google-Smtp-Source: APBJJlHrHEP3Xu8xMLETOrLzToY6wrT3LbLCWDMMaL1wSC3hhrhC48r6ZgL8n3iw0rRt98ZnZSS0iNTinWr1GQiWfTs=
+X-Received: by 2002:a25:5507:0:b0:d01:a2e6:a3be with SMTP id
+ j7-20020a255507000000b00d01a2e6a3bemr7232107ybb.5.1690217326963; Mon, 24 Jul
+ 2023 09:48:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
+ <2023072438-aftermath-fracture-3dff@gregkh> <140065e3-0368-0b5d-8a0d-afe49b741ad2@kernel.dk>
+ <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk> <CAMEGJJ3SjWdJFwzB+sz79ojWqAAMULa2CFAas0tv+JJLJMwoGQ@mail.gmail.com>
+ <0ae07b66-956a-bb62-e4e8-85fa5f72362f@kernel.dk>
+In-Reply-To: <0ae07b66-956a-bb62-e4e8-85fa5f72362f@kernel.dk>
+From:   Phil Elwell <phil@raspberrypi.com>
+Date:   Mon, 24 Jul 2023 17:48:36 +0100
+Message-ID: <CAMEGJJ0oNGBg=9jRogsstcYCBUVnDGpuijwXVZZQEJr=2awaqA@mail.gmail.com>
+Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, andres@anarazel.de,
+        asml.silence@gmail.com, david@fromorbit.com, hch@lst.de,
+        io-uring@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-xfs@vger.kernel.org, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,16 +71,25 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 08:53:32AM -0700, Linus Torvalds wrote:
-> Is it too late to just fix pidfd_getfd() to duplicate the 'struct
-> file', and act like a new open, and act like /proc/<pid>/fd/<xyz>?
+Hi Jens,
 
-So thinking a little about it I think that doesn't work.
-/proc/<pid>/fd/<xyz> does a reopen and for good reasons. The original
-open will have gone through the module's/subsytem's ->open() method
-which might stash additional refcounted data in e.g., file->private_data
-if we simply copy that file or sm then we risk UAFs. If we don't skip
-->open() though and effectively emulate /proc/<pid>/fd/<xyz> completely
-then we break any such use-cases where a socket or something else is
-shared as they cannot be reopened. So the module/subsystem really needs
-to be informed that a new struct file is created and not simply refd.
+On Mon, 24 Jul 2023 at 17:08, Jens Axboe <axboe@kernel.dk> wrote:
+>
+> On 7/24/23 10:07?AM, Phil Elwell wrote:
+> >> Even though I don't think this is an actual problem, it is a bit
+> >> confusing that you get 100% iowait while waiting without having IO
+> >> pending. So I do think the suggested patch is probably worthwhile
+> >> pursuing. I'll post it and hopefully have Andres test it too, if he's
+> >> available.
+> >
+> > If you CC me I'll happily test it for you.
+>
+> Here it is.
+
+< snip >
+
+Thanks, that works for me on top of 6.5-rc3. Going to 6.1 is a
+non-trivial (for me) back-port - the switch from "ret = 0" in 6.5 to
+"ret = 1" in 6.1 is surprising.
+
+Phil
