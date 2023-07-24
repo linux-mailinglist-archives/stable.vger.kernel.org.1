@@ -2,103 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AE9075F789
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 14:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B9D75F7AB
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 15:01:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbjGXM7B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 08:59:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49018 "EHLO
+        id S231435AbjGXNBG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 09:01:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232103AbjGXM6l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 08:58:41 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB1E46592
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:55:32 -0700 (PDT)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qNv3m-0003xy-60; Mon, 24 Jul 2023 14:53:10 +0200
-Received: from pengutronix.de (unknown [172.20.34.65])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 7BE8F1F883E;
-        Mon, 24 Jul 2023 12:53:06 +0000 (UTC)
-Date:   Mon, 24 Jul 2023 14:53:05 +0200
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Oliver Hartkopp <socketcan@hartkopp.net>
-Cc:     Eric Dumazet <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-can@vger.kernel.org, eric.dumazet@gmail.com,
-        syzbot <syzkaller@googlegroups.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        with ESMTP id S231347AbjGXNAn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 09:00:43 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815E446AB
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:58:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690203498; x=1721739498;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cKQb0hHyw62+3w8EDhb99A3vugN+bsNLMvCSG6tr08s=;
+  b=UGgCu5fnnIGQOi8aAetmLu6refWSe/abj1ZGGrU4T76j95oyWGWDXUyb
+   2xWQfKwIOAJql7XEkDISrGWRux+CswAls5Hsx2qo8yeHO85YLStT+7z61
+   jhwk3X6kpLfI0yzNB1UwsYITdnzqMSwGDAUCAQWz/bIJRQ4pT8+vSoA53
+   9eS0gh5LYgBd7GMunY8dtRxkpV2LskmYfhYRR6sEhsnjT9xbnN4Rdfuaa
+   lzzaUSN2BIEPTrZn4+B4/QNeXf8J0fgWHSZ2khH3H6A/h4LQHACViKkhJ
+   H1cmNka1tiiRE821qnKRtmZ4BRIsoqqJr+5jQKhtU0I95bLAt6vhzX0pf
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="370099780"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="370099780"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 05:56:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="849625005"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="849625005"
+Received: from srichara-mobl.amr.corp.intel.com (HELO localhost.localdomain) ([10.209.170.186])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 05:56:42 -0700
+From:   Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To:     Intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
         stable@vger.kernel.org
-Subject: Re: [PATCH net] can: raw: fix lockdep issue in raw_release()
-Message-ID: <20230724-bubble-grasp-b7e65af54bb9-mkl@pengutronix.de>
-References: <20230720114438.172434-1-edumazet@google.com>
- <35c85eb5-24aa-d948-516a-72fa7db28c88@hartkopp.net>
+Subject: [PATCH] drm/i915: Avoid GGTT flushing on non-GGTT paths of i915_vma_pin_iomap
+Date:   Mon, 24 Jul 2023 13:56:33 +0100
+Message-Id: <20230724125633.1490543-1-tvrtko.ursulin@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rviok646mxfd6hxt"
-Content-Disposition: inline
-In-Reply-To: <35c85eb5-24aa-d948-516a-72fa7db28c88@hartkopp.net>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
---rviok646mxfd6hxt
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Commit 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is available")
+added a code path which does not map via GGTT, but was still setting the
+ggtt write bit, and so triggering the GGTT flushing.
 
-On 24.07.2023 14:49:28, Oliver Hartkopp wrote:
-> Hello Eric, Jakub,
->=20
-> the patch that needs to be fixed here is currently already on its way into
-> the stable trees:
->=20
-> > Fixes: ee8b94c8510c ("can: raw: fix receiver memory leak")
->=20
-> Should this patch go through the linux-can tree or would somebody like to
-> apply it directly to the net tree?
+Fix it by not setting that bit unless the GGTT mapping path was used, and
+replace the flush with wmb() in i915_vma_flush_writes().
 
-I'll send a PR including this fix today.
+This also works for the i915_gem_object_pin_map path added in
+d976521a995a ("drm/i915: extend i915_vma_pin_iomap()").
 
-Marc
+It is hard to say if the fix has any observable effect, given that the
+write-combine buffer gets flushed from intel_gt_flush_ggtt_writes too, but
+apart from code clarity, skipping the needless GGTT flushing could be
+beneficial on platforms with non-coherent GGTT. (See the code flow in
+intel_gt_flush_ggtt_writes().)
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Fixes: 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is available")
+References: d976521a995a ("drm/i915: extend i915_vma_pin_iomap()")
+Cc: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+Cc: <stable@vger.kernel.org> # v5.14+
+---
+ drivers/gpu/drm/i915/i915_vma.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---rviok646mxfd6hxt
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
+index ffb425ba591c..f2b626cd2755 100644
+--- a/drivers/gpu/drm/i915/i915_vma.c
++++ b/drivers/gpu/drm/i915/i915_vma.c
+@@ -602,7 +602,9 @@ void __iomem *i915_vma_pin_iomap(struct i915_vma *vma)
+ 	if (err)
+ 		goto err_unpin;
+ 
+-	i915_vma_set_ggtt_write(vma);
++	if (!i915_gem_object_is_lmem(vma->obj) &&
++	    i915_vma_is_map_and_fenceable(vma))
++		i915_vma_set_ggtt_write(vma);
+ 
+ 	/* NB Access through the GTT requires the device to be awake. */
+ 	return page_mask_bits(ptr);
+@@ -617,6 +619,8 @@ void i915_vma_flush_writes(struct i915_vma *vma)
+ {
+ 	if (i915_vma_unset_ggtt_write(vma))
+ 		intel_gt_flush_ggtt_writes(vma->vm->gt);
++	else
++		wmb(); /* Just flush the write-combine buffer. */
+ }
+ 
+ void i915_vma_unpin_iomap(struct i915_vma *vma)
+-- 
+2.39.2
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmS+dC8ACgkQvlAcSiqK
-BOiXtAgAiaZgw+a+qM+EwegTjTMuBFDkqzNk/J/0algu+wrN2JCSjxfEA4LNwjNv
-779J3kcRB6xkFSlLDfh9ZZ7D2i27hH5G0KhJ39N0qQMbUdLY6yzADM58Gegxqnij
-NZHXpT3A1JMh/Bm4qAL6NIS+bHS/aiwPIyWF2jsBKI1TMC1ykSoSKTMRMjZoshkx
-+Guibdz9Zr4hAGuZe1fI0JPcHpIYir88atslMDGsGVcomfvLgQrC1ubIbyvf9UYu
-IoKY0VehsCcdT3v2+QioQ7w0BTtxcfMEomebMyvziVoESkyM0Fp9fNVEjZHjNQRo
-Vg/qlDn7q+nTsaYAIcZUepBdKOAqTg==
-=BYRw
------END PGP SIGNATURE-----
-
---rviok646mxfd6hxt--
