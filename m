@@ -2,64 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E9F75FB59
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 18:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3ABC75FB79
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 18:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231179AbjGXQAo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 12:00:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36576 "EHLO
+        id S231194AbjGXQHW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 12:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbjGXQAn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 12:00:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364F5E76;
-        Mon, 24 Jul 2023 09:00:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D19061234;
-        Mon, 24 Jul 2023 16:00:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC40AC433C8;
-        Mon, 24 Jul 2023 16:00:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690214440;
-        bh=HiWKiSQHyMaDEa0UiXE1Jt4gJBcBxoHYQfLcTXtdLDQ=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=JsgYAt5GJCqyn3QYlUMN4EXGVsqVeZ/6C2hqUKN5bwIJ89GPa3ZpLKd/CJxVCxk3G
-         RW63NxZSjsP1SotXymG3DgXJPnK3OoGlO3+451CjPs0BWhbm/TjbsmCtZZV28zN2HR
-         DvqSZLQDDC6Ab5kxW69aS6BidQ4NRRoTB5/Vb2JipHYwYA/tZ4R0S9JOG2VRDxOtZD
-         yH/OX7MtDrBX+Q9l8ykUQq/s3geiWJafOaho7zT8/cumXa8IiNVarDork0te5btsX/
-         VE8AMUkSdmE0SRCAPlOVR//hO38orIK9rNu/ZwSvicxH7sCDT7y614CY+O91Dt8e/q
-         kcCMpTlo/V3Cw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id 6D342CE0C4B; Mon, 24 Jul 2023 09:00:40 -0700 (PDT)
-Date:   Mon, 24 Jul 2023 09:00:40 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [BUG] Re: Linux 6.4.4
-Message-ID: <4b231ce5-7bb8-4abf-9c40-04aa676d1e45@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
- <9b42cb38-8375-fc41-475a-2bd26c60a7b9@joelfernandes.org>
- <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
- <7bfde9f4-2bd6-7337-b9ca-94a9253d847f@joelfernandes.org>
- <ad82995c-061e-4f97-a972-c13a85ad0b72@paulmck-laptop>
- <a7bcbcf2-9b34-4326-822f-e1f2aa5c5668@joelfernandes.org>
- <ebde8612-95de-4eaf-aa56-34e9b3a3fa86@paulmck-laptop>
- <20230724003257.GA60074@google.com>
- <381862e5-153c-4641-a60e-8175acae971d@paulmck-laptop>
- <CAEXW_YQsP_j9ZBAYKGk0mBfa3x-RikMoWE01Z6q1GXkLug2xoQ@mail.gmail.com>
+        with ESMTP id S230236AbjGXQHV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 12:07:21 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEA810F5
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:07:16 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d0728058651so2903816276.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:07:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google; t=1690214835; x=1690819635;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=H+9hATyxM1wFvDyiZv4CUg26TjbnT4RKHY7Z6xDG7Qc=;
+        b=n4RguLbipIDQE05X2UsocctdpugWflo7O4z8c3gwAfkLynyr8zm5/CVjbVs+tll8O7
+         X0Ku/7bnlehb3Ox7SBdt1JsBF51lWhN9JK4rkJEMe0mtYfMYNmhReGcTwTaGi7XrgH6w
+         AoqM98jUDwcsem/XlkeUawhQ/Quf5wkpYquBpA2iv6vMPHpiz/M0Efuv1r/EidPG0Cga
+         g/AtYUJgSPRocmaMMJ5LbLxrodle3GBgnj/TYbtq4vGuFmT/0T6ZBnSct+p5l8T3d8J5
+         iuyr8NvNhfPPNd6gvWBkWI3g9QTKs7q2xbyLTIMfzVy1BOOaCmxvRzGuXAOkGFLAzt4f
+         aGVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690214835; x=1690819635;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H+9hATyxM1wFvDyiZv4CUg26TjbnT4RKHY7Z6xDG7Qc=;
+        b=Re9FVBxIlUM9vUMRM5XX5qjKJO3j3Z72ZIQNOwCu7Kb766OZw/iCQoVLElWNk9LrLC
+         /tTGvY/A3aWMVtRMDlS6t7uEwkqHw4uBw+kBEt6+GwfbA53HJBfjOCTHY+WiNsJXnI1V
+         xy7s+ZpTrIUqjQuzLsGhHb20oLRFaFZYwKIYNHv77UC1OieBZqNEQ5kIaWj0LMSnVu53
+         0HY5XZGst3oGeULOdvPT5Cw+ePyLn1d49brlP5t670B4m4wBJ2RV1D8soVURJCaeV/7m
+         7aWbb7P9i6YmWAbE6+FbXqrjZtDG8FS3sRb6+caaYgglsvHCqQtx2LHoSY0vVVGQ2Vyt
+         ZfOA==
+X-Gm-Message-State: ABy/qLaVMBBAjA0fHhJCSoFDBKjnTdqqLMD/401Ol6AIKZCrgRHlhT96
+        wlUpCt0rcYc3jB76Tn/vEDkwfiRuEfK1nq2bKbAoMg==
+X-Google-Smtp-Source: APBJJlHCWUTp7P04MApBHJlPyUxUZOvWwilt6qHx3n6q3KAE86ERNTh2oELFuCYqojOuLFYMFtf2PwJIimHh9n9Bbn0=
+X-Received: by 2002:a25:ada1:0:b0:d0f:2038:9ca2 with SMTP id
+ z33-20020a25ada1000000b00d0f20389ca2mr3639883ybi.51.1690214835437; Mon, 24
+ Jul 2023 09:07:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEXW_YQsP_j9ZBAYKGk0mBfa3x-RikMoWE01Z6q1GXkLug2xoQ@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
+ <2023072438-aftermath-fracture-3dff@gregkh> <140065e3-0368-0b5d-8a0d-afe49b741ad2@kernel.dk>
+ <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+In-Reply-To: <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+From:   Phil Elwell <phil@raspberrypi.com>
+Date:   Mon, 24 Jul 2023 17:07:04 +0100
+Message-ID: <CAMEGJJ3SjWdJFwzB+sz79ojWqAAMULa2CFAas0tv+JJLJMwoGQ@mail.gmail.com>
+Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, andres@anarazel.de,
+        asml.silence@gmail.com, david@fromorbit.com, hch@lst.de,
+        io-uring@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-xfs@vger.kernel.org, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,86 +70,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 09:36:02AM -0400, Joel Fernandes wrote:
-> On Sun, Jul 23, 2023 at 11:35 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > On Mon, Jul 24, 2023 at 12:32:57AM +0000, Joel Fernandes wrote:
-> > > On Sun, Jul 23, 2023 at 10:19:27AM -0700, Paul E. McKenney wrote:
-> > > > On Sun, Jul 23, 2023 at 10:50:26AM -0400, Joel Fernandes wrote:
-> > > > >
-> > > > >
-> > > > > On 7/22/23 13:27, Paul E. McKenney wrote:
-> > > > > [..]
-> > > > > >
-> > > > > > OK, if this kernel is non-preemptible, you are not running TREE03,
-> > > > > > correct?
-> > > > > >
-> > > > > >> Next plan of action is to get sched_waking stack traces since I have a
-> > > > > >> very reliable repro of this now.
-> > > > > >
-> > > > > > Too much fun!  ;-)
-> > > > >
-> > > > > For TREE07 issue, it is actually the schedule_timeout_interruptible(1)
-> > > > > in stutter_wait() that is beating up the CPU0 for 4 seconds.
-> > > > >
-> > > > > This is very similar to the issue I fixed in New year in d52d3a2bf408
-> > > > > ("torture: Fix hang during kthread shutdown phase")
-> > > >
-> > > > Agreed, if there are enough kthreads, and all the kthreads are on a
-> > > > single CPU, this could consume that CPU.
-> > > >
-> > > > > Adding a cond_resched() there also did not help.
-> > > > >
-> > > > > I think the issue is the stutter thread fails to move spt forward
-> > > > > because it does not get CPU time. But spt == 1 should be very brief
-> > > > > AFAIU. I was wondering if we could set that to RT.
-> > > >
-> > > > Or just use a single hrtimer-based wait for each kthread?
-> > >
-> > > [Joel]
-> > > Yes this might be better, but there's still the issue that spt may not be set
-> > > back to 0 in some future release where the thread gets starved.
-> >
-> > But if each thread knows the absolute time at which the current stutter
-> > period is supposed to end, there should not be any need for the spt
-> > variable, correct?
-> 
-> Yes.
-> 
-> > > > > But also maybe the following will cure it like it did for the shutdown
-> > > > > issue, giving the stutter thread just enough CPU time to move spt forward.
-> > > > >
-> > > > > Now I am trying the following and will let it run while I go do other
-> > > > > family related things. ;)
-> > > >
-> > > > Good point, if this avoids the problem, that gives a strong indication
-> > > > that your hypothesis on the root cause is correct.
-> > >
-> > > [Joel]
-> > > And the TREE07 issue is gone with that change!
-> [...]
-> > > Let me know what you think, thanks!
-> >
-> > If we can make the stutter kthread set an absolute time for the current
-> > stutter period to end, then we should be able to simplify the code quite
-> > a bit and get rid of the CPU consumption entirely.  (Give or take the
-> > possible need for a given thread to check whether it was erroneously
-> > awakened early.)
-> >
-> > But what specifically did you have in mind?
-> 
-> I was thinking of a 2 counter approach storing the absolute time. Use
-> an alternative counter for different stuttering sessions. But yes,
-> generally I agree with the absolute time idea. What do you think Paul?
-> 
-> Do we want to just do  the simpler schedule_timeout at HZ / 20 to keep stable
-> green, and do the absolute-time approach for mainline? That might be better
-> from a process PoV. But I think stable requires patches to be upstream. Greg?
-> 
-> I will try to send out patches this week to discuss this, thanks,
+Jens, Greg,
 
-Heh!!!
+On Mon, 24 Jul 2023 at 16:58, Jens Axboe <axboe@kernel.dk> wrote:
+>
+> On 7/24/23 9:50?AM, Jens Axboe wrote:
+> > On 7/24/23 9:48?AM, Greg KH wrote:
+> >> On Mon, Jul 24, 2023 at 04:35:43PM +0100, Phil Elwell wrote:
+> >>> Hi Andres,
+> >>>
+> >>> With this commit applied to the 6.1 and later kernels (others not
+> >>> tested) the iowait time ("wa" field in top) in an ARM64 build running
+> >>> on a 4 core CPU (a Raspberry Pi 4 B) increases to 25%, as if one core
+> >>> is permanently blocked on I/O. The change can be observed after
+> >>> installing mariadb-server (no configuration or use is required). After
+> >>> reverting just this commit, "wa" drops to zero again.
+> >>
+> >> This has been discussed already:
+> >>      https://lore.kernel.org/r/12251678.O9o76ZdvQC@natalenko.name
 
-Me, I was just thinking of mainline.  ;-)
+Sorry - a brief search failed to find that.
 
-							Thanx, Paul
+> >> It's not a bug, mariadb does have pending I/O, so the report is correct,
+> >> but the CPU isn't blocked at all.
+> >
+> > Indeed - only thing I can think of is perhaps mariadb is having a
+> > separate thread waiting on the ring in perpetuity, regardless of whether
+> > or not it currently has IO.
+> >
+> > But yes, this is very much ado about nothing...
+>
+> Current -git and having mariadb idle:
+>
+> Average:     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+> Average:     all    0.00    0.00    0.04   12.47    0.04    0.00    0.00    0.00    0.00   87.44
+> Average:       0    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       1    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       2    0.00    0.00    0.00    0.00    0.33    0.00    0.00    0.00    0.00   99.67
+> Average:       3    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       4    0.00    0.00    0.33    0.00    0.00    0.00    0.00    0.00    0.00   99.67
+> Average:       5    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       6    0.00    0.00    0.00  100.00    0.00    0.00    0.00    0.00    0.00    0.00
+> Average:       7    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+>
+> which is showing 100% iowait on one cpu, as mariadb has a thread waiting
+> on IO. That is obviously a valid use case, if you split submission and
+> completion into separate threads. Then you have the latter just always
+> waiting on something to process.
+>
+> With the suggested patch, we do eliminate that case and the iowait on
+> that task is gone. Here's current -git with the patch and mariadb also
+> running:
+>
+> 09:53:49 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+> 09:53:50 AM  all    0.00    0.00    0.00    0.00    0.00    0.75    0.00    0.00    0.00   99.25
+> 09:53:50 AM    0    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> 09:53:50 AM    1    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    2    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    3    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    4    0.00    0.00    0.00    0.00    0.00    0.99    0.00    0.00    0.00   99.01
+> 09:53:50 AM    5    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    6    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> 09:53:50 AM    7    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+>
+>
+> Even though I don't think this is an actual problem, it is a bit
+> confusing that you get 100% iowait while waiting without having IO
+> pending. So I do think the suggested patch is probably worthwhile
+> pursuing. I'll post it and hopefully have Andres test it too, if he's
+> available.
+
+If you CC me I'll happily test it for you.
+
+Thanks,
+
+Phil
+
+> --
+> Jens Axboe
+>
