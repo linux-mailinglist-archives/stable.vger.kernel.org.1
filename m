@@ -2,119 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 553CB75FDD5
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 19:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C6D75FDE0
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 19:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbjGXRey (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 13:34:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40458 "EHLO
+        id S230330AbjGXRge (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 13:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbjGXRex (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 13:34:53 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE76F10D1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 10:34:51 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b701e41cd3so65637501fa.3
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 10:34:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1690220090; x=1690824890;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vSeNUZn0VMlhUmialM4MIBW/h43PVFZlS7oEOOQOqx4=;
-        b=E1iZNZgHqy5j84LnJL8C5nGb7AYsOkLu4MLNb6FypA4nNUJ9zZFjNSUnmiu54hfNq6
-         fJlddLLO1vFogLhej844F0tNYGf5y3bu/KHmt6cqPkwL+spyPISjZh9Cg1fmAdfMO3yC
-         RhlleFLP0+pgPY3E1RUPwTdMD+UbjOeHgTJBk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690220090; x=1690824890;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vSeNUZn0VMlhUmialM4MIBW/h43PVFZlS7oEOOQOqx4=;
-        b=I6l3yBwwUp222EiXQ684sLXMgh8RpI+BsNUu/MrZlgucVrSUNW49TIQLUpeawF+k4G
-         QXbaIpbBYmbY5GcfoGOc+C6aT6iRTsTCR0IfPKAkXXQAvQT67iHmqaI6EF+Y4GhrcMbB
-         o6nGgm3e0rgugMeph1//T7o5znQFIFs1LgJfQlyqsMftfj607LtyBngSOkayd1hL97UH
-         Hl5/3eTYKjLwqZAH2bPuDb1LBO0dhdohcwkLxsLvEBX4a2xXLrQFQYUSGHaD3FPB0NbY
-         rF7FAxqt7KwKJTXS5sS+qUK6ROk60dehuplS5o0xkYljcR/RReOvgIaCUuVdTdayA5cD
-         p4DA==
-X-Gm-Message-State: ABy/qLZYkXD8KqoN75rIfumY3oq18qDrdu1hvy6I1xPmR6lbX+UbL9rj
-        U804f9/hahAu3G08v5O4Drn59BE0Afs9v8K+eOi9kuGF
-X-Google-Smtp-Source: APBJJlEPGqUHztt21PVtqRvaOYchJDOITzQtOPGxXlQt1LTkEDAkSUn06zZQXSL9VWrdFosB2t+B4A==
-X-Received: by 2002:a2e:97da:0:b0:2b6:ec2b:7d77 with SMTP id m26-20020a2e97da000000b002b6ec2b7d77mr6800027ljj.6.1690220089815;
-        Mon, 24 Jul 2023 10:34:49 -0700 (PDT)
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
-        by smtp.gmail.com with ESMTPSA id n25-20020a2e86d9000000b002b69f44646bsm3022768ljj.17.2023.07.24.10.34.48
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 10:34:48 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-4fb761efa7aso7071071e87.0
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 10:34:48 -0700 (PDT)
-X-Received: by 2002:a05:6512:b96:b0:4fd:c23b:959d with SMTP id
- b22-20020a0565120b9600b004fdc23b959dmr8461441lfv.34.1690220088417; Mon, 24
- Jul 2023 10:34:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-scheren-absegnen-8c807c760ba1@brauner> <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
- <20230724-gebessert-wortwahl-195daecce8f0@brauner>
-In-Reply-To: <20230724-gebessert-wortwahl-195daecce8f0@brauner>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 24 Jul 2023 10:34:31 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
-Message-ID: <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
-Subject: Re: [PATCH] file: always lock position
-To:     Christian Brauner <brauner@kernel.org>
-Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S230159AbjGXRgd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 13:36:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343C998;
+        Mon, 24 Jul 2023 10:36:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBABE61306;
+        Mon, 24 Jul 2023 17:36:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AC9C433C7;
+        Mon, 24 Jul 2023 17:36:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1690220191;
+        bh=XazVHcWa1FREvGB4btFLb8Pz+qjaDjUMjSd19IGIK7M=;
+        h=Date:To:From:Subject:From;
+        b=vyq3dWH+9Mmmfqh0gXe45xOziQ3wy+BVBzZ+siaOn5SPUmBTcE4DFzbfpF4ScRidc
+         1BWn+Nazrd3V9omkLAYvoMysyScZJwZId2LH1XI0TVzHZWeZRnT2ZprxGusjrySIUE
+         YU593qqG+1P661y8wss8JcY8p8anqP+EsbuWV/a8=
+Date:   Mon, 24 Jul 2023 10:36:30 -0700
+To:     mm-commits@vger.kernel.org, surenb@google.com,
+        stable@vger.kernel.org, jannh@google.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-lock-vma-in-dup_anon_vma-before-setting-anon_vma.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230724173631.19AC9C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 24 Jul 2023 at 10:23, Christian Brauner <brauner@kernel.org> wrote:
->
-> This means pidfd_getfd() needs the same treatment as MSG_PEEK for sockets.
 
-So the reason I think pidfd_getfd() is ok is that it has serialized
-with the source of the file descriptor and uses fget_task() ->
-__fget_files.
+The patch titled
+     Subject: mm: lock VMA in dup_anon_vma() before setting ->anon_vma
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-lock-vma-in-dup_anon_vma-before-setting-anon_vma.patch
 
-And that code is nasty and complicated, but it does get_file_rcu() to
-increment the file count, and then *after* that it still checks that
-yes, the file pointer is still there.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-lock-vma-in-dup_anon_vma-before-setting-anon_vma.patch
 
-And that means that anybody who uses fget_task() will only ever get a
-ref to a file if that file still existed in the source, and you can
-never have a situation where a file comes back to life.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-The reason MSG_PEEK is special is exactly because it can "resurrect" a
-file that was closed, and added to the unix SCM garbage collection
-list as "only has a ref in the SCM thing", so when we then make it
-live again, it needs that very very subtle thing.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-So pidfd_getfd() is ok in this regard.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-But it *is* an example of how subtle it is to just get a new ref to an
-existing file.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-That whole
+------------------------------------------------------
+From: Jann Horn <jannh@google.com>
+Subject: mm: lock VMA in dup_anon_vma() before setting ->anon_vma
+Date: Fri, 21 Jul 2023 05:46:43 +0200
 
-         if (atomic_read_acquire(&files->count) == 1) {
+When VMAs are merged, dup_anon_vma() is called with `dst` pointing to the
+VMA that is being expanded to cover the area previously occupied by
+another VMA.  This currently happens while `dst` is not write-locked.
 
-in __fget_light() is also worth being aware of. It isn't about the
-file count, but it is about "I have exclusive access to the file
-table". So you can *not* close a file, or open a file, for another
-process from outside. The only thread that is allowed to access or
-change the file table (including resizing it), is the thread itself.
+This means that, in the `src->anon_vma && !dst->anon_vma` case, as soon as
+the assignment `dst->anon_vma = src->anon_vma` has happened, concurrent
+page faults can happen on `dst` under the per-VMA lock.  This is already
+icky in itself, since such page faults can now install pages into `dst`
+that are attached to an `anon_vma` that is not yet tied back to the
+`anon_vma` with an `anon_vma_chain`.  But if `anon_vma_clone()` fails due
+to an out-of-memory error, things get much worse: `anon_vma_clone()` then
+reverts `dst->anon_vma` back to NULL, and `dst` remains completely
+unconnected to the `anon_vma`, even though we can have pages in the area
+covered by `dst` that point to the `anon_vma`.
 
-I really hope we don't have cases of that.
+This means the `anon_vma` of such pages can be freed while the pages are
+still mapped into userspace, which leads to UAF when a helper like
+folio_lock_anon_vma_read() tries to look up the anon_vma of such a page.
 
-             Linus
+This theoretically is a security bug, but I believe it is really hard to
+actually trigger as an unprivileged user because it requires that you can
+make an order-0 GFP_KERNEL allocation fail, and the page allocator tries
+pretty hard to prevent that.
+
+I think doing the vma_start_write() call inside dup_anon_vma() is the most
+straightforward fix for now.
+
+For a kernel-assisted reproducer, see the notes section of the patch mail.
+
+Link: https://lkml.kernel.org/r/20230721034643.616851-1-jannh@google.com
+Fixes: 5e31275cc997 ("mm: add per-VMA lock and helper functions to control it")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mmap.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/mmap.c~mm-lock-vma-in-dup_anon_vma-before-setting-anon_vma
++++ a/mm/mmap.c
+@@ -615,6 +615,7 @@ static inline int dup_anon_vma(struct vm
+ 	 * anon pages imported.
+ 	 */
+ 	if (src->anon_vma && !dst->anon_vma) {
++		vma_start_write(dst);
+ 		dst->anon_vma = src->anon_vma;
+ 		return anon_vma_clone(dst, src);
+ 	}
+_
+
+Patches currently in -mm which might be from jannh@google.com are
+
+mm-fix-memory-ordering-for-mm_lock_seq-and-vm_lock_seq.patch
+mm-lock-vma-in-dup_anon_vma-before-setting-anon_vma.patch
+
