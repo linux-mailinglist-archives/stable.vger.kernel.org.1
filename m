@@ -2,82 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8983675F3BE
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 12:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EDBE75F48A
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 13:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjGXKrG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 06:47:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43304 "EHLO
+        id S229683AbjGXLJV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 07:09:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229983AbjGXKrF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 06:47:05 -0400
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D459C;
-        Mon, 24 Jul 2023 03:47:03 -0700 (PDT)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4R8cKv30xJz9t3y;
-        Mon, 24 Jul 2023 12:46:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-        t=1690195619;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QRgDsdj4PRaBX4F+5NuwghTRwQQTxR0MoJRVxO8TmDM=;
-        b=hJZVWzSGSd27nZkk+77PknK0vznvbxJ0/csknIDZKtbuqocbGowTgvDTRp5kHwHq8VTNcN
-        sI6IlW31o4Bg7agxOLgIQv1FsKLi00x1uQSyGLFRClbvZZ6TctRU4GzTt+AYihA62RE90E
-        8XoFTkdBXcRTITTVEEo8fa6PVq1Ug8zpqfzpnl4s/ZNyaV3lsfbncy16bsE0CGkN8y/xRp
-        GPdV0do0y4x+rT3b8fXqrISxwuL1j7sA3ewktGWABKEQxBdgD5hkQ/O0FQr2vlP/cI//4b
-        pRZHonfpIKk3994LbXC9WTO5Jtz06jIpRC5JGawPh2npyTY2EwJKBdM6nJ6F4A==
-Message-ID: <a31d3d49-1861-19a2-2bb4-8793c8eabee9@mailbox.org>
-Date:   Mon, 24 Jul 2023 12:46:56 +0200
+        with ESMTP id S230161AbjGXLJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 07:09:20 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1378E10F4
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 04:08:53 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1bb775625e2so13965205ad.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 04:08:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690196896; x=1690801696;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=QOvlioC4rKzBhy0MpdBD5rmoguMUIdou06Aq2BBueN8=;
+        b=nImh/e7al6ekT5YAoFIv0yHbJAFsKFYqoYTM7S6GROceX+BRE9YnpRtNvfBImWQVlv
+         skJer5N/j8micGkJ2QfF1GAO/h0V6po3zulXf/+9Y4ucJhBSx0DSFgjlueJfavh8wA5u
+         SQXfDgBpjgpMvxSU7Pw6Dz7v7wuEHHQ2E/aX20WZ9FXkOiXVGBThHjWSqdHs7+6KMux9
+         6ZQC1hJKjzh6rly/sau/wKbYby8CQx6QS63anlNlGsY6p/c7U4CmqkY07y0MajMycg7x
+         CF0cui6G6FW8LVAWXKP9/G1NVaOOth/Layz6gNMf1UYP1R/mUo8TLMPdGXx7GoCD2Un5
+         kHWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690196896; x=1690801696;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QOvlioC4rKzBhy0MpdBD5rmoguMUIdou06Aq2BBueN8=;
+        b=Epiw9tnew5P2uMpy2kgLLotJ+sDVFX1ECI1niw9co8Jn6oxS7yHG08CJc/qApaYkBR
+         eI26eYGzKHOmvY0LcAwpl+nEFukyGkYXvikzGIhnGULc6div9XjyTZBUDI2DwMk8P4D7
+         QRZvGhKE9buS+5CpT1IY1Lo13F/yQhIZQ0ujeperMr4MBqd9oUibHZb1N05GgxPzAxqX
+         I0M/vj8kokF6CTZQL2XiHoKynZ9iWE4EasA5ZAgQJ7TV6LDUXXxFxrC93F4ICsoDmE0G
+         wVITOR4iYXqLvluUgMwtt5XXzNrChFEPpHOTPe+zw7+En4IwVTCS3gINibHJS0AbyIWu
+         Pb9g==
+X-Gm-Message-State: ABy/qLbi+pUG23gMDm51luaXWsq1wHwpqH8mleghnpcYIFHeVOnKPacf
+        my450WuRcMLpsTBOxNxxt7Ys1c3hITEgZlMVuQVF5gVH
+X-Google-Smtp-Source: APBJJlFnHlF/AwiUlUTHUPuxioFu4NGtvNR4K0sAMG47jsfmPRvMfgEOqgs/NAPaPedznMBnfTs4tA==
+X-Received: by 2002:a17:902:f545:b0:1bb:55be:e198 with SMTP id h5-20020a170902f54500b001bb55bee198mr12858393plf.0.1690196895765;
+        Mon, 24 Jul 2023 04:08:15 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id g13-20020a170902868d00b001b85a4821f8sm8572495plo.276.2023.07.24.04.08.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jul 2023 04:08:14 -0700 (PDT)
+Message-ID: <64be5b9e.170a0220.697db.e937@mx.google.com>
+Date:   Mon, 24 Jul 2023 04:08:14 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [PATCH AUTOSEL 6.1 28/41] Revert "drm/amd/display: Do not set drr
- on pipe commit"
-Content-Language: en-CA
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     Dmytro.Laktyushkin@amd.com, dri-devel@lists.freedesktop.org,
-        Wesley.Chalmers@amd.com, sunpeng.li@amd.com, qingqing.zhuo@amd.com,
-        Rodrigo.Siqueira@amd.com, amd-gfx@lists.freedesktop.org,
-        airlied@linux.ie, Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>, daniel@ffwll.ch,
-        wayne.lin@amd.com, Alex Deucher <alexander.deucher@amd.com>,
-        hugo.hu@amd.com, harry.wentland@amd.com, christian.koenig@amd.com,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230724012118.2316073-1-sashal@kernel.org>
- <20230724012118.2316073-28-sashal@kernel.org>
-From:   =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel.daenzer@mailbox.org>
-In-Reply-To: <20230724012118.2316073-28-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 324e36e7dfef5be2138
-X-MBO-RS-META: ugp96btdxp5iatie16dfbs8fg661iw7g
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Kernel: v6.1.40-172-gd796cfd075afc
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-6.1.y build: 2 builds: 0 failed,
+ 2 passed (v6.1.40-172-gd796cfd075afc)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/24/23 03:21, Sasha Levin wrote:
-> From: Michel Dänzer <mdaenzer@redhat.com>
-> 
-> [ Upstream commit 8e1b45c578b799510f9a01a9745a737e74f43cb1 ]
-> 
-> This reverts commit 474f01015ffdb74e01c2eb3584a2822c64e7b2be.
+stable-rc/linux-6.1.y build: 2 builds: 0 failed, 2 passed (v6.1.40-172-gd79=
+6cfd075afc)
 
-The reverted commit is the same as patch 1 in this series...
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.40-172-gd796cfd075afc/
 
-Same issue with the autosel patches for 6.4.
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.40-172-gd796cfd075afc
+Git Commit: d796cfd075afc1c50fd811cd00d8844e6749641d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 1 unique architecture
 
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
--- 
-Earthling Michel Dänzer            |                  https://redhat.com
-Libre software enthusiast          |         Mesa and Xwayland developer
+Detailed per-defconfig build reports:
 
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---
+For more info write to <info@kernelci.org>
