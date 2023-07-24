@@ -2,75 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C5F075FFC1
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 21:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A542F75FFC0
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 21:23:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjGXTXu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 15:23:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38134 "EHLO
+        id S229496AbjGXTXV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 15:23:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjGXTXt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 15:23:49 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09DD610F0;
-        Mon, 24 Jul 2023 12:23:48 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-52229f084beso2559371a12.2;
-        Mon, 24 Jul 2023 12:23:47 -0700 (PDT)
+        with ESMTP id S229470AbjGXTXU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 15:23:20 -0400
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9A09E73
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 12:23:19 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-565a8d9d832so3009608eaf.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 12:23:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690226626; x=1690831426;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1690226599; x=1690831399;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=cWo4sIKyvyIpPAwWLeOJz8L9JuZtA+G/0dxZszCh6vo=;
-        b=latCLXtw9bkLnLi+GLz0mDfQySuJCccWsImdGir5RMfkHE5vZl+IIi4uL+keuRwu9t
-         60BrwZbclALe81Fmmch9iK+eeXTACpiUYg5lqLsAIrkxyJZkCnTIFBjZjqXa6gi2kisY
-         rmVUL8HEqXdXtzqarHvCsirm7SK6hcJulzBHcyeHxt1Qapo1jSQLjNA4MDVedjg2Pvnj
-         xPP28DoqOBqMFzMKbj4qh+BICTLz0fN6wVksJQFAKOdXsqLqmbVosQ6gxFoIKLStt8gR
-         nRDmJ68TT7H4nfQ4/RciVdwnC2kJPLmV0t44hV5vMEGiSARqdDgWmEuEztVMzGfej8Ch
-         uQEA==
+        bh=zm6azpD5so/aQhpF9W7ZnuZupkzF/gW9qt6fdIS+xjI=;
+        b=eXqy4N8/i0/BJt5HjkkZl9ZsZqYgfS5GxP3QtHbLjwMTezXd+meQb/6xlXiViQBXnt
+         Aledap/rbpydiotJQ+4HmkPv6+3JqAOPuytmpPhQYPCO2FJrKaMfMMxLB0XWlPR0T/ma
+         ZqOiwG1LVogv4Vk9+Hwbxsc1LpEJM0/DAxJ3f1IQCexLv18PLwdIMmxypek9Xxoll67P
+         V5IIEzflcnHKaw37WVzd1cO6qEk4VR24zGxM9nZZpFONhZvuUFMl0eAtr/jlUBvhy3Wv
+         nw7hfb/U3ax2f1sKGhkbdiFnYI7eKF7ZpX5Hv5F7hmw+UVcrFhRfVMrCnDW62PCIbHFw
+         SrMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690226626; x=1690831426;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1690226599; x=1690831399;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cWo4sIKyvyIpPAwWLeOJz8L9JuZtA+G/0dxZszCh6vo=;
-        b=jLmKBi/nYImE3YPjz/1DR5L0KuC49OGrXiRFlup0yLbQZUlknhd11KgPnqolLEQ7GU
-         /Yucm/VksRpY152b5KD2i7Dy0ocDxoZozZk413BcTJ4z+iBxuqIXpNAN1CwIjZOS7ywa
-         xNzYMSHVJrJl7wzqtrzZdIv12I6ydDNtKv8yREsfPHWAi7e9CGrCcRh/fbWy9v0RFTh7
-         bktT3OZXON5zU1rK781SYVxrUGCKIDLLSSpzoUSD2bCAXA1VtXsBRv/1sgJsbDC24Q76
-         HEaQB1E/9xW1zI/2SXoy/4DCDUG4lJJpEa0t8Oj3vzje1Ouo7U4IfxAXp3CNijL2ruwa
-         8weQ==
-X-Gm-Message-State: ABy/qLbKJCvEgUnl2FdVQwVt+k8gPDlNABhpO+qh0TnyR8vQRLBh7fzo
-        8aiTdcw9DzIa+rgK2CoBHHY=
-X-Google-Smtp-Source: APBJJlFLrOqXJwk2/ZogigT9lz5sDvbwFGJVMGIOCEC/jeoYe69weJzVeSfX0lbNF+PHSciKnQdVNw==
-X-Received: by 2002:a17:907:b11:b0:992:7e1f:8419 with SMTP id h17-20020a1709070b1100b009927e1f8419mr10392698ejl.2.1690226626234;
-        Mon, 24 Jul 2023 12:23:46 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:310::2eef? ([2620:10d:c092:600::2:c92])
-        by smtp.gmail.com with ESMTPSA id h23-20020a170906829700b0098d486d2bdfsm7242644ejx.177.2023.07.24.12.23.45
+        bh=zm6azpD5so/aQhpF9W7ZnuZupkzF/gW9qt6fdIS+xjI=;
+        b=iStkv7w5vIF2+ZMYqQe4UoO7mNQW6H6ny2XChGSnepDHxO5NHMNzD5R/RcIwtXDqZC
+         LLvagfK8xYve7grFcBGX88QXW/09pqO+1Rt6goOQNaDZWHzbP2lku1FrpSlIOo6+oLWL
+         H6g9IvrjQeNdjzgO+MXjR8rfp3ENVoNL5ShPHLx3SZg+dWll+zuXNprzHBt8yinmKwx4
+         wgKuY0KpooKuVFaSVLsqNZ9LMz+Tf+9gyI0Ls5TBCks8aqrOmD3f78h7Dzbx6u4APvNT
+         4NmRt5EVUWRr+DjFwJ8ZA3r6XIy7jU/G7MnXwYbn55+4bytRioVMPgIlQH3H+Q2O3dOZ
+         b3fw==
+X-Gm-Message-State: ABy/qLYVxDKK3KN/JLYe87s9PPAVpMRzxr9Anh2G4l24DSd/2XgbXZvY
+        T3ENNbBQjkQ+bf7tLCWuEKo=
+X-Google-Smtp-Source: APBJJlEsdE2sFvDlv24LKkg7Bu3OcKYvo6bWMRs8PW64/CFmuFMLmOwlFJbcu1CB4mkhTP8ng+2iKw==
+X-Received: by 2002:a05:6808:1a99:b0:39e:c660:a5fa with SMTP id bm25-20020a0568081a9900b0039ec660a5famr9026693oib.10.1690226598851;
+        Mon, 24 Jul 2023 12:23:18 -0700 (PDT)
+Received: from [192.168.7.168] (c-98-197-58-203.hsd1.tx.comcast.net. [98.197.58.203])
+        by smtp.gmail.com with ESMTPSA id a12-20020a056808128c00b003a44b425c18sm4398631oiw.43.2023.07.24.12.23.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 12:23:46 -0700 (PDT)
-Message-ID: <0f63b072-840c-db5d-13cd-7faa554975d3@gmail.com>
-Date:   Mon, 24 Jul 2023 20:22:28 +0100
+        Mon, 24 Jul 2023 12:23:18 -0700 (PDT)
+Message-ID: <18e9e042-12ec-8e09-1225-ca44810e2b82@gmail.com>
+Date:   Mon, 24 Jul 2023 14:23:17 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
-To:     Jens Axboe <axboe@kernel.dk>, Greg KH <gregkh@linuxfoundation.org>,
-        Phil Elwell <phil@raspberrypi.com>
-Cc:     andres@anarazel.de, david@fromorbit.com, hch@lst.de,
-        io-uring@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        linux-xfs@vger.kernel.org, stable <stable@vger.kernel.org>
-References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
- <2023072438-aftermath-fracture-3dff@gregkh>
- <140065e3-0368-0b5d-8a0d-afe49b741ad2@kernel.dk>
- <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH 6.1 146/223] drm/amd/display: edp do not add non-edid
+ timings
 Content-Language: en-US
-From:   Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>, Roman Li <roman.li@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>, eniac-xw.zhang@hp.com
+References: <20230721160520.865493356@linuxfoundation.org>
+ <20230721160527.097927704@linuxfoundation.org>
+From:   "Alex G." <mr.nuke.me@gmail.com>
+In-Reply-To: <20230721160527.097927704@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,77 +81,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/24/23 16:58, Jens Axboe wrote:
-> On 7/24/23 9:50?AM, Jens Axboe wrote:
->> On 7/24/23 9:48?AM, Greg KH wrote:
->>> On Mon, Jul 24, 2023 at 04:35:43PM +0100, Phil Elwell wrote:
->>>> Hi Andres,
->>>>
->>>> With this commit applied to the 6.1 and later kernels (others not
->>>> tested) the iowait time ("wa" field in top) in an ARM64 build running
->>>> on a 4 core CPU (a Raspberry Pi 4 B) increases to 25%, as if one core
->>>> is permanently blocked on I/O. The change can be observed after
->>>> installing mariadb-server (no configuration or use is required). After
->>>> reverting just this commit, "wa" drops to zero again.
->>>
->>> This has been discussed already:
->>> 	https://lore.kernel.org/r/12251678.O9o76ZdvQC@natalenko.name
->>>
->>> It's not a bug, mariadb does have pending I/O, so the report is correct,
->>> but the CPU isn't blocked at all.
->>
->> Indeed - only thing I can think of is perhaps mariadb is having a
->> separate thread waiting on the ring in perpetuity, regardless of whether
->> or not it currently has IO.
->>
->> But yes, this is very much ado about nothing...
-> 
-> Current -git and having mariadb idle:
-> 
-> Average:     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
-> Average:     all    0.00    0.00    0.04   12.47    0.04    0.00    0.00    0.00    0.00   87.44
-> Average:       0    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-> Average:       1    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-> Average:       2    0.00    0.00    0.00    0.00    0.33    0.00    0.00    0.00    0.00   99.67
-> Average:       3    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-> Average:       4    0.00    0.00    0.33    0.00    0.00    0.00    0.00    0.00    0.00   99.67
-> Average:       5    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-> Average:       6    0.00    0.00    0.00  100.00    0.00    0.00    0.00    0.00    0.00    0.00
-> Average:       7    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-> 
-> which is showing 100% iowait on one cpu, as mariadb has a thread waiting
-> on IO. That is obviously a valid use case, if you split submission and
-> completion into separate threads. Then you have the latter just always
-> waiting on something to process.
-> 
-> With the suggested patch, we do eliminate that case and the iowait on
-> that task is gone. Here's current -git with the patch and mariadb also
-> running:
-> 
-> 09:53:49 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
-> 09:53:50 AM  all    0.00    0.00    0.00    0.00    0.00    0.75    0.00    0.00    0.00   99.25
-> 09:53:50 AM    0    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-> 09:53:50 AM    1    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
-> 09:53:50 AM    2    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
-> 09:53:50 AM    3    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
-> 09:53:50 AM    4    0.00    0.00    0.00    0.00    0.00    0.99    0.00    0.00    0.00   99.01
-> 09:53:50 AM    5    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
-> 09:53:50 AM    6    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-> 09:53:50 AM    7    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
-> 
-> 
-> Even though I don't think this is an actual problem, it is a bit
-> confusing that you get 100% iowait while waiting without having IO
-> pending. So I do think the suggested patch is probably worthwhile
-> pursuing. I'll post it and hopefully have Andres test it too, if he's
-> available.
+Hi Greg,
 
-Emmm, what's the definition of the "IO" state? Unless we can say what exactly
-it is there will be no end to adjustments, because I can easily argue that
-CQ waiting by itself is IO.
-Do we consider sleep(N) to be "IO"? I don't think the kernel uses io
-schedule around that, and so it'd be different from io_uring waiting for
-a timeout request. What about epoll waiting, etc.?
+This patch was
+     * originally added to v6.1.35
+     * reverted in v6.1.39
+     * added back in v6.1.40
 
--- 
-Pavel Begunkov
+This patch is still reverted in mainline. Was this patch re-added by 
+mistake in v6.1.y stable?
+
+Alex
+
+On 7/21/23 11:06, Greg Kroah-Hartman wrote:
+> From: Hersen Wu <hersenxs.wu@amd.com>
+> 
+> commit 7a0e005c7957931689a327b2a4e7333a19f13f95 upstream.
+> 
+> [Why] most edp support only timings from edid. applying
+> non-edid timings, especially those timings out of edp
+> bandwidth, may damage edp.
+> 
+> [How] do not add non-edid timings for edp.
+> 
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: stable@vger.kernel.org
+> Acked-by: Stylon Wang <stylon.wang@amd.com>
+> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+> Reviewed-by: Roman Li <roman.li@amd.com>
+> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -6972,7 +6972,13 @@ static int amdgpu_dm_connector_get_modes
+>   				drm_add_modes_noedid(connector, 640, 480);
+>   	} else {
+>   		amdgpu_dm_connector_ddc_get_modes(connector, edid);
+> -		amdgpu_dm_connector_add_common_modes(encoder, connector);
+> +		/* most eDP supports only timings from its edid,
+> +		 * usually only detailed timings are available
+> +		 * from eDP edid. timings which are not from edid
+> +		 * may damage eDP
+> +		 */
+> +		if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+> +			amdgpu_dm_connector_add_common_modes(encoder, connector);
+>   		amdgpu_dm_connector_add_freesync_modes(connector, edid);
+>   	}
+>   	amdgpu_dm_fbc_init(connector);
+> 
+> 
+> 
