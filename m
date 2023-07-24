@@ -2,257 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43D6275EF4D
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 11:42:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC0F175F3E6
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 12:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbjGXJmY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 05:42:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45180 "EHLO
+        id S232901AbjGXKyb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 06:54:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbjGXJmX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 05:42:23 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5834F1A1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 02:42:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690191742; x=1721727742;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VvytKGDtH/fBtdVc6oyotXKFmAWRI9fZEF7VjkY63Aw=;
-  b=I4J+a/oRxVRvziBM1XEpzYHxuohQdSiLbNxVnYUlMwq0HWijneAOiBPJ
-   YLQ0rK3O80qXBajclJcn3/uAtcKdlTDVL8XrUrPgh6z0uN97mHLpJDf8o
-   JTmT9El7tmEbJ7n0V828W1DYF03G1ZSZbW9E/pjVJhGhAoNOxGAAec1d3
-   644eUMeaL6PVntwBGR7Inr4esn1HqNtbG1CMM4inBsoy/ikXywnjdoSw5
-   LLdBfby+HOZvRJIknAmHbFcUmiIVP0DRvHS6bZQkBQbgONIRfDKTsdm1+
-   yxlC0GDrPnNOmFf80LE73ljx3xJHYsTjVXYrmtIvp30B/xmJRqRdIPVgD
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="398298041"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="398298041"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 02:42:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="702807513"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="702807513"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.14.115]) ([10.213.14.115])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 02:42:19 -0700
-Message-ID: <5f846260-8416-fb19-bd46-ced39153a92a@intel.com>
-Date:   Mon, 24 Jul 2023 11:42:16 +0200
+        with ESMTP id S229487AbjGXKyb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 06:54:31 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E442A90;
+        Mon, 24 Jul 2023 03:54:29 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fd190065a7so32623325e9.2;
+        Mon, 24 Jul 2023 03:54:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690196068; x=1690800868;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jm2AmYXeSq7Hv1D3EYH8vxoR54aZLC/z7y6TUDXlfXw=;
+        b=d9UMgBhPwr9+yS0cB8RgNScyWl6BhHVnRy8vrVAfOBKNk6b2xc+GWR5P56tHAcVBZT
+         ckIoK4Eqrokqg700VJ3UnLuEVrOCK8jrRwCBv3BOS8u8NST3tSx+CltWurz5swA81Mfv
+         A2Es1/fkBb+zs4Tv2VY8QEmqRZhwg4BZ7Ym4fqUQjP5d9XBO1OHi9GojHgOGw7V46DGX
+         de/BS6iskM9gQnfDrdHjzG4mi4aQBOC5HguEkLHuomkhX6N0kordNQlWGky/OwvcKisN
+         iP0OG97pozmINDmZ8dHhnrLnq4o534AgT29943ny4cLzpbvknbksrSq+f82ZoOIHFO7I
+         vu+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690196068; x=1690800868;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jm2AmYXeSq7Hv1D3EYH8vxoR54aZLC/z7y6TUDXlfXw=;
+        b=dSvhFHEwvlz2I0V269xO062qdp8QOI2MzyVlgYj3efoQaUvETQ1eusOnVd8RhJyuDK
+         4slC2GKD02JoDQ7MCTBWXKlaG2KednNL13hU0EGxV3EUl/L98U4S2iRRVpa4b0NH6O09
+         y8EHRROeNuq77Hch3YVyOapK8ptr06cObWiAIx3MVRQ9uAHlam5eQ7NbLiuRuNjKExhq
+         ECJ6W9JJPPMiNB6TqrSnAfnk8H0MReI3RbzISD+T15GnuoghloOWnOv21z33sCj7kVhv
+         WdMZ1LmZOLbcI84jkiZNoVl4puK9LuRM0e68DQXD49gyIhNP4n8omuPc85QeV962xOe7
+         Uw1g==
+X-Gm-Message-State: ABy/qLaTscQvWstrY4BOU4IeHt9qbUgAVP2F/z8OZa/hX18dvUgtPNLo
+        PzBfanXjIuiZrMKLN0+wSX4=
+X-Google-Smtp-Source: APBJJlH/2BbzxEZghaykXJzZO9SLi2QkikMnuGRruKqHnDxO2xRWHD+bs5wItOEpHv6nJW1vwwaEmA==
+X-Received: by 2002:a5d:5909:0:b0:317:60ae:2ef5 with SMTP id v9-20020a5d5909000000b0031760ae2ef5mr1036070wrd.31.1690196068041;
+        Mon, 24 Jul 2023 03:54:28 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id j6-20020adfff86000000b0031274a184d5sm12529631wrr.109.2023.07.24.03.54.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jul 2023 03:54:27 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Atin Bainada <hi@atinb.me>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+Subject: [net PATCH 1/4] net: dsa: qca8k: enable use_single_write for qca8xxx
+Date:   Mon, 24 Jul 2023 05:25:28 +0200
+Message-Id: <20230724032531.15998-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Subject: Re: [Intel-gfx] [PATCH v8 9/9] drm/i915/gt: Support aux invalidation
- on all engines
-Content-Language: en-US
-To:     Andi Shyti <andi.shyti@linux.intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>
-Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
-        linux-stable <stable@vger.kernel.org>,
-        dri-evel <dri-devel@lists.freedesktop.org>
-References: <20230721161514.818895-1-andi.shyti@linux.intel.com>
- <20230721161514.818895-10-andi.shyti@linux.intel.com>
-From:   Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20230721161514.818895-10-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 21.07.2023 18:15, Andi Shyti wrote:
-> Perform some refactoring with the purpose of keeping in one
-> single place all the operations around the aux table
-> invalidation.
-> 
-> With this refactoring add more engines where the invalidation
-> should be performed.
-> 
-> Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: <stable@vger.kernel.org> # v5.8+
-> ---
->   drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 53 ++++++++++++++----------
->   drivers/gpu/drm/i915/gt/gen8_engine_cs.h |  3 +-
->   drivers/gpu/drm/i915/gt/intel_lrc.c      | 17 +-------
->   3 files changed, 36 insertions(+), 37 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> index 6daf7d99700e0..d33462387d1c6 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> @@ -178,9 +178,36 @@ static bool gen12_needs_ccs_aux_inv(struct intel_engine_cs *engine)
->   	return !HAS_FLAT_CCS(engine->i915);
->   }
->   
-> -u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
-> +static i915_reg_t gen12_get_aux_inv_reg(struct intel_engine_cs *engine)
-> +{
-> +	if (!gen12_needs_ccs_aux_inv(engine))
-> +		return INVALID_MMIO_REG;
-> +
-> +	switch (engine->id) {
-> +	case RCS0:
-> +		return GEN12_CCS_AUX_INV;
-> +	case BCS0:
-> +		return GEN12_BCS0_AUX_INV;
+The qca8xxx switch supports 2 way to write reg values, a slow way using
+mdio and a fast way by sending specially crafted mgmt packet to
+read/write reg.
 
-Shouldn't be MTL only?
-With that explained/fixed:
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+The fast way can support up to 32 bytes of data as eth packet are used
+to send/receive.
 
-Regards
-Andrzej
+This correctly works for almost the entire regmap of the switch but with
+the use of some kernel selftests for dsa drivers it was found a funny
+and interesting hw defect/limitation.
 
+For some specific reg, bulk write won't work and will result in writing
+only part of the requested regs resulting in half data written. This was
+especially hard to track and discover due to the total strangeness of
+the problem and also by the specific regs where this occurs.
 
-> +	case VCS0:
-> +		return GEN12_VD0_AUX_INV;
-> +	case VCS2:
-> +		return GEN12_VD2_AUX_INV;
-> +	case VECS0:
-> +		return GEN12_VE0_AUX_INV;
-> +	case CCS0:
-> +		return GEN12_CCS0_AUX_INV;
-> +	default:
-> +		return INVALID_MMIO_REG;
-> +	}
-> +}
-> +
-> +u32 *gen12_emit_aux_table_inv(struct intel_engine_cs *engine, u32 *cs)
->   {
-> -	u32 gsi_offset = gt->uncore->gsi_offset;
-> +	i915_reg_t inv_reg = gen12_get_aux_inv_reg(engine);
-> +	u32 gsi_offset = engine->gt->uncore->gsi_offset;
-> +
-> +	if (i915_mmio_reg_valid(inv_reg))
-> +		return cs;
->   
->   	*cs++ = MI_LOAD_REGISTER_IMM(1) | MI_LRI_MMIO_REMAP_EN;
->   	*cs++ = i915_mmio_reg_offset(inv_reg) + gsi_offset;
-> @@ -322,11 +349,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->   
->   		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
->   
-> -		if (gen12_needs_ccs_aux_inv(rq->engine)) {
-> -			/* hsdes: 1809175790 */
-> -			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
-> -						      GEN12_CCS_AUX_INV);
-> -		}
-> +		cs = gen12_emit_aux_table_inv(engine, cs);
->   
->   		*cs++ = preparser_disable(false);
->   		intel_ring_advance(rq, cs);
-> @@ -337,7 +360,6 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->   
->   int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
->   {
-> -	intel_engine_mask_t aux_inv = 0;
->   	u32 cmd_flush = 0;
->   	u32 cmd = 4;
->   	u32 *cs;
-> @@ -345,15 +367,11 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
->   	if (mode & EMIT_INVALIDATE)
->   		cmd += 2;
->   
-> -	if (gen12_needs_ccs_aux_inv(rq->engine))
-> -		aux_inv = rq->engine->mask &
-> -			  ~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
-> -
->   	/*
->   	 * On Aux CCS platforms the invalidation of the Aux
->   	 * table requires quiescing memory traffic beforehand
->   	 */
-> -	if (aux_inv) {
-> +	if (gen12_needs_ccs_aux_inv(rq->engine)) {
->   		cmd += 8; /* for the AUX invalidation */
->   		cmd += 2; /* for the engine quiescing */
->   
-> @@ -396,14 +414,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
->   	*cs++ = 0; /* upper addr */
->   	*cs++ = 0; /* value */
->   
-> -	if (aux_inv) { /* hsdes: 1809175790 */
-> -		if (rq->engine->class == VIDEO_DECODE_CLASS)
-> -			cs = gen12_emit_aux_table_inv(rq->engine->gt,
-> -						      cs, GEN12_VD0_AUX_INV);
-> -		else
-> -			cs = gen12_emit_aux_table_inv(rq->engine->gt,
-> -						      cs, GEN12_VE0_AUX_INV);
-> -	}
-> +	cs = gen12_emit_aux_table_inv(rq->engine, cs);
->   
->   	if (mode & EMIT_INVALIDATE)
->   		*cs++ = preparser_disable(false);
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
-> index a44eda096557c..867ba697aceb8 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
-> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
-> @@ -13,6 +13,7 @@
->   #include "intel_gt_regs.h"
->   #include "intel_gpu_commands.h"
->   
-> +struct intel_engine_cs;
->   struct intel_gt;
->   struct i915_request;
->   
-> @@ -46,7 +47,7 @@ u32 *gen8_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
->   u32 *gen11_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
->   u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
->   
-> -u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg);
-> +u32 *gen12_emit_aux_table_inv(struct intel_engine_cs *engine, u32 *cs);
->   
->   static inline u32 *
->   __gen8_emit_pipe_control(u32 *batch, u32 bit_group_0,
-> diff --git a/drivers/gpu/drm/i915/gt/intel_lrc.c b/drivers/gpu/drm/i915/gt/intel_lrc.c
-> index 235f3fab60a98..119deb9f938c7 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_lrc.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
-> @@ -1371,10 +1371,7 @@ gen12_emit_indirect_ctx_rcs(const struct intel_context *ce, u32 *cs)
->   	    IS_DG2_G11(ce->engine->i915))
->   		cs = gen8_emit_pipe_control(cs, PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE, 0);
->   
-> -	/* hsdes: 1809175790 */
-> -	if (!HAS_FLAT_CCS(ce->engine->i915))
-> -		cs = gen12_emit_aux_table_inv(ce->engine->gt,
-> -					      cs, GEN12_CCS_AUX_INV);
-> +	cs = gen12_emit_aux_table_inv(ce->engine, cs);
->   
->   	/* Wa_16014892111 */
->   	if (IS_MTL_GRAPHICS_STEP(ce->engine->i915, M, STEP_A0, STEP_B0) ||
-> @@ -1399,17 +1396,7 @@ gen12_emit_indirect_ctx_xcs(const struct intel_context *ce, u32 *cs)
->   						    PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE,
->   						    0);
->   
-> -	/* hsdes: 1809175790 */
-> -	if (!HAS_FLAT_CCS(ce->engine->i915)) {
-> -		if (ce->engine->class == VIDEO_DECODE_CLASS)
-> -			cs = gen12_emit_aux_table_inv(ce->engine->gt,
-> -						      cs, GEN12_VD0_AUX_INV);
-> -		else if (ce->engine->class == VIDEO_ENHANCEMENT_CLASS)
-> -			cs = gen12_emit_aux_table_inv(ce->engine->gt,
-> -						      cs, GEN12_VE0_AUX_INV);
-> -	}
-> -
-> -	return cs;
-> +	return gen12_emit_aux_table_inv(ce->engine, cs);
->   }
->   
->   static void
+This occurs in the specific regs of the ATU table, where multiple entry
+needs to be written to compose the entire entry.
+It was discovered that with a bulk write of 12 bytes on
+QCA8K_REG_ATU_DATA0 only QCA8K_REG_ATU_DATA0 and QCA8K_REG_ATU_DATA2
+were written, but QCA8K_REG_ATU_DATA1 was always zero.
+Tcpdump was used to make sure the specially crafted packet was correct
+and this was confirmed.
+
+The problem was hard to track as the lack of QCA8K_REG_ATU_DATA1
+resulted in an entry somehow possible as the first bytes of the mac
+address are set in QCA8K_REG_ATU_DATA0 and the entry type is set in
+QCA8K_REG_ATU_DATA2.
+
+Funlly enough writing QCA8K_REG_ATU_DATA1 results in the same problem
+with QCA8K_REG_ATU_DATA2 empty and QCA8K_REG_ATU_DATA1 and
+QCA8K_REG_ATU_FUNC correctly written.
+A speculation on the problem might be that there are some kind of
+indirection internally when accessing these regs and they can't be
+accessed all together, due to the fact that it's really a table mapped
+somewhere in the switch SRAM.
+
+Even more funny is the fact that every other reg was tested with all
+kind of combination and they are not affected by this problem. Read
+operation was also tested and always worked so it's not affected by this
+problem.
+
+The problem is not present if we limit writing a single reg at times.
+
+To handle this hardware defect, enable use_single_write so that bulk
+api can correctly split the write in multiple different operation
+effectively reverting to a non-bulk write.
+
+Cc: Mark Brown <broonie@kernel.org>
+Fixes: c766e077d927 ("net: dsa: qca8k: convert to regmap read/write API")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/net/dsa/qca/qca8k-8xxx.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index dee7b6579916..ae088a4df794 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -576,8 +576,11 @@ static struct regmap_config qca8k_regmap_config = {
+ 	.rd_table = &qca8k_readable_table,
+ 	.disable_locking = true, /* Locking is handled by qca8k read/write */
+ 	.cache_type = REGCACHE_NONE, /* Explicitly disable CACHE */
+-	.max_raw_read = 32, /* mgmt eth can read/write up to 8 registers at time */
+-	.max_raw_write = 32,
++	.max_raw_read = 32, /* mgmt eth can read up to 8 registers at time */
++	/* ATU regs suffer from a bug where some data are not correctly
++	 * written. Disable bulk write to correctly write ATU entry.
++	 */
++	.use_single_write = true,
+ };
+ 
+ static int
+-- 
+2.40.1
 
