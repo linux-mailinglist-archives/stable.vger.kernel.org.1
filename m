@@ -2,173 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A81D875ECED
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 09:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 001E975ED14
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 10:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231371AbjGXH5W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 03:57:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39624 "EHLO
+        id S231311AbjGXIIb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 04:08:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbjGXH4v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 03:56:51 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8701716
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 00:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690185370; x=1721721370;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9MYGepOmucZkFKKawDLrW6irF0O4CITjlV6O/LiLNZw=;
-  b=Pk9dw8hWJ8M+j7wjpkiy5IbMhtJYQUSL+7CAR/bKf1u7HXahJGT9L/53
-   lUqryQujUV4BCRaPCowdhmFudfvH502JqAQ4RorfAL12XJdMwd1nk+4Fj
-   dO5901TQBBnSuwgr8kPVVg20kT9ltIRT0DHwsxnwLKEDb63wW9NrQ1NVt
-   kapi8YaBaH64G0hbc7fYFXSV2fQQMHbMCW/Lgx0pWJVqv4tRxY7oX7jS3
-   ALh8/oAo1KgrOBsBNfJUsLEIKjQ+UBqFnTLu+KMGaCF0bHWG0cEarPVhD
-   idcBEPcRK5Z5+b6u2/2vNG/jM+cuOhOuxlW7Kri+l7FpXmqn0ISPqCnek
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="352273834"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="352273834"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 00:54:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="725603352"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="725603352"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.14.115]) ([10.213.14.115])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 00:54:56 -0700
-Message-ID: <446e7f3b-3e85-9d27-c8c2-4a1c105a280a@intel.com>
-Date:   Mon, 24 Jul 2023 09:54:54 +0200
+        with ESMTP id S230451AbjGXIIa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 04:08:30 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BEAFE;
+        Mon, 24 Jul 2023 01:08:29 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1bb84194bf3so7976365ad.3;
+        Mon, 24 Jul 2023 01:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690186108; x=1690790908;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mnjnEM1q4FaIbu0XLbBMFL7FTXZt/Gd9eRGXpPcG/Vw=;
+        b=bZQtBrhMr0cUsQ384TewyyuQjYBuSXTgIm7TDluHBqi9F/9gJu1SyBJBqFgfePUGBY
+         oYups6EcndxOA4vxt11LpADG2+NP81YGpJoRJfqR07iUlcOPJBiOepJAHNnfL4kLIkbv
+         F69gSXIbnBnGWEXwt+o2yFLnKXL/Mdu5/fFetjxGbKhPR4Srfr9LtFpI4zSur3R/f4r5
+         jOil2c8bJG0y4HyY3TFQnS0GAcJu6eXcfSEY8icxdMEEfyuCXbYTt8ux2mZfs6xVkNRY
+         idVmoPyyrOYk1sQ7QeSviuLvQPgVKvC1M/WfBpNtU+srFTHvXfExJ/ZH3BT1kmLwGaD6
+         L9PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690186108; x=1690790908;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mnjnEM1q4FaIbu0XLbBMFL7FTXZt/Gd9eRGXpPcG/Vw=;
+        b=L0KhHoI9uFWA2Pmt7pL4b7VOJHB6P5tfKjpOGrIHM9UE0TZ0kK3r9EPdhKLTB+Cuny
+         oNAEA0pvmC3jbtACZVeLi9QMfC+S1F5B1inELk/p5CE9l5+OpUo87WB4gB9fGHoeD7fT
+         uKCQn8w4Jh8RGvrqGJQFV47emzr3i/K0aY/TXKLm8lh4jDraGKmywnax6DHJYYtS1+c6
+         wWgNZUr9LdETaVLsky9tZCl1npgkl5s0QJ69I6rvEC6p/h16sQTaVKRqcihtdKQQcJNz
+         2y9X3jU5cRgfb2VmYKkz+F7OMkFP5S1ZncAclrVt2zzYjUWA3BWtX8HysvD863zMDfbH
+         ZdHQ==
+X-Gm-Message-State: ABy/qLbNDLQj+RuJSYfrYRvkx1x4Lf0iCAX1Nias/UBwBdsPYv9oHKN/
+        0xg6QfbrgdPIxGIXX3/2yJv1aX2lkwI=
+X-Google-Smtp-Source: APBJJlHMuefu6wZvJjrdOrw4A5U3v2EERq/cIjbO2kLFG0eQp1uULaHgOpVMPQhp0OP0UPWFpewnIA==
+X-Received: by 2002:a17:902:c103:b0:1b5:561a:5ca9 with SMTP id 3-20020a170902c10300b001b5561a5ca9mr7113521pli.50.1690186108617;
+        Mon, 24 Jul 2023 01:08:28 -0700 (PDT)
+Received: from octofox.hsd1.ca.comcast.net ([2601:646:a201:19d0:9f1d:4d2f:6739:324d])
+        by smtp.gmail.com with ESMTPSA id x14-20020a170902ec8e00b001b8622c1ad2sm8159957plg.130.2023.07.24.01.08.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jul 2023 01:08:28 -0700 (PDT)
+From:   Max Filippov <jcmvbkbc@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] xtensa: PMU: fix base address for the newer hardware
+Date:   Mon, 24 Jul 2023 01:08:19 -0700
+Message-Id: <20230724080819.2305666-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Subject: Re: [PATCH v8 6/9] drm/i915/gt: Refactor intel_emit_pipe_control_cs()
- in a single function
-Content-Language: en-US
-To:     Andi Shyti <andi.shyti@linux.intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>
-Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-evel <dri-devel@lists.freedesktop.org>,
-        linux-stable <stable@vger.kernel.org>
-References: <20230721161514.818895-1-andi.shyti@linux.intel.com>
- <20230721161514.818895-7-andi.shyti@linux.intel.com>
-From:   Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20230721161514.818895-7-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FROM_LOCAL_NOVOWEL,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+With introduction of ERI access control in RG.0 base address of the PMU
+unit registers has changed. Add support for the new PMU configuration.
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ arch/xtensa/include/asm/core.h  |  9 +++++++++
+ arch/xtensa/kernel/perf_event.c | 17 +++++++++++++----
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-On 21.07.2023 18:15, Andi Shyti wrote:
-> Just a trivial refactoring for reducing the number of code
-> duplicate. This will come at handy in the next commits.
->
-> Meantime, propagate the error to the above layers if we fail to
-> emit the pipe control.
->
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v5.8+
-
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-
-Regards
-Andrzej
-
-> ---
->   drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 47 +++++++++++++-----------
->   1 file changed, 26 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> index 139a7e69f5c4d..5e19b45a5cabe 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> @@ -7,6 +7,7 @@
->   #include "i915_drv.h"
->   #include "intel_engine_regs.h"
->   #include "intel_gpu_commands.h"
-> +#include "intel_gt_print.h"
->   #include "intel_lrc.h"
->   #include "intel_ring.h"
->   
-> @@ -189,23 +190,30 @@ u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv
->   	return cs;
->   }
->   
-> +static int gen12_emit_pipe_control_cs(struct i915_request *rq, u32 bit_group_0,
-> +				      u32 bit_group_1, u32 offset)
-> +{
-> +	u32 *cs;
-> +
-> +	cs = intel_ring_begin(rq, 6);
-> +	if (IS_ERR(cs))
-> +		return PTR_ERR(cs);
-> +
-> +	cs = gen12_emit_pipe_control(cs, bit_group_0, bit_group_1,
-> +				     LRC_PPHWSP_SCRATCH_ADDR);
-> +	intel_ring_advance(rq, cs);
-> +
-> +	return 0;
-> +}
-> +
->   static int mtl_dummy_pipe_control(struct i915_request *rq)
->   {
->   	/* Wa_14016712196 */
->   	if (IS_MTL_GRAPHICS_STEP(rq->engine->i915, M, STEP_A0, STEP_B0) ||
-> -	    IS_MTL_GRAPHICS_STEP(rq->engine->i915, P, STEP_A0, STEP_B0)) {
-> -		u32 *cs;
-> -
-> -		/* dummy PIPE_CONTROL + depth flush */
-> -		cs = intel_ring_begin(rq, 6);
-> -		if (IS_ERR(cs))
-> -			return PTR_ERR(cs);
-> -		cs = gen12_emit_pipe_control(cs,
-> -					     0,
-> -					     PIPE_CONTROL_DEPTH_CACHE_FLUSH,
-> -					     LRC_PPHWSP_SCRATCH_ADDR);
-> -		intel_ring_advance(rq, cs);
-> -	}
-> +	    IS_MTL_GRAPHICS_STEP(rq->engine->i915, P, STEP_A0, STEP_B0))
-> +		return gen12_emit_pipe_control_cs(rq, 0,
-> +					PIPE_CONTROL_DEPTH_CACHE_FLUSH,
-> +					LRC_PPHWSP_SCRATCH_ADDR);
->   
->   	return 0;
->   }
-> @@ -222,7 +230,6 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->   		u32 bit_group_0 = 0;
->   		u32 bit_group_1 = 0;
->   		int err;
-> -		u32 *cs;
->   
->   		err = mtl_dummy_pipe_control(rq);
->   		if (err)
-> @@ -256,13 +263,11 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->   		else if (engine->class == COMPUTE_CLASS)
->   			bit_group_1 &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
->   
-> -		cs = intel_ring_begin(rq, 6);
-> -		if (IS_ERR(cs))
-> -			return PTR_ERR(cs);
-> -
-> -		cs = gen12_emit_pipe_control(cs, bit_group_0, bit_group_1,
-> -					     LRC_PPHWSP_SCRATCH_ADDR);
-> -		intel_ring_advance(rq, cs);
-> +		err = gen12_emit_pipe_control_cs(rq, bit_group_0, bit_group_1,
-> +						 LRC_PPHWSP_SCRATCH_ADDR);
-> +		if (err)
-> +			gt_warn(engine->gt,
-> +				"Failed to emit flush pipe control\n");
->   	}
->   
->   	if (mode & EMIT_INVALIDATE) {
+diff --git a/arch/xtensa/include/asm/core.h b/arch/xtensa/include/asm/core.h
+index 0e1bb6f019d6..3f5ffae89b58 100644
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -52,4 +52,13 @@
+ #define XTENSA_STACK_ALIGNMENT	16
+ #endif
+ 
++#ifndef XCHAL_HW_MIN_VERSION
++#if defined(XCHAL_HW_MIN_VERSION_MAJOR) && defined(XCHAL_HW_MIN_VERSION_MINOR)
++#define XCHAL_HW_MIN_VERSION (XCHAL_HW_MIN_VERSION_MAJOR * 100 + \
++			      XCHAL_HW_MIN_VERSION_MINOR)
++#else
++#define XCHAL_HW_MIN_VERSION 0
++#endif
++#endif
++
+ #endif
+diff --git a/arch/xtensa/kernel/perf_event.c b/arch/xtensa/kernel/perf_event.c
+index a0d05c8598d0..183618090d05 100644
+--- a/arch/xtensa/kernel/perf_event.c
++++ b/arch/xtensa/kernel/perf_event.c
+@@ -13,17 +13,26 @@
+ #include <linux/perf_event.h>
+ #include <linux/platform_device.h>
+ 
++#include <asm/core.h>
+ #include <asm/processor.h>
+ #include <asm/stacktrace.h>
+ 
++#define XTENSA_HWVERSION_RG_2015_0	260000
++
++#if XCHAL_HW_MIN_VERSION >= XTENSA_HWVERSION_RG_2015_0
++#define XTENSA_PMU_ERI_BASE		0x00101000
++#else
++#define XTENSA_PMU_ERI_BASE		0x00001000
++#endif
++
+ /* Global control/status for all perf counters */
+-#define XTENSA_PMU_PMG			0x1000
++#define XTENSA_PMU_PMG			XTENSA_PMU_ERI_BASE
+ /* Perf counter values */
+-#define XTENSA_PMU_PM(i)		(0x1080 + (i) * 4)
++#define XTENSA_PMU_PM(i)		(XTENSA_PMU_ERI_BASE + 0x80 + (i) * 4)
+ /* Perf counter control registers */
+-#define XTENSA_PMU_PMCTRL(i)		(0x1100 + (i) * 4)
++#define XTENSA_PMU_PMCTRL(i)		(XTENSA_PMU_ERI_BASE + 0x100 + (i) * 4)
+ /* Perf counter status registers */
+-#define XTENSA_PMU_PMSTAT(i)		(0x1180 + (i) * 4)
++#define XTENSA_PMU_PMSTAT(i)		(XTENSA_PMU_ERI_BASE + 0x180 + (i) * 4)
+ 
+ #define XTENSA_PMU_PMG_PMEN		0x1
+ 
+-- 
+2.30.2
 
