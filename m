@@ -2,56 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16766760075
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 22:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7890760069
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 22:22:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230128AbjGXU1v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 16:27:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
+        id S229578AbjGXUWy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 16:22:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230148AbjGXU1u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 16:27:50 -0400
-Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A8A188
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 13:27:49 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id O29iqjz3ja8FgO29iqVhmt; Mon, 24 Jul 2023 22:27:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1690230467;
-        bh=nthQGP0J+y1vqKNylVAArmUha3e+ZlF00r9glbojKIk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=RsNt35/4KIA7ba4e7OrZ39DVXWD3bnvV2uk/KYshXfx3EYd6qvgau0SPJq101UmoP
-         uHu5IabCj5/NoFlAtVLjD5VfbgNlzlVC6xU1NFJRBGHopistjBWwiCjVuUbOYy3Axx
-         Cf6LOIaHG/8f/DSe1AnBPuKv15cepxla+AyPceDP++P6I6g59rHqTeb/y3mvSND7cM
-         LaOpmg8G0Ul0m4MWAYIbdfhia88kK2wcai/AYzkogbebbAl/qhHzVHiSSJap1gOyCQ
-         gSlNB0+PWmHjUYSG0Beae/KXDuC7s3Wj5s7ZRWoyE1SedpWNlbe2Ry69g5clqs8Ysf
-         7p7uN1VKE0rsg==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 24 Jul 2023 22:27:47 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <6c9a6a72-880b-5ebd-f266-4b574a004fe9@wanadoo.fr>
-Date:   Mon, 24 Jul 2023 22:27:46 +0200
+        with ESMTP id S229506AbjGXUWx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 16:22:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317911B8
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 13:22:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690230129;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ShKXd85SOx0saxITqxIawBxKdACPZs/8Qk1lelqQbIY=;
+        b=YqCicBubQbkKw3cBvB9wZsYXIBERjZBoDKocpHRb6pgFMaBErgScjmqIo47xHJD4i5WCNx
+        75xg+c0Bzl2j2t+cwapBEoqGMU+y+XM1x4V4BR0NRDSU4TAb7q676YITqqjSQnIXUjQJyd
+        hq2RZRfwrv5qaBaE7D/UFUSe4uIpeHs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-543-7eNZMO9ONJuqpUPYsJfYuw-1; Mon, 24 Jul 2023 16:22:05 -0400
+X-MC-Unique: 7eNZMO9ONJuqpUPYsJfYuw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B2B56802666;
+        Mon, 24 Jul 2023 20:22:04 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 1B701492CA6;
+        Mon, 24 Jul 2023 20:22:04 +0000 (UTC)
+From:   Jeff Moyer <jmoyer@redhat.com>
+To:     Pavel Begunkov <asml.silence@gmail.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Greg KH <gregkh@linuxfoundation.org>,
+        Phil Elwell <phil@raspberrypi.com>, andres@anarazel.de,
+        david@fromorbit.com, hch@lst.de, io-uring@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-xfs@vger.kernel.org,
+        stable <stable@vger.kernel.org>, riel@surriel.com
+Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
+References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
+        <2023072438-aftermath-fracture-3dff@gregkh>
+        <140065e3-0368-0b5d-8a0d-afe49b741ad2@kernel.dk>
+        <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+        <0f63b072-840c-db5d-13cd-7faa554975d3@gmail.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date:   Mon, 24 Jul 2023 16:27:53 -0400
+In-Reply-To: <0f63b072-840c-db5d-13cd-7faa554975d3@gmail.com> (Pavel
+        Begunkov's message of "Mon, 24 Jul 2023 20:22:28 +0100")
+Message-ID: <x49cz0hxdfa.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 6.4.y] i2c: busses: i2c-nomadik: Remove a useless call in
- the remove function
-Content-Language: fr, en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>
-References: <2023072154-animal-dropkick-6a92@gregkh>
- <62fe6800d41e04a4eb5adfa18a9e1090cbc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
- <2023072303-ranking-wife-05ae@gregkh>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <2023072303-ranking-wife-05ae@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,51 +69,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Pavel Begunkov <asml.silence@gmail.com> writes:
 
-Le 23/07/2023 à 22:34, Greg KH a écrit :
-> On Fri, Jul 21, 2023 at 07:47:41PM +0200, Christophe JAILLET wrote:
->> Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
->> driver"), there is no more request_mem_region() call in this driver.
->>
->> So remove the release_mem_region() call from the remove function which is
->> likely a left over.
->>
->> Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
->> Cc: <stable@vger.kernel.org> # v3.6+
->> Acked-by: Linus Walleij <linus.walleij@linaro.org>
->> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> The patch below that should fix a merge conflict related to commit
->> 9c7174db4cdd1 ("i2c: nomadik: Use devm_clk_get_enabled()") has been
->> HAND MODIFIED.
-> I don't understand, that commit is not in the stable trees.  What do you
-> mean by "hand modified"?
+> On 7/24/23 16:58, Jens Axboe wrote:
+>> Even though I don't think this is an actual problem, it is a bit
+>> confusing that you get 100% iowait while waiting without having IO
+>> pending. So I do think the suggested patch is probably worthwhile
+>> pursuing. I'll post it and hopefully have Andres test it too, if he's
+>> available.
 >
->> I hope it is fine, but is provided as-is. Especially line numbers should be
->> wrong, but 'patch' should be able to deal with it. (sorry if it does not apply)
->>
->> I guess that it should also apply to all previous branches.
->>
->> I've left the commit description as it was. Not sure what to do with A-b and R-b
->> tags.
-> Why isn't this needed in Linus's tree?
+> Emmm, what's the definition of the "IO" state? Unless we can say what exactly
+> it is there will be no end to adjustments, because I can easily argue that
+> CQ waiting by itself is IO.
+> Do we consider sleep(N) to be "IO"? I don't think the kernel uses io
+> schedule around that, and so it'd be different from io_uring waiting for
+> a timeout request. What about epoll waiting, etc.?
 
-If *this* is the patch --> see my other reply.
+See Documentation/filesystems/proc.rst (and mainly commit 9c240d757658
+("Change the document about iowait")):
 
+- iowait: In a word, iowait stands for waiting for I/O to complete. But there
+  are several problems:
 
-If *this* is the A-b and R-b tags, knowing that it is a *modified 
-version* of what they agreed, I'm not sure that the tags are still relevant.
-They agreed with the patch in a *given context*. That does not mean that 
-an updated patch is still correct in another context and that they still 
-agree with it.
+  1. CPU will not wait for I/O to complete, iowait is the time that a task is
+     waiting for I/O to complete. When CPU goes into idle state for
+     outstanding task I/O, another task will be scheduled on this CPU.
+  2. In a multi-core CPU, the task waiting for I/O to complete is not running
+     on any CPU, so the iowait of each CPU is difficult to calculate.
+  3. The value of iowait field in /proc/stat will decrease in certain
+     conditions.
 
-That' why I wonder.
+  So, the iowait is not reliable by reading from /proc/stat.
 
-CJ
+Also, vmstat(8):
+       wa: Time spent waiting for IO.  Prior to Linux 2.5.41, included in idle.
 
+iostat/mpstat man pages:
+              %iowait
+                     Show the percentage of time that the  CPU  or  CPUs  were
+                     idle  during which the system had an outstanding disk I/O
+                     request.
 
->
-> confused,
->
-> greg k-h
+sar(1):
+              %iowait
+                     Percentage of time that the CPU or CPUs were idle  during
+                     which the system had an outstanding disk I/O request.
+
+iowait was initially introduced in 2002 by Rik van Riel in historical
+git commit 7b88e5e0bdf25 ("[PATCH] "io wait" process accounting").  The
+changelog from akpm reads:
+
+    Patch from Rik adds "I/O wait" statistics to /proc/stat.
+    
+    This allows us to determine how much system time is being spent
+    awaiting IO completion.  This is an important statistic, as it tends to
+    directly subtract from job completion time.
+    
+    procps-2.0.9 is OK with this, but doesn't report it.
+
+I vaguely recall there was confusion from users about why the system was
+idle when running database workloads.  Maybe Rik can remember more
+clearly.
+
+Anyway, as you can see, the definition is murky, at best.  I don't think
+we should overthink it.  I agree with the principle of Jens'
+patch--let's just not surprise users with a change in behavior.
+
+Cheers,
+Jeff
+
