@@ -2,61 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6E575F68E
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 14:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25F5975F68F
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 14:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229477AbjGXMml (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 08:42:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34958 "EHLO
+        id S229717AbjGXMmm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 08:42:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbjGXMmk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 08:42:40 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA6D61B8
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:42:38 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-993a37b79e2so696268566b.1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:42:38 -0700 (PDT)
+        with ESMTP id S229583AbjGXMml (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 08:42:41 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DB8EA
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:42:40 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-991fe70f21bso695381666b.3
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:42:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690202557; x=1690807357;
+        d=gmail.com; s=20221208; t=1690202558; x=1690807358;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7boIelHsP3P49HF7QYAFfHrfd18axPzxdFc22Fj5lNo=;
-        b=H534mtacJMyhPkJdqcZIsPtfZ40gHtluZfpoOMzTE1cBp2gIi+XcN5P7+rb5JCrofU
-         zc6oRVKYoCoxi9e11TqE6Xs+syer6CH9COKvC4y55EX/d0SrTWD6t74ImB7AK3l5fOzd
-         6kaGFW3ZCIlEi2fbep46IddJviYPdkP93QLGTGgk3dmz9L3B1/9haAJhRt7/NCo7hVpk
-         f+Yr8oopkbr/sE7dIxagBA2TsYWF8KD3wYs5NPnljo4hqIFbCQkRQyXVdtabwXKijNKA
-         6nacvJ2hSIWzYeMV19SIRMPBWIgBVOwzq9kI3CeYqiFyWkUvfT31FmwCANq0O0lP9YYP
-         2tsQ==
+        bh=9TbdZmckQ9lmBZtT4e3IsvZdHQrsc8Ko1WwQSQFHTfA=;
+        b=sVL4UEMP5CqoJUDjxTJpbm0IfuHzFhhhJucgVj7iKLpwTDooQqwDX5eGZRGswQI9AV
+         7Jnh6TOLl2+DIgVlS+O4IATx5CDvlBx2WrfZtxx68wRzZNPs6yJayF29ZL9z6hveQyfg
+         8uZPQpDrMjz2JobZgyApWeTpX6E4LmxlylTzvAJ7fytCEbUPWIsFl77jeVEh/YUk8LJm
+         IBZyy/djY91viGWbC3L8JYcmfyCTHGa/fFazokf5HZDqbfAxWDUizCsw+fCR7FTYo+Z0
+         bjIJZtzo9+75O9zyeDRQSnR8uukMrik6Y1yOPbdupj5KYJM01DfbLKl91T3NrCH3zv3j
+         qeIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690202557; x=1690807357;
+        d=1e100.net; s=20221208; t=1690202558; x=1690807358;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7boIelHsP3P49HF7QYAFfHrfd18axPzxdFc22Fj5lNo=;
-        b=d8CXMGhAXuR6rvIirY+jbe8Z+2N6me3oTl0YHkUeZa1dODpmWdAGvcsUMJ6eAU4Lx9
-         AmWbR+viCUICV7L+76uVE12vPIF5CF124K8ap8S2BQ2W49JqWf8nDp+FzURS6uyO+Lcz
-         AoJOhCMa9aX0KJR7bjtVag9eJ9DzTbsYiVEDe5nXWU4vCnb4SVGrowhZERi9AiM/71Ch
-         rVhEc1bWpwPbN2naU9z9DPzCJIQH3QC3eiCZP6dOIBJl+8mWdN46SZZMBsUT3JKesKHv
-         BM8U+jfLifSjyOrdqsbovx0AbuQbH5gTO/BCb6CgQaXBHhEsJhAtiED0nQTVGbF8yDrb
-         6PSw==
-X-Gm-Message-State: ABy/qLaN98RzBi1zFJHAdc6FUZaXwblu8Dn78BbwMQIZzmlb+B0+DtkK
-        JYDpNHtY0R1Rpc8ASP5f89vWDlGq2vE=
-X-Google-Smtp-Source: APBJJlFCgu4Z/Oa2tkMC2TSDPFFGHiLPmpzJLsw6adBMJaCDGN7fE+eI3I5b7V4SLHIknxGY2BZFRg==
-X-Received: by 2002:a17:907:784f:b0:99b:445d:45d3 with SMTP id lb15-20020a170907784f00b0099b445d45d3mr8977020ejc.67.1690202557170;
-        Mon, 24 Jul 2023 05:42:37 -0700 (PDT)
+        bh=9TbdZmckQ9lmBZtT4e3IsvZdHQrsc8Ko1WwQSQFHTfA=;
+        b=cWODwv6VsgaUx94Or7BDeayIPmf7H4R+HlFx9KZqN909V8cE9DUxcrEhUWP3zT4Lrf
+         5uA65aN7zWgfr47v/UKxjpwoOXdA+65NmpjsaC6EFUk1emdh7qSQGNZMu1dWHdb2Qs8t
+         lCSYzBFQYhI7UE7Ur/Rmxve7sOEby7PLtNM0EzSbAP8F8d7uORx9cF7P6XFm2nKVQJYN
+         2NpFDNRQ2eAxXSIrkUcEre/IacuuMBajVs+jsI1N/MvQOx5CauZdHtmpfNx0lUM9Ma1M
+         /KiPtBYodebi3MAIl4oe9GKQZmJvKg+FvdSQJTAwoxPYaqxVLtcCB7FTZqora2h7Y6oE
+         hFTQ==
+X-Gm-Message-State: ABy/qLY5wl2pfG2A0SRM20WIDNei/cWmCdnUe6sHE3a5J+oDf68fOf4o
+        GQtwQc53m0EB6AxC7TKhrvDZkjm9zys=
+X-Google-Smtp-Source: APBJJlEW9Vu/NgqShHc6L0LKdjGYizw6pb+Yr7TexV1kQ007Q06c9TyGRaKBuFYQiFT1WCOKripJUA==
+X-Received: by 2002:a17:907:7791:b0:97c:64bd:50a5 with SMTP id ky17-20020a170907779100b0097c64bd50a5mr9544488ejc.53.1690202558545;
+        Mon, 24 Jul 2023 05:42:38 -0700 (PDT)
 Received: from bigfoot.. (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
-        by smtp.gmail.com with ESMTPSA id a6-20020a1709062b0600b0099297782aa9sm6628490ejg.49.2023.07.24.05.42.36
+        by smtp.gmail.com with ESMTPSA id a6-20020a1709062b0600b0099297782aa9sm6628490ejg.49.2023.07.24.05.42.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 05:42:36 -0700 (PDT)
+        Mon, 24 Jul 2023 05:42:38 -0700 (PDT)
 From:   Eduard Zingerman <eddyz87@gmail.com>
 To:     stable@vger.kernel.org, ast@kernel.org
 Cc:     andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
         yhs@fb.com, mykolal@fb.com, luizcap@amazon.com,
         Eduard Zingerman <eddyz87@gmail.com>
-Subject: [PATCH 6.1.y v2 3/6] bpf: aggressively forget precise markings during state checkpointing
-Date:   Mon, 24 Jul 2023 15:42:20 +0300
-Message-ID: <20230724124223.1176479-4-eddyz87@gmail.com>
+Subject: [PATCH 6.1.y v2 4/6] selftests/bpf: make test_align selftest more robust
+Date:   Mon, 24 Jul 2023 15:42:21 +0300
+Message-ID: <20230724124223.1176479-5-eddyz87@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230724124223.1176479-1-eddyz87@gmail.com>
 References: <20230724124223.1176479-1-eddyz87@gmail.com>
@@ -74,125 +74,131 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 7a830b53c17bbadcf99f778f28aaaa4e6c41df5f ]
+[ Upstream commit 4f999b767769b76378c3616c624afd6f4bb0d99f ]
 
-Exploit the property of about-to-be-checkpointed state to be able to
-forget all precise markings up to that point even more aggressively. We
-now clear all potentially inherited precise markings right before
-checkpointing and branching off into child state. If any of children
-states require precise knowledge of any SCALAR register, those will be
-propagated backwards later on before this state is finalized, preserving
-correctness.
+test_align selftest relies on BPF verifier log emitting register states
+for specific instructions in expected format. Unfortunately, BPF
+verifier precision backtracking log interferes with such expectations.
+And instruction on which precision propagation happens sometimes don't
+output full expected register states. This does indeed look like
+something to be improved in BPF verifier, but is beyond the scope of
+this patch set.
 
-There is a single selftests BPF program change, but tremendous one: 25x
-reduction in number of verified instructions and states in
-trace_virtqueue_add_sgs.
-
-Cilium results are more modest, but happen across wider range of programs.
-
-SELFTESTS RESULTS
-=================
-
-$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results.csv ~/imprecise-aggressive-results.csv | grep -v '+0'
-File                 Program                  Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
--------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
-loop6.bpf.linked1.o  trace_virtqueue_add_sgs           398057            15114   -382943 (-96.20%)              8717               336      -8381 (-96.15%)
--------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
-
-CILIUM RESULTS
-==============
-
-$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results-cilium.csv ~/imprecise-aggressive-results-cilium.csv | grep -v '+0'
-File           Program                           Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
--------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
-bpf_host.o     tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
-bpf_host.o     tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
-bpf_host.o     tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
-bpf_host.o     tail_nodeport_nat_ipv6_egress                3446             3406        -40 (-1.16%)               203               198          -5 (-2.46%)
-bpf_lxc.o      tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
-bpf_lxc.o      tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
-bpf_lxc.o      tail_ipv4_ct_egress                          5074             4897       -177 (-3.49%)               255               248          -7 (-2.75%)
-bpf_lxc.o      tail_ipv4_ct_ingress                         5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
-bpf_lxc.o      tail_ipv4_ct_ingress_policy_only             5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
-bpf_lxc.o      tail_ipv6_ct_egress                          4558             4536        -22 (-0.48%)               188               187          -1 (-0.53%)
-bpf_lxc.o      tail_ipv6_ct_ingress                         4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
-bpf_lxc.o      tail_ipv6_ct_ingress_policy_only             4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
-bpf_lxc.o      tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
-bpf_overlay.o  tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
-bpf_overlay.o  tail_nodeport_nat_ipv6_egress                3482             3442        -40 (-1.15%)               204               201          -3 (-1.47%)
-bpf_xdp.o      tail_nodeport_nat_egress_ipv4               17200            15619      -1581 (-9.19%)              1111              1010        -101 (-9.09%)
--------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+So to make test_align a bit more robust, inject few dummy R4 = R5
+instructions which capture desired state of R5 and won't have precision
+tracking logs on them. This fixes tests until we can improve BPF
+verifier output in the presence of precision tracking.
 
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20221104163649.121784-6-andrii@kernel.org
+Link: https://lore.kernel.org/r/20221104163649.121784-7-andrii@kernel.org
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
 ---
- kernel/bpf/verifier.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ .../testing/selftests/bpf/prog_tests/align.c  | 38 ++++++++++++-------
+ 1 file changed, 24 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 8dc97cd0c01c..1384bf071d95 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2813,6 +2813,31 @@ static void mark_all_scalars_precise(struct bpf_verifier_env *env,
+diff --git a/tools/testing/selftests/bpf/prog_tests/align.c b/tools/testing/selftests/bpf/prog_tests/align.c
+index de27a29af270..8baebb41541d 100644
+--- a/tools/testing/selftests/bpf/prog_tests/align.c
++++ b/tools/testing/selftests/bpf/prog_tests/align.c
+@@ -2,7 +2,7 @@
+ #include <test_progs.h>
+ 
+ #define MAX_INSNS	512
+-#define MAX_MATCHES	16
++#define MAX_MATCHES	24
+ 
+ struct bpf_reg_match {
+ 	unsigned int line;
+@@ -267,6 +267,7 @@ static struct bpf_align_test tests[] = {
+ 			 */
+ 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
+ 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
++			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
+ 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_4, 4),
+@@ -280,6 +281,7 @@ static struct bpf_align_test tests[] = {
+ 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
+ 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
++			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 4),
+ 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
+ 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+@@ -311,44 +313,52 @@ static struct bpf_align_test tests[] = {
+ 			{15, "R4=pkt(id=1,off=18,r=18,umax=1020,var_off=(0x0; 0x3fc))"},
+ 			{15, "R5=pkt(id=1,off=14,r=18,umax=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Variable offset is added to R5 packet pointer,
+-			 * resulting in auxiliary alignment of 4.
++			 * resulting in auxiliary alignment of 4. To avoid BPF
++			 * verifier's precision backtracking logging
++			 * interfering we also have a no-op R4 = R5
++			 * instruction to validate R5 state. We also check
++			 * that R4 is what it should be in such case.
+ 			 */
+-			{17, "R5_w=pkt(id=2,off=0,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
++			{18, "R4_w=pkt(id=2,off=0,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
++			{18, "R5_w=pkt(id=2,off=0,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Constant offset is added to R5, resulting in
+ 			 * reg->off of 14.
+ 			 */
+-			{18, "R5_w=pkt(id=2,off=14,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
++			{19, "R5_w=pkt(id=2,off=14,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
+ 			/* At the time the word size load is performed from R5,
+ 			 * its total fixed offset is NET_IP_ALIGN + reg->off
+ 			 * (14) which is 16.  Then the variable offset is 4-byte
+ 			 * aligned, so the total offset is 4-byte aligned and
+ 			 * meets the load's requirements.
+ 			 */
+-			{23, "R4=pkt(id=2,off=18,r=18,umax=1020,var_off=(0x0; 0x3fc))"},
+-			{23, "R5=pkt(id=2,off=14,r=18,umax=1020,var_off=(0x0; 0x3fc))"},
++			{24, "R4=pkt(id=2,off=18,r=18,umax=1020,var_off=(0x0; 0x3fc))"},
++			{24, "R5=pkt(id=2,off=14,r=18,umax=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Constant offset is added to R5 packet pointer,
+ 			 * resulting in reg->off value of 14.
+ 			 */
+-			{25, "R5_w=pkt(off=14,r=8"},
++			{26, "R5_w=pkt(off=14,r=8"},
+ 			/* Variable offset is added to R5, resulting in a
+-			 * variable offset of (4n).
++			 * variable offset of (4n). See comment for insn #18
++			 * for R4 = R5 trick.
+ 			 */
+-			{26, "R5_w=pkt(id=3,off=14,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
++			{28, "R4_w=pkt(id=3,off=14,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
++			{28, "R5_w=pkt(id=3,off=14,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Constant is added to R5 again, setting reg->off to 18. */
+-			{27, "R5_w=pkt(id=3,off=18,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
++			{29, "R5_w=pkt(id=3,off=18,r=0,umax=1020,var_off=(0x0; 0x3fc))"},
+ 			/* And once more we add a variable; resulting var_off
+ 			 * is still (4n), fixed offset is not changed.
+ 			 * Also, we create a new reg->id.
+ 			 */
+-			{28, "R5_w=pkt(id=4,off=18,r=0,umax=2040,var_off=(0x0; 0x7fc)"},
++			{31, "R4_w=pkt(id=4,off=18,r=0,umax=2040,var_off=(0x0; 0x7fc)"},
++			{31, "R5_w=pkt(id=4,off=18,r=0,umax=2040,var_off=(0x0; 0x7fc)"},
+ 			/* At the time the word size load is performed from R5,
+ 			 * its total fixed offset is NET_IP_ALIGN + reg->off (18)
+ 			 * which is 20.  Then the variable offset is (4n), so
+ 			 * the total offset is 4-byte aligned and meets the
+ 			 * load's requirements.
+ 			 */
+-			{33, "R4=pkt(id=4,off=22,r=22,umax=2040,var_off=(0x0; 0x7fc)"},
+-			{33, "R5=pkt(id=4,off=18,r=22,umax=2040,var_off=(0x0; 0x7fc)"},
++			{35, "R4=pkt(id=4,off=22,r=22,umax=2040,var_off=(0x0; 0x7fc)"},
++			{35, "R5=pkt(id=4,off=18,r=22,umax=2040,var_off=(0x0; 0x7fc)"},
+ 		},
+ 	},
+ 	{
+@@ -681,6 +691,6 @@ void test_align(void)
+ 		if (!test__start_subtest(test->descr))
+ 			continue;
+ 
+-		CHECK_FAIL(do_test_single(test));
++		ASSERT_OK(do_test_single(test), test->descr);
  	}
  }
- 
-+static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
-+{
-+	struct bpf_func_state *func;
-+	struct bpf_reg_state *reg;
-+	int i, j;
-+
-+	for (i = 0; i <= st->curframe; i++) {
-+		func = st->frame[i];
-+		for (j = 0; j < BPF_REG_FP; j++) {
-+			reg = &func->regs[j];
-+			if (reg->type != SCALAR_VALUE)
-+				continue;
-+			reg->precise = false;
-+		}
-+		for (j = 0; j < func->allocated_stack / BPF_REG_SIZE; j++) {
-+			if (!is_spilled_reg(&func->stack[j]))
-+				continue;
-+			reg = &func->stack[j].spilled_ptr;
-+			if (reg->type != SCALAR_VALUE)
-+				continue;
-+			reg->precise = false;
-+		}
-+	}
-+}
-+
- /*
-  * __mark_chain_precision() backtracks BPF program instruction sequence and
-  * chain of verifier states making sure that register *regno* (if regno >= 0)
-@@ -2891,6 +2916,14 @@ static void mark_all_scalars_precise(struct bpf_verifier_env *env,
-  * be imprecise. If any child state does require this register to be precise,
-  * we'll mark it precise later retroactively during precise markings
-  * propagation from child state to parent states.
-+ *
-+ * Skipping precise marking setting in current state is a mild version of
-+ * relying on the above observation. But we can utilize this property even
-+ * more aggressively by proactively forgetting any precise marking in the
-+ * current state (which we inherited from the parent state), right before we
-+ * checkpoint it and branch off into new child state. This is done by
-+ * mark_all_scalars_imprecise() to hopefully get more permissive and generic
-+ * finalized states which help in short circuiting more future states.
-  */
- static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
- 				  int spi)
-@@ -12277,6 +12310,10 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
- 	env->prev_jmps_processed = env->jmps_processed;
- 	env->prev_insn_processed = env->insn_processed;
- 
-+	/* forget precise markings we inherited, see __mark_chain_precision */
-+	if (env->bpf_capable)
-+		mark_all_scalars_imprecise(env, cur);
-+
- 	/* add new state to the head of linked list */
- 	new = &new_sl->state;
- 	err = copy_verifier_state(new, cur);
 -- 
 2.41.0
 
