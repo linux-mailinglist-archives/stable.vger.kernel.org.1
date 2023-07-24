@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9AE075EB5C
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E66775EB5D
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbjGXGS1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 02:18:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52726 "EHLO
+        id S230253AbjGXGSe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 02:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbjGXGSZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:18:25 -0400
+        with ESMTP id S229728AbjGXGSe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:18:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2924EE53
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:18:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50CA9E4F
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:18:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A55CF60F25
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B364CC433C8;
-        Mon, 24 Jul 2023 06:18:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98F3D60F36
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59D4C433C7;
+        Mon, 24 Jul 2023 06:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690179503;
-        bh=q0RD52IUzCn1egr2WOCf80fYdh+PtsrVASHbY5sQ7z4=;
+        s=korg; t=1690179508;
+        bh=6eQcJbvlVwhakRyxVRRbXrTNFjR4L8vYlb5fYHqLYU0=;
         h=Subject:To:Cc:From:Date:From;
-        b=DL8sNYAjcqgcxhRn4/G3KFBw0g/F/bqoFkF9hu4uU/4lWr0R4okOlqENdeLKHYjdC
-         mWnsg/ldumkCOfug5PaQBBEleajXUQHrOweA8W4Fc2VSbKyQRDCr2AVlKL85ufPJOQ
-         apg9f/VtnC2mIe/bKAFUUfOOiL/NZlD9VeGh8pzs=
-Subject: FAILED: patch "[PATCH] ext4: fix off by one issue in" failed to apply to 5.10-stable tree
-To:     ojaswin@linux.ibm.com, tytso@mit.edu
+        b=lzbk9rIxsr8VuNT2g48c6EJJcSu+UmSZ91EDW4ZvrjoMv/ErcEFY2x4WZN8DKDByC
+         8HNIDYvhEoWKouuCflSAAvRcRYmPcZD6EmrdQWo5M2FOmHIT47QZv3tSC3gM/dCHSs
+         7iAQjzPGRQkznhXHlNdqbzJToqMxyd/BZVHAcLN8=
+Subject: FAILED: patch "[PATCH] jbd2: fix a race when checking checkpoint buffer busy" failed to apply to 6.1-stable tree
+To:     yi.zhang@huawei.com, jack@suse.cz, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 24 Jul 2023 08:18:20 +0200
-Message-ID: <2023072419-silt-kinswoman-c896@gregkh>
+Date:   Mon, 24 Jul 2023 08:18:24 +0200
+Message-ID: <2023072424-dejected-raisin-2dd7@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,42 +49,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5d5460fa7932bed3a9082a6a8852cfbdb46acbe8
+git cherry-pick -x 46f881b5b1758dc4a35fba4a643c10717d0cf427
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072419-silt-kinswoman-c896@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072424-dejected-raisin-2dd7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-5d5460fa7932 ("ext4: fix off by one issue in ext4_mb_choose_next_group_best_avail()")
-f52f3d2b9fba ("ext4: Give symbolic names to mballoc criterias")
-7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-1b4200112108 ("ext4: Avoid scanning smaller extents in BG during CR1")
-3ef5d2638796 ("ext4: Add counter to track successful allocation of goal length")
-fdd9a00943a5 ("ext4: Add per CR extent scanned counter")
-4eb7a4a1a33b ("ext4: Convert mballoc cr (criteria) to enum")
-c3defd99d58c ("ext4: treat stripe in block unit")
-361eb69fc99f ("ext4: Remove the logic to trim inode PAs")
-3872778664e3 ("ext4: Use rbtrees to manage PAs instead of inode i_prealloc_list")
-a8e38fd37cff ("ext4: Convert pa->pa_inode_list and pa->pa_obj_lock into a union")
-93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
-0830344c953a ("ext4: Abstract out overlap fix/check logic in ext4_mb_normalize_request()")
-7692094ac513 ("ext4: Move overlap assert logic into a separate function")
-bcf434992145 ("ext4: Refactor code in ext4_mb_normalize_request() and ext4_mb_use_preallocated()")
-e86a718228b6 ("ext4: Stop searching if PA doesn't satisfy non-extent file")
-91a48aaf59d0 ("ext4: avoid unnecessary pointer dereference in ext4_mb_normalize_request")
-83e80a6e3543 ("ext4: use buckets for cr 1 block scan instead of rbtree")
-4fca50d440cc ("ext4: make mballoc try target group first even with mb_optimize_scan")
-cf4ff938b47f ("ext4: correct the judgment of BUG in ext4_mb_normalize_request")
+46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+b98dba273a0e ("jbd2: remove journal_clean_one_cp_list()")
 
 thanks,
 
@@ -92,67 +74,141 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5d5460fa7932bed3a9082a6a8852cfbdb46acbe8 Mon Sep 17 00:00:00 2001
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Date: Fri, 9 Jun 2023 16:04:03 +0530
-Subject: [PATCH] ext4: fix off by one issue in
- ext4_mb_choose_next_group_best_avail()
+From 46f881b5b1758dc4a35fba4a643c10717d0cf427 Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Tue, 6 Jun 2023 21:59:27 +0800
+Subject: [PATCH] jbd2: fix a race when checking checkpoint buffer busy
 
-In ext4_mb_choose_next_group_best_avail(), we want the start order to be
-1 less than goal length and the min_order to be, at max, 1 more than the
-original length. This commit fixes an off by one issue that arose due to
-the fact that 1 << fls(n) > (n).
+Before removing checkpoint buffer from the t_checkpoint_list, we have to
+check both BH_Dirty and BH_Lock bits together to distinguish buffers
+have not been or were being written back. But __cp_buffer_busy() checks
+them separately, it first check lock state and then check dirty, the
+window between these two checks could be raced by writing back
+procedure, which locks buffer and clears buffer dirty before I/O
+completes. So it cannot guarantee checkpointing buffers been written
+back to disk if some error happens later. Finally, it may clean
+checkpoint transactions and lead to inconsistent filesystem.
 
-After all the processing:
+jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
+same problem (journal_unmap_buffer() escape from this issue since it's
+running under the buffer lock), so fix them through introducing a new
+helper to try holding the buffer lock and remove really clean buffer.
 
-order = 1 order below goal len
-min_order = maximum of the three:-
-             - order - trim_order
-             - 1 order below B2C(s_stripe)
-             - 1 order above original len
-
-Cc: stable@kernel.org
-Fixes: 33122aa930 ("ext4: Add allocation criteria 1.5 (CR1_5)")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230609103403.112807-1-ojaswin@linux.ibm.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index a2475b8c9fb5..456150ef6111 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1006,14 +1006,11 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
- 	 * fls() instead since we need to know the actual length while modifying
- 	 * goal length.
- 	 */
--	order = fls(ac->ac_g_ex.fe_len);
-+	order = fls(ac->ac_g_ex.fe_len) - 1;
- 	min_order = order - sbi->s_mb_best_avail_max_trim_order;
- 	if (min_order < 0)
- 		min_order = 0;
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 42b34cab64fb..9ec91017a7f3 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+ 		jh = next_jh;
+ 		next_jh = jh->b_cpnext;
  
--	if (1 << min_order < ac->ac_o_ex.fe_len)
--		min_order = fls(ac->ac_o_ex.fe_len) + 1;
--
- 	if (sbi->s_stripe > 0) {
- 		/*
- 		 * We are assuming that stripe size is always a multiple of
-@@ -1021,9 +1018,16 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
- 		 */
- 		num_stripe_clusters = EXT4_NUM_B2C(sbi, sbi->s_stripe);
- 		if (1 << min_order < num_stripe_clusters)
--			min_order = fls(num_stripe_clusters);
-+			/*
-+			 * We consider 1 order less because later we round
-+			 * up the goal len to num_stripe_clusters
-+			 */
-+			min_order = fls(num_stripe_clusters) - 1;
- 	}
+-		if (!destroy && __cp_buffer_busy(jh))
+-			continue;
++		if (destroy) {
++			ret = __jbd2_journal_remove_checkpoint(jh);
++		} else {
++			ret = jbd2_journal_try_remove_checkpoint(jh);
++			if (ret < 0)
++				continue;
++		}
  
-+	if (1 << min_order < ac->ac_o_ex.fe_len)
-+		min_order = fls(ac->ac_o_ex.fe_len);
+ 		nr_freed++;
+-		ret = __jbd2_journal_remove_checkpoint(jh);
+ 		if (ret) {
+ 			*released = true;
+ 			break;
+@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
+ 	return 1;
+ }
+ 
++/*
++ * Check the checkpoint buffer and try to remove it from the checkpoint
++ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
++ * it frees the transaction, 0 otherwise.
++ *
++ * This function is called with j_list_lock held.
++ */
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
++{
++	struct buffer_head *bh = jh2bh(jh);
 +
- 	for (i = order; i >= min_order; i--) {
- 		int frag_order;
- 		/*
++	if (!trylock_buffer(bh))
++		return -EBUSY;
++	if (buffer_dirty(bh)) {
++		unlock_buffer(bh);
++		return -EBUSY;
++	}
++	unlock_buffer(bh);
++
++	/*
++	 * Buffer is clean and the IO has finished (we held the buffer
++	 * lock) so the checkpoint is done. We can safely remove the
++	 * buffer from this transaction.
++	 */
++	JBUFFER_TRACE(jh, "remove from checkpoint list");
++	return __jbd2_journal_remove_checkpoint(jh);
++}
++
+ /*
+  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
+  * list so that we know when it is safe to clean the transaction out of
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 18611241f451..6ef5022949c4 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1784,8 +1784,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
+ 		 * Otherwise, if the buffer has been written to disk,
+ 		 * it is safe to remove the checkpoint and drop it.
+ 		 */
+-		if (!buffer_dirty(bh)) {
+-			__jbd2_journal_remove_checkpoint(jh);
++		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
+ 			spin_unlock(&journal->j_list_lock);
+ 			goto drop;
+ 		}
+@@ -2112,20 +2111,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
+ 
+ 	jh = bh2jh(bh);
+ 
+-	if (buffer_locked(bh) || buffer_dirty(bh))
+-		goto out;
+-
+ 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
+-		goto out;
++		return;
+ 
+ 	spin_lock(&journal->j_list_lock);
+-	if (jh->b_cp_transaction != NULL) {
+-		/* written-back checkpointed metadata buffer */
+-		JBUFFER_TRACE(jh, "remove from checkpoint list");
+-		__jbd2_journal_remove_checkpoint(jh);
+-	}
++	/* Remove written-back checkpointed metadata buffer */
++	if (jh->b_cp_transaction != NULL)
++		jbd2_journal_try_remove_checkpoint(jh);
+ 	spin_unlock(&journal->j_list_lock);
+-out:
+ 	return;
+ }
+ 
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index bd660aac8e07..44c298aa58d4 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1443,6 +1443,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
+ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
+ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
+ int __jbd2_journal_remove_checkpoint(struct journal_head *);
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
+ void jbd2_journal_destroy_checkpoint(journal_t *journal);
+ void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
+ 
 
