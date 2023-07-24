@@ -2,137 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97A1D75E5DD
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 02:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F27875E5E6
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 02:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229725AbjGXAdH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 20:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
+        id S229477AbjGXAn7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 20:43:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGXAdD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 20:33:03 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F995D8
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 17:32:59 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-785d738d3feso90229239f.0
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 17:32:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1690158779; x=1690763579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=okkG/ASud8bLD06JXRVQQQz75TIzTLjFE+g1R5XNRR0=;
-        b=wzEpS8znt/KxoJH41SBjTpOAf7SjE8+6B76QKwyLShkp6frvxhQTjNA01CdMQpJvwH
-         i4e46zjY7u+xtcpm3n+Jjpc1VkUT3Tx9CRwPSZ8n79ENbfx3zEJTBBIk/NVWzQ36PBkh
-         WaiLgAMF89nIO4b973kH7KlJyNwsK2uARFgzc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690158779; x=1690763579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=okkG/ASud8bLD06JXRVQQQz75TIzTLjFE+g1R5XNRR0=;
-        b=Ey2cKetLyo4sKueb0txPDpHX7fznK9O/lB9sRL42NqMSPjIjSobwCusAYr+/LSANqV
-         c2Ip2m+HJeSLnw4lnAk/sbtBrTG/Hh5F4FHLL6acgjkxBUb/MJUiNxTeV3z2jKcMY9HK
-         uHm+rntcy5g/QDo8XbQAVktWdmEVx7pDmf2w6NnTAsKAjUs2OoTDIF822ECfnCl4MEuL
-         zbdscIJhaEv/AQ0kwEqYGbtHhInGwxWdXh6KZ5YW7XnxdnpTU3IDlcePTpFBPs0ijmjG
-         C7EkNKFFvHhTQ9Nrd5mDBjwtohMXnCpinWrLS5BWjXKmfqkOhHXOy5h478pcFnaDluu0
-         FPXg==
-X-Gm-Message-State: ABy/qLYj+mvy0+v18idMyVftxn7hNNLy0rWPH95FjUOgts8ayJau1DxG
-        1q7gen7+t4p+BDr4G9+VocFILH4lt+ax4JWCNhc=
-X-Google-Smtp-Source: APBJJlENT9DK1h4VT6XVyoZzt/3Fi6aMgmGbSTEM9F5klJFOr9BBANR8HvOe7z8qwGRAEPyA984uJw==
-X-Received: by 2002:a5e:a810:0:b0:786:7100:5727 with SMTP id c16-20020a5ea810000000b0078671005727mr4057316ioa.1.1690158778914;
-        Sun, 23 Jul 2023 17:32:58 -0700 (PDT)
-Received: from localhost (30.64.135.34.bc.googleusercontent.com. [34.135.64.30])
-        by smtp.gmail.com with ESMTPSA id m3-20020a056602018300b00786fd8e764bsm3115485ioo.0.2023.07.23.17.32.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jul 2023 17:32:57 -0700 (PDT)
-Date:   Mon, 24 Jul 2023 00:32:57 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [BUG] Re: Linux 6.4.4
-Message-ID: <20230724003257.GA60074@google.com>
-References: <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
- <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
- <eb04b7d0-2f49-4e01-be09-9062d9f08404@paulmck-laptop>
- <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
- <9b42cb38-8375-fc41-475a-2bd26c60a7b9@joelfernandes.org>
- <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
- <7bfde9f4-2bd6-7337-b9ca-94a9253d847f@joelfernandes.org>
- <ad82995c-061e-4f97-a972-c13a85ad0b72@paulmck-laptop>
- <a7bcbcf2-9b34-4326-822f-e1f2aa5c5668@joelfernandes.org>
- <ebde8612-95de-4eaf-aa56-34e9b3a3fa86@paulmck-laptop>
+        with ESMTP id S229469AbjGXAn6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 20:43:58 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2063.outbound.protection.outlook.com [40.107.94.63])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A94A19B
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 17:43:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dK8mx1ekQlDLXT++JqnAMHtMphP+RokMTzytK5HhRo/eSLCXagbSdP7vpWN0vOUz8HpU3sa2Nv0PBlh/G1ThBNWxCEBTXcmZ60UFqQ2ypweICaexOytW8qAPCPoeQh4M9eaubpoAHay70Xre+LNSGYImWo7rUn+KqAurGd2NcUQoKyDLeW3TDTfwOd0NEtmm0qCgWXmEVWqHuO/Fs22AQaLf6PvlS6Io7WXMVvhweBXWn1hcdShXW3UIVsOOqraK/lsKFT146enVFJz572IlYbjA3y+RinHyS2Zz823mveEo/UsIYO/GZpLx2hLcCvFjU7HnCePJmxAfYrvRNNPhyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I6zmzHA9WzjJRLgYYrbxRXjIcXs1KkVIAKL0ZDk5yFY=;
+ b=TFGj2CLYDXHw4+t/4Y+bARHrjVvPQrd73b1ud/H2BC662wTSlHV0Ct52Lintnp3+6WazLpR4AxbA7azDSvnjDRkfTXEIUW8rYzYuJFWvtP/xCQhfuhxoRl7RhljKbGON2ruQrt2PyHzb4Py3UzGoHsqVdcW5BwNjGsMKAbwfihARqwuRlUK9+Kza0f8Cdz3QGOoJLyvlh92wEfRhXbPg4c8VjnBVlZJUpXkbBQKBC3Af1Cu5fAPFWpaf4c7uzdK5vWr7lSlt0AfebmCoBixPzkNTt2iiERoTQdNOaZrKAWd0biXkz2uDLA7cR15SDu9aKeouEVBHBBWPC8M1hJqTaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I6zmzHA9WzjJRLgYYrbxRXjIcXs1KkVIAKL0ZDk5yFY=;
+ b=yZgfLod7ubIBA8UbrN0o4Mnmu5oDncdqcjkCEWvd8oJ4lsO8lL/IQBZeGPSd0FbK2SlhhZOYc8l6cHGuiL24rWNwz0xFERnpUxLgmrzmX8adhs7zozfF9hWPih8tbc0sphH2AMrg3UUZFxCXtr/JDKBSBSkQTjhIi5Kq16PjfzU=
+Received: from BY3PR05CA0003.namprd05.prod.outlook.com (2603:10b6:a03:254::8)
+ by DM3PR12MB9327.namprd12.prod.outlook.com (2603:10b6:0:42::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Mon, 24 Jul
+ 2023 00:43:54 +0000
+Received: from DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:a03:254:cafe::7e) by BY3PR05CA0003.outlook.office365.com
+ (2603:10b6:a03:254::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.24 via Frontend
+ Transport; Mon, 24 Jul 2023 00:43:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT056.mail.protection.outlook.com (10.13.173.99) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6631.24 via Frontend Transport; Mon, 24 Jul 2023 00:43:53 +0000
+Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sun, 23 Jul
+ 2023 19:43:52 -0500
+From:   Yunxiang Li <Yunxiang.Li@amd.com>
+To:     <stable@vger.kernel.org>
+CC:     Yunxiang Li <Yunxiang.Li@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.4.y] drm/ttm: fix bulk_move corruption when adding a entry
+Date:   Sun, 23 Jul 2023 20:43:26 -0400
+Message-ID: <20230724004330.1320-1-Yunxiang.Li@amd.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <2023072146-sports-deluge-22a1@gregkh>
+References: <2023072146-sports-deluge-22a1@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ebde8612-95de-4eaf-aa56-34e9b3a3fa86@paulmck-laptop>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT056:EE_|DM3PR12MB9327:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac0db13d-8f04-41e0-222f-08db8bdf0e61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: FI8nymXtNZf41PxsKlAzwdXcynesdksVTknwTwWbTNQA1U17R6kZQelhOCDHIJOn0VxnooY2LWEg/eskYvVJIqH6pb50s/FLEgFAyC5y6hCeEtOQQGDWIZxY8QnrmTaXLjs76LAMYUOsu2iysORPM/7ojycyH40iGX19ZVIi9XyBr0yratFAGsvpYkTWf8y6VLjBBSg5noKbD1SeRAY167yc3Y29dH7CZvAMGWGAjK1IC98cXTMGK4EpTBNcaMtPoW/JE+75uu5st02Cn8597ITKOnFYXi6JGe+/hA/4ZQefM8aFaWojmkB8YRc0ZofrJrEdOWkz+XOowv2Zt5WJeutMPiX/5R0f/3dbBvsZBrG7I3laRk/eAPJbvkh20xyAMJ5WiG+LSqM+DRQ963hx8IkJ0nKPKWxSKMzbbau0qdxhuDFLuPh6Fx/DM2yyaCIDbTi2Ix4dkjz/+z8Z/0E87SYmbKzTZHIJg1zD7sX3XFIf6peUrmhaANljbZGer/efvKNi6NTd9n9VcFAywyOBvQj12LaUEwDjp/5s88fvvXlRr4xWwrvtCs8rFfvRYUP67TC42oPvlMPgazGP6kV9mca5mHDcJ+NVGFOFPm7NeGMktqRaTuk+iAZjoqlJ/VsyNzNgeAw2bRfDCioZdku+taxrbAELuPzrpWVT+jQjS1dALOsvQ8zw3rUR9Jq2KJPp8Ha4vge5zEUjpDSjzNy7DzC85bqHfzC399o0aim6Pnc2pS4Nsumf+NGAe1oReQ9H
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(39850400004)(396003)(346002)(376002)(82310400008)(451199021)(46966006)(40470700004)(36840700001)(40480700001)(40460700003)(1076003)(966005)(70206006)(36756003)(54906003)(5660300002)(70586007)(81166007)(8676002)(316002)(41300700001)(86362001)(4326008)(6916009)(8936002)(2906002)(6666004)(82740400003)(478600001)(356005)(2616005)(83380400001)(26005)(36860700001)(336012)(47076005)(426003)(186003)(16526019)(66574015)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 00:43:53.7490
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac0db13d-8f04-41e0-222f-08db8bdf0e61
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9327
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 23, 2023 at 10:19:27AM -0700, Paul E. McKenney wrote:
-> On Sun, Jul 23, 2023 at 10:50:26AM -0400, Joel Fernandes wrote:
-> > 
-> > 
-> > On 7/22/23 13:27, Paul E. McKenney wrote:
-> > [..]
-> > > 
-> > > OK, if this kernel is non-preemptible, you are not running TREE03,
-> > > correct?
-> > > 
-> > >> Next plan of action is to get sched_waking stack traces since I have a
-> > >> very reliable repro of this now.
-> > > 
-> > > Too much fun!  ;-)
-> > 
-> > For TREE07 issue, it is actually the schedule_timeout_interruptible(1)
-> > in stutter_wait() that is beating up the CPU0 for 4 seconds.
-> > 
-> > This is very similar to the issue I fixed in New year in d52d3a2bf408
-> > ("torture: Fix hang during kthread shutdown phase")
-> 
-> Agreed, if there are enough kthreads, and all the kthreads are on a
-> single CPU, this could consume that CPU.
-> 
-> > Adding a cond_resched() there also did not help.
-> > 
-> > I think the issue is the stutter thread fails to move spt forward
-> > because it does not get CPU time. But spt == 1 should be very brief
-> > AFAIU. I was wondering if we could set that to RT.
-> 
-> Or just use a single hrtimer-based wait for each kthread?
+When the resource is the first in the bulk_move range, adding it again
+(thus moving it to the tail) will corrupt the list since the first
+pointer is not moved. This eventually lead to null pointer deref in
+ttm_lru_bulk_move_del()
 
-[Joel]
-Yes this might be better, but there's still the issue that spt may not be set
-back to 0 in some future release where the thread gets starved.
+Fixes: fee2ede15542 ("drm/ttm: rework bulk move handling v5")
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+CC: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230622141902.28718-3-Yunxiang.Li@amd.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+(cherry picked from commit 4481913607e58196c48a4fef5e6f45350684ec3c)
+---
+ drivers/gpu/drm/ttm/ttm_resource.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> > But also maybe the following will cure it like it did for the shutdown
-> > issue, giving the stutter thread just enough CPU time to move spt forward.
-> > 
-> > Now I am trying the following and will let it run while I go do other
-> > family related things. ;)
-> 
-> Good point, if this avoids the problem, that gives a strong indication
-> that your hypothesis on the root cause is correct.
-
-[Joel]
-And the TREE07 issue is gone with that change! So I think I'll roll into a
-patch and send it to you. But I am also hoping that you are Ok with me
-setting the stutter thread to RT in addition to the longer schedule_timeout.
-That's just to make it more robust since I think it is crucial that it does
-not stutter threads indefinitely due to the scheduler (for any unforeseen
-reason in the future, such as scheduler issues). And maybe, as a part of
-that I could also tackle that other TODO item about cleaning up
-torture_create_kthead() as well to add support to it for setting things to
-RT and use it for that.
-
-Let me know what you think, thanks!
-
- - Joel
+diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+index 7333f7a87a2f..46ff9c75bb12 100644
+--- a/drivers/gpu/drm/ttm/ttm_resource.c
++++ b/drivers/gpu/drm/ttm/ttm_resource.c
+@@ -86,6 +86,8 @@ static void ttm_lru_bulk_move_pos_tail(struct ttm_lru_bulk_move_pos *pos,
+ 				       struct ttm_resource *res)
+ {
+ 	if (pos->last != res) {
++		if (pos->first == res)
++			pos->first = list_next_entry(res, lru);
+ 		list_move(&res->lru, &pos->last->lru);
+ 		pos->last = res;
+ 	}
+@@ -111,7 +113,8 @@ static void ttm_lru_bulk_move_del(struct ttm_lru_bulk_move *bulk,
+ {
+ 	struct ttm_lru_bulk_move_pos *pos = ttm_lru_bulk_move_pos(bulk, res);
+ 
+-	if (unlikely(pos->first == res && pos->last == res)) {
++	if (unlikely(WARN_ON(!pos->first || !pos->last) ||
++		     (pos->first == res && pos->last == res))) {
+ 		pos->first = NULL;
+ 		pos->last = NULL;
+ 	} else if (pos->first == res) {
+-- 
+2.41.0
 
