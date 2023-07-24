@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A06F76023D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 00:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D22C6760244
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 00:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbjGXW0v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 18:26:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52482 "EHLO
+        id S229557AbjGXW2F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 18:28:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjGXW0u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 18:26:50 -0400
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2055.outbound.protection.outlook.com [40.107.102.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43C2810D
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:26:48 -0700 (PDT)
+        with ESMTP id S231398AbjGXW16 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 18:27:58 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2067.outbound.protection.outlook.com [40.107.244.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7944D172D
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:27:51 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eCwZzlbAnjWSDkkgXEbTidkAMK6D95ChRx7auUIOcMnnOObjrHMjd5j54ZDGAxmmKVWvIEE6vQzGNS+JE7Dkqx+LLLYmBgDOe+Oo45NHWjb35ijMMUuos2FRxONse3sZyhpY9eHrV+PO5Sce6JJ5tOV8lDbtwfGFEXPgh75sKuDargnay140IZRFd7aLWg1NtBErg76OPm3GoDJdgh+D/Liogsfvzky20bd+HhLuKINQw6L3bEfUByxgWe4F3YbRYs3+bsChEQ9//xVp2lIEk5THrgKKoe7M3kH3uQJOubLMT4dIMY2K7nujfQMAsjXb7xDMLRuqJdJDQ8GXM5uHwg==
+ b=O2DRWNBvlhzWbBeWekxTlJWARyElt6YlGKe7fvY1yXRCGz7uIJ9O6RBazxKGnTIiif7G4Tv3Di0/R4Ee6x+i7q2Xu0aNmjggyovp+TmEa05yEsD+krKc2k7ylv9i0b4Vc4BB2snyn1Np6U6w/5ij+WqOCWF/lmMzYSsrvX+j4GdQ2GLmIGIvmWxhhVhJvk3JwDybMn74xLb3LGsGyPjMJNWJTk8SuD+2GzvATgPF9i/tjELPBNXFWX7B7pnpxnCFSxbuJVtqR2haGH9/X+pUE7Zs4JqpvTMK1VmGYMnnsheoX3cqdNHoJUFodJyfhNZh+fmKt0mxET7HFycTOmixOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HZrFYCUzoZ36N4HdrcMzWMW8pRYgOEj7a2JB+zsARw0=;
- b=AsOjxvHiDrUM65HDGW25at+vK8LWjozH6Tiz81Y32qbfVVTkwVLefEg7cdnDRBt08CxA/+ja4a7F2g6vwNgN9Gy/3Abtmf4vlr5xocSsGthRyyJyj8nppCbTmTn43zXOLM/dPg16FM6+g1xMqW1Wuj26eOetv8nyJLYXzZJ2RgT6JpHG949+R+lKec+/klmnRx6+jRcrwh1klEbwz1wrM1LjfAAHwsrWducDNxlhuzeYySteisYPkK4LN20CRex8C5DXTb/inuU3O8CSTdW23tXlkn2OgDhrnL6OjgwbovQ/GFIgrfrKpNadJgCsTuMTZg8MhvRgv3m+ZTVeNCQCOg==
+ bh=FSEtYaGJO+lFxVK81HDQFVQmKmdu7bnU2buvQG/9zVk=;
+ b=oJgCexzZJ0cGofovji3RJyBQTy37H514339EULcIHlwrVbqUfIjqrTwy8I/bFsN7C/EVKiga3ysiUmkX42uOpuX1Vbne7CcnYip6SFY1VrmG3JIDR3rU0Z6a+zSxQ8WB0PBW/x35qG28SNgfu68ha3N2gTp0EQFeDPmHuKlyxdV7vxUezV/QO/YNju/oc57nE6lUK0HxIEUhz6ZF25Rn2r2rP0L2UL4IrKhHQE6p5eLMvrQeMekrvU+x6eCglWIWmUVJl86HQOumrWj3eORiPhH5b/GrmzuTF4pBFLn2tnKfI2VUA4JNtxqDKTtyL3sfjxVu2EvZfYkq+fs78yERWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HZrFYCUzoZ36N4HdrcMzWMW8pRYgOEj7a2JB+zsARw0=;
- b=v3aEPJGn85At9r0saTMj3jPWJ64rsU2j4PLDskd9yDAfVN/AM4oIk8Flr6oSd935Bi8ArIZQF2HyMBITRkGXngRO7Cj+l0YpX5qVyPXLU0wG44RyK+FtE/5gbdC1RX10CKkYr/wyYjWghyOhNyAcvvEcwgy7LKuh96WQo1tUnE4=
-Received: from BN0PR04CA0073.namprd04.prod.outlook.com (2603:10b6:408:ea::18)
- by CY8PR12MB7435.namprd12.prod.outlook.com (2603:10b6:930:51::6) with
+ bh=FSEtYaGJO+lFxVK81HDQFVQmKmdu7bnU2buvQG/9zVk=;
+ b=pvu+AMjM7yikTPt7IdSGUS04o1KPf3q8Y1/5UTqIWE3T3Bjon3siIkwpXSp61VXxxunDYzW8Lan0guGnQO1VcDtUOw3PwbUzL9oe5wttytUeqVWIUCocdtj3C8J1wq1Z0ojdwhkd30LetYBjvjXlOaoPudd5/LUU+E+IXaDv3hc=
+Received: from BN0PR04CA0065.namprd04.prod.outlook.com (2603:10b6:408:ea::10)
+ by PH7PR12MB6492.namprd12.prod.outlook.com (2603:10b6:510:1f3::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.31; Mon, 24 Jul
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.32; Mon, 24 Jul
  2023 22:26:46 +0000
 Received: from BN8NAM11FT100.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:ea:cafe::a1) by BN0PR04CA0073.outlook.office365.com
- (2603:10b6:408:ea::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33 via Frontend
- Transport; Mon, 24 Jul 2023 22:26:45 +0000
+ (2603:10b6:408:ea:cafe::15) by BN0PR04CA0065.outlook.office365.com
+ (2603:10b6:408:ea::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.32 via Frontend
+ Transport; Mon, 24 Jul 2023 22:26:46 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,7 +48,7 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BN8NAM11FT100.mail.protection.outlook.com (10.13.177.100) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6631.25 via Frontend Transport; Mon, 24 Jul 2023 22:26:45 +0000
+ 15.20.6631.25 via Frontend Transport; Mon, 24 Jul 2023 22:26:46 +0000
 Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 24 Jul
@@ -56,9 +56,9 @@ Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
 From:   Mario Limonciello <mario.limonciello@amd.com>
 To:     <stable@vger.kernel.org>
 CC:     Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 2/7] drm/amd/display: fix some coding style issues
-Date:   Mon, 24 Jul 2023 17:26:33 -0500
-Message-ID: <20230724222638.1477-3-mario.limonciello@amd.com>
+Subject: [PATCH 6.1 3/7] drm/dp_mst: Clear MSG_RDY flag before sending new message
+Date:   Mon, 24 Jul 2023 17:26:34 -0500
+Message-ID: <20230724222638.1477-4-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230724222638.1477-1-mario.limonciello@amd.com>
 References: <20230724222638.1477-1-mario.limonciello@amd.com>
@@ -70,26 +70,26 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT100:EE_|CY8PR12MB7435:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64101f41-f31d-4bfc-621e-08db8c95105e
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT100:EE_|PH7PR12MB6492:EE_
+X-MS-Office365-Filtering-Correlation-Id: e245aa89-19dd-4b00-f7d3-08db8c9510d7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: z6SFdkemgLZw+4pu3kekhdZxarDrnNaDqcqS+Lro0IsHTZO7gGrJgVZhGm+VeNETPBaNl6jedc+zYX+tz9dyxA1ZcrKs6I7WzejpCFfVvkNyYKE7aM+Q6tc4DdF9H3+f4oChIsy+zK/Mzs7fF3Eo36K7D4gQokgt0kUMTbnekeqvTAPvibvYrk2t79DqT7xg2s56N5eb8GOhXSTz3CwaHNWRiKfu1o46IIqb0uo1V32ZRNPgmKUByU72/OVUpH/0xr5+ZdEeLa2QVDYsLAMY3hBg+7ok54yjeK+UKNGC2V12QhM4t6lwVBwp31L7rTgAm2ULdxQ8ZsGvMbLCiYUc9dNG+/Id65kr7GS90ihg8w2YpXZUtk4cE9A9w7hNOPb4DApjlv6jBten5wO1RTaU/G74Bc26ZoKlHr2oLOOFFBJ2KFkgwsu5qlR5l+OYudrkdpZvcwuN7HwzQGCQ/s2q4RA41VtbDTOrNlXHc5b2lLx+ZWuiK67BUM6Z4NxKsVlb0Lj7DHt+8H4gEhAWwhwYd4L+oU7FWlmDLPDGIb7DpJ13OnKqFr8Tl3TFJZRxVZHaeO9SNBYV0KsTGeltSIfMlw2Mns2160efH+WHQcQzUA9DnuWYxM+H90NQjRWRshGTLEpbN1QStDQNl0JcwN1C3EzvjGvfl9zeazwUMypq1npSiTcNAKKIrTtANbQ/Ur+3TIe2C3V+pJ1u0ENeJLfLHGwpHsCrc2wbgdH0yEeOIFQ/f//cstiY/ZwF8zIurPfR3trb2zYpmQ5O4Lwv7/T3Cw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(136003)(376002)(396003)(346002)(82310400008)(451199021)(46966006)(36840700001)(40470700004)(7696005)(478600001)(6666004)(83380400001)(36860700001)(426003)(47076005)(40460700003)(86362001)(40480700001)(36756003)(30864003)(44832011)(2906002)(16526019)(336012)(2616005)(26005)(1076003)(356005)(82740400003)(81166007)(70206006)(6916009)(186003)(70586007)(4326008)(41300700001)(8936002)(316002)(5660300002)(8676002)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 8nPjVX8CcH8SieFOPX6b476G89/R5M91bbmMJCDpYfL3AN+LtZQZ8mgugz3YAD2K0ccoHf7gK79XnU3rsPWYLQvWSP7XAMVHgmnQkBt2FbiA07joPhXGOJ6IG4vClu1hirVFMMIyv0PtkVBvGlem/MNZbzbUFomoqFWud2kSb7ZO+T9DENdOMPfY96Qg9O0iITKWJm8EEdZfe406iSAn1Tq9Yfj5oFbSpfeZpUmCltPxXD6MSLYUCFh8NeqZ8VRr+y4/qwH1fBap2C4UgLpFT5H9lfjC5CiI8jxLMs0/VtXBY3FcP8/oAm6PLchXy2AbXYfV9EUCZv7Vcz/TYv3rZ+2dbSmouM9nRP1T5+RqAGWJN2dYZLE+Y/M4rpfeRF+jNbfmsoXg5w8kq2e35/y+6vBt8YcwtEyqalfMQEIzW3js4DKi2xpo9Q9cXwyanZblOciZgXMK0aFt0wwV9kB9xKrt4U6/wIbEOhaTDDZmTZ1BYycOkEdIXNk2jo4QpKndRLWU9mBPb8Xr72tQOp+XhTEHDPdInTkyZZzLPCZC3qpuMjhV3RWpzYicPiaUOeq9EJ2Iio6T7H6HFPdElugm7hREUz1fhkYd34OgFzcq9BMfn25hkPG9Wg2PHm9+DXOjB+LIQDQ2xPmWNJOH0Y7nyRQgIjygZ3QVTSJP944yLEbAtA9Dcn5oLIetQV1T/qaUtI/Z8TG+02NAK42/PGfSFLKc4UzrESyyyv2yePeU8fkCwB5Wa8/34Xf3rBR4uLNAU1Z8i3e4vBRBUt4618ItVQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(396003)(136003)(39860400002)(451199021)(82310400008)(36840700001)(46966006)(40470700004)(1076003)(26005)(356005)(81166007)(40460700003)(478600001)(86362001)(8936002)(8676002)(5660300002)(44832011)(6916009)(41300700001)(70586007)(70206006)(7696005)(40480700001)(4326008)(6666004)(316002)(426003)(2616005)(336012)(186003)(16526019)(82740400003)(2906002)(15650500001)(30864003)(83380400001)(47076005)(36860700001)(36756003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 22:26:45.5225
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 22:26:46.3349
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64101f41-f31d-4bfc-621e-08db8c95105e
+X-MS-Exchange-CrossTenant-Network-Message-Id: e245aa89-19dd-4b00-f7d3-08db8c9510d7
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT100.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7435
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6492
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,359 +97,293 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-Fix the following checkpatch checks in amdgpu_dm.c
+[Why]
+The sequence for collecting down_reply from source perspective should
+be:
 
-CHECK: Prefer kernel type 'u8' over 'uint8_t'
-CHECK: Prefer kernel type 'u32' over 'uint32_t'
-CHECK: Prefer kernel type 'u64' over 'uint64_t'
-CHECK: Prefer kernel type 's32' over 'int32_t'
+Request_n->repeat (get partial reply of Request_n->clear message ready
+flag to ack DPRX that the message is received) till all partial
+replies for Request_n are received->new Request_n+1.
 
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Now there is chance that drm_dp_mst_hpd_irq() will fire new down
+request in the tx queue when the down reply is incomplete. Source is
+restricted to generate interveleaved message transactions so we should
+avoid it.
+
+Also, while assembling partial reply packets, reading out DPCD DOWN_REP
+Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
+wrapped up as a complete operation for reading out a reply packet.
+Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
+be risky. e.g. If the reply of the new request has overwritten the
+DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
+DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
+for the new request. Should handle the up request in the same way.
+
+[How]
+Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
+event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
+trigger drm_dp_mst_kick_tx() only when there is no on going message
+transaction.
+
+Changes since v1:
+* Reworked on review comments received
+-> Adjust the fix to let driver explicitly kick off new down request
+when mst irq event is handled and acked
+-> Adjust the commit message
+
+Changes since v2:
+* Adjust the commit message
+* Adjust the naming of the divided 2 functions and add a new input
+  parameter "ack".
+* Adjust code flow as per review comments.
+
+Changes since v3:
+* Update the function description of drm_dp_mst_hpd_irq_handle_event
+
+Changes since v4:
+* Change ack of drm_dp_mst_hpd_irq_handle_event() to be an array align
+  the size of esi[]
+
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ae67558be712237109100fd14f12378adcf24356)
-
-PSR-SU support was introduced in kernel 6.2 with commits like
-30ebe41582d1 ("drm/amd/display: add FB_DAMAGE_CLIPS support")
-but PSR-SU isn't enabled in 6.1.y, so this block needs to be skipped
-when backporting.
-
+(cherry picked from commit 72f1de49ffb90b29748284f27f1d6b829ab1de95)
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 90 +++++++++----------
- 1 file changed, 45 insertions(+), 45 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 32 +++++------
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 54 ++++++++++++++++---
+ drivers/gpu/drm/i915/display/intel_dp.c       |  7 +--
+ drivers/gpu/drm/nouveau/dispnv50/disp.c       | 12 +++--
+ include/drm/display/drm_dp_mst_helper.h       |  7 ++-
+ 5 files changed, 81 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index e7c7ac47f86a..8274981f8766 100644
+index 8274981f8766..1aa84c020e7f 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -211,7 +211,7 @@ static void amdgpu_dm_destroy_drm_device(struct amdgpu_display_manager *dm);
- 
- static int amdgpu_dm_connector_init(struct amdgpu_display_manager *dm,
- 				    struct amdgpu_dm_connector *amdgpu_dm_connector,
--				    uint32_t link_index,
-+				    u32 link_index,
- 				    struct amdgpu_encoder *amdgpu_encoder);
- static int amdgpu_dm_encoder_init(struct drm_device *dev,
- 				  struct amdgpu_encoder *aencoder,
-@@ -263,7 +263,7 @@ static u32 dm_vblank_get_counter(struct amdgpu_device *adev, int crtc)
- static int dm_crtc_get_scanoutpos(struct amdgpu_device *adev, int crtc,
- 				  u32 *vbl, u32 *position)
- {
--	uint32_t v_blank_start, v_blank_end, h_position, v_position;
-+	u32 v_blank_start, v_blank_end, h_position, v_position;
- 
- 	if ((crtc < 0) || (crtc >= adev->mode_info.num_crtc))
- 		return -EINVAL;
-@@ -391,7 +391,7 @@ static void dm_pflip_high_irq(void *interrupt_params)
- 	struct amdgpu_device *adev = irq_params->adev;
- 	unsigned long flags;
- 	struct drm_pending_vblank_event *e;
--	uint32_t vpos, hpos, v_blank_start, v_blank_end;
-+	u32 vpos, hpos, v_blank_start, v_blank_end;
- 	bool vrr_active;
- 
- 	amdgpu_crtc = get_crtc_by_otg_inst(adev, irq_params->irq_src - IRQ_TYPE_PFLIP);
-@@ -678,7 +678,7 @@ static void dmub_hpd_callback(struct amdgpu_device *adev,
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
- 	struct dc_link *link;
--	uint8_t link_index = 0;
-+	u8 link_index = 0;
- 	struct drm_device *dev;
- 
- 	if (adev == NULL)
-@@ -779,7 +779,7 @@ static void dm_dmub_outbox1_low_irq(void *interrupt_params)
- 	struct amdgpu_device *adev = irq_params->adev;
- 	struct amdgpu_display_manager *dm = &adev->dm;
- 	struct dmcub_trace_buf_entry entry = { 0 };
--	uint32_t count = 0;
-+	u32 count = 0;
- 	struct dmub_hpd_work *dmub_hpd_wrk;
- 	struct dc_link *plink = NULL;
- 
-@@ -1045,7 +1045,7 @@ static int dm_dmub_hw_init(struct amdgpu_device *adev)
- 	struct dmub_srv_hw_params hw_params;
- 	enum dmub_status status;
- 	const unsigned char *fw_inst_const, *fw_bss_data;
--	uint32_t i, fw_inst_const_size, fw_bss_data_size;
-+	u32 i, fw_inst_const_size, fw_bss_data_size;
- 	bool has_hw_support;
- 
- 	if (!dmub_srv)
-@@ -1206,10 +1206,10 @@ static void dm_dmub_hw_resume(struct amdgpu_device *adev)
- 
- static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_addr_space_config *pa_config)
- {
--	uint64_t pt_base;
--	uint32_t logical_addr_low;
--	uint32_t logical_addr_high;
--	uint32_t agp_base, agp_bot, agp_top;
-+	u64 pt_base;
-+	u32 logical_addr_low;
-+	u32 logical_addr_high;
-+	u32 agp_base, agp_bot, agp_top;
- 	PHYSICAL_ADDRESS_LOC page_table_start, page_table_end, page_table_base;
- 
- 	memset(pa_config, 0, sizeof(*pa_config));
-@@ -2536,7 +2536,7 @@ struct amdgpu_dm_connector *
- amdgpu_dm_find_first_crtc_matching_connector(struct drm_atomic_state *state,
- 					     struct drm_crtc *crtc)
- {
--	uint32_t i;
-+	u32 i;
- 	struct drm_connector_state *new_con_state;
- 	struct drm_connector *connector;
- 	struct drm_crtc *crtc_from_state;
-@@ -3172,8 +3172,8 @@ static void handle_hpd_irq(void *param)
- 
- static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
- {
--	uint8_t esi[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = { 0 };
--	uint8_t dret;
-+	u8 esi[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = { 0 };
-+	u8 dret;
- 	bool new_irq_handled = false;
- 	int dpcd_addr;
- 	int dpcd_bytes_to_read;
-@@ -3201,7 +3201,7 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
+@@ -3201,6 +3201,7 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
  
  	while (dret == dpcd_bytes_to_read &&
  		process_count < max_process_count) {
--		uint8_t retry;
-+		u8 retry;
++		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
+ 		u8 retry;
  		dret = 0;
  
- 		process_count++;
-@@ -3220,7 +3220,7 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
- 				dpcd_bytes_to_read - 1;
+@@ -3209,28 +3210,29 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
+ 		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
+ 		/* handle HPD short pulse irq */
+ 		if (aconnector->mst_mgr.mst_state)
+-			drm_dp_mst_hpd_irq(
+-				&aconnector->mst_mgr,
+-				esi,
+-				&new_irq_handled);
++			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
++							esi,
++							ack,
++							&new_irq_handled);
  
+ 		if (new_irq_handled) {
+ 			/* ACK at DPCD to notify down stream */
+-			const int ack_dpcd_bytes_to_write =
+-				dpcd_bytes_to_read - 1;
+-
  			for (retry = 0; retry < 3; retry++) {
--				uint8_t wret;
-+				u8 wret;
+-				u8 wret;
+-
+-				wret = drm_dp_dpcd_write(
+-					&aconnector->dm_dp_aux.aux,
+-					dpcd_addr + 1,
+-					&esi[1],
+-					ack_dpcd_bytes_to_write);
+-				if (wret == ack_dpcd_bytes_to_write)
++				ssize_t wret;
++
++				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
++							  dpcd_addr + 1,
++							  ack[1]);
++				if (wret == 1)
+ 					break;
+ 			}
  
- 				wret = drm_dp_dpcd_write(
- 					&aconnector->dm_dp_aux.aux,
-@@ -4236,12 +4236,12 @@ static void amdgpu_set_panel_orientation(struct drm_connector *connector);
- static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
- {
- 	struct amdgpu_display_manager *dm = &adev->dm;
--	int32_t i;
-+	s32 i;
- 	struct amdgpu_dm_connector *aconnector = NULL;
- 	struct amdgpu_encoder *aencoder = NULL;
- 	struct amdgpu_mode_info *mode_info = &adev->mode_info;
--	uint32_t link_cnt;
--	int32_t primary_planes;
-+	u32 link_cnt;
-+	s32 primary_planes;
- 	enum dc_connection_type new_connection_type = dc_connection_none;
- 	const struct dc_plane_cap *plane;
- 	bool psr_feature_enabled = false;
-@@ -4768,7 +4768,7 @@ fill_plane_color_attributes(const struct drm_plane_state *plane_state,
- static int
- fill_dc_plane_info_and_addr(struct amdgpu_device *adev,
- 			    const struct drm_plane_state *plane_state,
--			    const uint64_t tiling_flags,
-+			    const u64 tiling_flags,
- 			    struct dc_plane_info *plane_info,
- 			    struct dc_plane_address *address,
- 			    bool tmz_surface,
-@@ -4977,7 +4977,7 @@ static void fill_dc_dirty_rects(struct drm_plane *plane,
- 	uint32_t num_clips;
- 	bool bb_changed;
- 	bool fb_changed;
--	uint32_t i = 0;
-+	u32 i = 0;
++			if (retry == 3) {
++				DRM_ERROR("Failed to ack MST event.\n");
++				return;
++			}
++
++			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
+ 			/* check if there is new irq to be handled */
+ 			dret = drm_dp_dpcd_read(
+ 				&aconnector->dm_dp_aux.aux,
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index e2e21ce79510..f854cb5eafbe 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4053,17 +4053,28 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ }
  
- 	flip_addrs->dirty_rect_count = 0;
- 
-@@ -5111,7 +5111,7 @@ static enum dc_color_depth
- convert_color_depth_from_display_info(const struct drm_connector *connector,
- 				      bool is_y420, int requested_bpc)
- {
--	uint8_t bpc;
-+	u8 bpc;
- 
- 	if (is_y420) {
- 		bpc = 8;
-@@ -5655,8 +5655,8 @@ static void apply_dsc_policy_for_edp(struct amdgpu_dm_connector *aconnector,
- 				    uint32_t max_dsc_target_bpp_limit_override)
- {
- 	const struct dc_link_settings *verified_link_cap = NULL;
--	uint32_t link_bw_in_kbps;
--	uint32_t edp_min_bpp_x16, edp_max_bpp_x16;
-+	u32 link_bw_in_kbps;
-+	u32 edp_min_bpp_x16, edp_max_bpp_x16;
- 	struct dc *dc = sink->ctx->dc;
- 	struct dc_dsc_bw_range bw_range = {0};
- 	struct dc_dsc_config dsc_cfg = {0};
-@@ -5713,11 +5713,11 @@ static void apply_dsc_policy_for_stream(struct amdgpu_dm_connector *aconnector,
- 					struct dsc_dec_dpcd_caps *dsc_caps)
- {
- 	struct drm_connector *drm_connector = &aconnector->base;
--	uint32_t link_bandwidth_kbps;
-+	u32 link_bandwidth_kbps;
- 	struct dc *dc = sink->ctx->dc;
--	uint32_t max_supported_bw_in_kbps, timing_bw_in_kbps;
--	uint32_t dsc_max_supported_bw_in_kbps;
--	uint32_t max_dsc_target_bpp_limit_override =
-+	u32 max_supported_bw_in_kbps, timing_bw_in_kbps;
-+	u32 dsc_max_supported_bw_in_kbps;
-+	u32 max_dsc_target_bpp_limit_override =
- 		drm_connector->display_info.max_dsc_bpp;
- 
- 	link_bandwidth_kbps = dc_link_bandwidth_kbps(aconnector->dc_link,
-@@ -6871,7 +6871,7 @@ static uint add_fs_modes(struct amdgpu_dm_connector *aconnector)
- 	const struct drm_display_mode *m;
- 	struct drm_display_mode *new_mode;
- 	uint i;
--	uint32_t new_modes_count = 0;
-+	u32 new_modes_count = 0;
- 
- 	/* Standard FPS values
- 	 *
-@@ -6885,7 +6885,7 @@ static uint add_fs_modes(struct amdgpu_dm_connector *aconnector)
- 	 * 60 	        - Commonly used
- 	 * 48,72,96,120 - Multiples of 24
- 	 */
--	static const uint32_t common_rates[] = {
-+	static const u32 common_rates[] = {
- 		23976, 24000, 25000, 29970, 30000,
- 		48000, 50000, 60000, 72000, 96000, 120000
- 	};
-@@ -6901,8 +6901,8 @@ static uint add_fs_modes(struct amdgpu_dm_connector *aconnector)
- 		return 0;
- 
- 	for (i = 0; i < ARRAY_SIZE(common_rates); i++) {
--		uint64_t target_vtotal, target_vtotal_diff;
--		uint64_t num, den;
-+		u64 target_vtotal, target_vtotal_diff;
-+		u64 num, den;
- 
- 		if (drm_mode_vrefresh(m) * 1000 < common_rates[i])
- 			continue;
-@@ -7150,7 +7150,7 @@ create_i2c(struct ddc_service *ddc_service,
+ /**
+- * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
++ * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
+  * @mgr: manager to notify irq for.
+  * @esi: 4 bytes from SINK_COUNT_ESI
++ * @ack: 4 bytes used to ack events starting from SINK_COUNT_ESI
+  * @handled: whether the hpd interrupt was consumed or not
+  *
+- * This should be called from the driver when it detects a short IRQ,
++ * This should be called from the driver when it detects a HPD IRQ,
+  * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
+- * topology manager will process the sideband messages received as a result
+- * of this.
++ * topology manager will process the sideband messages received
++ * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
++ * corresponding flags that Driver has to ack the DP receiver later.
++ *
++ * Note that driver shall also call
++ * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
++ * after calling this function, to try to kick off a new request in
++ * the queue if the previous message transaction is completed.
++ *
++ * See also:
++ * drm_dp_mst_hpd_irq_send_new_request()
   */
- static int amdgpu_dm_connector_init(struct amdgpu_display_manager *dm,
- 				    struct amdgpu_dm_connector *aconnector,
--				    uint32_t link_index,
-+				    u32 link_index,
- 				    struct amdgpu_encoder *aencoder)
+-int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled)
++int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u8 *esi,
++				    u8 *ack, bool *handled)
  {
- 	int res = 0;
-@@ -7641,8 +7641,8 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 				    struct drm_crtc *pcrtc,
- 				    bool wait_for_vblank)
- {
--	uint32_t i;
--	uint64_t timestamp_ns;
-+	u32 i;
-+	u64 timestamp_ns;
- 	struct drm_plane *plane;
- 	struct drm_plane_state *old_plane_state, *new_plane_state;
- 	struct amdgpu_crtc *acrtc_attach = to_amdgpu_crtc(pcrtc);
-@@ -7653,7 +7653,7 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 			to_dm_crtc_state(drm_atomic_get_old_crtc_state(state, pcrtc));
- 	int planes_count = 0, vpos, hpos;
- 	unsigned long flags;
--	uint32_t target_vblank, last_flip_vblank;
-+	u32 target_vblank, last_flip_vblank;
- 	bool vrr_active = amdgpu_dm_vrr_active(acrtc_state);
- 	bool cursor_update = false;
- 	bool pflip_present = false;
-@@ -8094,7 +8094,7 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
- 	struct amdgpu_display_manager *dm = &adev->dm;
- 	struct dm_atomic_state *dm_state;
- 	struct dc_state *dc_state = NULL, *dc_state_temp = NULL;
--	uint32_t i, j;
-+	u32 i, j;
- 	struct drm_crtc *crtc;
- 	struct drm_crtc_state *old_crtc_state, *new_crtc_state;
- 	unsigned long flags;
-@@ -8724,7 +8724,7 @@ is_timing_unchanged_for_freesync(struct drm_crtc_state *old_crtc_state,
+ 	int ret = 0;
+ 	int sc;
+@@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handl
+ 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
+ 		ret = drm_dp_mst_handle_down_rep(mgr);
+ 		*handled = true;
++		ack[1] |= DP_DOWN_REP_MSG_RDY;
+ 	}
+ 
+ 	if (esi[1] & DP_UP_REQ_MSG_RDY) {
+ 		ret |= drm_dp_mst_handle_up_req(mgr);
+ 		*handled = true;
++		ack[1] |= DP_UP_REQ_MSG_RDY;
+ 	}
+ 
+-	drm_dp_mst_kick_tx(mgr);
+ 	return ret;
  }
+-EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
++EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
  
- static void set_freesync_fixed_config(struct dm_crtc_state *dm_new_crtc_state) {
--	uint64_t num, den, res;
-+	u64 num, den, res;
- 	struct drm_crtc_state *new_crtc_state = &dm_new_crtc_state->base;
++/**
++ * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new request
++ * @mgr: manager to notify irq for.
++ *
++ * This should be called from the driver when mst irq event is handled
++ * and acked. Note that new down request should only be sent when
++ * previous message transaction is completed. Source is not supposed to generate
++ * interleaved message transactions.
++ */
++void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr)
++{
++	struct drm_dp_sideband_msg_tx *txmsg;
++	bool kick = true;
++
++	mutex_lock(&mgr->qlock);
++	txmsg = list_first_entry_or_null(&mgr->tx_msg_downq,
++					 struct drm_dp_sideband_msg_tx, next);
++	/* If last transaction is not completed yet*/
++	if (!txmsg ||
++	    txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
++	    txmsg->state == DRM_DP_SIDEBAND_TX_SENT)
++		kick = false;
++	mutex_unlock(&mgr->qlock);
++
++	if (kick)
++		drm_dp_mst_kick_tx(mgr);
++}
++EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
+ /**
+  * drm_dp_mst_detect_port() - get connection status for an MST port
+  * @connector: DRM connector for this port
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index b1653308f145..594ea037050a 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -3804,9 +3804,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *intel_dp, u8 *esi, u8 *ack)
+ {
+ 	bool handled = false;
  
- 	dm_new_crtc_state->freesync_config.state = VRR_STATE_ACTIVE_FIXED;
-@@ -9900,7 +9900,7 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
- static bool is_dp_capable_without_timing_msa(struct dc *dc,
- 					     struct amdgpu_dm_connector *amdgpu_dm_connector)
- {
--	uint8_t dpcd_data;
-+	u8 dpcd_data;
- 	bool capable = false;
+-	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
+-	if (handled)
+-		ack[1] |= esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
++	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, ack, &handled);
  
- 	if (amdgpu_dm_connector->dc_link &&
-@@ -9919,7 +9919,7 @@ static bool is_dp_capable_without_timing_msa(struct dc *dc,
- static bool dm_edid_parser_send_cea(struct amdgpu_display_manager *dm,
- 		unsigned int offset,
- 		unsigned int total_length,
--		uint8_t *data,
-+		u8 *data,
- 		unsigned int length,
- 		struct amdgpu_hdmi_vsdb_info *vsdb)
- {
-@@ -9974,7 +9974,7 @@ static bool dm_edid_parser_send_cea(struct amdgpu_display_manager *dm,
- }
+ 	if (esi[1] & DP_CP_IRQ) {
+ 		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
+@@ -3881,6 +3879,9 @@ intel_dp_check_mst_status(struct intel_dp *intel_dp)
  
- static bool parse_edid_cea_dmcu(struct amdgpu_display_manager *dm,
--		uint8_t *edid_ext, int len,
-+		u8 *edid_ext, int len,
- 		struct amdgpu_hdmi_vsdb_info *vsdb_info)
- {
- 	int i;
-@@ -10015,7 +10015,7 @@ static bool parse_edid_cea_dmcu(struct amdgpu_display_manager *dm,
- }
+ 		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
+ 			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
++
++		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
++			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
+ 	}
  
- static bool parse_edid_cea_dmub(struct amdgpu_display_manager *dm,
--		uint8_t *edid_ext, int len,
-+		u8 *edid_ext, int len,
- 		struct amdgpu_hdmi_vsdb_info *vsdb_info)
- {
- 	int i;
-@@ -10031,7 +10031,7 @@ static bool parse_edid_cea_dmub(struct amdgpu_display_manager *dm,
- }
+ 	return link_ok;
+diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+index 006cb76adaa9..a851354c0c5f 100644
+--- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+@@ -1473,22 +1473,26 @@ nv50_mstm_service(struct nouveau_drm *drm,
+ 	u8 esi[8] = {};
  
- static bool parse_edid_cea(struct amdgpu_dm_connector *aconnector,
--		uint8_t *edid_ext, int len,
-+		u8 *edid_ext, int len,
- 		struct amdgpu_hdmi_vsdb_info *vsdb_info)
- {
- 	struct amdgpu_device *adev = drm_to_adev(aconnector->base.dev);
-@@ -10045,7 +10045,7 @@ static bool parse_edid_cea(struct amdgpu_dm_connector *aconnector,
- static int parse_hdmi_amd_vsdb(struct amdgpu_dm_connector *aconnector,
- 		struct edid *edid, struct amdgpu_hdmi_vsdb_info *vsdb_info)
- {
--	uint8_t *edid_ext = NULL;
-+	u8 *edid_ext = NULL;
- 	int i;
- 	bool valid_vsdb_found = false;
+ 	while (handled) {
++		u8 ack[8] = {};
++
+ 		rc = drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
+ 		if (rc != 8) {
+ 			ret = false;
+ 			break;
+ 		}
  
-@@ -10221,7 +10221,7 @@ void amdgpu_dm_trigger_timing_sync(struct drm_device *dev)
- }
+-		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
++		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, ack, &handled);
+ 		if (!handled)
+ 			break;
  
- void dm_write_reg_func(const struct dc_context *ctx, uint32_t address,
--		       uint32_t value, const char *func_name)
-+		       u32 value, const char *func_name)
- {
- #ifdef DM_CHECK_ADDR_0
- 	if (address == 0) {
-@@ -10236,7 +10236,7 @@ void dm_write_reg_func(const struct dc_context *ctx, uint32_t address,
- uint32_t dm_read_reg_func(const struct dc_context *ctx, uint32_t address,
- 			  const char *func_name)
- {
--	uint32_t value;
-+	u32 value;
- #ifdef DM_CHECK_ADDR_0
- 	if (address == 0) {
- 		DC_ERR("invalid register read; address = 0\n");
+-		rc = drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
+-				       3);
+-		if (rc != 3) {
++		rc = drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack[1]);
++
++		if (rc != 1) {
+ 			ret = false;
+ 			break;
+ 		}
++
++		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
+ 	}
+ 
+ 	if (!ret)
+diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
+index 32c764fb9cb5..40e855c8407c 100644
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -815,8 +815,11 @@ void drm_dp_mst_topology_mgr_destroy(struct drm_dp_mst_topology_mgr *mgr);
+ bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);
+ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool mst_state);
+ 
+-int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled);
+-
++int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
++				    const u8 *esi,
++				    u8 *ack,
++				    bool *handled);
++void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr);
+ 
+ int
+ drm_dp_mst_detect_port(struct drm_connector *connector,
 -- 
 2.34.1
 
