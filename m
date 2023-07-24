@@ -2,109 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F4417602D5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 00:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAEB7602F0
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 01:04:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjGXW5H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 18:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34192 "EHLO
+        id S229661AbjGXXEh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 19:04:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229904AbjGXW5G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 18:57:06 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BC9E5A
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:57:00 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-682a5465e9eso1153580b3a.1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 15:57:00 -0700 (PDT)
+        with ESMTP id S230399AbjGXXEa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 19:04:30 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31A8710F8
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 16:04:28 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-63cef62a944so16326766d6.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 16:04:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690239420; x=1690844220;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UrBb13udC0Sw0lvgxVDSnhNAbZY+mi9v9znyZvL6wfM=;
-        b=lESGWgwKbHrD7eD+yo7IbzjvnFOa2AQYQC3b7uZhKvqkRZkfnvHzBeHSU0cqXVaXdD
-         AoGoLbgdHZgTvNgHg+Yh5M1cgNPkHBGMX320oz56TCM8ccJX7l1vSHlG9ApRg/Uy5dTS
-         En5mbnU/9wdkBUGFHYU5uHY6qk24AjK0o7+pxHxChhn1wu90qgXY0EH6/ubOvsyjf0F0
-         bCTSdN0Bg8kZLcHZUJRBPGPpQGMYiBuf/wjZ8pZzwPcp6AWo7zjA+gxRxEyrtwEFDnkN
-         pTsrwSB0T88vZpj4Q+w2in78yTsJiFqu/7iGDOBi6IHRa1AaPSTQN5gUZiN3Tz9fjKRk
-         HKJA==
+        d=joelfernandes.org; s=google; t=1690239867; x=1690844667;
+        h=to:references:message-id:date:cc:in-reply-to:from:mime-version
+         :subject:content-transfer-encoding:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2LXtorpou+Rntqb6dTPTasH604CVMh1dch7l87Dmks4=;
+        b=ZeDVrssVR9RnInRKhSi2QDZnnuNdmhZWng4oqfa/1pgNVbWCyhKMkSX2Bi/Pz5wBNo
+         gjw7gyl11AZJAC19mXP7OfVb7AqoBPGSrRGyKv4jp1EG8IWbKc00PsOya3xxMPSh8ahD
+         9RLy5xi53au7LFW15WmkTj/e3tDD7aehtTXUo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690239420; x=1690844220;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UrBb13udC0Sw0lvgxVDSnhNAbZY+mi9v9znyZvL6wfM=;
-        b=eMaEDz5BCLvvVQ2vtGhoLe7cv+ffnEjuXEZM6ll6WdMYvMeyByVu2jl1t0Y03eaPof
-         ZAUq1cvXEUOEK/eqotZ6HZhle1p3MIo+Ywttmapdm1mWPYg4Zbk/k127+t+7N+vbb94z
-         Rhu1AuxA2lQk1rxsK+4tyw/VrAJu0PLwGkP2Gt/G1Wa4HV/Ty5hOEW641/LWBVmsj3LF
-         6l9VmLA+gxZdxuxsS8jfwmrAkXtYZn5s3rFk2h2s5+lX2kBbpL1cbfYZkok5OqM0NiPQ
-         dKEbwLVm6161Sm7JwOJqX1HoFUDbRR1Gu9xbVaQLifO/QKmYY/ACjUGoYYMGaT1UKcmV
-         55eA==
-X-Gm-Message-State: ABy/qLZfL7yApAyyjY0wS3SD0zzWCCuR2A+4OxvgIVr41EFazBargq5z
-        5iDAXbP/feo+uLMqijiZsmk0iQ==
-X-Google-Smtp-Source: APBJJlHzOj52nENWFGfKQ1Ibk02D3ClkkpbgfLa6YtnLuKXCpqfiTDI1LkP79vTn6z0iGFufaZh5Aw==
-X-Received: by 2002:a05:6a20:160d:b0:111:a0e5:d2b7 with SMTP id l13-20020a056a20160d00b00111a0e5d2b7mr14464498pzj.4.1690239420187;
-        Mon, 24 Jul 2023 15:57:00 -0700 (PDT)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id g14-20020a62e30e000000b006579b062d5dsm8232945pfh.21.2023.07.24.15.56.59
+        d=1e100.net; s=20221208; t=1690239867; x=1690844667;
+        h=to:references:message-id:date:cc:in-reply-to:from:mime-version
+         :subject:content-transfer-encoding:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2LXtorpou+Rntqb6dTPTasH604CVMh1dch7l87Dmks4=;
+        b=QcsUBvqphcYsu2k8cNlJPDY7K9JV+Nn8W6nEukarA8L8SXQ0vTCTHJWcdx2078+ngk
+         ET/DWkqLbzkm00/OynflCa5qh+pMOsoDIBm9zTd6dq9wLo8V0U+bFsrYzUX22CMXmnYh
+         jMyULc7P0cFFbySM94KRJs5dVTTKA8lUF0ugKXfo9vB9/UDHu6kswBnF6TR47gWfjsDt
+         56j8LWK9wLPapevuOg46IAVFJOzLh7tYHPgJMmh1L6tw3vWEaAzPWMeggLK3i93Uc9dm
+         i5Jd5ftACO91uJMgoUgoTxUUceQRjx9RecjxY/KA74KbskgAtCmeLWtLCEUlAbKXr87s
+         sUmA==
+X-Gm-Message-State: ABy/qLb82jBPSnYPH2tV91Ng4goIykGKd37Dg9rC8LbqZV3ffUfD71yG
+        48czV0qtw2QfeHpRbFOENIhpEg==
+X-Google-Smtp-Source: APBJJlGPAEEJq51dg5WK/pI1EJhqLCwRfejHDT1BUIqI7Qy6/6W93B4v/VTAm+MwO2pEvj8jnWjcNA==
+X-Received: by 2002:a0c:f051:0:b0:632:2e63:d34b with SMTP id b17-20020a0cf051000000b006322e63d34bmr282386qvl.14.1690239867204;
+        Mon, 24 Jul 2023 16:04:27 -0700 (PDT)
+Received: from smtpclient.apple ([192.145.116.44])
+        by smtp.gmail.com with ESMTPSA id bn9-20020a05620a2ac900b00767e2668536sm3314658qkb.17.2023.07.24.16.04.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 15:56:59 -0700 (PDT)
-Message-ID: <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
-Date:   Mon, 24 Jul 2023 16:56:58 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] file: always lock position
-Content-Language: en-US
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Christian Brauner <brauner@kernel.org>
-Cc:     Christoph Hellwig <hch@lst.de>, Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-scheren-absegnen-8c807c760ba1@brauner>
- <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
- <20230724-gebessert-wortwahl-195daecce8f0@brauner>
- <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
- <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
- <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
- <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
- <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
- <20230724-geadelt-nachrangig-07e431a2f3a4@brauner>
- <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Mon, 24 Jul 2023 16:04:25 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [BUG] Re: Linux 6.4.4
+Mime-Version: 1.0 (1.0)
+X-Apple-Notify-Thread: NO
+X-Universally-Unique-Identifier: EB10CBA5-D87D-47AD-8CB1-4ED1C1201EB1
+From:   Joel Fernandes <joel@joelfernandes.org>
+In-Reply-To: <4b231ce5-7bb8-4abf-9c40-04aa676d1e45@paulmck-laptop>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Date:   Mon, 24 Jul 2023 19:04:14 -0400
+X-Apple-Message-Smime-Encrypt: NO
+Message-Id: <123C6650-490B-4D08-96B4-39B118AD0054@joelfernandes.org>
+References: <4b231ce5-7bb8-4abf-9c40-04aa676d1e45@paulmck-laptop>
+To:     paulmck@kernel.org
+X-Mailer: iPhone Mail (20B101)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/24/23 4:25?PM, Linus Torvalds wrote:
-> On Mon, 24 Jul 2023 at 11:48, Christian Brauner <brauner@kernel.org> wrote:
->>
->> It's really just keeping in mind that refcount rules change depending on
->> whether fds or fixed files are used.
-> 
-> This sentence still worries me.
-> 
-> Those fixed files had better have their own refcounts from being
-> fixed. So the rules really shouldn't change in any way what-so-ever.
-> So what exactly are you alluding to?
 
-They do, but they only have a single reference, which is what fixes them
-into the io_uring file table for fixed files. With the patch from the
-top of this thread, that should then be fine as we don't need to
-artificially elevator the ref count more than that.
 
--- 
-Jens Axboe
+> On Jul 24, 2023, at 12:00 PM, Paul E. McKenney <paulmck@kernel.org> wrote:=
 
+>=20
+> =EF=BB=BFOn Mon, Jul 24, 2023 at 09:36:02AM -0400, Joel Fernandes wrote:
+>>> On Sun, Jul 23, 2023 at 11:35=E2=80=AFPM Paul E. McKenney <paulmck@kerne=
+l.org> wrote:
+>>>=20
+>>> On Mon, Jul 24, 2023 at 12:32:57AM +0000, Joel Fernandes wrote:
+>>>> On Sun, Jul 23, 2023 at 10:19:27AM -0700, Paul E. McKenney wrote:
+>>>>> On Sun, Jul 23, 2023 at 10:50:26AM -0400, Joel Fernandes wrote:
+>>>>>>=20
+>>>>>>=20
+>>>>>> On 7/22/23 13:27, Paul E. McKenney wrote:
+>>>>>> [..]
+>>>>>>>=20
+>>>>>>> OK, if this kernel is non-preemptible, you are not running TREE03,
+>>>>>>> correct?
+>>>>>>>=20
+>>>>>>>> Next plan of action is to get sched_waking stack traces since I hav=
+e a
+>>>>>>>> very reliable repro of this now.
+>>>>>>>=20
+>>>>>>> Too much fun!  ;-)
+>>>>>>=20
+>>>>>> For TREE07 issue, it is actually the schedule_timeout_interruptible(1=
+)
+>>>>>> in stutter_wait() that is beating up the CPU0 for 4 seconds.
+>>>>>>=20
+>>>>>> This is very similar to the issue I fixed in New year in d52d3a2bf408=
+
+>>>>>> ("torture: Fix hang during kthread shutdown phase")
+>>>>>=20
+>>>>> Agreed, if there are enough kthreads, and all the kthreads are on a
+>>>>> single CPU, this could consume that CPU.
+>>>>>=20
+>>>>>> Adding a cond_resched() there also did not help.
+>>>>>>=20
+>>>>>> I think the issue is the stutter thread fails to move spt forward
+>>>>>> because it does not get CPU time. But spt =3D=3D 1 should be very bri=
+ef
+>>>>>> AFAIU. I was wondering if we could set that to RT.
+>>>>>=20
+>>>>> Or just use a single hrtimer-based wait for each kthread?
+>>>>=20
+>>>> [Joel]
+>>>> Yes this might be better, but there's still the issue that spt may not b=
+e set
+>>>> back to 0 in some future release where the thread gets starved.
+>>>=20
+>>> But if each thread knows the absolute time at which the current stutter
+>>> period is supposed to end, there should not be any need for the spt
+>>> variable, correct?
+>>=20
+>> Yes.
+>>=20
+>>>>>> But also maybe the following will cure it like it did for the shutdow=
+n
+>>>>>> issue, giving the stutter thread just enough CPU time to move spt for=
+ward.
+>>>>>>=20
+>>>>>> Now I am trying the following and will let it run while I go do other=
+
+>>>>>> family related things. ;)
+>>>>>=20
+>>>>> Good point, if this avoids the problem, that gives a strong indication=
+
+>>>>> that your hypothesis on the root cause is correct.
+>>>>=20
+>>>> [Joel]
+>>>> And the TREE07 issue is gone with that change!
+>> [...]
+>>>> Let me know what you think, thanks!
+>>>=20
+>>> If we can make the stutter kthread set an absolute time for the current
+>>> stutter period to end, then we should be able to simplify the code quite=
+
+>>> a bit and get rid of the CPU consumption entirely.  (Give or take the
+>>> possible need for a given thread to check whether it was erroneously
+>>> awakened early.)
+>>>=20
+>>> But what specifically did you have in mind?
+>>=20
+>> I was thinking of a 2 counter approach storing the absolute time. Use
+>> an alternative counter for different stuttering sessions. But yes,
+>> generally I agree with the absolute time idea. What do you think Paul?
+>>=20
+>> Do we want to just do  the simpler schedule_timeout at HZ / 20 to keep st=
+able
+>> green, and do the absolute-time approach for mainline? That might be bett=
+er
+>> from a process PoV. But I think stable requires patches to be upstream. G=
+reg?
+>>=20
+>> I will try to send out patches this week to discuss this, thanks,
+>=20
+> Heh!!!
+>=20
+> Me, I was just thinking of mainline.  ;-)
+
+Turns out it is simple enough for both mainline and stable :-).
+Will test more and send it out soon.
+
+Thanks,
+
+- Joel
+
+
+>=20
+>                            Thanx, Paul
