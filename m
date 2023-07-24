@@ -2,134 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D51BD75ED21
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 10:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 809E875ED43
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 10:20:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231226AbjGXIND (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 04:13:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
+        id S229538AbjGXIT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 04:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231367AbjGXINA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 04:13:00 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802E0129
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 01:12:58 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-993d1f899d7so717959766b.2
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 01:12:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690186377; x=1690791177;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v9TJeEMNRCv2DgCOuJM1bBGc8b3D58xXpaHuqfHRQK8=;
-        b=IF+0ss6NBRFxVEvrbdhWI4conkRSs7twLSGYcxdmi6/cC/bynEt5PSWxf9WbyO4akj
-         SSkOYO0ltYkykh1A+aRmVxXyb9WYfbifp+QfcC91Wo964JFWwMOTKJLrsNLI9/7h6S2g
-         xvwkf659OHSWtNurKOW9lRV0jo4EX5g0fdTh1UC1yy5pdlVmDdQni9MYQfCeVC9dT51p
-         aRFtftRXnU/gu0NxhOira9W4ABhJ7GUrLyoFXml9y+65QF8tI6oAQFCs0iRuDmXrh0cd
-         59hEBINQ20GXqeeeo8CyAIJxRwnf0mSVKllCSQlovJvg6nNRrXMsuG5JRCGYSZ0jPnUB
-         5NfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690186377; x=1690791177;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v9TJeEMNRCv2DgCOuJM1bBGc8b3D58xXpaHuqfHRQK8=;
-        b=MsqOiEYbV1Qj6RtB75TWg4rXBUqWO8pqUMiGZsS1q3XBt7rKFo6QAnMKnXOFMwmAwk
-         hvgYMW6tpCzQLRbrThWWbx6hLMyXre8t0fXS+dQ0DxeLbPNo/8QT7d115/BrNPRy369q
-         wc9RNWJhdQLrHMmo4eE5mhbuCD6nHpMLD6FMYQ/533xnxUxYSsShu6lpACQaVEwOXge5
-         hYYQ9GzFm/fk71EdGDXg+xPKBqlCshEgsAag4u20ULVRHSZ40++Yp0ajpkrBHLdT3dBi
-         aE+JlI3gHYFTS/bBfKPDy+IjBGcr6EjWrn3opq/rbjhiZLetcvcSvgolqb7bKuiIJY2A
-         pXew==
-X-Gm-Message-State: ABy/qLZa2R+b3vqFQpULGe11t9kAjgvYsnv6S3HdIgk6KCp6PxsgXfL9
-        2o5+mUYjjCkFySIrRMMByhRI9g==
-X-Google-Smtp-Source: APBJJlFrbF1dyLHSDZqf2T8yfi603+3h845Soxk6FH+ij/grlAEud6qiyv29/Xz1egJwH4A8fSBWHw==
-X-Received: by 2002:a17:907:7895:b0:99b:4bab:2838 with SMTP id ku21-20020a170907789500b0099b4bab2838mr9950011ejc.0.1690186377054;
-        Mon, 24 Jul 2023 01:12:57 -0700 (PDT)
-Received: from 1.. ([79.115.63.48])
-        by smtp.gmail.com with ESMTPSA id a6-20020a1709065f8600b0098ec690e6d7sm6355395eju.73.2023.07.24.01.12.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 01:12:56 -0700 (PDT)
-From:   Tudor Ambarus <tudor.ambarus@linaro.org>
-To:     tkuw584924@gmail.com, takahiro.kuwano@infineon.com,
-        michael@walle.cc
-Cc:     pratyush@kernel.org, linux-mtd@lists.infradead.org,
-        linux-kernel@vger.kernel.org, bacem.daassi@infineon.com,
-        miquel.raynal@bootlin.com, richard@nod.at,
-        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-        stable@vger.kernel.org
-Subject: [RESEND PATCH v3 02/11] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT
-Date:   Mon, 24 Jul 2023 11:12:38 +0300
-Message-Id: <20230724081247.4779-3-tudor.ambarus@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230724081247.4779-1-tudor.ambarus@linaro.org>
-References: <20230724081247.4779-1-tudor.ambarus@linaro.org>
+        with ESMTP id S231368AbjGXIT5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 04:19:57 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E1D131
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 01:19:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690186795; x=1721722795;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vW4ze8oZKFb995ZUmc4ozXg5zKX+vuA/U5BVP8f2dbk=;
+  b=fnVv57XPtenaERxOGHbT9NI65+oFo5mQHuscrFFCOSbXIMG5wSJZoFo5
+   MliBp3KRuUp4C3oWUSmWdeG6oocBwW7Npd2mrVqu5UVf2daPCWEUGZ53G
+   ZkjivImY3Jnt1zoaNQV6jSgdIaaB+ry11mubMUc7TlGCZo6mJNljqzgQt
+   YcBrEjxMm7TAiwoWmzA69OhE61jmqhaKAY0BQDdWREI1+JdSPOo+ZB61r
+   P1SHI+OFj8pXTEeOx5Wk6l7XAFCZi5PXNtrtlKGiWz6JoTU2Pv1m2h2WM
+   iG+2ELgn52hF7qLsgXbh7sSVVow9sGeTBtCorYCGmhSNoMrY7q/fjMBMS
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="367404735"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="367404735"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 01:19:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="675742972"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="675742972"
+Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.14.115]) ([10.213.14.115])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 01:19:50 -0700
+Message-ID: <3b7e1781-ca2b-44b3-846d-89e42f24106e@intel.com>
+Date:   Mon, 24 Jul 2023 10:19:48 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1944; i=tudor.ambarus@linaro.org; h=from:subject; bh=kVZ7aQId7ERSbIGrhSxOKuGFZinAOtskWkM0179Q9K8=; b=owEBbQGS/pANAwAKAUtVT0eljRTpAcsmYgBkvjJ+SIacWrtM6rqggQL3xW9NW3MgQizA9VFwu e+IRxfckVyJATMEAAEKAB0WIQQdQirKzw7IbV4d/t9LVU9HpY0U6QUCZL4yfgAKCRBLVU9HpY0U 6fIXB/4sxp2lHpr0bsLJOluiR+54Ai3rZFme+Z0Pca5oGlc2cJN4GcjbS3uuNnLbr7tfVFoByji wShomDl6y/CbrxwQzxMake0uet1egUDKMWMu2yTRNbwRE4ljVUgMEF9xh1WpId9T4CkC+CJ5pc0 FXWgZLt/0PjOw5XX+xjohQBXJ21y+U+C+2XPZJwkY+5Vh9uPkmc2qz6KrFOrpemfQRKYB/bWxsO I1IF9O5SU2xNxx1wJIL4/1HQISx1JFwpwJlzQnL51sa1tgg785Vx3zE4n7KJiy9VI+xADeSsD+u WUTXjxqujyuVPa5dvmLNFofEraQia4pr0HXRWfdH/DGgiR20
-X-Developer-Key: i=tudor.ambarus@linaro.org; a=openpgp; fpr=280B06FD4CAAD2980C46DDDF4DB1B079AD29CF3D
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Subject: Re: [PATCH v8 7/9] drm/i915/gt: Ensure memory quiesced before
+ invalidation for all engines
+Content-Language: en-US
+To:     Andi Shyti <andi.shyti@linux.intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>
+Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-evel <dri-devel@lists.freedesktop.org>,
+        linux-stable <stable@vger.kernel.org>
+References: <20230721161514.818895-1-andi.shyti@linux.intel.com>
+ <20230721161514.818895-8-andi.shyti@linux.intel.com>
+From:   Andrzej Hajda <andrzej.hajda@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20230721161514.818895-8-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-CFR2V[7] is assigned to Flash's address mode (3- or 4-ybte) and must not
-be changed when writing MEMLAT (CFR2V[3:0]). CFR2V shall be used in a read,
-update, write back fashion.
 
-Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Cc: stable@vger.kernel.org
----
- drivers/mtd/spi-nor/spansion.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+On 21.07.2023 18:15, Andi Shyti wrote:
+> Commit af9e423a8aae ("drm/i915/gt: Ensure memory quiesced before
+> invalidation") has made sure that the memory is quiesced before
+> invalidating the AUX CCS table. Do it for all the other engines
+> and not just RCS.
+>
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Cc: <stable@vger.kernel.org> # v5.8+
+> ---
+>   drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 36 ++++++++++++++++--------
+>   1 file changed, 25 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> index 5e19b45a5cabe..646151e1b5deb 100644
+> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> @@ -331,26 +331,40 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+>   int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+>   {
+>   	intel_engine_mask_t aux_inv = 0;
+> -	u32 cmd, *cs;
+> +	u32 cmd_flush = 0;
+> +	u32 cmd = 4;
+> +	u32 *cs;
+>   
+> -	cmd = 4;
+> -	if (mode & EMIT_INVALIDATE) {
+> +	if (mode & EMIT_INVALIDATE)
+>   		cmd += 2;
+>   
+> -		if (gen12_needs_ccs_aux_inv(rq->engine) &&
+> -		    (rq->engine->class == VIDEO_DECODE_CLASS ||
+> -		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
+> -			aux_inv = rq->engine->mask &
+> -				~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
+> -			if (aux_inv)
+> -				cmd += 4;
+> -		}
+> +	if (gen12_needs_ccs_aux_inv(rq->engine))
+> +		aux_inv = rq->engine->mask &
+> +			  ~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index 6b2532ed053c..6460d2247bdf 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2014, Freescale Semiconductor, Inc.
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/mtd/spi-nor.h>
- 
-@@ -28,6 +29,7 @@
- #define SPINOR_REG_CYPRESS_CFR2			0x3
- #define SPINOR_REG_CYPRESS_CFR2V					\
- 	(SPINOR_REG_CYPRESS_VREG + SPINOR_REG_CYPRESS_CFR2)
-+#define SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK	GENMASK(3, 0)
- #define SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24	0xb
- #define SPINOR_REG_CYPRESS_CFR2_ADRBYT		BIT(7)
- #define SPINOR_REG_CYPRESS_CFR3			0x4
-@@ -161,8 +163,18 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
- 	int ret;
- 	u8 addr_mode_nbytes = nor->params->addr_mode_nbytes;
- 
-+	op = (struct spi_mem_op)
-+		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
-+					  SPINOR_REG_CYPRESS_CFR2V, 0, buf);
-+
-+	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
-+	if (ret)
-+		return ret;
-+
- 	/* Use 24 dummy cycles for memory array reads. */
--	*buf = SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24;
-+	*buf &= ~SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK;
-+	*buf |= FIELD_PREP(SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK,
-+			   SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24);
- 	op = (struct spi_mem_op)
- 		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
- 					  SPINOR_REG_CYPRESS_CFR2V, 1, buf);
--- 
-2.34.1
+Shouldn't we remove BCS check for MTL? And move it inside 
+gen12_needs_ccs_aux_inv?
+Btw aux_inv is used as bool, make better is to make it bool.
+
+Regards
+Andrzej
+> +
+> +	/*
+> +	 * On Aux CCS platforms the invalidation of the Aux
+> +	 * table requires quiescing memory traffic beforehand
+> +	 */
+> +	if (aux_inv) {
+> +		cmd += 4; /* for the AUX invalidation */
+> +		cmd += 2; /* for the engine quiescing */
+> +
+> +		cmd_flush = MI_FLUSH_DW;
+> +
+> +		if (rq->engine->class == COPY_ENGINE_CLASS)
+> +			cmd_flush |= MI_FLUSH_DW_CCS;
+>   	}
+>   
+>   	cs = intel_ring_begin(rq, cmd);
+>   	if (IS_ERR(cs))
+>   		return PTR_ERR(cs);
+>   
+> +	if (cmd_flush) {
+> +		*cs++ = cmd_flush;
+> +		*cs++ = 0;
+> +	}
+> +
+>   	if (mode & EMIT_INVALIDATE)
+>   		*cs++ = preparser_disable(true);
+>   
 
