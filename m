@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE34575EB56
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80BAC75EB57
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230190AbjGXGSG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 02:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
+        id S230017AbjGXGSR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 02:18:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230245AbjGXGSF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:18:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50D8B9
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:18:01 -0700 (PDT)
+        with ESMTP id S230253AbjGXGSM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:18:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB92E42
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:18:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 552A060F09
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:18:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621B0C433C8;
-        Mon, 24 Jul 2023 06:18:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A24BC60F25
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:18:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC361C433CB;
+        Mon, 24 Jul 2023 06:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690179480;
-        bh=5c7xb0IHx3JZ5+B8JPct/wn8FfV5uYxV2ycb1eSNZyY=;
+        s=korg; t=1690179488;
+        bh=ihYKCYVpehTqw1UVYV4+MvS3333uFC3Qc0ygrB0JaXw=;
         h=Subject:To:Cc:From:Date:From;
-        b=K3TuKP6lZAfmMME/suE/xLy58l79G9UH/ll94tv7MjUBcwXGljbDOBQxvDO1/3/um
-         RW7n9D7WbS25iKGYCIRq86qJ7hgnrjt4iMjucF98pKzI6wf+HhS9PuvZdoGFLp59MR
-         FNleXcwu+rX5+BpxqDVgRZ+BSXQDQdt0xnXbZtE4=
-Subject: FAILED: patch "[PATCH] ext4: fix off by one issue in" failed to apply to 6.4-stable tree
+        b=jCfuR4BYdp4MmkdYd5ufuYW+kworurUANVDmgSxRu6W5GqX9ijE2Hj9K58O9qfKq2
+         1Pkux5r+WioYE3tDTQGyBiEwRLZ7dcxhonLxBWJS+mY8pOF1c8eXztIq7tXE3cTX6/
+         x7kGWk5SN4zWBD6PsiCcMS1x+ZPZkAa1MWbKLD4g=
+Subject: FAILED: patch "[PATCH] ext4: fix off by one issue in" failed to apply to 6.1-stable tree
 To:     ojaswin@linux.ibm.com, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 24 Jul 2023 08:17:57 +0200
-Message-ID: <2023072456-starting-gauging-768c@gregkh>
+Date:   Mon, 24 Jul 2023 08:18:05 +0200
+Message-ID: <2023072404-hubcap-railroad-9c52@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,23 +49,39 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5d5460fa7932bed3a9082a6a8852cfbdb46acbe8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072456-starting-gauging-768c@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072404-hubcap-railroad-9c52@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+5d5460fa7932 ("ext4: fix off by one issue in ext4_mb_choose_next_group_best_avail()")
+f52f3d2b9fba ("ext4: Give symbolic names to mballoc criterias")
+7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
+1b4200112108 ("ext4: Avoid scanning smaller extents in BG during CR1")
+3ef5d2638796 ("ext4: Add counter to track successful allocation of goal length")
+fdd9a00943a5 ("ext4: Add per CR extent scanned counter")
+4eb7a4a1a33b ("ext4: Convert mballoc cr (criteria) to enum")
+c3defd99d58c ("ext4: treat stripe in block unit")
+361eb69fc99f ("ext4: Remove the logic to trim inode PAs")
+3872778664e3 ("ext4: Use rbtrees to manage PAs instead of inode i_prealloc_list")
+a8e38fd37cff ("ext4: Convert pa->pa_inode_list and pa->pa_obj_lock into a union")
+93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
+0830344c953a ("ext4: Abstract out overlap fix/check logic in ext4_mb_normalize_request()")
+7692094ac513 ("ext4: Move overlap assert logic into a separate function")
+bcf434992145 ("ext4: Refactor code in ext4_mb_normalize_request() and ext4_mb_use_preallocated()")
+e86a718228b6 ("ext4: Stop searching if PA doesn't satisfy non-extent file")
+91a48aaf59d0 ("ext4: avoid unnecessary pointer dereference in ext4_mb_normalize_request")
 
 thanks,
 
