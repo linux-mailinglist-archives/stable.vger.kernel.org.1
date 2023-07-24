@@ -2,119 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3777475F682
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 14:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 837F575F68B
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 14:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbjGXMlW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 08:41:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33954 "EHLO
+        id S229496AbjGXMmi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 08:42:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230046AbjGXMlU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 08:41:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D655A1B8
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:40:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690202435;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tXsloDiGpIg8qGR9m9vo1J1SkzXL7p6lXFOemvxFP9Y=;
-        b=cgS1Ah7F7idEOQxe7NHqcLNh+DIBhqXkEG5wY1CsJVRwtjjF+7ZLjenX4v4WmXioAbL/Ux
-        Zn1Mhlf8RxyCzc7jvS3i3qFRaWeYKE9JWBQqKcS8KNrvepvR03h7qt3da8GlTWLz54z/Su
-        Xeie35mtLJlWyIA+z71b/rgr5vc/AEk=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-Cnep0H_mPZqnhGWQNdYJKw-1; Mon, 24 Jul 2023 08:40:31 -0400
-X-MC-Unique: Cnep0H_mPZqnhGWQNdYJKw-1
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-55c29c5594dso4366927a12.1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:40:31 -0700 (PDT)
+        with ESMTP id S229477AbjGXMmh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 08:42:37 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18774EA
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:42:36 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-98df3dea907so682496766b.3
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690202554; x=1690807354;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fO2YG8nW8mvY6hNYPJQVh9kEAqrBQdvVfFZAX9P/Y7k=;
+        b=ZcaPhrnTldvghpU0vIPWYcbHKHmNJYJJsrEpaSz0p+dUJykyzkYTLXp8rrk2XDKyL/
+         tHA/xVq1QuFbD4nEfnuGg324JdKBkXwd6zE2Zu1jxP0MTsxNlOtSCDkXp8T8ldlbZuXU
+         FY5TfvwgITVLxmOlMF01coaazT2o4WupMJ9v8HWGPvWe238N2CVrs6qtxXM5ebNTpQ0I
+         jgPbmjXP01qlSDgUDTA7pYo2ngs3Xi5B48LitNKW+fpjlA3CjtiFmf6lo00FP3S4e4gA
+         P4PCjOIvA3z/4c03JRKjG9GVp2KauagNHZgQthczBzgEFpEDEHVDl0ndvH63Nkh2FeP8
+         VXEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690202430; x=1690807230;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tXsloDiGpIg8qGR9m9vo1J1SkzXL7p6lXFOemvxFP9Y=;
-        b=V5JSUkCPrFNr0G2hDs9TePM//ZYHzcbBHGIldiRIAodMIreQ+Cfiw/gW3xHM/vFnAm
-         7jQlTP7oogXSga7yHLbZz1TXUPbIgqkN+TsXh64mVZ/xpFrsB/JidmBsredESoVi75M9
-         i9ia9lF1TCYg1nT88RW9IHxWj8e9DWsCUVX7u09501Bl1kX9YbDM1MMvxVRi+wf/o566
-         SA6ssYtJx5lwdFnNg6vm1VjxvXXlVmS637WMLaMSPBJG7o5wazPMZDfKNlwgP+RYixsD
-         IC6zHKfKxLdjpnNQ7o87mCIkUY5A+uFZ/mT+B+Wyc20mREoJbIxBXYsExzOCNAALe6MJ
-         1zGw==
-X-Gm-Message-State: ABy/qLbMRpl4f6r2VqQFi87fbpTdjga86vUdKhi2JdWDwX88wOxuKNyS
-        vT/Rh5wa+Tfv56XNjr3W70UGa5SYKbDNYSzdsP3nOET2UC1Ni/ZPUfFAyI3nge9b/9f58rvGB8r
-        7IC0NtoaGM28oBogw
-X-Received: by 2002:a17:902:6b82:b0:1b8:7f95:7ba2 with SMTP id p2-20020a1709026b8200b001b87f957ba2mr10265405plk.42.1690202430765;
-        Mon, 24 Jul 2023 05:40:30 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHcqXKheYfAKfo57gFCYKNJojWj2lLEO7K1mFNCrOtch0EkElbw8DiKTbihmJVn9demmMed3w==
-X-Received: by 2002:a17:902:6b82:b0:1b8:7f95:7ba2 with SMTP id p2-20020a1709026b8200b001b87f957ba2mr10265388plk.42.1690202430441;
-        Mon, 24 Jul 2023 05:40:30 -0700 (PDT)
-Received: from [10.72.12.127] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id ja21-20020a170902efd500b001b89891bfc4sm8872525plb.199.2023.07.24.05.40.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 05:40:30 -0700 (PDT)
-Message-ID: <09e357a7-6a44-2209-88e9-afd28d9a4059@redhat.com>
-Date:   Mon, 24 Jul 2023 20:40:26 +0800
+        d=1e100.net; s=20221208; t=1690202554; x=1690807354;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fO2YG8nW8mvY6hNYPJQVh9kEAqrBQdvVfFZAX9P/Y7k=;
+        b=cdiB55HfkDGyAWsQym5lvdqcSGRlQqQRcmTbCDiUiErAu/PLTSqbGHwazayqJNbn+8
+         JwmO03YIZ4wxEx/i0oe4CT+nb4dL4KzSvCDO18rbzrQ+zeVceZEa1Q3frYctbLbpt0k3
+         ZAAP1OUXDk5pB324gwb76S2RDnG6i1ZIXT8PXd75+OFZ/Zre7LBVBVA4gIGuptMWAzDN
+         aDiH0g7JHOmN0I0zq1y+Nyrjb9jrr91Sm+7C//ihrxYRKbzS9lJHgDb7R+d6mXXWQ2Ag
+         b24N/mDmOYJqOOBf6FOcpcHcQFP252C8bhdifnIGQba2+nfcHTx++trm7tulE1OPXSF/
+         bABw==
+X-Gm-Message-State: ABy/qLZH68J0SeBTF0QglHuP6pEhOtJ/SANjyzzQM7LznX3w1MrkWr3z
+        85+wQ614L5eJmYIXIOVmjK1PZQjfu44=
+X-Google-Smtp-Source: APBJJlGi0sncQtDxGxvnn1rx1Qbn3T3mWr1Cd9Of+G3gDz0BmTjJt7pl80gGBxGWVEymWvNzIpnWWg==
+X-Received: by 2002:a17:906:8468:b0:991:e17c:f8fa with SMTP id hx8-20020a170906846800b00991e17cf8famr9284751ejc.61.1690202553886;
+        Mon, 24 Jul 2023 05:42:33 -0700 (PDT)
+Received: from bigfoot.. (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
+        by smtp.gmail.com with ESMTPSA id a6-20020a1709062b0600b0099297782aa9sm6628490ejg.49.2023.07.24.05.42.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jul 2023 05:42:33 -0700 (PDT)
+From:   Eduard Zingerman <eddyz87@gmail.com>
+To:     stable@vger.kernel.org, ast@kernel.org
+Cc:     andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
+        yhs@fb.com, mykolal@fb.com, luizcap@amazon.com,
+        Eduard Zingerman <eddyz87@gmail.com>
+Subject: [PATCH 6.1.y v2 0/6] BPF selftests fixes for 6.1 branch
+Date:   Mon, 24 Jul 2023 15:42:17 +0300
+Message-ID: <20230724124223.1176479-1-eddyz87@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] ceph: defer stopping the mdsc delayed_work
-Content-Language: en-US
-To:     Ilya Dryomov <idryomov@gmail.com>
-Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
-References: <20230724084214.321005-1-xiubli@redhat.com>
- <CAOi1vP9Yygpavo8fS=Tz8YGeQJ7Wmieo=14+HS20+MSMErb79A@mail.gmail.com>
- <e28b9ea0-a62c-5aae-50d0-bc092675e20d@redhat.com>
- <CAOi1vP_80f8v_3c9O0O2AW7kB3YCv9TF4rUXjZHFgkXb4ZLZyA@mail.gmail.com>
-From:   Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <CAOi1vP_80f8v_3c9O0O2AW7kB3YCv9TF4rUXjZHFgkXb4ZLZyA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Recently Luiz Capitulino reported BPF test failure for kernel version
+6.1.36 (see [7]). The following test_verifier test failed:
+"precise: ST insn causing spi > allocated_stack".
+After back-port of the following upstream commit:
+ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
 
-On 7/24/23 20:34, Ilya Dryomov wrote:
-> On Mon, Jul 24, 2023 at 2:20 PM Xiubo Li <xiubli@redhat.com> wrote:
->>
->> On 7/24/23 19:12, Ilya Dryomov wrote:
->>> On Mon, Jul 24, 2023 at 10:44 AM <xiubli@redhat.com> wrote:
->>>> From: Xiubo Li <xiubli@redhat.com>
->>>>
->>>> Flushing the dirty buffer may take a long time if the Rados is
->>>> overloaded or if there is network issue. So we should ping the
->>>> MDSs periodically to keep alive, else the MDS will blocklist
->>>> the kclient.
->>>>
->>>> Cc: stable@vger.kernel.org
->>> Hi Xiubo,
->>>
->>> The stable tag doesn't make sense here as this commit enhances commit
->>> 2789c08342f7 ("ceph: drop the messages from MDS when unmounting") which
->>> isn't upstream.  It should probably just be folded there.
->> No, Ilya. This is not an enhancement for commit 2789c08342f7.
->>
->> They are for different issues here. This patch just based on that. We
->> can apply this first and then I can rebase the testing branch.
-> Ah, thanks for letting me know.  Please go ahead and structure it that
-> way in the testing branch.  As it is, it conflicts heavily as the enum
-> that it adds a new member to was added in commit 2789c08342f7.
+Investigation in [8] shows that test failure is not a bug, but a
+difference in BPF verifier behavior between upstream, where commits
+[1,2,3] by Andrii Nakryiko are present, and 6.1.36, where these
+commits are absent. Both Luiz and Greg suggested back-porting [1,2,3]
+from upstream to avoid divergences.
 
-Sure. Thanks
+Commits [1,2,3] break test_progs selftest "align/packet variable offset",
+commit [4] fixes this selftest.
 
+I did some additional testing using the following compiler versions:
+- Kernel compilation
+  - gcc version 11.3.0
+- BPF tests compilation
+  - clang version 16.0.6
+  - clang version 17.0.0 (fa46feb31481)
 
->
->                  Ilya
->
+And identified a few more failing BPF selftests:
+- Tests failing with LLVM 16:
+  - test_verifier:
+    - precise: ST insn causing spi > allocated_stack FAIL (fixed by [1,2,3])
+  - test_progs:
+    - sk_assign                                           (fixed by [6])
+- Tests failing with LLVM 17:
+  - test_verifier:
+    - precise: ST insn causing spi > allocated_stack FAIL (fixed by [1,2,3])
+  - test_progs:
+    - fexit_bpf2bpf/func_replace_verify                   (fixed by [5])
+    - fexit_bpf2bpf/func_replace_return_code              (fixed by [5])
+    - sk_assign                                           (fixed by [6])
+
+Commits [4,5,6] only apply to BPF selftests and don't change verifier
+behavior.
+
+After applying all of the listed commits I have test_verifier,
+test_progs, test_progs-no_alu32 and test_maps passing on my x86 setup,
+both for LLVM 16 and LLVM 17.
+
+Upstream commits in chronological order:
+[1] be2ef8161572 ("bpf: allow precision tracking for programs with subprogs")
+[2] f63181b6ae79 ("bpf: stop setting precise in current state")
+[3] 7a830b53c17b ("bpf: aggressively forget precise markings during state checkpointing")
+[4] 4f999b767769 ("selftests/bpf: make test_align selftest more robust")
+[5] 63d78b7e8ca2 ("selftests/bpf: Workaround verification failure for fexit_bpf2bpf/func_replace_return_code")
+[6] 7ce878ca81bc ("selftests/bpf: Fix sk_assign on s390x")
+
+Links:
+[7] https://lore.kernel.org/stable/935c4751-d368-df29-33a6-9f4fcae720fa@amazon.com/
+[8] https://lore.kernel.org/stable/c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com/
+
+Changelog:
+  V1 -> V2: added missing signed-off-by tags
+  V1: https://lore.kernel.org/stable/20230722004514.767618-1-eddyz87@gmail.com/
+
+Reported-by: Luiz Capitulino <luizcap@amazon.com>
+
+Andrii Nakryiko (4):
+  bpf: allow precision tracking for programs with subprogs
+  bpf: stop setting precise in current state
+  bpf: aggressively forget precise markings during state checkpointing
+  selftests/bpf: make test_align selftest more robust
+
+Ilya Leoshkevich (1):
+  selftests/bpf: Fix sk_assign on s390x
+
+Yonghong Song (1):
+  selftests/bpf: Workaround verification failure for
+    fexit_bpf2bpf/func_replace_return_code
+
+ kernel/bpf/verifier.c                         | 202 ++++++++++++++++--
+ .../testing/selftests/bpf/prog_tests/align.c  |  38 ++--
+ .../selftests/bpf/prog_tests/sk_assign.c      |  25 ++-
+ .../selftests/bpf/progs/connect4_prog.c       |   2 +-
+ .../selftests/bpf/progs/test_sk_assign.c      |  11 +
+ .../bpf/progs/test_sk_assign_libbpf.c         |   3 +
+ 6 files changed, 247 insertions(+), 34 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+
+-- 
+2.41.0
 
