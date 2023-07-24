@@ -2,92 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC29875E5BE
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 01:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97A1D75E5DD
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 02:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229675AbjGWXlr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 19:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35918 "EHLO
+        id S229725AbjGXAdH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 20:33:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229598AbjGWXlq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 19:41:46 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1365E5F;
-        Sun, 23 Jul 2023 16:41:45 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bb85ed352bso1728205ad.0;
-        Sun, 23 Jul 2023 16:41:45 -0700 (PDT)
+        with ESMTP id S229468AbjGXAdD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 20:33:03 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F995D8
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 17:32:59 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-785d738d3feso90229239f.0
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 17:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690155705; x=1690760505;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lwrLRuLXj8SHaGOhqw9PbpKmc82/+6Aipnzx6dTElL8=;
-        b=AM/kFZCWa3uzV8PQc0is47mGVWBl0jPW74oQtHwlHDYr4a8khPFczbevFQj7xKv/iJ
-         K86ey5Fgtkg54XSNRp33uyN/HL611jA35vCZ5qmq7yhdhtVPyG1gzRyKGw8MCJ23vPAh
-         RvdLvzp92G6po+2oc/IXpdPACnaItxKLlFCN7pPk9it5ZSwzlw4C/Nk41aueNK8ajhOP
-         TJSKF9bjkThbb7GPdY1AcxL/XuAcGps79N0Ns1/lU6PQc7bal1Fwh+b33Xsz8VWzPT7y
-         9x3dODT4UB+HsCn2moD/ZRMDDA7sqelpE17SN/5xm48SqmtWOCsT359nJDsUmCqO88U1
-         Blwg==
+        d=joelfernandes.org; s=google; t=1690158779; x=1690763579;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=okkG/ASud8bLD06JXRVQQQz75TIzTLjFE+g1R5XNRR0=;
+        b=wzEpS8znt/KxoJH41SBjTpOAf7SjE8+6B76QKwyLShkp6frvxhQTjNA01CdMQpJvwH
+         i4e46zjY7u+xtcpm3n+Jjpc1VkUT3Tx9CRwPSZ8n79ENbfx3zEJTBBIk/NVWzQ36PBkh
+         WaiLgAMF89nIO4b973kH7KlJyNwsK2uARFgzc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690155705; x=1690760505;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lwrLRuLXj8SHaGOhqw9PbpKmc82/+6Aipnzx6dTElL8=;
-        b=TkdohDaHSk2bI1BNKtbqSl9NyhXaDhrAsDna7Tw0S5ulv3KzmiBFc+a568U51SYW9F
-         iZCH7XNgHhNcXyRUih29ySDxlQ7j/PkWZu+YJSdS+j56dnUQ6mKw6ke35dDzXV7htM1f
-         UNIxdrpdVaSyG1uZXKFTiWhqiwCzRwqwXSZz9wwORguldanYvNvuVSDZvt7076NMzakJ
-         Uj/JVw3zAi0cgck01peOB0cMmANdF+yZ/+KztW6nvGSDtGlmCsWtVl7wBdF4rhTCP3mR
-         FcfsCKgNEvLPSUkn1/z/LeHY4f6LwHmmg+j9IJD0Y4bWPcYeHu+bTuHbgRew3aJedFrO
-         fbnA==
-X-Gm-Message-State: ABy/qLZyrXfrW3CdtEiMsdSMGbSleRGTMyUnCoz/zyawnXzeWMyY6LGr
-        HyDASWcyd5MajipCrZ49gjA02yMqYIjmCugtvFykpldS
-X-Google-Smtp-Source: APBJJlH6vs+K/CbuFkeV7XO9qfwoQkwgdpOdDnjtv1vn97dIw5hiB+z2jOkl3L5LVuKXhYeeF9PZyrm8nUqy7QNMY6g=
-X-Received: by 2002:a17:903:32c9:b0:1b8:5827:8763 with SMTP id
- i9-20020a17090332c900b001b858278763mr10842761plr.4.1690155705222; Sun, 23 Jul
- 2023 16:41:45 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690158779; x=1690763579;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=okkG/ASud8bLD06JXRVQQQz75TIzTLjFE+g1R5XNRR0=;
+        b=Ey2cKetLyo4sKueb0txPDpHX7fznK9O/lB9sRL42NqMSPjIjSobwCusAYr+/LSANqV
+         c2Ip2m+HJeSLnw4lnAk/sbtBrTG/Hh5F4FHLL6acgjkxBUb/MJUiNxTeV3z2jKcMY9HK
+         uHm+rntcy5g/QDo8XbQAVktWdmEVx7pDmf2w6NnTAsKAjUs2OoTDIF822ECfnCl4MEuL
+         zbdscIJhaEv/AQ0kwEqYGbtHhInGwxWdXh6KZ5YW7XnxdnpTU3IDlcePTpFBPs0ijmjG
+         C7EkNKFFvHhTQ9Nrd5mDBjwtohMXnCpinWrLS5BWjXKmfqkOhHXOy5h478pcFnaDluu0
+         FPXg==
+X-Gm-Message-State: ABy/qLYj+mvy0+v18idMyVftxn7hNNLy0rWPH95FjUOgts8ayJau1DxG
+        1q7gen7+t4p+BDr4G9+VocFILH4lt+ax4JWCNhc=
+X-Google-Smtp-Source: APBJJlENT9DK1h4VT6XVyoZzt/3Fi6aMgmGbSTEM9F5klJFOr9BBANR8HvOe7z8qwGRAEPyA984uJw==
+X-Received: by 2002:a5e:a810:0:b0:786:7100:5727 with SMTP id c16-20020a5ea810000000b0078671005727mr4057316ioa.1.1690158778914;
+        Sun, 23 Jul 2023 17:32:58 -0700 (PDT)
+Received: from localhost (30.64.135.34.bc.googleusercontent.com. [34.135.64.30])
+        by smtp.gmail.com with ESMTPSA id m3-20020a056602018300b00786fd8e764bsm3115485ioo.0.2023.07.23.17.32.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Jul 2023 17:32:57 -0700 (PDT)
+Date:   Mon, 24 Jul 2023 00:32:57 +0000
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     "Paul E. McKenney" <paulmck@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [BUG] Re: Linux 6.4.4
+Message-ID: <20230724003257.GA60074@google.com>
+References: <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
+ <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
+ <eb04b7d0-2f49-4e01-be09-9062d9f08404@paulmck-laptop>
+ <32aec6d1-bf25-7b47-8f31-7b6318d5238d@joelfernandes.org>
+ <9b42cb38-8375-fc41-475a-2bd26c60a7b9@joelfernandes.org>
+ <5dcf7117-cec7-4772-8aad-e100484a84dc@paulmck-laptop>
+ <7bfde9f4-2bd6-7337-b9ca-94a9253d847f@joelfernandes.org>
+ <ad82995c-061e-4f97-a972-c13a85ad0b72@paulmck-laptop>
+ <a7bcbcf2-9b34-4326-822f-e1f2aa5c5668@joelfernandes.org>
+ <ebde8612-95de-4eaf-aa56-34e9b3a3fa86@paulmck-laptop>
 MIME-Version: 1.0
-References: <20230712115301.690714-1-festevam@gmail.com>
-In-Reply-To: <20230712115301.690714-1-festevam@gmail.com>
-From:   Fabio Estevam <festevam@gmail.com>
-Date:   Sun, 23 Jul 2023 20:41:34 -0300
-Message-ID: <CAOMZO5AgwLypVJNNbkd20rzouLxSWeYDd2ScaGLFNFv1st8H_Q@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] ARM: dts: imx6sx: Remove LDB endpoint
-To:     shawnguo@kernel.org
-Cc:     hs@denx.de, linux-arm-kernel@lists.infradead.org, sboyd@kernel.org,
-        abelvesa@kernel.org, linux-clk@vger.kernel.org,
-        Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ebde8612-95de-4eaf-aa56-34e9b3a3fa86@paulmck-laptop>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Shawn,
+On Sun, Jul 23, 2023 at 10:19:27AM -0700, Paul E. McKenney wrote:
+> On Sun, Jul 23, 2023 at 10:50:26AM -0400, Joel Fernandes wrote:
+> > 
+> > 
+> > On 7/22/23 13:27, Paul E. McKenney wrote:
+> > [..]
+> > > 
+> > > OK, if this kernel is non-preemptible, you are not running TREE03,
+> > > correct?
+> > > 
+> > >> Next plan of action is to get sched_waking stack traces since I have a
+> > >> very reliable repro of this now.
+> > > 
+> > > Too much fun!  ;-)
+> > 
+> > For TREE07 issue, it is actually the schedule_timeout_interruptible(1)
+> > in stutter_wait() that is beating up the CPU0 for 4 seconds.
+> > 
+> > This is very similar to the issue I fixed in New year in d52d3a2bf408
+> > ("torture: Fix hang during kthread shutdown phase")
+> 
+> Agreed, if there are enough kthreads, and all the kthreads are on a
+> single CPU, this could consume that CPU.
+> 
+> > Adding a cond_resched() there also did not help.
+> > 
+> > I think the issue is the stutter thread fails to move spt forward
+> > because it does not get CPU time. But spt == 1 should be very brief
+> > AFAIU. I was wondering if we could set that to RT.
+> 
+> Or just use a single hrtimer-based wait for each kthread?
 
-On Wed, Jul 12, 2023 at 8:53=E2=80=AFAM Fabio Estevam <festevam@gmail.com> =
-wrote:
->
-> From: Fabio Estevam <festevam@denx.de>
->
-> Remove the LDB endpoint description from the common imx6sx.dtsi
-> as it causes regression for boards that has the LCDIF connected
-> directly to a parallel display.
->
-> Let the LDB endpoint be described in the board devicetree file
-> instead.
->
-> Cc: stable@vger.kernel.org
-> Fixes: b74edf626c4f ("ARM: dts: imx6sx: Add LDB support")
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> ---
-> Changes since v2:
-> - Rebased against 6.5-rc1.
+[Joel]
+Yes this might be better, but there's still the issue that spt may not be set
+back to 0 in some future release where the thread gets starved.
 
-Please consider applying this one as it fixes a regression, thanks.
+> > But also maybe the following will cure it like it did for the shutdown
+> > issue, giving the stutter thread just enough CPU time to move spt forward.
+> > 
+> > Now I am trying the following and will let it run while I go do other
+> > family related things. ;)
+> 
+> Good point, if this avoids the problem, that gives a strong indication
+> that your hypothesis on the root cause is correct.
+
+[Joel]
+And the TREE07 issue is gone with that change! So I think I'll roll into a
+patch and send it to you. But I am also hoping that you are Ok with me
+setting the stutter thread to RT in addition to the longer schedule_timeout.
+That's just to make it more robust since I think it is crucial that it does
+not stutter threads indefinitely due to the scheduler (for any unforeseen
+reason in the future, such as scheduler issues). And maybe, as a part of
+that I could also tackle that other TODO item about cleaning up
+torture_create_kthead() as well to add support to it for setting things to
+RT and use it for that.
+
+Let me know what you think, thanks!
+
+ - Joel
+
