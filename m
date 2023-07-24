@@ -2,62 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5487E75EC81
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 09:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE6175ECC5
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 09:53:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbjGXH2U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 03:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58374 "EHLO
+        id S231309AbjGXHw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 03:52:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbjGXH2T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 03:28:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 637BD187;
-        Mon, 24 Jul 2023 00:28:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0B2D60F6B;
-        Mon, 24 Jul 2023 07:28:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49180C43397;
-        Mon, 24 Jul 2023 07:28:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690183695;
-        bh=GLnsrmTJQyipNzjtP9w/tp3G33tGRxpIkFbIQBxhhLM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=IEVOH7rrKbxlAafi3pd9P3vo8/q1NGdit3Lna7XuwUK1VR7QNt2JWvuSMBvEgdA8s
-         QaNSmwnSl6WHkFUNA+Aadm+NDb2O/6B3s5Eegy42ubRT5+8tSrhk5VNdu99NWeWbg5
-         77twwwJi4V0vMhqblG6Zf5GniOCfEeV8oKv5w9IHGcEV5lmp094sRu1+E0T5Kr3FTn
-         RgJlWIVKYRd2q34jfAuANnyyij9vY6Xc0IKtGK5QrTcMPiN53nAvZW/aE57c3ysjxC
-         ZJW8uMP9A7UheDcsBTT6ZQFy2iq0q2IJtdkPv96uAGeiaJQOVCpsZtEXKwhkicefVN
-         pP605K9c/OUZQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-4fa48b5dc2eso5854022e87.1;
-        Mon, 24 Jul 2023 00:28:15 -0700 (PDT)
-X-Gm-Message-State: ABy/qLaUCY3uN94QF1hy95cjQv3Av2we3m8PkymXrHyv+WCF19RLU//e
-        jyKI98dGfi3s03kgewZBBcwFI/mN4tHbHPGfgH8=
-X-Google-Smtp-Source: APBJJlEGz6OG1NKpKFLNSBRyJpiL9bNI8DJD1V12HIzUf22/vJ+2NpSgMhYn9F/mdFWW0vVlEB/ydlNYKQIKPVgn+wk=
-X-Received: by 2002:a19:7508:0:b0:4ed:cc6d:61fe with SMTP id
- y8-20020a197508000000b004edcc6d61femr4848902lfe.24.1690183693160; Mon, 24 Jul
- 2023 00:28:13 -0700 (PDT)
+        with ESMTP id S231181AbjGXHww (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 03:52:52 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE841A3
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 00:52:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690185171; x=1721721171;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=18HrS3rmE0LhoroiohHtBYV8bIE2JHOhM3MwP5aRQ30=;
+  b=VdfjLFJ59i6tjuBxd/Rzg27Fm45bJ0Q4TxitUImDtTE+UaVoCOli0qS3
+   ty6szC0aMdagWdDZ+WQbagnZd6mOzM0EDIWIhzJt6QvnlGYViHHkGxmYa
+   nAqiLOBGrKLLJtRwpb+tn5VBnQGV3SW0Jn/mvktlt+OmrN2HNJeTR8fqA
+   w9pBxHHohGUeYjNfLQpMD2ABzh+8TxOY+xiHwBLSyf7y30VVowB57GmiT
+   wGkimyONLOJWJ+22sggUSG3ZCbS0SNgJQKtfKU/4WfpmDLXiCjaInRlQt
+   YQXR+h8sJpx1X6PZDGSlnGcz+yeWIjPTCRoVtWp9gVYdAWFFHVz1Nqknt
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="352273396"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="352273396"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 00:52:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="790878313"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="790878313"
+Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.14.115]) ([10.213.14.115])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 00:52:46 -0700
+Message-ID: <5db69384-06bc-6ec5-ced7-d5c5245a03c5@intel.com>
+Date:   Mon, 24 Jul 2023 09:52:41 +0200
 MIME-Version: 1.0
-References: <20230724013111.2327251-1-sashal@kernel.org>
-In-Reply-To: <20230724013111.2327251-1-sashal@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 24 Jul 2023 09:28:01 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFxPFbihEMN-vPLzw6mDtrO56pTfA48kKwxWmRczxrTXg@mail.gmail.com>
-Message-ID: <CAMj1kXFxPFbihEMN-vPLzw6mDtrO56pTfA48kKwxWmRczxrTXg@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.4 1/4] efivarfs: expose used and total size
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Anisse Astier <an.astier@criteo.com>, matt@codeblueprint.co.uk,
-        ard.biesheuvel@linaro.org, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, matthew.garrett@nebula.com,
-        jk@ozlabs.org, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Subject: Re: [PATCH v8 2/9] drm/i915: Add the gen12_needs_ccs_aux_inv helper
+To:     Andi Shyti <andi.shyti@linux.intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>
+Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-evel <dri-devel@lists.freedesktop.org>,
+        linux-stable <stable@vger.kernel.org>
+References: <20230721161514.818895-1-andi.shyti@linux.intel.com>
+ <20230721161514.818895-3-andi.shyti@linux.intel.com>
+Content-Language: en-US
+From:   Andrzej Hajda <andrzej.hajda@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20230721161514.818895-3-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,192 +72,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 24 Jul 2023 at 03:31, Sasha Levin <sashal@kernel.org> wrote:
->
-> From: Anisse Astier <an.astier@criteo.com>
->
-> [ Upstream commit d86ff3333cb1d5f42d8898fb5fdb304e143c0237 ]
->
 
-NAK
 
-Please don't backport this - this is obviously new functionality.
+On 21.07.2023 18:15, Andi Shyti wrote:
+> We always assumed that a device might either have AUX or FLAT
+> CCS, but this is an approximation that is not always true, e.g.
+> PVC represents an exception.
+>
+> Set the basis for future finer selection by implementing a
+> boolean gen12_needs_ccs_aux_inv() function that tells whether aux
+> invalidation is needed or not.
+>
+> Currently PVC is the only exception to the above mentioned rule.
+>
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Cc: <stable@vger.kernel.org> # v5.8+
 
-> When writing EFI variables, one might get errors with no other message
-> on why it fails. Being able to see how much is used by EFI variables
-> helps analyzing such issues.
->
-> Since this is not a conventional filesystem, block size is intentionally
-> set to 1 instead of PAGE_SIZE.
->
-> x86 quirks of reserved size are taken into account; so that available
-> and free size can be different, further helping debugging space issues.
->
-> With this patch, one can see the remaining space in EFI variable storage
-> via efivarfs, like this:
->
->    $ df -h /sys/firmware/efi/efivars/
->    Filesystem      Size  Used Avail Use% Mounted on
->    efivarfs        176K  106K   66K  62% /sys/firmware/efi/efivars
->
-> Signed-off-by: Anisse Astier <an.astier@criteo.com>
-> [ardb: - rename efi_reserved_space() to efivar_reserved_space()
->        - whitespace/coding style tweaks]
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
+Regards
+Andrzej
 > ---
->  arch/x86/platform/efi/quirks.c |  8 +++++++
->  drivers/firmware/efi/efi.c     |  1 +
->  drivers/firmware/efi/vars.c    | 12 +++++++++++
->  fs/efivarfs/super.c            | 39 +++++++++++++++++++++++++++++++++-
->  include/linux/efi.h            | 11 ++++++++++
->  5 files changed, 70 insertions(+), 1 deletion(-)
+>   drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 18 +++++++++++++++---
+>   1 file changed, 15 insertions(+), 3 deletions(-)
 >
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index b0b848d6933af..f0cc00032751d 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -114,6 +114,14 @@ void efi_delete_dummy_variable(void)
->                                      EFI_VARIABLE_RUNTIME_ACCESS, 0, NULL);
->  }
->
-> +u64 efivar_reserved_space(void)
+> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> index 563efee055602..460c9225a50fc 100644
+> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> @@ -165,6 +165,18 @@ static u32 preparser_disable(bool state)
+>   	return MI_ARB_CHECK | 1 << 8 | state;
+>   }
+>   
+> +static bool gen12_needs_ccs_aux_inv(struct intel_engine_cs *engine)
 > +{
-> +       if (efi_no_storage_paranoia)
-> +               return 0;
-> +       return EFI_MIN_RESERVE;
+> +	if (IS_PONTEVECCHIO(engine->i915))
+> +		return false;
+> +
+> +	/*
+> +	 * so far platforms supported by i915 having
+> +	 * flat ccs do not require AUX invalidation
+> +	 */
+> +	return !HAS_FLAT_CCS(engine->i915);
 > +}
-> +EXPORT_SYMBOL_GPL(efivar_reserved_space);
 > +
->  /*
->   * In the nonblocking case we do not attempt to perform garbage
->   * collection if we do not have enough free space. Rather, we do the
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 34b9e78765386..91d986a741dad 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -211,6 +211,7 @@ static int generic_ops_register(void)
->         generic_ops.get_variable = efi.get_variable;
->         generic_ops.get_next_variable = efi.get_next_variable;
->         generic_ops.query_variable_store = efi_query_variable_store;
-> +       generic_ops.query_variable_info = efi.query_variable_info;
->
->         if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
->                 generic_ops.set_variable = efi.set_variable;
-> diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-> index bfc5fa6aa47b6..e9dc7116daf13 100644
-> --- a/drivers/firmware/efi/vars.c
-> +++ b/drivers/firmware/efi/vars.c
-> @@ -245,3 +245,15 @@ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
->         return status;
->  }
->  EXPORT_SYMBOL_NS_GPL(efivar_set_variable, EFIVAR);
-> +
-> +efi_status_t efivar_query_variable_info(u32 attr,
-> +                                       u64 *storage_space,
-> +                                       u64 *remaining_space,
-> +                                       u64 *max_variable_size)
-> +{
-> +       if (!__efivars->ops->query_variable_info)
-> +               return EFI_UNSUPPORTED;
-> +       return __efivars->ops->query_variable_info(attr, storage_space,
-> +                       remaining_space, max_variable_size);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(efivar_query_variable_info, EFIVAR);
-> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-> index 482d612b716bb..e028fafa04f38 100644
-> --- a/fs/efivarfs/super.c
-> +++ b/fs/efivarfs/super.c
-> @@ -13,6 +13,7 @@
->  #include <linux/ucs2_string.h>
->  #include <linux/slab.h>
->  #include <linux/magic.h>
-> +#include <linux/statfs.h>
->
->  #include "internal.h"
->
-> @@ -23,8 +24,44 @@ static void efivarfs_evict_inode(struct inode *inode)
->         clear_inode(inode);
->  }
->
-> +static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
-> +{
-> +       const u32 attr = EFI_VARIABLE_NON_VOLATILE |
-> +                        EFI_VARIABLE_BOOTSERVICE_ACCESS |
-> +                        EFI_VARIABLE_RUNTIME_ACCESS;
-> +       u64 storage_space, remaining_space, max_variable_size;
-> +       efi_status_t status;
-> +
-> +       status = efivar_query_variable_info(attr, &storage_space, &remaining_space,
-> +                                           &max_variable_size);
-> +       if (status != EFI_SUCCESS)
-> +               return efi_status_to_err(status);
-> +
-> +       /*
-> +        * This is not a normal filesystem, so no point in pretending it has a block
-> +        * size; we declare f_bsize to 1, so that we can then report the exact value
-> +        * sent by EFI QueryVariableInfo in f_blocks and f_bfree
-> +        */
-> +       buf->f_bsize    = 1;
-> +       buf->f_namelen  = NAME_MAX;
-> +       buf->f_blocks   = storage_space;
-> +       buf->f_bfree    = remaining_space;
-> +       buf->f_type     = dentry->d_sb->s_magic;
-> +
-> +       /*
-> +        * In f_bavail we declare the free space that the kernel will allow writing
-> +        * when the storage_paranoia x86 quirk is active. To use more, users
-> +        * should boot the kernel with efi_no_storage_paranoia.
-> +        */
-> +       if (remaining_space > efivar_reserved_space())
-> +               buf->f_bavail = remaining_space - efivar_reserved_space();
-> +       else
-> +               buf->f_bavail = 0;
-> +
-> +       return 0;
-> +}
->  static const struct super_operations efivarfs_ops = {
-> -       .statfs = simple_statfs,
-> +       .statfs = efivarfs_statfs,
->         .drop_inode = generic_delete_inode,
->         .evict_inode = efivarfs_evict_inode,
->  };
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 571d1a6e1b744..120af31a5136f 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -1042,6 +1042,7 @@ struct efivar_operations {
->         efi_set_variable_t *set_variable;
->         efi_set_variable_t *set_variable_nonblocking;
->         efi_query_variable_store_t *query_variable_store;
-> +       efi_query_variable_info_t *query_variable_info;
->  };
->
->  struct efivars {
-> @@ -1049,6 +1050,12 @@ struct efivars {
->         const struct efivar_operations *ops;
->  };
->
-> +#ifdef CONFIG_X86
-> +u64 __attribute_const__ efivar_reserved_space(void);
-> +#else
-> +static inline u64 efivar_reserved_space(void) { return 0; }
-> +#endif
-> +
->  /*
->   * The maximum size of VariableName + Data = 1024
->   * Therefore, it's reasonable to save that much
-> @@ -1087,6 +1094,10 @@ efi_status_t efivar_set_variable_locked(efi_char16_t *name, efi_guid_t *vendor,
->  efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
->                                  u32 attr, unsigned long data_size, void *data);
->
-> +efi_status_t efivar_query_variable_info(u32 attr, u64 *storage_space,
-> +                                       u64 *remaining_space,
-> +                                       u64 *max_variable_size);
-> +
->  #if IS_ENABLED(CONFIG_EFI_CAPSULE_LOADER)
->  extern bool efi_capsule_pending(int *reset_type);
->
-> --
-> 2.39.2
->
+>   u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
+>   {
+>   	u32 gsi_offset = gt->uncore->gsi_offset;
+> @@ -267,7 +279,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+>   		else if (engine->class == COMPUTE_CLASS)
+>   			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
+>   
+> -		if (!HAS_FLAT_CCS(rq->engine->i915))
+> +		if (gen12_needs_ccs_aux_inv(rq->engine))
+>   			count = 8 + 4;
+>   		else
+>   			count = 8;
+> @@ -285,7 +297,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+>   
+>   		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
+>   
+> -		if (!HAS_FLAT_CCS(rq->engine->i915)) {
+> +		if (gen12_needs_ccs_aux_inv(rq->engine)) {
+>   			/* hsdes: 1809175790 */
+>   			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
+>   						      GEN12_CCS_AUX_INV);
+> @@ -307,7 +319,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+>   	if (mode & EMIT_INVALIDATE) {
+>   		cmd += 2;
+>   
+> -		if (!HAS_FLAT_CCS(rq->engine->i915) &&
+> +		if (gen12_needs_ccs_aux_inv(rq->engine) &&
+>   		    (rq->engine->class == VIDEO_DECODE_CLASS ||
+>   		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
+>   			aux_inv = rq->engine->mask &
+
