@@ -2,105 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D4A175FB2D
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 17:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB5775FB3C
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 17:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231319AbjGXPub (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 11:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60712 "EHLO
+        id S231396AbjGXPyA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 11:54:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230287AbjGXPua (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 11:50:30 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC159E4
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 08:50:25 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-77dcff76e35so55821639f.1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 08:50:25 -0700 (PDT)
+        with ESMTP id S231407AbjGXPx6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 11:53:58 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D56EE70
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 08:53:53 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-991ef0b464cso1189024466b.0
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 08:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690213825; x=1690818625;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RIsGgKww9Eb9PV4fKcvrXzf2hZ8SDdRIJ2lqhbJPbJQ=;
-        b=owmGOTF+NRNxB4d7mwEMH/srf6ZO86sCeA9RYlA2xU+3tARUIMj5MSrcFV+blaqX2T
-         h/DNPpYOOivTX8NaHKjWzGenwwSPRcvvqW+Tk+qdppXYRyjBhVYx4f3RPR+PhAySz7qb
-         +lXyGwJqDiCsovfQ9A68Uhf5enWmzwFRHhiZ4jEqtH4LLhYvRMtKRvmZxx7j5nNcua3f
-         m68WS24q4UwLYVAj6e4Z0zZ8qUErgBzfvjoBfFOkeSFkPK/cscV7C5OMsIu+zFbG9M8t
-         AwFRyzE6T87xjDBXixmz6psfFGuszmC8UmbWlCoXuJ+OoLHxwxXKzUHgOIElucUcWpQ+
-         Jqng==
+        d=linux-foundation.org; s=google; t=1690214031; x=1690818831;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGgctA2utHA8Ao8JF1uO8HVoivYG2O9nLkJv2/8DmH8=;
+        b=JVWXqJAxDgZpjEpGxa0aAZkvDjjTaKiQ8mFdp2sPgRJuID6aRIV/E9Nx/RLoFJTHqR
+         J3VrH+xas43LBUcTnD3U/e95vtIar72kzk3MlX1JgCxpKajLiX8aucCK8LrsLU8haeGb
+         gqTwAskoMH+gObYWgDQe89Jjb5bdNQ8JNtabw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690213825; x=1690818625;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RIsGgKww9Eb9PV4fKcvrXzf2hZ8SDdRIJ2lqhbJPbJQ=;
-        b=cklmZbQkW7elKxMONvqSE9daiYXxbOhCbeYSbQzPslyQm28Ad0FSD4GBZnEPcQPc/n
-         tZ7TPqcY4gH2QKTpJDDbmUGi4DLzx7kPJx4a3fcVbUhBLde96JGupHrl0pQOX65kkmom
-         8AICubjJbWxvuBpeL8oGooCnYrsYGFb9lgm4fEnZbkZSLrhimKYsxD8hyH+N5F3lkTTw
-         23SVYEnWnxYen1cNchTL4xcbIjn+NSBlWn8UMR2kByrQW6cCfZwTnfZOsgELMQkZ33Sj
-         zIlYNO8RoOrCzBEDPTtipX6EuVuvWHJpNO5GvL6pl4GjDCJimodxzI0lcXQ9QuHkTZP1
-         4yLQ==
-X-Gm-Message-State: ABy/qLb/bUjgS0Ks4DYyxo6nOL+xtOyPc9NnVRv98rre+IjHq7IyE3+i
-        G/JzLhvlaC/YD1l9psliYwI7KQ==
-X-Google-Smtp-Source: APBJJlHXzYYl5MkD6ZjEsZRCsiXpMK0FkxLXK+k8wkt+S6Et1/6HEGKXVp0UJrNVR8gc854pfJh2nA==
-X-Received: by 2002:a05:6602:3e87:b0:780:cb36:6f24 with SMTP id el7-20020a0566023e8700b00780cb366f24mr8220438iob.2.1690213825340;
-        Mon, 24 Jul 2023 08:50:25 -0700 (PDT)
-Received: from [192.168.1.94] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id t23-20020a05663801f700b00420e6c58971sm3008295jaq.178.2023.07.24.08.50.24
+        d=1e100.net; s=20221208; t=1690214031; x=1690818831;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gGgctA2utHA8Ao8JF1uO8HVoivYG2O9nLkJv2/8DmH8=;
+        b=ISQp5+c241pbNVZII7fxLUqf3m6LtJaIIbTuMQamUJbh58gffb09QRskseNlABuIBv
+         7DclBneIjt4ZiOKNcj/NTnQhzx7zO6nhxjFm6Vq2/QyoM++7ZedPFX2L2iXZ2azhI5um
+         Al16upgBBGRyiH5uytpM7qWtcqHa07Z2/yXY0jr4/PQ2nY2WUNEunvK4ms/ZZhVLJNdk
+         xQjOw749D+tWMp2SUWWQK8H/GnIFPKhlTh9jZKfcVSYqKtQDj/hjLv6nBW39iLMVowTu
+         WUNBtUNvKHLB/KpiZoW7j0AKb2+fRS6h9ePOMI2ZW7Tabc+WzBvrS1sHrL2B4+XULGyy
+         GzvQ==
+X-Gm-Message-State: ABy/qLbr5SOOUXV1POltvs5k4qrC2P+Zu3zyDuM5FlgZ8GPZBvp0q3e8
+        BWKFi0dh2+hxC7sa4X7oT2ANItwmaSbqaIG/VsyPgQ==
+X-Google-Smtp-Source: APBJJlFFzmcDfOeldwxPK3Jx6HUsrlzcznQnudyR6uZ9JQaW+2qUQCkVZ0foV8mB/Zcz21NUTR8ofg==
+X-Received: by 2002:a17:907:2da9:b0:98e:48cc:4cbf with SMTP id gt41-20020a1709072da900b0098e48cc4cbfmr15885407ejc.26.1690214031223;
+        Mon, 24 Jul 2023 08:53:51 -0700 (PDT)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id g4-20020a170906868400b009920e9a3a73sm6889457ejx.115.2023.07.24.08.53.50
+        for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 08:50:24 -0700 (PDT)
-Message-ID: <140065e3-0368-0b5d-8a0d-afe49b741ad2@kernel.dk>
-Date:   Mon, 24 Jul 2023 09:50:24 -0600
+        Mon, 24 Jul 2023 08:53:50 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so11552725a12.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 08:53:50 -0700 (PDT)
+X-Received: by 2002:a05:6402:1212:b0:521:ad49:8493 with SMTP id
+ c18-20020a056402121200b00521ad498493mr10321795edw.6.1690214029969; Mon, 24
+ Jul 2023 08:53:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Phil Elwell <phil@raspberrypi.com>
-Cc:     andres@anarazel.de, asml.silence@gmail.com, david@fromorbit.com,
-        hch@lst.de, io-uring@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>, linux-xfs@vger.kernel.org,
-        stable <stable@vger.kernel.org>
-References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
- <2023072438-aftermath-fracture-3dff@gregkh>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2023072438-aftermath-fracture-3dff@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+In-Reply-To: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 24 Jul 2023 08:53:32 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+Message-ID: <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+Subject: Re: [PATCH] file: always lock position
+To:     Christian Brauner <brauner@kernel.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/24/23 9:48?AM, Greg KH wrote:
-> On Mon, Jul 24, 2023 at 04:35:43PM +0100, Phil Elwell wrote:
->> Hi Andres,
->>
->> With this commit applied to the 6.1 and later kernels (others not
->> tested) the iowait time ("wa" field in top) in an ARM64 build running
->> on a 4 core CPU (a Raspberry Pi 4 B) increases to 25%, as if one core
->> is permanently blocked on I/O. The change can be observed after
->> installing mariadb-server (no configuration or use is required). After
->> reverting just this commit, "wa" drops to zero again.
-> 
-> This has been discussed already:
-> 	https://lore.kernel.org/r/12251678.O9o76ZdvQC@natalenko.name
-> 
-> It's not a bug, mariadb does have pending I/O, so the report is correct,
-> but the CPU isn't blocked at all.
+So this was a case of "too much explanations make the explanation much
+harder to follow".
 
-Indeed - only thing I can think of is perhaps mariadb is having a
-separate thread waiting on the ring in perpetuity, regardless of whether
-or not it currently has IO.
+I tend to enjoy your pull request explanations, but this one was just
+*way* too much.
 
-But yes, this is very much ado about nothing...
+Please try to make the point you are making a bit more salient, so
+that it's a lot easier to follow.
 
--- 
-Jens Axboe
+On Mon, 24 Jul 2023 at 08:01, Christian Brauner <brauner@kernel.org> wrote:
+>
+>     [..] the
+> file_count(file) greater than one optimization was already broken and
+> that concurrent read/write/getdents/seek calls are possible in the
+> regular system call api.
+>
+> The pidfd_getfd() system call allows a caller with ptrace_may_access()
+> abilities on another process to steal a file descriptor from this
+> process.
 
+I think the above is all you need to actually explain the problem and
+boil down the cause of the bug, and it means that the reader doesn't
+have to wade through a lot of other verbiage to figure it out.
+
+>         if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
+> -               if (file_count(file) > 1) {
+> -                       v |= FDPUT_POS_UNLOCK;
+> -                       mutex_lock(&file->f_pos_lock);
+> -               }
+> +               v |= FDPUT_POS_UNLOCK;
+> +               mutex_lock(&file->f_pos_lock);
+>         }
+
+Ho humm. The patch is obviously correct.
+
+At the same time this is actually very annoying, because I played this
+very issue with the plain /proc/<pid>/fd/<xyz> interface long long
+ago, where it would just re-use the 'struct file' directly, and it was
+such a sh*t-show that I know it's much better to actually open a new
+file descriptor.
+
+I'm not sure that "share actual 'struct file' ever was part of a
+mainline kernel". I remember having it, but it was a "last century"
+kind of thing.
+
+The /proc interface hack was actually somewhat useful exactly because
+you'd see the file position change, but it really caused problems.
+
+The fact that pidfd_getfd() re-introduced that garbage and I never
+realized this just annoys me no end.
+
+And sadly, the man-page makes it very explicit that it's this broken
+kind of "share the whole file, file offset and all". Damn damn damn.
+
+Is it too late to just fix pidfd_getfd() to duplicate the 'struct
+file', and act like a new open, and act like /proc/<pid>/fd/<xyz>?
+
+Because honestly, having been there before, I'm pretty convinced that
+the real bug here is pidfd_getfd.
+
+I wonder if we could make pidfd_getfd() at least duplicate the struct
+file for directories. Those are the things that absolutely *require*
+atomic file positions.
+
+Argh.
+
+I wonder if this also screws up our garbage collection logic. It too
+ends up having some requirements for a reliable file_count().
+
+                Linus
