@@ -2,97 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85B2975FE6D
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 19:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD8B075FE7E
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 19:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231955AbjGXRrt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 13:47:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45936 "EHLO
+        id S231987AbjGXRum (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 13:50:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231386AbjGXRq3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 13:46:29 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72E12715
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 10:44:40 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-7748ca56133so37823639f.0
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 10:44:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690220674; x=1690825474;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bzU5lY227HowVnhs3Ok5Y7xSQf1WHlO84hYRZwMfQfs=;
-        b=tP/A++YN/DGIb6hYUjW13jD4aw+ICMtkRZ9UZ8ClUkcULbVQOVoUTjkxG2MjRh79lq
-         F73Mo/A5kBKCvYa7Ls7ti7dEUV5klu9UW+CRtJ0cWXe+lmt9WsvHzszxkR73VTfi49Br
-         PXT4tQhO7dTWkG+hqGMUMCBpzw/4BBXHUJcBACBuVDGOPJTTd/tAWNC8aRs1lxRWsN3Y
-         Iz7Ndze3wA9iL5c0LlZYwd4QfJeWUcdtsIja8a297af1q6SXvErtmiLiZR/1W0mb1gde
-         6mJvVCYcrZnogfauU01MPJ2vOCLI2qOF6iolWUXBTrDwXjtqDC7ryPXmiK5Cime+jLYc
-         Xaxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690220674; x=1690825474;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bzU5lY227HowVnhs3Ok5Y7xSQf1WHlO84hYRZwMfQfs=;
-        b=fh0GDdr8NkwrGLIYvRVas18S+t23q3nhTNpxbsN2odbQ0pJ9c1bvi7/sWSxAoYx/JA
-         XOSnxZ786gz1K0dk+x3MDVCTjzYrW7UJgaAWbIf2c7sD95kqDrD3aeaWhgd6TVF/CLcC
-         GA0pWowzd27jADaQw7Daz8ZqChqqsjLI+PCyoojHoqGXJxmCQX8yMvYHemfPJ1Z3VQo1
-         QpCYi40KrAUk6BxGvhwLs+29nUko5h48t0+JjVwigvqBgmhk5S4z7h2J/dJXpZ6OlmuP
-         0KX0Z3zh9xIeuziQCdamQ760f4dHmRIZ2u8gn8uX7W16Yvdpcm9Dw09EueZ/qlvYdo0n
-         lXww==
-X-Gm-Message-State: ABy/qLaVbD8yXUYkUecVGATzmco7sp9AEn9DbULsKkthFKqe+zEv6XZL
-        0ll1NVN2O4Vi+4O3WQ4xjVAUnA==
-X-Google-Smtp-Source: APBJJlH0TUd0xWGbYo8TQIl7EDf3lSiyhqH+eIbnJYDen6yrBU/R4ToeCyzg2u61OOMCThqfezx3bA==
-X-Received: by 2002:a6b:b4d5:0:b0:788:2d78:813c with SMTP id d204-20020a6bb4d5000000b007882d78813cmr8387563iof.0.1690220673775;
-        Mon, 24 Jul 2023 10:44:33 -0700 (PDT)
-Received: from [192.168.1.94] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id i21-20020a02cc55000000b0041627abe120sm3003902jaq.160.2023.07.24.10.44.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 10:44:33 -0700 (PDT)
-Message-ID: <5f303931-40d3-2133-9085-62440f8b0666@kernel.dk>
-Date:   Mon, 24 Jul 2023 11:44:32 -0600
+        with ESMTP id S230022AbjGXRuY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 13:50:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B864C19;
+        Mon, 24 Jul 2023 10:47:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6434961360;
+        Mon, 24 Jul 2023 17:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD843C433C8;
+        Mon, 24 Jul 2023 17:46:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690220794;
+        bh=jy1HYFTjzSQArcOEX/GY5RMYACOnapkGSnMBIFuMSVA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AZyI90B0S9SoHJriLWGk76YncnZYcthpOlVsVabOcFAJLgSA/xo37jIca8IR/HBa1
+         m+HvLMsjwiPjR+tp6nQiXQ8kGKVHa/JEELgkZCWxAJ+NZHNNbTGYzn3ARc/p3d49pM
+         xDgeU8sY7cYA62OXouG2rEgCB12c020nsLhqbIy9t3OnhFIBkHMFJl8obnYVgoN8Eq
+         RVPWPmy5A+AaU5qr09aqdqBhnM7zxGL5eMNTGw9Om2wp6YMuEYUSDB2ypEuYrqrm4r
+         BbEEKXb7ZivJlJ0t59WJ9ejX80asVcOf5nwFIVgYBuJl+KWcDT6FHs5SDf3Si4bxs1
+         F0r5SGCM7icFw==
+Date:   Mon, 24 Jul 2023 19:46:30 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] file: always lock position
+Message-ID: <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-scheren-absegnen-8c807c760ba1@brauner>
+ <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
+ <20230724-gebessert-wortwahl-195daecce8f0@brauner>
+ <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
-Content-Language: en-US
-To:     Andres Freund <andres@anarazel.de>
-Cc:     Phil Elwell <phil@raspberrypi.com>, asml.silence@gmail.com,
-        david@fromorbit.com, hch@lst.de, io-uring@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>, linux-xfs@vger.kernel.org,
-        stable <stable@vger.kernel.org>
-References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
- <3d97ae14-dd8d-7f82-395a-ccc17c6156be@kernel.dk>
- <20230724161654.cjh7pd63uas5grmz@awork3.anarazel.de>
- <20230724172432.mcua7vewxrs5cvlg@awork3.anarazel.de>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20230724172432.mcua7vewxrs5cvlg@awork3.anarazel.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/24/23 11:24?AM, Andres Freund wrote:
-> Hi,
+On Mon, Jul 24, 2023 at 10:34:31AM -0700, Linus Torvalds wrote:
+> On Mon, 24 Jul 2023 at 10:23, Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > This means pidfd_getfd() needs the same treatment as MSG_PEEK for sockets.
 > 
-> On 2023-07-24 09:16:56 -0700, Andres Freund wrote:
->> Building a kernel to test with the patch applied, will reboot into it once the
->> call I am on has finished. Unfortunately the performance difference didn't
->> reproduce nicely in VM...
+> So the reason I think pidfd_getfd() is ok is that it has serialized
+> with the source of the file descriptor and uses fget_task() ->
+> __fget_files.
 > 
-> Performance is good with the patch applied. Results are slightly better even,
-> but I think that's likely just noise.
+> And that code is nasty and complicated, but it does get_file_rcu() to
+> increment the file count, and then *after* that it still checks that
+> yes, the file pointer is still there.
+> 
+> And that means that anybody who uses fget_task() will only ever get a
+> ref to a file if that file still existed in the source, and you can
+> never have a situation where a file comes back to life.
+> 
+> The reason MSG_PEEK is special is exactly because it can "resurrect" a
+> file that was closed, and added to the unix SCM garbage collection
+> list as "only has a ref in the SCM thing", so when we then make it
+> live again, it needs that very very subtle thing.
 
-Could be - it's avoiding a few function calls and the flush, but would
-probably have to be a pretty targeted test setup to find that for
-storage IO. Thanks for testing!
+Oh, eew.
 
--- 
-Jens Axboe
+> 
+> So pidfd_getfd() is ok in this regard.
+> 
+> But it *is* an example of how subtle it is to just get a new ref to an
+> existing file.
+> 
+> That whole
+> 
+>          if (atomic_read_acquire(&files->count) == 1) {
+> 
+> in __fget_light() is also worth being aware of. It isn't about the
+> file count, but it is about "I have exclusive access to the file
+> table". So you can *not* close a file, or open a file, for another
+> process from outside. The only thread that is allowed to access or
+> change the file table (including resizing it), is the thread itself.
 
+Yeah, I'm well aware of that because an earlier version of the getdents
+patchset would've run into exactly that problem because of async offload
+on the file while the process that registered that async offload
+would've been free to create another thread and issue additional
+requests.
+
+> 
+> I really hope we don't have cases of that.
+
+I don't think we do but it's something to keep in mind with async io
+interfaces where the caller is free to create other threads after having
+registered a request. Depending on how file references are done things
+can get tricky easily.
+
+I'm not complaining here but it is worth noting that additions to e.g.,
+io_uring now have to reason through two reference counting mechanisms:
+the regular system call rules and the fixed file io_uring rules. If
+conditional locking is involved in one part it might have
+effects/consequences in the other part as one can mix regular system
+call requests and fixed file requests on the same struct file.
