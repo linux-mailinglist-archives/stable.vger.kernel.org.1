@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FB7A75EB4D
+	by mail.lfdr.de (Postfix) with ESMTP id B568975EB4E
 	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230075AbjGXGRG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 02:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51710 "EHLO
+        id S229978AbjGXGRH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 02:17:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230114AbjGXGRF (ORCPT
+        with ESMTP id S230143AbjGXGRF (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:17:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4558D1B8
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:17:00 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 942C6B9
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:17:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D336D60F0C
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:16:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26F4C433C7;
-        Mon, 24 Jul 2023 06:16:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26A8A60F31
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:17:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6EBC433C8;
+        Mon, 24 Jul 2023 06:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690179419;
-        bh=NT3rseCUkTk1tu0PAmMVNsOvSYPa0mD13CskpPBsbbM=;
+        s=korg; t=1690179422;
+        bh=zW/9B6mKNHLQ2eKTDIj9BZqV+eFZIPxLpXoZ//GlwF4=;
         h=Subject:To:Cc:From:Date:From;
-        b=Ef0t1Bmf0S8Cw6XINV3QSyGHzcqU1dNSyYAlMSquym0muvVrMhCF0vWJyA5NYkyV5
-         Si1DLL8t1GE1InxdBSpnJWQD2i9xWOdegv42NW6IlQ+02rVzRbk3D9kMYKONcGVRK4
-         /XQw3j6hBSZ0xnXTfEwOUvWa1AzGfJsbyCUlcr7U=
-Subject: FAILED: patch "[PATCH] jbd2: recheck chechpointing non-dirty buffer" failed to apply to 5.4-stable tree
+        b=eM/FvbTskqSysLJaHetyb64+M9PscnGhhR25J7X6bijfLN585xsnidOKvyiAOwFVP
+         VR0km9j3azhnUlPPcg49G21lA4iJuBQYCRGnXjwBjylkh3e8bM/fw67RYm5KENjq/X
+         lVVH06yt11LxyWrcKvOTqv7JRiz7XB2oEZQ/TXIk=
+Subject: FAILED: patch "[PATCH] jbd2: recheck chechpointing non-dirty buffer" failed to apply to 4.19-stable tree
 To:     yi.zhang@huawei.com, chengzhihao1@huawei.com, jack@suse.cz,
         tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 24 Jul 2023 08:16:56 +0200
-Message-ID: <2023072456-thermal-relieving-1b68@gregkh>
+Date:   Mon, 24 Jul 2023 08:16:58 +0200
+Message-ID: <2023072457-patio-doornail-5f44@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x c2d6fd9d6f35079f1669f0100f05b46708c74b7f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072456-thermal-relieving-1b68@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072457-patio-doornail-5f44@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,7 @@ c2d6fd9d6f35 ("jbd2: recheck chechpointing non-dirty buffer")
 214eb5a4d8a2 ("jbd2: remove redundant buffer io error checks")
 2bf31d94423c ("jbd2: fix kernel-doc markups")
 60ed633f51d0 ("jbd2: fix incorrect code style")
+ccd3c4373eac ("jbd2: fix use after free in jbd2_log_do_checkpoint()")
 
 thanks,
 
