@@ -2,64 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 750CF75FC8D
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 18:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4421B75FCCB
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 19:00:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbjGXQv1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 12:51:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42452 "EHLO
+        id S229577AbjGXRAJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 13:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjGXQv0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 12:51:26 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26166E54
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:51:25 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99364ae9596so801544066b.1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:51:25 -0700 (PDT)
+        with ESMTP id S230391AbjGXRAH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 13:00:07 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30EACE54
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:59:42 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9924ac01f98so797129066b.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1690217483; x=1690822283;
+        d=linux-foundation.org; s=google; t=1690217973; x=1690822773;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=F1PcgD4KNACPIHRzby9gkRic2d4smXVPIn37UpHTR9A=;
-        b=WRlPdejRXuqwClLsrc073yiX/16IWeF7XMgJS0/Wo4b+CwQgUlRMEjnNRecDn8J7AL
-         0nG8VjYkNh7qfzJrBdMsuNTnHkCcGUk6djL5vfTv5a76/dCjeHHSZz+J46T96cR3GbBz
-         eDVift+Ljn6opZHIYkkbTiWqVeK/5uKDlfRuo=
+        bh=o2B4woNmLNdUuguJvCzvlrs61XjRQO0GpugOQ9y5gEs=;
+        b=HalCIjUStTaGlN01rfZnkZgNiWrLwtjO2VwMGTmj+UXr7Bz+WWN/5XoY5RdLUFRnWM
+         7/WzoePPM5WiWiaMu40zMc44ztKANmPYWXKOt94R9Hen2XMOdnIbtLm9BfIbyhjWSust
+         7TxiunNKouknbzxS0cy70kqIXqp+RvoVOa124=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690217483; x=1690822283;
+        d=1e100.net; s=20221208; t=1690217973; x=1690822773;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=F1PcgD4KNACPIHRzby9gkRic2d4smXVPIn37UpHTR9A=;
-        b=km4D/ByVWhZBUT4vvPZ6zyteyA7ectwbaRZWGQRi8eXhlieGiXuDXynV2xXhw1gBba
-         46xtu+2IisU52xutPNF9xRNPpTf/rGQHibbA8NS6Xvry+A3Efkns5ODlRkEIoLlneliN
-         riLNMhZhApmN8Uqm8BJiuRoDbijhFglaNgfjIDEDshl6pZYjcx/Q6RU0BXQCK56pSXtG
-         osvGylcOUXO8yFUx+mmlN5FD0DraMLvPgJWnE4lQN1ET830SBGAnUsXtXy33CBHnJgEu
-         XDVwjjNN9LhyqvMWFZobVrRDv07Ax4Ia++0IvHXB5d4tUBHU2POgjq2+Serm46kGGj0f
-         smZQ==
-X-Gm-Message-State: ABy/qLYEIqAl8FAKUb/ZncyfOq3T/xkGm/+9D33RlMwdNQJECRgYm0oJ
-        pRyfg+sD5GBCW02TtbFXsRa8wkm3DxeRoWyjk+3fEg==
-X-Google-Smtp-Source: APBJJlFR1QVzfDvzF9TeIL4Dd6df4RO6KkGISeILYUVEvHK589IlycLpGCbfpF+I3II5PuYkUY9OpQ==
-X-Received: by 2002:a17:907:b19:b0:994:4f10:fb39 with SMTP id h25-20020a1709070b1900b009944f10fb39mr10337647ejl.16.1690217483417;
-        Mon, 24 Jul 2023 09:51:23 -0700 (PDT)
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
-        by smtp.gmail.com with ESMTPSA id q11-20020a170906388b00b00988dbbd1f7esm6842598ejd.213.2023.07.24.09.51.22
+        bh=o2B4woNmLNdUuguJvCzvlrs61XjRQO0GpugOQ9y5gEs=;
+        b=UrDyS+DVAT/KNSBGZe/phQR6qu+sKgJ8IbGB/G0haZFw/m3bsOwIe4MVldIl0Wrgfz
+         d+VB39wrgRh3suvl2WpAYctLQdKAowvXOB8tUeq3+UDwvRN69WJUa8SeXxnMdwhhldvr
+         Tg5GvxbSOFyuPzlnHsgcwjyJ5/szauHvl6aRBz5ZWJtDYz5OD6p6uRLsloJ30Mf3SXze
+         FazF4f4D/soUzXWcZzCmBWLVHka42+hTIM/B4VDoNNPwr9dhS6PxVhzFhcsh3OiXZu7x
+         a4Z0r1jL1yXYlKEKrV2o8yZuxhHekRjFHdkRux0WIh6Y/DiLivHeNZECxFwtkpOe5ZDs
+         vXqw==
+X-Gm-Message-State: ABy/qLYRtWp6MYbO6nRi04kb+hFC8wmvXYEbq3ljMkI0AA5J3jHoH3aE
+        8r0tWRGSEjJnnfhg/bdq8M3YAmE2RjrMspTG0/n8Tg==
+X-Google-Smtp-Source: APBJJlETZBG+mS9TIVazx8ykyDejkqhc8JGjhEk2b6FqQblel/S19kErtHBIJSs3xepYhtv+CFN37A==
+X-Received: by 2002:a17:906:cc0e:b0:99b:465c:fb9f with SMTP id ml14-20020a170906cc0e00b0099b465cfb9fmr10837449ejb.8.1690217973414;
+        Mon, 24 Jul 2023 09:59:33 -0700 (PDT)
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
+        by smtp.gmail.com with ESMTPSA id q6-20020a1709060f8600b00993b381f808sm6924582ejj.38.2023.07.24.09.59.32
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 09:51:22 -0700 (PDT)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-992f6d7c7fbso800451766b.3
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:51:22 -0700 (PDT)
-X-Received: by 2002:a17:906:292:b0:999:37ff:be94 with SMTP id
- 18-20020a170906029200b0099937ffbe94mr10526397ejf.71.1690217482084; Mon, 24
- Jul 2023 09:51:22 -0700 (PDT)
+        Mon, 24 Jul 2023 09:59:33 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5223fbd54c6so324517a12.3
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 09:59:32 -0700 (PDT)
+X-Received: by 2002:aa7:ce0a:0:b0:522:3081:ddb4 with SMTP id
+ d10-20020aa7ce0a000000b005223081ddb4mr2402715edv.20.1690217972684; Mon, 24
+ Jul 2023 09:59:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-scheren-absegnen-8c807c760ba1@brauner> <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
-In-Reply-To: <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com> <20230724-pyjama-papier-9e4cdf5359cb@brauner>
+In-Reply-To: <20230724-pyjama-papier-9e4cdf5359cb@brauner>
 From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 24 Jul 2023 09:51:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whtPzpL1D-VMHU9M6jbwSqFuXsc5u_6ePanVkBCNAYjMQ@mail.gmail.com>
-Message-ID: <CAHk-=whtPzpL1D-VMHU9M6jbwSqFuXsc5u_6ePanVkBCNAYjMQ@mail.gmail.com>
+Date:   Mon, 24 Jul 2023 09:59:15 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj2XZqex6kzz7SbdVHwP9fFoOvHSzHj--0KuxyrVO+3-w@mail.gmail.com>
+Message-ID: <CAHk-=wj2XZqex6kzz7SbdVHwP9fFoOvHSzHj--0KuxyrVO+3-w@mail.gmail.com>
 Subject: Re: [PATCH] file: always lock position
 To:     Christian Brauner <brauner@kernel.org>
 Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
@@ -78,31 +77,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 24 Jul 2023 at 09:36, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Mon, 24 Jul 2023 at 09:46, Christian Brauner <brauner@kernel.org> wrote:
 >
-> There are magic rules with "total_refs == inflight_refs", and that
-> total_refs thing is very much the file count, ie
->
->                 total_refs = file_count(u->sk.sk_socket->file);
->
-> where we had some nasty bugs with files coming back to life.
+> So thinking a little about it I think that doesn't work.
+> /proc/<pid>/fd/<xyz> does a reopen and for good reasons. The original
+> open will have gone through the module's/subsytem's ->open() method
+> which might stash additional refcounted data in e.g., file->private_data
+> if we simply copy that file or sm then we risk UAFs.
 
-Ok, I don't think this is an issue here. It really is that "only
-in-flight refs remaining" that is a special case, and even
-pidfd_getfd() shouldn't be able to change that.
+Oh, absolutely, we';d absolutely need to do all the re-open things.
 
-But the magic code is all in fget_task(), and those need to be checked.
+That said, we could limit it to FMODE_ATOMIC_POS - so just regular
+files and directories. The only thing that sets that bit is
+do_dentry_open().
 
-You can see how proc does things properly: it does do "fget_task()",
-but then it only uses it to copy the path part, and just does fput()
-afterwards.
+And honestly, the only thing that *really* cares is directories,
+because they generally have special rules for pos changing.
 
-The bpf code does something like that too, and seems ok (ie it gets
-the file in order to copy data from it, not to install it).
+The regular files have the "POSIX rules" reason, but hey, if you use
+pidfd_getfd() and mess with the pos behind the back of the process,
+it's no different from using a debugger to change it, so the POSIX
+rules issue just isn't relevant.
 
-kcmp_epoll_target() -> get_epoll_tfile_raw_ptr() looks a bit scary,
-but seems to use the thing only for polling, so I guess any f_pos is
-irrelevant.
+I really hate making the traditional unix single-threaded file
+descriptor case take that lock.
 
-               Linus
+Maybe it doesn't matter. Obviously it can't have contention, and your
+patch in that sense is pretty benign.
+
+But locking is just fundamentally expensive in the first place, and it
+annoys me that I never realized that pidfd_getfd() did that thing that
+I knew was broken for /proc.
+
+                  Linus
