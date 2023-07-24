@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88C9C75E9D6
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 04:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9EFE75E97D
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 04:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbjGXCkI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 23 Jul 2023 22:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50564 "EHLO
+        id S229688AbjGXCHG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 23 Jul 2023 22:07:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229920AbjGXCkG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 22:40:06 -0400
+        with ESMTP id S230462AbjGXCGx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 23 Jul 2023 22:06:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34878180;
-        Sun, 23 Jul 2023 19:39:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507FE4EEA;
+        Sun, 23 Jul 2023 19:00:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9098860EF0;
-        Mon, 24 Jul 2023 01:24:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35921C433C7;
-        Mon, 24 Jul 2023 01:24:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 262BF60FBD;
+        Mon, 24 Jul 2023 01:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26791C433C7;
+        Mon, 24 Jul 2023 01:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690161873;
-        bh=qhh8Lf1XCfAF8rtfnerjBiHBNF3y9GF83zIN60JVDwI=;
+        s=k20201202; t=1690162343;
+        bh=Hxmsd7CTkowhF3Snq2/CkhdalK+PtprpnpOIPLirBOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jxF6t4a86PqGsxc6XPjfjE/N5FzyfPayjsvCXcqbgmmry3YUE31TIdXWGC4yu21F2
-         osKmaIHnHbZrLOiSDbukPXRuXqzKjDcN5P95VCJAbaHO3MBIj7ZjD8XCcmQhQKCNt1
-         oWK11Yj57QHbUy2jcTPhpmztLfIshh0QNl0O69pfBqRnWPs+7c17/qz5TNfg6qib3T
-         Iq/TOTo9ILNVDeE2klF7tMGA/dcXXQlTyBNiyWFrKaji1AA9ScpZfn9rokvDZapkAM
-         3R1n4IBn4WdvHiI9dSNgQHKMPpyKz4PqaIrXeKDkGI1FKIs5eEg5N4DWlw4PtdrOPW
-         HkPiizRHd0q4w==
+        b=IL+TW5uYOcT8tZQGVVx15xyNM3QU4CukOgLSM1xo1MWfPI2e+LQU6j9y1Uz4NjRWG
+         WrDzCIksby/NR67AM4rTu5Cva0oWR2AA+W5316zJRGDQPwvVRTllcMra6m/quGP4Je
+         SFPlyUYJfuijHy0fsXzOPSdBy0zSIPdvkt48zTQqP1x9HdERuT2k2Nuou5VGTZ1vOP
+         3r8+u6o2z0UcNsC0Fjc95ADuy85oO3wuF801VtNK1r+xH55Iydtux+voAgbAMdeCzz
+         JFTPhlQpECQVAkjGe9hN6Wbz0pZ2qeNrPkWkCWDxGaEwSDrPCDb8xGr7CdgvA6RXTH
+         cd5UbMVmKHS0g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+Cc:     Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.10 08/22] iopoll: Call cpu_relax() in busy loops
-Date:   Sun, 23 Jul 2023 21:24:05 -0400
-Message-Id: <20230724012419.2317649-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.4 31/40] fs/ntfs3: Mark ntfs dirty when on-disk struct is corrupted
+Date:   Sun, 23 Jul 2023 21:31:31 -0400
+Message-Id: <20230724013140.2327815-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230724012419.2317649-1-sashal@kernel.org>
-References: <20230724012419.2317649-1-sashal@kernel.org>
+In-Reply-To: <20230724013140.2327815-1-sashal@kernel.org>
+References: <20230724013140.2327815-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.186
+X-stable-base: Linux 6.4.5
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -61,75 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit b407460ee99033503993ac7437d593451fcdfe44 ]
+[ Upstream commit e0f363a98830e8d7d70fbaf91c07ae0b7c57aafe ]
 
-It is considered good practice to call cpu_relax() in busy loops, see
-Documentation/process/volatile-considered-harmful.rst.  This can not
-only lower CPU power consumption or yield to a hyperthreaded twin
-processor, but also allows an architecture to mitigate hardware issues
-(e.g. ARM Erratum 754327 for Cortex-A9 prior to r2p0) in the
-architecture-specific cpu_relax() implementation.
-
-In addition, cpu_relax() is also a compiler barrier.  It is not
-immediately obvious that the @op argument "function" will result in an
-actual function call (e.g. in case of inlining).
-
-Where a function call is a C sequence point, this is lost on inlining.
-Therefore, with agressive enough optimization it might be possible for
-the compiler to hoist the:
-
-        (val) = op(args);
-
-"load" out of the loop because it doesn't see the value changing. The
-addition of cpu_relax() would inhibit this.
-
-As the iopoll helpers lack calls to cpu_relax(), people are sometimes
-reluctant to use them, and may fall back to open-coded polling loops
-(including cpu_relax() calls) instead.
-
-Fix this by adding calls to cpu_relax() to the iopoll helpers:
-  - For the non-atomic case, it is sufficient to call cpu_relax() in
-    case of a zero sleep-between-reads value, as a call to
-    usleep_range() is a safe barrier otherwise.  However, it doesn't
-    hurt to add the call regardless, for simplicity, and for similarity
-    with the atomic case below.
-  - For the atomic case, cpu_relax() must be called regardless of the
-    sleep-between-reads value, as there is no guarantee all
-    architecture-specific implementations of udelay() handle this.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/45c87bec3397fdd704376807f0eec5cc71be440f.1685692810.git.geert+renesas@glider.be
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iopoll.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ntfs3/fsntfs.c  | 2 +-
+ fs/ntfs3/index.c   | 6 ++++++
+ fs/ntfs3/ntfs_fs.h | 2 ++
+ fs/ntfs3/record.c  | 6 ++++++
+ 4 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-index 2c8860e406bd8..0417360a6db9b 100644
---- a/include/linux/iopoll.h
-+++ b/include/linux/iopoll.h
-@@ -53,6 +53,7 @@
- 		} \
- 		if (__sleep_us) \
- 			usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-+		cpu_relax(); \
- 	} \
- 	(cond) ? 0 : -ETIMEDOUT; \
- })
-@@ -95,6 +96,7 @@
- 		} \
- 		if (__delay_us) \
- 			udelay(__delay_us); \
-+		cpu_relax(); \
- 	} \
- 	(cond) ? 0 : -ETIMEDOUT; \
- })
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 28cc421102e59..21567e58265c4 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -178,7 +178,7 @@ int ntfs_fix_post_read(struct NTFS_RECORD_HEADER *rhdr, size_t bytes,
+ 	/* Check errors. */
+ 	if ((fo & 1) || fo + fn * sizeof(short) > SECTOR_SIZE || !fn-- ||
+ 	    fn * SECTOR_SIZE > bytes) {
+-		return -EINVAL; /* Native chkntfs returns ok! */
++		return -E_NTFS_CORRUPT;
+ 	}
+ 
+ 	/* Get fixup pointer. */
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 0a48d2d672198..b40da258e6848 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1113,6 +1113,12 @@ int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
+ 	*node = in;
+ 
+ out:
++	if (err == -E_NTFS_CORRUPT) {
++		ntfs_inode_err(&ni->vfs_inode, "directory corrupted");
++		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
++		err = -EINVAL;
++	}
++
+ 	if (ib != in->index)
+ 		kfree(ib);
+ 
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index eb01f7e76479a..2e4be773728df 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -53,6 +53,8 @@ enum utf16_endian;
+ #define E_NTFS_NONRESIDENT		556
+ /* NTFS specific error code about punch hole. */
+ #define E_NTFS_NOTALIGNED		557
++/* NTFS specific error code when on-disk struct is corrupted. */
++#define E_NTFS_CORRUPT			558
+ 
+ 
+ /* sbi->flags */
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 7060f784c2d72..7974ca35a15c6 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -180,6 +180,12 @@ int mi_read(struct mft_inode *mi, bool is_mft)
+ 	return 0;
+ 
+ out:
++	if (err == -E_NTFS_CORRUPT) {
++		ntfs_err(sbi->sb, "mft corrupted");
++		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
++		err = -EINVAL;
++	}
++
+ 	return err;
+ }
+ 
 -- 
 2.39.2
 
