@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80BAC75EB57
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB6575EB59
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:18:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbjGXGSR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 02:18:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52624 "EHLO
+        id S230157AbjGXGSS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 02:18:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230253AbjGXGSM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:18:12 -0400
+        with ESMTP id S229548AbjGXGSS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:18:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB92E42
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:18:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CF4B9
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:18:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A24BC60F25
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:18:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC361C433CB;
-        Mon, 24 Jul 2023 06:18:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4472460F31
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:18:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEB7C433C7;
+        Mon, 24 Jul 2023 06:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690179488;
-        bh=ihYKCYVpehTqw1UVYV4+MvS3333uFC3Qc0ygrB0JaXw=;
+        s=korg; t=1690179495;
+        bh=ut8hqeagekmlQ9ES4F8BeiRtXzu89Qv1l3I3E7+pRM0=;
         h=Subject:To:Cc:From:Date:From;
-        b=jCfuR4BYdp4MmkdYd5ufuYW+kworurUANVDmgSxRu6W5GqX9ijE2Hj9K58O9qfKq2
-         1Pkux5r+WioYE3tDTQGyBiEwRLZ7dcxhonLxBWJS+mY8pOF1c8eXztIq7tXE3cTX6/
-         x7kGWk5SN4zWBD6PsiCcMS1x+ZPZkAa1MWbKLD4g=
-Subject: FAILED: patch "[PATCH] ext4: fix off by one issue in" failed to apply to 6.1-stable tree
+        b=ji0flE3alSLxqXkTQ8PkRUmM6q83o0Mf0rUhjVykOrqL2brQb3u5kfUPO/aso3c01
+         98dPxjgNGGDerRjAVodsaDMmMDzjtNji5p5/rWLA8G7pOg/xRflzDXtopE/f/50Xiq
+         iWeMVCdFZbBA8Dv0TB8/Vo8VBMv8xiYN3wV/lpQ4=
+Subject: FAILED: patch "[PATCH] ext4: fix off by one issue in" failed to apply to 5.15-stable tree
 To:     ojaswin@linux.ibm.com, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 24 Jul 2023 08:18:05 +0200
-Message-ID: <2023072404-hubcap-railroad-9c52@gregkh>
+Date:   Mon, 24 Jul 2023 08:18:12 +0200
+Message-ID: <2023072412-raft-circle-8700@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5d5460fa7932bed3a9082a6a8852cfbdb46acbe8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072404-hubcap-railroad-9c52@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072412-raft-circle-8700@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -82,6 +82,9 @@ a8e38fd37cff ("ext4: Convert pa->pa_inode_list and pa->pa_obj_lock into a union"
 bcf434992145 ("ext4: Refactor code in ext4_mb_normalize_request() and ext4_mb_use_preallocated()")
 e86a718228b6 ("ext4: Stop searching if PA doesn't satisfy non-extent file")
 91a48aaf59d0 ("ext4: avoid unnecessary pointer dereference in ext4_mb_normalize_request")
+83e80a6e3543 ("ext4: use buckets for cr 1 block scan instead of rbtree")
+4fca50d440cc ("ext4: make mballoc try target group first even with mb_optimize_scan")
+cf4ff938b47f ("ext4: correct the judgment of BUG in ext4_mb_normalize_request")
 
 thanks,
 
