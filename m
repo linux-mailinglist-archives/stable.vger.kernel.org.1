@@ -2,121 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9AD75FEC4
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 20:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43BDF75FEF6
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 20:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbjGXSFW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 14:05:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34642 "EHLO
+        id S230092AbjGXSWM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 14:22:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230230AbjGXSFV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 14:05:21 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B2910E5
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 11:05:15 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-77dcff76e35so58038939f.1
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 11:05:15 -0700 (PDT)
+        with ESMTP id S229941AbjGXSWL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 14:22:11 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52D7F10DE
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 11:22:09 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-3463955e8c6so2933485ab.1
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 11:22:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690221914; x=1690826714;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690222928; x=1690827728;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=hsQLWiCx5Jj3SkbXeD4hp14VN/U+7+kmixZ0jf5P3sM=;
-        b=xMrm9jSJ4x9FAKpp7ej5qB+8nUyzzUwmdQATjODYVT0GKYPEwUwIGqv8iw+oecBLdu
-         zL3KxGy8gZL7hb6L4c8/fiwaRdN+FDuAd9wcWdXhe4nL64tcA+1stPDbnKSL39A1JAbz
-         E3Co6XOyzIklkxavfRgCnyRc5Csavdft/R01dIjRiUrDcGquJv5amFManYiCWOzTQLIB
-         0fL/2vl6gdfNkPIFrpq+C/UH4JKemn7gWbpReVn9JJ5n1YNYz9o8ieZn3azyspDTIyjg
-         qixy+09uI7uC0qvfF0UzAYMW5fLsstCI2rZDiWi6k9ZgZ+9awnX0jcG5WIWB229FUAvV
-         fC2Q==
+        bh=ZlGqwdb6bAoylkqLXqRNncq4LrSVbEkxLHu0eBS0UCo=;
+        b=SbDqTYDYrGfwh+e6v+ZS5/BSB8MarGS6nvaJI+QlbYAw4Qhj0G4GRSrfEA51SabuqI
+         4qyzgUnfiTSx5pVPmcKrI6NZQla58YVwtZYp5dBlDehg8aQbe92/u2zNzzHTrAiemJn7
+         C0yWsFFzvZ8MWmAA/QgDuKf7th0nR81ICYUISmqDm4Yd3KwwfF1vIKIi3VLPvLZ627y7
+         dag0yJM6fnek3ENIuSi9GTCkiTDdsLEBbpGc/ARu0IsY5PtBGK3QvEV26kxN5lm5BGIL
+         BcgDZh3T5AH/3uCsGeROBYGnSzWDnV8WvZPq0z1u/gwLdBwhTA3CYtguTHCiJomGOcHH
+         MZCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690221914; x=1690826714;
+        d=1e100.net; s=20221208; t=1690222928; x=1690827728;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hsQLWiCx5Jj3SkbXeD4hp14VN/U+7+kmixZ0jf5P3sM=;
-        b=ZYuZbczlEw6cnV7Rw7zgTFBMAiW07oF853d3sjSG/GzrVRpnIupe1eN+mfAQM6ob7/
-         OmN0zikLGEO9KtfUq7ouy/bDat1s89v5GbO6f4R+q91P0ZVeB5MkHA4d9j9+nKIWdvBN
-         3SsdXA/wY5u1+SgMVbWYN1k3N1n8TMPGjl91NkydyCmzPCEYB9sTO7w5Zaa8EIgueQ/i
-         JH4VAE/yK/1OMNwHjoaOFJsnBjG3yDyOAyxMfvkjDukTW9lHT5N5/JvYks5a4/ZVTEQ8
-         YA4R6xE9WlkmfyB02Ttxs2VECzb7NTuDxHAPwk73hlvmgoZajockcjeqQtIaTFXOkYBB
-         Dfhw==
-X-Gm-Message-State: ABy/qLZ1yRJkRIOte4x9KOftweIJfNcNKyKVXykNzFueD1rxdBNRCx/d
-        0dPDR9EImwJzkCFSETOp5T6+Rw==
-X-Google-Smtp-Source: APBJJlHU/IEgJnOjhKfDwNqIMcgChLFB2B3H7kd6sx8OXuMH1PIEth+hwzINuoq76AZYvb5cyXSgSw==
-X-Received: by 2002:a6b:b789:0:b0:787:1926:54ed with SMTP id h131-20020a6bb789000000b00787192654edmr8086955iof.1.1690221914639;
-        Mon, 24 Jul 2023 11:05:14 -0700 (PDT)
+        bh=ZlGqwdb6bAoylkqLXqRNncq4LrSVbEkxLHu0eBS0UCo=;
+        b=PZejkV0Bend8p+Lum2mAwIw/qcVOqMHfsD8GhqrlbZMbRoW589Y0NB9WLBwyUksR3y
+         SOLhZeUUoxZeUyF+ZpXpeZ0/jldcpoSH1J1wy6q4buh394EPn60kwxtIAd+Q3FXNGhb4
+         ER8U7hfPdJzIMJ77zfs/dxaoSWfdxhvI3uNZyKx0GkDDhfeghaZEUTxNgDUi9cNl/HOB
+         mqvkQAFwNv9NbSQOL8WNl4P1L132dqEBNeSMCF/a/siwXKx5xtntT5JIERWztRoxSCF4
+         vMytUr93+bAA482ozffFIJQTJwxngpNPJxtvqDwO92DwcMzcsan+ukCnb/Pcj2fkhHRc
+         wkLg==
+X-Gm-Message-State: ABy/qLaYimnTJ+53XhXnhW6e59+Oa8gTj3LvZNidOtn/j7mguxvIkpyo
+        ujron/XnhYEzmauTc+SONMYH9A==
+X-Google-Smtp-Source: APBJJlGOaq3eY9t8T7Eh1q/nPBtpvZXB+aZaoDKkzrXd7wpYNzUQxjZqSuSQRfhk2xfUsDEgn7j0cw==
+X-Received: by 2002:a05:6602:3e87:b0:780:cb36:6f24 with SMTP id el7-20020a0566023e8700b00780cb366f24mr8633262iob.2.1690222928696;
+        Mon, 24 Jul 2023 11:22:08 -0700 (PDT)
 Received: from [192.168.1.94] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id do17-20020a0566384c9100b0042b10d42c90sm2959694jab.113.2023.07.24.11.05.13
+        by smtp.gmail.com with ESMTPSA id c20-20020a5d9754000000b00760e7a343c1sm3521048ioo.30.2023.07.24.11.22.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 11:05:14 -0700 (PDT)
-Message-ID: <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
-Date:   Mon, 24 Jul 2023 12:05:13 -0600
+        Mon, 24 Jul 2023 11:22:08 -0700 (PDT)
+Message-ID: <fb2e6c9d-028c-3ed8-1068-0e654bdb63a4@kernel.dk>
+Date:   Mon, 24 Jul 2023 12:22:07 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] file: always lock position
+Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
 Content-Language: en-US
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Christian Brauner <brauner@kernel.org>
-Cc:     Christoph Hellwig <hch@lst.de>, Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-scheren-absegnen-8c807c760ba1@brauner>
- <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
- <20230724-gebessert-wortwahl-195daecce8f0@brauner>
- <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
- <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
- <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+To:     Phil Elwell <phil@raspberrypi.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, andres@anarazel.de,
+        asml.silence@gmail.com, david@fromorbit.com, hch@lst.de,
+        io-uring@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-xfs@vger.kernel.org, stable <stable@vger.kernel.org>
+References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
+ <2023072438-aftermath-fracture-3dff@gregkh>
+ <140065e3-0368-0b5d-8a0d-afe49b741ad2@kernel.dk>
+ <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+ <CAMEGJJ3SjWdJFwzB+sz79ojWqAAMULa2CFAas0tv+JJLJMwoGQ@mail.gmail.com>
+ <0ae07b66-956a-bb62-e4e8-85fa5f72362f@kernel.dk>
+ <CAMEGJJ0oNGBg=9jRogsstcYCBUVnDGpuijwXVZZQEJr=2awaqA@mail.gmail.com>
 From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+In-Reply-To: <CAMEGJJ0oNGBg=9jRogsstcYCBUVnDGpuijwXVZZQEJr=2awaqA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/24/23 12:01?PM, Linus Torvalds wrote:
-> On Mon, 24 Jul 2023 at 10:46, Christian Brauner <brauner@kernel.org> wrote:
+On 7/24/23 10:48 AM, Phil Elwell wrote:
+> Hi Jens,
+> 
+> On Mon, 24 Jul 2023 at 17:08, Jens Axboe <axboe@kernel.dk> wrote:
 >>
->> I don't think we do but it's something to keep in mind with async io
->> interfaces where the caller is free to create other threads after having
->> registered a request. Depending on how file references are done things
->> can get tricky easily.
+>> On 7/24/23 10:07?AM, Phil Elwell wrote:
+>>>> Even though I don't think this is an actual problem, it is a bit
+>>>> confusing that you get 100% iowait while waiting without having IO
+>>>> pending. So I do think the suggested patch is probably worthwhile
+>>>> pursuing. I'll post it and hopefully have Andres test it too, if he's
+>>>> available.
+>>>
+>>> If you CC me I'll happily test it for you.
+>>
+>> Here it is.
 > 
-> Honestly, by now, the io_uring code had *better* understand that it
-> needs to act exactly like a user thread.
+> < snip >
 > 
-> Anything else is simply not acceptable. io_uring has been a huge pain,
-> and the only thing that salvaged the horror was that the io_uring
-> async code should now *always* be done as a real thread.
-> 
-> If io_uring does something from truly async context (ie interrupts,
-> not io_uring threads), then io_uring had better be very *very*
-> careful.
-> 
-> And any kind of "from kthread context" is not acceptable. We've been
-> there, done that, and have the battle scars. Never again.
-> 
-> So the absolutely *only* acceptable context is "I'm a real
-> io_uringthread that looks exactly like a user thread in every which
-> way, except I never return to user space".
-> 
-> And if io_uring does absolutely _anything_ to file descriptors from
-> any other context, it needs to be fixed *NOW*.
+> Thanks, that works for me on top of 6.5-rc3. Going to 6.1 is a
+> non-trivial (for me) back-port - the switch from "ret = 0" in 6.5 to
+> "ret = 1" in 6.1 is surprising.
 
-io_uring never does that isn't the original user space creator task, or
-from the io-wq workers that it may create. Those are _always_ normal
-threads. There's no workqueue/kthread usage for IO or file
-getting/putting/installing/removing etc.
+Great, thanks for testing. I'll take care of the stable backports
+once the patch lands in upstream -git later this week.
 
 -- 
 Jens Axboe
+
 
