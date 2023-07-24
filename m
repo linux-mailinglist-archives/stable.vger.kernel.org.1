@@ -2,154 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809E875ED43
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 10:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C8C775EDA3
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 10:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbjGXIT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 04:19:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50934 "EHLO
+        id S231699AbjGXIaz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 04:30:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231368AbjGXIT5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 04:19:57 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E1D131
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 01:19:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690186795; x=1721722795;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vW4ze8oZKFb995ZUmc4ozXg5zKX+vuA/U5BVP8f2dbk=;
-  b=fnVv57XPtenaERxOGHbT9NI65+oFo5mQHuscrFFCOSbXIMG5wSJZoFo5
-   MliBp3KRuUp4C3oWUSmWdeG6oocBwW7Npd2mrVqu5UVf2daPCWEUGZ53G
-   ZkjivImY3Jnt1zoaNQV6jSgdIaaB+ry11mubMUc7TlGCZo6mJNljqzgQt
-   YcBrEjxMm7TAiwoWmzA69OhE61jmqhaKAY0BQDdWREI1+JdSPOo+ZB61r
-   P1SHI+OFj8pXTEeOx5Wk6l7XAFCZi5PXNtrtlKGiWz6JoTU2Pv1m2h2WM
-   iG+2ELgn52hF7qLsgXbh7sSVVow9sGeTBtCorYCGmhSNoMrY7q/fjMBMS
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="367404735"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="367404735"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 01:19:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="675742972"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="675742972"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.14.115]) ([10.213.14.115])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 01:19:50 -0700
-Message-ID: <3b7e1781-ca2b-44b3-846d-89e42f24106e@intel.com>
-Date:   Mon, 24 Jul 2023 10:19:48 +0200
+        with ESMTP id S231618AbjGXIag (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 04:30:36 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4051B3
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 01:30:33 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-316eabffaa6so2792509f8f.2
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 01:30:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1690187431; x=1690792231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mM3T4XQeo2Rwf8P4XnVgIPJxLOK5OfL53+1bBgJEHlI=;
+        b=yNCJ/1cGSLzFXQigRWvUyUoHDHIVzBh9O68gZyds2VvxTsqgJPZ1jKhHGPC3PktHk5
+         yR9XvGq2np/yKjj8s0f2zj2Rmq23mVp3DNiUnLx0cHdQvy9A/nMfF5BFSfOdIF5L22DW
+         dwss61loxN1F8Sc0c6hdx6piAOfESYoUiA3qrYP2BOnkJqWggtKwcYb6yw3wk8KJe0qN
+         zGCezCbo8HaLRFdAoqpwewdc5hFYqDAdr7yKNj8+AcqUa3lqSRYA4osAExe6uOdi1rKU
+         JXZOG0+bwphc1vc1a8T+/Ohwo//gtrzVj8i+FmnTgcjGhDkdI2LZY9H2XZw9eFP8ZnKk
+         HcPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690187431; x=1690792231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mM3T4XQeo2Rwf8P4XnVgIPJxLOK5OfL53+1bBgJEHlI=;
+        b=UzQZmMhlIjvG0+lMstjsbr+J8NOyFHZZONDafgmEH/HC9tjyF6TjUCxBMEX4LzlQ9e
+         XQ67JZUoqwNG+NMnRF+qwYWFTDMkOYYxW4JEamWNtDpXqtJnsEH+VA/J5vCCWccIbEep
+         JIST3R0Es3WJgXpbruI9FCKjJiaTl8Rx4c653j80ia35B9aeR1Ieqhp2vRTWcIvewII+
+         QawohJRw2LQYMSHDWOXiAQ7JQAI7dHLORo0UTLQI2SgAqdVQqPPaqL680aX/lmU54Pbn
+         pEaeJufjDvaC3CoZkPibMD70K0BmGzz8KeB/Nlol9hkGlF1/+B5T9aLEX4i42FLXh0Gx
+         EVkA==
+X-Gm-Message-State: ABy/qLaaGl9ynZUqOUIFDBf7DL5kFvkBannpgzfRCqw0hQhvhsuuCouu
+        iZf01N0BrlRl1cQzeGzoZX/ayYF14jqprOsxFz52FQ==
+X-Google-Smtp-Source: APBJJlHCEmaleZW/hhPhv2uqHLz8a4WYPXRqkt+WjJ14d+PGHLWfAzR6MNjtG5kcPIMNo71K3DxpJ7uzImxt65cvdeI=
+X-Received: by 2002:a5d:4526:0:b0:317:630f:de0c with SMTP id
+ j6-20020a5d4526000000b00317630fde0cmr482547wra.44.1690187431488; Mon, 24 Jul
+ 2023 01:30:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Subject: Re: [PATCH v8 7/9] drm/i915/gt: Ensure memory quiesced before
- invalidation for all engines
-Content-Language: en-US
-To:     Andi Shyti <andi.shyti@linux.intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>
-Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-evel <dri-devel@lists.freedesktop.org>,
-        linux-stable <stable@vger.kernel.org>
-References: <20230721161514.818895-1-andi.shyti@linux.intel.com>
- <20230721161514.818895-8-andi.shyti@linux.intel.com>
-From:   Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20230721161514.818895-8-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230723134822.617037-1-petko.manolov@konsulko.com> <20230723134822.617037-7-petko.manolov@konsulko.com>
+In-Reply-To: <20230723134822.617037-7-petko.manolov@konsulko.com>
+From:   Alexandre Ghiti <alexghiti@rivosinc.com>
+Date:   Mon, 24 Jul 2023 10:30:20 +0200
+Message-ID: <CAHVXubig4XHGeK5qW+w3uqZ-DQbZaY8f80=Y9fnCGKfRgwk0nA@mail.gmail.com>
+Subject: Re: [PATCH] riscv: Implement missing huge_ptep_get
+To:     Petko Manolov <petko.manolov@konsulko.com>
+Cc:     leon.anavi@konsulko.com, Andrew Jones <ajones@ventanamicro.com>,
+        stable@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Petko,
 
-
-On 21.07.2023 18:15, Andi Shyti wrote:
-> Commit af9e423a8aae ("drm/i915/gt: Ensure memory quiesced before
-> invalidation") has made sure that the memory is quiesced before
-> invalidating the AUX CCS table. Do it for all the other engines
-> and not just RCS.
+On Sun, Jul 23, 2023 at 3:48=E2=80=AFPM Petko Manolov
+<petko.manolov@konsulko.com> wrote:
 >
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: <stable@vger.kernel.org> # v5.8+
+> From: Alexandre Ghiti <alexghiti@rivosinc.com>
+>
+> huge_ptep_get must be reimplemented in order to go through all the PTEs
+> of a NAPOT region: this is needed because the HW can update the A/D bits
+> of any of the PTE that constitutes the NAPOT region.
+>
+> Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> Link: https://lore.kernel.org/r/20230428120120.21620-2-alexghiti@rivosinc=
+.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+> Signed-off-by: Petko Manolov <petko.manolov@konsulko.com>
 > ---
->   drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 36 ++++++++++++++++--------
->   1 file changed, 25 insertions(+), 11 deletions(-)
+>  arch/riscv/include/asm/hugetlb.h |  3 +++
+>  arch/riscv/mm/hugetlbpage.c      | 24 ++++++++++++++++++++++++
+>  2 files changed, 27 insertions(+)
 >
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> index 5e19b45a5cabe..646151e1b5deb 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> @@ -331,26 +331,40 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->   int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
->   {
->   	intel_engine_mask_t aux_inv = 0;
-> -	u32 cmd, *cs;
-> +	u32 cmd_flush = 0;
-> +	u32 cmd = 4;
-> +	u32 *cs;
->   
-> -	cmd = 4;
-> -	if (mode & EMIT_INVALIDATE) {
-> +	if (mode & EMIT_INVALIDATE)
->   		cmd += 2;
->   
-> -		if (gen12_needs_ccs_aux_inv(rq->engine) &&
-> -		    (rq->engine->class == VIDEO_DECODE_CLASS ||
-> -		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
-> -			aux_inv = rq->engine->mask &
-> -				~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
-> -			if (aux_inv)
-> -				cmd += 4;
-> -		}
-> +	if (gen12_needs_ccs_aux_inv(rq->engine))
-> +		aux_inv = rq->engine->mask &
-> +			  ~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
+> diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hu=
+getlb.h
+> index fe6f23006641..ce1ebda1a49a 100644
+> --- a/arch/riscv/include/asm/hugetlb.h
+> +++ b/arch/riscv/include/asm/hugetlb.h
+> @@ -36,6 +36,9 @@ int huge_ptep_set_access_flags(struct vm_area_struct *v=
+ma,
+>                                unsigned long addr, pte_t *ptep,
+>                                pte_t pte, int dirty);
+>
+> +#define __HAVE_ARCH_HUGE_PTEP_GET
+> +pte_t huge_ptep_get(pte_t *ptep);
+> +
+>  pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t fla=
+gs);
+>  #define arch_make_huge_pte arch_make_huge_pte
+>
+> diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+> index 238d00bdac14..e0ef56dc57b9 100644
+> --- a/arch/riscv/mm/hugetlbpage.c
+> +++ b/arch/riscv/mm/hugetlbpage.c
+> @@ -3,6 +3,30 @@
+>  #include <linux/err.h>
+>
+>  #ifdef CONFIG_RISCV_ISA_SVNAPOT
+> +pte_t huge_ptep_get(pte_t *ptep)
+> +{
+> +       unsigned long pte_num;
+> +       int i;
+> +       pte_t orig_pte =3D ptep_get(ptep);
+> +
+> +       if (!pte_present(orig_pte) || !pte_napot(orig_pte))
+> +               return orig_pte;
+> +
+> +       pte_num =3D napot_pte_num(napot_cont_order(orig_pte));
+> +
+> +       for (i =3D 0; i < pte_num; i++, ptep++) {
+> +               pte_t pte =3D ptep_get(ptep);
+> +
+> +               if (pte_dirty(pte))
+> +                       orig_pte =3D pte_mkdirty(orig_pte);
+> +
+> +               if (pte_young(pte))
+> +                       orig_pte =3D pte_mkyoung(orig_pte);
+> +       }
+> +
+> +       return orig_pte;
+> +}
+> +
+>  pte_t *huge_pte_alloc(struct mm_struct *mm,
+>                       struct vm_area_struct *vma,
+>                       unsigned long addr,
+> --
+> 2.39.2
+>
 
-Shouldn't we remove BCS check for MTL? And move it inside 
-gen12_needs_ccs_aux_inv?
-Btw aux_inv is used as bool, make better is to make it bool.
+Not sure I understand why you propose this patch to stable since
+svnapot support was introduced in 6.4 and this fix (and another one)
+was merged in 6.4 too. Am I missing something?
 
-Regards
-Andrzej
-> +
-> +	/*
-> +	 * On Aux CCS platforms the invalidation of the Aux
-> +	 * table requires quiescing memory traffic beforehand
-> +	 */
-> +	if (aux_inv) {
-> +		cmd += 4; /* for the AUX invalidation */
-> +		cmd += 2; /* for the engine quiescing */
-> +
-> +		cmd_flush = MI_FLUSH_DW;
-> +
-> +		if (rq->engine->class == COPY_ENGINE_CLASS)
-> +			cmd_flush |= MI_FLUSH_DW_CCS;
->   	}
->   
->   	cs = intel_ring_begin(rq, cmd);
->   	if (IS_ERR(cs))
->   		return PTR_ERR(cs);
->   
-> +	if (cmd_flush) {
-> +		*cs++ = cmd_flush;
-> +		*cs++ = 0;
-> +	}
-> +
->   	if (mode & EMIT_INVALIDATE)
->   		*cs++ = preparser_disable(true);
->   
+Thanks,
 
+Alex
