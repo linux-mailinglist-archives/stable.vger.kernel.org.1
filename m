@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9AE75EB64
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E48375EB66
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjGXGTK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 02:19:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
+        id S229913AbjGXGTW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 02:19:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbjGXGTI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:19:08 -0400
+        with ESMTP id S229552AbjGXGTW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:19:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68B21BE
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:19:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C2D1BE
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:19:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E3E560F09
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:19:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B54C433C7;
-        Mon, 24 Jul 2023 06:19:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63FA060F0C
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F417C433C8;
+        Mon, 24 Jul 2023 06:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690179546;
-        bh=kB4jP4USKlcr73UInXUcqLg2NPVmfy3kkWtU3u45LK8=;
+        s=korg; t=1690179559;
+        bh=6tTUI1cpQgrYUO9lEzRLEI/79u3tRK9UUWYmwHJSwiU=;
         h=Subject:To:Cc:From:Date:From;
-        b=NCCW0Zkm+j7VwAJscSVr9t01CpkWzyrsleuvwkOPegJdHRDtwghcXe+E5FmKi0zWB
-         NEU4WABmuABhVju+v6sYziLPEz8+HhItipQN3tAhpIAE34KKQxDhbCp7cESx7RkV98
-         iwE02gkTNXdsK4eTh6S9N35Ei+r0x+pVK/MyD2tM=
-Subject: FAILED: patch "[PATCH] jbd2: fix a race when checking checkpoint buffer busy" failed to apply to 4.19-stable tree
-To:     yi.zhang@huawei.com, jack@suse.cz, tytso@mit.edu
+        b=rme4MSAOG+1PUDY91GEWnQ2m0/B9nzRJt/v0Z0IESxaafoAytBczv/qAtPoO9Dibz
+         nkwa6jcRFdDEcZax1rpZ/YnsuqeHDbdHvWXtSO1+ldP1pT5ioCweAjHYSoAOT/lde0
+         65tiMrWql59LYTGc4NPrh88Wqjp3xLxtqxzO3tT8=
+Subject: FAILED: patch "[PATCH] ext4: fix rbtree traversal bug in ext4_mb_use_preallocated" failed to apply to 6.4-stable tree
+To:     ojaswin@linux.ibm.com, naresh.kamboju@linaro.org, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 24 Jul 2023 08:19:03 +0200
-Message-ID: <2023072403-virtuous-straw-2f43@gregkh>
+Date:   Mon, 24 Jul 2023 08:19:13 +0200
+Message-ID: <2023072413-glamorous-unjustly-bb12@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,30 +49,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 46f881b5b1758dc4a35fba4a643c10717d0cf427
+git cherry-pick -x 9d3de7ee192a6a253f475197fe4d2e2af10a731f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072403-virtuous-straw-2f43@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072413-glamorous-unjustly-bb12@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
-b98dba273a0e ("jbd2: remove journal_clean_one_cp_list()")
-dbf2bab7935b ("jbd2: simplify journal_clean_one_cp_list()")
-4ba3fcdde7e3 ("jbd2,ext4: add a shrinker to release checkpointed buffers")
-214eb5a4d8a2 ("jbd2: remove redundant buffer io error checks")
-2bf31d94423c ("jbd2: fix kernel-doc markups")
-60ed633f51d0 ("jbd2: fix incorrect code style")
-597599268e3b ("jbd2: discard dirty data when forgetting an un-journalled buffer")
+
 
 thanks,
 
@@ -80,141 +73,254 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 46f881b5b1758dc4a35fba4a643c10717d0cf427 Mon Sep 17 00:00:00 2001
-From: Zhang Yi <yi.zhang@huawei.com>
-Date: Tue, 6 Jun 2023 21:59:27 +0800
-Subject: [PATCH] jbd2: fix a race when checking checkpoint buffer busy
+From 9d3de7ee192a6a253f475197fe4d2e2af10a731f Mon Sep 17 00:00:00 2001
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Date: Sat, 22 Jul 2023 22:45:24 +0530
+Subject: [PATCH] ext4: fix rbtree traversal bug in ext4_mb_use_preallocated
 
-Before removing checkpoint buffer from the t_checkpoint_list, we have to
-check both BH_Dirty and BH_Lock bits together to distinguish buffers
-have not been or were being written back. But __cp_buffer_busy() checks
-them separately, it first check lock state and then check dirty, the
-window between these two checks could be raced by writing back
-procedure, which locks buffer and clears buffer dirty before I/O
-completes. So it cannot guarantee checkpointing buffers been written
-back to disk if some error happens later. Finally, it may clean
-checkpoint transactions and lead to inconsistent filesystem.
+During allocations, while looking for preallocations(PA) in the per
+inode rbtree, we can't do a direct traversal of the tree because
+ext4_mb_discard_group_preallocation() can paralelly mark the pa deleted
+and that can cause direct traversal to skip some entries. This was
+leading to a BUG_ON() being hit [1] when we missed a PA that could satisfy
+our request and ultimately tried to create a new PA that would overlap
+with the missed one.
 
-jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
-same problem (journal_unmap_buffer() escape from this issue since it's
-running under the buffer lock), so fix them through introducing a new
-helper to try holding the buffer lock and remove really clean buffer.
+To makes sure we handle that case while still keeping the performance of
+the rbtree, we make use of the fact that the only pa that could possibly
+overlap the original goal start is the one that satisfies the below
+conditions:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
+  1. It must have it's logical start immediately to the left of
+  (ie less than) original logical start.
+
+  2. It must not be deleted
+
+To find this pa we use the following traversal method:
+
+1. Descend into the rbtree normally to find the immediate neighboring
+PA. Here we keep descending irrespective of if the PA is deleted or if
+it overlaps with our request etc. The goal is to find an immediately
+adjacent PA.
+
+2. If the found PA is on right of original goal, use rb_prev() to find
+the left adjacent PA.
+
+3. Check if this PA is deleted and keep moving left with rb_prev() until
+a non deleted PA is found.
+
+4. This is the PA we are looking for. Now we can check if it can satisfy
+the original request and proceed accordingly.
+
+This approach also takes care of having deleted PAs in the tree.
+
+(While we are at it, also fix a possible overflow bug in calculating the
+end of a PA)
+
+[1] https://lore.kernel.org/linux-ext4/CA+G9fYv2FRpLqBZf34ZinR8bU2_ZRAUOjKAD3+tKRFaEQHtt8Q@mail.gmail.com/
+
+Cc: stable@kernel.org # 6.4
+Fixes: 3872778664e3 ("ext4: Use rbtrees to manage PAs instead of inode i_prealloc_list")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Reviewed-by: Ritesh Harjani (IBM) ritesh.list@gmail.com
+Tested-by: Ritesh Harjani (IBM) ritesh.list@gmail.com
+Link: https://lore.kernel.org/r/edd2efda6a83e6343c5ace9deea44813e71dbe20.1690045963.git.ojaswin@linux.ibm.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 42b34cab64fb..9ec91017a7f3 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 		jh = next_jh;
- 		next_jh = jh->b_cpnext;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 456150ef6111..21b903fe546e 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4765,8 +4765,8 @@ ext4_mb_use_preallocated(struct ext4_allocation_context *ac)
+ 	int order, i;
+ 	struct ext4_inode_info *ei = EXT4_I(ac->ac_inode);
+ 	struct ext4_locality_group *lg;
+-	struct ext4_prealloc_space *tmp_pa, *cpa = NULL;
+-	ext4_lblk_t tmp_pa_start, tmp_pa_end;
++	struct ext4_prealloc_space *tmp_pa = NULL, *cpa = NULL;
++	loff_t tmp_pa_end;
+ 	struct rb_node *iter;
+ 	ext4_fsblk_t goal_block;
  
--		if (!destroy && __cp_buffer_busy(jh))
--			continue;
-+		if (destroy) {
-+			ret = __jbd2_journal_remove_checkpoint(jh);
-+		} else {
-+			ret = jbd2_journal_try_remove_checkpoint(jh);
-+			if (ret < 0)
-+				continue;
-+		}
+@@ -4774,47 +4774,151 @@ ext4_mb_use_preallocated(struct ext4_allocation_context *ac)
+ 	if (!(ac->ac_flags & EXT4_MB_HINT_DATA))
+ 		return false;
  
- 		nr_freed++;
--		ret = __jbd2_journal_remove_checkpoint(jh);
- 		if (ret) {
- 			*released = true;
- 			break;
-@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 	return 1;
- }
- 
-+/*
-+ * Check the checkpoint buffer and try to remove it from the checkpoint
-+ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
-+ * it frees the transaction, 0 otherwise.
-+ *
-+ * This function is called with j_list_lock held.
-+ */
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
-+{
-+	struct buffer_head *bh = jh2bh(jh);
+-	/* first, try per-file preallocation */
++	/*
++	 * first, try per-file preallocation by searching the inode pa rbtree.
++	 *
++	 * Here, we can't do a direct traversal of the tree because
++	 * ext4_mb_discard_group_preallocation() can paralelly mark the pa
++	 * deleted and that can cause direct traversal to skip some entries.
++	 */
+ 	read_lock(&ei->i_prealloc_lock);
 +
-+	if (!trylock_buffer(bh))
-+		return -EBUSY;
-+	if (buffer_dirty(bh)) {
-+		unlock_buffer(bh);
-+		return -EBUSY;
++	if (RB_EMPTY_ROOT(&ei->i_prealloc_node)) {
++		goto try_group_pa;
 +	}
-+	unlock_buffer(bh);
 +
 +	/*
-+	 * Buffer is clean and the IO has finished (we held the buffer
-+	 * lock) so the checkpoint is done. We can safely remove the
-+	 * buffer from this transaction.
++	 * Step 1: Find a pa with logical start immediately adjacent to the
++	 * original logical start. This could be on the left or right.
++	 *
++	 * (tmp_pa->pa_lstart never changes so we can skip locking for it).
 +	 */
-+	JBUFFER_TRACE(jh, "remove from checkpoint list");
-+	return __jbd2_journal_remove_checkpoint(jh);
-+}
-+
- /*
-  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
-  * list so that we know when it is safe to clean the transaction out of
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index 18611241f451..6ef5022949c4 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1784,8 +1784,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
- 		 * Otherwise, if the buffer has been written to disk,
- 		 * it is safe to remove the checkpoint and drop it.
- 		 */
--		if (!buffer_dirty(bh)) {
--			__jbd2_journal_remove_checkpoint(jh);
-+		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
- 			spin_unlock(&journal->j_list_lock);
- 			goto drop;
- 		}
-@@ -2112,20 +2111,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
+ 	for (iter = ei->i_prealloc_node.rb_node; iter;
+ 	     iter = ext4_mb_pa_rb_next_iter(ac->ac_o_ex.fe_logical,
+-					    tmp_pa_start, iter)) {
++					    tmp_pa->pa_lstart, iter)) {
+ 		tmp_pa = rb_entry(iter, struct ext4_prealloc_space,
+ 				  pa_node.inode_node);
++	}
  
- 	jh = bh2jh(bh);
+-		/* all fields in this condition don't change,
+-		 * so we can skip locking for them */
+-		tmp_pa_start = tmp_pa->pa_lstart;
+-		tmp_pa_end = tmp_pa->pa_lstart + EXT4_C2B(sbi, tmp_pa->pa_len);
++	/*
++	 * Step 2: The adjacent pa might be to the right of logical start, find
++	 * the left adjacent pa. After this step we'd have a valid tmp_pa whose
++	 * logical start is towards the left of original request's logical start
++	 */
++	if (tmp_pa->pa_lstart > ac->ac_o_ex.fe_logical) {
++		struct rb_node *tmp;
++		tmp = rb_prev(&tmp_pa->pa_node.inode_node);
  
--	if (buffer_locked(bh) || buffer_dirty(bh))
--		goto out;
+-		/* original request start doesn't lie in this PA */
+-		if (ac->ac_o_ex.fe_logical < tmp_pa_start ||
+-		    ac->ac_o_ex.fe_logical >= tmp_pa_end)
+-			continue;
 -
- 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
--		goto out;
-+		return;
+-		/* non-extent files can't have physical blocks past 2^32 */
+-		if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)) &&
+-		    (tmp_pa->pa_pstart + EXT4_C2B(sbi, tmp_pa->pa_len) >
+-		     EXT4_MAX_BLOCK_FILE_PHYS)) {
++		if (tmp) {
++			tmp_pa = rb_entry(tmp, struct ext4_prealloc_space,
++					    pa_node.inode_node);
++		} else {
+ 			/*
+-			 * Since PAs don't overlap, we won't find any
+-			 * other PA to satisfy this.
++			 * If there is no adjacent pa to the left then finding
++			 * an overlapping pa is not possible hence stop searching
++			 * inode pa tree
++			 */
++			goto try_group_pa;
++		}
++	}
++
++	BUG_ON(!(tmp_pa && tmp_pa->pa_lstart <= ac->ac_o_ex.fe_logical));
++
++	/*
++	 * Step 3: If the left adjacent pa is deleted, keep moving left to find
++	 * the first non deleted adjacent pa. After this step we should have a
++	 * valid tmp_pa which is guaranteed to be non deleted.
++	 */
++	for (iter = &tmp_pa->pa_node.inode_node;; iter = rb_prev(iter)) {
++		if (!iter) {
++			/*
++			 * no non deleted left adjacent pa, so stop searching
++			 * inode pa tree
++			 */
++			goto try_group_pa;
++		}
++		tmp_pa = rb_entry(iter, struct ext4_prealloc_space,
++				  pa_node.inode_node);
++		spin_lock(&tmp_pa->pa_lock);
++		if (tmp_pa->pa_deleted == 0) {
++			/*
++			 * We will keep holding the pa_lock from
++			 * this point on because we don't want group discard
++			 * to delete this pa underneath us. Since group
++			 * discard is anyways an ENOSPC operation it
++			 * should be okay for it to wait a few more cycles.
+ 			 */
+ 			break;
+-		}
+-
+-		/* found preallocated blocks, use them */
+-		spin_lock(&tmp_pa->pa_lock);
+-		if (tmp_pa->pa_deleted == 0 && tmp_pa->pa_free &&
+-		    likely(ext4_mb_pa_goal_check(ac, tmp_pa))) {
+-			atomic_inc(&tmp_pa->pa_count);
+-			ext4_mb_use_inode_pa(ac, tmp_pa);
++		} else {
+ 			spin_unlock(&tmp_pa->pa_lock);
+-			read_unlock(&ei->i_prealloc_lock);
+-			return true;
+ 		}
+-		spin_unlock(&tmp_pa->pa_lock);
+ 	}
++
++	BUG_ON(!(tmp_pa && tmp_pa->pa_lstart <= ac->ac_o_ex.fe_logical));
++	BUG_ON(tmp_pa->pa_deleted == 1);
++
++	/*
++	 * Step 4: We now have the non deleted left adjacent pa. Only this
++	 * pa can possibly satisfy the request hence check if it overlaps
++	 * original logical start and stop searching if it doesn't.
++	 */
++	tmp_pa_end = (loff_t)tmp_pa->pa_lstart + EXT4_C2B(sbi, tmp_pa->pa_len);
++
++	if (ac->ac_o_ex.fe_logical >= tmp_pa_end) {
++		spin_unlock(&tmp_pa->pa_lock);
++		goto try_group_pa;
++	}
++
++	/* non-extent files can't have physical blocks past 2^32 */
++	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)) &&
++	    (tmp_pa->pa_pstart + EXT4_C2B(sbi, tmp_pa->pa_len) >
++	     EXT4_MAX_BLOCK_FILE_PHYS)) {
++		/*
++		 * Since PAs don't overlap, we won't find any other PA to
++		 * satisfy this.
++		 */
++		spin_unlock(&tmp_pa->pa_lock);
++		goto try_group_pa;
++	}
++
++	if (tmp_pa->pa_free && likely(ext4_mb_pa_goal_check(ac, tmp_pa))) {
++		atomic_inc(&tmp_pa->pa_count);
++		ext4_mb_use_inode_pa(ac, tmp_pa);
++		spin_unlock(&tmp_pa->pa_lock);
++		read_unlock(&ei->i_prealloc_lock);
++		return true;
++	} else {
++		/*
++		 * We found a valid overlapping pa but couldn't use it because
++		 * it had no free blocks. This should ideally never happen
++		 * because:
++		 *
++		 * 1. When a new inode pa is added to rbtree it must have
++		 *    pa_free > 0 since otherwise we won't actually need
++		 *    preallocation.
++		 *
++		 * 2. An inode pa that is in the rbtree can only have it's
++		 *    pa_free become zero when another thread calls:
++		 *      ext4_mb_new_blocks
++		 *       ext4_mb_use_preallocated
++		 *        ext4_mb_use_inode_pa
++		 *
++		 * 3. Further, after the above calls make pa_free == 0, we will
++		 *    immediately remove it from the rbtree in:
++		 *      ext4_mb_new_blocks
++		 *       ext4_mb_release_context
++		 *        ext4_mb_put_pa
++		 *
++		 * 4. Since the pa_free becoming 0 and pa_free getting removed
++		 * from tree both happen in ext4_mb_new_blocks, which is always
++		 * called with i_data_sem held for data allocations, we can be
++		 * sure that another process will never see a pa in rbtree with
++		 * pa_free == 0.
++		 */
++		WARN_ON_ONCE(tmp_pa->pa_free == 0);
++	}
++	spin_unlock(&tmp_pa->pa_lock);
++try_group_pa:
+ 	read_unlock(&ei->i_prealloc_lock);
  
- 	spin_lock(&journal->j_list_lock);
--	if (jh->b_cp_transaction != NULL) {
--		/* written-back checkpointed metadata buffer */
--		JBUFFER_TRACE(jh, "remove from checkpoint list");
--		__jbd2_journal_remove_checkpoint(jh);
--	}
-+	/* Remove written-back checkpointed metadata buffer */
-+	if (jh->b_cp_transaction != NULL)
-+		jbd2_journal_try_remove_checkpoint(jh);
- 	spin_unlock(&journal->j_list_lock);
--out:
- 	return;
- }
- 
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index bd660aac8e07..44c298aa58d4 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1443,6 +1443,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
- void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
- unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
- int __jbd2_journal_remove_checkpoint(struct journal_head *);
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
- void jbd2_journal_destroy_checkpoint(journal_t *journal);
- void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
- 
+ 	/* can we use group allocation? */
 
