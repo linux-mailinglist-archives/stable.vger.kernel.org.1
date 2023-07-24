@@ -2,117 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AAAA75F590
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 13:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5397D75F631
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 14:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbjGXL75 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 07:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37548 "EHLO
+        id S230441AbjGXMVh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 08:21:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjGXL75 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 07:59:57 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D98E73
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 04:59:54 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b8c81e36c0so24724735ad.0
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 04:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690199993; x=1690804793;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=X55qGfqurl3+XzYFon6Kd/dPBcYz+Gt8vVZUhYCD/tQ=;
-        b=SDBA6F00URpdW3puFO3jwwMjviozAodRBlokOloGNzrtbnpRtLLvKSQp6zJnC6ON/7
-         JHI7HoB5K3AJvUCMHXSjTP61mbsPzFhzqUVr/EpTvA9l2NDFtRbqnIrs7Fh4wp6T3IXG
-         m1nyoQnspezkZI2hElKLDpLPZEIM1UXo0BF7qpS2H/h9atb2qjk1RLZ+qhsut/nkOI9R
-         6ZS5hpBQxzOxnTb0tXhSdnAYSw/uyLuWieWZ5UhuQXR+vZVJG2Wyk9vN869Uo1AATWq0
-         FsGDx7y8XHDRgeP2X3p/qee4GyVJkjNdUPJdjMYtRpka34HXklOl1wtJVMTz1mzZwu5J
-         v8lQ==
+        with ESMTP id S230413AbjGXMVf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 08:21:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7ADA2106
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:20:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690201225;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=16bws0qf1eK2snTxL0KnDiIJKu7INDftZkzK6rYqevI=;
+        b=cWir4y1pHT2+QeQB5sAUb2DFCK7M+xOOWLT9TKVHgk3FWu7eHgLmGqatJezJ+u6k3KD2Bz
+        rMJA/nHHetmHjvHtFBSofpIXEalf9VAfYsut67iFax6mKruWPL6zrU+QQZikXWovCLJW4B
+        jdjhxibw0ZvIbkszrvTFqIU2ttIOSKY=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-317-XUrQElLHMPmpTsN3arbkyA-1; Mon, 24 Jul 2023 08:20:24 -0400
+X-MC-Unique: XUrQElLHMPmpTsN3arbkyA-1
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7865e0082c5so186552939f.3
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 05:20:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690199993; x=1690804793;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X55qGfqurl3+XzYFon6Kd/dPBcYz+Gt8vVZUhYCD/tQ=;
-        b=UM9REH7VdfrNlX0DqqJZqZzP8cdTzM1JY6J44Qtz22Bfw28PAHvOtpQL7GopaX5Rtp
-         Pd6RAMcM84jbBTzvY9/yPpTuh739R73R79J8TEqWa/9NF+e3MD6DoJcpJ4ZWX2nRGAbv
-         hxg9f1U0QA+M6ptn73QAR2rTJuJLuU4RMV0GDA8JAaXLxC7SZL9NPd5Ki4rQq7DZ84jZ
-         +I0/JJpEUTlYEqV1CVMZH6AF+aj10Lye1tUQCU38hh0SFwcXvjsnrMnpRMoGDraALpvo
-         XH0Nlikan0LMv6qLmGB8aZg1sQRDUY8tBFwEK8rodmvq/dWEM6NpAZruB/2C7P9TaXvM
-         MdMA==
-X-Gm-Message-State: ABy/qLb7TMiZbWplkGUWl5acLZ7jYmso/DfPSn3h1OKnQF+yaYD8d9ZL
-        tSyIdiy/IKJaLdtPISTrGa+Ojr93zD+JdlH9DlV12jM3
-X-Google-Smtp-Source: APBJJlEBKzaZkHD2EDMiP8xstIqcXAriq+CByAol7pSj6N3VImPZeJPpVrTsQKWlI5jM/zWHW8z8QA==
-X-Received: by 2002:a17:902:e5ce:b0:1b8:b841:3ff2 with SMTP id u14-20020a170902e5ce00b001b8b8413ff2mr10409250plf.64.1690199993666;
-        Mon, 24 Jul 2023 04:59:53 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 10-20020a170902c14a00b001bb3dac1577sm8733360plj.95.2023.07.24.04.59.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 04:59:53 -0700 (PDT)
-Message-ID: <64be67b9.170a0220.4d9ec.ed06@mx.google.com>
-Date:   Mon, 24 Jul 2023 04:59:53 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1690201223; x=1690806023;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=16bws0qf1eK2snTxL0KnDiIJKu7INDftZkzK6rYqevI=;
+        b=e+7wPsT2bumNaXLi2WlXa96Pc6ja1eoLZI8yh7R0ZfHxJomqC3nmU+VoC27En2iETV
+         LV1DOKMcLHeYMue8InvXFaHmEvSbVibwx2G6HYKaQwf6jX1gNY9V+kR4ugFNsdOu8CjV
+         Y0fYCmD2xCLO9zTZn17x4sj1f5LdgbT0/XKecrM0+h8I/hPPmzCCCdIfEpYBqJbh0EaK
+         68O1jS7ppVKniNE86PVRDW4qwYkxIfQnp0VFwGvVcc+UZuaGC8D+Dl1BLuDXefmA7b9G
+         Si2IQyVydwrvFF0HpmbUM3r48jGLfaD+CL8QBMoH9ZubdswEGqt4yJeOKrmm3zg/ARKx
+         G/Rg==
+X-Gm-Message-State: ABy/qLaI5sBg5DQCxInNs8yJqLuhDzjYDsW65/tHWUP8BG1iKhxIJTES
+        gljcPHPusGMM97Ia8k+sHdmC4IFgTc+T1IW+xlJvnsqLLoNo1vWxuMnw8zil6sb4lfX7szhe3Rr
+        VCPtzrKTPhXawRHJ4
+X-Received: by 2002:a05:6e02:216f:b0:346:3eec:c893 with SMTP id s15-20020a056e02216f00b003463eecc893mr7136112ilv.0.1690201223485;
+        Mon, 24 Jul 2023 05:20:23 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHeMG/0a9FLNlW+LgYiPQNwIEt1/4XxnmoP0bUKH6yFHLYejFMH9HiYHC4gU5puuW6vSpgAjw==
+X-Received: by 2002:a05:6e02:216f:b0:346:3eec:c893 with SMTP id s15-20020a056e02216f00b003463eecc893mr7136102ilv.0.1690201223234;
+        Mon, 24 Jul 2023 05:20:23 -0700 (PDT)
+Received: from [10.72.12.127] ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d2-20020a17090a6f0200b00256799877ffsm1371157pjk.47.2023.07.24.05.20.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 05:20:22 -0700 (PDT)
+Message-ID: <e28b9ea0-a62c-5aae-50d0-bc092675e20d@redhat.com>
+Date:   Mon, 24 Jul 2023 20:20:17 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Kernel: v5.4.249-315-g2b5f78e632440
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.4.y build: 1 build: 0 failed, 1 passed,
- 2 warnings (v5.4.249-315-g2b5f78e632440)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] ceph: defer stopping the mdsc delayed_work
+Content-Language: en-US
+To:     Ilya Dryomov <idryomov@gmail.com>
+Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
+References: <20230724084214.321005-1-xiubli@redhat.com>
+ <CAOi1vP9Yygpavo8fS=Tz8YGeQJ7Wmieo=14+HS20+MSMErb79A@mail.gmail.com>
+From:   Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <CAOi1vP9Yygpavo8fS=Tz8YGeQJ7Wmieo=14+HS20+MSMErb79A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y build: 1 build: 0 failed, 1 passed, 2 warnings (v5.4.=
-249-315-g2b5f78e632440)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
-/kernel/v5.4.249-315-g2b5f78e632440/
+On 7/24/23 19:12, Ilya Dryomov wrote:
+> On Mon, Jul 24, 2023 at 10:44 AM <xiubli@redhat.com> wrote:
+>> From: Xiubo Li <xiubli@redhat.com>
+>>
+>> Flushing the dirty buffer may take a long time if the Rados is
+>> overloaded or if there is network issue. So we should ping the
+>> MDSs periodically to keep alive, else the MDS will blocklist
+>> the kclient.
+>>
+>> Cc: stable@vger.kernel.org
+> Hi Xiubo,
+>
+> The stable tag doesn't make sense here as this commit enhances commit
+> 2789c08342f7 ("ceph: drop the messages from MDS when unmounting") which
+> isn't upstream.  It should probably just be folded there.
 
-Tree: stable-rc
-Branch: linux-5.4.y
-Git Describe: v5.4.249-315-g2b5f78e632440
-Git Commit: 2b5f78e63244061899701db2e38e46a3a7f83be6
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 1 unique architecture
+No, Ilya. This is not an enhancement for commit 2789c08342f7.
 
-Warnings Detected:
+They are for different issues here. This patch just based on that. We 
+can apply this first and then I can rebase the testing branch.
 
-i386:
-    allnoconfig (gcc-10): 2 warnings
+Thanks
+
+- Xiubo
 
 
-Warnings summary:
+> Thanks,
+>
+>                  Ilya
+>
 
-    1    ld: warning: creating DT_TEXTREL in a PIE
-    1    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
