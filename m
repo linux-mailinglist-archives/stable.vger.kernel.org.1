@@ -2,185 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6469975FF59
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 20:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C5F075FFC1
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 21:23:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230158AbjGXSwD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 14:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53388 "EHLO
+        id S229670AbjGXTXu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 15:23:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbjGXSvw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 14:51:52 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7630710EF;
-        Mon, 24 Jul 2023 11:51:38 -0700 (PDT)
-Received: from rrs24-12-35.corp.microsoft.com (unknown [131.107.8.21])
-        by linux.microsoft.com (Postfix) with ESMTPSA id E6B7620A118A;
-        Mon, 24 Jul 2023 11:51:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E6B7620A118A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1690224698;
-        bh=TIdl384Iap1GcXbzei1Rvgtksno4iQVw2UrSwGaph0c=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qfwl3P9+LbBTGYvPg5VZqZlmmY2vsCK0hIt674Dmm1joKUc5oR73ftZaS6kMb+whi
-         BmFGo4t+3+rvWjo20YiawnO1BQ/jr/RaAgCDqSWoTwRh1ArvYU/7CcAoCIrwTNosEc
-         5/evqI6GK3LmClj6QH/8/kvokVF1dF9jyy3DyahQ=
-From:   Easwar Hariharan <eahariha@linux.microsoft.com>
-To:     stable@vger.kernel.org
-Cc:     easwar.hariharan@microsoft.com,
-        Robin Murphy <robin.murphy@arm.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Joerg Roedel <joro@8bytes.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Tomas Krcka <krckatom@amazon.de>,
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT
-        (AARCH64 ARCHITECTURE)),
-        linux-doc@vger.kernel.org (open list:DOCUMENTATION),
-        linux-kernel@vger.kernel.org (open list),
-        iommu@lists.linux-foundation.org (open list:IOMMU DRIVERS),
-        iommu@lists.linux.dev (open list:IOMMU DRIVERS)
-Subject: [PATCH 6.4] iommu/arm-smmu-v3: Document MMU-700 erratum 2812531
-Date:   Mon, 24 Jul 2023 18:51:28 +0000
-Message-Id: <20230724185130.1676140-1-eahariha@linux.microsoft.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229470AbjGXTXt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 15:23:49 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09DD610F0;
+        Mon, 24 Jul 2023 12:23:48 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-52229f084beso2559371a12.2;
+        Mon, 24 Jul 2023 12:23:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690226626; x=1690831426;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cWo4sIKyvyIpPAwWLeOJz8L9JuZtA+G/0dxZszCh6vo=;
+        b=latCLXtw9bkLnLi+GLz0mDfQySuJCccWsImdGir5RMfkHE5vZl+IIi4uL+keuRwu9t
+         60BrwZbclALe81Fmmch9iK+eeXTACpiUYg5lqLsAIrkxyJZkCnTIFBjZjqXa6gi2kisY
+         rmVUL8HEqXdXtzqarHvCsirm7SK6hcJulzBHcyeHxt1Qapo1jSQLjNA4MDVedjg2Pvnj
+         xPP28DoqOBqMFzMKbj4qh+BICTLz0fN6wVksJQFAKOdXsqLqmbVosQ6gxFoIKLStt8gR
+         nRDmJ68TT7H4nfQ4/RciVdwnC2kJPLmV0t44hV5vMEGiSARqdDgWmEuEztVMzGfej8Ch
+         uQEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690226626; x=1690831426;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cWo4sIKyvyIpPAwWLeOJz8L9JuZtA+G/0dxZszCh6vo=;
+        b=jLmKBi/nYImE3YPjz/1DR5L0KuC49OGrXiRFlup0yLbQZUlknhd11KgPnqolLEQ7GU
+         /Yucm/VksRpY152b5KD2i7Dy0ocDxoZozZk413BcTJ4z+iBxuqIXpNAN1CwIjZOS7ywa
+         xNzYMSHVJrJl7wzqtrzZdIv12I6ydDNtKv8yREsfPHWAi7e9CGrCcRh/fbWy9v0RFTh7
+         bktT3OZXON5zU1rK781SYVxrUGCKIDLLSSpzoUSD2bCAXA1VtXsBRv/1sgJsbDC24Q76
+         HEaQB1E/9xW1zI/2SXoy/4DCDUG4lJJpEa0t8Oj3vzje1Ouo7U4IfxAXp3CNijL2ruwa
+         8weQ==
+X-Gm-Message-State: ABy/qLbKJCvEgUnl2FdVQwVt+k8gPDlNABhpO+qh0TnyR8vQRLBh7fzo
+        8aiTdcw9DzIa+rgK2CoBHHY=
+X-Google-Smtp-Source: APBJJlFLrOqXJwk2/ZogigT9lz5sDvbwFGJVMGIOCEC/jeoYe69weJzVeSfX0lbNF+PHSciKnQdVNw==
+X-Received: by 2002:a17:907:b11:b0:992:7e1f:8419 with SMTP id h17-20020a1709070b1100b009927e1f8419mr10392698ejl.2.1690226626234;
+        Mon, 24 Jul 2023 12:23:46 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:310::2eef? ([2620:10d:c092:600::2:c92])
+        by smtp.gmail.com with ESMTPSA id h23-20020a170906829700b0098d486d2bdfsm7242644ejx.177.2023.07.24.12.23.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 12:23:46 -0700 (PDT)
+Message-ID: <0f63b072-840c-db5d-13cd-7faa554975d3@gmail.com>
+Date:   Mon, 24 Jul 2023 20:22:28 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] io_uring: Use io_schedule* in cqring wait
+To:     Jens Axboe <axboe@kernel.dk>, Greg KH <gregkh@linuxfoundation.org>,
+        Phil Elwell <phil@raspberrypi.com>
+Cc:     andres@anarazel.de, david@fromorbit.com, hch@lst.de,
+        io-uring@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-xfs@vger.kernel.org, stable <stable@vger.kernel.org>
+References: <CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com>
+ <2023072438-aftermath-fracture-3dff@gregkh>
+ <140065e3-0368-0b5d-8a0d-afe49b741ad2@kernel.dk>
+ <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+Content-Language: en-US
+From:   Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <ecb821a2-e90a-fec1-d2ca-b355c16b7515@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+On 7/24/23 16:58, Jens Axboe wrote:
+> On 7/24/23 9:50?AM, Jens Axboe wrote:
+>> On 7/24/23 9:48?AM, Greg KH wrote:
+>>> On Mon, Jul 24, 2023 at 04:35:43PM +0100, Phil Elwell wrote:
+>>>> Hi Andres,
+>>>>
+>>>> With this commit applied to the 6.1 and later kernels (others not
+>>>> tested) the iowait time ("wa" field in top) in an ARM64 build running
+>>>> on a 4 core CPU (a Raspberry Pi 4 B) increases to 25%, as if one core
+>>>> is permanently blocked on I/O. The change can be observed after
+>>>> installing mariadb-server (no configuration or use is required). After
+>>>> reverting just this commit, "wa" drops to zero again.
+>>>
+>>> This has been discussed already:
+>>> 	https://lore.kernel.org/r/12251678.O9o76ZdvQC@natalenko.name
+>>>
+>>> It's not a bug, mariadb does have pending I/O, so the report is correct,
+>>> but the CPU isn't blocked at all.
+>>
+>> Indeed - only thing I can think of is perhaps mariadb is having a
+>> separate thread waiting on the ring in perpetuity, regardless of whether
+>> or not it currently has IO.
+>>
+>> But yes, this is very much ado about nothing...
+> 
+> Current -git and having mariadb idle:
+> 
+> Average:     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+> Average:     all    0.00    0.00    0.04   12.47    0.04    0.00    0.00    0.00    0.00   87.44
+> Average:       0    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       1    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       2    0.00    0.00    0.00    0.00    0.33    0.00    0.00    0.00    0.00   99.67
+> Average:       3    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       4    0.00    0.00    0.33    0.00    0.00    0.00    0.00    0.00    0.00   99.67
+> Average:       5    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> Average:       6    0.00    0.00    0.00  100.00    0.00    0.00    0.00    0.00    0.00    0.00
+> Average:       7    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> 
+> which is showing 100% iowait on one cpu, as mariadb has a thread waiting
+> on IO. That is obviously a valid use case, if you split submission and
+> completion into separate threads. Then you have the latter just always
+> waiting on something to process.
+> 
+> With the suggested patch, we do eliminate that case and the iowait on
+> that task is gone. Here's current -git with the patch and mariadb also
+> running:
+> 
+> 09:53:49 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+> 09:53:50 AM  all    0.00    0.00    0.00    0.00    0.00    0.75    0.00    0.00    0.00   99.25
+> 09:53:50 AM    0    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> 09:53:50 AM    1    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    2    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    3    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    4    0.00    0.00    0.00    0.00    0.00    0.99    0.00    0.00    0.00   99.01
+> 09:53:50 AM    5    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 09:53:50 AM    6    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+> 09:53:50 AM    7    0.00    0.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00   99.00
+> 
+> 
+> Even though I don't think this is an actual problem, it is a bit
+> confusing that you get 100% iowait while waiting without having IO
+> pending. So I do think the suggested patch is probably worthwhile
+> pursuing. I'll post it and hopefully have Andres test it too, if he's
+> available.
 
-commit 309a15cb16bb075da1c99d46fb457db6a1a2669e upstream
+Emmm, what's the definition of the "IO" state? Unless we can say what exactly
+it is there will be no end to adjustments, because I can easily argue that
+CQ waiting by itself is IO.
+Do we consider sleep(N) to be "IO"? I don't think the kernel uses io
+schedule around that, and so it'd be different from io_uring waiting for
+a timeout request. What about epoll waiting, etc.?
 
-To work around MMU-700 erratum 2812531 we need to ensure that certain
-sequences of commands cannot be issued without an intervening sync. In
-practice this falls out of our current command-batching machinery
-anyway - each batch only contains a single type of invalidation command,
-and ends with a sync. The only exception is when a batch is sufficiently
-large to need issuing across multiple command queue slots, wherein the
-earlier slots will not contain a sync and thus may in theory interleave
-with another batch being issued in parallel to create an affected
-sequence across the slot boundary.
-
-Since MMU-700 supports range invalidate commands and thus we will prefer
-to use them (which also happens to avoid conditions for other errata),
-I'm not entirely sure it's even possible for a single high-level
-invalidate call to generate a batch of more than 63 commands, but for
-the sake of robustness and documentation, wire up an option to enforce
-that a sync is always inserted for every slot issued.
-
-The other aspect is that the relative order of DVM commands cannot be
-controlled, so DVM cannot be used. Again that is already the status quo,
-but since we have at least defined ARM_SMMU_FEAT_BTM, we can explicitly
-disable it for documentation purposes even if it's not wired up anywhere
-yet.
-
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/330221cdfd0003cd51b6c04e7ff3566741ad8374.1683731256.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
----
- Documentation/arm64/silicon-errata.rst      |  4 +++
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 39 +++++++++++++++++++++
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  1 +
- 3 files changed, 44 insertions(+)
-
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index cd46e2b20a81..b0346968765d 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -143,6 +143,10 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | MMU-600         | #1076982        | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | MMU-700         | #2812531        | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
- +----------------+-----------------+-----------------+-----------------------------+
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 3fd83fb75722..410a683740ae 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -894,6 +894,12 @@ static void arm_smmu_cmdq_batch_add(struct arm_smmu_device *smmu,
- {
- 	int index;
- 
-+	if (cmds->num == CMDQ_BATCH_ENTRIES - 1 &&
-+	    (smmu->options & ARM_SMMU_OPT_CMDQ_FORCE_SYNC)) {
-+		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, true);
-+		cmds->num = 0;
-+	}
-+
- 	if (cmds->num == CMDQ_BATCH_ENTRIES) {
- 		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, false);
- 		cmds->num = 0;
-@@ -3429,6 +3435,39 @@ static int arm_smmu_device_reset(struct arm_smmu_device *smmu, bool bypass)
- 	return 0;
- }
- 
-+#define IIDR_IMPLEMENTER_ARM		0x43b
-+#define IIDR_PRODUCTID_ARM_MMU_600	0x483
-+#define IIDR_PRODUCTID_ARM_MMU_700	0x487
-+
-+static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
-+{
-+	u32 reg;
-+	unsigned int implementer, productid, variant, revision;
-+
-+	reg = readl_relaxed(smmu->base + ARM_SMMU_IIDR);
-+	implementer = FIELD_GET(IIDR_IMPLEMENTER, reg);
-+	productid = FIELD_GET(IIDR_PRODUCTID, reg);
-+	variant = FIELD_GET(IIDR_VARIANT, reg);
-+	revision = FIELD_GET(IIDR_REVISION, reg);
-+
-+	switch (implementer) {
-+	case IIDR_IMPLEMENTER_ARM:
-+		switch (productid) {
-+		case IIDR_PRODUCTID_ARM_MMU_600:
-+			/* Arm erratum 1076982 */
-+			if (variant == 0 && revision <= 2)
-+				smmu->features &= ~ARM_SMMU_FEAT_SEV;
-+			break;
-+		case IIDR_PRODUCTID_ARM_MMU_700:
-+			/* Arm erratum 2812531 */
-+			smmu->features &= ~ARM_SMMU_FEAT_BTM;
-+			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
-+			break;
-+		}
-+		break;
-+	}
-+}
-+
- static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
- {
- 	u32 reg;
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-index b574c58a3487..81dd6f151ac8 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -644,6 +644,7 @@ struct arm_smmu_device {
- #define ARM_SMMU_OPT_SKIP_PREFETCH	(1 << 0)
- #define ARM_SMMU_OPT_PAGE0_REGS_ONLY	(1 << 1)
- #define ARM_SMMU_OPT_MSIPOLL		(1 << 2)
-+#define ARM_SMMU_OPT_CMDQ_FORCE_SYNC	(1 << 3)
- 	u32				options;
- 
- 	struct arm_smmu_cmdq		cmdq;
 -- 
-2.25.1
-
+Pavel Begunkov
