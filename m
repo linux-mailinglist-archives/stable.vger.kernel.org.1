@@ -2,129 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F45376005B
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 22:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD193760066
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 22:20:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbjGXUQM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 16:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57698 "EHLO
+        id S229498AbjGXUUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 16:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjGXUQL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 16:16:11 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D25A7C7
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 13:16:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690229769; x=1721765769;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QXTogMEqj8WARXQRtzwBquYXFZkG/HEmBMFRqdRB1CU=;
-  b=ZAH3bOzHJoXNpnJB45Pq2Pft4ENZyA/0y2HIr0TKJarTDaRtZ6zFSdbc
-   1MPXYVQ7q8R8emixpZJce+bZEuyYHJ9CKgyXxKnc4XT1NxsWWRCNCLrfu
-   ODWXnGZLaa9k3sJ65teM2TbIqwpoBFqK2SPVaHImQEfp4mYDO4Xlj8Y0G
-   /s5V1kx5tszfqAS3f0zu7ojxnRIcpSTZWKoHeFF2ObEaEdhWHfULnyl8K
-   qnepxbAZW6CJYE3SA5T3/FSklbPkFhGtlTog+mPhhOVcPrVVXX1r7XU/E
-   bjTe57O1asCZrbTbcXT3dLwyFzuonG94F+bsrSEa9er2xJvaA8mYlnhOv
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="357543860"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="357543860"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 13:16:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="972404956"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="972404956"
-Received: from gionescu-mobl2.ger.corp.intel.com (HELO intel.com) ([10.252.34.175])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 13:16:08 -0700
-Date:   Mon, 24 Jul 2023 22:16:06 +0200
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc:     Intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        stable@vger.kernel.org
-Subject: Re: [Intel-gfx] [PATCH] drm/i915: Avoid GGTT flushing on non-GGTT
- paths of i915_vma_pin_iomap
-Message-ID: <ZL7cBvXCdtx3yzkB@ashyti-mobl2.lan>
-References: <20230724125633.1490543-1-tvrtko.ursulin@linux.intel.com>
+        with ESMTP id S229828AbjGXUUR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 16:20:17 -0400
+Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A91FE4F
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 13:20:15 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id O22OqB8tSbkI3O22OqHaKq; Mon, 24 Jul 2023 22:20:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1690230013;
+        bh=7SOasPmTr+wC/3XpFI8WDSX1IY2vReXQXw2azH3LDEo=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=mv7xkAJPpTHrCK4oXV8qa8vJHpFpSRFxYlR4rBweuf6rJkaqzJMnHKvfH8K1XvuZf
+         xiegceXcWbK9SCjHFRxyNuIBxpIu39XA2GQuyZ8NTK3+hoTMMh7wF2ftICFWkIlRr8
+         So+aKE1Zkh08Xny8MdF+NAQqf0xuUeOBmImmsRXfgnbC4nFbtk4nI6x2ip8NrTekcR
+         KorIb34OrhXtrGkT68Lt+ZggaAQ8I7CyYfSIDQ+QXwR0WL9Jgr22AZLe0xjSX2qtnW
+         AhzoUViE3Oiv3u1+vg22UxHVoPCmuDbfnIh14AS0yeE05u2/GNcY+YA4AqP7xLRoHE
+         KdYYQsFKH2nyQ==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 24 Jul 2023 22:20:13 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <e52e6a0b-205a-63cb-04dd-6f1c5f5c31f7@wanadoo.fr>
+Date:   Mon, 24 Jul 2023 22:20:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230724125633.1490543-1-tvrtko.ursulin@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.4.y] i2c: busses: i2c-nomadik: Remove a useless call in
+ the remove function
+Content-Language: fr, en-US
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>
+References: <2023072154-animal-dropkick-6a92@gregkh>
+ <62fe6800d41e04a4eb5adfa18a9e1090cbc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
+ <2023072303-ranking-wife-05ae@gregkh>
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <2023072303-ranking-wife-05ae@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Tvrtko,
 
-On Mon, Jul 24, 2023 at 01:56:33PM +0100, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> Commit 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is available")
-> added a code path which does not map via GGTT, but was still setting the
-> ggtt write bit, and so triggering the GGTT flushing.
-> 
-> Fix it by not setting that bit unless the GGTT mapping path was used, and
-> replace the flush with wmb() in i915_vma_flush_writes().
-> 
-> This also works for the i915_gem_object_pin_map path added in
-> d976521a995a ("drm/i915: extend i915_vma_pin_iomap()").
-> 
-> It is hard to say if the fix has any observable effect, given that the
-> write-combine buffer gets flushed from intel_gt_flush_ggtt_writes too, but
-> apart from code clarity, skipping the needless GGTT flushing could be
-> beneficial on platforms with non-coherent GGTT. (See the code flow in
-> intel_gt_flush_ggtt_writes().)
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Fixes: 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is available")
-> References: d976521a995a ("drm/i915: extend i915_vma_pin_iomap()")
-> Cc: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-> Cc: <stable@vger.kernel.org> # v5.14+
-> ---
->  drivers/gpu/drm/i915/i915_vma.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
-> index ffb425ba591c..f2b626cd2755 100644
-> --- a/drivers/gpu/drm/i915/i915_vma.c
-> +++ b/drivers/gpu/drm/i915/i915_vma.c
-> @@ -602,7 +602,9 @@ void __iomem *i915_vma_pin_iomap(struct i915_vma *vma)
->  	if (err)
->  		goto err_unpin;
->  
-> -	i915_vma_set_ggtt_write(vma);
-> +	if (!i915_gem_object_is_lmem(vma->obj) &&
-> +	    i915_vma_is_map_and_fenceable(vma))
-> +		i915_vma_set_ggtt_write(vma);
->  
->  	/* NB Access through the GTT requires the device to be awake. */
->  	return page_mask_bits(ptr);
-> @@ -617,6 +619,8 @@ void i915_vma_flush_writes(struct i915_vma *vma)
->  {
->  	if (i915_vma_unset_ggtt_write(vma))
->  		intel_gt_flush_ggtt_writes(vma->vm->gt);
-> +	else
-> +		wmb(); /* Just flush the write-combine buffer. */
+Le 23/07/2023 à 22:34, Greg KH a écrit :
+> On Fri, Jul 21, 2023 at 07:47:41PM +0200, Christophe JAILLET wrote:
+>> Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
+>> driver"), there is no more request_mem_region() call in this driver.
+>>
+>> So remove the release_mem_region() call from the remove function which is
+>> likely a left over.
+>>
+>> Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
+>> Cc: <stable@vger.kernel.org> # v3.6+
+>> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+>> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>> The patch below that should fix a merge conflict related to commit
+>> 9c7174db4cdd1 ("i2c: nomadik: Use devm_clk_get_enabled()") has been
+>> HAND MODIFIED.
+> I don't understand, that commit is not in the stable trees.  What do you
+> mean by "hand modified"?
 
-is flush the right word? Can you expand more the explanation in
-this comment and why this point of synchronization is needed
-here? (I am even wondering if it is really needed).
 
-Anyway, it looks good:
+I mean that I took the file initially generated by git format-patch when 
+I sent the patch against -next.
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> 
+I updated the diff context from this file and left everything else as-is.
+I only added some (apparently unclear :) ) context below the ---.
 
-Andi
 
->  }
->  
->  void i915_vma_unpin_iomap(struct i915_vma *vma)
-> -- 
-> 2.39.2
+Yes, precisely.
+My patch has been sent *after* 9c7174db4cdd1 in -next, and it depends on it.
+
+The proposed modified patch for backport tries to deal with this missing 
+part in older branches.
+
+If 9c7174db4cdd1 was also backported, I think that my patch would apply 
+cleanly.
+
+
+>> I hope it is fine, but is provided as-is. Especially line numbers should be
+>> wrong, but 'patch' should be able to deal with it. (sorry if it does not apply)
+>>
+>> I guess that it should also apply to all previous branches.
+>>
+>> I've left the commit description as it was. Not sure what to do with A-b and R-b
+>> tags.
+> Why isn't this needed in Linus's tree?
+
+
+I never said that.
+
+It is one of the first time, if not the first one, I update a patch to 
+ease backport.
+I only sent something for 6.4.y, but it must be valid for other branches 
+as well. (i.e. # v3.6+)
+
+The way I generated this backport proposal is likely not the correct 
+approach. I choose to hand modify the initial git format-patch output.
+I think that I should have switched to the expected branch and apply a 
+clean process from there.
+
+
+Personalty, I don't really care if backported or not.
+I don't use these older kernel. I don't use this hardware (AFAIK :)).
+I proposed an updated patch to help, should it be helpful for you or any 
+one else.
+
+If I did it wrong, sorry for the noise.
+
+
+No hard feeling, but I won't update this backport proposal, should 
+something need to be fixed.
+
+I consider I've already done my part of the job.
+
+
+CJ
+
+
+>
+> confused,
+>
+> greg k-h
