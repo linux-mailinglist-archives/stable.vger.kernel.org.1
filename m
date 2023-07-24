@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FFEE75EB49
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FB7A75EB4D
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 08:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230224AbjGXGRF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 02:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51696 "EHLO
+        id S230075AbjGXGRG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 02:17:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230075AbjGXGRF (ORCPT
+        with ESMTP id S230114AbjGXGRF (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 02:17:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F78D1AE
-        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:16:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4558D1B8
+        for <stable@vger.kernel.org>; Sun, 23 Jul 2023 23:17:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB3A060F09
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFA9C433C9;
-        Mon, 24 Jul 2023 06:16:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D336D60F0C
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 06:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26F4C433C7;
+        Mon, 24 Jul 2023 06:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690179416;
-        bh=F0bsPL+2LN+ezVpHK+7xoTaWViCrEFzRtVERvxsi2Yk=;
+        s=korg; t=1690179419;
+        bh=NT3rseCUkTk1tu0PAmMVNsOvSYPa0mD13CskpPBsbbM=;
         h=Subject:To:Cc:From:Date:From;
-        b=aBs8Nq7PiAXciLbsJfFUnKvfab+8KbGdN2LymTseMuBNYE2SEkuSXVjcqmISagprb
-         lXL+lmLbfoB9Wr4o738QmBvFEf6zE2AJltyxMTPbdmn3Vx/93JGY/+PODVlHb5nW2A
-         8g8WvaYcKxxEosrhew9hQa1+VP5/Wl7gCdve43Xo=
-Subject: FAILED: patch "[PATCH] jbd2: recheck chechpointing non-dirty buffer" failed to apply to 5.10-stable tree
+        b=Ef0t1Bmf0S8Cw6XINV3QSyGHzcqU1dNSyYAlMSquym0muvVrMhCF0vWJyA5NYkyV5
+         Si1DLL8t1GE1InxdBSpnJWQD2i9xWOdegv42NW6IlQ+02rVzRbk3D9kMYKONcGVRK4
+         /XQw3j6hBSZ0xnXTfEwOUvWa1AzGfJsbyCUlcr7U=
+Subject: FAILED: patch "[PATCH] jbd2: recheck chechpointing non-dirty buffer" failed to apply to 5.4-stable tree
 To:     yi.zhang@huawei.com, chengzhihao1@huawei.com, jack@suse.cz,
         tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 24 Jul 2023 08:16:52 +0200
-Message-ID: <2023072450-contour-slick-c3db@gregkh>
+Date:   Mon, 24 Jul 2023 08:16:56 +0200
+Message-ID: <2023072456-thermal-relieving-1b68@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,25 +50,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x c2d6fd9d6f35079f1669f0100f05b46708c74b7f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072450-contour-slick-c3db@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072456-thermal-relieving-1b68@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 c2d6fd9d6f35 ("jbd2: recheck chechpointing non-dirty buffer")
 4ba3fcdde7e3 ("jbd2,ext4: add a shrinker to release checkpointed buffers")
 214eb5a4d8a2 ("jbd2: remove redundant buffer io error checks")
+2bf31d94423c ("jbd2: fix kernel-doc markups")
+60ed633f51d0 ("jbd2: fix incorrect code style")
 
 thanks,
 
