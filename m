@@ -2,58 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F64A7600DE
-	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 23:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8713760101
+	for <lists+stable@lfdr.de>; Mon, 24 Jul 2023 23:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbjGXVGm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 24 Jul 2023 17:06:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45868 "EHLO
+        id S229703AbjGXVRy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 24 Jul 2023 17:17:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbjGXVGl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 17:06:41 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A64110FA;
-        Mon, 24 Jul 2023 14:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=N3iwInQIj2/YuIQ+ANXYVcDoWVmU02nNRa9+HoqMVvY=; b=RdAOdRnniSR+QFsDIxcoqreHNz
-        6VPUNtl1Gh9KWpjlWzq1hkv8HtV0ipYtzYgely3faXRA9Kple1CVCOhcOD30CxudcKOhcnZfGwwWu
-        ZoAw1CLita25/SRcaY1H3+FEcQY3SU7+bd8qdJVX0cWAFE7QZ6u2vo17GH8Wubvkc85ourRXucxKg
-        7T18Oa+uqqimA6wSQezdIfOexFhQoLokLhpgO/Nywp6ZCaFYU/enEouXitV8yOtNSbeG3GLf6QaNs
-        bEY1SQ4C9ZPhuTl9K+gvF8WWzPV6qXgIsSOm8uFTicxAoXnboU951grBff5IQTPxHxKD1gZd0LJQQ
-        3MaQSe8Q==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qO2lC-004oHb-3Y; Mon, 24 Jul 2023 21:06:30 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A8F8130036B;
-        Mon, 24 Jul 2023 23:06:29 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 9448726688798; Mon, 24 Jul 2023 23:06:29 +0200 (CEST)
-Date:   Mon, 24 Jul 2023 23:06:29 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Michael Kelley <mikelley@microsoft.com>
-Cc:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] x86/hyperv: Disable IBT when hypercall page lacks
- ENDBR instruction
-Message-ID: <20230724210629.GF3745454@hirez.programming.kicks-ass.net>
-References: <1690001476-98594-1-git-send-email-mikelley@microsoft.com>
+        with ESMTP id S229461AbjGXVRw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 24 Jul 2023 17:17:52 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DB91987
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 14:17:50 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <rsc@pengutronix.de>)
+        id 1qO2vw-0007nO-2D; Mon, 24 Jul 2023 23:17:36 +0200
+Received: from rsc by pty.hi.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <rsc@pengutronix.de>)
+        id 1qO2vt-009q1A-8O; Mon, 24 Jul 2023 23:17:33 +0200
+Date:   Mon, 24 Jul 2023 23:17:33 +0200
+From:   Robert Schwebel <r.schwebel@pengutronix.de>
+To:     Eric Van Hensbergen <ericvh@kernel.org>
+Cc:     Latchesar Ionkov <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Christian Schoenebeck <linux_oss@crudebyte.com>,
+        v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH v3 0/4] fs/9p: fix mmap regression
+Message-ID: <ZL7qbTU7D1mAJePi@pengutronix.de>
+References: <20230716-fixes-overly-restrictive-mmap-v3-0-769791f474fd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1690001476-98594-1-git-send-email-mikelley@microsoft.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20230716-fixes-overly-restrictive-mmap-v3-0-769791f474fd@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: rsc@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,74 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 09:51:16PM -0700, Michael Kelley wrote:
-> On hardware that supports Indirect Branch Tracking (IBT), Hyper-V VMs
-> with ConfigVersion 9.3 or later support IBT in the guest. However,
-> current versions of Hyper-V have a bug in that there's not an ENDBR64
-> instruction at the beginning of the hypercall page. Since hypercalls are
-> made with an indirect call to the hypercall page, all hypercall attempts
-> fail with an exception and Linux panics.
-> 
-> A Hyper-V fix is in progress to add ENDBR64. But guard against the Linux
-> panic by clearing X86_FEATURE_IBT if the hypercall page doesn't start
-> with ENDBR. The VM will boot and run without IBT.
-> 
-> If future Linux 32-bit kernels were to support IBT, additional hypercall
-> page hackery would be needed to make IBT work for such kernels in a
-> Hyper-V VM.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Hi Eric,
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
+On Wed, Jul 19, 2023 at 03:17:04PM +0000, Eric Van Hensbergen wrote:
+> This series attempts to fix a reported exception with mmap
+> on newer kernels.
+>
+> Fixes: 1543b4c5071c ("fs/9p: remove writeback fid and fix per-file modes")
+> Link: https://lore.kernel.org/v9fs/ZK25XZ%2BGpR3KHIB%2F@pengutronix.de/
+> Reported-by: Robert Schwebel <r.schwebel@pengutronix.de>
+> Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 > ---
-> 
+> Changes in v3:
+> - Clarify debug print to read-only mmap mode versus no mmap mode in
+>   v9fs_file_mmap
+> - Fix suggested regression tags and propagate across series
+> - Link to v2: https://lore.kernel.org/r/20230716-fixes-overly-restrictive-mmap-v2-0-147d6b93f699@kernel.org
+>
 > Changes in v2:
-> * Use pr_warn() instead of pr_info() [Peter Zijlstra]
-> 
->  arch/x86/hyperv/hv_init.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
-> index 6c04b52..5cbee24 100644
-> --- a/arch/x86/hyperv/hv_init.c
-> +++ b/arch/x86/hyperv/hv_init.c
-> @@ -14,6 +14,7 @@
->  #include <asm/apic.h>
->  #include <asm/desc.h>
->  #include <asm/sev.h>
-> +#include <asm/ibt.h>
->  #include <asm/hypervisor.h>
->  #include <asm/hyperv-tlfs.h>
->  #include <asm/mshyperv.h>
-> @@ -472,6 +473,26 @@ void __init hyperv_init(void)
->  	}
->  
->  	/*
-> +	 * Some versions of Hyper-V that provide IBT in guest VMs have a bug
-> +	 * in that there's no ENDBR64 instruction at the entry to the
-> +	 * hypercall page. Because hypercalls are invoked via an indirect call
-> +	 * to the hypercall page, all hypercall attempts fail when IBT is
-> +	 * enabled, and Linux panics. For such buggy versions, disable IBT.
-> +	 *
-> +	 * Fixed versions of Hyper-V always provide ENDBR64 on the hypercall
-> +	 * page, so if future Linux kernel versions enable IBT for 32-bit
-> +	 * builds, additional hypercall page hackery will be required here
-> +	 * to provide an ENDBR32.
-> +	 */
-> +#ifdef CONFIG_X86_KERNEL_IBT
-> +	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
-> +	    *(u32 *)hv_hypercall_pg != gen_endbr()) {
-> +		setup_clear_cpu_cap(X86_FEATURE_IBT);
-> +		pr_warn("Hyper-V: Disabling IBT because of Hyper-V bug\n");
-> +	}
-> +#endif
-> +
-> +	/*
->  	 * hyperv_init() is called before LAPIC is initialized: see
->  	 * apic_intr_mode_init() -> x86_platform.apic_post_init() and
->  	 * apic_bsp_setup() -> setup_local_APIC(). The direct-mode STIMER
-> -- 
-> 1.8.3.1
-> 
+> - fix requested changes in commit messages
+> - add patch to remove unnecessary invalidate_inode_pages in mmap readonly path
+> - Link to v1: https://lore.kernel.org/r/20230716-fixes-overly-restrictive-mmap-v1-0-0683b283b932@kernel.org
+
+I've tested this patch series with my qemu setup and it resolves the
+issue. Thanks for taking care!
+
+Tested-by: Robert Schwebel <r.schwebel@pengutronix.de>
+
+----------8<----------
+
+rsc@dude05:~/work/DistroKit$ configs/platform-v7a/run
+Forwarding SSH port 127.0.0.1:24910 -> qemu:22
+[    0.000000] L2C: platform modifies aux control register: 0x02020000 -> 0x02420000
+[    0.000000] L2C: DT/platform modifies aux control register: 0x02020000 -> 0x02420000
+[    0.004896] smp_twd: clock not found -2
+[    0.726397] simple-pm-bus bus@40000000:motherboard-bus@40000000:iofpga@7,00000000: Failed to create device link (0x180) with dcc:tcrefclk
+[    0.742338] simple-pm-bus bus@40000000:motherboard-bus@40000000:iofpga@7,00000000: Failed to create device link (0x180) with dcc:tcrefclk
+[    0.809910] physmap-flash 48000000.psram: map_probe failed
+[    1.201306] 9pnet_virtio: no channels available for device root
+
+ ____                        _                   _
+|  _ \ ___ _ __   __ _ _   _| |_ _ __ ___  _ __ (_)_  __
+| |_) / _ \ '_ \ / _` | | | | __| '__/ _ \| '_ \| \ \/ /
+|  __/  __/ | | | (_| | |_| | |_| | | (_) | | | | |>  <
+|_|   \___|_| |_|\__, |\__,_|\__|_|  \___/|_| |_|_/_/\_\
+                 |___/
+
+ ____  _     _             _  ___ _
+|  _ \(_)___| |_ _ __ ___ | |/ (_) |_
+| | | | / __| __| '__/ _ \| ' /| | __|
+| |_| | \__ \ |_| | | (_) | . \| | |_
+|____/|_|___/\__|_|  \___/|_|\_\_|\__|
+
+
+OSELAS(R)-DistroKit-2019.12.0-00429-g57ffae760eb9 / v7a-2019.12.0-00429-g57ffae760eb9
+ptxdist-2023.07.1/2023-07-11T19:56:50+0200
+
+DistroKit login: root
+root@DistroKit:~ mount / -o remount,rw
+root@DistroKit:~ ldconfig
+root@DistroKit:~ uname -a
+Linux DistroKit 6.4.0 #1 SMP PREEMPT 2023-07-01T00:00:00+00:00 armv7l GNU/Linux
+
+----------8<----------
+
+rsc
+-- 
+Pengutronix e.K.                           | Dipl.-Ing. Robert Schwebel  |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
