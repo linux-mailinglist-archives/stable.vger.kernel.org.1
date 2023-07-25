@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3D27615E0
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A19C761334
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233479AbjGYLeG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41232 "EHLO
+        id S234094AbjGYLIx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234701AbjGYLeE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9719810C7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:02 -0700 (PDT)
+        with ESMTP id S234096AbjGYLIj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914171FC4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 243906169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED87C433C7;
-        Tue, 25 Jul 2023 11:34:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 177A761648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C98C433C8;
+        Tue, 25 Jul 2023 11:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284841;
-        bh=+ARJS2fRf3jq6v4YN1dAH/bW3KjrxUoS3Vmx7GvoMn0=;
+        s=korg; t=1690283222;
+        bh=haXr1Mj2DtYcfgySi85B1H6aVU+MDnD5K/bLHinuoE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VL5JKlttvuTRS65tfePrUSc9cmH0S6IH6LjPUbCbnizShGYu6lXY8k8iEYEdaTs6y
-         0I409oEG4aBplrteJ1AcrSq61njKhFtcikAFPhiVS+54Gf1QdBrzB3Edd/mem9fzmh
-         sijrREcCMWW4coFexHym5vljKz1E3xCX2qFnFF8I=
+        b=vPSMcM1ozOWj6RQNZTp4sQlKxP6vq3+bhi/jZVI6oitMZq9HyLWJinWxZY1I1gnWN
+         vNyoQGFAfUYboChK/HtW41H9xkS9kvcJ0E+UWcUrtqC5f9RSOwd4Qh+Gv0zZz1fkUT
+         T0N/dlt3azzLeTgm9MOdRYRc7XMoiy6FjocJ0Vfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Roee Goldfiner <roee.h.goldfiner@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 471/509] wifi: iwlwifi: mvm: avoid baid size integer overflow
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>, Alex Hung <alex.hung@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 182/183] drm/amd/display: fix linux dp link lost handled only one time
 Date:   Tue, 25 Jul 2023 12:46:50 +0200
-Message-ID: <20230725104615.323447943@linuxfoundation.org>
+Message-ID: <20230725104514.280632535@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,47 +57,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 1a528ab1da324d078ec60283c34c17848580df24 ]
+commit e322843e5e33e72ff218d661f3d15ff9c9f2f1b5 upstream.
 
-Roee reported various hard-to-debug crashes with pings in
-EHT aggregation scenarios. Enabling KASAN showed that we
-access the BAID allocation out of bounds, and looking at
-the code a bit shows that since the reorder buffer entry
-(struct iwl_mvm_reorder_buf_entry) is 128 bytes if debug
-such as lockdep is enabled, then staring from an agg size
-512 we overflow the size calculation, and allocate a much
-smaller structure than we should, causing slab corruption
-once we initialize this.
+[Why]
+linux amdgpu defer handle link lost irq. dm add handle
+request to irq work queue for the first irq of link lost.
+if link training fails for link lost handle, link will not
+be enabled anymore.
 
-Fix this by simply using u32 instead of u16.
+[How]
+allow adding handle request of link lost to work queue
+before running dp link training for link lost.
 
-Reported-by: Roee Goldfiner <roee.h.goldfiner@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230620125813.f428c856030d.I2c2bb808e945adb71bc15f5b2bac2d8957ea90eb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ Modified due to not having
+  c5a31f178e352 ("drm/amd/display: move dp irq handler functions from dc_link_dp to link_dp_irq_handler")
+  until kernel 6.3-rc1.]
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   24 +++++++++++++++++++---
+ drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c  |    2 -
+ drivers/gpu/drm/amd/display/dc/inc/dc_link_dp.h   |    4 +++
+ 3 files changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 09f870c48a4f6..141581fa74c82 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -2590,7 +2590,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1346,10 +1346,28 @@ static void dm_handle_hpd_rx_offload_wor
+ 	} else if ((dc_link->connector_signal != SIGNAL_TYPE_EDP) &&
+ 			hpd_rx_irq_check_link_loss_status(dc_link, &offload_work->data) &&
+ 			dc_link_dp_allow_hpd_rx_irq(dc_link)) {
+-		dc_link_dp_handle_link_loss(dc_link);
++		/* offload_work->data is from handle_hpd_rx_irq->
++		 * schedule_hpd_rx_offload_work.this is defer handle
++		 * for hpd short pulse. upon here, link status may be
++		 * changed, need get latest link status from dpcd
++		 * registers. if link status is good, skip run link
++		 * training again.
++		 */
++		union hpd_irq_data irq_data;
++
++		memset(&irq_data, 0, sizeof(irq_data));
++
++		/* before dc_link_dp_handle_link_loss, allow new link lost handle
++		 * request be added to work queue if link lost at end of dc_link_
++		 * dp_handle_link_loss
++		 */
+ 		spin_lock_irqsave(&offload_work->offload_wq->offload_lock, flags);
+ 		offload_work->offload_wq->is_handling_link_loss = false;
+ 		spin_unlock_irqrestore(&offload_work->offload_wq->offload_lock, flags);
++
++		if ((read_hpd_rx_irq_data(dc_link, &irq_data) == DC_OK) &&
++			hpd_rx_irq_check_link_loss_status(dc_link, &irq_data))
++			dc_link_dp_handle_link_loss(dc_link);
  	}
+ 	mutex_unlock(&adev->dm.dc_lock);
  
- 	if (iwl_mvm_has_new_rx_api(mvm) && start) {
--		u16 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
-+		u32 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
+@@ -3324,7 +3342,7 @@ static void handle_hpd_rx_irq(void *para
+ 	union hpd_irq_data hpd_irq_data;
+ 	bool link_loss = false;
+ 	bool has_left_work = false;
+-	int idx = aconnector->base.index;
++	int idx = dc_link->link_index;
+ 	struct hpd_rx_irq_offload_work_queue *offload_wq = &adev->dm.hpd_rx_offload_wq[idx];
  
- 		/* sparse doesn't like the __align() so don't check */
- #ifndef __CHECKER__
--- 
-2.39.2
-
+ 	memset(&hpd_irq_data, 0, sizeof(hpd_irq_data));
+@@ -3466,7 +3484,7 @@ static void register_hpd_handlers(struct
+ 					(void *) aconnector);
+ 
+ 			if (adev->dm.hpd_rx_offload_wq)
+-				adev->dm.hpd_rx_offload_wq[connector->index].aconnector =
++				adev->dm.hpd_rx_offload_wq[dc_link->link_index].aconnector =
+ 					aconnector;
+ 		}
+ 	}
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
+@@ -3115,7 +3115,7 @@ struct dc_link_settings dp_get_max_link_
+ 	return max_link_cap;
+ }
+ 
+-static enum dc_status read_hpd_rx_irq_data(
++enum dc_status read_hpd_rx_irq_data(
+ 	struct dc_link *link,
+ 	union hpd_irq_data *irq_data)
+ {
+--- a/drivers/gpu/drm/amd/display/dc/inc/dc_link_dp.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/dc_link_dp.h
+@@ -82,6 +82,10 @@ bool perform_link_training_with_retries(
+ 	enum signal_type signal,
+ 	bool do_fallback);
+ 
++enum dc_status read_hpd_rx_irq_data(
++	struct dc_link *link,
++	union hpd_irq_data *irq_data);
++
+ bool hpd_rx_irq_check_link_loss_status(
+ 	struct dc_link *link,
+ 	union hpd_irq_data *hpd_irq_dpcd_data);
 
 
