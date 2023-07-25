@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB0137614F9
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FCC6761655
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234533AbjGYLYZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:24:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33770 "EHLO
+        id S234912AbjGYLiY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234536AbjGYLYW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:22 -0400
+        with ESMTP id S235022AbjGYLiL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF4F31BD1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26209A0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C43D61600
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D273C433C8;
-        Tue, 25 Jul 2023 11:24:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B717A616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7404C433C7;
+        Tue, 25 Jul 2023 11:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284257;
-        bh=NUOwHOtiZLKlkVZLFaYQ97k5Qe7FbI07YlCrhd9ol4Y=;
+        s=korg; t=1690285086;
+        bh=o29lUjrMCrDA3+3uQSIRUPsbO846uYb8Y5O1/VYAQdU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y8RdXI5WFcDOtQzeh318bupSc6S4xjxYeWf+81mMM0SR3RyHKQ6Nmw684GI9HUBc6
-         Qim5uyoVvvH8Rwolp3JIAeEu8dPaQIFJLUeo9mGjjA4CoYknOo9wwFAnkJ3uMtT7LO
-         7SmG/vkPF5dTuS50IUSDMnY8KUWXvY6h7NkYvSw4=
+        b=jvXdCD1k/hYFCCs89mfaKj9j0zbyS/m52X7+LYPaHaiQH+q/d5foYREajZZax+len
+         bikqhxdvfP3+DqBKO7jelMD6c/2bhAM48szXZc0VX8LELJ91Ea3QSsaORl00zAgWpe
+         1VAsKfAFfcUvsnswOOxk+w8Wjt2ELxujXrs/0JQA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 292/509] autofs: use flexible array in ioctl structure
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 078/313] arm64: dts: qcom: msm8916: correct camss unit address
 Date:   Tue, 25 Jul 2023 12:43:51 +0200
-Message-ID: <20230725104607.109897284@linuxfoundation.org>
+Message-ID: <20230725104524.324064708@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,80 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit e910c8e3aa02dc456e2f4c32cb479523c326b534 upstream.
+[ Upstream commit 48798d992ce276cf0d57bf75318daf8eabd02aa4 ]
 
-Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") introduced a warning
-for the autofs_dev_ioctl structure:
+Match unit-address to reg entry to fix dtbs W=1 warnings:
 
-In function 'check_name',
-    inlined from 'validate_dev_ioctl' at fs/autofs/dev-ioctl.c:131:9,
-    inlined from '_autofs_dev_ioctl' at fs/autofs/dev-ioctl.c:624:8:
-fs/autofs/dev-ioctl.c:33:14: error: 'strchr' reading 1 or more bytes from a region of size 0 [-Werror=stringop-overread]
-   33 |         if (!strchr(name, '/'))
-      |              ^~~~~~~~~~~~~~~~~
-In file included from include/linux/auto_dev-ioctl.h:10,
-                 from fs/autofs/autofs_i.h:10,
-                 from fs/autofs/dev-ioctl.c:14:
-include/uapi/linux/auto_dev-ioctl.h: In function '_autofs_dev_ioctl':
-include/uapi/linux/auto_dev-ioctl.h:112:14: note: source object 'path' of size 0
-  112 |         char path[0];
-      |              ^~~~
+  Warning (simple_bus_reg): /soc@0/camss@1b00000: simple-bus unit address format error, expected "1b0ac00"
 
-This is easily fixed by changing the gnu 0-length array into a c99
-flexible array. Since this is a uapi structure, we have to be careful
-about possible regressions but this one should be fine as they are
-equivalent here. While it would break building with ancient gcc versions
-that predate c99, it helps building with --std=c99 and -Wpedantic builds
-in user space, as well as non-gnu compilers. This means we probably
-also want it fixed in stable kernels.
-
-Cc: stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230523081944.581710-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 58f479f90a7c ("arm64: dts: qcom: msm8916: Add CAMSS support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230419211856.79332-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/autofs-mount-control.rst |    2 +-
- Documentation/filesystems/autofs.rst               |    2 +-
- include/uapi/linux/auto_dev-ioctl.h                |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/filesystems/autofs-mount-control.rst
-+++ b/Documentation/filesystems/autofs-mount-control.rst
-@@ -196,7 +196,7 @@ information and return operation results
- 		    struct args_ismountpoint	ismountpoint;
- 	    };
- 
--	    char path[0];
-+	    char path[];
-     };
- 
- The ioctlfd field is a mount point file descriptor of an autofs mount
---- a/Documentation/filesystems/autofs.rst
-+++ b/Documentation/filesystems/autofs.rst
-@@ -467,7 +467,7 @@ Each ioctl is passed a pointer to an `au
- 			struct args_ismountpoint	ismountpoint;
+diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+index 301c1c467c0b7..bf40500adef73 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1451,7 +1451,7 @@ video-encoder {
+ 			};
  		};
  
--                char path[0];
-+                char path[];
-         };
- 
- For the **OPEN_MOUNT** and **IS_MOUNTPOINT** commands, the target
---- a/include/uapi/linux/auto_dev-ioctl.h
-+++ b/include/uapi/linux/auto_dev-ioctl.h
-@@ -109,7 +109,7 @@ struct autofs_dev_ioctl {
- 		struct args_ismountpoint	ismountpoint;
- 	};
- 
--	char path[0];
-+	char path[];
- };
- 
- static inline void init_autofs_dev_ioctl(struct autofs_dev_ioctl *in)
+-		camss: camss@1b00000 {
++		camss: camss@1b0ac00 {
+ 			compatible = "qcom,msm8916-camss";
+ 			reg = <0x1b0ac00 0x200>,
+ 				<0x1b00030 0x4>,
+-- 
+2.39.2
+
 
 
