@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE73761395
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2746876176C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234206AbjGYLLs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49780 "EHLO
+        id S232103AbjGYLsj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234180AbjGYLLa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A46B9D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:51 -0700 (PDT)
+        with ESMTP id S232643AbjGYLrq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5F510EF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 011436166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C67C433C7;
-        Tue, 25 Jul 2023 11:10:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8271A616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920BDC433C7;
+        Tue, 25 Jul 2023 11:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283450;
-        bh=sHtE15PecU2QpaCoVfQN+PYWLcVMakYcm1Moz9PpAqY=;
+        s=korg; t=1690285664;
+        bh=tBUw1YMVL1zmNCC5GW5lJsJ5CUD8QGP8X06S7dr0oUo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a02oYUeHd90VHk7weGDY7UPA75vuNLnWX1HuoNyoOuUpBEVyf1ACDcimp6h1304tW
-         GAGvyZpY2QNTTcv6k7s+PO3QwmuMgMkukCn3n7vcMg8a04oFTb+6Gd/PsF7+NwPgu9
-         y+m1XvABFiFLjR+c1FF6ibkiIp21eoB0EWGyyKRc=
+        b=J4qlZmyPuXntoYkf8JYY7bqCscccZHGNDiVsDT2y5DkbgQYxjv71MrOZ0z3ZH8w3U
+         gVvcbfWCBr4nDyunRKCkSCt1QXmMvg2f56ijTSU3/+MGVePSRb0MpAzJsQ+0r3bnVB
+         WLy9uzxjGxJsFNr8rxk7eui/8tCykEk3/Truw2oA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 59/78] fbdev: au1200fb: Fix missing IRQ check in au1200fb_drv_probe
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.4 257/313] firmware: stratix10-svc: Fix a potential resource leak in svc_create_memory_pool()
 Date:   Tue, 25 Jul 2023 12:46:50 +0200
-Message-ID: <20230725104453.546457371@linuxfoundation.org>
+Message-ID: <20230725104532.171295336@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,40 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 4e88761f5f8c7869f15a2046b1a1116f4fab4ac8 ]
+commit 1995f15590ca222f91193ed11461862b450abfd6 upstream.
 
-This func misses checking for platform_get_irq()'s call and may passes the
-negative error codes to request_irq(), which takes unsigned IRQ #,
-causing it to fail with -EINVAL, overriding an original error code.
+svc_create_memory_pool() is only called from stratix10_svc_drv_probe().
+Most of resources in the probe are managed, but not this memremap() call.
 
-Fix this by stop calling request_irq() with invalid IRQ #s.
+There is also no memunmap() call in the file.
 
-Fixes: 1630d85a8312 ("au1200fb: fix hardcoded IRQ")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So switch to devm_memremap() to avoid a resource leak.
+
+Cc: stable@vger.kernel.org
+Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
+Link: https://lore.kernel.org/all/783e9dfbba34e28505c9efa8bba41f97fd0fa1dc.1686109400.git.christophe.jaillet@wanadoo.fr/
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Message-ID: <20230613211521.16366-1-dinguyen@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/au1200fb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/stratix10-svc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/au1200fb.c b/drivers/video/fbdev/au1200fb.c
-index a8a0a448cdb5e..80f54111baec1 100644
---- a/drivers/video/fbdev/au1200fb.c
-+++ b/drivers/video/fbdev/au1200fb.c
-@@ -1732,6 +1732,9 @@ static int au1200fb_drv_probe(struct platform_device *dev)
- 
- 	/* Now hook interrupt too */
- 	irq = platform_get_irq(dev, 0);
-+	if (irq < 0)
-+		return irq;
-+
- 	ret = request_irq(irq, au1200fb_handle_irq,
- 			  IRQF_SHARED, "lcd", (void *)dev);
- 	if (ret) {
--- 
-2.39.2
-
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -615,7 +615,7 @@ svc_create_memory_pool(struct platform_d
+ 	end = rounddown(sh_memory->addr + sh_memory->size, PAGE_SIZE);
+ 	paddr = begin;
+ 	size = end - begin;
+-	va = memremap(paddr, size, MEMREMAP_WC);
++	va = devm_memremap(dev, paddr, size, MEMREMAP_WC);
+ 	if (!va) {
+ 		dev_err(dev, "fail to remap shared memory\n");
+ 		return ERR_PTR(-EINVAL);
 
 
