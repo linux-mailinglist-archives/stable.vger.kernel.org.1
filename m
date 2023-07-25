@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF99976132A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A56C976135B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234030AbjGYLIc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
+        id S234100AbjGYLKN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:10:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234160AbjGYLIH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:07 -0400
+        with ESMTP id S234106AbjGYLJm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76AEB421F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B784227
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 901E16166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B557C433C8;
-        Tue, 25 Jul 2023 11:06:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E506A61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01816C433C7;
+        Tue, 25 Jul 2023 11:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283203;
-        bh=+aX+WgJUWBiAxUEZ25vKOliyOdFk8ZBC2vdGpLxhBKA=;
+        s=korg; t=1690283322;
+        bh=Twd8ayarVB1qE1t1WLkgVnSABqdKRoM0XPuE0blvbhk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rFc4XXKVy88M5K7Vp15YEBtw3zIXMXiJdeT0+hdmzJDM9m5YzPgSrWmh2JyNusikj
-         SZS8DFqDiRGkuluLgaq/KlzwtzfvUUhBgPRgxQlCi/t9fuKtlWjLA2vOJrV/qcxZIi
-         NMmARaS4/Th98F5pihXMRgZd1edOmmQuRUUNJnj0=
+        b=BQyQ5HgmyoTBH3+ifBg9hJkxq92n6yw82dicavsLo6EQKd81vv5Gj7+FE2ZVEojWF
+         0U5Aq3v805oDfg7JUOa9yOb2ikaMD1d+/MhmlAh8xAI2Y94q3c0iQTYcKzEAHJCYw3
+         9w7pFzLVM2Hv4btP1ncWmkI9vlDwWMWaQntuAcZ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/183] tcp: annotate data-races around tp->linger2
+Subject: [PATCH 5.15 35/78] [PATCH AUTOSEL 4.14 7/9] MIPS: dec: prom: Address -Warray-bounds warning
 Date:   Tue, 25 Jul 2023 12:46:26 +0200
-Message-ID: <20230725104513.510441748@linuxfoundation.org>
+Message-ID: <20230725104452.668819435@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+[ Upstream commit 7b191b9b55df2a844bd32d1d380f47a7df1c2896 ]
 
-[ Upstream commit 9df5335ca974e688389c875546e5819778a80d59 ]
+Zero-length arrays are deprecated, and we are replacing them with flexible
+array members instead. So, replace zero-length array with flexible-array
+member in struct memmap.
 
-do_tcp_getsockopt() reads tp->linger2 while another cpu
-might change its value.
+Address the following warning found after building (with GCC-13) mips64
+with decstation_64_defconfig:
+In function 'rex_setup_memory_region',
+    inlined from 'prom_meminit' at arch/mips/dec/prom/memory.c:91:3:
+arch/mips/dec/prom/memory.c:72:31: error: array subscript i is outside array bounds of 'unsigned char[0]' [-Werror=array-bounds=]
+   72 |                 if (bm->bitmap[i] == 0xff)
+      |                     ~~~~~~~~~~^~~
+In file included from arch/mips/dec/prom/memory.c:16:
+./arch/mips/include/asm/dec/prom.h: In function 'prom_meminit':
+./arch/mips/include/asm/dec/prom.h:73:23: note: while referencing 'bitmap'
+   73 |         unsigned char bitmap[0];
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This helps with the ongoing efforts to globally enable -Warray-bounds.
+
+This results in no differences in binary output.
+
+Link: https://github.com/KSPP/linux/issues/79
+Link: https://github.com/KSPP/linux/issues/323
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/dec/prom.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index ffa9717293358..363535b6ece83 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3691,11 +3691,11 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+--- a/arch/mips/include/asm/dec/prom.h
++++ b/arch/mips/include/asm/dec/prom.h
+@@ -70,7 +70,7 @@ static inline bool prom_is_rex(u32 magic
+  */
+ typedef struct {
+ 	int pagesize;
+-	unsigned char bitmap[0];
++	unsigned char bitmap[];
+ } memmap;
  
- 	case TCP_LINGER2:
- 		if (val < 0)
--			tp->linger2 = -1;
-+			WRITE_ONCE(tp->linger2, -1);
- 		else if (val > TCP_FIN_TIMEOUT_MAX / HZ)
--			tp->linger2 = TCP_FIN_TIMEOUT_MAX;
-+			WRITE_ONCE(tp->linger2, TCP_FIN_TIMEOUT_MAX);
- 		else
--			tp->linger2 = val * HZ;
-+			WRITE_ONCE(tp->linger2, val * HZ);
- 		break;
  
- 	case TCP_DEFER_ACCEPT:
-@@ -4099,7 +4099,7 @@ int do_tcp_getsockopt(struct sock *sk, int level,
- 			READ_ONCE(net->ipv4.sysctl_tcp_syn_retries);
- 		break;
- 	case TCP_LINGER2:
--		val = tp->linger2;
-+		val = READ_ONCE(tp->linger2);
- 		if (val >= 0)
- 			val = (val ? : READ_ONCE(net->ipv4.sysctl_tcp_fin_timeout)) / HZ;
- 		break;
--- 
-2.39.2
-
 
 
