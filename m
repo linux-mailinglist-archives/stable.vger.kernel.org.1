@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07108761683
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B49576152A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234918AbjGYLj4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:39:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47442 "EHLO
+        id S234517AbjGYL0O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234895AbjGYLj4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:56 -0400
+        with ESMTP id S234489AbjGYL0M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5629F19C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E5119A1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0BC061698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF50CC433C8;
-        Tue, 25 Jul 2023 11:39:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5636C6169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F39C433CB;
+        Tue, 25 Jul 2023 11:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285194;
-        bh=cXxs9X5aAf/rmF+ly0QpUKlbokW/7PVGhV9U9w9jKeY=;
+        s=korg; t=1690284369;
+        bh=F7PoIq55H4DQZ0kzjQ/vJZDTCsckSefymbwhRlMQaOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BRQMLMraOeYHJloNaGRTARsyZb84cUPfij/LrCyFXzMUyWnodVdyGTRCEf55ykr5u
-         yADRP8NUsgzkSnPJnXb4Oze1KRPs1n7mezJsNN8qIZ90EYDcHwkxKLANmzLEDheg5Y
-         FRreXChfzkUHs8tZPg1MraFKoHQtgIXOjdezpzes=
+        b=FPIb/2u93Hud2wwuwFQGcYQ8zln5V8eOWWaAZO4vzh6981W09B2/EhBoPVRXTf4L/
+         yMoAz8cYcDC3eD0qYgUUOO77pUUYgAYZBxQ0nXyrDuWu5FAUzhQHHHUyzzlXUKpa+s
+         LLoDjdX/bYMsMHR8OdcMvuQS5w3Ho/FTN5HuFMJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/313] ARC: define ASM_NL and __ALIGN(_STR) outside #ifdef __ASSEMBLY__ guard
+        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Subject: [PATCH 5.10 331/509] rcu-tasks: Simplify trc_read_check_handler() atomic operations
 Date:   Tue, 25 Jul 2023 12:44:30 +0200
-Message-ID: <20230725104526.071530303@linuxfoundation.org>
+Message-ID: <20230725104608.860158097@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,61 +54,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-[ Upstream commit 92e2921eeafdfca9acd9b83f07d2b7ca099bac24 ]
+[ Upstream commit 96017bf9039763a2e02dcc6adaa18592cd73a39d ]
 
-ASM_NL is useful not only in *.S files but also in .c files for using
-inline assembler in C code.
+Currently, trc_wait_for_one_reader() atomically increments
+the trc_n_readers_need_end counter before sending the IPI
+invoking trc_read_check_handler().  All failure paths out of
+trc_read_check_handler() and also from the smp_call_function_single()
+within trc_wait_for_one_reader() must carefully atomically decrement
+this counter.  This is more complex than it needs to be.
 
-On ARC, however, ASM_NL is evaluated inconsistently. It is expanded to
-a backquote (`) in *.S files, but a semicolon (;) in *.c files because
-arch/arc/include/asm/linkage.h defines it inside #ifdef __ASSEMBLY__,
-so the definition for C code falls back to the default value defined in
-include/linux/linkage.h.
+This commit therefore simplifies things and saves a few lines of
+code by dispensing with the atomic decrements in favor of having
+trc_read_check_handler() do the atomic increment only in the success case.
+In theory, this represents no change in functionality.
 
-If ASM_NL is used in inline assembler in .c files, it will result in
-wrong assembly code because a semicolon is not an instruction separator,
-but the start of a comment for ARC.
-
-Move ASM_NL (also __ALIGN and __ALIGN_STR) out of the #ifdef.
-
-Fixes: 9df62f054406 ("arch: use ASM_NL instead of ';' for assembler new line character in the macro")
-Fixes: 8d92e992a785 ("ARC: define __ALIGN_STR and __ALIGN symbols for ARC")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.10.x
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arc/include/asm/linkage.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/rcu/tasks.h |   20 +++-----------------
+ 1 file changed, 3 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arc/include/asm/linkage.h b/arch/arc/include/asm/linkage.h
-index fe19f1d412e71..284fd513d7c67 100644
---- a/arch/arc/include/asm/linkage.h
-+++ b/arch/arc/include/asm/linkage.h
-@@ -8,6 +8,10 @@
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -841,32 +841,24 @@ static void trc_read_check_handler(void
  
- #include <asm/dwarf.h>
+ 	// If the task is no longer running on this CPU, leave.
+ 	if (unlikely(texp != t)) {
+-		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
+-			wake_up(&trc_wait);
+ 		goto reset_ipi; // Already on holdout list, so will check later.
+ 	}
  
-+#define ASM_NL		 `	/* use '`' to mark new line in macro */
-+#define __ALIGN		.align 4
-+#define __ALIGN_STR	__stringify(__ALIGN)
-+
- #ifdef __ASSEMBLY__
+ 	// If the task is not in a read-side critical section, and
+ 	// if this is the last reader, awaken the grace-period kthread.
+ 	if (likely(!READ_ONCE(t->trc_reader_nesting))) {
+-		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
+-			wake_up(&trc_wait);
+-		// Mark as checked after decrement to avoid false
+-		// positives on the above WARN_ON_ONCE().
+ 		WRITE_ONCE(t->trc_reader_checked, true);
+ 		goto reset_ipi;
+ 	}
+ 	// If we are racing with an rcu_read_unlock_trace(), try again later.
+-	if (unlikely(READ_ONCE(t->trc_reader_nesting) < 0)) {
+-		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
+-			wake_up(&trc_wait);
++	if (unlikely(READ_ONCE(t->trc_reader_nesting) < 0))
+ 		goto reset_ipi;
+-	}
+ 	WRITE_ONCE(t->trc_reader_checked, true);
  
- .macro ST2 e, o, off
-@@ -28,10 +32,6 @@
- #endif
- .endm
+ 	// Get here if the task is in a read-side critical section.  Set
+ 	// its state so that it will awaken the grace-period kthread upon
+ 	// exit from that critical section.
++	atomic_inc(&trc_n_readers_need_end); // One more to wait on.
+ 	WARN_ON_ONCE(READ_ONCE(t->trc_reader_special.b.need_qs));
+ 	WRITE_ONCE(t->trc_reader_special.b.need_qs, true);
  
--#define ASM_NL		 `	/* use '`' to mark new line in macro */
--#define __ALIGN		.align 4
--#define __ALIGN_STR	__stringify(__ALIGN)
--
- /* annotation for data we want in DCCM - if enabled in .config */
- .macro ARCFP_DATA nm
- #ifdef CONFIG_ARC_HAS_DCCM
--- 
-2.39.2
-
+@@ -960,21 +952,15 @@ static void trc_wait_for_one_reader(stru
+ 		if (per_cpu(trc_ipi_to_cpu, cpu) || t->trc_ipi_to_cpu >= 0)
+ 			return;
+ 
+-		atomic_inc(&trc_n_readers_need_end);
+ 		per_cpu(trc_ipi_to_cpu, cpu) = true;
+ 		t->trc_ipi_to_cpu = cpu;
+ 		rcu_tasks_trace.n_ipis++;
+-		if (smp_call_function_single(cpu,
+-					     trc_read_check_handler, t, 0)) {
++		if (smp_call_function_single(cpu, trc_read_check_handler, t, 0)) {
+ 			// Just in case there is some other reason for
+ 			// failure than the target CPU being offline.
+ 			rcu_tasks_trace.n_ipis_fails++;
+ 			per_cpu(trc_ipi_to_cpu, cpu) = false;
+ 			t->trc_ipi_to_cpu = cpu;
+-			if (atomic_dec_and_test(&trc_n_readers_need_end)) {
+-				WARN_ON_ONCE(1);
+-				wake_up(&trc_wait);
+-			}
+ 		}
+ 	}
+ }
 
 
