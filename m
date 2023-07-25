@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FE84761236
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 885847616E9
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232803AbjGYLAS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:00:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
+        id S235007AbjGYLny (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232276AbjGYK7x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:53 -0400
+        with ESMTP id S235347AbjGYLnY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA8C3ABD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CCA611F;
+        Tue, 25 Jul 2023 04:43:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FD9761655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52873C433C8;
-        Tue, 25 Jul 2023 10:57:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88D10616C4;
+        Tue, 25 Jul 2023 11:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936EEC433C8;
+        Tue, 25 Jul 2023 11:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282622;
-        bh=sRXJxQIpYIfGKnfWD4fAeqkdKX6kaIgq8wxMH0QG89E=;
+        s=korg; t=1690285370;
+        bh=NIpYwlLuahxfD0/Dds0gw8TPNMG8NLCY4TXz08WafZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t2MkJ1zTDax5qvqskdQecmUX9cb3Lc6b/EOdDb2eNThitHKazWDqoamqLTPe7AOIl
-         uSdtr4Axq5j8CNJb/25dblgposL6UrkCg4LSCLGvVMtopiWHDgKC2yKfQbxKsiY/8H
-         OqNEdSy0KWCljcGJ4TRN0rClTEWs26teVP6KrIys=
+        b=dMbuKCdilfZUoEQxKek6ONl/XV2t9le6PO3ee9AFcz8WKz7SxYaF6Tc8fh8KDhZCk
+         t9zTenX1hDzOv1poPuAVXVfqE2Uc+IWTESJrm0332cJI1UDRZUl/mXdWFNCry7Gkyb
+         6TunYV23xTIriCvHF0OacsVtMLxIlxAsuHgWX5vQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Victor Nogueira <victor@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 166/227] net: sched: cls_bpf: Undo tcf_bind_filter in case of an error
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 180/313] netfilter: nftables: add helper function to set the base sequence number
 Date:   Tue, 25 Jul 2023 12:45:33 +0200
-Message-ID: <20230725104521.786275444@linuxfoundation.org>
+Message-ID: <20230725104528.737752455@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,165 +53,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 26a22194927e8521e304ed75c2f38d8068d55fc7 ]
+[ 802b805162a1b7d8391c40ac8a878e9e63287aff ]
 
-If cls_bpf_offload errors out, we must also undo tcf_bind_filter that
-was done before the error.
+This patch adds a helper function to calculate the base sequence number
+field that is stored in the nfnetlink header. Use the helper function
+whenever possible.
 
-Fix that by calling tcf_unbind_filter in errout_parms.
-
-Fixes: eadb41489fd2 ("net: cls_bpf: add support for marking filters as hardware-only")
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_bpf.c | 99 +++++++++++++++++++++------------------------
- 1 file changed, 47 insertions(+), 52 deletions(-)
+ net/netfilter/nf_tables_api.c |   23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
-index 466c26df853a0..382c7a71f81f2 100644
---- a/net/sched/cls_bpf.c
-+++ b/net/sched/cls_bpf.c
-@@ -406,56 +406,6 @@ static int cls_bpf_prog_from_efd(struct nlattr **tb, struct cls_bpf_prog *prog,
- 	return 0;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -588,6 +588,11 @@ nf_tables_chain_type_lookup(struct net *
+ 	return ERR_PTR(-ENOENT);
  }
  
--static int cls_bpf_set_parms(struct net *net, struct tcf_proto *tp,
--			     struct cls_bpf_prog *prog, unsigned long base,
--			     struct nlattr **tb, struct nlattr *est, u32 flags,
--			     struct netlink_ext_ack *extack)
--{
--	bool is_bpf, is_ebpf, have_exts = false;
--	u32 gen_flags = 0;
--	int ret;
--
--	is_bpf = tb[TCA_BPF_OPS_LEN] && tb[TCA_BPF_OPS];
--	is_ebpf = tb[TCA_BPF_FD];
--	if ((!is_bpf && !is_ebpf) || (is_bpf && is_ebpf))
--		return -EINVAL;
--
--	ret = tcf_exts_validate(net, tp, tb, est, &prog->exts, flags,
--				extack);
--	if (ret < 0)
--		return ret;
--
--	if (tb[TCA_BPF_FLAGS]) {
--		u32 bpf_flags = nla_get_u32(tb[TCA_BPF_FLAGS]);
--
--		if (bpf_flags & ~TCA_BPF_FLAG_ACT_DIRECT)
--			return -EINVAL;
--
--		have_exts = bpf_flags & TCA_BPF_FLAG_ACT_DIRECT;
--	}
--	if (tb[TCA_BPF_FLAGS_GEN]) {
--		gen_flags = nla_get_u32(tb[TCA_BPF_FLAGS_GEN]);
--		if (gen_flags & ~CLS_BPF_SUPPORTED_GEN_FLAGS ||
--		    !tc_flags_valid(gen_flags))
--			return -EINVAL;
--	}
--
--	prog->exts_integrated = have_exts;
--	prog->gen_flags = gen_flags;
--
--	ret = is_bpf ? cls_bpf_prog_from_ops(tb, prog) :
--		       cls_bpf_prog_from_efd(tb, prog, gen_flags, tp);
--	if (ret < 0)
--		return ret;
--
--	if (tb[TCA_BPF_CLASSID]) {
--		prog->res.classid = nla_get_u32(tb[TCA_BPF_CLASSID]);
--		tcf_bind_filter(tp, &prog->res, base);
--	}
--
--	return 0;
--}
--
- static int cls_bpf_change(struct net *net, struct sk_buff *in_skb,
- 			  struct tcf_proto *tp, unsigned long base,
- 			  u32 handle, struct nlattr **tca,
-@@ -463,9 +413,12 @@ static int cls_bpf_change(struct net *net, struct sk_buff *in_skb,
- 			  struct netlink_ext_ack *extack)
- {
- 	struct cls_bpf_head *head = rtnl_dereference(tp->root);
-+	bool is_bpf, is_ebpf, have_exts = false;
- 	struct cls_bpf_prog *oldprog = *arg;
- 	struct nlattr *tb[TCA_BPF_MAX + 1];
-+	bool bound_to_filter = false;
- 	struct cls_bpf_prog *prog;
-+	u32 gen_flags = 0;
- 	int ret;
++static __be16 nft_base_seq(const struct net *net)
++{
++	return htons(net->nft.base_seq & 0xffff);
++}
++
+ static const struct nla_policy nft_table_policy[NFTA_TABLE_MAX + 1] = {
+ 	[NFTA_TABLE_NAME]	= { .type = NLA_STRING,
+ 				    .len = NFT_TABLE_MAXNAMELEN - 1 },
+@@ -610,7 +615,7 @@ static int nf_tables_fill_table_info(str
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= family;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(net);
  
- 	if (tca[TCA_OPTIONS] == NULL)
-@@ -504,11 +457,51 @@ static int cls_bpf_change(struct net *net, struct sk_buff *in_skb,
- 		goto errout;
- 	prog->handle = handle;
+ 	if (nla_put_string(skb, NFTA_TABLE_NAME, table->name) ||
+ 	    nla_put_be32(skb, NFTA_TABLE_FLAGS, htonl(table->flags)) ||
+@@ -1274,7 +1279,7 @@ static int nf_tables_fill_chain_info(str
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= family;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(net);
  
--	ret = cls_bpf_set_parms(net, tp, prog, base, tb, tca[TCA_RATE], flags,
--				extack);
-+	is_bpf = tb[TCA_BPF_OPS_LEN] && tb[TCA_BPF_OPS];
-+	is_ebpf = tb[TCA_BPF_FD];
-+	if ((!is_bpf && !is_ebpf) || (is_bpf && is_ebpf)) {
-+		ret = -EINVAL;
-+		goto errout_idr;
-+	}
-+
-+	ret = tcf_exts_validate(net, tp, tb, tca[TCA_RATE], &prog->exts,
-+				flags, extack);
-+	if (ret < 0)
-+		goto errout_idr;
-+
-+	if (tb[TCA_BPF_FLAGS]) {
-+		u32 bpf_flags = nla_get_u32(tb[TCA_BPF_FLAGS]);
-+
-+		if (bpf_flags & ~TCA_BPF_FLAG_ACT_DIRECT) {
-+			ret = -EINVAL;
-+			goto errout_idr;
-+		}
-+
-+		have_exts = bpf_flags & TCA_BPF_FLAG_ACT_DIRECT;
-+	}
-+	if (tb[TCA_BPF_FLAGS_GEN]) {
-+		gen_flags = nla_get_u32(tb[TCA_BPF_FLAGS_GEN]);
-+		if (gen_flags & ~CLS_BPF_SUPPORTED_GEN_FLAGS ||
-+		    !tc_flags_valid(gen_flags)) {
-+			ret = -EINVAL;
-+			goto errout_idr;
-+		}
-+	}
-+
-+	prog->exts_integrated = have_exts;
-+	prog->gen_flags = gen_flags;
-+
-+	ret = is_bpf ? cls_bpf_prog_from_ops(tb, prog) :
-+		cls_bpf_prog_from_efd(tb, prog, gen_flags, tp);
- 	if (ret < 0)
- 		goto errout_idr;
+ 	if (nla_put_string(skb, NFTA_CHAIN_TABLE, table->name))
+ 		goto nla_put_failure;
+@@ -2366,7 +2371,7 @@ static int nf_tables_fill_rule_info(stru
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= family;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(net);
  
-+	if (tb[TCA_BPF_CLASSID]) {
-+		prog->res.classid = nla_get_u32(tb[TCA_BPF_CLASSID]);
-+		tcf_bind_filter(tp, &prog->res, base);
-+		bound_to_filter = true;
-+	}
-+
- 	ret = cls_bpf_offload(tp, prog, oldprog, extack);
- 	if (ret)
- 		goto errout_parms;
-@@ -530,6 +523,8 @@ static int cls_bpf_change(struct net *net, struct sk_buff *in_skb,
- 	return 0;
+ 	if (nla_put_string(skb, NFTA_RULE_TABLE, table->name))
+ 		goto nla_put_failure;
+@@ -3325,7 +3330,7 @@ static int nf_tables_fill_set(struct sk_
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= ctx->family;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(ctx->net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(ctx->net);
  
- errout_parms:
-+	if (bound_to_filter)
-+		tcf_unbind_filter(tp, &prog->res);
- 	cls_bpf_free_parms(prog);
- errout_idr:
- 	if (!oldprog)
--- 
-2.39.2
-
+ 	if (nla_put_string(skb, NFTA_SET_TABLE, ctx->table->name))
+ 		goto nla_put_failure;
+@@ -4180,7 +4185,7 @@ static int nf_tables_dump_set(struct sk_
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family = table->family;
+ 	nfmsg->version      = NFNETLINK_V0;
+-	nfmsg->res_id	    = htons(net->nft.base_seq & 0xffff);
++	nfmsg->res_id	    = nft_base_seq(net);
+ 
+ 	if (nla_put_string(skb, NFTA_SET_ELEM_LIST_TABLE, table->name))
+ 		goto nla_put_failure;
+@@ -4252,7 +4257,7 @@ static int nf_tables_fill_setelem_info(s
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= ctx->family;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(ctx->net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(ctx->net);
+ 
+ 	if (nla_put_string(skb, NFTA_SET_TABLE, ctx->table->name))
+ 		goto nla_put_failure;
+@@ -5383,7 +5388,7 @@ static int nf_tables_fill_obj_info(struc
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= family;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(net);
+ 
+ 	if (nla_put_string(skb, NFTA_OBJ_TABLE, table->name) ||
+ 	    nla_put_string(skb, NFTA_OBJ_NAME, obj->key.name) ||
+@@ -6059,7 +6064,7 @@ static int nf_tables_fill_flowtable_info
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= family;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(net);
+ 
+ 	if (nla_put_string(skb, NFTA_FLOWTABLE_TABLE, flowtable->table->name) ||
+ 	    nla_put_string(skb, NFTA_FLOWTABLE_NAME, flowtable->name) ||
+@@ -6297,7 +6302,7 @@ static int nf_tables_fill_gen_info(struc
+ 	nfmsg = nlmsg_data(nlh);
+ 	nfmsg->nfgen_family	= AF_UNSPEC;
+ 	nfmsg->version		= NFNETLINK_V0;
+-	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
++	nfmsg->res_id		= nft_base_seq(net);
+ 
+ 	if (nla_put_be32(skb, NFTA_GEN_ID, htonl(net->nft.base_seq)) ||
+ 	    nla_put_be32(skb, NFTA_GEN_PROC_PID, htonl(task_pid_nr(current))) ||
 
 
