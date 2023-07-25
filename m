@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A94A9761796
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A09AE7615EB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232954AbjGYLti (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:49:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56790 "EHLO
+        id S234699AbjGYLeh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:34:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233316AbjGYLtZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:49:25 -0400
+        with ESMTP id S234701AbjGYLeg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BBC10EC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:49:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A592F118
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A985F616B9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:49:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FAEC433C9;
-        Tue, 25 Jul 2023 11:49:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43B326169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDA9C433C7;
+        Tue, 25 Jul 2023 11:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285754;
-        bh=HsjOsyZpM0XOvf7Yw5OEliG1tMtf61Syx8aBjyVFuTs=;
+        s=korg; t=1690284874;
+        bh=qWXsThcD0VJTXdv/kjr3ZKnio9ekAttLz2ER9RPPpLY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gxkp68D5iVVcRLK+f0WmBUrkdWkAPpCI1wVqL7FE8viu3G++uXrmzvdH15nuuACVU
-         Ja4lxjZ+bcflp8RN6HsWFZbTc0fkXqq1YxFKthCWwM5/Mo7n4K6jdgxrt1cdAYkv2B
-         NBOdMZ8wIlCxVSWUkYHNWuTOkNspmErrNjTqr4Ig=
+        b=yR8CvFaveBYIW/3C6uZPveRpZ8VHJ3zH33m2Oei4HywWeuPchMaV5XmoDT1BRT8+9
+         Z8as27m8P4SMef4nMpTEUQdVrpNHIaG2tfDfFQBmWUfYKBzSQvd1EwZTIuXyLfOfg1
+         inaTPdQy3+6ApOSpPrtNocqxwCTfPGQKEv36JVv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Steve Capper <steve.capper@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 289/313] arm64: mm: fix VA-range sanity check
+Subject: [PATCH 5.10 503/509] tcp: annotate data-races around icsk->icsk_user_timeout
 Date:   Tue, 25 Jul 2023 12:47:22 +0200
-Message-ID: <20230725104533.604140391@linuxfoundation.org>
+Message-ID: <20230725104616.765559403@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,104 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ab9b4008092c86dc12497af155a0901cc1156999 ]
+[ Upstream commit 26023e91e12c68669db416b97234328a03d8e499 ]
 
-Both create_mapping_noalloc() and update_mapping_prot() sanity-check
-their 'virt' parameter, but the check itself doesn't make much sense.
-The condition used today appears to be a historical accident.
+This field can be read locklessly from do_tcp_getsockopt()
 
-The sanity-check condition:
-
-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-... can only be true for the KASAN shadow region or the module region,
-and there's no reason to exclude these specifically for creating and
-updateing mappings.
-
-When arm64 support was first upstreamed in commit:
-
-  c1cc1552616d0f35 ("arm64: MMU initialisation")
-
-... the condition was:
-
-	if (virt < VMALLOC_START) {
-		[ ... warning here ... ]
-		return;
-	}
-
-At the time, VMALLOC_START was the lowest kernel address, and this was
-checking whether 'virt' would be translated via TTBR1.
-
-Subsequently in commit:
-
-  14c127c957c1c607 ("arm64: mm: Flip kernel VA space")
-
-... the condition was changed to:
-
-	if ((virt >= VA_START) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-This appear to have been a thinko. The commit moved the linear map to
-the bottom of the kernel address space, with VMALLOC_START being at the
-halfway point. The old condition would warn for changes to the linear
-map below this, and at the time VA_START was the end of the linear map.
-
-Subsequently we cleaned up the naming of VA_START in commit:
-
-  77ad4ce69321abbe ("arm64: memory: rename VA_START to PAGE_END")
-
-... keeping the erroneous condition as:
-
-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-Correct the condition to check against the start of the TTBR1 address
-space, which is currently PAGE_OFFSET. This simplifies the logic, and
-more clearly matches the "outside kernel range" message in the warning.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Steve Capper <steve.capper@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20230615102628.1052103-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: dca43c75e7e5 ("tcp: Add TCP_USER_TIMEOUT socket option.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-11-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 5cf575f23af28..8e934bb44f12e 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -399,7 +399,7 @@ static phys_addr_t pgd_pgtable_alloc(int shift)
- static void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 				  phys_addr_t size, pgprot_t prot)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 8a441dfd258d5..0a5f61b3423bf 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3081,7 +3081,7 @@ EXPORT_SYMBOL(tcp_sock_set_syncnt);
+ void tcp_sock_set_user_timeout(struct sock *sk, u32 val)
  {
--	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-+	if (virt < PAGE_OFFSET) {
- 		pr_warn("BUG: not creating mapping for %pa at 0x%016lx - outside kernel range\n",
- 			&phys, virt);
- 		return;
-@@ -426,7 +426,7 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
- static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 				phys_addr_t size, pgprot_t prot)
- {
--	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-+	if (virt < PAGE_OFFSET) {
- 		pr_warn("BUG: not updating mapping for %pa at 0x%016lx - outside kernel range\n",
- 			&phys, virt);
- 		return;
+ 	lock_sock(sk);
+-	inet_csk(sk)->icsk_user_timeout = val;
++	WRITE_ONCE(inet_csk(sk)->icsk_user_timeout, val);
+ 	release_sock(sk);
+ }
+ EXPORT_SYMBOL(tcp_sock_set_user_timeout);
+@@ -3393,7 +3393,7 @@ static int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+ 		if (val < 0)
+ 			err = -EINVAL;
+ 		else
+-			icsk->icsk_user_timeout = val;
++			WRITE_ONCE(icsk->icsk_user_timeout, val);
+ 		break;
+ 
+ 	case TCP_FASTOPEN:
+@@ -3890,7 +3890,7 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
+ 		break;
+ 
+ 	case TCP_USER_TIMEOUT:
+-		val = icsk->icsk_user_timeout;
++		val = READ_ONCE(icsk->icsk_user_timeout);
+ 		break;
+ 
+ 	case TCP_FASTOPEN:
 -- 
 2.39.2
 
