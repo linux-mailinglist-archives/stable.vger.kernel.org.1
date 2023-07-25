@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC6ED76166C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8177761678
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234905AbjGYLjW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45858 "EHLO
+        id S234900AbjGYLjh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:39:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234906AbjGYLjP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:15 -0400
+        with ESMTP id S234896AbjGYLjb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05ED01FE2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859391BE8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8798C6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945A3C433C7;
-        Tue, 25 Jul 2023 11:38:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09AEC616A8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19553C433CB;
+        Tue, 25 Jul 2023 11:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285139;
-        bh=QyWUOdIXI1sD1NaxF0endeXbCioZrfpkNa1CYqKPjFY=;
+        s=korg; t=1690285169;
+        bh=UypysPMkncfOKh9XSwquy77iUOPt8W//5FT5DQYrFP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xj+ULuDOgp1HZDZU5rymWDHwcmrZX9hI9AhW7qGsKKtlT1YkfipjQSJ5/4MZB4nDB
-         F6mJWhK3jTTjb9q66rpSqhVCnta3QeWaacHuF9LtUdhWdZOtJ1u/AebtJ1qlsGPQVx
-         mKjJUEMK/Kre+MbuTGjvFd1qyGWJIbAeA3W2bfN0=
+        b=oE6NIhkZmnbFroC7P6LCpcRcwqmW1MjxLAPPGfVxV1uHuTwwGlo30rH+gxS4Mwp7N
+         Jb7hVgR3KOOHoUcTCGzWPiYOZjsAxNyLamXiJBoNxA2artixA0kttOeFFY4bfq9WTM
+         BjCQd3Xbv5OQRXQLNoCon+WCGLVdKKNAojfxocQg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/313] clk: tegra: tegra124-emc: Fix potential memory leak
-Date:   Tue, 25 Jul 2023 12:44:03 +0200
-Message-ID: <20230725104524.837597433@linuxfoundation.org>
+        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 091/313] ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer
+Date:   Tue, 25 Jul 2023 12:44:04 +0200
+Message-ID: <20230725104524.887627145@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
 References: <20230725104521.167250627@linuxfoundation.org>
@@ -56,43 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 53a06e5924c0d43c11379a08c5a78529c3e61595 ]
+[ Upstream commit 79597c8bf64ca99eab385115743131d260339da5 ]
 
-The tegra and tegra needs to be freed in the error handling path, otherwise
-it will be leaked.
+smatch error:
+sound/pci/ac97/ac97_codec.c:2354 snd_ac97_mixer() error:
+we previously assumed 'rac97' could be null (see line 2072)
 
-Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Link: https://lore.kernel.org/r/20221209094124.71043-1-yuancan@huawei.com
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+remove redundant assignment, return error if rac97 is NULL.
+
+Fixes: da3cec35dd3c ("ALSA: Kill snd_assert() in sound/pci/*")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20230615021732.1972194-1-suhui@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-emc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/ac97/ac97_codec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-emc.c b/drivers/clk/tegra/clk-emc.c
-index 0c1b83bedb73d..eb2411a4cd783 100644
---- a/drivers/clk/tegra/clk-emc.c
-+++ b/drivers/clk/tegra/clk-emc.c
-@@ -459,6 +459,7 @@ static int load_timings_from_dt(struct tegra_clk_emc *tegra,
- 		err = load_one_timing_from_dt(tegra, timing, child);
- 		if (err) {
- 			of_node_put(child);
-+			kfree(tegra->timings);
- 			return err;
- 		}
+diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
+index 83bb086bf9757..b920c739d6863 100644
+--- a/sound/pci/ac97/ac97_codec.c
++++ b/sound/pci/ac97/ac97_codec.c
+@@ -2006,8 +2006,8 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
+ 		.dev_disconnect =	snd_ac97_dev_disconnect,
+ 	};
  
-@@ -510,6 +511,7 @@ struct clk *tegra_clk_register_emc(void __iomem *base, struct device_node *np,
- 		err = load_timings_from_dt(tegra, node, node_ram_code);
- 		if (err) {
- 			of_node_put(node);
-+			kfree(tegra);
- 			return ERR_PTR(err);
- 		}
- 	}
+-	if (rac97)
+-		*rac97 = NULL;
++	if (!rac97)
++		return -EINVAL;
+ 	if (snd_BUG_ON(!bus || !template))
+ 		return -EINVAL;
+ 	if (snd_BUG_ON(template->num >= 4))
 -- 
 2.39.2
 
