@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C737614F8
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD37761653
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234540AbjGYLYX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33790 "EHLO
+        id S234897AbjGYLiX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234542AbjGYLYU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:20 -0400
+        with ESMTP id S235019AbjGYLiL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 100C218F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265611BC3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85BF56167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94085C433C7;
-        Tue, 25 Jul 2023 11:24:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02ED261655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1857FC433C9;
+        Tue, 25 Jul 2023 11:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284255;
-        bh=lgTUt7JDiYkVjOzr8diPbzsXbnxvocxGjGGmQyEAwHs=;
+        s=korg; t=1690285083;
+        bh=56f1In5tbzygGHl5qDvchEX5W2hG6dnIKV1N39LOWoI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bjb5jmOMnaeJYR6ox5VuKT6ar0Q8RK1ga2lDQuZUp+s7FjA9dKWRrUr23KttmzHHW
-         MHqoCteBJCbRszTXlryO/ywlMgbOuDv2WFE76chthNcs2Xzy75bhD1Q8g7ugJ7iVCn
-         p27+dYM8MecF4B2v5aF8z4UFwu72OvbqjYpq2rtk=
+        b=k4rL9TR3Ra8KEQHe4BVZHytMXJzE8KfN6VCVfxKro+KerS+StWiuXnS2833Qlwm/e
+         3/nFyi4SnwNKcmocX6FJxVNedP7p4SvtJGvTw8P9QiPvvAYBIx/IpZ4RoKpZHMziIk
+         tVOY05sgH3JsipsqtaNgAHtqbSoYdhW867VXOQns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 5.10 291/509] integrity: Fix possible multiple allocation in integrity_inode_get()
+        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 077/313] ARM: dts: gta04: Move model property out of pinctrl node
 Date:   Tue, 25 Jul 2023 12:43:50 +0200
-Message-ID: <20230725104607.066005784@linuxfoundation.org>
+Message-ID: <20230725104524.274133095@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 9df6a4870dc371136e90330cfbbc51464ee66993 upstream.
+[ Upstream commit 4ffec92e70ac5097b9f67ec154065305b16a3b46 ]
 
-When integrity_inode_get() is querying and inserting the cache, there
-is a conditional race in the concurrent environment.
+The model property should be at the top level, let's move it out
+of the pinctrl node.
 
-The race condition is the result of not properly implementing
-"double-checked locking". In this case, it first checks to see if the
-iint cache record exists before taking the lock, but doesn't check
-again after taking the integrity_iint_lock.
-
-Fixes: bf2276d10ce5 ("ima: allocating iint improvements")
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-Cc: <stable@vger.kernel.org> # v3.10+
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d2eaf949d2c3 ("ARM: dts: omap3-gta04a5one: define GTA04A5 variant with OneNAND")
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Cc: H. Nikolaus Schaller <hns@goldelico.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/iint.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/omap3-gta04a5one.dts | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/security/integrity/iint.c
-+++ b/security/integrity/iint.c
-@@ -43,12 +43,10 @@ static struct integrity_iint_cache *__in
- 		else if (inode > iint->inode)
- 			n = n->rb_right;
- 		else
--			break;
-+			return iint;
- 	}
--	if (!n)
--		return NULL;
+diff --git a/arch/arm/boot/dts/omap3-gta04a5one.dts b/arch/arm/boot/dts/omap3-gta04a5one.dts
+index 9db9fe67cd63b..95df45cc70c09 100644
+--- a/arch/arm/boot/dts/omap3-gta04a5one.dts
++++ b/arch/arm/boot/dts/omap3-gta04a5one.dts
+@@ -5,9 +5,11 @@
  
--	return iint;
-+	return NULL;
- }
+ #include "omap3-gta04a5.dts"
  
- /*
-@@ -121,10 +119,15 @@ struct integrity_iint_cache *integrity_i
- 		parent = *p;
- 		test_iint = rb_entry(parent, struct integrity_iint_cache,
- 				     rb_node);
--		if (inode < test_iint->inode)
-+		if (inode < test_iint->inode) {
- 			p = &(*p)->rb_left;
--		else
-+		} else if (inode > test_iint->inode) {
- 			p = &(*p)->rb_right;
-+		} else {
-+			write_unlock(&integrity_iint_lock);
-+			kmem_cache_free(iint_cache, iint);
-+			return test_iint;
-+		}
- 	}
+-&omap3_pmx_core {
++/ {
+ 	model = "Goldelico GTA04A5/Letux 2804 with OneNAND";
++};
  
- 	iint->inode = inode;
++&omap3_pmx_core {
+ 	gpmc_pins: pinmux_gpmc_pins {
+ 		pinctrl-single,pins = <
+ 
+-- 
+2.39.2
+
 
 
