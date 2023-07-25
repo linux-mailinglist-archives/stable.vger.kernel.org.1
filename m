@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B108776114B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6277614AC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233397AbjGYKtk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
+        id S234419AbjGYLVl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232950AbjGYKtg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF2210FD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:35 -0700 (PDT)
+        with ESMTP id S234428AbjGYLVk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B15D13D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB6AA61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C07C433C9;
-        Tue, 25 Jul 2023 10:49:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 94B1F615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A167BC433C7;
+        Tue, 25 Jul 2023 11:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282174;
-        bh=imrHEHHlqMTyu3/NpIbMlbN+Q6Qww7rOZhHhLpY/eGk=;
+        s=korg; t=1690284099;
+        bh=8l7XzQtqX4yokLfq9O14GJE+di7RNty3J2FSe+cOSuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C6iDltjPH9IEzaPI0ylzcqgYAFPW5hVEfTzAs5YzFbUzLDh4bYnoBOGemSOGKtY2S
-         M8SdtezSaUqU1RvfJnUsDGIfnas5j436JUUeOXOAMUmypCBRe9wFjqNWb1ByRffCHb
-         ZdR4hX+v5y2orvdwusV9edz8eL4el51tTosos+Vk=
+        b=cCxJj2aPTPTKMUxqR6JhQZloeHREMXY0eWA/wXC1mt5Zl/L8b3PlGLxp3+CbMq71h
+         20q3zpisrWqmLBujbqbeiHewEhkvALeIC8NxrnV+dW6qGEFBNKyhp4c+sqzF8primn
+         vaiXJiaPJOHRC5cBYaf+h7KhupGE5QD3BemYkesE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Zhang <zhangpeng.00@bytedance.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 006/227] maple_tree: set the node limit when creating a new root node
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 234/509] usb: hide unused usbfs_notify_suspend/resume functions
 Date:   Tue, 25 Jul 2023 12:42:53 +0200
-Message-ID: <20230725104515.067058570@linuxfoundation.org>
+Message-ID: <20230725104604.474721965@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peng Zhang <zhangpeng.00@bytedance.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 3c769fd88b9742954763a968e84de09f7ad78cfe upstream.
+[ Upstream commit 8e6bd945e6dde64fbc60ec3fe252164493a8d3a2 ]
 
-Set the node limit of the root node so that the last pivot of all nodes is
-the node limit (if the node is not full).
+The declaration is in an #ifdef, which causes warnings when building
+with 'make W=1' and without CONFIG_PM:
 
-This patch also fixes a bug in mas_rev_awalk().  Effectively, always
-setting a maximum makes mas_logical_pivot() behave as mas_safe_pivot().
-Without this fix, it is possible that very small tasks would fail to find
-the correct gap.  Although this has not been observed with real tasks, it
-has been reported to happen in m68k nommu running the maple tree tests.
+drivers/usb/core/devio.c:742:6: error: no previous prototype for 'usbfs_notify_suspend'
+drivers/usb/core/devio.c:747:6: error: no previous prototype for 'usbfs_notify_resume'
 
-Link: https://lkml.kernel.org/r/20230711035444.526-1-zhangpeng.00@bytedance.com
-Link: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
-Link: https://lkml.kernel.org/r/20230711035444.526-2-zhangpeng.00@bytedance.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Use the same #ifdef check around the function definitions to avoid
+the warnings and slightly shrink the USB core.
+
+Fixes: 7794f486ed0b ("usbfs: Add ioctls for runtime power management")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230516202103.558301-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/core/devio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -3693,7 +3693,8 @@ static inline int mas_root_expand(struct
- 	mas->offset = slot;
- 	pivots[slot] = mas->last;
- 	if (mas->last != ULONG_MAX)
--		slot++;
-+		pivots[++slot] = ULONG_MAX;
-+
- 	mas->depth = 1;
- 	mas_set_height(mas);
- 	ma_set_meta(node, maple_leaf_64, 0, slot);
+diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
+index 2fe29319de441..1b95035d179f3 100644
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -734,6 +734,7 @@ static int driver_resume(struct usb_interface *intf)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PM
+ /* The following routines apply to the entire device, not interfaces */
+ void usbfs_notify_suspend(struct usb_device *udev)
+ {
+@@ -752,6 +753,7 @@ void usbfs_notify_resume(struct usb_device *udev)
+ 	}
+ 	mutex_unlock(&usbfs_mutex);
+ }
++#endif
+ 
+ struct usb_driver usbfs_driver = {
+ 	.name =		"usbfs",
+-- 
+2.39.2
+
 
 
