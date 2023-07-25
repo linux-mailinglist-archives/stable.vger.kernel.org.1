@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F20507611B0
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B972F761519
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbjGYKyl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:54:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
+        id S234589AbjGYLZj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:25:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233807AbjGYKyF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:05 -0400
+        with ESMTP id S234591AbjGYLZi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 989864236
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A270A187;
+        Tue, 25 Jul 2023 04:25:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D622D6168F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AB8C433C8;
-        Tue, 25 Jul 2023 10:52:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3246D61683;
+        Tue, 25 Jul 2023 11:25:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3ABC433C7;
+        Tue, 25 Jul 2023 11:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282335;
-        bh=pXrayAEezZS6p6Du3wIUqtam/djN7+zbnTBibE50m6U=;
+        s=korg; t=1690284335;
+        bh=1MnVIuusv6+jg2IxeOSakk1k769CXW9DWG5EA8ehna8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HAJ/2oGFwEM5W0/6P1R77Q4MMNVWE31TeWycvwQBkcAQOWik6nfJFv2v+LZzjWarN
-         34hTiRdyY1MvZJnVp2CtBQrITlcK8OfuVKjvsxeOn141cXJ+jO+A2jWEYpxUZF9zAe
-         suRxo0RXHYo3JTdxbr5jfiYX7eb+PIpBHmLmcQm4=
+        b=mtYekHh8wCUudU3uWGYLNn4v8Gve6khoirSWfIE9eVSLAy17q1vVLEFVH0zSQhwyw
+         KsMC3yKi22T5wXmiSVCdX8s4aVaUQE2eTUBx/z46ibFrLFfIS1RycleFIEHrVRNFeT
+         MIJ0d+P78oRQ/wUWCwkzr8ld1+oySGB2vdBht1OQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 092/227] posix-timers: Ensure timer ID search-loop limit is valid
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 320/509] netfilter: nf_tables: drop map element references from preparation phase
 Date:   Tue, 25 Jul 2023 12:44:19 +0200
-Message-ID: <20230725104518.524071570@linuxfoundation.org>
+Message-ID: <20230725104608.349925015@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,115 +53,373 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 8ce8849dd1e78dadcee0ec9acbd259d239b7069f ]
+[ Upstream commit 628bd3e49cba1c066228e23d71a852c23e26da73 ]
 
-posix_timer_add() tries to allocate a posix timer ID by starting from the
-cached ID which was stored by the last successful allocation.
+set .destroy callback releases the references to other objects in maps.
+This is very late and it results in spurious EBUSY errors. Drop refcount
+from the preparation phase instead, update set backend not to drop
+reference counter from set .destroy path.
 
-This is done in a loop searching the ID space for a free slot one by
-one. The loop has to terminate when the search wrapped around to the
-starting point.
+Exceptions: NFT_TRANS_PREPARE_ERROR does not require to drop the
+reference counter because the transaction abort path releases the map
+references for each element since the set is unbound. The abort path
+also deals with releasing reference counter for new elements added to
+unbound sets.
 
-But that's racy vs. establishing the starting point. That is read out
-lockless, which leads to the following problem:
-
-CPU0	  	      	     	   CPU1
-posix_timer_add()
-  start = sig->posix_timer_id;
-  lock(hash_lock);
-  ...				   posix_timer_add()
-  if (++sig->posix_timer_id < 0)
-      			             start = sig->posix_timer_id;
-     sig->posix_timer_id = 0;
-
-So CPU1 can observe a negative start value, i.e. -1, and the loop break
-never happens because the condition can never be true:
-
-  if (sig->posix_timer_id == start)
-     break;
-
-While this is unlikely to ever turn into an endless loop as the ID space is
-huge (INT_MAX), the racy read of the start value caught the attention of
-KCSAN and Dmitry unearthed that incorrectness.
-
-Rewrite it so that all id operations are under the hash lock.
-
-Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
-Reported-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 591054469b3e ("netfilter: nf_tables: revisit chain/object refcounting from elements")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/signal.h |  2 +-
- kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
- 2 files changed, 19 insertions(+), 14 deletions(-)
+ include/net/netfilter/nf_tables.h |    5 +-
+ net/netfilter/nf_tables_api.c     |   89 ++++++++++++++++++++++++++++++++++----
+ net/netfilter/nft_set_bitmap.c    |    5 +-
+ net/netfilter/nft_set_hash.c      |   23 +++++++--
+ net/netfilter/nft_set_pipapo.c    |   14 +++--
+ net/netfilter/nft_set_rbtree.c    |    5 +-
+ 6 files changed, 117 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-index 20099268fa257..669e8cff40c74 100644
---- a/include/linux/sched/signal.h
-+++ b/include/linux/sched/signal.h
-@@ -135,7 +135,7 @@ struct signal_struct {
- #ifdef CONFIG_POSIX_TIMERS
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -382,7 +382,8 @@ struct nft_set_ops {
+ 	int				(*init)(const struct nft_set *set,
+ 						const struct nft_set_desc *desc,
+ 						const struct nlattr * const nla[]);
+-	void				(*destroy)(const struct nft_set *set);
++	void				(*destroy)(const struct nft_ctx *ctx,
++						   const struct nft_set *set);
+ 	void				(*gc_init)(const struct nft_set *set);
  
- 	/* POSIX.1b Interval Timers */
--	int			posix_timer_id;
-+	unsigned int		next_posix_timer_id;
- 	struct list_head	posix_timers;
+ 	unsigned int			elemsize;
+@@ -686,6 +687,8 @@ void *nft_set_elem_init(const struct nft
+ 			u64 timeout, u64 expiration, gfp_t gfp);
+ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
+ 			  bool destroy_expr);
++void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
++				const struct nft_set *set, void *elem);
  
- 	/* ITIMER_REAL timer for the process */
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index ed3c4a9543982..2d6cf93ca370a 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -140,25 +140,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
- static int posix_timer_add(struct k_itimer *timer)
- {
- 	struct signal_struct *sig = current->signal;
--	int first_free_id = sig->posix_timer_id;
- 	struct hlist_head *head;
--	int ret = -ENOENT;
-+	unsigned int cnt, id;
- 
--	do {
-+	/*
-+	 * FIXME: Replace this by a per signal struct xarray once there is
-+	 * a plan to handle the resulting CRIU regression gracefully.
-+	 */
-+	for (cnt = 0; cnt <= INT_MAX; cnt++) {
- 		spin_lock(&hash_lock);
--		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
--		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
-+		id = sig->next_posix_timer_id;
-+
-+		/* Write the next ID back. Clamp it to the positive space */
-+		sig->next_posix_timer_id = (id + 1) & INT_MAX;
-+
-+		head = &posix_timers_hashtable[hash(sig, id)];
-+		if (!__posix_timers_find(head, sig, id)) {
- 			hlist_add_head_rcu(&timer->t_hash, head);
--			ret = sig->posix_timer_id;
-+			spin_unlock(&hash_lock);
-+			return id;
- 		}
--		if (++sig->posix_timer_id < 0)
--			sig->posix_timer_id = 0;
--		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
--			/* Loop over all possible ids completed */
--			ret = -EAGAIN;
- 		spin_unlock(&hash_lock);
--	} while (ret == -ENOENT);
--	return ret;
-+	}
-+	/* POSIX return code when no timer ID could be allocated */
-+	return -EAGAIN;
+ /**
+  *	struct nft_set_gc_batch_head - nf_tables set garbage collection batch
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -557,6 +557,31 @@ static int nft_trans_set_add(const struc
+ 	return 0;
  }
  
- static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
--- 
-2.39.2
-
++static void nft_setelem_data_deactivate(const struct net *net,
++					const struct nft_set *set,
++					struct nft_set_elem *elem);
++
++static int nft_mapelem_deactivate(const struct nft_ctx *ctx,
++				  struct nft_set *set,
++				  const struct nft_set_iter *iter,
++				  struct nft_set_elem *elem)
++{
++	nft_setelem_data_deactivate(ctx->net, set, elem);
++
++	return 0;
++}
++
++static void nft_map_deactivate(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	struct nft_set_iter iter = {
++		.genmask	= nft_genmask_next(ctx->net),
++		.fn		= nft_mapelem_deactivate,
++	};
++
++	set->ops->walk(ctx, set, &iter);
++	WARN_ON_ONCE(iter.err);
++}
++
+ static int nft_delset(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	int err;
+@@ -565,6 +590,9 @@ static int nft_delset(const struct nft_c
+ 	if (err < 0)
+ 		return err;
+ 
++	if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++		nft_map_deactivate(ctx, set);
++
+ 	nft_deactivate_next(ctx->net, set);
+ 	ctx->table->use--;
+ 
+@@ -4474,7 +4502,7 @@ err_set_expr_alloc:
+ 	if (set->expr)
+ 		nft_expr_destroy(&ctx, set->expr);
+ 
+-	ops->destroy(set);
++	ops->destroy(&ctx, set);
+ err_set_init:
+ 	kfree(set->name);
+ err_set_name:
+@@ -4490,7 +4518,7 @@ static void nft_set_destroy(const struct
+ 	if (set->expr)
+ 		nft_expr_destroy(ctx, set->expr);
+ 
+-	set->ops->destroy(set);
++	set->ops->destroy(ctx, set);
+ 	kfree(set->name);
+ 	kvfree(set);
+ }
+@@ -4614,10 +4642,39 @@ static void nf_tables_unbind_set(const s
+ 	}
+ }
+ 
++static void nft_setelem_data_activate(const struct net *net,
++				      const struct nft_set *set,
++				      struct nft_set_elem *elem);
++
++static int nft_mapelem_activate(const struct nft_ctx *ctx,
++				struct nft_set *set,
++				const struct nft_set_iter *iter,
++				struct nft_set_elem *elem)
++{
++	nft_setelem_data_activate(ctx->net, set, elem);
++
++	return 0;
++}
++
++static void nft_map_activate(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	struct nft_set_iter iter = {
++		.genmask	= nft_genmask_next(ctx->net),
++		.fn		= nft_mapelem_activate,
++	};
++
++	set->ops->walk(ctx, set, &iter);
++	WARN_ON_ONCE(iter.err);
++}
++
+ void nf_tables_activate_set(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+-	if (nft_set_is_anonymous(set))
++	if (nft_set_is_anonymous(set)) {
++		if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++			nft_map_activate(ctx, set);
++
+ 		nft_clear(ctx->net, set);
++	}
+ 
+ 	set->use++;
+ }
+@@ -4636,13 +4693,20 @@ void nf_tables_deactivate_set(const stru
+ 		set->use--;
+ 		break;
+ 	case NFT_TRANS_PREPARE:
+-		if (nft_set_is_anonymous(set))
+-			nft_deactivate_next(ctx->net, set);
++		if (nft_set_is_anonymous(set)) {
++			if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++				nft_map_deactivate(ctx, set);
+ 
++			nft_deactivate_next(ctx->net, set);
++		}
+ 		set->use--;
+ 		return;
+ 	case NFT_TRANS_ABORT:
+ 	case NFT_TRANS_RELEASE:
++		if (nft_set_is_anonymous(set) &&
++		    set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++			nft_map_deactivate(ctx, set);
++
+ 		set->use--;
+ 		fallthrough;
+ 	default:
+@@ -5249,6 +5313,7 @@ static void nft_set_elem_expr_destroy(co
+ 	}
+ }
+ 
++/* Drop references and destroy. Called from gc, dynset and abort path. */
+ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
+ 			  bool destroy_expr)
+ {
+@@ -5270,11 +5335,11 @@ void nft_set_elem_destroy(const struct n
+ }
+ EXPORT_SYMBOL_GPL(nft_set_elem_destroy);
+ 
+-/* Only called from commit path, nft_setelem_data_deactivate() already deals
+- * with the refcounting from the preparation phase.
++/* Destroy element. References have been already dropped in the preparation
++ * path via nft_setelem_data_deactivate().
+  */
+-static void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
+-				       const struct nft_set *set, void *elem)
++void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
++				const struct nft_set *set, void *elem)
+ {
+ 	struct nft_set_ext *ext = nft_set_elem_ext(set, elem);
+ 
+@@ -8399,6 +8464,9 @@ static int __nf_tables_abort(struct net
+ 		case NFT_MSG_DELSET:
+ 			trans->ctx.table->use++;
+ 			nft_clear(trans->ctx.net, nft_trans_set(trans));
++			if (nft_trans_set(trans)->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++				nft_map_activate(&trans->ctx, nft_trans_set(trans));
++
+ 			nft_trans_destroy(trans);
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+@@ -9128,6 +9196,9 @@ static void __nft_release_table(struct n
+ 	list_for_each_entry_safe(set, ns, &table->sets, list) {
+ 		list_del(&set->list);
+ 		table->use--;
++		if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++			nft_map_deactivate(&ctx, set);
++
+ 		nft_set_destroy(&ctx, set);
+ 	}
+ 	list_for_each_entry_safe(obj, ne, &table->objects, list) {
+--- a/net/netfilter/nft_set_bitmap.c
++++ b/net/netfilter/nft_set_bitmap.c
+@@ -270,13 +270,14 @@ static int nft_bitmap_init(const struct
+ 	return 0;
+ }
+ 
+-static void nft_bitmap_destroy(const struct nft_set *set)
++static void nft_bitmap_destroy(const struct nft_ctx *ctx,
++			       const struct nft_set *set)
+ {
+ 	struct nft_bitmap *priv = nft_set_priv(set);
+ 	struct nft_bitmap_elem *be, *n;
+ 
+ 	list_for_each_entry_safe(be, n, &priv->list, head)
+-		nft_set_elem_destroy(set, be, true);
++		nf_tables_set_elem_destroy(ctx, set, be);
+ }
+ 
+ static bool nft_bitmap_estimate(const struct nft_set_desc *desc, u32 features,
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -380,19 +380,31 @@ static int nft_rhash_init(const struct n
+ 	return 0;
+ }
+ 
++struct nft_rhash_ctx {
++	const struct nft_ctx	ctx;
++	const struct nft_set	*set;
++};
++
+ static void nft_rhash_elem_destroy(void *ptr, void *arg)
+ {
+-	nft_set_elem_destroy(arg, ptr, true);
++	struct nft_rhash_ctx *rhash_ctx = arg;
++
++	nf_tables_set_elem_destroy(&rhash_ctx->ctx, rhash_ctx->set, ptr);
+ }
+ 
+-static void nft_rhash_destroy(const struct nft_set *set)
++static void nft_rhash_destroy(const struct nft_ctx *ctx,
++			      const struct nft_set *set)
+ {
+ 	struct nft_rhash *priv = nft_set_priv(set);
++	struct nft_rhash_ctx rhash_ctx = {
++		.ctx	= *ctx,
++		.set	= set,
++	};
+ 
+ 	cancel_delayed_work_sync(&priv->gc_work);
+ 	rcu_barrier();
+ 	rhashtable_free_and_destroy(&priv->ht, nft_rhash_elem_destroy,
+-				    (void *)set);
++				    (void *)&rhash_ctx);
+ }
+ 
+ /* Number of buckets is stored in u32, so cap our result to 1U<<31 */
+@@ -621,7 +633,8 @@ static int nft_hash_init(const struct nf
+ 	return 0;
+ }
+ 
+-static void nft_hash_destroy(const struct nft_set *set)
++static void nft_hash_destroy(const struct nft_ctx *ctx,
++			     const struct nft_set *set)
+ {
+ 	struct nft_hash *priv = nft_set_priv(set);
+ 	struct nft_hash_elem *he;
+@@ -631,7 +644,7 @@ static void nft_hash_destroy(const struc
+ 	for (i = 0; i < priv->buckets; i++) {
+ 		hlist_for_each_entry_safe(he, next, &priv->table[i], node) {
+ 			hlist_del_rcu(&he->node);
+-			nft_set_elem_destroy(set, he, true);
++			nf_tables_set_elem_destroy(ctx, set, he);
+ 		}
+ 	}
+ }
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -2127,10 +2127,12 @@ out_scratch:
+ 
+ /**
+  * nft_set_pipapo_match_destroy() - Destroy elements from key mapping array
++ * @ctx:	context
+  * @set:	nftables API set representation
+  * @m:		matching data pointing to key mapping array
+  */
+-static void nft_set_pipapo_match_destroy(const struct nft_set *set,
++static void nft_set_pipapo_match_destroy(const struct nft_ctx *ctx,
++					 const struct nft_set *set,
+ 					 struct nft_pipapo_match *m)
+ {
+ 	struct nft_pipapo_field *f;
+@@ -2147,15 +2149,17 @@ static void nft_set_pipapo_match_destroy
+ 
+ 		e = f->mt[r].e;
+ 
+-		nft_set_elem_destroy(set, e, true);
++		nf_tables_set_elem_destroy(ctx, set, e);
+ 	}
+ }
+ 
+ /**
+  * nft_pipapo_destroy() - Free private data for set and all committed elements
++ * @ctx:	context
+  * @set:	nftables API set representation
+  */
+-static void nft_pipapo_destroy(const struct nft_set *set)
++static void nft_pipapo_destroy(const struct nft_ctx *ctx,
++			       const struct nft_set *set)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct nft_pipapo_match *m;
+@@ -2165,7 +2169,7 @@ static void nft_pipapo_destroy(const str
+ 	if (m) {
+ 		rcu_barrier();
+ 
+-		nft_set_pipapo_match_destroy(set, m);
++		nft_set_pipapo_match_destroy(ctx, set, m);
+ 
+ #ifdef NFT_PIPAPO_ALIGN
+ 		free_percpu(m->scratch_aligned);
+@@ -2182,7 +2186,7 @@ static void nft_pipapo_destroy(const str
+ 		m = priv->clone;
+ 
+ 		if (priv->dirty)
+-			nft_set_pipapo_match_destroy(set, m);
++			nft_set_pipapo_match_destroy(ctx, set, m);
+ 
+ #ifdef NFT_PIPAPO_ALIGN
+ 		free_percpu(priv->clone->scratch_aligned);
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -657,7 +657,8 @@ static int nft_rbtree_init(const struct
+ 	return 0;
+ }
+ 
+-static void nft_rbtree_destroy(const struct nft_set *set)
++static void nft_rbtree_destroy(const struct nft_ctx *ctx,
++			       const struct nft_set *set)
+ {
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	struct nft_rbtree_elem *rbe;
+@@ -668,7 +669,7 @@ static void nft_rbtree_destroy(const str
+ 	while ((node = priv->root.rb_node) != NULL) {
+ 		rb_erase(node, &priv->root);
+ 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
+-		nft_set_elem_destroy(set, rbe, true);
++		nf_tables_set_elem_destroy(ctx, set, rbe);
+ 	}
+ }
+ 
 
 
