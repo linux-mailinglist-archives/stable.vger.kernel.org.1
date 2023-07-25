@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7EF7616F8
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 104F1761319
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232246AbjGYLoe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
+        id S233957AbjGYLH5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:07:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233759AbjGYLoX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:23 -0400
+        with ESMTP id S233910AbjGYLHY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D514D19AA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B5A3A84
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71D6C6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E2EC433C8;
-        Tue, 25 Jul 2023 11:44:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 79B756166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4A4C433C8;
+        Tue, 25 Jul 2023 11:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285445;
-        bh=cSNdj7cQR9/ud7VJRYQhaPlyuuwF5HsZVCKQ+IjVXH8=;
+        s=korg; t=1690283163;
+        bh=FKZbOhdA7/68DKOEKNohWy4R+kHghKdMXoKva7FA37w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ksencOS1AHbCCiPHh5srpR+/S2YBmLfMFU37UyamV+GvTOncks2tkVYWDHSGrD6BT
-         B8B1nGPaJo//dSlB5lth1FPqu7eYPPnzS7pL4TLMe3W1zje+bI8iHH6iuDqLkCjp6L
-         IC97fqmlUwu57z4aRWSaRIqBhVZWe8Ybn7yTI2Zw=
+        b=Idd3VxRWF0jAusTmq0HxISIGAMzHAE1hMIbh1WXJaSL/+gZE07LZmr1/oDFJsgTwG
+         PwcGllH1uSbNQeKcKr8Ir7q0lXBsDe8TM8iXhBztFCN2p9NoeH36af/DBrk8Sq8R1g
+         KWRcK09vZaLwPP5jL5y5co0+eziqLULbDOP42x8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nitya Sunkad <nitya.sunkad@amd.com>,
-        Shannon Nelson <shannon.nelson@amd.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Kurt Kanzenbach <kurt@linutronix.de>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 207/313] ionic: remove WARN_ON to prevent panic_on_warn
+Subject: [PATCH 6.1 132/183] igc: Avoid transmit queue timeout for XDP
 Date:   Tue, 25 Jul 2023 12:46:00 +0200
-Message-ID: <20230725104529.960367383@linuxfoundation.org>
+Message-ID: <20230725104512.690877105@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,40 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nitya Sunkad <nitya.sunkad@amd.com>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-[ Upstream commit abfb2a58a5377ebab717d4362d6180f901b6e5c1 ]
+[ Upstream commit 95b681485563c64585de78662ee52d06b7fa47d9 ]
 
-Remove unnecessary early code development check and the WARN_ON
-that it uses.  The irq alloc and free paths have long been
-cleaned up and this check shouldn't have stuck around so long.
+High XDP load triggers the netdev watchdog:
 
-Fixes: 77ceb68e29cc ("ionic: Add notifyq support")
-Signed-off-by: Nitya Sunkad <nitya.sunkad@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+|NETDEV WATCHDOG: enp3s0 (igc): transmit queue 2 timed out
+
+The reason is the Tx queue transmission start (txq->trans_start) is not updated
+in XDP code path. Therefore, add it for all XDP transmission functions.
+
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 78adb4bcf99e ("igc: Prevent garbled TX queue with XDP ZEROCOPY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 52d291383c233..d718c1a6d5fc7 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -332,11 +332,6 @@ static void ionic_qcqs_free(struct ionic_lif *lif)
- static void ionic_link_qcq_interrupts(struct ionic_qcq *src_qcq,
- 				      struct ionic_qcq *n_qcq)
- {
--	if (WARN_ON(n_qcq->flags & IONIC_QCQ_F_INTR)) {
--		ionic_intr_free(n_qcq->cq.lif->ionic, n_qcq->intr.index);
--		n_qcq->flags &= ~IONIC_QCQ_F_INTR;
--	}
--
- 	n_qcq->intr.vector = src_qcq->intr.vector;
- 	n_qcq->intr.index = src_qcq->intr.index;
- }
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 273941f90f066..ade4bde47c65a 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -2402,6 +2402,8 @@ static int igc_xdp_xmit_back(struct igc_adapter *adapter, struct xdp_buff *xdp)
+ 	nq = txring_txq(ring);
+ 
+ 	__netif_tx_lock(nq, cpu);
++	/* Avoid transmit queue timeout since we share it with the slow path */
++	txq_trans_cond_update(nq);
+ 	res = igc_xdp_init_tx_descriptor(ring, xdpf);
+ 	__netif_tx_unlock(nq);
+ 	return res;
+@@ -2804,6 +2806,9 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
+ 
+ 	__netif_tx_lock(nq, cpu);
+ 
++	/* Avoid transmit queue timeout since we share it with the slow path */
++	txq_trans_cond_update(nq);
++
+ 	budget = igc_desc_unused(ring);
+ 
+ 	while (xsk_tx_peek_desc(pool, &xdp_desc) && budget--) {
+@@ -6297,6 +6302,9 @@ static int igc_xdp_xmit(struct net_device *dev, int num_frames,
+ 
+ 	__netif_tx_lock(nq, cpu);
+ 
++	/* Avoid transmit queue timeout since we share it with the slow path */
++	txq_trans_cond_update(nq);
++
+ 	drops = 0;
+ 	for (i = 0; i < num_frames; i++) {
+ 		int err;
 -- 
 2.39.2
 
