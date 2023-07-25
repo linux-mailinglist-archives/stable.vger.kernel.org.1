@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C54776155F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C30D7616AB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234626AbjGYL2W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:28:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37004 "EHLO
+        id S235003AbjGYLk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234720AbjGYL2L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F29897
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:10 -0700 (PDT)
+        with ESMTP id S235008AbjGYLks (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 244AB1BC5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 341326168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C25C433C8;
-        Tue, 25 Jul 2023 11:28:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E31761655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2207C433C8;
+        Tue, 25 Jul 2023 11:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284489;
-        bh=8GAmZO/WqNL3QSuzG71YUw7pfjZGk59m96FiseWY6EY=;
+        s=korg; t=1690285233;
+        bh=gx8zwY60F9E+Vs0YmxglvR+D2dMUpWBIyn8lQa1s8WU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CqUtVwehzJztGRIPtT87RoLmUpMrcdn2HQJ9sZ1DsYz8hkvHAFTBHWNF0+G1mbXWw
-         iAn8YECPPvTVc/Jh3b0wp76PxBRReoLlGCX/GhQFjFdmfWtLydPSeM9TeuqkWI3E6I
-         fnIDinUAp+95/wgk3GaoaeJXoDac4WIoiqM1/3FQ=
+        b=rVUx7xK3uiZKA+LRZ7BP0Hxjp040mnuLlogfVyo+2k/8wSXqVt1Fobl+2Mdi4CarK
+         mluzlvY3bSr77MUcjRLgtFpbKGt1dW8DJrAPEA5GAQUAAHBLV2VlGD0ArO11SG14mv
+         NmgBHSSniW/YLqx/cqa676jjs5F1TiShuhSQhNLM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, M A Ramdhan <ramdhan@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 345/509] net/sched: cls_fw: Fix improper refcount update leads to use-after-free
-Date:   Tue, 25 Jul 2023 12:44:44 +0200
-Message-ID: <20230725104609.528705297@linuxfoundation.org>
+Subject: [PATCH 5.4 132/313] extcon: Fix kernel doc of property capability fields to avoid warnings
+Date:   Tue, 25 Jul 2023 12:44:45 +0200
+Message-ID: <20230725104526.728585174@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,59 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: M A Ramdhan <ramdhan@starlabs.sg>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 0323bce598eea038714f941ce2b22541c46d488f ]
+[ Upstream commit 73346b9965ebda2feb7fef8629e9b28baee820e3 ]
 
-In the event of a failure in tcf_change_indev(), fw_set_parms() will
-immediately return an error after incrementing or decrementing
-reference counter in tcf_bind_filter().  If attacker can control
-reference counter to zero and make reference freed, leading to
-use after free.
+Kernel documentation has to be synchronized with a code, otherwise
+the validator is not happy:
 
-In order to prevent this, move the point of possible failure above the
-point where the TC_FW_CLASSID is handled.
+     Function parameter or member 'usb_bits' not described in 'extcon_cable'
+     Function parameter or member 'chg_bits' not described in 'extcon_cable'
+     Function parameter or member 'jack_bits' not described in 'extcon_cable'
+     Function parameter or member 'disp_bits' not described in 'extcon_cable'
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
-Signed-off-by: M A Ramdhan <ramdhan@starlabs.sg>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Message-ID: <20230705161530.52003-1-ramdhan@starlabs.sg>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Describe the fields added in the past.
+
+Fixes: ceaa98f442cf ("extcon: Add the support for the capability of each property")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_fw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/extcon/extcon.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index ec945294626a8..41f0898a5a565 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -210,11 +210,6 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
- 	if (err < 0)
- 		return err;
- 
--	if (tb[TCA_FW_CLASSID]) {
--		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
--		tcf_bind_filter(tp, &f->res, base);
--	}
--
- 	if (tb[TCA_FW_INDEV]) {
- 		int ret;
- 		ret = tcf_change_indev(net, tb[TCA_FW_INDEV], extack);
-@@ -231,6 +226,11 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
- 	} else if (head->mask != 0xFFFFFFFF)
- 		return err;
- 
-+	if (tb[TCA_FW_CLASSID]) {
-+		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
-+		tcf_bind_filter(tp, &f->res, base);
-+	}
-+
- 	return 0;
- }
- 
+diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
+index 00ad8b637749b..12f9ae2aac113 100644
+--- a/drivers/extcon/extcon.c
++++ b/drivers/extcon/extcon.c
+@@ -200,6 +200,10 @@ static const struct __extcon_info {
+  * @chg_propval:	the array of charger connector properties
+  * @jack_propval:	the array of jack connector properties
+  * @disp_propval:	the array of display connector properties
++ * @usb_bits:		the bit array of the USB connector property capabilities
++ * @chg_bits:		the bit array of the charger connector property capabilities
++ * @jack_bits:		the bit array of the jack connector property capabilities
++ * @disp_bits:		the bit array of the display connector property capabilities
+  */
+ struct extcon_cable {
+ 	struct extcon_dev *edev;
 -- 
 2.39.2
 
