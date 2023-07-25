@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCB8F7616BA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C807612C2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235082AbjGYLld (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48648 "EHLO
+        id S233812AbjGYLFa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235088AbjGYLlN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:13 -0400
+        with ESMTP id S233827AbjGYLFP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473B71FC2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D247C2106
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F90E61698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D346C433C8;
-        Tue, 25 Jul 2023 11:40:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6596461654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770AFC433C7;
+        Tue, 25 Jul 2023 11:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285252;
-        bh=5rvemBe/PPvB11ZhZP/FGRUXjGh5Kn76maallkmqXCA=;
+        s=korg; t=1690282968;
+        bh=1zPbHwvfIywXZUmBBH/wMjpEDRSlVTxe2vkSOS2VUEs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aLRbntULSzXGPy3M/6BcTM8NP2lJNTW7iRSZMAen/LIpdSTpgus6OGcVlKgBNTuJ2
-         19VPS5spYHpLNpAV5rZCsqGSaS1gGznY1IoJYLdqcdiFrXhL43F+mJg6662YiJ00O/
-         PoxPOTrZTzCNac0ydlGda5+gNm3FxIsi0hS5P0m8=
+        b=MBw2e77HmzNjE6qS3hWWk0J0y9VTj4hR55u4o6gag95Q74NJOgylyFKnTTCtrkXai
+         3rYXnAyGCEkblvWpyVAnptZL1QK0TLYL3ppTkn+e8rRpnkGwodjGtOORpsXeTaxSpZ
+         N9VOUjyg2wVWBzcWRyEKCVgOlErhvZ7sE+5NQq/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
-        Dhruva Gole <d-gole@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 139/313] serial: 8250_omap: Use force_suspend and resume for system suspend
+        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 064/183] rcu: Mark additional concurrent load from ->cpu_no_qs.b.exp
 Date:   Tue, 25 Jul 2023 12:44:52 +0200
-Message-ID: <20230725104527.018627881@linuxfoundation.org>
+Message-ID: <20230725104510.271969069@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,76 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 20a41a62618df85f3a2981008edec5cadd785e0a ]
+[ Upstream commit 9146eb25495ea8bfb5010192e61e3ed5805ce9ef ]
 
-We should not rely on autosuspend timeout for system suspend. Instead,
-let's use force_suspend and force_resume functions. Otherwise the serial
-port controller device may not be idled on suspend.
+The per-CPU rcu_data structure's ->cpu_no_qs.b.exp field is updated
+only on the instance corresponding to the current CPU, but can be read
+more widely.  Unmarked accesses are OK from the corresponding CPU, but
+only if interrupts are disabled, given that interrupt handlers can and
+do modify this field.
 
-As we are doing a register write on suspend to configure the serial port,
-we still need to runtime PM resume the port on suspend.
+Unfortunately, although the load from rcu_preempt_deferred_qs() is always
+carried out from the corresponding CPU, interrupts are not necessarily
+disabled.  This commit therefore upgrades this load to READ_ONCE.
 
-While at it, let's switch to pm_runtime_resume_and_get() and check for
-errors returned. And let's add the missing line break before return to the
-suspend function while at it.
+Similarly, the diagnostic access from synchronize_rcu_expedited_wait()
+might run with interrupts disabled and from some other CPU.  This commit
+therefore marks this load with data_race().
 
-Fixes: 09d8b2bdbc5c ("serial: 8250: omap: Provide ability to enable/disable UART as wakeup source")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Dhruva Gole <d-gole@ti.com>
-Message-ID: <20230614045922.4798-1-tony@atomide.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Finally, the C-language access in rcu_preempt_ctxt_queue() is OK as
+is because interrupts are disabled and this load is always from the
+corresponding CPU.  This commit adds a comment giving the rationale for
+this access being safe.
+
+This data race was reported by KCSAN.  Not appropriate for backporting
+due to failure being unlikely.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ kernel/rcu/tree_exp.h    | 2 +-
+ kernel/rcu/tree_plugin.h | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 928b35b87dcf3..a2db055278a17 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1314,25 +1314,35 @@ static int omap8250_suspend(struct device *dev)
+diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
+index e25321dbb068e..aa3ec3c3b9f75 100644
+--- a/kernel/rcu/tree_exp.h
++++ b/kernel/rcu/tree_exp.h
+@@ -641,7 +641,7 @@ static void synchronize_rcu_expedited_wait(void)
+ 					"O."[!!cpu_online(cpu)],
+ 					"o."[!!(rdp->grpmask & rnp->expmaskinit)],
+ 					"N."[!!(rdp->grpmask & rnp->expmaskinitnext)],
+-					"D."[!!(rdp->cpu_no_qs.b.exp)]);
++					"D."[!!data_race(rdp->cpu_no_qs.b.exp)]);
+ 			}
+ 		}
+ 		pr_cont(" } %lu jiffies s: %lu root: %#lx/%c\n",
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index e3142ee35fc6a..044026abfdd7f 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -257,6 +257,8 @@ static void rcu_preempt_ctxt_queue(struct rcu_node *rnp, struct rcu_data *rdp)
+ 	 * GP should not be able to end until we report, so there should be
+ 	 * no need to check for a subsequent expedited GP.  (Though we are
+ 	 * still in a quiescent state in any case.)
++	 *
++	 * Interrupts are disabled, so ->cpu_no_qs.b.exp cannot change.
+ 	 */
+ 	if (blkd_state & RCU_EXP_BLKD && rdp->cpu_no_qs.b.exp)
+ 		rcu_report_exp_rdp(rdp);
+@@ -941,7 +943,7 @@ notrace void rcu_preempt_deferred_qs(struct task_struct *t)
  {
- 	struct omap8250_priv *priv = dev_get_drvdata(dev);
- 	struct uart_8250_port *up = serial8250_get_port(priv->line);
-+	int err;
+ 	struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
  
- 	serial8250_suspend_port(priv->line);
- 
--	pm_runtime_get_sync(dev);
-+	err = pm_runtime_resume_and_get(dev);
-+	if (err)
-+		return err;
- 	if (!device_may_wakeup(dev))
- 		priv->wer = 0;
- 	serial_out(up, UART_OMAP_WER, priv->wer);
--	pm_runtime_mark_last_busy(dev);
--	pm_runtime_put_autosuspend(dev);
--
-+	err = pm_runtime_force_suspend(dev);
- 	flush_work(&priv->qos_work);
--	return 0;
-+
-+	return err;
+-	if (rdp->cpu_no_qs.b.exp)
++	if (READ_ONCE(rdp->cpu_no_qs.b.exp))
+ 		rcu_report_exp_rdp(rdp);
  }
  
- static int omap8250_resume(struct device *dev)
- {
- 	struct omap8250_priv *priv = dev_get_drvdata(dev);
-+	int err;
- 
-+	err = pm_runtime_force_resume(dev);
-+	if (err)
-+		return err;
- 	serial8250_resume_port(priv->line);
-+	/* Paired with pm_runtime_resume_and_get() in omap8250_suspend() */
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
- 	return 0;
- }
- #else
 -- 
 2.39.2
 
