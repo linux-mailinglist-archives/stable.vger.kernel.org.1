@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA13B76178D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 180E37615E7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232635AbjGYLsp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55374 "EHLO
+        id S234695AbjGYLeX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233585AbjGYLsG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:06 -0400
+        with ESMTP id S233754AbjGYLeW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D0412C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D702118F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B798616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D538C433C7;
-        Tue, 25 Jul 2023 11:48:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50DBC615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FC3C433C7;
+        Tue, 25 Jul 2023 11:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285684;
-        bh=xAjnnjtKgsqBNirUt8fPoThn3ipjvoEV7IxJoqGNg0E=;
+        s=korg; t=1690284860;
+        bh=nFF++ixhHHV/4D1GpKIugpJ9MNKMgHz3YXbr6CN3qn0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UhX1+Wi1wYpKRfJTGSRq+QqkNXC51uTUpl/hYoqnHgnZGUicAOVyyVXz5kM2hpo1Z
-         rNXcRZfP7S4KONR3SXBL6igfEs/b68awS4dQnzH1pbWlDUMA74KO2DOw6bHtcCBnA3
-         EhZmnKn/verKGuohiOFLaetOchO3RDqgwY6It2pg=
+        b=us3CxV+LAqgPmPtpcJTeR5Ax+R+y4tq1Odw42tM4ihdydnm6KjK18R8HjY4hnE12Q
+         QB1dlEjrkVaxIt9eFu2SMdAXG6eqSRk7ISEBxPB/jzALpg+8XYAMql+rejupFMWnj1
+         yA/LDqZLNkM9nu70BifpD5trMZmQbaapkECbaezk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Roee Goldfiner <roee.h.goldfiner@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 294/313] wifi: iwlwifi: mvm: avoid baid size integer overflow
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>
+Subject: [PATCH 5.10 508/509] ftrace: Store the order of pages allocated in ftrace_page
 Date:   Tue, 25 Jul 2023 12:47:27 +0200
-Message-ID: <20230725104533.847680341@linuxfoundation.org>
+Message-ID: <20230725104616.979249367@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,47 +56,136 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 1a528ab1da324d078ec60283c34c17848580df24 ]
+commit db42523b4f3e83ff86b53cdda219a9767c8b047f upstream.
 
-Roee reported various hard-to-debug crashes with pings in
-EHT aggregation scenarios. Enabling KASAN showed that we
-access the BAID allocation out of bounds, and looking at
-the code a bit shows that since the reorder buffer entry
-(struct iwl_mvm_reorder_buf_entry) is 128 bytes if debug
-such as lockdep is enabled, then staring from an agg size
-512 we overflow the size calculation, and allocate a much
-smaller structure than we should, causing slab corruption
-once we initialize this.
+Instead of saving the size of the records field of the ftrace_page, store
+the order it uses to allocate the pages, as that is what is needed to know
+in order to free the pages. This simplifies the code.
 
-Fix this by simply using u32 instead of u16.
+Link: https://lore.kernel.org/lkml/CAHk-=whyMxheOqXAORt9a7JK9gc9eHTgCJ55Pgs4p=X3RrQubQ@mail.gmail.com/
 
-Reported-by: Roee Goldfiner <roee.h.goldfiner@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230620125813.f428c856030d.I2c2bb808e945adb71bc15f5b2bac2d8957ea90eb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[ change log written by Steven Rostedt ]
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ftrace.c |   35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index a3255100e3fee..7befb92b5159c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -2557,7 +2557,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -1091,7 +1091,7 @@ struct ftrace_page {
+ 	struct ftrace_page	*next;
+ 	struct dyn_ftrace	*records;
+ 	int			index;
+-	int			size;
++	int			order;
+ };
+ 
+ #define ENTRY_SIZE sizeof(struct dyn_ftrace)
+@@ -3188,7 +3188,7 @@ static int ftrace_allocate_records(struc
+ 	ftrace_number_of_groups++;
+ 
+ 	cnt = (PAGE_SIZE << order) / ENTRY_SIZE;
+-	pg->size = cnt;
++	pg->order = order;
+ 
+ 	if (cnt > count)
+ 		cnt = count;
+@@ -3201,7 +3201,6 @@ ftrace_allocate_pages(unsigned long num_
+ {
+ 	struct ftrace_page *start_pg;
+ 	struct ftrace_page *pg;
+-	int order;
+ 	int cnt;
+ 
+ 	if (!num_to_init)
+@@ -3237,13 +3236,13 @@ ftrace_allocate_pages(unsigned long num_
+  free_pages:
+ 	pg = start_pg;
+ 	while (pg) {
+-		order = get_count_order(pg->size / ENTRIES_PER_PAGE);
+-		if (order >= 0)
+-			free_pages((unsigned long)pg->records, order);
++		if (pg->records) {
++			free_pages((unsigned long)pg->records, pg->order);
++			ftrace_number_of_pages -= 1 << pg->order;
++		}
+ 		start_pg = pg->next;
+ 		kfree(pg);
+ 		pg = start_pg;
+-		ftrace_number_of_pages -= 1 << order;
+ 		ftrace_number_of_groups--;
  	}
+ 	pr_info("ftrace: FAILED to allocate memory for functions\n");
+@@ -6239,6 +6238,7 @@ static int ftrace_process_locs(struct mo
+ 	p = start;
+ 	pg = start_pg;
+ 	while (p < end) {
++		unsigned long end_offset;
+ 		addr = ftrace_call_adjust(*p++);
+ 		/*
+ 		 * Some architecture linkers will pad between
+@@ -6249,7 +6249,8 @@ static int ftrace_process_locs(struct mo
+ 		if (!addr)
+ 			continue;
  
- 	if (iwl_mvm_has_new_rx_api(mvm) && start) {
--		u16 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
-+		u32 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
+-		if (pg->index == pg->size) {
++		end_offset = (pg->index+1) * sizeof(pg->records[0]);
++		if (end_offset > PAGE_SIZE << pg->order) {
+ 			/* We should have allocated enough */
+ 			if (WARN_ON(!pg->next))
+ 				break;
+@@ -6418,7 +6419,6 @@ void ftrace_release_mod(struct module *m
+ 	struct ftrace_page **last_pg;
+ 	struct ftrace_page *tmp_page = NULL;
+ 	struct ftrace_page *pg;
+-	int order;
  
- 		/* sparse doesn't like the __align() so don't check */
- #ifndef __CHECKER__
--- 
-2.39.2
-
+ 	mutex_lock(&ftrace_lock);
+ 
+@@ -6469,12 +6469,12 @@ void ftrace_release_mod(struct module *m
+ 		/* Needs to be called outside of ftrace_lock */
+ 		clear_mod_from_hashes(pg);
+ 
+-		order = get_count_order(pg->size / ENTRIES_PER_PAGE);
+-		if (order >= 0)
+-			free_pages((unsigned long)pg->records, order);
++		if (pg->records) {
++			free_pages((unsigned long)pg->records, pg->order);
++			ftrace_number_of_pages -= 1 << pg->order;
++		}
+ 		tmp_page = pg->next;
+ 		kfree(pg);
+-		ftrace_number_of_pages -= 1 << order;
+ 		ftrace_number_of_groups--;
+ 	}
+ }
+@@ -6792,7 +6792,6 @@ void ftrace_free_mem(struct module *mod,
+ 	struct ftrace_mod_map *mod_map = NULL;
+ 	struct ftrace_init_func *func, *func_next;
+ 	struct list_head clear_hash;
+-	int order;
+ 
+ 	INIT_LIST_HEAD(&clear_hash);
+ 
+@@ -6830,10 +6829,10 @@ void ftrace_free_mem(struct module *mod,
+ 		ftrace_update_tot_cnt--;
+ 		if (!pg->index) {
+ 			*last_pg = pg->next;
+-			order = get_count_order(pg->size / ENTRIES_PER_PAGE);
+-			if (order >= 0)
+-				free_pages((unsigned long)pg->records, order);
+-			ftrace_number_of_pages -= 1 << order;
++			if (pg->records) {
++				free_pages((unsigned long)pg->records, pg->order);
++				ftrace_number_of_pages -= 1 << pg->order;
++			}
+ 			ftrace_number_of_groups--;
+ 			kfree(pg);
+ 			pg = container_of(last_pg, struct ftrace_page, next);
 
 
