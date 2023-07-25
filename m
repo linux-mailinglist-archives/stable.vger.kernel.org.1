@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 904A17615B7
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A36761735
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjGYLcS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40226 "EHLO
+        id S231909AbjGYLqE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232624AbjGYLcR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:17 -0400
+        with ESMTP id S230444AbjGYLqE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E3D1F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D2CB113
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F174261654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DE8C433C7;
-        Tue, 25 Jul 2023 11:32:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF9E061654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5681C433C7;
+        Tue, 25 Jul 2023 11:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284735;
-        bh=x7QgD5cbrpnxYXtiHTDilUKOuTppJo9uI3sOZCIeioE=;
+        s=korg; t=1690285562;
+        bh=gYXngkGUL5Hwh870SJF9R5QpN/RWjCtlMX/sAxgaAdY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ymmqA3ygHvdijZfXa9uOBu4DZEbJSOQoMw9HHrdsW1ud3VsHyJP37mY0DeZI8+hGN
-         4ezaicAnIop7WlNeyMkmvUC/J6YIe4oz9F/6gGFycaE2326oqHXhTCra9lpM4q/mkg
-         4YcOKgJxN2sDc4wnbElSm1rcOVacCxZvwsT+SzVo=
+        b=nuL6u1mwbE+6Hv50OOKJGMS5u7WxoEuSnWEo3CnjBPdrJwy3aqMkWC5OIk0SkG8DH
+         xtWlXhvkzpehp4jhQQxCY/gK6BBvsp1758FcVHyVUG/PTLBa1wj4FfFn+2GLsLHXEl
+         jNGtou+bxiSdsvPJ7inlHaFOKigcuErq4UQtueZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 462/509] ACPI: video: Add backlight=native DMI quirk for Apple iMac11,3
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 5.4 248/313] PCI: rockchip: Use u32 variable to access 32-bit registers
 Date:   Tue, 25 Jul 2023 12:46:41 +0200
-Message-ID: <20230725104614.907411520@linuxfoundation.org>
+Message-ID: <20230725104531.798813161@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit 48436f2e9834b46b47b038b605c8142a1c07bc85 ]
+commit 8962b2cb39119cbda4fc69a1f83957824f102f81 upstream.
 
-Linux defaults to picking the non-working ACPI video backlight interface
-on the Apple iMac11,3 .
+Previously u16 variables were used to access 32-bit registers, this
+resulted in not all of the data being read from the registers. Also
+the left shift of more than 16-bits would result in moving data out
+of the variable. Use u32 variables to access 32-bit registers
 
-Add a DMI quirk to pick the working native radeon_bl0 interface instead.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230418074700.1083505-10-rick.wertenbroek@gmail.com
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/controller/pcie-rockchip-ep.c |   10 +++++-----
+ drivers/pci/controller/pcie-rockchip.h    |    1 +
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 038542b3a80a7..872b5351f0d8f 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -332,6 +332,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Apple iMac11,3 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "iMac11,3"),
-+		},
-+	},
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
- 	 .callback = video_detect_force_native,
--- 
-2.39.2
-
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -313,15 +313,15 @@ static int rockchip_pcie_ep_set_msi(stru
+ {
+ 	struct rockchip_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct rockchip_pcie *rockchip = &ep->rockchip;
+-	u16 flags;
++	u32 flags;
+ 
+ 	flags = rockchip_pcie_read(rockchip,
+ 				   ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
+ 				   ROCKCHIP_PCIE_EP_MSI_CTRL_REG);
+ 	flags &= ~ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_MASK;
+ 	flags |=
+-	   ((multi_msg_cap << 1) <<  ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_OFFSET) |
+-	   PCI_MSI_FLAGS_64BIT;
++	   (multi_msg_cap << ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_OFFSET) |
++	   (PCI_MSI_FLAGS_64BIT << ROCKCHIP_PCIE_EP_MSI_FLAGS_OFFSET);
+ 	flags &= ~ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP;
+ 	rockchip_pcie_write(rockchip, flags,
+ 			    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
+@@ -333,7 +333,7 @@ static int rockchip_pcie_ep_get_msi(stru
+ {
+ 	struct rockchip_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct rockchip_pcie *rockchip = &ep->rockchip;
+-	u16 flags;
++	u32 flags;
+ 
+ 	flags = rockchip_pcie_read(rockchip,
+ 				   ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
+@@ -394,7 +394,7 @@ static int rockchip_pcie_ep_send_msi_irq
+ 					 u8 interrupt_num)
+ {
+ 	struct rockchip_pcie *rockchip = &ep->rockchip;
+-	u16 flags, mme, data, data_mask;
++	u32 flags, mme, data, data_mask;
+ 	u8 msi_count;
+ 	u64 pci_addr, pci_addr_mask = 0xff;
+ 
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -232,6 +232,7 @@
+ #define ROCKCHIP_PCIE_EP_CMD_STATUS			0x4
+ #define   ROCKCHIP_PCIE_EP_CMD_STATUS_IS		BIT(19)
+ #define ROCKCHIP_PCIE_EP_MSI_CTRL_REG			0x90
++#define   ROCKCHIP_PCIE_EP_MSI_FLAGS_OFFSET		16
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_OFFSET		17
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_MASK		GENMASK(19, 17)
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MME_OFFSET		20
 
 
