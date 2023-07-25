@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16DFD76175D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 811617615D5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231997AbjGYLrh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
+        id S234674AbjGYLdl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:33:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232944AbjGYLrY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB05B1BD8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:23 -0700 (PDT)
+        with ESMTP id S234672AbjGYLdl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF25F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69FD8616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6B7C433C8;
-        Tue, 25 Jul 2023 11:47:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E702661655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16B9C433C8;
+        Tue, 25 Jul 2023 11:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285642;
-        bh=/6qy0W4HWDIn7gndrX9MwiTGc78ncsM+UWjHWgGq3vg=;
+        s=korg; t=1690284819;
+        bh=pFdr8y0W5BbIKwuj68ECZ0nMa6piaOSLfm2ci2Aec6o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t+3yiIfhnlvPaLdiWPrR0UU1NXxZjuLvUBhTkKf6RB8D2Wb6WUwBqItVOqYm/6oUH
-         u5bg2oRsyRdwNh/nIxD+BxlumQn7gyDetQq9mvSVnZV8KfxjSlRQlla1PB2TDwgmcd
-         I/qhBrQJTv/1e88Hw95uKk9Qy+XLUEX2M1epq2Ng=
+        b=SDnSR8usPiKhTdbq5MNd9gw1pu9WvgJJsIiIhrzV5kGMoHj1OzzcmIsEMMLMpnB9D
+         zd35BqAjpg1VCIhgR3kXFkcI7Kb+wGYjizaroQSnoGMbaN6NLG6kaPRWuHhHtMsQ3U
+         w40/Taq1GQkq1Ivx2/TDIregMb8sJiL4vYb4s/XQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Rongbo <xurongbo@baidu.com>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.4 278/313] fuse: revalidate: dont invalidate if interrupted
+        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 492/509] netfilter: nf_tables: skip bound chain on rule flush
 Date:   Tue, 25 Jul 2023 12:47:11 +0200
-Message-ID: <20230725104533.106715449@linuxfoundation.org>
+Message-ID: <20230725104616.278723261@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit a9d1c4c6df0e568207907c04aed9e7beb1294c42 upstream.
+[ Upstream commit 6eaf41e87a223ae6f8e7a28d6e78384ad7e407f8 ]
 
-If the LOOKUP request triggered from fuse_dentry_revalidate() is
-interrupted, then the dentry will be invalidated, possibly resulting in
-submounts being unmounted.
+Skip bound chain when flushing table rules, the rule that owns this
+chain releases these objects.
 
-Reported-by: Xu Rongbo <xurongbo@baidu.com>
-Closes: https://lore.kernel.org/all/CAJfpegswN_CJJ6C3RZiaK6rpFmNyWmXfaEpnQUJ42KCwNF5tWw@mail.gmail.com/
-Fixes: 9e6268db496a ("[PATCH] FUSE - read-write operations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Otherwise, the following warning is triggered:
+
+  WARNING: CPU: 2 PID: 1217 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+  CPU: 2 PID: 1217 Comm: chain-flush Not tainted 6.1.39 #1
+  RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -246,7 +246,7 @@ static int fuse_dentry_revalidate(struct
- 			spin_unlock(&fi->lock);
- 		}
- 		kfree(forget);
--		if (ret == -ENOMEM)
-+		if (ret == -ENOMEM || ret == -EINTR)
- 			goto out;
- 		if (ret || fuse_invalid_attr(&outarg.attr) ||
- 		    (outarg.attr.mode ^ inode->i_mode) & S_IFMT)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 40ed4dd530c5a..356416564d9f4 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3611,6 +3611,8 @@ static int nf_tables_delrule(struct net *net, struct sock *nlsk,
+ 		list_for_each_entry(chain, &table->chains, list) {
+ 			if (!nft_is_active_next(net, chain))
+ 				continue;
++			if (nft_chain_is_bound(chain))
++				continue;
+ 
+ 			ctx.chain = chain;
+ 			err = nft_delrule_by_chain(&ctx);
+-- 
+2.39.2
+
 
 
