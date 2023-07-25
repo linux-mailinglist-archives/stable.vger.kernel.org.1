@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF06761613
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A56A976113E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234810AbjGYLgY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43452 "EHLO
+        id S232242AbjGYKtG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:49:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234803AbjGYLgU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:20 -0400
+        with ESMTP id S232234AbjGYKtF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0918D10C7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D5C173F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C855616AC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78754C433C8;
-        Tue, 25 Jul 2023 11:36:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE3C96165D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED149C433C8;
+        Tue, 25 Jul 2023 10:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284968;
-        bh=jXMu5i5rhqurSYTDGtvJ7Kb3ZPzWEJNw/7nn02n5vq0=;
+        s=korg; t=1690282143;
+        bh=u0s5v0cHR+hs5cNgLiIluV/YDq29nb9yExBQ2TG2pYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1pPOZ95ObQTogG/J3eC9sS9Z8NGDv0PES/jfmcmrYH08MSww8kT8jaraUbRxhLYt0
-         vF/alXhlL2mqEpGzbmfxSYh560I3ITeC32LXQ22LZricFFUqRndUH+ZDAzUK/Y7cMy
-         dO2c8WWL95iXooVkZ5pQpueQ5hJBC7hw4GSIxabg=
+        b=YVtZFqM2SKF6bXBf4Lv6hj7gxLMTHVXc3Y26AL08W24wCCRY+/1jWi6z2XY9sua9f
+         i13e+6fTcydbPwsRRcj6m4dJVzmMYLfNroXGK4MH/gvS+7furuQvN32G9xGRBt224/
+         8BAiqAyYO2NjjvRsYRP06kC84qJ1hORVyvB4OZ5Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/313] wifi: orinoco: Fix an error handling path in spectrum_cs_probe()
+        patches@lists.linux.dev, Jonathan Katz <jkatz@eitmlabs.org>,
+        Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.4 023/227] fuse: ioctl: translate ENOSYS in outarg
 Date:   Tue, 25 Jul 2023 12:43:10 +0200
-Message-ID: <20230725104522.679290129@linuxfoundation.org>
+Message-ID: <20230725104515.758129877@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,59 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 925244325159824385209e3e0e3f91fa6bf0646c ]
+commit 6a567e920fd0451bf29abc418df96c3365925770 upstream.
 
-Should spectrum_cs_config() fail, some resources need to be released as
-already done in the remove function.
+Fuse shouldn't return ENOSYS from its ioctl implementation. If userspace
+responds with ENOSYS it should be translated to ENOTTY.
 
-While at it, remove a useless and erroneous comment. The probe is
-spectrum_cs_probe(), not spectrum_cs_attach().
+There are two ways to return an error from the IOCTL request:
 
-Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/c0bc0c21c58ca477fc5521607615bafbf2aef8eb.1684567733.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - fuse_out_header.error
+ - fuse_ioctl_out.result
+
+Commit 02c0cab8e734 ("fuse: ioctl: translate ENOSYS") already fixed this
+issue for the first case, but missed the second case.  This patch fixes the
+second case.
+
+Reported-by: Jonathan Katz <jkatz@eitmlabs.org>
+Closes: https://lore.kernel.org/all/CALKgVmcC1VUV_gJVq70n--omMJZUb4HSh_FqvLTHgNBc+HCLFQ@mail.gmail.com/
+Fixes: 02c0cab8e734 ("fuse: ioctl: translate ENOSYS")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intersil/orinoco/spectrum_cs.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/fuse/ioctl.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
-index b60048c95e0a8..011c86e55923e 100644
---- a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
-+++ b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
-@@ -157,6 +157,7 @@ spectrum_cs_probe(struct pcmcia_device *link)
+--- a/fs/fuse/ioctl.c
++++ b/fs/fuse/ioctl.c
+@@ -9,14 +9,23 @@
+ #include <linux/compat.h>
+ #include <linux/fileattr.h>
+ 
+-static ssize_t fuse_send_ioctl(struct fuse_mount *fm, struct fuse_args *args)
++static ssize_t fuse_send_ioctl(struct fuse_mount *fm, struct fuse_args *args,
++			       struct fuse_ioctl_out *outarg)
  {
- 	struct orinoco_private *priv;
- 	struct orinoco_pccard *card;
-+	int ret;
- 
- 	priv = alloc_orinocodev(sizeof(*card), &link->dev,
- 				spectrum_cs_hard_reset,
-@@ -169,8 +170,16 @@ spectrum_cs_probe(struct pcmcia_device *link)
- 	card->p_dev = link;
- 	link->priv = priv;
- 
--	return spectrum_cs_config(link);
--}				/* spectrum_cs_attach */
-+	ret = spectrum_cs_config(link);
-+	if (ret)
-+		goto err_free_orinocodev;
+-	ssize_t ret = fuse_simple_request(fm, args);
++	ssize_t ret;
 +
-+	return 0;
++	args->out_args[0].size = sizeof(*outarg);
++	args->out_args[0].value = outarg;
 +
-+err_free_orinocodev:
-+	free_orinocodev(priv);
-+	return ret;
-+}
++	ret = fuse_simple_request(fm, args);
  
- static void spectrum_cs_detach(struct pcmcia_device *link)
- {
--- 
-2.39.2
-
+ 	/* Translate ENOSYS, which shouldn't be returned from fs */
+ 	if (ret == -ENOSYS)
+ 		ret = -ENOTTY;
+ 
++	if (ret >= 0 && outarg->result == -ENOSYS)
++		outarg->result = -ENOTTY;
++
+ 	return ret;
+ }
+ 
+@@ -264,13 +273,11 @@ long fuse_do_ioctl(struct file *file, un
+ 	}
+ 
+ 	ap.args.out_numargs = 2;
+-	ap.args.out_args[0].size = sizeof(outarg);
+-	ap.args.out_args[0].value = &outarg;
+ 	ap.args.out_args[1].size = out_size;
+ 	ap.args.out_pages = true;
+ 	ap.args.out_argvar = true;
+ 
+-	transferred = fuse_send_ioctl(fm, &ap.args);
++	transferred = fuse_send_ioctl(fm, &ap.args, &outarg);
+ 	err = transferred;
+ 	if (transferred < 0)
+ 		goto out;
+@@ -399,12 +406,10 @@ static int fuse_priv_ioctl(struct inode
+ 	args.in_args[1].size = inarg.in_size;
+ 	args.in_args[1].value = ptr;
+ 	args.out_numargs = 2;
+-	args.out_args[0].size = sizeof(outarg);
+-	args.out_args[0].value = &outarg;
+ 	args.out_args[1].size = inarg.out_size;
+ 	args.out_args[1].value = ptr;
+ 
+-	err = fuse_send_ioctl(fm, &args);
++	err = fuse_send_ioctl(fm, &args, &outarg);
+ 	if (!err) {
+ 		if (outarg.result < 0)
+ 			err = outarg.result;
 
 
