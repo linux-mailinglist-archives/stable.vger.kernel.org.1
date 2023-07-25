@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60E4F76119A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDFB8761270
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232128AbjGYKxk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58764 "EHLO
+        id S233892AbjGYLCc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231300AbjGYKwd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:33 -0400
+        with ESMTP id S233632AbjGYLCR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8642139
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8161C59CD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6082A61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0F8C433C8;
-        Tue, 25 Jul 2023 10:51:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6EF76168A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CF4C433C8;
+        Tue, 25 Jul 2023 10:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282293;
-        bh=yOyF1wLMW/x8Ufu4Q9NjpiC1go/ZDjm13J8aetj2wwk=;
+        s=korg; t=1690282759;
+        bh=zI4TukLV4h6IsoVU6qizxAg+Rn6N4tRytu2d6FNV1c4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JVVbjsZnz3cZhGfr2NDtlMa/tR2dzbzQS/pCmxx5VfTwPAJ7ptKhgqqqr5lKGuXlN
-         H0vKcf8hRoABefSQ80Bn2CQNVX9APVV0XIe2Zu//7rDW4moMvnSkFRxH1SopYoP5Xe
-         QPJZMuo5SE+Jit5SAuE8xlsnifhJNOoj78vFmBZw=
+        b=oATXiPzf5HnqSvyMoNTdpQZ94OOwFyFnpXgD8wrnZb7fcQW1kh2lb6Ff4vUO+GhgD
+         vJf9/DZDLQNA/aXjbt2Jf+0/eZZdPjmQuQg3Vf/wq/MAq4uQVSIniABlBhEFIzELll
+         Nc08Wk3EoJd54wau27xSB/t0Cdx0zLYcM35aePfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>,
-        Ye Bin <yebin10@huawei.com>
-Subject: [PATCH 6.4 078/227] [PATCH AUTOSEL 5.4 03/12] quota: Properly disable quotas when add_dquot_ref() fails
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 017/183] selftests: tc: add ct action kconfig dep
 Date:   Tue, 25 Jul 2023 12:44:05 +0200
-Message-ID: <20230725104518.000874770@linuxfoundation.org>
+Message-ID: <20230725104508.485747805@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 6a4e3363792e30177cc3965697e34ddcea8b900b ]
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-When add_dquot_ref() fails (usually due to IO error or ENOMEM), we want
-to disable quotas we are trying to enable. However dquot_disable() call
-was passed just the flags we are enabling so in case flags ==
-DQUOT_USAGE_ENABLED dquot_disable() call will just fail with EINVAL
-instead of properly disabling quotas. Fix the problem by always passing
-DQUOT_LIMITS_ENABLED | DQUOT_USAGE_ENABLED to dquot_disable() in this
-case.
+commit 719b4774a8cb1a501e2d22a5a4a3a0a870e427d5 upstream.
 
-Reported-and-tested-by: Ye Bin <yebin10@huawei.com>
-Reported-by: syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230605140731.2427629-2-yebin10@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When looking for something else in LKFT reports [1], I noticed most of
+the tests were skipped because the "teardown stage" did not complete
+successfully.
+
+Pedro found out this is due to the fact CONFIG_NF_FLOW_TABLE is required
+but not listed in the 'config' file. Adding it to the list fixes the
+issues on LKFT side. CONFIG_NET_ACT_CT is now set to 'm' in the final
+kconfig.
+
+Fixes: c34b961a2492 ("net/sched: act_ct: Create nf flow table per zone")
+Cc: stable@vger.kernel.org
+Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Tested-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-2-1eb4fd3a96e7@tessares.net
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/tc-testing/config |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -2420,7 +2420,8 @@ int dquot_load_quota_sb(struct super_blo
+--- a/tools/testing/selftests/tc-testing/config
++++ b/tools/testing/selftests/tc-testing/config
+@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_MARK=y
+ CONFIG_NF_CONNTRACK_ZONES=y
+ CONFIG_NF_CONNTRACK_LABELS=y
++CONFIG_NF_FLOW_TABLE=m
+ CONFIG_NF_NAT=m
+ CONFIG_NETFILTER_XT_TARGET_LOG=m
  
- 	error = add_dquot_ref(sb, type);
- 	if (error)
--		dquot_disable(sb, type, flags);
-+		dquot_disable(sb, type,
-+			      DQUOT_USAGE_ENABLED | DQUOT_LIMITS_ENABLED);
- 
- 	return error;
- out_fmt:
 
 
