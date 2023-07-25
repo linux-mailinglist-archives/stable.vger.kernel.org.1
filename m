@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ECD276159C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 930B476134E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234627AbjGYLbC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:31:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38692 "EHLO
+        id S234132AbjGYLJb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234555AbjGYLbB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003BBF2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:00 -0700 (PDT)
+        with ESMTP id S233808AbjGYLJR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738B8358D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9316C61691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3ECC433C9;
-        Tue, 25 Jul 2023 11:30:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA8526165D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC8DC433C8;
+        Tue, 25 Jul 2023 11:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284660;
-        bh=oN5+X/9Q60ifzLMZjrIgB/HOVDXrf08kbB6elr+7td0=;
+        s=korg; t=1690283289;
+        bh=xBNeXezKU3ECzXvCHpbi84hFwFD7JJPxTFRX5UOCmCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GzA8em9XJQrdJ0QhyfJaghbBB4DFN0Nj39Ys1+BlicDil38v0HM2DsrdgWRiN4204
-         JPnyUza4j722ZszlW+4PwTt+DvFFYY/E9GP0E03I1jC0QaTW6SL885UB5z2a6F1/CG
-         d+GKFfDFjRDatQ3Rqk2GS96Latx5PGiIKjM66yAo=
+        b=XnVbUPa3sr2kRx2oy1xbddY157pOgM//+AB0WgWoBqMpLRhUnfg8bjGBNoIKkK06m
+         6aCdJD+fZOTngQHjdxEKLHflOPweurLuSrfKVw9qG/E9qrg0CMHsG+3GXS4OTYCY9v
+         ZKTBY38vWsxc+NH7j6T+X1cBW2Jt2ASi3qsqa8Y4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bikash Hazarika <bhazarika@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 434/509] scsi: qla2xxx: Correct the index of array
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 22/78] ASoC: codecs: wcd-mbhc-v2: fix resource leaks on component remove
 Date:   Tue, 25 Jul 2023 12:46:13 +0200
-Message-ID: <20230725104613.599807131@linuxfoundation.org>
+Message-ID: <20230725104452.173812884@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,51 +56,157 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bikash Hazarika <bhazarika@marvell.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit b1b9d3825df4c757d653d0b1df66f084835db9c3 upstream.
+commit a5475829adcc600bc69ee9ff7c9e3e43fb4f8d30 upstream.
 
-Klocwork reported array 'port_dstate_str' of size 10 may use index value(s)
-10..15.
+The MBHC resources must be released on component probe failure and
+removal so can not be tied to the lifetime of the component device.
 
-Add a fix to correct the index of array.
+This is specifically needed to allow probe deferrals of the sound card
+which otherwise fails when reprobing the codec component:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-8-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    snd-sc8280xp sound: ASoC: failed to instantiate card -517
+    genirq: Flags mismatch irq 299. 00002001 (mbhc sw intr) vs. 00002001 (mbhc sw intr)
+    wcd938x_codec audio-codec: Failed to request mbhc interrupts -16
+    wcd938x_codec audio-codec: mbhc initialization failed
+    wcd938x_codec audio-codec: ASoC: error at snd_soc_component_probe on audio-codec: -16
+    snd-sc8280xp sound: ASoC: failed to instantiate card -16
+
+Fixes: 0e5c9e7ff899 ("ASoC: codecs: wcd: add multi button Headset detection support")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230705123018.30903-7-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_inline.h |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wcd-mbhc-v2.c |   57 +++++++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 16 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_inline.h
-+++ b/drivers/scsi/qla2xxx/qla_inline.h
-@@ -109,11 +109,13 @@ qla2x00_set_fcport_disc_state(fc_port_t
+--- a/sound/soc/codecs/wcd-mbhc-v2.c
++++ b/sound/soc/codecs/wcd-mbhc-v2.c
+@@ -1370,7 +1370,7 @@ struct wcd_mbhc *wcd_mbhc_init(struct sn
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	mbhc = devm_kzalloc(dev, sizeof(*mbhc), GFP_KERNEL);
++	mbhc = kzalloc(sizeof(*mbhc), GFP_KERNEL);
+ 	if (!mbhc)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1390,61 +1390,76 @@ struct wcd_mbhc *wcd_mbhc_init(struct sn
+ 
+ 	INIT_WORK(&mbhc->correct_plug_swch, wcd_correct_swch_plug);
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_sw_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_sw_intr, NULL,
+ 					wcd_mbhc_mech_plug_detect_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"mbhc sw intr", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_mbhc;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_press_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_press_intr, NULL,
+ 					wcd_mbhc_btn_press_handler,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Button Press detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_sw_intr;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_release_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_release_intr, NULL,
+ 					wcd_mbhc_btn_release_handler,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Button Release detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_btn_press_intr;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
+ 					wcd_mbhc_adc_hs_ins_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Elect Insert", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_btn_release_intr;
+ 
+ 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_ins_intr);
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
+ 					wcd_mbhc_adc_hs_rem_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Elect Remove", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_hs_ins_intr;
+ 
+ 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_rem_intr);
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_left_ocp, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->hph_left_ocp, NULL,
+ 					wcd_mbhc_hphl_ocp_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"HPH_L OCP detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_hs_rem_intr;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_right_ocp, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->hph_right_ocp, NULL,
+ 					wcd_mbhc_hphr_ocp_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"HPH_R OCP detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_hph_left_ocp;
+ 
+ 	return mbhc;
+-err:
++
++err_free_hph_left_ocp:
++	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
++err_free_hs_rem_intr:
++	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
++err_free_hs_ins_intr:
++	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
++err_free_btn_release_intr:
++	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
++err_free_btn_press_intr:
++	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
++err_free_sw_intr:
++	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
++err_free_mbhc:
++	kfree(mbhc);
++
+ 	dev_err(dev, "Failed to request mbhc interrupts %d\n", ret);
+ 
+ 	return ERR_PTR(ret);
+@@ -1453,9 +1468,19 @@ EXPORT_SYMBOL(wcd_mbhc_init);
+ 
+ void wcd_mbhc_deinit(struct wcd_mbhc *mbhc)
  {
- 	int old_val;
- 	uint8_t shiftbits, mask;
-+	uint8_t port_dstate_str_sz;
++	free_irq(mbhc->intr_ids->hph_right_ocp, mbhc);
++	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
++
+ 	mutex_lock(&mbhc->lock);
+ 	wcd_cancel_hs_detect_plug(mbhc,	&mbhc->correct_plug_swch);
+ 	mutex_unlock(&mbhc->lock);
++
++	kfree(mbhc);
+ }
+ EXPORT_SYMBOL(wcd_mbhc_deinit);
  
- 	/* This will have to change when the max no. of states > 16 */
- 	shiftbits = 4;
- 	mask = (1 << shiftbits) - 1;
- 
-+	port_dstate_str_sz = sizeof(port_dstate_str) / sizeof(char *);
- 	fcport->disc_state = state;
- 	while (1) {
- 		old_val = atomic_read(&fcport->shadow_disc_state);
-@@ -121,7 +123,8 @@ qla2x00_set_fcport_disc_state(fc_port_t
- 		    old_val, (old_val << shiftbits) | state)) {
- 			ql_dbg(ql_dbg_disc, fcport->vha, 0x2134,
- 			    "FCPort %8phC disc_state transition: %s to %s - portid=%06x.\n",
--			    fcport->port_name, port_dstate_str[old_val & mask],
-+			    fcport->port_name, (old_val & mask) < port_dstate_str_sz ?
-+				    port_dstate_str[old_val & mask] : "Unknown",
- 			    port_dstate_str[state], fcport->d_id.b24);
- 			return;
- 		}
 
 
