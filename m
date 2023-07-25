@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3C07612F3
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1B676170C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234013AbjGYLGr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44790 "EHLO
+        id S230408AbjGYLon (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234014AbjGYLGb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:31 -0400
+        with ESMTP id S232635AbjGYLo2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4370146BE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7D42137
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD55F6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6F9C433C8;
-        Tue, 25 Jul 2023 11:04:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44D0761698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5648BC433C8;
+        Tue, 25 Jul 2023 11:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283094;
-        bh=lVb9P3WrInp7+yGTFvEGQcLlrKopVv0U6+cKuQqqQxE=;
+        s=korg; t=1690285459;
+        bh=KntBNbfRb6ObvqZs6AxX+x76HbtxCZssz1DuxpzG2HI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M13jix3Xw6hGld4gYyaDC91G1Zi3rX6Dv73MABusBPVKZr1gBw6CruRRc9ZV3W6Mk
-         QE/ae/nWIAKwQ0hpe07qVKOB7aX6OGELHjfiWhRSnBupIzvxJrdKpEVKrUxuyNHrod
-         mv0Fpr7BTEDvMqEBUbg3mx/8JlKO7rXQxqrVO8v8=
+        b=G4thIFY2sPEfVEDnL4t/VRzEyVZ4MxhrIqAscnLVcu3PgupExBJXRcVcf7hY+DpEO
+         ECIXsXN21Ovp7IonDiC7eqMXx1rwhHPJ8CzOpmholgxn7Z9AwoN8MD0Vaqx31TNRmu
+         mKWMvUkEev8/xcwaskn7qdYGC/EqhsWmasXzE4zQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/183] net: ipv4: Use kfree_sensitive instead of kfree
+        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 212/313] ntb: intel: Fix error handling in intel_ntb_pci_driver_init()
 Date:   Tue, 25 Jul 2023 12:46:05 +0200
-Message-ID: <20230725104512.853139596@linuxfoundation.org>
+Message-ID: <20230725104530.203293338@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,36 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang Ming <machel@vivo.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit daa751444fd9d4184270b1479d8af49aaf1a1ee6 ]
+[ Upstream commit 4c3c796aca02883ad35bb117468938cc4022ca41 ]
 
-key might contain private part of the key, so better use
-kfree_sensitive to free it.
+A problem about ntb_hw_intel create debugfs failed is triggered with the
+following log given:
 
-Fixes: 38320c70d282 ("[IPSEC]: Use crypto_aead and authenc in ESP")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+ [  273.112733] Intel(R) PCI-E Non-Transparent Bridge Driver 2.0
+ [  273.115342] debugfs: Directory 'ntb_hw_intel' with parent '/' already present!
+
+The reason is that intel_ntb_pci_driver_init() returns
+pci_register_driver() directly without checking its return value, if
+pci_register_driver() failed, it returns without destroy the newly created
+debugfs, resulting the debugfs of ntb_hw_intel can never be created later.
+
+ intel_ntb_pci_driver_init()
+   debugfs_create_dir() # create debugfs directory
+   pci_register_driver()
+     driver_register()
+       bus_add_driver()
+         priv = kzalloc(...) # OOM happened
+   # return without destroy debugfs directory
+
+Fix by removing debugfs when pci_register_driver() returns error.
+
+Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ntb/hw/intel/ntb_hw_gen1.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 52c8047efedbb..2d094d417ecae 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -1132,7 +1132,7 @@ static int esp_init_authenc(struct xfrm_state *x,
- 	err = crypto_aead_setkey(aead, key, keylen);
+diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+index bb57ec2390299..8d8739bff9f3c 100644
+--- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
++++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+@@ -2065,12 +2065,17 @@ static struct pci_driver intel_ntb_pci_driver = {
  
- free_key:
--	kfree(key);
-+	kfree_sensitive(key);
+ static int __init intel_ntb_pci_driver_init(void)
+ {
++	int ret;
+ 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
  
- error:
- 	return err;
+ 	if (debugfs_initialized())
+ 		debugfs_dir = debugfs_create_dir(KBUILD_MODNAME, NULL);
+ 
+-	return pci_register_driver(&intel_ntb_pci_driver);
++	ret = pci_register_driver(&intel_ntb_pci_driver);
++	if (ret)
++		debugfs_remove_recursive(debugfs_dir);
++
++	return ret;
+ }
+ module_init(intel_ntb_pci_driver_init);
+ 
 -- 
 2.39.2
 
