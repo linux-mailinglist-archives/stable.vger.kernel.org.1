@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 930B476134E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1B4D761733
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234132AbjGYLJb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
+        id S229620AbjGYLqC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:46:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233808AbjGYLJR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:17 -0400
+        with ESMTP id S232032AbjGYLp6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738B8358D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F8DF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA8526165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC8DC433C8;
-        Tue, 25 Jul 2023 11:08:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EE4D61654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F38C433C7;
+        Tue, 25 Jul 2023 11:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283289;
-        bh=xBNeXezKU3ECzXvCHpbi84hFwFD7JJPxTFRX5UOCmCc=;
+        s=korg; t=1690285556;
+        bh=Gitt7Ig/LogD1/MlOHh3EK9qkgT5cECP34HjSASH2EY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XnVbUPa3sr2kRx2oy1xbddY157pOgM//+AB0WgWoBqMpLRhUnfg8bjGBNoIKkK06m
-         6aCdJD+fZOTngQHjdxEKLHflOPweurLuSrfKVw9qG/E9qrg0CMHsG+3GXS4OTYCY9v
-         ZKTBY38vWsxc+NH7j6T+X1cBW2Jt2ASi3qsqa8Y4=
+        b=y98TTGdd/0/009h24/UO8gyqHt2lcVBN6MpmgjN7U3g2R4BFxkXgZd/PGBpDp4rXV
+         myhTCCSkfcntFB4BMzE5ceWrwselVLz4VmGfy0gg3+5czTOtDx6gDogDbITZzReuA2
+         7Pl56QqApFCxgGGGqDqe74sQfL1Dq88nELo+1kus=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 22/78] ASoC: codecs: wcd-mbhc-v2: fix resource leaks on component remove
+        =?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 220/313] platform/x86: wmi: move variables
 Date:   Tue, 25 Jul 2023 12:46:13 +0200
-Message-ID: <20230725104452.173812884@linuxfoundation.org>
+Message-ID: <20230725104530.571709994@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,157 +56,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Barnabás Pőcze <pobrn@protonmail.com>
 
-commit a5475829adcc600bc69ee9ff7c9e3e43fb4f8d30 upstream.
+[ Upstream commit f5431bf1e6781e876bdc8ae10fb1e7da6f1aa9b5 ]
 
-The MBHC resources must be released on component probe failure and
-removal so can not be tied to the lifetime of the component device.
+Move some variables in order to keep them
+in the narrowest possible scope.
 
-This is specifically needed to allow probe deferrals of the sound card
-which otherwise fails when reprobing the codec component:
-
-    snd-sc8280xp sound: ASoC: failed to instantiate card -517
-    genirq: Flags mismatch irq 299. 00002001 (mbhc sw intr) vs. 00002001 (mbhc sw intr)
-    wcd938x_codec audio-codec: Failed to request mbhc interrupts -16
-    wcd938x_codec audio-codec: mbhc initialization failed
-    wcd938x_codec audio-codec: ASoC: error at snd_soc_component_probe on audio-codec: -16
-    snd-sc8280xp sound: ASoC: failed to instantiate card -16
-
-Fixes: 0e5c9e7ff899 ("ASoC: codecs: wcd: add multi button Headset detection support")
-Cc: stable@vger.kernel.org      # 5.14
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230705123018.30903-7-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Barnabás Pőcze <pobrn@protonmail.com>
+Link: https://lore.kernel.org/r/20210904175450.156801-22-pobrn@protonmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: 028e6e204ace ("platform/x86: wmi: Break possible infinite loop when parsing GUID")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd-mbhc-v2.c |   57 +++++++++++++++++++++++++++++------------
- 1 file changed, 41 insertions(+), 16 deletions(-)
+ drivers/platform/x86/wmi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/sound/soc/codecs/wcd-mbhc-v2.c
-+++ b/sound/soc/codecs/wcd-mbhc-v2.c
-@@ -1370,7 +1370,7 @@ struct wcd_mbhc *wcd_mbhc_init(struct sn
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	mbhc = devm_kzalloc(dev, sizeof(*mbhc), GFP_KERNEL);
-+	mbhc = kzalloc(sizeof(*mbhc), GFP_KERNEL);
- 	if (!mbhc)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1390,61 +1390,76 @@ struct wcd_mbhc *wcd_mbhc_init(struct sn
- 
- 	INIT_WORK(&mbhc->correct_plug_swch, wcd_correct_swch_plug);
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_sw_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_sw_intr, NULL,
- 					wcd_mbhc_mech_plug_detect_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"mbhc sw intr", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_mbhc;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_press_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_press_intr, NULL,
- 					wcd_mbhc_btn_press_handler,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Button Press detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_sw_intr;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_release_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_release_intr, NULL,
- 					wcd_mbhc_btn_release_handler,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Button Release detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_btn_press_intr;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
- 					wcd_mbhc_adc_hs_ins_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Elect Insert", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_btn_release_intr;
- 
- 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_ins_intr);
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
- 					wcd_mbhc_adc_hs_rem_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Elect Remove", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_hs_ins_intr;
- 
- 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_rem_intr);
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_left_ocp, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->hph_left_ocp, NULL,
- 					wcd_mbhc_hphl_ocp_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"HPH_L OCP detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_hs_rem_intr;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_right_ocp, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->hph_right_ocp, NULL,
- 					wcd_mbhc_hphr_ocp_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"HPH_R OCP detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_hph_left_ocp;
- 
- 	return mbhc;
--err:
-+
-+err_free_hph_left_ocp:
-+	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
-+err_free_hs_rem_intr:
-+	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
-+err_free_hs_ins_intr:
-+	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
-+err_free_btn_release_intr:
-+	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
-+err_free_btn_press_intr:
-+	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
-+err_free_sw_intr:
-+	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
-+err_free_mbhc:
-+	kfree(mbhc);
-+
- 	dev_err(dev, "Failed to request mbhc interrupts %d\n", ret);
- 
- 	return ERR_PTR(ret);
-@@ -1453,9 +1468,19 @@ EXPORT_SYMBOL(wcd_mbhc_init);
- 
- void wcd_mbhc_deinit(struct wcd_mbhc *mbhc)
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 41a680b39f9d1..8d1a7923c03b6 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -133,7 +133,6 @@ static const void *find_guid_context(struct wmi_block *wblock,
+ 				      struct wmi_driver *wdriver)
  {
-+	free_irq(mbhc->intr_ids->hph_right_ocp, mbhc);
-+	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
-+
- 	mutex_lock(&mbhc->lock);
- 	wcd_cancel_hs_detect_plug(mbhc,	&mbhc->correct_plug_swch);
- 	mutex_unlock(&mbhc->lock);
-+
-+	kfree(mbhc);
- }
- EXPORT_SYMBOL(wcd_mbhc_deinit);
+ 	const struct wmi_device_id *id;
+-	guid_t guid_input;
  
+ 	if (wblock == NULL || wdriver == NULL)
+ 		return NULL;
+@@ -142,6 +141,8 @@ static const void *find_guid_context(struct wmi_block *wblock,
+ 
+ 	id = wdriver->id_table;
+ 	while (*id->guid_string) {
++		guid_t guid_input;
++
+ 		if (guid_parse(id->guid_string, &guid_input))
+ 			continue;
+ 		if (guid_equal(&wblock->gblock.guid, &guid_input))
+@@ -612,7 +613,6 @@ acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out)
+ {
+ 	struct acpi_object_list input;
+ 	union acpi_object params[1];
+-	struct guid_block *gblock;
+ 	struct wmi_block *wblock;
+ 
+ 	input.count = 1;
+@@ -621,7 +621,7 @@ acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out)
+ 	params[0].integer.value = event;
+ 
+ 	list_for_each_entry(wblock, &wmi_block_list, list) {
+-		gblock = &wblock->gblock;
++		struct guid_block *gblock = &wblock->gblock;
+ 
+ 		if ((gblock->flags & ACPI_WMI_EVENT) &&
+ 			(gblock->notify_id == event))
+@@ -1278,12 +1278,11 @@ acpi_wmi_ec_space_handler(u32 function, acpi_physical_address address,
+ static void acpi_wmi_notify_handler(acpi_handle handle, u32 event,
+ 				    void *context)
+ {
+-	struct guid_block *block;
+ 	struct wmi_block *wblock;
+ 	bool found_it = false;
+ 
+ 	list_for_each_entry(wblock, &wmi_block_list, list) {
+-		block = &wblock->gblock;
++		struct guid_block *block = &wblock->gblock;
+ 
+ 		if (wblock->acpi_device->handle == handle &&
+ 		    (block->flags & ACPI_WMI_EVENT) &&
+-- 
+2.39.2
+
 
 
