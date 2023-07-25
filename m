@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC88761595
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 184A676123A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234779AbjGYLao (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
+        id S233820AbjGYLAW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:00:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234780AbjGYLan (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:43 -0400
+        with ESMTP id S233630AbjGYK75 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE68EF3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE02C3C25
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4434261648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504DFC433C8;
-        Tue, 25 Jul 2023 11:30:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53C9F61689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAD0C433C7;
+        Tue, 25 Jul 2023 10:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284640;
-        bh=xKRkZmxvUuOC4+u+Y8elazlMac925G8ZZUEyBDFRG1M=;
+        s=korg; t=1690282633;
+        bh=EhFcaz6H3KWc5O6SrNIyhfdqfZhg4Wj54dKYJ94PYI4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x5NBb62Qj1HJU6sDxtTyZDOV6NbJFnrgjgUOiiiucmkEtDvKt6YPmMV8NN/auf/Ns
-         8iSt5O5xWuBnnMMf52qep+F5om/HIcZLIucB9F9EirZK4A5Sfv5tpzRcE6i48wsl3B
-         CoXesjWEv4V6bzoyVTJprWP2xvhAMbd96Yf58vt0=
+        b=TEjqXhCUkFmjmYijS6xKdfk3lvPJHl0MHTH4p78o6ilam+W1ijmI90YNbad/E8etQ
+         YYi7rcAUEvwqUIrL+ORaC/TMMlfTfJyjHm25nC6eRJ0C725m7ZGzWUgUDTJCQTgV8+
+         kkvUlc6qT3ONyou40obsjiGG1b0B3LQQSscjC8qw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 428/509] tracing/probes: Fix not to count error code to total length
+        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 200/227] Bluetooth: use RCU for hci_conn_params and iterate safely in hci_sync
 Date:   Tue, 25 Jul 2023 12:46:07 +0200
-Message-ID: <20230725104613.305003167@linuxfoundation.org>
+Message-ID: <20230725104523.073988223@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +55,594 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-commit b41326b5e0f82e93592c4366359917b5d67b529f upstream.
+[ Upstream commit 195ef75e19287b4bc413da3e3e3722b030ac881e ]
 
-Fix not to count the error code (which is minus value) to the total
-used length of array, because it can mess up the return code of
-process_fetch_insn_bottom(). Also clear the 'ret' value because it
-will be used for calculating next data_loc entry.
+hci_update_accept_list_sync iterates over hdev->pend_le_conns and
+hdev->pend_le_reports, and waits for controller events in the loop body,
+without holding hdev lock.
 
-Link: https://lore.kernel.org/all/168908493827.123124.2175257289106364229.stgit@devnote2/
+Meanwhile, these lists and the items may be modified e.g. by
+le_scan_cleanup. This can invalidate the list cursor or any other item
+in the list, resulting to invalid behavior (eg use-after-free).
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/8819b154-2ba1-43c3-98a2-cbde20892023@moroto.mountain/
-Fixes: 9b960a38835f ("tracing: probeevent: Unify fetch_insn processing common part")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use RCU for the hci_conn_params action lists. Since the loop bodies in
+hci_sync block and we cannot use RCU or hdev->lock for the whole loop,
+copy list items first and then iterate on the copy. Only the flags field
+is written from elsewhere, so READ_ONCE/WRITE_ONCE should guarantee we
+read valid values.
+
+Free params everywhere with hci_conn_params_free so the cleanup is
+guaranteed to be done properly.
+
+This fixes the following, which can be triggered e.g. by BlueZ new
+mgmt-tester case "Add + Remove Device Nowait - Success", or by changing
+hci_le_set_cig_params to always return false, and running iso-tester:
+
+==================================================================
+BUG: KASAN: slab-use-after-free in hci_update_passive_scan_sync (net/bluetooth/hci_sync.c:2536 net/bluetooth/hci_sync.c:2723 net/bluetooth/hci_sync.c:2841)
+Read of size 8 at addr ffff888001265018 by task kworker/u3:0/32
+
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-1.fc38 04/01/2014
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+<TASK>
+dump_stack_lvl (./arch/x86/include/asm/irqflags.h:134 lib/dump_stack.c:107)
+print_report (mm/kasan/report.c:320 mm/kasan/report.c:430)
+? __virt_addr_valid (./include/linux/mmzone.h:1915 ./include/linux/mmzone.h:2011 arch/x86/mm/physaddr.c:65)
+? hci_update_passive_scan_sync (net/bluetooth/hci_sync.c:2536 net/bluetooth/hci_sync.c:2723 net/bluetooth/hci_sync.c:2841)
+kasan_report (mm/kasan/report.c:538)
+? hci_update_passive_scan_sync (net/bluetooth/hci_sync.c:2536 net/bluetooth/hci_sync.c:2723 net/bluetooth/hci_sync.c:2841)
+hci_update_passive_scan_sync (net/bluetooth/hci_sync.c:2536 net/bluetooth/hci_sync.c:2723 net/bluetooth/hci_sync.c:2841)
+? __pfx_hci_update_passive_scan_sync (net/bluetooth/hci_sync.c:2780)
+? mutex_lock (kernel/locking/mutex.c:282)
+? __pfx_mutex_lock (kernel/locking/mutex.c:282)
+? __pfx_mutex_unlock (kernel/locking/mutex.c:538)
+? __pfx_update_passive_scan_sync (net/bluetooth/hci_sync.c:2861)
+hci_cmd_sync_work (net/bluetooth/hci_sync.c:306)
+process_one_work (./arch/x86/include/asm/preempt.h:27 kernel/workqueue.c:2399)
+worker_thread (./include/linux/list.h:292 kernel/workqueue.c:2538)
+? __pfx_worker_thread (kernel/workqueue.c:2480)
+kthread (kernel/kthread.c:376)
+? __pfx_kthread (kernel/kthread.c:331)
+ret_from_fork (arch/x86/entry/entry_64.S:314)
+</TASK>
+
+Allocated by task 31:
+kasan_save_stack (mm/kasan/common.c:46)
+kasan_set_track (mm/kasan/common.c:52)
+__kasan_kmalloc (mm/kasan/common.c:374 mm/kasan/common.c:383)
+hci_conn_params_add (./include/linux/slab.h:580 ./include/linux/slab.h:720 net/bluetooth/hci_core.c:2277)
+hci_connect_le_scan (net/bluetooth/hci_conn.c:1419 net/bluetooth/hci_conn.c:1589)
+hci_connect_cis (net/bluetooth/hci_conn.c:2266)
+iso_connect_cis (net/bluetooth/iso.c:390)
+iso_sock_connect (net/bluetooth/iso.c:899)
+__sys_connect (net/socket.c:2003 net/socket.c:2020)
+__x64_sys_connect (net/socket.c:2027)
+do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:120)
+
+Freed by task 15:
+kasan_save_stack (mm/kasan/common.c:46)
+kasan_set_track (mm/kasan/common.c:52)
+kasan_save_free_info (mm/kasan/generic.c:523)
+__kasan_slab_free (mm/kasan/common.c:238 mm/kasan/common.c:200 mm/kasan/common.c:244)
+__kmem_cache_free (mm/slub.c:1807 mm/slub.c:3787 mm/slub.c:3800)
+hci_conn_params_del (net/bluetooth/hci_core.c:2323)
+le_scan_cleanup (net/bluetooth/hci_conn.c:202)
+process_one_work (./arch/x86/include/asm/preempt.h:27 kernel/workqueue.c:2399)
+worker_thread (./include/linux/list.h:292 kernel/workqueue.c:2538)
+kthread (kernel/kthread.c:376)
+ret_from_fork (arch/x86/entry/entry_64.S:314)
+==================================================================
+
+Fixes: e8907f76544f ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 3")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe_tmpl.h |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/bluetooth/hci_core.h |   5 ++
+ net/bluetooth/hci_conn.c         |  10 +--
+ net/bluetooth/hci_core.c         |  38 ++++++++--
+ net/bluetooth/hci_event.c        |  12 ++--
+ net/bluetooth/hci_sync.c         | 117 ++++++++++++++++++++++++++++---
+ net/bluetooth/mgmt.c             |  26 +++----
+ 6 files changed, 164 insertions(+), 44 deletions(-)
 
---- a/kernel/trace/trace_probe_tmpl.h
-+++ b/kernel/trace/trace_probe_tmpl.h
-@@ -143,6 +143,8 @@ stage3:
- array:
- 	/* the last stage: Loop on array */
- 	if (code->op == FETCH_OP_LP_ARRAY) {
-+		if (ret < 0)
-+			ret = 0;
- 		total += ret;
- 		if (++i < code->param) {
- 			code = s3;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 9654567cfae37..870b6d3c5146b 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -822,6 +822,7 @@ struct hci_conn_params {
+ 
+ 	struct hci_conn *conn;
+ 	bool explicit_connect;
++	/* Accessed without hdev->lock: */
+ 	hci_conn_flags_t flags;
+ 	u8  privacy_mode;
+ };
+@@ -1573,7 +1574,11 @@ struct hci_conn_params *hci_conn_params_add(struct hci_dev *hdev,
+ 					    bdaddr_t *addr, u8 addr_type);
+ void hci_conn_params_del(struct hci_dev *hdev, bdaddr_t *addr, u8 addr_type);
+ void hci_conn_params_clear_disabled(struct hci_dev *hdev);
++void hci_conn_params_free(struct hci_conn_params *param);
+ 
++void hci_pend_le_list_del_init(struct hci_conn_params *param);
++void hci_pend_le_list_add(struct hci_conn_params *param,
++			  struct list_head *list);
+ struct hci_conn_params *hci_pend_le_action_lookup(struct list_head *list,
+ 						  bdaddr_t *addr,
+ 						  u8 addr_type);
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 2275e0d9f8419..7b0c74ef93296 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -118,7 +118,7 @@ static void hci_connect_le_scan_cleanup(struct hci_conn *conn, u8 status)
+ 	 */
+ 	params->explicit_connect = false;
+ 
+-	list_del_init(&params->action);
++	hci_pend_le_list_del_init(params);
+ 
+ 	switch (params->auto_connect) {
+ 	case HCI_AUTO_CONN_EXPLICIT:
+@@ -127,10 +127,10 @@ static void hci_connect_le_scan_cleanup(struct hci_conn *conn, u8 status)
+ 		return;
+ 	case HCI_AUTO_CONN_DIRECT:
+ 	case HCI_AUTO_CONN_ALWAYS:
+-		list_add(&params->action, &hdev->pend_le_conns);
++		hci_pend_le_list_add(params, &hdev->pend_le_conns);
+ 		break;
+ 	case HCI_AUTO_CONN_REPORT:
+-		list_add(&params->action, &hdev->pend_le_reports);
++		hci_pend_le_list_add(params, &hdev->pend_le_reports);
+ 		break;
+ 	default:
+ 		break;
+@@ -1426,8 +1426,8 @@ static int hci_explicit_conn_params_set(struct hci_dev *hdev,
+ 	if (params->auto_connect == HCI_AUTO_CONN_DISABLED ||
+ 	    params->auto_connect == HCI_AUTO_CONN_REPORT ||
+ 	    params->auto_connect == HCI_AUTO_CONN_EXPLICIT) {
+-		list_del_init(&params->action);
+-		list_add(&params->action, &hdev->pend_le_conns);
++		hci_pend_le_list_del_init(params);
++		hci_pend_le_list_add(params, &hdev->pend_le_conns);
+ 	}
+ 
+ 	params->explicit_connect = true;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 48917c68358de..b421e196f60c3 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2249,21 +2249,45 @@ struct hci_conn_params *hci_conn_params_lookup(struct hci_dev *hdev,
+ 	return NULL;
+ }
+ 
+-/* This function requires the caller holds hdev->lock */
++/* This function requires the caller holds hdev->lock or rcu_read_lock */
+ struct hci_conn_params *hci_pend_le_action_lookup(struct list_head *list,
+ 						  bdaddr_t *addr, u8 addr_type)
+ {
+ 	struct hci_conn_params *param;
+ 
+-	list_for_each_entry(param, list, action) {
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(param, list, action) {
+ 		if (bacmp(&param->addr, addr) == 0 &&
+-		    param->addr_type == addr_type)
++		    param->addr_type == addr_type) {
++			rcu_read_unlock();
+ 			return param;
++		}
+ 	}
+ 
++	rcu_read_unlock();
++
+ 	return NULL;
+ }
+ 
++/* This function requires the caller holds hdev->lock */
++void hci_pend_le_list_del_init(struct hci_conn_params *param)
++{
++	if (list_empty(&param->action))
++		return;
++
++	list_del_rcu(&param->action);
++	synchronize_rcu();
++	INIT_LIST_HEAD(&param->action);
++}
++
++/* This function requires the caller holds hdev->lock */
++void hci_pend_le_list_add(struct hci_conn_params *param,
++			  struct list_head *list)
++{
++	list_add_rcu(&param->action, list);
++}
++
+ /* This function requires the caller holds hdev->lock */
+ struct hci_conn_params *hci_conn_params_add(struct hci_dev *hdev,
+ 					    bdaddr_t *addr, u8 addr_type)
+@@ -2297,14 +2321,15 @@ struct hci_conn_params *hci_conn_params_add(struct hci_dev *hdev,
+ 	return params;
+ }
+ 
+-static void hci_conn_params_free(struct hci_conn_params *params)
++void hci_conn_params_free(struct hci_conn_params *params)
+ {
++	hci_pend_le_list_del_init(params);
++
+ 	if (params->conn) {
+ 		hci_conn_drop(params->conn);
+ 		hci_conn_put(params->conn);
+ 	}
+ 
+-	list_del(&params->action);
+ 	list_del(&params->list);
+ 	kfree(params);
+ }
+@@ -2342,8 +2367,7 @@ void hci_conn_params_clear_disabled(struct hci_dev *hdev)
+ 			continue;
+ 		}
+ 
+-		list_del(&params->list);
+-		kfree(params);
++		hci_conn_params_free(params);
+ 	}
+ 
+ 	BT_DBG("All LE disabled connection parameters were removed");
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 21e26d3b286cc..72b6d189d3de2 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -1564,7 +1564,7 @@ static u8 hci_cc_le_set_privacy_mode(struct hci_dev *hdev, void *data,
+ 
+ 	params = hci_conn_params_lookup(hdev, &cp->bdaddr, cp->bdaddr_type);
+ 	if (params)
+-		params->privacy_mode = cp->mode;
++		WRITE_ONCE(params->privacy_mode, cp->mode);
+ 
+ 	hci_dev_unlock(hdev);
+ 
+@@ -2804,8 +2804,8 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
+ 
+ 		case HCI_AUTO_CONN_DIRECT:
+ 		case HCI_AUTO_CONN_ALWAYS:
+-			list_del_init(&params->action);
+-			list_add(&params->action, &hdev->pend_le_conns);
++			hci_pend_le_list_del_init(params);
++			hci_pend_le_list_add(params, &hdev->pend_le_conns);
+ 			break;
+ 
+ 		default:
+@@ -3423,8 +3423,8 @@ static void hci_disconn_complete_evt(struct hci_dev *hdev, void *data,
+ 
+ 		case HCI_AUTO_CONN_DIRECT:
+ 		case HCI_AUTO_CONN_ALWAYS:
+-			list_del_init(&params->action);
+-			list_add(&params->action, &hdev->pend_le_conns);
++			hci_pend_le_list_del_init(params);
++			hci_pend_le_list_add(params, &hdev->pend_le_conns);
+ 			hci_update_passive_scan(hdev);
+ 			break;
+ 
+@@ -5961,7 +5961,7 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
+ 	params = hci_pend_le_action_lookup(&hdev->pend_le_conns, &conn->dst,
+ 					   conn->dst_type);
+ 	if (params) {
+-		list_del_init(&params->action);
++		hci_pend_le_list_del_init(params);
+ 		if (params->conn) {
+ 			hci_conn_drop(params->conn);
+ 			hci_conn_put(params->conn);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index b5b1b610df335..1bcb54272dc67 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2160,15 +2160,23 @@ static int hci_le_del_accept_list_sync(struct hci_dev *hdev,
+ 	return 0;
+ }
+ 
++struct conn_params {
++	bdaddr_t addr;
++	u8 addr_type;
++	hci_conn_flags_t flags;
++	u8 privacy_mode;
++};
++
+ /* Adds connection to resolve list if needed.
+  * Setting params to NULL programs local hdev->irk
+  */
+ static int hci_le_add_resolve_list_sync(struct hci_dev *hdev,
+-					struct hci_conn_params *params)
++					struct conn_params *params)
+ {
+ 	struct hci_cp_le_add_to_resolv_list cp;
+ 	struct smp_irk *irk;
+ 	struct bdaddr_list_with_irk *entry;
++	struct hci_conn_params *p;
+ 
+ 	if (!use_ll_privacy(hdev))
+ 		return 0;
+@@ -2203,6 +2211,16 @@ static int hci_le_add_resolve_list_sync(struct hci_dev *hdev,
+ 	/* Default privacy mode is always Network */
+ 	params->privacy_mode = HCI_NETWORK_PRIVACY;
+ 
++	rcu_read_lock();
++	p = hci_pend_le_action_lookup(&hdev->pend_le_conns,
++				      &params->addr, params->addr_type);
++	if (!p)
++		p = hci_pend_le_action_lookup(&hdev->pend_le_reports,
++					      &params->addr, params->addr_type);
++	if (p)
++		WRITE_ONCE(p->privacy_mode, HCI_NETWORK_PRIVACY);
++	rcu_read_unlock();
++
+ done:
+ 	if (hci_dev_test_flag(hdev, HCI_PRIVACY))
+ 		memcpy(cp.local_irk, hdev->irk, 16);
+@@ -2215,7 +2233,7 @@ static int hci_le_add_resolve_list_sync(struct hci_dev *hdev,
+ 
+ /* Set Device Privacy Mode. */
+ static int hci_le_set_privacy_mode_sync(struct hci_dev *hdev,
+-					struct hci_conn_params *params)
++					struct conn_params *params)
+ {
+ 	struct hci_cp_le_set_privacy_mode cp;
+ 	struct smp_irk *irk;
+@@ -2240,6 +2258,8 @@ static int hci_le_set_privacy_mode_sync(struct hci_dev *hdev,
+ 	bacpy(&cp.bdaddr, &irk->bdaddr);
+ 	cp.mode = HCI_DEVICE_PRIVACY;
+ 
++	/* Note: params->privacy_mode is not updated since it is a copy */
++
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_PRIVACY_MODE,
+ 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
+ }
+@@ -2249,7 +2269,7 @@ static int hci_le_set_privacy_mode_sync(struct hci_dev *hdev,
+  * properly set the privacy mode.
+  */
+ static int hci_le_add_accept_list_sync(struct hci_dev *hdev,
+-				       struct hci_conn_params *params,
++				       struct conn_params *params,
+ 				       u8 *num_entries)
+ {
+ 	struct hci_cp_le_add_to_accept_list cp;
+@@ -2447,6 +2467,52 @@ struct sk_buff *hci_read_local_oob_data_sync(struct hci_dev *hdev,
+ 	return __hci_cmd_sync_sk(hdev, opcode, 0, NULL, 0, HCI_CMD_TIMEOUT, sk);
+ }
+ 
++static struct conn_params *conn_params_copy(struct list_head *list, size_t *n)
++{
++	struct hci_conn_params *params;
++	struct conn_params *p;
++	size_t i;
++
++	rcu_read_lock();
++
++	i = 0;
++	list_for_each_entry_rcu(params, list, action)
++		++i;
++	*n = i;
++
++	rcu_read_unlock();
++
++	p = kvcalloc(*n, sizeof(struct conn_params), GFP_KERNEL);
++	if (!p)
++		return NULL;
++
++	rcu_read_lock();
++
++	i = 0;
++	list_for_each_entry_rcu(params, list, action) {
++		/* Racing adds are handled in next scan update */
++		if (i >= *n)
++			break;
++
++		/* No hdev->lock, but: addr, addr_type are immutable.
++		 * privacy_mode is only written by us or in
++		 * hci_cc_le_set_privacy_mode that we wait for.
++		 * We should be idempotent so MGMT updating flags
++		 * while we are processing is OK.
++		 */
++		bacpy(&p[i].addr, &params->addr);
++		p[i].addr_type = params->addr_type;
++		p[i].flags = READ_ONCE(params->flags);
++		p[i].privacy_mode = READ_ONCE(params->privacy_mode);
++		++i;
++	}
++
++	rcu_read_unlock();
++
++	*n = i;
++	return p;
++}
++
+ /* Device must not be scanning when updating the accept list.
+  *
+  * Update is done using the following sequence:
+@@ -2466,11 +2532,12 @@ struct sk_buff *hci_read_local_oob_data_sync(struct hci_dev *hdev,
+  */
+ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
+ {
+-	struct hci_conn_params *params;
++	struct conn_params *params;
+ 	struct bdaddr_list *b, *t;
+ 	u8 num_entries = 0;
+ 	bool pend_conn, pend_report;
+ 	u8 filter_policy;
++	size_t i, n;
+ 	int err;
+ 
+ 	/* Pause advertising if resolving list can be used as controllers
+@@ -2504,6 +2571,7 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
+ 		if (hci_conn_hash_lookup_le(hdev, &b->bdaddr, b->bdaddr_type))
+ 			continue;
+ 
++		/* Pointers not dereferenced, no locks needed */
+ 		pend_conn = hci_pend_le_action_lookup(&hdev->pend_le_conns,
+ 						      &b->bdaddr,
+ 						      b->bdaddr_type);
+@@ -2532,23 +2600,50 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
+ 	 * available accept list entries in the controller, then
+ 	 * just abort and return filer policy value to not use the
+ 	 * accept list.
++	 *
++	 * The list and params may be mutated while we wait for events,
++	 * so make a copy and iterate it.
+ 	 */
+-	list_for_each_entry(params, &hdev->pend_le_conns, action) {
+-		err = hci_le_add_accept_list_sync(hdev, params, &num_entries);
+-		if (err)
++
++	params = conn_params_copy(&hdev->pend_le_conns, &n);
++	if (!params) {
++		err = -ENOMEM;
++		goto done;
++	}
++
++	for (i = 0; i < n; ++i) {
++		err = hci_le_add_accept_list_sync(hdev, &params[i],
++						  &num_entries);
++		if (err) {
++			kvfree(params);
+ 			goto done;
++		}
+ 	}
+ 
++	kvfree(params);
++
+ 	/* After adding all new pending connections, walk through
+ 	 * the list of pending reports and also add these to the
+ 	 * accept list if there is still space. Abort if space runs out.
+ 	 */
+-	list_for_each_entry(params, &hdev->pend_le_reports, action) {
+-		err = hci_le_add_accept_list_sync(hdev, params, &num_entries);
+-		if (err)
++
++	params = conn_params_copy(&hdev->pend_le_reports, &n);
++	if (!params) {
++		err = -ENOMEM;
++		goto done;
++	}
++
++	for (i = 0; i < n; ++i) {
++		err = hci_le_add_accept_list_sync(hdev, &params[i],
++						  &num_entries);
++		if (err) {
++			kvfree(params);
+ 			goto done;
++		}
+ 	}
+ 
++	kvfree(params);
++
+ 	/* Use the allowlist unless the following conditions are all true:
+ 	 * - We are not currently suspending
+ 	 * - There are 1 or more ADV monitors registered and it's not offloaded
+@@ -4839,12 +4934,12 @@ static void hci_pend_le_actions_clear(struct hci_dev *hdev)
+ 	struct hci_conn_params *p;
+ 
+ 	list_for_each_entry(p, &hdev->le_conn_params, list) {
++		hci_pend_le_list_del_init(p);
+ 		if (p->conn) {
+ 			hci_conn_drop(p->conn);
+ 			hci_conn_put(p->conn);
+ 			p->conn = NULL;
+ 		}
+-		list_del_init(&p->action);
+ 	}
+ 
+ 	BT_DBG("All LE pending actions cleared");
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index f7b2d0971f240..1e07d0f289723 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -1297,15 +1297,15 @@ static void restart_le_actions(struct hci_dev *hdev)
+ 		/* Needed for AUTO_OFF case where might not "really"
+ 		 * have been powered off.
+ 		 */
+-		list_del_init(&p->action);
++		hci_pend_le_list_del_init(p);
+ 
+ 		switch (p->auto_connect) {
+ 		case HCI_AUTO_CONN_DIRECT:
+ 		case HCI_AUTO_CONN_ALWAYS:
+-			list_add(&p->action, &hdev->pend_le_conns);
++			hci_pend_le_list_add(p, &hdev->pend_le_conns);
+ 			break;
+ 		case HCI_AUTO_CONN_REPORT:
+-			list_add(&p->action, &hdev->pend_le_reports);
++			hci_pend_le_list_add(p, &hdev->pend_le_reports);
+ 			break;
+ 		default:
+ 			break;
+@@ -5169,7 +5169,7 @@ static int set_device_flags(struct sock *sk, struct hci_dev *hdev, void *data,
+ 		goto unlock;
+ 	}
+ 
+-	params->flags = current_flags;
++	WRITE_ONCE(params->flags, current_flags);
+ 	status = MGMT_STATUS_SUCCESS;
+ 
+ 	/* Update passive scan if HCI_CONN_FLAG_DEVICE_PRIVACY
+@@ -7580,7 +7580,7 @@ static int hci_conn_params_set(struct hci_dev *hdev, bdaddr_t *addr,
+ 	if (params->auto_connect == auto_connect)
+ 		return 0;
+ 
+-	list_del_init(&params->action);
++	hci_pend_le_list_del_init(params);
+ 
+ 	switch (auto_connect) {
+ 	case HCI_AUTO_CONN_DISABLED:
+@@ -7589,18 +7589,18 @@ static int hci_conn_params_set(struct hci_dev *hdev, bdaddr_t *addr,
+ 		 * connect to device, keep connecting.
+ 		 */
+ 		if (params->explicit_connect)
+-			list_add(&params->action, &hdev->pend_le_conns);
++			hci_pend_le_list_add(params, &hdev->pend_le_conns);
+ 		break;
+ 	case HCI_AUTO_CONN_REPORT:
+ 		if (params->explicit_connect)
+-			list_add(&params->action, &hdev->pend_le_conns);
++			hci_pend_le_list_add(params, &hdev->pend_le_conns);
+ 		else
+-			list_add(&params->action, &hdev->pend_le_reports);
++			hci_pend_le_list_add(params, &hdev->pend_le_reports);
+ 		break;
+ 	case HCI_AUTO_CONN_DIRECT:
+ 	case HCI_AUTO_CONN_ALWAYS:
+ 		if (!is_connected(hdev, addr, addr_type))
+-			list_add(&params->action, &hdev->pend_le_conns);
++			hci_pend_le_list_add(params, &hdev->pend_le_conns);
+ 		break;
+ 	}
+ 
+@@ -7823,9 +7823,7 @@ static int remove_device(struct sock *sk, struct hci_dev *hdev,
+ 			goto unlock;
+ 		}
+ 
+-		list_del(&params->action);
+-		list_del(&params->list);
+-		kfree(params);
++		hci_conn_params_free(params);
+ 
+ 		device_removed(sk, hdev, &cp->addr.bdaddr, cp->addr.type);
+ 	} else {
+@@ -7856,9 +7854,7 @@ static int remove_device(struct sock *sk, struct hci_dev *hdev,
+ 				p->auto_connect = HCI_AUTO_CONN_EXPLICIT;
+ 				continue;
+ 			}
+-			list_del(&p->action);
+-			list_del(&p->list);
+-			kfree(p);
++			hci_conn_params_free(p);
+ 		}
+ 
+ 		bt_dev_dbg(hdev, "All LE connection parameters were removed");
+-- 
+2.39.2
+
 
 
