@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA35B76157C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB0A7611F5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234761AbjGYL3d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:29:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
+        id S232171AbjGYK6c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:58:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234758AbjGYL3c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC25F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:31 -0700 (PDT)
+        with ESMTP id S232442AbjGYK5b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1542D71
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B3E661691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335DDC433C7;
-        Tue, 25 Jul 2023 11:29:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7673F6165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852C4C433C9;
+        Tue, 25 Jul 2023 10:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284570;
-        bh=R3eXIU5uv7IHlswPhuNnN2+wN88U3sj5P/wyawGusFY=;
+        s=korg; t=1690282490;
+        bh=HboF+4v05ushogV5yKXmiced3Q7m/2nac8pU+/lWLCQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QdWFJ8IVLdF3CNoJ0cgHsnJu9kdocA8L3GzYqPt1GUZAi3WpcsF6l77UvUYBvwUwL
-         Pd1V05XHb7Ib2SWvYvgCW2WjkdPXuwa165DI1fwCTbT1ODc4ZWAz9xIZA0fdkALFBy
-         ek9x8wBKvfAM75tfIrNFclrI774Pl1XbGrJdqTLY=
+        b=Tjr39rSpxkTgVRtwAgkOHFMCzoTRufRH2dQaBLa5FpWeNs099xmAFB0YdqXQN2yZf
+         ooRzIoQnioskVafaeYwhDUl5uxt7vvCf5XgzhziEEAonlyAAvbBLMYUBCE9i4A2Fwi
+         2vbayJZQWjxbbWEFZC4YROHB4Y+YR4Uoy4AD6oMo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        butt3rflyh4ck <butterflyhuangxx@gmail.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
-        Stefan Ghinea <stefan.ghinea@windriver.com>
-Subject: [PATCH 5.10 376/509] f2fs: fix to avoid NULL pointer dereference f2fs_write_end_io()
+        patches@lists.linux.dev, Jaewon Kim <jaewon02.kim@samsung.com>,
+        Chanho Park <chanho61.park@samsung.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 148/227] spi: s3c64xx: clear loopback bit after loopback test
 Date:   Tue, 25 Jul 2023 12:45:15 +0200
-Message-ID: <20230725104610.941831059@linuxfoundation.org>
+Message-ID: <20230725104521.020123270@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,161 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Jaewon Kim <jaewon02.kim@samsung.com>
 
-commit d8189834d4348ae608083e1f1f53792cfcc2a9bc upstream.
+[ Upstream commit 9ec3c5517e22a12d2ff1b71e844f7913641460c6 ]
 
-butt3rflyh4ck reports a bug as below:
+When SPI loopback transfer is performed, S3C64XX_SPI_MODE_SELF_LOOPBACK
+bit still remained. It works as loopback even if the next transfer is
+not spi loopback mode.
+If not SPI_LOOP, needs to clear S3C64XX_SPI_MODE_SELF_LOOPBACK bit.
 
-When a thread always calls F2FS_IOC_RESIZE_FS to resize fs, if resize fs is
-failed, f2fs kernel thread would invoke callback function to update f2fs io
-info, it would call  f2fs_write_end_io and may trigger null-ptr-deref in
-NODE_MAPPING.
-
-general protection fault, probably for non-canonical address
-KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-RIP: 0010:NODE_MAPPING fs/f2fs/f2fs.h:1972 [inline]
-RIP: 0010:f2fs_write_end_io+0x727/0x1050 fs/f2fs/data.c:370
- <TASK>
- bio_endio+0x5af/0x6c0 block/bio.c:1608
- req_bio_endio block/blk-mq.c:761 [inline]
- blk_update_request+0x5cc/0x1690 block/blk-mq.c:906
- blk_mq_end_request+0x59/0x4c0 block/blk-mq.c:1023
- lo_complete_rq+0x1c6/0x280 drivers/block/loop.c:370
- blk_complete_reqs+0xad/0xe0 block/blk-mq.c:1101
- __do_softirq+0x1d4/0x8ef kernel/softirq.c:571
- run_ksoftirqd kernel/softirq.c:939 [inline]
- run_ksoftirqd+0x31/0x60 kernel/softirq.c:931
- smpboot_thread_fn+0x659/0x9e0 kernel/smpboot.c:164
- kthread+0x33e/0x440 kernel/kthread.c:379
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
-
-The root cause is below race case can cause leaving dirty metadata
-in f2fs after filesystem is remount as ro:
-
-Thread A				Thread B
-- f2fs_ioc_resize_fs
- - f2fs_readonly   --- return false
- - f2fs_resize_fs
-					- f2fs_remount
-					 - write_checkpoint
-					 - set f2fs as ro
-  - free_segment_range
-   - update meta_inode's data
-
-Then, if f2fs_put_super()  fails to write_checkpoint due to readonly
-status, and meta_inode's dirty data will be writebacked after node_inode
-is put, finally, f2fs_write_end_io will access NULL pointer on
-sbi->node_inode.
-
-Thread A				IRQ context
-- f2fs_put_super
- - write_checkpoint fails
- - iput(node_inode)
- - node_inode = NULL
- - iput(meta_inode)
-  - write_inode_now
-   - f2fs_write_meta_page
-					- f2fs_write_end_io
-					 - NODE_MAPPING(sbi)
-					 : access NULL pointer on node_inode
-
-Fixes: b4b10061ef98 ("f2fs: refactor resize_fs to avoid meta updates in progress")
-Reported-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
-Closes: https://lore.kernel.org/r/1684480657-2375-1-git-send-email-yangtiezhu@loongson.cn
-Tested-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Stefan Ghinea <stefan.ghinea@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
+Fixes: ffb7bcd3b27e ("spi: s3c64xx: support loopback mode")
+Reviewed-by: Chanho Park <chanho61.park@samsung.com>
+Link: https://lore.kernel.org/r/20230711082020.138165-1-jaewon02.kim@samsung.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h |    2 +-
- fs/f2fs/file.c |    2 +-
- fs/f2fs/gc.c   |   22 +++++++++++++++++++---
- 3 files changed, 21 insertions(+), 5 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3483,7 +3483,7 @@ block_t f2fs_start_bidx_of_node(unsigned
- int f2fs_gc(struct f2fs_sb_info *sbi, bool sync, bool background, bool force,
- 			unsigned int segno);
- void f2fs_build_gc_manager(struct f2fs_sb_info *sbi);
--int f2fs_resize_fs(struct f2fs_sb_info *sbi, __u64 block_count);
-+int f2fs_resize_fs(struct file *filp, __u64 block_count);
- int __init f2fs_create_garbage_collection_cache(void);
- void f2fs_destroy_garbage_collection_cache(void);
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 7ac17f0d18a95..1a8b31e20baf2 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -668,6 +668,8 @@ static int s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
  
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3356,7 +3356,7 @@ static int f2fs_ioc_resize_fs(struct fil
- 			   sizeof(block_count)))
- 		return -EFAULT;
+ 	if ((sdd->cur_mode & SPI_LOOP) && sdd->port_conf->has_loopback)
+ 		val |= S3C64XX_SPI_MODE_SELF_LOOPBACK;
++	else
++		val &= ~S3C64XX_SPI_MODE_SELF_LOOPBACK;
  
--	return f2fs_resize_fs(sbi, block_count);
-+	return f2fs_resize_fs(filp, block_count);
- }
+ 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
  
- static int f2fs_ioc_enable_verity(struct file *filp, unsigned long arg)
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -7,6 +7,7 @@
-  */
- #include <linux/fs.h>
- #include <linux/module.h>
-+#include <linux/mount.h>
- #include <linux/backing-dev.h>
- #include <linux/init.h>
- #include <linux/f2fs_fs.h>
-@@ -1976,8 +1977,9 @@ static void update_fs_metadata(struct f2
- 	}
- }
- 
--int f2fs_resize_fs(struct f2fs_sb_info *sbi, __u64 block_count)
-+int f2fs_resize_fs(struct file *filp, __u64 block_count)
- {
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(file_inode(filp));
- 	__u64 old_block_count, shrunk_blocks;
- 	struct cp_control cpc = { CP_RESIZE, 0, 0, 0 };
- 	unsigned int secs;
-@@ -2015,12 +2017,18 @@ int f2fs_resize_fs(struct f2fs_sb_info *
- 		return -EINVAL;
- 	}
- 
-+	err = mnt_want_write_file(filp);
-+	if (err)
-+		return err;
-+
- 	shrunk_blocks = old_block_count - block_count;
- 	secs = div_u64(shrunk_blocks, BLKS_PER_SEC(sbi));
- 
- 	/* stop other GC */
--	if (!down_write_trylock(&sbi->gc_lock))
--		return -EAGAIN;
-+	if (!down_write_trylock(&sbi->gc_lock)) {
-+		err = -EAGAIN;
-+		goto out_drop_write;
-+	}
- 
- 	/* stop CP to protect MAIN_SEC in free_segment_range */
- 	f2fs_lock_op(sbi);
-@@ -2040,10 +2048,18 @@ int f2fs_resize_fs(struct f2fs_sb_info *
- out_unlock:
- 	f2fs_unlock_op(sbi);
- 	up_write(&sbi->gc_lock);
-+out_drop_write:
-+	mnt_drop_write_file(filp);
- 	if (err)
- 		return err;
- 
- 	freeze_super(sbi->sb);
-+
-+	if (f2fs_readonly(sbi->sb)) {
-+		thaw_super(sbi->sb);
-+		return -EROFS;
-+	}
-+
- 	down_write(&sbi->gc_lock);
- 	mutex_lock(&sbi->cp_mutex);
- 
+-- 
+2.39.2
+
 
 
