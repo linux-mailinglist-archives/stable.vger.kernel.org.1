@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E912E7615AD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F21A8761367
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234635AbjGYLb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
+        id S234098AbjGYLKj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:10:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234638AbjGYLb6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:58 -0400
+        with ESMTP id S234119AbjGYLKP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62FCCE74
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B36711FDE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB47C6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26DDC433C8;
-        Tue, 25 Jul 2023 11:31:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51D8C615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF13C433C8;
+        Tue, 25 Jul 2023 11:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284707;
-        bh=dZ1WMYtoGzG/ORHegjjw/aXCzTkwgnTo3F8NyxTxSHw=;
+        s=korg; t=1690283338;
+        bh=j8cIg2zuCMp5vEDPceWHifQgVfsvXLI+m8rZq9GawUo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eruFPI2aLfw3JXdSYII7dSOrzPyeajmJMFOFIP/9UFuww9jwKdATpqvtgc11UnTsk
-         zQ5UOPoRcn00S5iMNMj0Nqy764qGTiZv41GEIlTFwdSFx7ntEIp1pRxBy2yGOdfg+1
-         vAdLCKbU8liw13G5T8riYEY+YWwN3j0zxnShrhgE=
+        b=KmuokPg81xhiCxdEYXB7BxGgebivbMSg9oMGem1+l7kVFjNCG3MkJE5j0TEkJiLgV
+         tPfoPGLwAtMZKFyHmvrxTVDhRuOrppQu3T3s8rJDPsYrvq/25y7iTlLguH7m+tTDKO
+         TQaRtci6PpJV3SlL6aDjqx0YzLTtFUjrUk2QzEZI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
-        Shengjiu Wang <shengjiu.wang@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 453/509] ASoC: fsl_sai: Disable bit clock with transmitter
+        patches@lists.linux.dev, Nik P <npliashechnikov@gmail.com>,
+        Nathan Schulte <nmschulte@gmail.com>,
+        Friedrich Vock <friedrich.vock@gmx.de>, dridri85@gmail.com,
+        Jan Visser <starquake@linuxeverywhere.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 41/78] pinctrl: amd: Use amd_pinconf_set() for all config options
 Date:   Tue, 25 Jul 2023 12:46:32 +0200
-Message-ID: <20230725104614.475702645@linuxfoundation.org>
+Message-ID: <20230725104452.893694917@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +60,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matus Gajdos <matuszpd@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 269f399dc19f0e5c51711c3ba3bd06e0ef6ef403 upstream.
+[ Upstream commit 635a750d958e158e17af0f524bedc484b27fbb93 ]
 
-Otherwise bit clock remains running writing invalid data to the DAC.
+On ASUS TUF A16 it is reported that the ITE5570 ACPI device connected to
+GPIO 7 is causing an interrupt storm.  This issue doesn't happen on
+Windows.
 
-Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230712124934.32232-1-matuszpd@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Comparing the GPIO register configuration between Windows and Linux
+bit 20 has been configured as a pull up on Windows, but not on Linux.
+Checking GPIO declaration from the firmware it is clear it *should* have
+been a pull up on Linux as well.
+
+```
+GpioInt (Level, ActiveLow, Exclusive, PullUp, 0x0000,
+	 "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+{   // Pin list
+0x0007
+}
+```
+
+On Linux amd_gpio_set_config() is currently only used for programming
+the debounce. Actually the GPIO core calls it with all the arguments
+that are supported by a GPIO, pinctrl-amd just responds `-ENOTSUPP`.
+
+To solve this issue expand amd_gpio_set_config() to support the other
+arguments amd_pinconf_set() supports, namely `PIN_CONFIG_BIAS_PULL_DOWN`,
+`PIN_CONFIG_BIAS_PULL_UP`, and `PIN_CONFIG_DRIVE_STRENGTH`.
+
+Reported-by: Nik P <npliashechnikov@gmail.com>
+Reported-by: Nathan Schulte <nmschulte@gmail.com>
+Reported-by: Friedrich Vock <friedrich.vock@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+Reported-by: dridri85@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217493
+Link: https://lore.kernel.org/linux-input/20230530154058.17594-1-friedrich.vock@gmx.de/
+Tested-by: Jan Visser <starquake@linuxeverywhere.org>
+Fixes: 2956b5d94a76 ("pinctrl / gpio: Introduce .set_config() callback for GPIO chips")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230705133005.577-3-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c |    2 +-
- sound/soc/fsl/fsl_sai.h |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-amd.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -552,7 +552,7 @@ static void fsl_sai_config_disable(struc
- 	u32 xcsr, count = 100;
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 9dff866614d40..384d93146e1f5 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -189,18 +189,6 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
+ 	return ret;
+ }
  
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
--			   FSL_SAI_CSR_TERE, 0);
-+			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
+-static int amd_gpio_set_config(struct gpio_chip *gc, unsigned offset,
+-			       unsigned long config)
+-{
+-	u32 debounce;
+-
+-	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
+-		return -ENOTSUPP;
+-
+-	debounce = pinconf_to_config_argument(config);
+-	return amd_gpio_set_debounce(gc, offset, debounce);
+-}
+-
+ #ifdef CONFIG_DEBUG_FS
+ static void amd_gpio_dbg_show(struct seq_file *s, struct gpio_chip *gc)
+ {
+@@ -775,7 +763,7 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
+ }
  
- 	/* TERE will remain set till the end of current frame */
- 	do {
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -87,6 +87,7 @@
- /* SAI Transmit/Receive Control Register */
- #define FSL_SAI_CSR_TERE	BIT(31)
- #define FSL_SAI_CSR_SE		BIT(30)
-+#define FSL_SAI_CSR_BCE		BIT(28)
- #define FSL_SAI_CSR_FR		BIT(25)
- #define FSL_SAI_CSR_SR		BIT(24)
- #define FSL_SAI_CSR_xF_SHIFT	16
+ static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+-				unsigned long *configs, unsigned num_configs)
++			   unsigned long *configs, unsigned int num_configs)
+ {
+ 	int i;
+ 	u32 arg;
+@@ -865,6 +853,20 @@ static int amd_pinconf_group_set(struct pinctrl_dev *pctldev,
+ 	return 0;
+ }
+ 
++static int amd_gpio_set_config(struct gpio_chip *gc, unsigned int pin,
++			       unsigned long config)
++{
++	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
++
++	if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE) {
++		u32 debounce = pinconf_to_config_argument(config);
++
++		return amd_gpio_set_debounce(gc, pin, debounce);
++	}
++
++	return amd_pinconf_set(gpio_dev->pctrl, pin, &config, 1);
++}
++
+ static const struct pinconf_ops amd_pinconf_ops = {
+ 	.pin_config_get		= amd_pinconf_get,
+ 	.pin_config_set		= amd_pinconf_set,
+-- 
+2.39.2
+
 
 
