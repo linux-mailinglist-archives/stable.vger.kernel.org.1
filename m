@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEB9E7612E5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CAA4761227
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234028AbjGYLGa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
+        id S231381AbjGYK7x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233970AbjGYLGP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:15 -0400
+        with ESMTP id S233799AbjGYK73 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90DB74209
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EAFE1FF0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65A576164D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A4DC433C8;
-        Tue, 25 Jul 2023 11:04:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D054F6166F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC63C433C8;
+        Tue, 25 Jul 2023 10:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283057;
-        bh=Q3R0nPsVtfhumfGdyaN8MN1C6m7UxsBG9REu40XCPNw=;
+        s=korg; t=1690282589;
+        bh=82eKH/QmvDoL2Z8HW+/MK/ahA2tZvCxLUILutelxuYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PSPPyASMYHKsdqg0K+AlGiN1AV3cu5o8Si3uOBTOEs26eGVqzRQdsz9Q540rXeC06
-         M/PLAJsNwanOzbAUA1t5rwkEsrbM9B6jz93tLvrt70gjplIY7ft1M8ZWX9ng4TEKIg
-         11Mfmkcoipue/IJsCIYJoshvyINb4z2XCYM+JyZk=
+        b=PEKCRD6tBa68qefbO4mvYVQN3SoGqyBFUKWEEiTZTaUT09vQadwAr1cWUzby67c7N
+         n9wtcihU8fOVujdlcaIocEuIjIb2QoRpIytTK+JDxio25cZ72RWiJlmyJs7pHCNr2O
+         y4Bn+tLOSGqSMtH5SK08/PwI1ir6VDkQk+YPasGA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
+        patches@lists.linux.dev, Kurt Kanzenbach <kurt@linutronix.de>,
+        Naama Meir <naamax.meir@linux.intel.com>,
         Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/183] iavf: send VLAN offloading caps once after VFR
+Subject: [PATCH 6.4 183/227] igc: Avoid transmit queue timeout for XDP
 Date:   Tue, 25 Jul 2023 12:45:50 +0200
-Message-ID: <20230725104512.335103250@linuxfoundation.org>
+Message-ID: <20230725104522.398282544@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-[ Upstream commit 7dcbdf29282fbcdb646dc785e8a57ed2c2fec8ba ]
+[ Upstream commit 95b681485563c64585de78662ee52d06b7fa47d9 ]
 
-When the user disables rxvlan offloading and then changes the number of
-channels, all VLAN ports are unable to receive traffic.
+High XDP load triggers the netdev watchdog:
 
-Changing the number of channels triggers a VFR reset. During re-init, when
-VIRTCHNL_OP_GET_OFFLOAD_VLAN_V2_CAPS is received, we do:
-1 - set the IAVF_FLAG_SETUP_NETDEV_FEATURES flag
-2 - call
-    iavf_set_vlan_offload_features(adapter, 0, netdev->features);
+|NETDEV WATCHDOG: enp3s0 (igc): transmit queue 2 timed out
 
-The second step sends to the PF the __default__ features, in this case
-aq_required |= IAVF_FLAG_AQ_ENABLE_CTAG_VLAN_STRIPPING
+The reason is the Tx queue transmission start (txq->trans_start) is not updated
+in XDP code path. Therefore, add it for all XDP transmission functions.
 
-While the first step forces the watchdog task to call
-netdev_update_features() ->  iavf_set_features() ->
-iavf_set_vlan_offload_features(adapter, netdev->features, features).
-Since the user disabled the "rxvlan", this sets:
-aq_required |= IAVF_FLAG_AQ_DISABLE_CTAG_VLAN_STRIPPING
-
-When we start processing the AQ commands, both flags are enabled. Since we
-process DISABLE_XTAG first then ENABLE_XTAG, this results in the PF
-enabling the rxvlan offload. This breaks all communications on the VLAN
-net devices.
-
-Fix by removing the call to iavf_set_vlan_offload_features() (second
-step). Calling netdev_update_features() from watchdog task is enough for
-both init and reset paths.
-
-Fixes: 7598f4b40bd6 ("iavf: Move netdev_update_features() into watchdog task")
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: c2ed2403f12c ("iavf: Wait for reset in callbacks which trigger it")
+Stable-dep-of: 78adb4bcf99e ("igc: Prevent garbled TX queue with XDP ZEROCOPY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index 07d37402a0df5..7b34111fd4eb1 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2238,11 +2238,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		iavf_process_config(adapter);
- 		adapter->flags |= IAVF_FLAG_SETUP_NETDEV_FEATURES;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 44aa4342cbbb5..ef4ea46442f21 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -2417,6 +2417,8 @@ static int igc_xdp_xmit_back(struct igc_adapter *adapter, struct xdp_buff *xdp)
+ 	nq = txring_txq(ring);
  
--		/* Request VLAN offload settings */
--		if (VLAN_V2_ALLOWED(adapter))
--			iavf_set_vlan_offload_features(adapter, 0,
--						       netdev->features);
--
- 		iavf_set_queue_vlan_tag_loc(adapter);
+ 	__netif_tx_lock(nq, cpu);
++	/* Avoid transmit queue timeout since we share it with the slow path */
++	txq_trans_cond_update(nq);
+ 	res = igc_xdp_init_tx_descriptor(ring, xdpf);
+ 	__netif_tx_unlock(nq);
+ 	return res;
+@@ -2833,6 +2835,9 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
  
- 		was_mac_changed = !ether_addr_equal(netdev->dev_addr,
+ 	__netif_tx_lock(nq, cpu);
+ 
++	/* Avoid transmit queue timeout since we share it with the slow path */
++	txq_trans_cond_update(nq);
++
+ 	budget = igc_desc_unused(ring);
+ 
+ 	while (xsk_tx_peek_desc(pool, &xdp_desc) && budget--) {
+@@ -6385,6 +6390,9 @@ static int igc_xdp_xmit(struct net_device *dev, int num_frames,
+ 
+ 	__netif_tx_lock(nq, cpu);
+ 
++	/* Avoid transmit queue timeout since we share it with the slow path */
++	txq_trans_cond_update(nq);
++
+ 	drops = 0;
+ 	for (i = 0; i < num_frames; i++) {
+ 		int err;
 -- 
 2.39.2
 
