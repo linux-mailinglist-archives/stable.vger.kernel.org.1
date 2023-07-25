@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D05761242
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4318B7615C2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233830AbjGYLAd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35810 "EHLO
+        id S233155AbjGYLcs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:32:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbjGYLAS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:18 -0400
+        with ESMTP id S233144AbjGYLcr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868C3423F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB85118
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A578B61602
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A7FC433C8;
-        Tue, 25 Jul 2023 10:57:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B17D361648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5826C433C8;
+        Tue, 25 Jul 2023 11:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282653;
-        bh=gpzIfCH0s7WTLgAVB9JQDjEWS38URzkX6wg4LeYGzAI=;
+        s=korg; t=1690284766;
+        bh=MHuwr0d/5zFSgt+xB0uSYJdiddrMMjiGXWScvaGbgSc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XeSMeyq7VBoHKOfvR1oFdcuYfJYCjs1GdX4KOAnE32SetyFcEPccZFLv+JFLtW5QR
-         gOXt0JjreC2guyUl00niwcIegbToaoFWTIBQG1FEspisM246goVaeKxHq+9qrA+mFi
-         86NKxoxDnJ6brmGbDVIxqaX43xtUpoeLNWv0zbqY=
+        b=B8c190/nza7gYfw4+DT4/Wt0lDDxblNPCfUZqZfew+NF3pYzWOdLi2FhKthQQoy5L
+         C3Ls6at1otlRwuIsHTKKXOyfoc0LgMmDtlJc0+kIlaOHx4NRLIXDZUNV9owJcdhvy/
+         jCIV2B7uOdDM+2M5D+4IEDu8qcr98uUzn+mOGLjI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 207/227] tcp: annotate data-races around tp->tcp_tx_delay
+        patches@lists.linux.dev, Shreyas Deodhar <sdeodhar@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 435/509] scsi: qla2xxx: Pointer may be dereferenced
 Date:   Tue, 25 Jul 2023 12:46:14 +0200
-Message-ID: <20230725104523.334628031@linuxfoundation.org>
+Message-ID: <20230725104613.649910765@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,46 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-[ Upstream commit 348b81b68b13ebd489a3e6a46aa1c384c731c919 ]
+commit 00eca15319d9ce8c31cdf22f32a3467775423df4 upstream.
 
-do_tcp_getsockopt() reads tp->tcp_tx_delay while another cpu
-might change its value.
+Klocwork tool reported pointer 'rport' returned from call to function
+fc_bsg_to_rport() may be NULL and will be dereferenced.
 
-Fixes: a842fe1425cb ("tcp: add optional per socket transmit delay")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a fix to validate rport before dereferencing.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230607113843.37185-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_bsg.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 8d20d9221238c..c0e0add372f75 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3783,7 +3783,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 	case TCP_TX_DELAY:
- 		if (val)
- 			tcp_enable_tx_delay();
--		tp->tcp_tx_delay = val;
-+		WRITE_ONCE(tp->tcp_tx_delay, val);
- 		break;
- 	default:
- 		err = -ENOPROTOOPT;
-@@ -4263,7 +4263,7 @@ int do_tcp_getsockopt(struct sock *sk, int level,
- 		break;
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -2545,6 +2545,8 @@ qla24xx_bsg_request(struct bsg_job *bsg_
  
- 	case TCP_TX_DELAY:
--		val = tp->tcp_tx_delay;
-+		val = READ_ONCE(tp->tcp_tx_delay);
- 		break;
- 
- 	case TCP_TIMESTAMP:
--- 
-2.39.2
-
+ 	if (bsg_request->msgcode == FC_BSG_RPT_ELS) {
+ 		rport = fc_bsg_to_rport(bsg_job);
++		if (!rport)
++			return ret;
+ 		host = rport_to_shost(rport);
+ 		vha = shost_priv(host);
+ 	} else {
 
 
