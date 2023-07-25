@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A673D761652
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220AB7614E1
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234877AbjGYLiX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45494 "EHLO
+        id S234507AbjGYLXf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235007AbjGYLiK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:10 -0400
+        with ESMTP id S234501AbjGYLXd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 636481AA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C7219BF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43E8361682
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FF1C433C7;
-        Tue, 25 Jul 2023 11:38:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 870016166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964E5C433C7;
+        Tue, 25 Jul 2023 11:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285080;
-        bh=TjsRewEaKFCTwtlIaimnxVUcIxvQHaIYwGzmsVp3d9k=;
+        s=korg; t=1690284208;
+        bh=2DQkxeUcvPViWW4OXYccAVwbYFbV3k0nVACGIjpMtdM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2q6IR8xGKL9SzT48IixLMNfY0ze0c7mXJcyBteDLJ5oXjklmPrFnMZysZ1pFcnbxG
-         eOGjSw6/ltVAoPxnWFwTUxW//IfZ5Bj/M43OxViuFucvKX4TPE4HGz4gSWuWDrj4oo
-         FNUknwNNir5vp/JPiJu3i9CWyxLtXtQBTsuLY+rE=
+        b=InfQ2dAoE651en5e7B68kqOUG4UCpvpuCre2f2Tq/UCnCX8ojEOt6Eq9t1po39NyT
+         Vc6+MnM2vQudvjIrM10DHUX1TAVYI+rq+u14dt/dktyYHLyii5oAONFOh6UtqHVHy5
+         oRt4I7m38q65/MedLkIsxC3/qR9XmaqDxbIfQGhw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/313] wifi: ath9k: convert msecs to jiffies where needed
+Subject: [PATCH 5.10 273/509] net: dsa: tag_sja1105: fix MAC DA patching from meta frames
 Date:   Tue, 25 Jul 2023 12:43:32 +0200
-Message-ID: <20230725104523.591477818@linuxfoundation.org>
+Message-ID: <20230725104606.245913156@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 2aa083acea9f61be3280184384551178f510ff51 ]
+[ Upstream commit 1dcf6efd5f0c1f4496b3ef7ec5a7db104a53b38c ]
 
-Since 'ieee80211_queue_delayed_work()' expects timeout in
-jiffies and not milliseconds, 'msecs_to_jiffies()' should
-be used in 'ath_restart_work()' and '__ath9k_flush()'.
+The SJA1105 manual says that at offset 4 into the meta frame payload we
+have "MAC destination byte 2" and at offset 5 we have "MAC destination
+byte 1". These are counted from the LSB, so byte 1 is h_dest[ETH_HLEN-2]
+aka h_dest[4] and byte 2 is h_dest[ETH_HLEN-3] aka h_dest[3].
 
-Fixes: d63ffc45c5d3 ("ath9k: rename tx_complete_work to hw_check_work")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230613134655.248728-1-dmantipov@yandex.ru
+The sja1105_meta_unpack() function decodes these the other way around,
+so a frame with MAC DA 01:80:c2:11:22:33 is received by the network
+stack as having 01:80:c2:22:11:33.
+
+Fixes: e53e18a6fe4d ("net: dsa: sja1105: Receive and decode meta frames")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/main.c | 4 ++--
+ net/dsa/tag_sja1105.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 4e606a4b19f2d..5968fcec11737 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -200,7 +200,7 @@ void ath_cancel_work(struct ath_softc *sc)
- void ath_restart_work(struct ath_softc *sc)
- {
- 	ieee80211_queue_delayed_work(sc->hw, &sc->hw_check_work,
--				     ATH_HW_CHECK_POLL_INT);
-+				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
- 
- 	if (AR_SREV_9340(sc->sc_ah) || AR_SREV_9330(sc->sc_ah))
- 		ieee80211_queue_delayed_work(sc->hw, &sc->hw_pll_work,
-@@ -2228,7 +2228,7 @@ void __ath9k_flush(struct ieee80211_hw *hw, u32 queues, bool drop,
- 	}
- 
- 	ieee80211_queue_delayed_work(hw, &sc->hw_check_work,
--				     ATH_HW_CHECK_POLL_INT);
-+				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
+diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
+index 50496013cdb7f..07876160edd2b 100644
+--- a/net/dsa/tag_sja1105.c
++++ b/net/dsa/tag_sja1105.c
+@@ -48,8 +48,8 @@ static void sja1105_meta_unpack(const struct sk_buff *skb,
+ 	 * a unified unpacking command for both device series.
+ 	 */
+ 	packing(buf,     &meta->tstamp,     31, 0, 4, UNPACK, 0);
+-	packing(buf + 4, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
+-	packing(buf + 5, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
++	packing(buf + 4, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
++	packing(buf + 5, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
+ 	packing(buf + 6, &meta->source_port, 7, 0, 1, UNPACK, 0);
+ 	packing(buf + 7, &meta->switch_id,   7, 0, 1, UNPACK, 0);
  }
- 
- static bool ath9k_tx_frames_pending(struct ieee80211_hw *hw)
 -- 
 2.39.2
 
