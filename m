@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C219076154C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76F877616B9
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234612AbjGYL1T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:27:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36510 "EHLO
+        id S235069AbjGYLlq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:41:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234608AbjGYL1S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C33A6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:17 -0700 (PDT)
+        with ESMTP id S235071AbjGYLl3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74BBF1BCF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53D1761648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64948C433C9;
-        Tue, 25 Jul 2023 11:27:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54832616B5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD06C433CC;
+        Tue, 25 Jul 2023 11:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284436;
-        bh=asfKbqMDfDPadBTgOSrlDM5YIFGvx7EU/j2CfBH+Ca8=;
+        s=korg; t=1690285263;
+        bh=NyAdYL3puK8Z0+vIaY8L9hEWumESJZ4u1TPX2pr7yvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pepfXyXv7EfFE/1DnSUnogFRYLGDEX1xm9cUT2RC8EPGR+g5i8/e7NWbkZnhRkENT
-         g9VDahzhKXwgUeOH2N/RhBW8mkdLGRzVUMbxFawgfzr6KopA3SOKq/lQMzqkcpXpc/
-         laLbjPrSyWCajgNbp8gHPGQ7z4QtcDV+TBt6+tgk=
+        b=LL+IYCz8r4rdvKUlEa8oOcpp6JqAHYNCykkt718siXMSzd+Y0m18+5wrEUjmvBeR8
+         FqzTknXSCnsTOR9VMKGMXqK7EJgA7m3ZMJA2lEJ5/1ICPk6CFbkw1vyXu58w4+545y
+         IAx59ms+aiGySZF5JZTdsylc6lSqmaAOkBeGVw0M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 356/509] NTB: ntb_tool: Add check for devm_kcalloc
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 142/313] mfd: stmpe: Only disable the regulators if they are enabled
 Date:   Tue, 25 Jul 2023 12:44:55 +0200
-Message-ID: <20230725104610.035772233@linuxfoundation.org>
+Message-ID: <20230725104527.139173900@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 2790143f09938776a3b4f69685b380bae8fd06c7 ]
+[ Upstream commit 104d32bd81f620bb9f67fbf7d1159c414e89f05f ]
 
-As the devm_kcalloc may return NULL pointer,
-it should be better to add check for the return
-value, as same as the others.
+In stmpe_probe(), if some regulator_enable() calls fail, probing continues
+and there is only a dev_warn().
 
-Fixes: 7f46c8b3a552 ("NTB: ntb_tool: Add full multi-port NTB API support")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+So, if stmpe_probe() is called the regulator may not be enabled. It is
+cleaner to test it before calling regulator_disable() in the remove
+function.
+
+Fixes: 9c9e321455fb ("mfd: stmpe: add optional regulators")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/8de3aaf297931d655b9ad6aed548f4de8b85425a.1686998575.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/test/ntb_tool.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/stmpe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ntb/test/ntb_tool.c b/drivers/ntb/test/ntb_tool.c
-index 5ee0afa621a95..eeeb4b1c97d2c 100644
---- a/drivers/ntb/test/ntb_tool.c
-+++ b/drivers/ntb/test/ntb_tool.c
-@@ -998,6 +998,8 @@ static int tool_init_mws(struct tool_ctx *tc)
- 		tc->peers[pidx].outmws =
- 			devm_kcalloc(&tc->ntb->dev, tc->peers[pidx].outmw_cnt,
- 				   sizeof(*tc->peers[pidx].outmws), GFP_KERNEL);
-+		if (tc->peers[pidx].outmws == NULL)
-+			return -ENOMEM;
+diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
+index 508349399f8af..7f758fb60c1fa 100644
+--- a/drivers/mfd/stmpe.c
++++ b/drivers/mfd/stmpe.c
+@@ -1494,9 +1494,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
  
- 		for (widx = 0; widx < tc->peers[pidx].outmw_cnt; widx++) {
- 			tc->peers[pidx].outmws[widx].pidx = pidx;
+ int stmpe_remove(struct stmpe *stmpe)
+ {
+-	if (!IS_ERR(stmpe->vio))
++	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
+ 		regulator_disable(stmpe->vio);
+-	if (!IS_ERR(stmpe->vcc))
++	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
+ 		regulator_disable(stmpe->vcc);
+ 
+ 	__stmpe_disable(stmpe, STMPE_BLOCK_ADC);
 -- 
 2.39.2
 
