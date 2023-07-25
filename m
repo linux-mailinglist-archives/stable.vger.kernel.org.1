@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B421761551
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68EF676129D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233271AbjGYL1d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36674 "EHLO
+        id S233946AbjGYLE3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:04:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233468AbjGYL1c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:32 -0400
+        with ESMTP id S233902AbjGYLER (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 902F099
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FF104684
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E9DE6168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF24C433C8;
-        Tue, 25 Jul 2023 11:27:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F6D761654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A20C433C9;
+        Tue, 25 Jul 2023 11:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284450;
-        bh=z8cP61s+mKKRbZT0TyzD52U5uEu2W9Hf+1NQSThle2Q=;
+        s=korg; t=1690282865;
+        bh=cG1lRn/5KJzvmgZc9fInGQG8X2KtbjDUXQ0m7WQClCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dahP8MOx/u0y+Qiku3X0org7eVYQdrmYMqZdPrOaIb8AB9DUnXkVQrxks9u/WN+xW
-         GbaNznaFUiUsbTmbIqajaGuPgJR1G6QzHz8q/XGdWYc+7V1u3I0LGlM68CjMMAMCNt
-         H/qr4R0vvoLY4xy3zVLqQWjfnELAdldoOk3DOk3g=
+        b=mWh5+qbioE9+MvVCHAP19TA9YMRZc0oopYf3Rc4vg/KTBDQS9pjLxpy33QlyLFhjV
+         XCkc7DSGUwuk3To45dO1k7SG1taZDC6vcPwTcEidd/G7QgCmfH3S03DpGVfpGvlGh9
+         dAyVP4jLp6UFCQSTYN46NEFpP2uknQuJRLR9+yV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 343/509] scsi: qla2xxx: Fix error code in qla2x00_start_sp()
+        patches@lists.linux.dev, Ye Bin <yebin10@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 054/183] [PATCH AUTOSEL 4.19 04/11] quota: fix warning in dqgrab()
 Date:   Tue, 25 Jul 2023 12:44:42 +0200
-Message-ID: <20230725104609.435132711@linuxfoundation.org>
+Message-ID: <20230725104509.915265003@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +54,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+[ Upstream commit d6a95db3c7ad160bc16b89e36449705309b52bcb ]
 
-[ Upstream commit e579b007eff3ff8d29d59d16214cd85fb9e573f7 ]
+There's issue as follows when do fault injection:
+WARNING: CPU: 1 PID: 14870 at include/linux/quotaops.h:51 dquot_disable+0x13b7/0x18c0
+Modules linked in:
+CPU: 1 PID: 14870 Comm: fsconfig Not tainted 6.3.0-next-20230505-00006-g5107a9c821af-dirty #541
+RIP: 0010:dquot_disable+0x13b7/0x18c0
+RSP: 0018:ffffc9000acc79e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88825e41b980
+RDX: 0000000000000000 RSI: ffff88825e41b980 RDI: 0000000000000002
+RBP: ffff888179f68000 R08: ffffffff82087ca7 R09: 0000000000000000
+R10: 0000000000000001 R11: ffffed102f3ed026 R12: ffff888179f68130
+R13: ffff888179f68110 R14: dffffc0000000000 R15: ffff888179f68118
+FS:  00007f450a073740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe96f2efd8 CR3: 000000025c8ad000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ dquot_load_quota_sb+0xd53/0x1060
+ dquot_resume+0x172/0x230
+ ext4_reconfigure+0x1dc6/0x27b0
+ reconfigure_super+0x515/0xa90
+ __x64_sys_fsconfig+0xb19/0xd20
+ do_syscall_64+0x39/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-This should be negative -EAGAIN instead of positive.  The callers treat
-non-zero error codes the same so it doesn't really impact runtime beyond
-some trivial differences to debug output.
+Above issue may happens as follows:
+ProcessA              ProcessB                    ProcessC
+sys_fsconfig
+  vfs_fsconfig_locked
+   reconfigure_super
+     ext4_remount
+      dquot_suspend -> suspend all type quota
 
-Fixes: 80676d054e5a ("scsi: qla2xxx: Fix session cleanup hang")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/49866d28-4cfe-47b0-842b-78f110e61aab@moroto.mountain
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+                 sys_fsconfig
+                  vfs_fsconfig_locked
+                    reconfigure_super
+                     ext4_remount
+                      dquot_resume
+                       ret = dquot_load_quota_sb
+                        add_dquot_ref
+                                           do_open  -> open file O_RDWR
+                                            vfs_open
+                                             do_dentry_open
+                                              get_write_access
+                                               atomic_inc_unless_negative(&inode->i_writecount)
+                                              ext4_file_open
+                                               dquot_file_open
+                                                dquot_initialize
+                                                  __dquot_initialize
+                                                   dqget
+						    atomic_inc(&dquot->dq_count);
+
+                          __dquot_initialize
+                           __dquot_initialize
+                            dqget
+                             if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+                               ext4_acquire_dquot
+			        -> Return error DQ_ACTIVE_B flag isn't set
+                         dquot_disable
+			  invalidate_dquots
+			   if (atomic_read(&dquot->dq_count))
+	                    dqgrab
+			     WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+	                      -> Trigger warning
+
+In the above scenario, 'dquot->dq_flags' has no DQ_ACTIVE_B is normal when
+dqgrab().
+To solve above issue just replace the dqgrab() use in invalidate_dquots() with
+atomic_inc(&dquot->dq_count).
+
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230605140731.2427629-3-yebin10@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_iocb.c | 2 +-
+ fs/quota/dquot.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_iocb.c b/drivers/scsi/qla2xxx/qla_iocb.c
-index e54cc2a761dd4..f0af76c3de7e3 100644
---- a/drivers/scsi/qla2xxx/qla_iocb.c
-+++ b/drivers/scsi/qla2xxx/qla_iocb.c
-@@ -3713,7 +3713,7 @@ qla2x00_start_sp(srb_t *sp)
- 	spin_lock_irqsave(qp->qp_lock_ptr, flags);
- 	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
- 	if (!pkt) {
--		rval = EAGAIN;
-+		rval = -EAGAIN;
- 		ql_log(ql_log_warn, vha, 0x700c,
- 		    "qla2x00_alloc_iocbs failed.\n");
- 		goto done;
--- 
-2.39.2
-
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -555,7 +555,7 @@ restart:
+ 			continue;
+ 		/* Wait for dquot users */
+ 		if (atomic_read(&dquot->dq_count)) {
+-			dqgrab(dquot);
++			atomic_inc(&dquot->dq_count);
+ 			spin_unlock(&dq_list_lock);
+ 			/*
+ 			 * Once dqput() wakes us up, we know it's time to free
 
 
