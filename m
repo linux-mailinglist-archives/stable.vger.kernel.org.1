@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7311E761346
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0AA876170D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234137AbjGYLJU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45376 "EHLO
+        id S232195AbjGYLop (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234126AbjGYLJC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:02 -0400
+        with ESMTP id S233332AbjGYLob (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C140326BE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D50419F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 562926166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649B0C433C8;
-        Tue, 25 Jul 2023 11:07:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D62CC616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9840C433CD;
+        Tue, 25 Jul 2023 11:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283269;
-        bh=16I14zlxM5Z8sG+rP3I/g1VVh0LQ+pa5xuai99GVnLk=;
+        s=korg; t=1690285465;
+        bh=l0Ua5GK+ughoS+OZYlkfIYWZsEhrTxFr92Gg/l9diaM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rveS5xn+6LJ70EZvEYOet8cTYoIgm9/aPNMMnSjGTt7WagmEs4xykgKiQMOR80A9d
-         7k6r1/HF/JaSlWQhYrn1LH2vL8FYT8CSrEKSUkjdRVw9j4tZFbKp8Vo49a/jXIkp+g
-         Wrx4ZRWYsmPmHcL08Ztgvob+jW5wK6PD5Zw0+La8=
+        b=PF/IJ8ss2UdlpH8Cp8c5riBILW7F5QMHD99QrckW13yw9KEe8TdC5wqQzfEQOr0eu
+         VNnrtSUDQjB/JXy9NB72CpLpiOvUHiqfj1Z/hJeJfIh1prVDPcHRcEOfHTtCERzkQ8
+         DzXO3vnmmvKUDZ7HGayBeArn6WbIv8BRJi8AHpMI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
-        Jocelyn Falempe <jfalempe@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.15 16/78] drm/client: Fix memory leak in drm_client_target_cloned
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 214/313] NTB: ntb_tool: Add check for devm_kcalloc
 Date:   Tue, 25 Jul 2023 12:46:07 +0200
-Message-ID: <20230725104451.965374607@linuxfoundation.org>
+Message-ID: <20230725104530.294318520@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,68 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03 upstream.
+[ Upstream commit 2790143f09938776a3b4f69685b380bae8fd06c7 ]
 
-dmt_mode is allocated and never freed in this function.
-It was found with the ast driver, but most drivers using generic fbdev
-setup are probably affected.
+As the devm_kcalloc may return NULL pointer,
+it should be better to add check for the return
+value, as same as the others.
 
-This fixes the following kmemleak report:
-  backtrace:
-    [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
-    [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
-    [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
-    [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
-    [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
-    [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
-    [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
-    [<00000000987f19bb>] local_pci_probe+0xdc/0x180
-    [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
-    [<0000000000b85301>] process_one_work+0x8b7/0x1540
-    [<000000003375b17c>] worker_thread+0x70a/0xed0
-    [<00000000b0d43cd9>] kthread+0x29f/0x340
-    [<000000008d770833>] ret_from_fork+0x1f/0x30
-unreferenced object 0xff11000333089a00 (size 128):
-
-cc: <stable@vger.kernel.org>
-Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
-Reported-by: Zhang Yi <yizhan@redhat.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7f46c8b3a552 ("NTB: ntb_tool: Add full multi-port NTB API support")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/ntb/test/ntb_tool.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -309,6 +309,9 @@ static bool drm_client_target_cloned(str
- 	can_clone = true;
- 	dmt_mode = drm_mode_find_dmt(dev, 1024, 768, 60, false);
+diff --git a/drivers/ntb/test/ntb_tool.c b/drivers/ntb/test/ntb_tool.c
+index 6301aa413c3b8..1f64146546221 100644
+--- a/drivers/ntb/test/ntb_tool.c
++++ b/drivers/ntb/test/ntb_tool.c
+@@ -998,6 +998,8 @@ static int tool_init_mws(struct tool_ctx *tc)
+ 		tc->peers[pidx].outmws =
+ 			devm_kcalloc(&tc->ntb->dev, tc->peers[pidx].outmw_cnt,
+ 				   sizeof(*tc->peers[pidx].outmws), GFP_KERNEL);
++		if (tc->peers[pidx].outmws == NULL)
++			return -ENOMEM;
  
-+	if (!dmt_mode)
-+		goto fail;
-+
- 	for (i = 0; i < connector_count; i++) {
- 		if (!enabled[i])
- 			continue;
-@@ -324,11 +327,13 @@ static bool drm_client_target_cloned(str
- 		if (!modes[i])
- 			can_clone = false;
- 	}
-+	kfree(dmt_mode);
- 
- 	if (can_clone) {
- 		DRM_DEBUG_KMS("can clone using 1024x768\n");
- 		return true;
- 	}
-+fail:
- 	DRM_INFO("kms: can't enable cloning when we probably wanted to.\n");
- 	return false;
- }
+ 		for (widx = 0; widx < tc->peers[pidx].outmw_cnt; widx++) {
+ 			tc->peers[pidx].outmws[widx].pidx = pidx;
+-- 
+2.39.2
+
 
 
