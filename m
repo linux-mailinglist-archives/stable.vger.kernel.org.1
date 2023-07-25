@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 779E776131F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB2476172C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232611AbjGYLIU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44790 "EHLO
+        id S231886AbjGYLpm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:45:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234082AbjGYLHb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:31 -0400
+        with ESMTP id S231126AbjGYLpl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08E93C0B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BACA0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7389D6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C19C433C8;
-        Tue, 25 Jul 2023 11:06:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B3C9661698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1951C433C8;
+        Tue, 25 Jul 2023 11:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283174;
-        bh=sCPzJ58rJYzroxH1xC+4Hb+DiSvqOQcB2ylZam0dqTM=;
+        s=korg; t=1690285540;
+        bh=vWHef46qcdlYOvGvS13EIIo48y9FXxw+UjZebpaZVbc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rnx38f2SaFzqy7THa8PnhHt46ou6paOriXOSdymJ6STMQbxeLSgqG8rXWoURKn78n
-         u47aHlbOTG952LS1gxZKoKAdY/JCLHdMtnqdW5FSPJpdDkwJox82yYEjthviM4LGjr
-         sUOnXvRFAXglFfyXL6b2vNG+HEdWQZa6nMVhe1IA=
+        b=Ymgi0x6wjOOEn+Ys4E+z7F+mE90CfQ+G+DDV5Q5xksrhGA2JsGhrayhclFGSY2mAH
+         gs1L5hMxbon7KYiqaFLM9t8tCeBciiukRNvBsKzWvwkbbiOuDf3hM9liDJNvHPp66u
+         8OyOBodoL6srSITcVuS/+zOr1QOAafqmIcyD1Tzg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunxiang Li <Yunxiang.Li@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.1 166/183] drm/ttm: fix bulk_move corruption when adding a entry
+        patches@lists.linux.dev, Ondrej Zary <linux@zary.sk>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.4 241/313] PCI/PM: Avoid putting EloPOS E2/S2/H2 PCIe Ports in D3cold
 Date:   Tue, 25 Jul 2023 12:46:34 +0200
-Message-ID: <20230725104513.760072287@linuxfoundation.org>
+Message-ID: <20230725104531.497788256@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunxiang Li <Yunxiang.Li@amd.com>
+From: Ondrej Zary <linux@zary.sk>
 
-commit 4481913607e58196c48a4fef5e6f45350684ec3c upstream.
+commit 9e30fd26f43b89cb6b4e850a86caa2e50dedb454 upstream.
 
-When the resource is the first in the bulk_move range, adding it again
-(thus moving it to the tail) will corrupt the list since the first
-pointer is not moved. This eventually lead to null pointer deref in
-ttm_lru_bulk_move_del()
+The quirk for Elo i2 introduced in commit 92597f97a40b ("PCI/PM: Avoid
+putting Elo i2 PCIe Ports in D3cold") is also needed by EloPOS E2/S2/H2
+which uses the same Continental Z2 board.
 
-Fixes: fee2ede15542 ("drm/ttm: rework bulk move handling v5")
-Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-CC: stable@vger.kernel.org
-Link: https://patchwork.freedesktop.org/patch/msgid/20230622141902.28718-3-Yunxiang.Li@amd.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Change the quirk to match the board instead of system.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215715
+Link: https://lore.kernel.org/r/20230614074253.22318-1-linux@zary.sk
+Signed-off-by: Ondrej Zary <linux@zary.sk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_resource.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/pci.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/ttm/ttm_resource.c
-+++ b/drivers/gpu/drm/ttm/ttm_resource.c
-@@ -85,6 +85,8 @@ static void ttm_lru_bulk_move_pos_tail(s
- 				       struct ttm_resource *res)
- {
- 	if (pos->last != res) {
-+		if (pos->first == res)
-+			pos->first = list_next_entry(res, lru);
- 		list_move(&res->lru, &pos->last->lru);
- 		pos->last = res;
- 	}
-@@ -110,7 +112,8 @@ static void ttm_lru_bulk_move_del(struct
- {
- 	struct ttm_lru_bulk_move_pos *pos = ttm_lru_bulk_move_pos(bulk, res);
- 
--	if (unlikely(pos->first == res && pos->last == res)) {
-+	if (unlikely(WARN_ON(!pos->first || !pos->last) ||
-+		     (pos->first == res && pos->last == res))) {
- 		pos->first = NULL;
- 		pos->last = NULL;
- 	} else if (pos->first == res) {
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2617,13 +2617,13 @@ static const struct dmi_system_id bridge
+ 	{
+ 		/*
+ 		 * Downstream device is not accessible after putting a root port
+-		 * into D3cold and back into D0 on Elo i2.
++		 * into D3cold and back into D0 on Elo Continental Z2 board
+ 		 */
+-		.ident = "Elo i2",
++		.ident = "Elo Continental Z2",
+ 		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Elo Touch Solutions"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Elo i2"),
+-			DMI_MATCH(DMI_PRODUCT_VERSION, "RevB"),
++			DMI_MATCH(DMI_BOARD_VENDOR, "Elo Touch Solutions"),
++			DMI_MATCH(DMI_BOARD_NAME, "Geminilake"),
++			DMI_MATCH(DMI_BOARD_VERSION, "Continental Z2"),
+ 		},
+ 	},
+ #endif
 
 
