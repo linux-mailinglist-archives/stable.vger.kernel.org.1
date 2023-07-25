@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE087616C4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C198C7611BB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235043AbjGYLmV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:42:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
+        id S231792AbjGYKzf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:55:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234999AbjGYLmG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:42:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6FC26B0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:48 -0700 (PDT)
+        with ESMTP id S232941AbjGYKzF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC7C49DE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 514E46169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CF0C433C7;
-        Tue, 25 Jul 2023 11:41:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DCA061600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F1FC433C9;
+        Tue, 25 Jul 2023 10:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285288;
-        bh=W9lKpO2hpnjOaCep9TJPM21+VDoQMnHx66l/UlLwexw=;
+        s=korg; t=1690282382;
+        bh=KptPEawdgWI9fzLCjG0bVYq+NRHIj8zv7gFX1hKEFxo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZLZdel0I0xdxta9//Tbjk8gb0WU/mj4fxgUcHDYa3IVRHLWUNiFR89u8kGUwmXrcW
-         dDDDLVmVr/wMK/7jY1eNnj84dxbuc87jxB0LvzFTwqF7lY3A7WSRgl5gJgIl0kKheO
-         6mhHgG+VA+bPxDYUQd8V25oj4GqOzwhdIbhLlrTY=
+        b=zEarrgwOBlgkRpIsElydxYYeCT/OVTLDxsfeBGWaEPmo1xJCnAPvBpXSIOc5ehM6Y
+         su9jRNqs5xCKAgIBa6QOQhE5jjN3+LwDhWcCCNTikiMKev7oI6K5pRXBlo0bI4Dh9x
+         Qd5O7zgy7M5yZVJY9Twt10+9tppYUU8bwevlA6BA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 124/313] block: change all __u32 annotations to __be32 in affs_hardblocks.h
+        patches@lists.linux.dev, Maxime Bizon <mbizon@freebox.fr>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 110/227] wifi: ath11k: fix registration of 6Ghz-only phy without the full channel range
 Date:   Tue, 25 Jul 2023 12:44:37 +0200
-Message-ID: <20230725104526.390095414@linuxfoundation.org>
+Message-ID: <20230725104519.330426897@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,142 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Maxime Bizon <mbizon@freebox.fr>
 
-commit 95a55437dc49fb3342c82e61f5472a71c63d9ed0 upstream.
+[ Upstream commit e2ceb1de2f83aafd8003f0b72dfd4b7441e97d14 ]
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
+Because of what seems to be a typo, a 6Ghz-only phy for which the BDF
+does not allow the 7115Mhz channel will fail to register:
 
-Use u64 as type for sector address and size to allow using disks up to
-2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
-format allows to specify disk sizes up to 2^128 bytes (though native
-OS limitations reduce this somewhat, to max 2^68 bytes), so check for
-u64 overflow carefully to protect against overflowing sector_t.
+  WARNING: CPU: 2 PID: 106 at net/wireless/core.c:907 wiphy_register+0x914/0x954
+  Modules linked in: ath11k_pci sbsa_gwdt
+  CPU: 2 PID: 106 Comm: kworker/u8:5 Not tainted 6.3.0-rc7-next-20230418-00549-g1e096a17625a-dirty #9
+  Hardware name: Freebox V7R Board (DT)
+  Workqueue: ath11k_qmi_driver_event ath11k_qmi_driver_event_work
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : wiphy_register+0x914/0x954
+  lr : ieee80211_register_hw+0x67c/0xc10
+  sp : ffffff800b123aa0
+  x29: ffffff800b123aa0 x28: 0000000000000000 x27: 0000000000000000
+  x26: 0000000000000000 x25: 0000000000000006 x24: ffffffc008d51418
+  x23: ffffffc008cb0838 x22: ffffff80176c2460 x21: 0000000000000168
+  x20: ffffff80176c0000 x19: ffffff80176c03e0 x18: 0000000000000014
+  x17: 00000000cbef338c x16: 00000000d2a26f21 x15: 00000000ad6bb85f
+  x14: 0000000000000020 x13: 0000000000000020 x12: 00000000ffffffbd
+  x11: 0000000000000208 x10: 00000000fffffdf7 x9 : ffffffc009394718
+  x8 : ffffff80176c0528 x7 : 000000007fffffff x6 : 0000000000000006
+  x5 : 0000000000000005 x4 : ffffff800b304284 x3 : ffffff800b304284
+  x2 : ffffff800b304d98 x1 : 0000000000000000 x0 : 0000000000000000
+  Call trace:
+   wiphy_register+0x914/0x954
+   ieee80211_register_hw+0x67c/0xc10
+   ath11k_mac_register+0x7c4/0xe10
+   ath11k_core_qmi_firmware_ready+0x1f4/0x570
+   ath11k_qmi_driver_event_work+0x198/0x590
+   process_one_work+0x1b8/0x328
+   worker_thread+0x6c/0x414
+   kthread+0x100/0x104
+   ret_from_fork+0x10/0x20
+  ---[ end trace 0000000000000000 ]---
+  ath11k_pci 0002:01:00.0: ieee80211 registration failed: -22
+  ath11k_pci 0002:01:00.0: failed register the radio with mac80211: -22
+  ath11k_pci 0002:01:00.0: failed to create pdev core: -22
 
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted (now resubmitted as patch 1 of this series).
-
-Patch 3 (this series) adds additional error checking and warning
-messages. One of the error checks now makes use of the previously
-unused rdb_CylBlocks field, which causes a 'sparse' warning
-(cast to restricted __be32).
-
-Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
-on-disk format of RDB and partition blocks is always big endian.
-
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/20230620201725.7020-3-schmitzmic@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230421145445.2612280-1-mbizon@freebox.fr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/affs_hardblocks.h |   68 +++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 34 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/uapi/linux/affs_hardblocks.h
-+++ b/include/uapi/linux/affs_hardblocks.h
-@@ -7,42 +7,42 @@
- /* Just the needed definitions for the RDB of an Amiga HD. */
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 1c93f1afccc57..05920ad413c55 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8892,7 +8892,7 @@ static int ath11k_mac_setup_channels_rates(struct ath11k *ar,
+ 	}
  
- struct RigidDiskBlock {
--	__u32	rdb_ID;
-+	__be32	rdb_ID;
- 	__be32	rdb_SummedLongs;
--	__s32	rdb_ChkSum;
--	__u32	rdb_HostID;
-+	__be32	rdb_ChkSum;
-+	__be32	rdb_HostID;
- 	__be32	rdb_BlockBytes;
--	__u32	rdb_Flags;
--	__u32	rdb_BadBlockList;
-+	__be32	rdb_Flags;
-+	__be32	rdb_BadBlockList;
- 	__be32	rdb_PartitionList;
--	__u32	rdb_FileSysHeaderList;
--	__u32	rdb_DriveInit;
--	__u32	rdb_Reserved1[6];
--	__u32	rdb_Cylinders;
--	__u32	rdb_Sectors;
--	__u32	rdb_Heads;
--	__u32	rdb_Interleave;
--	__u32	rdb_Park;
--	__u32	rdb_Reserved2[3];
--	__u32	rdb_WritePreComp;
--	__u32	rdb_ReducedWrite;
--	__u32	rdb_StepRate;
--	__u32	rdb_Reserved3[5];
--	__u32	rdb_RDBBlocksLo;
--	__u32	rdb_RDBBlocksHi;
--	__u32	rdb_LoCylinder;
--	__u32	rdb_HiCylinder;
--	__u32	rdb_CylBlocks;
--	__u32	rdb_AutoParkSeconds;
--	__u32	rdb_HighRDSKBlock;
--	__u32	rdb_Reserved4;
-+	__be32	rdb_FileSysHeaderList;
-+	__be32	rdb_DriveInit;
-+	__be32	rdb_Reserved1[6];
-+	__be32	rdb_Cylinders;
-+	__be32	rdb_Sectors;
-+	__be32	rdb_Heads;
-+	__be32	rdb_Interleave;
-+	__be32	rdb_Park;
-+	__be32	rdb_Reserved2[3];
-+	__be32	rdb_WritePreComp;
-+	__be32	rdb_ReducedWrite;
-+	__be32	rdb_StepRate;
-+	__be32	rdb_Reserved3[5];
-+	__be32	rdb_RDBBlocksLo;
-+	__be32	rdb_RDBBlocksHi;
-+	__be32	rdb_LoCylinder;
-+	__be32	rdb_HiCylinder;
-+	__be32	rdb_CylBlocks;
-+	__be32	rdb_AutoParkSeconds;
-+	__be32	rdb_HighRDSKBlock;
-+	__be32	rdb_Reserved4;
- 	char	rdb_DiskVendor[8];
- 	char	rdb_DiskProduct[16];
- 	char	rdb_DiskRevision[4];
- 	char	rdb_ControllerVendor[8];
- 	char	rdb_ControllerProduct[16];
- 	char	rdb_ControllerRevision[4];
--	__u32	rdb_Reserved5[10];
-+	__be32	rdb_Reserved5[10];
- };
- 
- #define	IDNAME_RIGIDDISK	0x5244534B	/* "RDSK" */
-@@ -50,16 +50,16 @@ struct RigidDiskBlock {
- struct PartitionBlock {
- 	__be32	pb_ID;
- 	__be32	pb_SummedLongs;
--	__s32	pb_ChkSum;
--	__u32	pb_HostID;
-+	__be32	pb_ChkSum;
-+	__be32	pb_HostID;
- 	__be32	pb_Next;
--	__u32	pb_Flags;
--	__u32	pb_Reserved1[2];
--	__u32	pb_DevFlags;
-+	__be32	pb_Flags;
-+	__be32	pb_Reserved1[2];
-+	__be32	pb_DevFlags;
- 	__u8	pb_DriveName[32];
--	__u32	pb_Reserved2[15];
-+	__be32	pb_Reserved2[15];
- 	__be32	pb_Environment[17];
--	__u32	pb_EReserved[15];
-+	__be32	pb_EReserved[15];
- };
- 
- #define	IDNAME_PARTITION	0x50415254	/* "PART" */
+ 	if (supported_bands & WMI_HOST_WLAN_5G_CAP) {
+-		if (reg_cap->high_5ghz_chan >= ATH11K_MAX_6G_FREQ) {
++		if (reg_cap->high_5ghz_chan >= ATH11K_MIN_6G_FREQ) {
+ 			channels = kmemdup(ath11k_6ghz_channels,
+ 					   sizeof(ath11k_6ghz_channels), GFP_KERNEL);
+ 			if (!channels) {
+-- 
+2.39.2
+
 
 
