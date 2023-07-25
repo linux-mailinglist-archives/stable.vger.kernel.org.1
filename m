@@ -2,86 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E879761443
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2851C761699
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234112AbjGYLRi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54196 "EHLO
+        id S234984AbjGYLkm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:40:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234292AbjGYLRZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:17:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99DAFE69
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:17:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S234930AbjGYLki (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649D7F2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690285187;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XtvYGHEuqAI2O/l3IR/bbPM8dSIPYozgR99K5jDaFuo=;
+        b=QkqwrwEmsmjURaCX6Z08ghzTiuu45ODCz2hXKyOmz5V2OFsESMu31nVoKqI+2co7yyzuoL
+        N8E1LUQR+qoQsOGYIEriTb+YpiSQpIjX8/CtQ1uuKnYAOs3jdK6kXe+Nq6qTwM5gfIk7pg
+        gQNhHnZZKVI1tW4GrLQIJCj2xu4YOuo=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-675-Pq0jL7OUPeWzXbshJIobsw-1; Tue, 25 Jul 2023 07:39:44 -0400
+X-MC-Unique: Pq0jL7OUPeWzXbshJIobsw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AA596168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:17:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB3AC433C8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:17:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690283843;
-        bh=/W/9GJDQ9gFS7dB9fUNuS0m4Qz/JcUlmSVIpwrBoK9o=;
-        h=References:In-Reply-To:From:Date:Subject:To:From;
-        b=Zr8D4XlFsl2qX2e0CxYvQqXtQYJXMxHeaDT009b5Ehi3xbgudxcIfYJx61FnXXBna
-         A1W4xD+iyngsC4TTtYoPxXJQdIvNe54T0/SH8WEML2ok/ggCnerzhuScj+xFSgmulv
-         TXSY0TBceZfzLvE1Xyfkgqhz5Uyu60jWIKLLvpWN2K6Hpsv1Bl0q/aK8Xw5RtqgZOO
-         FpZeDceLOqHfXJHIa10VUrgBx1cJXRM5rhQfjIbxKy5OdCbPfATeI7ucooKzUi//R2
-         L6NDtRqYNHRHgIm7os7QYzPD3F5dswZxlFmGKn3xrrl1seCOQcpQgDvUZKuglw32vl
-         PLFXzSBxPcPVg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2b97f34239cso46929021fa.3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:17:23 -0700 (PDT)
-X-Gm-Message-State: ABy/qLaab5pJcC/TyEdO2E0XWYZxzm70UO22u2sAp5XIbKBd/DxgwnnW
-        uJ+GmIpqXa1oSntc9nvFmPnMKqo8RBAH/MOqx7A=
-X-Google-Smtp-Source: APBJJlHEb9Qral6xLMEEdz9hGFkrUAIPnq2m5ma+uH8CPs09gL671gq68Zr22dyLlOY3WqSGmK/KF43rsjBPssTua6M=
-X-Received: by 2002:a2e:98d3:0:b0:2b9:601d:2ce with SMTP id
- s19-20020a2e98d3000000b002b9601d02cemr8448119ljj.35.1690283841491; Tue, 25
- Jul 2023 04:17:21 -0700 (PDT)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB7AC29AA39B;
+        Tue, 25 Jul 2023 11:39:43 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C0EC84094DC1;
+        Tue, 25 Jul 2023 11:39:42 +0000 (UTC)
+From:   Igor Mammedov <imammedo@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     terraluna977@gmail.com, bhelgaas@google.com,
+        linux-pci@vger.kernel.org, imammedo@redhat.com, mst@redhat.com,
+        "Rafael J . Wysocki" <rafael@kernel.org>, stable@vger.kernel.org
+Subject: [RFC 2/3] PCI: acpiphp: Reassign resources on bridge if necessary
+Date:   Tue, 25 Jul 2023 13:39:37 +0200
+Message-Id: <20230725113938.2277420-3-imammedo@redhat.com>
+In-Reply-To: <20230725113938.2277420-1-imammedo@redhat.com>
+References: <20230725113938.2277420-1-imammedo@redhat.com>
 MIME-Version: 1.0
-References: <CAMj1kXHQkgRCt=W0FbZZ9qLVCaWisFhv9wJtYONjA3cEPdXMRQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXHQkgRCt=W0FbZZ9qLVCaWisFhv9wJtYONjA3cEPdXMRQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 25 Jul 2023 13:17:10 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFe89ScVNy-MdBQjC2-CPVut+Mw7FjwmKztzwm7yOsC3w@mail.gmail.com>
-Message-ID: <CAMj1kXFe89ScVNy-MdBQjC2-CPVut+Mw7FjwmKztzwm7yOsC3w@mail.gmail.com>
-Subject: Re: backport request
-To:     "# 3.4.x" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 25 Jul 2023 at 13:13, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> Please backport commit
->
-> commit 9cf42bca30e98a1c6c9e8abf876940a551eaa3d1
-> Author: Ard Biesheuvel <ardb@kernel.org>
-> Date:   Tue Aug 2 11:00:16 2022 +0200
->
->     efi: libstub: use EFI_LOADER_CODE region when moving the kernel in memory
->
-> to all active stable trees all the way back to v5.15. I will provide a
-> separate backport for v5.10,
+When using ACPI PCI hotplug, hotplugging a device with large BARs may fail
+if bridge windows programmed by firmware are not large enough.
 
-Actually, v5.10 just needs the following patch to be applied first
+Reproducer:
+  $ qemu-kvm -monitor stdio -M q35  -m 4G \
+      -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
+      -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
+      disk_image
 
-commit 8a81b6bbdccae98d751644723c67bb6aa9a79571
-Author: Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon Jul 26 16:24:01 2021 +0200
+ wait till linux guest boots, then hotplug device:
+   (qemu) device_add qxl,bus=rp1
 
-    efi/libstub: arm64: Warn when efi_random_alloc() fails
+ hotplug on guest side fails with:
+   pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
+   pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
+   pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
+   pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
+   pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
+   pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
+   pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
+   qxl 0000:01:00.0: enabling device (0000 -> 0003)
+   Unable to create vram_mapping
+   qxl: probe of 0000:01:00.0 failed with error -12
 
-so please backport that one to v5.10 as well.
+However when using native PCIe hotplug
+  '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
+it works fine, since kernel attempts to reassign unused resources.
 
-Thanks,
-Ard.
+Use the same machinery as native PCIe hotplug to (re)assign resources.
+
+Link: https://lore.kernel.org/r/20230424191557.2464760-1-imammedo@redhat.com
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/pci/hotplug/acpiphp_glue.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+index af1c73f2bee6..c0ffb1389fda 100644
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -499,7 +499,6 @@ pci_info(bus, "enable_slot bus: bridge: %d, bus->self: %p\n", bridge, bus->self)
+ 				acpiphp_native_scan_bridge(dev);
+ 		}
+ 	} else {
+-		LIST_HEAD(add_list);
+ 		int max, pass;
+ 
+ 		acpiphp_rescan_slot(slot);
+@@ -513,12 +512,10 @@ pci_info(bus, "enable_slot bus: bridge: %d, bus->self: %p\n", bridge, bus->self)
+ 				if (pass && dev->subordinate) {
+ 					check_hotplug_bridge(slot, dev);
+ 					pcibios_resource_survey_bus(dev->subordinate);
+-					__pci_bus_size_bridges(dev->subordinate,
+-							       &add_list);
+ 				}
+ 			}
+ 		}
+-		__pci_bus_assign_resources(bus, &add_list, NULL);
++		pci_assign_unassigned_bridge_resources(bus->self);
+ 	}
+ 
+ 	acpiphp_sanitize_bus(bus);
+-- 
+2.39.3
+
