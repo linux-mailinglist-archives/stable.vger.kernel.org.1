@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4077176174F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83A0F7615CA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232289AbjGYLq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
+        id S233552AbjGYLdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232649AbjGYLqz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E43E19BB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:53 -0700 (PDT)
+        with ESMTP id S234814AbjGYLdK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D8CF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0F8C6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C70CC433C8;
-        Tue, 25 Jul 2023 11:46:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF6BD61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAC7C433C8;
+        Tue, 25 Jul 2023 11:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285612;
-        bh=xKRkZmxvUuOC4+u+Y8elazlMac925G8ZZUEyBDFRG1M=;
+        s=korg; t=1690284788;
+        bh=UQp42N3SU9cC+JyGWa/FmaXm5TEJ9pnNlRy6Z5cpydU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wgbKg7/XPMQkmgaEAyaneTGlrHw6N+k9HoajUdjatHIljrwZGmaYqFqkRNM68fWsK
-         wS+ff5+zB++ij5/jiSsBXfszt4c89s3s//QaCEX4zhhbGmXNqdBCRYar6oFTVggdFC
-         08M7II8CV71G8D+grXvXCI9H6wKmQE+eeDgg7XSQ=
+        b=R3aiCwzj98nAwqKBezg7mYvIGCEIvbJcnlSMeQMoSt0z17qjbnpctk+VbOU8RjD7T
+         oJ6oQ2UutatsBCGOgZxhKG33BVCfQCk6ZFwuWrC2RsWl1ayWHdEE8axKlgKlnr9g4+
+         iebC6bjPYQMZlnBI2ssS5xNl5Vftk+YrVsx/Ynl0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.4 268/313] tracing/probes: Fix not to count error code to total length
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 482/509] tcp: annotate data-races around tcp_rsk(req)->ts_recent
 Date:   Tue, 25 Jul 2023 12:47:01 +0200
-Message-ID: <20230725104532.649422874@linuxfoundation.org>
+Message-ID: <20230725104615.813040432@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,38 +57,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b41326b5e0f82e93592c4366359917b5d67b529f upstream.
+[ Upstream commit eba20811f32652bc1a52d5e7cc403859b86390d9 ]
 
-Fix not to count the error code (which is minus value) to the total
-used length of array, because it can mess up the return code of
-process_fetch_insn_bottom(). Also clear the 'ret' value because it
-will be used for calculating next data_loc entry.
+TCP request sockets are lockless, tcp_rsk(req)->ts_recent
+can change while being read by another cpu as syzbot noticed.
 
-Link: https://lore.kernel.org/all/168908493827.123124.2175257289106364229.stgit@devnote2/
+This is harmless, but we should annotate the known races.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/8819b154-2ba1-43c3-98a2-cbde20892023@moroto.mountain/
-Fixes: 9b960a38835f ("tracing: probeevent: Unify fetch_insn processing common part")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that tcp_check_req() changes req->ts_recent a bit early,
+we might change this in the future.
+
+BUG: KCSAN: data-race in tcp_check_req / tcp_check_req
+
+write to 0xffff88813c8afb84 of 4 bytes by interrupt on cpu 1:
+tcp_check_req+0x694/0xc70 net/ipv4/tcp_minisocks.c:762
+tcp_v4_rcv+0x12db/0x1b70 net/ipv4/tcp_ipv4.c:2071
+ip_protocol_deliver_rcu+0x356/0x6d0 net/ipv4/ip_input.c:205
+ip_local_deliver_finish+0x13c/0x1a0 net/ipv4/ip_input.c:233
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_local_deliver+0xec/0x1c0 net/ipv4/ip_input.c:254
+dst_input include/net/dst.h:468 [inline]
+ip_rcv_finish net/ipv4/ip_input.c:449 [inline]
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_rcv+0x197/0x270 net/ipv4/ip_input.c:569
+__netif_receive_skb_one_core net/core/dev.c:5493 [inline]
+__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+do_softirq+0x7e/0xb0 kernel/softirq.c:472
+__local_bh_enable_ip+0x64/0x70 kernel/softirq.c:396
+local_bh_enable+0x1f/0x20 include/linux/bottom_half.h:33
+rcu_read_unlock_bh include/linux/rcupdate.h:843 [inline]
+__dev_queue_xmit+0xabb/0x1d10 net/core/dev.c:4271
+dev_queue_xmit include/linux/netdevice.h:3088 [inline]
+neigh_hh_output include/net/neighbour.h:528 [inline]
+neigh_output include/net/neighbour.h:542 [inline]
+ip_finish_output2+0x700/0x840 net/ipv4/ip_output.c:229
+ip_finish_output+0xf4/0x240 net/ipv4/ip_output.c:317
+NF_HOOK_COND include/linux/netfilter.h:292 [inline]
+ip_output+0xe5/0x1b0 net/ipv4/ip_output.c:431
+dst_output include/net/dst.h:458 [inline]
+ip_local_out net/ipv4/ip_output.c:126 [inline]
+__ip_queue_xmit+0xa4d/0xa70 net/ipv4/ip_output.c:533
+ip_queue_xmit+0x38/0x40 net/ipv4/ip_output.c:547
+__tcp_transmit_skb+0x1194/0x16e0 net/ipv4/tcp_output.c:1399
+tcp_transmit_skb net/ipv4/tcp_output.c:1417 [inline]
+tcp_write_xmit+0x13ff/0x2fd0 net/ipv4/tcp_output.c:2693
+__tcp_push_pending_frames+0x6a/0x1a0 net/ipv4/tcp_output.c:2877
+tcp_push_pending_frames include/net/tcp.h:1952 [inline]
+__tcp_sock_set_cork net/ipv4/tcp.c:3336 [inline]
+tcp_sock_set_cork+0xe8/0x100 net/ipv4/tcp.c:3343
+rds_tcp_xmit_path_complete+0x3b/0x40 net/rds/tcp_send.c:52
+rds_send_xmit+0xf8d/0x1420 net/rds/send.c:422
+rds_send_worker+0x42/0x1d0 net/rds/threads.c:200
+process_one_work+0x3e6/0x750 kernel/workqueue.c:2408
+worker_thread+0x5f2/0xa10 kernel/workqueue.c:2555
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+
+read to 0xffff88813c8afb84 of 4 bytes by interrupt on cpu 0:
+tcp_check_req+0x32a/0xc70 net/ipv4/tcp_minisocks.c:622
+tcp_v4_rcv+0x12db/0x1b70 net/ipv4/tcp_ipv4.c:2071
+ip_protocol_deliver_rcu+0x356/0x6d0 net/ipv4/ip_input.c:205
+ip_local_deliver_finish+0x13c/0x1a0 net/ipv4/ip_input.c:233
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_local_deliver+0xec/0x1c0 net/ipv4/ip_input.c:254
+dst_input include/net/dst.h:468 [inline]
+ip_rcv_finish net/ipv4/ip_input.c:449 [inline]
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_rcv+0x197/0x270 net/ipv4/ip_input.c:569
+__netif_receive_skb_one_core net/core/dev.c:5493 [inline]
+__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+
+value changed: 0x1cd237f1 -> 0x1cd237f2
+
+Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230717144445.653164-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe_tmpl.h |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_ipv4.c      | 2 +-
+ net/ipv4/tcp_minisocks.c | 9 ++++++---
+ net/ipv4/tcp_output.c    | 2 +-
+ net/ipv6/tcp_ipv6.c      | 2 +-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/kernel/trace/trace_probe_tmpl.h
-+++ b/kernel/trace/trace_probe_tmpl.h
-@@ -143,6 +143,8 @@ stage3:
- array:
- 	/* the last stage: Loop on array */
- 	if (code->op == FETCH_OP_LP_ARRAY) {
-+		if (ret < 0)
-+			ret = 0;
- 		total += ret;
- 		if (++i < code->param) {
- 			code = s3;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index d62d5d7764ade..b40780fde7915 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -960,7 +960,7 @@ static void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
+ 			tcp_rsk(req)->rcv_nxt,
+ 			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
+ 			tcp_time_stamp_raw() + tcp_rsk(req)->ts_off,
+-			req->ts_recent,
++			READ_ONCE(req->ts_recent),
+ 			0,
+ 			tcp_md5_do_lookup(sk, l3index, addr, AF_INET),
+ 			inet_rsk(req)->no_srccheck ? IP_REPLY_ARG_NOSRCCHECK : 0,
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 8d854feebdb00..01e27620b7ee5 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -523,7 +523,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
+ 	newtp->max_window = newtp->snd_wnd;
+ 
+ 	if (newtp->rx_opt.tstamp_ok) {
+-		newtp->rx_opt.ts_recent = req->ts_recent;
++		newtp->rx_opt.ts_recent = READ_ONCE(req->ts_recent);
+ 		newtp->rx_opt.ts_recent_stamp = ktime_get_seconds();
+ 		newtp->tcp_header_len = sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED;
+ 	} else {
+@@ -586,7 +586,7 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+ 		tcp_parse_options(sock_net(sk), skb, &tmp_opt, 0, NULL);
+ 
+ 		if (tmp_opt.saw_tstamp) {
+-			tmp_opt.ts_recent = req->ts_recent;
++			tmp_opt.ts_recent = READ_ONCE(req->ts_recent);
+ 			if (tmp_opt.rcv_tsecr)
+ 				tmp_opt.rcv_tsecr -= tcp_rsk(req)->ts_off;
+ 			/* We do not store true stamp, but it is not required,
+@@ -726,8 +726,11 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+ 
+ 	/* In sequence, PAWS is OK. */
+ 
++	/* TODO: We probably should defer ts_recent change once
++	 * we take ownership of @req.
++	 */
+ 	if (tmp_opt.saw_tstamp && !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
+-		req->ts_recent = tmp_opt.rcv_tsval;
++		WRITE_ONCE(req->ts_recent, tmp_opt.rcv_tsval);
+ 
+ 	if (TCP_SKB_CB(skb)->seq == tcp_rsk(req)->rcv_isn) {
+ 		/* Truncate SYN, it is out of window starting
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index e4ad274ec7a30..86e896351364e 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -874,7 +874,7 @@ static unsigned int tcp_synack_options(const struct sock *sk,
+ 	if (likely(ireq->tstamp_ok)) {
+ 		opts->options |= OPTION_TS;
+ 		opts->tsval = tcp_skb_timestamp(skb) + tcp_rsk(req)->ts_off;
+-		opts->tsecr = req->ts_recent;
++		opts->tsecr = READ_ONCE(req->ts_recent);
+ 		remaining -= TCPOLEN_TSTAMP_ALIGNED;
+ 	}
+ 	if (likely(ireq->sack_ok)) {
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 5392aebd48f1e..79d6f6ea3c546 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1151,7 +1151,7 @@ static void tcp_v6_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
+ 			tcp_rsk(req)->rcv_nxt,
+ 			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
+ 			tcp_time_stamp_raw() + tcp_rsk(req)->ts_off,
+-			req->ts_recent, sk->sk_bound_dev_if,
++			READ_ONCE(req->ts_recent), sk->sk_bound_dev_if,
+ 			tcp_v6_md5_do_lookup(sk, &ipv6_hdr(skb)->saddr, l3index),
+ 			ipv6_get_dsfield(ipv6_hdr(skb)), 0, sk->sk_priority);
+ }
+-- 
+2.39.2
+
 
 
