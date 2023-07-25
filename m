@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC7F7612DF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F591761220
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233879AbjGYLGS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
+        id S233804AbjGYK7s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233853AbjGYLFy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:54 -0400
+        with ESMTP id S233587AbjGYK7W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 371C24202
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845DF1FCF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 017BE615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13150C433C8;
-        Tue, 25 Jul 2023 11:03:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F1761656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3220CC433C8;
+        Tue, 25 Jul 2023 10:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283038;
-        bh=njRaw3mogpFUeb28QN4+v1DkZp2ISppWike+/gvGlDY=;
+        s=korg; t=1690282572;
+        bh=9AB+ocDjifGOrKZcWMOMmB0GOz/87uK0rOP0S0Vz0DY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WlSoreh16FGEi6czz58bLVr/hnldd/bF5dmYtmpamT+KJvUGqSs1jZ640UKBtVhtK
-         KT8QbhxyCx9GIGFgdQvhC6OPAM/mwD6ykusbt/pdOPl7gs7q2J9xZhMvGLlygK3won
-         I9Ezlju+Fq2Ygxh18+pnTVe51OHPzHkFhVjciUKg=
+        b=vF0vkUeOh+6Ws37Etajnq9is4xKTEZz2ub8cXEs/PFj5nRtYhnuMXEl0wq8/gmb5U
+         G88/zlqfn4qM7hpOXAITfnTBgnQZwkt/LqzPyw551vFbTjwVq2uwq0icYw+5sHQtjN
+         39GqXGMOZbv5khrry7Dp0p9pqTMK9YM30m+fVoSg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oleksij Rempel <o.rempel@pengutronix.de>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Abaci Robot <abaci@linux.alibaba.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/183] net: dsa: microchip: ksz8_r_sta_mac_table(): Avoid using error code for empty entries
+Subject: [PATCH 6.4 177/227] security: keys: Modify mismatched function name
 Date:   Tue, 25 Jul 2023 12:45:44 +0200
-Message-ID: <20230725104512.140523334@linuxfoundation.org>
+Message-ID: <20230725104522.174997893@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,151 +57,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit 559901b46810e82ba5321a5e789f994b65d3bc3d ]
+[ Upstream commit 2a4152742025c5f21482e8cebc581702a0fa5b01 ]
 
-Prepare for the next patch by ensuring that ksz8_r_sta_mac_table() does
-not use error codes for empty entries. This change will enable better
-handling of read/write errors in the upcoming patch.
+No functional modification involved.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 4bdf79d686b4 ("net: dsa: microchip: correct KSZ8795 static MAC table access")
+security/keys/trusted-keys/trusted_tpm2.c:203: warning: expecting prototype for tpm_buf_append_auth(). Prototype was for tpm2_buf_append_auth() instead.
+
+Fixes: 2e19e10131a0 ("KEYS: trusted: Move TPM2 trusted keys code")
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=5524
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Reviewed-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz8795.c | 87 +++++++++++++++++------------
- 1 file changed, 50 insertions(+), 37 deletions(-)
+ security/keys/trusted-keys/trusted_tpm2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz8795.c b/drivers/net/dsa/microchip/ksz8795.c
-index a2f67be66b97d..6639fae56da7f 100644
---- a/drivers/net/dsa/microchip/ksz8795.c
-+++ b/drivers/net/dsa/microchip/ksz8795.c
-@@ -407,7 +407,7 @@ int ksz8_r_dyn_mac_table(struct ksz_device *dev, u16 addr, u8 *mac_addr,
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 2b2c8eb258d5b..bc700f85f80be 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -186,7 +186,7 @@ int tpm2_key_priv(void *context, size_t hdrlen,
  }
  
- static int ksz8_r_sta_mac_table(struct ksz_device *dev, u16 addr,
--				struct alu_struct *alu)
-+				struct alu_struct *alu, bool *valid)
- {
- 	u32 data_hi, data_lo;
- 	const u8 *shifts;
-@@ -420,28 +420,32 @@ static int ksz8_r_sta_mac_table(struct ksz_device *dev, u16 addr,
- 	ksz8_r_table(dev, TABLE_STATIC_MAC, addr, &data);
- 	data_hi = data >> 32;
- 	data_lo = (u32)data;
--	if (data_hi & (masks[STATIC_MAC_TABLE_VALID] |
--			masks[STATIC_MAC_TABLE_OVERRIDE])) {
--		alu->mac[5] = (u8)data_lo;
--		alu->mac[4] = (u8)(data_lo >> 8);
--		alu->mac[3] = (u8)(data_lo >> 16);
--		alu->mac[2] = (u8)(data_lo >> 24);
--		alu->mac[1] = (u8)data_hi;
--		alu->mac[0] = (u8)(data_hi >> 8);
--		alu->port_forward =
--			(data_hi & masks[STATIC_MAC_TABLE_FWD_PORTS]) >>
--				shifts[STATIC_MAC_FWD_PORTS];
--		alu->is_override =
--			(data_hi & masks[STATIC_MAC_TABLE_OVERRIDE]) ? 1 : 0;
--		data_hi >>= 1;
--		alu->is_static = true;
--		alu->is_use_fid =
--			(data_hi & masks[STATIC_MAC_TABLE_USE_FID]) ? 1 : 0;
--		alu->fid = (data_hi & masks[STATIC_MAC_TABLE_FID]) >>
--				shifts[STATIC_MAC_FID];
-+
-+	if (!(data_hi & (masks[STATIC_MAC_TABLE_VALID] |
-+			 masks[STATIC_MAC_TABLE_OVERRIDE]))) {
-+		*valid = false;
- 		return 0;
- 	}
--	return -ENXIO;
-+
-+	alu->mac[5] = (u8)data_lo;
-+	alu->mac[4] = (u8)(data_lo >> 8);
-+	alu->mac[3] = (u8)(data_lo >> 16);
-+	alu->mac[2] = (u8)(data_lo >> 24);
-+	alu->mac[1] = (u8)data_hi;
-+	alu->mac[0] = (u8)(data_hi >> 8);
-+	alu->port_forward =
-+		(data_hi & masks[STATIC_MAC_TABLE_FWD_PORTS]) >>
-+			shifts[STATIC_MAC_FWD_PORTS];
-+	alu->is_override = (data_hi & masks[STATIC_MAC_TABLE_OVERRIDE]) ? 1 : 0;
-+	data_hi >>= 1;
-+	alu->is_static = true;
-+	alu->is_use_fid = (data_hi & masks[STATIC_MAC_TABLE_USE_FID]) ? 1 : 0;
-+	alu->fid = (data_hi & masks[STATIC_MAC_TABLE_FID]) >>
-+		shifts[STATIC_MAC_FID];
-+
-+	*valid = true;
-+
-+	return 0;
- }
- 
- void ksz8_w_sta_mac_table(struct ksz_device *dev, u16 addr,
-@@ -930,20 +934,25 @@ static int ksz8_add_sta_mac(struct ksz_device *dev, int port,
- 			    const unsigned char *addr, u16 vid)
- {
- 	struct alu_struct alu;
--	int index;
-+	int index, ret;
- 	int empty = 0;
- 
- 	alu.port_forward = 0;
- 	for (index = 0; index < dev->info->num_statics; index++) {
--		if (!ksz8_r_sta_mac_table(dev, index, &alu)) {
--			/* Found one already in static MAC table. */
--			if (!memcmp(alu.mac, addr, ETH_ALEN) &&
--			    alu.fid == vid)
--				break;
--		/* Remember the first empty entry. */
--		} else if (!empty) {
--			empty = index + 1;
-+		bool valid;
-+
-+		ret = ksz8_r_sta_mac_table(dev, index, &alu, &valid);
-+		if (ret)
-+			return ret;
-+		if (!valid) {
-+			/* Remember the first empty entry. */
-+			if (!empty)
-+				empty = index + 1;
-+			continue;
- 		}
-+
-+		if (!memcmp(alu.mac, addr, ETH_ALEN) && alu.fid == vid)
-+			break;
- 	}
- 
- 	/* no available entry */
-@@ -973,15 +982,19 @@ static int ksz8_del_sta_mac(struct ksz_device *dev, int port,
- 			    const unsigned char *addr, u16 vid)
- {
- 	struct alu_struct alu;
--	int index;
-+	int index, ret;
- 
- 	for (index = 0; index < dev->info->num_statics; index++) {
--		if (!ksz8_r_sta_mac_table(dev, index, &alu)) {
--			/* Found one already in static MAC table. */
--			if (!memcmp(alu.mac, addr, ETH_ALEN) &&
--			    alu.fid == vid)
--				break;
--		}
-+		bool valid;
-+
-+		ret = ksz8_r_sta_mac_table(dev, index, &alu, &valid);
-+		if (ret)
-+			return ret;
-+		if (!valid)
-+			continue;
-+
-+		if (!memcmp(alu.mac, addr, ETH_ALEN) && alu.fid == vid)
-+			break;
- 	}
- 
- 	/* no available entry */
+ /**
+- * tpm_buf_append_auth() - append TPMS_AUTH_COMMAND to the buffer.
++ * tpm2_buf_append_auth() - append TPMS_AUTH_COMMAND to the buffer.
+  *
+  * @buf: an allocated tpm_buf instance
+  * @session_handle: session handle
 -- 
 2.39.2
 
