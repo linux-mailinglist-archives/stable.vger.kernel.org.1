@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D89EC7611B9
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6ED76152B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231572AbjGYKzR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:55:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59110 "EHLO
+        id S230437AbjGYL0P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:26:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231577AbjGYKyp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:45 -0400
+        with ESMTP id S234497AbjGYL0O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C5246A6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B85DB187
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6847A61689
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BC3C433C8;
-        Tue, 25 Jul 2023 10:52:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3156C61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBC6C433C8;
+        Tue, 25 Jul 2023 11:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282365;
-        bh=Y2NWTI9uJftjAgHQHVZxvuguhSzJNoNp4tot3HJ6cJA=;
+        s=korg; t=1690284372;
+        bh=QiYljg1eE9tGi6A4aNqTnnij3eqPbG+TxBoAH3aCvtU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cC7XNNhSEW43uxeP4aTwArlWK5ZkDhOjH+nQ2oS5Ry9jUkT4c3aiQlQ6ZwrcOeZ1A
-         5PTJ/JBBTgzQzrnsn5qenubi0PYvJCqrQM1q2XIaOTpI7k4oogSFIjT1Ce1MBv3bAV
-         2HKQSK/Mq/D2LD0du+K3vNF3ojVZqULmFT5V5KSs=
+        b=u1jsCG1pkiHqWzoXiQla9uBmmamSBoHLi+PnW0quPeLkqV+FbNirthZTKuemmAvAb
+         kXJxZCSwqROrnkEeSPzGUhW+2a/anTugmeX/00G5E2Bu3l0lTa62s5AQBCdo5IkXAO
+         C5giY/0NIYTDdsTyjcoZpcxSQI2pOB5/Ck8SEK9A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Steve Capper <steve.capper@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 104/227] arm64: mm: fix VA-range sanity check
+        patches@lists.linux.dev,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Martin Steigerwald <martin@lichtvoll.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 332/509] block/partition: fix signedness issue for Amiga partitions
 Date:   Tue, 25 Jul 2023 12:44:31 +0200
-Message-ID: <20230725104519.061873189@linuxfoundation.org>
+Message-ID: <20230725104608.901944502@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,106 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit ab9b4008092c86dc12497af155a0901cc1156999 ]
+commit 7eb1e47696aa231b1a567846bbe3a1e1befe1854 upstream.
 
-Both create_mapping_noalloc() and update_mapping_prot() sanity-check
-their 'virt' parameter, but the check itself doesn't make much sense.
-The condition used today appears to be a historical accident.
+Making 'blk' sector_t (i.e. 64 bit if LBD support is active) fails the
+'blk>0' test in the partition block loop if a value of (signed int) -1 is
+used to mark the end of the partition block list.
 
-The sanity-check condition:
+Explicitly cast 'blk' to signed int to allow use of -1 to terminate the
+partition block linked list.
 
-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-... can only be true for the KASAN shadow region or the module region,
-and there's no reason to exclude these specifically for creating and
-updateing mappings.
-
-When arm64 support was first upstreamed in commit:
-
-  c1cc1552616d0f35 ("arm64: MMU initialisation")
-
-... the condition was:
-
-	if (virt < VMALLOC_START) {
-		[ ... warning here ... ]
-		return;
-	}
-
-At the time, VMALLOC_START was the lowest kernel address, and this was
-checking whether 'virt' would be translated via TTBR1.
-
-Subsequently in commit:
-
-  14c127c957c1c607 ("arm64: mm: Flip kernel VA space")
-
-... the condition was changed to:
-
-	if ((virt >= VA_START) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-This appear to have been a thinko. The commit moved the linear map to
-the bottom of the kernel address space, with VMALLOC_START being at the
-halfway point. The old condition would warn for changes to the linear
-map below this, and at the time VA_START was the end of the linear map.
-
-Subsequently we cleaned up the naming of VA_START in commit:
-
-  77ad4ce69321abbe ("arm64: memory: rename VA_START to PAGE_END")
-
-... keeping the erroneous condition as:
-
-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-Correct the condition to check against the start of the TTBR1 address
-space, which is currently PAGE_OFFSET. This simplifies the logic, and
-more clearly matches the "outside kernel range" message in the warning.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Steve Capper <steve.capper@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20230615102628.1052103-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b6f3f28f604b ("block: add overflow checks for Amiga partition support")
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Martin Steigerwald <martin@lichtvoll.de>
+Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/partitions/amiga.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index af6bc8403ee46..72b3c21820b96 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -451,7 +451,7 @@ static phys_addr_t pgd_pgtable_alloc(int shift)
- void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 				   phys_addr_t size, pgprot_t prot)
- {
--	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-+	if (virt < PAGE_OFFSET) {
- 		pr_warn("BUG: not creating mapping for %pa at 0x%016lx - outside kernel range\n",
- 			&phys, virt);
- 		return;
-@@ -478,7 +478,7 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
- static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 				phys_addr_t size, pgprot_t prot)
- {
--	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-+	if (virt < PAGE_OFFSET) {
- 		pr_warn("BUG: not updating mapping for %pa at 0x%016lx - outside kernel range\n",
- 			&phys, virt);
- 		return;
--- 
-2.39.2
-
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -91,7 +91,7 @@ int amiga_partition(struct parsed_partit
+ 	}
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+-	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
++	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
+ 		/* Read in terms partition table understands */
+ 		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+ 			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
 
 
