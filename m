@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9338776159A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 619A4761240
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234623AbjGYLa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38660 "EHLO
+        id S233795AbjGYLA3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:00:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234727AbjGYLa4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:56 -0400
+        with ESMTP id S230287AbjGYLAP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C23CF3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D3A421C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11DE46168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0D6C433C8;
-        Tue, 25 Jul 2023 11:30:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E193A6168A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F413FC433C9;
+        Tue, 25 Jul 2023 10:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284654;
-        bh=nY063vLnsZ+XuZqaWJsNmWBmBx9NazUICXFMfiW2wSk=;
+        s=korg; t=1690282650;
+        bh=1zwcQE97x2gLZQL1/8vkF6CzptRzoEIUt6w0zFv9bUQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SnO2r6MQiNh5UsAS4+8cfOTALNyjZQdv8N2MCv93IfhVJqHGZAYIFSKFoPEFxPOUY
-         69bh7mjVlYPAPXi8EeAMnDdCb+lPn59ReOa5ok1a701Ix/8lf8BJdWHeOo+45Ftpn5
-         wNR5dbxAOZrbPUqHr7rS1i/x/50SYAclI2AvjnPE=
+        b=UBqKSr7LoUVFF77Al87QJkMw636GMifT07vOufs2ZG5WB8WIOmhNZFga0PkuPHZ/V
+         duTruSGtqb5gHva3vrgPNq1BS51PS46BY1mTByzhSXvVVcI554yTD6/B56mWrVn8pR
+         wqgSIB2ltIruDqzZ9QiyaDJ2b0uhJ8R8NZ28JDxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 433/509] scsi: qla2xxx: Check valid rport returned by fc_bsg_to_rport()
-Date:   Tue, 25 Jul 2023 12:46:12 +0200
-Message-ID: <20230725104613.547797831@linuxfoundation.org>
+        patches@lists.linux.dev, John Holland <johnbholland@icloud.com>,
+        =?UTF-8?q?Tomasz=20Mo=C5=84?= <tomasz.mon@nordicsemi.no>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 206/227] Bluetooth: btusb: Fix bluetooth on Intel Macbook 2014
+Date:   Tue, 25 Jul 2023 12:46:13 +0200
+Message-ID: <20230725104523.287662466@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Tomasz Moń <tomasz.mon@nordicsemi.no>
 
-commit af73f23a27206ffb3c477cac75b5fcf03410556e upstream.
+[ Upstream commit 95b7015433053cd5f648ad2a7b8f43b2c99c949a ]
 
-Klocwork reported warning of rport maybe NULL and will be dereferenced.
-rport returned by call to fc_bsg_to_rport() could be NULL and dereferenced.
+Commit c13380a55522 ("Bluetooth: btusb: Do not require hardcoded
+interface numbers") inadvertedly broke bluetooth on Intel Macbook 2014.
+The intention was to keep behavior intact when BTUSB_IFNUM_2 is set and
+otherwise allow any interface numbers. The problem is that the new logic
+condition omits the case where bInterfaceNumber is 0.
 
-Check valid rport returned by fc_bsg_to_rport().
+Fix BTUSB_IFNUM_2 handling by allowing both interface number 0 and 2
+when the flag is set.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c13380a55522 ("Bluetooth: btusb: Do not require hardcoded interface numbers")
+Reported-by: John Holland <johnbholland@icloud.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217651
+Signed-off-by: Tomasz Moń <tomasz.mon@nordicsemi.no>
+Tested-by: John Holland<johnbholland@icloud.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/bluetooth/btusb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -268,6 +268,10 @@ qla2x00_process_els(struct bsg_job *bsg_
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 2a8e2bb038f58..50e23762ec5e9 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4099,6 +4099,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 	BT_DBG("intf %p id %p", intf, id);
  
- 	if (bsg_request->msgcode == FC_BSG_RPT_ELS) {
- 		rport = fc_bsg_to_rport(bsg_job);
-+		if (!rport) {
-+			rval = -ENOMEM;
-+			goto done;
-+		}
- 		fcport = *(fc_port_t **) rport->dd_data;
- 		host = rport_to_shost(rport);
- 		vha = shost_priv(host);
+ 	if ((id->driver_info & BTUSB_IFNUM_2) &&
++	    (intf->cur_altsetting->desc.bInterfaceNumber != 0) &&
+ 	    (intf->cur_altsetting->desc.bInterfaceNumber != 2))
+ 		return -ENODEV;
+ 
+-- 
+2.39.2
+
 
 
