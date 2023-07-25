@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A49147613AA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3AAC7613AC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234211AbjGYLMq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:12:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49786 "EHLO
+        id S234058AbjGYLMs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234212AbjGYLMQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:12:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0651FE3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:11:38 -0700 (PDT)
+        with ESMTP id S234047AbjGYLMS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:12:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570F61FF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:11:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B4316166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:11:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A572C433C7;
-        Tue, 25 Jul 2023 11:11:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D55C561655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:11:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8492C433C7;
+        Tue, 25 Jul 2023 11:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283497;
-        bh=YczOVFZ+6g91yzuremJu1rdzZruFTsKOVjXHaoiujSg=;
+        s=korg; t=1690283503;
+        bh=vyQf+3mZIAmgjmDHAkm5GOb2K8UQZzMp9IVJpSJqyGQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bHMAIlnmw4UAUZEmm/5F9uqn6C19lvGlgNub+9W2Ykv20f+LUv05yY4NJmfz3sGNE
-         8I9uiXNFNbxEm9fRoy2Y6Hhd4UEeremLL308dxHAAdeQlNWlUsg+ruwdq5MPuOj5Ln
-         T+oyHcr5h6c8PJ1dlWeXa3gU4hGN2OeUX5BSOop4=
+        b=qB+YCa5XIaPrC/2hdmolZ1YnDyvY9sOvMxmEcy6eZC18Y0PZFOiOb8p73kxq8fc0e
+         8isy3CzhC8KzmSUC5Gc/0pNHmPJQdMfh4GeCrDuRcSuoAP1444ZWHoD/4L3agtcC2/
+         qbYqSajL/vthQ9P+FFVd0oyH92iLMmW7UAaU8Jhs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/509] md/raid10: fix io loss while replacement replace rdev
-Date:   Tue, 25 Jul 2023 12:39:18 +0200
-Message-ID: <20230725104554.526317716@linuxfoundation.org>
+Subject: [PATCH 5.10 020/509] irqchip/jcore-aic: Kill use of irq_create_strict_mappings()
+Date:   Tue, 25 Jul 2023 12:39:19 +0200
+Message-ID: <20230725104554.575847023@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
 References: <20230725104553.588743331@linuxfoundation.org>
@@ -45,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,77 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Nan <linan122@huawei.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 2ae6aaf76912bae53c74b191569d2ab484f24bf3 ]
+[ Upstream commit 5f8b938bd790cff6542c7fe3c1495c71f89fef1b ]
 
-When removing a disk with replacement, the replacement will be used to
-replace rdev. During this process, there is a brief window in which both
-rdev and replacement are read as NULL in raid10_write_request(). This
-will result in io not being submitted but it should be.
+irq_create_strict_mappings() is a poor way to allow the use of
+a linear IRQ domain as a legacy one. Let's be upfront about it.
 
-  //remove				//write
-  raid10_remove_disk			raid10_write_request
-   mirror->rdev = NULL
-					 read rdev -> NULL
-   mirror->rdev = mirror->replacement
-   mirror->replacement = NULL
-					 read replacement -> NULL
-
-Fix it by reading replacement first and rdev later, meanwhile, use smp_mb()
-to prevent memory reordering.
-
-Fixes: 475b0321a4df ("md/raid10: writes should get directed to replacement as well as original.")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230602091839.743798-3-linan666@huaweicloud.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20210406093557.1073423-4-maz@kernel.org
+Stable-dep-of: 4848229494a3 ("irqchip/jcore-aic: Fix missing allocation of IRQ descriptors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-jcore-aic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 01680029f0de5..32a917e5103a6 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -751,8 +751,16 @@ static struct md_rdev *read_balance(struct r10conf *conf,
- 		disk = r10_bio->devs[slot].devnum;
- 		rdev = rcu_dereference(conf->mirrors[disk].replacement);
- 		if (rdev == NULL || test_bit(Faulty, &rdev->flags) ||
--		    r10_bio->devs[slot].addr + sectors > rdev->recovery_offset)
-+		    r10_bio->devs[slot].addr + sectors >
-+		    rdev->recovery_offset) {
-+			/*
-+			 * Read replacement first to prevent reading both rdev
-+			 * and replacement as NULL during replacement replace
-+			 * rdev.
-+			 */
-+			smp_mb();
- 			rdev = rcu_dereference(conf->mirrors[disk].rdev);
-+		}
- 		if (rdev == NULL ||
- 		    test_bit(Faulty, &rdev->flags))
- 			continue;
-@@ -1346,9 +1354,15 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
+index 033bccb41455c..5f47d8ee4ae39 100644
+--- a/drivers/irqchip/irq-jcore-aic.c
++++ b/drivers/irqchip/irq-jcore-aic.c
+@@ -100,11 +100,11 @@ static int __init aic_irq_of_init(struct device_node *node,
+ 	jcore_aic.irq_unmask = noop;
+ 	jcore_aic.name = "AIC";
  
- 	for (i = 0;  i < conf->copies; i++) {
- 		int d = r10_bio->devs[i].devnum;
--		struct md_rdev *rdev = rcu_dereference(conf->mirrors[d].rdev);
--		struct md_rdev *rrdev = rcu_dereference(
--			conf->mirrors[d].replacement);
-+		struct md_rdev *rdev, *rrdev;
-+
-+		rrdev = rcu_dereference(conf->mirrors[d].replacement);
-+		/*
-+		 * Read replacement first to prevent reading both rdev and
-+		 * replacement as NULL during replacement replace rdev.
-+		 */
-+		smp_mb();
-+		rdev = rcu_dereference(conf->mirrors[d].rdev);
- 		if (rdev == rrdev)
- 			rrdev = NULL;
- 		if (rdev && unlikely(test_bit(Blocked, &rdev->flags))) {
+-	domain = irq_domain_add_linear(node, dom_sz, &jcore_aic_irqdomain_ops,
++	domain = irq_domain_add_legacy(node, dom_sz - min_irq, min_irq, min_irq,
++				       &jcore_aic_irqdomain_ops,
+ 				       &jcore_aic);
+ 	if (!domain)
+ 		return -ENOMEM;
+-	irq_create_strict_mappings(domain, min_irq, min_irq, dom_sz - min_irq);
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
