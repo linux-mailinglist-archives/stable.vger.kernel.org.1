@@ -2,362 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D92F3761E35
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68317761E5A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229798AbjGYQP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 12:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50078 "EHLO
+        id S229567AbjGYQXD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 12:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233125AbjGYQPz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:15:55 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A40E273E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:15:35 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-563d3e4f73cso315986a12.3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:15:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690301698; x=1690906498;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=AReYKAhWaDE9WsDVyPcEwFS9YeBSxpsCvD+wbKtTLuY=;
-        b=w6wMbnxD8ILO4nUWpHf+kRRpfhcRJ7s+9uAONeVIgzqNe8Uf/JTbuvZJ8hzkCFHt8X
-         3QWW99jhaU0L3HvDOil7SOUhU5o1DoQ0UEcU8tq9S8/g95+qylIQ5ahjjBcjYwm/J4/3
-         HcpV32q4E8mCMpdu264/LT3kxsfi5NmYcDaCkAVQWEB30dVaeUAnVb9tWE7n8qNlGZ9l
-         3FqbInG0tZMuyfGNNFaJGz78DRiz3jh+WOORqK4co9Vv22HsaK/3JWNVRQuHzV7F/0Qp
-         O7HL9AsybYv64Xpq+/pxZTovlBIlA6FQ5/fNzTUqJZZWW6OKysbaityEosUukgYkH6ms
-         5VsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690301698; x=1690906498;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AReYKAhWaDE9WsDVyPcEwFS9YeBSxpsCvD+wbKtTLuY=;
-        b=lwCPrJ47gFEo7s02iBnf0b+8T33axGv7nzjSxlLAVVN1E9UjKCmXIwDttLGXqhhFKE
-         QTDkDE8pL8BxIgTxVQntLQHMccAQ3rYBsOhqs/R782yul3WLcSv+T5Md1LHNnirDeGxL
-         ZwrmtALHHbMgTdAZd2vrZwBzWx/W+47ps1orSQNNOH1YiC5tPqkLO9/YZKKvuo4wfDHf
-         jVpcMOZd2DR4VT2yiye8wsxowUJpB8ytxno2KNfRoyjbF4JrAuaBcUUuHmROfoOGY0aZ
-         wB/jrLfRwuLChtsjcxPX1WpP1Fx06RZqw1tE8EKVDKSVFJLhJX2QvriIIyueZAiPGPnH
-         +3hw==
-X-Gm-Message-State: ABy/qLaxmrb38dnj0Qvoui4mgvMnAUdKUNHzdoJss5EQ7vnCZVy+b1a4
-        JuxoWm9NCLgnrbSd2s0LQmTD3K0SCOauZtJn6GMaMg==
-X-Google-Smtp-Source: APBJJlGdQI+ikbYY9TT2IwGIUlXDQRPiRZmTqgb+5NEpKs6pNcHrE/U4v8VXdv9vt0OT/ayetT4Y4g==
-X-Received: by 2002:a17:90b:4b90:b0:268:f38:b2a1 with SMTP id lr16-20020a17090b4b9000b002680f38b2a1mr5836425pjb.41.1690301698541;
-        Tue, 25 Jul 2023 09:14:58 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id v3-20020a17090a0c8300b00263f33eef41sm10758209pja.37.2023.07.25.09.14.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 09:14:58 -0700 (PDT)
-Message-ID: <64bff502.170a0220.70c7e.3b42@mx.google.com>
-Date:   Tue, 25 Jul 2023 09:14:58 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231603AbjGYQWu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:22:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5FC9B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:22:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 01FF2617E0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 16:22:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12615C433C7;
+        Tue, 25 Jul 2023 16:22:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690302168;
+        bh=gkUo+Pae5v991TeRzjsW6UTg+4OzfLpa5q2h4L3w/ok=;
+        h=Subject:To:From:Date:From;
+        b=a255o4wJJUcQeyvtgPgabOuyeD3ygyRk5W5FzDuaMbW3bqwA7dMtGrKkK+abIpDod
+         HJQek9a0TyVCX6wdAqlWHtCl/WIW2If36qCSw24h+VGfVzYhCaq0dzBT1gouXSd84X
+         8652aqdHWRRzjfwWOAw98p83wBCvi5wtXx4hKAvg=
+Subject: patch "usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0" added to usb-testing
+To:     xu.yang_2@nxp.com, gregkh@linuxfoundation.org,
+        peter.chen@kernel.org, stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Tue, 25 Jul 2023 18:22:45 +0200
+Message-ID: <2023072545-countdown-animate-38e2@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Kernel: v5.4.250-314-g1362bbd1b27c7
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
- 38 warnings (v5.4.250-314-g1362bbd1b27c7)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 38 warnings (v=
-5.4.250-314-g1362bbd1b27c7)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
-/kernel/v5.4.250-314-g1362bbd1b27c7/
+This is a note to let you know that I've just added the patch titled
 
-Tree: stable-rc
-Branch: linux-5.4.y
-Git Describe: v5.4.250-314-g1362bbd1b27c7
-Git Commit: 1362bbd1b27c72f90eb34039a8d1b0f8b8468a5e
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+    usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
 
-Warnings Detected:
+to my usb git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+in the usb-testing branch.
 
-arc:
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
+The patch will be merged to the usb-next branch sometime soon,
+after it passes testing, and the merge window is open.
 
-arm:
-    imx_v6_v7_defconfig (gcc-10): 1 warning
-    multi_v5_defconfig (gcc-10): 1 warning
-    multi_v7_defconfig (gcc-10): 1 warning
-    omap2plus_defconfig (gcc-10): 1 warning
-    vexpress_defconfig (gcc-10): 1 warning
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    defconfig (gcc-10): 1 warning
-
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 5 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 5 warnings
+If you have any questions about this process, please let me know.
 
 
-Warnings summary:
+From 36668515d56bf73f06765c71e08c8f7465f1e5c4 Mon Sep 17 00:00:00 2001
+From: Xu Yang <xu.yang_2@nxp.com>
+Date: Tue, 27 Jun 2023 19:21:24 +0800
+Subject: usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
 
-    12   fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=
-=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
-without a cast [-Wint-conversion]
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
+In current driver, the value of tuning parameter will not take effect
+if samsung,picophy-* is assigned as 0. Because 0 is also a valid value
+acccording to the description of USB_PHY_CFG1 register, this will improve
+the logic to let it work.
 
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
-smatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 5 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-5 warnings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    fs/ext4/ioctl.c:595:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Fixes: 58a3cefb3840 ("usb: chipidea: imx: add two samsung picophy parameters tuning implementation")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230627112126.1882666-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-For more info write to <info@kernelci.org>
+ drivers/usb/chipidea/ci_hdrc_imx.c | 10 ++++++----
+ drivers/usb/chipidea/usbmisc_imx.c |  6 ++++--
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index aa2aebed8e2d..c251a4f34879 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -176,10 +176,12 @@ static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
+ 	if (of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI)
+ 		data->ulpi = 1;
+ 
+-	of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
+-			&data->emp_curr_control);
+-	of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
+-			&data->dc_vol_level_adjust);
++	if (of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
++			&data->emp_curr_control))
++		data->emp_curr_control = -1;
++	if (of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
++			&data->dc_vol_level_adjust))
++		data->dc_vol_level_adjust = -1;
+ 
+ 	return data;
+ }
+diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
+index e8a712e5abad..c4165f061e42 100644
+--- a/drivers/usb/chipidea/usbmisc_imx.c
++++ b/drivers/usb/chipidea/usbmisc_imx.c
+@@ -660,13 +660,15 @@ static int usbmisc_imx7d_init(struct imx_usbmisc_data *data)
+ 			usbmisc->base + MX7D_USBNC_USB_CTRL2);
+ 		/* PHY tuning for signal quality */
+ 		reg = readl(usbmisc->base + MX7D_USB_OTG_PHY_CFG1);
+-		if (data->emp_curr_control && data->emp_curr_control <=
++		if (data->emp_curr_control >= 0 &&
++			data->emp_curr_control <=
+ 			(TXPREEMPAMPTUNE0_MASK >> TXPREEMPAMPTUNE0_BIT)) {
+ 			reg &= ~TXPREEMPAMPTUNE0_MASK;
+ 			reg |= (data->emp_curr_control << TXPREEMPAMPTUNE0_BIT);
+ 		}
+ 
+-		if (data->dc_vol_level_adjust && data->dc_vol_level_adjust <=
++		if (data->dc_vol_level_adjust >= 0 &&
++			data->dc_vol_level_adjust <=
+ 			(TXVREFTUNE0_MASK >> TXVREFTUNE0_BIT)) {
+ 			reg &= ~TXVREFTUNE0_MASK;
+ 			reg |= (data->dc_vol_level_adjust << TXVREFTUNE0_BIT);
+-- 
+2.41.0
+
+
