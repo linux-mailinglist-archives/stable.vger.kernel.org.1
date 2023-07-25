@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40C8F76124F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF99976132A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233858AbjGYLBM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:01:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
+        id S234030AbjGYLIc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233798AbjGYLAu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:50 -0400
+        with ESMTP id S234160AbjGYLIH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55DAD2D77
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76AEB421F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E874F61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06734C433C7;
-        Tue, 25 Jul 2023 10:58:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 901E16166F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B557C433C8;
+        Tue, 25 Jul 2023 11:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282687;
-        bh=mE2gqmtV5YAJrFAlQ0tK3EXkKc4b7YosXIgkNi8k+mE=;
+        s=korg; t=1690283203;
+        bh=+aX+WgJUWBiAxUEZ25vKOliyOdFk8ZBC2vdGpLxhBKA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZCD0mcFXcQaNRPslpF4xIUGA7sWKdCqcX5rI2kbIdbiW/T52g5cKIRpYBsS84d5j6
-         Q2jgmMybw+PVE5oiPMshaXIMDum8OB6du5aPKoheP5dOIFz+PppvpTxCLp+LFUGrkl
-         8mm5YNP0b+n6X6Re2cWtUqSZziDNXvTQc/MNxNj0=
+        b=rFc4XXKVy88M5K7Vp15YEBtw3zIXMXiJdeT0+hdmzJDM9m5YzPgSrWmh2JyNusikj
+         SZS8DFqDiRGkuluLgaq/KlzwtzfvUUhBgPRgxQlCi/t9fuKtlWjLA2vOJrV/qcxZIi
+         NMmARaS4/Th98F5pihXMRgZd1edOmmQuRUUNJnj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 218/227] net: phy: prevent stale pointer dereference in phy_init()
-Date:   Tue, 25 Jul 2023 12:46:25 +0200
-Message-ID: <20230725104523.741945100@linuxfoundation.org>
+Subject: [PATCH 6.1 158/183] tcp: annotate data-races around tp->linger2
+Date:   Tue, 25 Jul 2023 12:46:26 +0200
+Message-ID: <20230725104513.510441748@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,72 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1c613beaf877c0c0d755853dc62687e2013e55c4 ]
+[ Upstream commit 9df5335ca974e688389c875546e5819778a80d59 ]
 
-mdio_bus_init() and phy_driver_register() both have error paths, and if
-those are ever hit, ethtool will have a stale pointer to the
-phy_ethtool_phy_ops stub structure, which references memory from a
-module that failed to load (phylib).
+do_tcp_getsockopt() reads tp->linger2 while another cpu
+might change its value.
 
-It is probably hard to force an error in this code path even manually,
-but the error teardown path of phy_init() should be the same as
-phy_exit(), which is now simply not the case.
-
-Fixes: 55d8f053ce1b ("net: phy: Register ethtool PHY operations")
-Link: https://lore.kernel.org/netdev/ZLaiJ4G6TaJYGJyU@shell.armlinux.org.uk/
-Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230720000231.1939689-1-vladimir.oltean@nxp.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-8-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ net/ipv4/tcp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 53598210be6cb..2c4e6de8f4d9f 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3452,23 +3452,30 @@ static int __init phy_init(void)
- {
- 	int rc;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index ffa9717293358..363535b6ece83 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3691,11 +3691,11 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
  
-+	ethtool_set_ethtool_phy_ops(&phy_ethtool_phy_ops);
-+
- 	rc = mdio_bus_init();
- 	if (rc)
--		return rc;
-+		goto err_ethtool_phy_ops;
+ 	case TCP_LINGER2:
+ 		if (val < 0)
+-			tp->linger2 = -1;
++			WRITE_ONCE(tp->linger2, -1);
+ 		else if (val > TCP_FIN_TIMEOUT_MAX / HZ)
+-			tp->linger2 = TCP_FIN_TIMEOUT_MAX;
++			WRITE_ONCE(tp->linger2, TCP_FIN_TIMEOUT_MAX);
+ 		else
+-			tp->linger2 = val * HZ;
++			WRITE_ONCE(tp->linger2, val * HZ);
+ 		break;
  
--	ethtool_set_ethtool_phy_ops(&phy_ethtool_phy_ops);
- 	features_init();
- 
- 	rc = phy_driver_register(&genphy_c45_driver, THIS_MODULE);
- 	if (rc)
--		goto err_c45;
-+		goto err_mdio_bus;
- 
- 	rc = phy_driver_register(&genphy_driver, THIS_MODULE);
--	if (rc) {
--		phy_driver_unregister(&genphy_c45_driver);
-+	if (rc)
-+		goto err_c45;
-+
-+	return 0;
-+
- err_c45:
--		mdio_bus_exit();
--	}
-+	phy_driver_unregister(&genphy_c45_driver);
-+err_mdio_bus:
-+	mdio_bus_exit();
-+err_ethtool_phy_ops:
-+	ethtool_set_ethtool_phy_ops(NULL);
- 
- 	return rc;
- }
+ 	case TCP_DEFER_ACCEPT:
+@@ -4099,7 +4099,7 @@ int do_tcp_getsockopt(struct sock *sk, int level,
+ 			READ_ONCE(net->ipv4.sysctl_tcp_syn_retries);
+ 		break;
+ 	case TCP_LINGER2:
+-		val = tp->linger2;
++		val = READ_ONCE(tp->linger2);
+ 		if (val >= 0)
+ 			val = (val ? : READ_ONCE(net->ipv4.sysctl_tcp_fin_timeout)) / HZ;
+ 		break;
 -- 
 2.39.2
 
