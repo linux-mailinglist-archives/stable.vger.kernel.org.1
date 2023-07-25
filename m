@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A767614BA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABE1E761137
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234442AbjGYLWQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:22:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
+        id S233585AbjGYKsu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234439AbjGYLWP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:15 -0400
+        with ESMTP id S232864AbjGYKsp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:48:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF4FE69
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C141010FD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:48:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 916E4615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EEEC433C8;
-        Tue, 25 Jul 2023 11:22:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56F576165E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:48:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6596EC433C7;
+        Tue, 25 Jul 2023 10:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284132;
-        bh=DXsBlyXl6a8bx2jBOGbUfTKNT3T1e0cuJSeYlHczbmk=;
+        s=korg; t=1690282123;
+        bh=bHSPKhK+umItmdo8BplFHrAVX6l3M6Qv2Q7VLFh2NzE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UamD7AIsbB0irto4nD3egGWckDF6JLEpQhvi0SMHaBIm+MvMgw0PQ0ZjCy5TyBRnQ
-         BVQb85AKJtpDSRFCTd6LQn+akXoz7A/waR1rADfEndfUueBdrvl9LocKohGY9CccnE
-         1/zgK69IsfRNqaU2Jhtn+7QdxyzmLCKAoPa6Sf7Q=
+        b=1gq9ah9BJaWTceSWXjYq+GOm+shZuhJER/r3PI/bAiOxvqjtA3tt4Bd90PSSL20X+
+         NgMJPB5qus9xBE/oONPjjAaxG7We2a1im7iNOrMjfyXDvMYEMaYdT0J5xQHYOUdkIc
+         dchpTw6SSxTJtb+h7S7seDJh2n6VDlT3LS5+FGEw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 245/509] usb: common: usb-conn-gpio: Set last role to unknown before initial detection
+        patches@lists.linux.dev, Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.4 017/227] fuse: add feature flag for expire-only
 Date:   Tue, 25 Jul 2023 12:43:04 +0200
-Message-ID: <20230725104604.962752812@linuxfoundation.org>
+Message-ID: <20230725104515.511815463@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,103 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit edd60d24bd858cef165274e4cd6cab43bdc58d15 ]
+commit 5cadfbd5a11e5495cac217534c5f788168b1afd7 upstream.
 
-Currently if we bootup a device without cable connected, then
-usb-conn-gpio won't call set_role() since last_role is same as
-current role. This happens because during probe last_role gets
-initialised to zero.
+Add an init flag idicating whether the FUSE_EXPIRE_ONLY flag of
+FUSE_NOTIFY_INVAL_ENTRY is effective.
 
-To avoid this, added a new constant in enum usb_role, last_role
-is set to USB_ROLE_UNKNOWN before performing initial detection.
+This is needed for backports of this feature, otherwise the server could
+just check the protocol version.
 
-While at it, also handle default case for the usb_role switch
-in cdns3, intel-xhci-usb-role-switch & musb/jz4740 to avoid
-build warnings.
-
-Fixes: 4602f3bff266 ("usb: common: add USB GPIO based connection detection driver")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Message-ID: <1685544074-17337-1-git-send-email-quic_prashk@quicinc.com>
+Fixes: 4f8d37020e1f ("fuse: add "expire only" mode to FUSE_NOTIFY_INVAL_ENTRY")
+Cc: <stable@vger.kernel.org> # v6.2
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.c                       | 2 ++
- drivers/usb/common/usb-conn-gpio.c             | 3 +++
- drivers/usb/musb/jz4740.c                      | 2 ++
- drivers/usb/roles/intel-xhci-usb-role-switch.c | 2 ++
- include/linux/usb/role.h                       | 1 +
- 5 files changed, 10 insertions(+)
+ fs/fuse/inode.c           |    3 ++-
+ include/uapi/linux/fuse.h |    3 +++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 8fe7420de033d..e5fe640b2bb01 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -243,6 +243,8 @@ static enum usb_role cdns3_hw_role_state_machine(struct cdns3 *cdns)
- 		if (!vbus)
- 			role = USB_ROLE_NONE;
- 		break;
-+	default:
-+		break;
- 	}
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1254,7 +1254,8 @@ void fuse_send_init(struct fuse_mount *f
+ 		FUSE_ABORT_ERROR | FUSE_MAX_PAGES | FUSE_CACHE_SYMLINKS |
+ 		FUSE_NO_OPENDIR_SUPPORT | FUSE_EXPLICIT_INVAL_DATA |
+ 		FUSE_HANDLE_KILLPRIV_V2 | FUSE_SETXATTR_EXT | FUSE_INIT_EXT |
+-		FUSE_SECURITY_CTX | FUSE_CREATE_SUPP_GROUP;
++		FUSE_SECURITY_CTX | FUSE_CREATE_SUPP_GROUP |
++		FUSE_HAS_EXPIRE_ONLY;
+ #ifdef CONFIG_FUSE_DAX
+ 	if (fm->fc->dax)
+ 		flags |= FUSE_MAP_ALIGNMENT;
+--- a/include/uapi/linux/fuse.h
++++ b/include/uapi/linux/fuse.h
+@@ -206,6 +206,7 @@
+  *  - add extension header
+  *  - add FUSE_EXT_GROUPS
+  *  - add FUSE_CREATE_SUPP_GROUP
++ *  - add FUSE_HAS_EXPIRE_ONLY
+  */
  
- 	dev_dbg(cdns->dev, "role %d -> %d\n", cdns->role, role);
-diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
-index c9545a4eff664..5754e467c16a8 100644
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -276,6 +276,9 @@ static int usb_conn_probe(struct platform_device *pdev)
+ #ifndef _LINUX_FUSE_H
+@@ -369,6 +370,7 @@ struct fuse_file_lock {
+  * FUSE_HAS_INODE_DAX:  use per inode DAX
+  * FUSE_CREATE_SUPP_GROUP: add supplementary group info to create, mkdir,
+  *			symlink and mknod (single group that matches parent)
++ * FUSE_HAS_EXPIRE_ONLY: kernel supports expiry-only entry invalidation
+  */
+ #define FUSE_ASYNC_READ		(1 << 0)
+ #define FUSE_POSIX_LOCKS	(1 << 1)
+@@ -406,6 +408,7 @@ struct fuse_file_lock {
+ #define FUSE_SECURITY_CTX	(1ULL << 32)
+ #define FUSE_HAS_INODE_DAX	(1ULL << 33)
+ #define FUSE_CREATE_SUPP_GROUP	(1ULL << 34)
++#define FUSE_HAS_EXPIRE_ONLY	(1ULL << 35)
  
- 	platform_set_drvdata(pdev, info);
- 
-+	/* Set last role to unknown before performing the initial detection */
-+	info->last_role = USB_ROLE_UNKNOWN;
-+
- 	/* Perform initial detection */
- 	usb_conn_queue_dwork(info, 0);
- 
-diff --git a/drivers/usb/musb/jz4740.c b/drivers/usb/musb/jz4740.c
-index c4fe1f4cd17a3..f283629091ec4 100644
---- a/drivers/usb/musb/jz4740.c
-+++ b/drivers/usb/musb/jz4740.c
-@@ -91,6 +91,8 @@ static int jz4740_musb_role_switch_set(struct usb_role_switch *sw,
- 	case USB_ROLE_HOST:
- 		atomic_notifier_call_chain(&phy->notifier, USB_EVENT_ID, phy);
- 		break;
-+	default:
-+		break;
- 	}
- 
- 	return 0;
-diff --git a/drivers/usb/roles/intel-xhci-usb-role-switch.c b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-index 5c96e929acea0..4d6a3dd06e011 100644
---- a/drivers/usb/roles/intel-xhci-usb-role-switch.c
-+++ b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-@@ -97,6 +97,8 @@ static int intel_xhci_usb_set_role(struct usb_role_switch *sw,
- 		val |= SW_VBUS_VALID;
- 		drd_config = DRD_CONFIG_STATIC_DEVICE;
- 		break;
-+	default:
-+		break;
- 	}
- 	val |= SW_IDPIN_EN;
- 	if (data->enable_sw_switch) {
-diff --git a/include/linux/usb/role.h b/include/linux/usb/role.h
-index b9ccaeb8a4aef..aecfce46d3544 100644
---- a/include/linux/usb/role.h
-+++ b/include/linux/usb/role.h
-@@ -11,6 +11,7 @@ enum usb_role {
- 	USB_ROLE_NONE,
- 	USB_ROLE_HOST,
- 	USB_ROLE_DEVICE,
-+	USB_ROLE_UNKNOWN,
- };
- 
- typedef int (*usb_role_switch_set_t)(struct usb_role_switch *sw,
--- 
-2.39.2
-
+ /**
+  * CUSE INIT request/reply flags
 
 
