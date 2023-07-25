@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAC076166B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B8D776115B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234871AbjGYLjV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:39:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46454 "EHLO
+        id S232915AbjGYKuX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234925AbjGYLjP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:15 -0400
+        with ESMTP id S233452AbjGYKuC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0A51FDE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0243210FD;
+        Tue, 25 Jul 2023 03:49:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C05F561655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34B0C433C8;
-        Tue, 25 Jul 2023 11:38:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 566B96166E;
+        Tue, 25 Jul 2023 10:49:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6658DC433C8;
+        Tue, 25 Jul 2023 10:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285136;
-        bh=ggWDAm8x9ar8TAxSMj+4+XB4uWxUBAKqwD9ycYQrSaw=;
+        s=korg; t=1690282196;
+        bh=mqeWrjRkKEshdY5zvAqc2lyl7BsSe/D42AtpoyJoeE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1hLeAm6sVSO4Nhf+TZRhKqV+9mFcOs1UfkiTDdhdxoRFrIrqF2hKKf/btOpnlxUef
-         mb7JOQ+zwpHL8THXOk0StH0HUzPEuue7EWFuPRrUP6xO4XocK0aEvHdWg+Y4guMT/n
-         AuekAQoZnNdazA75AZdCmvE24V15uvRDf5BH/l4A=
+        b=XQVwhIoIUY49cragFx1gM6ymIKwa5ilV5ALGKUGGIQiNHgJz93cydVDBMnmxtaSIW
+         7JM3+OhgI1DIekW74AbUm1y+aexaRbKgIgQdZw+gZhKrTXr7YmmJWrfUYYoW8tBIje
+         tx/9sed7cFZt5KxMMlPZXCEhzqO6Bu6vpmd8ozsU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/313] wifi: iwlwifi: pull from TXQs with softirqs disabled
+        patches@lists.linux.dev, Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>
+Subject: [PATCH 6.4 043/227] dma-buf/dma-resv: Stop leaking on krealloc() failure
 Date:   Tue, 25 Jul 2023 12:43:30 +0200
-Message-ID: <20230725104523.518179692@linuxfoundation.org>
+Message-ID: <20230725104516.591974295@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +58,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 96fb6f47db24a712d650b0a9b9074873f273fb0e ]
+commit 05abb3be91d8788328231ee02973ab3d47f5e3d2 upstream.
 
-In mac80211, it's required that we pull from TXQs by calling
-ieee80211_tx_dequeue() only with softirqs disabled. However,
-in iwl_mvm_queue_state_change() we're often called with them
-enabled, e.g. from flush if anything was flushed, triggering
-a mac80211 warning.
+Currently dma_resv_get_fences() will leak the previously
+allocated array if the fence iteration got restarted and
+the krealloc_array() fails.
 
-Fix that by disabling the softirqs across the TX call.
+Free the old array by hand, and make sure we still clear
+the returned *fences so the caller won't end up accessing
+freed memory. Some (but not all) of the callers of
+dma_resv_get_fences() seem to still trawl through the
+array even when dma_resv_get_fences() failed. And let's
+zero out *num_fences as well for good measure.
 
-Fixes: cfbc6c4c5b91 ("iwlwifi: mvm: support mac80211 TXQs model")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230614123446.0feef7fa81db.I4dd62542d955b40dd8f0af34fa4accb9d0d17c7e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: linux-media@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linaro-mm-sig@lists.linaro.org
+Fixes: d3c80698c9f5 ("dma-buf: use new iterator in dma_resv_get_fences v3")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230713194745.1751-1-ville.syrjala@linux.intel.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma-buf/dma-resv.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 5973eecbc0378..18c5975d7c037 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1167,8 +1167,11 @@ static void iwl_mvm_queue_state_change(struct iwl_op_mode *op_mode,
- 		mvmtxq = iwl_mvm_txq_from_mac80211(txq);
- 		mvmtxq->stopped = !start;
+--- a/drivers/dma-buf/dma-resv.c
++++ b/drivers/dma-buf/dma-resv.c
+@@ -571,6 +571,7 @@ int dma_resv_get_fences(struct dma_resv
+ 	dma_resv_for_each_fence_unlocked(&cursor, fence) {
  
--		if (start && mvmsta->sta_state != IEEE80211_STA_NOTEXIST)
-+		if (start && mvmsta->sta_state != IEEE80211_STA_NOTEXIST) {
-+			local_bh_disable();
- 			iwl_mvm_mac_itxq_xmit(mvm->hw, txq);
-+			local_bh_enable();
-+		}
- 	}
+ 		if (dma_resv_iter_is_restarted(&cursor)) {
++			struct dma_fence **new_fences;
+ 			unsigned int count;
  
- out:
--- 
-2.39.2
-
+ 			while (*num_fences)
+@@ -579,13 +580,17 @@ int dma_resv_get_fences(struct dma_resv
+ 			count = cursor.num_fences + 1;
+ 
+ 			/* Eventually re-allocate the array */
+-			*fences = krealloc_array(*fences, count,
+-						 sizeof(void *),
+-						 GFP_KERNEL);
+-			if (count && !*fences) {
++			new_fences = krealloc_array(*fences, count,
++						    sizeof(void *),
++						    GFP_KERNEL);
++			if (count && !new_fences) {
++				kfree(*fences);
++				*fences = NULL;
++				*num_fences = 0;
+ 				dma_resv_iter_end(&cursor);
+ 				return -ENOMEM;
+ 			}
++			*fences = new_fences;
+ 		}
+ 
+ 		(*fences)[(*num_fences)++] = dma_fence_get(fence);
 
 
