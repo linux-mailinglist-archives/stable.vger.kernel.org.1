@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3627D7615F4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF82C7614A2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234712AbjGYLe4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41970 "EHLO
+        id S234189AbjGYLVO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:21:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234711AbjGYLe4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBFC9F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:54 -0700 (PDT)
+        with ESMTP id S234415AbjGYLVN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 782F0A6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89F6261683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98892C433C7;
-        Tue, 25 Jul 2023 11:34:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E9F261600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC01C433C7;
+        Tue, 25 Jul 2023 11:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284894;
-        bh=mkquG+SEPgkKd0aHnjmGEtZbwGZ+RRBoc7SphSyUZ9o=;
+        s=korg; t=1690284071;
+        bh=3kzTfVKWWibrQ+PquFHbQp7KSFHKcdtT0J/DFETlprE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ODYykLx6gEKvMKSlidHhISRRk5YUTVxBNpz7cKU2O/rr8qxHkuPwpPaFkQkUgMvIE
-         J85y+Crpx2p8/B2F7sELIFbPJ+SZy/b/lZVTdiCZoZmHETR8UWS3TGGMN/wJsqmpoK
-         BGkwFY10N67s18/DseesvYNRdxKHsf2mSfXVI2ag=
+        b=YeqnAHg75qLBctvpwHentvkuCRAbRQ4D+d9xBhmkpA8zt+etIlngK2sGeRpEmv7zt
+         eC//w2BHho9zkUu8zO2iRX46LFMm9BrCmhFJ/tok1e9aqxhHXrCPCSjUp/3MA9MqnC
+         8afFj6acyjvEB1bA/hFlGqCgJ8KRQ7nXyNqz0oYQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@suse.de>,
-        Reinette Chatre <reinette.chatre@intel.com>,
+        patches@lists.linux.dev,
+        syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com,
+        Duoming Zhou <duoming@zju.edu.cn>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/313] x86/resctrl: Use is_closid_match() in more places
-Date:   Tue, 25 Jul 2023 12:42:43 +0200
-Message-ID: <20230725104521.619221528@linuxfoundation.org>
+Subject: [PATCH 5.10 225/509] media: usb: siano: Fix warning due to null work_func_t function pointer
+Date:   Tue, 25 Jul 2023 12:42:44 +0200
+Message-ID: <20230725104604.069600154@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,91 +57,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: James Morse <james.morse@arm.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit e6b2fac36fcc0b73cbef063d700a9841850e37a0 ]
+[ Upstream commit 6f489a966fbeb0da63d45c2c66a8957eab604bf6 ]
 
-rdtgroup_tasks_assigned() and show_rdt_tasks() loop over threads testing
-for a CTRL/MON group match by closid/rmid with the provided rdtgrp.
-Further down the file are helpers to do this, move these further up and
-make use of them here.
+The previous commit ebad8e731c1c ("media: usb: siano: Fix use after
+free bugs caused by do_submit_urb") adds cancel_work_sync() in
+smsusb_stop_streaming(). But smsusb_stop_streaming() may be called,
+even if the work_struct surb->wq has not been initialized. As a result,
+the warning will occur. One of the processes that could lead to warning
+is shown below:
 
-These helpers additionally check for alloc/mon capable. This is harmless
-as rdtgroup_mkdir() tests these capable flags before allowing the config
-directories to be created.
+smsusb_probe()
+  smsusb_init_device()
+    if (!dev->in_ep || !dev->out_ep || align < 0) {
+         smsusb_term_device(intf);
+           smsusb_stop_streaming()
+             cancel_work_sync(&dev->surbs[i].wq);
+               __cancel_work_timer()
+                 __flush_work()
+                   if (WARN_ON(!work->func)) // work->func is null
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20200708163929.2783-7-james.morse@arm.com
-Stable-dep-of: 2997d94b5dd0 ("x86/resctrl: Only show tasks' pid in current pid namespace")
+The log reported by syzbot is shown below:
+
+WARNING: CPU: 0 PID: 897 at kernel/workqueue.c:3066 __flush_work+0x798/0xa80 kernel/workqueue.c:3063
+Modules linked in:
+CPU: 0 PID: 897 Comm: kworker/0:2 Not tainted 6.2.0-rc1-syzkaller #0
+RIP: 0010:__flush_work+0x798/0xa80 kernel/workqueue.c:3066
+...
+RSP: 0018:ffffc9000464ebf8 EFLAGS: 00010246
+RAX: 1ffff11002dbb420 RBX: 0000000000000021 RCX: 1ffffffff204fa4e
+RDX: dffffc0000000000 RSI: 0000000000000001 RDI: ffff888016dda0e8
+RBP: ffffc9000464ed98 R08: 0000000000000001 R09: ffffffff90253b2f
+R10: 0000000000000001 R11: 0000000000000000 R12: ffff888016dda0e8
+R13: ffff888016dda0e8 R14: ffff888016dda100 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffd4331efe8 CR3: 000000000b48e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __cancel_work_timer+0x315/0x460 kernel/workqueue.c:3160
+ smsusb_stop_streaming drivers/media/usb/siano/smsusb.c:182 [inline]
+ smsusb_term_device+0xda/0x2d0 drivers/media/usb/siano/smsusb.c:344
+ smsusb_init_device+0x400/0x9ce drivers/media/usb/siano/smsusb.c:419
+ smsusb_probe+0xbbd/0xc55 drivers/media/usb/siano/smsusb.c:567
+...
+
+This patch adds check before cancel_work_sync(). If surb->wq has not
+been initialized, the cancel_work_sync() will not be executed.
+
+Reported-by: syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com
+Fixes: ebad8e731c1c ("media: usb: siano: Fix use after free bugs caused by do_submit_urb")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 30 ++++++++++++--------------
- 1 file changed, 14 insertions(+), 16 deletions(-)
+ drivers/media/usb/siano/smsusb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 0e4f14dae1c05..9de55fd77937c 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -593,6 +593,18 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
- 	return 0;
- }
+diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
+index 1babfe6e2c361..5c223b5498b4b 100644
+--- a/drivers/media/usb/siano/smsusb.c
++++ b/drivers/media/usb/siano/smsusb.c
+@@ -179,7 +179,8 @@ static void smsusb_stop_streaming(struct smsusb_device_t *dev)
  
-+static bool is_closid_match(struct task_struct *t, struct rdtgroup *r)
-+{
-+	return (rdt_alloc_capable &&
-+	       (r->type == RDTCTRL_GROUP) && (t->closid == r->closid));
-+}
-+
-+static bool is_rmid_match(struct task_struct *t, struct rdtgroup *r)
-+{
-+	return (rdt_mon_capable &&
-+	       (r->type == RDTMON_GROUP) && (t->rmid == r->mon.rmid));
-+}
-+
- /**
-  * rdtgroup_tasks_assigned - Test if tasks have been assigned to resource group
-  * @r: Resource group
-@@ -608,8 +620,7 @@ int rdtgroup_tasks_assigned(struct rdtgroup *r)
+ 	for (i = 0; i < MAX_URBS; i++) {
+ 		usb_kill_urb(&dev->surbs[i].urb);
+-		cancel_work_sync(&dev->surbs[i].wq);
++		if (dev->surbs[i].wq.func)
++			cancel_work_sync(&dev->surbs[i].wq);
  
- 	rcu_read_lock();
- 	for_each_process_thread(p, t) {
--		if ((r->type == RDTCTRL_GROUP && t->closid == r->closid) ||
--		    (r->type == RDTMON_GROUP && t->rmid == r->mon.rmid)) {
-+		if (is_closid_match(t, r) || is_rmid_match(t, r)) {
- 			ret = 1;
- 			break;
- 		}
-@@ -707,8 +718,7 @@ static void show_rdt_tasks(struct rdtgroup *r, struct seq_file *s)
- 
- 	rcu_read_lock();
- 	for_each_process_thread(p, t) {
--		if ((r->type == RDTCTRL_GROUP && t->closid == r->closid) ||
--		    (r->type == RDTMON_GROUP && t->rmid == r->mon.rmid))
-+		if (is_closid_match(t, r) || is_rmid_match(t, r))
- 			seq_printf(s, "%d\n", t->pid);
- 	}
- 	rcu_read_unlock();
-@@ -2148,18 +2158,6 @@ static int reset_all_ctrls(struct rdt_resource *r)
- 	return 0;
- }
- 
--static bool is_closid_match(struct task_struct *t, struct rdtgroup *r)
--{
--	return (rdt_alloc_capable &&
--		(r->type == RDTCTRL_GROUP) && (t->closid == r->closid));
--}
--
--static bool is_rmid_match(struct task_struct *t, struct rdtgroup *r)
--{
--	return (rdt_mon_capable &&
--		(r->type == RDTMON_GROUP) && (t->rmid == r->mon.rmid));
--}
--
- /*
-  * Move tasks from one to the other group. If @from is NULL, then all tasks
-  * in the systems are moved unconditionally (used for teardown).
+ 		if (dev->surbs[i].cb) {
+ 			smscore_putbuffer(dev->coredev, dev->surbs[i].cb);
 -- 
 2.39.2
 
