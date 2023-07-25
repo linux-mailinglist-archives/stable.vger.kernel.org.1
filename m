@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A277B761353
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A21A76158A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234042AbjGYLJg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44728 "EHLO
+        id S234771AbjGYLaO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234043AbjGYLJW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F36D35AE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:24 -0700 (PDT)
+        with ESMTP id S234770AbjGYLaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB05FB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE38761682
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96DBC433C7;
-        Tue, 25 Jul 2023 11:08:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71B5061683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82086C433C8;
+        Tue, 25 Jul 2023 11:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283303;
-        bh=Q44RtPYxS7QTNh9PJlDFzuljPnDwxak+TeDoKM0XMlg=;
+        s=korg; t=1690284609;
+        bh=2V8NwtKl7gwQujKZqCETd1gBnkkwIHHvJ+/TBiW6sLI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R0d2Ks96dWOQ5hAKoUE/F+HjjoZJvFdaD868wllpQ9v6ee46kCKCWaXhyEDf9PEsI
-         yKQdh0a7xvH1O8EiRsisYNKD6S0R+OjxWjmKFhP4L/oOPKHPCNqfbxdckbsxiGEHBg
-         LsMdveY/rLJ6Dimnn7PQTUyRN31J16/grK04+EiQ=
+        b=g5fPbbynE55Xvr8pLZ6yKxeKkmc1cANpybWozNAiSYTN116d2/IS03k5uLvSMFIVS
+         dUkUsJnf9fj3O22Uzh0O0exKIIdsyvXAVZESx0862ltWXD4GqLoiMlx4hUHr4wr8NP
+         lrGBe+0Q4Pqjz4BnEPTJWSnnI5URGSHyiO/PtC7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Qu Wenruo <wqu@suse.com>, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 06/78] btrfs: fix warning when putting transaction with qgroups enabled after abort
+        patches@lists.linux.dev,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Subject: [PATCH 5.10 418/509] xhci: Show ZHAOXIN xHCI root hub speed correctly
 Date:   Tue, 25 Jul 2023 12:45:57 +0200
-Message-ID: <20230725104451.564919329@linuxfoundation.org>
+Message-ID: <20230725104612.819366969@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,89 +55,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
 
-commit aa84ce8a78a1a5c10cdf9c7a5fb0c999fbc2c8d6 upstream.
+commit d9b0328d0b8b8298dfdc97cd8e0e2371d4bcc97b upstream.
 
-If we have a transaction abort with qgroups enabled we get a warning
-triggered when doing the final put on the transaction, like this:
+Some ZHAOXIN xHCI controllers follow usb3.1 spec, but only support
+gen1 speed 5Gbps. While in Linux kernel, if xHCI suspport usb3.1,
+root hub speed will show on 10Gbps.
+To fix this issue of ZHAOXIN xHCI platforms, read usb speed ID
+supported by xHCI to determine root hub speed. And add a quirk
+XHCI_ZHAOXIN_HOST for this issue.
 
-  [552.6789] ------------[ cut here ]------------
-  [552.6815] WARNING: CPU: 4 PID: 81745 at fs/btrfs/transaction.c:144 btrfs_put_transaction+0x123/0x130 [btrfs]
-  [552.6817] Modules linked in: btrfs blake2b_generic xor (...)
-  [552.6819] CPU: 4 PID: 81745 Comm: btrfs-transacti Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
-  [552.6819] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [552.6819] RIP: 0010:btrfs_put_transaction+0x123/0x130 [btrfs]
-  [552.6821] Code: bd a0 01 00 (...)
-  [552.6821] RSP: 0018:ffffa168c0527e28 EFLAGS: 00010286
-  [552.6821] RAX: ffff936042caed00 RBX: ffff93604a3eb448 RCX: 0000000000000000
-  [552.6821] RDX: ffff93606421b028 RSI: ffffffff92ff0878 RDI: ffff93606421b010
-  [552.6821] RBP: ffff93606421b000 R08: 0000000000000000 R09: ffffa168c0d07c20
-  [552.6821] R10: 0000000000000000 R11: ffff93608dc52950 R12: ffffa168c0527e70
-  [552.6821] R13: ffff93606421b000 R14: ffff93604a3eb420 R15: ffff93606421b028
-  [552.6821] FS:  0000000000000000(0000) GS:ffff93675fb00000(0000) knlGS:0000000000000000
-  [552.6821] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [552.6821] CR2: 0000558ad262b000 CR3: 000000014feda005 CR4: 0000000000370ee0
-  [552.6822] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  [552.6822] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  [552.6822] Call Trace:
-  [552.6822]  <TASK>
-  [552.6822]  ? __warn+0x80/0x130
-  [552.6822]  ? btrfs_put_transaction+0x123/0x130 [btrfs]
-  [552.6824]  ? report_bug+0x1f4/0x200
-  [552.6824]  ? handle_bug+0x42/0x70
-  [552.6824]  ? exc_invalid_op+0x14/0x70
-  [552.6824]  ? asm_exc_invalid_op+0x16/0x20
-  [552.6824]  ? btrfs_put_transaction+0x123/0x130 [btrfs]
-  [552.6826]  btrfs_cleanup_transaction+0xe7/0x5e0 [btrfs]
-  [552.6828]  ? _raw_spin_unlock_irqrestore+0x23/0x40
-  [552.6828]  ? try_to_wake_up+0x94/0x5e0
-  [552.6828]  ? __pfx_process_timeout+0x10/0x10
-  [552.6828]  transaction_kthread+0x103/0x1d0 [btrfs]
-  [552.6830]  ? __pfx_transaction_kthread+0x10/0x10 [btrfs]
-  [552.6832]  kthread+0xee/0x120
-  [552.6832]  ? __pfx_kthread+0x10/0x10
-  [552.6832]  ret_from_fork+0x29/0x50
-  [552.6832]  </TASK>
-  [552.6832] ---[ end trace 0000000000000000 ]---
+[fix warning about uninitialized symbol -Mathias]
 
-This corresponds to this line of code:
-
-  void btrfs_put_transaction(struct btrfs_transaction *transaction)
-  {
-      (...)
-          WARN_ON(!RB_EMPTY_ROOT(
-                          &transaction->delayed_refs.dirty_extent_root));
-      (...)
-  }
-
-The warning happens because btrfs_qgroup_destroy_extent_records(), called
-in the transaction abort path, we free all entries from the rbtree
-"dirty_extent_root" with rbtree_postorder_for_each_entry_safe(), but we
-don't actually empty the rbtree - it's still pointing to nodes that were
-freed.
-
-So set the rbtree's root node to NULL to avoid this warning (assign
-RB_ROOT).
-
-Fixes: 81f7eb00ff5b ("btrfs: destroy qgroup extent records on transaction abort")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Suggested-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Message-ID: <20230602144009.1225632-11-mathias.nyman@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-mem.c |   31 ++++++++++++++++++++++++-------
+ drivers/usb/host/xhci-pci.c |    2 ++
+ drivers/usb/host/xhci.h     |    1 +
+ 3 files changed, 27 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -4342,4 +4342,5 @@ void btrfs_qgroup_destroy_extent_records
- 		ulist_free(entry->old_roots);
- 		kfree(entry);
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2146,7 +2146,7 @@ static void xhci_add_in_port(struct xhci
+ {
+ 	u32 temp, port_offset, port_count;
+ 	int i;
+-	u8 major_revision, minor_revision;
++	u8 major_revision, minor_revision, tmp_minor_revision;
+ 	struct xhci_hub *rhub;
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_port_cap *port_cap;
+@@ -2166,6 +2166,15 @@ static void xhci_add_in_port(struct xhci
+ 		 */
+ 		if (minor_revision > 0x00 && minor_revision < 0x10)
+ 			minor_revision <<= 4;
++		/*
++		 * Some zhaoxin's xHCI controller that follow usb3.1 spec
++		 * but only support Gen1.
++		 */
++		if (xhci->quirks & XHCI_ZHAOXIN_HOST) {
++			tmp_minor_revision = minor_revision;
++			minor_revision = 0;
++		}
++
+ 	} else if (major_revision <= 0x02) {
+ 		rhub = &xhci->usb2_rhub;
+ 	} else {
+@@ -2175,10 +2184,6 @@ static void xhci_add_in_port(struct xhci
+ 		/* Ignoring port protocol we can't understand. FIXME */
+ 		return;
  	}
-+	*root = RB_ROOT;
- }
+-	rhub->maj_rev = XHCI_EXT_PORT_MAJOR(temp);
+-
+-	if (rhub->min_rev < minor_revision)
+-		rhub->min_rev = minor_revision;
+ 
+ 	/* Port offset and count in the third dword, see section 7.2 */
+ 	temp = readl(addr + 2);
+@@ -2197,8 +2202,6 @@ static void xhci_add_in_port(struct xhci
+ 	if (xhci->num_port_caps > max_caps)
+ 		return;
+ 
+-	port_cap->maj_rev = major_revision;
+-	port_cap->min_rev = minor_revision;
+ 	port_cap->psi_count = XHCI_EXT_PORT_PSIC(temp);
+ 
+ 	if (port_cap->psi_count) {
+@@ -2219,6 +2222,11 @@ static void xhci_add_in_port(struct xhci
+ 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i - 1])))
+ 				port_cap->psi_uid_count++;
+ 
++			if (xhci->quirks & XHCI_ZHAOXIN_HOST &&
++			    major_revision == 0x03 &&
++			    XHCI_EXT_PORT_PSIV(port_cap->psi[i]) >= 5)
++				minor_revision = tmp_minor_revision;
++
+ 			xhci_dbg(xhci, "PSIV:%d PSIE:%d PLT:%d PFD:%d LP:%d PSIM:%d\n",
+ 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i]),
+ 				  XHCI_EXT_PORT_PSIE(port_cap->psi[i]),
+@@ -2228,6 +2236,15 @@ static void xhci_add_in_port(struct xhci
+ 				  XHCI_EXT_PORT_PSIM(port_cap->psi[i]));
+ 		}
+ 	}
++
++	rhub->maj_rev = major_revision;
++
++	if (rhub->min_rev < minor_revision)
++		rhub->min_rev = minor_revision;
++
++	port_cap->maj_rev = major_revision;
++	port_cap->min_rev = minor_revision;
++
+ 	/* cache usb2 port capabilities */
+ 	if (major_revision < 0x03 && xhci->num_ext_caps < max_caps)
+ 		xhci->ext_caps[xhci->num_ext_caps++] = temp;
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -331,6 +331,8 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
++		xhci->quirks |= XHCI_ZHAOXIN_HOST;
++
+ 		if (pdev->device == 0x9202) {
+ 			xhci->quirks |= XHCI_RESET_ON_RESUME;
+ 			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1896,6 +1896,7 @@ struct xhci_hcd {
+ #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
+ #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
+ #define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
++#define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 
 
