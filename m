@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B89047612BA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EC7C76155E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233955AbjGYLFV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40438 "EHLO
+        id S234625AbjGYL2V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:28:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233895AbjGYLFI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:08 -0400
+        with ESMTP id S234706AbjGYL2I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76587213C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A4697
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1254C6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2034AC433C7;
-        Tue, 25 Jul 2023 11:02:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 308176168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BA4C433C7;
+        Tue, 25 Jul 2023 11:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282946;
-        bh=/bi/n13EhkQIvQMtuRSki9i9QSE/wiahr4R11XxqrSA=;
+        s=korg; t=1690284486;
+        bh=0Aw/59vnlWzcu5s0Nje/aDuhJCutSPF7l2kyhEwJnuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q6ou0OR2CIT980cB0Uq40HDbrcXGie42rDvpTVLWXy2IXyU80mkShxdReyriPzqdH
-         VEo1tvThrZuHAqUnHqGjfaPBTHmzJu3T520o2T9lU7jm8Ai0ik+DJNzO4Q4uZkXJts
-         BUDU3tR1lRMzCum1FZ3bhMwgo4ffXYx248hiSRf0=
+        b=izyvumgWh4OuaB6ngb6RzC8zTMLU2dig6R0WTdlN5uo1F/p6U2hT+jt9cPW0L+7Dg
+         tAXEpu5QYobhIg3scv3ar+Z9KPBh5mJbEjfBPHY3RVMEZWsu8nPKQCbT1PCPqnqKgS
+         X5RT4/o10pAAEs2xIH54VbG+1E7Btz44gZ8UoaYc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/183] ASoC: codecs: wcd938x: fix mbhc impedance loglevel
+Subject: [PATCH 5.10 372/509] net/sched: make psched_mtu() RTNL-less safe
 Date:   Tue, 25 Jul 2023 12:45:11 +0200
-Message-ID: <20230725104510.948513134@linuxfoundation.org>
+Message-ID: <20230725104610.749305626@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit e5ce198bd5c6923b6a51e1493b1401f84c24b26d ]
+[ Upstream commit 150e33e62c1fa4af5aaab02776b6c3812711d478 ]
 
-Demote the MBHC impedance measurement printk, which is not an error
-message, from error to debug level.
+Eric Dumazet says[1]:
+-------
+Speaking of psched_mtu(), I see that net/sched/sch_pie.c is using it
+without holding RTNL, so dev->mtu can be changed underneath.
+KCSAN could issue a warning.
+-------
 
-While at it, fix the capitalisation of "ohm" and add the missing space
-before the opening parenthesis.
+Annotate dev->mtu with READ_ONCE() so KCSAN don't issue a warning.
 
-Fixes: bcee7ed09b8e ("ASoC: codecs: wcd938x: add Multi Button Headset Control support")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230630142717.5314-2-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[1] https://lore.kernel.org/all/CANn89iJoJO5VtaJ-2=_d2aOQhb0Xw8iBT_Cxqp2HyuS-zj6azw@mail.gmail.com/
+
+v1 -> v2: Fix commit message
+
+Fixes: d4b36210c2e6 ("net: pkt_sched: PIE AQM scheme")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230711021634.561598-1-pctammela@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd938x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/pkt_sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
-index df0b3ac7f1321..7715040383840 100644
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -2165,8 +2165,8 @@ static inline void wcd938x_mbhc_get_result_params(struct wcd938x_priv *wcd938x,
- 	else if (x1 < minCode_param[noff])
- 		*zdet = WCD938X_ZDET_FLOATING_IMPEDANCE;
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index ba781e0aaf566..e186b2bd8c860 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -136,7 +136,7 @@ extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
+  */
+ static inline unsigned int psched_mtu(const struct net_device *dev)
+ {
+-	return dev->mtu + dev->hard_header_len;
++	return READ_ONCE(dev->mtu) + dev->hard_header_len;
+ }
  
--	pr_err("%s: d1=%d, c1=%d, x1=0x%x, z_val=%d(milliOhm)\n",
--		__func__, d1, c1, x1, *zdet);
-+	pr_debug("%s: d1=%d, c1=%d, x1=0x%x, z_val=%d (milliohm)\n",
-+		 __func__, d1, c1, x1, *zdet);
- ramp_down:
- 	i = 0;
- 	while (x1) {
+ static inline struct net *qdisc_net(struct Qdisc *q)
 -- 
 2.39.2
 
