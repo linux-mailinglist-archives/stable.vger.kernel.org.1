@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43CFB761513
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10016761650
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234579AbjGYLZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34524 "EHLO
+        id S234841AbjGYLiU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234589AbjGYLZX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:23 -0400
+        with ESMTP id S234920AbjGYLiA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991E0187
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F891BF8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2305C6167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308FAC433C8;
-        Tue, 25 Jul 2023 11:25:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4268461698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CFBC433C9;
+        Tue, 25 Jul 2023 11:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284321;
-        bh=z2i4tqGdIBZVJUZBD/ygEiYHnQ2ow9EvNjNGLvwFwhc=;
+        s=korg; t=1690285066;
+        bh=RybqTSJzi4FIo+abIa7eRqW+uSupp2XZWUGQYRsODS8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KbzW8LhrOn/W4Juyp8o6RDaNkVZVN72JdHIfeHM1k6QQ4LJRCyMz0QzIZrQaq2Wcr
-         B4VUxESZ+BD3r/f7f3Ri/8wltkvUt67IocHvD27goyhYNXKPPOTv0aYvANwRnpMaR0
-         6CD6u6ro5o7mpCmheHi1R4tBk+rFdgHNGaFcXbM0=
+        b=iFeWlHFhSuiW3TVHiV1iUFxhIcJhxeBs5YJ309129M5GBRtbcrklSGYMdekCJjm8N
+         3iW02voYkh9rJ2inVPoAWhO4cSB20BJc1Z47LesnacnE7nynbVyavgJalMkJ/obUw7
+         RK0HSno6MU1OZpA44lsq5yFywBnsLEZmdiwrquNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chevron Li <chevron.li@bayhubtech.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 286/509] mmc: sdhci: fix DMA configure compatibility issue when 64bit DMA mode is used.
+        patches@lists.linux.dev, Luca Weiss <luca@z3ntu.xyz>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 072/313] Input: drv260x - sleep between polling GO bit
 Date:   Tue, 25 Jul 2023 12:43:45 +0200
-Message-ID: <20230725104606.826331838@linuxfoundation.org>
+Message-ID: <20230725104524.087528226@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,58 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chevron Li <chevron.li@bayhubtech.com>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-commit 20dbd07ef0a8bc29eb03d6a95258ac8934cbe52d upstream.
+[ Upstream commit efef661dfa6bf8cbafe4cd6a97433fcef0118967 ]
 
-Bayhub SD host has hardware limitation:
-1.The upper 32bit address is inhibited to be written at SD Host Register
-  [03E][13]=0 (32bits addressing) mode, is admitted to be written only at
-  SD Host Register [03E][13]=1 (64bits addressing) mode.
-2.Because of above item#1, need to configure SD Host Register [03E][13] to
-  1(64bits addressing mode) before set 64bit ADMA system address's higher
-  32bits SD Host Register [05F~05C] if 64 bits addressing mode is used.
+When doing the initial startup there's no need to poll without any
+delay and spam the I2C bus.
 
-The hardware limitation is reasonable for below reasons:
-1.Normal flow should set DMA working mode first, then do
-  DMA-transfer-related configuration, such as system address.
-2.The hardware limitation may avoid the software to configure wrong higher
-  32bit address at 32bits addressing mode although it is redundant.
+Let's sleep 15ms between each attempt, which is the same time as used
+in the vendor driver.
 
-The change that set 32bits/64bits addressing mode before set ADMA address,
-  has no side-effect to other host IPs for below reason:
-The setting order is reasonable and standard: DMA Mode setting first and
-  then DMA address setting. It meets all DMA setting sequence.
-
-Signed-off-by: Chevron Li <chevron.li@bayhubtech.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230523111114.18124-1-chevron_li@126.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7132fe4f5687 ("Input: drv260x - add TI drv260x haptics driver")
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20230430-drv260x-improvements-v1-2-1fb28b4cc698@z3ntu.xyz
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/misc/drv260x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -1145,6 +1145,8 @@ static void sdhci_prepare_data(struct sd
- 		}
+diff --git a/drivers/input/misc/drv260x.c b/drivers/input/misc/drv260x.c
+index 79d7fa710a714..54002d1a446b7 100644
+--- a/drivers/input/misc/drv260x.c
++++ b/drivers/input/misc/drv260x.c
+@@ -435,6 +435,7 @@ static int drv260x_init(struct drv260x_data *haptics)
  	}
  
-+	sdhci_config_dma(host);
-+
- 	if (host->flags & SDHCI_REQ_USE_DMA) {
- 		int sg_cnt = sdhci_pre_dma_transfer(host, data, COOKIE_MAPPED);
- 
-@@ -1164,8 +1166,6 @@ static void sdhci_prepare_data(struct sd
- 		}
- 	}
- 
--	sdhci_config_dma(host);
--
- 	if (!(host->flags & SDHCI_REQ_USE_DMA)) {
- 		int flags;
- 
+ 	do {
++		usleep_range(15000, 15500);
+ 		error = regmap_read(haptics->regmap, DRV260X_GO, &cal_buf);
+ 		if (error) {
+ 			dev_err(&haptics->client->dev,
+-- 
+2.39.2
+
 
 
