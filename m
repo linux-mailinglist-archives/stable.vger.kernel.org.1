@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3B28761596
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D61A4761348
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234780AbjGYLaq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38568 "EHLO
+        id S234140AbjGYLJW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234786AbjGYLap (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DD45FB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:44 -0700 (PDT)
+        with ESMTP id S234061AbjGYLJE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A4A72733
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 144C2615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EA0C433C7;
-        Tue, 25 Jul 2023 11:30:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1983361648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A016C433C7;
+        Tue, 25 Jul 2023 11:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284643;
-        bh=VePy0bQcPHZmfvEXYaOTEDqkdbRFhfpENS4TGVRrFMU=;
+        s=korg; t=1690283272;
+        bh=F3eCiaUAcg3QHaoyKn6aMrx9ZXD5Er2WcoaCX3xk1aA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y1OwsE5zR30PLnTYPXG1ITy6O/NN3mk1orfTKqObJ60V5GuyuTd/2RUPpJsc9gZps
-         Z+DndVA9sYpcPz7QDR0dMWupX5977YRUDBpAD3QF7zO00d4dcJa29IlIMH2ivyl6CN
-         4rqlx/Q395/T0S1205jtDt0QtHYaQ3Cy8WRFRjA4=
+        b=Omgj2qGxD+ijL3vgGCyyGAuf2xhBQE4NMaZJAX6is1S8Uswy8zRlN+yZ4AQlZeeCz
+         BTgomt3jHOdtFdwtuzmCDKEU4Gow66bWidonuHLkik4RlHqWID/UeTk+8+C8cxuLa+
+         SAbJkmHrF3vnIU74VNNZQGaW9H2kCGh89mZSdYY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 429/509] scsi: qla2xxx: Wait for io return on terminate rport
+        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
+        Jocelyn Falempe <jfalempe@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 5.15 17/78] drm/client: Fix memory leak in drm_client_modeset_probe
 Date:   Tue, 25 Jul 2023 12:46:08 +0200
-Message-ID: <20230725104613.354990392@linuxfoundation.org>
+Message-ID: <20230725104452.007255820@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,71 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quinn Tran <qutran@marvell.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-commit fc0cba0c7be8261a1625098bd1d695077ec621c9 upstream.
+commit 2329cc7a101af1a844fbf706c0724c0baea38365 upstream.
 
-System crash due to use after free.
-Current code allows terminate_rport_io to exit before making
-sure all IOs has returned. For FCP-2 device, IO's can hang
-on in HW because driver has not tear down the session in FW at
-first sign of cable pull. When dev_loss_tmo timer pops,
-terminate_rport_io is called and upper layer is about to
-free various resources. Terminate_rport_io trigger qla to do
-the final cleanup, but the cleanup might not be fast enough where it
-leave qla still holding on to the same resource.
+When a new mode is set to modeset->mode, the previous mode should be freed.
+This fixes the following kmemleak report:
 
-Wait for IO's to return to upper layer before resources are freed.
+drm_mode_duplicate+0x45/0x220 [drm]
+drm_client_modeset_probe+0x944/0xf50 [drm]
+__drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
+drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
+drm_client_register+0x169/0x240 [drm]
+ast_pci_probe+0x142/0x190 [ast]
+local_pci_probe+0xdc/0x180
+work_for_cpu_fn+0x4e/0xa0
+process_one_work+0x8b7/0x1540
+worker_thread+0x70a/0xed0
+kthread+0x29f/0x340
+ret_from_fork+0x1f/0x30
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230428075339.32551-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+cc: <stable@vger.kernel.org>
+Reported-by: Zhang Yi <yizhan@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-3-jfalempe@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_attr.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/drm_client_modeset.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -2698,6 +2698,7 @@ static void
- qla2x00_terminate_rport_io(struct fc_rport *rport)
- {
- 	fc_port_t *fcport = *(fc_port_t **)rport->dd_data;
-+	scsi_qla_host_t *vha;
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -865,6 +865,7 @@ int drm_client_modeset_probe(struct drm_
+ 				break;
+ 			}
  
- 	if (!fcport)
- 		return;
-@@ -2707,9 +2708,12 @@ qla2x00_terminate_rport_io(struct fc_rpo
- 
- 	if (test_bit(ABORT_ISP_ACTIVE, &fcport->vha->dpc_flags))
- 		return;
-+	vha = fcport->vha;
- 
- 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
- 		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
-+		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
-+			0, WAIT_TARGET);
- 		return;
- 	}
- 	/*
-@@ -2724,6 +2728,15 @@ qla2x00_terminate_rport_io(struct fc_rpo
- 		else
- 			qla2x00_port_logout(fcport->vha, fcport);
- 	}
-+
-+	/* check for any straggling io left behind */
-+	if (qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24, 0, WAIT_TARGET)) {
-+		ql_log(ql_log_warn, vha, 0x300b,
-+		       "IO not return.  Resetting. \n");
-+		set_bit(ISP_ABORT_NEEDED, &vha->dpc_flags);
-+		qla2xxx_wake_dpc(vha);
-+		qla2x00_wait_for_chip_reset(vha);
-+	}
- }
- 
- static int
++			kfree(modeset->mode);
+ 			modeset->mode = drm_mode_duplicate(dev, mode);
+ 			drm_connector_get(connector);
+ 			modeset->connectors[modeset->num_connectors++] = connector;
 
 
