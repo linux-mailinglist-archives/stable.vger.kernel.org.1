@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BCC4761632
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 197C5761157
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234804AbjGYLhV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:37:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44472 "EHLO
+        id S232742AbjGYKuE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:50:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234793AbjGYLhQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:37:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AC5F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:02 -0700 (PDT)
+        with ESMTP id S233725AbjGYKt7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2796199D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 900F661698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F335C433C7;
-        Tue, 25 Jul 2023 11:37:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87DFB61648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95373C433C7;
+        Tue, 25 Jul 2023 10:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285022;
-        bh=qmlR8L2IH4RcnaGtnZPlTVFE9NnIV91ssNg7HdyFgHo=;
+        s=korg; t=1690282194;
+        bh=scIPt4ADhKDFOgyuQDlf1im9g/OQjr3UD6+SoWIb1bQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k4w/2YrJGg/Fd1piLeccFoHTNwHMLn+wwz5nkK+LMePNvH4XFIU/GfNN7wnTFa2ll
-         ypXoFew3W8M6+WmA95cElFEfUpGCUsaM/8JYeWuhCmhBx31Yw0zWoXf/67mrTweOxR
-         KtobCh5qwHRvGqPJC/Z36WDm0z/GJHJQkARovUjk=
+        b=L7OBB4Qjv1NK/WvMM6cMmOtroQS0jLaCcSmHZmxKCVvAOHKsYuqU+1ousHPBQjkIT
+         +QQTqJzmV0ifsJjDGtiO4EWk13oDjH5DaK8ImtugOUiscuVdLVt5OCXI61hRWZ5N2Q
+         plXcw9n/tGlhdnwwN+SEPib+mjQMe0pQvDIeGLrI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Nicolas Escande <nico.escande@gmail.com>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/313] wifi: ath9k: Fix possible stall on ath9k_txq_list_has_key()
-Date:   Tue, 25 Jul 2023 12:43:28 +0200
-Message-ID: <20230725104523.452310440@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
+        Jeffrey Hugo <quic_jhugo@quicinc.com>
+Subject: [PATCH 6.4 042/227] accel/qaic: Add consistent integer overflow checks
+Date:   Tue, 25 Jul 2023 12:43:29 +0200
+Message-ID: <20230725104516.561228017@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,108 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 75086cc6dee046e3fbb3dba148b376d8802f83bc ]
+commit 47d87f71d00b7091b43a56f608f7151b33e5772e upstream.
 
-On EDMA capable hardware, ath9k_txq_list_has_key() can enter infinite
-loop if it is called while all txq_fifos have packets that use different
-key that the one we are looking for. Fix it by exiting the loop if all
-txq_fifos have been checked already.
+The encode_dma() function has integer overflow checks.  The
+encode_passthrough(), encode_activate() and encode_status() functions
+did not.  I added integer overflow checking everywhere.  I also
+updated the integer overflow checking in encode_dma() to use size_add()
+so everything is consistent.
 
-Because this loop is called under spin_lock_bh() (see ath_txq_lock) it
-causes the following rcu stall:
-
-rcu: INFO: rcu_sched self-detected stall on CPU
-ath10k_pci 0000:01:00.0: failed to read temperature -11
-rcu:    1-....: (5254 ticks this GP) idle=189/1/0x4000000000000002 softirq=8442983/8442984 fqs=2579
-        (t=5257 jiffies g=17983297 q=334)
-Task dump for CPU 1:
-task:hostapd         state:R  running task     stack:    0 pid:  297 ppid:   289 flags:0x0000000a
-Call trace:
- dump_backtrace+0x0/0x170
- show_stack+0x1c/0x24
- sched_show_task+0x140/0x170
- dump_cpu_task+0x48/0x54
- rcu_dump_cpu_stacks+0xf0/0x134
- rcu_sched_clock_irq+0x8d8/0x9fc
- update_process_times+0xa0/0xec
- tick_sched_timer+0x5c/0xd0
- __hrtimer_run_queues+0x154/0x320
- hrtimer_interrupt+0x120/0x2f0
- arch_timer_handler_virt+0x38/0x44
- handle_percpu_devid_irq+0x9c/0x1e0
- handle_domain_irq+0x64/0x90
- gic_handle_irq+0x78/0xb0
- call_on_irq_stack+0x28/0x38
- do_interrupt_handler+0x54/0x5c
- el1_interrupt+0x2c/0x4c
- el1h_64_irq_handler+0x14/0x1c
- el1h_64_irq+0x74/0x78
- ath9k_txq_has_key+0x1bc/0x250 [ath9k]
- ath9k_set_key+0x1cc/0x3dc [ath9k]
- drv_set_key+0x78/0x170
- ieee80211_key_replace+0x564/0x6cc
- ieee80211_key_link+0x174/0x220
- ieee80211_add_key+0x11c/0x300
- nl80211_new_key+0x12c/0x330
- genl_family_rcv_msg_doit+0xbc/0x11c
- genl_rcv_msg+0xd8/0x1c4
- netlink_rcv_skb+0x40/0x100
- genl_rcv+0x3c/0x50
- netlink_unicast+0x1ec/0x2c0
- netlink_sendmsg+0x198/0x3c0
- ____sys_sendmsg+0x210/0x250
- ___sys_sendmsg+0x78/0xc4
- __sys_sendmsg+0x4c/0x90
- __arm64_sys_sendmsg+0x28/0x30
- invoke_syscall.constprop.0+0x60/0x100
- do_el0_svc+0x48/0xd0
- el0_svc+0x14/0x50
- el0t_64_sync_handler+0xa8/0xb0
- el0t_64_sync+0x158/0x15c
-
-This rcu stall is hard to reproduce as is, but changing ATH_TXFIFO_DEPTH
-from 8 to 2 makes it reasonably easy to reproduce.
-
-Fixes: ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Tested-by: Nicolas Escande <nico.escande@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230609093744.1985-1-repk@triplefau.lt
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 129776ac2e38 ("accel/qaic: Add control path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Cc: stable@vger.kernel.org # 6.4.x
+[jhugo: tweak if in encode_dma() to match existing style]
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/ZK0Q7IsPkj6WSCcL@moroto
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/accel/qaic/qaic_control.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index eb5751a45f266..4e606a4b19f2d 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -847,7 +847,7 @@ static bool ath9k_txq_list_has_key(struct list_head *txq_list, u32 keyix)
- static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
- {
- 	struct ath_hw *ah = sc->sc_ah;
--	int i;
-+	int i, j;
- 	struct ath_txq *txq;
- 	bool key_in_use = false;
+--- a/drivers/accel/qaic/qaic_control.c
++++ b/drivers/accel/qaic/qaic_control.c
+@@ -367,7 +367,7 @@ static int encode_passthrough(struct qai
+ 	if (in_trans->hdr.len % 8 != 0)
+ 		return -EINVAL;
  
-@@ -865,8 +865,9 @@ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
- 		if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) {
- 			int idx = txq->txq_tailidx;
+-	if (msg_hdr_len + in_trans->hdr.len > QAIC_MANAGE_EXT_MSG_LENGTH)
++	if (size_add(msg_hdr_len, in_trans->hdr.len) > QAIC_MANAGE_EXT_MSG_LENGTH)
+ 		return -ENOSPC;
  
--			while (!key_in_use &&
--			       !list_empty(&txq->txq_fifo[idx])) {
-+			for (j = 0; !key_in_use &&
-+			     !list_empty(&txq->txq_fifo[idx]) &&
-+			     j < ATH_TXFIFO_DEPTH; j++) {
- 				key_in_use = ath9k_txq_list_has_key(
- 					&txq->txq_fifo[idx], keyix);
- 				INCR(idx, ATH_TXFIFO_DEPTH);
--- 
-2.39.2
-
+ 	trans_wrapper = add_wrapper(wrappers,
+@@ -561,11 +561,8 @@ static int encode_dma(struct qaic_device
+ 	msg = &wrapper->msg;
+ 	msg_hdr_len = le32_to_cpu(msg->hdr.len);
+ 
+-	if (msg_hdr_len > (UINT_MAX - QAIC_MANAGE_EXT_MSG_LENGTH))
+-		return -EINVAL;
+-
+ 	/* There should be enough space to hold at least one ASP entry. */
+-	if (msg_hdr_len + sizeof(*out_trans) + sizeof(struct wire_addr_size_pair) >
++	if (size_add(msg_hdr_len, sizeof(*out_trans) + sizeof(struct wire_addr_size_pair)) >
+ 	    QAIC_MANAGE_EXT_MSG_LENGTH)
+ 		return -ENOMEM;
+ 
+@@ -638,7 +635,7 @@ static int encode_activate(struct qaic_d
+ 	msg = &wrapper->msg;
+ 	msg_hdr_len = le32_to_cpu(msg->hdr.len);
+ 
+-	if (msg_hdr_len + sizeof(*out_trans) > QAIC_MANAGE_MAX_MSG_LENGTH)
++	if (size_add(msg_hdr_len, sizeof(*out_trans)) > QAIC_MANAGE_MAX_MSG_LENGTH)
+ 		return -ENOSPC;
+ 
+ 	if (!in_trans->queue_size)
+@@ -722,7 +719,7 @@ static int encode_status(struct qaic_dev
+ 	msg = &wrapper->msg;
+ 	msg_hdr_len = le32_to_cpu(msg->hdr.len);
+ 
+-	if (msg_hdr_len + in_trans->hdr.len > QAIC_MANAGE_MAX_MSG_LENGTH)
++	if (size_add(msg_hdr_len, in_trans->hdr.len) > QAIC_MANAGE_MAX_MSG_LENGTH)
+ 		return -ENOSPC;
+ 
+ 	trans_wrapper = add_wrapper(wrappers, sizeof(*trans_wrapper));
 
 
