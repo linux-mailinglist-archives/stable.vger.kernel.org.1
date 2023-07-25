@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD31376147D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 237F876147F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234368AbjGYLTz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56982 "EHLO
+        id S234379AbjGYLUE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:20:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234399AbjGYLTx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:19:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBD99D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:19:52 -0700 (PDT)
+        with ESMTP id S234384AbjGYLTz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:19:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D3713D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:19:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C67F661683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:19:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D836CC433C8;
-        Tue, 25 Jul 2023 11:19:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8548A6167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:19:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95653C433C8;
+        Tue, 25 Jul 2023 11:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283991;
-        bh=to5B9D5qf0Y6+XQ1rhkyuHzXZKaeHvIUOnBmmVx6Q+U=;
+        s=korg; t=1690283994;
+        bh=zY9XjGwUuVLCFgXWsLvhFCPuVnxtRpJKWAShISqKmkI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R96bF89e2NGu1x8BeRfz1kGCjPoLaTSopaHyRVcVNnlshbvIDh/w5jMLTiWf8MuJb
-         WmxAje/2mH5cDEX8BICdYA5ahQ4bOuwuYaA9rV76pzlHGbmRlTyhXZI4tRCeWUAH9t
-         p+9F4tbHNo+pmuzhYWkgmn8VBh22nOp8yOhPiyB4=
+        b=yN//cHx7TiRbQLr+KDDHUET1bxTCwf59CLtHIAhbt/tGZ6Wxx42bcG9NWPb4Ip3xx
+         fn3aBWilxTvpb6+Skso0Q6Uh894RjwojpEm5WWQZtjNJj7ok0xFiLwaumCdFDI8Rxt
+         B5G11Ys/b8OMR+3xgJnDmQ3DAzw2VSO6Lu9IupHI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Laurent Vivier <lvivier@redhat.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 196/509] hwrng: virtio - add an internal buffer
-Date:   Tue, 25 Jul 2023 12:42:15 +0200
-Message-ID: <20230725104602.726374395@linuxfoundation.org>
+Subject: [PATCH 5.10 197/509] hwrng: virtio - dont wait on cleanup
+Date:   Tue, 25 Jul 2023 12:42:16 +0200
+Message-ID: <20230725104602.765506552@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
 References: <20230725104553.588743331@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,123 +57,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Laurent Vivier <lvivier@redhat.com>
 
-[ Upstream commit bf3175bc50a3754dc427e2f5046e17a9fafc8be7 ]
+[ Upstream commit 2bb31abdbe55742c89f4dc0cc26fcbc8467364f6 ]
 
-hwrng core uses two buffers that can be mixed in the
-virtio-rng queue.
+When virtio-rng device was dropped by the hwrng core we were forced
+to wait the buffer to come back from the device to not have
+remaining ongoing operation that could spoil the buffer.
 
-If the buffer is provided with wait=0 it is enqueued in the
-virtio-rng queue but unused by the caller.
-On the next call, core provides another buffer but the
-first one is filled instead and the new one queued.
-And the caller reads the data from the new one that is not
-updated, and the data in the first one are lost.
+But now, as the buffer is internal to the virtio-rng we can release
+the waiting loop immediately, the buffer will be retrieve and use
+when the virtio-rng driver will be selected again.
 
-To avoid this mix, virtio-rng needs to use its own unique
-internal buffer at a cost of a data copy to the caller buffer.
+This avoids to hang on an rng_current write command if the virtio-rng
+device is blocked by a lack of entropy. This allows to select
+another entropy source if the current one is empty.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Link: https://lore.kernel.org/r/20211028101111.128049-2-lvivier@redhat.com
+Link: https://lore.kernel.org/r/20211028101111.128049-3-lvivier@redhat.com
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Stable-dep-of: ac52578d6e8d ("hwrng: virtio - Fix race on data_avail and actual data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/virtio-rng.c | 43 ++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ drivers/char/hw_random/virtio-rng.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
-index a90001e02bf7a..208c547dcac16 100644
+index 208c547dcac16..173aeea835bb6 100644
 --- a/drivers/char/hw_random/virtio-rng.c
 +++ b/drivers/char/hw_random/virtio-rng.c
-@@ -18,13 +18,20 @@ static DEFINE_IDA(rng_index_ida);
- struct virtrng_info {
- 	struct hwrng hwrng;
- 	struct virtqueue *vq;
--	struct completion have_data;
- 	char name[25];
--	unsigned int data_avail;
- 	int index;
- 	bool busy;
- 	bool hwrng_register_done;
- 	bool hwrng_removed;
-+	/* data transfer */
-+	struct completion have_data;
-+	unsigned int data_avail;
-+	/* minimal size returned by rng_buffer_size() */
-+#if SMP_CACHE_BYTES < 32
-+	u8 data[32];
-+#else
-+	u8 data[SMP_CACHE_BYTES];
-+#endif
- };
+@@ -82,6 +82,11 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
+ 		ret = wait_for_completion_killable(&vi->have_data);
+ 		if (ret < 0)
+ 			return ret;
++		/* if vi->data_avail is 0, we have been interrupted
++		 * by a cleanup, but buffer stays in the queue
++		 */
++		if (vi->data_avail == 0)
++			return read;
  
- static void random_recv_done(struct virtqueue *vq)
-@@ -39,14 +46,14 @@ static void random_recv_done(struct virtqueue *vq)
- }
- 
- /* The host will fill any buffer we give it with sweet, sweet randomness. */
--static void register_buffer(struct virtrng_info *vi, u8 *buf, size_t size)
-+static void register_buffer(struct virtrng_info *vi)
- {
- 	struct scatterlist sg;
- 
--	sg_init_one(&sg, buf, size);
-+	sg_init_one(&sg, vi->data, sizeof(vi->data));
- 
- 	/* There should always be room for one buffer. */
--	virtqueue_add_inbuf(vi->vq, &sg, 1, buf, GFP_KERNEL);
-+	virtqueue_add_inbuf(vi->vq, &sg, 1, vi->data, GFP_KERNEL);
- 
- 	virtqueue_kick(vi->vq);
- }
-@@ -55,6 +62,8 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
- {
- 	int ret;
+ 		chunk = min_t(unsigned int, size, vi->data_avail);
+ 		memcpy(buf + read, vi->data, chunk);
+@@ -105,7 +110,7 @@ static void virtio_cleanup(struct hwrng *rng)
  	struct virtrng_info *vi = (struct virtrng_info *)rng->priv;
-+	unsigned int chunk;
-+	size_t read;
  
- 	if (vi->hwrng_removed)
- 		return -ENODEV;
-@@ -62,19 +71,33 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
- 	if (!vi->busy) {
- 		vi->busy = true;
- 		reinit_completion(&vi->have_data);
--		register_buffer(vi, buf, size);
-+		register_buffer(vi);
- 	}
- 
- 	if (!wait)
- 		return 0;
- 
--	ret = wait_for_completion_killable(&vi->have_data);
--	if (ret < 0)
--		return ret;
-+	read = 0;
-+	while (size != 0) {
-+		ret = wait_for_completion_killable(&vi->have_data);
-+		if (ret < 0)
-+			return ret;
-+
-+		chunk = min_t(unsigned int, size, vi->data_avail);
-+		memcpy(buf + read, vi->data, chunk);
-+		read += chunk;
-+		size -= chunk;
-+		vi->data_avail = 0;
-+
-+		if (size != 0) {
-+			reinit_completion(&vi->have_data);
-+			register_buffer(vi);
-+		}
-+	}
- 
- 	vi->busy = false;
- 
--	return vi->data_avail;
-+	return read;
+ 	if (vi->busy)
+-		wait_for_completion(&vi->have_data);
++		complete(&vi->have_data);
  }
  
- static void virtio_cleanup(struct hwrng *rng)
+ static int probe_common(struct virtio_device *vdev)
 -- 
 2.39.2
 
