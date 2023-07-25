@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B3C76164C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5729A76117C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234848AbjGYLiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45350 "EHLO
+        id S233748AbjGYKv6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234943AbjGYLiD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:03 -0400
+        with ESMTP id S233794AbjGYKvM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:51:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974B310F7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77AE91FC4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3262561654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E32C433C7;
-        Tue, 25 Jul 2023 11:37:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB8FE6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98DDC433C9;
+        Tue, 25 Jul 2023 10:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285069;
-        bh=9Iye4DWd4dvF7GouocvFllJ2rK2/lru3L0OBB1+wV38=;
+        s=korg; t=1690282244;
+        bh=ej7toLlbG+n4n24AN0TO8PJP/e7IERNfVL3iDT9ue7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V9LAm2g9109O+JpNMl0uUEAJao6B/7ARIonWvZHxeH6qSvdpALOCEq/FDBS6aEy4M
-         EyzF3MH3QCAfxVutOWWPqnmes4jOwcAM9glynRNwjh+RG6gfEg42C39FOhZP/GHYzz
-         aiJJpK9Y4c0TlstHbT7h+/UuYsRT+0fBCmtrCO2g=
+        b=T/BA2zk5YMsYFfk/OjIhXjpAHlL3gbceUp+4llDj0uIDi/ba3VgDUDuzWnXhCzaBr
+         zqXWaIXw1ocXahrZ8RDxKrKAfs2NUBH0bxiWaSR1CtrjSMM+TPNA0CxcYZ+pfnGAQk
+         15b6eBLcGgxDIvCHidXYMjyh1lG3ithTXozDXDRQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/313] ARM: dts: BCM5301X: Drop "clock-names" from the SPI node
+        patches@lists.linux.dev, Oder Chiou <oder_chiou@realtek.com>,
+        Sameer Pujar <spujar@nvidia.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 059/227] ASoC: rt5640: Fix sleep in atomic context
 Date:   Tue, 25 Jul 2023 12:43:46 +0200
-Message-ID: <20230725104524.133514139@linuxfoundation.org>
+Message-ID: <20230725104517.204093481@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,39 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Sameer Pujar <spujar@nvidia.com>
 
-[ Upstream commit d3c8e2c5757153bbfad70019ec1decbca86f3def ]
+commit 70a6404ff610aa4889d98977da131c37f9ff9d1f upstream.
 
-There is no such property in the SPI controller binding documentation.
-Also Linux driver doesn't look for it.
+Following prints are observed while testing audio on Jetson AGX Orin which
+has onboard RT5640 audio codec:
 
-This fixes:
-arch/arm/boot/dts/bcm4708-asus-rt-ac56u.dtb: spi@18029200: Unevaluated properties are not allowed ('clock-names' was unexpected)
-        From schema: Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml
+  BUG: sleeping function called from invalid context at kernel/workqueue.c:3027
+  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/0
+  preempt_count: 10001, expected: 0
+  RCU nest depth: 0, expected: 0
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 0 at kernel/irq/handle.c:159 __handle_irq_event_percpu+0x1e0/0x270
+  ---[ end trace ad1c64905aac14a6 ]-
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230503122830.3200-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The IRQ handler rt5640_irq() runs in interrupt context and can sleep
+during cancel_delayed_work_sync().
+
+Fix this by running IRQ handler, rt5640_irq(), in thread context.
+Hence replace request_irq() calls with devm_request_threaded_irq().
+
+Fixes: 051dade34695 ("ASoC: rt5640: Fix the wrong state of JD1 and JD2")
+Cc: stable@vger.kernel.org
+Cc: Oder Chiou <oder_chiou@realtek.com>
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://lore.kernel.org/r/1688015537-31682-4-git-send-email-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/bcm5301x.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/codecs/rt5640.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm5301x.dtsi b/arch/arm/boot/dts/bcm5301x.dtsi
-index 05d67f9769118..bf8154aa203a7 100644
---- a/arch/arm/boot/dts/bcm5301x.dtsi
-+++ b/arch/arm/boot/dts/bcm5301x.dtsi
-@@ -511,7 +511,6 @@ spi@18029200 {
- 				  "spi_lr_session_done",
- 				  "spi_lr_overread";
- 		clocks = <&iprocmed>;
--		clock-names = "iprocmed";
- 		num-cs = <2>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--- 
-2.39.2
-
+--- a/sound/soc/codecs/rt5640.c
++++ b/sound/soc/codecs/rt5640.c
+@@ -2567,9 +2567,10 @@ static void rt5640_enable_jack_detect(st
+ 	if (jack_data && jack_data->use_platform_clock)
+ 		rt5640->use_platform_clock = jack_data->use_platform_clock;
+ 
+-	ret = request_irq(rt5640->irq, rt5640_irq,
+-			  IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+-			  "rt5640", rt5640);
++	ret = devm_request_threaded_irq(component->dev, rt5640->irq,
++					NULL, rt5640_irq,
++					IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++					"rt5640", rt5640);
+ 	if (ret) {
+ 		dev_warn(component->dev, "Failed to reguest IRQ %d: %d\n", rt5640->irq, ret);
+ 		rt5640_disable_jack_detect(component);
+@@ -2622,8 +2623,9 @@ static void rt5640_enable_hda_jack_detec
+ 
+ 	rt5640->jack = jack;
+ 
+-	ret = request_irq(rt5640->irq, rt5640_irq,
+-			  IRQF_TRIGGER_RISING | IRQF_ONESHOT, "rt5640", rt5640);
++	ret = devm_request_threaded_irq(component->dev, rt5640->irq,
++					NULL, rt5640_irq, IRQF_TRIGGER_RISING | IRQF_ONESHOT,
++					"rt5640", rt5640);
+ 	if (ret) {
+ 		dev_warn(component->dev, "Failed to reguest IRQ %d: %d\n", rt5640->irq, ret);
+ 		rt5640->irq = -ENXIO;
 
 
