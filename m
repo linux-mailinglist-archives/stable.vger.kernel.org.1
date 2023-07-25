@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 197C5761157
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5887614DC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232742AbjGYKuE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:50:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58388 "EHLO
+        id S234500AbjGYLX1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233725AbjGYKt7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2796199D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:54 -0700 (PDT)
+        with ESMTP id S234515AbjGYLXY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9DC1BC2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87DFB61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95373C433C7;
-        Tue, 25 Jul 2023 10:49:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A4A5616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA67C433B6;
+        Tue, 25 Jul 2023 11:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282194;
-        bh=scIPt4ADhKDFOgyuQDlf1im9g/OQjr3UD6+SoWIb1bQ=;
+        s=korg; t=1690284199;
+        bh=mcV8RQXqsoigTcj3IIVMalE9Wu/jYg/LIuRb9o/DoEs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L7OBB4Qjv1NK/WvMM6cMmOtroQS0jLaCcSmHZmxKCVvAOHKsYuqU+1ousHPBQjkIT
-         +QQTqJzmV0ifsJjDGtiO4EWk13oDjH5DaK8ImtugOUiscuVdLVt5OCXI61hRWZ5N2Q
-         plXcw9n/tGlhdnwwN+SEPib+mjQMe0pQvDIeGLrI=
+        b=Sd+b0Wx0d0Ko2KbcBRHRbIRJpJIucYTJqhrYI93YcJC5UxLGRgPUJ87Ds3JX4KHXE
+         khbwxT1XpSaPTzrRCTjhQ+eA6TAWHpFFETyczRiMVRaPuQ7mHc3gaUpGR8hpDsERxd
+         BVKGc8ehN97ERGEE8dQ1GbHRBI7Tq000t8xQ9Apg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
-        Jeffrey Hugo <quic_jhugo@quicinc.com>
-Subject: [PATCH 6.4 042/227] accel/qaic: Add consistent integer overflow checks
+        patches@lists.linux.dev, Ilya Maximets <i.maximets@ovn.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Magnus Karlsson <magnus.karlsson@intel.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 270/509] xsk: Honor SO_BINDTODEVICE on bind
 Date:   Tue, 25 Jul 2023 12:43:29 +0200
-Message-ID: <20230725104516.561228017@linuxfoundation.org>
+Message-ID: <20230725104606.123462637@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,70 +58,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 47d87f71d00b7091b43a56f608f7151b33e5772e upstream.
+[ Upstream commit f7306acec9aae9893d15e745c8791124d42ab10a ]
 
-The encode_dma() function has integer overflow checks.  The
-encode_passthrough(), encode_activate() and encode_status() functions
-did not.  I added integer overflow checking everywhere.  I also
-updated the integer overflow checking in encode_dma() to use size_add()
-so everything is consistent.
+Initial creation of an AF_XDP socket requires CAP_NET_RAW capability. A
+privileged process might create the socket and pass it to a non-privileged
+process for later use. However, that process will be able to bind the socket
+to any network interface. Even though it will not be able to receive any
+traffic without modification of the BPF map, the situation is not ideal.
 
-Fixes: 129776ac2e38 ("accel/qaic: Add control path")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Cc: stable@vger.kernel.org # 6.4.x
-[jhugo: tweak if in encode_dma() to match existing style]
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/ZK0Q7IsPkj6WSCcL@moroto
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Sockets already have a mechanism that can be used to restrict what interface
+they can be attached to. That is SO_BINDTODEVICE.
+
+To change the SO_BINDTODEVICE binding the process will need CAP_NET_RAW.
+
+Make xsk_bind() honor the SO_BINDTODEVICE in order to allow safer workflow
+when non-privileged process is using AF_XDP.
+
+The intended workflow is following:
+
+  1. First process creates a bare socket with socket(AF_XDP, ...).
+  2. First process loads the XSK program to the interface.
+  3. First process adds the socket fd to a BPF map.
+  4. First process ties socket fd to a particular interface using
+     SO_BINDTODEVICE.
+  5. First process sends socket fd to a second process.
+  6. Second process allocates UMEM.
+  7. Second process binds socket to the interface with bind(...).
+  8. Second process sends/receives the traffic.
+
+All the steps above are possible today if the first process is privileged
+and the second one has sufficient RLIMIT_MEMLOCK and no capabilities.
+However, the second process will be able to bind the socket to any interface
+it wants on step 7 and send traffic from it. With the proposed change, the
+second process will be able to bind the socket only to a specific interface
+chosen by the first process at step 4.
+
+Fixes: 965a99098443 ("xsk: add support for bind for Rx")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://lore.kernel.org/bpf/20230703175329.3259672-1-i.maximets@ovn.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_control.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ Documentation/networking/af_xdp.rst | 9 +++++++++
+ net/xdp/xsk.c                       | 5 +++++
+ 2 files changed, 14 insertions(+)
 
---- a/drivers/accel/qaic/qaic_control.c
-+++ b/drivers/accel/qaic/qaic_control.c
-@@ -367,7 +367,7 @@ static int encode_passthrough(struct qai
- 	if (in_trans->hdr.len % 8 != 0)
+diff --git a/Documentation/networking/af_xdp.rst b/Documentation/networking/af_xdp.rst
+index 2ccc5644cc98a..70623cb135d3c 100644
+--- a/Documentation/networking/af_xdp.rst
++++ b/Documentation/networking/af_xdp.rst
+@@ -433,6 +433,15 @@ start N bytes into the buffer leaving the first N bytes for the
+ application to use. The final option is the flags field, but it will
+ be dealt with in separate sections for each UMEM flag.
+ 
++SO_BINDTODEVICE setsockopt
++--------------------------
++
++This is a generic SOL_SOCKET option that can be used to tie AF_XDP
++socket to a particular network interface.  It is useful when a socket
++is created by a privileged process and passed to a non-privileged one.
++Once the option is set, kernel will refuse attempts to bind that socket
++to a different interface.  Updating the value requires CAP_NET_RAW.
++
+ XDP_STATISTICS getsockopt
+ -------------------------
+ 
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 691841dc6d334..d04f91f4d09df 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -667,6 +667,7 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ 	struct sock *sk = sock->sk;
+ 	struct xdp_sock *xs = xdp_sk(sk);
+ 	struct net_device *dev;
++	int bound_dev_if;
+ 	u32 flags, qid;
+ 	int err = 0;
+ 
+@@ -680,6 +681,10 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ 		      XDP_USE_NEED_WAKEUP))
  		return -EINVAL;
  
--	if (msg_hdr_len + in_trans->hdr.len > QAIC_MANAGE_EXT_MSG_LENGTH)
-+	if (size_add(msg_hdr_len, in_trans->hdr.len) > QAIC_MANAGE_EXT_MSG_LENGTH)
- 		return -ENOSPC;
- 
- 	trans_wrapper = add_wrapper(wrappers,
-@@ -561,11 +561,8 @@ static int encode_dma(struct qaic_device
- 	msg = &wrapper->msg;
- 	msg_hdr_len = le32_to_cpu(msg->hdr.len);
- 
--	if (msg_hdr_len > (UINT_MAX - QAIC_MANAGE_EXT_MSG_LENGTH))
--		return -EINVAL;
--
- 	/* There should be enough space to hold at least one ASP entry. */
--	if (msg_hdr_len + sizeof(*out_trans) + sizeof(struct wire_addr_size_pair) >
-+	if (size_add(msg_hdr_len, sizeof(*out_trans) + sizeof(struct wire_addr_size_pair)) >
- 	    QAIC_MANAGE_EXT_MSG_LENGTH)
- 		return -ENOMEM;
- 
-@@ -638,7 +635,7 @@ static int encode_activate(struct qaic_d
- 	msg = &wrapper->msg;
- 	msg_hdr_len = le32_to_cpu(msg->hdr.len);
- 
--	if (msg_hdr_len + sizeof(*out_trans) > QAIC_MANAGE_MAX_MSG_LENGTH)
-+	if (size_add(msg_hdr_len, sizeof(*out_trans)) > QAIC_MANAGE_MAX_MSG_LENGTH)
- 		return -ENOSPC;
- 
- 	if (!in_trans->queue_size)
-@@ -722,7 +719,7 @@ static int encode_status(struct qaic_dev
- 	msg = &wrapper->msg;
- 	msg_hdr_len = le32_to_cpu(msg->hdr.len);
- 
--	if (msg_hdr_len + in_trans->hdr.len > QAIC_MANAGE_MAX_MSG_LENGTH)
-+	if (size_add(msg_hdr_len, in_trans->hdr.len) > QAIC_MANAGE_MAX_MSG_LENGTH)
- 		return -ENOSPC;
- 
- 	trans_wrapper = add_wrapper(wrappers, sizeof(*trans_wrapper));
++	bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
++	if (bound_dev_if && bound_dev_if != sxdp->sxdp_ifindex)
++		return -EINVAL;
++
+ 	rtnl_lock();
+ 	mutex_lock(&xs->mutex);
+ 	if (xs->state != XSK_READY) {
+-- 
+2.39.2
+
 
 
