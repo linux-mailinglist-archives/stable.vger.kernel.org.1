@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EC7C76155E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD247611ED
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:57:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234625AbjGYL2V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:28:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36998 "EHLO
+        id S233374AbjGYK5f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:57:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234706AbjGYL2I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A4697
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:07 -0700 (PDT)
+        with ESMTP id S232380AbjGYK5F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A95A14239
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 308176168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BA4C433C7;
-        Tue, 25 Jul 2023 11:28:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86A7F61600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FE0C433C7;
+        Tue, 25 Jul 2023 10:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284486;
-        bh=0Aw/59vnlWzcu5s0Nje/aDuhJCutSPF7l2kyhEwJnuI=;
+        s=korg; t=1690282477;
+        bh=2mp8ZBA3se9/xna/gAl7qNRsdXq82zO3CdKoZ6bVnnw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=izyvumgWh4OuaB6ngb6RzC8zTMLU2dig6R0WTdlN5uo1F/p6U2hT+jt9cPW0L+7Dg
-         tAXEpu5QYobhIg3scv3ar+Z9KPBh5mJbEjfBPHY3RVMEZWsu8nPKQCbT1PCPqnqKgS
-         X5RT4/o10pAAEs2xIH54VbG+1E7Btz44gZ8UoaYc=
+        b=q4/VVL+aoNDeWuq1MIa/G8ABD5llbSaVTMXTjiKw0ZQYfB6wyOYriABvnqx4CAlnR
+         SeM6+KEXQcdixJZIP5sfj0Dc8t/ZVMe1LSt1CC7hPkgAJJkSFMbhPnpI9fEz4QojVh
+         8bpekMjAJROozCpKQzmTbZO//N1bTb678KY5F1ro=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 372/509] net/sched: make psched_mtu() RTNL-less safe
+        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 144/227] fbdev: imxfb: warn about invalid left/right margin
 Date:   Tue, 25 Jul 2023 12:45:11 +0200
-Message-ID: <20230725104610.749305626@linuxfoundation.org>
+Message-ID: <20230725104520.840273372@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,47 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit 150e33e62c1fa4af5aaab02776b6c3812711d478 ]
+[ Upstream commit 4e47382fbca916d7db95cbf9e2d7ca2e9d1ca3fe ]
 
-Eric Dumazet says[1]:
--------
-Speaking of psched_mtu(), I see that net/sched/sch_pie.c is using it
-without holding RTNL, so dev->mtu can be changed underneath.
-KCSAN could issue a warning.
--------
+Warn about invalid var->left_margin or var->right_margin. Their values
+are read from the device tree.
 
-Annotate dev->mtu with READ_ONCE() so KCSAN don't issue a warning.
+We store var->left_margin-3 and var->right_margin-1 in register
+fields. These fields should be >= 0.
 
-[1] https://lore.kernel.org/all/CANn89iJoJO5VtaJ-2=_d2aOQhb0Xw8iBT_Cxqp2HyuS-zj6azw@mail.gmail.com/
-
-v1 -> v2: Fix commit message
-
-Fixes: d4b36210c2e6 ("net: pkt_sched: PIE AQM scheme")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230711021634.561598-1-pctammela@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7e8549bcee00 ("imxfb: Fix margin settings")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/pkt_sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/imxfb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index ba781e0aaf566..e186b2bd8c860 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -136,7 +136,7 @@ extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
-  */
- static inline unsigned int psched_mtu(const struct net_device *dev)
- {
--	return dev->mtu + dev->hard_header_len;
-+	return READ_ONCE(dev->mtu) + dev->hard_header_len;
- }
- 
- static inline struct net *qdisc_net(struct Qdisc *q)
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index adf36690c342b..5fbcb78a9caee 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -613,10 +613,10 @@ static int imxfb_activate_var(struct fb_var_screeninfo *var, struct fb_info *inf
+ 	if (var->hsync_len < 1    || var->hsync_len > 64)
+ 		printk(KERN_ERR "%s: invalid hsync_len %d\n",
+ 			info->fix.id, var->hsync_len);
+-	if (var->left_margin > 255)
++	if (var->left_margin < 3  || var->left_margin > 255)
+ 		printk(KERN_ERR "%s: invalid left_margin %d\n",
+ 			info->fix.id, var->left_margin);
+-	if (var->right_margin > 255)
++	if (var->right_margin < 1 || var->right_margin > 255)
+ 		printk(KERN_ERR "%s: invalid right_margin %d\n",
+ 			info->fix.id, var->right_margin);
+ 	if (var->yres < 1 || var->yres > ymax_mask)
 -- 
 2.39.2
 
