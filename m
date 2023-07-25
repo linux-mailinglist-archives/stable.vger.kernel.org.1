@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB64C7614EA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C350761140
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234512AbjGYLX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33324 "EHLO
+        id S232142AbjGYKtN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:49:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234509AbjGYLX4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:56 -0400
+        with ESMTP id S232085AbjGYKtL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C791B8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A50F199D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFC5261691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF89C433C7;
-        Tue, 25 Jul 2023 11:23:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D1706165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15FBC433C7;
+        Tue, 25 Jul 2023 10:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284230;
-        bh=ig4R60prGrQS1rLLv0Q9aNv9X50c8B1yKfTsH8g1I1E=;
+        s=korg; t=1690282149;
+        bh=AsPTQrPzTDhdK/72JF3qBlfWN0iPBbmFkZvJ++WrSw8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0gnAE3Ky/tlOE8aKMyEgjHRv8M5G8HWclgoKJADnQLRFg07fU+qLx7v4Ay5/1Y7Ih
-         5Fk5iChs1bjayp3BIXpB4VjRYbmDyBZYTC/duHxxzjdOZiMhityMR4rSNjCrw8FwQ5
-         zhce/3czk03aUPBJIwZDPPJL1XEHr7TI5u1FT8nA=
+        b=NZn39+4llKCkHcsM9PMBz9O6lpfVrx+bTeMevgZo6BF8Zedev3AxXe++OzsWvy2JI
+         QtcAAGXyLKDX/5tbAwI0KuCKEMzFT0nvKkq5fT/zsGO/C7xfM2Ix1axvdXBZ2y0vfX
+         hwIIyCiuQaP3+mPwpFzU/Rw40aHXOFp9dA98e1gg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 252/509] mfd: stmfx: Nullify stmfx->vdd in case of error
-Date:   Tue, 25 Jul 2023 12:43:11 +0200
-Message-ID: <20230725104605.274302707@linuxfoundation.org>
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 025/227] selftests: tc: set timeout to 15 minutes
+Date:   Tue, 25 Jul 2023 12:43:12 +0200
+Message-ID: <20230725104515.848152416@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit 7c81582c0bccb4757186176f0ee12834597066ad ]
+commit fda05798c22a354efde09a76bdfc276b2d591829 upstream.
 
-Nullify stmfx->vdd in case devm_regulator_get_optional() returns an error.
-And simplify code by returning an error only if return code is not -ENODEV,
-which means there is no vdd regulator and it is not an issue.
+When looking for something else in LKFT reports [1], I noticed that the
+TC selftest ended with a timeout error:
 
-Fixes: d75846ed08e6 ("mfd: stmfx: Fix dev_err_probe() call in stmfx_chip_init()")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://lore.kernel.org/r/20230609092804.793100-2-amelie.delaunay@foss.st.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
+
+The timeout had been introduced 3 years ago, see the Fixes commit below.
+
+This timeout is only in place when executing the selftests via the
+kselftests runner scripts. I guess this is not what most TC devs are
+using and nobody noticed the issue before.
+
+The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
+like it is plenty more time than what it takes in "normal" conditions.
+
+Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
+Cc: stable@vger.kernel.org
+Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/stmfx.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/tc-testing/settings |    1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 tools/testing/selftests/tc-testing/settings
 
-diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
-index 41e74b5dd9901..b45d7b0b842c5 100644
---- a/drivers/mfd/stmfx.c
-+++ b/drivers/mfd/stmfx.c
-@@ -330,9 +330,8 @@ static int stmfx_chip_init(struct i2c_client *client)
- 	stmfx->vdd = devm_regulator_get_optional(&client->dev, "vdd");
- 	ret = PTR_ERR_OR_ZERO(stmfx->vdd);
- 	if (ret) {
--		if (ret == -ENODEV)
--			stmfx->vdd = NULL;
--		else
-+		stmfx->vdd = NULL;
-+		if (ret != -ENODEV)
- 			return dev_err_probe(&client->dev, ret, "Failed to get VDD regulator\n");
- 	}
- 
--- 
-2.39.2
-
+--- /dev/null
++++ b/tools/testing/selftests/tc-testing/settings
+@@ -0,0 +1 @@
++timeout=900
 
 
