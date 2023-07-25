@@ -2,114 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7288C7608DC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 06:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0FA7608F5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 07:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229998AbjGYEq3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 00:46:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
+        id S229824AbjGYFB3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 01:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231802AbjGYEq1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 00:46:27 -0400
+        with ESMTP id S229568AbjGYFB3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 01:01:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1351E10E5
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 21:46:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF49C10F9;
+        Mon, 24 Jul 2023 22:01:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91CE961535
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D53CC433CC;
-        Tue, 25 Jul 2023 04:46:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690260383;
-        bh=bpLPeLn+xGD3bpb5Qfr8oWmqKwMTnOxkwkkLWH7IzSw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aH7MACeJG/Xyfl8shxtsA/wM2aTBU5yIECyegW/6PCAKoivNOhyp1ZQhwrCasyG2v
-         nf/vMv3tpF78M5KeYSHQ6yJ6Gx89UmialjiPuE07Hk/KjfNE7qKzHCp7bl6G/0CZro
-         l6YQT5nf5DXvOp+1PIDTDUuFvTcSjnSx2HvbG7io=
-Date:   Tue, 25 Jul 2023 06:46:19 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     stable@vger.kernel.org, kuba@kernel.org
-Subject: Re: [PATCH] r8169: revert 2ab19de62d67 ("r8169: remove ASPM
- restrictions now that ASPM is disabled during NAPI poll")
-Message-ID: <2023072558-moisten-snore-73c7@gregkh>
-References: <2023072337-dreamlike-rewrite-a12e@gregkh>
- <38cddf6d-f894-55a1-6275-87945b265e8b@gmail.com>
- <2023072453-saturate-atlas-2572@gregkh>
- <e24f1b91-efd1-5398-624f-a73c0e92d677@gmail.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3448961530;
+        Tue, 25 Jul 2023 05:01:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E770C433CD;
+        Tue, 25 Jul 2023 05:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690261286;
+        bh=+FyEzIHHHu86QHrIoXwjeeWi+fV/oC+M1YZ91MsjQXQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BnI66cA59lweu/0a+Q3u7Ol/c21g7OcL6K6YkWORXYvQrvrj4qh94ARo/HvjORaMe
+         qTvOs1yXe/Pdpia5RAMtcbWVHN+tOdW39vwGAp775rngcIf+JpNfIN0/VpOUHyon2O
+         CMzMrsFzfNc7Tpmsab8Sy2MM5ufE3IOjmHSUBUcCO/Bq97fwVFpkqFpYx+DDEuVZ1P
+         2ac4U8pBgan/zJ/OGRzjsI3dlcgGMSPPhR++d4+CAb/GAqMxFcwZG3numGUbjCaQUq
+         +sUwSJqOpwNCnmIrYRgRoaRfAdc+cEAKSnm0EMb6kknpf08EpNdbEsGW/QKOZzSX7h
+         kkuLgyreoWyuw==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-56597d949b1so3147964eaf.1;
+        Mon, 24 Jul 2023 22:01:26 -0700 (PDT)
+X-Gm-Message-State: ABy/qLbj+Xl0xHHFuX9A6LVIALec8H7W5N/t+NOFMhW0hT7mv8nakfLI
+        hrbGgdLQodnt+TeIhL/sbZYXXmOk20s2cIXb9vY=
+X-Google-Smtp-Source: APBJJlHNMewixjluZirFDxPtZ/xyBhT/i9rV3VOmKVpLXySF76A/9PjhZyiOUBiUZa72yxWxXdde6eDqTDRyg9svjDM=
+X-Received: by 2002:a4a:91d0:0:b0:566:fa3f:82af with SMTP id
+ e16-20020a4a91d0000000b00566fa3f82afmr9199256ooh.5.1690261285620; Mon, 24 Jul
+ 2023 22:01:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e24f1b91-efd1-5398-624f-a73c0e92d677@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20230723142128.194339-1-ojeda@kernel.org>
+In-Reply-To: <20230723142128.194339-1-ojeda@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Tue, 25 Jul 2023 14:00:49 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR_CaZ8fJ+fOm9-X83MOtwDa9aavZ5JM6DFOAA00GgULw@mail.gmail.com>
+Message-ID: <CAK7LNAR_CaZ8fJ+fOm9-X83MOtwDa9aavZ5JM6DFOAA00GgULw@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: rust: avoid creating temporary files
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Raphael Nestler <raphael.nestler@gmail.com>,
+        Andrea Righi <andrea.righi@canonical.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,TRACKER_ID,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 09:58:39PM +0200, Heiner Kallweit wrote:
-> On 24.07.2023 19:32, Greg KH wrote:
-> > On Mon, Jul 24, 2023 at 05:59:07PM +0200, Heiner Kallweit wrote:
-> >> There have been reports that on a number of systems this change breaks
-> >> network connectivity. Therefore effectively revert it. Mainly affected
-> >> seem to be systems where BIOS denies ASPM access to OS.
-> >> Due to later changes we can't do a direct revert.
-> >>
-> >> Fixes: 2ab19de62d67 ("r8169: remove ASPM restrictions now that ASPM is disabled during NAPI poll")
-> >> Cc: stable@vger.kernel.org # v6.4.y
-> >> Link: https://lore.kernel.org/netdev/e47bac0d-e802-65e1-b311-6acb26d5cf10@freenet.de/T/
-> >> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217596
-> >> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> >> Link: https://lore.kernel.org/r/57f13ec0-b216-d5d8-363d-5b05528ec5fb@gmail.com
-> >> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> >> ---
-> >>  drivers/net/ethernet/realtek/r8169_main.c | 27 ++++++++++++++++++++++-
-> >>  1 file changed, 26 insertions(+), 1 deletion(-)
-> >>
-> > 
-> > <formletter>
-> > 
-> > This is not the correct way to submit patches for inclusion in the
-> > stable kernel tree.  Please read:
-> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > for how to do this properly.
-> > 
-> > </formletter>
-> 
-> The conflict notification email mentioned the following, therefore I replied
-> with the backported patch. Which part is wrong or what is missing?
+On Sun, Jul 23, 2023 at 11:21=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> `rustc` outputs by default the temporary files (i.e. the ones saved
+> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
+> directory when `-o` and `--out-dir` are not given (even if
+> `--emit=3Dx=3Dpath` is given, i.e. it does not use those for temporaries)=
+.
+>
+> Since out-of-tree modules are compiled from the `linux` tree,
+> `rustc` then tries to create them there, which may not be accessible.
+>
+> Thus pass `--out-dir` explicitly, even if it is just for the temporary
+> files.
+>
+> Similarly, do so for Rust host programs too.
+>
+> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
+> Reported-by: Andrea Righi <andrea.righi@canonical.com>
+> Tested-by: Raphael Nestler <raphael.nestler@gmail.com> # non-hostprogs
+> Tested-by: Andrea Righi <andrea.righi@canonical.com> # non-hostprogs
+> Fixes: 295d8398c67e ("kbuild: specify output names separately for each em=
+ission type from rustc")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> v2:
+>   - Add fix for host programs too (Masahiro).
 
-No hint that it was a backported patch, what the git id was, or what
-branch to apply it to :(
 
-> The patch below does not apply to the 6.4-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x cf2ffdea0839398cb0551762af7f5efb0a6e0fea
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072337-dreamlike-rewrite-a12e@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+This is now available in the mainline.
 
-The instructions above, if followed, will give the git id, and the
-branch to apply it to, in the email in a form which it can be properly
-deduced.
+df01b7cfcef08bf3fdcac2909d0e1910781d6bfd
 
-Otherwise this looks like a mis-directed patch that we don't know what
-to do with :(
 
-thanks,
 
-greg k-h
+
+
+--=20
+Best Regards
+Masahiro Yamada
