@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0A1A7611AC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D940F761278
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbjGYKyi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:54:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58712 "EHLO
+        id S233778AbjGYLCq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:02:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232981AbjGYKxq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 400CD3C2D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:08 -0700 (PDT)
+        with ESMTP id S233775AbjGYLCf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9C6C1FF7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD9A961681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AF1C433C7;
-        Tue, 25 Jul 2023 10:52:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9613061680
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D35C433C8;
+        Tue, 25 Jul 2023 10:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282327;
-        bh=UGZNxAi0mkTEbho6xJzTAYFYpXuw3NADS3Ic0xURk0Y=;
+        s=korg; t=1690282793;
+        bh=Qjv9bgPQff6uzOzL1GC2HdX7Jljr2kvMRpF8atfrcRg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qBkvs4itvpJLkO39dT82PVSq6u/+dXmoqQBfBmX93yALD7yeo0bYplPyhv/zn1vKb
-         pT11pntjKsAp1QMP/89jgT9rFYKWVvBOVZrpUIC2pz5KLVv10HLtDTvimZWLPW0UaH
-         kfUDOGnOleVWrfwKrsm5P6eHe5Xjjg8s7VRoSo00=
+        b=o8dIsKz8KgAK8hbf5P0lYvxNA8ME42uMQ+xv3SYRq3qiUnD/C0nLrQYqaISxqArDL
+         3quvFvGrsTpyxGHq56RfzTlFE0pHrZJmurd6DVkM3WNl9c4aWQfH3LXWbBbxFmguWY
+         lzC1aftD080f4P/30TITd2/nSKOYjlVyQBbUYs3c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 089/227] md/raid10: prevent soft lockup while flush writes
+        patches@lists.linux.dev, Kenneth Feng <kenneth.feng@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 028/183] drm/amdgpu/pm: make gfxclock consistent for sienna cichlid
 Date:   Tue, 25 Jul 2023 12:44:16 +0200
-Message-ID: <20230725104518.418646628@linuxfoundation.org>
+Message-ID: <20230725104508.938257175@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,79 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 010444623e7f4da6b4a4dd603a7da7469981e293 ]
+commit a4eb11824170d742531998f4ebd1c6a18b63db47 upstream.
 
-Currently, there is no limit for raid1/raid10 plugged bio. While flushing
-writes, raid1 has cond_resched() while raid10 doesn't, and too many
-writes can cause soft lockup.
+Use average gfxclock for consistency with other dGPUs.
 
-Follow up soft lockup can be triggered easily with writeback test for
-raid10 with ramdisks:
-
-watchdog: BUG: soft lockup - CPU#10 stuck for 27s! [md0_raid10:1293]
-Call Trace:
- <TASK>
- call_rcu+0x16/0x20
- put_object+0x41/0x80
- __delete_object+0x50/0x90
- delete_object_full+0x2b/0x40
- kmemleak_free+0x46/0xa0
- slab_free_freelist_hook.constprop.0+0xed/0x1a0
- kmem_cache_free+0xfd/0x300
- mempool_free_slab+0x1f/0x30
- mempool_free+0x3a/0x100
- bio_free+0x59/0x80
- bio_put+0xcf/0x2c0
- free_r10bio+0xbf/0xf0
- raid_end_bio_io+0x78/0xb0
- one_write_done+0x8a/0xa0
- raid10_end_write_request+0x1b4/0x430
- bio_endio+0x175/0x320
- brd_submit_bio+0x3b9/0x9b7 [brd]
- __submit_bio+0x69/0xe0
- submit_bio_noacct_nocheck+0x1e6/0x5a0
- submit_bio_noacct+0x38c/0x7e0
- flush_pending_writes+0xf0/0x240
- raid10d+0xac/0x1ed0
-
-Fix the problem by adding cond_resched() to raid10 like what raid1 did.
-
-Note that unlimited plugged bio still need to be optimized, for example,
-in the case of lots of dirty pages writeback, this will take lots of
-memory and io will spend a long time in plug, hence io latency is bad.
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230529131106.2123367-2-yukuai1@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 9d23963496194..ee75b058438f3 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -920,6 +920,7 @@ static void flush_pending_writes(struct r10conf *conf)
- 
- 			raid1_submit_write(bio);
- 			bio = next;
-+			cond_resched();
- 		}
- 		blk_finish_plug(&plug);
- 	} else
-@@ -1132,6 +1133,7 @@ static void raid10_unplug(struct blk_plug_cb *cb, bool from_schedule)
- 
- 		raid1_submit_write(bio);
- 		bio = next;
-+		cond_resched();
- 	}
- 	kfree(plug);
- }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index f6599c00a6fd..0cda3b276f61 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -1927,12 +1927,16 @@ static int sienna_cichlid_read_sensor(struct smu_context *smu,
+ 		*size = 4;
+ 		break;
+ 	case AMDGPU_PP_SENSOR_GFX_MCLK:
+-		ret = sienna_cichlid_get_current_clk_freq_by_table(smu, SMU_UCLK, (uint32_t *)data);
++		ret = sienna_cichlid_get_smu_metrics_data(smu,
++							  METRICS_CURR_UCLK,
++							  (uint32_t *)data);
+ 		*(uint32_t *)data *= 100;
+ 		*size = 4;
+ 		break;
+ 	case AMDGPU_PP_SENSOR_GFX_SCLK:
+-		ret = sienna_cichlid_get_current_clk_freq_by_table(smu, SMU_GFXCLK, (uint32_t *)data);
++		ret = sienna_cichlid_get_smu_metrics_data(smu,
++							  METRICS_AVERAGE_GFXCLK,
++							  (uint32_t *)data);
+ 		*(uint32_t *)data *= 100;
+ 		*size = 4;
+ 		break;
 -- 
-2.39.2
+2.41.0
 
 
 
