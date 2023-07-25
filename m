@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF8EE7614DE
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEAC076166B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234486AbjGYLX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60858 "EHLO
+        id S234871AbjGYLjV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:39:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234499AbjGYLX0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:26 -0400
+        with ESMTP id S234925AbjGYLjP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E98FA6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0A51FDE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C518B61699
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24D4C433C8;
-        Tue, 25 Jul 2023 11:23:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C05F561655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34B0C433C8;
+        Tue, 25 Jul 2023 11:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284202;
-        bh=DDL4vmAtA78ty2CRmWwY8Kvfyv596MBSmvT+MP8JRjk=;
+        s=korg; t=1690285136;
+        bh=ggWDAm8x9ar8TAxSMj+4+XB4uWxUBAKqwD9ycYQrSaw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mdjcJ5wgwQPG/tqm5kw9OM/6ZaNwkDeruqpl6HZeTuZr3B3iOFduda2DaVqvr9bP5
-         2UJQ/5Xi0zIQdTMhPcb6cZqdYNvf7llU0pY/UwyZKNUEmAK3mbukBntv63MNznriRu
-         u7M8nrGX3nR2I05mjMoL8avvqa3filCj/za7B+Q4=
+        b=1hLeAm6sVSO4Nhf+TZRhKqV+9mFcOs1UfkiTDdhdxoRFrIrqF2hKKf/btOpnlxUef
+         mb7JOQ+zwpHL8THXOk0StH0HUzPEuue7EWFuPRrUP6xO4XocK0aEvHdWg+Y4guMT/n
+         AuekAQoZnNdazA75AZdCmvE24V15uvRDf5BH/l4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 271/509] net/sched: act_pedit: Add size check for TCA_PEDIT_PARMS_EX
+Subject: [PATCH 5.4 057/313] wifi: iwlwifi: pull from TXQs with softirqs disabled
 Date:   Tue, 25 Jul 2023 12:43:30 +0200
-Message-ID: <20230725104606.159828433@linuxfoundation.org>
+Message-ID: <20230725104523.518179692@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,55 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 30c45b5361d39b4b793780ffac5538090b9e2eb1 ]
+[ Upstream commit 96fb6f47db24a712d650b0a9b9074873f273fb0e ]
 
-The attribute TCA_PEDIT_PARMS_EX is not be included in pedit_policy and
-one malicious user could fake a TCA_PEDIT_PARMS_EX whose length is
-smaller than the intended sizeof(struct tc_pedit). Hence, the
-dereference in tcf_pedit_init() could access dirty heap data.
+In mac80211, it's required that we pull from TXQs by calling
+ieee80211_tx_dequeue() only with softirqs disabled. However,
+in iwl_mvm_queue_state_change() we're often called with them
+enabled, e.g. from flush if anything was flushed, triggering
+a mac80211 warning.
 
-static int tcf_pedit_init(...)
-{
-  // ...
-  pattr = tb[TCA_PEDIT_PARMS]; // TCA_PEDIT_PARMS is included
-  if (!pattr)
-    pattr = tb[TCA_PEDIT_PARMS_EX]; // but this is not
+Fix that by disabling the softirqs across the TX call.
 
-  // ...
-  parm = nla_data(pattr);
-
-  index = parm->index; // parm is able to be smaller than 4 bytes
-                       // and this dereference gets dirty skb_buff
-                       // data created in netlink_sendmsg
-}
-
-This commit adds TCA_PEDIT_PARMS_EX length in pedit_policy which avoid
-the above case, just like the TCA_PEDIT_PARMS.
-
-Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to the conventional network headers")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://lore.kernel.org/r/20230703110842.590282-1-linma@zju.edu.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: cfbc6c4c5b91 ("iwlwifi: mvm: support mac80211 TXQs model")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230614123446.0feef7fa81db.I4dd62542d955b40dd8f0af34fa4accb9d0d17c7e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_pedit.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index db0d3bff19eba..a44101b2f4419 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -26,6 +26,7 @@ static struct tc_action_ops act_pedit_ops;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 5973eecbc0378..18c5975d7c037 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1167,8 +1167,11 @@ static void iwl_mvm_queue_state_change(struct iwl_op_mode *op_mode,
+ 		mvmtxq = iwl_mvm_txq_from_mac80211(txq);
+ 		mvmtxq->stopped = !start;
  
- static const struct nla_policy pedit_policy[TCA_PEDIT_MAX + 1] = {
- 	[TCA_PEDIT_PARMS]	= { .len = sizeof(struct tc_pedit) },
-+	[TCA_PEDIT_PARMS_EX]	= { .len = sizeof(struct tc_pedit) },
- 	[TCA_PEDIT_KEYS_EX]   = { .type = NLA_NESTED },
- };
+-		if (start && mvmsta->sta_state != IEEE80211_STA_NOTEXIST)
++		if (start && mvmsta->sta_state != IEEE80211_STA_NOTEXIST) {
++			local_bh_disable();
+ 			iwl_mvm_mac_itxq_xmit(mvm->hw, txq);
++			local_bh_enable();
++		}
+ 	}
  
+ out:
 -- 
 2.39.2
 
