@@ -2,127 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37AAD762156
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95CB7762159
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:31:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231390AbjGYSa4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 14:30:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38892 "EHLO
+        id S230342AbjGYSbX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 14:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231285AbjGYSay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:30:54 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF692125
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:52 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-5222b917e0cso3772911a12.0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1690309850; x=1690914650;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aHGpPoXTTKU95qTHzCpP6PWMEtmaqjLvANNO2417VQI=;
-        b=I6HhDY/XSRKwTwElLogUEtVdnjY/ZjoJ3buHC+3GLvd03gIcEkv28rV0A/gISJtAZ1
-         kSdpoIsigUE1zdN9mDmc3V1LX42U9AK9PDWGZ7OLQQyCiK6GERjm1bR5kfvVpUt4h78N
-         Va3lq+HSztVwG63OdQZTYPpWdG6CXANqjqZd8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690309850; x=1690914650;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aHGpPoXTTKU95qTHzCpP6PWMEtmaqjLvANNO2417VQI=;
-        b=caTISv5jsrJUETWOe1IX+P8wC6gdmGqph6N4WMNhSYbB1JtfXfZBt5tWSn/GvPCySV
-         4uCY0Y56Vbq9GlCCL3YYcGDV3solOWFTMVfpfN4K/nR4uGjbxYjO+fAHxIWJNe0/LmqR
-         IFx6w0nmduXXCPBPOSYO9cXYZmhzocuKoXXaqC7WnWy+tmWaUt/W7ly5Ivy3BPX93zKd
-         q6FGptIQHu/HM6yDjZD6jdiPAvG7ypJkqL1k+0iE7IjKqXzQKkikSUga+cWhQ2MoL0fb
-         NZJjFjsDIuaHR/K7sEmTAeIb1jX30cdHgvND5G77ojPFUy5x/L2UlXdFr8uqm64WFu6s
-         6Nug==
-X-Gm-Message-State: ABy/qLbSZR+3jnyFn8zI3gutBeP/w0QhIhzyXmtlVb1NIE8fhmnAIrRr
-        zjtou/Kt06hWkmR3VBmQ6pwIXCkp6+ez5J6PdFXhi9uH
-X-Google-Smtp-Source: APBJJlGcfQDanKPC2w489422qSSrJTtZ33g7itHTdjs9uA3Vyt3J187CRRQMXKAOeDr7Afi6PG6qGg==
-X-Received: by 2002:a17:906:3298:b0:993:eddd:6df4 with SMTP id 24-20020a170906329800b00993eddd6df4mr12853877ejw.10.1690309850467;
-        Tue, 25 Jul 2023 11:30:50 -0700 (PDT)
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
-        by smtp.gmail.com with ESMTPSA id m8-20020a170906234800b00992c92af6easm8540767eja.161.2023.07.25.11.30.49
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jul 2023 11:30:50 -0700 (PDT)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5222b917e0cso3772874a12.0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:49 -0700 (PDT)
-X-Received: by 2002:aa7:c390:0:b0:51b:e4b4:8bb0 with SMTP id
- k16-20020aa7c390000000b0051be4b48bb0mr11654096edq.2.1690309849617; Tue, 25
- Jul 2023 11:30:49 -0700 (PDT)
+        with ESMTP id S229603AbjGYSbW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:31:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FFC71FC2;
+        Tue, 25 Jul 2023 11:31:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E95E61853;
+        Tue, 25 Jul 2023 18:31:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C6EC433C7;
+        Tue, 25 Jul 2023 18:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690309880;
+        bh=oYiFfH4/ejDhli0ntnUBCBnZXV270dLH0QAu/hyht28=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=O/ia/X885onJOScij37SG3MjorUGIzudHT85xBrhaGx9TEDZnLgWX1htTUGKJkXTY
+         f62qS50naU0aKLzc8FXvqni2T9PLPQrBfpNnI37fpJhYtoczqmXUdKCSe4hU7pJiAo
+         7W/aXRQ8SKTqbqWKLufLC4u5KMuQoKyPuPYsvOh0=
+Date:   Tue, 25 Jul 2023 20:31:17 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Ruihong Luo <colorsu1922@gmail.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        stable@vger.kernel.org, luoruihong@xiaomi.com,
+        weipengliang@xiaomi.com, wengjinfei@xiaomi.com
+Subject: Re: [PATCH v4] serial: 8250_dw: Preserve original value of DLF
+ register
+Message-ID: <2023072546-ladies-landlord-8a6d@gregkh>
+References: <20230713004235.35904-1-colorsu1922@gmail.com>
+ <5fac4a28-ff70-d6e6-dcee-8cb45916789@linux.intel.com>
+ <ZLFAD8lblUA6/cVd@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-scheren-absegnen-8c807c760ba1@brauner> <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
- <20230724-gebessert-wortwahl-195daecce8f0@brauner> <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
- <20230724-eckpunkte-melden-fc35b97d1c11@brauner> <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
- <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk> <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
- <20230724-geadelt-nachrangig-07e431a2f3a4@brauner> <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
- <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
-In-Reply-To: <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 25 Jul 2023 11:30:32 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
-Message-ID: <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
-Subject: Re: [PATCH] file: always lock position
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Christian Brauner <brauner@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZLFAD8lblUA6/cVd@smile.fi.intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 24 Jul 2023 at 15:57, Jens Axboe <axboe@kernel.dk> wrote:
->
-> On 7/24/23 4:25?PM, Linus Torvalds wrote:
-> > This sentence still worries me.
-> >
-> > Those fixed files had better have their own refcounts from being
-> > fixed. So the rules really shouldn't change in any way what-so-ever.
-> > So what exactly are you alluding to?
->
-> They do, but they only have a single reference, which is what fixes them
-> into the io_uring file table for fixed files. With the patch from the
-> top of this thread, that should then be fine as we don't need to
-> artificially elevator the ref count more than that.
+On Fri, Jul 14, 2023 at 03:31:11PM +0300, Andy Shevchenko wrote:
+> On Fri, Jul 14, 2023 at 03:07:42PM +0300, Ilpo Järvinen wrote:
+> > On Thu, 13 Jul 2023, Ruihong Luo wrote:
+> > 
+> > > Preserve the original value of the Divisor Latch Fraction (DLF) register.
+> > > When the DLF register is modified without preservation, it can disrupt
+> > > the baudrate settings established by firmware or bootloader, leading to
+> > > data corruption and the generation of unreadable or distorted characters.
+> > > 
+> > > Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
+> 
+> > You forgot to add:
+> > 
+> > Cc: stable@vger.kernel.org
+> 
+> It's there. Just not in the commit message. It's fine.
 
-No.
+No it isn't, that's not how to have a patch added to the stable tree, as
+my form letter says:
 
-The patch from the top of this thread cannot *possibly* matter for a
-io_uring fixed file.
+<formletter>
 
-The fdget_pos() always gets the file pointer from the file table. But
-that means that it is guaranteed to have a refcount of at least one.
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-If io_uring fixed file holds a reference (and not holding a reference
-would be a huge bug), that in turn means that the minimum refcount is
-now two.
+</formletter>
 
-So the code in fdget_pos() is correct, with or without the patch.
-
-The *only* problem is when something actually violates the refcounting
-rules. Sadly, that's exactly what pidfd_getfd() does, and can
-basically make a private file pointer be non-private without
-synchronizing with the original owner of the fd.
-
-Now, io_uring may have had its own problems, if it tried to
-re-implement some io_uring-specific version of fdget_pos() for the
-fixed file case, and thought that it could use the file_count() == 1
-trick when it *wasn't* also a file table entry.
-
-But that would be an independent bug from copy-and-pasting code
-without taking the surrounding rules into account.
-
-              Linus
+I'll go fix it up by hand...
