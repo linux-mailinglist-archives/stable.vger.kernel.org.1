@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A945C761726
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFB00761360
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231846AbjGYLpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:45:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53360 "EHLO
+        id S234166AbjGYLKX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231535AbjGYLpZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:25 -0400
+        with ESMTP id S234142AbjGYLKC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544E2A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E1731FC6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCFFF61654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB896C433C7;
-        Tue, 25 Jul 2023 11:45:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C583C61681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D223CC433C7;
+        Tue, 25 Jul 2023 11:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285523;
-        bh=NiDAlHeo9Q/SttiZTxgZbA7nYDfN764dL0b5aiAQTeE=;
+        s=korg; t=1690283333;
+        bh=6jcNjQQjaki7h7bZRkQYNtxUXG2P6f4T9Y6Q1ebZ8Ew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PM6zlXvzqmctIYSYEXwhS6gcfpZEOwb6FsTIsm+ewzg2mPwSxemPpg9iYjajhqTP/
-         E05FRHZ3TuoUspLxeDkE68fYxzA0WPqgJlN0rScVwIdwBlZWrTiyrbS5yOTQm3fhJK
-         Dli7FArnqANyMoU1zD1xAIHTqBpTI43EvR58+D24=
+        b=rPffdHa+kfi82Mj+FvTdeQrGuRcb4L3jW6gZYqMIutBbL5mOsgXQHBasejc9tewuQ
+         4IAwJdiXbz4LPfsbwqDH+OwCH6DJm0Ttouuyvo4mDvQ6B+HaOio285rqwczsu/Ib+7
+         CICpAoT04wI5wvbLMzZKegbAR5kx5W7e+MHEAYUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 5.4 236/313] erofs: fix compact 4B support for 16k block size
-Date:   Tue, 25 Jul 2023 12:46:29 +0200
-Message-ID: <20230725104531.260634457@linuxfoundation.org>
+        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 39/78] fbdev: imxfb: warn about invalid left/right margin
+Date:   Tue, 25 Jul 2023 12:46:30 +0200
+Message-ID: <20230725104452.822130892@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,66 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-commit 001b8ccd0650727e54ec16ef72bf1b8eeab7168e upstream.
+[ Upstream commit 4e47382fbca916d7db95cbf9e2d7ca2e9d1ca3fe ]
 
-In compact 4B, two adjacent lclusters are packed together as a unit to
-form on-disk indexes for effective random access, as below:
+Warn about invalid var->left_margin or var->right_margin. Their values
+are read from the device tree.
 
-(amortized = 4, vcnt = 2)
-       _____________________________________________
-      |___@_____ encoded bits __________|_ blkaddr _|
-      0        .                                    amortized * vcnt = 8
-      .             .
-      .                  .              amortized * vcnt - 4 = 4
-      .                        .
-      .____________________________.
-      |_type (2 bits)_|_clusterofs_|
+We store var->left_margin-3 and var->right_margin-1 in register
+fields. These fields should be >= 0.
 
-Therefore, encoded bits for each pack are 32 bits (4 bytes). IOWs,
-since each lcluster can get 16 bits for its type and clusterofs, the
-maximum supported lclustersize for compact 4B format is 16k (14 bits).
-
-Fix this to enable compact 4B format for 16k lclusters (blocks), which
-is tested on an arm64 server with 16k page size.
-
-Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230601112341.56960-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e8549bcee00 ("imxfb: Fix margin settings")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/video/fbdev/imxfb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -215,7 +215,7 @@ static int unpack_compacted_index(struct
- 	int i;
- 	u8 *in, type;
- 
--	if (1 << amortizedshift == 4)
-+	if (1 << amortizedshift == 4 && lclusterbits <= 14)
- 		vcnt = 2;
- 	else if (1 << amortizedshift == 2 && lclusterbits == 12)
- 		vcnt = 16;
-@@ -273,7 +273,6 @@ static int compacted_load_cluster_from_d
- {
- 	struct inode *const inode = m->inode;
- 	struct erofs_inode *const vi = EROFS_I(inode);
--	const unsigned int lclusterbits = vi->z_logical_clusterbits;
- 	const erofs_off_t ebase = ALIGN(iloc(EROFS_I_SB(inode), vi->nid) +
- 					vi->inode_isize + vi->xattr_isize, 8) +
- 		sizeof(struct z_erofs_map_header);
-@@ -283,9 +282,6 @@ static int compacted_load_cluster_from_d
- 	erofs_off_t pos;
- 	int err;
- 
--	if (lclusterbits != 12)
--		return -EOPNOTSUPP;
--
- 	if (lcn >= totalidx)
- 		return -EINVAL;
- 
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index ad598257ab386..cd376a9bfe1b7 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -602,10 +602,10 @@ static int imxfb_activate_var(struct fb_var_screeninfo *var, struct fb_info *inf
+ 	if (var->hsync_len < 1    || var->hsync_len > 64)
+ 		printk(KERN_ERR "%s: invalid hsync_len %d\n",
+ 			info->fix.id, var->hsync_len);
+-	if (var->left_margin > 255)
++	if (var->left_margin < 3  || var->left_margin > 255)
+ 		printk(KERN_ERR "%s: invalid left_margin %d\n",
+ 			info->fix.id, var->left_margin);
+-	if (var->right_margin > 255)
++	if (var->right_margin < 1 || var->right_margin > 255)
+ 		printk(KERN_ERR "%s: invalid right_margin %d\n",
+ 			info->fix.id, var->right_margin);
+ 	if (var->yres < 1 || var->yres > ymax_mask)
+-- 
+2.39.2
+
 
 
