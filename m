@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46CC176160E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DECBA7614C2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234747AbjGYLgL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43228 "EHLO
+        id S234445AbjGYLWe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234684AbjGYLgK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:10 -0400
+        with ESMTP id S234459AbjGYLWc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF3A1BE6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96F0C1BCF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C0BFB6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCE8C433C9;
-        Tue, 25 Jul 2023 11:35:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D7826167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA722C433C7;
+        Tue, 25 Jul 2023 11:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284952;
-        bh=CdfibJQ8OiTo7Js8MtTeFQwAHJ+QDlLmnpU+XmRW/HA=;
+        s=korg; t=1690284146;
+        bh=+1hMspF/G9VnTE1U8jAUe9oapUDtIFZeqHZj3czvEns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iWCcTDeawCsoPsgZdsjjLbAkU5ea7Id/QZriN7TChAQsgGRC/QmygUV1V+MynKjq0
-         Ft056QLsAfOCwx89bqwaG4++qjTbEU6NDMHZzkdlJVP2qYG9W4QIIJez+jLZ6gBEZf
-         4AYzAhaGoiXtOYBKh0ediUhSU+rdAfIwy4ret47A=
+        b=F6u2sFPOisfElFlhjdD+69PmgJAmn0/PzuzakV0k3tn9lKAPO9Xoeby2PbCqWvppw
+         4iufov2zSHleKUXBG+9PBcgIL4D/bVN2pN/y5JY+ax2SyF7Pml4YjuY76LwINlKvul
+         smwMxLJt0AS3HDUR1XhG6zSxiZl8Rv63Bzr49xJM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Ahmed S. Darwish" <darwi@linutronix.de>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.4 007/313] scripts/tags.sh: Resolve gtags empty index generation
-Date:   Tue, 25 Jul 2023 12:42:40 +0200
-Message-ID: <20230725104521.506297412@linuxfoundation.org>
+        patches@lists.linux.dev, Mantas Pucka <mantas@8devices.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 222/509] clk: qcom: gcc-ipq6018: Use floor ops for sdcc clocks
+Date:   Tue, 25 Jul 2023 12:42:41 +0200
+Message-ID: <20230725104603.919057077@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,65 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Mantas Pucka <mantas@8devices.com>
 
-commit e1b37563caffc410bb4b55f153ccb14dede66815 upstream.
+[ Upstream commit 56e5ae0116aef87273cf1812d608645b076e4f02 ]
 
-gtags considers any file outside of its current working directory
-"outside the source tree" and refuses to index it. For O= kernel builds,
-or when "make" is invoked from a directory other then the kernel source
-tree, gtags ignores the entire kernel source and generates an empty
-index.
+SDCC clocks must be rounded down to avoid overclocking the controller.
 
-Force-set gtags current working directory to the kernel source tree.
-
-Due to commit 9da0763bdd82 ("kbuild: Use relative path when building in
-a subdir of the source tree"), if the kernel build is done in a
-sub-directory of the kernel source tree, the kernel Makefile will set
-the kernel's $srctree to ".." for shorter compile-time and run-time
-warnings. Consequently, the list of files to be indexed will be in the
-"../*" form, rendering all such paths invalid once gtags switches to the
-kernel source tree as its current working directory.
-
-If gtags indexing is requested and the build directory is not the kernel
-source tree, index all files in absolute-path form.
-
-Note, indexing in absolute-path form will not affect the generated
-index, as paths in gtags indices are always relative to the gtags "root
-directory" anyway (as evidenced by "gtags --dump").
-
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
+Signed-off-by: Mantas Pucka <mantas@8devices.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/1682413909-24927-1-git-send-email-mantas@8devices.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/tags.sh |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq6018.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -28,6 +28,13 @@ fi
- # ignore userspace tools
- ignore="$ignore ( -path ${tree}tools ) -prune -o"
+diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
+index 3f9c2f61a5d93..5c5d1b04ea7af 100644
+--- a/drivers/clk/qcom/gcc-ipq6018.c
++++ b/drivers/clk/qcom/gcc-ipq6018.c
+@@ -1654,7 +1654,7 @@ static struct clk_rcg2 sdcc1_apps_clk_src = {
+ 		.name = "sdcc1_apps_clk_src",
+ 		.parent_data = gcc_xo_gpll0_gpll2_gpll0_out_main_div2,
+ 		.num_parents = 4,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
  
-+# gtags(1) refuses to index any file outside of its current working dir.
-+# If gtags indexing is requested and the build output directory is not
-+# the kernel source tree, index all files in absolute-path form.
-+if [[ "$1" == "gtags" && -n "${tree}" ]]; then
-+	tree=$(realpath "$tree")/
-+fi
-+
- # Detect if ALLSOURCE_ARCHS is set. If not, we assume SRCARCH
- if [ "${ALLSOURCE_ARCHS}" = "" ]; then
- 	ALLSOURCE_ARCHS=${SRCARCH}
-@@ -134,7 +141,7 @@ docscope()
- 
- dogtags()
- {
--	all_target_sources | gtags -i -f -
-+	all_target_sources | gtags -i -C "${tree:-.}" -f - "$PWD"
- }
- 
- # Basic regular expressions with an optional /kind-spec/ for ctags and
+-- 
+2.39.2
+
 
 
