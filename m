@@ -2,102 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 855B7762725
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 01:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89AE76272C
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 01:05:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbjGYXBv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 19:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53260 "EHLO
+        id S231302AbjGYXFb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 19:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230398AbjGYXBu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 19:01:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010CF1737;
-        Tue, 25 Jul 2023 16:01:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CCEF6192D;
-        Tue, 25 Jul 2023 23:01:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531F2C433C8;
-        Tue, 25 Jul 2023 23:01:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690326082;
-        bh=wOUzfezAhBuQ9O9A0eCypYAtr74aYdAOMGNyaZrRDYE=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=OvU51YhW7xFdnFxGM5Ga4LE7OXb+RvJaDcRcBFI2zZdNRobaQ2bxtt+xj4hi8KqGx
-         L0uI5pKLOwtvDM81+HNkMVCntlFG0Wu4/8FwBJE26glO8x2smTOh7fWDhRh31kE2gC
-         t3WklBJPr2YQlKHfp73dGh5eRrlZcBqxe59cTTbOzWYhWdJ7adDuP7NWBnfbYcQhCJ
-         RpEJvKXnKZUiIIxmsULAnvBsVMCCwd00qBvP5tYUIK2v3a1KnSC20+4NdoILGROuc8
-         nlQPHCACYh9R6AIbnOFJ/WZ41zjyHXDYtujjmlM6iPxMN1XAyi+zLofUneCZqTbQrJ
-         QWYTqo9IQX/Mw==
-From:   Mark Brown <broonie@kernel.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     stable@vger.kernel.org
-In-Reply-To: <20230725164047.368892-1-krzysztof.kozlowski@linaro.org>
-References: <20230725164047.368892-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] regulator: dt-bindings: qcom,rpm: fix pattern for
- children
-Message-Id: <169032608005.1636970.13530519930947403367.b4-ty@kernel.org>
-Date:   Wed, 26 Jul 2023 00:01:20 +0100
+        with ESMTP id S231294AbjGYXFa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 19:05:30 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A1DE47;
+        Tue, 25 Jul 2023 16:05:25 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6689430d803so3759773b3a.0;
+        Tue, 25 Jul 2023 16:05:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690326325; x=1690931125;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5+Rj5HE+U7eILrOCnywUgryQcn05XBMLVDPwImnu2yQ=;
+        b=fdLyJVPOR/Q7tVlvJo9S4VR7dGrlRV+GhT9Tia9yYAq+3mpyNrJ42gC7S34jT8qQIh
+         nSEuAvM9051/3Vj1Z7Tl+qFsp41VWqUylatlnrcdsQ8F+n2aoPv7f0bha4ZDy6HeJ18t
+         4YFIm5JXkn0nFRbJWowSE1aRhwOcgTQFPDibwfFffEovnBMuKcxIuHYaCt08oUoO9kfn
+         ZytoPsiBND2zT05LtikjbUpq+OrEVUqZp4tPwHhBlL4M3fq7H7xVGffFJQfrcy67SXAs
+         QzjO5sjRRGj1Y6K91mpcj670616djZ9e5Pq3MzrNaN8HGWJ4JQHM6BUoqauwdGgPWk6m
+         I/ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690326325; x=1690931125;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5+Rj5HE+U7eILrOCnywUgryQcn05XBMLVDPwImnu2yQ=;
+        b=bV8FYvd2JysDNBuAVYJS+Le5TBtIbzZJrvqInS4KrMBs74ZRO1cPJP3efZhsW8HZVv
+         Nv+yJP0D4pA0vCxhocZhsuGWG9QGJ94WyzDHAemHIH9E8M66IKdxGWW0J4R8bYh+yc/4
+         sgPy8BwEbFgxIshGWdcUepaeq2KTd54XajcCTfBYn++0jM+THuHqjvo34Wiv/xEecYHg
+         Bd7MocAWHyOIbaKbX7o0chmmyWqv4oVk8alxIoCaRXN0jEsAFDj1RXFio7WxeRTwyGDa
+         1Yp4a/e4NkoKBlrxem+OKYVfw5fDwrB9tvObQVkXj33XNiuxSOaGtgA+KMYCM+bc7HyN
+         NlsQ==
+X-Gm-Message-State: ABy/qLZ3+3XIudwubJNyAyH1ArINPgGKBCUSOl5QPmScHdxsfWmaRiei
+        vG1NN0BHJa5Iln/5geYw7RE=
+X-Google-Smtp-Source: APBJJlHi3dgidEaSE0dFIGHL5Now0nZ4TpUmbeH8G3nq5VuJfWmw5hdmCqVsCKwY6/udTT+GDgUapQ==
+X-Received: by 2002:a05:6a20:9697:b0:133:ec83:598 with SMTP id hp23-20020a056a20969700b00133ec830598mr308514pzc.28.1690326325180;
+        Tue, 25 Jul 2023 16:05:25 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id c16-20020aa78810000000b006828ee9fdaesm10082027pfo.127.2023.07.25.16.05.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Jul 2023 16:05:24 -0700 (PDT)
+Message-ID: <19226f61-7e47-eaab-f463-50b88ae1f2f0@gmail.com>
+Date:   Tue, 25 Jul 2023 16:05:22 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230725104514.821564989@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-099c9
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 25 Jul 2023 18:40:47 +0200, Krzysztof Kozlowski wrote:
-> The "or" (|) in regular expression must be within parentheses,
-> otherwise it is not really an "or" and it matches supplies:
+On 7/25/23 03:42, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.7 release.
+> There are 227 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
->   qcom-apq8060-dragonboard.dtb: regulators-1: vdd_ncp-supply: [[34]] is not of type 'object'
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
 > 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
 > 
+> thanks,
+> 
+> greg k-h
 
-Applied to
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-
-Thanks!
-
-[1/1] regulator: dt-bindings: qcom,rpm: fix pattern for children
-      commit: 75d9bf03e2fa38242b35e941ce7c7cdabe479961
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
