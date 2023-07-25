@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8447D7615AA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4857576135E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234648AbjGYLbw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:31:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
+        id S234037AbjGYLKT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:10:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234651AbjGYLbu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:50 -0400
+        with ESMTP id S234038AbjGYLJz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93E11BEE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA0C448B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5034C6168F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F53C433C8;
-        Tue, 25 Jul 2023 11:31:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0846361689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B61C433C7;
+        Tue, 25 Jul 2023 11:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284698;
-        bh=dq1+HV3swrdUEjVKh3IySCv1nLwlhLdp7/OR5kgkhLw=;
+        s=korg; t=1690283330;
+        bh=ObqO7+00nlkMK6KGGi4EGZ9qP/vawE+7zD57CJhjyFU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ty6V7uhZVi6SyrFtXCMe8dSaHLoF8Vh9s8X8zjnKz/gdpFd2Ci2x27Kz0GTApVu/5
-         7f9ByqDaORzmhhGQnB1QmB3bOjF0S5xtRJGcrKXqBBRNutoYOGaZOJMyJiDneb5ZwX
-         5NAI6n4hRlehoAmrQo0X3snzfA4BVx4ZWorpF4/c=
+        b=oCEbV7dYmrxieregvfSJ8VJKhZe9ATFnEKLPa4vOCYsyc14rz60KlCk+2Fe+fntaE
+         U+TXZAxgQ4N9e/sU0sPyHaUneHhy3feMm/n79miXznxgHV6igmKqaGxsk2/DiKfwif
+         s0FvWOmLf/L1xAd8r6XqrTXQuADJIFU2oLOLKVxo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YueHaibing <yuehaibing@huawei.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 450/509] can: bcm: Fix UAF in bcm_proc_show()
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 38/78] spi: bcm63xx: fix max prepend length
 Date:   Tue, 25 Jul 2023 12:46:29 +0200
-Message-ID: <20230725104614.340656011@linuxfoundation.org>
+Message-ID: <20230725104452.782368253@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,92 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 55c3b96074f3f9b0aee19bf93cd71af7516582bb upstream.
+[ Upstream commit 5158814cbb37bbb38344b3ecddc24ba2ed0365f2 ]
 
-BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80
-Read of size 8 at addr ffff888155846230 by task cat/7862
+The command word is defined as following:
 
-CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xd5/0x150
- print_report+0xc1/0x5e0
- kasan_report+0xba/0xf0
- bcm_proc_show+0x969/0xa80
- seq_read_iter+0x4f6/0x1260
- seq_read+0x165/0x210
- proc_reg_read+0x227/0x300
- vfs_read+0x1d5/0x8d0
- ksys_read+0x11e/0x240
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+    /* Command */
+    #define SPI_CMD_COMMAND_SHIFT           0
+    #define SPI_CMD_DEVICE_ID_SHIFT         4
+    #define SPI_CMD_PREPEND_BYTE_CNT_SHIFT  8
+    #define SPI_CMD_ONE_BYTE_SHIFT          11
+    #define SPI_CMD_ONE_WIRE_SHIFT          12
 
-Allocated by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x9e/0xa0
- bcm_sendmsg+0x264b/0x44e0
- sock_sendmsg+0xda/0x180
- ____sys_sendmsg+0x735/0x920
- ___sys_sendmsg+0x11d/0x1b0
- __sys_sendmsg+0xfa/0x1d0
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+If the prepend byte count field starts at bit 8, and the next defined
+bit is SPI_CMD_ONE_BYTE at bit 11, it can be at most 3 bits wide, and
+thus the max value is 7, not 15.
 
-Freed by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x27/0x40
- ____kasan_slab_free+0x161/0x1c0
- slab_free_freelist_hook+0x119/0x220
- __kmem_cache_free+0xb4/0x2e0
- rcu_core+0x809/0x1bd0
-
-bcm_op is freed before procfs entry be removed in bcm_release(),
-this lead to bcm_proc_show() may read the freed bcm_op.
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/all/20230715092543.15548-1-yuehaibing@huawei.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://lore.kernel.org/r/20230629071453.62024-1-jonas.gorski@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1521,6 +1521,12 @@ static int bcm_release(struct socket *so
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 80fa0ef8909ca..147199002df1e 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -126,7 +126,7 @@ enum bcm63xx_regs_spi {
+ 	SPI_MSG_DATA_SIZE,
+ };
  
- 	lock_sock(sk);
+-#define BCM63XX_SPI_MAX_PREPEND		15
++#define BCM63XX_SPI_MAX_PREPEND		7
  
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+	/* remove procfs entry */
-+	if (net->can.bcmproc_dir && bo->bcm_proc_read)
-+		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
-+#endif /* CONFIG_PROC_FS */
-+
- 	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
- 		bcm_remove_op(op);
- 
-@@ -1556,12 +1562,6 @@ static int bcm_release(struct socket *so
- 	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
- 		bcm_remove_op(op);
- 
--#if IS_ENABLED(CONFIG_PROC_FS)
--	/* remove procfs entry */
--	if (net->can.bcmproc_dir && bo->bcm_proc_read)
--		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
--#endif /* CONFIG_PROC_FS */
--
- 	/* remove device reference */
- 	if (bo->bound) {
- 		bo->bound   = 0;
+ #define BCM63XX_SPI_MAX_CS		8
+ #define BCM63XX_SPI_BUS_NUM		0
+-- 
+2.39.2
+
 
 
