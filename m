@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1937616FD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05743761589
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235012AbjGYLo0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
+        id S234510AbjGYLaL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235006AbjGYLny (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:54 -0400
+        with ESMTP id S234770AbjGYLaJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB69C1BFB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11680F2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD200616B8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF12CC433C7;
-        Tue, 25 Jul 2023 11:43:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3CBA61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E201C433C9;
+        Tue, 25 Jul 2023 11:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285432;
-        bh=Doceio9ZV421efEcN/Dyu2frYvEDriVuJfpiPB1cIR4=;
+        s=korg; t=1690284607;
+        bh=uHjJDVnXuPXzUGaFpRPD2RjDaLhzCd7Z9ZebcGvk7FY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u1K9ZVpSkVA7IbaEgekueC2bBMedpUF+i5Qtz/KAWAWS1jhbL5oPCbgcttGFbJIso
-         SbwsNE/1LeBVuOXuJMfsvT9m+S2RK+ymCx1AlC+KNcfJmZu4lHam/1Ot+S2L/Gud9N
-         aBBb0ET0bdnQ8VgkqrmjtBWp5VdNOJx3Jb16HvqA=
+        b=ZmQlQzgazzp1jkndmZnx1PDLiV8mDZFy2HULbGG6S5/3da37Lhw5H5ePXS9aEro3N
+         XPZZ3tMft64GjdRgN5m8SdpN7WPVndG53mqaQMGWWQAWMa3hP5lIBFDw3lNzHST0qK
+         nvNraUnkt3FKjC1aseGBrh6g3ERP8fUfkf6PkvNY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <snelson@pensando.io>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 203/313] ionic: improve irq numa locality
+        patches@lists.linux.dev, Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 417/509] xhci: Fix TRB prefetch issue of ZHAOXIN hosts
 Date:   Tue, 25 Jul 2023 12:45:56 +0200
-Message-ID: <20230725104529.799822557@linuxfoundation.org>
+Message-ID: <20230725104612.784102284@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,42 +54,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shannon Nelson <snelson@pensando.io>
+From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
 
-[ Upstream commit b7f55b81f2ac40e52c5a56e22c80488eac531c91 ]
+commit 2a865a652299f5666f3b785cbe758c5f57453036 upstream.
 
-Spreading the interrupts across the CPU cores is good for load
-balancing, but not necessarily as good when using a CPU/core
-that is not part of the NUMA local CPU.  If it can be localized,
-the kernel's cpumask_local_spread() service will pick a core
-that is on the node close to the PCI device.
+On some ZHAOXIN hosts, xHCI will prefetch TRB for performance
+improvement. However this TRB prefetch mechanism may cross page boundary,
+which may access memory not allocated by xHCI driver. In order to fix
+this issue, two pages was allocated for a segment and only the first
+page will be used. And add a quirk XHCI_ZHAOXIN_TRB_FETCH for this issue.
 
-Signed-off-by: Shannon Nelson <snelson@pensando.io>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: abfb2a58a537 ("ionic: remove WARN_ON to prevent panic_on_warn")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Message-ID: <20230602144009.1225632-10-mathias.nyman@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-mem.c |    8 ++++++--
+ drivers/usb/host/xhci-pci.c |    7 ++++++-
+ drivers/usb/host/xhci.h     |    1 +
+ 3 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index d0841836cf705..975cda9377ec4 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -418,8 +418,9 @@ static int ionic_qcq_alloc(struct ionic_lif *lif, unsigned int type,
- 		ionic_intr_mask_assert(idev->intr_ctrl, new->intr.index,
- 				       IONIC_INTR_MASK_SET);
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2472,8 +2472,12 @@ int xhci_mem_init(struct xhci_hcd *xhci,
+ 	 * and our use of dma addresses in the trb_address_map radix tree needs
+ 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
+ 	 */
+-	xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
+-			TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
++	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
++		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
++				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
++	else
++		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
++				TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
  
--		new->intr.cpu = new->intr.index % num_online_cpus();
--		if (cpu_online(new->intr.cpu))
-+		new->intr.cpu = cpumask_local_spread(new->intr.index,
-+						     dev_to_node(dev));
-+		if (new->intr.cpu != -1)
- 			cpumask_set_cpu(new->intr.cpu,
- 					&new->intr.affinity_mask);
- 	} else {
--- 
-2.39.2
-
+ 	/* See Table 46 and Note on Figure 55 */
+ 	xhci->device_pool = dma_pool_create("xHCI input/output contexts", dev,
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -331,8 +331,13 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
+-		if (pdev->device == 0x9202)
++		if (pdev->device == 0x9202) {
+ 			xhci->quirks |= XHCI_RESET_ON_RESUME;
++			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
++		}
++
++		if (pdev->device == 0x9203)
++			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
+ 	}
+ 
+ 	/* xHC spec requires PCI devices to support D3hot and D3cold */
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1895,6 +1895,7 @@ struct xhci_hcd {
+ #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
+ #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
+ #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
++#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 
 
