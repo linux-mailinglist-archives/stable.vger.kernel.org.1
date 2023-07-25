@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 042AC76127A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 285E7761657
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjGYLDH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:03:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39860 "EHLO
+        id S234920AbjGYLiZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233877AbjGYLCn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18E235B8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:04 -0700 (PDT)
+        with ESMTP id S235048AbjGYLiO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BAE519AA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E1861681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55A5C433C8;
-        Tue, 25 Jul 2023 11:00:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D19B61600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8B0C433C7;
+        Tue, 25 Jul 2023 11:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282804;
-        bh=XHcGXGuhvoMuvi/gJHx84dsIHkJEGprisf7ZJ/Re1d8=;
+        s=korg; t=1690285091;
+        bh=KZnft3sVw5x33P3BLTN2j1AAlZ2+XyVaeAqZgoxC67k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RM7sbDMRiYd+a3qzjesuCzcu9HDm9mBnetDUvvYqPolszNYNecdgzhAeQctZExFK2
-         Jqeq0dQWUj9onkZsGBh2b/imByJ9JYXvpUelXhTbNK2MgQW+k0Ut238KTxYMZKoRwY
-         UxFhlXBDvlD/IeJh7f3hScdKli6Po2NnymP74u7Y=
+        b=1NOS0esnpJ3GL+zmpPlc5ZKREuMqzvWhzD/vqeojJ8MlpptKCJGos6aBtg6odktZ4
+         eJiHdcdQDrFfUjPyHtICM0/iPeQl9alS7v1i+CYWzeN+CARYfOtr8qRlRsCkxwsvrC
+         b7FgYoiAIVluqRrucC6DLkhBd+dLZ9moLSKyURBI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Zhang <zhangpeng.00@bytedance.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 005/183] maple_tree: set the node limit when creating a new root node
+        patches@lists.linux.dev,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 080/313] ARM: ep93xx: fix missing-prototype warnings
 Date:   Tue, 25 Jul 2023 12:43:53 +0200
-Message-ID: <20230725104507.986648638@linuxfoundation.org>
+Message-ID: <20230725104524.392702818@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peng Zhang <zhangpeng.00@bytedance.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 3c769fd88b9742954763a968e84de09f7ad78cfe upstream.
+[ Upstream commit 419013740ea1e4343d8ade535d999f59fa28e460 ]
 
-Set the node limit of the root node so that the last pivot of all nodes is
-the node limit (if the node is not full).
+ep93xx_clocksource_read() is only called from the file it is declared in,
+while ep93xx_timer_init() is declared in a header that is not included here.
 
-This patch also fixes a bug in mas_rev_awalk().  Effectively, always
-setting a maximum makes mas_logical_pivot() behave as mas_safe_pivot().
-Without this fix, it is possible that very small tasks would fail to find
-the correct gap.  Although this has not been observed with real tasks, it
-has been reported to happen in m68k nommu running the maple tree tests.
+arch/arm/mach-ep93xx/timer-ep93xx.c:120:13: error: no previous prototype for 'ep93xx_timer_init'
+arch/arm/mach-ep93xx/timer-ep93xx.c:63:5: error: no previous prototype for 'ep93xx_clocksource_read'
 
-Link: https://lkml.kernel.org/r/20230711035444.526-1-zhangpeng.00@bytedance.com
-Link: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
-Link: https://lkml.kernel.org/r/20230711035444.526-2-zhangpeng.00@bytedance.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 000bc17817bf ("ARM: ep93xx: switch to GENERIC_CLOCKEVENTS")
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/20230516153109.514251-3-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |    3 ++-
+ arch/arm/mach-ep93xx/timer-ep93xx.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -3711,7 +3711,8 @@ static inline int mas_root_expand(struct
- 	mas->offset = slot;
- 	pivots[slot] = mas->last;
- 	if (mas->last != ULONG_MAX)
--		slot++;
-+		pivots[++slot] = ULONG_MAX;
-+
- 	mas->depth = 1;
- 	mas_set_height(mas);
- 	ma_set_meta(node, maple_leaf_64, 0, slot);
+diff --git a/arch/arm/mach-ep93xx/timer-ep93xx.c b/arch/arm/mach-ep93xx/timer-ep93xx.c
+index de998830f534f..b07956883e165 100644
+--- a/arch/arm/mach-ep93xx/timer-ep93xx.c
++++ b/arch/arm/mach-ep93xx/timer-ep93xx.c
+@@ -9,6 +9,7 @@
+ #include <linux/io.h>
+ #include <asm/mach/time.h>
+ #include "soc.h"
++#include "platform.h"
+ 
+ /*************************************************************************
+  * Timer handling for EP93xx
+@@ -60,7 +61,7 @@ static u64 notrace ep93xx_read_sched_clock(void)
+ 	return ret;
+ }
+ 
+-u64 ep93xx_clocksource_read(struct clocksource *c)
++static u64 ep93xx_clocksource_read(struct clocksource *c)
+ {
+ 	u64 ret;
+ 
+-- 
+2.39.2
+
 
 
