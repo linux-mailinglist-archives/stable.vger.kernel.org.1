@@ -2,123 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36B7D762115
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37AAD762156
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:30:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231533AbjGYSNG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 14:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
+        id S231390AbjGYSa4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 14:30:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230005AbjGYSNF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:13:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D04FE9;
-        Tue, 25 Jul 2023 11:13:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 125C2617DE;
-        Tue, 25 Jul 2023 18:13:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A6BC433C8;
-        Tue, 25 Jul 2023 18:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690308783;
-        bh=CcXqnaAebCrmsxkP8+aUxYonPtBiUjJWawJul8tJzuI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HSIzqrr3s8SfsYEEGIrO9TB6Ox64+AsR3PqjAfBSctNjrMhwViizJg5L/EYooBnmi
-         SP+LA3KJMkuv65awxXqLSEw0GBm2Nxx9BrB4FhV67bWIHN1K0GNhhj0s9VQsAFVr2O
-         FdDtBpwM3EAi89pkEY6FScOScIg9hKFdKkaXmx+p/QHmvkkxJY3q8unXwZ/nfbK3NV
-         nXEUnjdobJWQQIglAluY2HBfXpveyr12EC4fBG4BENOJb4oJ24vMqJ8JpGr1tDVplL
-         58sen9X1lSZtR46SXo7jlC+r252S917KnHmu2sS4GsUWLvA1Sh1F8M6xp49j7NTex9
-         9y0918IqxMdKQ==
-From:   SeongJae Park <sj@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
-Date:   Tue, 25 Jul 2023 18:12:59 +0000
-Message-Id: <20230725181259.70285-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: 
+        with ESMTP id S231285AbjGYSay (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:30:54 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF692125
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:52 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-5222b917e0cso3772911a12.0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1690309850; x=1690914650;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aHGpPoXTTKU95qTHzCpP6PWMEtmaqjLvANNO2417VQI=;
+        b=I6HhDY/XSRKwTwElLogUEtVdnjY/ZjoJ3buHC+3GLvd03gIcEkv28rV0A/gISJtAZ1
+         kSdpoIsigUE1zdN9mDmc3V1LX42U9AK9PDWGZ7OLQQyCiK6GERjm1bR5kfvVpUt4h78N
+         Va3lq+HSztVwG63OdQZTYPpWdG6CXANqjqZd8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690309850; x=1690914650;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aHGpPoXTTKU95qTHzCpP6PWMEtmaqjLvANNO2417VQI=;
+        b=caTISv5jsrJUETWOe1IX+P8wC6gdmGqph6N4WMNhSYbB1JtfXfZBt5tWSn/GvPCySV
+         4uCY0Y56Vbq9GlCCL3YYcGDV3solOWFTMVfpfN4K/nR4uGjbxYjO+fAHxIWJNe0/LmqR
+         IFx6w0nmduXXCPBPOSYO9cXYZmhzocuKoXXaqC7WnWy+tmWaUt/W7ly5Ivy3BPX93zKd
+         q6FGptIQHu/HM6yDjZD6jdiPAvG7ypJkqL1k+0iE7IjKqXzQKkikSUga+cWhQ2MoL0fb
+         NZJjFjsDIuaHR/K7sEmTAeIb1jX30cdHgvND5G77ojPFUy5x/L2UlXdFr8uqm64WFu6s
+         6Nug==
+X-Gm-Message-State: ABy/qLbSZR+3jnyFn8zI3gutBeP/w0QhIhzyXmtlVb1NIE8fhmnAIrRr
+        zjtou/Kt06hWkmR3VBmQ6pwIXCkp6+ez5J6PdFXhi9uH
+X-Google-Smtp-Source: APBJJlGcfQDanKPC2w489422qSSrJTtZ33g7itHTdjs9uA3Vyt3J187CRRQMXKAOeDr7Afi6PG6qGg==
+X-Received: by 2002:a17:906:3298:b0:993:eddd:6df4 with SMTP id 24-20020a170906329800b00993eddd6df4mr12853877ejw.10.1690309850467;
+        Tue, 25 Jul 2023 11:30:50 -0700 (PDT)
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
+        by smtp.gmail.com with ESMTPSA id m8-20020a170906234800b00992c92af6easm8540767eja.161.2023.07.25.11.30.49
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Jul 2023 11:30:50 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5222b917e0cso3772874a12.0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:49 -0700 (PDT)
+X-Received: by 2002:aa7:c390:0:b0:51b:e4b4:8bb0 with SMTP id
+ k16-20020aa7c390000000b0051be4b48bb0mr11654096edq.2.1690309849617; Tue, 25
+ Jul 2023 11:30:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-scheren-absegnen-8c807c760ba1@brauner> <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
+ <20230724-gebessert-wortwahl-195daecce8f0@brauner> <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
+ <20230724-eckpunkte-melden-fc35b97d1c11@brauner> <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+ <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk> <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
+ <20230724-geadelt-nachrangig-07e431a2f3a4@brauner> <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
+ <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
+In-Reply-To: <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 25 Jul 2023 11:30:32 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
+Message-ID: <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
+Subject: Re: [PATCH] file: always lock position
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Christian Brauner <brauner@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Mon, 24 Jul 2023 at 15:57, Jens Axboe <axboe@kernel.dk> wrote:
+>
+> On 7/24/23 4:25?PM, Linus Torvalds wrote:
+> > This sentence still worries me.
+> >
+> > Those fixed files had better have their own refcounts from being
+> > fixed. So the rules really shouldn't change in any way what-so-ever.
+> > So what exactly are you alluding to?
+>
+> They do, but they only have a single reference, which is what fixes them
+> into the io_uring file table for fixed files. With the patch from the
+> top of this thread, that should then be fine as we don't need to
+> artificially elevator the ref count more than that.
 
-On Tue, 25 Jul 2023 12:42:47 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+No.
 
-> This is the start of the stable review cycle for the 6.4.7 release.
-> There are 227 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
+The patch from the top of this thread cannot *possibly* matter for a
+io_uring fixed file.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+The fdget_pos() always gets the file pointer from the file table. But
+that means that it is guaranteed to have a refcount of at least one.
 
-Tested-by: SeongJae Park <sj@kernel.org>
+If io_uring fixed file holds a reference (and not holding a reference
+would be a huge bug), that in turn means that the minimum refcount is
+now two.
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] commit 3c19c5641cce ("Linux 6.4.7-rc1")
+So the code in fdget_pos() is correct, with or without the patch.
 
+The *only* problem is when something actually violates the refcounting
+rules. Sadly, that's exactly what pidfd_getfd() does, and can
+basically make a private file pointer be non-private without
+synchronizing with the original owner of the fd.
 
-Thanks,
-SJ
+Now, io_uring may have had its own problems, if it tried to
+re-implement some io_uring-specific version of fdget_pos() for the
+fixed file case, and thought that it could use the file_count() == 1
+trick when it *wasn't* also a file table entry.
 
-[...]
+But that would be an independent bug from copy-and-pasting code
+without taking the surrounding rules into account.
 
----
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_m68k.sh
-ok 12 selftests: damon-tests: build_arm64.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
-
-PASS
+              Linus
