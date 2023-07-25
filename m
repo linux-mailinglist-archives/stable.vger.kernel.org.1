@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74F8376125E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C1527615AC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233798AbjGYLBf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:01:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
+        id S234654AbjGYLb5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232457AbjGYLBN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:13 -0400
+        with ESMTP id S234655AbjGYLbz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958824C2D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E101FC7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E19A66164D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D18C433C8;
-        Tue, 25 Jul 2023 10:58:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1E4B61691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111CBC433C7;
+        Tue, 25 Jul 2023 11:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282723;
-        bh=x3shIIGvGstVJyoHIehJ7TDYf4It8ylxyEPNu7fg2M8=;
+        s=korg; t=1690284704;
+        bh=MA5xMtUNpf+N3Kf6oxa0KkgN1FqMWr1DoYT0TsOTkhI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ELXRjpQKBnZH2VvHTqYNduTt3Xp8OKilXWe5VMo/5Mp04O1AadSiMaGreNGYtuSOX
-         GBTsXYlovehQ9u3aB9RmIuUv8Vj2nVmakpmFtZJ+aWWplhohAhkZ1+imUFefxCuEpF
-         bGHdd6lZWGVyZ2yI8iMLg+8pR5Ug56zSGHK487oE=
+        b=m3uyqmWkS6tx+EYkenGEMMJRr/IAJ6q1HXCh7ULGTrBnNP2IFByjUGwKS0VfXzkKh
+         f70eXBPNDbqubvSgXKIBdE8UaXnxbTGegPajP3w0OmI0dpdoZ41MHx3olw+rL61BEh
+         JLroA97FlXeqO22MV2byxcadU9OkNk0dWWW+K6fk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-        Yu Kuai <yukuai3@huawei.com>, Christoph Hellwig <hch@lst.de>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 224/227] scsi/sg: dont grab scsi host module reference
+        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
+        Jocelyn Falempe <jfalempe@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 5.10 452/509] drm/client: Fix memory leak in drm_client_modeset_probe
 Date:   Tue, 25 Jul 2023 12:46:31 +0200
-Message-ID: <20230725104523.983367634@linuxfoundation.org>
+Message-ID: <20230725104614.436381951@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,69 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-commit fcaa174a9c995cf0af3967e55644a1543ea07e36 upstream.
+commit 2329cc7a101af1a844fbf706c0724c0baea38365 upstream.
 
-In order to prevent request_queue to be freed before cleaning up
-blktrace debugfs entries, commit db59133e9279 ("scsi: sg: fix blktrace
-debugfs entries leakage") use scsi_device_get(), however,
-scsi_device_get() will also grab scsi module reference and scsi module
-can't be removed.
+When a new mode is set to modeset->mode, the previous mode should be freed.
+This fixes the following kmemleak report:
 
-It's reported that blktests can't unload scsi_debug after block/001:
+drm_mode_duplicate+0x45/0x220 [drm]
+drm_client_modeset_probe+0x944/0xf50 [drm]
+__drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
+drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
+drm_client_register+0x169/0x240 [drm]
+ast_pci_probe+0x142/0x190 [ast]
+local_pci_probe+0xdc/0x180
+work_for_cpu_fn+0x4e/0xa0
+process_one_work+0x8b7/0x1540
+worker_thread+0x70a/0xed0
+kthread+0x29f/0x340
+ret_from_fork+0x1f/0x30
 
-blktests (master) # ./check block
-block/001 (stress device hotplugging) [failed]
-     +++ /root/blktests/results/nodev/block/001.out.bad 2023-06-19
-      Running block/001
-      Stressing sd
-     +modprobe: FATAL: Module scsi_debug is in use.
-
-Fix this problem by grabbing request_queue reference directly, so that
-scsi host module can still be unloaded while request_queue will be
-pinged by sg device.
-
-Reported-by: Chaitanya Kulkarni <chaitanyak@nvidia.com>
-Link: https://lore.kernel.org/all/1760da91-876d-fc9c-ab51-999a6f66ad50@nvidia.com/
-Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230621160111.1433521-1-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+cc: <stable@vger.kernel.org>
+Reported-by: Zhang Yi <yizhan@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-3-jfalempe@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_client_modeset.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -1496,7 +1496,7 @@ sg_add_device(struct device *cl_dev)
- 	int error;
- 	unsigned long iflags;
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -864,6 +864,7 @@ int drm_client_modeset_probe(struct drm_
+ 				break;
+ 			}
  
--	error = scsi_device_get(scsidp);
-+	error = blk_get_queue(scsidp->request_queue);
- 	if (error)
- 		return error;
- 
-@@ -1557,7 +1557,7 @@ cdev_add_err:
- out:
- 	if (cdev)
- 		cdev_del(cdev);
--	scsi_device_put(scsidp);
-+	blk_put_queue(scsidp->request_queue);
- 	return error;
- }
- 
-@@ -1574,7 +1574,7 @@ sg_device_destroy(struct kref *kref)
- 	 */
- 
- 	blk_trace_remove(q);
--	scsi_device_put(sdp->device);
-+	blk_put_queue(q);
- 
- 	write_lock_irqsave(&sg_index_lock, flags);
- 	idr_remove(&sg_index_idr, sdp->index);
++			kfree(modeset->mode);
+ 			modeset->mode = drm_mode_duplicate(dev, mode);
+ 			drm_connector_get(connector);
+ 			modeset->connectors[modeset->num_connectors++] = connector;
 
 
