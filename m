@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74DDF7616FE
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7568A761232
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232229AbjGYLnu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:43:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51306 "EHLO
+        id S233541AbjGYK76 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235297AbjGYLnS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:18 -0400
+        with ESMTP id S233632AbjGYK7m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CDD42106
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB00930EB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37C5361698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:42:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C686C433C7;
-        Tue, 25 Jul 2023 11:42:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23E8A6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBD9C433C7;
+        Tue, 25 Jul 2023 10:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285358;
-        bh=KHTVn3Z3TWQN/O+w9EBMRV2laeN9G+YWqmK3AXsLmec=;
+        s=korg; t=1690282611;
+        bh=GZA6wExYjc3AFatZg/N0vDbT6mOAnsOX0iPXu8574nk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zz/pllbaKD5MUlUYRb5KmHE5EMrgZhh4FiEPZsRVllBVF3WD9V++GA5zLlhsJzguO
-         tgnVXnYIq2hZqvcL3O1A/hxgyUjmJYCwWBTCarXuqwgfgiHwkkGR08/rzclajBRyNl
-         y+uCNWNK2o63TV85htUosrnDJS+Mj7RNAZuwZUb8=
+        b=z4PKCyYnJap5Pv33nrgTaG05tIBBoFzWYYWovFcekAddA7DEtXS5L0DirPaVHBrEJ
+         nMLaNGTiz9rnKkyIwTrmZVKYxKHPWdwGsatqGTF4kK+rxKaWIF6DIORgx7uZBMaPgg
+         VsIYaf3UZ5u+dVw8NEOeM8Xzpfcu5UgnGr2pxmxU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 176/313] fs: no need to check source
+        patches@lists.linux.dev,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 162/227] regulator: da9063: fix null pointer deref with partial DT config
 Date:   Tue, 25 Jul 2023 12:45:29 +0200
-Message-ID: <20230725104528.554868408@linuxfoundation.org>
+Message-ID: <20230725104521.634184325@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Martin Fuzzey <martin.fuzzey@flowbird.group>
 
-commit 66d8fc0539b0d49941f313c9509a8384e4245ac1 upstream.
+[ Upstream commit 98e2dd5f7a8be5cb2501a897e96910393a49f0ff ]
 
-The @source inode must be valid. It is even checked via IS_SWAPFILE()
-above making it pretty clear. So no need to check it when we unlock.
+When some of the da9063 regulators do not have corresponding DT nodes
+a null pointer dereference occurs on boot because such regulators have
+no init_data causing the pointers calculated in
+da9063_check_xvp_constraints() to be invalid.
 
-What doesn't need to exist is the @target inode. The lock_two_inodes()
-helper currently swaps the @inode1 and @inode2 arguments if @inode1 is
-NULL to have consistent lock class usage. However, we know that at least
-for vfs_rename() that @inode1 is @source and thus is never NULL as per
-above. We also know that @source is a different inode than @target as
-that is checked right at the beginning of vfs_rename(). So we know that
-@source is valid and locked and that @target is locked. So drop the
-check whether @source is non-NULL.
+Do not dereference them in this case.
 
-Fixes: 28eceeda130f ("fs: Lock moved directories")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202307030026.9sE2pk2x-lkp@intel.com
-Message-Id: <20230703-vfs-rename-source-v1-1-37eebb29b65b@kernel.org>
-[brauner: use commit message from patch I sent concurrently]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b8717a80e6ee ("regulator: da9063: implement setter for voltage monitoring")
+Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Link: https://lore.kernel.org/r/20230616143736.2946173-1-martin.fuzzey@flowbird.group
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namei.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/regulator/da9063-regulator.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -4497,8 +4497,7 @@ int vfs_rename(struct inode *old_dir, st
- 			d_exchange(old_dentry, new_dentry);
- 	}
- out:
--	if (source)
--		inode_unlock(source);
-+	inode_unlock(source);
- 	if (target)
- 		inode_unlock(target);
- 	dput(new_dentry);
+diff --git a/drivers/regulator/da9063-regulator.c b/drivers/regulator/da9063-regulator.c
+index c5dd77be558b6..dfd5ec9f75c90 100644
+--- a/drivers/regulator/da9063-regulator.c
++++ b/drivers/regulator/da9063-regulator.c
+@@ -778,6 +778,9 @@ static int da9063_check_xvp_constraints(struct regulator_config *config)
+ 	const struct notification_limit *uv_l = &constr->under_voltage_limits;
+ 	const struct notification_limit *ov_l = &constr->over_voltage_limits;
+ 
++	if (!config->init_data) /* No config in DT, pointers will be invalid */
++		return 0;
++
+ 	/* make sure that only one severity is used to clarify if unchanged, enabled or disabled */
+ 	if ((!!uv_l->prot + !!uv_l->err + !!uv_l->warn) > 1) {
+ 		dev_err(config->dev, "%s: at most one voltage monitoring severity allowed!\n",
+-- 
+2.39.2
+
 
 
