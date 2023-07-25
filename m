@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6DD27615F6
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7669D7614A4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234721AbjGYLfC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42024 "EHLO
+        id S234404AbjGYLVT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:21:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234718AbjGYLfB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:35:01 -0400
+        with ESMTP id S234417AbjGYLVS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B7A118F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6DEB6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 108816166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BAAC433C8;
-        Tue, 25 Jul 2023 11:34:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89D3A615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD1FC433CA;
+        Tue, 25 Jul 2023 11:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284899;
-        bh=IcHyIVsIG9SnJRp4MalCtaRPuWE9SJi2yK0TKu0hAVU=;
+        s=korg; t=1690284077;
+        bh=FaqdUIyMkvgk6FJ8+pmVw35p6XeNUShefM2Z/+8wY4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mro7CHSbWceFAZ+xWAYLJNtrIgAJ5NLvH7wur1qlpvCmJPzPSQ5/F8ZXVK0U7KT4A
-         hq8I2GYE8HOn910lPkS2Np43jqDUUJdRdjyHO3cVW77H0LwURbphuLlbYEu45JTetr
-         /e+oBJE+lN9UYPJPK0qmpnmEaqVEe9TV15RsCRN8=
+        b=Udv2AGuS/uX5/vvGjWhKxJ22bNhhB0y4FNkduxEOVQmlMjxuZWYkxzWB2ET0BqKfQ
+         R+5mwhoFmiWWAapRuRHU1w3r1qOAsC5XLmQi8fnkSKiGuIBjAeiVnyp7unBmzCAo8J
+         I9YzUO9Y8wH5JMQ1LYyOcc/4BW1BHkh4l4Qnxd9M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 012/313] md/raid10: check slab-out-of-bounds in md_bitmap_get_counter
-Date:   Tue, 25 Jul 2023 12:42:45 +0200
-Message-ID: <20230725104521.700725001@linuxfoundation.org>
+Subject: [PATCH 5.10 227/509] clk: qcom: reset: support resetting multiple bits
+Date:   Tue, 25 Jul 2023 12:42:46 +0200
+Message-ID: <20230725104604.158678444@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,63 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Nan <linan122@huawei.com>
+From: Robert Marko <robimarko@gmail.com>
 
-[ Upstream commit 301867b1c16805aebbc306aafa6ecdc68b73c7e5 ]
+[ Upstream commit 4a5210893625f89723ea210d7c630b730abb37ad ]
 
-If we write a large number to md/bitmap_set_bits, md_bitmap_checkpage()
-will return -EINVAL because 'page >= bitmap->pages', but the return value
-was not checked immediately in md_bitmap_get_counter() in order to set
-*blocks value and slab-out-of-bounds occurs.
+This patch adds the support for giving the complete bitmask
+in reset structure and reset operation will use this bitmask
+for all reset operations.
 
-Move check of 'page >= bitmap->pages' to md_bitmap_get_counter() and
-return directly if true.
+Currently, reset structure only takes a single bit for each reset
+and then calculates the bitmask by using the BIT() macro.
 
-Fixes: ef4256733506 ("md/bitmap: optimise scanning of empty bitmaps.")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230515134808.3936750-2-linan666@huaweicloud.com
+However, this is not sufficient anymore for newer SoC-s like IPQ8074,
+IPQ6018 and more, since their networking resets require multiple bits
+to be asserted in order to properly reset the HW block completely.
+
+So, in order to allow asserting multiple bits add "bitmask" field to
+qcom_reset_map, and then use that bitmask value if its populated in the
+driver, if its not populated, then we just default to existing behaviour
+and calculate the bitmask on the fly.
+
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20221107132901.489240-1-robimarko@gmail.com
+Stable-dep-of: 349b5bed539b ("clk: qcom: ipq6018: fix networking resets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/clk/qcom/reset.c | 4 ++--
+ drivers/clk/qcom/reset.h | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 0545cdccf6369..bea8265ce9b8e 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -54,14 +54,7 @@ __acquires(bitmap->lock)
- {
- 	unsigned char *mappage;
+diff --git a/drivers/clk/qcom/reset.c b/drivers/clk/qcom/reset.c
+index 2a16adb572d2b..0e914ec7aeae1 100644
+--- a/drivers/clk/qcom/reset.c
++++ b/drivers/clk/qcom/reset.c
+@@ -30,7 +30,7 @@ qcom_reset_assert(struct reset_controller_dev *rcdev, unsigned long id)
  
--	if (page >= bitmap->pages) {
--		/* This can happen if bitmap_start_sync goes beyond
--		 * End-of-device while looking for a whole page.
--		 * It is harmless.
--		 */
--		return -EINVAL;
--	}
--
-+	WARN_ON_ONCE(page >= bitmap->pages);
- 	if (bitmap->bp[page].hijacked) /* it's hijacked, don't try to alloc */
- 		return 0;
+ 	rst = to_qcom_reset_controller(rcdev);
+ 	map = &rst->reset_map[id];
+-	mask = BIT(map->bit);
++	mask = map->bitmask ? map->bitmask : BIT(map->bit);
  
-@@ -1369,6 +1362,14 @@ __acquires(bitmap->lock)
- 	sector_t csize;
- 	int err;
+ 	return regmap_update_bits(rst->regmap, map->reg, mask, mask);
+ }
+@@ -44,7 +44,7 @@ qcom_reset_deassert(struct reset_controller_dev *rcdev, unsigned long id)
  
-+	if (page >= bitmap->pages) {
-+		/*
-+		 * This can happen if bitmap_start_sync goes beyond
-+		 * End-of-device while looking for a whole page or
-+		 * user set a huge number to sysfs bitmap_set_bits.
-+		 */
-+		return NULL;
-+	}
- 	err = md_bitmap_checkpage(bitmap, page, create, 0);
+ 	rst = to_qcom_reset_controller(rcdev);
+ 	map = &rst->reset_map[id];
+-	mask = BIT(map->bit);
++	mask = map->bitmask ? map->bitmask : BIT(map->bit);
  
- 	if (bitmap->bp[page].hijacked ||
+ 	return regmap_update_bits(rst->regmap, map->reg, mask, 0);
+ }
+diff --git a/drivers/clk/qcom/reset.h b/drivers/clk/qcom/reset.h
+index b8c113582072b..9a47c838d9b1b 100644
+--- a/drivers/clk/qcom/reset.h
++++ b/drivers/clk/qcom/reset.h
+@@ -12,6 +12,7 @@ struct qcom_reset_map {
+ 	unsigned int reg;
+ 	u8 bit;
+ 	u8 udelay;
++	u32 bitmask;
+ };
+ 
+ struct regmap;
 -- 
 2.39.2
 
