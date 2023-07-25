@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8FB97612A5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FECA761523
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233937AbjGYLEm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
+        id S234600AbjGYLZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:25:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233827AbjGYLE3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:29 -0400
+        with ESMTP id S234607AbjGYLZz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EE25FD9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B78A69D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97F016164D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A432DC433C7;
-        Tue, 25 Jul 2023 11:01:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 005F56166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A53CC433C7;
+        Tue, 25 Jul 2023 11:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282896;
-        bh=EuYZDRqvaRDTXZe54PnMnFdlT0OO8E4mdcFCHt03pfY=;
+        s=korg; t=1690284352;
+        bh=jbU/E+nKIFSxau9+ObOakyHqpYw2tMLSD6dmiCqF+Jk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gmfU7JJdXplDjGr01hSa76Bgz+tU10BawjR1xM8YgVNb7c9EI9wy6aEr8AmSEKSdJ
-         oljOTLMpIKFbprCb/m0xYq0MC5Mdk5Xu1KZRNwnB3DiH0NxTdUr7a3AwZqOfFzNRqo
-         komwQ3o47/hYynxgjcO8K3xeNFCFUjuA1uFdwE3c=
+        b=IFuQrCwIoTF1kVsuBa3H135PZb89dMFXuqnU/5PyKbB5mXgs0YqOQ4frdnUryPgu3
+         qwCCngk4I/WAC6zN3XhnGZgJxA5KhaiMRG5Oy6wXBxvpkXLQGQCG9VyQ/g3Fi7zaiU
+         A5un+ePqu0HvdqfCilCaShzyRHjn/KFeQj0Wv8SA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Henriksson <andreas@fatal.se>,
-        Fabio Estevam <festevam@denx.de>,
-        Shengjiu Wang <shengjiu.wang@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 037/183] ASoC: fsl_sai: Revert "ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode"
+        patches@lists.linux.dev,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Manuel Leiner <manuel.leiner@gmx.de>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 326/509] wireguard: queueing: use saner cpu selection wrapping
 Date:   Tue, 25 Jul 2023 12:44:25 +0200
-Message-ID: <20230725104509.275093624@linuxfoundation.org>
+Message-ID: <20230725104608.619577396@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,58 +57,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fabio Estevam <festevam@denx.de>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit 86867aca7330e4fbcfa2a117e20b48bbb6c758a9 upstream.
+commit 7387943fa35516f6f8017a3b0e9ce48a3bef9faa upstream.
 
-This reverts commit ff87d619ac180444db297f043962a5c325ded47b.
+Using `% nr_cpumask_bits` is slow and complicated, and not totally
+robust toward dynamic changes to CPU topologies. Rather than storing the
+next CPU in the round-robin, just store the last one, and also return
+that value. This simplifies the loop drastically into a much more common
+pattern.
 
-Andreas reports that on an i.MX8MP-based system where MCLK needs to be
-used as an input, the MCLK pin is actually an output, despite not having
-the 'fsl,sai-mclk-direction-output' property present in the devicetree.
-
-This is caused by commit ff87d619ac18 ("ASoC: fsl_sai: Enable
-MCTL_MCLK_EN bit for master mode") that sets FSL_SAI_MCTL_MCLK_EN
-unconditionally for imx8mm/8mn/8mp/93, causing the MCLK to always
-be configured as output.
-
-FSL_SAI_MCTL_MCLK_EN corresponds to the MOE (MCLK Output Enable) bit
-of register MCR and the drivers sets it when the
-'fsl,sai-mclk-direction-output' devicetree property is present.
-
-Revert the commit to allow SAI to use MCLK as input as well.
-
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
 Cc: stable@vger.kernel.org
-Fixes: ff87d619ac18 ("ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode")
-Reported-by: Andreas Henriksson <andreas@fatal.se>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://lore.kernel.org/r/20230706221827.1938990-1-festevam@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Tested-by: Manuel Leiner <manuel.leiner@gmx.de>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/net/wireguard/queueing.c |    1 +
+ drivers/net/wireguard/queueing.h |   25 +++++++++++--------------
+ drivers/net/wireguard/receive.c  |    2 +-
+ drivers/net/wireguard/send.c     |    2 +-
+ 4 files changed, 14 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 5e09f634c61b..54b4bf3744c6 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -507,12 +507,6 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
- 				   savediv / 2 - 1);
- 	}
+--- a/drivers/net/wireguard/queueing.c
++++ b/drivers/net/wireguard/queueing.c
+@@ -28,6 +28,7 @@ int wg_packet_queue_init(struct crypt_qu
+ 	int ret;
  
--	if (sai->soc_data->max_register >= FSL_SAI_MCTL) {
--		/* SAI is in master mode at this point, so enable MCLK */
--		regmap_update_bits(sai->regmap, FSL_SAI_MCTL,
--				   FSL_SAI_MCTL_MCLK_EN, FSL_SAI_MCTL_MCLK_EN);
--	}
--
- 	return 0;
+ 	memset(queue, 0, sizeof(*queue));
++	queue->last_cpu = -1;
+ 	ret = ptr_ring_init(&queue->ring, len, GFP_KERNEL);
+ 	if (ret)
+ 		return ret;
+--- a/drivers/net/wireguard/queueing.h
++++ b/drivers/net/wireguard/queueing.h
+@@ -119,20 +119,17 @@ static inline int wg_cpumask_choose_onli
+ 	return cpu;
  }
  
--- 
-2.41.0
-
+-/* This function is racy, in the sense that next is unlocked, so it could return
+- * the same CPU twice. A race-free version of this would be to instead store an
+- * atomic sequence number, do an increment-and-return, and then iterate through
+- * every possible CPU until we get to that index -- choose_cpu. However that's
+- * a bit slower, and it doesn't seem like this potential race actually
+- * introduces any performance loss, so we live with it.
++/* This function is racy, in the sense that it's called while last_cpu is
++ * unlocked, so it could return the same CPU twice. Adding locking or using
++ * atomic sequence numbers is slower though, and the consequences of racing are
++ * harmless, so live with it.
+  */
+-static inline int wg_cpumask_next_online(int *next)
++static inline int wg_cpumask_next_online(int *last_cpu)
+ {
+-	int cpu = *next;
+-
+-	while (unlikely(!cpumask_test_cpu(cpu, cpu_online_mask)))
+-		cpu = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
+-	*next = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
++	int cpu = cpumask_next(*last_cpu, cpu_online_mask);
++	if (cpu >= nr_cpu_ids)
++		cpu = cpumask_first(cpu_online_mask);
++	*last_cpu = cpu;
+ 	return cpu;
+ }
+ 
+@@ -161,7 +158,7 @@ static inline void wg_prev_queue_drop_pe
+ 
+ static inline int wg_queue_enqueue_per_device_and_peer(
+ 	struct crypt_queue *device_queue, struct prev_queue *peer_queue,
+-	struct sk_buff *skb, struct workqueue_struct *wq, int *next_cpu)
++	struct sk_buff *skb, struct workqueue_struct *wq)
+ {
+ 	int cpu;
+ 
+@@ -175,7 +172,7 @@ static inline int wg_queue_enqueue_per_d
+ 	/* Then we queue it up in the device queue, which consumes the
+ 	 * packet as soon as it can.
+ 	 */
+-	cpu = wg_cpumask_next_online(next_cpu);
++	cpu = wg_cpumask_next_online(&device_queue->last_cpu);
+ 	if (unlikely(ptr_ring_produce_bh(&device_queue->ring, skb)))
+ 		return -EPIPE;
+ 	queue_work_on(cpu, wq, &per_cpu_ptr(device_queue->worker, cpu)->work);
+--- a/drivers/net/wireguard/receive.c
++++ b/drivers/net/wireguard/receive.c
+@@ -531,7 +531,7 @@ static void wg_packet_consume_data(struc
+ 		goto err;
+ 
+ 	ret = wg_queue_enqueue_per_device_and_peer(&wg->decrypt_queue, &peer->rx_queue, skb,
+-						   wg->packet_crypt_wq, &wg->decrypt_queue.last_cpu);
++						   wg->packet_crypt_wq);
+ 	if (unlikely(ret == -EPIPE))
+ 		wg_queue_enqueue_per_peer_rx(skb, PACKET_STATE_DEAD);
+ 	if (likely(!ret || ret == -EPIPE)) {
+--- a/drivers/net/wireguard/send.c
++++ b/drivers/net/wireguard/send.c
+@@ -318,7 +318,7 @@ static void wg_packet_create_data(struct
+ 		goto err;
+ 
+ 	ret = wg_queue_enqueue_per_device_and_peer(&wg->encrypt_queue, &peer->tx_queue, first,
+-						   wg->packet_crypt_wq, &wg->encrypt_queue.last_cpu);
++						   wg->packet_crypt_wq);
+ 	if (unlikely(ret == -EPIPE))
+ 		wg_queue_enqueue_per_peer_tx(first, PACKET_STATE_DEAD);
+ err:
 
 
