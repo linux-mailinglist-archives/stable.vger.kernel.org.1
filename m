@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A19F876154D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 930477612C8
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234586AbjGYL1W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:27:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36550 "EHLO
+        id S233988AbjGYLFg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234608AbjGYL1V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7D018F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:20 -0700 (PDT)
+        with ESMTP id S233972AbjGYLFU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F4A26BC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 185A661648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B00FC433C8;
-        Tue, 25 Jul 2023 11:27:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F0E561656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD2FC433C7;
+        Tue, 25 Jul 2023 11:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284439;
-        bh=p2CWBFnGCo34fM/0P4txOYXPWhUAaxsiEODE3Lc2D34=;
+        s=korg; t=1690282985;
+        bh=DRqy4J0FbsDMHpC4wjeM+awMaitWaE1HmYJLSpVI+2o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e0i6VQuZekd2l3GgjC4AgtGd6QGpeLCGGMpPVlhXC9QKUPwFX5aQI5afjvFEeB7fu
-         p2CTn6X62oyvBK93mpTtimkw4vRC3z50SlUUy7qorgLk7vJsxiKRrGyDYawU1pyRXt
-         sF0DY5yHTrAvf2JPyAHro61Wqt2ebV+RXdRmhVks=
+        b=Nc8OMLTWpGa2JN4igrY0D2+8QQECTC7BiF983rcx1tYmmnGFXUL9ivOhuHdZuYfrc
+         xOtOJinHeAVrFDy3NiErJ77kSpT8FAUA64hSfdwHTseOJPjHrd+bnIKnpPWT8oiRzq
+         TuKx0di240dA7naYq0GvZvErTCz8rcMx1OEUrW7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Yonghong Song <yhs@meta.com>,
+        Stanislav Fomichev <sdf@google.com>,
+        Aditi Ghag <aditi.ghag@isovalent.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 357/509] ipv6/addrconf: fix a potential refcount underflow for idev
-Date:   Tue, 25 Jul 2023 12:44:56 +0200
-Message-ID: <20230725104610.075228786@linuxfoundation.org>
+Subject: [PATCH 6.1 069/183] bpf: tcp: Avoid taking fast sock lock in iterator
+Date:   Tue, 25 Jul 2023 12:44:57 +0200
+Message-ID: <20230725104510.467005012@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,51 +57,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Aditi Ghag <aditi.ghag@isovalent.com>
 
-[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
+[ Upstream commit 9378096e8a656fb5c4099b26b1370c56f056eab9 ]
 
-Now in addrconf_mod_rs_timer(), reference idev depends on whether
-rs_timer is not pending. Then modify rs_timer timeout.
+This is a preparatory commit to replace `lock_sock_fast` with
+`lock_sock`,and facilitate BPF programs executed from the TCP sockets
+iterator to be able to destroy TCP sockets using the bpf_sock_destroy
+kfunc (implemented in follow-up commits).
 
-There is a time gap in [1], during which if the pending rs_timer
-becomes not pending. It will miss to hold idev, but the rs_timer
-is activated. Thus rs_timer callback function addrconf_rs_timer()
-will be executed and put idev later without holding idev. A refcount
-underflow issue for idev can be caused by this.
+Previously, BPF TCP iterator was acquiring the sock lock with BH
+disabled. This led to scenarios where the sockets hash table bucket lock
+can be acquired with BH enabled in some path versus disabled in other.
+In such situation, kernel issued a warning since it thinks that in the
+BH enabled path the same bucket lock *might* be acquired again in the
+softirq context (BH disabled), which will lead to a potential dead lock.
+Since bpf_sock_destroy also happens in a process context, the potential
+deadlock warning is likely a false alarm.
 
-	if (!timer_pending(&idev->rs_timer))
-		in6_dev_hold(idev);
-		  <--------------[1]
-	mod_timer(&idev->rs_timer, jiffies + when);
+Here is a snippet of annotated stack trace that motivated this change:
 
-To fix the issue, hold idev if mod_timer() return 0.
+```
 
-Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Possible interrupt unsafe locking scenario:
+
+      CPU0                    CPU1
+      ----                    ----
+ lock(&h->lhash2[i].lock);
+                              local_bh_disable();
+                              lock(&h->lhash2[i].lock);
+kernel imagined possible scenario:
+  local_bh_disable();  /* Possible softirq */
+  lock(&h->lhash2[i].lock);
+*** Potential Deadlock ***
+
+process context:
+
+lock_acquire+0xcd/0x330
+_raw_spin_lock+0x33/0x40
+------> Acquire (bucket) lhash2.lock with BH enabled
+__inet_hash+0x4b/0x210
+inet_csk_listen_start+0xe6/0x100
+inet_listen+0x95/0x1d0
+__sys_listen+0x69/0xb0
+__x64_sys_listen+0x14/0x20
+do_syscall_64+0x3c/0x90
+entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+bpf_sock_destroy run from iterator:
+
+lock_acquire+0xcd/0x330
+_raw_spin_lock+0x33/0x40
+------> Acquire (bucket) lhash2.lock with BH disabled
+inet_unhash+0x9a/0x110
+tcp_set_state+0x6a/0x210
+tcp_abort+0x10d/0x200
+bpf_prog_6793c5ca50c43c0d_iter_tcp6_server+0xa4/0xa9
+bpf_iter_run_prog+0x1ff/0x340
+------> lock_sock_fast that acquires sock lock with BH disabled
+bpf_iter_tcp_seq_show+0xca/0x190
+bpf_seq_read+0x177/0x450
+
+```
+
+Also, Yonghong reported a deadlock for non-listening TCP sockets that
+this change resolves. Previously, `lock_sock_fast` held the sock spin
+lock with BH which was again being acquired in `tcp_abort`:
+
+```
+watchdog: BUG: soft lockup - CPU#0 stuck for 86s! [test_progs:2331]
+RIP: 0010:queued_spin_lock_slowpath+0xd8/0x500
+Call Trace:
+ <TASK>
+ _raw_spin_lock+0x84/0x90
+ tcp_abort+0x13c/0x1f0
+ bpf_prog_88539c5453a9dd47_iter_tcp6_client+0x82/0x89
+ bpf_iter_run_prog+0x1aa/0x2c0
+ ? preempt_count_sub+0x1c/0xd0
+ ? from_kuid_munged+0x1c8/0x210
+ bpf_iter_tcp_seq_show+0x14e/0x1b0
+ bpf_seq_read+0x36c/0x6a0
+
+bpf_iter_tcp_seq_show
+   lock_sock_fast
+     __lock_sock_fast
+       spin_lock_bh(&sk->sk_lock.slock);
+	/* * Fast path return with bottom halves disabled and * sock::sk_lock.slock held.* */
+
+ ...
+ tcp_abort
+   local_bh_disable();
+   spin_lock(&((sk)->sk_lock.slock)); // from bh_lock_sock(sk)
+
+```
+
+With the switch to `lock_sock`, it calls `spin_unlock_bh` before returning:
+
+```
+lock_sock
+    lock_sock_nested
+       spin_lock_bh(&sk->sk_lock.slock);
+       :
+       spin_unlock_bh(&sk->sk_lock.slock);
+```
+
+Acked-by: Yonghong Song <yhs@meta.com>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Aditi Ghag <aditi.ghag@isovalent.com>
+Link: https://lore.kernel.org/r/20230519225157.760788-2-aditi.ghag@isovalent.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/tcp_ipv4.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index ed1e5bfc97b31..d5d10496b4aef 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -314,9 +314,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
- static void addrconf_mod_rs_timer(struct inet6_dev *idev,
- 				  unsigned long when)
- {
--	if (!timer_pending(&idev->rs_timer))
-+	if (!mod_timer(&idev->rs_timer, jiffies + when))
- 		in6_dev_hold(idev);
--	mod_timer(&idev->rs_timer, jiffies + when);
- }
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index b37c1bcb15097..a7de5ba74e7f7 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2911,7 +2911,6 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
+ 	struct bpf_iter_meta meta;
+ 	struct bpf_prog *prog;
+ 	struct sock *sk = v;
+-	bool slow;
+ 	uid_t uid;
+ 	int ret;
  
- static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
+@@ -2919,7 +2918,7 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
+ 		return 0;
+ 
+ 	if (sk_fullsock(sk))
+-		slow = lock_sock_fast(sk);
++		lock_sock(sk);
+ 
+ 	if (unlikely(sk_unhashed(sk))) {
+ 		ret = SEQ_SKIP;
+@@ -2943,7 +2942,7 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
+ 
+ unlock:
+ 	if (sk_fullsock(sk))
+-		unlock_sock_fast(sk, slow);
++		release_sock(sk);
+ 	return ret;
+ 
+ }
 -- 
 2.39.2
 
