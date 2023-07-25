@@ -2,50 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8083A7616F0
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E3DA7612EA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235075AbjGYLnv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51384 "EHLO
+        id S233951AbjGYLGf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:06:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235294AbjGYLnS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202CB212B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:58 -0700 (PDT)
+        with ESMTP id S233908AbjGYLGU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FA0330D4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FE4E616B9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:42:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBA8C433C7;
-        Tue, 25 Jul 2023 11:42:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9A8061689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA605C433C9;
+        Tue, 25 Jul 2023 11:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285347;
-        bh=x8i/cMqqPdk8x0DQXZN7QHViFeaZNDPqeadNO64hUnM=;
+        s=korg; t=1690283069;
+        bh=6btb+kOCRqTp4R0hKgZdE3qq69oTBLHT1O+BZureoHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SFZ9vSmhY+l9RzbbFMlSQxw2uBVyl+BhtwUJyR838EdECZ+3Hcs1hhzYd7F2YNRP/
-         MX9ixVxAUeSBxd3CS8jl3uX3CvP1BCygt9KVPNBFJs15m3XqCi3LR5Vgh4PM1uXUoY
-         d+BXH1lBgBNjCrNfVgQXHyLFZQfwoUgeT73mKFtE=
+        b=A22tKKcAeXlmxI/+5uEht69/p0I5KXTvX0FGk9K8E0Qjxp4Un1uS2/NlNTjWRZYhK
+         +cEeavBus17Kbr5KYM/FaP9S40pNMkrgTUTHQwSVI5/dzCdrJ//at4AQkau5vTb9Nr
+         +OUJOAQSAPuuc497vo/3YavW0JY2hwekshyRahFE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 173/313] fs: Lock moved directories
+        patches@lists.linux.dev,
+        Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+        James Clark <james.clark@arm.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        coresight@lists.linaro.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 098/183] perf build: Fix library not found error when using CSLIBS
 Date:   Tue, 25 Jul 2023 12:45:26 +0200
-Message-ID: <20230725104528.436342513@linuxfoundation.org>
+Message-ID: <20230725104511.481356908@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,126 +65,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: James Clark <james.clark@arm.com>
 
-commit 28eceeda130f5058074dd007d9c59d2e8bc5af2e upstream.
+[ Upstream commit 1feece2780ac2f8de45177fe53979726cee4b3d1 ]
 
-When a directory is moved to a different directory, some filesystems
-(udf, ext4, ocfs2, f2fs, and likely gfs2, reiserfs, and others) need to
-update their pointer to the parent and this must not race with other
-operations on the directory. Lock the directories when they are moved.
-Although not all filesystems need this locking, we perform it in
-vfs_rename() because getting the lock ordering right is really difficult
-and we don't want to expose these locking details to filesystems.
+-L only specifies the search path for libraries directly provided in the
+link line with -l. Because -lopencsd isn't specified, it's only linked
+because it's a dependency of -lopencsd_c_api. Dependencies like this are
+resolved using the default system search paths or -rpath-link=... rather
+than -L. This means that compilation only works if OpenCSD is installed
+to the system rather than provided with the CSLIBS (-L) option.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230601105830.13168-5-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This could be fixed by adding -Wl,-rpath-link=$(CSLIBS) but that is less
+conventional than just adding -lopencsd to the link line so that it uses
+-L. -lopencsd seems to have been removed in commit ed17b1914978eddb
+("perf tools: Drop requirement for libstdc++.so for libopencsd check")
+because it was thought that there was a chance compilation would work
+even if it didn't exist, but I think that only applies to libstdc++ so
+there is no harm to add it back. libopencsd.so and libopencsd_c_api.so
+would always exist together.
+
+Testing
+=======
+
+The following scenarios now all work:
+
+ * Cross build with OpenCSD installed
+ * Cross build using CSLIBS=...
+ * Native build with OpenCSD installed
+ * Native build using CSLIBS=...
+ * Static cross build with OpenCSD installed
+ * Static cross build with CSLIBS=...
+
+Committer testing:
+
+  ⬢[acme@toolbox perf-tools]$ alias m
+  alias m='make -k BUILD_BPF_SKEL=1 CORESIGHT=1 O=/tmp/build/perf-tools -C tools/perf install-bin && git status && perf test python ;  perf record -o /dev/null sleep 0.01 ; perf stat --null sleep 0.01'
+  ⬢[acme@toolbox perf-tools]$ ldd ~/bin/perf | grep csd
+  	libopencsd_c_api.so.1 => /lib64/libopencsd_c_api.so.1 (0x00007fd49c44e000)
+  	libopencsd.so.1 => /lib64/libopencsd.so.1 (0x00007fd49bd56000)
+  ⬢[acme@toolbox perf-tools]$ cat /etc/redhat-release
+  Fedora release 36 (Thirty Six)
+  ⬢[acme@toolbox perf-tools]$
+
+Fixes: ed17b1914978eddb ("perf tools: Drop requirement for libstdc++.so for libopencsd check")
+Reported-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Uwe Kleine-König <uwe@kleine-koenig.org>
+Cc: coresight@lists.linaro.org
+Closes: https://lore.kernel.org/linux-arm-kernel/56905d7a-a91e-883a-b707-9d5f686ba5f1@arm.com/
+Link: https://lore.kernel.org/all/36cc4dc6-bf4b-1093-1c0a-876e368af183@kleine-koenig.org/
+Link: https://lore.kernel.org/r/20230707154546.456720-1-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/directory-locking.rst |   26 ++++++++++++------------
- fs/namei.c                                      |   22 ++++++++++++--------
- 2 files changed, 28 insertions(+), 20 deletions(-)
+ tools/perf/Makefile.config | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/filesystems/directory-locking.rst
-+++ b/Documentation/filesystems/directory-locking.rst
-@@ -22,12 +22,11 @@ exclusive.
- 3) object removal.  Locking rules: caller locks parent, finds victim,
- locks victim and calls the method.  Locks are exclusive.
- 
--4) rename() that is _not_ cross-directory.  Locking rules: caller locks
--the parent and finds source and target.  In case of exchange (with
--RENAME_EXCHANGE in flags argument) lock both.  In any case,
--if the target already exists, lock it.  If the source is a non-directory,
--lock it.  If we need to lock both, lock them in inode pointer order.
--Then call the method.  All locks are exclusive.
-+4) rename() that is _not_ cross-directory.  Locking rules: caller locks the
-+parent and finds source and target.  We lock both (provided they exist).  If we
-+need to lock two inodes of different type (dir vs non-dir), we lock directory
-+first.  If we need to lock two inodes of the same type, lock them in inode
-+pointer order.  Then call the method.  All locks are exclusive.
- NB: we might get away with locking the the source (and target in exchange
- case) shared.
- 
-@@ -44,15 +43,17 @@ All locks are exclusive.
- rules:
- 
- 	* lock the filesystem
--	* lock parents in "ancestors first" order.
-+	* lock parents in "ancestors first" order. If one is not ancestor of
-+	  the other, lock them in inode pointer order.
- 	* find source and target.
- 	* if old parent is equal to or is a descendent of target
- 	  fail with -ENOTEMPTY
- 	* if new parent is equal to or is a descendent of source
- 	  fail with -ELOOP
--	* If it's an exchange, lock both the source and the target.
--	* If the target exists, lock it.  If the source is a non-directory,
--	  lock it.  If we need to lock both, do so in inode pointer order.
-+	* Lock both the source and the target provided they exist. If we
-+	  need to lock two inodes of different type (dir vs non-dir), we lock
-+	  the directory first. If we need to lock two inodes of the same type,
-+	  lock them in inode pointer order.
- 	* call the method.
- 
- All ->i_rwsem are taken exclusive.  Again, we might get away with locking
-@@ -66,8 +67,9 @@ If no directory is its own ancestor, the
- 
- Proof:
- 
--	First of all, at any moment we have a partial ordering of the
--	objects - A < B iff A is an ancestor of B.
-+	First of all, at any moment we have a linear ordering of the
-+	objects - A < B iff (A is an ancestor of B) or (B is not an ancestor
-+        of A and ptr(A) < ptr(B)).
- 
- 	That ordering can change.  However, the following is true:
- 
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -4367,7 +4367,7 @@ SYSCALL_DEFINE2(link, const char __user
-  *	   sb->s_vfs_rename_mutex. We might be more accurate, but that's another
-  *	   story.
-  *	c) we have to lock _four_ objects - parents and victim (if it exists),
-- *	   and source (if it is not a directory).
-+ *	   and source.
-  *	   And that - after we got ->i_mutex on parents (until then we don't know
-  *	   whether the target exists).  Solution: try to be smart with locking
-  *	   order for inodes.  We rely on the fact that tree topology may change
-@@ -4444,10 +4444,16 @@ int vfs_rename(struct inode *old_dir, st
- 
- 	take_dentry_name_snapshot(&old_name, old_dentry);
- 	dget(new_dentry);
--	if (!is_dir || (flags & RENAME_EXCHANGE))
--		lock_two_nondirectories(source, target);
--	else if (target)
--		inode_lock(target);
-+	/*
-+	 * Lock all moved children. Moved directories may need to change parent
-+	 * pointer so they need the lock to prevent against concurrent
-+	 * directory changes moving parent pointer. For regular files we've
-+	 * historically always done this. The lockdep locking subclasses are
-+	 * somewhat arbitrary but RENAME_EXCHANGE in particular can swap
-+	 * regular files and directories so it's difficult to tell which
-+	 * subclasses to use.
-+	 */
-+	lock_two_inodes(source, target, I_MUTEX_NORMAL, I_MUTEX_NONDIR2);
- 
- 	error = -EBUSY;
- 	if (is_local_mountpoint(old_dentry) || is_local_mountpoint(new_dentry))
-@@ -4491,9 +4497,9 @@ int vfs_rename(struct inode *old_dir, st
- 			d_exchange(old_dentry, new_dentry);
- 	}
- out:
--	if (!is_dir || (flags & RENAME_EXCHANGE))
--		unlock_two_nondirectories(source, target);
--	else if (target)
-+	if (source)
-+		inode_unlock(source);
-+	if (target)
- 		inode_unlock(target);
- 	dput(new_dentry);
- 	if (!error) {
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index 898226ea8cadc..fac6ba07eacdb 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -149,9 +149,9 @@ FEATURE_CHECK_LDFLAGS-libcrypto = -lcrypto
+ ifdef CSINCLUDES
+   LIBOPENCSD_CFLAGS := -I$(CSINCLUDES)
+ endif
+-OPENCSDLIBS := -lopencsd_c_api
++OPENCSDLIBS := -lopencsd_c_api -lopencsd
+ ifeq ($(findstring -static,${LDFLAGS}),-static)
+-  OPENCSDLIBS += -lopencsd -lstdc++
++  OPENCSDLIBS += -lstdc++
+ endif
+ ifdef CSLIBS
+   LIBOPENCSD_LDFLAGS := -L$(CSLIBS)
+-- 
+2.39.2
+
 
 
