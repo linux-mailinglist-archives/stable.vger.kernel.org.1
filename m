@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD7C7612D3
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E734761575
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233933AbjGYLFs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44726 "EHLO
+        id S234689AbjGYL3O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233983AbjGYLFd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:33 -0400
+        with ESMTP id S234720AbjGYL3N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA85535A2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 481CD11B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FB3761656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D283C433C7;
-        Tue, 25 Jul 2023 11:03:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBE576168F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E16C433C8;
+        Tue, 25 Jul 2023 11:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283010;
-        bh=jECjzHkVJJi3sHo7EPhDTaDYRCcF+NHBbnIbQXY3nSY=;
+        s=korg; t=1690284551;
+        bh=v7Kr/YcLP1fWz/E8C2JAziBGcqjUMBNoIkQ/ezNgGcw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cvxC+t7Uw6/O2XBLCIjqUgHqKO2sT/6sKb9NGnIXh7s7ecQe9jLNjUpWPt149z4fq
-         /NjiNZKsq0F4Ceoxmjt98xtbEfqL8hgEYzZBolxwiLkJzMUtlKQ5Hwor533I2C/RkJ
-         0JHN80YNLAPLJAPRm0HQOjCCjNplMLggOXflaE9s=
+        b=QzjqO4AgTBk2lT9k55zDbRVPKPb3tmeQq13uiw6dWQ6OkESY21BC9BJk8fawTrb5V
+         +8nDls96+W+yVrCGtOEidkbYiMvWJsJx2+s7kMc8WODng6MtdS7SFFffWuLiMBOvJ8
+         +Zc8aGSse+AlzMe2egvuu1DWZqzrGm6U4FPTCdf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Golle <daniel@makrotopia.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/183] net: ethernet: mtk_eth_soc: handle probe deferral
+        patches@lists.linux.dev, Jason Adriaanse <jason_a69@yahoo.co.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 5.10 396/509] PCI: Add function 1 DMA alias quirk for Marvell 88SE9235
 Date:   Tue, 25 Jul 2023 12:45:35 +0200
-Message-ID: <20230725104511.801926989@linuxfoundation.org>
+Message-ID: <20230725104611.887139619@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,86 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 1d6d537dc55d1f42d16290f00157ac387985b95b ]
+commit 88d341716b83abd355558523186ca488918627ee upstream.
 
-Move the call to of_get_ethdev_address to mtk_add_mac which is part of
-the probe function and can hence itself return -EPROBE_DEFER should
-of_get_ethdev_address return -EPROBE_DEFER. This allows us to entirely
-get rid of the mtk_init function.
+Marvell's own product brief implies the 92xx series are a closely related
+family, and sure enough it turns out that 9235 seems to need the same quirk
+as the other three, although possibly only when certain ports are used.
 
-The problem of of_get_ethdev_address returning -EPROBE_DEFER surfaced
-in situations in which the NVMEM provider holding the MAC address has
-not yet be loaded at the time mtk_eth_soc is initially probed. In this
-case probing of mtk_eth_soc should be deferred instead of falling back
-to use a random MAC address, so once the NVMEM provider becomes
-available probing can be repeated.
-
-Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-iommu/2a699a99-545c-1324-e052-7d2f41fed1ae@yahoo.co.uk/
+Link: https://lore.kernel.org/r/731507e05d70239aec96fcbfab6e65d8ce00edd2.1686157165.git.robin.murphy@arm.com
+Reported-by: Jason Adriaanse <jason_a69@yahoo.co.uk>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 29 ++++++++-------------
- 1 file changed, 11 insertions(+), 18 deletions(-)
+ drivers/pci/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 49975924e2426..7e318133423a9 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3425,23 +3425,6 @@ static int mtk_hw_deinit(struct mtk_eth *eth)
- 	return 0;
- }
- 
--static int __init mtk_init(struct net_device *dev)
--{
--	struct mtk_mac *mac = netdev_priv(dev);
--	struct mtk_eth *eth = mac->hw;
--	int ret;
--
--	ret = of_get_ethdev_address(mac->of_node, dev);
--	if (ret) {
--		/* If the mac address is invalid, use random mac address */
--		eth_hw_addr_random(dev);
--		dev_err(eth->dev, "generated random MAC address %pM\n",
--			dev->dev_addr);
--	}
--
--	return 0;
--}
--
- static void mtk_uninit(struct net_device *dev)
- {
- 	struct mtk_mac *mac = netdev_priv(dev);
-@@ -3789,7 +3772,6 @@ static const struct ethtool_ops mtk_ethtool_ops = {
- };
- 
- static const struct net_device_ops mtk_netdev_ops = {
--	.ndo_init		= mtk_init,
- 	.ndo_uninit		= mtk_uninit,
- 	.ndo_open		= mtk_open,
- 	.ndo_stop		= mtk_stop,
-@@ -3845,6 +3827,17 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	mac->hw = eth;
- 	mac->of_node = np;
- 
-+	err = of_get_ethdev_address(mac->of_node, eth->netdev[id]);
-+	if (err == -EPROBE_DEFER)
-+		return err;
-+
-+	if (err) {
-+		/* If the mac address is invalid, use random mac address */
-+		eth_hw_addr_random(eth->netdev[id]);
-+		dev_err(eth->dev, "generated random MAC address %pM\n",
-+			eth->netdev[id]->dev_addr);
-+	}
-+
- 	memset(mac->hwlro_ip, 0, sizeof(mac->hwlro_ip));
- 	mac->hwlro_ip_cnt = 0;
- 
--- 
-2.39.2
-
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4123,6 +4123,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_M
+ /* https://bugzilla.kernel.org/show_bug.cgi?id=42679#c49 */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9230,
+ 			 quirk_dma_func1_alias);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9235,
++			 quirk_dma_func1_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0642,
+ 			 quirk_dma_func1_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0645,
 
 
