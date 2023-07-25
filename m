@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17B1C7615FF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74B34761149
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234713AbjGYLfa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:35:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42428 "EHLO
+        id S233244AbjGYKte (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:49:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234725AbjGYLfY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:35:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67932F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:20 -0700 (PDT)
+        with ESMTP id S231862AbjGYKtd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF46173F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4C4E61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B62C433C8;
-        Tue, 25 Jul 2023 11:35:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 096B761648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12336C433C7;
+        Tue, 25 Jul 2023 10:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284919;
-        bh=oaLozk9NbJEk3IUbC1+IlVGrGLMgZUywCXTwhbZgeMQ=;
+        s=korg; t=1690282171;
+        bh=D59vORNl4tvgos08fD82d8V6msc+xVEjrVrVrR/W/FY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I+Rz52mF5Elt8PULYkZq5JiXcXX0xcrdSD2YsNanJ7I0PlfRc/g4mEDPWHEtXw+vW
-         2GbPKs47Ffv/sKX4uq4KEPiP/I918/OWeenwol7kGs9e7Lzu5AoykL0gU/JS8dpBH9
-         TrgM8e7tl3qeLL1FMJfzlCh/qkrCmWitDkuajFcE=
+        b=1JOA78+yw37TAXJG2cFkOci14heTG/JGTXU3zEnl6CuQXetlEzzI4VJ+9sudFucom
+         2ryaUq8El/FXfA7phEP97umWI8oA09ghwtUue7u/RRHwGEJGBRmMJkNgd8oIdlOiQu
+         34hz5OFncbB8ODZ1RPTk1UcjCi0CRfHTCiRJ3/Pc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mukesh Ojha <quic_mojha@quicinc.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/313] tracing/timer: Add missing hrtimer modes to decode_hrtimer_mode().
+        patches@lists.linux.dev, Luka Guzenko <l.guzenko@web.de>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.4 005/227] ALSA: hda/realtek: Enable Mute LED on HP Laptop 15s-eq2xxx
 Date:   Tue, 25 Jul 2023 12:42:52 +0200
-Message-ID: <20230725104521.968686704@linuxfoundation.org>
+Message-ID: <20230725104515.027363711@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,47 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Luka Guzenko <l.guzenko@web.de>
 
-[ Upstream commit 2951580ba6adb082bb6b7154a5ecb24e7c1f7569 ]
+commit 0659400f18c0e6c0c69d74fe5d09e7f6fbbd52a2 upstream.
 
-The trace output for the HRTIMER_MODE_.*_HARD modes is seen as a number
-since these modes are not decoded. The author was not aware of the fancy
-decoding function which makes the life easier.
+The HP Laptop 15s-eq2xxx uses ALC236 codec and controls the mute LED using
+COEF 0x07 index 1. No existing quirk covers this configuration.
+Adds a new quirk and enables it for the device.
 
-Extend decode_hrtimer_mode() with the additional HRTIMER_MODE_.*_HARD
-modes.
-
-Fixes: ae6683d815895 ("hrtimer: Introduce HARD expiry mode")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20230418143854.8vHWQKLM@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luka Guzenko <l.guzenko@web.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230718161241.393181-1-l.guzenko@web.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/timer.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
-index 295517f109d71..1b5371f0317af 100644
---- a/include/trace/events/timer.h
-+++ b/include/trace/events/timer.h
-@@ -156,7 +156,11 @@ DEFINE_EVENT(timer_class, timer_cancel,
- 		{ HRTIMER_MODE_ABS_SOFT,	"ABS|SOFT"	},	\
- 		{ HRTIMER_MODE_REL_SOFT,	"REL|SOFT"	},	\
- 		{ HRTIMER_MODE_ABS_PINNED_SOFT,	"ABS|PINNED|SOFT" },	\
--		{ HRTIMER_MODE_REL_PINNED_SOFT,	"REL|PINNED|SOFT" })
-+		{ HRTIMER_MODE_REL_PINNED_SOFT,	"REL|PINNED|SOFT" },	\
-+		{ HRTIMER_MODE_ABS_HARD,	"ABS|HARD" },		\
-+		{ HRTIMER_MODE_REL_HARD,	"REL|HARD" },		\
-+		{ HRTIMER_MODE_ABS_PINNED_HARD, "ABS|PINNED|HARD" },	\
-+		{ HRTIMER_MODE_REL_PINNED_HARD,	"REL|PINNED|HARD" })
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4624,6 +4624,21 @@ static void alc236_fixup_hp_mute_led_coe
+ 	}
+ }
  
- /**
-  * hrtimer_init - called when the hrtimer is initialized
--- 
-2.39.2
-
++static void alc236_fixup_hp_mute_led_coefbit2(struct hda_codec *codec,
++					  const struct hda_fixup *fix, int action)
++{
++	struct alc_spec *spec = codec->spec;
++
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		spec->mute_led_polarity = 0;
++		spec->mute_led_coef.idx = 0x07;
++		spec->mute_led_coef.mask = 1;
++		spec->mute_led_coef.on = 1;
++		spec->mute_led_coef.off = 0;
++		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
++	}
++}
++
+ /* turn on/off mic-mute LED per capture hook by coef bit */
+ static int coef_micmute_led_set(struct led_classdev *led_cdev,
+ 				enum led_brightness brightness)
+@@ -7134,6 +7149,7 @@ enum {
+ 	ALC285_FIXUP_HP_GPIO_LED,
+ 	ALC285_FIXUP_HP_MUTE_LED,
+ 	ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED,
++	ALC236_FIXUP_HP_MUTE_LED_COEFBIT2,
+ 	ALC236_FIXUP_HP_GPIO_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF,
+@@ -8557,6 +8573,10 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_spectre_x360_mute_led,
+ 	},
++	[ALC236_FIXUP_HP_MUTE_LED_COEFBIT2] = {
++	    .type = HDA_FIXUP_FUNC,
++	    .v.func = alc236_fixup_hp_mute_led_coefbit2,
++	},
+ 	[ALC236_FIXUP_HP_GPIO_LED] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc236_fixup_hp_gpio_led,
+@@ -9441,6 +9461,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x886d, "HP ZBook Fury 17.3 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8870, "HP ZBook Fury 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8873, "HP ZBook Studio 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
++	SND_PCI_QUIRK(0x103c, 0x887a, "HP Laptop 15s-eq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x888d, "HP ZBook Power 15.6 inch G8 Mobile Workstation PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8895, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
 
 
