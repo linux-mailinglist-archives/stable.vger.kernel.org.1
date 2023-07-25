@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C08F676176E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F5527615E2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231182AbjGYLsk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55794 "EHLO
+        id S233482AbjGYLeP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:34:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232742AbjGYLrt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:49 -0400
+        with ESMTP id S234698AbjGYLeK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C893519AF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0550911B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B8F86167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEF2C433C8;
-        Tue, 25 Jul 2023 11:47:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9832861655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA148C433C7;
+        Tue, 25 Jul 2023 11:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285667;
-        bh=OW8ZtS95zmE7n/YZvDijcnYIe+919f3l26uxfQkzhhA=;
+        s=korg; t=1690284847;
+        bh=NO5AxKQDmp5oI1YUAgPvVsFiDo24T8oemBuXl+K/GN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iWmMn0ozQ5fe8Rbzx5WB6HRzyY/gq678S7ic0S9hdUz9KRHKQegUhhWebMnKw7rqX
-         kEK69fQqT35tgpRyyJE5lAmPHqzmtq+0CEjalZMQana40+N/ixSHR+BB+et6/H9ccx
-         3YDgIVsNi8AeJlOdME3ENEij7qpTvECvV/VEqbI0=
+        b=MZzINVdTfGq3JZTbvgbt87fPMLJEgfasrA7ocepRE+3Q4HbeAZjKYDRaCfoH1Fbzo
+         6kvtX3b/lmYjKMiCa4jNdGIT78gffbkGyMXvq77jhzBTHHnTl9eyxh+LnfuX2XiKOd
+         M6fD3CCbyHjN+y7VplLKhJ356LLzT7FmD6683xzY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.4 258/313] hwrng: imx-rngc - fix the timeout for init and self check
-Date:   Tue, 25 Jul 2023 12:46:51 +0200
-Message-ID: <20230725104532.220978691@linuxfoundation.org>
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 473/509] spi: bcm63xx: fix max prepend length
+Date:   Tue, 25 Jul 2023 12:46:52 +0200
+Message-ID: <20230725104615.411333152@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,45 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit d744ae7477190967a3ddc289e2cd4ae59e8b1237 upstream.
+[ Upstream commit 5158814cbb37bbb38344b3ecddc24ba2ed0365f2 ]
 
-Fix the timeout that is used for the initialisation and for the self
-test. wait_for_completion_timeout expects a timeout in jiffies, but
-RNGC_TIMEOUT is in milliseconds. Call msecs_to_jiffies to do the
-conversion.
+The command word is defined as following:
 
-Cc: stable@vger.kernel.org
-Fixes: 1d5449445bd0 ("hwrng: mx-rngc - add a driver for Freescale RNGC")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    /* Command */
+    #define SPI_CMD_COMMAND_SHIFT           0
+    #define SPI_CMD_DEVICE_ID_SHIFT         4
+    #define SPI_CMD_PREPEND_BYTE_CNT_SHIFT  8
+    #define SPI_CMD_ONE_BYTE_SHIFT          11
+    #define SPI_CMD_ONE_WIRE_SHIFT          12
+
+If the prepend byte count field starts at bit 8, and the next defined
+bit is SPI_CMD_ONE_BYTE at bit 11, it can be at most 3 bits wide, and
+thus the max value is 7, not 15.
+
+Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://lore.kernel.org/r/20230629071453.62024-1-jonas.gorski@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/imx-rngc.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/hw_random/imx-rngc.c
-+++ b/drivers/char/hw_random/imx-rngc.c
-@@ -99,7 +99,7 @@ static int imx_rngc_self_test(struct imx
- 	cmd = readl(rngc->base + RNGC_COMMAND);
- 	writel(cmd | RNGC_CMD_SELF_TEST, rngc->base + RNGC_COMMAND);
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 96d075e633f43..d36384fef0d71 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -126,7 +126,7 @@ enum bcm63xx_regs_spi {
+ 	SPI_MSG_DATA_SIZE,
+ };
  
--	ret = wait_for_completion_timeout(&rngc->rng_op_done, RNGC_TIMEOUT);
-+	ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
- 	if (!ret) {
- 		imx_rngc_irq_mask_clear(rngc);
- 		return -ETIMEDOUT;
-@@ -182,9 +182,7 @@ static int imx_rngc_init(struct hwrng *r
- 		cmd = readl(rngc->base + RNGC_COMMAND);
- 		writel(cmd | RNGC_CMD_SEED, rngc->base + RNGC_COMMAND);
+-#define BCM63XX_SPI_MAX_PREPEND		15
++#define BCM63XX_SPI_MAX_PREPEND		7
  
--		ret = wait_for_completion_timeout(&rngc->rng_op_done,
--				RNGC_TIMEOUT);
--
-+		ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
- 		if (!ret) {
- 			imx_rngc_irq_mask_clear(rngc);
- 			return -ETIMEDOUT;
+ #define BCM63XX_SPI_MAX_CS		8
+ #define BCM63XX_SPI_BUS_NUM		0
+-- 
+2.39.2
+
 
 
