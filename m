@@ -2,175 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BF9F762106
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C8376210A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232241AbjGYSIO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 14:08:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
+        id S232246AbjGYSJA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 14:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232838AbjGYSIL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:08:11 -0400
-Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD56D10EF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:08 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id OMS6qYF8QeA2LOMS6qL8YT; Tue, 25 Jul 2023 20:08:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1690308487;
-        bh=dvViFuXuJeLE1liWekkSjehQZfC703FFbZZyHgKFhdg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=o4FdgcCjgO/BAqlxG3TnvsA5LXbml4OaDAD9p6F7CyXWAJ4qwojbGDYtGBEsu146o
-         zmqKNxn/DrC4WpPBYR0H1Ue2QQqLtVp9mirorJKP+QPUQ4SOfFKBAKCAv74Pvyx4kh
-         q/j3UV530q4zpw4GCjMOEQRBWEvPeL0M4Yytzodm5TkiGcUgAkPUbYMoAyHCIEpjJA
-         I3A5ZWdzNKJk80wxn+29A3Lm5mREbQj2JnmqAbS2BptHXLmvC75T2lhdb7kANFyW3L
-         961erEjrdWnZhEBhH8VRI/L3DsNXFHg2pxBk1M3xz3slvHWIWVmJAtc8AbnGHcFn6c
-         ZN+zFmXTpQnNA==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 25 Jul 2023 20:08:07 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <c2e1b927-fd0e-2865-c0b1-f8aab4cb6833@wanadoo.fr>
-Date:   Tue, 25 Jul 2023 20:08:06 +0200
+        with ESMTP id S232391AbjGYSI7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:08:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA7691FF5;
+        Tue, 25 Jul 2023 11:08:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5879261856;
+        Tue, 25 Jul 2023 18:08:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700DBC433C7;
+        Tue, 25 Jul 2023 18:08:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690308537;
+        bh=1Clt9J7kxfsc4f8hrpAeO1TjNRZX2DHiChFCoZRrBvw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DAtV6NqS9qT4abqocFS1p90SMzPc84WwfITbF3GqkJK0rM+nyaIFV8X2rfJ2v+Y1J
+         2vN0drZHLLxybw7MLup2AF0JbehKyGPcupmLdS+/fU9z8I/9KL16YgOxCJ2H47+q9h
+         p4d2BcGvfevFhofYtZn4s92hQUVI0vQrrAXmWN6ymNAnkIbFpoxa4lEAUCrRw/8yR2
+         tTQEtNuQ2nzt3YsxSawLygQzqhGofVMKdNNZfNhdhLUwYIpHEjOCnYoN/xXkcTsA9B
+         PqotE5gqblQ4Zw2fiIX35kYW2FO2sRToFhBdioYOPbbzKKJPp+bh4i+sREE6GBNRHh
+         8QTWUn1LDU0DA==
+From:   SeongJae Park <sj@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 5.15 00/78] 5.15.123-rc1 review
+Date:   Tue, 25 Jul 2023 18:08:54 +0000
+Message-Id: <20230725180854.70162-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 6.4.y] i2c: busses: i2c-nomadik: Remove a useless call in
- the remove function
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>
-References: <2023072154-animal-dropkick-6a92@gregkh>
- <62fe6800d41e04a4eb5adfa18a9e1090cbc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
- <2023072303-ranking-wife-05ae@gregkh>
- <e52e6a0b-205a-63cb-04dd-6f1c5f5c31f7@wanadoo.fr>
- <2023072538-vacancy-retinal-73ea@gregkh>
-Content-Language: fr, en-US
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <2023072538-vacancy-retinal-73ea@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi,
 
-Le 25/07/2023 à 09:09, Greg KH a écrit :
-> On Mon, Jul 24, 2023 at 10:20:12PM +0200, Marion & Christophe JAILLET wrote:
->> Le 23/07/2023 à 22:34, Greg KH a écrit :
->>> On Fri, Jul 21, 2023 at 07:47:41PM +0200, Christophe JAILLET wrote:
->>>> Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
->>>> driver"), there is no more request_mem_region() call in this driver.
->>>>
->>>> So remove the release_mem_region() call from the remove function which is
->>>> likely a left over.
->>>>
->>>> Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
->>>> Cc: <stable@vger.kernel.org> # v3.6+
->>>> Acked-by: Linus Walleij <linus.walleij@linaro.org>
->>>> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
->>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->>>> ---
->>>> The patch below that should fix a merge conflict related to commit
->>>> 9c7174db4cdd1 ("i2c: nomadik: Use devm_clk_get_enabled()") has been
->>>> HAND MODIFIED.
->>> I don't understand, that commit is not in the stable trees.  What do you
->>> mean by "hand modified"?
->>
->> I mean that I took the file initially generated by git format-patch when I
->> sent the patch against -next.
->>
->> I updated the diff context from this file and left everything else as-is.
->> I only added some (apparently unclear :) ) context below the ---.
->>
->>
->> Yes, precisely.
->> My patch has been sent *after* 9c7174db4cdd1 in -next, and it depends on it.
->>
->> The proposed modified patch for backport tries to deal with this missing
->> part in older branches.
->>
->> If 9c7174db4cdd1 was also backported, I think that my patch would apply
->> cleanly.
->>
->>
->>>> I hope it is fine, but is provided as-is. Especially line numbers should be
->>>> wrong, but 'patch' should be able to deal with it. (sorry if it does not apply)
->>>>
->>>> I guess that it should also apply to all previous branches.
->>>>
->>>> I've left the commit description as it was. Not sure what to do with A-b and R-b
->>>> tags.
->>> Why isn't this needed in Linus's tree?
->>
->> I never said that.
->>
->> It is one of the first time, if not the first one, I update a patch to ease
->> backport.
->> I only sent something for 6.4.y, but it must be valid for other branches as
->> well. (i.e. # v3.6+)
-> But what is the patch in Linus's tree?  If it's not there yet, there's
-> nothing we can do with this for stable backports.  If it is there, we
-> need the git commit id in Linus's tree.
+On Tue, 25 Jul 2023 12:45:51 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-Not sure to understand what you need.
+> This is the start of the stable review cycle for the 5.15.123 release.
+> There are 78 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.123-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] commit 3bef1500d246 ("Linux 5.15.123-rc1")
 
 
-In torvalds/linux.git/ :
-======================
+Thanks,
+SJ
 
-My initial patch is with the same commit id:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=05f933d5f7318b03ff2028c1704dc867ac16f2c7
+[...]
 
-The patch that cause the merge issue with older trees is this one. The 
-patch above depends on it:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=9c7174db4cdd111e10d19eed5c36fd978a14c8a2
+---
 
-The patch in Fixes:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=235602146ec9c1882edf1ccc68389c1176be8198
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_m68k.sh
+ok 12 selftests: damon-tests: build_arm64.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
 
+PASS
 
-In stable/linux.git/ :
-====================
-
-My initial patch is with the same commit id:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=05f933d5f7318b03ff2028c1704dc867ac16f2c7
-
-The patch that cause the merge issue with older trees is this one. The 
-patch above depends on it:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=9c7174db4cdd111e10d19eed5c36fd978a14c8a2
-
-The patch in Fixes:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=235602146ec9c1882edf1ccc68389c1176be8198
-
-
-In stable/linux.git/?h=linux-6.4.y :
-==================================
-
-My patch and the one it depends one are available there, obviously.
-
-The patch in Fixes:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?h=linux-6.4.y&id=235602146ec9c1882edf1ccc68389c1176be8198
-
-
-The patch sent as "[PATCH 6.4.y] i2c: busses: i2c-nomadik:..." is commit 
-05f933d5f731 + a need part of 9c7174db4cdd.
-
-If 9c7174db4cdd is backported as well (and applies cleanly), 
-05f933d5f731 should also work un-modified.
-
-
-> Still confused,
-
-Confused as well.
-
-CJ
-
-> greg k-h
