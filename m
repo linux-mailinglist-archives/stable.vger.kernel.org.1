@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC8237612C5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C939C7616B7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233862AbjGYLFe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40888 "EHLO
+        id S235051AbjGYLlm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233857AbjGYLFS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64F6B26A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:58 -0700 (PDT)
+        with ESMTP id S235049AbjGYLlY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78E0D1FCC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBFFF61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA01C433C7;
-        Tue, 25 Jul 2023 11:02:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5825461655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C383C433C7;
+        Tue, 25 Jul 2023 11:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282977;
-        bh=GBPgJfxiQ5r2sx8ga0FfDdUHZokRuoT4MKnvi1S4cGE=;
+        s=korg; t=1690285260;
+        bh=VyFStyMnQdG47vupCKZyR4Q6LFqyBIHqOnlzFufy+DA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LnQqj080SsdTo2nDSpfPHebflJvlyqRRG0dvPzGRbjy42ObCLX/1hwu18uN3WBhF/
-         kPQ0H1GcbQR4luOnc9sfNBt6X82eZhEtzdEbDY2gpHmJYI2Eswe8bqxmbEwGEhpeDL
-         Lkg23j9M1eJnqGO0d7xOQ0QUZTmidHjCejbWBcd0=
+        b=uOuw1nllIGLyJvKq/2jT+VeL9nkgcphinAIHV88EE0r7V94eM9GC6DcMjuEi/pcid
+         8fO2taP4gr7vhd8jAAcx7KpHyo7o+jxCoaov4AI0RVt66CAVbhQrTzvr/sYP7ycebT
+         bOxuUbu2bn8h9TfpofpXkQtuMOPmqPzg78cik8Fs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxime Bizon <mbizon@freebox.fr>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Pierre Morel <pmorel@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/183] wifi: ath11k: fix registration of 6Ghz-only phy without the full channel range
+Subject: [PATCH 5.4 141/313] KVM: s390: vsie: fix the length of APCB bitmap
 Date:   Tue, 25 Jul 2023 12:44:54 +0200
-Message-ID: <20230725104510.336069885@linuxfoundation.org>
+Message-ID: <20230725104527.101012248@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,68 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxime Bizon <mbizon@freebox.fr>
+From: Pierre Morel <pmorel@linux.ibm.com>
 
-[ Upstream commit e2ceb1de2f83aafd8003f0b72dfd4b7441e97d14 ]
+[ Upstream commit 246be7d2720ea9a795b576067ecc5e5c7a1e7848 ]
 
-Because of what seems to be a typo, a 6Ghz-only phy for which the BDF
-does not allow the 7115Mhz channel will fail to register:
+bit_and() uses the count of bits as the woking length.
+Fix the previous implementation and effectively use
+the right bitmap size.
 
-  WARNING: CPU: 2 PID: 106 at net/wireless/core.c:907 wiphy_register+0x914/0x954
-  Modules linked in: ath11k_pci sbsa_gwdt
-  CPU: 2 PID: 106 Comm: kworker/u8:5 Not tainted 6.3.0-rc7-next-20230418-00549-g1e096a17625a-dirty #9
-  Hardware name: Freebox V7R Board (DT)
-  Workqueue: ath11k_qmi_driver_event ath11k_qmi_driver_event_work
-  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : wiphy_register+0x914/0x954
-  lr : ieee80211_register_hw+0x67c/0xc10
-  sp : ffffff800b123aa0
-  x29: ffffff800b123aa0 x28: 0000000000000000 x27: 0000000000000000
-  x26: 0000000000000000 x25: 0000000000000006 x24: ffffffc008d51418
-  x23: ffffffc008cb0838 x22: ffffff80176c2460 x21: 0000000000000168
-  x20: ffffff80176c0000 x19: ffffff80176c03e0 x18: 0000000000000014
-  x17: 00000000cbef338c x16: 00000000d2a26f21 x15: 00000000ad6bb85f
-  x14: 0000000000000020 x13: 0000000000000020 x12: 00000000ffffffbd
-  x11: 0000000000000208 x10: 00000000fffffdf7 x9 : ffffffc009394718
-  x8 : ffffff80176c0528 x7 : 000000007fffffff x6 : 0000000000000006
-  x5 : 0000000000000005 x4 : ffffff800b304284 x3 : ffffff800b304284
-  x2 : ffffff800b304d98 x1 : 0000000000000000 x0 : 0000000000000000
-  Call trace:
-   wiphy_register+0x914/0x954
-   ieee80211_register_hw+0x67c/0xc10
-   ath11k_mac_register+0x7c4/0xe10
-   ath11k_core_qmi_firmware_ready+0x1f4/0x570
-   ath11k_qmi_driver_event_work+0x198/0x590
-   process_one_work+0x1b8/0x328
-   worker_thread+0x6c/0x414
-   kthread+0x100/0x104
-   ret_from_fork+0x10/0x20
-  ---[ end trace 0000000000000000 ]---
-  ath11k_pci 0002:01:00.0: ieee80211 registration failed: -22
-  ath11k_pci 0002:01:00.0: failed register the radio with mac80211: -22
-  ath11k_pci 0002:01:00.0: failed to create pdev core: -22
+Fixes: 19fd83a64718 ("KVM: s390: vsie: allow CRYCB FORMAT-1")
+Fixes: 56019f9aca22 ("KVM: s390: vsie: Allow CRYCB FORMAT-2")
 
-Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230421145445.2612280-1-mbizon@freebox.fr
+Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/kvm/20230511094719.9691-1-pmorel@linux.ibm.com/
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kvm/vsie.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index ef7617802491e..b19d44b3f5dfb 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8715,7 +8715,7 @@ static int ath11k_mac_setup_channels_rates(struct ath11k *ar,
- 	}
+diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+index 2021946176de8..596b2a2cd837d 100644
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -168,7 +168,8 @@ static int setup_apcb00(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
+ 			    sizeof(struct kvm_s390_apcb0)))
+ 		return -EFAULT;
  
- 	if (supported_bands & WMI_HOST_WLAN_5G_CAP) {
--		if (reg_cap->high_5ghz_chan >= ATH11K_MAX_6G_FREQ) {
-+		if (reg_cap->high_5ghz_chan >= ATH11K_MIN_6G_FREQ) {
- 			channels = kmemdup(ath11k_6ghz_channels,
- 					   sizeof(ath11k_6ghz_channels), GFP_KERNEL);
- 			if (!channels) {
+-	bitmap_and(apcb_s, apcb_s, apcb_h, sizeof(struct kvm_s390_apcb0));
++	bitmap_and(apcb_s, apcb_s, apcb_h,
++		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb0));
+ 
+ 	return 0;
+ }
+@@ -190,7 +191,8 @@ static int setup_apcb11(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
+ 			    sizeof(struct kvm_s390_apcb1)))
+ 		return -EFAULT;
+ 
+-	bitmap_and(apcb_s, apcb_s, apcb_h, sizeof(struct kvm_s390_apcb1));
++	bitmap_and(apcb_s, apcb_s, apcb_h,
++		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb1));
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
