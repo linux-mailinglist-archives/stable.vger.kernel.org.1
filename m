@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37A45761290
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECE087616C4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:42:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233903AbjGYLEB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40888 "EHLO
+        id S235043AbjGYLmV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:42:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233908AbjGYLDp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:45 -0400
+        with ESMTP id S234999AbjGYLmG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:42:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 925635BB6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6FC26B0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AAEF56165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECC8C433C8;
-        Tue, 25 Jul 2023 11:00:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 514E46169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CF0C433C7;
+        Tue, 25 Jul 2023 11:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282846;
-        bh=ajFG5oZk8RW+Sz0tYhfE7EYLpgWyaxTS03WHuL7RGQA=;
+        s=korg; t=1690285288;
+        bh=W9lKpO2hpnjOaCep9TJPM21+VDoQMnHx66l/UlLwexw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=02ebc8fkKgqlLe+pS5erWksDqZBNESHfN+cSPlyT/U33JfurN/9z/uqW4UI8rM3Tk
-         dm+7QZTK4aXxliJT2gG2mhN01rOqwJ9IbXCR/XopI5DwLvkk0LPftc+jVLTRWjC/Oh
-         8if/0IPeCA84TTe/S1Vog2imt5cKsXIMQOzlGElQ=
+        b=ZLZdel0I0xdxta9//Tbjk8gb0WU/mj4fxgUcHDYa3IVRHLWUNiFR89u8kGUwmXrcW
+         dDDDLVmVr/wMK/7jY1eNnj84dxbuc87jxB0LvzFTwqF7lY3A7WSRgl5gJgIl0kKheO
+         6mhHgG+VA+bPxDYUQd8V25oj4GqOzwhdIbhLlrTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Steev Klimaszewski <steev@kali.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 048/183] ASoC: codecs: wcd938x: fix codec initialisation race
-Date:   Tue, 25 Jul 2023 12:44:36 +0200
-Message-ID: <20230725104509.699427197@linuxfoundation.org>
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.4 124/313] block: change all __u32 annotations to __be32 in affs_hardblocks.h
+Date:   Tue, 25 Jul 2023 12:44:37 +0200
+Message-ID: <20230725104526.390095414@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,54 +57,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-commit 85a61b1ce461a3f62f1019e5e6423c393c542bff upstream.
+commit 95a55437dc49fb3342c82e61f5472a71c63d9ed0 upstream.
 
-Make sure to resume the codec and soundwire device before trying to read
-the codec variant and configure the device during component probe.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-This specifically avoids interpreting (a masked and shifted) -EBUSY
-errno as the variant:
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
-	wcd938x_codec audio-codec: ASoC: error at soc_component_read_no_lock on audio-codec for register: [0x000034b0] -16
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted (now resubmitted as patch 1 of this series).
 
-when the soundwire device happens to be suspended, which in turn
-prevents some headphone controls from being registered.
+Patch 3 (this series) adds additional error checking and warning
+messages. One of the error checks now makes use of the previously
+unused rdb_CylBlocks field, which causes a 'sparse' warning
+(cast to restricted __be32).
 
-Fixes: 8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
-Cc: stable@vger.kernel.org      # 5.14
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reported-by: Steev Klimaszewski <steev@kali.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230630120318.6571-1-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+on-disk format of RDB and partition blocks is always big endian.
+
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20230620201725.7020-3-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd938x.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ include/uapi/linux/affs_hardblocks.h |   68 +++++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -3095,6 +3095,10 @@ static int wcd938x_soc_codec_probe(struc
+--- a/include/uapi/linux/affs_hardblocks.h
++++ b/include/uapi/linux/affs_hardblocks.h
+@@ -7,42 +7,42 @@
+ /* Just the needed definitions for the RDB of an Amiga HD. */
  
- 	snd_soc_component_init_regmap(component, wcd938x->regmap);
+ struct RigidDiskBlock {
+-	__u32	rdb_ID;
++	__be32	rdb_ID;
+ 	__be32	rdb_SummedLongs;
+-	__s32	rdb_ChkSum;
+-	__u32	rdb_HostID;
++	__be32	rdb_ChkSum;
++	__be32	rdb_HostID;
+ 	__be32	rdb_BlockBytes;
+-	__u32	rdb_Flags;
+-	__u32	rdb_BadBlockList;
++	__be32	rdb_Flags;
++	__be32	rdb_BadBlockList;
+ 	__be32	rdb_PartitionList;
+-	__u32	rdb_FileSysHeaderList;
+-	__u32	rdb_DriveInit;
+-	__u32	rdb_Reserved1[6];
+-	__u32	rdb_Cylinders;
+-	__u32	rdb_Sectors;
+-	__u32	rdb_Heads;
+-	__u32	rdb_Interleave;
+-	__u32	rdb_Park;
+-	__u32	rdb_Reserved2[3];
+-	__u32	rdb_WritePreComp;
+-	__u32	rdb_ReducedWrite;
+-	__u32	rdb_StepRate;
+-	__u32	rdb_Reserved3[5];
+-	__u32	rdb_RDBBlocksLo;
+-	__u32	rdb_RDBBlocksHi;
+-	__u32	rdb_LoCylinder;
+-	__u32	rdb_HiCylinder;
+-	__u32	rdb_CylBlocks;
+-	__u32	rdb_AutoParkSeconds;
+-	__u32	rdb_HighRDSKBlock;
+-	__u32	rdb_Reserved4;
++	__be32	rdb_FileSysHeaderList;
++	__be32	rdb_DriveInit;
++	__be32	rdb_Reserved1[6];
++	__be32	rdb_Cylinders;
++	__be32	rdb_Sectors;
++	__be32	rdb_Heads;
++	__be32	rdb_Interleave;
++	__be32	rdb_Park;
++	__be32	rdb_Reserved2[3];
++	__be32	rdb_WritePreComp;
++	__be32	rdb_ReducedWrite;
++	__be32	rdb_StepRate;
++	__be32	rdb_Reserved3[5];
++	__be32	rdb_RDBBlocksLo;
++	__be32	rdb_RDBBlocksHi;
++	__be32	rdb_LoCylinder;
++	__be32	rdb_HiCylinder;
++	__be32	rdb_CylBlocks;
++	__be32	rdb_AutoParkSeconds;
++	__be32	rdb_HighRDSKBlock;
++	__be32	rdb_Reserved4;
+ 	char	rdb_DiskVendor[8];
+ 	char	rdb_DiskProduct[16];
+ 	char	rdb_DiskRevision[4];
+ 	char	rdb_ControllerVendor[8];
+ 	char	rdb_ControllerProduct[16];
+ 	char	rdb_ControllerRevision[4];
+-	__u32	rdb_Reserved5[10];
++	__be32	rdb_Reserved5[10];
+ };
  
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	wcd938x->variant = snd_soc_component_read_field(component,
- 						 WCD938X_DIGITAL_EFUSE_REG_0,
- 						 WCD938X_ID_MASK);
-@@ -3112,6 +3116,8 @@ static int wcd938x_soc_codec_probe(struc
- 			     (WCD938X_DIGITAL_INTR_LEVEL_0 + i), 0);
- 	}
+ #define	IDNAME_RIGIDDISK	0x5244534B	/* "RDSK" */
+@@ -50,16 +50,16 @@ struct RigidDiskBlock {
+ struct PartitionBlock {
+ 	__be32	pb_ID;
+ 	__be32	pb_SummedLongs;
+-	__s32	pb_ChkSum;
+-	__u32	pb_HostID;
++	__be32	pb_ChkSum;
++	__be32	pb_HostID;
+ 	__be32	pb_Next;
+-	__u32	pb_Flags;
+-	__u32	pb_Reserved1[2];
+-	__u32	pb_DevFlags;
++	__be32	pb_Flags;
++	__be32	pb_Reserved1[2];
++	__be32	pb_DevFlags;
+ 	__u8	pb_DriveName[32];
+-	__u32	pb_Reserved2[15];
++	__be32	pb_Reserved2[15];
+ 	__be32	pb_Environment[17];
+-	__u32	pb_EReserved[15];
++	__be32	pb_EReserved[15];
+ };
  
-+	pm_runtime_put(dev);
-+
- 	wcd938x->hphr_pdm_wd_int = regmap_irq_get_virq(wcd938x->irq_chip,
- 						       WCD938X_IRQ_HPHR_PDM_WD_INT);
- 	wcd938x->hphl_pdm_wd_int = regmap_irq_get_virq(wcd938x->irq_chip,
+ #define	IDNAME_PARTITION	0x50415254	/* "PART" */
 
 
