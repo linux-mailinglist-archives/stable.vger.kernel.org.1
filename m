@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF3C076131B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43FC97616FA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233834AbjGYLIT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45444 "EHLO
+        id S233214AbjGYLof (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbjGYLH0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:26 -0400
+        with ESMTP id S235022AbjGYLoX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0A53A9D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32AE1FFD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 489AB61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC60C433C8;
-        Tue, 25 Jul 2023 11:06:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B6A4616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DF1C433C7;
+        Tue, 25 Jul 2023 11:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283166;
-        bh=CH+mpUKI7cVZxH1NTgcSC8N1o6cjpyQRK5eWfz/TduA=;
+        s=korg; t=1690285448;
+        bh=Ek3fH4jBADama0ov7GO2gwseu3TrDz5k4NaRalm3Qak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l7R8/HzX4YenE3UooqISpqHpX5557xGL65ggs04cGJZTeC7vKjCCLnfl51FK32z/c
-         1pfSA9CEiOrpWskO2hxfMrkima8Uq+8baVRYM5a3m3PST8GbNuUujaDs3H93GF49/B
-         +KXNLv6oSrcsn+6dJDACipdfmHPdhQzWSUS8VuI8=
+        b=sbluUY54rfxSzDFJWDYC8rr9SGfHSeUgD65wZDtRYVj8svM7KkNANg+NItjI7ZqsY
+         /WHzJO+fNxL5akNZJbrgh6P4jicYdZ1cCKDELNkKSkAw6A5Y9A2SJx0lhuF/OppjsR
+         zoPjtO3CIpqM/QlVzyU+1D03Kus2d2qYr7eZk1xM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Florian Kauer <florian.kauer@linutronix.de>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Wang Yufen <wangyufen@huawei.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/183] igc: Prevent garbled TX queue with XDP ZEROCOPY
+Subject: [PATCH 5.4 208/313] icmp6: Fix null-ptr-deref of ip6_null_entry->rt6i_idev in icmp6_dev().
 Date:   Tue, 25 Jul 2023 12:46:01 +0200
-Message-ID: <20230725104512.730588035@linuxfoundation.org>
+Message-ID: <20230725104530.010105088@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,77 +58,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Kauer <florian.kauer@linutronix.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 78adb4bcf99effbb960c5f9091e2e062509d1030 ]
+[ Upstream commit 2aaa8a15de73874847d62eb595c6683bface80fd ]
 
-In normal operation, each populated queue item has
-next_to_watch pointing to the last TX desc of the packet,
-while each cleaned item has it set to 0. In particular,
-next_to_use that points to the next (necessarily clean)
-item to use has next_to_watch set to 0.
+With some IPv6 Ext Hdr (RPL, SRv6, etc.), we can send a packet that
+has the link-local address as src and dst IP and will be forwarded to
+an external IP in the IPv6 Ext Hdr.
 
-When the TX queue is used both by an application using
-AF_XDP with ZEROCOPY as well as a second non-XDP application
-generating high traffic, the queue pointers can get in
-an invalid state where next_to_use points to an item
-where next_to_watch is NOT set to 0.
+For example, the script below generates a packet whose src IP is the
+link-local address and dst is updated to 11::.
 
-However, the implementation assumes at several places
-that this is never the case, so if it does hold,
-bad things happen. In particular, within the loop inside
-of igc_clean_tx_irq(), next_to_clean can overtake next_to_use.
-Finally, this prevents any further transmission via
-this queue and it never gets unblocked or signaled.
-Secondly, if the queue is in this garbled state,
-the inner loop of igc_clean_tx_ring() will never terminate,
-completely hogging a CPU core.
+  # for f in $(find /proc/sys/net/ -name *seg6_enabled*); do echo 1 > $f; done
+  # python3
+  >>> from socket import *
+  >>> from scapy.all import *
+  >>>
+  >>> SRC_ADDR = DST_ADDR = "fe80::5054:ff:fe12:3456"
+  >>>
+  >>> pkt = IPv6(src=SRC_ADDR, dst=DST_ADDR)
+  >>> pkt /= IPv6ExtHdrSegmentRouting(type=4, addresses=["11::", "22::"], segleft=1)
+  >>>
+  >>> sk = socket(AF_INET6, SOCK_RAW, IPPROTO_RAW)
+  >>> sk.sendto(bytes(pkt), (DST_ADDR, 0))
 
-The reason is that igc_xdp_xmit_zc() reads next_to_use
-before acquiring the lock, and writing it back
-(potentially unmodified) later. If it got modified
-before locking, the outdated next_to_use is written
-pointing to an item that was already used elsewhere
-(and thus next_to_watch got written).
+For such a packet, we call ip6_route_input() to look up a route for the
+next destination in these three functions depending on the header type.
 
-Fixes: 9acf59a752d4 ("igc: Enable TX via AF_XDP zero-copy")
-Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
-Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
-Tested-by: Kurt Kanzenbach <kurt@linutronix.de>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230717175444.3217831-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  * ipv6_rthdr_rcv()
+  * ipv6_rpl_srh_rcv()
+  * ipv6_srh_rcv()
+
+If no route is found, ip6_null_entry is set to skb, and the following
+dst_input(skb) calls ip6_pkt_drop().
+
+Finally, in icmp6_dev(), we dereference skb_rt6_info(skb)->rt6i_idev->dev
+as the input device is the loopback interface.  Then, we have to check if
+skb_rt6_info(skb)->rt6i_idev is NULL or not to avoid NULL pointer deref
+for ip6_null_entry.
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 157 Comm: python3 Not tainted 6.4.0-11996-gb121d614371c #35
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
+Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
+RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
+RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
+RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
+R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
+R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
+FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ ip6_pkt_drop (net/ipv6/route.c:4513)
+ ipv6_rthdr_rcv (net/ipv6/exthdrs.c:640 net/ipv6/exthdrs.c:686)
+ ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:437 (discriminator 5))
+ ip6_input_finish (./include/linux/rcupdate.h:781 net/ipv6/ip6_input.c:483)
+ __netif_receive_skb_one_core (net/core/dev.c:5455)
+ process_backlog (./include/linux/rcupdate.h:781 net/core/dev.c:5895)
+ __napi_poll (net/core/dev.c:6460)
+ net_rx_action (net/core/dev.c:6529 net/core/dev.c:6660)
+ __do_softirq (./arch/x86/include/asm/jump_label.h:27 ./include/linux/jump_label.h:207 ./include/trace/events/irq.h:142 kernel/softirq.c:554)
+ do_softirq (kernel/softirq.c:454 kernel/softirq.c:441)
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip (kernel/softirq.c:381)
+ __dev_queue_xmit (net/core/dev.c:4231)
+ ip6_finish_output2 (./include/net/neighbour.h:544 net/ipv6/ip6_output.c:135)
+ rawv6_sendmsg (./include/net/dst.h:458 ./include/linux/netfilter.h:303 net/ipv6/raw.c:656 net/ipv6/raw.c:914)
+ sock_sendmsg (net/socket.c:725 net/socket.c:748)
+ __sys_sendto (net/socket.c:2134)
+ __x64_sys_sendto (net/socket.c:2146 net/socket.c:2142 net/socket.c:2142)
+ do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:120)
+RIP: 0033:0x7f9dc751baea
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffe98712c38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007ffe98712cf8 RCX: 00007f9dc751baea
+RDX: 0000000000000060 RSI: 00007f9dc6460b90 RDI: 0000000000000003
+RBP: 00007f9dc56e8be0 R08: 00007ffe98712d70 R09: 000000000000001c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: ffffffffc4653600 R14: 0000000000000001 R15: 00007f9dc6af5d1b
+ </TASK>
+Modules linked in:
+CR2: 0000000000000000
+ ---[ end trace 0000000000000000 ]---
+RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
+Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
+RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
+RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
+RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
+R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
+R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
+FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
+PKRU: 55555554
+Kernel panic - not syncing: Fatal exception in interrupt
+Kernel Offset: disabled
+
+Fixes: 4832c30d5458 ("net: ipv6: put host and anycast routes on device with address")
+Reported-by: Wang Yufen <wangyufen@huawei.com>
+Closes: https://lore.kernel.org/netdev/c41403a9-c2f6-3b7e-0c96-e1901e605cd0@huawei.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/icmp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index ade4bde47c65a..2e091a4a065e7 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -2797,9 +2797,8 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
- 	struct netdev_queue *nq = txring_txq(ring);
- 	union igc_adv_tx_desc *tx_desc = NULL;
- 	int cpu = smp_processor_id();
--	u16 ntu = ring->next_to_use;
- 	struct xdp_desc xdp_desc;
--	u16 budget;
-+	u16 budget, ntu;
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 3db10cae7b178..169467b5c98a6 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -410,7 +410,10 @@ static struct net_device *icmp6_dev(const struct sk_buff *skb)
+ 	if (unlikely(dev->ifindex == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
+ 		const struct rt6_info *rt6 = skb_rt6_info(skb);
  
- 	if (!netif_carrier_ok(ring->netdev))
- 		return;
-@@ -2809,6 +2808,7 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
- 	/* Avoid transmit queue timeout since we share it with the slow path */
- 	txq_trans_cond_update(nq);
+-		if (rt6)
++		/* The destination could be an external IP in Ext Hdr (SRv6, RPL, etc.),
++		 * and ip6_null_entry could be set to skb if no route is found.
++		 */
++		if (rt6 && rt6->rt6i_idev)
+ 			dev = rt6->rt6i_idev->dev;
+ 	}
  
-+	ntu = ring->next_to_use;
- 	budget = igc_desc_unused(ring);
- 
- 	while (xsk_tx_peek_desc(pool, &xdp_desc) && budget--) {
 -- 
 2.39.2
 
