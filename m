@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4DAF761382
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 004F476124E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234131AbjGYLLO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45752 "EHLO
+        id S233787AbjGYLBL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234055AbjGYLKu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B677B26BC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:58 -0700 (PDT)
+        with ESMTP id S233835AbjGYLAs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4806E173F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24E0661655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BAEC433C9;
-        Tue, 25 Jul 2023 11:09:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25A5D6165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344FCC433C8;
+        Tue, 25 Jul 2023 10:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283397;
-        bh=ReKqaDLmlQacJeaTrzjz3zIHtmJTeEGv2kx9RNraFPE=;
+        s=korg; t=1690282684;
+        bh=o/v0gKPCwXzvXAbgXz1r5K9ujBQF+on3pmUWJmUi99Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nm+ayzq9zQVoyts+zDcIfEAgdTMvS3ZjIboHX7iuZnroMlaJXi1AWBAR+Xqwk7LDD
-         sMkvwXLEIArI22lj3PDn10FAQmYmAvdaym0TgZjqvYIjnudBwmL9t0pdze/L9jkk6r
-         rmOmR8kuDp/J4XWeaX0h7sl1OgookliNDaCUzFOE=
+        b=IIAuPCY56QbCA0yAQVwoC9c/nV1hblNTWO5m5Vyi6MDeuC3J/iR0tw7kkeIU5eiIe
+         9iZfyf1EJufkNefQ3DE1JfIrtpdSqlpp7RtIgiy1mKjjfoQme1EQNQ62mX89G8NyF0
+         U2rI9oTAA4EqEF21cvGdCEEfteK94mUyOhaJzmOY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+cd311b1e43cc25f90d18@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/78] [PATCH AUTOSEL 4.14 5/9] udf: Fix uninitialized array access for some pathnames
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 217/227] tcp: annotate data-races around fastopenq.max_qlen
 Date:   Tue, 25 Jul 2023 12:46:24 +0200
-Message-ID: <20230725104452.583889120@linuxfoundation.org>
+Message-ID: <20230725104523.705328967@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,32 +55,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 028f6055c912588e6f72722d89c30b401bbcf013 ]
+From: Eric Dumazet <edumazet@google.com>
 
-For filenames that begin with . and are between 2 and 5 characters long,
-UDF charset conversion code would read uninitialized memory in the
-output buffer. The only practical impact is that the name may be prepended a
-"unification hash" when it is not actually needed but still it is good
-to fix this.
+[ Upstream commit 70f360dd7042cb843635ece9d28335a4addff9eb ]
 
-Reported-by: syzbot+cd311b1e43cc25f90d18@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000e2638a05fe9dc8f9@google.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+This field can be read locklessly.
+
+Fixes: 1536e2857bd3 ("tcp: Add a TCP_FASTOPEN socket option to get a max backlog on its listner")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-12-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/unicode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/tcp.h     | 2 +-
+ net/ipv4/tcp.c          | 2 +-
+ net/ipv4/tcp_fastopen.c | 6 ++++--
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/udf/unicode.c
-+++ b/fs/udf/unicode.c
-@@ -247,7 +247,7 @@ static int udf_name_from_CS0(struct supe
- 	}
+diff --git a/include/linux/tcp.h b/include/linux/tcp.h
+index b4c08ac869835..91a37c99ba665 100644
+--- a/include/linux/tcp.h
++++ b/include/linux/tcp.h
+@@ -513,7 +513,7 @@ static inline void fastopen_queue_tune(struct sock *sk, int backlog)
+ 	struct request_sock_queue *queue = &inet_csk(sk)->icsk_accept_queue;
+ 	int somaxconn = READ_ONCE(sock_net(sk)->core.sysctl_somaxconn);
  
- 	if (translate) {
--		if (str_o_len <= 2 && str_o[0] == '.' &&
-+		if (str_o_len > 0 && str_o_len <= 2 && str_o[0] == '.' &&
- 		    (str_o_len == 1 || str_o[1] == '.'))
- 			needsCRC = 1;
- 		if (needsCRC) {
+-	queue->fastopenq.max_qlen = min_t(unsigned int, backlog, somaxconn);
++	WRITE_ONCE(queue->fastopenq.max_qlen, min_t(unsigned int, backlog, somaxconn));
+ }
+ 
+ static inline void tcp_move_syn(struct tcp_sock *tp,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index c9b955d9d7ace..79f29e138fc9f 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4254,7 +4254,7 @@ int do_tcp_getsockopt(struct sock *sk, int level,
+ 		break;
+ 
+ 	case TCP_FASTOPEN:
+-		val = icsk->icsk_accept_queue.fastopenq.max_qlen;
++		val = READ_ONCE(icsk->icsk_accept_queue.fastopenq.max_qlen);
+ 		break;
+ 
+ 	case TCP_FASTOPEN_CONNECT:
+diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+index 45cc7f1ca2961..85e4953f11821 100644
+--- a/net/ipv4/tcp_fastopen.c
++++ b/net/ipv4/tcp_fastopen.c
+@@ -296,6 +296,7 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
+ static bool tcp_fastopen_queue_check(struct sock *sk)
+ {
+ 	struct fastopen_queue *fastopenq;
++	int max_qlen;
+ 
+ 	/* Make sure the listener has enabled fastopen, and we don't
+ 	 * exceed the max # of pending TFO requests allowed before trying
+@@ -308,10 +309,11 @@ static bool tcp_fastopen_queue_check(struct sock *sk)
+ 	 * temporarily vs a server not supporting Fast Open at all.
+ 	 */
+ 	fastopenq = &inet_csk(sk)->icsk_accept_queue.fastopenq;
+-	if (fastopenq->max_qlen == 0)
++	max_qlen = READ_ONCE(fastopenq->max_qlen);
++	if (max_qlen == 0)
+ 		return false;
+ 
+-	if (fastopenq->qlen >= fastopenq->max_qlen) {
++	if (fastopenq->qlen >= max_qlen) {
+ 		struct request_sock *req1;
+ 		spin_lock(&fastopenq->lock);
+ 		req1 = fastopenq->rskq_rst_head;
+-- 
+2.39.2
+
 
 
