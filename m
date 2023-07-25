@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F6CE761330
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4843B7615CE
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233945AbjGYLIp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44848 "EHLO
+        id S234667AbjGYLd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233950AbjGYLIU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0AA449E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:55 -0700 (PDT)
+        with ESMTP id S233333AbjGYLdV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5788F2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F75461683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA7BC433C9;
-        Tue, 25 Jul 2023 11:06:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D3D961655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515D8C433C7;
+        Tue, 25 Jul 2023 11:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283213;
-        bh=Cq1VAFo3rrS0vKUZec0/gmCrg01lyUW0eDeABbfsJ9Q=;
+        s=korg; t=1690284799;
+        bh=8IWUj6y3H6Ha2yGWyqLs1YGPvD5wgjSl19LTfDQUppo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XcKaJXcfnDkwQfEaTXqt+UNzHY93bAInqupDRBS0kmEh4A0G8blRWDZLUBbn2MCLk
-         GI2xfJFccLGZCx0rrEEg2nsmoTjBZlKbfXozY2Uw5t41EY0ryhIIMQjf4eEuJmn7RW
-         qeWP734vRsj0W787NsPgZsTJoYhkmvLzDLvUmzNU=
+        b=odjKetIFV0AOXn200CInRfS0fHNeksfm9sR5PLTTx0WkWf53UNd+94VZogH6NZkQf
+         NUAdPvjqtD2cobqmrLae0KQXQQMztHtNSpKFlwFYC8IxRzH500Vi6E4dI/81Ssf6ZR
+         jJtp3Vj+GRMCy1CMtgwKgIVJGwFV2jFezFFjWKRc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Wayne Lin <Wayne.Lin@amd.com>, Lyude Paul <lyude@redhat.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 179/183] drm/dp_mst: Clear MSG_RDY flag before sending new message
+        syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Yonghong Song <yhs@fb.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 468/509] bpf: Address KCSAN report on bpf_lru_list
 Date:   Tue, 25 Jul 2023 12:46:47 +0200
-Message-ID: <20230725104514.167706120@linuxfoundation.org>
+Message-ID: <20230725104615.187479785@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,283 +58,177 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-commit 72f1de49ffb90b29748284f27f1d6b829ab1de95 upstream.
+[ Upstream commit ee9fd0ac3017c4313be91a220a9ac4c99dde7ad4 ]
 
-[Why]
-The sequence for collecting down_reply from source perspective should
-be:
+KCSAN reported a data-race when accessing node->ref.
+Although node->ref does not have to be accurate,
+take this chance to use a more common READ_ONCE() and WRITE_ONCE()
+pattern instead of data_race().
 
-Request_n->repeat (get partial reply of Request_n->clear message ready
-flag to ack DPRX that the message is received) till all partial
-replies for Request_n are received->new Request_n+1.
+There is an existing bpf_lru_node_is_ref() and bpf_lru_node_set_ref().
+This patch also adds bpf_lru_node_clear_ref() to do the
+WRITE_ONCE(node->ref, 0) also.
 
-Now there is chance that drm_dp_mst_hpd_irq() will fire new down
-request in the tx queue when the down reply is incomplete. Source is
-restricted to generate interveleaved message transactions so we should
-avoid it.
+==================================================================
+BUG: KCSAN: data-race in __bpf_lru_list_rotate / __htab_lru_percpu_map_update_elem
 
-Also, while assembling partial reply packets, reading out DPCD DOWN_REP
-Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
-wrapped up as a complete operation for reading out a reply packet.
-Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
-be risky. e.g. If the reply of the new request has overwritten the
-DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
-DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
-for the new request. Should handle the up request in the same way.
+write to 0xffff888137038deb of 1 bytes by task 11240 on cpu 1:
+__bpf_lru_node_move kernel/bpf/bpf_lru_list.c:113 [inline]
+__bpf_lru_list_rotate_active kernel/bpf/bpf_lru_list.c:149 [inline]
+__bpf_lru_list_rotate+0x1bf/0x750 kernel/bpf/bpf_lru_list.c:240
+bpf_lru_list_pop_free_to_local kernel/bpf/bpf_lru_list.c:329 [inline]
+bpf_common_lru_pop_free kernel/bpf/bpf_lru_list.c:447 [inline]
+bpf_lru_pop_free+0x638/0xe20 kernel/bpf/bpf_lru_list.c:499
+prealloc_lru_pop kernel/bpf/hashtab.c:290 [inline]
+__htab_lru_percpu_map_update_elem+0xe7/0x820 kernel/bpf/hashtab.c:1316
+bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
+bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
+generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
+bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
+__sys_bpf+0x338/0x810
+__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
+__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-[How]
-Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
-event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
-trigger drm_dp_mst_kick_tx() only when there is no on going message
-transaction.
+read to 0xffff888137038deb of 1 bytes by task 11241 on cpu 0:
+bpf_lru_node_set_ref kernel/bpf/bpf_lru_list.h:70 [inline]
+__htab_lru_percpu_map_update_elem+0x2f1/0x820 kernel/bpf/hashtab.c:1332
+bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
+bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
+generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
+bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
+__sys_bpf+0x338/0x810
+__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
+__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Changes since v1:
-* Reworked on review comments received
--> Adjust the fix to let driver explicitly kick off new down request
-when mst irq event is handled and acked
--> Adjust the commit message
+value changed: 0x01 -> 0x00
 
-Changes since v2:
-* Adjust the commit message
-* Adjust the naming of the divided 2 functions and add a new input
-  parameter "ack".
-* Adjust code flow as per review comments.
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 11241 Comm: syz-executor.3 Not tainted 6.3.0-rc7-syzkaller-00136-g6a66fdd29ea1 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
+==================================================================
 
-Changes since v3:
-* Update the function description of drm_dp_mst_hpd_irq_handle_event
-
-Changes since v4:
-* Change ack of drm_dp_mst_hpd_irq_handle_event() to be an array align
-  the size of esi[]
-
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20230511043748.1384166-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   30 ++++++------
- drivers/gpu/drm/display/drm_dp_mst_topology.c     |   54 +++++++++++++++++++---
- drivers/gpu/drm/i915/display/intel_dp.c           |    7 +-
- drivers/gpu/drm/nouveau/dispnv50/disp.c           |   12 +++-
- include/drm/display/drm_dp_mst_helper.h           |    7 ++
- 5 files changed, 80 insertions(+), 30 deletions(-)
+ kernel/bpf/bpf_lru_list.c | 21 +++++++++++++--------
+ kernel/bpf/bpf_lru_list.h |  7 ++-----
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3201,6 +3201,7 @@ static void dm_handle_mst_sideband_msg(s
- 
- 	while (dret == dpcd_bytes_to_read &&
- 		process_count < max_process_count) {
-+		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
- 		u8 retry;
- 		dret = 0;
- 
-@@ -3209,28 +3210,29 @@ static void dm_handle_mst_sideband_msg(s
- 		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
- 		/* handle HPD short pulse irq */
- 		if (aconnector->mst_mgr.mst_state)
--			drm_dp_mst_hpd_irq(
--				&aconnector->mst_mgr,
--				esi,
--				&new_irq_handled);
-+			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
-+							esi,
-+							ack,
-+							&new_irq_handled);
- 
- 		if (new_irq_handled) {
- 			/* ACK at DPCD to notify down stream */
--			const int ack_dpcd_bytes_to_write =
--				dpcd_bytes_to_read - 1;
--
- 			for (retry = 0; retry < 3; retry++) {
--				u8 wret;
-+				ssize_t wret;
- 
--				wret = drm_dp_dpcd_write(
--					&aconnector->dm_dp_aux.aux,
--					dpcd_addr + 1,
--					&esi[1],
--					ack_dpcd_bytes_to_write);
--				if (wret == ack_dpcd_bytes_to_write)
-+				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
-+							  dpcd_addr + 1,
-+							  ack[1]);
-+				if (wret == 1)
- 					break;
- 			}
- 
-+			if (retry == 3) {
-+				DRM_ERROR("Failed to ack MST event.\n");
-+				return;
-+			}
-+
-+			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
- 			/* check if there is new irq to be handled */
- 			dret = drm_dp_dpcd_read(
- 				&aconnector->dm_dp_aux.aux,
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -4053,17 +4053,28 @@ out:
- }
- 
- /**
-- * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
-+ * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
-  * @mgr: manager to notify irq for.
-  * @esi: 4 bytes from SINK_COUNT_ESI
-+ * @ack: 4 bytes used to ack events starting from SINK_COUNT_ESI
-  * @handled: whether the hpd interrupt was consumed or not
-  *
-- * This should be called from the driver when it detects a short IRQ,
-+ * This should be called from the driver when it detects a HPD IRQ,
-  * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
-- * topology manager will process the sideband messages received as a result
-- * of this.
-+ * topology manager will process the sideband messages received
-+ * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
-+ * corresponding flags that Driver has to ack the DP receiver later.
-+ *
-+ * Note that driver shall also call
-+ * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
-+ * after calling this function, to try to kick off a new request in
-+ * the queue if the previous message transaction is completed.
-+ *
-+ * See also:
-+ * drm_dp_mst_hpd_irq_send_new_request()
-  */
--int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled)
-+int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u8 *esi,
-+				    u8 *ack, bool *handled)
+diff --git a/kernel/bpf/bpf_lru_list.c b/kernel/bpf/bpf_lru_list.c
+index d99e89f113c43..3dabdd137d102 100644
+--- a/kernel/bpf/bpf_lru_list.c
++++ b/kernel/bpf/bpf_lru_list.c
+@@ -41,7 +41,12 @@ static struct list_head *local_pending_list(struct bpf_lru_locallist *loc_l)
+ /* bpf_lru_node helpers */
+ static bool bpf_lru_node_is_ref(const struct bpf_lru_node *node)
  {
- 	int ret = 0;
- 	int sc;
-@@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst
- 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
- 		ret = drm_dp_mst_handle_down_rep(mgr);
- 		*handled = true;
-+		ack[1] |= DP_DOWN_REP_MSG_RDY;
- 	}
- 
- 	if (esi[1] & DP_UP_REQ_MSG_RDY) {
- 		ret |= drm_dp_mst_handle_up_req(mgr);
- 		*handled = true;
-+		ack[1] |= DP_UP_REQ_MSG_RDY;
- 	}
- 
--	drm_dp_mst_kick_tx(mgr);
- 	return ret;
- }
--EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
-+EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
-+
-+/**
-+ * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new request
-+ * @mgr: manager to notify irq for.
-+ *
-+ * This should be called from the driver when mst irq event is handled
-+ * and acked. Note that new down request should only be sent when
-+ * previous message transaction is completed. Source is not supposed to generate
-+ * interleaved message transactions.
-+ */
-+void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr)
-+{
-+	struct drm_dp_sideband_msg_tx *txmsg;
-+	bool kick = true;
- 
-+	mutex_lock(&mgr->qlock);
-+	txmsg = list_first_entry_or_null(&mgr->tx_msg_downq,
-+					 struct drm_dp_sideband_msg_tx, next);
-+	/* If last transaction is not completed yet*/
-+	if (!txmsg ||
-+	    txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
-+	    txmsg->state == DRM_DP_SIDEBAND_TX_SENT)
-+		kick = false;
-+	mutex_unlock(&mgr->qlock);
-+
-+	if (kick)
-+		drm_dp_mst_kick_tx(mgr);
+-	return node->ref;
++	return READ_ONCE(node->ref);
 +}
-+EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
- /**
-  * drm_dp_mst_detect_port() - get connection status for an MST port
-  * @connector: DRM connector for this port
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -3804,9 +3804,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *in
++
++static void bpf_lru_node_clear_ref(struct bpf_lru_node *node)
++{
++	WRITE_ONCE(node->ref, 0);
+ }
+ 
+ static void bpf_lru_list_count_inc(struct bpf_lru_list *l,
+@@ -89,7 +94,7 @@ static void __bpf_lru_node_move_in(struct bpf_lru_list *l,
+ 
+ 	bpf_lru_list_count_inc(l, tgt_type);
+ 	node->type = tgt_type;
+-	node->ref = 0;
++	bpf_lru_node_clear_ref(node);
+ 	list_move(&node->list, &l->lists[tgt_type]);
+ }
+ 
+@@ -110,7 +115,7 @@ static void __bpf_lru_node_move(struct bpf_lru_list *l,
+ 		bpf_lru_list_count_inc(l, tgt_type);
+ 		node->type = tgt_type;
+ 	}
+-	node->ref = 0;
++	bpf_lru_node_clear_ref(node);
+ 
+ 	/* If the moving node is the next_inactive_rotation candidate,
+ 	 * move the next_inactive_rotation pointer also.
+@@ -353,7 +358,7 @@ static void __local_list_add_pending(struct bpf_lru *lru,
+ 	*(u32 *)((void *)node + lru->hash_offset) = hash;
+ 	node->cpu = cpu;
+ 	node->type = BPF_LRU_LOCAL_LIST_T_PENDING;
+-	node->ref = 0;
++	bpf_lru_node_clear_ref(node);
+ 	list_add(&node->list, local_pending_list(loc_l));
+ }
+ 
+@@ -419,7 +424,7 @@ static struct bpf_lru_node *bpf_percpu_lru_pop_free(struct bpf_lru *lru,
+ 	if (!list_empty(free_list)) {
+ 		node = list_first_entry(free_list, struct bpf_lru_node, list);
+ 		*(u32 *)((void *)node + lru->hash_offset) = hash;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		__bpf_lru_node_move(l, node, BPF_LRU_LIST_T_INACTIVE);
+ 	}
+ 
+@@ -522,7 +527,7 @@ static void bpf_common_lru_push_free(struct bpf_lru *lru,
+ 		}
+ 
+ 		node->type = BPF_LRU_LOCAL_LIST_T_FREE;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		list_move(&node->list, local_free_list(loc_l));
+ 
+ 		raw_spin_unlock_irqrestore(&loc_l->lock, flags);
+@@ -568,7 +573,7 @@ static void bpf_common_lru_populate(struct bpf_lru *lru, void *buf,
+ 
+ 		node = (struct bpf_lru_node *)(buf + node_offset);
+ 		node->type = BPF_LRU_LIST_T_FREE;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
+ 		buf += elem_size;
+ 	}
+@@ -594,7 +599,7 @@ static void bpf_percpu_lru_populate(struct bpf_lru *lru, void *buf,
+ 		node = (struct bpf_lru_node *)(buf + node_offset);
+ 		node->cpu = cpu;
+ 		node->type = BPF_LRU_LIST_T_FREE;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
+ 		i++;
+ 		buf += elem_size;
+diff --git a/kernel/bpf/bpf_lru_list.h b/kernel/bpf/bpf_lru_list.h
+index 6b12f06ee18c3..9c12ee453c616 100644
+--- a/kernel/bpf/bpf_lru_list.h
++++ b/kernel/bpf/bpf_lru_list.h
+@@ -63,11 +63,8 @@ struct bpf_lru {
+ 
+ static inline void bpf_lru_node_set_ref(struct bpf_lru_node *node)
  {
- 	bool handled = false;
+-	/* ref is an approximation on access frequency.  It does not
+-	 * have to be very accurate.  Hence, no protection is used.
+-	 */
+-	if (!node->ref)
+-		node->ref = 1;
++	if (!READ_ONCE(node->ref))
++		WRITE_ONCE(node->ref, 1);
+ }
  
--	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
--	if (handled)
--		ack[1] |= esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
-+	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, ack, &handled);
- 
- 	if (esi[1] & DP_CP_IRQ) {
- 		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
-@@ -3881,6 +3879,9 @@ intel_dp_check_mst_status(struct intel_d
- 
- 		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
- 			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
-+
-+		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
-+			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
- 	}
- 
- 	return link_ok;
---- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-@@ -1473,22 +1473,26 @@ nv50_mstm_service(struct nouveau_drm *dr
- 	u8 esi[8] = {};
- 
- 	while (handled) {
-+		u8 ack[8] = {};
-+
- 		rc = drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
- 		if (rc != 8) {
- 			ret = false;
- 			break;
- 		}
- 
--		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
-+		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, ack, &handled);
- 		if (!handled)
- 			break;
- 
--		rc = drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
--				       3);
--		if (rc != 3) {
-+		rc = drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack[1]);
-+
-+		if (rc != 1) {
- 			ret = false;
- 			break;
- 		}
-+
-+		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
- 	}
- 
- 	if (!ret)
---- a/include/drm/display/drm_dp_mst_helper.h
-+++ b/include/drm/display/drm_dp_mst_helper.h
-@@ -815,8 +815,11 @@ void drm_dp_mst_topology_mgr_destroy(str
- bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);
- int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool mst_state);
- 
--int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled);
--
-+int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
-+				    const u8 *esi,
-+				    u8 *ack,
-+				    bool *handled);
-+void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr);
- 
- int
- drm_dp_mst_detect_port(struct drm_connector *connector,
+ int bpf_lru_init(struct bpf_lru *lru, bool percpu, u32 hash_offset,
+-- 
+2.39.2
+
 
 
