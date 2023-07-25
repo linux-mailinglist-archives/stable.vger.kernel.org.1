@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 220AB7614E1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6209761163
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234507AbjGYLXf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
+        id S233750AbjGYKum (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:50:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234501AbjGYLXd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:33 -0400
+        with ESMTP id S233751AbjGYKuX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C7219BF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035C31FD3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 870016166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964E5C433C7;
-        Tue, 25 Jul 2023 11:23:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE1656165D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD047C433C8;
+        Tue, 25 Jul 2023 10:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284208;
-        bh=2DQkxeUcvPViWW4OXYccAVwbYFbV3k0nVACGIjpMtdM=;
+        s=korg; t=1690282205;
+        bh=aXsBD8vEtU4R9P40FIRXk5xuGyk9gGsfxT2EMAqxmaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=InfQ2dAoE651en5e7B68kqOUG4UCpvpuCre2f2Tq/UCnCX8ojEOt6Eq9t1po39NyT
-         Vc6+MnM2vQudvjIrM10DHUX1TAVYI+rq+u14dt/dktyYHLyii5oAONFOh6UtqHVHy5
-         oRt4I7m38q65/MedLkIsxC3/qR9XmaqDxbIfQGhw=
+        b=Cl5N/BgXIeh/vk9El1sCa3LDvQ4pqALkwFUH3NT7jMZFG21oR3RU5ihbcGxFHh+Yr
+         sYQj7yTq7T3oyvrXF1XbQ9JYCSzIhXwHHiNmfiF4LxNG+dqs11Y15avvv9HfHUDMvS
+         D0zqJNX/cwdiI4ML0uP9sRs+m4Yh9u6QtLQDkuGk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/509] net: dsa: tag_sja1105: fix MAC DA patching from meta frames
-Date:   Tue, 25 Jul 2023 12:43:32 +0200
-Message-ID: <20230725104606.245913156@linuxfoundation.org>
+        patches@lists.linux.dev, Kenneth Feng <kenneth.feng@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.4 046/227] drm/amdgpu/pm: make mclk consistent for smu 13.0.7
+Date:   Tue, 25 Jul 2023 12:43:33 +0200
+Message-ID: <20230725104516.709048419@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,46 +54,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 1dcf6efd5f0c1f4496b3ef7ec5a7db104a53b38c ]
+commit 068c8bb10f37bb84824625dbbda053a3a3e0d6e1 upstream.
 
-The SJA1105 manual says that at offset 4 into the meta frame payload we
-have "MAC destination byte 2" and at offset 5 we have "MAC destination
-byte 1". These are counted from the LSB, so byte 1 is h_dest[ETH_HLEN-2]
-aka h_dest[4] and byte 2 is h_dest[ETH_HLEN-3] aka h_dest[3].
+Use current uclk to be consistent with other dGPUs.
 
-The sja1105_meta_unpack() function decodes these the other way around,
-so a frame with MAC DA 01:80:c2:11:22:33 is received by the network
-stack as having 01:80:c2:22:11:33.
-
-Fixes: e53e18a6fe4d ("net: dsa: sja1105: Receive and decode meta frames")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_sja1105.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
-index 50496013cdb7f..07876160edd2b 100644
---- a/net/dsa/tag_sja1105.c
-+++ b/net/dsa/tag_sja1105.c
-@@ -48,8 +48,8 @@ static void sja1105_meta_unpack(const struct sk_buff *skb,
- 	 * a unified unpacking command for both device series.
- 	 */
- 	packing(buf,     &meta->tstamp,     31, 0, 4, UNPACK, 0);
--	packing(buf + 4, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
--	packing(buf + 5, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
-+	packing(buf + 4, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
-+	packing(buf + 5, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
- 	packing(buf + 6, &meta->source_port, 7, 0, 1, UNPACK, 0);
- 	packing(buf + 7, &meta->switch_id,   7, 0, 1, UNPACK, 0);
- }
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -940,7 +940,7 @@ static int smu_v13_0_7_read_sensor(struc
+ 		break;
+ 	case AMDGPU_PP_SENSOR_GFX_MCLK:
+ 		ret = smu_v13_0_7_get_smu_metrics_data(smu,
+-						       METRICS_AVERAGE_UCLK,
++						       METRICS_CURR_UCLK,
+ 						       (uint32_t *)data);
+ 		*(uint32_t *)data *= 100;
+ 		*size = 4;
 
 
