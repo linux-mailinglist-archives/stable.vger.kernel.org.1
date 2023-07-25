@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE5876165B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E453C7614FD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234927AbjGYLi0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
+        id S234543AbjGYLYb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:24:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234838AbjGYLiT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:19 -0400
+        with ESMTP id S234538AbjGYLYa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B94510C7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB0E797
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A5FB61655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D884C433C7;
-        Tue, 25 Jul 2023 11:38:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 493B76167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3C5C433C9;
+        Tue, 25 Jul 2023 11:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285097;
-        bh=eVvQozQRg5Alttg7xoZkXkMo0IV0FZcs5q1kTvjtVaU=;
+        s=korg; t=1690284268;
+        bh=8m6eav4SntL9E9lvTwD8myAVuBHyodsZr0FeIXrhjMo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mKtnQv/JUwa66CETfDbCeEUWCEHSOj0cGRxF+h8dYGcPvEk8e3DHlLaLJI2BiRx5k
-         /3pJppeoDz3b1V3/Mf0EEG8m6XDpqEMO/3HoNiquAURXW5tqLDy4Iqm+Uz7XGDeTaQ
-         HR3Tq2mLyJEsllPbd/0sHoXBh0MwFhh8l3FNfynA=
+        b=Ti5PZBpRXa86sgsIZpqCMaW5nf4bfjfucTBnLDXZd7WeEDaTl+6hPKz4uPVC5tg2a
+         dIV8ECuvqXVS5oWNa+/vt0zrKkXZ/3923FJeGVQ/xRFC/fwPauXuaFoa8KQ9JtWHE9
+         AIG4M1aLBHKsMz2szL/yA17tGfjXBmJYbDQkOdqg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/313] ASoC: es8316: Increment max value for ALC Capture Target Volume control
+        patches@lists.linux.dev, Ted Tso <tytso@mit.edu>,
+        Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 296/509] ext4: Remove ext4 locking of moved directory
 Date:   Tue, 25 Jul 2023 12:43:55 +0200
-Message-ID: <20230725104524.493040989@linuxfoundation.org>
+Message-ID: <20230725104607.288640820@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,90 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 6f073429037cd79d7311cd8236311c53f5ea8f01 ]
+commit 3658840cd363f2be094f5dfd2f0b174a9055dd0f upstream.
 
-The following error occurs when trying to restore a previously saved
-ALSA mixer state (tested on a Rock 5B board):
+Remove locking of moved directory in ext4_rename2(). We will take care
+of it in VFS instead. This effectively reverts commit 0813299c586b
+("ext4: Fix possible corruption when moving a directory") and followup
+fixes.
 
-  $ alsactl --no-ucm -f /tmp/asound.state store hw:Analog
-  $ alsactl --no-ucm -I -f /tmp/asound.state restore hw:Analog
-  alsactl: set_control:1475: Cannot write control '2:0:0:ALC Capture Target Volume:0' : Invalid argument
-
-According to ES8316 datasheet, the register at address 0x2B, which is
-related to the above mixer control, contains by default the value 0xB0.
-Considering the corresponding ALC target bits (ALCLVL) are 7:4, the
-control is initialized with 11, which is one step above the maximum
-value allowed by the driver:
-
- ALCLVL | dB gain
- -------+--------
-  0000  |  -16.5
-  0001  |  -15.0
-  0010  |  -13.5
-  ....  |  .....
-  0111  |   -6.0
-  1000  |   -4.5
-  1001  |   -3.0
-  1010  |   -1.5
-  ....  |  .....
-  1111  |   -1.5
-
-The tests performed using the VU meter feature (--vumeter=TYPE) of
-arecord/aplay confirm the specs are correct and there is no measured
-gain if the 1011-1111 range would have been mapped to 0 dB:
-
- dB gain | VU meter %
- --------+-----------
-   -6.0  |  30-31
-   -4.5  |  35-36
-   -3.0  |  42-43
-   -1.5  |  50-51
-    0.0  |  50-51
-
-Increment the max value allowed for ALC Capture Target Volume control,
-so that it matches the hardware default.  Additionally, update the
-related TLV to prevent an artificial extension of the dB gain range.
-
-Fixes: b8b88b70875a ("ASoC: add es8316 codec driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20230530181140.483936-2-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: Ted Tso <tytso@mit.edu>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230601105830.13168-1-jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/es8316.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/ext4/namei.c |   17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
-index efeffa0bf2d78..9be667e76e552 100644
---- a/sound/soc/codecs/es8316.c
-+++ b/sound/soc/codecs/es8316.c
-@@ -52,7 +52,12 @@ static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(dac_vol_tlv, -9600, 50, 1);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(adc_vol_tlv, -9600, 50, 1);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_max_gain_tlv, -650, 150, 0);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_min_gain_tlv, -1200, 150, 0);
--static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_target_tlv, -1650, 150, 0);
-+
-+static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(alc_target_tlv,
-+	0, 10, TLV_DB_SCALE_ITEM(-1650, 150, 0),
-+	11, 11, TLV_DB_SCALE_ITEM(-150, 0, 0),
-+);
-+
- static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(hpmixer_gain_tlv,
- 	0, 4, TLV_DB_SCALE_ITEM(-1200, 150, 0),
- 	8, 11, TLV_DB_SCALE_ITEM(-450, 150, 0),
-@@ -115,7 +120,7 @@ static const struct snd_kcontrol_new es8316_snd_controls[] = {
- 		       alc_max_gain_tlv),
- 	SOC_SINGLE_TLV("ALC Capture Min Volume", ES8316_ADC_ALC2, 0, 28, 0,
- 		       alc_min_gain_tlv),
--	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 10, 0,
-+	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 11, 0,
- 		       alc_target_tlv),
- 	SOC_SINGLE("ALC Capture Hold Time", ES8316_ADC_ALC3, 0, 10, 0),
- 	SOC_SINGLE("ALC Capture Decay Time", ES8316_ADC_ALC4, 4, 10, 0),
--- 
-2.39.2
-
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -3863,19 +3863,10 @@ static int ext4_rename(struct inode *old
+ 			return retval;
+ 	}
+ 
+-	/*
+-	 * We need to protect against old.inode directory getting converted
+-	 * from inline directory format into a normal one.
+-	 */
+-	if (S_ISDIR(old.inode->i_mode))
+-		inode_lock_nested(old.inode, I_MUTEX_NONDIR2);
+-
+ 	old.bh = ext4_find_entry(old.dir, &old.dentry->d_name, &old.de,
+ 				 &old.inlined);
+-	if (IS_ERR(old.bh)) {
+-		retval = PTR_ERR(old.bh);
+-		goto unlock_moved_dir;
+-	}
++	if (IS_ERR(old.bh))
++		return PTR_ERR(old.bh);
+ 
+ 	/*
+ 	 *  Check for inode number is _not_ due to possible IO errors.
+@@ -4065,10 +4056,6 @@ release_bh:
+ 	brelse(old.bh);
+ 	brelse(new.bh);
+ 
+-unlock_moved_dir:
+-	if (S_ISDIR(old.inode->i_mode))
+-		inode_unlock(old.inode);
+-
+ 	return retval;
+ }
+ 
 
 
