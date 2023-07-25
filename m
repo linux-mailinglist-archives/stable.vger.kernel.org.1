@@ -2,148 +2,287 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 036B6761E7E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A92761E96
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:33:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232027AbjGYQ2K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 12:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57276 "EHLO
+        id S229577AbjGYQdu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 12:33:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232376AbjGYQ2B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:28:01 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2078.outbound.protection.outlook.com [40.107.243.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1D8E51;
-        Tue, 25 Jul 2023 09:28:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XGxMq/MNsGvXfsZ+3pVQQKLNOJlwcaCG41vHyFu/wKaLDq5hBHkh5B3MT5hUCEkkTYdJJDyCCf45+s0dufiUV8HnV6UFXIt7iGYVZkFLHcJJ6ByA+VloSwYScOkUzbiht/q8mbq51uAu1w8lXZqWjdmweGQ6H/MmiWuLX3iIbESHYXXdfhyfqz0O4/SABOkdr+is9vLQp4cVFf/RVf6cacnYeCv8ZxtzcsTS4Xj3QpPDyeyz4w8Gx8wqJz+G9NgasBDvbtIIblY1t47k4w30r+ie1CMVZ7f7D+r0fI47cC5StkZB7FILUMyofG96aeF2rM77NjhsfeiVMnOw1joMpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=waTcKMo+jxZZLJxgL7+6ua8tlg5AsArOlk513JTriVI=;
- b=NF0wMCvi22WuIMFsmjz04TOHSBh4vxoXS/IiyHdeHcbaPFxQj5nwJ6ncZeCO3zEMB4/0B3P6YSyZsIUrFfIkOqCzEuMJV/MDHQtVUm4rqkUB1AoEKXdjpJhfG2z2EMdD4uq68uRPiq8VObILVzAcXpiX4n7iab/CVpMQKs0gbUfxPFnqG6VU1nqknf8e9Nf6zYLa8DdZtWvScdD99ptcXobO4CPWSoQGZwRQQUCSIpEAgjgnI71MMSEfWex3dBRniobKC++heIotfkJCGDhr/co8H2aCYWhDxIlbMHWdphymkYrtr8py1Ez6WfQwym6620CKBItT21Hw9y4ZpUaEmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=waTcKMo+jxZZLJxgL7+6ua8tlg5AsArOlk513JTriVI=;
- b=RjOsCiGUtCSBaIGUDnxouis+qJnsVfdfLSNdbfS/SoowaXIo3+nNlaQq4Q87h+k1ZjxwPMYXp6MLXdk7Sq0oJtqK0/EUoElChG4NM1oV1M/NHBlISQfvD6WbPOnqgmzvGNNn8is2//s5kTHu7K8Yk8heY1404au6gRAKRTFfvNA0Rm3x20VlPXFdaask2+DV2MP396JC6afDOTH6FwU/7UanGzvbpz7kl15TyNDubM67MjNBIb/xUGDe5StJu98T1meYpj5y6FeemrbI29rM0GDKN8yCc1dKgc5KUJBZDWsSghqB/151BS60oynoCl9aNOJi5Va0SDQEXGeX2krJDw==
-Received: from DM5PR07CA0119.namprd07.prod.outlook.com (2603:10b6:4:ae::48) by
- PH0PR12MB7472.namprd12.prod.outlook.com (2603:10b6:510:1e9::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6609.33; Tue, 25 Jul 2023 16:27:57 +0000
-Received: from DM6NAM11FT103.eop-nam11.prod.protection.outlook.com
- (2603:10b6:4:ae:cafe::de) by DM5PR07CA0119.outlook.office365.com
- (2603:10b6:4:ae::48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33 via Frontend
- Transport; Tue, 25 Jul 2023 16:27:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DM6NAM11FT103.mail.protection.outlook.com (10.13.172.75) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6631.25 via Frontend Transport; Tue, 25 Jul 2023 16:27:57 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Tue, 25 Jul 2023
- 09:27:42 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Tue, 25 Jul
- 2023 09:27:42 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37 via Frontend
- Transport; Tue, 25 Jul 2023 09:27:41 -0700
-From:   Jon Hunter <jonathanh@nvidia.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>,
-        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S229502AbjGYQdt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:33:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB3DFB;
+        Tue, 25 Jul 2023 09:33:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB0B36177F;
+        Tue, 25 Jul 2023 16:33:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAC7C433C7;
+        Tue, 25 Jul 2023 16:33:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690302827;
+        bh=MRQMQFjTgJfjqUwN+LpHsvnC6Xaoz6At3uH/zrv07fg=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=bI9n/ekeJLcHTnxE08dGvBWflyQw4bwkKr5aJU8lGmmf0cMd3Gk4c1ym5G7XCQhTA
+         XEKO/bWfHXXlSLQENYVjELXNhpWHpBn+wRrnfvWevawHGnXGWyjT1IK2xyLGXre106
+         qhCo7nc02WNOq/olNKh8WgdZ/7cFlas0eAONga2YEhiWmA5+MTUQhG6Qw2rb4sGdT2
+         9jqbDU7VlAb6yqHVViG+Z+1/q6Nyamr08M49HbK3uIwhcEMI3QZKg0sz246Bau5CJp
+         QV1V+gvjBdwJ4B69tk04Whuci2g3ctdbk71Y++v+uw4QjwBKKPs1ZOXfQPYLKLB62V
+         ovDOwvxjScnVw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id 02B03CE0902; Tue, 25 Jul 2023 09:33:46 -0700 (PDT)
+Date:   Tue, 25 Jul 2023 09:33:46 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [BUG] Re: Linux 6.4.4
+Message-ID: <749b68ac-da4d-452e-883a-d7065b3b3c30@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <4b231ce5-7bb8-4abf-9c40-04aa676d1e45@paulmck-laptop>
+ <123C6650-490B-4D08-96B4-39B118AD0054@joelfernandes.org>
+ <fa417689-cf91-4687-8308-3ffe6759cf1d@paulmck-laptop>
+ <20230725153017.GA1191712@google.com>
 MIME-Version: 1.0
-Message-ID: <b435fe4d-a6b8-4b33-858a-b4dddf9ce3e1@rnnvmail203.nvidia.com>
-Date:   Tue, 25 Jul 2023 09:27:41 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT103:EE_|PH0PR12MB7472:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ad33962-8493-4b76-4e87-08db8d2c1b3b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oZtA/cuWNuBQfU8QILekrXg0gxDoC7GLWkLWMnJECn97zZhm/mp82NyMBg/RfzmEiRckn/m2huYhIgDRzJE8MYamd8PMnJkl/hdS3RNregAO4XZ7bqpvdOW3E4SRiF9nhzKZIaFAAK+mq6lzbqhUIbmlikCuIg0B6RTf8CJwoQysQPOXdYjL5tOBxmagw6rdOLpXKtjR8jQXIqhoasAgea2D3oQcNAb+PXwzTAJ5kddTJ+avdLMAtv8qNbKWEpL64rgC13nLw02rHrwKYX9QvBkfH1n8KkhvCejlcrWPQxYaKVhoFwWht+nfofUuvhQ3hTuLZ+TK7av2AePxdd1+tttPCU5LrTn5JGK4/WKUF+6BKDJq5lb4PYnbCeucO/pJakrMJBcpaNZVQVFZ+8fllRkvrhV2HYVJp/dxwtGBdSo/s14hmfN5YoWbWENy6qzR/SLPqG/GrthHA/ZDXBsjyZlIrB0et/YfI10FPuEw5EBgBwnhAPcYA81fawuNYpUlQnOaoOxIVyBJPBNjxIphIrCo2wvSg0j6iOTmvnTcmcNcsssRc4LveOH32+E1xWbIRwx4fRWamiJBQSFV6x+JYImMlRCqFmLGuUeywDca/d7VvcSTO0Ff8f7C1YM0mFX5DaEomKU/WlASXibJKUTK82nljcW0pdxVFw6HqycmphkwYSUmOB5bklLF3fLfExJg39wuMn9kVtU74J1N9ZbO+PXopOJ0ETHs1kUWer7TsP9689BUkW7P9hnDG389vPI01fAo71Wq7T+m2ESgSKQF5UlV9zQ3/UJ2LEmcwr9KTm4=
-X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(346002)(376002)(136003)(82310400008)(451199021)(40470700004)(46966006)(36840700001)(82740400003)(356005)(7636003)(186003)(336012)(47076005)(26005)(36860700001)(426003)(2906002)(8676002)(41300700001)(8936002)(40460700003)(7416002)(5660300002)(86362001)(31696002)(478600001)(966005)(70206006)(70586007)(6916009)(4326008)(316002)(40480700001)(54906003)(31686004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2023 16:27:57.6443
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ad33962-8493-4b76-4e87-08db8d2c1b3b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT103.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7472
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230725153017.GA1191712@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 25 Jul 2023 12:42:47 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.7 release.
-> There are 227 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Jul 25, 2023 at 03:30:17PM +0000, Joel Fernandes wrote:
+> On Mon, Jul 24, 2023 at 04:17:32PM -0700, Paul E. McKenney wrote:
+> > On Mon, Jul 24, 2023 at 07:04:14PM -0400, Joel Fernandes wrote:
+> > > 
+> > > 
+> > > > On Jul 24, 2023, at 12:00 PM, Paul E. McKenney <paulmck@kernel.org> wrote:
+> > > > 
+> > > > ﻿On Mon, Jul 24, 2023 at 09:36:02AM -0400, Joel Fernandes wrote:
+> > > >>> On Sun, Jul 23, 2023 at 11:35 PM Paul E. McKenney <paulmck@kernel.org> wrote:
+> > > >>> 
+> > > >>> On Mon, Jul 24, 2023 at 12:32:57AM +0000, Joel Fernandes wrote:
+> > > >>>> On Sun, Jul 23, 2023 at 10:19:27AM -0700, Paul E. McKenney wrote:
+> > > >>>>> On Sun, Jul 23, 2023 at 10:50:26AM -0400, Joel Fernandes wrote:
+> > > >>>>>> 
+> > > >>>>>> 
+> > > >>>>>> On 7/22/23 13:27, Paul E. McKenney wrote:
+> > > >>>>>> [..]
+> > > >>>>>>> 
+> > > >>>>>>> OK, if this kernel is non-preemptible, you are not running TREE03,
+> > > >>>>>>> correct?
+> > > >>>>>>> 
+> > > >>>>>>>> Next plan of action is to get sched_waking stack traces since I have a
+> > > >>>>>>>> very reliable repro of this now.
+> > > >>>>>>> 
+> > > >>>>>>> Too much fun!  ;-)
+> > > >>>>>> 
+> > > >>>>>> For TREE07 issue, it is actually the schedule_timeout_interruptible(1)
+> > > >>>>>> in stutter_wait() that is beating up the CPU0 for 4 seconds.
+> > > >>>>>> 
+> > > >>>>>> This is very similar to the issue I fixed in New year in d52d3a2bf408
+> > > >>>>>> ("torture: Fix hang during kthread shutdown phase")
+> > > >>>>> 
+> > > >>>>> Agreed, if there are enough kthreads, and all the kthreads are on a
+> > > >>>>> single CPU, this could consume that CPU.
+> > > >>>>> 
+> > > >>>>>> Adding a cond_resched() there also did not help.
+> > > >>>>>> 
+> > > >>>>>> I think the issue is the stutter thread fails to move spt forward
+> > > >>>>>> because it does not get CPU time. But spt == 1 should be very brief
+> > > >>>>>> AFAIU. I was wondering if we could set that to RT.
+> > > >>>>> 
+> > > >>>>> Or just use a single hrtimer-based wait for each kthread?
+> > > >>>> 
+> > > >>>> [Joel]
+> > > >>>> Yes this might be better, but there's still the issue that spt may not be set
+> > > >>>> back to 0 in some future release where the thread gets starved.
+> > > >>> 
+> > > >>> But if each thread knows the absolute time at which the current stutter
+> > > >>> period is supposed to end, there should not be any need for the spt
+> > > >>> variable, correct?
+> > > >> 
+> > > >> Yes.
+> > > >> 
+> > > >>>>>> But also maybe the following will cure it like it did for the shutdown
+> > > >>>>>> issue, giving the stutter thread just enough CPU time to move spt forward.
+> > > >>>>>> 
+> > > >>>>>> Now I am trying the following and will let it run while I go do other
+> > > >>>>>> family related things. ;)
+> > > >>>>> 
+> > > >>>>> Good point, if this avoids the problem, that gives a strong indication
+> > > >>>>> that your hypothesis on the root cause is correct.
+> > > >>>> 
+> > > >>>> [Joel]
+> > > >>>> And the TREE07 issue is gone with that change!
+> > > >> [...]
+> > > >>>> Let me know what you think, thanks!
+> > > >>> 
+> > > >>> If we can make the stutter kthread set an absolute time for the current
+> > > >>> stutter period to end, then we should be able to simplify the code quite
+> > > >>> a bit and get rid of the CPU consumption entirely.  (Give or take the
+> > > >>> possible need for a given thread to check whether it was erroneously
+> > > >>> awakened early.)
+> > > >>> 
+> > > >>> But what specifically did you have in mind?
+> > > >> 
+> > > >> I was thinking of a 2 counter approach storing the absolute time. Use
+> > > >> an alternative counter for different stuttering sessions. But yes,
+> > > >> generally I agree with the absolute time idea. What do you think Paul?
+> > > >> 
+> > > >> Do we want to just do  the simpler schedule_timeout at HZ / 20 to keep stable
+> > > >> green, and do the absolute-time approach for mainline? That might be better
+> > > >> from a process PoV. But I think stable requires patches to be upstream. Greg?
+> > > >> 
+> > > >> I will try to send out patches this week to discuss this, thanks,
+> > > > 
+> > > > Heh!!!
+> > > > 
+> > > > Me, I was just thinking of mainline.  ;-)
+> > > 
+> > > Turns out it is simple enough for both mainline and stable :-).
+> > > Will test more and send it out soon.
+> > 
+> > Woo-hoo!!!  Some times you get lucky!
 > 
-> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
-> Anything received after that time might be too late.
+> Better luck today than yesterday since yesterday a Linux distro update
+> stalled my development. :-). Thanks to backups that I got back up quickly..
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
+> Here is the mostly tested patch as preview. I am running the full suite now
+> after confirming it fixed TREE07. Looks OK? (I also confirmed with prints
+> that stuttering timing is the same as before).
+
+Looks quite plausible, thank you!
+
+							Thanx, Paul
+
+> ---8<-----------------------
 > 
-> thanks,
+> From: Joel Fernandes <joelaf@google.com>
+> Subject: [PATCH] rcutorture: Fix stuttering races and other issues
 > 
-> greg k-h
-
-All tests passing for Tegra ...
-
-Test results for stable-v6.4:
-    11 builds:	11 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    130 tests:	130 pass, 0 fail
-
-Linux version:	6.4.7-rc1-g3c19c5641cce
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
-
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-
-Jon
+> The stuttering code isn't functioning as expected. Ideally, it should
+> pause the torture threads for a designated period before resuming. Yet,
+> it fails to halt the test for the correct duration. Additionally, a race
+> condition exists, potentially causing the stuttering code to pause for
+> an extended period if the 'spt' variable is non-zero due to the stutter
+> orchestration thread's inadequate CPU time.
+> 
+> Moreover, over-stuttering can hinder RCU's progress on TREE07 kernels.
+> This happens as the stuttering code may run within a softirq due to RCU
+> callbacks. Consequently, ksoftirqd keeps a CPU busy for several seconds,
+> thus obstructing RCU's progress. This situation triggers a warning
+> message in the logs:
+> 
+> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+> 
+> This warning suggests that an RCU torture object, although invisible to
+> RCU readers, couldn't make it past the pipe array and be freed -- a
+> strong indication that there weren't enough grace periods during the
+> stutter interval.
+> 
+> To address these issues, this patch sets the "stutter end" time to an
+> absolute point in the future set by the main stutter thread. This is
+> then used for waiting in stutter_wait(). While the stutter thread still
+> defines this absolute time, the waiters' waiting logic doesn't rely on
+> the stutter thread receiving sufficient CPU time to halt the stuttering
+> as the halting is now self-controlled.
+> 
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> ---
+>  kernel/torture.c | 46 +++++++++++++---------------------------------
+>  1 file changed, 13 insertions(+), 33 deletions(-)
+> 
+> diff --git a/kernel/torture.c b/kernel/torture.c
+> index 68dba4ecab5c..63f8f2a7d960 100644
+> --- a/kernel/torture.c
+> +++ b/kernel/torture.c
+> @@ -719,7 +719,7 @@ static void torture_shutdown_cleanup(void)
+>   * suddenly applied to or removed from the system.
+>   */
+>  static struct task_struct *stutter_task;
+> -static int stutter_pause_test;
+> +static ktime_t stutter_till_abs_time;
+>  static int stutter;
+>  static int stutter_gap;
+>  
+> @@ -729,30 +729,17 @@ static int stutter_gap;
+>   */
+>  bool stutter_wait(const char *title)
+>  {
+> -	unsigned int i = 0;
+>  	bool ret = false;
+> -	int spt;
+> +	ktime_t now_ns, till_ns;
+>  
+>  	cond_resched_tasks_rcu_qs();
+> -	spt = READ_ONCE(stutter_pause_test);
+> -	for (; spt; spt = READ_ONCE(stutter_pause_test)) {
+> -		if (!ret && !rt_task(current)) {
+> -			sched_set_normal(current, MAX_NICE);
+> -			ret = true;
+> -		}
+> -		if (spt == 1) {
+> -			torture_hrtimeout_jiffies(1, NULL);
+> -		} else if (spt == 2) {
+> -			while (READ_ONCE(stutter_pause_test)) {
+> -				if (!(i++ & 0xffff))
+> -					torture_hrtimeout_us(10, 0, NULL);
+> -				cond_resched();
+> -			}
+> -		} else {
+> -			torture_hrtimeout_jiffies(round_jiffies_relative(HZ), NULL);
+> -		}
+> -		torture_shutdown_absorb(title);
+> +	now_ns = ktime_get();
+> +	till_ns = READ_ONCE(stutter_till_abs_time);
+> +	if (till_ns && ktime_before(now_ns, till_ns)) {
+> +		torture_hrtimeout_ns(ktime_sub(till_ns, now_ns), 0, NULL);
+> +		ret = true;
+>  	}
+> +	torture_shutdown_absorb(title);
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(stutter_wait);
+> @@ -763,23 +750,16 @@ EXPORT_SYMBOL_GPL(stutter_wait);
+>   */
+>  static int torture_stutter(void *arg)
+>  {
+> -	DEFINE_TORTURE_RANDOM(rand);
+> -	int wtime;
+> +	ktime_t till_ns;
+>  
+>  	VERBOSE_TOROUT_STRING("torture_stutter task started");
+>  	do {
+>  		if (!torture_must_stop() && stutter > 1) {
+> -			wtime = stutter;
+> -			if (stutter > 2) {
+> -				WRITE_ONCE(stutter_pause_test, 1);
+> -				wtime = stutter - 3;
+> -				torture_hrtimeout_jiffies(wtime, &rand);
+> -				wtime = 2;
+> -			}
+> -			WRITE_ONCE(stutter_pause_test, 2);
+> -			torture_hrtimeout_jiffies(wtime, NULL);
+> +			till_ns = ktime_add_ns(ktime_get(),
+> +					       jiffies_to_nsecs(stutter));
+> +			WRITE_ONCE(stutter_till_abs_time, till_ns);
+> +			torture_hrtimeout_jiffies(stutter - 1, NULL);
+>  		}
+> -		WRITE_ONCE(stutter_pause_test, 0);
+>  		if (!torture_must_stop())
+>  			torture_hrtimeout_jiffies(stutter_gap, NULL);
+>  		torture_shutdown_absorb("torture_stutter");
+> -- 
+> 2.41.0.487.g6d72f3e995-goog
+> 
