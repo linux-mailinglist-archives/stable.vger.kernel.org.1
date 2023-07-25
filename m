@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A56C976135B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1FD07615A7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234100AbjGYLKN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:10:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
+        id S234629AbjGYLbg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:31:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234106AbjGYLJm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:42 -0400
+        with ESMTP id S234649AbjGYLbe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B784227
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D5791B8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E506A61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01816C433C7;
-        Tue, 25 Jul 2023 11:08:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23FBB6169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E904C433C7;
+        Tue, 25 Jul 2023 11:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283322;
-        bh=Twd8ayarVB1qE1t1WLkgVnSABqdKRoM0XPuE0blvbhk=;
+        s=korg; t=1690284690;
+        bh=z7BFixCmGewQxSmWKaXu1g8Afbx1mNqQk4aDvzsM6GE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BQyQ5HgmyoTBH3+ifBg9hJkxq92n6yw82dicavsLo6EQKd81vv5Gj7+FE2ZVEojWF
-         0U5Aq3v805oDfg7JUOa9yOb2ikaMD1d+/MhmlAh8xAI2Y94q3c0iQTYcKzEAHJCYw3
-         9w7pFzLVM2Hv4btP1ncWmkI9vlDwWMWaQntuAcZ8=
+        b=oiWK44LJCkt2tfwquxn/YuiVHPiQYNX//Z1q3zb0xjGCLZNBgirj1stOs7+vWofam
+         8xgC29aAQ5nBB7Gi9y7aa5fKKU/p2+9T+2dXLWXBjVCXO9yxgcWTeEHUWtIKky4exM
+         9Sb7Jjmrctqc4UN5uXgJUCE93bLr1NPjj7D3i7Ik=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/78] [PATCH AUTOSEL 4.14 7/9] MIPS: dec: prom: Address -Warray-bounds warning
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 447/509] selftests: tc: add ct action kconfig dep
 Date:   Tue, 25 Jul 2023 12:46:26 +0200
-Message-ID: <20230725104452.668819435@linuxfoundation.org>
+Message-ID: <20230725104614.218551119@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 7b191b9b55df2a844bd32d1d380f47a7df1c2896 ]
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-Zero-length arrays are deprecated, and we are replacing them with flexible
-array members instead. So, replace zero-length array with flexible-array
-member in struct memmap.
+commit 719b4774a8cb1a501e2d22a5a4a3a0a870e427d5 upstream.
 
-Address the following warning found after building (with GCC-13) mips64
-with decstation_64_defconfig:
-In function 'rex_setup_memory_region',
-    inlined from 'prom_meminit' at arch/mips/dec/prom/memory.c:91:3:
-arch/mips/dec/prom/memory.c:72:31: error: array subscript i is outside array bounds of 'unsigned char[0]' [-Werror=array-bounds=]
-   72 |                 if (bm->bitmap[i] == 0xff)
-      |                     ~~~~~~~~~~^~~
-In file included from arch/mips/dec/prom/memory.c:16:
-./arch/mips/include/asm/dec/prom.h: In function 'prom_meminit':
-./arch/mips/include/asm/dec/prom.h:73:23: note: while referencing 'bitmap'
-   73 |         unsigned char bitmap[0];
+When looking for something else in LKFT reports [1], I noticed most of
+the tests were skipped because the "teardown stage" did not complete
+successfully.
 
-This helps with the ongoing efforts to globally enable -Warray-bounds.
+Pedro found out this is due to the fact CONFIG_NF_FLOW_TABLE is required
+but not listed in the 'config' file. Adding it to the list fixes the
+issues on LKFT side. CONFIG_NET_ACT_CT is now set to 'm' in the final
+kconfig.
 
-This results in no differences in binary output.
-
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/323
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c34b961a2492 ("net/sched: act_ct: Create nf flow table per zone")
+Cc: stable@vger.kernel.org
+Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Tested-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-2-1eb4fd3a96e7@tessares.net
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/dec/prom.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/tc-testing/config |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/include/asm/dec/prom.h
-+++ b/arch/mips/include/asm/dec/prom.h
-@@ -70,7 +70,7 @@ static inline bool prom_is_rex(u32 magic
-  */
- typedef struct {
- 	int pagesize;
--	unsigned char bitmap[0];
-+	unsigned char bitmap[];
- } memmap;
+--- a/tools/testing/selftests/tc-testing/config
++++ b/tools/testing/selftests/tc-testing/config
+@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_MARK=y
+ CONFIG_NF_CONNTRACK_ZONES=y
+ CONFIG_NF_CONNTRACK_LABELS=y
++CONFIG_NF_FLOW_TABLE=m
+ CONFIG_NF_NAT=m
  
- 
+ CONFIG_NET_SCHED=y
 
 
