@@ -2,57 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DCAD761372
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7C0761326
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234139AbjGYLKv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:10:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45760 "EHLO
+        id S234005AbjGYLIZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234047AbjGYLKW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C61212A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:25 -0700 (PDT)
+        with ESMTP id S234106AbjGYLIC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A7E1FF6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A68E615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB592C433C8;
-        Tue, 25 Jul 2023 11:09:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E9DB6166F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70853C433C8;
+        Tue, 25 Jul 2023 11:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283364;
-        bh=oduQ7iqjw8yMWoBnfLoTtmsKrlHwSMMMSCh0WNezBVY=;
+        s=korg; t=1690283192;
+        bh=EhCRABLkFEd6F5knn1GIe9wrsVZwax0GAVu6GwMhdbA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i1eGG5627TDMldCB/qOMsr5MdWczoK6hV5B32Gy+UXl8zM37TTSIvYw3d9S5LrnsP
-         fvHu8ZUydfbZ18ZFapVCs4nMDV9EhT7UxXMNdMZfIampWC7Hx8Mnw/XsHhmG/AgLFB
-         9eqWNOW14m0B076CB0xSYxzgJ8phv7qV5c5yyJpg=
+        b=sgXYBovmC8fBzcMWvEN63NMsgrOXMY2B9gB+CGaRB139Cox42ATCsibPoVmTWEzg6
+         LR0FdYL90tSqqsQY6tdCP6bgmS5rYTJvndC6dlrWll7g8XRRBFDyvxW+M2PNiPwhxl
+         gw8+H+ZCBbsQhnlWBZcIWs1XY3mIzoLb+YNq8mNI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ding Hui <dinghui@sangfor.com.cn>,
-        Donglin Peng <pengdonglin@sangfor.com.cn>,
-        Huang Cun <huangcun@sangfor.com.cn>,
-        Simon Horman <simon.horman@corigine.com>,
-        Madhu Chittim <madhu.chittim@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 49/78] iavf: Fix use-after-free in free_netdev
+        patches@lists.linux.dev,
+        "andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
+        yhs@fb.com, mykolal@fb.com, luizcap@amazon.com, Eduard Zingerman" 
+        <eddyz87@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>
+Subject: [PATCH 6.1 172/183] bpf: stop setting precise in current state
 Date:   Tue, 25 Jul 2023 12:46:40 +0200
-Message-ID: <20230725104453.170303928@linuxfoundation.org>
+Message-ID: <20230725104513.943009512@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,215 +58,231 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ding Hui <dinghui@sangfor.com.cn>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 5f4fa1672d98fe99d2297b03add35346f1685d6b ]
+[ Upstream commit f63181b6ae79fd3b034cde641db774268c2c3acf ]
 
-We do netif_napi_add() for all allocated q_vectors[], but potentially
-do netif_napi_del() for part of them, then kfree q_vectors and leave
-invalid pointers at dev->napi_list.
+Setting reg->precise to true in current state is not necessary from
+correctness standpoint, but it does pessimise the whole precision (or
+rather "imprecision", because that's what we want to keep as much as
+possible) tracking. Why is somewhat subtle and my best attempt to
+explain this is recorded in an extensive comment for __mark_chain_precise()
+function. Some more careful thinking and code reading is probably required
+still to grok this completely, unfortunately. Whiteboarding and a bunch
+of extra handwaiving in person would be even more helpful, but is deemed
+impractical in Git commit.
 
-Reproducer:
+Next patch pushes this imprecision property even further, building on top of
+the insights described in this patch.
 
-  [root@host ~]# cat repro.sh
-  #!/bin/bash
+End results are pretty nice, we get reduction in number of total instructions
+and states verified due to a better states reuse, as some of the states are now
+more generic and permissive due to less unnecessary precise=true requirements.
 
-  pf_dbsf="0000:41:00.0"
-  vf0_dbsf="0000:41:02.0"
-  g_pids=()
+SELFTESTS RESULTS
+=================
 
-  function do_set_numvf()
-  {
-      echo 2 >/sys/bus/pci/devices/${pf_dbsf}/sriov_numvfs
-      sleep $((RANDOM%3+1))
-      echo 0 >/sys/bus/pci/devices/${pf_dbsf}/sriov_numvfs
-      sleep $((RANDOM%3+1))
-  }
+$ ./veristat -C -e file,prog,insns,states ~/subprog-precise-results.csv ~/imprecise-early-results.csv | grep -v '+0'
+File                                     Program                 Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+---------------------------------------  ----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+bpf_iter_ksym.bpf.linked1.o              dump_ksym                           347              285       -62 (-17.87%)                20                19          -1 (-5.00%)
+pyperf600_bpf_loop.bpf.linked1.o         on_event                           3678             3736        +58 (+1.58%)               276               285          +9 (+3.26%)
+setget_sockopt.bpf.linked1.o             skops_sockopt                      4038             3947        -91 (-2.25%)               347               343          -4 (-1.15%)
+test_l4lb.bpf.linked1.o                  balancer_ingress                   4559             2611     -1948 (-42.73%)               118               105        -13 (-11.02%)
+test_l4lb_noinline.bpf.linked1.o         balancer_ingress                   6279             6268        -11 (-0.18%)               237               236          -1 (-0.42%)
+test_misc_tcp_hdr_options.bpf.linked1.o  misc_estab                         1307             1303         -4 (-0.31%)               100                99          -1 (-1.00%)
+test_sk_lookup.bpf.linked1.o             ctx_narrow_access                   456              447         -9 (-1.97%)                39                38          -1 (-2.56%)
+test_sysctl_loop1.bpf.linked1.o          sysctl_tcp_mem                     1389             1384         -5 (-0.36%)                26                25          -1 (-3.85%)
+test_tc_dtime.bpf.linked1.o              egress_fwdns_prio101                518              485        -33 (-6.37%)                51                46          -5 (-9.80%)
+test_tc_dtime.bpf.linked1.o              egress_host                         519              468        -51 (-9.83%)                50                44         -6 (-12.00%)
+test_tc_dtime.bpf.linked1.o              ingress_fwdns_prio101               842             1000      +158 (+18.76%)                73                88        +15 (+20.55%)
+xdp_synproxy_kern.bpf.linked1.o          syncookie_tc                     405757           373173     -32584 (-8.03%)             25735             22882      -2853 (-11.09%)
+xdp_synproxy_kern.bpf.linked1.o          syncookie_xdp                    479055           371590   -107465 (-22.43%)             29145             22207      -6938 (-23.81%)
+---------------------------------------  ----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
 
-  function do_set_channel()
-  {
-      local nic=$(ls -1 --indicator-style=none /sys/bus/pci/devices/${vf0_dbsf}/net/)
-      [ -z "$nic" ] && { sleep $((RANDOM%3)) ; return 1; }
-      ifconfig $nic 192.168.18.5 netmask 255.255.255.0
-      ifconfig $nic up
-      ethtool -L $nic combined 1
-      ethtool -L $nic combined 4
-      sleep $((RANDOM%3))
-  }
+Slight regression in test_tc_dtime.bpf.linked1.o/ingress_fwdns_prio101
+is left for a follow up, there might be some more precision-related bugs
+in existing BPF verifier logic.
 
-  function on_exit()
-  {
-      local pid
-      for pid in "${g_pids[@]}"; do
-          kill -0 "$pid" &>/dev/null && kill "$pid" &>/dev/null
-      done
-      g_pids=()
-  }
+CILIUM RESULTS
+==============
 
-  trap "on_exit; exit" EXIT
+$ ./veristat -C -e file,prog,insns,states ~/subprog-precise-results-cilium.csv ~/imprecise-early-results-cilium.csv | grep -v '+0'
+File           Program                         Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+-------------  ------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+bpf_host.o     cil_from_host                               762              556      -206 (-27.03%)                43                37         -6 (-13.95%)
+bpf_host.o     tail_handle_nat_fwd_ipv4                  23541            23426       -115 (-0.49%)              1538              1537          -1 (-0.07%)
+bpf_host.o     tail_nodeport_nat_egress_ipv4             33592            33566        -26 (-0.08%)              2163              2161          -2 (-0.09%)
+bpf_lxc.o      tail_handle_nat_fwd_ipv4                  23541            23426       -115 (-0.49%)              1538              1537          -1 (-0.07%)
+bpf_overlay.o  tail_nodeport_nat_egress_ipv4             33581            33543        -38 (-0.11%)              2160              2157          -3 (-0.14%)
+bpf_xdp.o      tail_handle_nat_fwd_ipv4                  21659            20920       -739 (-3.41%)              1440              1376         -64 (-4.44%)
+bpf_xdp.o      tail_handle_nat_fwd_ipv6                  17084            17039        -45 (-0.26%)               907               905          -2 (-0.22%)
+bpf_xdp.o      tail_lb_ipv4                              73442            73430        -12 (-0.02%)              4370              4369          -1 (-0.02%)
+bpf_xdp.o      tail_lb_ipv6                             152114           151895       -219 (-0.14%)              6493              6479         -14 (-0.22%)
+bpf_xdp.o      tail_nodeport_nat_egress_ipv4             17377            17200       -177 (-1.02%)              1125              1111         -14 (-1.24%)
+bpf_xdp.o      tail_nodeport_nat_ingress_ipv6             6405             6397         -8 (-0.12%)               309               308          -1 (-0.32%)
+bpf_xdp.o      tail_rev_nodeport_lb4                      7126             6934       -192 (-2.69%)               414               402         -12 (-2.90%)
+bpf_xdp.o      tail_rev_nodeport_lb6                     18059            17905       -154 (-0.85%)              1105              1096          -9 (-0.81%)
+-------------  ------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
 
-  while :; do do_set_numvf ; done &
-  g_pids+=($!)
-  while :; do do_set_channel ; done &
-  g_pids+=($!)
-
-  wait
-
-Result:
-
-[ 4093.900222] ==================================================================
-[ 4093.900230] BUG: KASAN: use-after-free in free_netdev+0x308/0x390
-[ 4093.900232] Read of size 8 at addr ffff88b4dc145640 by task repro.sh/6699
-[ 4093.900233]
-[ 4093.900236] CPU: 10 PID: 6699 Comm: repro.sh Kdump: loaded Tainted: G           O     --------- -t - 4.18.0 #1
-[ 4093.900238] Hardware name: Powerleader PR2008AL/H12DSi-N6, BIOS 2.0 04/09/2021
-[ 4093.900239] Call Trace:
-[ 4093.900244]  dump_stack+0x71/0xab
-[ 4093.900249]  print_address_description+0x6b/0x290
-[ 4093.900251]  ? free_netdev+0x308/0x390
-[ 4093.900252]  kasan_report+0x14a/0x2b0
-[ 4093.900254]  free_netdev+0x308/0x390
-[ 4093.900261]  iavf_remove+0x825/0xd20 [iavf]
-[ 4093.900265]  pci_device_remove+0xa8/0x1f0
-[ 4093.900268]  device_release_driver_internal+0x1c6/0x460
-[ 4093.900271]  pci_stop_bus_device+0x101/0x150
-[ 4093.900273]  pci_stop_and_remove_bus_device+0xe/0x20
-[ 4093.900275]  pci_iov_remove_virtfn+0x187/0x420
-[ 4093.900277]  ? pci_iov_add_virtfn+0xe10/0xe10
-[ 4093.900278]  ? pci_get_subsys+0x90/0x90
-[ 4093.900280]  sriov_disable+0xed/0x3e0
-[ 4093.900282]  ? bus_find_device+0x12d/0x1a0
-[ 4093.900290]  i40e_free_vfs+0x754/0x1210 [i40e]
-[ 4093.900298]  ? i40e_reset_all_vfs+0x880/0x880 [i40e]
-[ 4093.900299]  ? pci_get_device+0x7c/0x90
-[ 4093.900300]  ? pci_get_subsys+0x90/0x90
-[ 4093.900306]  ? pci_vfs_assigned.part.7+0x144/0x210
-[ 4093.900309]  ? __mutex_lock_slowpath+0x10/0x10
-[ 4093.900315]  i40e_pci_sriov_configure+0x1fa/0x2e0 [i40e]
-[ 4093.900318]  sriov_numvfs_store+0x214/0x290
-[ 4093.900320]  ? sriov_totalvfs_show+0x30/0x30
-[ 4093.900321]  ? __mutex_lock_slowpath+0x10/0x10
-[ 4093.900323]  ? __check_object_size+0x15a/0x350
-[ 4093.900326]  kernfs_fop_write+0x280/0x3f0
-[ 4093.900329]  vfs_write+0x145/0x440
-[ 4093.900330]  ksys_write+0xab/0x160
-[ 4093.900332]  ? __ia32_sys_read+0xb0/0xb0
-[ 4093.900334]  ? fput_many+0x1a/0x120
-[ 4093.900335]  ? filp_close+0xf0/0x130
-[ 4093.900338]  do_syscall_64+0xa0/0x370
-[ 4093.900339]  ? page_fault+0x8/0x30
-[ 4093.900341]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-[ 4093.900357] RIP: 0033:0x7f16ad4d22c0
-[ 4093.900359] Code: 73 01 c3 48 8b 0d d8 cb 2c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d 89 24 2d 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 fe dd 01 00 48 89 04 24
-[ 4093.900360] RSP: 002b:00007ffd6491b7f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[ 4093.900362] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f16ad4d22c0
-[ 4093.900363] RDX: 0000000000000002 RSI: 0000000001a41408 RDI: 0000000000000001
-[ 4093.900364] RBP: 0000000001a41408 R08: 00007f16ad7a1780 R09: 00007f16ae1f2700
-[ 4093.900364] R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000002
-[ 4093.900365] R13: 0000000000000001 R14: 00007f16ad7a0620 R15: 0000000000000001
-[ 4093.900367]
-[ 4093.900368] Allocated by task 820:
-[ 4093.900371]  kasan_kmalloc+0xa6/0xd0
-[ 4093.900373]  __kmalloc+0xfb/0x200
-[ 4093.900376]  iavf_init_interrupt_scheme+0x63b/0x1320 [iavf]
-[ 4093.900380]  iavf_watchdog_task+0x3d51/0x52c0 [iavf]
-[ 4093.900382]  process_one_work+0x56a/0x11f0
-[ 4093.900383]  worker_thread+0x8f/0xf40
-[ 4093.900384]  kthread+0x2a0/0x390
-[ 4093.900385]  ret_from_fork+0x1f/0x40
-[ 4093.900387]  0xffffffffffffffff
-[ 4093.900387]
-[ 4093.900388] Freed by task 6699:
-[ 4093.900390]  __kasan_slab_free+0x137/0x190
-[ 4093.900391]  kfree+0x8b/0x1b0
-[ 4093.900394]  iavf_free_q_vectors+0x11d/0x1a0 [iavf]
-[ 4093.900397]  iavf_remove+0x35a/0xd20 [iavf]
-[ 4093.900399]  pci_device_remove+0xa8/0x1f0
-[ 4093.900400]  device_release_driver_internal+0x1c6/0x460
-[ 4093.900401]  pci_stop_bus_device+0x101/0x150
-[ 4093.900402]  pci_stop_and_remove_bus_device+0xe/0x20
-[ 4093.900403]  pci_iov_remove_virtfn+0x187/0x420
-[ 4093.900404]  sriov_disable+0xed/0x3e0
-[ 4093.900409]  i40e_free_vfs+0x754/0x1210 [i40e]
-[ 4093.900415]  i40e_pci_sriov_configure+0x1fa/0x2e0 [i40e]
-[ 4093.900416]  sriov_numvfs_store+0x214/0x290
-[ 4093.900417]  kernfs_fop_write+0x280/0x3f0
-[ 4093.900418]  vfs_write+0x145/0x440
-[ 4093.900419]  ksys_write+0xab/0x160
-[ 4093.900420]  do_syscall_64+0xa0/0x370
-[ 4093.900421]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-[ 4093.900422]  0xffffffffffffffff
-[ 4093.900422]
-[ 4093.900424] The buggy address belongs to the object at ffff88b4dc144200
-                which belongs to the cache kmalloc-8k of size 8192
-[ 4093.900425] The buggy address is located 5184 bytes inside of
-                8192-byte region [ffff88b4dc144200, ffff88b4dc146200)
-[ 4093.900425] The buggy address belongs to the page:
-[ 4093.900427] page:ffffea00d3705000 refcount:1 mapcount:0 mapping:ffff88bf04415c80 index:0x0 compound_mapcount: 0
-[ 4093.900430] flags: 0x10000000008100(slab|head)
-[ 4093.900433] raw: 0010000000008100 dead000000000100 dead000000000200 ffff88bf04415c80
-[ 4093.900434] raw: 0000000000000000 0000000000030003 00000001ffffffff 0000000000000000
-[ 4093.900434] page dumped because: kasan: bad access detected
-[ 4093.900435]
-[ 4093.900435] Memory state around the buggy address:
-[ 4093.900436]  ffff88b4dc145500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900437]  ffff88b4dc145580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900438] >ffff88b4dc145600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900438]                                            ^
-[ 4093.900439]  ffff88b4dc145680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900440]  ffff88b4dc145700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900440] ==================================================================
-
-Although the patch #2 (of 2) can avoid the issue triggered by this
-repro.sh, there still are other potential risks that if num_active_queues
-is changed to less than allocated q_vectors[] by unexpected, the
-mismatched netif_napi_add/del() can also cause UAF.
-
-Since we actually call netif_napi_add() for all allocated q_vectors
-unconditionally in iavf_alloc_q_vectors(), so we should fix it by
-letting netif_napi_del() match to netif_napi_add().
-
-Fixes: 5eae00c57f5e ("i40evf: main driver core")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: Donglin Peng <pengdonglin@sangfor.com.cn>
-Cc: Huang Cun <huangcun@sangfor.com.cn>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20221104163649.121784-5-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ kernel/bpf/verifier.c |  103 ++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 91 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 3e45ca40288ad..bcceb2ddfea63 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1507,19 +1507,16 @@ static int iavf_alloc_q_vectors(struct iavf_adapter *adapter)
- static void iavf_free_q_vectors(struct iavf_adapter *adapter)
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2788,8 +2788,11 @@ static void mark_all_scalars_precise(str
+ 
+ 	/* big hammer: mark all scalars precise in this path.
+ 	 * pop_stack may still get !precise scalars.
++	 * We also skip current state and go straight to first parent state,
++	 * because precision markings in current non-checkpointed state are
++	 * not needed. See why in the comment in __mark_chain_precision below.
+ 	 */
+-	for (; st; st = st->parent)
++	for (st = st->parent; st; st = st->parent) {
+ 		for (i = 0; i <= st->curframe; i++) {
+ 			func = st->frame[i];
+ 			for (j = 0; j < BPF_REG_FP; j++) {
+@@ -2807,8 +2810,88 @@ static void mark_all_scalars_precise(str
+ 				reg->precise = true;
+ 			}
+ 		}
++	}
+ }
+ 
++/*
++ * __mark_chain_precision() backtracks BPF program instruction sequence and
++ * chain of verifier states making sure that register *regno* (if regno >= 0)
++ * and/or stack slot *spi* (if spi >= 0) are marked as precisely tracked
++ * SCALARS, as well as any other registers and slots that contribute to
++ * a tracked state of given registers/stack slots, depending on specific BPF
++ * assembly instructions (see backtrack_insns() for exact instruction handling
++ * logic). This backtracking relies on recorded jmp_history and is able to
++ * traverse entire chain of parent states. This process ends only when all the
++ * necessary registers/slots and their transitive dependencies are marked as
++ * precise.
++ *
++ * One important and subtle aspect is that precise marks *do not matter* in
++ * the currently verified state (current state). It is important to understand
++ * why this is the case.
++ *
++ * First, note that current state is the state that is not yet "checkpointed",
++ * i.e., it is not yet put into env->explored_states, and it has no children
++ * states as well. It's ephemeral, and can end up either a) being discarded if
++ * compatible explored state is found at some point or BPF_EXIT instruction is
++ * reached or b) checkpointed and put into env->explored_states, branching out
++ * into one or more children states.
++ *
++ * In the former case, precise markings in current state are completely
++ * ignored by state comparison code (see regsafe() for details). Only
++ * checkpointed ("old") state precise markings are important, and if old
++ * state's register/slot is precise, regsafe() assumes current state's
++ * register/slot as precise and checks value ranges exactly and precisely. If
++ * states turn out to be compatible, current state's necessary precise
++ * markings and any required parent states' precise markings are enforced
++ * after the fact with propagate_precision() logic, after the fact. But it's
++ * important to realize that in this case, even after marking current state
++ * registers/slots as precise, we immediately discard current state. So what
++ * actually matters is any of the precise markings propagated into current
++ * state's parent states, which are always checkpointed (due to b) case above).
++ * As such, for scenario a) it doesn't matter if current state has precise
++ * markings set or not.
++ *
++ * Now, for the scenario b), checkpointing and forking into child(ren)
++ * state(s). Note that before current state gets to checkpointing step, any
++ * processed instruction always assumes precise SCALAR register/slot
++ * knowledge: if precise value or range is useful to prune jump branch, BPF
++ * verifier takes this opportunity enthusiastically. Similarly, when
++ * register's value is used to calculate offset or memory address, exact
++ * knowledge of SCALAR range is assumed, checked, and enforced. So, similar to
++ * what we mentioned above about state comparison ignoring precise markings
++ * during state comparison, BPF verifier ignores and also assumes precise
++ * markings *at will* during instruction verification process. But as verifier
++ * assumes precision, it also propagates any precision dependencies across
++ * parent states, which are not yet finalized, so can be further restricted
++ * based on new knowledge gained from restrictions enforced by their children
++ * states. This is so that once those parent states are finalized, i.e., when
++ * they have no more active children state, state comparison logic in
++ * is_state_visited() would enforce strict and precise SCALAR ranges, if
++ * required for correctness.
++ *
++ * To build a bit more intuition, note also that once a state is checkpointed,
++ * the path we took to get to that state is not important. This is crucial
++ * property for state pruning. When state is checkpointed and finalized at
++ * some instruction index, it can be correctly and safely used to "short
++ * circuit" any *compatible* state that reaches exactly the same instruction
++ * index. I.e., if we jumped to that instruction from a completely different
++ * code path than original finalized state was derived from, it doesn't
++ * matter, current state can be discarded because from that instruction
++ * forward having a compatible state will ensure we will safely reach the
++ * exit. States describe preconditions for further exploration, but completely
++ * forget the history of how we got here.
++ *
++ * This also means that even if we needed precise SCALAR range to get to
++ * finalized state, but from that point forward *that same* SCALAR register is
++ * never used in a precise context (i.e., it's precise value is not needed for
++ * correctness), it's correct and safe to mark such register as "imprecise"
++ * (i.e., precise marking set to false). This is what we rely on when we do
++ * not set precise marking in current state. If no child state requires
++ * precision for any given SCALAR register, it's safe to dictate that it can
++ * be imprecise. If any child state does require this register to be precise,
++ * we'll mark it precise later retroactively during precise markings
++ * propagation from child state to parent states.
++ */
+ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
+ 				  int spi)
  {
- 	int q_idx, num_q_vectors;
--	int napi_vectors;
+@@ -2826,6 +2909,10 @@ static int __mark_chain_precision(struct
+ 	if (!env->bpf_capable)
+ 		return 0;
  
- 	if (!adapter->q_vectors)
- 		return;
- 
- 	num_q_vectors = adapter->num_msix_vectors - NONQ_VECS;
--	napi_vectors = adapter->num_active_queues;
- 
- 	for (q_idx = 0; q_idx < num_q_vectors; q_idx++) {
- 		struct iavf_q_vector *q_vector = &adapter->q_vectors[q_idx];
- 
--		if (q_idx < napi_vectors)
--			netif_napi_del(&q_vector->napi);
-+		netif_napi_del(&q_vector->napi);
++	/* Do sanity checks against current state of register and/or stack
++	 * slot, but don't set precise flag in current state, as precision
++	 * tracking in the current state is unnecessary.
++	 */
+ 	func = st->frame[frame];
+ 	if (regno >= 0) {
+ 		reg = &func->regs[regno];
+@@ -2833,11 +2920,7 @@ static int __mark_chain_precision(struct
+ 			WARN_ONCE(1, "backtracing misuse");
+ 			return -EFAULT;
+ 		}
+-		if (!reg->precise)
+-			new_marks = true;
+-		else
+-			reg_mask = 0;
+-		reg->precise = true;
++		new_marks = true;
  	}
- 	kfree(adapter->q_vectors);
- 	adapter->q_vectors = NULL;
--- 
-2.39.2
-
+ 
+ 	while (spi >= 0) {
+@@ -2850,11 +2933,7 @@ static int __mark_chain_precision(struct
+ 			stack_mask = 0;
+ 			break;
+ 		}
+-		if (!reg->precise)
+-			new_marks = true;
+-		else
+-			stack_mask = 0;
+-		reg->precise = true;
++		new_marks = true;
+ 		break;
+ 	}
+ 
+@@ -11668,7 +11747,7 @@ static bool regsafe(struct bpf_verifier_
+ 		if (env->explore_alu_limits)
+ 			return false;
+ 		if (rcur->type == SCALAR_VALUE) {
+-			if (!rold->precise && !rcur->precise)
++			if (!rold->precise)
+ 				return true;
+ 			/* new val must satisfy old val knowledge */
+ 			return range_within(rold, rcur) &&
 
 
