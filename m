@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B147612DE
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22598761221
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234006AbjGYLGR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41274 "EHLO
+        id S233784AbjGYK7t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233861AbjGYLF4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F028C4208
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:01 -0700 (PDT)
+        with ESMTP id S233786AbjGYK7Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D2B26B3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D109A6164D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09DDC433C8;
-        Tue, 25 Jul 2023 11:04:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2EA161656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1664C433C8;
+        Tue, 25 Jul 2023 10:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283041;
-        bh=1XeDw4OdYLZSeLMwsfwmY4myXT098xFwcPj5JHF7uZs=;
+        s=korg; t=1690282575;
+        bh=1ya9FReZrp0uhli1J8I65X06sI6RJIIFU2P4NpZ2Uqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=itRQRSgx9+IZ5RV4tN6SMYEYYWfMVKbtpqPcfYNOj0lJ4k2co4qY29+Pk3c9vmiuP
-         kAg6YT4vL3/4viPkAtlqaZ8iwYFf4/S0fF6NFCXwv8cvm1rpcx4fR5B4RkVmxDPfYb
-         IfkxXVtogCGVH9Z9k8a2K7WaD6x3B1kuC/S5Q2WA=
+        b=CdGSUEhqIPcKe7+IAfzLTnRaIaAUTVuwT4ZTNoCyGWZPb+bnpTRfIz+oEAo4Gjs/n
+         rLAGlPDO73dBpvLCbNOgjq71UBWT5YpjbxVMxwa6oieF8B9XGHMhDYFB4/UT+ZaWnL
+         Lbt9Rni/0xj2OaFhiopHYW3StWccXhU9miRrHznU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tristram Ha <Tristram.Ha@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Ido Schimmel <idosch@nvidia.com>,
+        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/183] net: dsa: microchip: correct KSZ8795 static MAC table access
+Subject: [PATCH 6.4 178/227] vrf: Fix lockdep splat in output path
 Date:   Tue, 25 Jul 2023 12:45:45 +0200
-Message-ID: <20230725104512.171866416@linuxfoundation.org>
+Message-ID: <20230725104522.204982756@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,92 +59,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tristram Ha <Tristram.Ha@microchip.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 4bdf79d686b49ac49373b36466acfb93972c7d7c ]
+[ Upstream commit 2033ab90380d46e0e9f0520fd6776a73d107fd95 ]
 
-The KSZ8795 driver code was modified to use on KSZ8863/73, which has
-different register definitions.  Some of the new KSZ8795 register
-information are wrong compared to previous code.
+Cited commit converted the neighbour code to use the standard RCU
+variant instead of the RCU-bh variant, but the VRF code still uses
+rcu_read_lock_bh() / rcu_read_unlock_bh() around the neighbour lookup
+code in its IPv4 and IPv6 output paths, resulting in lockdep splats
+[1][2]. Can be reproduced using [3].
 
-KSZ8795 also behaves differently in that the STATIC_MAC_TABLE_USE_FID
-and STATIC_MAC_TABLE_FID bits are off by 1 when doing MAC table reading
-than writing.  To compensate that a special code was added to shift the
-register value by 1 before applying those bits.  This is wrong when the
-code is running on KSZ8863, so this special code is only executed when
-KSZ8795 is detected.
+Fix by switching to rcu_read_lock() / rcu_read_unlock().
 
-Fixes: 4b20a07e103f ("net: dsa: microchip: ksz8795: add support for ksz88xx chips")
-Signed-off-by: Tristram Ha <Tristram.Ha@microchip.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[1]
+=============================
+WARNING: suspicious RCU usage
+6.5.0-rc1-custom-g9c099e6dbf98 #403 Not tainted
+-----------------------------
+include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+2 locks held by ping/183:
+ #0: ffff888105ea1d80 (sk_lock-AF_INET){+.+.}-{0:0}, at: raw_sendmsg+0xc6c/0x33c0
+ #1: ffffffff85b46820 (rcu_read_lock_bh){....}-{1:2}, at: vrf_output+0x2e3/0x2030
+
+stack backtrace:
+CPU: 0 PID: 183 Comm: ping Not tainted 6.5.0-rc1-custom-g9c099e6dbf98 #403
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc37 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xc1/0xf0
+ lockdep_rcu_suspicious+0x211/0x3b0
+ vrf_output+0x1380/0x2030
+ ip_push_pending_frames+0x125/0x2a0
+ raw_sendmsg+0x200d/0x33c0
+ inet_sendmsg+0xa2/0xe0
+ __sys_sendto+0x2aa/0x420
+ __x64_sys_sendto+0xe5/0x1c0
+ do_syscall_64+0x38/0x80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+[2]
+=============================
+WARNING: suspicious RCU usage
+6.5.0-rc1-custom-g9c099e6dbf98 #403 Not tainted
+-----------------------------
+include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+2 locks held by ping6/182:
+ #0: ffff888114b63000 (sk_lock-AF_INET6){+.+.}-{0:0}, at: rawv6_sendmsg+0x1602/0x3e50
+ #1: ffffffff85b46820 (rcu_read_lock_bh){....}-{1:2}, at: vrf_output6+0xe9/0x1310
+
+stack backtrace:
+CPU: 0 PID: 182 Comm: ping6 Not tainted 6.5.0-rc1-custom-g9c099e6dbf98 #403
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc37 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xc1/0xf0
+ lockdep_rcu_suspicious+0x211/0x3b0
+ vrf_output6+0xd32/0x1310
+ ip6_local_out+0xb4/0x1a0
+ ip6_send_skb+0xbc/0x340
+ ip6_push_pending_frames+0xe5/0x110
+ rawv6_sendmsg+0x2e6e/0x3e50
+ inet_sendmsg+0xa2/0xe0
+ __sys_sendto+0x2aa/0x420
+ __x64_sys_sendto+0xe5/0x1c0
+ do_syscall_64+0x38/0x80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+[3]
+#!/bin/bash
+
+ip link add name vrf-red up numtxqueues 2 type vrf table 10
+ip link add name swp1 up master vrf-red type dummy
+ip address add 192.0.2.1/24 dev swp1
+ip address add 2001:db8:1::1/64 dev swp1
+ip neigh add 192.0.2.2 lladdr 00:11:22:33:44:55 nud perm dev swp1
+ip neigh add 2001:db8:1::2 lladdr 00:11:22:33:44:55 nud perm dev swp1
+ip vrf exec vrf-red ping 192.0.2.2 -c 1 &> /dev/null
+ip vrf exec vrf-red ping6 2001:db8:1::2 -c 1 &> /dev/null
+
+Fixes: 09eed1192cec ("neighbour: switch to standard rcu, instead of rcu_bh")
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Link: https://lore.kernel.org/netdev/CA+G9fYtEr-=GbcXNDYo3XOkwR+uYgehVoDjsP0pFLUpZ_AZcyg@mail.gmail.com/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230715153605.4068066-1-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz8795.c    | 8 +++++++-
- drivers/net/dsa/microchip/ksz_common.c | 8 ++++----
- drivers/net/dsa/microchip/ksz_common.h | 7 +++++++
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ drivers/net/vrf.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz8795.c b/drivers/net/dsa/microchip/ksz8795.c
-index 6639fae56da7f..c63e082dc57dc 100644
---- a/drivers/net/dsa/microchip/ksz8795.c
-+++ b/drivers/net/dsa/microchip/ksz8795.c
-@@ -437,7 +437,13 @@ static int ksz8_r_sta_mac_table(struct ksz_device *dev, u16 addr,
- 		(data_hi & masks[STATIC_MAC_TABLE_FWD_PORTS]) >>
- 			shifts[STATIC_MAC_FWD_PORTS];
- 	alu->is_override = (data_hi & masks[STATIC_MAC_TABLE_OVERRIDE]) ? 1 : 0;
--	data_hi >>= 1;
-+
-+	/* KSZ8795 family switches have STATIC_MAC_TABLE_USE_FID and
-+	 * STATIC_MAC_TABLE_FID definitions off by 1 when doing read on the
-+	 * static MAC table compared to doing write.
-+	 */
-+	if (ksz_is_ksz87xx(dev))
-+		data_hi >>= 1;
- 	alu->is_static = true;
- 	alu->is_use_fid = (data_hi & masks[STATIC_MAC_TABLE_USE_FID]) ? 1 : 0;
- 	alu->fid = (data_hi & masks[STATIC_MAC_TABLE_FID]) >>
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 3d59298eaa5cf..8c492d56d2c36 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -286,13 +286,13 @@ static const u32 ksz8795_masks[] = {
- 	[STATIC_MAC_TABLE_VALID]	= BIT(21),
- 	[STATIC_MAC_TABLE_USE_FID]	= BIT(23),
- 	[STATIC_MAC_TABLE_FID]		= GENMASK(30, 24),
--	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(26),
--	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(24, 20),
-+	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(22),
-+	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(20, 16),
- 	[DYNAMIC_MAC_TABLE_ENTRIES_H]	= GENMASK(6, 0),
--	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(8),
-+	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(7),
- 	[DYNAMIC_MAC_TABLE_NOT_READY]	= BIT(7),
- 	[DYNAMIC_MAC_TABLE_ENTRIES]	= GENMASK(31, 29),
--	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(26, 20),
-+	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(22, 16),
- 	[DYNAMIC_MAC_TABLE_SRC_PORT]	= GENMASK(26, 24),
- 	[DYNAMIC_MAC_TABLE_TIMESTAMP]	= GENMASK(28, 27),
- 	[P_MII_TX_FLOW_CTRL]		= BIT(5),
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index 9cfa179575ce8..d1b2db8e65331 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -512,6 +512,13 @@ static inline void ksz_regmap_unlock(void *__mtx)
- 	mutex_unlock(mtx);
- }
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index bdb3a76a352e4..6043e63b42f97 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -664,7 +664,7 @@ static int vrf_finish_output6(struct net *net, struct sock *sk,
+ 	skb->protocol = htons(ETH_P_IPV6);
+ 	skb->dev = dev;
  
-+static inline bool ksz_is_ksz87xx(struct ksz_device *dev)
-+{
-+	return dev->chip_id == KSZ8795_CHIP_ID ||
-+	       dev->chip_id == KSZ8794_CHIP_ID ||
-+	       dev->chip_id == KSZ8765_CHIP_ID;
-+}
-+
- static inline bool ksz_is_ksz88x3(struct ksz_device *dev)
- {
- 	return dev->chip_id == KSZ8830_CHIP_ID;
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	nexthop = rt6_nexthop((struct rt6_info *)dst, &ipv6_hdr(skb)->daddr);
+ 	neigh = __ipv6_neigh_lookup_noref(dst->dev, nexthop);
+ 	if (unlikely(!neigh))
+@@ -672,10 +672,10 @@ static int vrf_finish_output6(struct net *net, struct sock *sk,
+ 	if (!IS_ERR(neigh)) {
+ 		sock_confirm_neigh(skb, neigh);
+ 		ret = neigh_output(neigh, skb, false);
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 		return ret;
+ 	}
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	IP6_INC_STATS(dev_net(dst->dev),
+ 		      ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
+@@ -889,7 +889,7 @@ static int vrf_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
+ 		}
+ 	}
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 
+ 	neigh = ip_neigh_for_gw(rt, skb, &is_v6gw);
+ 	if (!IS_ERR(neigh)) {
+@@ -898,11 +898,11 @@ static int vrf_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
+ 		sock_confirm_neigh(skb, neigh);
+ 		/* if crossing protocols, can not use the cached header */
+ 		ret = neigh_output(neigh, skb, is_v6gw);
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 		return ret;
+ 	}
+ 
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 	vrf_tx_error(skb->dev, skb);
+ 	return -EINVAL;
+ }
 -- 
 2.39.2
 
