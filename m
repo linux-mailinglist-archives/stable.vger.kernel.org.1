@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 799A97616B6
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33DD0761547
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235063AbjGYLl1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:41:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48302 "EHLO
+        id S234581AbjGYL1F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235065AbjGYLlD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:03 -0400
+        with ESMTP id S234559AbjGYL1E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EDDE2685
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51E197
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98B29616D1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1982C433BA;
-        Tue, 25 Jul 2023 11:40:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AAA761691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863E3C433C8;
+        Tue, 25 Jul 2023 11:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285247;
-        bh=TrwXKZbS7wXXlhxahU0wrUAkJt2zrsbLB7FIYDx0E8Q=;
+        s=korg; t=1690284422;
+        bh=tqEVskwNQDad8FStnfOLC9cLN4N4pJrCHgqrZpCo8nQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0keY+9IoY5a91Cdw5lQukufWR51WKRnWNkPeo7YvtRMd7k4NnZBYcvRb2QW5UfLy6
-         NF9fv3YhT7mN5tRGkMA1Y4JyCSkcPsyBrQTntJTL18dmCWUQv32pmIhtHiuMbaMB6Z
-         Ia6uvkEk6vGIinsP2bdOfpd06a5IaZS3l1Qn2N9Y=
+        b=dSZo5fkBCWcNkGE3dTMVuojPkkExTFzzJR0jvywTtcOauoaVpw0+S2Pg+5i4dA9Nd
+         zGYf/MZKkR4V3BPflU8ezgQiCX6Mu9DBPacC6msDWIpvq5lI5M8Kid3UJJsyExDXXf
+         bsL5rKCn5qy6OpgM0wLn6/7OHShLFk7sgNT25Y3g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Andrew Halaney <ahalaney@redhat.com>,
+        patches@lists.linux.dev, Amit Klein <aksecurity@gmail.com>,
+        Eric Dumazet <edumazet@google.com>, Willy Tarreau <w@1wt.eu>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        David Ahern <dsahern@kernel.org>,
+        Hannes Frederic Sowa <hannes@stressinduktion.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 137/313] usb: dwc3: qcom: Release the correct resources in dwc3_qcom_remove()
+Subject: [PATCH 5.10 351/509] udp6: fix udp6_ehashfn() typo
 Date:   Tue, 25 Jul 2023 12:44:50 +0200
-Message-ID: <20230725104526.935897607@linuxfoundation.org>
+Message-ID: <20230725104609.805288337@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +59,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8fd95da2cfb5046c4bb5a3cdc9eb7963ba8b10dd ]
+[ Upstream commit 51d03e2f2203e76ed02d33fb5ffbb5fc85ffaf54 ]
 
-In the probe, some resources are allocated with
-dwc3_qcom_of_register_core() or dwc3_qcom_acpi_register_core(). The
-corresponding resources are already coorectly freed in the error handling
-path of the probe, but not in the remove function.
+Amit Klein reported that udp6_ehash_secret was initialized but never used.
 
-Fix it.
-
-Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Message-ID: <c0215a84cdf18fb3514c81842783ec53cf149deb.1685891059.git.christophe.jaillet@wanadoo.fr>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1bbdceef1e53 ("inet: convert inet_ehash_secret and ipv6_hash_secret to net_get_random_once")
+Reported-by: Amit Klein <aksecurity@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willy Tarreau <w@1wt.eu>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Hannes Frederic Sowa <hannes@stressinduktion.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv6/udp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -704,10 +704,14 @@ reset_assert:
- static int dwc3_qcom_remove(struct platform_device *pdev)
- {
- 	struct dwc3_qcom *qcom = platform_get_drvdata(pdev);
-+	struct device_node *np = pdev->dev.of_node;
- 	struct device *dev = &pdev->dev;
- 	int i;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 19c0721399d9e..788bb19f32e99 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -87,7 +87,7 @@ static u32 udp6_ehashfn(const struct net *net,
+ 	fhash = __ipv6_addr_jhash(faddr, udp_ipv6_hash_secret);
  
--	of_platform_depopulate(dev);
-+	if (np)
-+		of_platform_depopulate(&pdev->dev);
-+	else
-+		platform_device_put(pdev);
+ 	return __inet6_ehashfn(lhash, lport, fhash, fport,
+-			       udp_ipv6_hash_secret + net_hash_mix(net));
++			       udp6_ehash_secret + net_hash_mix(net));
+ }
  
- 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
- 		clk_disable_unprepare(qcom->clks[i]);
+ int udp_v6_get_port(struct sock *sk, unsigned short snum)
+-- 
+2.39.2
+
 
 
