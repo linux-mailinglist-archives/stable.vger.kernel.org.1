@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9B37615DD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90482761798
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234690AbjGYLdu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:33:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41186 "EHLO
+        id S233422AbjGYLtq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234678AbjGYLdt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FCF11B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:48 -0700 (PDT)
+        with ESMTP id S233492AbjGYLtd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:49:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E0C10EF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:49:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26AFB61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38227C433C9;
-        Tue, 25 Jul 2023 11:33:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 319CC616B0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:49:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E159C433C7;
+        Tue, 25 Jul 2023 11:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284827;
-        bh=W1T4xNzQjq+//7YpZzt1ubp5OTfzs7CTPWouUfPz5us=;
+        s=korg; t=1690285759;
+        bh=Y3WlsUL5hJZxHfiNm1Ea0J6d6fiUTZBJFxGFSfyHDaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nRhU1jPibKPyhL0uZFocB69EfVvGQzJsIvwYnR9Ha2DRLFr1kK11DRSPWqcfZGuAO
-         6DNmTSuQdcyv/BCn0MDWhkH/b2UQSGfLdVILbVLLvZYsaQdeGT0MNrSxixfRXVVI3+
-         z2Dke5wNmDeXfBJwC8W0Yhm2PN8XLvDew+2N2iC0=
+        b=DJt9vXRfWjJu7YAYPBUiitOvIAxvuTd3/q/zICjq/YvSLGPT8SrnHXJ1FDUzW+/43
+         J1LuMex3xvpRn1o1Qi6SY8RXERLuU2KNKDxjfT9m28DYWwul6P9wbpMIVlcag5VsAo
+         wY88y+0MDEj8U1dvi2wFQrlYHxIgbI1+/nYGaTp4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 495/509] tcp: annotate data-races around tp->keepalive_intvl
+        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
+        Jocelyn Falempe <jfalempe@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 5.4 281/313] drm/client: Fix memory leak in drm_client_target_cloned
 Date:   Tue, 25 Jul 2023 12:47:14 +0200
-Message-ID: <20230725104616.421846207@linuxfoundation.org>
+Message-ID: <20230725104533.229234323@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,68 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-[ Upstream commit 5ecf9d4f52ff2f1d4d44c9b68bc75688e82f13b4 ]
+commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03 upstream.
 
-do_tcp_getsockopt() reads tp->keepalive_intvl while another cpu
-might change its value.
+dmt_mode is allocated and never freed in this function.
+It was found with the ast driver, but most drivers using generic fbdev
+setup are probably affected.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes the following kmemleak report:
+  backtrace:
+    [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
+    [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
+    [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
+    [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
+    [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
+    [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
+    [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
+    [<00000000987f19bb>] local_pci_probe+0xdc/0x180
+    [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
+    [<0000000000b85301>] process_one_work+0x8b7/0x1540
+    [<000000003375b17c>] worker_thread+0x70a/0xed0
+    [<00000000b0d43cd9>] kthread+0x29f/0x340
+    [<000000008d770833>] ret_from_fork+0x1f/0x30
+unreferenced object 0xff11000333089a00 (size 128):
+
+cc: <stable@vger.kernel.org>
+Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
+Reported-by: Zhang Yi <yizhan@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tcp.h | 9 +++++++--
- net/ipv4/tcp.c    | 4 ++--
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_client_modeset.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 92de7c049f19e..428f84f6e0d0c 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1451,9 +1451,14 @@ void tcp_leave_memory_pressure(struct sock *sk);
- static inline int keepalive_intvl_when(const struct tcp_sock *tp)
- {
- 	struct net *net = sock_net((struct sock *)tp);
-+	int val;
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -281,6 +281,9 @@ static bool drm_client_target_cloned(str
+ 	can_clone = true;
+ 	dmt_mode = drm_mode_find_dmt(dev, 1024, 768, 60, false);
+ 
++	if (!dmt_mode)
++		goto fail;
 +
-+	/* Paired with WRITE_ONCE() in tcp_sock_set_keepintvl()
-+	 * and do_tcp_setsockopt().
-+	 */
-+	val = READ_ONCE(tp->keepalive_intvl);
+ 	for (i = 0; i < connector_count; i++) {
+ 		if (!enabled[i])
+ 			continue;
+@@ -296,11 +299,13 @@ static bool drm_client_target_cloned(str
+ 		if (!modes[i])
+ 			can_clone = false;
+ 	}
++	kfree(dmt_mode);
  
--	return tp->keepalive_intvl ? :
--		READ_ONCE(net->ipv4.sysctl_tcp_keepalive_intvl);
-+	return val ? : READ_ONCE(net->ipv4.sysctl_tcp_keepalive_intvl);
+ 	if (can_clone) {
+ 		DRM_DEBUG_KMS("can clone using 1024x768\n");
+ 		return true;
+ 	}
++fail:
+ 	DRM_INFO("kms: can't enable cloning when we probably wanted to.\n");
+ 	return false;
  }
- 
- static inline int keepalive_time_when(const struct tcp_sock *tp)
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 053e4880d8f0f..b5a05b0984146 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3126,7 +3126,7 @@ int tcp_sock_set_keepintvl(struct sock *sk, int val)
- 		return -EINVAL;
- 
- 	lock_sock(sk);
--	tcp_sk(sk)->keepalive_intvl = val * HZ;
-+	WRITE_ONCE(tcp_sk(sk)->keepalive_intvl, val * HZ);
- 	release_sock(sk);
- 	return 0;
- }
-@@ -3324,7 +3324,7 @@ static int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 		if (val < 1 || val > MAX_TCP_KEEPINTVL)
- 			err = -EINVAL;
- 		else
--			tp->keepalive_intvl = val * HZ;
-+			WRITE_ONCE(tp->keepalive_intvl, val * HZ);
- 		break;
- 	case TCP_KEEPCNT:
- 		if (val < 1 || val > MAX_TCP_KEEPCNT)
--- 
-2.39.2
-
 
 
