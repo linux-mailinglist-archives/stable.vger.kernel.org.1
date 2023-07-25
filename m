@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DC5876174C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B796E7611EA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:57:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232456AbjGYLqx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50916 "EHLO
+        id S233318AbjGYK5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235131AbjGYLm7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:42:59 -0400
+        with ESMTP id S231806AbjGYK5A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66D481BD9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7EA4220
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE8FC616B4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:42:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2B5C433C8;
-        Tue, 25 Jul 2023 11:42:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02FD2615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A1AC433C8;
+        Tue, 25 Jul 2023 10:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285350;
-        bh=XPzccGIjTslImqTCYaIFntMDFLt94RDiog6S6wjl0dw=;
+        s=korg; t=1690282471;
+        bh=1Q67qdk12FBuGwaaE5LJWkl7u8MfdyCJqcQiR0n6UsA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SKEpnGeET0xaA9qKKOK5+X/OknQcjJCFYO+3uNEKc12MZtL/VRLmHf55/r6zzTkCv
-         Vaj1c4WPbXZE4iqVVvu4EKYhtozet4Do72RUvfMVPcDf3HPyFEZx00iPdvuPtI5W0h
-         nj2ktRl6d1XJs2aWDW15ON15MpuCjXFr21FsB/xM=
+        b=TJJk+V4KPVTPcC9se5Fc1E4po/+Z+5ZHzVTvcpQiB415wvClsXJkdVBOI+O3Jsgi6
+         Nk+X0ZfFgZkCFMXdXhpNSPkyHDTeRYK5qMG/sOD/fSwuTMOJwyRbyV6m+uNqhEOobQ
+         FsP9ld5U14pvyS5FND89EglgrzjY17wCCsF6WFzE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 156/313] net/sched: act_pedit: Add size check for TCA_PEDIT_PARMS_EX
+Subject: [PATCH 6.4 142/227] pinctrl: renesas: rzg2l: Handle non-unique subnode names
 Date:   Tue, 25 Jul 2023 12:45:09 +0200
-Message-ID: <20230725104527.735535132@linuxfoundation.org>
+Message-ID: <20230725104520.757354299@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,55 +55,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 30c45b5361d39b4b793780ffac5538090b9e2eb1 ]
+[ Upstream commit bfc374a145ae133613e05b9b89be561f169cb58d ]
 
-The attribute TCA_PEDIT_PARMS_EX is not be included in pedit_policy and
-one malicious user could fake a TCA_PEDIT_PARMS_EX whose length is
-smaller than the intended sizeof(struct tc_pedit). Hence, the
-dereference in tcf_pedit_init() could access dirty heap data.
+Currently, sd1 and sd0 have unique subnode names 'sd1_mux' and 'sd0_mux'.
+If we change these to non-unique subnode names such as 'mux' this can
+lead to the below conflict as the RZ/G2L pin control driver considers
+only the names of the subnodes.
 
-static int tcf_pedit_init(...)
-{
-  // ...
-  pattr = tb[TCA_PEDIT_PARMS]; // TCA_PEDIT_PARMS is included
-  if (!pattr)
-    pattr = tb[TCA_PEDIT_PARMS_EX]; // but this is not
+   pinctrl-rzg2l 11030000.pinctrl: pin P47_0 already requested by 11c00000.mmc; cannot claim for 11c10000.mmc
+   pinctrl-rzg2l 11030000.pinctrl: pin-376 (11c10000.mmc) status -22
+   pinctrl-rzg2l 11030000.pinctrl: could not request pin 376 (P47_0) from group mux  on device pinctrl-rzg2l
+   renesas_sdhi_internal_dmac 11c10000.mmc: Error applying setting, reverse things back
 
-  // ...
-  parm = nla_data(pattr);
+Fix this by constructing unique names from the node names of both the
+pin control configuration node and its child node, where appropriate.
 
-  index = parm->index; // parm is able to be smaller than 4 bytes
-                       // and this dereference gets dirty skb_buff
-                       // data created in netlink_sendmsg
-}
+Based on the work done by Geert for the RZ/V2M pinctrl driver.
 
-This commit adds TCA_PEDIT_PARMS_EX length in pedit_policy which avoid
-the above case, just like the TCA_PEDIT_PARMS.
-
-Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to the conventional network headers")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://lore.kernel.org/r/20230703110842.590282-1-linma@zju.edu.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230704111858.215278-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_pedit.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 28 ++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index f095a0fb75c6d..bf74f3f4c7522 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -26,6 +26,7 @@ static struct tc_action_ops act_pedit_ops;
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 9511d920565e9..b53d26167da52 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -249,6 +249,7 @@ static int rzg2l_map_add_config(struct pinctrl_map *map,
  
- static const struct nla_policy pedit_policy[TCA_PEDIT_MAX + 1] = {
- 	[TCA_PEDIT_PARMS]	= { .len = sizeof(struct tc_pedit) },
-+	[TCA_PEDIT_PARMS_EX]	= { .len = sizeof(struct tc_pedit) },
- 	[TCA_PEDIT_KEYS_EX]   = { .type = NLA_NESTED },
- };
+ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 				   struct device_node *np,
++				   struct device_node *parent,
+ 				   struct pinctrl_map **map,
+ 				   unsigned int *num_maps,
+ 				   unsigned int *index)
+@@ -266,6 +267,7 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 	struct property *prop;
+ 	int ret, gsel, fsel;
+ 	const char **pin_fn;
++	const char *name;
+ 	const char *pin;
  
+ 	pinmux = of_find_property(np, "pinmux", NULL);
+@@ -349,8 +351,19 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 		psel_val[i] = MUX_FUNC(value);
+ 	}
+ 
++	if (parent) {
++		name = devm_kasprintf(pctrl->dev, GFP_KERNEL, "%pOFn.%pOFn",
++				      parent, np);
++		if (!name) {
++			ret = -ENOMEM;
++			goto done;
++		}
++	} else {
++		name = np->name;
++	}
++
+ 	/* Register a single pin group listing all the pins we read from DT */
+-	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, num_pinmux, NULL);
++	gsel = pinctrl_generic_add_group(pctldev, name, pins, num_pinmux, NULL);
+ 	if (gsel < 0) {
+ 		ret = gsel;
+ 		goto done;
+@@ -360,17 +373,16 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 	 * Register a single group function where the 'data' is an array PSEL
+ 	 * register values read from DT.
+ 	 */
+-	pin_fn[0] = np->name;
+-	fsel = pinmux_generic_add_function(pctldev, np->name, pin_fn, 1,
+-					   psel_val);
++	pin_fn[0] = name;
++	fsel = pinmux_generic_add_function(pctldev, name, pin_fn, 1, psel_val);
+ 	if (fsel < 0) {
+ 		ret = fsel;
+ 		goto remove_group;
+ 	}
+ 
+ 	maps[idx].type = PIN_MAP_TYPE_MUX_GROUP;
+-	maps[idx].data.mux.group = np->name;
+-	maps[idx].data.mux.function = np->name;
++	maps[idx].data.mux.group = name;
++	maps[idx].data.mux.function = name;
+ 	idx++;
+ 
+ 	dev_dbg(pctrl->dev, "Parsed %pOF with %d pins\n", np, num_pinmux);
+@@ -417,7 +429,7 @@ static int rzg2l_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	index = 0;
+ 
+ 	for_each_child_of_node(np, child) {
+-		ret = rzg2l_dt_subnode_to_map(pctldev, child, map,
++		ret = rzg2l_dt_subnode_to_map(pctldev, child, np, map,
+ 					      num_maps, &index);
+ 		if (ret < 0) {
+ 			of_node_put(child);
+@@ -426,7 +438,7 @@ static int rzg2l_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	}
+ 
+ 	if (*num_maps == 0) {
+-		ret = rzg2l_dt_subnode_to_map(pctldev, np, map,
++		ret = rzg2l_dt_subnode_to_map(pctldev, np, NULL, map,
+ 					      num_maps, &index);
+ 		if (ret < 0)
+ 			goto done;
 -- 
 2.39.2
 
