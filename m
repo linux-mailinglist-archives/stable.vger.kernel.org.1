@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5AB5761762
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F6CE761330
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbjGYLse (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54840 "EHLO
+        id S233945AbjGYLIp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232864AbjGYLrh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D693C199C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:34 -0700 (PDT)
+        with ESMTP id S233950AbjGYLIU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0AA449E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C1896167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D5AC433C8;
-        Tue, 25 Jul 2023 11:47:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F75461683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA7BC433C9;
+        Tue, 25 Jul 2023 11:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285653;
-        bh=edg6UkgKYLS5pK85NQ0bKz3X7ep0m+uVIjaSywVztWg=;
+        s=korg; t=1690283213;
+        bh=Cq1VAFo3rrS0vKUZec0/gmCrg01lyUW0eDeABbfsJ9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fOZtu5jA8UsLcRVyA1tVgkeLSz7dAeuOx+oh0T7lHzK+p33strZVWnds6e7pqQ0we
-         KIVPJeDKlyPrNt0mXHsDwbf+3MvlYr4Pm4XALYxuQIQ5jyqbmV4HHISI0T6A6mHQwp
-         NkvIE1e3ASRTDbWkWtaGIzVTgv+jQqFhBD8MDvtI=
+        b=XcKaJXcfnDkwQfEaTXqt+UNzHY93bAInqupDRBS0kmEh4A0G8blRWDZLUBbn2MCLk
+         GI2xfJFccLGZCx0rrEEg2nsmoTjBZlKbfXozY2Uw5t41EY0ryhIIMQjf4eEuJmn7RW
+         qeWP734vRsj0W787NsPgZsTJoYhkmvLzDLvUmzNU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>
-Subject: [PATCH 5.4 253/313] fs: dlm: return positive pid value for F_GETLK
-Date:   Tue, 25 Jul 2023 12:46:46 +0200
-Message-ID: <20230725104532.001128322@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Wayne Lin <Wayne.Lin@amd.com>, Lyude Paul <lyude@redhat.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 179/183] drm/dp_mst: Clear MSG_RDY flag before sending new message
+Date:   Tue, 25 Jul 2023 12:46:47 +0200
+Message-ID: <20230725104514.167706120@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +57,283 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 92655fbda5c05950a411eaabc19e025e86e2a291 upstream.
+commit 72f1de49ffb90b29748284f27f1d6b829ab1de95 upstream.
 
-The GETLK pid values have all been negated since commit 9d5b86ac13c5
-("fs/locks: Remove fl_nspid and use fs-specific l_pid for remote locks").
-Revert this for local pids, and leave in place negative pids for remote
-owners.
+[Why]
+The sequence for collecting down_reply from source perspective should
+be:
 
+Request_n->repeat (get partial reply of Request_n->clear message ready
+flag to ack DPRX that the message is received) till all partial
+replies for Request_n are received->new Request_n+1.
+
+Now there is chance that drm_dp_mst_hpd_irq() will fire new down
+request in the tx queue when the down reply is incomplete. Source is
+restricted to generate interveleaved message transactions so we should
+avoid it.
+
+Also, while assembling partial reply packets, reading out DPCD DOWN_REP
+Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
+wrapped up as a complete operation for reading out a reply packet.
+Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
+be risky. e.g. If the reply of the new request has overwritten the
+DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
+DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
+for the new request. Should handle the up request in the same way.
+
+[How]
+Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
+event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
+trigger drm_dp_mst_kick_tx() only when there is no on going message
+transaction.
+
+Changes since v1:
+* Reworked on review comments received
+-> Adjust the fix to let driver explicitly kick off new down request
+when mst irq event is handled and acked
+-> Adjust the commit message
+
+Changes since v2:
+* Adjust the commit message
+* Adjust the naming of the divided 2 functions and add a new input
+  parameter "ack".
+* Adjust code flow as per review comments.
+
+Changes since v3:
+* Update the function description of drm_dp_mst_hpd_irq_handle_event
+
+Changes since v4:
+* Change ack of drm_dp_mst_hpd_irq_handle_event() to be an array align
+  the size of esi[]
+
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 9d5b86ac13c5 ("fs/locks: Remove fl_nspid and use fs-specific l_pid for remote locks")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/plock.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   30 ++++++------
+ drivers/gpu/drm/display/drm_dp_mst_topology.c     |   54 +++++++++++++++++++---
+ drivers/gpu/drm/i915/display/intel_dp.c           |    7 +-
+ drivers/gpu/drm/nouveau/dispnv50/disp.c           |   12 +++-
+ include/drm/display/drm_dp_mst_helper.h           |    7 ++
+ 5 files changed, 80 insertions(+), 30 deletions(-)
 
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -363,7 +363,9 @@ int dlm_posix_get(dlm_lockspace_t *locks
- 		locks_init_lock(fl);
- 		fl->fl_type = (op->info.ex) ? F_WRLCK : F_RDLCK;
- 		fl->fl_flags = FL_POSIX;
--		fl->fl_pid = -op->info.pid;
-+		fl->fl_pid = op->info.pid;
-+		if (op->info.nodeid != dlm_our_nodeid())
-+			fl->fl_pid = -fl->fl_pid;
- 		fl->fl_start = op->info.start;
- 		fl->fl_end = op->info.end;
- 		rv = 0;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3201,6 +3201,7 @@ static void dm_handle_mst_sideband_msg(s
+ 
+ 	while (dret == dpcd_bytes_to_read &&
+ 		process_count < max_process_count) {
++		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
+ 		u8 retry;
+ 		dret = 0;
+ 
+@@ -3209,28 +3210,29 @@ static void dm_handle_mst_sideband_msg(s
+ 		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
+ 		/* handle HPD short pulse irq */
+ 		if (aconnector->mst_mgr.mst_state)
+-			drm_dp_mst_hpd_irq(
+-				&aconnector->mst_mgr,
+-				esi,
+-				&new_irq_handled);
++			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
++							esi,
++							ack,
++							&new_irq_handled);
+ 
+ 		if (new_irq_handled) {
+ 			/* ACK at DPCD to notify down stream */
+-			const int ack_dpcd_bytes_to_write =
+-				dpcd_bytes_to_read - 1;
+-
+ 			for (retry = 0; retry < 3; retry++) {
+-				u8 wret;
++				ssize_t wret;
+ 
+-				wret = drm_dp_dpcd_write(
+-					&aconnector->dm_dp_aux.aux,
+-					dpcd_addr + 1,
+-					&esi[1],
+-					ack_dpcd_bytes_to_write);
+-				if (wret == ack_dpcd_bytes_to_write)
++				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
++							  dpcd_addr + 1,
++							  ack[1]);
++				if (wret == 1)
+ 					break;
+ 			}
+ 
++			if (retry == 3) {
++				DRM_ERROR("Failed to ack MST event.\n");
++				return;
++			}
++
++			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
+ 			/* check if there is new irq to be handled */
+ 			dret = drm_dp_dpcd_read(
+ 				&aconnector->dm_dp_aux.aux,
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4053,17 +4053,28 @@ out:
+ }
+ 
+ /**
+- * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
++ * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
+  * @mgr: manager to notify irq for.
+  * @esi: 4 bytes from SINK_COUNT_ESI
++ * @ack: 4 bytes used to ack events starting from SINK_COUNT_ESI
+  * @handled: whether the hpd interrupt was consumed or not
+  *
+- * This should be called from the driver when it detects a short IRQ,
++ * This should be called from the driver when it detects a HPD IRQ,
+  * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
+- * topology manager will process the sideband messages received as a result
+- * of this.
++ * topology manager will process the sideband messages received
++ * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
++ * corresponding flags that Driver has to ack the DP receiver later.
++ *
++ * Note that driver shall also call
++ * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
++ * after calling this function, to try to kick off a new request in
++ * the queue if the previous message transaction is completed.
++ *
++ * See also:
++ * drm_dp_mst_hpd_irq_send_new_request()
+  */
+-int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled)
++int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u8 *esi,
++				    u8 *ack, bool *handled)
+ {
+ 	int ret = 0;
+ 	int sc;
+@@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst
+ 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
+ 		ret = drm_dp_mst_handle_down_rep(mgr);
+ 		*handled = true;
++		ack[1] |= DP_DOWN_REP_MSG_RDY;
+ 	}
+ 
+ 	if (esi[1] & DP_UP_REQ_MSG_RDY) {
+ 		ret |= drm_dp_mst_handle_up_req(mgr);
+ 		*handled = true;
++		ack[1] |= DP_UP_REQ_MSG_RDY;
+ 	}
+ 
+-	drm_dp_mst_kick_tx(mgr);
+ 	return ret;
+ }
+-EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
++EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
++
++/**
++ * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new request
++ * @mgr: manager to notify irq for.
++ *
++ * This should be called from the driver when mst irq event is handled
++ * and acked. Note that new down request should only be sent when
++ * previous message transaction is completed. Source is not supposed to generate
++ * interleaved message transactions.
++ */
++void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr)
++{
++	struct drm_dp_sideband_msg_tx *txmsg;
++	bool kick = true;
+ 
++	mutex_lock(&mgr->qlock);
++	txmsg = list_first_entry_or_null(&mgr->tx_msg_downq,
++					 struct drm_dp_sideband_msg_tx, next);
++	/* If last transaction is not completed yet*/
++	if (!txmsg ||
++	    txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
++	    txmsg->state == DRM_DP_SIDEBAND_TX_SENT)
++		kick = false;
++	mutex_unlock(&mgr->qlock);
++
++	if (kick)
++		drm_dp_mst_kick_tx(mgr);
++}
++EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
+ /**
+  * drm_dp_mst_detect_port() - get connection status for an MST port
+  * @connector: DRM connector for this port
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -3804,9 +3804,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *in
+ {
+ 	bool handled = false;
+ 
+-	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
+-	if (handled)
+-		ack[1] |= esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
++	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, ack, &handled);
+ 
+ 	if (esi[1] & DP_CP_IRQ) {
+ 		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
+@@ -3881,6 +3879,9 @@ intel_dp_check_mst_status(struct intel_d
+ 
+ 		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
+ 			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
++
++		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
++			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
+ 	}
+ 
+ 	return link_ok;
+--- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+@@ -1473,22 +1473,26 @@ nv50_mstm_service(struct nouveau_drm *dr
+ 	u8 esi[8] = {};
+ 
+ 	while (handled) {
++		u8 ack[8] = {};
++
+ 		rc = drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
+ 		if (rc != 8) {
+ 			ret = false;
+ 			break;
+ 		}
+ 
+-		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
++		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, ack, &handled);
+ 		if (!handled)
+ 			break;
+ 
+-		rc = drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
+-				       3);
+-		if (rc != 3) {
++		rc = drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack[1]);
++
++		if (rc != 1) {
+ 			ret = false;
+ 			break;
+ 		}
++
++		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
+ 	}
+ 
+ 	if (!ret)
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -815,8 +815,11 @@ void drm_dp_mst_topology_mgr_destroy(str
+ bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);
+ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool mst_state);
+ 
+-int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled);
+-
++int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
++				    const u8 *esi,
++				    u8 *ack,
++				    bool *handled);
++void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr);
+ 
+ int
+ drm_dp_mst_detect_port(struct drm_connector *connector,
 
 
