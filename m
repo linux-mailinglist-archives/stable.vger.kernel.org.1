@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 014FA761526
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 986CD7611A5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234616AbjGYL0G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35320 "EHLO
+        id S231661AbjGYKyI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234606AbjGYL0E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:04 -0400
+        with ESMTP id S233700AbjGYKxT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CB29D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 558AD3583
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F1436166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9FFC433C8;
-        Tue, 25 Jul 2023 11:26:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E1CFE615A3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00627C433C7;
+        Tue, 25 Jul 2023 10:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284360;
-        bh=pDQ+42DLVyZ1/fBjlDtEeF83k49JIUS5J8F2fQIqZ2c=;
+        s=korg; t=1690282310;
+        bh=oJGWT27rp3FxOi80Utut0owPSONAljeUEAlP0O5vah8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ziL8Ufy4klV9mLsBbRC1htpCFfD13jh37NMj0jYqryELZKVQ4K/dIqye18EFNIbyp
-         Mv7P9mNTTsY/uCrFW6nW89m8az5p/Wf4GjnyeEHXYRuaAswc19Iea8s+hrrBnWFhFH
-         ARo7Q7kk4n6JXavJnG6fLYaJCy1gzyXfdh37uehk=
+        b=KHW8CI0NRxqnN+RnrK3WD3w4xUrVoGK0X3cCb+eq1kve4rSEVL9dQ+6jZUhW93rep
+         kRxA0uosTMoL7XZIbS+TvW/yG83YB+7LvxbSv4nTsgmTQmkZsntR2tJRyFyQNuLBFb
+         ReJKwTFDqypuFY1B+HcgLKjVQbd43rfuTLIxRSLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Daniel Palmer <daniel@thingy.jp>,
-        Rob Landley <rob@landley.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Rich Felker <dalias@libc.org>
-Subject: [PATCH 5.10 311/509] sh: pgtable-3level: Fix cast to pointer from integer of different size
+        Matthew Anderson <ruinairas1992@gmail.com>,
+        Philip Mueller <philm@manjaro.org>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 083/227] [PATCH AUTOSEL 5.4 08/12] ALSA: hda/realtek: Add quirks for ROG ALLY CS35l41 audio
 Date:   Tue, 25 Jul 2023 12:44:10 +0200
-Message-ID: <20230725104607.979386993@linuxfoundation.org>
+Message-ID: <20230725104518.185233473@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,46 +56,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+[ Upstream commit 724418b84e6248cd27599607b7e5fac365b8e3f5 ]
 
-commit 8518e694203d0bfd202ea4a80356785b6992322e upstream.
+This requires a patched ACPI table or a firmware from ASUS to work because
+the system does not come with the _DSD field for the CSC3551.
 
-If X2TLB=y (CPU_SHX2=y or CPU_SHX3=y, e.g. migor_defconfig), pgd_t.pgd
-is "unsigned long long", causing:
-
-    In file included from arch/sh/include/asm/pgtable.h:13,
-		     from include/linux/pgtable.h:6,
-		     from include/linux/mm.h:33,
-		     from arch/sh/kernel/asm-offsets.c:14:
-    arch/sh/include/asm/pgtable-3level.h: In function ‘pud_pgtable’:
-    arch/sh/include/asm/pgtable-3level.h:37:9: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-       37 |  return (pmd_t *)pud_val(pud);
-	  |         ^
-
-Fix this by adding an intermediate cast to "unsigned long", which is
-basically what the old code did before.
-
-Fixes: 9cf6fa2458443118 ("mm: rename pud_page_vaddr to pud_pgtable and make it return pmd_t *")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Daniel Palmer <daniel@thingy.jp>
-Acked-by: Rob Landley <rob@landley.net>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Rich Felker <dalias@libc.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217550
+Signed-off-by: Matthew Anderson <ruinairas1992@gmail.com>
+Tested-by: Philip Mueller <philm@manjaro.org>
+Link: https://lore.kernel.org/r/20230621161714.9442-1-ruinairas1992@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/include/asm/pgtable-3level.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |   46 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
---- a/arch/sh/include/asm/pgtable-3level.h
-+++ b/arch/sh/include/asm/pgtable-3level.h
-@@ -34,7 +34,7 @@ typedef struct { unsigned long long pmd;
- 
- static inline pmd_t *pud_pgtable(pud_t pud)
- {
--	return (pmd_t *)pud_val(pud);
-+	return (pmd_t *)(unsigned long)pud_val(pud);
- }
- 
- /* only used by the stubbed out hugetlb gup code, should never be called */
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7136,6 +7136,10 @@ enum {
+ 	ALC294_FIXUP_ASUS_DUAL_SPK,
+ 	ALC285_FIXUP_THINKPAD_X1_GEN7,
+ 	ALC285_FIXUP_THINKPAD_HEADSET_JACK,
++	ALC294_FIXUP_ASUS_ALLY,
++	ALC294_FIXUP_ASUS_ALLY_PINS,
++	ALC294_FIXUP_ASUS_ALLY_VERBS,
++	ALC294_FIXUP_ASUS_ALLY_SPEAKER,
+ 	ALC294_FIXUP_ASUS_HPE,
+ 	ALC294_FIXUP_ASUS_COEF_1B,
+ 	ALC294_FIXUP_ASUS_GX502_HP,
+@@ -8449,6 +8453,47 @@ static const struct hda_fixup alc269_fix
+ 		.chained = true,
+ 		.chain_id = ALC294_FIXUP_SPK2_TO_DAC1
+ 	},
++	[ALC294_FIXUP_ASUS_ALLY] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cs35l41_fixup_i2c_two,
++		.chained = true,
++		.chain_id = ALC294_FIXUP_ASUS_ALLY_PINS
++	},
++	[ALC294_FIXUP_ASUS_ALLY_PINS] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x19, 0x03a11050 },
++			{ 0x1a, 0x03a11c30 },
++			{ 0x21, 0x03211420 },
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC294_FIXUP_ASUS_ALLY_VERBS
++	},
++	[ALC294_FIXUP_ASUS_ALLY_VERBS] = {
++		.type = HDA_FIXUP_VERBS,
++		.v.verbs = (const struct hda_verb[]) {
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x45 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x5089 },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x46 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x0004 },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x47 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0xa47a },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x49 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x0049},
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x4a },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x201b },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x6b },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x4278},
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC294_FIXUP_ASUS_ALLY_SPEAKER
++	},
++	[ALC294_FIXUP_ASUS_ALLY_SPEAKER] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_speaker2_to_dac1,
++	},
+ 	[ALC285_FIXUP_THINKPAD_X1_GEN7] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_thinkpad_x1_gen7,
+@@ -9557,6 +9602,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x16e3, "ASUS UX50", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1740, "ASUS UX430UA", ALC295_FIXUP_ASUS_DACS),
+ 	SND_PCI_QUIRK(0x1043, 0x17d1, "ASUS UX431FL", ALC294_FIXUP_ASUS_DUAL_SPK),
++	SND_PCI_QUIRK(0x1043, 0x17f3, "ROG Ally RC71L_RC71L", ALC294_FIXUP_ASUS_ALLY),
+ 	SND_PCI_QUIRK(0x1043, 0x1881, "ASUS Zephyrus S/M", ALC294_FIXUP_ASUS_GX502_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x18b1, "Asus MJ401TA", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x18f1, "Asus FX505DT", ALC256_FIXUP_ASUS_HEADSET_MIC),
 
 
