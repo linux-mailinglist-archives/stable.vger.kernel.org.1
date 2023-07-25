@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D017612F6
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A1F761349
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233942AbjGYLGx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45392 "EHLO
+        id S234144AbjGYLJY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233959AbjGYLGj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:39 -0400
+        with ESMTP id S234058AbjGYLJG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51FF30DD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD8D2D53
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34D3761655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460B0C433C8;
-        Tue, 25 Jul 2023 11:05:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E26176166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E84C433C8;
+        Tue, 25 Jul 2023 11:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283102;
-        bh=+PKvuQB0mLE1Vi/6E+9koxJxIZt23IUu+IZbTJ5+gKY=;
+        s=korg; t=1690283275;
+        bh=sAf9qbD3p5QELsfBa9+L+SSF0rD5lxPxrmG35ziB5lE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=faz7k/8KzAK7h132sdsi8lkrOHTaP25rN1ZMiYi7m47zKmOtXN9RVR5ESeYrM/JVl
-         tBNJzuiAoF6und5K312iMcVsJfLdXJFWGSUGhQ+55zCPeuhahVfquEn4EspSPJ/eBU
-         Qq0AF5R9VEtzZkYFkTnaezPCnUOchLl+7auDurCc=
+        b=EEMD0Go67yrid2Dz1eNthhPm+O/SKeHyV2RBztOF/rhkepkNJy9WpYjs+fffPgggV
+         BOHl/eLfLcZADRH9WXMtUFeDF0+NhOnWbLK1LX+ekvxN9+z88XLqfFkycmRRFnQnqh
+         KI6mIkGc147XJv+MxFMb8KKBYLZ0C+vFQ9xxRGNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/183] fbdev: au1200fb: Fix missing IRQ check in au1200fb_drv_probe
-Date:   Tue, 25 Jul 2023 12:46:08 +0200
-Message-ID: <20230725104512.953960432@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Alvin Lee <alvin.lee2@amd.com>, Alan Liu <haoping.liu@amd.com>,
+        Zhikai Zhai <zhikai.zhai@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 5.15 18/78] drm/amd/display: Disable MPC split by default on special asic
+Date:   Tue, 25 Jul 2023 12:46:09 +0200
+Message-ID: <20230725104452.042579931@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +58,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Zhikai Zhai <zhikai.zhai@amd.com>
 
-[ Upstream commit 4e88761f5f8c7869f15a2046b1a1116f4fab4ac8 ]
+commit a460beefe77d780ac48f19d39333852a7f93ffc1 upstream.
 
-This func misses checking for platform_get_irq()'s call and may passes the
-negative error codes to request_irq(), which takes unsigned IRQ #,
-causing it to fail with -EINVAL, overriding an original error code.
+[WHY]
+All of pipes will be used when the MPC split enable on the dcn
+which just has 2 pipes. Then MPO enter will trigger the minimal
+transition which need programe dcn from 2 pipes MPC split to 2
+pipes MPO. This action will cause lag if happen frequently.
 
-Fix this by stop calling request_irq() with invalid IRQ #s.
+[HOW]
+Disable the MPC split for the platform which dcn resource is limited
 
-Fixes: 1630d85a8312 ("au1200fb: fix hardcoded IRQ")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Alan Liu <haoping.liu@amd.com>
+Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/au1200fb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn303/dcn303_resource.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/au1200fb.c b/drivers/video/fbdev/au1200fb.c
-index b6b22fa4a8a01..fd3ff398d234a 100644
---- a/drivers/video/fbdev/au1200fb.c
-+++ b/drivers/video/fbdev/au1200fb.c
-@@ -1732,6 +1732,9 @@ static int au1200fb_drv_probe(struct platform_device *dev)
- 
- 	/* Now hook interrupt too */
- 	irq = platform_get_irq(dev, 0);
-+	if (irq < 0)
-+		return irq;
-+
- 	ret = request_irq(irq, au1200fb_handle_irq,
- 			  IRQF_SHARED, "lcd", (void *)dev);
- 	if (ret) {
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/display/dc/dcn303/dcn303_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn303/dcn303_resource.c
+@@ -193,7 +193,7 @@ static const struct dc_debug_options deb
+ 		.timing_trace = false,
+ 		.clock_trace = true,
+ 		.disable_pplib_clock_request = true,
+-		.pipe_split_policy = MPC_SPLIT_DYNAMIC,
++		.pipe_split_policy = MPC_SPLIT_AVOID,
+ 		.force_single_disp_pipe_split = false,
+ 		.disable_dcc = DCC_ENABLE,
+ 		.vsr_support = true,
 
 
