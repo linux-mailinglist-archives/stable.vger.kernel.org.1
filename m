@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22EED761552
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC2FE7616BF
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbjGYL1g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:27:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36686 "EHLO
+        id S235038AbjGYLmE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:42:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233338AbjGYL1f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:35 -0400
+        with ESMTP id S235094AbjGYLlv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FDAB99
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 834B11BDA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9B2F61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086F7C433C8;
-        Tue, 25 Jul 2023 11:27:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48BE8616B8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55961C433C8;
+        Tue, 25 Jul 2023 11:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284453;
-        bh=s+usCeWS54WM3fArivoFelxFyjeB6q2DdTANpWsxDMc=;
+        s=korg; t=1690285277;
+        bh=68GIa3uUSRNCjias3x85Hcywl6KPAY/BzHMiyY4IFoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JudIkLZlIByvTQtHTKO8v73Thzdoi7GLXbNUnuYzPapDHbHSs15GgZJwUo63IZm4V
-         RSoV4N6EHdlk0BY0GgLgw9jdTjIBZgwSONYLuQgkubZiMoLoEu8lzftXNM7komkHTY
-         oIivgrIYHtf8+tpqKe/YDDwR8kP1w7TW8d5oEd6E=
+        b=kaAu4A6dmvYOQY32jSnHaQk/LYspdFaAqX9OfN2r0XGd+KdePhe96vYbtMPtysdp7
+         NcfGcjG5kvdIMbzPsM1ULKpp+WefOyokZuhxp4VlAZAdhEFB4WyciJFt3khXlpyRv0
+         GaR6Rxk1kiWn9VREAURoUEYOBhD3Q4AwEognCDtQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Armin Wolf <W_Armin@gmx.de>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Tobias Heider <me@tobhe.de>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 361/509] platform/x86: wmi: Break possible infinite loop when parsing GUID
+Subject: [PATCH 5.4 147/313] Add MODULE_FIRMWARE() for FIRMWARE_TG357766.
 Date:   Tue, 25 Jul 2023 12:45:00 +0200
-Message-ID: <20230725104610.241158599@linuxfoundation.org>
+Message-ID: <20230725104527.364570406@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,82 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Tobias Heider <me@tobhe.de>
 
-[ Upstream commit 028e6e204ace1f080cfeacd72c50397eb8ae8883 ]
+[ Upstream commit 046f753da6143ee16452966915087ec8b0de3c70 ]
 
-The while-loop may break on one of the two conditions, either ID string
-is empty or GUID matches. The second one, may never be reached if the
-parsed string is not correct GUID. In such a case the loop will never
-advance to check the next ID.
+Fixes a bug where on the M1 mac mini initramfs-tools fails to
+include the necessary firmware into the initrd.
 
-Break possible infinite loop by factoring out guid_parse_and_compare()
-helper which may be moved to the generic header for everyone later on
-and preventing from similar mistake in the future.
-
-Interestingly that firstly it appeared when WMI was turned into a bus
-driver, but later when duplicated GUIDs were checked, the while-loop
-has been replaced by for-loop and hence no mistake made again.
-
-Fixes: a48e23385fcf ("platform/x86: wmi: add context pointer field to struct wmi_device_id")
-Fixes: 844af950da94 ("platform/x86: wmi: Turn WMI into a bus driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230621151155.78279-1-andriy.shevchenko@linux.intel.com
-Tested-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: c4dab50697ff ("tg3: Download 57766 EEE service patch firmware")
+Signed-off-by: Tobias Heider <me@tobhe.de>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/ZJt7LKzjdz8+dClx@tobhe.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/wmi.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 5e4c03f7db7c0..567c28705cb1b 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -130,6 +130,16 @@ static bool find_guid(const char *guid_string, struct wmi_block **out)
- 	return false;
- }
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index d0cd86af29d9f..b16517d162cfd 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -230,6 +230,7 @@ MODULE_DESCRIPTION("Broadcom Tigon3 ethernet driver");
+ MODULE_LICENSE("GPL");
+ MODULE_VERSION(DRV_MODULE_VERSION);
+ MODULE_FIRMWARE(FIRMWARE_TG3);
++MODULE_FIRMWARE(FIRMWARE_TG357766);
+ MODULE_FIRMWARE(FIRMWARE_TG3TSO);
+ MODULE_FIRMWARE(FIRMWARE_TG3TSO5);
  
-+static bool guid_parse_and_compare(const char *string, const guid_t *guid)
-+{
-+	guid_t guid_input;
-+
-+	if (guid_parse(string, &guid_input))
-+		return false;
-+
-+	return guid_equal(&guid_input, guid);
-+}
-+
- static const void *find_guid_context(struct wmi_block *wblock,
- 				      struct wmi_driver *wdriver)
- {
-@@ -142,11 +152,7 @@ static const void *find_guid_context(struct wmi_block *wblock,
- 
- 	id = wdriver->id_table;
- 	while (*id->guid_string) {
--		guid_t guid_input;
--
--		if (guid_parse(id->guid_string, &guid_input))
--			continue;
--		if (guid_equal(&wblock->gblock.guid, &guid_input))
-+		if (guid_parse_and_compare(id->guid_string, &wblock->gblock.guid))
- 			return id->context;
- 		id++;
- 	}
-@@ -804,11 +810,7 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
- 		return 0;
- 
- 	while (*id->guid_string) {
--		guid_t driver_guid;
--
--		if (WARN_ON(guid_parse(id->guid_string, &driver_guid)))
--			continue;
--		if (guid_equal(&driver_guid, &wblock->gblock.guid))
-+		if (guid_parse_and_compare(id->guid_string, &wblock->gblock.guid))
- 			return 1;
- 
- 		id++;
 -- 
 2.39.2
 
