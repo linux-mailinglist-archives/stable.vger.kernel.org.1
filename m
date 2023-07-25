@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E42F4761414
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86B7F761415
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234041AbjGYLQU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:16:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50158 "EHLO
+        id S234258AbjGYLQV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:16:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234257AbjGYLQF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:16:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2822129
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:15:39 -0700 (PDT)
+        with ESMTP id S232839AbjGYLQG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:16:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE542137
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:15:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7F1F61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:15:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2AAC433C8;
-        Tue, 25 Jul 2023 11:15:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B1F4261691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:15:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0283C433CA;
+        Tue, 25 Jul 2023 11:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283738;
-        bh=1MDd3kMLweByKAScR3JYZRxJkeZzLdYNsIrASekjZU4=;
+        s=korg; t=1690283741;
+        bh=QJ6y+EE2H8QvvkakafTDLoz5FEAHG4Z28+cb2DgkulU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EKVettUlYA8jqay6orO53bL7XBg8unvDfv0Ns1268o1lcTb5cWlJOTFR4HBU1K393
-         PfeCTQPpLWrqyDuas7jhpdUuDcGRIH9Rqwis1aVp/Nd1sMD+qkkZjhGfR17bpCX/U5
-         eqTSX8azjM0C8MX32/GWqu+ZJHQ86GjxfH8scst8=
+        b=qIz4SBvXTPqXIs56tV9DBc1ZLZONFSF0yYXDFhSPy+5z4MIpRbG1O0o3Q3k201YMe
+         td8VxmiMSdRSJO9sNTRM8rSw66F31pgyhyPChCSCRjAF1B20aUb979xR1xiYdgdKkv
+         Y2BTAwRWUHpY7JnbGRBshcNDC4g44Ch+W25M8zGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luc Ma <luc@sietium.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/509] drm/vram-helper: fix function names in vram helper doc
-Date:   Tue, 25 Jul 2023 12:40:44 +0200
-Message-ID: <20230725104558.494935898@linuxfoundation.org>
+Subject: [PATCH 5.10 106/509] ARM: dts: BCM5301X: Drop "clock-names" from the SPI node
+Date:   Tue, 25 Jul 2023 12:40:45 +0200
+Message-ID: <20230725104558.535680822@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
 References: <20230725104553.588743331@linuxfoundation.org>
@@ -45,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luc Ma <luc@sietium.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit b8e392245105b50706f18418054821e71e637288 ]
+[ Upstream commit d3c8e2c5757153bbfad70019ec1decbca86f3def ]
 
-Refer to drmm_vram_helper_init() instead of the non-existent
-drmm_vram_helper_alloc_mm().
+There is no such property in the SPI controller binding documentation.
+Also Linux driver doesn't look for it.
 
-Fixes: a5f23a72355d ("drm/vram-helper: Managed vram helpers")
-Signed-off-by: Luc Ma <luc@sietium.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/64583db2.630a0220.eb75d.8f51@mx.google.com
+This fixes:
+arch/arm/boot/dts/bcm4708-asus-rt-ac56u.dtb: spi@18029200: Unevaluated properties are not allowed ('clock-names' was unexpected)
+        From schema: Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml
+
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230503122830.3200-1-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gem_vram_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/bcm5301x.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_gem_vram_helper.c b/drivers/gpu/drm/drm_gem_vram_helper.c
-index 375c79e23ca59..eb104de16fa73 100644
---- a/drivers/gpu/drm/drm_gem_vram_helper.c
-+++ b/drivers/gpu/drm/drm_gem_vram_helper.c
-@@ -41,7 +41,7 @@ static const struct drm_gem_object_funcs drm_gem_vram_object_funcs;
-  * the frame's scanout buffer or the cursor image. If there's no more space
-  * left in VRAM, inactive GEM objects can be moved to system memory.
-  *
-- * To initialize the VRAM helper library call drmm_vram_helper_alloc_mm().
-+ * To initialize the VRAM helper library call drmm_vram_helper_init().
-  * The function allocates and initializes an instance of &struct drm_vram_mm
-  * in &struct drm_device.vram_mm . Use &DRM_GEM_VRAM_DRIVER to initialize
-  * &struct drm_driver and  &DRM_VRAM_MM_FILE_OPERATIONS to initialize
-@@ -69,7 +69,7 @@ static const struct drm_gem_object_funcs drm_gem_vram_object_funcs;
-  *		// setup device, vram base and size
-  *		// ...
-  *
-- *		ret = drmm_vram_helper_alloc_mm(dev, vram_base, vram_size);
-+ *		ret = drmm_vram_helper_init(dev, vram_base, vram_size);
-  *		if (ret)
-  *			return ret;
-  *		return 0;
-@@ -82,7 +82,7 @@ static const struct drm_gem_object_funcs drm_gem_vram_object_funcs;
-  * to userspace.
-  *
-  * You don't have to clean up the instance of VRAM MM.
-- * drmm_vram_helper_alloc_mm() is a managed interface that installs a
-+ * drmm_vram_helper_init() is a managed interface that installs a
-  * clean-up handler to run during the DRM device's release.
-  *
-  * For drawing or scanout operations, rsp. buffer objects have to be pinned
+diff --git a/arch/arm/boot/dts/bcm5301x.dtsi b/arch/arm/boot/dts/bcm5301x.dtsi
+index 9fdad20c40d17..4e9bb10f37d0f 100644
+--- a/arch/arm/boot/dts/bcm5301x.dtsi
++++ b/arch/arm/boot/dts/bcm5301x.dtsi
+@@ -532,7 +532,6 @@ spi@18029200 {
+ 				  "spi_lr_session_done",
+ 				  "spi_lr_overread";
+ 		clocks = <&iprocmed>;
+-		clock-names = "iprocmed";
+ 		num-cs = <2>;
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
 -- 
 2.39.2
 
