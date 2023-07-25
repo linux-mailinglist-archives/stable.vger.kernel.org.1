@@ -2,69 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB880761E67
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 929AD761E76
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229767AbjGYQYL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 12:24:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56296 "EHLO
+        id S229598AbjGYQ1t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 12:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjGYQYL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:24:11 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 225142118
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:24:06 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-55ae2075990so3053342a12.0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:24:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690302245; x=1690907045;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZpHB8QjGn5O6Y5h37s23WA2dKQ/pqtTxncQL8KAQlYs=;
-        b=xo7CL03QODIFjgMJZY2K4Fjl+XedKC0wM4mJu+kSsy38UyIa8hDhwHc11YUrfi3UxX
-         0nw0RM3M99DVMtt2HoxvZb/C5fxLdiRXbh7f5qAxGmAJrn/1Q3I1LDjrwr3c8VhBNJZ9
-         6k5HKeVC2mUmzWFh5ckNjN+7Ub2K6p/m0Vf3BcBnfjoaKGChLx2EhKsoDLp+fZxjwQgf
-         LaoRBZSOf0FMRI3M+xP+xiW/xSiq/+WnGQPdWtlj2mGOwmaWZRxArssYJGJ1CrxB3BLx
-         MZTTW1fDxuxBwJFx50Nsd2E0DYQvhBmVIo9EWqvoKaHKYrGoP0xEiT00Siz2jX/to5UN
-         DeXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690302245; x=1690907045;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZpHB8QjGn5O6Y5h37s23WA2dKQ/pqtTxncQL8KAQlYs=;
-        b=NKXBscslzcyKG/EMkkuv3pkspERYeUWYcvrAj1Zre3zDQ80AYayQ2LBLQFADqM0QkR
-         dMoZ1zL5s4BV787Z81A7BYiFiEMw1Eyqw3cZ0E1dgs92AIIgYJHlG1A7lk64QFAhWu0A
-         gc/Q3R9DtnWY3cGFeUPZH0qsB4AwzmU+SJbhcxX4cv+erTKE91Vj+bGSkDenBPs82bCh
-         KmhmA1MkT9I67+LBJQwUBxsvgw289iIjxbAH55yfWcEJ88UXatnmzP1JCLMo3Rwd1LBa
-         DhZcHdy1L4iFT/kI9R5TnOHAykvWi5oZ060yFXqyYmegePW+V/D9QbcK1SUvibStHZxU
-         BiIw==
-X-Gm-Message-State: ABy/qLaGyM3TAxPoP/4wuOee/tL2jqxrae61fH/fwPLSBWIgB933p++M
-        asDeGmBpyrxMJECspR2+xdadppDcaoWfQhT2Q+8UhQ==
-X-Google-Smtp-Source: APBJJlHkhAk5+L14xS1Xrw8QMG6gLP2KaEJeHxN0/p53KAI34dEvd0ASkkByUGugu9E/LxSoQi4HfA==
-X-Received: by 2002:a17:90a:f411:b0:268:1e9:53bf with SMTP id ch17-20020a17090af41100b0026801e953bfmr7763446pjb.37.1690302245007;
-        Tue, 25 Jul 2023 09:24:05 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id v3-20020a17090a0c8300b00263f33eef41sm10766003pja.37.2023.07.25.09.24.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 09:24:04 -0700 (PDT)
-Message-ID: <64bff724.170a0220.70c7e.3bc3@mx.google.com>
-Date:   Tue, 25 Jul 2023 09:24:04 -0700 (PDT)
+        with ESMTP id S229496AbjGYQ1s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:27:48 -0400
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2064.outbound.protection.outlook.com [40.107.101.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD5611A;
+        Tue, 25 Jul 2023 09:27:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HFsov5C4eUYt8khrh4GD0cg6FoNec5JBSvGUaSylyv7m3xrx796Y+BENYXMF1FXMRR+kPwywHJCeMre5dnrTTHTmq0IIhyixY0l2pcQTJLjO4RuLsbJAM/04f0lnV3udvmlFCknL/V3kyFQxllrfYr0PzLJH2kH8sSy2xjGkxrHCErOs2wh969m8RahfrgILgtGb2c1OPH4NR0ZQ/EvReI6b3HEgs2NX0xcxrb5hCtyfl/7Zij+s2Dq5B1VXK3ACWCYsnibIeXTGfS0ZJuSi7SqZcw2xONvJtuSjTuEXR2F8++Klbs6TH5JfL1xClNHsqsDZ63p3UyDwdJWik+Bwxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O+DtaNZ/3XG7+DHiplzwoSIfXnvpDKmjI4ixjwaUzqk=;
+ b=c/MMp8atSr0yMzre6gF5SVbrZ5Wm0OPgBGZEnzUMM1/0dm182ZKRDNzslm5jccc01aXU7KRai/rtSqUzgcfEDwrkBH1FsjMARCb3NWj5nqdPs/etIOtHqmzK5g4/VrNRK78dGj6aERNZG5EcEoxPJQgc2XP36KXo1K0LuHrELsNZCPCSxweu9ehxTtiHe8Gqhjl9zFIv/MP00Tjo45BzZAaWN+bcJ1H8Q5bIAlGfObO0S2+L0zUMoIE/t99o4L0NpGaNl0/NxI/LOqA1/U0RYm5bO7l9dldNVaHsq+K8WCwxbmczJiaDQqto2LzKWWS6ez8KqchfDB9eXMvojcFwOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O+DtaNZ/3XG7+DHiplzwoSIfXnvpDKmjI4ixjwaUzqk=;
+ b=pgZImOeEKLa56bnaZLgfocAm8ZFs86oG4vlQHP+14M5qNKd1mmLCPSgaesSmTKowaSiRJnIAJZemJjawEJSY2ceG60LjXcVxDLggUzNJfXqSp70mugBtcrIGzMqD1w8RTBljsuVz4eJX7vid1bx0LtmFn/ziLscEoGkHDH2OJq6Tv7T3IrClpXAGhxrYyo2jTI/xg7qY5WvFDdVtKxu5bDqHRd/zKVEcqQVDaGNpsLtZcp15IUqMMcS8KMqzxSEnu+ZVkZqj9LkPI64Ym1ibwCnklG1JCT38FQGETdkdQLMhlB+z4eiM2o/DJ1WJfrE5tLHPoxeDm2BG5HCDSyAzqw==
+Received: from SJ0PR03CA0377.namprd03.prod.outlook.com (2603:10b6:a03:3a1::22)
+ by BY5PR12MB4917.namprd12.prod.outlook.com (2603:10b6:a03:1d1::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33; Tue, 25 Jul
+ 2023 16:27:40 +0000
+Received: from CO1NAM11FT051.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:a03:3a1:cafe::15) by SJ0PR03CA0377.outlook.office365.com
+ (2603:10b6:a03:3a1::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33 via Frontend
+ Transport; Tue, 25 Jul 2023 16:27:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CO1NAM11FT051.mail.protection.outlook.com (10.13.174.114) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6631.25 via Frontend Transport; Tue, 25 Jul 2023 16:27:39 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Tue, 25 Jul 2023
+ 09:27:30 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.37; Tue, 25 Jul 2023 09:27:30 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37 via Frontend
+ Transport; Tue, 25 Jul 2023 09:27:30 -0700
+From:   Jon Hunter <jonathanh@nvidia.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>,
+        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.4 000/313] 5.4.251-rc1 review
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
+X-NVConfidentiality: public
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Kernel: v4.19.289-218-gd8e587288fc49
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
- 36 warnings (v4.19.289-218-gd8e587288fc49)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Message-ID: <9131881b-ea1e-461d-822a-088a5df4ad6c@drhqmail202.nvidia.com>
+Date:   Tue, 25 Jul 2023 09:27:30 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT051:EE_|BY5PR12MB4917:EE_
+X-MS-Office365-Filtering-Correlation-Id: 642b38d8-e93e-41ff-f4b3-08db8d2c107e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /qymqQCe4NGPtX8OecO9mv0xsql3Fc2hWPx9HzEFbXzmAQtqcME0k/CjAKzz2mf4orqKth71kSS3rffPePBariPCQ6MOLuLtVTy9H4iMY2xFEqYnQR2AlvYq6rf9PEDJWGbgJECpc4gojp+sZv2eKffFLl2GtUVAR+ulwCAPLqAa0CuvICdlprZdgjN+H5XQsVwNHxM1m74rwJD34xeNqZBhPHSOKWel/nq+wJ0ETk0MFsf3PreLaBF3es1S8LPTtpwFHHBj52El1hOzy3mRyASPfGlvQbhkJZpIJRptTDhFKJ/SomuLUHfY+4lWkwCvIiHfozwAp0mhhUZAjIp5LTGmmlYDyZ9EpOQ6b818zrE01huzS+/u2Gxpf9szrs2ImQd9TLlb9OG+lNj4JWwn94lM5qUzZZj3lDDyc2XIxVCkydlBssqGgNQuiPD14b5Nte3giN8SA8Mf99Tg+01hxskM0Ybr7A6CnyoH7GC8yuJfw7W00hDriVYM+de+ZphmDzAnj7WfqzYID4Kb5Rhynhuk/oTfF55qPFPIleH0FtoNTDgN+87CqG0XcamyjCY7RshLioPkMV4qtJ7EQw6Bmy3/qmWfuk/52+gREfPUKJ8Efzjb3ut8PEAicfjXbYJS6OCT1VtK6oaZwVKYzL4e/jjJAQT+5KXfgwViJhURoz3XOJGu2XCQ4Sg3BVq7EdI0NDMzXwwuLCCgxSVq35bxRtclXf4R3bFBynsBkLB8YGK2TUYpgihcQGR3Rf8l5NMKEkax3ilApVmFb/B/R0/dxSiDEDQeRT6yiptfRjF96o4=
+X-Forefront-Antispam-Report: CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(396003)(39860400002)(346002)(451199021)(82310400008)(36840700001)(46966006)(40470700004)(186003)(336012)(26005)(40480700001)(40460700003)(36860700001)(426003)(54906003)(7636003)(47076005)(356005)(82740400003)(31696002)(86362001)(478600001)(70206006)(41300700001)(4326008)(316002)(70586007)(6916009)(2906002)(8936002)(8676002)(5660300002)(7416002)(966005)(31686004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2023 16:27:39.6952
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 642b38d8-e93e-41ff-f4b3-08db8d2c107e
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT051.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4917
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,293 +113,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 36 warnings (=
-v4.19.289-218-gd8e587288fc49)
+On Tue, 25 Jul 2023 12:42:33 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.251 release.
+> There are 313 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.251-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.289-218-gd8e587288fc49/
+All tests passing for Tegra ...
 
-Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.289-218-gd8e587288fc49
-Git Commit: d8e587288fc49f0aa86b6a4986af9c617572bc4f
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Test results for stable-v5.4:
+    11 builds:	11 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    59 tests:	59 pass, 0 fail
 
-Build Failures Detected:
+Linux version:	5.4.251-rc1-g1362bbd1b27c
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 4 warnings
-    defconfig+arm64-chromebook (gcc-10): 4 warnings
-
-arm:
-    imx_v6_v7_defconfig (gcc-10): 1 warning
-    multi_v5_defconfig (gcc-10): 1 warning
-    multi_v7_defconfig (gcc-10): 1 warning
-    omap2plus_defconfig (gcc-10): 1 warning
-    vexpress_defconfig (gcc-10): 1 warning
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    defconfig (gcc-10): 1 warning
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 5 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 5 warnings
-
-
-Warnings summary:
-
-    12   fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=
-=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
-without a cast [-Wint-conversion]
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.c=
-onstprop.0()+0x6a: return with modified stack frame
-    2    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.c=
-onstprop.0()+0x0: stack state mismatch: cfa1=3D7+112 cfa2=3D7+8
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 1 warning, 0 section mi=
-smatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section m=
-ismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warn=
-ings, 0 section mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 5 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
-rop.0()+0x6a: return with modified stack frame
-    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
-rop.0()+0x0: stack state mismatch: cfa1=3D7+112 cfa2=3D7+8
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-5 warnings, 0 section mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:583:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
-rop.0()+0x6a: return with modified stack frame
-    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
-rop.0()+0x0: stack state mismatch: cfa1=3D7+112 cfa2=3D7+8
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+Jon
