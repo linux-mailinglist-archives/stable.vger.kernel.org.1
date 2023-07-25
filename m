@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC9576133A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F8376125E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234010AbjGYLJA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44872 "EHLO
+        id S233798AbjGYLBf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233979AbjGYLIq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40E2D1FF3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:20 -0700 (PDT)
+        with ESMTP id S232457AbjGYLBN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958824C2D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2D4A6166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE5EC433C8;
-        Tue, 25 Jul 2023 11:07:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E19A66164D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D18C433C8;
+        Tue, 25 Jul 2023 10:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283239;
-        bh=sgiXb5rYqzt7/yH49o/1J+SEM7p0rmUfJ5BbMBXIZzg=;
+        s=korg; t=1690282723;
+        bh=x3shIIGvGstVJyoHIehJ7TDYf4It8ylxyEPNu7fg2M8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a+c1gDJPkv9cYaJ/8+3gBMZrs7BkPthUPelwJmPa6+Sw8H+kcoWZ1SOtMcumQmIiS
-         aWITbbRgs5ciu76+0JnIgPVvdsHqWOFODKGGZ2hGn4vVZi3gKlFI6l9kqB+x5c/cJF
-         ZVqx4YJE/LS1zbC57aSE+G+ReTzwSOzab2xb5zJs=
+        b=ELXRjpQKBnZH2VvHTqYNduTt3Xp8OKilXWe5VMo/5Mp04O1AadSiMaGreNGYtuSOX
+         GBTsXYlovehQ9u3aB9RmIuUv8Vj2nVmakpmFtZJ+aWWplhohAhkZ1+imUFefxCuEpF
+         bGHdd6lZWGVyZ2yI8iMLg+8pR5Ug56zSGHK487oE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/183] net: phy: prevent stale pointer dereference in phy_init()
+        Chaitanya Kulkarni <chaitanyak@nvidia.com>,
+        Yu Kuai <yukuai3@huawei.com>, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 224/227] scsi/sg: dont grab scsi host module reference
 Date:   Tue, 25 Jul 2023 12:46:31 +0200
-Message-ID: <20230725104513.669513303@linuxfoundation.org>
+Message-ID: <20230725104523.983367634@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,74 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 1c613beaf877c0c0d755853dc62687e2013e55c4 ]
+commit fcaa174a9c995cf0af3967e55644a1543ea07e36 upstream.
 
-mdio_bus_init() and phy_driver_register() both have error paths, and if
-those are ever hit, ethtool will have a stale pointer to the
-phy_ethtool_phy_ops stub structure, which references memory from a
-module that failed to load (phylib).
+In order to prevent request_queue to be freed before cleaning up
+blktrace debugfs entries, commit db59133e9279 ("scsi: sg: fix blktrace
+debugfs entries leakage") use scsi_device_get(), however,
+scsi_device_get() will also grab scsi module reference and scsi module
+can't be removed.
 
-It is probably hard to force an error in this code path even manually,
-but the error teardown path of phy_init() should be the same as
-phy_exit(), which is now simply not the case.
+It's reported that blktests can't unload scsi_debug after block/001:
 
-Fixes: 55d8f053ce1b ("net: phy: Register ethtool PHY operations")
-Link: https://lore.kernel.org/netdev/ZLaiJ4G6TaJYGJyU@shell.armlinux.org.uk/
-Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230720000231.1939689-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+blktests (master) # ./check block
+block/001 (stress device hotplugging) [failed]
+     +++ /root/blktests/results/nodev/block/001.out.bad 2023-06-19
+      Running block/001
+      Stressing sd
+     +modprobe: FATAL: Module scsi_debug is in use.
+
+Fix this problem by grabbing request_queue reference directly, so that
+scsi host module can still be unloaded while request_queue will be
+pinged by sg device.
+
+Reported-by: Chaitanya Kulkarni <chaitanyak@nvidia.com>
+Link: https://lore.kernel.org/all/1760da91-876d-fc9c-ab51-999a6f66ad50@nvidia.com/
+Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230621160111.1433521-1-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy_device.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/scsi/sg.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 7fbb0904b3c0f..82f74f96eba29 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3252,23 +3252,30 @@ static int __init phy_init(void)
- {
- 	int rc;
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1496,7 +1496,7 @@ sg_add_device(struct device *cl_dev)
+ 	int error;
+ 	unsigned long iflags;
  
-+	ethtool_set_ethtool_phy_ops(&phy_ethtool_phy_ops);
-+
- 	rc = mdio_bus_init();
- 	if (rc)
--		return rc;
-+		goto err_ethtool_phy_ops;
+-	error = scsi_device_get(scsidp);
++	error = blk_get_queue(scsidp->request_queue);
+ 	if (error)
+ 		return error;
  
--	ethtool_set_ethtool_phy_ops(&phy_ethtool_phy_ops);
- 	features_init();
- 
- 	rc = phy_driver_register(&genphy_c45_driver, THIS_MODULE);
- 	if (rc)
--		goto err_c45;
-+		goto err_mdio_bus;
- 
- 	rc = phy_driver_register(&genphy_driver, THIS_MODULE);
--	if (rc) {
--		phy_driver_unregister(&genphy_c45_driver);
-+	if (rc)
-+		goto err_c45;
-+
-+	return 0;
-+
- err_c45:
--		mdio_bus_exit();
--	}
-+	phy_driver_unregister(&genphy_c45_driver);
-+err_mdio_bus:
-+	mdio_bus_exit();
-+err_ethtool_phy_ops:
-+	ethtool_set_ethtool_phy_ops(NULL);
- 
- 	return rc;
+@@ -1557,7 +1557,7 @@ cdev_add_err:
+ out:
+ 	if (cdev)
+ 		cdev_del(cdev);
+-	scsi_device_put(scsidp);
++	blk_put_queue(scsidp->request_queue);
+ 	return error;
  }
--- 
-2.39.2
-
+ 
+@@ -1574,7 +1574,7 @@ sg_device_destroy(struct kref *kref)
+ 	 */
+ 
+ 	blk_trace_remove(q);
+-	scsi_device_put(sdp->device);
++	blk_put_queue(q);
+ 
+ 	write_lock_irqsave(&sg_index_lock, flags);
+ 	idr_remove(&sg_index_idr, sdp->index);
 
 
