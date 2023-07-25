@@ -2,121 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C583760B36
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 09:09:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6592760B3C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 09:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231362AbjGYHJy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 03:09:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37708 "EHLO
+        id S232146AbjGYHMv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 03:12:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231967AbjGYHJn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 03:09:43 -0400
+        with ESMTP id S229524AbjGYHMq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 03:12:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6C4BF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 00:09:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38D82E0;
+        Tue, 25 Jul 2023 00:12:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 220AF6116C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 07:09:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334C4C433C7;
-        Tue, 25 Jul 2023 07:09:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690268981;
-        bh=fqYhkXXcuyPfSB2JuvAMOBpsxXDWNcKLfegSBD0iUqQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FSRFNXb5RTCcvA7QZqv1IShvabILCRtDjnWhIdfWkG1EyICKDgwL6Oos0GtuQ53bl
-         H8mLyJCu6+bawMOApoJW8RxF3coZWy0wSQ2k1jgXmtQ2kULqjJTiuM0filjaDd1R86
-         sY4tuO0/+ss5SyGbVu8Om5a2Bbqulp14attwcMAI=
-Date:   Tue, 25 Jul 2023 09:09:38 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH 6.4.y] i2c: busses: i2c-nomadik: Remove a useless call in
- the remove function
-Message-ID: <2023072538-vacancy-retinal-73ea@gregkh>
-References: <2023072154-animal-dropkick-6a92@gregkh>
- <62fe6800d41e04a4eb5adfa18a9e1090cbc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
- <2023072303-ranking-wife-05ae@gregkh>
- <e52e6a0b-205a-63cb-04dd-6f1c5f5c31f7@wanadoo.fr>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C22AF611F1;
+        Tue, 25 Jul 2023 07:12:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B490C433CA;
+        Tue, 25 Jul 2023 07:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690269164;
+        bh=aI7ZxYAZWlJJwjCBT+ee6LoTaj892FuVBC7Fojf9VzI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=hW7g3w5Kw0pS/hSdNwEre8jz9hbCE0eq3Kl32QphLESsVFtWgQKDSDFoFT/nzfV/n
+         m4WHOWapcyYVx1IlKAk9/Ux3pXV50OF/s0j36pltbH1j7LUaLgr83pa4rj0SxeoE/H
+         UqgtPbWREZBOXWUSNG5sbdj3Q2OV2VZiIS5+qHFhDbEeopuRJRN7IB7jACs4pDf7YT
+         m9KEdQfxoMgpCWtFO8Kq+9g3oFBAnXRVWd47iZmgR0Yi3dQiyBnE1ylwTQuePFGD0t
+         Ww+u4dnnjQlidonfcykAARagZjjkb9df9zCcG+RyNWkWk/7Sft8A3tkQbVLCDe7Xg/
+         oWExfwr2c3k0Q==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-52256241c66so177342a12.1;
+        Tue, 25 Jul 2023 00:12:44 -0700 (PDT)
+X-Gm-Message-State: ABy/qLZQv38xLk3Kdu2tdQinU3GHUkkLIdU+6UkR/upBizutazIZGuRM
+        fJqu1k5fg2B1jlOOV8raHcEW3b9nmR5X9AB+zfo=
+X-Google-Smtp-Source: APBJJlHQPOq5U9UiunyY1ciPlHNXhaZTj9WL96PQqOavAh1qrAHgwh701yOcTY56SwThmVOTkw7K25bIWNxzspX06+4=
+X-Received: by 2002:a05:6402:2802:b0:51e:588b:20ca with SMTP id
+ h2-20020a056402280200b0051e588b20camr1618231ede.8.1690269162359; Tue, 25 Jul
+ 2023 00:12:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e52e6a0b-205a-63cb-04dd-6f1c5f5c31f7@wanadoo.fr>
+References: <1690268708-5899-1-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <1690268708-5899-1-git-send-email-yangtiezhu@loongson.cn>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Tue, 25 Jul 2023 15:12:31 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H65jzk+PpuXBH79Q2XwYVzFdL55vFUhXTD1R4iUQ3zd-g@mail.gmail.com>
+Message-ID: <CAAhV-H65jzk+PpuXBH79Q2XwYVzFdL55vFUhXTD1R4iUQ3zd-g@mail.gmail.com>
+Subject: Re: [PATCH bpf-next] LoongArch: BPF: Fix check condition to call
+ lu32id in move_imm()
+To:     Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+        loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org,
+        #@web.codeaurora.org, 6.1@web.codeaurora.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 10:20:12PM +0200, Marion & Christophe JAILLET wrote:
-> 
-> Le 23/07/2023 à 22:34, Greg KH a écrit :
-> > On Fri, Jul 21, 2023 at 07:47:41PM +0200, Christophe JAILLET wrote:
-> > > Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
-> > > driver"), there is no more request_mem_region() call in this driver.
-> > > 
-> > > So remove the release_mem_region() call from the remove function which is
-> > > likely a left over.
-> > > 
-> > > Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
-> > > Cc: <stable@vger.kernel.org> # v3.6+
-> > > Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> > > Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-> > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > > ---
-> > > The patch below that should fix a merge conflict related to commit
-> > > 9c7174db4cdd1 ("i2c: nomadik: Use devm_clk_get_enabled()") has been
-> > > HAND MODIFIED.
-> > I don't understand, that commit is not in the stable trees.  What do you
-> > mean by "hand modified"?
-> 
-> 
-> I mean that I took the file initially generated by git format-patch when I
-> sent the patch against -next.
-> 
-> I updated the diff context from this file and left everything else as-is.
-> I only added some (apparently unclear :) ) context below the ---.
-> 
-> 
-> Yes, precisely.
-> My patch has been sent *after* 9c7174db4cdd1 in -next, and it depends on it.
-> 
-> The proposed modified patch for backport tries to deal with this missing
-> part in older branches.
-> 
-> If 9c7174db4cdd1 was also backported, I think that my patch would apply
-> cleanly.
-> 
-> 
-> > > I hope it is fine, but is provided as-is. Especially line numbers should be
-> > > wrong, but 'patch' should be able to deal with it. (sorry if it does not apply)
-> > > 
-> > > I guess that it should also apply to all previous branches.
-> > > 
-> > > I've left the commit description as it was. Not sure what to do with A-b and R-b
-> > > tags.
-> > Why isn't this needed in Linus's tree?
-> 
-> 
-> I never said that.
-> 
-> It is one of the first time, if not the first one, I update a patch to ease
-> backport.
-> I only sent something for 6.4.y, but it must be valid for other branches as
-> well. (i.e. # v3.6+)
+Queued for loongarch-next, thanks.
 
-But what is the patch in Linus's tree?  If it's not there yet, there's
-nothing we can do with this for stable backports.  If it is there, we
-need the git commit id in Linus's tree.
+Huacai
 
-Still confused,
-
-greg k-h
+On Tue, Jul 25, 2023 at 3:05=E2=80=AFPM Tiezhu Yang <yangtiezhu@loongson.cn=
+> wrote:
+>
+> As the code comment says, the initial aim is to reduce one instruction
+> in some corner cases, if bit[51:31] is all 0 or all 1, no need to call
+> lu32id, that is to say, it should call lu32id only if bit[51:31] is not
+> all 0 and not all 1. The current code always call lu32id, the result is
+> right but the logic is unexpected and wrong, fix it.
+>
+> Cc: stable@vger.kernel.org # 6.1
+> Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+> Reported-by: Colin King (gmail) <colin.i.king@gmail.com>
+> Closes: https://lore.kernel.org/all/bcf97046-e336-712a-ac68-7fd194f2953e@=
+gmail.com/
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> ---
+>  arch/loongarch/net/bpf_jit.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/loongarch/net/bpf_jit.h b/arch/loongarch/net/bpf_jit.h
+> index c335dc4..6858633 100644
+> --- a/arch/loongarch/net/bpf_jit.h
+> +++ b/arch/loongarch/net/bpf_jit.h
+> @@ -150,7 +150,7 @@ static inline void move_imm(struct jit_ctx *ctx, enum=
+ loongarch_gpr rd, long imm
+>                          * no need to call lu32id to do a new filled oper=
+ation.
+>                          */
+>                         imm_51_31 =3D (imm >> 31) & 0x1fffff;
+> -                       if (imm_51_31 !=3D 0 || imm_51_31 !=3D 0x1fffff) =
+{
+> +                       if (imm_51_31 !=3D 0 && imm_51_31 !=3D 0x1fffff) =
+{
+>                                 /* lu32id rd, imm_51_32 */
+>                                 imm_51_32 =3D (imm >> 32) & 0xfffff;
+>                                 emit_insn(ctx, lu32id, rd, imm_51_32);
+> --
+> 2.1.0
+>
+>
