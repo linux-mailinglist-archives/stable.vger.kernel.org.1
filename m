@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D7B7614D5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5000076113B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234451AbjGYLXP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60524 "EHLO
+        id S231254AbjGYKtA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234570AbjGYLXI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA3701AA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:05 -0700 (PDT)
+        with ESMTP id S232242AbjGYKs6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:48:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A5F0199D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:48:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92B466167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A600DC433C8;
-        Tue, 25 Jul 2023 11:23:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95AF76165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C41C433CC;
+        Tue, 25 Jul 2023 10:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284185;
-        bh=TmFCbMQWgCEViApQTymdYPsJYzjQtTcf9RdAopETO+g=;
+        s=korg; t=1690282135;
+        bh=w5efejBajAcnpsxg88S9kTJUWo3v09h5RvOz38U7ueE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M1DbMXWeh9RctxK1mDKYsbkXualvCkOhp/Mrnj9EsGAp2q+WXPNcf8ygwyZWUJN/6
-         fdTRtT6Z0BsJie2j55Pv7LF76YYJykCb7hTllBz6QEF9tDMm2XICeXlAl3FLZZSV7V
-         8psLM8a+bVE3DR40bPcQbiNujQzn3a8+QgnP7xog=
+        b=CcJ1O7UcktuKFJAD82z/gRWczK4rFX0cMkK1bAwvfhGyennuRdayJA023u98yrBbA
+         RSapdPzCy2ARo73rptAxR0AjC493L7dbsAWdfhkENVy2PlhcxSk04iTe5eQoSFygBm
+         tnvvkG0burLryGJqAdUU7N6hWAexQuZUnXX2dS+w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Prashanth K <quic_prashk@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 248/509] Revert "usb: common: usb-conn-gpio: Set last role to unknown before initial detection"
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 020/227] btrfs: set_page_extent_mapped after read_folio in btrfs_cont_expand
 Date:   Tue, 25 Jul 2023 12:43:07 +0200
-Message-ID: <20230725104605.101523538@linuxfoundation.org>
+Message-ID: <20230725104515.637638060@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,97 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit df49f2a0ac4a34c0cb4b5c233fcfa0add644c43c ]
+commit 17b17fcd6d446b95904a6929c40012ee7f0afc0c upstream.
 
-This reverts commit edd60d24bd858cef165274e4cd6cab43bdc58d15.
+While trying to get the subpage blocksize tests running, I hit the
+following panic on generic/476
 
-Heikki reports that this should not be a global flag just to work around
-one broken driver and should be fixed differently, so revert it.
+  assertion failed: PagePrivate(page) && page->private, in fs/btrfs/subpage.c:229
+  kernel BUG at fs/btrfs/subpage.c:229!
+  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+  CPU: 1 PID: 1453 Comm: fsstress Not tainted 6.4.0-rc7+ #12
+  Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20230301gitf80f052277c8-26.fc38 03/01/2023
+  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+  pc : btrfs_subpage_assert+0xbc/0xf0
+  lr : btrfs_subpage_assert+0xbc/0xf0
+  Call trace:
+   btrfs_subpage_assert+0xbc/0xf0
+   btrfs_subpage_clear_checked+0x38/0xc0
+   btrfs_page_clear_checked+0x48/0x98
+   btrfs_truncate_block+0x5d0/0x6a8
+   btrfs_cont_expand+0x5c/0x528
+   btrfs_write_check.isra.0+0xf8/0x150
+   btrfs_buffered_write+0xb4/0x760
+   btrfs_do_write_iter+0x2f8/0x4b0
+   btrfs_file_write_iter+0x1c/0x30
+   do_iter_readv_writev+0xc8/0x158
+   do_iter_write+0x9c/0x210
+   vfs_iter_write+0x24/0x40
+   iter_file_splice_write+0x224/0x390
+   direct_splice_actor+0x38/0x68
+   splice_direct_to_actor+0x12c/0x260
+   do_splice_direct+0x90/0xe8
+   generic_copy_file_range+0x50/0x90
+   vfs_copy_file_range+0x29c/0x470
+   __arm64_sys_copy_file_range+0xcc/0x498
+   invoke_syscall.constprop.0+0x80/0xd8
+   do_el0_svc+0x6c/0x168
+   el0_svc+0x50/0x1b0
+   el0t_64_sync_handler+0x114/0x120
+   el0t_64_sync+0x194/0x198
 
-Reported-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Fixes: edd60d24bd85 ("usb: common: usb-conn-gpio: Set last role to unknown before initial detection")
-Link: https://lore.kernel.org/r/ZImE4L3YgABnCIsP@kuha.fi.intel.com
-Cc: Prashanth K <quic_prashk@quicinc.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+This happens because during btrfs_cont_expand we'll get a page, set it
+as mapped, and if it's not Uptodate we'll read it.  However between the
+read and re-locking the page we could have called release_folio() on the
+page, but left the page in the file mapping.  release_folio() can clear
+the page private, and thus further down we blow up when we go to modify
+the subpage bits.
+
+Fix this by putting the set_page_extent_mapped() after the read.  This
+is safe because read_folio() will call set_page_extent_mapped() before
+it does the read, and then if we clear page private but leave it on the
+mapping we're completely safe re-setting set_page_extent_mapped().  With
+this patch I can now run generic/476 without panicing.
+
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.c                       | 2 --
- drivers/usb/common/usb-conn-gpio.c             | 3 ---
- drivers/usb/musb/jz4740.c                      | 2 --
- drivers/usb/roles/intel-xhci-usb-role-switch.c | 2 --
- include/linux/usb/role.h                       | 1 -
- 5 files changed, 10 deletions(-)
+ fs/btrfs/inode.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index e5fe640b2bb01..8fe7420de033d 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -243,8 +243,6 @@ static enum usb_role cdns3_hw_role_state_machine(struct cdns3 *cdns)
- 		if (!vbus)
- 			role = USB_ROLE_NONE;
- 		break;
--	default:
--		break;
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4734,9 +4734,6 @@ again:
+ 		ret = -ENOMEM;
+ 		goto out;
  	}
+-	ret = set_page_extent_mapped(page);
+-	if (ret < 0)
+-		goto out_unlock;
  
- 	dev_dbg(cdns->dev, "role %d -> %d\n", cdns->role, role);
-diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
-index 5754e467c16a8..c9545a4eff664 100644
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -276,9 +276,6 @@ static int usb_conn_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, info);
- 
--	/* Set last role to unknown before performing the initial detection */
--	info->last_role = USB_ROLE_UNKNOWN;
--
- 	/* Perform initial detection */
- 	usb_conn_queue_dwork(info, 0);
- 
-diff --git a/drivers/usb/musb/jz4740.c b/drivers/usb/musb/jz4740.c
-index f283629091ec4..c4fe1f4cd17a3 100644
---- a/drivers/usb/musb/jz4740.c
-+++ b/drivers/usb/musb/jz4740.c
-@@ -91,8 +91,6 @@ static int jz4740_musb_role_switch_set(struct usb_role_switch *sw,
- 	case USB_ROLE_HOST:
- 		atomic_notifier_call_chain(&phy->notifier, USB_EVENT_ID, phy);
- 		break;
--	default:
--		break;
+ 	if (!PageUptodate(page)) {
+ 		ret = btrfs_read_folio(NULL, page_folio(page));
+@@ -4751,6 +4748,17 @@ again:
+ 			goto out_unlock;
+ 		}
  	}
++
++	/*
++	 * We unlock the page after the io is completed and then re-lock it
++	 * above.  release_folio() could have come in between that and cleared
++	 * PagePrivate(), but left the page in the mapping.  Set the page mapped
++	 * here to make sure it's properly set for the subpage stuff.
++	 */
++	ret = set_page_extent_mapped(page);
++	if (ret < 0)
++		goto out_unlock;
++
+ 	wait_on_page_writeback(page);
  
- 	return 0;
-diff --git a/drivers/usb/roles/intel-xhci-usb-role-switch.c b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-index 4d6a3dd06e011..5c96e929acea0 100644
---- a/drivers/usb/roles/intel-xhci-usb-role-switch.c
-+++ b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-@@ -97,8 +97,6 @@ static int intel_xhci_usb_set_role(struct usb_role_switch *sw,
- 		val |= SW_VBUS_VALID;
- 		drd_config = DRD_CONFIG_STATIC_DEVICE;
- 		break;
--	default:
--		break;
- 	}
- 	val |= SW_IDPIN_EN;
- 	if (data->enable_sw_switch) {
-diff --git a/include/linux/usb/role.h b/include/linux/usb/role.h
-index aecfce46d3544..b9ccaeb8a4aef 100644
---- a/include/linux/usb/role.h
-+++ b/include/linux/usb/role.h
-@@ -11,7 +11,6 @@ enum usb_role {
- 	USB_ROLE_NONE,
- 	USB_ROLE_HOST,
- 	USB_ROLE_DEVICE,
--	USB_ROLE_UNKNOWN,
- };
- 
- typedef int (*usb_role_switch_set_t)(struct usb_role_switch *sw,
--- 
-2.39.2
-
+ 	lock_extent(io_tree, block_start, block_end, &cached_state);
 
 
