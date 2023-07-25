@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C8497613DC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C767613DE
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:14:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234158AbjGYLOf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:14:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50156 "EHLO
+        id S234234AbjGYLOq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:14:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234156AbjGYLOP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:14:15 -0400
+        with ESMTP id S234238AbjGYLO0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:14:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCCF935B7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:13:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78DE83C0A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:13:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39DAA61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:13:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1CFC433C8;
-        Tue, 25 Jul 2023 11:13:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B99D661683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:13:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA342C433C7;
+        Tue, 25 Jul 2023 11:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283601;
-        bh=Iyb+JBOmmiIfcXz1JePFw9gvAJ7XdQkifilg8I57LIA=;
+        s=korg; t=1690283607;
+        bh=zsZxocKI36DafTHxeSlxUIHV3nHxdnyvaE6BF5ZuKBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cEaGXTAwFi/laQkP/Y6bhlHCmaSNsQO0jthMdISyGMcNuJT9xa4NYdDjDxTHnrMg0
-         Mpnx2UvQ9Lyc+1nCBdLK21nqRgr2RFL93CCcpNo/IUplYpmF/gss3dQVhL7KJlEP7v
-         Ht/Ki4ruxPJm2N5MxeFkHNPv08qNc//d0qXaR1bA=
+        b=Mkc3UcWk5vILj055lXRkr6/V2S1OHn6Rm9NSqNZmgUlTJvAHanbG8cgbPkg2OjOoe
+         68Ezwvop7Dy08TAtRw5FDM3iYAmuceu1O5R+aoyZLyfiddJXZk63GpGP3I8kt7qJ5G
+         Qcz0FLEmnGf7aMHfXcxM8QwDXVqxtjOMpTlVmL+w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev, Niklas Neronin <niklas.neronin@intel.com>,
+        Tero Kristo <tero.kristo@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/509] ARM: 9303/1: kprobes: avoid missing-declaration warnings
-Date:   Tue, 25 Jul 2023 12:39:27 +0200
-Message-ID: <20230725104554.943094146@linuxfoundation.org>
+Subject: [PATCH 5.10 029/509] cpufreq: intel_pstate: Fix energy_performance_preference for passive
+Date:   Tue, 25 Jul 2023 12:39:28 +0200
+Message-ID: <20230725104554.986897126@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
 References: <20230725104553.588743331@linuxfoundation.org>
@@ -58,101 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Tero Kristo <tero.kristo@linux.intel.com>
 
-[ Upstream commit 1b9c3ddcec6a55e15d3e38e7405e2d078db02020 ]
+[ Upstream commit 03f44ffb3d5be2fceda375d92c70ab6de4df7081 ]
 
-checker_stack_use_t32strd() and kprobe_handler() can be made static since
-they are not used from other files, while coverage_start_registers()
-and __kprobes_test_case() are used from assembler code, and just need
-a declaration to avoid a warning with the global definition.
+If the intel_pstate driver is set to passive mode, then writing the
+same value to the energy_performance_preference sysfs twice will fail.
+This is caused by the wrong return value used (index of the matched
+energy_perf_string), instead of the length of the passed in parameter.
+Fix by forcing the internal return value to zero when the same
+preference is passed in by user. This same issue is not present when
+active mode is used for the driver.
 
-arch/arm/probes/kprobes/checkers-common.c:43:18: error: no previous prototype for 'checker_stack_use_t32strd'
-arch/arm/probes/kprobes/core.c:236:16: error: no previous prototype for 'kprobe_handler'
-arch/arm/probes/kprobes/test-core.c:723:10: error: no previous prototype for 'coverage_start_registers'
-arch/arm/probes/kprobes/test-core.c:918:14: error: no previous prototype for '__kprobes_test_case_start'
-arch/arm/probes/kprobes/test-core.c:952:14: error: no previous prototype for '__kprobes_test_case_end_16'
-arch/arm/probes/kprobes/test-core.c:967:14: error: no previous prototype for '__kprobes_test_case_end_32'
-
-Fixes: 6624cf651f1a ("ARM: kprobes: collects stack consumption for store instructions")
-Fixes: 454f3e132d05 ("ARM/kprobes: Remove jprobe arm implementation")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: f6ebbcf08f37 ("cpufreq: intel_pstate: Implement passive mode with HWP enabled")
+Reported-by: Niklas Neronin <niklas.neronin@intel.com>
+Signed-off-by: Tero Kristo <tero.kristo@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/probes/kprobes/checkers-common.c | 2 +-
- arch/arm/probes/kprobes/core.c            | 2 +-
- arch/arm/probes/kprobes/opt-arm.c         | 2 --
- arch/arm/probes/kprobes/test-core.c       | 2 +-
- arch/arm/probes/kprobes/test-core.h       | 4 ++++
- 5 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/probes/kprobes/checkers-common.c b/arch/arm/probes/kprobes/checkers-common.c
-index 4d720990cf2a3..eba7ac4725c02 100644
---- a/arch/arm/probes/kprobes/checkers-common.c
-+++ b/arch/arm/probes/kprobes/checkers-common.c
-@@ -40,7 +40,7 @@ enum probes_insn checker_stack_use_imm_0xx(probes_opcode_t insn,
-  * Different from other insn uses imm8, the real addressing offset of
-  * STRD in T32 encoding should be imm8 * 4. See ARMARM description.
-  */
--enum probes_insn checker_stack_use_t32strd(probes_opcode_t insn,
-+static enum probes_insn checker_stack_use_t32strd(probes_opcode_t insn,
- 		struct arch_probes_insn *asi,
- 		const struct decode_header *h)
- {
-diff --git a/arch/arm/probes/kprobes/core.c b/arch/arm/probes/kprobes/core.c
-index e513d8a467760..c0ed172893787 100644
---- a/arch/arm/probes/kprobes/core.c
-+++ b/arch/arm/probes/kprobes/core.c
-@@ -231,7 +231,7 @@ singlestep(struct kprobe *p, struct pt_regs *regs, struct kprobe_ctlblk *kcb)
-  * kprobe, and that level is reserved for user kprobe handlers, so we can't
-  * risk encountering a new kprobe in an interrupt handler.
-  */
--void __kprobes kprobe_handler(struct pt_regs *regs)
-+static void __kprobes kprobe_handler(struct pt_regs *regs)
- {
- 	struct kprobe *p, *cur;
- 	struct kprobe_ctlblk *kcb;
-diff --git a/arch/arm/probes/kprobes/opt-arm.c b/arch/arm/probes/kprobes/opt-arm.c
-index c78180172120f..e20304f1d8bc9 100644
---- a/arch/arm/probes/kprobes/opt-arm.c
-+++ b/arch/arm/probes/kprobes/opt-arm.c
-@@ -145,8 +145,6 @@ __arch_remove_optimized_kprobe(struct optimized_kprobe *op, int dirty)
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 1686705bee7bd..4b06b81d8bb0a 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -777,6 +777,8 @@ static ssize_t store_energy_performance_preference(
+ 			err = cpufreq_start_governor(policy);
+ 			if (!ret)
+ 				ret = err;
++		} else {
++			ret = 0;
+ 		}
  	}
- }
  
--extern void kprobe_handler(struct pt_regs *regs);
--
- static void
- optimized_callback(struct optimized_kprobe *op, struct pt_regs *regs)
- {
-diff --git a/arch/arm/probes/kprobes/test-core.c b/arch/arm/probes/kprobes/test-core.c
-index c562832b86272..171c7076b89f4 100644
---- a/arch/arm/probes/kprobes/test-core.c
-+++ b/arch/arm/probes/kprobes/test-core.c
-@@ -720,7 +720,7 @@ static const char coverage_register_lookup[16] = {
- 	[REG_TYPE_NOSPPCX]	= COVERAGE_ANY_REG | COVERAGE_SP,
- };
- 
--unsigned coverage_start_registers(const struct decode_header *h)
-+static unsigned coverage_start_registers(const struct decode_header *h)
- {
- 	unsigned regs = 0;
- 	int i;
-diff --git a/arch/arm/probes/kprobes/test-core.h b/arch/arm/probes/kprobes/test-core.h
-index 19a5b2add41e1..805116c2ec27c 100644
---- a/arch/arm/probes/kprobes/test-core.h
-+++ b/arch/arm/probes/kprobes/test-core.h
-@@ -453,3 +453,7 @@ void kprobe_thumb32_test_cases(void);
- #else
- void kprobe_arm_test_cases(void);
- #endif
-+
-+void __kprobes_test_case_start(void);
-+void __kprobes_test_case_end_16(void);
-+void __kprobes_test_case_end_32(void);
 -- 
 2.39.2
 
