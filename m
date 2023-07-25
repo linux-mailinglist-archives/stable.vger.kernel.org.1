@@ -2,50 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86BCB7614CD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D73C761195
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234478AbjGYLW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
+        id S231222AbjGYKxg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234458AbjGYLWz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:55 -0400
+        with ESMTP id S230205AbjGYKwA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447F11BEE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10863212B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E4BD61699
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A254C433C8;
-        Tue, 25 Jul 2023 11:22:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E493261600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03638C433C8;
+        Tue, 25 Jul 2023 10:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284165;
-        bh=pPqpxxxsNpwJRfOJB1PFI12LmyEANEKEm/1TgvXf3qE=;
+        s=korg; t=1690282274;
+        bh=Y1thFwVoES51AB1wPzTd0ivxRPqBzGtpvZ+MM/mJa3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qSblihv38JvBjaIWZHF7ucC5H2MK4Du6cihlOvHWnTSK01bQc/UpBx4vgSD+Ma5/n
-         SHq2y93dhvA6eI03qzqcZszNuUeUsZd8lDjBCTuRx67jd6O6hpEu8Ou9cmucVx4j6c
-         e2PxNqES2bmFshDkNDggEta4WdLcRRoxlv7JoAsg=
+        b=kQ/h9oobNoL7bjHt+3SrUkJwE/Y4/4uiP4V0OVZza65F7UF/RZBo5s0FU1nLcccEL
+         QEBXgjRGMZGe/R9TD7Cgw+1MrSF4F4L01gMQ0JS3QJYPPtXBujyOL5G+akXtSPdbgk
+         SuWIwerJXKafiWQHFCJgQaNIaUUfggGrDNHr6Z9s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jeff Chase <jnchase@google.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Joe Tessler <jrt@google.com>, Arnd Bergmann <arnd@arndb.de>,
-        Mark Brown <broonie@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 259/509] media: cec: i2c: ch7322: also select REGMAP
+        patches@lists.linux.dev, stable@kernel.org,
+        Mark Brown <broonie@kernel.org>, Xu Yilun <yilun.xu@intel.com>
+Subject: [PATCH 6.4 031/227] regmap: Account for register length in SMBus I/O limits
 Date:   Tue, 25 Jul 2023 12:43:18 +0200
-Message-ID: <20230725104605.608423583@linuxfoundation.org>
+Message-ID: <20230725104516.130329270@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,69 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 29f96ac23648b2259f42d40703c47dd18fd172ca ]
+commit 0c9d2eb5e94792fe64019008a04d4df5e57625af upstream.
 
-Selecting only REGMAP_I2C can leave REGMAP unset, causing build errors,
-so also select REGMAP to prevent the build errors.
+The SMBus I2C buses have limits on the size of transfers they can do but
+do not factor in the register length meaning we may try to do a transfer
+longer than our length limit, the core will not take care of this.
+Future changes will factor this out into the core but there are a number
+of users that assume current behaviour so let's just do something
+conservative here.
 
-../drivers/media/cec/i2c/ch7322.c:158:21: error: variable 'ch7322_regmap' has initializer but incomplete type
-  158 | static const struct regmap_config ch7322_regmap = {
-../drivers/media/cec/i2c/ch7322.c:159:10: error: 'const struct regmap_config' has no member named 'reg_bits'
-  159 |         .reg_bits = 8,
-../drivers/media/cec/i2c/ch7322.c:159:21: warning: excess elements in struct initializer
-  159 |         .reg_bits = 8,
-../drivers/media/cec/i2c/ch7322.c:160:10: error: 'const struct regmap_config' has no member named 'val_bits'
-  160 |         .val_bits = 8,
-../drivers/media/cec/i2c/ch7322.c:160:21: warning: excess elements in struct initializer
-  160 |         .val_bits = 8,
-../drivers/media/cec/i2c/ch7322.c:161:10: error: 'const struct regmap_config' has no member named 'max_register'
-  161 |         .max_register = 0x7f,
-../drivers/media/cec/i2c/ch7322.c:161:25: warning: excess elements in struct initializer
-  161 |         .max_register = 0x7f,
-../drivers/media/cec/i2c/ch7322.c:162:10: error: 'const struct regmap_config' has no member named 'disable_locking'
-  162 |         .disable_locking = true,
-../drivers/media/cec/i2c/ch7322.c:162:28: warning: excess elements in struct initializer
-  162 |         .disable_locking = true,
-../drivers/media/cec/i2c/ch7322.c: In function 'ch7322_probe':
-../drivers/media/cec/i2c/ch7322.c:468:26: error: implicit declaration of function 'devm_regmap_init_i2c' [-Werror=implicit-function-declaration]
-  468 |         ch7322->regmap = devm_regmap_init_i2c(client, &ch7322_regmap);
-../drivers/media/cec/i2c/ch7322.c:468:24: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-  468 |         ch7322->regmap = devm_regmap_init_i2c(client, &ch7322_regmap);
-../drivers/media/cec/i2c/ch7322.c: At top level:
-../drivers/media/cec/i2c/ch7322.c:158:35: error: storage size of 'ch7322_regmap' isn't known
-  158 | static const struct regmap_config ch7322_regmap = {
+This does not take account padding bits but practically speaking these
+are very rarely if ever used on I2C buses given that they generally run
+slowly enough to mean there's no issue.
 
-Link: https://lore.kernel.org/linux-media/20230608025435.29249-1-rdunlap@infradead.org
-Fixes: 21b9a47e0ec7 ("media: cec: i2c: ch7322: Add ch7322 CEC controller driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jeff Chase <jnchase@google.com>
-Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc: Joe Tessler <jrt@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-2-80e2aed22e83@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/i2c/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/regmap/regmap-i2c.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/cec/i2c/Kconfig b/drivers/media/cec/i2c/Kconfig
-index 70432a1d69186..d912d143fb312 100644
---- a/drivers/media/cec/i2c/Kconfig
-+++ b/drivers/media/cec/i2c/Kconfig
-@@ -5,6 +5,7 @@
- config CEC_CH7322
- 	tristate "Chrontel CH7322 CEC controller"
- 	depends on I2C
-+	select REGMAP
- 	select REGMAP_I2C
- 	select CEC_CORE
- 	help
--- 
-2.39.2
-
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -242,8 +242,8 @@ static int regmap_i2c_smbus_i2c_read(voi
+ static const struct regmap_bus regmap_i2c_smbus_i2c_block = {
+ 	.write = regmap_i2c_smbus_i2c_write,
+ 	.read = regmap_i2c_smbus_i2c_read,
+-	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
+-	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
++	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 1,
++	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 1,
+ };
+ 
+ static int regmap_i2c_smbus_i2c_write_reg16(void *context, const void *data,
+@@ -299,8 +299,8 @@ static int regmap_i2c_smbus_i2c_read_reg
+ static const struct regmap_bus regmap_i2c_smbus_i2c_block_reg16 = {
+ 	.write = regmap_i2c_smbus_i2c_write_reg16,
+ 	.read = regmap_i2c_smbus_i2c_read_reg16,
+-	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
+-	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
++	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 2,
++	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 2,
+ };
+ 
+ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
 
 
