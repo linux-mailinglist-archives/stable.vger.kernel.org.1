@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF5C761769
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D90C7615DC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231700AbjGYLsg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
+        id S234693AbjGYLeB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232103AbjGYLro (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:44 -0400
+        with ESMTP id S233482AbjGYLeB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E1E18D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFED510E7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDA3B616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0BBC433C8;
-        Tue, 25 Jul 2023 11:47:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4975D616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583E2C433C7;
+        Tue, 25 Jul 2023 11:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285662;
-        bh=yFFrRYuObWxpXUe4jw4te5mUJtwHI3A8hz5CrcaMtJY=;
+        s=korg; t=1690284838;
+        bh=m5V4VViDpcT/XNsvqKaxlZt8RzBckQhvVeebGBjQ6bc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YwU2wFN2CO+4ICqEZn2WUX2PpBfliQ3gLJ253gxNt7UeEqKnMCWQeo2DQ25TmlXoh
-         N5JrsUIe+BiDeRGE0TT3SBaZf35V8LGZtvRchIpZ+a43UCArSwxspNmsdG5snCHPyZ
-         iRXBoVLpaesbG95Bc/PqxQny9k/iSovNmhEgS9iY=
+        b=s0sLbTyjKJzeh6deTjSDwb/vrtPubRCXMiEAi20QofcYdciKVJp4q/MDvzYMbIsnR
+         swc1NS1Q1YzSHxnP5oUwZlb0dk1WU96wJG6LneOMttdzrimWT8F3xxbXTzRbMnYm1o
+         Yj/sIiFPTv25wufYdHQi7lGL6IDXf/Aa8f5YgIlE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        stable <stable@kernel.org>
-Subject: [PATCH 5.4 256/313] serial: atmel: dont enable IRQs prematurely
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 470/509] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
 Date:   Tue, 25 Jul 2023 12:46:49 +0200
-Message-ID: <20230725104532.123445858@linuxfoundation.org>
+Message-ID: <20230725104615.274689769@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +57,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit 27a826837ec9a3e94cc44bd9328b8289b0fcecd7 upstream.
+[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
 
-The atmel_complete_tx_dma() function disables IRQs at the start
-of the function by calling spin_lock_irqsave(&port->lock, flags);
-There is no need to disable them a second time using the
-spin_lock_irq() function and, in fact, doing so is a bug because
-it will enable IRQs prematurely when we call spin_unlock_irq().
+-Wstringop-overflow is legitimately warning us about extra_size
+pontentially being zero at some point, hence potenially ending
+up _allocating_ zero bytes of memory for extra pointer and then
+trying to access such object in a call to copy_from_user().
 
-Just use spin_lock/unlock() instead without disabling or enabling
-IRQs.
+Fix this by adding a sanity check to ensure we never end up
+trying to allocate zero bytes of data for extra pointer, before
+continue executing the rest of the code in the function.
 
-Fixes: 08f738be88bb ("serial: at91: add tx dma support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Acked-by: Richard Genoud <richard.genoud@gmail.com>
-Link: https://lore.kernel.org/r/cb7c39a9-c004-4673-92e1-be4e34b85368@moroto.mountain
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Address the following -Wstringop-overflow warning seen when built
+m68k architecture with allyesconfig configuration:
+                 from net/wireless/wext-core.c:11:
+In function '_copy_from_user',
+    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
+arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
+   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
+  153 |                 memset(to + (n - res), 0, res);
+      |                 ^~~~~~
+In function 'kmalloc',
+    inlined from 'kzalloc' at include/linux/slab.h:694:9,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
+include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
+  577 |         return __kmalloc(size, flags);
+      |                ^~~~~~~~~~~~~~~~~~~~~~
+
+This help with the ongoing efforts to globally enable
+-Wstringop-overflow.
+
+Link: https://github.com/KSPP/linux/issues/315
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/atmel_serial.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/wext-core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/tty/serial/atmel_serial.c
-+++ b/drivers/tty/serial/atmel_serial.c
-@@ -884,11 +884,11 @@ static void atmel_complete_tx_dma(void *
+diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
+index 76a80a41615be..a57f54bc0e1a7 100644
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -796,6 +796,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
+ 		}
+ 	}
  
- 	port->icount.tx += atmel_port->tx_len;
- 
--	spin_lock_irq(&atmel_port->lock_tx);
-+	spin_lock(&atmel_port->lock_tx);
- 	async_tx_ack(atmel_port->desc_tx);
- 	atmel_port->cookie_tx = -EINVAL;
- 	atmel_port->desc_tx = NULL;
--	spin_unlock_irq(&atmel_port->lock_tx);
-+	spin_unlock(&atmel_port->lock_tx);
- 
- 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
- 		uart_write_wakeup(port);
++	/* Sanity-check to ensure we never end up _allocating_ zero
++	 * bytes of data for extra.
++	 */
++	if (extra_size <= 0)
++		return -EFAULT;
++
+ 	/* kzalloc() ensures NULL-termination for essid_compat. */
+ 	extra = kzalloc(extra_size, GFP_KERNEL);
+ 	if (!extra)
+-- 
+2.39.2
+
 
 
