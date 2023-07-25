@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53BB6761196
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2B1876126B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231624AbjGYKxh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58430 "EHLO
+        id S233818AbjGYLCV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233541AbjGYKwM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:12 -0400
+        with ESMTP id S233833AbjGYLCE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D83711FC7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8EDA1FD6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D02B615FE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81708C433C8;
-        Tue, 25 Jul 2023 10:51:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D71B61689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6B1C433C8;
+        Tue, 25 Jul 2023 10:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282279;
-        bh=Puo2ywKsycAM5/PzEZl0qDeS+SlrJvR0ktGgJk+DU6A=;
+        s=korg; t=1690282745;
+        bh=+Lrr2QBCzXLYzHCb6BsVRVYjkB81rtr0uy5TsCVFiQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P2zWVPtetu4XpfMQZqoRis1gI25SjtLjSaCAJTqa8t00inBt4okFOXsTXnJQfaEtl
-         eHi06bqXuFOHykxXnVLJ4ljv00xyfkxbJm0x1BvUiY2cXp9RdWwfR6+NxJkJHTOY0u
-         M3t2UYzkb0fhSOq5XMFANhw9dOhj0fWrR26McFnE=
+        b=Y5RPBsNnBBARLUw36LG1HCICO0QG/ETK7jP2S5kMbwyTjEtNqWPIafqB+GbjVRsyK
+         HLA3JQ2j9KtlibhTWJSunq+prAx4nDCSLJ+5SV0OZmnTkfq6GrQlStp9YA/sVTHFrx
+         MVGmRxCq+x/CxK+gK41wJdhAIstu3A8y6DzC3W3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kristina Martsenko <kristina.martsenko@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.4 073/227] KVM: arm64: Disable preemption in kvm_arch_hardware_enable()
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 012/183] btrfs: set_page_extent_mapped after read_folio in btrfs_cont_expand
 Date:   Tue, 25 Jul 2023 12:44:00 +0200
-Message-ID: <20230725104517.784687016@linuxfoundation.org>
+Message-ID: <20230725104508.266706795@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,66 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Zyngier <maz@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 970dee09b230895fe2230d2b32ad05a2826818c6 upstream.
+commit 17b17fcd6d446b95904a6929c40012ee7f0afc0c upstream.
 
-Since 0bf50497f03b ("KVM: Drop kvm_count_lock and instead protect
-kvm_usage_count with kvm_lock"), hotplugging back a CPU whilst
-a guest is running results in a number of ugly splats as most
-of this code expects to run with preemption disabled, which isn't
-the case anymore.
+While trying to get the subpage blocksize tests running, I hit the
+following panic on generic/476
 
-While the context is preemptable, it isn't migratable, which should
-be enough. But we have plenty of preemptible() checks all over
-the place, and our per-CPU accessors also disable preemption.
+  assertion failed: PagePrivate(page) && page->private, in fs/btrfs/subpage.c:229
+  kernel BUG at fs/btrfs/subpage.c:229!
+  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+  CPU: 1 PID: 1453 Comm: fsstress Not tainted 6.4.0-rc7+ #12
+  Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20230301gitf80f052277c8-26.fc38 03/01/2023
+  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+  pc : btrfs_subpage_assert+0xbc/0xf0
+  lr : btrfs_subpage_assert+0xbc/0xf0
+  Call trace:
+   btrfs_subpage_assert+0xbc/0xf0
+   btrfs_subpage_clear_checked+0x38/0xc0
+   btrfs_page_clear_checked+0x48/0x98
+   btrfs_truncate_block+0x5d0/0x6a8
+   btrfs_cont_expand+0x5c/0x528
+   btrfs_write_check.isra.0+0xf8/0x150
+   btrfs_buffered_write+0xb4/0x760
+   btrfs_do_write_iter+0x2f8/0x4b0
+   btrfs_file_write_iter+0x1c/0x30
+   do_iter_readv_writev+0xc8/0x158
+   do_iter_write+0x9c/0x210
+   vfs_iter_write+0x24/0x40
+   iter_file_splice_write+0x224/0x390
+   direct_splice_actor+0x38/0x68
+   splice_direct_to_actor+0x12c/0x260
+   do_splice_direct+0x90/0xe8
+   generic_copy_file_range+0x50/0x90
+   vfs_copy_file_range+0x29c/0x470
+   __arm64_sys_copy_file_range+0xcc/0x498
+   invoke_syscall.constprop.0+0x80/0xd8
+   do_el0_svc+0x6c/0x168
+   el0_svc+0x50/0x1b0
+   el0t_64_sync_handler+0x114/0x120
+   el0t_64_sync+0x194/0x198
 
-Since this affects released versions, let's do the easy fix first,
-disabling preemption in kvm_arch_hardware_enable(). We can always
-revisit this with a more invasive fix in the future.
+This happens because during btrfs_cont_expand we'll get a page, set it
+as mapped, and if it's not Uptodate we'll read it.  However between the
+read and re-locking the page we could have called release_folio() on the
+page, but left the page in the file mapping.  release_folio() can clear
+the page private, and thus further down we blow up when we go to modify
+the subpage bits.
 
-Fixes: 0bf50497f03b ("KVM: Drop kvm_count_lock and instead protect kvm_usage_count with kvm_lock")
-Reported-by: Kristina Martsenko <kristina.martsenko@arm.com>
-Tested-by: Kristina Martsenko <kristina.martsenko@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/aeab7562-2d39-e78e-93b1-4711f8cc3fa5@arm.com
-Cc: stable@vger.kernel.org # v6.3, v6.4
-Link: https://lore.kernel.org/r/20230703163548.1498943-1-maz@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Fix this by putting the set_page_extent_mapped() after the read.  This
+is safe because read_folio() will call set_page_extent_mapped() before
+it does the read, and then if we clear page private but leave it on the
+mapping we're completely safe re-setting set_page_extent_mapped().  With
+this patch I can now run generic/476 without panicing.
+
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/arm.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/btrfs/inode.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1793,8 +1793,17 @@ static void _kvm_arch_hardware_enable(vo
- 
- int kvm_arch_hardware_enable(void)
- {
--	int was_enabled = __this_cpu_read(kvm_arm_hardware_enabled);
-+	int was_enabled;
- 
-+	/*
-+	 * Most calls to this function are made with migration
-+	 * disabled, but not with preemption disabled. The former is
-+	 * enough to ensure correctness, but most of the helpers
-+	 * expect the later and will throw a tantrum otherwise.
-+	 */
-+	preempt_disable();
-+
-+	was_enabled = __this_cpu_read(kvm_arm_hardware_enabled);
- 	_kvm_arch_hardware_enable(NULL);
- 
- 	if (!was_enabled) {
-@@ -1802,6 +1811,8 @@ int kvm_arch_hardware_enable(void)
- 		kvm_timer_cpu_up();
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4913,9 +4913,6 @@ again:
+ 		ret = -ENOMEM;
+ 		goto out;
  	}
+-	ret = set_page_extent_mapped(page);
+-	if (ret < 0)
+-		goto out_unlock;
  
-+	preempt_enable();
+ 	if (!PageUptodate(page)) {
+ 		ret = btrfs_read_folio(NULL, page_folio(page));
+@@ -4930,6 +4927,17 @@ again:
+ 			goto out_unlock;
+ 		}
+ 	}
 +
- 	return 0;
- }
++	/*
++	 * We unlock the page after the io is completed and then re-lock it
++	 * above.  release_folio() could have come in between that and cleared
++	 * PagePrivate(), but left the page in the mapping.  Set the page mapped
++	 * here to make sure it's properly set for the subpage stuff.
++	 */
++	ret = set_page_extent_mapped(page);
++	if (ret < 0)
++		goto out_unlock;
++
+ 	wait_on_page_writeback(page);
  
+ 	lock_extent(io_tree, block_start, block_end, &cached_state);
 
 
