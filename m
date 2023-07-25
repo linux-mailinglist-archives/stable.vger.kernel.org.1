@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902F6761273
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB01D761691
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233849AbjGYLCk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:02:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40056 "EHLO
+        id S234948AbjGYLk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233860AbjGYLC2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:28 -0400
+        with ESMTP id S234949AbjGYLkV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DEA326A1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 952CF1FD3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18283616A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C240C433C7;
-        Tue, 25 Jul 2023 10:59:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BBF96169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D666C433C7;
+        Tue, 25 Jul 2023 11:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282770;
-        bh=Y1thFwVoES51AB1wPzTd0ivxRPqBzGtpvZ+MM/mJa3Y=;
+        s=korg; t=1690285213;
+        bh=I0zl0RXdqBsOg6TnVwLCWc8XiNdABBhigcYd33eG3bU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b9vTSXfy2h3fNFYYDpL3ovARqmYqSEzJ9c48Un0ZBrnBuFJOYwsMplbqaD19SahqV
-         uCAszmVN8Psy/TM0uzFqSJ7ZV6TZfMyuFOXDvrTMxPzcJdHowISJtByUTwW5mI5Q4/
-         GzaPZt34NIGJeq6lMQWUqrAPjE8ruFKuo/+lE2pE=
+        b=WFqcCerI5moUsbTeRBXs0/O5AKHZWMB+14ISo28IF3eoETVunnc6akJaacBaDA9xz
+         aK36tFVQf7Nsjnmpi8prbuFi99NXnQlpxKD3aA5JLqv3lkE2CMy6Xrj0SdhkIWI4Gh
+         fI/KO+q00qC9901sITqEXuY2FVCdED8yTWSBNOaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Mark Brown <broonie@kernel.org>, Xu Yilun <yilun.xu@intel.com>
-Subject: [PATCH 6.1 020/183] regmap: Account for register length in SMBus I/O limits
+        patches@lists.linux.dev, Jinhong Zhu <jinhongzhu@hust.edu.cn>,
+        Dan Carpenter <error27@gmail.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 095/313] scsi: qedf: Fix NULL dereference in error handling
 Date:   Tue, 25 Jul 2023 12:44:08 +0200
-Message-ID: <20230725104508.608069747@linuxfoundation.org>
+Message-ID: <20230725104525.075415685@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Jinhong Zhu <jinhongzhu@hust.edu.cn>
 
-commit 0c9d2eb5e94792fe64019008a04d4df5e57625af upstream.
+[ Upstream commit f025312b089474a54e4859f3453771314d9e3d4f ]
 
-The SMBus I2C buses have limits on the size of transfers they can do but
-do not factor in the register length meaning we may try to do a transfer
-longer than our length limit, the core will not take care of this.
-Future changes will factor this out into the core but there are a number
-of users that assume current behaviour so let's just do something
-conservative here.
+Smatch reported:
 
-This does not take account padding bits but practically speaking these
-are very rarely if ever used on I2C buses given that they generally run
-slowly enough to mean there's no issue.
+drivers/scsi/qedf/qedf_main.c:3056 qedf_alloc_global_queues()
+warn: missing unwind goto?
 
-Cc: stable@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-2-80e2aed22e83@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At this point in the function, nothing has been allocated so we can return
+directly. In particular the "qedf->global_queues" have not been allocated
+so calling qedf_free_global_queues() will lead to a NULL dereference when
+we check if (!gl[i]) and "gl" is NULL.
+
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Jinhong Zhu <jinhongzhu@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230502140022.2852-1-jinhongzhu@hust.edu.cn
+Reviewed-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-i2c.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/qedf/qedf_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/base/regmap/regmap-i2c.c
-+++ b/drivers/base/regmap/regmap-i2c.c
-@@ -242,8 +242,8 @@ static int regmap_i2c_smbus_i2c_read(voi
- static const struct regmap_bus regmap_i2c_smbus_i2c_block = {
- 	.write = regmap_i2c_smbus_i2c_write,
- 	.read = regmap_i2c_smbus_i2c_read,
--	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
--	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
-+	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 1,
-+	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 1,
- };
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index f864ef059d29e..858058f228191 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -2914,9 +2914,8 @@ static int qedf_alloc_global_queues(struct qedf_ctx *qedf)
+ 	 * addresses of our queues
+ 	 */
+ 	if (!qedf->p_cpuq) {
+-		status = -EINVAL;
+ 		QEDF_ERR(&qedf->dbg_ctx, "p_cpuq is NULL.\n");
+-		goto mem_alloc_failure;
++		return -EINVAL;
+ 	}
  
- static int regmap_i2c_smbus_i2c_write_reg16(void *context, const void *data,
-@@ -299,8 +299,8 @@ static int regmap_i2c_smbus_i2c_read_reg
- static const struct regmap_bus regmap_i2c_smbus_i2c_block_reg16 = {
- 	.write = regmap_i2c_smbus_i2c_write_reg16,
- 	.read = regmap_i2c_smbus_i2c_read_reg16,
--	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
--	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
-+	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 2,
-+	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 2,
- };
- 
- static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
+ 	qedf->global_queues = kzalloc((sizeof(struct global_queue *)
+-- 
+2.39.2
+
 
 
