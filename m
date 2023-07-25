@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F15D761594
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECC36761345
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234782AbjGYLak (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38514 "EHLO
+        id S233838AbjGYLJS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234780AbjGYLaj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0CF511B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:38 -0700 (PDT)
+        with ESMTP id S234137AbjGYLI7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0763426AD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FBA66168F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC69C433C8;
-        Tue, 25 Jul 2023 11:30:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83C0361648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FDCC433C7;
+        Tue, 25 Jul 2023 11:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284637;
-        bh=d3tRm0jycDi/q0kW0hpLMYm4sV61GxnPDeQna2/nS0U=;
+        s=korg; t=1690283267;
+        bh=nZF5eHtWmCSAo1o00/9/b0UcRnKe+0CYWJFAVG3ukQ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ApLdtdX+2H904VDdAeOa06mI+DeBNTu6tuMXTkFGtMBJyH9tMOEnGU7SE6oXijhkc
-         BlZx1ayI1c7vsK33zigcQDdspjZDE3nBmqzrhtiSsxaJKp5fyjduwG9J1wSqN2xu9U
-         qfSXqN112AxzvodRWrA8LeK4yBroQEd1mRFMRUSI=
+        b=iIH8rsx4Bo6v2YJdE5MhNrDamqV0EUbe0ptx71IXxTBt6kx33ne81F7OScqvqwQRT
+         cBWk8fTslURE48L5cfoENkhqaLeyn+9hZHRVmg6WGx97yOkIzRI2Nm2IjVRG+ZWByH
+         tgPh9xCS53AsIqPjr888qtqhkV3XjF5Hg0GftiDI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mateusz Stachyra <m.stachyra@samsung.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.10 427/509] tracing: Fix null pointer dereference in tracing_err_log_open()
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 15/78] selftests: tc: add ConnTrack procfs kconfig
 Date:   Tue, 25 Jul 2023 12:46:06 +0200
-Message-ID: <20230725104613.250724115@linuxfoundation.org>
+Message-ID: <20230725104451.935988951@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,61 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mateusz Stachyra <m.stachyra@samsung.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 02b0095e2fbbc060560c1065f86a211d91e27b26 upstream.
+commit 031c99e71fedcce93b6785d38b7d287bf59e3952 upstream.
 
-Fix an issue in function 'tracing_err_log_open'.
-The function doesn't call 'seq_open' if the file is opened only with
-write permissions, which results in 'file->private_data' being left as null.
-If we then use 'lseek' on that opened file, 'seq_lseek' dereferences
-'file->private_data' in 'mutex_lock(&m->lock)', resulting in a kernel panic.
-Writing to this node requires root privileges, therefore this bug
-has very little security impact.
+When looking at the TC selftest reports, I noticed one test was failing
+because /proc/net/nf_conntrack was not available.
 
-Tracefs node: /sys/kernel/tracing/error_log
+  not ok 373 3992 - Add ct action triggering DNAT tuple conflict
+  	Could not match regex pattern. Verify command output:
+  cat: /proc/net/nf_conntrack: No such file or directory
 
-Example Kernel panic:
+It is only available if NF_CONNTRACK_PROCFS kconfig is set. So the issue
+can be fixed simply by adding it to the list of required kconfig.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000038
-Call trace:
- mutex_lock+0x30/0x110
- seq_lseek+0x34/0xb8
- __arm64_sys_lseek+0x6c/0xb8
- invoke_syscall+0x58/0x13c
- el0_svc_common+0xc4/0x10c
- do_el0_svc+0x24/0x98
- el0_svc+0x24/0x88
- el0t_64_sync_handler+0x84/0xe4
- el0t_64_sync+0x1b4/0x1b8
-Code: d503201f aa0803e0 aa1f03e1 aa0103e9 (c8e97d02)
----[ end trace 561d1b49c12cf8a5 ]---
-Kernel panic - not syncing: Oops: Fatal exception
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230703155237eucms1p4dfb6a19caa14c79eb6c823d127b39024@eucms1p4
-Link: https://lore.kernel.org/linux-trace-kernel/20230704102706eucms1p30d7ecdcc287f46ad67679fc8491b2e0f@eucms1p3
-
+Fixes: e46905641316 ("tc-testing: add test for ct DNAT tuple collision")
 Cc: stable@vger.kernel.org
-Fixes: 8a062902be725 ("tracing: Add tracing error log")
-Signed-off-by: Mateusz Stachyra <m.stachyra@samsung.com>
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [1]
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Tested-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-3-1eb4fd3a96e7@tessares.net
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/tc-testing/config |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7529,7 +7529,7 @@ static const struct file_operations trac
- 	.open           = tracing_err_log_open,
- 	.write		= tracing_err_log_write,
- 	.read           = seq_read,
--	.llseek         = seq_lseek,
-+	.llseek         = tracing_lseek,
- 	.release        = tracing_err_log_release,
- };
+--- a/tools/testing/selftests/tc-testing/config
++++ b/tools/testing/selftests/tc-testing/config
+@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_MARK=y
+ CONFIG_NF_CONNTRACK_ZONES=y
+ CONFIG_NF_CONNTRACK_LABELS=y
++CONFIG_NF_CONNTRACK_PROCFS=y
+ CONFIG_NF_FLOW_TABLE=m
+ CONFIG_NF_NAT=m
  
 
 
