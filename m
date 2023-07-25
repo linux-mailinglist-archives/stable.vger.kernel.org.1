@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F67761190
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4257614D8
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233840AbjGYKxe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59068 "EHLO
+        id S234485AbjGYLXQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233742AbjGYKv4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:51:56 -0400
+        with ESMTP id S234476AbjGYLXO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA111BCF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C2FA12D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BF336165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DC3C433C8;
-        Tue, 25 Jul 2023 10:51:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 966506166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66C5C433C8;
+        Tue, 25 Jul 2023 11:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282268;
-        bh=mcphBhLLIf1cioV4bNCf0dtTj6ptqrqod4gTHb69Px8=;
+        s=korg; t=1690284191;
+        bh=3NNCmys3mcbaBWupSTJRD2ZZlizmujbBEXYyQS2MU94=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cmkMG+mMJobbqYP0ucp3KlxT2OGZSZy+SNNVlMnm66BH+aalr43yjNIAVGmK9KebW
-         ecpqTAx0c+W0x+2iJp9DF9Zcb65llsg110+ABZl71UHGxI5+50IrFqXSD54PzUCs3u
-         F/tb/I8KrqqVdSHI9URQysNYrQPL584WL/bL/QkI=
+        b=y3SxuDhDccCkCSc9O7zeOrae6JDSk+VnWRtKj89PrPrGAr+XHF6B7I61Zp5qwoXNR
+         K6ciXjAI2AqPcFHpZE0FGqFlb82ypdbdgsWpn1nUOYhPEexiPsOdAkphMU2GUVbhvF
+         wbwtgwvEkuYEpjYqkKMbrd4FQmocJ6lZRmRjJ4m8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 039/227] selftests: tc: add ConnTrack procfs kconfig
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 267/509] powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=y
 Date:   Tue, 25 Jul 2023 12:43:26 +0200
-Message-ID: <20230725104516.442213949@linuxfoundation.org>
+Message-ID: <20230725104605.980447743@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 031c99e71fedcce93b6785d38b7d287bf59e3952 upstream.
+[ Upstream commit 39f49684036d24af800ff194c33c7b2653c591d7 ]
 
-When looking at the TC selftest reports, I noticed one test was failing
-because /proc/net/nf_conntrack was not available.
+In a randconfig with CONFIG_SERIAL_CPM=m and
+CONFIG_PPC_EARLY_DEBUG_CPM=y, there is a build error:
+ERROR: modpost: "udbg_putc" [drivers/tty/serial/cpm_uart/cpm_uart.ko] undefined!
 
-  not ok 373 3992 - Add ct action triggering DNAT tuple conflict
-  	Could not match regex pattern. Verify command output:
-  cat: /proc/net/nf_conntrack: No such file or directory
+Prevent the build error by allowing PPC_EARLY_DEBUG_CPM only when
+SERIAL_CPM=y.
 
-It is only available if NF_CONNTRACK_PROCFS kconfig is set. So the issue
-can be fixed simply by adding it to the list of required kconfig.
-
-Fixes: e46905641316 ("tc-testing: add test for ct DNAT tuple collision")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [1]
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Tested-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-3-1eb4fd3a96e7@tessares.net
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c374e00e17f1 ("[POWERPC] Add early debug console for CPM serial ports.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230701054714.30512-1-rdunlap@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/tc-testing/config |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/Kconfig.debug | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/tc-testing/config
-+++ b/tools/testing/selftests/tc-testing/config
-@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_MARK=y
- CONFIG_NF_CONNTRACK_ZONES=y
- CONFIG_NF_CONNTRACK_LABELS=y
-+CONFIG_NF_CONNTRACK_PROCFS=y
- CONFIG_NF_FLOW_TABLE=m
- CONFIG_NF_NAT=m
- CONFIG_NETFILTER_XT_TARGET_LOG=m
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index 52abca88b5b2b..e03fb91544206 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -234,7 +234,7 @@ config PPC_EARLY_DEBUG_40x
+ 
+ config PPC_EARLY_DEBUG_CPM
+ 	bool "Early serial debugging for Freescale CPM-based serial ports"
+-	depends on SERIAL_CPM
++	depends on SERIAL_CPM=y
+ 	help
+ 	  Select this to enable early debugging for Freescale chips
+ 	  using a CPM-based serial port.  This assumes that the bootwrapper
+-- 
+2.39.2
+
 
 
