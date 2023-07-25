@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF38D761715
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64353761597
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232039AbjGYLoy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52738 "EHLO
+        id S234784AbjGYLas (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232151AbjGYLof (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:35 -0400
+        with ESMTP id S234783AbjGYLar (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D201A1BE6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35069F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F6136167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BC6C433C7;
-        Tue, 25 Jul 2023 11:44:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8615615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D736EC433C9;
+        Tue, 25 Jul 2023 11:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285473;
-        bh=2J7AXJYg4EDM+Bp3BokIiMqI77ap95H/W4X6i7q9U8E=;
+        s=korg; t=1690284646;
+        bh=xVd+e8L8q/LVoeMmpjHJNBqWRhIFUg+w1o/yahyxHE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pz1qNSmArr5e5SP3zrKFpg2o9zZ/8PeLG6P/NIH1fdGOGae9Pjjp1k9fPT5JIqYdv
-         rNxDKPmX6HOn3fW/yBSZpfzMnBV5Mm7imWvNPTDv+s+qqWsfbU0Hn5ePE8PZuWOaVq
-         GM5JCvTN9QKX9NiMeWEYz+T7j1cHj6khF1lQuYDI=
+        b=I5o1d+vC8OhfQ/fxqQ9z2avQBqPnPJ7fXYylwTKjTwWld4/z8LemuRoCJYQXOc911
+         m+UIEBS0toJkimtMkZJpfVAQwbx5WuOG0lpNJMsgoshepF3WbKNwGF1XvdTI4L3p6A
+         zdSXDS+WdOCMCTJWu1gjY4/oMuRpwGJ7auQLIcuQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 216/313] platform/x86: wmi: Replace UUID redefinitions by their originals
+        patches@lists.linux.dev, Bikash Hazarika <bhazarika@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 430/509] scsi: qla2xxx: Array index may go out of bound
 Date:   Tue, 25 Jul 2023 12:46:09 +0200
-Message-ID: <20230725104530.384377040@linuxfoundation.org>
+Message-ID: <20230725104613.406547644@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,100 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-[ Upstream commit f9dffc1417130a2d465e2edaf6663d99738792a3 ]
+commit d721b591b95cf3f290f8a7cbe90aa2ee0368388d upstream.
 
-There are types and helpers that are redefined with old names.
-Convert the WMI library to use those types and helpers directly.
+Klocwork reports array 'vha->host_str' of size 16 may use index value(s)
+16..19.  Use snprintf() instead of sprintf().
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 028e6e204ace ("platform/x86: wmi: Break possible infinite loop when parsing GUID")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Co-developed-by: Bikash Hazarika <bhazarika@marvell.com>
+Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230607113843.37185-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/wmi.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index cb029126a68c6..62b146af35679 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -110,11 +110,11 @@ static struct platform_driver acpi_wmi_driver = {
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -4877,7 +4877,8 @@ struct scsi_qla_host *qla2x00_create_hos
+ 	}
+ 	INIT_DELAYED_WORK(&vha->scan.scan_work, qla_scan_work_fn);
  
- static bool find_guid(const char *guid_string, struct wmi_block **out)
- {
--	uuid_le guid_input;
-+	guid_t guid_input;
- 	struct wmi_block *wblock;
- 	struct guid_block *block;
- 
--	if (uuid_le_to_bin(guid_string, &guid_input))
-+	if (guid_parse(guid_string, &guid_input))
- 		return false;
- 
- 	list_for_each_entry(wblock, &wmi_block_list, list) {
-@@ -133,7 +133,7 @@ static const void *find_guid_context(struct wmi_block *wblock,
- 				      struct wmi_driver *wdriver)
- {
- 	const struct wmi_device_id *id;
--	uuid_le guid_input;
-+	guid_t guid_input;
- 
- 	if (wblock == NULL || wdriver == NULL)
- 		return NULL;
-@@ -142,7 +142,7 @@ static const void *find_guid_context(struct wmi_block *wblock,
- 
- 	id = wdriver->id_table;
- 	while (*id->guid_string) {
--		if (uuid_le_to_bin(id->guid_string, &guid_input))
-+		if (guid_parse(id->guid_string, &guid_input))
- 			continue;
- 		if (!memcmp(wblock->gblock.guid, &guid_input, 16))
- 			return id->context;
-@@ -526,12 +526,12 @@ wmi_notify_handler handler, void *data)
- {
- 	struct wmi_block *block;
- 	acpi_status status = AE_NOT_EXIST;
--	uuid_le guid_input;
-+	guid_t guid_input;
- 
- 	if (!guid || !handler)
- 		return AE_BAD_PARAMETER;
- 
--	if (uuid_le_to_bin(guid, &guid_input))
-+	if (guid_parse(guid, &guid_input))
- 		return AE_BAD_PARAMETER;
- 
- 	list_for_each_entry(block, &wmi_block_list, list) {
-@@ -565,12 +565,12 @@ acpi_status wmi_remove_notify_handler(const char *guid)
- {
- 	struct wmi_block *block;
- 	acpi_status status = AE_NOT_EXIST;
--	uuid_le guid_input;
-+	guid_t guid_input;
- 
- 	if (!guid)
- 		return AE_BAD_PARAMETER;
- 
--	if (uuid_le_to_bin(guid, &guid_input))
-+	if (guid_parse(guid, &guid_input))
- 		return AE_BAD_PARAMETER;
- 
- 	list_for_each_entry(block, &wmi_block_list, list) {
-@@ -801,9 +801,9 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
- 		return 0;
- 
- 	while (*id->guid_string) {
--		uuid_le driver_guid;
-+		guid_t driver_guid;
- 
--		if (WARN_ON(uuid_le_to_bin(id->guid_string, &driver_guid)))
-+		if (WARN_ON(guid_parse(id->guid_string, &driver_guid)))
- 			continue;
- 		if (!memcmp(&driver_guid, wblock->gblock.guid, 16))
- 			return 1;
--- 
-2.39.2
-
+-	sprintf(vha->host_str, "%s_%lu", QLA2XXX_DRIVER_NAME, vha->host_no);
++	snprintf(vha->host_str, sizeof(vha->host_str), "%s_%lu",
++		 QLA2XXX_DRIVER_NAME, vha->host_no);
+ 	ql_dbg(ql_dbg_init, vha, 0x0041,
+ 	    "Allocated the host=%p hw=%p vha=%p dev_name=%s",
+ 	    vha->host, vha->hw, vha,
 
 
