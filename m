@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B7A761213
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A71376156A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233746AbjGYK7N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36200 "EHLO
+        id S234642AbjGYL2n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:28:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233886AbjGYK6Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7975199C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:39 -0700 (PDT)
+        with ESMTP id S234474AbjGYL2m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB36FB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7488861648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BC2C433C8;
-        Tue, 25 Jul 2023 10:55:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F233B615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123F8C433C8;
+        Tue, 25 Jul 2023 11:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282538;
-        bh=gMuC0ZuHNDiWABZXb2y6akIvzBpqRjIdyg8yHybunpc=;
+        s=korg; t=1690284520;
+        bh=JqBU8t6FRCEE0mutgpPenOurlJXZu0j4miKHJ2HHlgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mkc0IPU9+AzTbpBSypTmlSxpClWiQw2RAzF+5nTj6CBQAw23pHh/uKCq1juMNNT7d
-         z7TfISKK4RQGFsR46d2QVtKoN0QvtsEQtYR1LQStOaXKtpD7N8D3nmohLx2HxCsAWt
-         mNCyY921DPl/pJFsVhHVPsVoua0OjncdBZGWxNWs=
+        b=rus758c3Kp4IU7ztZ51gRIpLzoXjOC+pkoFrUVmFp+ppL9pV9X93SCctqlIt4CPy9
+         hIYV5qHjeEhjAJ2/EWFeu/b6eWe+Oilp6NQ2Eb+8qFE0TaxZVJrKILfubvRWhvUB8L
+         VYUQkdbeftCZJpTUywj56L+aupsxCU9PKIYceb8w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 158/227] cifs: fix mid leak during reconnection after timeout threshold
+        patches@lists.linux.dev, Huang Pei <huangpei@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 386/509] MIPS: Loongson: Fix cpu_probe_loongson() again
 Date:   Tue, 25 Jul 2023 12:45:25 +0200
-Message-ID: <20230725104521.469955957@linuxfoundation.org>
+Message-ID: <20230725104611.418725702@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,100 +55,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Prasad N <nspmangalore@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 69cba9d3c1284e0838ae408830a02c4a063104bc ]
+commit 65fee014dc41a774bcd94896f3fb380bc39d8dda upstream.
 
-When the number of responses with status of STATUS_IO_TIMEOUT
-exceeds a specified threshold (NUM_STATUS_IO_TIMEOUT), we reconnect
-the connection. But we do not return the mid, or the credits
-returned for the mid, or reduce the number of in-flight requests.
+Commit 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
+move decode_configs() from the beginning of cpu_probe_loongson() to the
+end in order to fix FTLB configuration. However, it breaks the CPUCFG
+decoding because decode_configs() use "c->options = xxxx" rather than
+"c->options |= xxxx", all information get from CPUCFG by decode_cpucfg()
+is lost.
 
-This bug could result in the server->in_flight count to go bad,
-and also cause a leak in the mids.
+This causes error when creating a KVM guest on Loongson-3A4000:
+Exception Code: 4 not handled @ PC: 0000000087ad5981, inst: 0xcb7a1898 BadVaddr: 0x0 Status: 0x0
 
-This change moves the check to a few lines below where the
-response is decrypted, even of the response is read from the
-transform header. This way, the code for returning the mids
-can be reused.
+Fix this by moving the c->cputype setting to the beginning and moving
+decode_configs() after that.
 
-Also, the cifs_reconnect was reconnecting just the transport
-connection before. In case of multi-channel, this may not be
-what we want to do after several timeouts. Changed that to
-reconnect the session and the tree too.
-
-Also renamed NUM_STATUS_IO_TIMEOUT to a more appropriate name
-MAX_STATUS_IO_TIMEOUT.
-
-Fixes: 8e670f77c4a5 ("Handle STATUS_IO_TIMEOUT gracefully")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
+Cc: stable@vger.kernel.org
+Cc: Huang Pei <huangpei@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ arch/mips/kernel/cpu-probe.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index d9f0b3b94f007..853209268f507 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -60,7 +60,7 @@ extern bool disable_legacy_dialects;
- #define TLINK_IDLE_EXPIRE	(600 * HZ)
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1721,7 +1721,10 @@ static inline void decode_cpucfg(struct
  
- /* Drop the connection to not overload the server */
--#define NUM_STATUS_IO_TIMEOUT   5
-+#define MAX_STATUS_IO_TIMEOUT   5
- 
- static int ip_connect(struct TCP_Server_Info *server);
- static int generic_ip_connect(struct TCP_Server_Info *server);
-@@ -1117,6 +1117,7 @@ cifs_demultiplex_thread(void *p)
- 	struct mid_q_entry *mids[MAX_COMPOUND];
- 	char *bufs[MAX_COMPOUND];
- 	unsigned int noreclaim_flag, num_io_timeout = 0;
-+	bool pending_reconnect = false;
- 
- 	noreclaim_flag = memalloc_noreclaim_save();
- 	cifs_dbg(FYI, "Demultiplex PID: %d\n", task_pid_nr(current));
-@@ -1156,6 +1157,8 @@ cifs_demultiplex_thread(void *p)
- 		cifs_dbg(FYI, "RFC1002 header 0x%x\n", pdu_length);
- 		if (!is_smb_response(server, buf[0]))
- 			continue;
+ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ {
++	c->cputype = CPU_LOONGSON64;
 +
-+		pending_reconnect = false;
- next_pdu:
- 		server->pdu_size = pdu_length;
+ 	/* All Loongson processors covered here define ExcCode 16 as GSExc. */
++	decode_configs(c);
+ 	c->options |= MIPS_CPU_GSEXCEX;
  
-@@ -1213,10 +1216,13 @@ cifs_demultiplex_thread(void *p)
- 		if (server->ops->is_status_io_timeout &&
- 		    server->ops->is_status_io_timeout(buf)) {
- 			num_io_timeout++;
--			if (num_io_timeout > NUM_STATUS_IO_TIMEOUT) {
--				cifs_reconnect(server, false);
-+			if (num_io_timeout > MAX_STATUS_IO_TIMEOUT) {
-+				cifs_server_dbg(VFS,
-+						"Number of request timeouts exceeded %d. Reconnecting",
-+						MAX_STATUS_IO_TIMEOUT);
-+
-+				pending_reconnect = true;
- 				num_io_timeout = 0;
--				continue;
- 			}
- 		}
- 
-@@ -1263,6 +1269,11 @@ cifs_demultiplex_thread(void *p)
- 			buf = server->smallbuf;
- 			goto next_pdu;
- 		}
-+
-+		/* do this reconnect at the very end after processing all MIDs */
-+		if (pending_reconnect)
-+			cifs_reconnect(server, true);
-+
- 	} /* end while !EXITING */
- 
- 	/* buffer usually freed in free_mid - need to free it here on exit */
--- 
-2.39.2
-
+ 	switch (c->processor_id & PRID_IMP_MASK) {
+@@ -1731,7 +1734,6 @@ static inline void cpu_probe_loongson(st
+ 		case PRID_REV_LOONGSON2K_R1_1:
+ 		case PRID_REV_LOONGSON2K_R1_2:
+ 		case PRID_REV_LOONGSON2K_R1_3:
+-			c->cputype = CPU_LOONGSON64;
+ 			__cpu_name[cpu] = "Loongson-2K";
+ 			set_elf_platform(cpu, "gs264e");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+@@ -1744,14 +1746,12 @@ static inline void cpu_probe_loongson(st
+ 		switch (c->processor_id & PRID_REV_MASK) {
+ 		case PRID_REV_LOONGSON3A_R2_0:
+ 		case PRID_REV_LOONGSON3A_R2_1:
+-			c->cputype = CPU_LOONGSON64;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R3_0:
+ 		case PRID_REV_LOONGSON3A_R3_1:
+-			c->cputype = CPU_LOONGSON64;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+@@ -1771,7 +1771,6 @@ static inline void cpu_probe_loongson(st
+ 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
+ 		break;
+ 	case PRID_IMP_LOONGSON_64G:
+-		c->cputype = CPU_LOONGSON64;
+ 		__cpu_name[cpu] = "ICT Loongson-3";
+ 		set_elf_platform(cpu, "loongson3a");
+ 		set_isa(c, MIPS_CPU_ISA_M64R2);
+@@ -1781,8 +1780,6 @@ static inline void cpu_probe_loongson(st
+ 		panic("Unknown Loongson Processor ID!");
+ 		break;
+ 	}
+-
+-	decode_configs(c);
+ }
+ #else
+ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu) { }
 
 
