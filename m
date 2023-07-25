@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 016C37614DB
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BCC4761632
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:37:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234464AbjGYLXX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60720 "EHLO
+        id S234804AbjGYLhV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234477AbjGYLXS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B523C11B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:17 -0700 (PDT)
+        with ESMTP id S234793AbjGYLhQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:37:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AC5F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CBA161683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F671C433C7;
-        Tue, 25 Jul 2023 11:23:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 900F661698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F335C433C7;
+        Tue, 25 Jul 2023 11:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284196;
-        bh=Q5K1Og8ERQuia5Noyd6Sccpob1z6xTNjOAVARBUxTIg=;
+        s=korg; t=1690285022;
+        bh=qmlR8L2IH4RcnaGtnZPlTVFE9NnIV91ssNg7HdyFgHo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mb36ZxA2GqS8JIMb0hXfMSMK/MKSNlzzR6VLGY21zw6dYZValcjfh6DKKEWbHgOga
-         7m7FH4skAE3mSn9cwqc5TAgEZHUK7+CtUuNDbKqBJiLbGIdrl+mUODDbXOXYQkCSWf
-         /MAGyyF7d4GDNbekixq+H4u7Y7sY9hvDWtVRcVhk=
+        b=k4w/2YrJGg/Fd1piLeccFoHTNwHMLn+wwz5nkK+LMePNvH4XFIU/GfNN7wnTFa2ll
+         ypXoFew3W8M6+WmA95cElFEfUpGCUsaM/8JYeWuhCmhBx31Yw0zWoXf/67mrTweOxR
+         KtobCh5qwHRvGqPJC/Z36WDm0z/GJHJQkARovUjk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Nicolas Escande <nico.escande@gmail.com>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/509] tcp: annotate data races in __tcp_oow_rate_limited()
+Subject: [PATCH 5.4 055/313] wifi: ath9k: Fix possible stall on ath9k_txq_list_has_key()
 Date:   Tue, 25 Jul 2023 12:43:28 +0200
-Message-ID: <20230725104606.075065722@linuxfoundation.org>
+Message-ID: <20230725104523.452310440@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,53 +57,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 998127cdb4699b9d470a9348ffe9f1154346be5f ]
+[ Upstream commit 75086cc6dee046e3fbb3dba148b376d8802f83bc ]
 
-request sockets are lockless, __tcp_oow_rate_limited() could be called
-on the same object from different cpus. This is harmless.
+On EDMA capable hardware, ath9k_txq_list_has_key() can enter infinite
+loop if it is called while all txq_fifos have packets that use different
+key that the one we are looking for. Fix it by exiting the loop if all
+txq_fifos have been checked already.
 
-Add READ_ONCE()/WRITE_ONCE() annotations to avoid a KCSAN report.
+Because this loop is called under spin_lock_bh() (see ath_txq_lock) it
+causes the following rcu stall:
 
-Fixes: 4ce7e93cb3fe ("tcp: rate limit ACK sent by SYN_RECV request sockets")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+rcu: INFO: rcu_sched self-detected stall on CPU
+ath10k_pci 0000:01:00.0: failed to read temperature -11
+rcu:    1-....: (5254 ticks this GP) idle=189/1/0x4000000000000002 softirq=8442983/8442984 fqs=2579
+        (t=5257 jiffies g=17983297 q=334)
+Task dump for CPU 1:
+task:hostapd         state:R  running task     stack:    0 pid:  297 ppid:   289 flags:0x0000000a
+Call trace:
+ dump_backtrace+0x0/0x170
+ show_stack+0x1c/0x24
+ sched_show_task+0x140/0x170
+ dump_cpu_task+0x48/0x54
+ rcu_dump_cpu_stacks+0xf0/0x134
+ rcu_sched_clock_irq+0x8d8/0x9fc
+ update_process_times+0xa0/0xec
+ tick_sched_timer+0x5c/0xd0
+ __hrtimer_run_queues+0x154/0x320
+ hrtimer_interrupt+0x120/0x2f0
+ arch_timer_handler_virt+0x38/0x44
+ handle_percpu_devid_irq+0x9c/0x1e0
+ handle_domain_irq+0x64/0x90
+ gic_handle_irq+0x78/0xb0
+ call_on_irq_stack+0x28/0x38
+ do_interrupt_handler+0x54/0x5c
+ el1_interrupt+0x2c/0x4c
+ el1h_64_irq_handler+0x14/0x1c
+ el1h_64_irq+0x74/0x78
+ ath9k_txq_has_key+0x1bc/0x250 [ath9k]
+ ath9k_set_key+0x1cc/0x3dc [ath9k]
+ drv_set_key+0x78/0x170
+ ieee80211_key_replace+0x564/0x6cc
+ ieee80211_key_link+0x174/0x220
+ ieee80211_add_key+0x11c/0x300
+ nl80211_new_key+0x12c/0x330
+ genl_family_rcv_msg_doit+0xbc/0x11c
+ genl_rcv_msg+0xd8/0x1c4
+ netlink_rcv_skb+0x40/0x100
+ genl_rcv+0x3c/0x50
+ netlink_unicast+0x1ec/0x2c0
+ netlink_sendmsg+0x198/0x3c0
+ ____sys_sendmsg+0x210/0x250
+ ___sys_sendmsg+0x78/0xc4
+ __sys_sendmsg+0x4c/0x90
+ __arm64_sys_sendmsg+0x28/0x30
+ invoke_syscall.constprop.0+0x60/0x100
+ do_el0_svc+0x48/0xd0
+ el0_svc+0x14/0x50
+ el0t_64_sync_handler+0xa8/0xb0
+ el0t_64_sync+0x158/0x15c
+
+This rcu stall is hard to reproduce as is, but changing ATH_TXFIFO_DEPTH
+from 8 to 2 makes it reasonably easy to reproduce.
+
+Fixes: ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230609093744.1985-1-repk@triplefau.lt
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index b98b7920c4029..d6dfbb88dcf5b 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3560,8 +3560,11 @@ static int tcp_ack_update_window(struct sock *sk, const struct sk_buff *skb, u32
- static bool __tcp_oow_rate_limited(struct net *net, int mib_idx,
- 				   u32 *last_oow_ack_time)
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index eb5751a45f266..4e606a4b19f2d 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -847,7 +847,7 @@ static bool ath9k_txq_list_has_key(struct list_head *txq_list, u32 keyix)
+ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
  {
--	if (*last_oow_ack_time) {
--		s32 elapsed = (s32)(tcp_jiffies32 - *last_oow_ack_time);
-+	/* Paired with the WRITE_ONCE() in this function. */
-+	u32 val = READ_ONCE(*last_oow_ack_time);
-+
-+	if (val) {
-+		s32 elapsed = (s32)(tcp_jiffies32 - val);
+ 	struct ath_hw *ah = sc->sc_ah;
+-	int i;
++	int i, j;
+ 	struct ath_txq *txq;
+ 	bool key_in_use = false;
  
- 		if (0 <= elapsed &&
- 		    elapsed < READ_ONCE(net->ipv4.sysctl_tcp_invalid_ratelimit)) {
-@@ -3570,7 +3573,10 @@ static bool __tcp_oow_rate_limited(struct net *net, int mib_idx,
- 		}
- 	}
+@@ -865,8 +865,9 @@ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
+ 		if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) {
+ 			int idx = txq->txq_tailidx;
  
--	*last_oow_ack_time = tcp_jiffies32;
-+	/* Paired with the prior READ_ONCE() and with itself,
-+	 * as we might be lockless.
-+	 */
-+	WRITE_ONCE(*last_oow_ack_time, tcp_jiffies32);
- 
- 	return false;	/* not rate-limited: go ahead, send dupack now! */
- }
+-			while (!key_in_use &&
+-			       !list_empty(&txq->txq_fifo[idx])) {
++			for (j = 0; !key_in_use &&
++			     !list_empty(&txq->txq_fifo[idx]) &&
++			     j < ATH_TXFIFO_DEPTH; j++) {
+ 				key_in_use = ath9k_txq_list_has_key(
+ 					&txq->txq_fifo[idx], keyix);
+ 				INCR(idx, ATH_TXFIFO_DEPTH);
 -- 
 2.39.2
 
