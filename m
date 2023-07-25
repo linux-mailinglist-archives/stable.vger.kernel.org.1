@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9841C761342
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5AD3761256
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234081AbjGYLJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45708 "EHLO
+        id S233752AbjGYLBT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234080AbjGYLIw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E94B2688
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:40 -0700 (PDT)
+        with ESMTP id S233843AbjGYLBA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D2244B8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C2BA6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B27C433C7;
-        Tue, 25 Jul 2023 11:07:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37BC061655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F31C433C8;
+        Tue, 25 Jul 2023 10:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283258;
-        bh=GA3AXba4RIA+vI2O1pmKc5G1QHXIzixM7iVRLG+BBxE=;
+        s=korg; t=1690282706;
+        bh=ya+qC8mljZsiAxKSO0OJZpEHNHHa44PXmdvrGQaBfvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CK6CUdhwxRAxyXNdkZJNkopK5uO+zHap1cFbqxkKC4srHWouksQGgKHatmJ2/xVAo
-         XqyWEiOe+hJFl2JYvaDKEWSyjvKaZ6Jvo0+Gc9Wcl2UsAQBHeP5tGGo0EKCnfjtpQA
-         ubiRVzvrRUfDproB2B1Wrs3ytqUX+jr+jumRT/EE=
+        b=gdluV/NjloRHJAJ4uRyNfpd15JXnhsvTdUBUox5/YK6lErJ+uTzKOsb6WI3ZjzYPv
+         4O0O2r7mnR1oz2ZxC5RCVo2FIvm+G4goRuND3IxLLRRDFbRcjA1hRxp4+VNWSsWV7a
+         RETXFimvBXrVDP/jXuFf5IJku4icOuhuN/yGQQTA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Xu Yilun <yilun.xu@intel.com>, stable@kernel.org
-Subject: [PATCH 5.15 12/78] regmap: Drop initial version of maximum transfer length fixes
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 196/227] netfilter: nf_tables: cant schedule in nft_chain_validate
 Date:   Tue, 25 Jul 2023 12:46:03 +0200
-Message-ID: <20230725104451.807166049@linuxfoundation.org>
+Message-ID: <20230725104522.928034647@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,64 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit bc64734825c59e18a27ac266b07e14944c111fd8 upstream.
+[ Upstream commit 314c82841602a111c04a7210c21dc77e0d560242 ]
 
-When problems were noticed with the register address not being taken
-into account when limiting raw transfers with I2C devices we fixed this
-in the core.  Unfortunately it has subsequently been realised that a lot
-of buses were relying on the prior behaviour, partly due to unclear
-documentation not making it obvious what was intended in the core.  This
-is all more involved to fix than is sensible for a fix commit so let's
-just drop the original fixes, a separate commit will fix the originally
-observed problem in an I2C specific way
+Can be called via nft set element list iteration, which may acquire
+rcu and/or bh read lock (depends on set type).
 
-Fixes: 3981514180c9 ("regmap: Account for register length when chunking")
-Fixes: c8e796895e23 ("regmap: spi-avmm: Fix regmap_bus max_raw_write")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-1-80e2aed22e83@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: sleeping function called from invalid context at net/netfilter/nf_tables_api.c:3353
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1232, name: nft
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+2 locks held by nft/1232:
+ #0: ffff8881180e3ea8 (&nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid
+ #1: ffffffff83f5f540 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire
+Call Trace:
+ nft_chain_validate
+ nft_lookup_validate_setelem
+ nft_pipapo_walk
+ nft_lookup_validate
+ nft_chain_validate
+ nft_immediate_validate
+ nft_chain_validate
+ nf_tables_validate
+ nf_tables_abort
+
+No choice but to move it to nf_tables_validate().
+
+Fixes: 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-spi-avmm.c |    2 +-
- drivers/base/regmap/regmap.c          |    6 ++----
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ net/netfilter/nf_tables_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/base/regmap/regmap-spi-avmm.c
-+++ b/drivers/base/regmap/regmap-spi-avmm.c
-@@ -666,7 +666,7 @@ static const struct regmap_bus regmap_sp
- 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
--	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
-+	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
- 	.free_context = spi_avmm_bridge_ctx_free,
- };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 51909bcc181fa..f3a4aa9054876 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3684,8 +3684,6 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
+ 			if (err < 0)
+ 				return err;
+ 		}
+-
+-		cond_resched();
+ 	}
  
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -2041,8 +2041,6 @@ int _regmap_raw_write(struct regmap *map
- 	size_t val_count = val_len / val_bytes;
- 	size_t chunk_count, chunk_bytes;
- 	size_t chunk_regs = val_count;
--	size_t max_data = map->max_raw_write - map->format.reg_bytes -
--			map->format.pad_bytes;
- 	int ret, i;
+ 	return 0;
+@@ -3709,6 +3707,8 @@ static int nft_table_validate(struct net *net, const struct nft_table *table)
+ 		err = nft_chain_validate(&ctx, chain);
+ 		if (err < 0)
+ 			return err;
++
++		cond_resched();
+ 	}
  
- 	if (!val_count)
-@@ -2050,8 +2048,8 @@ int _regmap_raw_write(struct regmap *map
- 
- 	if (map->use_single_write)
- 		chunk_regs = 1;
--	else if (map->max_raw_write && val_len > max_data)
--		chunk_regs = max_data / val_bytes;
-+	else if (map->max_raw_write && val_len > map->max_raw_write)
-+		chunk_regs = map->max_raw_write / val_bytes;
- 
- 	chunk_count = val_count / chunk_regs;
- 	chunk_bytes = chunk_regs * val_bytes;
+ 	return 0;
+-- 
+2.39.2
+
 
 
