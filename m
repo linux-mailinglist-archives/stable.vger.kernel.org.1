@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CCD8761199
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6602E761508
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjGYKxj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
+        id S234528AbjGYLY4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:24:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233775AbjGYKw0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506CE1FCC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:29 -0700 (PDT)
+        with ESMTP id S234552AbjGYLYz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E465E9D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBD92615FE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB166C433C8;
-        Tue, 25 Jul 2023 10:51:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83974615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CD6C433C9;
+        Tue, 25 Jul 2023 11:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282288;
-        bh=OppGpa/h8ZlcbP30JHx3ga6YtaKYFCYpPH2X3hyxitk=;
+        s=korg; t=1690284293;
+        bh=AHAfLPUTCUUHRsnA2xM2PyG6fmI/bjg4m342f+s8WGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MF0jaej6JbxLlCjRXYhW7jlOSnjshpDeepeMOPrD7Hj7P3AhBSLy2sUw2twzsvCsb
-         DRHhSXuOQo+W6I9/9kP5pvwqYC16OiCCJK4IBjx4k0IFHhBYc85FPoK8bIPuSgX66e
-         Baz2AaTrfuvCHSBbMXvDvn00h2Z8LKBqSuhJPUBE=
+        b=OJyOMEdMhEnEhmgnnoOA8m8zxI9xr4nv0Ote359vI/LIHat1GpLeLulp1xrkXkNyl
+         Nx0zdDzApR/EtEztV6Z33367q1UkO2rCu2L3QgIWw5epqYggRYjPxE/lib9lNjzJCP
+         JyENQoA6RY4IjpVI8tRu4M4BSYV0PGfWYVb+Voas=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        hackyzh002 <hackyzh002@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 076/227] [PATCH AUTOSEL 5.4 01/12] drm/radeon: Fix integer overflow in radeon_cs_parser_init
+        patches@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 304/509] ARM: orion5x: fix d2net gpio initialization
 Date:   Tue, 25 Jul 2023 12:44:03 +0200
-Message-ID: <20230725104517.921107823@linuxfoundation.org>
+Message-ID: <20230725104607.662611986@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,31 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit f828b681d0cd566f86351c0b913e6cb6ed8c7b9c ]
+From: Arnd Bergmann <arnd@arndb.de>
 
-The type of size is unsigned, if size is 0x40000000, there will be an
-integer overflow, size will be zero after size *= sizeof(uint32_t),
-will cause uninitialized memory to be referenced later
+commit f8ef1233939495c405a9faa4bd1ae7d3f581bae4 upstream.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: hackyzh002 <hackyzh002@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The DT version of this board has a custom file with the gpio
+device. However, it does nothing because the d2net_init()
+has no caller or prototype:
+
+arch/arm/mach-orion5x/board-d2net.c:101:13: error: no previous prototype for 'd2net_init'
+
+Call it from the board-dt file as intended.
+
+Fixes: 94b0bd366e36 ("ARM: orion5x: convert d2net to Device Tree")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230516153109.514251-10-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_cs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-orion5x/board-dt.c |    3 +++
+ arch/arm/mach-orion5x/common.h   |    6 ++++++
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/gpu/drm/radeon/radeon_cs.c
-+++ b/drivers/gpu/drm/radeon/radeon_cs.c
-@@ -270,7 +270,8 @@ int radeon_cs_parser_init(struct radeon_
- {
- 	struct drm_radeon_cs *cs = data;
- 	uint64_t *chunk_array_ptr;
--	unsigned size, i;
-+	u64 size;
-+	unsigned i;
- 	u32 ring = RADEON_CS_RING_GFX;
- 	s32 priority = 0;
+--- a/arch/arm/mach-orion5x/board-dt.c
++++ b/arch/arm/mach-orion5x/board-dt.c
+@@ -63,6 +63,9 @@ static void __init orion5x_dt_init(void)
+ 	if (of_machine_is_compatible("maxtor,shared-storage-2"))
+ 		mss2_init();
  
++	if (of_machine_is_compatible("lacie,d2-network"))
++		d2net_init();
++
+ 	of_platform_default_populate(NULL, orion5x_auxdata_lookup, NULL);
+ }
+ 
+--- a/arch/arm/mach-orion5x/common.h
++++ b/arch/arm/mach-orion5x/common.h
+@@ -75,6 +75,12 @@ extern void mss2_init(void);
+ static inline void mss2_init(void) {}
+ #endif
+ 
++#ifdef CONFIG_MACH_D2NET_DT
++void d2net_init(void);
++#else
++static inline void d2net_init(void) {}
++#endif
++
+ /*****************************************************************************
+  * Helpers to access Orion registers
+  ****************************************************************************/
 
 
