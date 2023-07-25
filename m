@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C455761516
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 343AC7611A0
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234582AbjGYLZg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34690 "EHLO
+        id S230424AbjGYKyG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:54:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234591AbjGYLZc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:32 -0400
+        with ESMTP id S233026AbjGYKxM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C88187
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075A62720
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7F706169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E81C433C8;
-        Tue, 25 Jul 2023 11:25:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5748C615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBE7C433C8;
+        Tue, 25 Jul 2023 10:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284330;
-        bh=T3i1HTZBPyzEbzqZTXzzY5G70qq1TRHwkWnt5ZgAjLE=;
+        s=korg; t=1690282304;
+        bh=jSJqy8Dp32uToZ9D/V14KpKw+yN3eK1KBgxNuYszwAg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rTxaXPo0Le+09a60Akm1jXs/SlpWDueuFGE66HE9zoob0v3re5WCTeJwloGV3OVvz
-         ApwQEt4wqShemDu2x/kA2vizWaFhlmv1+ILLKTe1WkrM6g6G0KjQlz7sCzbLFWTE67
-         MF4sylukz8ejCKgy2PsBq5f10Bt/d03s8an8aCjQ=
+        b=jqy4mlD9YzmMiIwS7WqJZqCCxUjZcFR4LN/pn1/3kqhiMAqKSGEzyPEzoREABRFYa
+         DEKXoKuHRR0uCnn5E+Tmz5s7q+0MK+XAAqMQCkpvcUMDdXEnwuIRisxLO6VYLFSi1p
+         02JCi9ZwuuTfIjroMJ375Ll/+wlgLxgDIvZSQMEg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 310/509] block: add overflow checks for Amiga partition support
+        patches@lists.linux.dev,
+        syzbot+cd311b1e43cc25f90d18@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 082/227] [PATCH AUTOSEL 5.4 07/12] udf: Fix uninitialized array access for some pathnames
 Date:   Tue, 25 Jul 2023 12:44:09 +0200
-Message-ID: <20230725104607.934620100@linuxfoundation.org>
+Message-ID: <20230725104518.152645181@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,202 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+[ Upstream commit 028f6055c912588e6f72722d89c30b401bbcf013 ]
 
-commit b6f3f28f604ba3de4724ad82bea6adb1300c0b5f upstream.
+For filenames that begin with . and are between 2 and 5 characters long,
+UDF charset conversion code would read uninitialized memory in the
+output buffer. The only practical impact is that the name may be prepended a
+"unification hash" when it is not actually needed but still it is good
+to fix this.
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
-
-Use u64 as type for sector address and size to allow using disks up to
-2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
-format allows to specify disk sizes up to 2^128 bytes (though native
-OS limitations reduce this somewhat, to max 2^68 bytes), so check for
-u64 overflow carefully to protect against overflowing sector_t.
-
-Bail out if sector addresses overflow 32 bits on kernels without LBD
-support.
-
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted (now resubmitted as patch 1 in this series).
-This patch adds additional error checking and warning messages.
-
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Christoph Hellwig <hch@infradead.org>
-Link: https://lore.kernel.org/r/20230620201725.7020-4-schmitzmic@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+cd311b1e43cc25f90d18@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000e2638a05fe9dc8f9@google.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/amiga.c |  103 ++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 85 insertions(+), 18 deletions(-)
+ fs/udf/unicode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -11,10 +11,18 @@
- #define pr_fmt(fmt) fmt
- 
- #include <linux/types.h>
-+#include <linux/mm_types.h>
-+#include <linux/overflow.h>
- #include <linux/affs_hardblocks.h>
- 
- #include "check.h"
- 
-+/* magic offsets in partition DosEnvVec */
-+#define NR_HD	3
-+#define NR_SECT	5
-+#define LO_CYL	9
-+#define HI_CYL	10
-+
- static __inline__ u32
- checksum_block(__be32 *m, int size)
- {
-@@ -31,9 +39,12 @@ int amiga_partition(struct parsed_partit
- 	unsigned char *data;
- 	struct RigidDiskBlock *rdb;
- 	struct PartitionBlock *pb;
--	sector_t start_sect, nr_sects;
--	int blk, part, res = 0;
--	int blksize = 1;	/* Multiplier for disk block size */
-+	u64 start_sect, nr_sects;
-+	sector_t blk, end_sect;
-+	u32 cylblk;		/* rdb_CylBlocks = nr_heads*sect_per_track */
-+	u32 nr_hd, nr_sect, lo_cyl, hi_cyl;
-+	int part, res = 0;
-+	unsigned int blksize = 1;	/* Multiplier for disk block size */
- 	int slot = 1;
- 	char b[BDEVNAME_SIZE];
- 
-@@ -42,7 +53,7 @@ int amiga_partition(struct parsed_partit
- 			goto rdb_done;
- 		data = read_part_sector(state, blk, &sect);
- 		if (!data) {
--			pr_err("Dev %s: unable to read RDB block %d\n",
-+			pr_err("Dev %s: unable to read RDB block %llu\n",
- 			       bdevname(state->bdev, b), blk);
- 			res = -1;
- 			goto rdb_done;
-@@ -59,12 +70,12 @@ int amiga_partition(struct parsed_partit
- 		*(__be32 *)(data+0xdc) = 0;
- 		if (checksum_block((__be32 *)data,
- 				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
--			pr_err("Trashed word at 0xd0 in block %d ignored in checksum calculation\n",
-+			pr_err("Trashed word at 0xd0 in block %llu ignored in checksum calculation\n",
- 			       blk);
- 			break;
- 		}
- 
--		pr_err("Dev %s: RDB in block %d has bad checksum\n",
-+		pr_err("Dev %s: RDB in block %llu has bad checksum\n",
- 		       bdevname(state->bdev, b), blk);
+diff --git a/fs/udf/unicode.c b/fs/udf/unicode.c
+index 622569007b530..2142cbd1dde24 100644
+--- a/fs/udf/unicode.c
++++ b/fs/udf/unicode.c
+@@ -247,7 +247,7 @@ static int udf_name_from_CS0(struct super_block *sb,
  	}
  
-@@ -81,10 +92,15 @@ int amiga_partition(struct parsed_partit
- 	blk = be32_to_cpu(rdb->rdb_PartitionList);
- 	put_dev_sector(sect);
- 	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
--		blk *= blksize;	/* Read in terms partition table understands */
-+		/* Read in terms partition table understands */
-+		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
-+			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
-+				bdevname(state->bdev, b), blk, part);
-+			break;
-+		}
- 		data = read_part_sector(state, blk, &sect);
- 		if (!data) {
--			pr_err("Dev %s: unable to read partition block %d\n",
-+			pr_err("Dev %s: unable to read partition block %llu\n",
- 			       bdevname(state->bdev, b), blk);
- 			res = -1;
- 			goto rdb_done;
-@@ -96,19 +112,70 @@ int amiga_partition(struct parsed_partit
- 		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
- 			continue;
- 
--		/* Tell Kernel about it */
-+		/* RDB gives us more than enough rope to hang ourselves with,
-+		 * many times over (2^128 bytes if all fields max out).
-+		 * Some careful checks are in order, so check for potential
-+		 * overflows.
-+		 * We are multiplying four 32 bit numbers to one sector_t!
-+		 */
-+
-+		nr_hd   = be32_to_cpu(pb->pb_Environment[NR_HD]);
-+		nr_sect = be32_to_cpu(pb->pb_Environment[NR_SECT]);
-+
-+		/* CylBlocks is total number of blocks per cylinder */
-+		if (check_mul_overflow(nr_hd, nr_sect, &cylblk)) {
-+			pr_err("Dev %s: heads*sects %u overflows u32, skipping partition!\n",
-+				bdevname(state->bdev, b), cylblk);
-+			continue;
-+		}
-+
-+		/* check for consistency with RDB defined CylBlocks */
-+		if (cylblk > be32_to_cpu(rdb->rdb_CylBlocks)) {
-+			pr_warn("Dev %s: cylblk %u > rdb_CylBlocks %u!\n",
-+				bdevname(state->bdev, b), cylblk,
-+				be32_to_cpu(rdb->rdb_CylBlocks));
-+		}
-+
-+		/* RDB allows for variable logical block size -
-+		 * normalize to 512 byte blocks and check result.
-+		 */
-+
-+		if (check_mul_overflow(cylblk, blksize, &cylblk)) {
-+			pr_err("Dev %s: partition %u bytes per cyl. overflows u32, skipping partition!\n",
-+				bdevname(state->bdev, b), part);
-+			continue;
-+		}
-+
-+		/* Calculate partition start and end. Limit of 32 bit on cylblk
-+		 * guarantees no overflow occurs if LBD support is enabled.
-+		 */
-+
-+		lo_cyl = be32_to_cpu(pb->pb_Environment[LO_CYL]);
-+		start_sect = ((u64) lo_cyl * cylblk);
-+
-+		hi_cyl = be32_to_cpu(pb->pb_Environment[HI_CYL]);
-+		nr_sects = (((u64) hi_cyl - lo_cyl + 1) * cylblk);
- 
--		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
--			   be32_to_cpu(pb->pb_Environment[9])) *
--			   be32_to_cpu(pb->pb_Environment[3]) *
--			   be32_to_cpu(pb->pb_Environment[5]) *
--			   blksize;
- 		if (!nr_sects)
- 			continue;
--		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
--			     be32_to_cpu(pb->pb_Environment[3]) *
--			     be32_to_cpu(pb->pb_Environment[5]) *
--			     blksize;
-+
-+		/* Warn user if partition end overflows u32 (AmigaDOS limit) */
-+
-+		if ((start_sect + nr_sects) > UINT_MAX) {
-+			pr_warn("Dev %s: partition %u (%llu-%llu) needs 64 bit device support!\n",
-+				bdevname(state->bdev, b), part,
-+				start_sect, start_sect + nr_sects);
-+		}
-+
-+		if (check_add_overflow(start_sect, nr_sects, &end_sect)) {
-+			pr_err("Dev %s: partition %u (%llu-%llu) needs LBD device support, skipping partition!\n",
-+				bdevname(state->bdev, b), part,
-+				start_sect, end_sect);
-+			continue;
-+		}
-+
-+		/* Tell Kernel about it */
-+
- 		put_partition(state,slot++,start_sect,nr_sects);
- 		{
- 			/* Be even more informative to aid mounting */
+ 	if (translate) {
+-		if (str_o_len <= 2 && str_o[0] == '.' &&
++		if (str_o_len > 0 && str_o_len <= 2 && str_o[0] == '.' &&
+ 		    (str_o_len == 1 || str_o[1] == '.'))
+ 			needsCRC = 1;
+ 		if (needsCRC) {
+-- 
+2.39.2
+
 
 
