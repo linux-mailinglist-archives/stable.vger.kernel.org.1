@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA88E761622
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86BCB7614CD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234824AbjGYLgt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43916 "EHLO
+        id S234478AbjGYLW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234849AbjGYLgl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:41 -0400
+        with ESMTP id S234458AbjGYLWz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F281FC9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447F11BEE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35453615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48885C433C7;
-        Tue, 25 Jul 2023 11:36:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E4BD61699
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A254C433C8;
+        Tue, 25 Jul 2023 11:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284988;
-        bh=E9ya2b8KKo6LsDW5/vDtj4VE+cNW082YVEEQRaTG4kc=;
+        s=korg; t=1690284165;
+        bh=pPqpxxxsNpwJRfOJB1PFI12LmyEANEKEm/1TgvXf3qE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CBFEdXgf2aufXQwsT1Jnk4u/5MmFCejkyf7inxfwE6BA+OUnXZ4JIvtJLiRBOryaC
-         sC7pC3cc3UKLcDGKdZLoT+xSsLPfKqPl97ZfIjpW71/fkuaP3v9hBrws4dNpgj33W6
-         p2jItJ+Cj915+OHkeCGWtpwb13aKBwvy/CqicipM=
+        b=qSblihv38JvBjaIWZHF7ucC5H2MK4Du6cihlOvHWnTSK01bQc/UpBx4vgSD+Ma5/n
+         SHq2y93dhvA6eI03qzqcZszNuUeUsZd8lDjBCTuRx67jd6O6hpEu8Ou9cmucVx4j6c
+         e2PxNqES2bmFshDkNDggEta4WdLcRRoxlv7JoAsg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Jeff Chase <jnchase@google.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Joe Tessler <jrt@google.com>, Arnd Bergmann <arnd@arndb.de>,
+        Mark Brown <broonie@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 044/313] wl3501_cs: use eth_hw_addr_set()
-Date:   Tue, 25 Jul 2023 12:43:17 +0200
-Message-ID: <20230725104522.987345068@linuxfoundation.org>
+Subject: [PATCH 5.10 259/509] media: cec: i2c: ch7322: also select REGMAP
+Date:   Tue, 25 Jul 2023 12:43:18 +0200
+Message-ID: <20230725104605.608423583@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +60,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 18774612246d036c04ce9fee7f67192f96f48725 ]
+[ Upstream commit 29f96ac23648b2259f42d40703c47dd18fd172ca ]
 
-Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
-of VLANs...") introduced a rbtree for faster Ethernet address look
-up. To maintain netdev->dev_addr in this tree we need to make all
-the writes to it got through appropriate helpers.
+Selecting only REGMAP_I2C can leave REGMAP unset, causing build errors,
+so also select REGMAP to prevent the build errors.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20211018235021.1279697-15-kuba@kernel.org
-Stable-dep-of: 391af06a02e7 ("wifi: wl3501_cs: Fix an error handling path in wl3501_probe()")
+../drivers/media/cec/i2c/ch7322.c:158:21: error: variable 'ch7322_regmap' has initializer but incomplete type
+  158 | static const struct regmap_config ch7322_regmap = {
+../drivers/media/cec/i2c/ch7322.c:159:10: error: 'const struct regmap_config' has no member named 'reg_bits'
+  159 |         .reg_bits = 8,
+../drivers/media/cec/i2c/ch7322.c:159:21: warning: excess elements in struct initializer
+  159 |         .reg_bits = 8,
+../drivers/media/cec/i2c/ch7322.c:160:10: error: 'const struct regmap_config' has no member named 'val_bits'
+  160 |         .val_bits = 8,
+../drivers/media/cec/i2c/ch7322.c:160:21: warning: excess elements in struct initializer
+  160 |         .val_bits = 8,
+../drivers/media/cec/i2c/ch7322.c:161:10: error: 'const struct regmap_config' has no member named 'max_register'
+  161 |         .max_register = 0x7f,
+../drivers/media/cec/i2c/ch7322.c:161:25: warning: excess elements in struct initializer
+  161 |         .max_register = 0x7f,
+../drivers/media/cec/i2c/ch7322.c:162:10: error: 'const struct regmap_config' has no member named 'disable_locking'
+  162 |         .disable_locking = true,
+../drivers/media/cec/i2c/ch7322.c:162:28: warning: excess elements in struct initializer
+  162 |         .disable_locking = true,
+../drivers/media/cec/i2c/ch7322.c: In function 'ch7322_probe':
+../drivers/media/cec/i2c/ch7322.c:468:26: error: implicit declaration of function 'devm_regmap_init_i2c' [-Werror=implicit-function-declaration]
+  468 |         ch7322->regmap = devm_regmap_init_i2c(client, &ch7322_regmap);
+../drivers/media/cec/i2c/ch7322.c:468:24: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  468 |         ch7322->regmap = devm_regmap_init_i2c(client, &ch7322_regmap);
+../drivers/media/cec/i2c/ch7322.c: At top level:
+../drivers/media/cec/i2c/ch7322.c:158:35: error: storage size of 'ch7322_regmap' isn't known
+  158 | static const struct regmap_config ch7322_regmap = {
+
+Link: https://lore.kernel.org/linux-media/20230608025435.29249-1-rdunlap@infradead.org
+Fixes: 21b9a47e0ec7 ("media: cec: i2c: ch7322: Add ch7322 CEC controller driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jeff Chase <jnchase@google.com>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: Joe Tessler <jrt@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/wl3501_cs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/cec/i2c/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
-index 115bb408d4f20..ae660f25a0e5a 100644
---- a/drivers/net/wireless/wl3501_cs.c
-+++ b/drivers/net/wireless/wl3501_cs.c
-@@ -1945,8 +1945,7 @@ static int wl3501_config(struct pcmcia_device *link)
- 		goto failed;
- 	}
- 
--	for (i = 0; i < 6; i++)
--		dev->dev_addr[i] = ((char *)&this->mac_addr)[i];
-+	eth_hw_addr_set(dev, this->mac_addr);
- 
- 	/* print probe information */
- 	printk(KERN_INFO "%s: wl3501 @ 0x%3.3x, IRQ %d, "
+diff --git a/drivers/media/cec/i2c/Kconfig b/drivers/media/cec/i2c/Kconfig
+index 70432a1d69186..d912d143fb312 100644
+--- a/drivers/media/cec/i2c/Kconfig
++++ b/drivers/media/cec/i2c/Kconfig
+@@ -5,6 +5,7 @@
+ config CEC_CH7322
+ 	tristate "Chrontel CH7322 CEC controller"
+ 	depends on I2C
++	select REGMAP
+ 	select REGMAP_I2C
+ 	select CEC_CORE
+ 	help
 -- 
 2.39.2
 
