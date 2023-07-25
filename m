@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9F276146F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 218AD761470
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234366AbjGYLTU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:19:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56758 "EHLO
+        id S234372AbjGYLTY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:19:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234345AbjGYLTT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:19:19 -0400
+        with ESMTP id S234345AbjGYLTW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:19:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4FFBA6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:19:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA99B9D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:19:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8365D615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CC7C433C8;
-        Tue, 25 Jul 2023 11:19:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48D2361683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:19:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595DBC433C8;
+        Tue, 25 Jul 2023 11:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283958;
-        bh=HbLRwAACZPv0mYzrnGD8NX3JSrZTCn3pt98l/pWgZqc=;
+        s=korg; t=1690283960;
+        bh=UuTk6rggBf2tAw2MrN7Wuct+GlmeZN9ULMV4nf81EyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0fcgEdAgvOFkJ7JRwOfpr3oAoxE8mbNeiYC0vb6FGA7ySUZDhpC3RwBzj0QkfS9iO
-         SZlNPFnl0kCvXsE0Pv20WA4s7yWiiuxqFuiIz7/PVxVkBcHMrxqzu9s9VkyE4FMox1
-         2/tEs4KjA6FOYRgb7muCv9iwrHE23OgKX4cyAjB8=
+        b=MzO6GoGA949myQRsBUs8yikB8GVqZflXB1JOyI5bkX5r20pphCEa9uVsjBlQfpP7W
+         X0SYBe2MPVtScf+96mmATEFVNJaldVAzDwBoadvwUp25O7mPb/DrLz9r407j3O+mAa
+         m842qdlqcVf6k/Ig0CSc1vTS93R2iSAqriZVIUXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Chia-I Wu <olvaffe@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/509] amdgpu: validate offset_in_bo of drm_amdgpu_gem_va
-Date:   Tue, 25 Jul 2023 12:41:33 +0200
-Message-ID: <20230725104600.770188594@linuxfoundation.org>
+Subject: [PATCH 5.10 155/509] RDMA/bnxt_re: wraparound mbox producer index
+Date:   Tue, 25 Jul 2023 12:41:34 +0200
+Message-ID: <20230725104600.813498788@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
 References: <20230725104553.588743331@linuxfoundation.org>
@@ -57,68 +57,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 9f0bcf49e9895cb005d78b33a5eebfa11711b425 ]
+[ Upstream commit 0af91306e17ef3d18e5f100aa58aa787869118af ]
 
-This is motivated by OOB access in amdgpu_vm_update_range when
-offset_in_bo+map_size overflows.
+Driver is not handling the wraparound of the mbox producer index correctly.
+Currently the wraparound happens once u32 max is reached.
 
-v2: keep the validations in amdgpu_vm_bo_map
-v3: add the validations to amdgpu_vm_bo_map/amdgpu_vm_bo_replace_map
-    rather than to amdgpu_gem_va_ioctl
+Bit 31 of the producer index register is special and should be set
+only once for the first command. Because the producer index overflow
+setting bit31 after a long time, FW goes to initialization sequence
+and this causes FW hang.
 
-Fixes: 9f7eb5367d00 ("drm/amdgpu: actually use the VM map parameters")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix is to wraparound the mbox producer index once it reaches u16 max.
+
+Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1686308514-11996-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index c705ce11c436f..8445bb7ae06ab 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2229,14 +2229,14 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
- 	uint64_t eaddr;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 4836bc433f53c..212e5cd82d0db 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -181,7 +181,7 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw, struct cmdq_base *req,
+ 	} while (size > 0);
+ 	cmdq->seq_num++;
  
- 	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK ||
--	    size == 0 || size & ~PAGE_MASK)
-+	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
-+		return -EINVAL;
-+	if (saddr + size <= saddr || offset + size <= offset)
- 		return -EINVAL;
+-	cmdq_prod = hwq->prod;
++	cmdq_prod = hwq->prod & 0xFFFF;
+ 	if (test_bit(FIRMWARE_FIRST_FLAG, &cmdq->flags)) {
+ 		/* The very first doorbell write
+ 		 * is required to set this flag
+@@ -595,7 +595,7 @@ int bnxt_qplib_alloc_rcfw_channel(struct bnxt_qplib_res *res,
+ 		rcfw->cmdq_depth = BNXT_QPLIB_CMDQE_MAX_CNT_8192;
  
- 	/* make sure object fit at this offset */
- 	eaddr = saddr + size - 1;
--	if (saddr >= eaddr ||
--	    (bo && offset + size > amdgpu_bo_size(bo)) ||
-+	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
- 	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
- 		return -EINVAL;
- 
-@@ -2295,14 +2295,14 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
- 	int r;
- 
- 	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK ||
--	    size == 0 || size & ~PAGE_MASK)
-+	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
-+		return -EINVAL;
-+	if (saddr + size <= saddr || offset + size <= offset)
- 		return -EINVAL;
- 
- 	/* make sure object fit at this offset */
- 	eaddr = saddr + size - 1;
--	if (saddr >= eaddr ||
--	    (bo && offset + size > amdgpu_bo_size(bo)) ||
-+	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
- 	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
- 		return -EINVAL;
- 
+ 	sginfo.pgsize = bnxt_qplib_cmdqe_page_size(rcfw->cmdq_depth);
+-	hwq_attr.depth = rcfw->cmdq_depth;
++	hwq_attr.depth = rcfw->cmdq_depth & 0x7FFFFFFF;
+ 	hwq_attr.stride = BNXT_QPLIB_CMDQE_UNITS;
+ 	hwq_attr.type = HWQ_TYPE_CTX;
+ 	if (bnxt_qplib_alloc_init_hwq(&cmdq->hwq, &hwq_attr)) {
 -- 
 2.39.2
 
