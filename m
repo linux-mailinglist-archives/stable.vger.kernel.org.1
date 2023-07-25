@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66ABA76160D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88E17614C1
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234746AbjGYLgF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43162 "EHLO
+        id S234460AbjGYLWc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:22:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234684AbjGYLgF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:05 -0400
+        with ESMTP id S234445AbjGYLW3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62EF71BD7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF749D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 052616166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8D1C433C8;
-        Tue, 25 Jul 2023 11:35:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA533615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC119C433C7;
+        Tue, 25 Jul 2023 11:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284949;
-        bh=puvGtCHrfFjPOy2iCaOxBGZxvH48hW5OyqAOqpcDZmI=;
+        s=korg; t=1690284143;
+        bh=L4bNO6+1j9qRSLfqs0DmD0VNpLLYyY4UBAHxHFB9RtE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ddXxWJE0uOo50la/ilGcNINIa4j1Rsd6vlVMkXJeB+sJ0rcQfB2GtFHqxsBr55tOt
-         YrbHdUXHg7jx4snMre0ggce1RMM00hop35BgahxHEmNnY4Bk58ou2pUPEHgdLC3Zp3
-         mM20g6rRzxqEMJOwerb5Q31cKBhSCXTg4tb0UKXw=
+        b=iPsFo+MbX7EAvQa4UOOAfybUG8arMVIRXEjCMz6QPxHpMWAx1zuk1WRj71XGe1sqZ
+         4kUhoqxloI688HOKVa9lGhT4Lm0aXnHCuAtj2L1zw+orwDMh9v71F0cCCL5jo4tv1c
+         GBpDowQyVsHWV6G8qo7ZV0rvTvtKQ0jSYIWiHRpk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Wilson <chris@chris-wilson.co.uk>,
-        =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Subject: [PATCH 5.4 006/313] drm/i915: Initialise outparam for error return from wait_for_register
-Date:   Tue, 25 Jul 2023 12:42:39 +0200
-Message-ID: <20230725104521.465745459@linuxfoundation.org>
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 221/509] serial: 8250: omap: Fix freeing of resources on failed register
+Date:   Tue, 25 Jul 2023 12:42:40 +0200
+Message-ID: <20230725104603.869434621@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+From: Tony Lindgren <tony@atomide.com>
 
-commit b79ffa914ede785a721f42d8ee3ce7b8eeede2bb upstream.
+[ Upstream commit b9ab22c2bc8652324a803b3e2be69838920b4025 ]
 
-Just in case the caller passes in 0 for both slow&fast timeouts, make
-sure we initialise the stack value returned. Add an assert so that we
-don't make the mistake of passing 0 timeouts for the wait.
+If serial8250_register_8250_port() fails, the SoC can hang as the
+deferred PMQoS work will still run as is not flushed and removed.
 
-drivers/gpu/drm/i915/intel_uncore.c:2011 __intel_wait_for_register_fw() error: uninitialized symbol 'reg_value'.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20200916105022.28316-1-chris@chris-wilson.co.uk
+Fixes: 61929cf0169d ("tty: serial: Add 8250-core based omap driver")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230508082014.23083-2-tony@atomide.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/intel_uncore.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/i915/intel_uncore.c
-+++ b/drivers/gpu/drm/i915/intel_uncore.c
-@@ -1926,13 +1926,14 @@ int __intel_wait_for_register_fw(struct
- 				 unsigned int slow_timeout_ms,
- 				 u32 *out_value)
- {
--	u32 reg_value;
-+	u32 reg_value = 0;
- #define done (((reg_value = intel_uncore_read_fw(uncore, reg)) & mask) == value)
- 	int ret;
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index 483fff3a95c9e..6b255e1633fd4 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1469,7 +1469,9 @@ static int omap8250_probe(struct platform_device *pdev)
+ err:
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_sync(&pdev->dev);
++	flush_work(&priv->qos_work);
+ 	pm_runtime_disable(&pdev->dev);
++	cpu_latency_qos_remove_request(&priv->pm_qos_request);
+ 	return ret;
+ }
  
- 	/* Catch any overuse of this function */
- 	might_sleep_if(slow_timeout_ms);
- 	GEM_BUG_ON(fast_timeout_us > 20000);
-+	GEM_BUG_ON(!fast_timeout_us && !slow_timeout_ms);
- 
- 	ret = -ETIMEDOUT;
- 	if (fast_timeout_us && fast_timeout_us <= 20000)
+-- 
+2.39.2
+
 
 
