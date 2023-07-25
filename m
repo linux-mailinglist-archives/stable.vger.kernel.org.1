@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8631761239
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 760767612F4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233413AbjGYLAU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:00:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
+        id S234040AbjGYLGu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:06:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233527AbjGYK74 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:56 -0400
+        with ESMTP id S233906AbjGYLGd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253A13C1B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C9649C4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 909AC61602
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC94C433C7;
-        Tue, 25 Jul 2023 10:57:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A486161697
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B600DC433CA;
+        Tue, 25 Jul 2023 11:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282631;
-        bh=f4tUOHA0cuJYXQGH5bcJqFwTv2vXZhnsxa2KCzaFT70=;
+        s=korg; t=1690283097;
+        bh=Zbsk50WPCS6LScNVx4opOWvJMGwEeTMKK3t83/GHmpo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j5fohligMPXR9ZZ38qsm/yOyoVPbaxg33myYxaRIeYgiAkxgu/frNGEL0wuCbQR9f
-         OQxMZHg7wTnHH14u5iIElCo4i3astUrHaHwe/RRfR3KW0uojmebiuy1Ym01pFWGgxa
-         kkTbXXQvZI+9J/7Pe7DSH4XYgi6sh+0cPjsX8Ij4=
+        b=DHSt0ASnVdxdbU9MQ1PPYgEbBP0vHZdzvvw1nEjtgrK7i+jSePrbDma9UgUNi/h4n
+         7AFzpQBbqRXIqjdisL5AsQNsLhjY2Afm72fB6Q3SY4WgEtHNrOxc9IfeRK/GU0rq5Z
+         6OY8W41g/51mlOjcKCLtM8lUOkggLm2dhmpfCQQE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 199/227] netfilter: nf_tables: skip bound chain on rule flush
+Subject: [PATCH 6.1 138/183] net:ipv6: check return value of pskb_trim()
 Date:   Tue, 25 Jul 2023 12:46:06 +0200
-Message-ID: <20230725104523.043385755@linuxfoundation.org>
+Message-ID: <20230725104512.887787384@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 6eaf41e87a223ae6f8e7a28d6e78384ad7e407f8 ]
+[ Upstream commit 4258faa130be4ea43e5e2d839467da421b8ff274 ]
 
-Skip bound chain when flushing table rules, the rule that owns this
-chain releases these objects.
+goto tx_err if an unexpected result is returned by pskb_tirm()
+in ip6erspan_tunnel_xmit().
 
-Otherwise, the following warning is triggered:
-
-  WARNING: CPU: 2 PID: 1217 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
-  CPU: 2 PID: 1217 Comm: chain-flush Not tainted 6.1.39 #1
-  RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
-
-Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/ip6_gre.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e3049c7db9041..ccf0b3d80fd97 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4086,6 +4086,8 @@ static int nf_tables_delrule(struct sk_buff *skb, const struct nfnl_info *info,
- 		list_for_each_entry(chain, &table->chains, list) {
- 			if (!nft_is_active_next(net, chain))
- 				continue;
-+			if (nft_chain_is_bound(chain))
-+				continue;
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index 216b40ccadae0..d3fba7d8dec4e 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -977,7 +977,8 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 		goto tx_err;
  
- 			ctx.chain = chain;
- 			err = nft_delrule_by_chain(&ctx);
+ 	if (skb->len > dev->mtu + dev->hard_header_len) {
+-		pskb_trim(skb, dev->mtu + dev->hard_header_len);
++		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
++			goto tx_err;
+ 		truncate = true;
+ 	}
+ 
 -- 
 2.39.2
 
