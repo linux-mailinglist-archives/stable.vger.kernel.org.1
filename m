@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10189761787
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C013761785
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232818AbjGYLsv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55972 "EHLO
+        id S232314AbjGYLsw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:48:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235081AbjGYLsR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:17 -0400
+        with ESMTP id S235104AbjGYLsU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A54E10E2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C3810E2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DD5761698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E491C433C8;
-        Tue, 25 Jul 2023 11:48:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 268326167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F9FC433C8;
+        Tue, 25 Jul 2023 11:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285695;
-        bh=ZcYq2XJiZLLmvXOevCuCebv2yUfSCD5LpPT6LeGt7WU=;
+        s=korg; t=1690285698;
+        bh=RXu3wIgm3cvrMDjA/AHMiw/ZCZenbT74Y9iCUd9Bfa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L0H1WoCPv32H+5WESIcFFVUn4jWz5EseXh4BMk1gIi5Cd6lfPcMg1dy4NhYjt9x2P
-         og4siR2IlQ+uoBSlmal/0vzL9pOr8BCHLT4+NzYIb6VkUhtr0rH5rqBhok2TqqpNka
-         xeVfHL7VbOwBveVXLnupnr5OdAEmZMPsOXhV9Lqk=
+        b=2pplGlTmdH1IYJdcNHTmgNAHAjLhiukqBcdiya97h1eHb2txGJKlzt6qnTDKFHXu2
+         rydmwd1vBsfTDge6Av7OXRGKFTyo6M1UKUsejjmd/wvc6XBduW6UfAJY6xGxxm+qhG
+         m95uLPfTEt1oZ9UJtrzSwjQ3pjZkKex7pfI/g3CI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nik P <npliashechnikov@gmail.com>,
-        Nathan Schulte <nmschulte@gmail.com>,
-        Friedrich Vock <friedrich.vock@gmx.de>, dridri85@gmail.com,
-        Jan Visser <starquake@linuxeverywhere.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Tanmay Patil <t-patil@ti.com>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 298/313] pinctrl: amd: Use amd_pinconf_set() for all config options
-Date:   Tue, 25 Jul 2023 12:47:31 +0200
-Message-ID: <20230725104534.039605721@linuxfoundation.org>
+Subject: [PATCH 5.4 299/313] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
+Date:   Tue, 25 Jul 2023 12:47:32 +0200
+Message-ID: <20230725104534.086478688@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
 References: <20230725104521.167250627@linuxfoundation.org>
@@ -60,106 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Tanmay Patil <t-patil@ti.com>
 
-[ Upstream commit 635a750d958e158e17af0f524bedc484b27fbb93 ]
+[ Upstream commit b685f1a58956fa36cc01123f253351b25bfacfda ]
 
-On ASUS TUF A16 it is reported that the ITE5570 ACPI device connected to
-GPIO 7 is causing an interrupt storm.  This issue doesn't happen on
-Windows.
+CPSW ALE has 75 bit ALE entries which are stored within three 32 bit words.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions assume that the
+field will be strictly contained within one word. However, this is not
+guaranteed to be the case and it is possible for ALE field entries to span
+across up to two words at the most.
 
-Comparing the GPIO register configuration between Windows and Linux
-bit 20 has been configured as a pull up on Windows, but not on Linux.
-Checking GPIO declaration from the firmware it is clear it *should* have
-been a pull up on Linux as well.
+Fix the methods to handle getting/setting fields spanning up to two words.
 
-```
-GpioInt (Level, ActiveLow, Exclusive, PullUp, 0x0000,
-	 "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
-{   // Pin list
-0x0007
-}
-```
-
-On Linux amd_gpio_set_config() is currently only used for programming
-the debounce. Actually the GPIO core calls it with all the arguments
-that are supported by a GPIO, pinctrl-amd just responds `-ENOTSUPP`.
-
-To solve this issue expand amd_gpio_set_config() to support the other
-arguments amd_pinconf_set() supports, namely `PIN_CONFIG_BIAS_PULL_DOWN`,
-`PIN_CONFIG_BIAS_PULL_UP`, and `PIN_CONFIG_DRIVE_STRENGTH`.
-
-Reported-by: Nik P <npliashechnikov@gmail.com>
-Reported-by: Nathan Schulte <nmschulte@gmail.com>
-Reported-by: Friedrich Vock <friedrich.vock@gmx.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
-Reported-by: dridri85@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217493
-Link: https://lore.kernel.org/linux-input/20230530154058.17594-1-friedrich.vock@gmx.de/
-Tested-by: Jan Visser <starquake@linuxeverywhere.org>
-Fixes: 2956b5d94a76 ("pinctrl / gpio: Introduce .set_config() callback for GPIO chips")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230705133005.577-3-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: db82173f23c5 ("netdev: driver: ethernet: add cpsw address lookup engine support")
+Signed-off-by: Tanmay Patil <t-patil@ti.com>
+[s-vadapalli@ti.com: rephrased commit message and added Fixes tag]
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
-index ba446271e17b6..2415085eadeda 100644
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -186,18 +186,6 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index e7c24396933e9..f17619c545ae5 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -60,23 +60,37 @@
  
--static int amd_gpio_set_config(struct gpio_chip *gc, unsigned offset,
--			       unsigned long config)
--{
--	u32 debounce;
--
--	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
--		return -ENOTSUPP;
--
--	debounce = pinconf_to_config_argument(config);
--	return amd_gpio_set_debounce(gc, offset, debounce);
--}
--
- #ifdef CONFIG_DEBUG_FS
- static void amd_gpio_dbg_show(struct seq_file *s, struct gpio_chip *gc)
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
  {
-@@ -682,7 +670,7 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
- }
+-	int idx;
++	int idx, idx2;
++	u32 hi_val = 0;
  
- static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
--				unsigned long *configs, unsigned num_configs)
-+			   unsigned long *configs, unsigned int num_configs)
- {
- 	int i;
- 	u32 arg;
-@@ -772,6 +760,20 @@ static int amd_pinconf_group_set(struct pinctrl_dev *pctldev,
- 	return 0;
- }
- 
-+static int amd_gpio_set_config(struct gpio_chip *gc, unsigned int pin,
-+			       unsigned long config)
-+{
-+	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
-+
-+	if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE) {
-+		u32 debounce = pinconf_to_config_argument(config);
-+
-+		return amd_gpio_set_debounce(gc, pin, debounce);
+ 	idx    = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be fetched exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
 +	}
-+
-+	return amd_pinconf_set(gpio_dev->pctrl, pin, &config, 1);
-+}
-+
- static const struct pinconf_ops amd_pinconf_ops = {
- 	.pin_config_get		= amd_pinconf_get,
- 	.pin_config_set		= amd_pinconf_set,
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+-	return (ale_entry[idx] >> start) & BITMASK(bits);
++	return (hi_val + (ale_entry[idx] >> start)) & BITMASK(bits);
+ }
+ 
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx;
++	int idx, idx2;
+ 
+ 	value &= BITMASK(bits);
+-	idx    = start / 32;
++	idx = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be set exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++	}
+ 	start -= idx * 32;
+-	idx    = 2 - idx; /* flip */
++	idx = 2 - idx; /* flip */
+ 	ale_entry[idx] &= ~(BITMASK(bits) << start);
+ 	ale_entry[idx] |=  (value << start);
+ }
 -- 
 2.39.2
 
