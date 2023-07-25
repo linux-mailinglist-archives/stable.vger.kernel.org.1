@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C334A761538
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB0E761294
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234545AbjGYL0n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:26:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36082 "EHLO
+        id S233734AbjGYLEE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234498AbjGYL0m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D87FA19F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:38 -0700 (PDT)
+        with ESMTP id S233666AbjGYLDt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B255FD0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 744756168F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D0BC433C8;
-        Tue, 25 Jul 2023 11:26:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7D5D6164D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC32C433C7;
+        Tue, 25 Jul 2023 11:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284397;
-        bh=Dawbfi9cUKcgHz0FMKbti22L1G5HksK8tkVVdpDwyy0=;
+        s=korg; t=1690282857;
+        bh=OppGpa/h8ZlcbP30JHx3ga6YtaKYFCYpPH2X3hyxitk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xjUUKTJujHPjZvW73bX0+aPkTdvDaYhoS3m3pNFReKPnFdewL1VdDhj+vZtN0li5N
-         X1dnRAfqB7Pf/kR8As5SQ63FaRxDaf7UcwRiZgbNF6DuXDVQg+6Q34kmZ1UMiXy61Z
-         KQG4clN5reQ4tg6dSJL6uxsJv5qZXg1pcB1+VDrA=
+        b=MWUDdtWDvg9IARFmtLdzartgiyamiGvEdEGZ2ETE3Qf6Ip9LJjeJva7UB32Rsd/0r
+         JbkLlLL3kz6cOMScd/UUBQOR8Alq0/QIImapHPlHd33PHNeWQgaD1eof0UbXro+4Jg
+         sHxLoiCx0pZnTBxtQIuKuGdVrPjAercBRWGydO10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        hackyzh002 <hackyzh002@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 340/509] net/mlx5e: fix double free in mlx5e_destroy_flow_table
+Subject: [PATCH 6.1 051/183] [PATCH AUTOSEL 4.19 01/11] drm/radeon: Fix integer overflow in radeon_cs_parser_init
 Date:   Tue, 25 Jul 2023 12:44:39 +0200
-Message-ID: <20230725104609.287768790@linuxfoundation.org>
+Message-ID: <20230725104509.816903878@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,38 +57,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+[ Upstream commit f828b681d0cd566f86351c0b913e6cb6ed8c7b9c ]
 
-[ Upstream commit 884abe45a9014d0de2e6edb0630dfd64f23f1d1b ]
+The type of size is unsigned, if size is 0x40000000, there will be an
+integer overflow, size will be zero after size *= sizeof(uint32_t),
+will cause uninitialized memory to be referenced later
 
-In function accel_fs_tcp_create_groups(), when the ft->g memory is
-successfully allocated but the 'in' memory fails to be allocated, the
-memory pointed to by ft->g is released once. And in function
-accel_fs_tcp_create_table, mlx5e_destroy_flow_table is called to release
-the memory pointed to by ft->g again. This will cause double free problem.
-
-Fixes: c062d52ac24c ("net/mlx5e: Receive flow steering framework for accelerated TCP flows")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: hackyzh002 <hackyzh002@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/fs_tcp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/radeon_cs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/fs_tcp.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/fs_tcp.c
-index e51f60b55daa4..2da90f6649d17 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/fs_tcp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/fs_tcp.c
-@@ -194,6 +194,7 @@ static int accel_fs_tcp_create_groups(struct mlx5e_flow_table *ft,
- 	in = kvzalloc(inlen, GFP_KERNEL);
- 	if  (!in || !ft->g) {
- 		kfree(ft->g);
-+		ft->g = NULL;
- 		kvfree(in);
- 		return -ENOMEM;
- 	}
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/radeon/radeon_cs.c
++++ b/drivers/gpu/drm/radeon/radeon_cs.c
+@@ -270,7 +270,8 @@ int radeon_cs_parser_init(struct radeon_
+ {
+ 	struct drm_radeon_cs *cs = data;
+ 	uint64_t *chunk_array_ptr;
+-	unsigned size, i;
++	u64 size;
++	unsigned i;
+ 	u32 ring = RADEON_CS_RING_GFX;
+ 	s32 priority = 0;
+ 
 
 
