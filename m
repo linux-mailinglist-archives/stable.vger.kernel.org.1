@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A36B761778
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2F94761786
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232391AbjGYLs4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56060 "EHLO
+        id S233095AbjGYLs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235164AbjGYLsd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5D110E2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:33 -0700 (PDT)
+        with ESMTP id S232152AbjGYLsh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2711BE74
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1D4C61698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F064DC433C7;
-        Tue, 25 Jul 2023 11:48:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFA93616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD375C433C9;
+        Tue, 25 Jul 2023 11:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285712;
-        bh=NSMC0Tlgfie/iA401e/uwvi+prACXIJByBRnTS3egv0=;
+        s=korg; t=1690285715;
+        bh=DDt+tKU63snw0uZUGRLpM/0mQ1YBeLXD0yQis9FtCwE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1st+Ndh7fqIekXbgQdtoapIbhgn+DlXYv4YSHwQRMrCG/GUnenn11RJasaNFa2x8d
-         zKtVddt4vB8s5/QX0oaTTAlN+s3u2vb5XFjt3nAZXOLvmj4uSI6Rs6epgn8b4klQiX
-         LYX8bvOyx76rL3fy3rWaN+CTfz1iBgpRDfc7kMoI=
+        b=mNTJzj7GCH576MoS2+PdzyM4RQrhtsz1Ezdd5++RoNMFqy8+6s058Dz2O6e9TmDFa
+         CP9LhaC4wYxTicHWiMf2JnOsQkp556X2WQB9el1rs6g1EQ7H+Bcmgl5hXHJORLj0KC
+         +LY+vbQFAcFtsDmXvmk5hqhzim77WFLnb1qvvJdo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 303/313] fbdev: au1200fb: Fix missing IRQ check in au1200fb_drv_probe
-Date:   Tue, 25 Jul 2023 12:47:36 +0200
-Message-ID: <20230725104534.258563427@linuxfoundation.org>
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 304/313] llc: Dont drop packet from non-root netns.
+Date:   Tue, 25 Jul 2023 12:47:37 +0200
+Message-ID: <20230725104534.298735314@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
 References: <20230725104521.167250627@linuxfoundation.org>
@@ -44,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,38 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 4e88761f5f8c7869f15a2046b1a1116f4fab4ac8 ]
+[ Upstream commit 6631463b6e6673916d2481f692938f393148aa82 ]
 
-This func misses checking for platform_get_irq()'s call and may passes the
-negative error codes to request_irq(), which takes unsigned IRQ #,
-causing it to fail with -EINVAL, overriding an original error code.
+Now these upper layer protocol handlers can be called from llc_rcv()
+as sap->rcv_func(), which is registered by llc_sap_open().
 
-Fix this by stop calling request_irq() with invalid IRQ #s.
+  * function which is passed to register_8022_client()
+    -> no in-kernel user calls register_8022_client().
 
-Fixes: 1630d85a8312 ("au1200fb: fix hardcoded IRQ")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+  * snap_rcv()
+    `- proto->rcvfunc() : registered by register_snap_client()
+       -> aarp_rcv() and atalk_rcv() drop packets from non-root netns
+
+  * stp_pdu_rcv()
+    `- garp_protos[]->rcv() : registered by stp_proto_register()
+       -> garp_pdu_rcv() and br_stp_rcv() are netns-aware
+
+So, we can safely remove the netns restriction in llc_rcv().
+
+Fixes: e730c15519d0 ("[NET]: Make packet reception network namespace safe")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/au1200fb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/llc/llc_input.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/au1200fb.c b/drivers/video/fbdev/au1200fb.c
-index 43a4dddaafd52..d0335d4d5ab54 100644
---- a/drivers/video/fbdev/au1200fb.c
-+++ b/drivers/video/fbdev/au1200fb.c
-@@ -1732,6 +1732,9 @@ static int au1200fb_drv_probe(struct platform_device *dev)
+diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
+index 82cb93f66b9bd..f9e801cc50f5e 100644
+--- a/net/llc/llc_input.c
++++ b/net/llc/llc_input.c
+@@ -162,9 +162,6 @@ int llc_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	void (*sta_handler)(struct sk_buff *skb);
+ 	void (*sap_handler)(struct llc_sap *sap, struct sk_buff *skb);
  
- 	/* Now hook interrupt too */
- 	irq = platform_get_irq(dev, 0);
-+	if (irq < 0)
-+		return irq;
-+
- 	ret = request_irq(irq, au1200fb_handle_irq,
- 			  IRQF_SHARED, "lcd", (void *)dev);
- 	if (ret) {
+-	if (!net_eq(dev_net(dev), &init_net))
+-		goto drop;
+-
+ 	/*
+ 	 * When the interface is in promisc. mode, drop all the crap that it
+ 	 * receives, do not try to analyse it.
 -- 
 2.39.2
 
