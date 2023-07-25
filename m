@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B5C076122C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC2E17612EF
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233817AbjGYK7y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:59:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35790 "EHLO
+        id S233996AbjGYLGm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:06:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232473AbjGYK7b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:31 -0400
+        with ESMTP id S234000AbjGYLG0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C572106
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C6F4699
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EC4261602
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D364C433CB;
-        Tue, 25 Jul 2023 10:56:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAD3E6165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D15C433C7;
+        Tue, 25 Jul 2023 11:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282597;
-        bh=WPO1UuEb4RrER0+yq49pVuFUQNAzxw8sVkV7Ns7SQDc=;
+        s=korg; t=1690283083;
+        bh=V6M+JrGyH+hOfCc4JytNFGsqgH/MJj1FJlK6P3ofTH4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QPOYQi9eCKP1BpUw6qyp/8+SWFBL47ZL22w9vzPgxCE8BX5tGH3L8xipPRYLU4lQ7
-         7bpFUpV7RtAtXMBYNISbFYc3mcFE8/W0gAZ7LTZJvf28yumzRNDIzQfpkJaWKLXijf
-         3lnTGMOOc3DqCxKrVr2UX7tcCy7uk7USA7cxf0LQ=
+        b=h22ZZuTwG+Sll+Pf4xDf2H6q5LHtei8f+LTCZ9hwmf0wwL/ovEwWBa3Y5rzkUFrqk
+         FlhyDweDRpoiKmKZGQjxXqG/mBRV27dF7K9Ky8ox/932XQgpRob60KTeGWFPDkyoF+
+         pJ4Q8lIoRmIgxJsbOgm8kAaHCn6qvthIWHcYgJxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
+        Mateusz Palczewski <mateusz.palczewski@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 186/227] tcp: annotate data-races around tcp_rsk(req)->txhash
+Subject: [PATCH 6.1 125/183] iavf: fix a deadlock caused by rtnl and drivers lock circular dependencies
 Date:   Tue, 25 Jul 2023 12:45:53 +0200
-Message-ID: <20230725104522.517210634@linuxfoundation.org>
+Message-ID: <20230725104512.433696923@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,167 +57,338 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit 5e5265522a9a7f91d1b0bd411d634bdaf16c80cd ]
+[ Upstream commit d1639a17319ba78a018280cd2df6577a7e5d9fab ]
 
-TCP request sockets are lockless, some of their fields
-can change while being read by another cpu as syzbot noticed.
+A driver's lock (crit_lock) is used to serialize all the driver's tasks.
+Lockdep, however, shows a circular dependency between rtnl and
+crit_lock. This happens when an ndo that already holds the rtnl requests
+the driver to reset, since the reset task (in some paths) tries to grab
+rtnl to either change real number of queues of update netdev features.
 
-This is usually harmless, but we should annotate the known
-races.
+  [566.241851] ======================================================
+  [566.241893] WARNING: possible circular locking dependency detected
+  [566.241936] 6.2.14-100.fc36.x86_64+debug #1 Tainted: G           OE
+  [566.241984] ------------------------------------------------------
+  [566.242025] repro.sh/2604 is trying to acquire lock:
+  [566.242061] ffff9280fc5ceee8 (&adapter->crit_lock){+.+.}-{3:3}, at: iavf_close+0x3c/0x240 [iavf]
+  [566.242167]
+               but task is already holding lock:
+  [566.242209] ffffffff9976d350 (rtnl_mutex){+.+.}-{3:3}, at: iavf_remove+0x6b5/0x730 [iavf]
+  [566.242300]
+               which lock already depends on the new lock.
 
-This patch takes care of tcp_rsk(req)->txhash,
-a separate one is needed for tcp_rsk(req)->ts_recent.
+  [566.242353]
+               the existing dependency chain (in reverse order) is:
+  [566.242401]
+               -> #1 (rtnl_mutex){+.+.}-{3:3}:
+  [566.242451]        __mutex_lock+0xc1/0xbb0
+  [566.242489]        iavf_init_interrupt_scheme+0x179/0x440 [iavf]
+  [566.242560]        iavf_watchdog_task+0x80b/0x1400 [iavf]
+  [566.242627]        process_one_work+0x2b3/0x560
+  [566.242663]        worker_thread+0x4f/0x3a0
+  [566.242696]        kthread+0xf2/0x120
+  [566.242730]        ret_from_fork+0x29/0x50
+  [566.242763]
+               -> #0 (&adapter->crit_lock){+.+.}-{3:3}:
+  [566.242815]        __lock_acquire+0x15ff/0x22b0
+  [566.242869]        lock_acquire+0xd2/0x2c0
+  [566.242901]        __mutex_lock+0xc1/0xbb0
+  [566.242934]        iavf_close+0x3c/0x240 [iavf]
+  [566.242997]        __dev_close_many+0xac/0x120
+  [566.243036]        dev_close_many+0x8b/0x140
+  [566.243071]        unregister_netdevice_many_notify+0x165/0x7c0
+  [566.243116]        unregister_netdevice_queue+0xd3/0x110
+  [566.243157]        iavf_remove+0x6c1/0x730 [iavf]
+  [566.243217]        pci_device_remove+0x33/0xa0
+  [566.243257]        device_release_driver_internal+0x1bc/0x240
+  [566.243299]        pci_stop_bus_device+0x6c/0x90
+  [566.243338]        pci_stop_and_remove_bus_device+0xe/0x20
+  [566.243380]        pci_iov_remove_virtfn+0xd1/0x130
+  [566.243417]        sriov_disable+0x34/0xe0
+  [566.243448]        ice_free_vfs+0x2da/0x330 [ice]
+  [566.244383]        ice_sriov_configure+0x88/0xad0 [ice]
+  [566.245353]        sriov_numvfs_store+0xde/0x1d0
+  [566.246156]        kernfs_fop_write_iter+0x15e/0x210
+  [566.246921]        vfs_write+0x288/0x530
+  [566.247671]        ksys_write+0x74/0xf0
+  [566.248408]        do_syscall_64+0x58/0x80
+  [566.249145]        entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  [566.249886]
+                 other info that might help us debug this:
 
-BUG: KCSAN: data-race in tcp_make_synack / tcp_rtx_synack
+  [566.252014]  Possible unsafe locking scenario:
 
-write to 0xffff8881362304bc of 4 bytes by task 32083 on cpu 1:
-tcp_rtx_synack+0x9d/0x2a0 net/ipv4/tcp_output.c:4213
-inet_rtx_syn_ack+0x38/0x80 net/ipv4/inet_connection_sock.c:880
-tcp_check_req+0x379/0xc70 net/ipv4/tcp_minisocks.c:665
-tcp_v6_rcv+0x125b/0x1b20 net/ipv6/tcp_ipv6.c:1673
-ip6_protocol_deliver_rcu+0x92f/0xf30 net/ipv6/ip6_input.c:437
-ip6_input_finish net/ipv6/ip6_input.c:482 [inline]
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ip6_input+0xbd/0x1b0 net/ipv6/ip6_input.c:491
-dst_input include/net/dst.h:468 [inline]
-ip6_rcv_finish+0x1e2/0x2e0 net/ipv6/ip6_input.c:79
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ipv6_rcv+0x74/0x150 net/ipv6/ip6_input.c:309
-__netif_receive_skb_one_core net/core/dev.c:5452 [inline]
-__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5566
-netif_receive_skb_internal net/core/dev.c:5652 [inline]
-netif_receive_skb+0x4a/0x310 net/core/dev.c:5711
-tun_rx_batched+0x3bf/0x400
-tun_get_user+0x1d24/0x22b0 drivers/net/tun.c:1997
-tun_chr_write_iter+0x18e/0x240 drivers/net/tun.c:2043
-call_write_iter include/linux/fs.h:1871 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x4ab/0x7d0 fs/read_write.c:584
-ksys_write+0xeb/0x1a0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x42/0x50 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [566.253432]        CPU0                    CPU1
+  [566.254118]        ----                    ----
+  [566.254800]   lock(rtnl_mutex);
+  [566.255514]                                lock(&adapter->crit_lock);
+  [566.256233]                                lock(rtnl_mutex);
+  [566.256897]   lock(&adapter->crit_lock);
+  [566.257388]
+                  *** DEADLOCK ***
 
-read to 0xffff8881362304bc of 4 bytes by task 32078 on cpu 0:
-tcp_make_synack+0x367/0xb40 net/ipv4/tcp_output.c:3663
-tcp_v6_send_synack+0x72/0x420 net/ipv6/tcp_ipv6.c:544
-tcp_conn_request+0x11a8/0x1560 net/ipv4/tcp_input.c:7059
-tcp_v6_conn_request+0x13f/0x180 net/ipv6/tcp_ipv6.c:1175
-tcp_rcv_state_process+0x156/0x1de0 net/ipv4/tcp_input.c:6494
-tcp_v6_do_rcv+0x98a/0xb70 net/ipv6/tcp_ipv6.c:1509
-tcp_v6_rcv+0x17b8/0x1b20 net/ipv6/tcp_ipv6.c:1735
-ip6_protocol_deliver_rcu+0x92f/0xf30 net/ipv6/ip6_input.c:437
-ip6_input_finish net/ipv6/ip6_input.c:482 [inline]
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ip6_input+0xbd/0x1b0 net/ipv6/ip6_input.c:491
-dst_input include/net/dst.h:468 [inline]
-ip6_rcv_finish+0x1e2/0x2e0 net/ipv6/ip6_input.c:79
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ipv6_rcv+0x74/0x150 net/ipv6/ip6_input.c:309
-__netif_receive_skb_one_core net/core/dev.c:5452 [inline]
-__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5566
-netif_receive_skb_internal net/core/dev.c:5652 [inline]
-netif_receive_skb+0x4a/0x310 net/core/dev.c:5711
-tun_rx_batched+0x3bf/0x400
-tun_get_user+0x1d24/0x22b0 drivers/net/tun.c:1997
-tun_chr_write_iter+0x18e/0x240 drivers/net/tun.c:2043
-call_write_iter include/linux/fs.h:1871 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x4ab/0x7d0 fs/read_write.c:584
-ksys_write+0xeb/0x1a0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x42/0x50 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+The deadlock can be triggered by a script that is continuously resetting
+the VF adapter while doing other operations requiring RTNL, e.g:
 
-value changed: 0x91d25731 -> 0xe79325cd
+	while :; do
+		ip link set $VF up
+		ethtool --set-channels $VF combined 2
+		ip link set $VF down
+		ip link set $VF up
+		ethtool --set-channels $VF combined 4
+		ip link set $VF down
+	done
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 32078 Comm: syz-executor.4 Not tainted 6.5.0-rc1-syzkaller-00033-geb26cbb1a754 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
+Any operation that triggers a reset can substitute "ethtool --set-channles"
 
-Fixes: 58d607d3e52f ("tcp: provide skb->hash to synack packets")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230717144445.653164-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As a fix, add a new task "finish_config" that do all the work which
+needs rtnl lock. With the exception of iavf_remove(), all work that
+require rtnl should be called from this task.
+
+As for iavf_remove(), at the point where we need to call
+unregister_netdevice() (and grab rtnl_lock), we make sure the finish_config
+task is not running (cancel_work_sync()) to safely grab rtnl. Subsequent
+finish_config work cannot restart after that since the task is guarded
+by the __IAVF_IN_REMOVE_TASK bit in iavf_schedule_finish_config().
+
+Fixes: 5ac49f3c2702 ("iavf: use mutexes for locking of critical sections")
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c      | 3 ++-
- net/ipv4/tcp_minisocks.c | 2 +-
- net/ipv4/tcp_output.c    | 4 ++--
- net/ipv6/tcp_ipv6.c      | 2 +-
- 4 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h        |   2 +
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 114 +++++++++++++-----
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   |   1 +
+ 3 files changed, 85 insertions(+), 32 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index a64069077e388..52229c75e76f6 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -992,7 +992,8 @@ static void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
- 			0,
- 			tcp_md5_do_lookup(sk, l3index, addr, AF_INET),
- 			inet_rsk(req)->no_srccheck ? IP_REPLY_ARG_NOSRCCHECK : 0,
--			ip_hdr(skb)->tos, tcp_rsk(req)->txhash);
-+			ip_hdr(skb)->tos,
-+			READ_ONCE(tcp_rsk(req)->txhash));
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 2fe44e865d0a2..305675042fe55 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -255,6 +255,7 @@ struct iavf_adapter {
+ 	struct workqueue_struct *wq;
+ 	struct work_struct reset_task;
+ 	struct work_struct adminq_task;
++	struct work_struct finish_config;
+ 	struct delayed_work client_task;
+ 	wait_queue_head_t down_waitqueue;
+ 	wait_queue_head_t reset_waitqueue;
+@@ -521,6 +522,7 @@ int iavf_process_config(struct iavf_adapter *adapter);
+ int iavf_parse_vf_resource_msg(struct iavf_adapter *adapter);
+ void iavf_schedule_reset(struct iavf_adapter *adapter);
+ void iavf_schedule_request_stats(struct iavf_adapter *adapter);
++void iavf_schedule_finish_config(struct iavf_adapter *adapter);
+ void iavf_reset(struct iavf_adapter *adapter);
+ void iavf_set_ethtool_ops(struct net_device *netdev);
+ void iavf_update_stats(struct iavf_adapter *adapter);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index c2739071149de..0e201d690f0dd 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1702,10 +1702,10 @@ static int iavf_set_interrupt_capability(struct iavf_adapter *adapter)
+ 		adapter->msix_entries[vector].entry = vector;
+ 
+ 	err = iavf_acquire_msix_vectors(adapter, v_budget);
++	if (!err)
++		iavf_schedule_finish_config(adapter);
+ 
+ out:
+-	netif_set_real_num_rx_queues(adapter->netdev, pairs);
+-	netif_set_real_num_tx_queues(adapter->netdev, pairs);
+ 	return err;
  }
  
- /*
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index dac0d62120e62..909f3b4ed2059 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -528,7 +528,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
- 	newicsk->icsk_ack.lrcvtime = tcp_jiffies32;
+@@ -1925,9 +1925,7 @@ static int iavf_init_interrupt_scheme(struct iavf_adapter *adapter)
+ 		goto err_alloc_queues;
+ 	}
  
- 	newtp->lsndtime = tcp_jiffies32;
--	newsk->sk_txhash = treq->txhash;
-+	newsk->sk_txhash = READ_ONCE(treq->txhash);
- 	newtp->total_retrans = req->num_retrans;
- 
- 	tcp_init_xmit_timers(newsk);
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index cfe128b81a010..1538b59913777 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -3578,7 +3578,7 @@ struct sk_buff *tcp_make_synack(const struct sock *sk, struct dst_entry *dst,
- 	rcu_read_lock();
- 	md5 = tcp_rsk(req)->af_specific->req_md5_lookup(sk, req_to_sk(req));
- #endif
--	skb_set_hash(skb, tcp_rsk(req)->txhash, PKT_HASH_TYPE_L4);
-+	skb_set_hash(skb, READ_ONCE(tcp_rsk(req)->txhash), PKT_HASH_TYPE_L4);
- 	/* bpf program will be interested in the tcp_flags */
- 	TCP_SKB_CB(skb)->tcp_flags = TCPHDR_SYN | TCPHDR_ACK;
- 	tcp_header_size = tcp_synack_options(sk, req, mss, skb, &opts, md5,
-@@ -4121,7 +4121,7 @@ int tcp_rtx_synack(const struct sock *sk, struct request_sock *req)
- 
- 	/* Paired with WRITE_ONCE() in sock_setsockopt() */
- 	if (READ_ONCE(sk->sk_txrehash) == SOCK_TXREHASH_ENABLED)
--		tcp_rsk(req)->txhash = net_tx_rndhash();
-+		WRITE_ONCE(tcp_rsk(req)->txhash, net_tx_rndhash());
- 	res = af_ops->send_synack(sk, NULL, &fl, req, NULL, TCP_SYNACK_NORMAL,
- 				  NULL);
- 	if (!res) {
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 7132eb213a7a2..a3c86b714b242 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1133,7 +1133,7 @@ static void tcp_v6_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
- 			req->ts_recent, sk->sk_bound_dev_if,
- 			tcp_v6_md5_do_lookup(sk, &ipv6_hdr(skb)->saddr, l3index),
- 			ipv6_get_dsfield(ipv6_hdr(skb)), 0, sk->sk_priority,
--			tcp_rsk(req)->txhash);
-+			READ_ONCE(tcp_rsk(req)->txhash));
+-	rtnl_lock();
+ 	err = iavf_set_interrupt_capability(adapter);
+-	rtnl_unlock();
+ 	if (err) {
+ 		dev_err(&adapter->pdev->dev,
+ 			"Unable to setup interrupt capabilities\n");
+@@ -2013,6 +2011,78 @@ static int iavf_reinit_interrupt_scheme(struct iavf_adapter *adapter, bool runni
+ 	return err;
  }
  
++/**
++ * iavf_finish_config - do all netdev work that needs RTNL
++ * @work: our work_struct
++ *
++ * Do work that needs both RTNL and crit_lock.
++ **/
++static void iavf_finish_config(struct work_struct *work)
++{
++	struct iavf_adapter *adapter;
++	int pairs, err;
++
++	adapter = container_of(work, struct iavf_adapter, finish_config);
++
++	/* Always take RTNL first to prevent circular lock dependency */
++	rtnl_lock();
++	mutex_lock(&adapter->crit_lock);
++
++	if ((adapter->flags & IAVF_FLAG_SETUP_NETDEV_FEATURES) &&
++	    adapter->netdev_registered &&
++	    !test_bit(__IAVF_IN_REMOVE_TASK, &adapter->crit_section)) {
++		netdev_update_features(adapter->netdev);
++		adapter->flags &= ~IAVF_FLAG_SETUP_NETDEV_FEATURES;
++	}
++
++	switch (adapter->state) {
++	case __IAVF_DOWN:
++		if (!adapter->netdev_registered) {
++			err = register_netdevice(adapter->netdev);
++			if (err) {
++				dev_err(&adapter->pdev->dev, "Unable to register netdev (%d)\n",
++					err);
++
++				/* go back and try again.*/
++				iavf_free_rss(adapter);
++				iavf_free_misc_irq(adapter);
++				iavf_reset_interrupt_capability(adapter);
++				iavf_change_state(adapter,
++						  __IAVF_INIT_CONFIG_ADAPTER);
++				goto out;
++			}
++			adapter->netdev_registered = true;
++		}
++
++		/* Set the real number of queues when reset occurs while
++		 * state == __IAVF_DOWN
++		 */
++		fallthrough;
++	case __IAVF_RUNNING:
++		pairs = adapter->num_active_queues;
++		netif_set_real_num_rx_queues(adapter->netdev, pairs);
++		netif_set_real_num_tx_queues(adapter->netdev, pairs);
++		break;
++
++	default:
++		break;
++	}
++
++out:
++	mutex_unlock(&adapter->crit_lock);
++	rtnl_unlock();
++}
++
++/**
++ * iavf_schedule_finish_config - Set the flags and schedule a reset event
++ * @adapter: board private structure
++ **/
++void iavf_schedule_finish_config(struct iavf_adapter *adapter)
++{
++	if (!test_bit(__IAVF_IN_REMOVE_TASK, &adapter->crit_section))
++		queue_work(adapter->wq, &adapter->finish_config);
++}
++
+ /**
+  * iavf_process_aq_command - process aq_required flags
+  * and sends aq command
+@@ -2650,22 +2720,8 @@ static void iavf_init_config_adapter(struct iavf_adapter *adapter)
+ 
+ 	netif_carrier_off(netdev);
+ 	adapter->link_up = false;
+-
+-	/* set the semaphore to prevent any callbacks after device registration
+-	 * up to time when state of driver will be set to __IAVF_DOWN
+-	 */
+-	rtnl_lock();
+-	if (!adapter->netdev_registered) {
+-		err = register_netdevice(netdev);
+-		if (err) {
+-			rtnl_unlock();
+-			goto err_register;
+-		}
+-	}
+-
+-	adapter->netdev_registered = true;
+-
+ 	netif_tx_stop_all_queues(netdev);
++
+ 	if (CLIENT_ALLOWED(adapter)) {
+ 		err = iavf_lan_add_device(adapter);
+ 		if (err)
+@@ -2678,7 +2734,6 @@ static void iavf_init_config_adapter(struct iavf_adapter *adapter)
+ 
+ 	iavf_change_state(adapter, __IAVF_DOWN);
+ 	set_bit(__IAVF_VSI_DOWN, adapter->vsi.state);
+-	rtnl_unlock();
+ 
+ 	iavf_misc_irq_enable(adapter);
+ 	wake_up(&adapter->down_waitqueue);
+@@ -2698,10 +2753,11 @@ static void iavf_init_config_adapter(struct iavf_adapter *adapter)
+ 		/* request initial VLAN offload settings */
+ 		iavf_set_vlan_offload_features(adapter, 0, netdev->features);
+ 
++	iavf_schedule_finish_config(adapter);
+ 	return;
++
+ err_mem:
+ 	iavf_free_rss(adapter);
+-err_register:
+ 	iavf_free_misc_irq(adapter);
+ err_sw_init:
+ 	iavf_reset_interrupt_capability(adapter);
+@@ -2728,15 +2784,6 @@ static void iavf_watchdog_task(struct work_struct *work)
+ 		goto restart_watchdog;
+ 	}
+ 
+-	if ((adapter->flags & IAVF_FLAG_SETUP_NETDEV_FEATURES) &&
+-	    adapter->netdev_registered &&
+-	    !test_bit(__IAVF_IN_REMOVE_TASK, &adapter->crit_section) &&
+-	    rtnl_trylock()) {
+-		netdev_update_features(adapter->netdev);
+-		rtnl_unlock();
+-		adapter->flags &= ~IAVF_FLAG_SETUP_NETDEV_FEATURES;
+-	}
+-
+ 	if (adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)
+ 		iavf_change_state(adapter, __IAVF_COMM_FAILED);
+ 
+@@ -4980,6 +5027,7 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	INIT_WORK(&adapter->reset_task, iavf_reset_task);
+ 	INIT_WORK(&adapter->adminq_task, iavf_adminq_task);
++	INIT_WORK(&adapter->finish_config, iavf_finish_config);
+ 	INIT_DELAYED_WORK(&adapter->watchdog_task, iavf_watchdog_task);
+ 	INIT_DELAYED_WORK(&adapter->client_task, iavf_client_task);
+ 	queue_delayed_work(adapter->wq, &adapter->watchdog_task,
+@@ -5123,13 +5171,15 @@ static void iavf_remove(struct pci_dev *pdev)
+ 		usleep_range(500, 1000);
+ 	}
+ 	cancel_delayed_work_sync(&adapter->watchdog_task);
++	cancel_work_sync(&adapter->finish_config);
+ 
++	rtnl_lock();
+ 	if (adapter->netdev_registered) {
+-		rtnl_lock();
+ 		unregister_netdevice(netdev);
+ 		adapter->netdev_registered = false;
+-		rtnl_unlock();
+ 	}
++	rtnl_unlock();
++
+ 	if (CLIENT_ALLOWED(adapter)) {
+ 		err = iavf_lan_del_device(adapter);
+ 		if (err)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index eec7ac3b7f6ee..35419673b6987 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -2237,6 +2237,7 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 
+ 		iavf_process_config(adapter);
+ 		adapter->flags |= IAVF_FLAG_SETUP_NETDEV_FEATURES;
++		iavf_schedule_finish_config(adapter);
+ 
+ 		iavf_set_queue_vlan_tag_loc(adapter);
  
 -- 
 2.39.2
