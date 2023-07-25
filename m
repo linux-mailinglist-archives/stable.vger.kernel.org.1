@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35EAD7611D0
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5369976129E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232327AbjGYK4g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:56:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35906 "EHLO
+        id S233902AbjGYLEa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:04:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbjGYK4M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:12 -0400
+        with ESMTP id S233834AbjGYLER (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FA435AC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E953A4683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 518F461699
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601ACC433C9;
-        Tue, 25 Jul 2023 10:53:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F4CF61682
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0762C433C8;
+        Tue, 25 Jul 2023 11:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282404;
-        bh=bsIpwQvhW2RhrlbPNicfEQTyjy9SKxY4Qebwl+FT3bM=;
+        s=korg; t=1690282871;
+        bh=LAeXTFwr9cWZIJeZFT1oEGrJ78/BcXY7TR8Vq8WhwoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qBsSrLrE3w+ZFRbzq6kaW2h4Klx8lQ1kXSJTemXe0GKwRVi6o0gbpNQ5UpSQXm+Ag
-         vUiwtr3VxY5V7aeKYq4Ix8ibJd8YS4Da93LLWVZL85op57Qz0V2UI3Ydwu/+SQ5nUF
-         CzH34tRH6Qsf3dhie8a+N401SFnRPKNquQeczdak=
+        b=M3Ua4Zu0BCkhF1d6qSaNJSKTfpXzLyCYiKJVlaEz2DMuePsdljn9JE99lDU5O1li+
+         hZwdeDwFNoPNd/YHZOiikmUvna+rrVJYABwS7nYQ/BuXceerJEvDmXUHxZOOw1hsJ1
+         HTzQ8E9V6anh8rJLYEo/I8YqJyEd5FrDsjuibJIY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+958967f249155967d42a@syzkaller.appspotmail.com,
-        Yonghong Song <yhs@fb.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 117/227] bpf: Silence a warning in btf_type_id_size()
+Subject: [PATCH 6.1 056/183] [PATCH AUTOSEL 4.19 06/11] ovl: check type and offset of struct vfsmount in ovl_entry
 Date:   Tue, 25 Jul 2023 12:44:44 +0200
-Message-ID: <20230725104519.640640169@linuxfoundation.org>
+Message-ID: <20230725104509.978445614@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,100 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yonghong Song <yhs@fb.com>
+[ Upstream commit f723edb8a532cd26e1ff0a2b271d73762d48f762 ]
 
-[ Upstream commit e6c2f594ed961273479505b42040782820190305 ]
+Porting overlayfs to the new amount api I started experiencing random
+crashes that couldn't be explained easily. So after much debugging and
+reasoning it became clear that struct ovl_entry requires the point to
+struct vfsmount to be the first member and of type struct vfsmount.
 
-syzbot reported a warning in [1] with the following stacktrace:
-  WARNING: CPU: 0 PID: 5005 at kernel/bpf/btf.c:1988 btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
-  ...
-  RIP: 0010:btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
-  ...
-  Call Trace:
-   <TASK>
-   map_check_btf kernel/bpf/syscall.c:1024 [inline]
-   map_create+0x1157/0x1860 kernel/bpf/syscall.c:1198
-   __sys_bpf+0x127f/0x5420 kernel/bpf/syscall.c:5040
-   __do_sys_bpf kernel/bpf/syscall.c:5162 [inline]
-   __se_sys_bpf kernel/bpf/syscall.c:5160 [inline]
-   __x64_sys_bpf+0x79/0xc0 kernel/bpf/syscall.c:5160
-   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-   do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+During the port I added a new member at the beginning of struct
+ovl_entry which broke all over the place in the form of random crashes
+and cache corruptions. While there's a comment in ovl_free_fs() to the
+effect of "Hack! Reuse ofs->layers as a vfsmount array before freeing
+it" there's no such comment on struct ovl_entry which makes this easy to
+trip over.
 
-With the following btf
-  [1] DECL_TAG 'a' type_id=4 component_idx=-1
-  [2] PTR '(anon)' type_id=0
-  [3] TYPE_TAG 'a' type_id=2
-  [4] VAR 'a' type_id=3, linkage=static
-and when the bpf_attr.btf_key_type_id = 1 (DECL_TAG),
-the following WARN_ON_ONCE in btf_type_id_size() is triggered:
-  if (WARN_ON_ONCE(!btf_type_is_modifier(size_type) &&
-                   !btf_type_is_var(size_type)))
-          return NULL;
+Add a comment and two static asserts for both the offset and the type of
+pointer in struct ovl_entry.
 
-Note that 'return NULL' is the correct behavior as we don't want
-a DECL_TAG type to be used as a btf_{key,value}_type_id even
-for the case like 'DECL_TAG -> STRUCT'. So there
-is no correctness issue here, we just want to silence warning.
-
-To silence the warning, I added DECL_TAG as one of kinds in
-btf_type_nosize() which will cause btf_type_id_size() returning
-NULL earlier without the warning.
-
-  [1] https://lore.kernel.org/bpf/000000000000e0df8d05fc75ba86@google.com/
-
-Reported-by: syzbot+958967f249155967d42a@syzkaller.appspotmail.com
-Signed-off-by: Yonghong Song <yhs@fb.com>
-Link: https://lore.kernel.org/r/20230530205029.264910-1-yhs@fb.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ fs/overlayfs/ovl_entry.h |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 25ca17a8e1964..8b4e92439d1d6 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -485,25 +485,26 @@ static bool btf_type_is_fwd(const struct btf_type *t)
- 	return BTF_INFO_KIND(t->info) == BTF_KIND_FWD;
- }
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -32,6 +32,7 @@ struct ovl_sb {
+ };
  
--static bool btf_type_nosize(const struct btf_type *t)
-+static bool btf_type_is_datasec(const struct btf_type *t)
- {
--	return btf_type_is_void(t) || btf_type_is_fwd(t) ||
--	       btf_type_is_func(t) || btf_type_is_func_proto(t);
-+	return BTF_INFO_KIND(t->info) == BTF_KIND_DATASEC;
- }
+ struct ovl_layer {
++	/* ovl_free_fs() relies on @mnt being the first member! */
+ 	struct vfsmount *mnt;
+ 	/* Trap in ovl inode cache */
+ 	struct inode *trap;
+@@ -42,6 +43,14 @@ struct ovl_layer {
+ 	int fsid;
+ };
  
--static bool btf_type_nosize_or_null(const struct btf_type *t)
-+static bool btf_type_is_decl_tag(const struct btf_type *t)
- {
--	return !t || btf_type_nosize(t);
-+	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
- }
- 
--static bool btf_type_is_datasec(const struct btf_type *t)
-+static bool btf_type_nosize(const struct btf_type *t)
- {
--	return BTF_INFO_KIND(t->info) == BTF_KIND_DATASEC;
-+	return btf_type_is_void(t) || btf_type_is_fwd(t) ||
-+	       btf_type_is_func(t) || btf_type_is_func_proto(t) ||
-+	       btf_type_is_decl_tag(t);
- }
- 
--static bool btf_type_is_decl_tag(const struct btf_type *t)
-+static bool btf_type_nosize_or_null(const struct btf_type *t)
- {
--	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
-+	return !t || btf_type_nosize(t);
- }
- 
- static bool btf_type_is_decl_tag_target(const struct btf_type *t)
--- 
-2.39.2
-
++/*
++ * ovl_free_fs() relies on @mnt being the first member when unmounting
++ * the private mounts created for each layer. Let's check both the
++ * offset and type.
++ */
++static_assert(offsetof(struct ovl_layer, mnt) == 0);
++static_assert(__same_type(typeof_member(struct ovl_layer, mnt), struct vfsmount *));
++
+ struct ovl_path {
+ 	const struct ovl_layer *layer;
+ 	struct dentry *dentry;
 
 
