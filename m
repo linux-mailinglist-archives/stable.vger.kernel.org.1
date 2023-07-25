@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6946D76123E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CDF676134C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231213AbjGYLA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35770 "EHLO
+        id S234129AbjGYLJ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230089AbjGYLAK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:10 -0400
+        with ESMTP id S234103AbjGYLJO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C9D4210
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A9A1270F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E6B361680
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7232BC433C9;
-        Tue, 25 Jul 2023 10:57:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19EC66166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28367C433C8;
+        Tue, 25 Jul 2023 11:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282644;
-        bh=SxqVO9DJmTTxCMtdDTNUQFJpsJ4w+FUa0dIh+m3hjSI=;
+        s=korg; t=1690283283;
+        bh=DeTAqd2Ti1ukAPlpzY/eu7tdF0BTBQiXjwHOPtrNmCM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yozpELvhO1ROK1Q6q3Z4QV1bNmkNWj4zpJ8vLYFZUTZTT3wc4hoWNSXeyRpsphwJU
-         wzAHNmf1we/kNUoNqCgGeKziJzjy40xQBGPYj24aWvrqjHGr5KiRvDxvMHBOwIx0qH
-         0oOLfw/EdXV6kDiSB0sGwzaprOKYfGNuxqyZ2eBY=
+        b=jH2n2PO5J1ItEFGiM+GqXNgsBI2HWgohGXG3Y9pkBK/xZHR85Xpu27xpYJV4p7emK
+         ZW7bmMTQVWP3XI2FfNszfYAPWobVLvBfZp3ziPuM1Vmcl14MGtdiNJwhTsTIsFEUV6
+         pJbjMUR/3b8tz7bDeQaKE8mo+ArgGKL9U6b4DeJk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Siddh Raman Pant <code@siddh.me>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+37acd5d80d00d609d233@syzkaller.appspotmail.com
-Subject: [PATCH 6.4 204/227] Bluetooth: hci_conn: return ERR_PTR instead of NULL when there is no link
+        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
+        Shengjiu Wang <shengjiu.wang@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 20/78] ASoC: fsl_sai: Disable bit clock with transmitter
 Date:   Tue, 25 Jul 2023 12:46:11 +0200
-Message-ID: <20230725104523.218986215@linuxfoundation.org>
+Message-ID: <20230725104452.110722064@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,57 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Siddh Raman Pant <code@siddh.me>
+From: Matus Gajdos <matuszpd@gmail.com>
 
-[ Upstream commit b4066eb04bb67e7ff66e5aaab0db4a753f37eaad ]
+commit 269f399dc19f0e5c51711c3ba3bd06e0ef6ef403 upstream.
 
-hci_connect_sco currently returns NULL when there is no link (i.e. when
-hci_conn_link() returns NULL).
+Otherwise bit clock remains running writing invalid data to the DAC.
 
-sco_connect() expects an ERR_PTR in case of any error (see line 266 in
-sco.c). Thus, hcon set as NULL passes through to sco_conn_add(), which
-tries to get hcon->hdev, resulting in dereferencing a NULL pointer as
-reported by syzkaller.
-
-The same issue exists for iso_connect_cis() calling hci_connect_cis().
-
-Thus, make hci_connect_sco() and hci_connect_cis() return ERR_PTR
-instead of NULL.
-
-Reported-and-tested-by: syzbot+37acd5d80d00d609d233@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=37acd5d80d00d609d233
-Fixes: 06149746e720 ("Bluetooth: hci_conn: Add support for linking multiple hcon")
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230712124934.32232-1-matuszpd@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_sai.c |    2 +-
+ sound/soc/fsl/fsl_sai.h |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 7b0c74ef93296..31c115b225e7e 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1684,7 +1684,7 @@ struct hci_conn *hci_connect_sco(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 	if (!link) {
- 		hci_conn_drop(acl);
- 		hci_conn_drop(sco);
--		return NULL;
-+		return ERR_PTR(-ENOLINK);
- 	}
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -560,7 +560,7 @@ static void fsl_sai_config_disable(struc
+ 	u32 xcsr, count = 100;
  
- 	sco->setting = setting;
-@@ -2256,7 +2256,7 @@ struct hci_conn *hci_connect_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 	if (!link) {
- 		hci_conn_drop(le);
- 		hci_conn_drop(cis);
--		return NULL;
-+		return ERR_PTR(-ENOLINK);
- 	}
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+-			   FSL_SAI_CSR_TERE, 0);
++			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
  
- 	/* If LE is already connected and CIS handle is already set proceed to
--- 
-2.39.2
-
+ 	/* TERE will remain set till the end of current frame */
+ 	do {
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -87,6 +87,7 @@
+ /* SAI Transmit/Receive Control Register */
+ #define FSL_SAI_CSR_TERE	BIT(31)
+ #define FSL_SAI_CSR_SE		BIT(30)
++#define FSL_SAI_CSR_BCE		BIT(28)
+ #define FSL_SAI_CSR_FR		BIT(25)
+ #define FSL_SAI_CSR_SR		BIT(24)
+ #define FSL_SAI_CSR_xF_SHIFT	16
 
 
