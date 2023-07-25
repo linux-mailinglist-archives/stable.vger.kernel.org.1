@@ -2,55 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5AAB76116D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52C90761647
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjGYKv1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:51:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58712 "EHLO
+        id S234825AbjGYLhp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:37:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjGYKuq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F8F2691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:34 -0700 (PDT)
+        with ESMTP id S234850AbjGYLhn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:37:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D29AE74
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C6636165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98505C433C7;
-        Tue, 25 Jul 2023 10:50:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B83361682
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13445C433C7;
+        Tue, 25 Jul 2023 11:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282233;
-        bh=lVGnxoJ5choazvgpHRDSUMPaI1CaK9SAkGAG+WCIGNE=;
+        s=korg; t=1690285058;
+        bh=tT0EHYQuVCOcn26KPDYOGuhUtv8zkUdC3YL/zh9K7fc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lMWjldAfV+X/HaU1VnLH134jemehHLNBq6cyZj2kE34CFGqY6OKS5Z06aRo8/ugYw
-         aGaaowaWMIVLAniImvneyFzPSgq27xcnngaTqAzHYQOX0JdzvYN7pKTsm2e/I544Wv
-         +5Z2D70Z75err0DZRIh1R6DT0guxPxOQv728LI+k=
+        b=B+kOPkyfOX6u9OkU2Z5Bi30W+Rlw3iEgZjLQ6jFHnceqRnbaiz54yZsgRv/EnJP+K
+         Dvt7qyr+RY62HOFaa219LTAprTV+cE0FLVqgOPvBw+wrvYhtpYtzCVLeOP/fkHGSIr
+         q/pxUM62hbzNNjybJKZ5talkWC13VXwJ6sZQRI3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Josip Pavic <josip.pavic@amd.com>,
-        Alan Liu <haoping.liu@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.4 055/227] drm/amd/display: Keep PHY active for DP displays on DCN31
+        patches@lists.linux.dev, Cambda Zhu <cambda@linux.alibaba.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 069/313] ipvlan: Fix return value of ipvlan_queue_xmit()
 Date:   Tue, 25 Jul 2023 12:43:42 +0200
-Message-ID: <20230725104517.048003422@linuxfoundation.org>
+Message-ID: <20230725104523.969739337@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,42 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Cambda Zhu <cambda@linux.alibaba.com>
 
-commit 2387ccf43e3c6cb5dbd757c5ef410cca9f14b971 upstream.
+[ Upstream commit 8a9922e7be6d042fa00f894c376473b17a162b66 ]
 
-[Why & How]
-Port of a change that went into DCN314 to keep the PHY enabled
-when we have a connected and active DP display.
+ipvlan_queue_xmit() should return NET_XMIT_XXX, but
+ipvlan_xmit_mode_l2/l3() returns rx_handler_result_t or NET_RX_XXX
+in some cases. ipvlan_rcv_frame() will only return RX_HANDLER_CONSUMED
+in ipvlan_xmit_mode_l2/l3() because 'local' is true. It's equal to
+NET_XMIT_SUCCESS. But dev_forward_skb() can return NET_RX_SUCCESS or
+NET_RX_DROP, and returning NET_RX_DROP(NET_XMIT_DROP) will increase
+both ipvlan and ipvlan->phy_dev drops counter.
 
-The PHY can hang if PHY refclk is disabled inadvertently.
+The skb to forward can be treated as xmitted successfully. This patch
+makes ipvlan_queue_xmit() return NET_XMIT_SUCCESS for forward skb.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Josip Pavic <josip.pavic@amd.com>
-Acked-by: Alan Liu <haoping.liu@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230626093347.7492-1-cambda@linux.alibaba.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ipvlan/ipvlan_core.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
-@@ -87,6 +87,11 @@ static int dcn31_get_active_display_cnt_
- 				stream->signal == SIGNAL_TYPE_DVI_SINGLE_LINK ||
- 				stream->signal == SIGNAL_TYPE_DVI_DUAL_LINK)
- 			tmds_present = true;
-+
-+		/* Checking stream / link detection ensuring that PHY is active*/
-+		if (dc_is_dp_signal(stream->signal) && !stream->dpms_off)
-+			display_count++;
-+
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index 0a5b5ff597c6f..ab09d110760ec 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -586,7 +586,8 @@ static int ipvlan_xmit_mode_l3(struct sk_buff *skb, struct net_device *dev)
+ 				consume_skb(skb);
+ 				return NET_XMIT_DROP;
+ 			}
+-			return ipvlan_rcv_frame(addr, &skb, true);
++			ipvlan_rcv_frame(addr, &skb, true);
++			return NET_XMIT_SUCCESS;
+ 		}
  	}
+ out:
+@@ -612,7 +613,8 @@ static int ipvlan_xmit_mode_l2(struct sk_buff *skb, struct net_device *dev)
+ 					consume_skb(skb);
+ 					return NET_XMIT_DROP;
+ 				}
+-				return ipvlan_rcv_frame(addr, &skb, true);
++				ipvlan_rcv_frame(addr, &skb, true);
++				return NET_XMIT_SUCCESS;
+ 			}
+ 		}
+ 		skb = skb_share_check(skb, GFP_ATOMIC);
+@@ -624,7 +626,8 @@ static int ipvlan_xmit_mode_l2(struct sk_buff *skb, struct net_device *dev)
+ 		 * the skb for the main-dev. At the RX side we just return
+ 		 * RX_PASS for it to be processed further on the stack.
+ 		 */
+-		return dev_forward_skb(ipvlan->phy_dev, skb);
++		dev_forward_skb(ipvlan->phy_dev, skb);
++		return NET_XMIT_SUCCESS;
  
- 	for (i = 0; i < dc->link_count; i++) {
+ 	} else if (is_multicast_ether_addr(eth->h_dest)) {
+ 		skb_reset_mac_header(skb);
+-- 
+2.39.2
+
 
 
