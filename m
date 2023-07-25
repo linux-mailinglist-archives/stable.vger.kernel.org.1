@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D237D761291
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C03817611CD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233923AbjGYLED (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40004 "EHLO
+        id S232862AbjGYK4b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233105AbjGYLDr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:47 -0400
+        with ESMTP id S231416AbjGYK4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F4A5FC3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE561FEB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E119F61681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023FDC433C8;
-        Tue, 25 Jul 2023 11:00:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E92AB61655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05553C433C9;
+        Tue, 25 Jul 2023 10:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282854;
-        bh=jt3JUmxKY7cqcOIXAy28/nzyNMTyACXQXZC5AwDhzKc=;
+        s=korg; t=1690282385;
+        bh=oyJMKpX+tRVslhuKNrHjM4kIgy+eIZlE7fR7+clRX28=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SeUrMCvqKVQl4m58wj6WWCwytPgFiVkt0ZfzMDf61APpFN2qObRQ+y+8G1khuC3f6
-         FJwO9l3Vv3e1uVEThYQUB3Rdyc3ruCWPYhQJfjdVfLIrA+M2x7dNXQpCr3cwdLFV6C
-         0mAvoFoAwPoTp8ZdnLqayglXKNXzOJPYwpea+rhk=
+        b=hDQUueKyjyW4PAuCmEI7vOh9i5KqoLuOLx2B+CDzKeYiHd1X+6DK1o4rQeN554MOY
+         2cHCSHKy2odBJBzw8teumGtpok1/KcpYU9+CByLJ/O70qwH/+PPXzVcxNg1sOTpH8g
+         tn+oNRSwi6DVUyZOBApOmPSeW7aR/JH2ld5rb900=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Eric Whitney <enwlinux@gmail.com>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 050/183] ext4: correct inline offset when handling xattrs in inode body
+        patches@lists.linux.dev, Kui-Feng Lee <kuifeng@meta.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Yonghong Song <yhs@fb.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 111/227] bpf: Print a warning only if writing to unprivileged_bpf_disabled.
 Date:   Tue, 25 Jul 2023 12:44:38 +0200
-Message-ID: <20230725104509.781091829@linuxfoundation.org>
+Message-ID: <20230725104519.380038361@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Whitney <enwlinux@gmail.com>
+From: Kui-Feng Lee <thinker.li@gmail.com>
 
-commit 6909cf5c4101214f4305a62d582a5b93c7e1eb9a upstream.
+[ Upstream commit fedf99200ab086c42a572fca1d7266b06cdc3e3f ]
 
-When run on a file system where the inline_data feature has been
-enabled, xfstests generic/269, generic/270, and generic/476 cause ext4
-to emit error messages indicating that inline directory entries are
-corrupted.  This occurs because the inline offset used to locate
-inline directory entries in the inode body is not updated when an
-xattr in that shared region is deleted and the region is shifted in
-memory to recover the space it occupied.  If the deleted xattr precedes
-the system.data attribute, which points to the inline directory entries,
-that attribute will be moved further up in the region.  The inline
-offset continues to point to whatever is located in system.data's former
-location, with unfortunate effects when used to access directory entries
-or (presumably) inline data in the inode body.
+Only print the warning message if you are writing to
+"/proc/sys/kernel/unprivileged_bpf_disabled".
 
-Cc: stable@kernel.org
-Signed-off-by: Eric Whitney <enwlinux@gmail.com>
-Link: https://lore.kernel.org/r/20230522181520.1570360-1-enwlinux@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The kernel may print an annoying warning when you read
+"/proc/sys/kernel/unprivileged_bpf_disabled" saying
+
+  WARNING: Unprivileged eBPF is enabled with eIBRS on, data leaks possible
+  via Spectre v2 BHB attacks!
+
+However, this message is only meaningful when the feature is
+disabled or enabled.
+
+Signed-off-by: Kui-Feng Lee <kuifeng@meta.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/bpf/20230502181418.308479-1-kuifeng@meta.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/bpf/syscall.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1732,6 +1732,20 @@ static int ext4_xattr_set_entry(struct e
- 		memmove(here, (void *)here + size,
- 			(void *)last - (void *)here + sizeof(__u32));
- 		memset(last, 0, size);
-+
-+		/*
-+		 * Update i_inline_off - moved ibody region might contain
-+		 * system.data attribute.  Handling a failure here won't
-+		 * cause other complications for setting an xattr.
-+		 */
-+		if (!is_block && ext4_has_inline_data(inode)) {
-+			ret = ext4_find_inline_data_nolock(inode);
-+			if (ret) {
-+				ext4_warning_inode(inode,
-+					"unable to update i_inline_off");
-+				goto out;
-+			}
-+		}
- 	} else if (s->not_found) {
- 		/* Insert new name. */
- 		size_t size = EXT4_XATTR_LEN(name_len);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index f1c8733f76b83..5524fcf6fb2a4 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -5394,7 +5394,8 @@ static int bpf_unpriv_handler(struct ctl_table *table, int write,
+ 		*(int *)table->data = unpriv_enable;
+ 	}
+ 
+-	unpriv_ebpf_notify(unpriv_enable);
++	if (write)
++		unpriv_ebpf_notify(unpriv_enable);
+ 
+ 	return ret;
+ }
+-- 
+2.39.2
+
 
 
