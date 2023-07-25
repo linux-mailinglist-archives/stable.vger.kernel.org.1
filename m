@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79BAE7611AB
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D74CE76153F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232158AbjGYKyL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59168 "EHLO
+        id S234548AbjGYL0y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232138AbjGYKxk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AE803C04
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:05 -0700 (PDT)
+        with ESMTP id S234580AbjGYL0v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1179397;
+        Tue, 25 Jul 2023 04:26:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE5D16166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E94C433C7;
-        Tue, 25 Jul 2023 10:52:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9998A61683;
+        Tue, 25 Jul 2023 11:26:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA97AC433C7;
+        Tue, 25 Jul 2023 11:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282324;
-        bh=XNEGnYTaRZvaf5XGYkYuRvH5jHt41IG3/iZn+E6FlfI=;
+        s=korg; t=1690284409;
+        bh=+0WPbyl8b6VAULhXgdV1PZfNsTNBzw3o80jkOhrW+yQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G+SpEm6CH3JTQ/bPW4PPZdw/AFOK4KvlmdQ4u87bjX4Ag0FYOvrSltNglqHNOoMjV
-         QgQeCaHjc5FRaihbLqecEsTm0NXMbO71lsR0hnWtLQzaiEH396NIny9JLhU+4Ih5H7
-         /iTzfv99CLKI1w/NjHFL66VFQYVWZ1NC4f3uijbE=
+        b=ILtzKjrjgZMIZjNJDal6QaxOuJDMzCf9To3DTJyFs7IQJnK1W9H0a57lUKnoqsN5Z
+         WPGPCe/q1+G1Pj/9B/fDMdSFVldW1cgMtnUGh90wCgh9zM8M+LIAP9vqkSjnFYx0Fy
+         OQD7f1fwqUAolJBgSuPKEDS6eIkkIPfVhoo0egWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Neuwirth <reddunur@online.de>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 088/227] md: fix data corruption for raid456 when reshape restart while grow up
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 316/509] netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
 Date:   Tue, 25 Jul 2023 12:44:15 +0200
-Message-ID: <20230725104518.376621555@linuxfoundation.org>
+Message-ID: <20230725104608.194165447@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,59 +53,167 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 873f50ece41aad5c4f788a340960c53774b5526e ]
+[ Upstream commit 26b5a5712eb85e253724e56a54c17f8519bd8e4e ]
 
-Currently, if reshape is interrupted, echo "reshape" to sync_action will
-restart reshape from scratch, for example:
+Add a new state to deal with rule expressions deactivation from the
+newrule error path, otherwise the anonymous set remains in the list in
+inactive state for the next generation. Mark the set/chain transaction
+as unbound so the abort path releases this object, set it as inactive in
+the next generation so it is not reachable anymore from this transaction
+and reference counter is dropped.
 
-echo frozen > sync_action
-echo reshape > sync_action
-
-This will corrupt data before reshape_position if the array is growing,
-fix the problem by continue reshape from reshape_position.
-
-Reported-by: Peter Neuwirth <reddunur@online.de>
-Link: https://lore.kernel.org/linux-raid/e2f96772-bfbc-f43b-6da1-f520e5164536@online.de/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230512015610.821290-3-yukuai1@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_tables.h |    2 +
+ net/netfilter/nf_tables_api.c     |   45 ++++++++++++++++++++++++++++++++------
+ net/netfilter/nft_immediate.c     |    3 ++
+ 3 files changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 350094f1cb09f..18384251399ab 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4807,11 +4807,21 @@ action_store(struct mddev *mddev, const char *page, size_t len)
- 			return -EINVAL;
- 		err = mddev_lock(mddev);
- 		if (!err) {
--			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
-+			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
- 				err =  -EBUSY;
--			else {
-+			} else if (mddev->reshape_position == MaxSector ||
-+				   mddev->pers->check_reshape == NULL ||
-+				   mddev->pers->check_reshape(mddev)) {
- 				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 				err = mddev->pers->start_reshape(mddev);
-+			} else {
-+				/*
-+				 * If reshape is still in progress, and
-+				 * md_check_recovery() can continue to reshape,
-+				 * don't restart reshape because data can be
-+				 * corrupted for raid456.
-+				 */
-+				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 			}
- 			mddev_unlock(mddev);
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -777,6 +777,7 @@ struct nft_expr_type {
+ 
+ enum nft_trans_phase {
+ 	NFT_TRANS_PREPARE,
++	NFT_TRANS_PREPARE_ERROR,
+ 	NFT_TRANS_ABORT,
+ 	NFT_TRANS_COMMIT,
+ 	NFT_TRANS_RELEASE
+@@ -970,6 +971,7 @@ struct nft_chain {
+ 
+ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain);
+ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
++void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
+ 
+ enum nft_chain_types {
+ 	NFT_CHAIN_T_DEFAULT = 0,
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -173,7 +173,8 @@ static void nft_trans_destroy(struct nft
+ 	kfree(trans);
+ }
+ 
+-static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
++				 bool bind)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -187,17 +188,28 @@ static void nft_set_trans_bind(const str
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWSET:
+ 			if (nft_trans_set(trans) == set)
+-				nft_trans_set_bound(trans) = true;
++				nft_trans_set_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+ 			if (nft_trans_elem_set(trans) == set)
+-				nft_trans_elem_set_bound(trans) = true;
++				nft_trans_elem_set_bound(trans) = bind;
+ 			break;
  		}
--- 
-2.39.2
-
+ 	}
+ }
+ 
+-static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *chain)
++static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, true);
++}
++
++static void nft_set_trans_unbind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, false);
++}
++
++static void __nft_chain_trans_bind(const struct nft_ctx *ctx,
++				   struct nft_chain *chain, bool bind)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -211,16 +223,22 @@ static void nft_chain_trans_bind(const s
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWCHAIN:
+ 			if (nft_trans_chain(trans) == chain)
+-				nft_trans_chain_bound(trans) = true;
++				nft_trans_chain_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWRULE:
+ 			if (trans->ctx.chain == chain)
+-				nft_trans_rule_bound(trans) = true;
++				nft_trans_rule_bound(trans) = bind;
+ 			break;
+ 		}
+ 	}
+ }
+ 
++static void nft_chain_trans_bind(const struct nft_ctx *ctx,
++				 struct nft_chain *chain)
++{
++	__nft_chain_trans_bind(ctx, chain, true);
++}
++
+ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
+ {
+ 	if (!nft_chain_binding(chain))
+@@ -239,6 +257,11 @@ int nf_tables_bind_chain(const struct nf
+ 	return 0;
+ }
+ 
++void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
++{
++	__nft_chain_trans_bind(ctx, chain, false);
++}
++
+ static int nft_netdev_register_hooks(struct net *net,
+ 				     struct list_head *hook_list)
+ {
+@@ -3449,7 +3472,7 @@ static int nf_tables_newrule(struct net
+ 
+ 	return 0;
+ err2:
+-	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+ 	nf_tables_rule_destroy(&ctx, rule);
+ err1:
+ 	for (i = 0; i < n; i++) {
+@@ -4585,6 +4608,13 @@ void nf_tables_deactivate_set(const stru
+ 			      enum nft_trans_phase phase)
+ {
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
++		nft_set_trans_unbind(ctx, set);
++		if (nft_set_is_anonymous(set))
++			nft_deactivate_next(ctx->net, set);
++
++		set->use--;
++		break;
+ 	case NFT_TRANS_PREPARE:
+ 		if (nft_set_is_anonymous(set))
+ 			nft_deactivate_next(ctx->net, set);
+@@ -6525,6 +6555,7 @@ void nf_tables_deactivate_flowtable(cons
+ 				    enum nft_trans_phase phase)
+ {
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
+ 	case NFT_TRANS_PREPARE:
+ 	case NFT_TRANS_ABORT:
+ 	case NFT_TRANS_RELEASE:
+--- a/net/netfilter/nft_immediate.c
++++ b/net/netfilter/nft_immediate.c
+@@ -150,6 +150,9 @@ static void nft_immediate_deactivate(con
+ 				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
+ 
+ 			switch (phase) {
++			case NFT_TRANS_PREPARE_ERROR:
++				nf_tables_unbind_chain(ctx, chain);
++				fallthrough;
+ 			case NFT_TRANS_PREPARE:
+ 				nft_deactivate_next(ctx->net, chain);
+ 				break;
 
 
