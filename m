@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 445D9761202
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 832F9761568
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232968AbjGYK6l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:58:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36000 "EHLO
+        id S234640AbjGYL2h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233835AbjGYK6J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:09 -0400
+        with ESMTP id S234642AbjGYL2g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B16C46B2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8FEF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD05261655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDD6C433C8;
-        Tue, 25 Jul 2023 10:55:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 79E5B61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C15C433C7;
+        Tue, 25 Jul 2023 11:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282516;
-        bh=f1vbqa+D9mzOGpLHlkbKJ2Wy1jqMng1a7gIbOnRIygQ=;
+        s=korg; t=1690284514;
+        bh=XnvtDfwSlEEkQMSoYckVxHKZRH66ois/0geTS5fp7ZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RtSh2J9yXueqU82zxY8MiyKc3R8cLsHisK01UQULlzKyUVYHww64gWS+B3lE3OzRg
-         F2hfXLQapoajXFpkmIYcgcJ0wJaYMyARIy5+lX42H4h6OFlOBxyysj/2m+nKJJ566Q
-         q+5jaS7zjl4Hl1GGoG5JS0XihXAczhrnYWWnN8jk=
+        b=oGYWyvGxYr4ArUdkGVGgwlFbOGZXU1gMUcLUH8JCifdCmZ61UN3qxloi/0kYcDDfp
+         EE0itKj/6q2i3IyrtGqVzQFyLfZEbElFtfWwp/WxaniSXpjqRGeO+nzvNcjnLSDWTc
+         2kEK1RLOht3IwZDYy6Q0UDT3dVjavOuy1MQFniPo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Yan Zhai <yan@cloudflare.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jason Wang <jasowang@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 156/227] gso: fix dodgy bit handling for GSO_UDP_L4
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Ekansh Gupta <quic_ekangupt@quicinc.com>
+Subject: [PATCH 5.10 384/509] misc: fastrpc: Create fastrpc scalar with correct buffer count
 Date:   Tue, 25 Jul 2023 12:45:23 +0200
-Message-ID: <20230725104521.387791248@linuxfoundation.org>
+Message-ID: <20230725104611.322987272@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,85 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-[ Upstream commit 9840036786d90cea11a90d1f30b6dc003b34ee67 ]
+commit 0b4e32df3e09406b835d8230b9331273f2805058 upstream.
 
-Commit 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4
-packets.") checks DODGY bit for UDP, but for packets that can be fed
-directly to the device after gso_segs reset, it actually falls through
-to fragmentation:
+A process can spawn a PD on DSP with some attributes that can be
+associated with the PD during spawn and run. The invocation
+corresponding to the create request with attributes has total
+4 buffers at the DSP side implementation. If this number is not
+correct, the invocation is expected to fail on DSP. Added change
+to use correct number of buffer count for creating fastrpc scalar.
 
-https://lore.kernel.org/all/CAJPywTKDdjtwkLVUW6LRA2FU912qcDmQOQGt2WaDo28KzYDg+A@mail.gmail.com/
-
-This change restores the expected behavior of GSO_UDP_L4 packets.
-
-Fixes: 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4 packets.")
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d73f71c7c6ee ("misc: fastrpc: Add support for create remote init process")
+Cc: stable <stable@kernel.org>
+Tested-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Message-ID: <1686743685-21715-1-git-send-email-quic_ekangupt@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c | 16 +++++++++++-----
- net/ipv6/udp_offload.c |  3 +--
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 1f01e15ca24fd..4a61832e7f69b 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -273,13 +273,20 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 	__sum16 check;
- 	__be16 newlen;
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1106,7 +1106,7 @@ static int fastrpc_init_create_process(s
  
--	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
--		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
--
- 	mss = skb_shinfo(gso_skb)->gso_size;
- 	if (gso_skb->len <= sizeof(*uh) + mss)
- 		return ERR_PTR(-EINVAL);
+ 	sc = FASTRPC_SCALARS(FASTRPC_RMID_INIT_CREATE, 4, 0);
+ 	if (init.attrs)
+-		sc = FASTRPC_SCALARS(FASTRPC_RMID_INIT_CREATE_ATTR, 6, 0);
++		sc = FASTRPC_SCALARS(FASTRPC_RMID_INIT_CREATE_ATTR, 4, 0);
  
-+	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
-+		/* Packet is from an untrusted source, reset gso_segs. */
-+		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
-+							     mss);
-+		return NULL;
-+	}
-+
-+	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
-+		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-+
- 	skb_pull(gso_skb, sizeof(*uh));
- 
- 	/* clear destructor to avoid skb_segment assigning it to tail */
-@@ -387,8 +394,7 @@ static struct sk_buff *udp4_ufo_fragment(struct sk_buff *skb,
- 	if (!pskb_may_pull(skb, sizeof(struct udphdr)))
- 		goto out;
- 
--	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--	    !skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST))
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
- 		return __udp_gso_segment(skb, features, false);
- 
- 	mss = skb_shinfo(skb)->gso_size;
-diff --git a/net/ipv6/udp_offload.c b/net/ipv6/udp_offload.c
-index c39c1e32f9804..e0e10f6bcdc18 100644
---- a/net/ipv6/udp_offload.c
-+++ b/net/ipv6/udp_offload.c
-@@ -42,8 +42,7 @@ static struct sk_buff *udp6_ufo_fragment(struct sk_buff *skb,
- 		if (!pskb_may_pull(skb, sizeof(struct udphdr)))
- 			goto out;
- 
--		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--		    !skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST))
-+		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
- 			return __udp_gso_segment(skb, features, true);
- 
- 		mss = skb_shinfo(skb)->gso_size;
--- 
-2.39.2
-
+ 	err = fastrpc_internal_invoke(fl, true, FASTRPC_INIT_HANDLE,
+ 				      sc, args);
 
 
