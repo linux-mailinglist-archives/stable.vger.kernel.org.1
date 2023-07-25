@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC877616CA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 445D9761202
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233610AbjGYLnn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50668 "EHLO
+        id S232968AbjGYK6l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:58:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235007AbjGYLmp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:42:45 -0400
+        with ESMTP id S233835AbjGYK6J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 233D11FE2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B16C46B2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8BC2616C4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C66C433C7;
-        Tue, 25 Jul 2023 11:42:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD05261655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDD6C433C8;
+        Tue, 25 Jul 2023 10:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285339;
-        bh=LoyFgFGZRhgKuJ5L+OqWoBI+yJGjJHp3EUEiXS5G4fY=;
+        s=korg; t=1690282516;
+        bh=f1vbqa+D9mzOGpLHlkbKJ2Wy1jqMng1a7gIbOnRIygQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lD4ljKoTv73oY0XTObPS2k8x7Bey/UVVci5bo0xPVKmaooBHJ23wpnbYkumBRZegA
-         rYjI3ivEbXr4v3tt+LFwnYkv+xUsE7iVnEF7A9O9d6Gdof16XA2QN89Y/Ld4BKYfTS
-         z8MJ1lS4hTbIt5bMInBtD7TjbMai5iZRzVFx7ksU=
+        b=RtSh2J9yXueqU82zxY8MiyKc3R8cLsHisK01UQULlzKyUVYHww64gWS+B3lE3OzRg
+         F2hfXLQapoajXFpkmIYcgcJ0wJaYMyARIy5+lX42H4h6OFlOBxyysj/2m+nKJJ566Q
+         q+5jaS7zjl4Hl1GGoG5JS0XihXAczhrnYWWnN8jk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ted Tso <tytso@mit.edu>,
-        Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 170/313] ext4: Remove ext4 locking of moved directory
+        patches@lists.linux.dev,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Yan Zhai <yan@cloudflare.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 156/227] gso: fix dodgy bit handling for GSO_UDP_L4
 Date:   Tue, 25 Jul 2023 12:45:23 +0200
-Message-ID: <20230725104528.307361479@linuxfoundation.org>
+Message-ID: <20230725104521.387791248@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,59 +59,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Yan Zhai <yan@cloudflare.com>
 
-commit 3658840cd363f2be094f5dfd2f0b174a9055dd0f upstream.
+[ Upstream commit 9840036786d90cea11a90d1f30b6dc003b34ee67 ]
 
-Remove locking of moved directory in ext4_rename2(). We will take care
-of it in VFS instead. This effectively reverts commit 0813299c586b
-("ext4: Fix possible corruption when moving a directory") and followup
-fixes.
+Commit 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4
+packets.") checks DODGY bit for UDP, but for packets that can be fed
+directly to the device after gso_segs reset, it actually falls through
+to fragmentation:
 
-CC: Ted Tso <tytso@mit.edu>
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230601105830.13168-1-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+https://lore.kernel.org/all/CAJPywTKDdjtwkLVUW6LRA2FU912qcDmQOQGt2WaDo28KzYDg+A@mail.gmail.com/
+
+This change restores the expected behavior of GSO_UDP_L4 packets.
+
+Fixes: 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4 packets.")
+Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c |   17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ net/ipv4/udp_offload.c | 16 +++++++++++-----
+ net/ipv6/udp_offload.c |  3 +--
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -3795,19 +3795,10 @@ static int ext4_rename(struct inode *old
- 			return retval;
- 	}
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 1f01e15ca24fd..4a61832e7f69b 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -273,13 +273,20 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	__sum16 check;
+ 	__be16 newlen;
  
--	/*
--	 * We need to protect against old.inode directory getting converted
--	 * from inline directory format into a normal one.
--	 */
--	if (S_ISDIR(old.inode->i_mode))
--		inode_lock_nested(old.inode, I_MUTEX_NONDIR2);
+-	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
 -
- 	old.bh = ext4_find_entry(old.dir, &old.dentry->d_name, &old.de,
- 				 &old.inlined);
--	if (IS_ERR(old.bh)) {
--		retval = PTR_ERR(old.bh);
--		goto unlock_moved_dir;
--	}
-+	if (IS_ERR(old.bh))
-+		return PTR_ERR(old.bh);
+ 	mss = skb_shinfo(gso_skb)->gso_size;
+ 	if (gso_skb->len <= sizeof(*uh) + mss)
+ 		return ERR_PTR(-EINVAL);
  
- 	/*
- 	 *  Check for inode number is _not_ due to possible IO errors.
-@@ -3968,10 +3959,6 @@ release_bh:
- 	brelse(old.bh);
- 	brelse(new.bh);
++	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
++		/* Packet is from an untrusted source, reset gso_segs. */
++		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
++							     mss);
++		return NULL;
++	}
++
++	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
++		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++
+ 	skb_pull(gso_skb, sizeof(*uh));
  
--unlock_moved_dir:
--	if (S_ISDIR(old.inode->i_mode))
--		inode_unlock(old.inode);
--
- 	return retval;
- }
+ 	/* clear destructor to avoid skb_segment assigning it to tail */
+@@ -387,8 +394,7 @@ static struct sk_buff *udp4_ufo_fragment(struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, sizeof(struct udphdr)))
+ 		goto out;
  
+-	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
+-	    !skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST))
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
+ 		return __udp_gso_segment(skb, features, false);
+ 
+ 	mss = skb_shinfo(skb)->gso_size;
+diff --git a/net/ipv6/udp_offload.c b/net/ipv6/udp_offload.c
+index c39c1e32f9804..e0e10f6bcdc18 100644
+--- a/net/ipv6/udp_offload.c
++++ b/net/ipv6/udp_offload.c
+@@ -42,8 +42,7 @@ static struct sk_buff *udp6_ufo_fragment(struct sk_buff *skb,
+ 		if (!pskb_may_pull(skb, sizeof(struct udphdr)))
+ 			goto out;
+ 
+-		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
+-		    !skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST))
++		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
+ 			return __udp_gso_segment(skb, features, true);
+ 
+ 		mss = skb_shinfo(skb)->gso_size;
+-- 
+2.39.2
+
 
 
