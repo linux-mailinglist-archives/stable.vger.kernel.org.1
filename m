@@ -2,132 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4F9761A48
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 15:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1931761A77
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 15:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231409AbjGYNos (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 09:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39446 "EHLO
+        id S231600AbjGYNs4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 09:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231408AbjGYNos (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 09:44:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FDE21FF5
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 06:44:18 -0700 (PDT)
+        with ESMTP id S231664AbjGYNsx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 09:48:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D4F1FF7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 06:48:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC2CC616FD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 13:44:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AB7C433C8;
-        Tue, 25 Jul 2023 13:44:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690292648;
-        bh=YWE/8RkY8IwL7upamSd1WGx59zrwlmId8h4DayhPkjk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=00vSltNdqJePYM+LsR2Xkdteezq8WkeCME9mcDGEh8WpPsKrYBEqzRfWjwsyzX/pF
-         fPef+7E7d0VO1t2ydjJ7I0+GZnJ/YwpXrxRY8a3z8HBKmbq6G3BDi6T7Tuie1lktY0
-         uF7ESnik6XpA82rw1/A2fIFeZWatJnjP1+K2tVL0=
-Date:   Tue, 25 Jul 2023 15:44:05 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Alex G." <mr.nuke.me@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        "Wang, Chao-kai (Stylon)" <Stylon.Wang@amd.com>,
-        "Wu, Hersen" <hersenxs.wu@amd.com>, "Li, Roman" <Roman.Li@amd.com>,
-        "Wheeler, Daniel" <Daniel.Wheeler@amd.com>,
-        "eniac-xw.zhang@hp.com" <eniac-xw.zhang@hp.com>
-Subject: Re: [PATCH 6.1 146/223] drm/amd/display: edp do not add non-edid
- timings
-Message-ID: <2023072548-basics-estranged-5e99@gregkh>
-References: <20230721160520.865493356@linuxfoundation.org>
- <20230721160527.097927704@linuxfoundation.org>
- <18e9e042-12ec-8e09-1225-ca44810e2b82@gmail.com>
- <BL1PR12MB5144A568ECEB3E9E18BA74C4F702A@BL1PR12MB5144.namprd12.prod.outlook.com>
- <2023072503-subduing-entertain-878c@gregkh>
- <774e7690-527a-7042-e61b-2f3a73c46c36@amd.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B1F36171E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 13:48:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C4FC433C8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 13:48:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690292927;
+        bh=LVsuvniU41OAjpmlr1YuKkw2BJTWr3abFPETIUBEzKU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Tj4qp5QdD/NKiiNrCgaIkPCA0j1aYSug/ixLGjyIqxAisSiaUuX+BOqGUrHUcoqTX
+         YOITCCYeDo3cbrImfdl3UxL2VGvp69Wedc0ye+vaH09GU77pi8fih8b+8I/IHvr20C
+         qDPCrnzCI/LFgBKX8B32cE1R6jI5DXFTjxbruWL8Lt0IZQdXSIQn1tRicTFkuOemxR
+         +vZAkKFigJCEFZoYg8JZRHreAcRFWKr1GbG6WegdUo6968qoSQqqvAPu54NBMwqHLy
+         JmJm+gHSh3CmKunQxz/KnXXYHKNCxGkq0+xhYadxEkF3DBKL+LcBzuPwZWXyJqy1i6
+         k8KI2lWWoE7dQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-4fdd14c1fbfso8536981e87.1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 06:48:46 -0700 (PDT)
+X-Gm-Message-State: ABy/qLbp7gOqYoJAYd2no/BC3nV2uXyW0cjdI4gS80/pk9HKO1SkD7lQ
+        hqChzVoq2yqAVTqFunchU1Q967Xd95bRWN58tes=
+X-Google-Smtp-Source: APBJJlGcWdPSElzZZj0dWZfvE9WkxvtmIFPCohS2A1LGgf0FBZQR3Tsdb3mcPYGrVsaIZLcITSuZy8nJaMHLtnCMohE=
+X-Received: by 2002:a19:914d:0:b0:4f8:4512:c844 with SMTP id
+ y13-20020a19914d000000b004f84512c844mr6648747lfj.48.1690292924893; Tue, 25
+ Jul 2023 06:48:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <774e7690-527a-7042-e61b-2f3a73c46c36@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <CAMj1kXHQkgRCt=W0FbZZ9qLVCaWisFhv9wJtYONjA3cEPdXMRQ@mail.gmail.com>
+ <2023072521-refurnish-grooving-fd36@gregkh> <CAMj1kXF55o_YZ=kshh5ALszN3ZWiKk+5LSNVQvSkjPaJNgh56g@mail.gmail.com>
+ <2023072527-dehydrate-frown-3312@gregkh> <CAMj1kXFzXs=cMz06J_z1vtbrQiF_yXsC0RLGun=ZgzrC0H+umA@mail.gmail.com>
+ <2023072516-steerable-onlooker-0a82@gregkh>
+In-Reply-To: <2023072516-steerable-onlooker-0a82@gregkh>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 25 Jul 2023 15:48:33 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEswMxpxj3yVar08mVQBAtSxMKH5-oYZqsjThsYd1Xx0A@mail.gmail.com>
+Message-ID: <CAMj1kXEswMxpxj3yVar08mVQBAtSxMKH5-oYZqsjThsYd1Xx0A@mail.gmail.com>
+Subject: Re: backport request
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     "# 3.4.x" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 25, 2023 at 08:22:17AM -0500, Mario Limonciello wrote:
-> On 7/25/23 02:13, Greg Kroah-Hartman wrote:
-> > On Mon, Jul 24, 2023 at 07:38:24PM +0000, Deucher, Alexander wrote:
-> > > [AMD Official Use Only - General]
-> > > 
-> > > > -----Original Message-----
-> > > > From: Alex G. <mr.nuke.me@gmail.com>
-> > > > Sent: Monday, July 24, 2023 3:23 PM
-> > > > To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
-> > > > stable@vger.kernel.org
-> > > > Cc: patches@lists.linux.dev; Limonciello, Mario
-> > > > <Mario.Limonciello@amd.com>; Deucher, Alexander
-> > > > <Alexander.Deucher@amd.com>; Wang, Chao-kai (Stylon)
-> > > > <Stylon.Wang@amd.com>; Wu, Hersen <hersenxs.wu@amd.com>; Li, Roman
-> > > > <Roman.Li@amd.com>; Wheeler, Daniel <Daniel.Wheeler@amd.com>; eniac-
-> > > > xw.zhang@hp.com
-> > > > Subject: Re: [PATCH 6.1 146/223] drm/amd/display: edp do not add non-edid
-> > > > timings
-> > > > 
-> > > > Hi Greg,
-> > > > 
-> > > > This patch was
-> > > >       * originally added to v6.1.35
-> > > >       * reverted in v6.1.39
-> > > >       * added back in v6.1.40
-> > > > 
-> > > > This patch is still reverted in mainline. Was this patch re-added by mistake in
-> > > > v6.1.y stable?
-> > > 
-> > > Yes, this patch should stay reverted.
-> > 
-> > Where was it reverted in the 6.1.y tree?  And where was it reverted in
-> > Linus's tree?
-> > 
-> > I think the confusion here is you have the same commit in the tree with
-> > two different commit ids.  So when I see the patches flow by, I applied
-> > just this one to the tree, and I only see it in 6.1.40 with that id,
-> > missing any possible revert of a previous version as the ids don't match
-> > up.
-> > 
-> > In other words, what am I supposed to do here when you duplicate
-> > commits?  What's the revert of this commit, is it also in the tree
-> > twice?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Here is the revert from Linus' tree (6.5-rc1):
-> d6149086b45e150c170beaa4546495fd1880724c
-> 
-> Here are the two times it landed in Linus' tree (6.4-rc7 and 6.5-rc1)
-> e749dd10e5f292061ad63d2b030194bf7d7d452c
-> 7a0e005c7957931689a327b2a4e7333a19f13f95
-> 
-> It should be reverted in 6.1.
+On Tue, 25 Jul 2023 at 15:41, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Jul 25, 2023 at 03:25:35PM +0200, Ard Biesheuvel wrote:
+> > On Tue, 25 Jul 2023 at 15:21, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Tue, Jul 25, 2023 at 02:51:56PM +0200, Ard Biesheuvel wrote:
+> > > > On Tue, 25 Jul 2023 at 14:29, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > >
+> > > > > On Tue, Jul 25, 2023 at 01:13:34PM +0200, Ard Biesheuvel wrote:
+> > > > > > Please backport commit
+> > > > > >
+> > > > > > commit 9cf42bca30e98a1c6c9e8abf876940a551eaa3d1
+> > > > > > Author: Ard Biesheuvel <ardb@kernel.org>
+> > > > > > Date:   Tue Aug 2 11:00:16 2022 +0200
+> > > > > >
+> > > > > >     efi: libstub: use EFI_LOADER_CODE region when moving the kernel in memory
+> > > > > >
+> > > > > > to all active stable trees all the way back to v5.15. I will provide a
+> > > > > > separate backport for v5.10, and possibly a [much] larger set of
+> > > > > > backports for v5.4 for EFI boot support.
+> > > > >
+> > > > > Sure, but why?  That sounds like a new feature, if you want EFI boot
+> > > > > support, why not just move to a newer kernel tree?  What bug is this
+> > > > > fixing?
+> > > > >
+> > > >
+> > > > Perhaps it is something that the distros just needs to carry in their
+> > > > forks, then.
+> > > >
+> > > > This is related to distro forks of grub and shim, and the royal mess
+> > > > they created on x86. We are making progress on the GRUB side to move
+> > > > to the much simpler and cleaner generic EFI stub support that works
+> > > > for x86, ARM, arm64, RISC-V and LoongArch. The problem is that the
+> > > > distros have a huge set of patches between them that turn shim, GRUB
+> > > > and the way x86 boots in a huge tangled mess, and they cannot phase
+> > > > those out as long as they need to support older kernels, and so they
+> > > > are now in a situation where they need to support all of the above.
+> > > >
+> > > > v5.4 is the only release where it is somewhat feasible to backport the
+> > > > changes [0] that would allow those GRUB out-of-tree hacks to be
+> > > > dropped. I.e., the number of backported patches is quite substantial
+> > > > but there are very few and minor conflicts, and the changes are
+> > > > confined to EFI code. Backporting this stuff from ~v5.8 to v5.4 would
+> > > > mean they can accelerate their phase out schedule by a year.
+> > > > (Actually, they asked me about v4.4 but anything older than v5.4 is
+> > > > really out of the question)
+> > > >
+> > > > In any case, I promised them to take a look and I did - I won't be the
+> > > > one pushing for this to get merged.
+> > >
+> > > I think this is up to the distros if they want to deal with this mess on
+> > > their older kernels.  They created it, and they want to maintain it as
+> > > their "value add", so let's let them earn that value :)
+> > >
+> > > So I'll not add these to any older kernels, they can use 6.1.y instead
+> > > if they want to.
+> > >
+> >
+> > Yes, but please backport commit
+> > 9cf42bca30e98a1c6c9e8abf876940a551eaa3d1  nonetheless - that one is an
+> > obvious bug fix.
+>
+> Ok, will do after this round of releases are done.
+>
 
-Ick, what a mess, and now you can see why I missed that.  And everyone
-missed the original revert should have also gone to 5.15.y :(
+Actually, no - please disregard.
 
-I've queued it up everywhere now, hopefully that's it.  But next time,
-PLEASE make this more obvious somehow.  Applying the same patch twice,
-and only having one revert looks like it was applied, reverted, and then
-applied, not reverted again once more.
+I confused myself here - the fix is fine, just not needed for v5.10 - v6.4.
 
-thanks,
-
-greg k-h
+Sorry for the noise.
