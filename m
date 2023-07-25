@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE7147615D3
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AF50761393
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234671AbjGYLdg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:33:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41014 "EHLO
+        id S234194AbjGYLLk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:11:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234672AbjGYLdf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3068118
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:34 -0700 (PDT)
+        with ESMTP id S234196AbjGYLL0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4741BD9
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51F9E615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66525C433C7;
-        Tue, 25 Jul 2023 11:33:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 84DBF6165D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8B7C433C7;
+        Tue, 25 Jul 2023 11:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284813;
-        bh=PT7ZopH54/8VK81n5EXj8oJgKflAMJ/aS1CRBoWdIvs=;
+        s=korg; t=1690283444;
+        bh=8NFxaijFKs4/2ZNVK+BGO4u8DhMMqn+PRnQWTKk6JHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r0GoCiHz70HiRnadI4QOtMqjXu+iWhYqiK1Ja9aY71upDWq6w+hqYWjQ0Tv8xWFk8
-         EY3AVpon9aguJpxGL45k/zMFBrImSmF4FrieKUuA5Wz9+9TF793X4P6h938Dh5qAmr
-         fLjAAsgJLoH0wwhpdeyJD92uf5KKB6mc4kuxUb18=
+        b=Q+7zwFNQtrZM77g2mc7f9C5mVouvKF9lBX7YGLGKi4uwZbv5kUO+vAgRz8CrbU4At
+         W4EsRkpK1UePnf5K4CZTmUacR7JiNVGyRGOjKavWBWxSvD1x2aulk9kwnT2k45LTpm
+         NV0erQKw9uD+N2YIzAM+3VDhRKb7vnrMoAUUp9eM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, lonial con <kongln9170@gmail.com>,
-        Stefano Brivio <sbrivio@redhat.com>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 490/509] netfilter: nft_set_pipapo: fix improper element removal
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 78/78] nixge: fix mac address error handling again
 Date:   Tue, 25 Jul 2023 12:47:09 +0200
-Message-ID: <20230725104616.184036924@linuxfoundation.org>
+Message-ID: <20230725104454.302083573@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,63 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 87b5a5c209405cb6b57424cdfa226a6dbd349232 ]
+commit a68229ca634066975fff6d4780155bd2eb14a82a upstream.
 
-end key should be equal to start unless NFT_SET_EXT_KEY_END is present.
+The change to eth_hw_addr_set() caused gcc to correctly spot a
+bug that was introduced in an earlier incorrect fix:
 
-Its possible to add elements that only have a start key
-("{ 1.0.0.0 . 2.0.0.0 }") without an internval end.
+In file included from include/linux/etherdevice.h:21,
+                 from drivers/net/ethernet/ni/nixge.c:7:
+In function '__dev_addr_set',
+    inlined from 'eth_hw_addr_set' at include/linux/etherdevice.h:319:2,
+    inlined from 'nixge_probe' at drivers/net/ethernet/ni/nixge.c:1286:3:
+include/linux/netdevice.h:4648:9: error: 'memcpy' reading 6 bytes from a region of size 0 [-Werror=stringop-overread]
+ 4648 |         memcpy(dev->dev_addr, addr, len);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Insertion treats this via:
+As nixge_get_nvmem_address() can return either NULL or an error
+pointer, the NULL check is wrong, and we can end up reading from
+ERR_PTR(-EOPNOTSUPP), which gcc knows to contain zero readable
+bytes.
 
-if (nft_set_ext_exists(ext, NFT_SET_EXT_KEY_END))
-   end = (const u8 *)nft_set_ext_key_end(ext)->data;
-else
-   end = start;
+Make the function always return an error pointer again but fix
+the check to match that.
 
-but removal side always uses nft_set_ext_key_end().
-This is wrong and leads to garbage remaining in the set after removal
-next lookup/insert attempt will give:
-
-BUG: KASAN: slab-use-after-free in pipapo_get+0x8eb/0xb90
-Read of size 1 at addr ffff888100d50586 by task nft-pipapo_uaf_/1399
-Call Trace:
- kasan_report+0x105/0x140
- pipapo_get+0x8eb/0xb90
- nft_pipapo_insert+0x1dc/0x1710
- nf_tables_newsetelem+0x31f5/0x4e00
- ..
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Reported-by: lonial con <kongln9170@gmail.com>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f3956ebb3bf0 ("ethernet: use eth_hw_addr_set() instead of ether_addr_copy()")
+Fixes: abcd3d6fc640 ("net: nixge: Fix error path for obtaining mac address")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ni/nixge.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 7c759e9b4d848..3be93175b3ffd 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1904,7 +1904,11 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 		int i, start, rules_fx;
+--- a/drivers/net/ethernet/ni/nixge.c
++++ b/drivers/net/ethernet/ni/nixge.c
+@@ -1211,7 +1211,7 @@ static void *nixge_get_nvmem_address(str
  
- 		match_start = data;
--		match_end = (const u8 *)nft_set_ext_key_end(&e->ext)->data;
-+
-+		if (nft_set_ext_exists(&e->ext, NFT_SET_EXT_KEY_END))
-+			match_end = (const u8 *)nft_set_ext_key_end(&e->ext)->data;
-+		else
-+			match_end = data;
+ 	cell = nvmem_cell_get(dev, "address");
+ 	if (IS_ERR(cell))
+-		return NULL;
++		return cell;
  
- 		start = first_rule;
- 		rules_fx = rules_f0;
--- 
-2.39.2
-
+ 	mac = nvmem_cell_read(cell, &cell_size);
+ 	nvmem_cell_put(cell);
+@@ -1284,7 +1284,7 @@ static int nixge_probe(struct platform_d
+ 	ndev->max_mtu = NIXGE_JUMBO_MTU;
+ 
+ 	mac_addr = nixge_get_nvmem_address(&pdev->dev);
+-	if (mac_addr && is_valid_ether_addr(mac_addr)) {
++	if (!IS_ERR(mac_addr) && is_valid_ether_addr(mac_addr)) {
+ 		eth_hw_addr_set(ndev, mac_addr);
+ 		kfree(mac_addr);
+ 	} else {
 
 
