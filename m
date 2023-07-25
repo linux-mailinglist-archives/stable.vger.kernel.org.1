@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AC707616BB
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AE2761533
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235044AbjGYLlk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:41:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48532 "EHLO
+        id S234497AbjGYL0b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:26:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235012AbjGYLlX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:23 -0400
+        with ESMTP id S234495AbjGYL03 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37AB199C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53DEA187
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 966DC616A2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B5EC433C8;
-        Tue, 25 Jul 2023 11:40:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DDE361691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3288CC433C7;
+        Tue, 25 Jul 2023 11:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285258;
-        bh=FlfyQakw9dYB9zwKyhehiEreVvbITJL1FAxet+FB9Y4=;
+        s=korg; t=1690284386;
+        bh=PeANfbb3Q1fvQ/2OGNls7bRDDtBPINZDJsKCGh+l7/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mh8I3qnbCWOrh1SlUICMGkIHNv0F1JZ6BaWmjinnA9em7GdxhF9H0QTBzPJBnSyNw
-         8LL4ufFal8EV0sxPjCmFgTuZ2hjmpJql1T1KVme2+BMWfxOanfduHxkzb39YN55uiR
-         1XxGMSngPZRIA8Vrl2fhMuUWyjB3rmEJMwHcmzaM=
+        b=axVZfaEjkz75caPojdl7TwiFmWsDdvqC+9O2gqo5DpaUTVE02cykZEgOqdbe8zxv8
+         5auTRiNJuSeAkMny8f4aYl1a7vHk3FHzQw4vzSyUj9TpHH7PYjUGguLFY7/hWYmD6K
+         8N68H72JYCoAjEM5Sax/YWiyhOIUF+Sc8ARRwJf8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 123/313] block: fix signed int overflow in Amiga partition support
+        patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 337/509] drm/panel: simple: Add connector_type for innolux_at043tn24
 Date:   Tue, 25 Jul 2023 12:44:36 +0200
-Message-ID: <20230725104526.339090889@linuxfoundation.org>
+Message-ID: <20230725104609.132864705@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,68 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit fc3d092c6bb48d5865fec15ed5b333c12f36288c upstream.
+[ Upstream commit 2c56a751845ddfd3078ebe79981aaaa182629163 ]
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
+The innolux at043tn24 display is a parallel LCD. Pass the 'connector_type'
+information to avoid the following warning:
 
-Use sector_t as type for sector address and size to allow using disks
-up to 2 TB without LBD support, and disks larger than 2 TB with LBD.
+panel-simple panel: Specify missing connector_type
 
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted. This patch differs from Joanne's patch only in its use of
-sector_t instead of unsigned int. No checking for overflows is done
-(see patch 3 of this series for that).
-
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Tested-by: Martin Steigerwald <Martin@lichtvoll.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230620201725.7020-2-schmitzmic@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Fixes: 41bcceb4de9c ("drm/panel: simple: Add support for Innolux AT043TN24")
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230620112202.654981-1-festevam@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/amiga.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -32,7 +32,8 @@ int amiga_partition(struct parsed_partit
- 	unsigned char *data;
- 	struct RigidDiskBlock *rdb;
- 	struct PartitionBlock *pb;
--	int start_sect, nr_sects, blk, part, res = 0;
-+	sector_t start_sect, nr_sects;
-+	int blk, part, res = 0;
- 	int blksize = 1;	/* Multiplier for disk block size */
- 	int slot = 1;
- 	char b[BDEVNAME_SIZE];
-@@ -100,14 +101,14 @@ int amiga_partition(struct parsed_partit
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index b0b92f436879a..ffda99c204356 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2091,6 +2091,7 @@ static const struct panel_desc innolux_at043tn24 = {
+ 		.height = 54,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
++	.connector_type = DRM_MODE_CONNECTOR_DPI,
+ 	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
+ };
  
- 		/* Tell Kernel about it */
- 
--		nr_sects = (be32_to_cpu(pb->pb_Environment[10]) + 1 -
--			    be32_to_cpu(pb->pb_Environment[9])) *
-+		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
-+			   be32_to_cpu(pb->pb_Environment[9])) *
- 			   be32_to_cpu(pb->pb_Environment[3]) *
- 			   be32_to_cpu(pb->pb_Environment[5]) *
- 			   blksize;
- 		if (!nr_sects)
- 			continue;
--		start_sect = be32_to_cpu(pb->pb_Environment[9]) *
-+		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
- 			     be32_to_cpu(pb->pb_Environment[3]) *
- 			     be32_to_cpu(pb->pb_Environment[5]) *
- 			     blksize;
+-- 
+2.39.2
+
 
 
