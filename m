@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B17FC761316
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C04B76158D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233939AbjGYLHx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:07:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45590 "EHLO
+        id S234772AbjGYLaU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233971AbjGYLHQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CECD358D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:02 -0700 (PDT)
+        with ESMTP id S234770AbjGYLaU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A92FB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDA976166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD119C433C8;
-        Tue, 25 Jul 2023 11:06:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C169961683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08EAC433C7;
+        Tue, 25 Jul 2023 11:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283161;
-        bh=ktQjvKFFB87qeMfDXpFlhXlm2dTpneebVLuCdbCqCMY=;
+        s=korg; t=1690284618;
+        bh=4wTjTmdO5Xx1pVjMDzCbxMIE5fMT5jewO5B38Vy3So4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tv+T/NkutQ+bGHGejVq1qvrWlItnDbFTO0PosWQTP9Fo3NAZXjVL4oMna3JqP51nI
-         z7t+rdLhpXICu4Oad7+QRjTqDPp8t6SbsCPTxXSDXZoSEt/xUCQK+Uqg5wY0zfoz5A
-         uCU2Qj++Cx06rfJAwSGkTiFjQAIFIJySl/o8EH8k=
+        b=qlyHZmgHkLZ8FeMahM6Lbhl0L/mJzL7g8j+fbkozUNYyM35JL6pFknpj9M2mqwIH8
+         lSaMP/edRd11K1cJIsU49aZjyUc8Kxg8WeSq1OHhAomhCNZj1pSfvwjG2KS+nv7Ikb
+         g99sAU6L87rHHX39k2tzKs4M+S6SLEJ+qdROKXmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Duyck <alexanderduyck@fb.com>,
-        Xu Kuohai <xukuohai@huawei.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/183] bpf, arm64: Fix BTI type used for freplace attached functions
-Date:   Tue, 25 Jul 2023 12:45:59 +0200
-Message-ID: <20230725104512.652372777@linuxfoundation.org>
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        CKI <cki-project@redhat.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 5.10 421/509] s390/decompressor: fix misaligned symbol build error
+Date:   Tue, 25 Jul 2023 12:46:00 +0200
+Message-ID: <20230725104612.952742506@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,55 +57,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Duyck <alexanderduyck@fb.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit a3f25d614bc73b45e8f02adc6769876dfd16ca84 ]
+commit 938f0c35d7d93a822ab9c9728e3205e8e57409d0 upstream.
 
-When running an freplace attached bpf program on an arm64 system w were
-seeing the following issue:
-  Unhandled 64-bit el1h sync exception on CPU47, ESR 0x0000000036000003 -- BTI
+Nathan Chancellor reported a kernel build error on Fedora 39:
 
-After a bit of work to track it down I determined that what appeared to be
-happening is that the 'bti c' at the start of the program was somehow being
-reached after a 'br' instruction. Further digging pointed me toward the
-fact that the function was attached via freplace. This in turn led me to
-build_plt which I believe is invoking the long jump which is triggering
-this error.
+$ clang --version | head -1
+clang version 16.0.5 (Fedora 16.0.5-1.fc39)
 
-To resolve it we can replace the 'bti c' with 'bti jc' and add a comment
-explaining why this has to be modified as such.
+$ s390x-linux-gnu-ld --version | head -1
+GNU ld version 2.40-1.fc39
 
-Fixes: b2ad54e1533e ("bpf, arm64: Implement bpf_arch_text_poke() for arm64")
-Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
-Acked-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/r/168926677665.316237.9953845318337455525.stgit@ahduyck-xeon-server.home.arpa
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ make -skj"$(nproc)" ARCH=s390 CC=clang CROSS_COMPILE=s390x-linux-gnu- olddefconfig all
+s390x-linux-gnu-ld: arch/s390/boot/startup.o(.text+0x5b4): misaligned symbol `_decompressor_end' (0x35b0f) for relocation R_390_PC32DBL
+make[3]: *** [.../arch/s390/boot/Makefile:78: arch/s390/boot/vmlinux] Error 1
+
+It turned out that the problem with misaligned symbols on s390 was fixed
+with commit 80ddf5ce1c92 ("s390: always build relocatable kernel") for the
+kernel image, but did not take into account that the decompressor uses its
+own set of CFLAGS, which come without -fPIE.
+
+Add the -fPIE flag also to the decompresser CFLAGS to fix this.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: CKI <cki-project@redhat.com>
+Suggested-by: Ulrich Weigand <Ulrich.Weigand@de.ibm.com>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1747
+Link: https://lore.kernel.org/32935.123062114500601371@us-mta-9.us.mimecast.lan/
+Link: https://lore.kernel.org/r/20230622125508.1068457-1-hca@linux.ibm.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/s390/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 8f16217c111c8..14134fd34ff79 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -322,7 +322,13 @@ static int build_prologue(struct jit_ctx *ctx, bool ebpf_from_cbpf)
- 	 *
- 	 */
- 
--	emit_bti(A64_BTI_C, ctx);
-+	/* bpf function may be invoked by 3 instruction types:
-+	 * 1. bl, attached via freplace to bpf prog via short jump
-+	 * 2. br, attached via freplace to bpf prog via long jump
-+	 * 3. blr, working as a function pointer, used by emit_call.
-+	 * So BTI_JC should used here to support both br and blr.
-+	 */
-+	emit_bti(A64_BTI_JC, ctx);
- 
- 	emit(A64_MOV(1, A64_R(9), A64_LR), ctx);
- 	emit(A64_NOP, ctx);
--- 
-2.39.2
-
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -29,6 +29,7 @@ KBUILD_CFLAGS_DECOMPRESSOR += -fno-delet
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
+ KBUILD_CFLAGS_DECOMPRESSOR += -ffreestanding
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-stack-protector
++KBUILD_CFLAGS_DECOMPRESSOR += -fPIE
+ KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-disable-warning, address-of-packed-member)
+ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),-g)
+ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO_DWARF4), $(call cc-option, -gdwarf-4,))
 
 
