@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 535597616F7
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CD5776155D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235094AbjGYLoD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51306 "EHLO
+        id S234624AbjGYL2V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:28:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235398AbjGYLna (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B694F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:16 -0700 (PDT)
+        with ESMTP id S234689AbjGYL2F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D06997
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E65AF615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E3EC433C8;
-        Tue, 25 Jul 2023 11:43:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3629B61691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416FEC433C8;
+        Tue, 25 Jul 2023 11:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285381;
-        bh=WpK5JFOCiF6DwXb5P466/JraED6r5Xf2KsSaKhz7uJc=;
+        s=korg; t=1690284483;
+        bh=S5xdVl+uaT7ygnqQV8S8z6qH835ziR8pkTsPX0E1uCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yMzm2LJOGaxTpjKYdIYyrIjNscRDgr4Kv42UQTWrcmlx9GFnANg1jV7zHpZrc8Wkl
-         UgqdL5+EAqc4tT5Zvwynz7B4I8mbO1PGhHl4L4fuWjA/LnCDLOrgHzr6BhV06T0ojl
-         gpBt58Lqqb+UTXwjVKNKGu3wJh/wwkqJwszeZF28=
+        b=BDyvK9GH1JauNmb/KzPYaXPcFXO/T/hcjIHV6b3Cw7AwEAsEClJnlZNJWZcDJdxSY
+         vCyVlf2xMtCJVPIHX4m2s6KRCTZO1LWmlD5st8NdhHrZrVMcT9ZfIHkbKhVwugzqSj
+         EtWq9FVaOecYqfkO2fVlNrr1hWT6YglsZW62p1Pk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 157/313] net: dsa: tag_sja1105: fix MAC DA patching from meta frames
+Subject: [PATCH 5.10 371/509] netdevsim: fix uninitialized data in nsim_dev_trap_fa_cookie_write()
 Date:   Tue, 25 Jul 2023 12:45:10 +0200
-Message-ID: <20230725104527.767562609@linuxfoundation.org>
+Message-ID: <20230725104610.696901091@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,44 +57,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1dcf6efd5f0c1f4496b3ef7ec5a7db104a53b38c ]
+[ Upstream commit f72207a5c0dbaaf6921cf9a6c0d2fd0bc249ea78 ]
 
-The SJA1105 manual says that at offset 4 into the meta frame payload we
-have "MAC destination byte 2" and at offset 5 we have "MAC destination
-byte 1". These are counted from the LSB, so byte 1 is h_dest[ETH_HLEN-2]
-aka h_dest[4] and byte 2 is h_dest[ETH_HLEN-3] aka h_dest[3].
+The simple_write_to_buffer() function is designed to handle partial
+writes.  It returns negatives on error, otherwise it returns the number
+of bytes that were able to be copied.  This code doesn't check the
+return properly.  We only know that the first byte is written, the rest
+of the buffer might be uninitialized.
 
-The sja1105_meta_unpack() function decodes these the other way around,
-so a frame with MAC DA 01:80:c2:11:22:33 is received by the network
-stack as having 01:80:c2:22:11:33.
+There is no need to use the simple_write_to_buffer() function.
+Partial writes are prohibited by the "if (*ppos != 0)" check at the
+start of the function.  Just use memdup_user() and copy the whole
+buffer.
 
-Fixes: e53e18a6fe4d ("net: dsa: sja1105: Receive and decode meta frames")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: d3cbb907ae57 ("netdevsim: add ACL trap reporting cookie as a metadata")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/7c1f950b-3a7d-4252-82a6-876e53078ef7@moroto.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/tag_sja1105.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/netdevsim/dev.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
-index 12f3ce52e62eb..836a75030a520 100644
---- a/net/dsa/tag_sja1105.c
-+++ b/net/dsa/tag_sja1105.c
-@@ -48,8 +48,8 @@ static void sja1105_meta_unpack(const struct sk_buff *skb,
- 	 * a unified unpacking command for both device series.
- 	 */
- 	packing(buf,     &meta->tstamp,     31, 0, 4, UNPACK, 0);
--	packing(buf + 4, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
--	packing(buf + 5, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
-+	packing(buf + 4, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
-+	packing(buf + 5, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
- 	packing(buf + 6, &meta->source_port, 7, 0, 1, UNPACK, 0);
- 	packing(buf + 7, &meta->switch_id,   7, 0, 1, UNPACK, 0);
- }
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index 9bbecf4d159b4..bcf354719745c 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -149,13 +149,10 @@ static ssize_t nsim_dev_trap_fa_cookie_write(struct file *file,
+ 	cookie_len = (count - 1) / 2;
+ 	if ((count - 1) % 2)
+ 		return -EINVAL;
+-	buf = kmalloc(count, GFP_KERNEL | __GFP_NOWARN);
+-	if (!buf)
+-		return -ENOMEM;
+ 
+-	ret = simple_write_to_buffer(buf, count, ppos, data, count);
+-	if (ret < 0)
+-		goto free_buf;
++	buf = memdup_user(data, count);
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
+ 
+ 	fa_cookie = kmalloc(sizeof(*fa_cookie) + cookie_len,
+ 			    GFP_KERNEL | __GFP_NOWARN);
 -- 
 2.39.2
 
