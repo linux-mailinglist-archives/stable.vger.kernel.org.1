@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8613B761145
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C32897614A9
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232864AbjGYKtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57916 "EHLO
+        id S234418AbjGYLVf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:21:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232085AbjGYKtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AE71990
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:24 -0700 (PDT)
+        with ESMTP id S234426AbjGYLVd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC830A6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A742A6165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76EAC433C7;
-        Tue, 25 Jul 2023 10:49:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61C3F61600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7254BC433C7;
+        Tue, 25 Jul 2023 11:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282163;
-        bh=qUuoT5ZSG/q1+dGlUA84NiN0CzIUpBuaoMFbSEp8jLI=;
+        s=korg; t=1690284090;
+        bh=aVsNyohXzBUGvjCOV0jjCvg8D0Y4kKYDMuVbCBCHxtw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dXu0pbQs09kYqt5p1C2TnPG3CJq/XMCeHZ9RMOUrIcmImVMZ4ESYSQ9m9LoyzRVA7
-         6yhoA4uZsGmDYffxOtZUAqooUk/zTrcTPrGC8sLWI1fiGxLQnbCEskYV1IVXMqyuhH
-         +XbDHpuqZIYrGrQeRafm6HW8EuhpzUioyA095pVk=
+        b=wRTAtEu8Nk0PM3OHG6KoPyl6+6DTxCaRRyZ0K/t+0OIAq4douY9Z8LYM/cByWA5Hl
+         a5aHl8WUfwIPi8OjH5DlcEtRbFp9D2IdgqUObZ1QJZn+ORktoTeCUPr2rAzW/1P4Ft
+         m6tMDmbpYthUN5Yg3XnfuSUMrky3CZj7+YyPwg3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        "Joseph C. Sible" <josephcsible@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.4 003/227] ALSA: hda/realtek - remove 3k pull low procedure
-Date:   Tue, 25 Jul 2023 12:42:50 +0200
-Message-ID: <20230725104514.945635129@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 232/509] extcon: Fix kernel doc of property capability fields to avoid warnings
+Date:   Tue, 25 Jul 2023 12:42:51 +0200
+Message-ID: <20230725104604.395312833@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,66 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kailang Yang <kailang@realtek.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 69ea4c9d02b7947cdd612335a61cc1a02e544ccd upstream.
+[ Upstream commit 73346b9965ebda2feb7fef8629e9b28baee820e3 ]
 
-This was the ALC283 depop procedure.
-Maybe this procedure wasn't suitable with new codec.
-So, let us remove it. But HP 15z-fc000 must do 3k pull low. If it
-reboot with plugged headset,
-it will have errors show don't find codec error messages. Run 3k pull
-low will solve issues.
-So, let AMD chipset will run this for workarround.
+Kernel documentation has to be synchronized with a code, otherwise
+the validator is not happy:
 
-Fixes: 5aec98913095 ("ALSA: hda/realtek - ALC236 headset MIC recording issue")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Reported-by: Joseph C. Sible <josephcsible@gmail.com>
-Closes: https://lore.kernel.org/r/CABpewhE4REgn9RJZduuEU6Z_ijXNeQWnrxO1tg70Gkw=F8qNYg@mail.gmail.com/
-Link: https://lore.kernel.org/r/4678992299664babac4403d9978e7ba7@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+     Function parameter or member 'usb_bits' not described in 'extcon_cable'
+     Function parameter or member 'chg_bits' not described in 'extcon_cable'
+     Function parameter or member 'jack_bits' not described in 'extcon_cable'
+     Function parameter or member 'disp_bits' not described in 'extcon_cable'
+
+Describe the fields added in the past.
+
+Fixes: ceaa98f442cf ("extcon: Add the support for the capability of each property")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/extcon/extcon.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -122,6 +122,7 @@ struct alc_spec {
- 	unsigned int ultra_low_power:1;
- 	unsigned int has_hs_key:1;
- 	unsigned int no_internal_mic_pin:1;
-+	unsigned int en_3kpull_low:1;
- 
- 	/* for PLL fix */
- 	hda_nid_t pll_nid;
-@@ -3622,6 +3623,7 @@ static void alc256_shutup(struct hda_cod
- 	if (!hp_pin)
- 		hp_pin = 0x21;
- 
-+	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
- 	if (hp_pin_sense)
-@@ -3638,8 +3640,7 @@ static void alc256_shutup(struct hda_cod
- 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
- 	 * when booting with headset plugged. So skip setting it for the codec alc257
- 	 */
--	if (codec->core.vendor_id != 0x10ec0236 &&
--	    codec->core.vendor_id != 0x10ec0257)
-+	if (spec->en_3kpull_low)
- 		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
- 
- 	if (!spec->no_shutup_pins)
-@@ -10601,6 +10602,8 @@ static int patch_alc269(struct hda_codec
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0; /* ALC256 does not have any loopback mixer path */
-+		if (codec->bus->pci->vendor == PCI_VENDOR_ID_AMD)
-+			spec->en_3kpull_low = true;
- 		break;
- 	case 0x10ec0257:
- 		spec->codec_variant = ALC269_TYPE_ALC257;
+diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
+index 3bc83feb5a34b..fa08dec389dc1 100644
+--- a/drivers/extcon/extcon.c
++++ b/drivers/extcon/extcon.c
+@@ -200,6 +200,10 @@ static const struct __extcon_info {
+  * @chg_propval:	the array of charger connector properties
+  * @jack_propval:	the array of jack connector properties
+  * @disp_propval:	the array of display connector properties
++ * @usb_bits:		the bit array of the USB connector property capabilities
++ * @chg_bits:		the bit array of the charger connector property capabilities
++ * @jack_bits:		the bit array of the jack connector property capabilities
++ * @disp_bits:		the bit array of the display connector property capabilities
+  */
+ struct extcon_cable {
+ 	struct extcon_dev *edev;
+-- 
+2.39.2
+
 
 
