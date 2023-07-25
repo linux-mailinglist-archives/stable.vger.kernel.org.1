@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22598761221
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA667761717
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233784AbjGYK7t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:59:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
+        id S232662AbjGYLpD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:45:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233786AbjGYK7Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:25 -0400
+        with ESMTP id S233492AbjGYLot (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D2B26B3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 887F21FCC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2EA161656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1664C433C8;
-        Tue, 25 Jul 2023 10:56:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 034626167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130EDC433C7;
+        Tue, 25 Jul 2023 11:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282575;
-        bh=1ya9FReZrp0uhli1J8I65X06sI6RJIIFU2P4NpZ2Uqg=;
+        s=korg; t=1690285487;
+        bh=bODkoiT2slns5eDs7hKURVdtm4JhUSM8yxH87bwyfMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CdGSUEhqIPcKe7+IAfzLTnRaIaAUTVuwT4ZTNoCyGWZPb+bnpTRfIz+oEAo4Gjs/n
-         rLAGlPDO73dBpvLCbNOgjq71UBWT5YpjbxVMxwa6oieF8B9XGHMhDYFB4/UT+ZaWnL
-         Lbt9Rni/0xj2OaFhiopHYW3StWccXhU9miRrHznU=
+        b=Aolmz6rP/5SPtq3o5Mq/pqdgMCUTSKE8nt1qJISFFemolB4aQWwUTN1odAwB9aMLc
+         +ScMGW+9NeADEP/bzxvgLMer27V1O3hhL0ypheIff4oB1poLiSWTdIqQuRTNE7O+vo
+         GdPtnYIVh8rPAGXBLJplVLa5zG9XxZ/0kyN1SIxg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 178/227] vrf: Fix lockdep splat in output path
-Date:   Tue, 25 Jul 2023 12:45:45 +0200
-Message-ID: <20230725104522.204982756@linuxfoundation.org>
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        UNGLinuxDriver@microchip.com, Moritz Fischer <moritzf@google.com>,
+        Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.4 193/313] net: lan743x: Dont sleep in atomic context
+Date:   Tue, 25 Jul 2023 12:45:46 +0200
+Message-ID: <20230725104529.349384542@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,156 +56,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Moritz Fischer <moritzf@google.com>
 
-[ Upstream commit 2033ab90380d46e0e9f0520fd6776a73d107fd95 ]
+commit 7a8227b2e76be506b2ac64d2beac950ca04892a5 upstream.
 
-Cited commit converted the neighbour code to use the standard RCU
-variant instead of the RCU-bh variant, but the VRF code still uses
-rcu_read_lock_bh() / rcu_read_unlock_bh() around the neighbour lookup
-code in its IPv4 and IPv6 output paths, resulting in lockdep splats
-[1][2]. Can be reproduced using [3].
+dev_set_rx_mode() grabs a spin_lock, and the lan743x implementation
+proceeds subsequently to go to sleep using readx_poll_timeout().
 
-Fix by switching to rcu_read_lock() / rcu_read_unlock().
+Introduce a helper wrapping the readx_poll_timeout_atomic() function
+and use it to replace the calls to readx_polL_timeout().
 
-[1]
-=============================
-WARNING: suspicious RCU usage
-6.5.0-rc1-custom-g9c099e6dbf98 #403 Not tainted
------------------------------
-include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by ping/183:
- #0: ffff888105ea1d80 (sk_lock-AF_INET){+.+.}-{0:0}, at: raw_sendmsg+0xc6c/0x33c0
- #1: ffffffff85b46820 (rcu_read_lock_bh){....}-{1:2}, at: vrf_output+0x2e3/0x2030
-
-stack backtrace:
-CPU: 0 PID: 183 Comm: ping Not tainted 6.5.0-rc1-custom-g9c099e6dbf98 #403
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc37 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xc1/0xf0
- lockdep_rcu_suspicious+0x211/0x3b0
- vrf_output+0x1380/0x2030
- ip_push_pending_frames+0x125/0x2a0
- raw_sendmsg+0x200d/0x33c0
- inet_sendmsg+0xa2/0xe0
- __sys_sendto+0x2aa/0x420
- __x64_sys_sendto+0xe5/0x1c0
- do_syscall_64+0x38/0x80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-[2]
-=============================
-WARNING: suspicious RCU usage
-6.5.0-rc1-custom-g9c099e6dbf98 #403 Not tainted
------------------------------
-include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by ping6/182:
- #0: ffff888114b63000 (sk_lock-AF_INET6){+.+.}-{0:0}, at: rawv6_sendmsg+0x1602/0x3e50
- #1: ffffffff85b46820 (rcu_read_lock_bh){....}-{1:2}, at: vrf_output6+0xe9/0x1310
-
-stack backtrace:
-CPU: 0 PID: 182 Comm: ping6 Not tainted 6.5.0-rc1-custom-g9c099e6dbf98 #403
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc37 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xc1/0xf0
- lockdep_rcu_suspicious+0x211/0x3b0
- vrf_output6+0xd32/0x1310
- ip6_local_out+0xb4/0x1a0
- ip6_send_skb+0xbc/0x340
- ip6_push_pending_frames+0xe5/0x110
- rawv6_sendmsg+0x2e6e/0x3e50
- inet_sendmsg+0xa2/0xe0
- __sys_sendto+0x2aa/0x420
- __x64_sys_sendto+0xe5/0x1c0
- do_syscall_64+0x38/0x80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-[3]
-#!/bin/bash
-
-ip link add name vrf-red up numtxqueues 2 type vrf table 10
-ip link add name swp1 up master vrf-red type dummy
-ip address add 192.0.2.1/24 dev swp1
-ip address add 2001:db8:1::1/64 dev swp1
-ip neigh add 192.0.2.2 lladdr 00:11:22:33:44:55 nud perm dev swp1
-ip neigh add 2001:db8:1::2 lladdr 00:11:22:33:44:55 nud perm dev swp1
-ip vrf exec vrf-red ping 192.0.2.2 -c 1 &> /dev/null
-ip vrf exec vrf-red ping6 2001:db8:1::2 -c 1 &> /dev/null
-
-Fixes: 09eed1192cec ("neighbour: switch to standard rcu, instead of rcu_bh")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Link: https://lore.kernel.org/netdev/CA+G9fYtEr-=GbcXNDYo3XOkwR+uYgehVoDjsP0pFLUpZ_AZcyg@mail.gmail.com/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230715153605.4068066-1-idosch@nvidia.com
+Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+Cc: stable@vger.kernel.org
+Cc: Bryan Whitehead <bryan.whitehead@microchip.com>
+Cc: UNGLinuxDriver@microchip.com
+Signed-off-by: Moritz Fischer <moritzf@google.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20230627035000.1295254-1-moritzf@google.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vrf.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c |   21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index bdb3a76a352e4..6043e63b42f97 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -664,7 +664,7 @@ static int vrf_finish_output6(struct net *net, struct sock *sk,
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
- 
--	rcu_read_lock_bh();
-+	rcu_read_lock();
- 	nexthop = rt6_nexthop((struct rt6_info *)dst, &ipv6_hdr(skb)->daddr);
- 	neigh = __ipv6_neigh_lookup_noref(dst->dev, nexthop);
- 	if (unlikely(!neigh))
-@@ -672,10 +672,10 @@ static int vrf_finish_output6(struct net *net, struct sock *sk,
- 	if (!IS_ERR(neigh)) {
- 		sock_confirm_neigh(skb, neigh);
- 		ret = neigh_output(neigh, skb, false);
--		rcu_read_unlock_bh();
-+		rcu_read_unlock();
- 		return ret;
- 	}
--	rcu_read_unlock_bh();
-+	rcu_read_unlock();
- 
- 	IP6_INC_STATS(dev_net(dst->dev),
- 		      ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
-@@ -889,7 +889,7 @@ static int vrf_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
- 		}
- 	}
- 
--	rcu_read_lock_bh();
-+	rcu_read_lock();
- 
- 	neigh = ip_neigh_for_gw(rt, skb, &is_v6gw);
- 	if (!IS_ERR(neigh)) {
-@@ -898,11 +898,11 @@ static int vrf_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
- 		sock_confirm_neigh(skb, neigh);
- 		/* if crossing protocols, can not use the cached header */
- 		ret = neigh_output(neigh, skb, is_v6gw);
--		rcu_read_unlock_bh();
-+		rcu_read_unlock();
- 		return ret;
- 	}
- 
--	rcu_read_unlock_bh();
-+	rcu_read_unlock();
- 	vrf_tx_error(skb->dev, skb);
- 	return -EINVAL;
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -80,6 +80,18 @@ static int lan743x_csr_light_reset(struc
+ 				  !(data & HW_CFG_LRST_), 100000, 10000000);
  }
--- 
-2.39.2
-
+ 
++static int lan743x_csr_wait_for_bit_atomic(struct lan743x_adapter *adapter,
++					   int offset, u32 bit_mask,
++					   int target_value, int udelay_min,
++					   int udelay_max, int count)
++{
++	u32 data;
++
++	return readx_poll_timeout_atomic(LAN743X_CSR_READ_OP, offset, data,
++					 target_value == !!(data & bit_mask),
++					 udelay_max, udelay_min * count);
++}
++
+ static int lan743x_csr_wait_for_bit(struct lan743x_adapter *adapter,
+ 				    int offset, u32 bit_mask,
+ 				    int target_value, int usleep_min,
+@@ -675,8 +687,8 @@ static int lan743x_dp_write(struct lan74
+ 	u32 dp_sel;
+ 	int i;
+ 
+-	if (lan743x_csr_wait_for_bit(adapter, DP_SEL, DP_SEL_DPRDY_,
+-				     1, 40, 100, 100))
++	if (lan743x_csr_wait_for_bit_atomic(adapter, DP_SEL, DP_SEL_DPRDY_,
++					    1, 40, 100, 100))
+ 		return -EIO;
+ 	dp_sel = lan743x_csr_read(adapter, DP_SEL);
+ 	dp_sel &= ~DP_SEL_MASK_;
+@@ -687,8 +699,9 @@ static int lan743x_dp_write(struct lan74
+ 		lan743x_csr_write(adapter, DP_ADDR, addr + i);
+ 		lan743x_csr_write(adapter, DP_DATA_0, buf[i]);
+ 		lan743x_csr_write(adapter, DP_CMD, DP_CMD_WRITE_);
+-		if (lan743x_csr_wait_for_bit(adapter, DP_SEL, DP_SEL_DPRDY_,
+-					     1, 40, 100, 100))
++		if (lan743x_csr_wait_for_bit_atomic(adapter, DP_SEL,
++						    DP_SEL_DPRDY_,
++						    1, 40, 100, 100))
+ 			return -EIO;
+ 	}
+ 
 
 
