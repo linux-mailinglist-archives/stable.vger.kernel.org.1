@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A2B776157D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31705761716
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234758AbjGYL3g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37868 "EHLO
+        id S230398AbjGYLo4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234757AbjGYL3f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:35 -0400
+        with ESMTP id S232977AbjGYLoi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC61F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1171BFE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F092061691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079C8C433C8;
-        Tue, 25 Jul 2023 11:29:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6F3A615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F54C433C8;
+        Tue, 25 Jul 2023 11:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284573;
-        bh=4OOsQUp3bPzcAklVGfXwhL/65/jhre1NfMusWXH1HiE=;
+        s=korg; t=1690285476;
+        bh=AhuwpEBkZU2pCjZEu13c3eyP6vz4F/lG3b/hLyL7zCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PMu1aHQHvhSvmxRWo49M1v2Zvkv9bdMV5mhrKEiIb0i5EZ3MDf6V2Nri3ftSmSjTo
-         v4QK1gm3RR4KL9VAFGGcB6UHnEWRBMM0OE7kITvwtjZEJ/0jbTHlH0AQwr1dDVoPPQ
-         oFqg4f9N/Kk7GwUGwjPQ0xrnfBFrPhGFE+DSsJ18=
+        b=iJMfEZ9gyri5BC9PTS2l9WPpxJVQOC0z9eBT4cj/iFEJ36TmSoeh0Ysnw5n6POLZt
+         itfIlBj1cBOooszu04qmHESPAnxqK8Rt7woFHzBRteskthIHJCmK60XmIhftis4wvZ
+         B7zcQusuKHdEL4AI0S6kL4yM+B1URjZeLxDcTbmU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.10 403/509] PCI: rockchip: Set address alignment for endpoint mode
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 189/313] netfilter: conntrack: Avoid nf_ct_helper_hash uses after free
 Date:   Tue, 25 Jul 2023 12:45:42 +0200
-Message-ID: <20230725104612.182875795@linuxfoundation.org>
+Message-ID: <20230725104529.150106898@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Florent Revest <revest@chromium.org>
 
-commit 7e6689b34a815bd379dfdbe9855d36f395ef056c upstream.
+commit 6eef7a2b933885a17679eb8ed0796ddf0ee5309b upstream.
 
-The address translation unit of the rockchip EP controller does not use
-the lower 8 bits of a PCIe-space address to map local memory. Thus we
-must set the align feature field to 256 to let the user know about this
-constraint.
+If nf_conntrack_init_start() fails (for example due to a
+register_nf_conntrack_bpf() failure), the nf_conntrack_helper_fini()
+clean-up path frees the nf_ct_helper_hash map.
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-12-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+When built with NF_CONNTRACK=y, further netfilter modules (e.g:
+netfilter_conntrack_ftp) can still be loaded and call
+nf_conntrack_helpers_register(), independently of whether nf_conntrack
+initialized correctly. This accesses the nf_ct_helper_hash dangling
+pointer and causes a uaf, possibly leading to random memory corruption.
+
+This patch guards nf_conntrack_helper_register() from accessing a freed
+or uninitialized nf_ct_helper_hash pointer and fixes possible
+uses-after-free when loading a conntrack module.
+
 Cc: stable@vger.kernel.org
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_conntrack_helper.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -485,6 +485,7 @@ static const struct pci_epc_features roc
- 	.linkup_notifier = false,
- 	.msi_capable = true,
- 	.msix_capable = false,
-+	.align = 256,
- };
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -404,6 +404,9 @@ int nf_conntrack_helper_register(struct
+ 	BUG_ON(me->expect_class_max >= NF_CT_MAX_EXPECT_CLASSES);
+ 	BUG_ON(strlen(me->name) > NF_CT_HELPER_NAME_LEN - 1);
  
- static const struct pci_epc_features*
++	if (!nf_ct_helper_hash)
++		return -ENOENT;
++
+ 	if (me->expect_policy->max_expected > NF_CT_EXPECT_MAX_CNT)
+ 		return -EINVAL;
+ 
+@@ -587,4 +590,5 @@ void nf_conntrack_helper_fini(void)
+ {
+ 	nf_ct_extend_unregister(&helper_extend);
+ 	kvfree(nf_ct_helper_hash);
++	nf_ct_helper_hash = NULL;
+ }
 
 
