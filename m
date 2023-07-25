@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA1B676170C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B890761258
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230408AbjGYLon (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52170 "EHLO
+        id S233829AbjGYLBV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232635AbjGYLo2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:28 -0400
+        with ESMTP id S233845AbjGYLBB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7D42137
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2780344BD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44D0761698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5648BC433C8;
-        Tue, 25 Jul 2023 11:44:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B170E61654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C177DC433C8;
+        Tue, 25 Jul 2023 10:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285459;
-        bh=KntBNbfRb6ObvqZs6AxX+x76HbtxCZssz1DuxpzG2HI=;
+        s=korg; t=1690282712;
+        bh=jv2yiGx/UsGYx9E9IwKOXGufObKecqox/DlcQw9Jj7s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G4thIFY2sPEfVEDnL4t/VRzEyVZ4MxhrIqAscnLVcu3PgupExBJXRcVcf7hY+DpEO
-         ECIXsXN21Ovp7IonDiC7eqMXx1rwhHPJ8CzOpmholgxn7Z9AwoN8MD0Vaqx31TNRmu
-         mKWMvUkEev8/xcwaskn7qdYGC/EqhsWmasXzE4zQ=
+        b=fW9TVY8YoXsI/OzLF8LOttf66ho1ZnqG5rLW7usbv5pJAhZ/Ns0jSlh2HzJfTG3Kj
+         0Me+ThX5gxYZg2Y1G0Hz5u/6/KYbFIP2MwZi5roPXmJ97En1iz/XL63OaALL53p4gw
+         +7E56cBW5pThz5kVJ8g/knzPbPvFCvrHhHjh7T7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 212/313] ntb: intel: Fix error handling in intel_ntb_pci_driver_init()
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 198/227] netfilter: nf_tables: skip bound chain in netns release path
 Date:   Tue, 25 Jul 2023 12:46:05 +0200
-Message-ID: <20230725104530.203293338@linuxfoundation.org>
+Message-ID: <20230725104522.998524873@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,63 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4c3c796aca02883ad35bb117468938cc4022ca41 ]
+[ Upstream commit 751d460ccff3137212f47d876221534bf0490996 ]
 
-A problem about ntb_hw_intel create debugfs failed is triggered with the
-following log given:
+Skip bound chain from netns release path, the rule that owns this chain
+releases these objects.
 
- [  273.112733] Intel(R) PCI-E Non-Transparent Bridge Driver 2.0
- [  273.115342] debugfs: Directory 'ntb_hw_intel' with parent '/' already present!
-
-The reason is that intel_ntb_pci_driver_init() returns
-pci_register_driver() directly without checking its return value, if
-pci_register_driver() failed, it returns without destroy the newly created
-debugfs, resulting the debugfs of ntb_hw_intel can never be created later.
-
- intel_ntb_pci_driver_init()
-   debugfs_create_dir() # create debugfs directory
-   pci_register_driver()
-     driver_register()
-       bus_add_driver()
-         priv = kzalloc(...) # OOM happened
-   # return without destroy debugfs directory
-
-Fix by removing debugfs when pci_register_driver() returns error.
-
-Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen1.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-index bb57ec2390299..8d8739bff9f3c 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-@@ -2065,12 +2065,17 @@ static struct pci_driver intel_ntb_pci_driver = {
- 
- static int __init intel_ntb_pci_driver_init(void)
- {
-+	int ret;
- 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
- 
- 	if (debugfs_initialized())
- 		debugfs_dir = debugfs_create_dir(KBUILD_MODNAME, NULL);
- 
--	return pci_register_driver(&intel_ntb_pci_driver);
-+	ret = pci_register_driver(&intel_ntb_pci_driver);
-+	if (ret)
-+		debugfs_remove_recursive(debugfs_dir);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index f3a4aa9054876..e3049c7db9041 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10767,6 +10767,9 @@ static void __nft_release_table(struct net *net, struct nft_table *table)
+ 	ctx.family = table->family;
+ 	ctx.table = table;
+ 	list_for_each_entry(chain, &table->chains, list) {
++		if (nft_chain_is_bound(chain))
++			continue;
 +
-+	return ret;
- }
- module_init(intel_ntb_pci_driver_init);
- 
+ 		ctx.chain = chain;
+ 		list_for_each_entry_safe(rule, nr, &chain->rules, list) {
+ 			list_del(&rule->list);
 -- 
 2.39.2
 
