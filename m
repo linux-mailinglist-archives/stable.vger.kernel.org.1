@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF836761142
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 261C47614C6
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232699AbjGYKtS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57744 "EHLO
+        id S234452AbjGYLWs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232085AbjGYKtR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9C319BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:15 -0700 (PDT)
+        with ESMTP id S234451AbjGYLWr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE051BCB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BB7D6166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A261C433C7;
-        Tue, 25 Jul 2023 10:49:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C83E56167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73CEC433C7;
+        Tue, 25 Jul 2023 11:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282154;
-        bh=zI4TukLV4h6IsoVU6qizxAg+Rn6N4tRytu2d6FNV1c4=;
+        s=korg; t=1690284157;
+        bh=ZYrG+cBJKda1IWaTWfYhAUhzyGMyNfFgMEdE5bGI8i0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wt62ulq7u9tY+Mrh5Fs34VQNiMN1ti/nHx8onauJOGJzA7CmbkJO1vvfFrunP5RR7
-         cpywvimJpqsJl7r6spIXiBxozvF2nESIg1q5s2Mi2xn1jghmM7K5Rd+O/I2sjhQlRo
-         yIESlfzb8gA7tmGASlRa/P7go/lxbkOaw/VsmDzo=
+        b=Oo2ihcUxjZ1OlmIptiMn2/LapE6+b3ixyEq/PjgaAh3RgDNDd9HRkBppzccQT7HCN
+         1t+cekNAlfwzrjjD+T2hSzSWptGxOp5WyMKzykYU2ZnQ+2DPKwRWMEFnWHybqOYVti
+         +wDID6raXYjWtjNaeZzCPHYmPTRssvcXQdAstd8E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 027/227] selftests: tc: add ct action kconfig dep
-Date:   Tue, 25 Jul 2023 12:43:14 +0200
-Message-ID: <20230725104515.942159784@linuxfoundation.org>
+        patches@lists.linux.dev, Fancy Fang <chen.fang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 256/509] pwm: imx-tpm: force real_period to be zero in suspend
+Date:   Tue, 25 Jul 2023 12:43:15 +0200
+Message-ID: <20230725104605.466775429@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,43 +58,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Fancy Fang <chen.fang@nxp.com>
 
-commit 719b4774a8cb1a501e2d22a5a4a3a0a870e427d5 upstream.
+[ Upstream commit 661dfb7f46298e53f6c3deaa772fa527aae86193 ]
 
-When looking for something else in LKFT reports [1], I noticed most of
-the tests were skipped because the "teardown stage" did not complete
-successfully.
+During suspend, all the tpm registers will lose values.
+So the 'real_period' value of struct 'imx_tpm_pwm_chip'
+should be forced to be zero to force the period update
+code can be executed after system resume back.
 
-Pedro found out this is due to the fact CONFIG_NF_FLOW_TABLE is required
-but not listed in the 'config' file. Adding it to the list fixes the
-issues on LKFT side. CONFIG_NET_ACT_CT is now set to 'm' in the final
-kconfig.
-
-Fixes: c34b961a2492 ("net/sched: act_ct: Create nf flow table per zone")
-Cc: stable@vger.kernel.org
-Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
-Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
-Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Tested-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-2-1eb4fd3a96e7@tessares.net
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fancy Fang <chen.fang@nxp.com>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/tc-testing/config |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/pwm-imx-tpm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/tools/testing/selftests/tc-testing/config
-+++ b/tools/testing/selftests/tc-testing/config
-@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_MARK=y
- CONFIG_NF_CONNTRACK_ZONES=y
- CONFIG_NF_CONNTRACK_LABELS=y
-+CONFIG_NF_FLOW_TABLE=m
- CONFIG_NF_NAT=m
- CONFIG_NETFILTER_XT_TARGET_LOG=m
+diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
+index fcdf6befb8389..871527b78aa46 100644
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -403,6 +403,13 @@ static int __maybe_unused pwm_imx_tpm_suspend(struct device *dev)
+ 	if (tpm->enable_count > 0)
+ 		return -EBUSY;
  
++	/*
++	 * Force 'real_period' to be zero to force period update code
++	 * can be executed after system resume back, since suspend causes
++	 * the period related registers to become their reset values.
++	 */
++	tpm->real_period = 0;
++
+ 	clk_disable_unprepare(tpm->clk);
+ 
+ 	return 0;
+-- 
+2.39.2
+
 
 
