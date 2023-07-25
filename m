@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D71761524
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78B507611D2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234607AbjGYLZ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35180 "EHLO
+        id S232421AbjGYK4j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234605AbjGYLZ5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:57 -0400
+        with ESMTP id S232457AbjGYK4P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815AA19C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9724C03
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4F9C6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B0DC433C7;
-        Tue, 25 Jul 2023 11:25:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E0A461682
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98166C433C7;
+        Tue, 25 Jul 2023 10:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284355;
-        bh=dKi6yeEg+AEVKwezsYdxwD7jHXbMT4mYBYn61WdLx1o=;
+        s=korg; t=1690282435;
+        bh=0xWRiWQWQT9nCTgwrrHRG9BM6tm1Sh5W6GmoVHq5964=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sjEZIqeZzUZxYgIQzTCYdALB0dWwyu/xIEE0wuIvdmEpseZLXjXA3aKkm6Z7zE66P
-         jlxPZFWo2Kprzu8R03m3/kfjnfNZztDkR1f8TUo/xGk2hBR2cmmIJR6YBCsTJdh4Nh
-         Dhd1nFypzWc1qZaHYaX++PZd8JaBj25IK5OvYaWE=
+        b=gD3hhqG0GFMDYmsEPaloBfMk/nY008QKM5GxZFVVbitbzHXrFP3Fo919obtERII7Y
+         20mSDoSd39uAa8Q1ncrTp74esN89hmqcEqiZOsfgKOMpzUqrgag2Q2SfBSkrAqnMZU
+         34k18UMqyfw5HTkFHOj+sx9hbTM0uRqjCs4uNu3o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Maxim Cournoyer <maxim.cournoyer@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 327/509] wireguard: netlink: send staged packets when setting initial private key
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 099/227] ACPI: x86: Add ACPI_QUIRK_UART1_SKIP for Lenovo Yoga Book yb1-x90f/l
 Date:   Tue, 25 Jul 2023 12:44:26 +0200
-Message-ID: <20230725104608.660373769@linuxfoundation.org>
+Message-ID: <20230725104518.835213115@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,118 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit f58d0a9b4c6a7a5199c3af967e43cc8b654604d4 upstream.
+[ Upstream commit f91280f35895d6dcb53f504968fafd1da0b00397 ]
 
-Packets bound for peers can queue up prior to the device private key
-being set. For example, if persistent keepalive is set, a packet is
-queued up to be sent as soon as the device comes up. However, if the
-private key hasn't been set yet, the handshake message never sends, and
-no timer is armed to retry, since that would be pointless.
+The Lenovo Yoga Book yb1-x90f/l 2-in-1 which ships with Android as
+Factory OS has (another) bug in its DSDT where the UART resource for
+the BTH0 ACPI device contains "\\_SB.PCIO.URT1" as path to the UART.
 
-But, if a user later sets a private key, the expectation is that those
-queued packets, such as a persistent keepalive, are actually sent. So
-adjust the configuration logic to account for this edge case, and add a
-test case to make sure this works.
+Note that is with a letter 'O' instead of the number '0' which is wrong.
 
-Maxim noticed this with a wg-quick(8) config to the tune of:
+This causes Linux to instantiate a standard /dev/ttyS? device for
+the UART instead of a /sys/bus/serial device, which in turn causes
+bluetooth to not work.
 
-    [Interface]
-    PostUp = wg set %i private-key somefile
+Similar DSDT bugs have been encountered before and to work around those
+the acpi_quirk_skip_serdev_enumeration() helper exists.
 
-    [Peer]
-    PublicKey = ...
-    Endpoint = ...
-    PersistentKeepalive = 25
+Previous devices had the broken resource pointing to the first UART, while
+the BT HCI was on the second UART, which ACPI_QUIRK_UART1_TTY_UART2_SKIP
+deals with. Add a new ACPI_QUIRK_UART1_SKIP quirk for skipping enumeration
+of UART1 instead for the Yoga Book case and add this quirk to the
+existing DMI quirk table entry for the yb1-x90f/l .
 
-Here, the private key gets set after the device comes up using a PostUp
-script, triggering the bug.
+This leaves the UART1 controller unbound allowing the x86-android-tablets
+module to manually instantiate a serdev for it fixing bluetooth.
 
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Cc: stable@vger.kernel.org
-Reported-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
-Tested-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
-Link: https://lore.kernel.org/wireguard/87fs7xtqrv.fsf@gmail.com/
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireguard/netlink.c            |   14 ++++++++-----
- tools/testing/selftests/wireguard/netns.sh |   30 +++++++++++++++++++++++++----
- 2 files changed, 35 insertions(+), 9 deletions(-)
+ drivers/acpi/x86/utils.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -546,6 +546,7 @@ static int wg_set_device(struct sk_buff
- 		u8 *private_key = nla_data(info->attrs[WGDEVICE_A_PRIVATE_KEY]);
- 		u8 public_key[NOISE_PUBLIC_KEY_LEN];
- 		struct wg_peer *peer, *temp;
-+		bool send_staged_packets;
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 4cfee2da06756..c2b925f8cd4e4 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -259,10 +259,11 @@ bool force_storage_d3(void)
+  * drivers/platform/x86/x86-android-tablets.c kernel module.
+  */
+ #define ACPI_QUIRK_SKIP_I2C_CLIENTS				BIT(0)
+-#define ACPI_QUIRK_UART1_TTY_UART2_SKIP				BIT(1)
+-#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(2)
+-#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(3)
+-#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(4)
++#define ACPI_QUIRK_UART1_SKIP					BIT(1)
++#define ACPI_QUIRK_UART1_TTY_UART2_SKIP				BIT(2)
++#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(3)
++#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(4)
++#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(5)
  
- 		if (!crypto_memneq(wg->static_identity.static_private,
- 				   private_key, NOISE_PUBLIC_KEY_LEN))
-@@ -564,14 +565,17 @@ static int wg_set_device(struct sk_buff
- 		}
+ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 	/*
+@@ -319,6 +320,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_UART1_SKIP |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+@@ -449,6 +451,9 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
+ 	if (dmi_id)
+ 		quirks = (unsigned long)dmi_id->driver_data;
  
- 		down_write(&wg->static_identity.lock);
--		wg_noise_set_static_identity_private_key(&wg->static_identity,
--							 private_key);
--		list_for_each_entry_safe(peer, temp, &wg->peer_list,
--					 peer_list) {
-+		send_staged_packets = !wg->static_identity.has_identity && netif_running(wg->dev);
-+		wg_noise_set_static_identity_private_key(&wg->static_identity, private_key);
-+		send_staged_packets = send_staged_packets && wg->static_identity.has_identity;
++	if ((quirks & ACPI_QUIRK_UART1_SKIP) && uid == 1)
++		*skip = true;
 +
-+		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
-+		list_for_each_entry_safe(peer, temp, &wg->peer_list, peer_list) {
- 			wg_noise_precompute_static_static(peer);
- 			wg_noise_expire_current_peer_keypairs(peer);
-+			if (send_staged_packets)
-+				wg_packet_send_staged_packets(peer);
- 		}
--		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
- 		up_write(&wg->static_identity.lock);
- 	}
- skip_set_private_key:
---- a/tools/testing/selftests/wireguard/netns.sh
-+++ b/tools/testing/selftests/wireguard/netns.sh
-@@ -502,10 +502,32 @@ n2 bash -c 'printf 0 > /proc/sys/net/ipv
- n1 ping -W 1 -c 1 192.168.241.2
- [[ $(n2 wg show wg0 endpoints) == "$pub1	10.0.0.3:1" ]]
- 
--ip1 link del veth1
--ip1 link del veth3
--ip1 link del wg0
--ip2 link del wg0
-+ip1 link del dev veth3
-+ip1 link del dev wg0
-+ip2 link del dev wg0
-+
-+# Make sure persistent keep alives are sent when an adapter comes up
-+ip1 link add dev wg0 type wireguard
-+n1 wg set wg0 private-key <(echo "$key1") peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -eq 0 ]]
-+ip1 link set dev wg0 up
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -gt 0 ]]
-+ip1 link del dev wg0
-+# This should also happen even if the private key is set later
-+ip1 link add dev wg0 type wireguard
-+n1 wg set wg0 peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -eq 0 ]]
-+ip1 link set dev wg0 up
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -eq 0 ]]
-+n1 wg set wg0 private-key <(echo "$key1")
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -gt 0 ]]
-+ip1 link del dev veth1
-+ip1 link del dev wg0
- 
- # We test that Netlink/IPC is working properly by doing things that usually cause split responses
- ip0 link add dev wg0 type wireguard
+ 	if (quirks & ACPI_QUIRK_UART1_TTY_UART2_SKIP) {
+ 		if (uid == 1)
+ 			return -ENODEV; /* Create tty cdev instead of serdev */
+-- 
+2.39.2
+
 
 
