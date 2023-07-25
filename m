@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 951177615F0
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA13B76178D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234710AbjGYLes (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41898 "EHLO
+        id S232635AbjGYLsp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:48:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234701AbjGYLer (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF62EF3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:46 -0700 (PDT)
+        with ESMTP id S233585AbjGYLsG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D0412C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49C2261655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5697BC433C8;
-        Tue, 25 Jul 2023 11:34:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B798616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D538C433C7;
+        Tue, 25 Jul 2023 11:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284885;
-        bh=/XQaFhL4r8dNnPLMSDwybwdCqAgX4tU5/TVn/31asX4=;
+        s=korg; t=1690285684;
+        bh=xAjnnjtKgsqBNirUt8fPoThn3ipjvoEV7IxJoqGNg0E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AOlKRAfIUFSOVDGzL48du/o6MGLTwD5a2TVXa9JWB8OQj7H+ZNHVHAAEHTcL5jpw4
-         yOiMCKdumLbspQnL26ZcmxWFXqotlCalQ+v1bxDF+Ef4FU5D21klwxZhPpGwuOj6Rn
-         tkFhbCCYbvbxmJCxBsVV7gnKTjFKFMMLLvcEfqUs=
+        b=UhX1+Wi1wYpKRfJTGSRq+QqkNXC51uTUpl/hYoqnHgnZGUicAOVyyVXz5kM2hpo1Z
+         rNXcRZfP7S4KONR3SXBL6igfEs/b68awS4dQnzH1pbWlDUMA74KO2DOw6bHtcCBnA3
+         EhZmnKn/verKGuohiOFLaetOchO3RDqgwY6It2pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 507/509] tracing: Fix memory leak of iter->temp when reading trace_pipe
-Date:   Tue, 25 Jul 2023 12:47:26 +0200
-Message-ID: <20230725104616.925151974@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Roee Goldfiner <roee.h.goldfiner@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 294/313] wifi: iwlwifi: mvm: avoid baid size integer overflow
+Date:   Tue, 25 Jul 2023 12:47:27 +0200
+Message-ID: <20230725104533.847680341@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,54 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit d5a821896360cc8b93a15bd888fabc858c038dc0 upstream.
+[ Upstream commit 1a528ab1da324d078ec60283c34c17848580df24 ]
 
-kmemleak reports:
-  unreferenced object 0xffff88814d14e200 (size 256):
-    comm "cat", pid 336, jiffies 4294871818 (age 779.490s)
-    hex dump (first 32 bytes):
-      04 00 01 03 00 00 00 00 08 00 00 00 00 00 00 00  ................
-      0c d8 c8 9b ff ff ff ff 04 5a ca 9b ff ff ff ff  .........Z......
-    backtrace:
-      [<ffffffff9bdff18f>] __kmalloc+0x4f/0x140
-      [<ffffffff9bc9238b>] trace_find_next_entry+0xbb/0x1d0
-      [<ffffffff9bc9caef>] trace_print_lat_context+0xaf/0x4e0
-      [<ffffffff9bc94490>] print_trace_line+0x3e0/0x950
-      [<ffffffff9bc95499>] tracing_read_pipe+0x2d9/0x5a0
-      [<ffffffff9bf03a43>] vfs_read+0x143/0x520
-      [<ffffffff9bf04c2d>] ksys_read+0xbd/0x160
-      [<ffffffff9d0f0edf>] do_syscall_64+0x3f/0x90
-      [<ffffffff9d2000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+Roee reported various hard-to-debug crashes with pings in
+EHT aggregation scenarios. Enabling KASAN showed that we
+access the BAID allocation out of bounds, and looking at
+the code a bit shows that since the reorder buffer entry
+(struct iwl_mvm_reorder_buf_entry) is 128 bytes if debug
+such as lockdep is enabled, then staring from an agg size
+512 we overflow the size calculation, and allocate a much
+smaller structure than we should, causing slab corruption
+once we initialize this.
 
-when reading file 'trace_pipe', 'iter->temp' is allocated or relocated
-in trace_find_next_entry() but not freed before 'trace_pipe' is closed.
+Fix this by simply using u32 instead of u16.
 
-To fix it, free 'iter->temp' in tracing_release_pipe().
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230713141435.1133021-1-zhengyejian1@huawei.com
-
-Cc: stable@vger.kernel.org
-Fixes: ff895103a84ab ("tracing: Save off entry when peeking at next entry")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[Fix conflict due to lack of 649e72070cbbb8600eb823833e4748f5a0815116]
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Roee Goldfiner <roee.h.goldfiner@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230620125813.f428c856030d.I2c2bb808e945adb71bc15f5b2bac2d8957ea90eb@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6250,6 +6250,7 @@ static int tracing_release_pipe(struct i
- 	mutex_unlock(&trace_types_lock);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index a3255100e3fee..7befb92b5159c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2557,7 +2557,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 	}
  
- 	free_cpumask_var(iter->started);
-+	kfree(iter->temp);
- 	mutex_destroy(&iter->mutex);
- 	kfree(iter);
+ 	if (iwl_mvm_has_new_rx_api(mvm) && start) {
+-		u16 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
++		u32 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
  
+ 		/* sparse doesn't like the __align() so don't check */
+ #ifndef __CHECKER__
+-- 
+2.39.2
+
 
 
