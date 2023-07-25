@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A95247616DC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB067611C4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235054AbjGYLnt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51350 "EHLO
+        id S232696AbjGYKzx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:55:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235283AbjGYLnR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:17 -0400
+        with ESMTP id S232050AbjGYKzd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12662128
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5CF49E0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DF8F6167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602E8C433C7;
-        Tue, 25 Jul 2023 11:41:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BED9D61680
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0556C433C8;
+        Tue, 25 Jul 2023 10:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285308;
-        bh=7i1ZTmwXQ/yG/MJMyANDqgQATmL9OGWXgh6b64eYz1s=;
+        s=korg; t=1690282399;
+        bh=78qvTLDUDG6OaQx7QIgD9YGNmLb/OoQSvzOmqN15t8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UZMAIN8f7sfyz0ARYqwkHx1lENUapm1KNf83MAL4l+iH9kbs9o4SZrtUClgHq9aiL
-         83f4p3zlfUqm8uM0pfWRXryn3wMYshQiZ1wRIAIqgPzeOhp/kFH55d1BPlEUy44XJx
-         rUB+JNlQZ811W2dG8u9KSt7wbhWkTjnepWrCqFwA=
+        b=F41YX6WUqX8pFBS5eyjqyZmQ2LUT0+26DrMpGzKNaQrzV4PAMYpQg5hfz2n8hsApw
+         DNyj+PWwqyGweW83NKtZsxIDcbHQhIms0pstNmW4hWEeWk7MjIGgYOlthQ8CjMRszF
+         9dRtjgEvZZcyFVsRAUQ43uv5699lXBzFEYddStTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Yonghong Song <yhs@meta.com>,
+        Stanislav Fomichev <sdf@google.com>,
+        Aditi Ghag <aditi.ghag@isovalent.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 128/313] media: videodev2.h: Fix struct v4l2_input tuner index comment
-Date:   Tue, 25 Jul 2023 12:44:41 +0200
-Message-ID: <20230725104526.550819639@linuxfoundation.org>
+Subject: [PATCH 6.4 115/227] bpf: tcp: Avoid taking fast sock lock in iterator
+Date:   Tue, 25 Jul 2023 12:44:42 +0200
+Message-ID: <20230725104519.548163609@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,60 +57,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Aditi Ghag <aditi.ghag@isovalent.com>
 
-[ Upstream commit 26ae58f65e64fa7ba61d64bae752e59e08380c6a ]
+[ Upstream commit 9378096e8a656fb5c4099b26b1370c56f056eab9 ]
 
-VIDIOC_ENUMINPUT documentation describes the tuner field of
-struct v4l2_input as index:
+This is a preparatory commit to replace `lock_sock_fast` with
+`lock_sock`,and facilitate BPF programs executed from the TCP sockets
+iterator to be able to destroy TCP sockets using the bpf_sock_destroy
+kfunc (implemented in follow-up commits).
 
-Documentation/userspace-api/media/v4l/vidioc-enuminput.rst
-"
-* - __u32
-  - ``tuner``
-  - Capture devices can have zero or more tuners (RF demodulators).
-    When the ``type`` is set to ``V4L2_INPUT_TYPE_TUNER`` this is an
-    RF connector and this field identifies the tuner. It corresponds
-    to struct :c:type:`v4l2_tuner` field ``index``. For
-    details on tuners see :ref:`tuner`.
-"
+Previously, BPF TCP iterator was acquiring the sock lock with BH
+disabled. This led to scenarios where the sockets hash table bucket lock
+can be acquired with BH enabled in some path versus disabled in other.
+In such situation, kernel issued a warning since it thinks that in the
+BH enabled path the same bucket lock *might* be acquired again in the
+softirq context (BH disabled), which will lead to a potential dead lock.
+Since bpf_sock_destroy also happens in a process context, the potential
+deadlock warning is likely a false alarm.
 
-Drivers I could find also use the 'tuner' field as an index, e.g.:
-drivers/media/pci/bt8xx/bttv-driver.c bttv_enum_input()
-drivers/media/usb/go7007/go7007-v4l2.c vidioc_enum_input()
+Here is a snippet of annotated stack trace that motivated this change:
 
-However, the UAPI comment claims this field is 'enum v4l2_tuner_type':
-include/uapi/linux/videodev2.h
+```
 
-This field being 'enum v4l2_tuner_type' is unlikely as it seems to be
-never used that way in drivers, and documentation confirms it. It seem
-this comment got in accidentally in the commit which this patch fixes.
-Fix the UAPI comment to stop confusion.
+Possible interrupt unsafe locking scenario:
 
-This was pointed out by Dmitry while reviewing VIDIOC_ENUMINPUT
-support for strace.
+      CPU0                    CPU1
+      ----                    ----
+ lock(&h->lhash2[i].lock);
+                              local_bh_disable();
+                              lock(&h->lhash2[i].lock);
+kernel imagined possible scenario:
+  local_bh_disable();  /* Possible softirq */
+  lock(&h->lhash2[i].lock);
+*** Potential Deadlock ***
 
-Fixes: 6016af82eafc ("[media] v4l2: use __u32 rather than enums in ioctl() structs")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+process context:
+
+lock_acquire+0xcd/0x330
+_raw_spin_lock+0x33/0x40
+------> Acquire (bucket) lhash2.lock with BH enabled
+__inet_hash+0x4b/0x210
+inet_csk_listen_start+0xe6/0x100
+inet_listen+0x95/0x1d0
+__sys_listen+0x69/0xb0
+__x64_sys_listen+0x14/0x20
+do_syscall_64+0x3c/0x90
+entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+bpf_sock_destroy run from iterator:
+
+lock_acquire+0xcd/0x330
+_raw_spin_lock+0x33/0x40
+------> Acquire (bucket) lhash2.lock with BH disabled
+inet_unhash+0x9a/0x110
+tcp_set_state+0x6a/0x210
+tcp_abort+0x10d/0x200
+bpf_prog_6793c5ca50c43c0d_iter_tcp6_server+0xa4/0xa9
+bpf_iter_run_prog+0x1ff/0x340
+------> lock_sock_fast that acquires sock lock with BH disabled
+bpf_iter_tcp_seq_show+0xca/0x190
+bpf_seq_read+0x177/0x450
+
+```
+
+Also, Yonghong reported a deadlock for non-listening TCP sockets that
+this change resolves. Previously, `lock_sock_fast` held the sock spin
+lock with BH which was again being acquired in `tcp_abort`:
+
+```
+watchdog: BUG: soft lockup - CPU#0 stuck for 86s! [test_progs:2331]
+RIP: 0010:queued_spin_lock_slowpath+0xd8/0x500
+Call Trace:
+ <TASK>
+ _raw_spin_lock+0x84/0x90
+ tcp_abort+0x13c/0x1f0
+ bpf_prog_88539c5453a9dd47_iter_tcp6_client+0x82/0x89
+ bpf_iter_run_prog+0x1aa/0x2c0
+ ? preempt_count_sub+0x1c/0xd0
+ ? from_kuid_munged+0x1c8/0x210
+ bpf_iter_tcp_seq_show+0x14e/0x1b0
+ bpf_seq_read+0x36c/0x6a0
+
+bpf_iter_tcp_seq_show
+   lock_sock_fast
+     __lock_sock_fast
+       spin_lock_bh(&sk->sk_lock.slock);
+	/* * Fast path return with bottom halves disabled and * sock::sk_lock.slock held.* */
+
+ ...
+ tcp_abort
+   local_bh_disable();
+   spin_lock(&((sk)->sk_lock.slock)); // from bh_lock_sock(sk)
+
+```
+
+With the switch to `lock_sock`, it calls `spin_unlock_bh` before returning:
+
+```
+lock_sock
+    lock_sock_nested
+       spin_lock_bh(&sk->sk_lock.slock);
+       :
+       spin_unlock_bh(&sk->sk_lock.slock);
+```
+
+Acked-by: Yonghong Song <yhs@meta.com>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Aditi Ghag <aditi.ghag@isovalent.com>
+Link: https://lore.kernel.org/r/20230519225157.760788-2-aditi.ghag@isovalent.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/videodev2.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_ipv4.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-index 9c89429f31130..895c5ba8b6ac2 100644
---- a/include/uapi/linux/videodev2.h
-+++ b/include/uapi/linux/videodev2.h
-@@ -1588,7 +1588,7 @@ struct v4l2_input {
- 	__u8	     name[32];		/*  Label */
- 	__u32	     type;		/*  Type of input */
- 	__u32	     audioset;		/*  Associated audios (bitfield) */
--	__u32        tuner;             /*  enum v4l2_tuner_type */
-+	__u32        tuner;             /*  Tuner index */
- 	v4l2_std_id  std;
- 	__u32	     status;
- 	__u32	     capabilities;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 06d2573685ca9..434e5f0c8b99d 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2963,7 +2963,6 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
+ 	struct bpf_iter_meta meta;
+ 	struct bpf_prog *prog;
+ 	struct sock *sk = v;
+-	bool slow;
+ 	uid_t uid;
+ 	int ret;
+ 
+@@ -2971,7 +2970,7 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
+ 		return 0;
+ 
+ 	if (sk_fullsock(sk))
+-		slow = lock_sock_fast(sk);
++		lock_sock(sk);
+ 
+ 	if (unlikely(sk_unhashed(sk))) {
+ 		ret = SEQ_SKIP;
+@@ -2995,7 +2994,7 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
+ 
+ unlock:
+ 	if (sk_fullsock(sk))
+-		unlock_sock_fast(sk, slow);
++		release_sock(sk);
+ 	return ret;
+ 
+ }
 -- 
 2.39.2
 
