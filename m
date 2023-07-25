@@ -2,143 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B98760701
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 06:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7288C7608DC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 06:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231629AbjGYEHU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 00:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47704 "EHLO
+        id S229998AbjGYEq3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 00:46:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230128AbjGYEHO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 00:07:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21C2F1A6
-        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 21:06:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690257987;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=HgBiSX0PXpQHphBJb2zYmC8Y8fFUR8vcZ7Z08zZI5lY=;
-        b=am7flIQksTaCHWKTrMXnjyPhgNMdmFAElk5hUp7M8HStPPnOVGBQHxhwfh6PS20e346zth
-        VGj8M0IIww7r7u32PA0Qoq+5fGqjWo6/I6HmaEdsUK7PPEJ3/QrnVI7mthDTpRWKD5EFSU
-        o9440WZkxXUmJrKQB/Ori5LEjA9BlrM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-689-o8vwuSAvOkC_fuQKX3PH3A-1; Tue, 25 Jul 2023 00:06:23 -0400
-X-MC-Unique: o8vwuSAvOkC_fuQKX3PH3A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S231802AbjGYEq1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 00:46:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1351E10E5
+        for <stable@vger.kernel.org>; Mon, 24 Jul 2023 21:46:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4BE3F1039655;
-        Tue, 25 Jul 2023 04:06:23 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-127.pek2.redhat.com [10.72.12.127])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 44F9E10E5E;
-        Tue, 25 Jul 2023 04:06:18 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
-Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
-        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH v3] ceph: defer stopping the mdsc delayed_work
-Date:   Tue, 25 Jul 2023 12:03:59 +0800
-Message-Id: <20230725040359.363444-1-xiubli@redhat.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91CE961535
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D53CC433CC;
+        Tue, 25 Jul 2023 04:46:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690260383;
+        bh=bpLPeLn+xGD3bpb5Qfr8oWmqKwMTnOxkwkkLWH7IzSw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aH7MACeJG/Xyfl8shxtsA/wM2aTBU5yIECyegW/6PCAKoivNOhyp1ZQhwrCasyG2v
+         nf/vMv3tpF78M5KeYSHQ6yJ6Gx89UmialjiPuE07Hk/KjfNE7qKzHCp7bl6G/0CZro
+         l6YQT5nf5DXvOp+1PIDTDUuFvTcSjnSx2HvbG7io=
+Date:   Tue, 25 Jul 2023 06:46:19 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     stable@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH] r8169: revert 2ab19de62d67 ("r8169: remove ASPM
+ restrictions now that ASPM is disabled during NAPI poll")
+Message-ID: <2023072558-moisten-snore-73c7@gregkh>
+References: <2023072337-dreamlike-rewrite-a12e@gregkh>
+ <38cddf6d-f894-55a1-6275-87945b265e8b@gmail.com>
+ <2023072453-saturate-atlas-2572@gregkh>
+ <e24f1b91-efd1-5398-624f-a73c0e92d677@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e24f1b91-efd1-5398-624f-a73c0e92d677@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+On Mon, Jul 24, 2023 at 09:58:39PM +0200, Heiner Kallweit wrote:
+> On 24.07.2023 19:32, Greg KH wrote:
+> > On Mon, Jul 24, 2023 at 05:59:07PM +0200, Heiner Kallweit wrote:
+> >> There have been reports that on a number of systems this change breaks
+> >> network connectivity. Therefore effectively revert it. Mainly affected
+> >> seem to be systems where BIOS denies ASPM access to OS.
+> >> Due to later changes we can't do a direct revert.
+> >>
+> >> Fixes: 2ab19de62d67 ("r8169: remove ASPM restrictions now that ASPM is disabled during NAPI poll")
+> >> Cc: stable@vger.kernel.org # v6.4.y
+> >> Link: https://lore.kernel.org/netdev/e47bac0d-e802-65e1-b311-6acb26d5cf10@freenet.de/T/
+> >> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217596
+> >> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> >> Link: https://lore.kernel.org/r/57f13ec0-b216-d5d8-363d-5b05528ec5fb@gmail.com
+> >> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> >> ---
+> >>  drivers/net/ethernet/realtek/r8169_main.c | 27 ++++++++++++++++++++++-
+> >>  1 file changed, 26 insertions(+), 1 deletion(-)
+> >>
+> > 
+> > <formletter>
+> > 
+> > This is not the correct way to submit patches for inclusion in the
+> > stable kernel tree.  Please read:
+> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > for how to do this properly.
+> > 
+> > </formletter>
+> 
+> The conflict notification email mentioned the following, therefore I replied
+> with the backported patch. Which part is wrong or what is missing?
 
-Flushing the dirty buffer may take a long time if the Rados is
-overloaded or if there is network issue. So we should ping the
-MDSs periodically to keep alive, else the MDS will blocklist
-the kclient.
+No hint that it was a backported patch, what the git id was, or what
+branch to apply it to :(
 
-Cc: stable@vger.kernel.org
-Cc: Venky Shankar <vshankar@redhat.com>
-URL: https://tracker.ceph.com/issues/61843
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
----
+> The patch below does not apply to the 6.4-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x cf2ffdea0839398cb0551762af7f5efb0a6e0fea
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072337-dreamlike-rewrite-a12e@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
-V3:
-- Rebased to the master branch
+The instructions above, if followed, will give the git id, and the
+branch to apply it to, in the email in a form which it can be properly
+deduced.
 
+Otherwise this looks like a mis-directed patch that we don't know what
+to do with :(
 
- fs/ceph/mds_client.c |  4 ++--
- fs/ceph/mds_client.h |  5 +++++
- fs/ceph/super.c      | 10 ++++++++++
- 3 files changed, 17 insertions(+), 2 deletions(-)
+thanks,
 
-diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index 66048a86c480..5fb367b1d4b0 100644
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -4764,7 +4764,7 @@ static void delayed_work(struct work_struct *work)
- 
- 	dout("mdsc delayed_work\n");
- 
--	if (mdsc->stopping)
-+	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHED)
- 		return;
- 
- 	mutex_lock(&mdsc->mutex);
-@@ -4943,7 +4943,7 @@ void send_flush_mdlog(struct ceph_mds_session *s)
- void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc)
- {
- 	dout("pre_umount\n");
--	mdsc->stopping = 1;
-+	mdsc->stopping = CEPH_MDSC_STOPPING_BEGIN;
- 
- 	ceph_mdsc_iterate_sessions(mdsc, send_flush_mdlog, true);
- 	ceph_mdsc_iterate_sessions(mdsc, lock_unlock_session, false);
-diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
-index 724307ff89cd..86d2965e68a1 100644
---- a/fs/ceph/mds_client.h
-+++ b/fs/ceph/mds_client.h
-@@ -380,6 +380,11 @@ struct cap_wait {
- 	int			want;
- };
- 
-+enum {
-+       CEPH_MDSC_STOPPING_BEGIN = 1,
-+       CEPH_MDSC_STOPPING_FLUSHED = 2,
-+};
-+
- /*
-  * mds client state
-  */
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index 3fc48b43cab0..a5f52013314d 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -1374,6 +1374,16 @@ static void ceph_kill_sb(struct super_block *s)
- 	ceph_mdsc_pre_umount(fsc->mdsc);
- 	flush_fs_workqueues(fsc);
- 
-+	/*
-+	 * Though the kill_anon_super() will finally trigger the
-+	 * sync_filesystem() anyway, we still need to do it here
-+	 * and then bump the stage of shutdown to stop the work
-+	 * queue as earlier as possible.
-+	 */
-+	sync_filesystem(s);
-+
-+	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
-+
- 	kill_anon_super(s);
- 
- 	fsc->client->extra_mon_dispatch = NULL;
--- 
-2.39.1
-
+greg k-h
