@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 349007611E4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 894DB7612B6
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbjGYK5U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35874 "EHLO
+        id S233944AbjGYLFO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231578AbjGYK45 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1400C4213
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:28 -0700 (PDT)
+        with ESMTP id S233931AbjGYLE4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C4B1BE2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C356A61691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6ECC433C8;
-        Tue, 25 Jul 2023 10:54:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B025161648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE7AC433C9;
+        Tue, 25 Jul 2023 11:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282468;
-        bh=CDA7tW9D6XL7/Y64ZN9KI3Vd3J/7T4dHEsty4b4ueqg=;
+        s=korg; t=1690282935;
+        bh=GNT2rBdZAbHwR9OeFsrHJ9hPafKi5zhIcIDq27RuLAw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n5oDTK+xjPbbp3ISeaZKeB2G+5p8I6odw6fTmPeXl0r31yW5N2OpGUUluR6AuqGHI
-         yr95xae+/FcczfkA0/FQUBgAmoGRyB/ffYGhzLvHeIJC1XH6r4xYFj0c1+qtQdMx5A
-         9Y+RqOgg1KfTjJphbiTKKEWFHce0g5JpfHjSjnlY=
+        b=VpYadE8k/0KVUl+/zuS6vv2K2rGlmjY+5TSnuNZ7BB/EWvFoCxxcEmF8dQUiM8CZE
+         Gc1piTB3ZaRwtQZVzgBJpKn75DlwN+GorncERXGt6447dLcTJ+EZFX/uw4Hth20QrR
+         VoQEODD7AM/1sa/YvfeTiyk9s3YAtANPg5GgXUuM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 141/227] pinctrl: renesas: rzv2m: Handle non-unique subnode names
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 080/183] igb: Fix igb_down hung on surprise removal
 Date:   Tue, 25 Jul 2023 12:45:08 +0200
-Message-ID: <20230725104520.708322910@linuxfoundation.org>
+Message-ID: <20230725104510.855377520@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,114 +58,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit f46a0b47cc0829acd050213194c5a77351e619b2 ]
+[ Upstream commit 004d25060c78fc31f66da0fa439c544dda1ac9d5 ]
 
-The eMMC and SDHI pin control configuration nodes in DT have subnodes
-with the same names ("data" and "ctrl").  As the RZ/V2M pin control
-driver considers only the names of the subnodes, this leads to
-conflicts:
+In a setup where a Thunderbolt hub connects to Ethernet and a display
+through USB Type-C, users may experience a hung task timeout when they
+remove the cable between the PC and the Thunderbolt hub.
+This is because the igb_down function is called multiple times when
+the Thunderbolt hub is unplugged. For example, the igb_io_error_detected
+triggers the first call, and the igb_remove triggers the second call.
+The second call to igb_down will block at napi_synchronize.
+Here's the call trace:
+    __schedule+0x3b0/0xddb
+    ? __mod_timer+0x164/0x5d3
+    schedule+0x44/0xa8
+    schedule_timeout+0xb2/0x2a4
+    ? run_local_timers+0x4e/0x4e
+    msleep+0x31/0x38
+    igb_down+0x12c/0x22a [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    __igb_close+0x6f/0x9c [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    igb_close+0x23/0x2b [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    __dev_close_many+0x95/0xec
+    dev_close_many+0x6e/0x103
+    unregister_netdevice_many+0x105/0x5b1
+    unregister_netdevice_queue+0xc2/0x10d
+    unregister_netdev+0x1c/0x23
+    igb_remove+0xa7/0x11c [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    pci_device_remove+0x3f/0x9c
+    device_release_driver_internal+0xfe/0x1b4
+    pci_stop_bus_device+0x5b/0x7f
+    pci_stop_bus_device+0x30/0x7f
+    pci_stop_bus_device+0x30/0x7f
+    pci_stop_and_remove_bus_device+0x12/0x19
+    pciehp_unconfigure_device+0x76/0xe9
+    pciehp_disable_slot+0x6e/0x131
+    pciehp_handle_presence_or_link_change+0x7a/0x3f7
+    pciehp_ist+0xbe/0x194
+    irq_thread_fn+0x22/0x4d
+    ? irq_thread+0x1fd/0x1fd
+    irq_thread+0x17b/0x1fd
+    ? irq_forced_thread_fn+0x5f/0x5f
+    kthread+0x142/0x153
+    ? __irq_get_irqchip_state+0x46/0x46
+    ? kthread_associate_blkcg+0x71/0x71
+    ret_from_fork+0x1f/0x30
 
-    pinctrl-rzv2m b6250000.pinctrl: pin P8_2 already requested by 85000000.mmc; cannot claim for 85020000.mmc
-    pinctrl-rzv2m b6250000.pinctrl: pin-130 (85020000.mmc) status -22
-    renesas_sdhi_internal_dmac 85020000.mmc: Error applying setting, reverse things back
+In this case, igb_io_error_detected detaches the network interface
+and requests a PCIE slot reset, however, the PCIE reset callback is
+not being invoked and thus the Ethernet connection breaks down.
+As the PCIE error in this case is a non-fatal one, requesting a
+slot reset can be avoided.
+This patch fixes the task hung issue and preserves Ethernet
+connection by ignoring non-fatal PCIE errors.
 
-Fix this by constructing unique names from the node names of both the
-pin control configuration node and its child node, where appropriate.
-
-Reported by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-
-Fixes: 92a9b825257614af ("pinctrl: renesas: Add RZ/V2M pin and gpio controller driver")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Link: https://lore.kernel.org/r/607bd6ab4905b0b1b119a06ef953fa1184505777.1688396717.git.geert+renesas@glider.be
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230620174732.4145155-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzv2m.c | 28 ++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzv2m.c b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-index e5472293bc7fb..35b23c1a5684d 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-@@ -209,6 +209,7 @@ static int rzv2m_map_add_config(struct pinctrl_map *map,
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 18ffbc892f86c..3e0444354632d 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -9585,6 +9585,11 @@ static pci_ers_result_t igb_io_error_detected(struct pci_dev *pdev,
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
  
- static int rzv2m_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 				   struct device_node *np,
-+				   struct device_node *parent,
- 				   struct pinctrl_map **map,
- 				   unsigned int *num_maps,
- 				   unsigned int *index)
-@@ -226,6 +227,7 @@ static int rzv2m_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 	struct property *prop;
- 	int ret, gsel, fsel;
- 	const char **pin_fn;
-+	const char *name;
- 	const char *pin;
- 
- 	pinmux = of_find_property(np, "pinmux", NULL);
-@@ -309,8 +311,19 @@ static int rzv2m_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 		psel_val[i] = MUX_FUNC(value);
- 	}
- 
-+	if (parent) {
-+		name = devm_kasprintf(pctrl->dev, GFP_KERNEL, "%pOFn.%pOFn",
-+				      parent, np);
-+		if (!name) {
-+			ret = -ENOMEM;
-+			goto done;
-+		}
-+	} else {
-+		name = np->name;
++	if (state == pci_channel_io_normal) {
++		dev_warn(&pdev->dev, "Non-correctable non-fatal error reported.\n");
++		return PCI_ERS_RESULT_CAN_RECOVER;
 +	}
 +
- 	/* Register a single pin group listing all the pins we read from DT */
--	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, num_pinmux, NULL);
-+	gsel = pinctrl_generic_add_group(pctldev, name, pins, num_pinmux, NULL);
- 	if (gsel < 0) {
- 		ret = gsel;
- 		goto done;
-@@ -320,17 +333,16 @@ static int rzv2m_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 	 * Register a single group function where the 'data' is an array PSEL
- 	 * register values read from DT.
- 	 */
--	pin_fn[0] = np->name;
--	fsel = pinmux_generic_add_function(pctldev, np->name, pin_fn, 1,
--					   psel_val);
-+	pin_fn[0] = name;
-+	fsel = pinmux_generic_add_function(pctldev, name, pin_fn, 1, psel_val);
- 	if (fsel < 0) {
- 		ret = fsel;
- 		goto remove_group;
- 	}
+ 	netif_device_detach(netdev);
  
- 	maps[idx].type = PIN_MAP_TYPE_MUX_GROUP;
--	maps[idx].data.mux.group = np->name;
--	maps[idx].data.mux.function = np->name;
-+	maps[idx].data.mux.group = name;
-+	maps[idx].data.mux.function = name;
- 	idx++;
- 
- 	dev_dbg(pctrl->dev, "Parsed %pOF with %d pins\n", np, num_pinmux);
-@@ -377,7 +389,7 @@ static int rzv2m_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	index = 0;
- 
- 	for_each_child_of_node(np, child) {
--		ret = rzv2m_dt_subnode_to_map(pctldev, child, map,
-+		ret = rzv2m_dt_subnode_to_map(pctldev, child, np, map,
- 					      num_maps, &index);
- 		if (ret < 0) {
- 			of_node_put(child);
-@@ -386,7 +398,7 @@ static int rzv2m_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	}
- 
- 	if (*num_maps == 0) {
--		ret = rzv2m_dt_subnode_to_map(pctldev, np, map,
-+		ret = rzv2m_dt_subnode_to_map(pctldev, np, NULL, map,
- 					      num_maps, &index);
- 		if (ret < 0)
- 			goto done;
+ 	if (state == pci_channel_io_perm_failure)
 -- 
 2.39.2
 
