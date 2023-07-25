@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0487616F4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38115761315
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233310AbjGYLo3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52170 "EHLO
+        id S233340AbjGYLHe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:07:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232743AbjGYLoF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5711FCC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:01 -0700 (PDT)
+        with ESMTP id S233834AbjGYLHN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9A730E5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDC6E61698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E356AC433C7;
-        Tue, 25 Jul 2023 11:43:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E07B661689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3E9C433C7;
+        Tue, 25 Jul 2023 11:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285440;
-        bh=oAMV6m1uEsuT35Eo+OgXvHVxa16lyUqbkzqOS85W42k=;
+        s=korg; t=1690283158;
+        bh=Z890YDLEJRpxZU1TH7OmQR5NgoSvLq2HVwpJWEraWgM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PlhMShCepbaQTR94E8lwKm87sof23iOa6L5A1MglxOiDXTIIdnkkxDoANJ7fsbjSN
-         a+FR7z0qw/MNskIlNN8YckSym4QLX3aDOFy+R/DpSxj3e0t2JRI05FgksFRMBm3Zfm
-         eDOD+VJTZJI7Cgjmh2OOtV49ZRVZPYWUJ3Wv3Vmk=
+        b=r2PAoIUEF6ZYxexT6QoDEgs2jkPXbvPL0cXBKrw6gurIRu7NhJT2OAggYlHf/GRB2
+         2xVJovGxlT9TmOa/yBJ8lIZvMiGt9jgN8+L/j3UeTdWyT0NplMJ6BEbyRtsxOtBn/x
+         qay/QoXfMKPpFuCWSnpD6lrCKbgRDRafB5X2P1Wo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <snelson@pensando.io>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 205/313] ionic: move irq request to qcq alloc
+Subject: [PATCH 6.1 130/183] bpf: Repeat check_max_stack_depth for async callbacks
 Date:   Tue, 25 Jul 2023 12:45:58 +0200
-Message-ID: <20230725104529.885726207@linuxfoundation.org>
+Message-ID: <20230725104512.614693982@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,138 +56,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shannon Nelson <snelson@pensando.io>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 0b0641009b8918c8d5f6e7ed300d569c9d811de5 ]
+[ Upstream commit b5e9ad522c4ccd32d322877515cff8d47ed731b9 ]
 
-Move the irq request and free out of the qcq_init and deinit
-and into the alloc and free routines where they belong for
-better resource management.
+While the check_max_stack_depth function explores call chains emanating
+from the main prog, which is typically enough to cover all possible call
+chains, it doesn't explore those rooted at async callbacks unless the
+async callback will have been directly called, since unlike non-async
+callbacks it skips their instruction exploration as they don't
+contribute to stack depth.
 
-Signed-off-by: Shannon Nelson <snelson@pensando.io>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: abfb2a58a537 ("ionic: remove WARN_ON to prevent panic_on_warn")
+It could be the case that the async callback leads to a callchain which
+exceeds the stack depth, but this is never reachable while only
+exploring the entry point from main subprog. Hence, repeat the check for
+the main subprog *and* all async callbacks marked by the symbolic
+execution pass of the verifier, as execution of the program may begin at
+any of them.
+
+Consider functions with following stack depths:
+main: 256
+async: 256
+foo: 256
+
+main:
+    rX = async
+    bpf_timer_set_callback(...)
+
+async:
+    foo()
+
+Here, async is not descended as it does not contribute to stack depth of
+main (since it is referenced using bpf_pseudo_func and not
+bpf_pseudo_call). However, when async is invoked asynchronously, it will
+end up breaching the MAX_BPF_STACK limit by calling foo.
+
+Hence, in addition to main, we also need to explore call chains
+beginning at all async callback subprogs in a program.
+
+Fixes: 7ddc80a476c2 ("bpf: Teach stack depth check about async callbacks.")
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230717161530.1238-3-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/pensando/ionic/ionic_lif.c   | 41 +++++++++----------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ kernel/bpf/verifier.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index fa57a526b60f6..3fc9ac1e8b7b7 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -256,7 +256,6 @@ static int ionic_qcq_disable(struct ionic_qcq *qcq)
- static void ionic_lif_qcq_deinit(struct ionic_lif *lif, struct ionic_qcq *qcq)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index fdba4086881b3..f25ce959fae64 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -4288,16 +4288,17 @@ static int update_stack_depth(struct bpf_verifier_env *env,
+  * Since recursion is prevented by check_cfg() this algorithm
+  * only needs a local stack of MAX_CALL_FRAMES to remember callsites
+  */
+-static int check_max_stack_depth(struct bpf_verifier_env *env)
++static int check_max_stack_depth_subprog(struct bpf_verifier_env *env, int idx)
  {
- 	struct ionic_dev *idev = &lif->ionic->idev;
--	struct device *dev = lif->ionic->dev;
+-	int depth = 0, frame = 0, idx = 0, i = 0, subprog_end;
+ 	struct bpf_subprog_info *subprog = env->subprog_info;
+ 	struct bpf_insn *insn = env->prog->insnsi;
++	int depth = 0, frame = 0, i, subprog_end;
+ 	bool tail_call_reachable = false;
+ 	int ret_insn[MAX_CALL_FRAMES];
+ 	int ret_prog[MAX_CALL_FRAMES];
+ 	int j;
  
- 	if (!qcq)
- 		return;
-@@ -269,10 +268,7 @@ static void ionic_lif_qcq_deinit(struct ionic_lif *lif, struct ionic_qcq *qcq)
- 	if (qcq->flags & IONIC_QCQ_F_INTR) {
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
- 				IONIC_INTR_MASK_SET);
--		irq_set_affinity_hint(qcq->intr.vector, NULL);
--		devm_free_irq(dev, qcq->intr.vector, &qcq->napi);
- 		netif_napi_del(&qcq->napi);
--		qcq->intr.vector = 0;
- 	}
++	i = subprog[idx].start;
+ process_func:
+ 	/* protect against potential stack overflow that might happen when
+ 	 * bpf2bpf calls get combined with tailcalls. Limit the caller's stack
+@@ -4398,6 +4399,22 @@ static int check_max_stack_depth(struct bpf_verifier_env *env)
+ 	goto continue_func;
+ }
  
- 	qcq->flags &= ~IONIC_QCQ_F_INITED;
-@@ -289,8 +285,12 @@ static void ionic_qcq_free(struct ionic_lif *lif, struct ionic_qcq *qcq)
- 	qcq->base = NULL;
- 	qcq->base_pa = 0;
- 
--	if (qcq->flags & IONIC_QCQ_F_INTR)
-+	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		irq_set_affinity_hint(qcq->intr.vector, NULL);
-+		devm_free_irq(dev, qcq->intr.vector, &qcq->napi);
-+		qcq->intr.vector = 0;
- 		ionic_intr_free(lif, qcq->intr.index);
-+	}
- 
- 	devm_kfree(dev, qcq->cq.info);
- 	qcq->cq.info = NULL;
-@@ -420,6 +420,12 @@ static int ionic_qcq_alloc(struct ionic_lif *lif, unsigned int type,
- 		ionic_intr_mask_assert(idev->intr_ctrl, new->intr.index,
- 				       IONIC_INTR_MASK_SET);
- 
-+		err = ionic_request_irq(lif, new);
-+		if (err) {
-+			netdev_warn(lif->netdev, "irq request failed %d\n", err);
-+			goto err_out_free_intr;
-+		}
++static int check_max_stack_depth(struct bpf_verifier_env *env)
++{
++	struct bpf_subprog_info *si = env->subprog_info;
++	int ret;
 +
- 		new->intr.cpu = cpumask_local_spread(new->intr.index,
- 						     dev_to_node(dev));
- 		if (new->intr.cpu != -1)
-@@ -434,13 +440,13 @@ static int ionic_qcq_alloc(struct ionic_lif *lif, unsigned int type,
- 	if (!new->cq.info) {
- 		netdev_err(lif->netdev, "Cannot allocate completion queue info\n");
- 		err = -ENOMEM;
--		goto err_out_free_intr;
-+		goto err_out_free_irq;
- 	}
- 
- 	err = ionic_cq_init(lif, &new->cq, &new->intr, num_descs, cq_desc_size);
- 	if (err) {
- 		netdev_err(lif->netdev, "Cannot initialize completion queue\n");
--		goto err_out_free_intr;
-+		goto err_out_free_irq;
- 	}
- 
- 	new->base = dma_alloc_coherent(dev, total_size, &new->base_pa,
-@@ -448,7 +454,7 @@ static int ionic_qcq_alloc(struct ionic_lif *lif, unsigned int type,
- 	if (!new->base) {
- 		netdev_err(lif->netdev, "Cannot allocate queue DMA memory\n");
- 		err = -ENOMEM;
--		goto err_out_free_intr;
-+		goto err_out_free_irq;
- 	}
- 
- 	new->total_size = total_size;
-@@ -474,8 +480,12 @@ static int ionic_qcq_alloc(struct ionic_lif *lif, unsigned int type,
- 
- 	return 0;
- 
-+err_out_free_irq:
-+	if (flags & IONIC_QCQ_F_INTR)
-+		devm_free_irq(dev, new->intr.vector, &new->napi);
- err_out_free_intr:
--	ionic_intr_free(lif, new->intr.index);
-+	if (flags & IONIC_QCQ_F_INTR)
-+		ionic_intr_free(lif, new->intr.index);
- err_out:
- 	dev_err(dev, "qcq alloc of %s%d failed %d\n", name, index, err);
- 	return err;
-@@ -650,12 +660,6 @@ static int ionic_lif_rxq_init(struct ionic_lif *lif, struct ionic_qcq *qcq)
- 	netif_napi_add(lif->netdev, &qcq->napi, ionic_rx_napi,
- 		       NAPI_POLL_WEIGHT);
- 
--	err = ionic_request_irq(lif, qcq);
--	if (err) {
--		netif_napi_del(&qcq->napi);
--		return err;
--	}
--
- 	qcq->flags |= IONIC_QCQ_F_INITED;
- 
- 	ionic_debugfs_add_qcq(lif, qcq);
-@@ -1873,13 +1877,6 @@ static int ionic_lif_adminq_init(struct ionic_lif *lif)
- 	netif_napi_add(lif->netdev, &qcq->napi, ionic_adminq_napi,
- 		       NAPI_POLL_WEIGHT);
- 
--	err = ionic_request_irq(lif, qcq);
--	if (err) {
--		netdev_warn(lif->netdev, "adminq irq request failed %d\n", err);
--		netif_napi_del(&qcq->napi);
--		return err;
--	}
--
- 	napi_enable(&qcq->napi);
- 
- 	if (qcq->flags & IONIC_QCQ_F_INTR)
++	for (int i = 0; i < env->subprog_cnt; i++) {
++		if (!i || si[i].is_async_cb) {
++			ret = check_max_stack_depth_subprog(env, i);
++			if (ret < 0)
++				return ret;
++		}
++		continue;
++	}
++	return 0;
++}
++
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
+ static int get_callee_stack_depth(struct bpf_verifier_env *env,
+ 				  const struct bpf_insn *insn, int idx)
 -- 
 2.39.2
 
