@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 394177614B7
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B418A761134
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:48:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234437AbjGYLWH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:22:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59016 "EHLO
+        id S232226AbjGYKsm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234443AbjGYLWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:03 -0400
+        with ESMTP id S232229AbjGYKsk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:48:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45713199C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E5591990
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:48:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8893361600
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FFEC433C8;
-        Tue, 25 Jul 2023 11:22:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4EE46165E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:48:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29B9C433C8;
+        Tue, 25 Jul 2023 10:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284121;
-        bh=bVMgwzBJUMyGtbdEfx/DoLkxXR8Qv5xHKfmOrU59HqQ=;
+        s=korg; t=1690282118;
+        bh=OeGB2vpmR+6EEy+eat8Zb7yE9C8xEWavSlDEfb2E6YU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PT+A6hFeMrsskJIXmQGM42/I7FhfPhyQLGKvCjqwoXQXroeU8hXgkzYW/SQfRx8LF
-         xuPNN18AT6SU46d2DYBkQjWk+/GQ3imC5WbKuVOj0ZW4Lp7x6+TiHduwl52uNNP+Bz
-         UNQSN60txTwvyR6FRC01V5JFzc3PwgnMnETNPnMc=
+        b=z9p2BkR4sczVjrZtjlaX90iTPHogXo2gjy1TGduXwt7po6nBDQL2Qt31nkStDZ9Yn
+         uQ99q03plVYfeuh04Tts3ThdVbL6MdJd6KkzoBwMiEH5uMuPgQ1n7/hzRM/lNUVePg
+         cog7RE4i6ABbGon1nENEjtcSMsqmsuge2cAjftrE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nico Boehr <nrb@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 242/509] KVM: s390: fix KVM_S390_GET_CMMA_BITS for GFNs in memslot holes
-Date:   Tue, 25 Jul 2023 12:43:01 +0200
-Message-ID: <20230725104604.840146415@linuxfoundation.org>
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Qu Wenruo <wqu@suse.com>, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 015/227] btrfs: fix warning when putting transaction with qgroups enabled after abort
+Date:   Tue, 25 Jul 2023 12:43:02 +0200
+Message-ID: <20230725104515.421151959@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,74 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nico Boehr <nrb@linux.ibm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 285cff4c0454340a4dc53f46e67f2cb1c293bd74 ]
+commit aa84ce8a78a1a5c10cdf9c7a5fb0c999fbc2c8d6 upstream.
 
-The KVM_S390_GET_CMMA_BITS ioctl may return incorrect values when userspace
-specifies a start_gfn outside of memslots.
+If we have a transaction abort with qgroups enabled we get a warning
+triggered when doing the final put on the transaction, like this:
 
-This can occur when a VM has multiple memslots with a hole in between:
+  [552.6789] ------------[ cut here ]------------
+  [552.6815] WARNING: CPU: 4 PID: 81745 at fs/btrfs/transaction.c:144 btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6817] Modules linked in: btrfs blake2b_generic xor (...)
+  [552.6819] CPU: 4 PID: 81745 Comm: btrfs-transacti Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [552.6819] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [552.6819] RIP: 0010:btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6821] Code: bd a0 01 00 (...)
+  [552.6821] RSP: 0018:ffffa168c0527e28 EFLAGS: 00010286
+  [552.6821] RAX: ffff936042caed00 RBX: ffff93604a3eb448 RCX: 0000000000000000
+  [552.6821] RDX: ffff93606421b028 RSI: ffffffff92ff0878 RDI: ffff93606421b010
+  [552.6821] RBP: ffff93606421b000 R08: 0000000000000000 R09: ffffa168c0d07c20
+  [552.6821] R10: 0000000000000000 R11: ffff93608dc52950 R12: ffffa168c0527e70
+  [552.6821] R13: ffff93606421b000 R14: ffff93604a3eb420 R15: ffff93606421b028
+  [552.6821] FS:  0000000000000000(0000) GS:ffff93675fb00000(0000) knlGS:0000000000000000
+  [552.6821] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [552.6821] CR2: 0000558ad262b000 CR3: 000000014feda005 CR4: 0000000000370ee0
+  [552.6822] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [552.6822] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [552.6822] Call Trace:
+  [552.6822]  <TASK>
+  [552.6822]  ? __warn+0x80/0x130
+  [552.6822]  ? btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6824]  ? report_bug+0x1f4/0x200
+  [552.6824]  ? handle_bug+0x42/0x70
+  [552.6824]  ? exc_invalid_op+0x14/0x70
+  [552.6824]  ? asm_exc_invalid_op+0x16/0x20
+  [552.6824]  ? btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6826]  btrfs_cleanup_transaction+0xe7/0x5e0 [btrfs]
+  [552.6828]  ? _raw_spin_unlock_irqrestore+0x23/0x40
+  [552.6828]  ? try_to_wake_up+0x94/0x5e0
+  [552.6828]  ? __pfx_process_timeout+0x10/0x10
+  [552.6828]  transaction_kthread+0x103/0x1d0 [btrfs]
+  [552.6830]  ? __pfx_transaction_kthread+0x10/0x10 [btrfs]
+  [552.6832]  kthread+0xee/0x120
+  [552.6832]  ? __pfx_kthread+0x10/0x10
+  [552.6832]  ret_from_fork+0x29/0x50
+  [552.6832]  </TASK>
+  [552.6832] ---[ end trace 0000000000000000 ]---
 
-+-----+----------+--------+--------+
-| ... | Slot N-1 | <hole> | Slot N |
-+-----+----------+--------+--------+
-      ^          ^        ^        ^
-      |          |        |        |
-GFN   A          A+B      |        |
-                          A+B+C    |
-			           A+B+C+D
+This corresponds to this line of code:
 
-When userspace specifies a GFN in [A+B, A+B+C), it would expect to get the
-CMMA values of the first dirty page in Slot N. However, userspace may get a
-start_gfn of A+B+C+D with a count of 0, hence completely skipping over any
-dirty pages in slot N.
+  void btrfs_put_transaction(struct btrfs_transaction *transaction)
+  {
+      (...)
+          WARN_ON(!RB_EMPTY_ROOT(
+                          &transaction->delayed_refs.dirty_extent_root));
+      (...)
+  }
 
-The error is in kvm_s390_next_dirty_cmma(), which assumes
-gfn_to_memslot_approx() will return the memslot _below_ the specified GFN
-when the specified GFN lies outside a memslot. In reality it may return
-either the memslot below or above the specified GFN.
+The warning happens because btrfs_qgroup_destroy_extent_records(), called
+in the transaction abort path, we free all entries from the rbtree
+"dirty_extent_root" with rbtree_postorder_for_each_entry_safe(), but we
+don't actually empty the rbtree - it's still pointing to nodes that were
+freed.
 
-When a memslot above the specified GFN is returned this happens:
+So set the rbtree's root node to NULL to avoid this warning (assign
+RB_ROOT).
 
-- ofs is calculated, but since the memslot's base_gfn is larger than the
-  specified cur_gfn, ofs will underflow to a huge number.
-- ofs is passed to find_next_bit(). Since ofs will exceed the memslot's
-  number of pages, the number of pages in the memslot is returned,
-  completely skipping over all bits in the memslot userspace would be
-  interested in.
-
-Fix this by resetting ofs to zero when a memslot _above_ cur_gfn is
-returned (cur_gfn < ms->base_gfn).
-
-Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Fixes: afdad61615cc ("KVM: s390: Fix storage attributes migration with memory slots")
-Message-Id: <20230324145424.293889-2-nrb@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 81f7eb00ff5b ("btrfs: destroy qgroup extent records on transaction abort")
+CC: stable@vger.kernel.org # 5.10+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kvm/kvm-s390.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/qgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 7ffc73ba220fb..7a326d03087ab 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -2005,6 +2005,10 @@ static unsigned long kvm_s390_next_dirty_cmma(struct kvm_memslots *slots,
- 		ms = slots->memslots + slotidx;
- 		ofs = 0;
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -4433,4 +4433,5 @@ void btrfs_qgroup_destroy_extent_records
+ 		ulist_free(entry->old_roots);
+ 		kfree(entry);
  	}
-+
-+	if (cur_gfn < ms->base_gfn)
-+		ofs = 0;
-+
- 	ofs = find_next_bit(kvm_second_dirty_bitmap(ms), ms->npages, ofs);
- 	while ((slotidx > 0) && (ofs >= ms->npages)) {
- 		slotidx--;
--- 
-2.39.2
-
++	*root = RB_ROOT;
+ }
 
 
