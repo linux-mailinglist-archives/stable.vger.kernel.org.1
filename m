@@ -2,53 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF586761740
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B04F7615BC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232137AbjGYLqW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53860 "EHLO
+        id S232624AbjGYLcc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232142AbjGYLqU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408DE1B8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:17 -0700 (PDT)
+        with ESMTP id S233061AbjGYLcb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4989B187
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CAB07616BF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6439C433CA;
-        Tue, 25 Jul 2023 11:46:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA8B061654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98F4C433C7;
+        Tue, 25 Jul 2023 11:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285576;
-        bh=I/hnvNXgmXjXkNsmNFnOqYTB3WBKnVF542oAU0Y75bc=;
+        s=korg; t=1690284749;
+        bh=IiINVVFp3FcZlpj5GWmJ9MH+vbqklIbUM8ZJn3S5EWQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WRpn7Vjb02lGRxilQAE+kQIQ2EHmq/adfSYUuL/7arM/GSyMwaG8wgPg0BiMEM70+
-         ofe4EfO55+jJ/aozQ125oq3qCO0vb0l3yTfDvCNmKfQ79DFubWrxSkMqRi0A6MKT3+
-         VhXB74g9oFXJ8JGOgWWgGGG/kQO6JnP8E1F5ydMs=
+        b=WIV1hhh4lbERP1ifVAoNUma8f4tdWOarzYZf2czWNMT/ncIA8X7lTMfiO7W71FBI9
+         ZtJfOCfHQkiCMNrxiDgMwYQTayWYAkeEu4RiPh5eP2w+WOpkLssVfB66G3mSrG6Rn/
+         NY4JsKCz/p9ST8mPxOElLS4euWLKQSh0bYMbdWe0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 225/313] net/sched: flower: Ensure both minimum and maximum ports are specified
+        patches@lists.linux.dev, shanzhulig <shanzhulig@gmail.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, stable@kernel.org,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 439/509] drm/atomic: Fix potential use-after-free in nonblocking commits
 Date:   Tue, 25 Jul 2023 12:46:18 +0200
-Message-ID: <20230725104530.784189868@linuxfoundation.org>
+Message-ID: <20230725104613.833889001@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,81 +60,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit d3f87278bcb80bd7f9519669d928b43320363d4f ]
+commit 4e076c73e4f6e90816b30fcd4a0d7ab365087255 upstream.
 
-The kernel does not currently validate that both the minimum and maximum
-ports of a port range are specified. This can lead user space to think
-that a filter matching on a port range was successfully added, when in
-fact it was not. For example, with a patched (buggy) iproute2 that only
-sends the minimum port, the following commands do not return an error:
+This requires a bit of background.  Properly done a modeset driver's
+unload/remove sequence should be
 
- # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp src_port 100-200 action pass
+	drm_dev_unplug();
+	drm_atomic_helper_shutdown();
+	drm_dev_put();
 
- # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp dst_port 100-200 action pass
+The trouble is that the drm_dev_unplugged() checks are by design racy,
+they do not synchronize against all outstanding ioctl.  This is because
+those ioctl could block forever (both for modeset and for driver
+specific ioctls), leading to deadlocks in hotunplug.  Instead the code
+sections that touch the hardware need to be annotated with
+drm_dev_enter/exit, to avoid accessing hardware resources after the
+unload/remove has finished.
 
- # tc filter show dev swp1 ingress
- filter protocol ip pref 1 flower chain 0
- filter protocol ip pref 1 flower chain 0 handle 0x1
-   eth_type ipv4
-   ip_proto udp
-   not_in_hw
-         action order 1: gact action pass
-          random type none pass val 0
-          index 1 ref 1 bind 1
+To avoid use-after-free issues all the involved userspace visible
+objects are supposed to hold a reference on the underlying drm_device,
+like drm_file does.
 
- filter protocol ip pref 1 flower chain 0 handle 0x2
-   eth_type ipv4
-   ip_proto udp
-   not_in_hw
-         action order 1: gact action pass
-          random type none pass val 0
-          index 2 ref 1 bind 1
+The issue now is that we missed one, the atomic modeset ioctl can be run
+in a nonblocking fashion, and in that case it cannot rely on the implied
+drm_device reference provided by the ioctl calling context.  This can
+result in a use-after-free if an nonblocking atomic commit is carefully
+raced against a driver unload.
 
-Fix by returning an error unless both ports are specified:
+Fix this by unconditionally grabbing a drm_device reference for any
+drm_atomic_state structures.  Strictly speaking this isn't required for
+blocking commits and TEST_ONLY calls, but it's the simpler approach.
 
- # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp src_port 100-200 action pass
- Error: Both min and max source ports must be specified.
- We have an error talking to the kernel
+Thanks to shanzhulig for the initial idea of grabbing an unconditional
+reference, I just added comments, a condensed commit message and fixed a
+minor potential issue in where exactly we drop the final reference.
 
- # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp dst_port 100-200 action pass
- Error: Both min and max destination ports must be specified.
- We have an error talking to the kernel
-
-Fixes: 5c72299fba9d ("net: sched: cls_flower: Classify packets using port ranges")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: shanzhulig <shanzhulig@gmail.com>
+Suggested-by: shanzhulig <shanzhulig@gmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: stable@kernel.org
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flower.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/drm_atomic.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index f0010e4850eb6..c92318f68f92d 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -735,6 +735,16 @@ static int fl_set_key_port_range(struct nlattr **tb, struct fl_flow_key *key,
- 		       TCA_FLOWER_KEY_PORT_SRC_MAX, &mask->tp_range.tp_max.src,
- 		       TCA_FLOWER_UNSPEC, sizeof(key->tp_range.tp_max.src));
+--- a/drivers/gpu/drm/drm_atomic.c
++++ b/drivers/gpu/drm/drm_atomic.c
+@@ -98,6 +98,12 @@ drm_atomic_state_init(struct drm_device
+ 	if (!state->planes)
+ 		goto fail;
  
-+	if (mask->tp_range.tp_min.dst != mask->tp_range.tp_max.dst) {
-+		NL_SET_ERR_MSG(extack,
-+			       "Both min and max destination ports must be specified");
-+		return -EINVAL;
-+	}
-+	if (mask->tp_range.tp_min.src != mask->tp_range.tp_max.src) {
-+		NL_SET_ERR_MSG(extack,
-+			       "Both min and max source ports must be specified");
-+		return -EINVAL;
-+	}
- 	if (mask->tp_range.tp_min.dst && mask->tp_range.tp_max.dst &&
- 	    htons(key->tp_range.tp_max.dst) <=
- 	    htons(key->tp_range.tp_min.dst)) {
--- 
-2.39.2
-
++	/*
++	 * Because drm_atomic_state can be committed asynchronously we need our
++	 * own reference and cannot rely on the on implied by drm_file in the
++	 * ioctl call.
++	 */
++	drm_dev_get(dev);
+ 	state->dev = dev;
+ 
+ 	DRM_DEBUG_ATOMIC("Allocated atomic state %p\n", state);
+@@ -257,7 +263,8 @@ EXPORT_SYMBOL(drm_atomic_state_clear);
+ void __drm_atomic_state_free(struct kref *ref)
+ {
+ 	struct drm_atomic_state *state = container_of(ref, typeof(*state), ref);
+-	struct drm_mode_config *config = &state->dev->mode_config;
++	struct drm_device *dev = state->dev;
++	struct drm_mode_config *config = &dev->mode_config;
+ 
+ 	drm_atomic_state_clear(state);
+ 
+@@ -269,6 +276,8 @@ void __drm_atomic_state_free(struct kref
+ 		drm_atomic_state_default_release(state);
+ 		kfree(state);
+ 	}
++
++	drm_dev_put(dev);
+ }
+ EXPORT_SYMBOL(__drm_atomic_state_free);
+ 
 
 
