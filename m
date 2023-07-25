@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1527615AC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B42D76172A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234654AbjGYLb5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:31:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
+        id S231684AbjGYLph (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:45:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234655AbjGYLbz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:55 -0400
+        with ESMTP id S231129AbjGYLpg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E101FC7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B092A0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1E4B61691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111CBC433C7;
-        Tue, 25 Jul 2023 11:31:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E2A5616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B09BC433C7;
+        Tue, 25 Jul 2023 11:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284704;
-        bh=MA5xMtUNpf+N3Kf6oxa0KkgN1FqMWr1DoYT0TsOTkhI=;
+        s=korg; t=1690285534;
+        bh=sXegpGPqHMmGNpxmk3vhF8xe/linCITjF9IFYaCdfl4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m3uyqmWkS6tx+EYkenGEMMJRr/IAJ6q1HXCh7ULGTrBnNP2IFByjUGwKS0VfXzkKh
-         f70eXBPNDbqubvSgXKIBdE8UaXnxbTGegPajP3w0OmI0dpdoZ41MHx3olw+rL61BEh
-         JLroA97FlXeqO22MV2byxcadU9OkNk0dWWW+K6fk=
+        b=t9UgFb0EWpePTVWgrpS2JeYRq07+nWaXWAht0brjNrbGdRgoOkKK3uUl6F/Ot/8Du
+         NnwJECjfN4KzSfvS9pNvWMds8svgXCcMm+Xgluvf6+5awIWPC+X9GWvyTLG3F+0usc
+         towlrxKiyXRvl+u8J5CVGOWqc/pIBA9TaOCoBqkc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
-        Jocelyn Falempe <jfalempe@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.10 452/509] drm/client: Fix memory leak in drm_client_modeset_probe
-Date:   Tue, 25 Jul 2023 12:46:31 +0200
-Message-ID: <20230725104614.436381951@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 239/313] ext4: only update i_reserved_data_blocks on successful block allocation
+Date:   Tue, 25 Jul 2023 12:46:32 +0200
+Message-ID: <20230725104531.403916805@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +55,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 2329cc7a101af1a844fbf706c0724c0baea38365 upstream.
+commit de25d6e9610a8b30cce9bbb19b50615d02ebca02 upstream.
 
-When a new mode is set to modeset->mode, the previous mode should be freed.
-This fixes the following kmemleak report:
+In our fault injection test, we create an ext4 file, migrate it to
+non-extent based file, then punch a hole and finally trigger a WARN_ON
+in the ext4_da_update_reserve_space():
 
-drm_mode_duplicate+0x45/0x220 [drm]
-drm_client_modeset_probe+0x944/0xf50 [drm]
-__drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
-drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
-drm_client_register+0x169/0x240 [drm]
-ast_pci_probe+0x142/0x190 [ast]
-local_pci_probe+0xdc/0x180
-work_for_cpu_fn+0x4e/0xa0
-process_one_work+0x8b7/0x1540
-worker_thread+0x70a/0xed0
-kthread+0x29f/0x340
-ret_from_fork+0x1f/0x30
+EXT4-fs warning (device sda): ext4_da_update_reserve_space:369:
+ino 14, used 11 with only 10 reserved data blocks
 
-cc: <stable@vger.kernel.org>
-Reported-by: Zhang Yi <yizhan@redhat.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-3-jfalempe@redhat.com
+When writing back a non-extent based file, if we enable delalloc, the
+number of reserved blocks will be subtracted from the number of blocks
+mapped by ext4_ind_map_blocks(), and the extent status tree will be
+updated. We update the extent status tree by first removing the old
+extent_status and then inserting the new extent_status. If the block range
+we remove happens to be in an extent, then we need to allocate another
+extent_status with ext4_es_alloc_extent().
+
+       use old    to remove   to add new
+    |----------|------------|------------|
+              old extent_status
+
+The problem is that the allocation of a new extent_status failed due to a
+fault injection, and __es_shrink() did not get free memory, resulting in
+a return of -ENOMEM. Then do_writepages() retries after receiving -ENOMEM,
+we map to the same extent again, and the number of reserved blocks is again
+subtracted from the number of blocks in that extent. Since the blocks in
+the same extent are subtracted twice, we end up triggering WARN_ON at
+ext4_da_update_reserve_space() because used > ei->i_reserved_data_blocks.
+
+For non-extent based file, we update the number of reserved blocks after
+ext4_ind_map_blocks() is executed, which causes a problem that when we call
+ext4_ind_map_blocks() to create a block, it doesn't always create a block,
+but we always reduce the number of reserved blocks. So we move the logic
+for updating reserved blocks to ext4_ind_map_blocks() to ensure that the
+number of reserved blocks is updated only after we do succeed in allocating
+some new blocks.
+
+Fixes: 5f634d064c70 ("ext4: Fix quota accounting error with fallocate")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/indirect.c |    8 ++++++++
+ fs/ext4/inode.c    |   10 ----------
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -864,6 +864,7 @@ int drm_client_modeset_probe(struct drm_
- 				break;
- 			}
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -636,6 +636,14 @@ int ext4_ind_map_blocks(handle_t *handle
  
-+			kfree(modeset->mode);
- 			modeset->mode = drm_mode_duplicate(dev, mode);
- 			drm_connector_get(connector);
- 			modeset->connectors[modeset->num_connectors++] = connector;
+ 	ext4_update_inode_fsync_trans(handle, inode, 1);
+ 	count = ar.len;
++
++	/*
++	 * Update reserved blocks/metadata blocks after successful block
++	 * allocation which had been deferred till now.
++	 */
++	if (flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE)
++		ext4_da_update_reserve_space(inode, count, 1);
++
+ got_it:
+ 	map->m_flags |= EXT4_MAP_MAPPED;
+ 	map->m_pblk = le32_to_cpu(chain[depth-1].key);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -669,16 +669,6 @@ found:
+ 			 */
+ 			ext4_clear_inode_state(inode, EXT4_STATE_EXT_MIGRATE);
+ 		}
+-
+-		/*
+-		 * Update reserved blocks/metadata blocks after successful
+-		 * block allocation which had been deferred till now. We don't
+-		 * support fallocate for non extent files. So we can update
+-		 * reserve space here.
+-		 */
+-		if ((retval > 0) &&
+-			(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE))
+-			ext4_da_update_reserve_space(inode, retval, 1);
+ 	}
+ 
+ 	if (retval > 0) {
 
 
