@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1C7761152
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC8A761168
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbjGYKt6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
+        id S232214AbjGYKux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232742AbjGYKtz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4F41999;
-        Tue, 25 Jul 2023 03:49:49 -0700 (PDT)
+        with ESMTP id S232307AbjGYKuj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0256D2129
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05CF06166E;
-        Tue, 25 Jul 2023 10:49:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DDDC433C9;
-        Tue, 25 Jul 2023 10:49:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CC6861656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99403C433C8;
+        Tue, 25 Jul 2023 10:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282188;
-        bh=8/5W2GXxWmIbAvkf807Q61r5u9UpymPMwxCirb9fScE=;
+        s=korg; t=1690282219;
+        bh=dYcUxV4GsbYlJfid9MLn9l1Qs39rVSDi3SBKWe8RnLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UiTz9y2waYEqstR6nDVf264JUbeMKLK7wiC9sHZ2wSUdWKnLhRieP0P8w9w0PoG55
-         35Uz46eBqKlPyh0y44tvB4ztZbMHjlzWM93Zb7Nd7ZT6C/jT0S5kA2XLEwJ2c18Z2B
-         YI4ue0GQ8Isho8xbE8zC4OGiBHBHpcLDtH8Jm/dY=
+        b=ppaVC9H+r7x7R/WGtfV2IBFcl3DDHO2jlyBGzXhvbR5ZDwKYsJPs0lB0ONMVh/oJ5
+         ggV0NQ5ZGRSNZAUjoVuzykbotfz/l0vJ4ALZb/H4ZhDrMPNNh0tensClInjf/RRN2E
+         5r2ZGZ0p8hBI2pdhOsQZPA2cD+f6mElfWlQt7BXE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        matoro <matoro_mailinglist_kernel@matoro.tk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-ia64@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 032/227] ia64: mmap: Consider pgoff when searching for free mapping
-Date:   Tue, 25 Jul 2023 12:43:19 +0200
-Message-ID: <20230725104516.170600624@linuxfoundation.org>
+        patches@lists.linux.dev, David Spickett <David.Spickett@arm.com>,
+        Mark Brown <broonie@kernel.org>, Will Deacon <will@kernel.org>
+Subject: [PATCH 6.4 033/227] arm64/fpsimd: Ensure SME storage is allocated after SVE VL changes
+Date:   Tue, 25 Jul 2023 12:43:20 +0200
+Message-ID: <20230725104516.216945984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
 References: <20230725104514.821564989@linuxfoundation.org>
@@ -46,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,42 +54,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Mark Brown <broonie@kernel.org>
 
-commit 07e981137f17e5275b6fa5fd0c28b0ddb4519702 upstream.
+commit d4d5be94a87872421ea2569044092535aff0b886 upstream.
 
-IA64 is the only architecture which does not consider the pgoff value when
-searching for a possible free memory region with vm_unmapped_area().
-Adding this seems to have no negative side effect on IA64, so add it now
-to make IA64 consistent with all other architectures.
+When we reconfigure the SVE vector length we discard the backing storage
+for the SVE vectors and then reallocate on next SVE use, leaving the SME
+specific state alone. This means that we do not enable SME traps if they
+were already disabled. That means that userspace code can enter streaming
+mode without trapping, putting the task in a state where if we try to save
+the state of the task we will fault.
 
-Cc: stable@vger.kernel.org # 6.4
-Signed-off-by: Helge Deller <deller@gmx.de>
-Tested-by: matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-ia64@vger.kernel.org
-Link: https://lore.kernel.org/r/20230721152432.196382-3-deller@gmx.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Since the ABI does not specify that changing the SVE vector length disturbs
+SME state, and since SVE code may not be aware of SME code in the process,
+we shouldn't simply discard any ZA state. Instead immediately reallocate
+the storage for SVE, and disable SME if we change the SVE vector length
+while there is no SME state active.
+
+Disabling SME traps on SVE vector length changes would make the overall
+code more complex since we would have a state where we have valid SME state
+stored but might get a SME trap.
+
+Fixes: 9e4ab6c89109 ("arm64/sme: Implement vector length configuration prctl()s")
+Reported-by: David Spickett <David.Spickett@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230720-arm64-fix-sve-sme-vl-change-v2-1-8eea06b82d57@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/ia64/kernel/sys_ia64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/fpsimd.c |   33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-diff --git a/arch/ia64/kernel/sys_ia64.c b/arch/ia64/kernel/sys_ia64.c
-index 6e948d015332..eb561cc93632 100644
---- a/arch/ia64/kernel/sys_ia64.c
-+++ b/arch/ia64/kernel/sys_ia64.c
-@@ -63,7 +63,7 @@ arch_get_unmapped_area (struct file *filp, unsigned long addr, unsigned long len
- 	info.low_limit = addr;
- 	info.high_limit = TASK_SIZE;
- 	info.align_mask = align_mask;
--	info.align_offset = 0;
-+	info.align_offset = pgoff << PAGE_SHIFT;
- 	return vm_unmapped_area(&info);
- }
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -847,6 +847,8 @@ void sve_sync_from_fpsimd_zeropad(struct
+ int vec_set_vector_length(struct task_struct *task, enum vec_type type,
+ 			  unsigned long vl, unsigned long flags)
+ {
++	bool free_sme = false;
++
+ 	if (flags & ~(unsigned long)(PR_SVE_VL_INHERIT |
+ 				     PR_SVE_SET_VL_ONEXEC))
+ 		return -EINVAL;
+@@ -897,21 +899,36 @@ int vec_set_vector_length(struct task_st
+ 		task->thread.fp_type = FP_STATE_FPSIMD;
+ 	}
  
--- 
-2.41.0
-
+-	if (system_supports_sme() && type == ARM64_VEC_SME) {
+-		task->thread.svcr &= ~(SVCR_SM_MASK |
+-				       SVCR_ZA_MASK);
+-		clear_thread_flag(TIF_SME);
++	if (system_supports_sme()) {
++		if (type == ARM64_VEC_SME ||
++		    !(task->thread.svcr & (SVCR_SM_MASK | SVCR_ZA_MASK))) {
++			/*
++			 * We are changing the SME VL or weren't using
++			 * SME anyway, discard the state and force a
++			 * reallocation.
++			 */
++			task->thread.svcr &= ~(SVCR_SM_MASK |
++					       SVCR_ZA_MASK);
++			clear_thread_flag(TIF_SME);
++			free_sme = true;
++		}
+ 	}
+ 
+ 	if (task == current)
+ 		put_cpu_fpsimd_context();
+ 
+ 	/*
+-	 * Force reallocation of task SVE and SME state to the correct
+-	 * size on next use:
++	 * Free the changed states if they are not in use, SME will be
++	 * reallocated to the correct size on next use and we just
++	 * allocate SVE now in case it is needed for use in streaming
++	 * mode.
+ 	 */
+-	sve_free(task);
+-	if (system_supports_sme() && type == ARM64_VEC_SME)
++	if (system_supports_sve()) {
++		sve_free(task);
++		sve_alloc(task, true);
++	}
++
++	if (free_sme)
+ 		sme_free(task);
+ 
+ 	task_set_vl(task, type, vl);
 
 
