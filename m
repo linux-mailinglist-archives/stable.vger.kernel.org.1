@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0AA876170D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 422367612F5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232195AbjGYLop (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51944 "EHLO
+        id S233529AbjGYLGw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:06:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233332AbjGYLob (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D50419F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:26 -0700 (PDT)
+        with ESMTP id S233908AbjGYLGf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307D119BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D62CC616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9840C433CD;
-        Tue, 25 Jul 2023 11:44:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73BC16166F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B61C433C8;
+        Tue, 25 Jul 2023 11:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285465;
-        bh=l0Ua5GK+ughoS+OZYlkfIYWZsEhrTxFr92Gg/l9diaM=;
+        s=korg; t=1690283099;
+        bh=7LNmTBWwu9kNnvVEBfJvCt8PeB/Imba8RT3se3rjrmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PF/IJ8ss2UdlpH8Cp8c5riBILW7F5QMHD99QrckW13yw9KEe8TdC5wqQzfEQOr0eu
-         VNnrtSUDQjB/JXy9NB72CpLpiOvUHiqfj1Z/hJeJfIh1prVDPcHRcEOfHTtCERzkQ8
-         DzXO3vnmmvKUDZ7HGayBeArn6WbIv8BRJi8AHpMI=
+        b=cfmDbhXGLzCv2YJcTxm+NNR1wSNLzCli9pQ8JoBF6vNb1+ayX8tXrKV/lE061LQIy
+         +yhbFO6nripRHybOvxh5EBQzT/L+fnYwuIVhbLzpX+p4P/7z1hpZf2SF7i0uY0nM3t
+         7fFCrucRej+mFjVI9qqroplyg93QbTKqzxM1kHXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 214/313] NTB: ntb_tool: Add check for devm_kcalloc
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/183] Revert "tcp: avoid the lookup process failing to get sk in ehash table"
 Date:   Tue, 25 Jul 2023 12:46:07 +0200
-Message-ID: <20230725104530.294318520@linuxfoundation.org>
+Message-ID: <20230725104512.918042745@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +55,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2790143f09938776a3b4f69685b380bae8fd06c7 ]
+[ Upstream commit 81b3ade5d2b98ad6e0a473b0e1e420a801275592 ]
 
-As the devm_kcalloc may return NULL pointer,
-it should be better to add check for the return
-value, as same as the others.
+This reverts commit 3f4ca5fafc08881d7a57daa20449d171f2887043.
 
-Fixes: 7f46c8b3a552 ("NTB: ntb_tool: Add full multi-port NTB API support")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Commit 3f4ca5fafc08 ("tcp: avoid the lookup process failing to get sk in
+ehash table") reversed the order in how a socket is inserted into ehash
+to fix an issue that ehash-lookup could fail when reqsk/full sk/twsk are
+swapped.  However, it introduced another lookup failure.
+
+The full socket in ehash is allocated from a slab with SLAB_TYPESAFE_BY_RCU
+and does not have SOCK_RCU_FREE, so the socket could be reused even while
+it is being referenced on another CPU doing RCU lookup.
+
+Let's say a socket is reused and inserted into the same hash bucket during
+lookup.  After the blamed commit, a new socket is inserted at the end of
+the list.  If that happens, we will skip sockets placed after the previous
+position of the reused socket, resulting in ehash lookup failure.
+
+As described in Documentation/RCU/rculist_nulls.rst, we should insert a
+new socket at the head of the list to avoid such an issue.
+
+This issue, the swap-lookup-failure, and another variant reported in [0]
+can all be handled properly by adding a locked ehash lookup suggested by
+Eric Dumazet [1].
+
+However, this issue could occur for every packet, thus more likely than
+the other two races, so let's revert the change for now.
+
+Link: https://lore.kernel.org/netdev/20230606064306.9192-1-duanmuquan@baidu.com/ [0]
+Link: https://lore.kernel.org/netdev/CANn89iK8snOz8TYOhhwfimC7ykYA78GA3Nyv8x06SZYa1nKdyA@mail.gmail.com/ [1]
+Fixes: 3f4ca5fafc08 ("tcp: avoid the lookup process failing to get sk in ehash table")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230717215918.15723-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/test/ntb_tool.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/inet_hashtables.c    | 17 ++---------------
+ net/ipv4/inet_timewait_sock.c |  8 ++++----
+ 2 files changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/ntb/test/ntb_tool.c b/drivers/ntb/test/ntb_tool.c
-index 6301aa413c3b8..1f64146546221 100644
---- a/drivers/ntb/test/ntb_tool.c
-+++ b/drivers/ntb/test/ntb_tool.c
-@@ -998,6 +998,8 @@ static int tool_init_mws(struct tool_ctx *tc)
- 		tc->peers[pidx].outmws =
- 			devm_kcalloc(&tc->ntb->dev, tc->peers[pidx].outmw_cnt,
- 				   sizeof(*tc->peers[pidx].outmws), GFP_KERNEL);
-+		if (tc->peers[pidx].outmws == NULL)
-+			return -ENOMEM;
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index e8734ffca85a8..c19b462662ad0 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -650,20 +650,8 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	spin_lock(lock);
+ 	if (osk) {
+ 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
+-		ret = sk_hashed(osk);
+-		if (ret) {
+-			/* Before deleting the node, we insert a new one to make
+-			 * sure that the look-up-sk process would not miss either
+-			 * of them and that at least one node would exist in ehash
+-			 * table all the time. Otherwise there's a tiny chance
+-			 * that lookup process could find nothing in ehash table.
+-			 */
+-			__sk_nulls_add_node_tail_rcu(sk, list);
+-			sk_nulls_del_node_init_rcu(osk);
+-		}
+-		goto unlock;
+-	}
+-	if (found_dup_sk) {
++		ret = sk_nulls_del_node_init_rcu(osk);
++	} else if (found_dup_sk) {
+ 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
+ 		if (*found_dup_sk)
+ 			ret = false;
+@@ -672,7 +660,6 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	if (ret)
+ 		__sk_nulls_add_node_rcu(sk, list);
  
- 		for (widx = 0; widx < tc->peers[pidx].outmw_cnt; widx++) {
- 			tc->peers[pidx].outmws[widx].pidx = pidx;
+-unlock:
+ 	spin_unlock(lock);
+ 
+ 	return ret;
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index beed32fff4841..1d77d992e6e77 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -91,10 +91,10 @@ void inet_twsk_put(struct inet_timewait_sock *tw)
+ }
+ EXPORT_SYMBOL_GPL(inet_twsk_put);
+ 
+-static void inet_twsk_add_node_tail_rcu(struct inet_timewait_sock *tw,
+-					struct hlist_nulls_head *list)
++static void inet_twsk_add_node_rcu(struct inet_timewait_sock *tw,
++				   struct hlist_nulls_head *list)
+ {
+-	hlist_nulls_add_tail_rcu(&tw->tw_node, list);
++	hlist_nulls_add_head_rcu(&tw->tw_node, list);
+ }
+ 
+ static void inet_twsk_add_bind_node(struct inet_timewait_sock *tw,
+@@ -147,7 +147,7 @@ void inet_twsk_hashdance(struct inet_timewait_sock *tw, struct sock *sk,
+ 
+ 	spin_lock(lock);
+ 
+-	inet_twsk_add_node_tail_rcu(tw, &ehead->chain);
++	inet_twsk_add_node_rcu(tw, &ehead->chain);
+ 
+ 	/* Step 3: Remove SK from hash chain */
+ 	if (__sk_nulls_del_node_init_rcu(sk))
 -- 
 2.39.2
 
