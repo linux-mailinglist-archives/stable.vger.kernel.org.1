@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03B7876119C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD70D76150B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232375AbjGYKxl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58502 "EHLO
+        id S234554AbjGYLZF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:25:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232465AbjGYKwl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:41 -0400
+        with ESMTP id S234561AbjGYLZE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80ACC2684
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A0D97
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F0B761655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B188C433C8;
-        Tue, 25 Jul 2023 10:51:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D56EC61600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B25C433C8;
+        Tue, 25 Jul 2023 11:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282296;
-        bh=cG1lRn/5KJzvmgZc9fInGQG8X2KtbjDUXQ0m7WQClCY=;
+        s=korg; t=1690284302;
+        bh=JJxJF42IJ8HH2dOOiJwY3UBKSEctPM+1Xq1ASdfXO00=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mxli+r2NflprMfV+Puy1jbHIP7UfaAb6y2Ovwhwa5nSacNKLPTCQsi7qJiUi+fGSe
-         ORzV43uq5JSgcy7oUbzD0IXqh9BaH1NGoEhrhWGO6EEmgD3Dkp7toeEzS7qLlwKCEt
-         uOn4U8GXOu2Imv/v0ANa56xuLAIcVaJvrfgChBAo=
+        b=w0KGJoojwoubRkrUELbfbDGfYkKqEIZd+BVKG8c39emk8LzaUdQZls4pGnJTVG0JW
+         87THy9bT2d2zHYmwQCQIFpuY1VI94mlJ38mqX2q2k/GruFu4aIdjIXDYRaLn6Z9E3z
+         /s6FThnLVBA/ojEF5zUDfhhvYv4Ely0xHscezojY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ye Bin <yebin10@huawei.com>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 079/227] [PATCH AUTOSEL 5.4 04/12] quota: fix warning in dqgrab()
+        patches@lists.linux.dev, Amir Goldstein <amir73il@gmail.com>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 307/509] fanotify: disallow mount/sb marks on kernel internal pseudo fs
 Date:   Tue, 25 Jul 2023 12:44:06 +0200
-Message-ID: <20230725104518.035117611@linuxfoundation.org>
+Message-ID: <20230725104607.794023737@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,97 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit d6a95db3c7ad160bc16b89e36449705309b52bcb ]
+From: Amir Goldstein <amir73il@gmail.com>
 
-There's issue as follows when do fault injection:
-WARNING: CPU: 1 PID: 14870 at include/linux/quotaops.h:51 dquot_disable+0x13b7/0x18c0
-Modules linked in:
-CPU: 1 PID: 14870 Comm: fsconfig Not tainted 6.3.0-next-20230505-00006-g5107a9c821af-dirty #541
-RIP: 0010:dquot_disable+0x13b7/0x18c0
-RSP: 0018:ffffc9000acc79e0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88825e41b980
-RDX: 0000000000000000 RSI: ffff88825e41b980 RDI: 0000000000000002
-RBP: ffff888179f68000 R08: ffffffff82087ca7 R09: 0000000000000000
-R10: 0000000000000001 R11: ffffed102f3ed026 R12: ffff888179f68130
-R13: ffff888179f68110 R14: dffffc0000000000 R15: ffff888179f68118
-FS:  00007f450a073740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe96f2efd8 CR3: 000000025c8ad000 CR4: 00000000000006e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- dquot_load_quota_sb+0xd53/0x1060
- dquot_resume+0x172/0x230
- ext4_reconfigure+0x1dc6/0x27b0
- reconfigure_super+0x515/0xa90
- __x64_sys_fsconfig+0xb19/0xd20
- do_syscall_64+0x39/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+commit 69562eb0bd3e6bb8e522a7b254334e0fb30dff0c upstream.
 
-Above issue may happens as follows:
-ProcessA              ProcessB                    ProcessC
-sys_fsconfig
-  vfs_fsconfig_locked
-   reconfigure_super
-     ext4_remount
-      dquot_suspend -> suspend all type quota
+Hopefully, nobody is trying to abuse mount/sb marks for watching all
+anonymous pipes/inodes.
 
-                 sys_fsconfig
-                  vfs_fsconfig_locked
-                    reconfigure_super
-                     ext4_remount
-                      dquot_resume
-                       ret = dquot_load_quota_sb
-                        add_dquot_ref
-                                           do_open  -> open file O_RDWR
-                                            vfs_open
-                                             do_dentry_open
-                                              get_write_access
-                                               atomic_inc_unless_negative(&inode->i_writecount)
-                                              ext4_file_open
-                                               dquot_file_open
-                                                dquot_initialize
-                                                  __dquot_initialize
-                                                   dqget
-						    atomic_inc(&dquot->dq_count);
+I cannot think of a good reason to allow this - it looks like an
+oversight that dated back to the original fanotify API.
 
-                          __dquot_initialize
-                           __dquot_initialize
-                            dqget
-                             if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-                               ext4_acquire_dquot
-			        -> Return error DQ_ACTIVE_B flag isn't set
-                         dquot_disable
-			  invalidate_dquots
-			   if (atomic_read(&dquot->dq_count))
-	                    dqgrab
-			     WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-	                      -> Trigger warning
-
-In the above scenario, 'dquot->dq_flags' has no DQ_ACTIVE_B is normal when
-dqgrab().
-To solve above issue just replace the dqgrab() use in invalidate_dquots() with
-atomic_inc(&dquot->dq_count).
-
-Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/linux-fsdevel/20230628101132.kvchg544mczxv2pm@quack3/
+Fixes: 0ff21db9fcc3 ("fanotify: hooks the fanotify_mark syscall to the vfsmount code")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230605140731.2427629-3-yebin10@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Message-Id: <20230629042044.25723-1-amir73il@gmail.com>
+[backport to 5.x.y]
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/notify/fanotify/fanotify_user.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -555,7 +555,7 @@ restart:
- 			continue;
- 		/* Wait for dquot users */
- 		if (atomic_read(&dquot->dq_count)) {
--			dqgrab(dquot);
-+			atomic_inc(&dquot->dq_count);
- 			spin_unlock(&dq_list_lock);
- 			/*
- 			 * Once dqput() wakes us up, we know it's time to free
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -1090,8 +1090,11 @@ static int fanotify_test_fid(struct path
+ 	return 0;
+ }
+ 
+-static int fanotify_events_supported(struct path *path, __u64 mask)
++static int fanotify_events_supported(struct path *path, __u64 mask,
++				     unsigned int flags)
+ {
++	unsigned int mark_type = flags & FANOTIFY_MARK_TYPE_BITS;
++
+ 	/*
+ 	 * Some filesystems such as 'proc' acquire unusual locks when opening
+ 	 * files. For them fanotify permission events have high chances of
+@@ -1103,6 +1106,21 @@ static int fanotify_events_supported(str
+ 	if (mask & FANOTIFY_PERM_EVENTS &&
+ 	    path->mnt->mnt_sb->s_type->fs_flags & FS_DISALLOW_NOTIFY_PERM)
+ 		return -EINVAL;
++
++	/*
++	 * mount and sb marks are not allowed on kernel internal pseudo fs,
++	 * like pipe_mnt, because that would subscribe to events on all the
++	 * anonynous pipes in the system.
++	 *
++	 * SB_NOUSER covers all of the internal pseudo fs whose objects are not
++	 * exposed to user's mount namespace, but there are other SB_KERNMOUNT
++	 * fs, like nsfs, debugfs, for which the value of allowing sb and mount
++	 * mark is questionable. For now we leave them alone.
++	 */
++	if (mark_type != FAN_MARK_INODE &&
++	    path->mnt->mnt_sb->s_flags & SB_NOUSER)
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+@@ -1218,7 +1236,7 @@ static int do_fanotify_mark(int fanotify
+ 		goto fput_and_out;
+ 
+ 	if (flags & FAN_MARK_ADD) {
+-		ret = fanotify_events_supported(&path, mask);
++		ret = fanotify_events_supported(&path, mask, flags);
+ 		if (ret)
+ 			goto path_put_and_out;
+ 	}
 
 
