@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6760376168C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:40:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 098B376152C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234928AbjGYLkA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47492 "EHLO
+        id S234484AbjGYL0S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234909AbjGYLj7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:59 -0400
+        with ESMTP id S234489AbjGYL0R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 182B119C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598B5187;
+        Tue, 25 Jul 2023 04:26:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 979DD6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A15C433C7;
-        Tue, 25 Jul 2023 11:39:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC3376168F;
+        Tue, 25 Jul 2023 11:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078F8C433C7;
+        Tue, 25 Jul 2023 11:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285197;
-        bh=CXbfIPRTFnTnwQ/IOZg/BFnIwDy6122osFJjLozNEzs=;
+        s=korg; t=1690284375;
+        bh=iO9QVdD47x8v4TjKLcrILY8ClzTFgslHn+QJsF9+AQE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KWIpbaEF1mJVNFCvCwQuW5DIvTe2Xln3YIGXqUb7AA8SzudSsH1EUdSJxDS609llz
-         fQ0nDZGfZXI9SkuHNf5e+JIpZB06B7JCugta4RwbOL1R1hofadmgDHTVmazOSSxhnM
-         xLtwqUvu148y1vmLr/Uw72jj0fn1o1KHDdk+Pr38=
+        b=ePRn+xDKpZ9LIOTspr3nd60dPfWx5T/qUVUge2AbTzUGguUtAtx7O6Un5oIx94TdK
+         TpvOMwQ4THMVm9fXCEBD+U6RLPo1R6lLyzfzWtyqcmP//ts8EjwDgdOnPG1fdjDRbJ
+         gpW0LfOmq0MwMgGXdcoewYK8ZL73itWbjPfEwA0s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 118/313] NFSv4.1: freeze the session table upon receiving NFS4ERR_BADSESSION
-Date:   Tue, 25 Jul 2023 12:44:31 +0200
-Message-ID: <20230725104526.106037202@linuxfoundation.org>
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andres Freund <andres@anarazel.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 333/509] io_uring: Use io_schedule* in cqring wait
+Date:   Tue, 25 Jul 2023 12:44:32 +0200
+Message-ID: <20230725104608.950442148@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Andres Freund <andres@anarazel.de>
 
-[ Upstream commit c907e72f58ed979a24a9fdcadfbc447c51d5e509 ]
+Commit 8a796565cec3601071cbbd27d6304e202019d014 upstream.
 
-When the client received NFS4ERR_BADSESSION, it schedules recovery
-and start the state manager thread which in turn freezes the
-session table and does not allow for any new requests to use the
-no-longer valid session. However, it is possible that before
-the state manager thread runs, a new operation would use the
-released slot that received BADSESSION and was therefore not
-updated its sequence number. Such re-use of the slot can lead
-the application errors.
+I observed poor performance of io_uring compared to synchronous IO. That
+turns out to be caused by deeper CPU idle states entered with io_uring,
+due to io_uring using plain schedule(), whereas synchronous IO uses
+io_schedule().
 
-Fixes: 5c441544f045 ("NFSv4.x: Handle bad/dead sessions correctly in nfs41_sequence_process()")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The losses due to this are substantial. On my cascade lake workstation,
+t/io_uring from the fio repository e.g. yields regressions between 20%
+and 40% with the following command:
+./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
+
+This is repeatable with different filesystems, using raw block devices
+and using different block devices.
+
+Use io_schedule_prepare() / io_schedule_finish() in
+io_cqring_wait_schedule() to address the difference.
+
+After that using io_uring is on par or surpassing synchronous IO (using
+registered files etc makes it reliably win, but arguably is a less fair
+comparison).
+
+There are other calls to schedule() in io_uring/, but none immediately
+jump out to be similarly situated, so I did not touch them. Similarly,
+it's possible that mutex_lock_io() should be used, but it's not clear if
+there are cases where that matters.
+
+Cc: stable@vger.kernel.org # 5.10+
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Andres Freund <andres@anarazel.de>
+Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
+[axboe: minor style fixup]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io_uring.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index c54dd49c993c5..231da9fadf098 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -915,6 +915,7 @@ static int nfs41_sequence_process(struct rpc_task *task,
- out_noaction:
- 	return ret;
- session_recover:
-+	set_bit(NFS4_SLOT_TBL_DRAINING, &session->fc_slot_table.slot_tbl_state);
- 	nfs4_schedule_session_recovery(session, status);
- 	dprintk("%s ERROR: %d Reset session\n", __func__, status);
- 	nfs41_sequence_free_slot(res);
--- 
-2.39.2
-
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -7625,7 +7625,7 @@ static inline int io_cqring_wait_schedul
+ 					  struct io_wait_queue *iowq,
+ 					  ktime_t *timeout)
+ {
+-	int ret;
++	int token, ret;
+ 
+ 	/* make sure we run task_work before checking for signals */
+ 	ret = io_run_task_work_sig();
+@@ -7635,9 +7635,17 @@ static inline int io_cqring_wait_schedul
+ 	if (test_bit(0, &ctx->check_cq_overflow))
+ 		return 1;
+ 
++	/*
++	 * Use io_schedule_prepare/finish, so cpufreq can take into account
++	 * that the task is waiting for IO - turns out to be important for low
++	 * QD IO.
++	 */
++	token = io_schedule_prepare();
++	ret = 1;
+ 	if (!schedule_hrtimeout(timeout, HRTIMER_MODE_ABS))
+-		return -ETIME;
+-	return 1;
++		ret = -ETIME;
++	io_schedule_finish(token);
++	return ret;
+ }
+ 
+ /*
 
 
