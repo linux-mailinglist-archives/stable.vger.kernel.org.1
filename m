@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00960761385
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87878761749
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234151AbjGYLLS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
+        id S232271AbjGYLqs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:46:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234079AbjGYLKy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:54 -0400
+        with ESMTP id S231918AbjGYLqq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F31CA2733
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67051BF0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 863BC615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D91C433C8;
-        Tue, 25 Jul 2023 11:10:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18287616A8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21662C433C7;
+        Tue, 25 Jul 2023 11:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283406;
-        bh=wAedHJfaoSYcB7K3HYtTuDHmkRFLM5SLbINjgutaWGE=;
+        s=korg; t=1690285598;
+        bh=2uQL/F6/hJ52Pd3GlZgRHGNkwwdzsw1fMacJfJA+ayM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Auy/zvy3R+xB9VMcm4cAvvqJWI6k1DuqMyFm7Skm8I9EiKWcI1fx4Lj4m/3HZy2wK
-         qOVpaUnHRaL9QhaYjwPYt5fTG6sx34whWnzFt+39V8S//wcfvzpEpQaNjvg+KQ8K4t
-         v5BTRzpLANHil9R3AmpTxIE9WBRXZR041EUWjmKU=
+        b=bRyklsAGwZF+dKIiKX09ybb7YDeIVvKi/91L9PilZ1UjXsJnh7EnswDHgOnTkLVm6
+         3TnUeTKt18R0m6rvJdbyF/pkmP4Chiy5FcFydvh0l1AkGsg8l9xJlZ2Pvhrr+p2R7M
+         FDjs57cY5tYcEdFKjht30ncONu3FQlZJ+SbsMeUc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 65/78] tcp: annotate data-races around tp->tcp_tx_delay
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 5.4 263/313] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() when iterating clk
 Date:   Tue, 25 Jul 2023 12:46:56 +0200
-Message-ID: <20230725104453.795570309@linuxfoundation.org>
+Message-ID: <20230725104532.433146088@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,46 +57,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 348b81b68b13ebd489a3e6a46aa1c384c731c919 ]
+commit 832e231cff476102e8204a9e7bddfe5c6154a375 upstream.
 
-do_tcp_getsockopt() reads tp->tcp_tx_delay while another cpu
-might change its value.
+When the best clk is searched, we iterate over all possible clk.
 
-Fixes: a842fe1425cb ("tcp: add optional per socket transmit delay")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If we find a better match, the previous one, if any, needs to be freed.
+If a better match has already been found, we still need to free the new
+one, otherwise it leaks.
+
+Cc: <stable@vger.kernel.org> # v3.3+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <cf3e0053d2fc7391b2d906a86cd01a5ef15fb9dc.1686412569.git.christophe.jaillet@wanadoo.fr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/samsung.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index fc0fa1f2ca9b1..8ff86431f44b4 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3679,7 +3679,7 @@ static int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 	case TCP_TX_DELAY:
- 		if (val)
- 			tcp_enable_tx_delay();
--		tp->tcp_tx_delay = val;
-+		WRITE_ONCE(tp->tcp_tx_delay, val);
- 		break;
- 	default:
- 		err = -ENOPROTOOPT;
-@@ -4151,7 +4151,7 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
- 		break;
+--- a/drivers/tty/serial/samsung.c
++++ b/drivers/tty/serial/samsung.c
+@@ -1230,10 +1230,18 @@ static unsigned int s3c24xx_serial_getcl
+ 			calc_deviation = -calc_deviation;
  
- 	case TCP_TX_DELAY:
--		val = tp->tcp_tx_delay;
-+		val = READ_ONCE(tp->tcp_tx_delay);
- 		break;
+ 		if (calc_deviation < deviation) {
++			/*
++			 * If we find a better clk, release the previous one, if
++			 * any.
++			 */
++			if (!IS_ERR(*best_clk))
++				clk_put(*best_clk);
+ 			*best_clk = clk;
+ 			best_quot = quot;
+ 			*clk_num = cnt;
+ 			deviation = calc_deviation;
++		} else {
++			clk_put(clk);
+ 		}
+ 	}
  
- 	case TCP_TIMESTAMP:
--- 
-2.39.2
-
 
 
