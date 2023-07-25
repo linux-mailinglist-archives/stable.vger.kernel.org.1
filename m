@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 621537616DB
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B421761551
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235034AbjGYLnt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
+        id S233271AbjGYL1d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235289AbjGYLnR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C213D2129
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:57 -0700 (PDT)
+        with ESMTP id S233468AbjGYL1c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 902F099
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1617C616BD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B77C433C8;
-        Tue, 25 Jul 2023 11:41:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E9DE6168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF24C433C8;
+        Tue, 25 Jul 2023 11:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285311;
-        bh=kMwtRJsKOpEIYUVeVvmxVb97dyoDVZQPFodIDkIcu4g=;
+        s=korg; t=1690284450;
+        bh=z8cP61s+mKKRbZT0TyzD52U5uEu2W9Hf+1NQSThle2Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zml7u0RcHDRhVb4x50iv7ZFcVYbM7tFRU04R1f7wSpu2nToeSCHCgSTqu9wdtwpEi
-         CKVsJKcGMnNvSc2twUBe1E3TlOyDlto6JESa94Lkg7+v5f4T8hGsTqNYY0hLYpZVUJ
-         OVS5xpT7Hzn7wl8D6a2V6PPE8Q55ZKIlKu7qhdJY=
+        b=dahP8MOx/u0y+Qiku3X0org7eVYQdrmYMqZdPrOaIb8AB9DUnXkVQrxks9u/WN+xW
+         GbaNznaFUiUsbTmbIqajaGuPgJR1G6QzHz8q/XGdWYc+7V1u3I0LGlM68CjMMAMCNt
+         H/qr4R0vvoLY4xy3zVLqQWjfnELAdldoOk3DOk3g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com,
-        Duoming Zhou <duoming@zju.edu.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/313] media: usb: siano: Fix warning due to null work_func_t function pointer
+Subject: [PATCH 5.10 343/509] scsi: qla2xxx: Fix error code in qla2x00_start_sp()
 Date:   Tue, 25 Jul 2023 12:44:42 +0200
-Message-ID: <20230725104526.601214417@linuxfoundation.org>
+Message-ID: <20230725104609.435132711@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,80 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6f489a966fbeb0da63d45c2c66a8957eab604bf6 ]
+[ Upstream commit e579b007eff3ff8d29d59d16214cd85fb9e573f7 ]
 
-The previous commit ebad8e731c1c ("media: usb: siano: Fix use after
-free bugs caused by do_submit_urb") adds cancel_work_sync() in
-smsusb_stop_streaming(). But smsusb_stop_streaming() may be called,
-even if the work_struct surb->wq has not been initialized. As a result,
-the warning will occur. One of the processes that could lead to warning
-is shown below:
+This should be negative -EAGAIN instead of positive.  The callers treat
+non-zero error codes the same so it doesn't really impact runtime beyond
+some trivial differences to debug output.
 
-smsusb_probe()
-  smsusb_init_device()
-    if (!dev->in_ep || !dev->out_ep || align < 0) {
-         smsusb_term_device(intf);
-           smsusb_stop_streaming()
-             cancel_work_sync(&dev->surbs[i].wq);
-               __cancel_work_timer()
-                 __flush_work()
-                   if (WARN_ON(!work->func)) // work->func is null
-
-The log reported by syzbot is shown below:
-
-WARNING: CPU: 0 PID: 897 at kernel/workqueue.c:3066 __flush_work+0x798/0xa80 kernel/workqueue.c:3063
-Modules linked in:
-CPU: 0 PID: 897 Comm: kworker/0:2 Not tainted 6.2.0-rc1-syzkaller #0
-RIP: 0010:__flush_work+0x798/0xa80 kernel/workqueue.c:3066
-...
-RSP: 0018:ffffc9000464ebf8 EFLAGS: 00010246
-RAX: 1ffff11002dbb420 RBX: 0000000000000021 RCX: 1ffffffff204fa4e
-RDX: dffffc0000000000 RSI: 0000000000000001 RDI: ffff888016dda0e8
-RBP: ffffc9000464ed98 R08: 0000000000000001 R09: ffffffff90253b2f
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff888016dda0e8
-R13: ffff888016dda0e8 R14: ffff888016dda100 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd4331efe8 CR3: 000000000b48e000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __cancel_work_timer+0x315/0x460 kernel/workqueue.c:3160
- smsusb_stop_streaming drivers/media/usb/siano/smsusb.c:182 [inline]
- smsusb_term_device+0xda/0x2d0 drivers/media/usb/siano/smsusb.c:344
- smsusb_init_device+0x400/0x9ce drivers/media/usb/siano/smsusb.c:419
- smsusb_probe+0xbbd/0xc55 drivers/media/usb/siano/smsusb.c:567
-...
-
-This patch adds check before cancel_work_sync(). If surb->wq has not
-been initialized, the cancel_work_sync() will not be executed.
-
-Reported-by: syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com
-Fixes: ebad8e731c1c ("media: usb: siano: Fix use after free bugs caused by do_submit_urb")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 80676d054e5a ("scsi: qla2xxx: Fix session cleanup hang")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/49866d28-4cfe-47b0-842b-78f110e61aab@moroto.mountain
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/siano/smsusb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_iocb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
-index 1db232a1063b9..0358cd1043877 100644
---- a/drivers/media/usb/siano/smsusb.c
-+++ b/drivers/media/usb/siano/smsusb.c
-@@ -179,7 +179,8 @@ static void smsusb_stop_streaming(struct smsusb_device_t *dev)
- 
- 	for (i = 0; i < MAX_URBS; i++) {
- 		usb_kill_urb(&dev->surbs[i].urb);
--		cancel_work_sync(&dev->surbs[i].wq);
-+		if (dev->surbs[i].wq.func)
-+			cancel_work_sync(&dev->surbs[i].wq);
- 
- 		if (dev->surbs[i].cb) {
- 			smscore_putbuffer(dev->coredev, dev->surbs[i].cb);
+diff --git a/drivers/scsi/qla2xxx/qla_iocb.c b/drivers/scsi/qla2xxx/qla_iocb.c
+index e54cc2a761dd4..f0af76c3de7e3 100644
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -3713,7 +3713,7 @@ qla2x00_start_sp(srb_t *sp)
+ 	spin_lock_irqsave(qp->qp_lock_ptr, flags);
+ 	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
+ 	if (!pkt) {
+-		rval = EAGAIN;
++		rval = -EAGAIN;
+ 		ql_log(ql_log_warn, vha, 0x700c,
+ 		    "qla2x00_alloc_iocbs failed.\n");
+ 		goto done;
 -- 
 2.39.2
 
