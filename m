@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94C657611B2
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B8376128F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231203AbjGYKym (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:54:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58296 "EHLO
+        id S233885AbjGYLD7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:03:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232357AbjGYKyN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:13 -0400
+        with ESMTP id S233891AbjGYLDn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C01464490
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E0C5BB1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EC2261689
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2F6C433C8;
-        Tue, 25 Jul 2023 10:52:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35FB961689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AA6C433C8;
+        Tue, 25 Jul 2023 11:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282340;
-        bh=CqcqxcUmzHdYOyCN68VWGEjTyLswR1xhNuKU3Y7Y4b4=;
+        s=korg; t=1690282851;
+        bh=N2vjr34r0P94c/Kii4tvZbI93fD41LmlC2531ZQXC3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1hrfx4bknxVVzcSqjhjYbyehC6d3Wi52YENYeAZwQ+NnQsogoYXCqWnY5nwwiNaiN
-         vOOIdo3uq73+52eDJ7PLhkzFis7rVAxri/8yKvWN0IfvEaY+0lxubutMwjgcxfNjOJ
-         dJW6hMAZ6uJJtRlbUyiQ9zKnC98xxZ+1QTiP+Kdc=
+        b=XZTY376hkKOWaFzbF3WHJkudJ0PxNOlIr/Y45yiy6Gv/UjZOIFIyxN0fsQlcH6Lh5
+         xGYXiBEYzBJAT3qyXuhO9sNr4+oQIlAROBWGLvu5xwxVlGGeF9Y+KH3uGSlcA7I1f7
+         xG+/4K3ydDCycdJMBb5U7K1zr5fE8sxvWJ6c8SNs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 093/227] btrfs: add xxhash to fast checksum implementations
+        patches@lists.linux.dev, Simon Ser <contact@emersion.fr>,
+        =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>
+Subject: [PATCH 6.1 032/183] drm/amd/display: only accept async flips for fast updates
 Date:   Tue, 25 Jul 2023 12:44:20 +0200
-Message-ID: <20230725104518.576517883@linuxfoundation.org>
+Message-ID: <20230725104509.080752866@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,59 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Sterba <dsterba@suse.com>
+From: Simon Ser <contact@emersion.fr>
 
-[ Upstream commit efcfcbc6a36195c42d98e0ee697baba36da94dc8 ]
+commit 1ca67aba8d11c2849d395013e1fdce02918d5657 upstream.
 
-The implementation of XXHASH is now CPU only but still fast enough to be
-considered for the synchronous checksumming, like non-generic crc32c.
+Up until now, amdgpu was silently degrading to vsync when
+user-space requested an async flip but the hardware didn't support
+it.
 
-A userspace benchmark comparing it to various implementations (patched
-hash-speedtest from btrfs-progs):
+The hardware doesn't support immediate flips when the update changes
+the FB pitch, the DCC state, the rotation, enables or disables CRTCs
+or planes, etc. This is reflected in the dm_crtc_state.update_type
+field: UPDATE_TYPE_FAST means that immediate flip is supported.
 
-  Block size:     4096
-  Iterations:     1000000
-  Implementation: builtin
-  Units:          CPU cycles
+Silently degrading async flips to vsync is not the expected behavior
+from a uAPI point-of-view. Xorg expects async flips to fail if
+unsupported, to be able to fall back to a blit. i915 already behaves
+this way.
 
-	NULL-NOP: cycles:     73384294, cycles/i       73
-     NULL-MEMCPY: cycles:    228033868, cycles/i      228,    61664.320 MiB/s
-      CRC32C-ref: cycles:  24758559416, cycles/i    24758,      567.950 MiB/s
-       CRC32C-NI: cycles:   1194350470, cycles/i     1194,    11773.433 MiB/s
-  CRC32C-ADLERSW: cycles:   6150186216, cycles/i     6150,     2286.372 MiB/s
-  CRC32C-ADLERHW: cycles:    626979180, cycles/i      626,    22427.453 MiB/s
-      CRC32C-PCL: cycles:    466746732, cycles/i      466,    30126.699 MiB/s
-	  XXHASH: cycles:    860656400, cycles/i      860,    16338.188 MiB/s
+This patch aligns amdgpu with uAPI expectations and returns a failure
+when an async flip is not possible.
 
-Comparing purely software implementation (ref), current outdated
-accelerated using crc32q instruction (NI), optimized implementations by
-M. Adler (https://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775#17646775)
-and the best one that was taken from kernel using the PCLMULQDQ
-instruction (PCL).
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Reviewed-by: André Almeida <andrealmeid@igalia.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c      |    8 ++++++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |   12 ++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index fc59eb4024438..795b30913c542 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2265,6 +2265,9 @@ static int btrfs_init_csum_hash(struct btrfs_fs_info *fs_info, u16 csum_type)
- 		if (!strstr(crypto_shash_driver_name(csum_shash), "generic"))
- 			set_bit(BTRFS_FS_CSUM_IMPL_FAST, &fs_info->flags);
- 		break;
-+	case BTRFS_CSUM_TYPE_XXHASH:
-+		set_bit(BTRFS_FS_CSUM_IMPL_FAST, &fs_info->flags);
-+		break;
- 	default:
- 		break;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7757,7 +7757,15 @@ static void amdgpu_dm_commit_planes(stru
+ 		 * Only allow immediate flips for fast updates that don't
+ 		 * change memory domain, FB pitch, DCC state, rotation or
+ 		 * mirroring.
++		 *
++		 * dm_crtc_helper_atomic_check() only accepts async flips with
++		 * fast updates.
+ 		 */
++		if (crtc->state->async_flip &&
++		    acrtc_state->update_type != UPDATE_TYPE_FAST)
++			drm_warn_once(state->dev,
++				      "[PLANE:%d:%s] async flip with non-fast update\n",
++				      plane->base.id, plane->name);
+ 		bundle->flip_addrs[planes_count].flip_immediate =
+ 			crtc->state->async_flip &&
+ 			acrtc_state->update_type == UPDATE_TYPE_FAST &&
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -406,6 +406,18 @@ static int dm_crtc_helper_atomic_check(s
+ 		return -EINVAL;
  	}
--- 
-2.39.2
-
+ 
++	/*
++	 * Only allow async flips for fast updates that don't change the FB
++	 * pitch, the DCC state, rotation, etc.
++	 */
++	if (crtc_state->async_flip &&
++	    dm_crtc_state->update_type != UPDATE_TYPE_FAST) {
++		drm_dbg_atomic(crtc->dev,
++			       "[CRTC:%d:%s] async flips are only supported for fast updates\n",
++			       crtc->base.id, crtc->name);
++		return -EINVAL;
++	}
++
+ 	/* In some use cases, like reset, no stream is attached */
+ 	if (!dm_crtc_state->stream)
+ 		return 0;
 
 
