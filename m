@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1498761397
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBD45761746
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234208AbjGYLLw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49492 "EHLO
+        id S232800AbjGYLqi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:46:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234044AbjGYLLe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:34 -0400
+        with ESMTP id S229968AbjGYLqb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30FD12121
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ADDB1BF0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 81B9F61655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E00FC433C7;
-        Tue, 25 Jul 2023 11:10:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9A94616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014E3C433C8;
+        Tue, 25 Jul 2023 11:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283455;
-        bh=VtctIqOPF+Ekrq/P/V9J48Xehmf2fN6mGYpqIOh7GVo=;
+        s=korg; t=1690285587;
+        bh=yY4ogMkaVpUfkmYWMW5ndCI78q17+dX8brbEkAQgaT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MR2tY6zcNpBmY/Np5MQhOMv3AKf7Y6zExHQ0L1cOCTWE56SHmBufzM9fsxAVNUWLJ
-         rxoFSfc1Wp3zxyQwzuSBgzB8qCfe9NCQCdsQBVU9MRMEUpxrAFzuxLO1HJnNBuYZBx
-         qy8JzXpn2Py0cF4A9EpC1rU0iSuCqeazcQCcjA7g=
+        b=XBDe5X+D4KZ+ak7UZXcpMk1WlIYGu48lWyaNUcueRxzzWQpW/whbGo7SJUw8hpZiI
+         KIIsfcRgQebdCPNE7Ih3LmkVYTiwJ1echSP5jlerJ8nmLW8Zhp36DV5gWfiGhrUn6A
+         H4EeiKOClb7xDe//3iF0MagE9eTI/bzXpibeKC7Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 61/78] netfilter: nf_tables: fix spurious set element insertion failure
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Patrick Donnelly <pdonnell@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.4 259/313] ceph: dont let check_caps skip sending responses for revoke msgs
 Date:   Tue, 25 Jul 2023 12:46:52 +0200
-Message-ID: <20230725104453.636809995@linuxfoundation.org>
+Message-ID: <20230725104532.255870627@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
+commit 257e6172ab36ebbe295a6c9ee9a9dd0fe54c1dc2 upstream.
 
-On some platforms there is a padding hole in the nft_verdict
-structure, between the verdict code and the chain pointer.
+If a client sends out a cap update dropping caps with the prior 'seq'
+just before an incoming cap revoke request, then the client may drop
+the revoke because it believes it's already released the requested
+capabilities.
 
-On element insertion, if the new element clashes with an existing one and
-NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
-the data associated with duplicated element is the same as the existing
-one.  The data equality check uses memcmp.
+This causes the MDS to wait indefinitely for the client to respond
+to the revoke. It's therefore always a good idea to ack the cap
+revoke request with the bumped up 'seq'.
 
-For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
-padding area leads to spurious failure even if the verdict data is the
-same.
-
-This then makes the insertion fail with 'already exists' error, even
-though the new "key : data" matches an existing entry and userspace
-told the kernel that it doesn't want to receive an error indication.
-
-Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61782
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ceph/caps.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 04b7c4e595200..f04a69d74cb23 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9908,6 +9908,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -3340,6 +3340,15 @@ static void handle_cap_grant(struct inod
+ 	}
+ 	BUG_ON(cap->issued & ~cap->implemented);
  
- 	if (!tb[NFTA_VERDICT_CODE])
- 		return -EINVAL;
++	/* don't let check_caps skip sending a response to MDS for revoke msgs */
++	if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
++		cap->mds_wanted = 0;
++		if (cap == ci->i_auth_cap)
++			check_caps = 1; /* check auth cap only */
++		else
++			check_caps = 2; /* check all caps */
++	}
 +
-+	/* zero padding hole for memcmp */
-+	memset(data, 0, sizeof(*data));
- 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
- 
- 	switch (data->verdict.code) {
--- 
-2.39.2
-
+ 	if (extra_info->inline_version > 0 &&
+ 	    extra_info->inline_version >= ci->i_inline_version) {
+ 		ci->i_inline_version = extra_info->inline_version;
 
 
