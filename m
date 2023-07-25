@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8733B761297
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 688AB761546
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233940AbjGYLES (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
+        id S234556AbjGYL1C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233850AbjGYLDz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D5649F9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:04 -0700 (PDT)
+        with ESMTP id S234559AbjGYL1B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC4C97
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 486346168A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1F6C433C7;
-        Tue, 25 Jul 2023 11:01:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFD9E6168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEA6C433CA;
+        Tue, 25 Jul 2023 11:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282862;
-        bh=yOyF1wLMW/x8Ufu4Q9NjpiC1go/ZDjm13J8aetj2wwk=;
+        s=korg; t=1690284420;
+        bh=4lwwYtcQMfWtNHM3K3B2qY62P8UFm4VJVFGXOwwNThE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f4OmD7WQSMKjCDQlLVb9FuMi6uBPu9XfhqpZRBLRYqT9fFz/PElm0QMzS3qaSOm9s
-         MqYQMMiPGOdTT9NXSSckkHS0ouxoCWxIsYGDQtZBNWsdeczsqyxW8O+ZmN7teNDjhu
-         N5KW9+Wo2f08wqXzefXtn1CkqmpXNo7Uf93DI7gI=
+        b=SJivTA+vxCwHhNcnoIVVSdvqA2zFEui+HBqrUEMaY397KUOPsn3sJsPxhycXDrz51
+         nWGQBWJOsw4acSw6x2Mm6LZ8FtoZS5+pzcc6EBElMyVKRLey78jeHfDcUTK8wfFONl
+         6Px+BatSNyk/NcuIG34acz8ZUMzi/0N97ZBMx+a4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>,
-        Ye Bin <yebin10@huawei.com>
-Subject: [PATCH 6.1 053/183] [PATCH AUTOSEL 4.19 03/11] quota: Properly disable quotas when add_dquot_ref() fails
+        patches@lists.linux.dev, Prasad Koya <prasad@arista.com>,
+        Sasha Neftin <sasha.neftin@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 342/509] igc: set TP bit in supported and advertising fields of ethtool_link_ksettings
 Date:   Tue, 25 Jul 2023 12:44:41 +0200
-Message-ID: <20230725104509.877448349@linuxfoundation.org>
+Message-ID: <20230725104609.386386918@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,36 +57,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 6a4e3363792e30177cc3965697e34ddcea8b900b ]
+From: Prasad Koya <prasad@arista.com>
 
-When add_dquot_ref() fails (usually due to IO error or ENOMEM), we want
-to disable quotas we are trying to enable. However dquot_disable() call
-was passed just the flags we are enabling so in case flags ==
-DQUOT_USAGE_ENABLED dquot_disable() call will just fail with EINVAL
-instead of properly disabling quotas. Fix the problem by always passing
-DQUOT_LIMITS_ENABLED | DQUOT_USAGE_ENABLED to dquot_disable() in this
-case.
+[ Upstream commit 9ac3fc2f42e5ffa1e927dcbffb71b15fa81459e2 ]
 
-Reported-and-tested-by: Ye Bin <yebin10@huawei.com>
-Reported-by: syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230605140731.2427629-2-yebin10@huawei.com>
+set TP bit in the 'supported' and 'advertising' fields. i225/226 parts
+only support twisted pair copper.
+
+Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
+Signed-off-by: Prasad Koya <prasad@arista.com>
+Acked-by: Sasha Neftin <sasha.neftin@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -2420,7 +2420,8 @@ int dquot_load_quota_sb(struct super_blo
+diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+index da259cd59adda..d28ac3a025ab1 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
++++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+@@ -1673,6 +1673,8 @@ static int igc_ethtool_get_link_ksettings(struct net_device *netdev,
+ 	/* twisted pair */
+ 	cmd->base.port = PORT_TP;
+ 	cmd->base.phy_address = hw->phy.addr;
++	ethtool_link_ksettings_add_link_mode(cmd, supported, TP);
++	ethtool_link_ksettings_add_link_mode(cmd, advertising, TP);
  
- 	error = add_dquot_ref(sb, type);
- 	if (error)
--		dquot_disable(sb, type, flags);
-+		dquot_disable(sb, type,
-+			      DQUOT_USAGE_ENABLED | DQUOT_LIMITS_ENABLED);
- 
- 	return error;
- out_fmt:
+ 	/* advertising link modes */
+ 	if (hw->phy.autoneg_advertised & ADVERTISE_10_HALF)
+-- 
+2.39.2
+
 
 
