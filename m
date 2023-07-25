@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 811617615D5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5053276175F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234674AbjGYLdl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41096 "EHLO
+        id S232383AbjGYLro (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:47:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234672AbjGYLdl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:41 -0400
+        with ESMTP id S232381AbjGYLrd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF25F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B291FF7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E702661655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16B9C433C8;
-        Tue, 25 Jul 2023 11:33:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA230616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DF0C433C8;
+        Tue, 25 Jul 2023 11:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284819;
-        bh=pFdr8y0W5BbIKwuj68ECZ0nMa6piaOSLfm2ci2Aec6o=;
+        s=korg; t=1690285648;
+        bh=CivuM81LuSSuax7eVM6Io0zzAIXz5OxlVy1/77tzCv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SDnSR8usPiKhTdbq5MNd9gw1pu9WvgJJsIiIhrzV5kGMoHj1OzzcmIsEMMLMpnB9D
-         zd35BqAjpg1VCIhgR3kXFkcI7Kb+wGYjizaroQSnoGMbaN6NLG6kaPRWuHhHtMsQ3U
-         w40/Taq1GQkq1Ivx2/TDIregMb8sJiL4vYb4s/XQ=
+        b=SFssWTur7NmgNAt2W0bnhGz7oqPdqnkf477tAwY6qcEtmYXMboMGqrk+zVyjtDcTG
+         QTB8XOMVmgl8vQ2vi+CK2xA6U/uy1/EsfAAN9ewvBbHZgiHwxEeVUpul6AqidVNvgn
+         eVTTpSQQF9c2BtTHVc8ugTONMf2d+yj3sd/N4oSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 492/509] netfilter: nf_tables: skip bound chain on rule flush
-Date:   Tue, 25 Jul 2023 12:47:11 +0200
-Message-ID: <20230725104616.278723261@linuxfoundation.org>
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 279/313] selftests: tc: set timeout to 15 minutes
+Date:   Tue, 25 Jul 2023 12:47:12 +0200
+Message-ID: <20230725104533.147578290@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit 6eaf41e87a223ae6f8e7a28d6e78384ad7e407f8 ]
+commit fda05798c22a354efde09a76bdfc276b2d591829 upstream.
 
-Skip bound chain when flushing table rules, the rule that owns this
-chain releases these objects.
+When looking for something else in LKFT reports [1], I noticed that the
+TC selftest ended with a timeout error:
 
-Otherwise, the following warning is triggered:
+  not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
 
-  WARNING: CPU: 2 PID: 1217 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
-  CPU: 2 PID: 1217 Comm: chain-flush Not tainted 6.1.39 #1
-  RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+The timeout had been introduced 3 years ago, see the Fixes commit below.
 
-Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This timeout is only in place when executing the selftests via the
+kselftests runner scripts. I guess this is not what most TC devs are
+using and nobody noticed the issue before.
+
+The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
+like it is plenty more time than what it takes in "normal" conditions.
+
+Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
+Cc: stable@vger.kernel.org
+Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/tc-testing/settings | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 tools/testing/selftests/tc-testing/settings
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 40ed4dd530c5a..356416564d9f4 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3611,6 +3611,8 @@ static int nf_tables_delrule(struct net *net, struct sock *nlsk,
- 		list_for_each_entry(chain, &table->chains, list) {
- 			if (!nft_is_active_next(net, chain))
- 				continue;
-+			if (nft_chain_is_bound(chain))
-+				continue;
- 
- 			ctx.chain = chain;
- 			err = nft_delrule_by_chain(&ctx);
+diff --git a/tools/testing/selftests/tc-testing/settings b/tools/testing/selftests/tc-testing/settings
+new file mode 100644
+index 000000000000..e2206265f67c
+--- /dev/null
++++ b/tools/testing/selftests/tc-testing/settings
+@@ -0,0 +1 @@
++timeout=900
 -- 
-2.39.2
+2.41.0
 
 
 
