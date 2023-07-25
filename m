@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6B97615BF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04C05761304
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233061AbjGYLck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40490 "EHLO
+        id S233934AbjGYLHN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:07:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233004AbjGYLck (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0F70F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:38 -0700 (PDT)
+        with ESMTP id S233939AbjGYLG7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 901D52129
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64F3261691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73360C433C8;
-        Tue, 25 Jul 2023 11:32:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F8B9615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEA7C433C8;
+        Tue, 25 Jul 2023 11:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284757;
-        bh=xtXUxUkZkGrGp77VRSq2OgPg+BCRWemaTfBlnj4SzT8=;
+        s=korg; t=1690283141;
+        bh=f0bD1/WfdlfuDuC/NKyGnpwdduzMP/rOtgKbRLsRUUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HcrVZLwYPQL5ivV4280SVBV3iMswdwDQnO0FAyoWHeK8zvAnUWXiZbQREXTUXo6cC
-         XrXpBEAN7Q10gAukskeug9XN7sBN7as4DxkVLqVFrm/Ef25T+dkXoD69AR1YikaYbb
-         Hd6ZGKGwwpTPjAGMMhg6qDDm2lFh7ZlkQc5iq7j4=
+        b=TSbjTG7b551WBWafAb4qgpExm+OuGdcpw3ZR30eopltZAGJl7ZVyqtaqc6cSP1uB2
+         xFWuF/xQhr8XS1V15NIAPx2PjbL9bTuTD5ycOCl+39nWpJZ8J+mM3agVYqmWqmTxQb
+         TGbVu1p8HFE1ijNaIhV6XUr/SqG5i0B8a3CdgPEQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Pavlu <petr.pavlu@suse.com>,
-        Joey Lee <jlee@suse.com>, Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.10 442/509] keys: Fix linking a duplicate key to a keyrings assoc_array
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 153/183] tcp: annotate data-races around tp->tsoffset
 Date:   Tue, 25 Jul 2023 12:46:21 +0200
-Message-ID: <20230725104613.982086577@linuxfoundation.org>
+Message-ID: <20230725104513.361489137@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,177 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d55901522f96082a43b9842d34867363c0cdbac5 upstream.
+[ Upstream commit dd23c9f1e8d5c1d2e3d29393412385ccb9c7a948 ]
 
-When making a DNS query inside the kernel using dns_query(), the request
-code can in rare cases end up creating a duplicate index key in the
-assoc_array of the destination keyring. It is eventually found by
-a BUG_ON() check in the assoc_array implementation and results in
-a crash.
+do_tcp_getsockopt() reads tp->tsoffset while another cpu
+might change its value.
 
-Example report:
-[2158499.700025] kernel BUG at ../lib/assoc_array.c:652!
-[2158499.700039] invalid opcode: 0000 [#1] SMP PTI
-[2158499.700065] CPU: 3 PID: 31985 Comm: kworker/3:1 Kdump: loaded Not tainted 5.3.18-150300.59.90-default #1 SLE15-SP3
-[2158499.700096] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-[2158499.700351] Workqueue: cifsiod cifs_resolve_server [cifs]
-[2158499.700380] RIP: 0010:assoc_array_insert+0x85f/0xa40
-[2158499.700401] Code: ff 74 2b 48 8b 3b 49 8b 45 18 4c 89 e6 48 83 e7 fe e8 95 ec 74 00 3b 45 88 7d db 85 c0 79 d4 0f 0b 0f 0b 0f 0b e8 41 f2 be ff <0f> 0b 0f 0b 81 7d 88 ff ff ff 7f 4c 89 eb 4c 8b ad 58 ff ff ff 0f
-[2158499.700448] RSP: 0018:ffffc0bd6187faf0 EFLAGS: 00010282
-[2158499.700470] RAX: ffff9f1ea7da2fe8 RBX: ffff9f1ea7da2fc1 RCX: 0000000000000005
-[2158499.700492] RDX: 0000000000000000 RSI: 0000000000000005 RDI: 0000000000000000
-[2158499.700515] RBP: ffffc0bd6187fbb0 R08: ffff9f185faf1100 R09: 0000000000000000
-[2158499.700538] R10: ffff9f1ea7da2cc0 R11: 000000005ed8cec8 R12: ffffc0bd6187fc28
-[2158499.700561] R13: ffff9f15feb8d000 R14: ffff9f1ea7da2fc0 R15: ffff9f168dc0d740
-[2158499.700585] FS:  0000000000000000(0000) GS:ffff9f185fac0000(0000) knlGS:0000000000000000
-[2158499.700610] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[2158499.700630] CR2: 00007fdd94fca238 CR3: 0000000809d8c006 CR4: 00000000003706e0
-[2158499.700702] Call Trace:
-[2158499.700741]  ? key_alloc+0x447/0x4b0
-[2158499.700768]  ? __key_link_begin+0x43/0xa0
-[2158499.700790]  __key_link_begin+0x43/0xa0
-[2158499.700814]  request_key_and_link+0x2c7/0x730
-[2158499.700847]  ? dns_resolver_read+0x20/0x20 [dns_resolver]
-[2158499.700873]  ? key_default_cmp+0x20/0x20
-[2158499.700898]  request_key_tag+0x43/0xa0
-[2158499.700926]  dns_query+0x114/0x2ca [dns_resolver]
-[2158499.701127]  dns_resolve_server_name_to_ip+0x194/0x310 [cifs]
-[2158499.701164]  ? scnprintf+0x49/0x90
-[2158499.701190]  ? __switch_to_asm+0x40/0x70
-[2158499.701211]  ? __switch_to_asm+0x34/0x70
-[2158499.701405]  reconn_set_ipaddr_from_hostname+0x81/0x2a0 [cifs]
-[2158499.701603]  cifs_resolve_server+0x4b/0xd0 [cifs]
-[2158499.701632]  process_one_work+0x1f8/0x3e0
-[2158499.701658]  worker_thread+0x2d/0x3f0
-[2158499.701682]  ? process_one_work+0x3e0/0x3e0
-[2158499.701703]  kthread+0x10d/0x130
-[2158499.701723]  ? kthread_park+0xb0/0xb0
-[2158499.701746]  ret_from_fork+0x1f/0x40
-
-The situation occurs as follows:
-* Some kernel facility invokes dns_query() to resolve a hostname, for
-  example, "abcdef". The function registers its global DNS resolver
-  cache as current->cred.thread_keyring and passes the query to
-  request_key_net() -> request_key_tag() -> request_key_and_link().
-* Function request_key_and_link() creates a keyring_search_context
-  object. Its match_data.cmp method gets set via a call to
-  type->match_preparse() (resolves to dns_resolver_match_preparse()) to
-  dns_resolver_cmp().
-* Function request_key_and_link() continues and invokes
-  search_process_keyrings_rcu() which returns that a given key was not
-  found. The control is then passed to request_key_and_link() ->
-  construct_alloc_key().
-* Concurrently to that, a second task similarly makes a DNS query for
-  "abcdef." and its result gets inserted into the DNS resolver cache.
-* Back on the first task, function construct_alloc_key() first runs
-  __key_link_begin() to determine an assoc_array_edit operation to
-  insert a new key. Index keys in the array are compared exactly as-is,
-  using keyring_compare_object(). The operation finds that "abcdef" is
-  not yet present in the destination keyring.
-* Function construct_alloc_key() continues and checks if a given key is
-  already present on some keyring by again calling
-  search_process_keyrings_rcu(). This search is done using
-  dns_resolver_cmp() and "abcdef" gets matched with now present key
-  "abcdef.".
-* The found key is linked on the destination keyring by calling
-  __key_link() and using the previously calculated assoc_array_edit
-  operation. This inserts the "abcdef." key in the array but creates
-  a duplicity because the same index key is already present.
-
-Fix the problem by postponing __key_link_begin() in
-construct_alloc_key() until an actual key which should be linked into
-the destination keyring is determined.
-
-[jarkko@kernel.org: added a fixes tag and cc to stable]
-Cc: stable@vger.kernel.org # v5.3+
-Fixes: df593ee23e05 ("keys: Hoist locking out of __key_link_begin()")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Joey Lee <jlee@suse.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93be6ce0e91b ("tcp: set and get per-socket timestamp")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/request_key.c |   35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ net/ipv4/tcp.c      | 4 ++--
+ net/ipv4/tcp_ipv4.c | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -401,17 +401,21 @@ static int construct_alloc_key(struct ke
- 	set_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 5e4bc80dc0ae5..3edf7a1c5cbd2 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3762,7 +3762,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+ 		if (!tp->repair)
+ 			err = -EPERM;
+ 		else
+-			tp->tsoffset = val - tcp_time_stamp_raw();
++			WRITE_ONCE(tp->tsoffset, val - tcp_time_stamp_raw());
+ 		break;
+ 	case TCP_REPAIR_WINDOW:
+ 		err = tcp_repair_set_window(tp, optval, optlen);
+@@ -4260,7 +4260,7 @@ int do_tcp_getsockopt(struct sock *sk, int level,
+ 		break;
  
- 	if (dest_keyring) {
--		ret = __key_link_lock(dest_keyring, &ctx->index_key);
-+		ret = __key_link_lock(dest_keyring, &key->index_key);
- 		if (ret < 0)
- 			goto link_lock_failed;
--		ret = __key_link_begin(dest_keyring, &ctx->index_key, &edit);
--		if (ret < 0)
--			goto link_prealloc_failed;
+ 	case TCP_TIMESTAMP:
+-		val = tcp_time_stamp_raw() + tp->tsoffset;
++		val = tcp_time_stamp_raw() + READ_ONCE(tp->tsoffset);
+ 		break;
+ 	case TCP_NOTSENT_LOWAT:
+ 		val = tp->notsent_lowat;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index d49a66b271d52..9a8d59e9303a0 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -307,8 +307,9 @@ int tcp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+ 						  inet->inet_daddr,
+ 						  inet->inet_sport,
+ 						  usin->sin_port));
+-		tp->tsoffset = secure_tcp_ts_off(net, inet->inet_saddr,
+-						 inet->inet_daddr);
++		WRITE_ONCE(tp->tsoffset,
++			   secure_tcp_ts_off(net, inet->inet_saddr,
++					     inet->inet_daddr));
  	}
  
--	/* attach the key to the destination keyring under lock, but we do need
-+	/*
-+	 * Attach the key to the destination keyring under lock, but we do need
- 	 * to do another check just in case someone beat us to it whilst we
--	 * waited for locks */
-+	 * waited for locks.
-+	 *
-+	 * The caller might specify a comparison function which looks for keys
-+	 * that do not exactly match but are still equivalent from the caller's
-+	 * perspective. The __key_link_begin() operation must be done only after
-+	 * an actual key is determined.
-+	 */
- 	mutex_lock(&key_construction_mutex);
- 
- 	rcu_read_lock();
-@@ -420,12 +424,16 @@ static int construct_alloc_key(struct ke
- 	if (!IS_ERR(key_ref))
- 		goto key_already_present;
- 
--	if (dest_keyring)
-+	if (dest_keyring) {
-+		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-+		if (ret < 0)
-+			goto link_alloc_failed;
- 		__key_link(dest_keyring, key, &edit);
-+	}
- 
- 	mutex_unlock(&key_construction_mutex);
- 	if (dest_keyring)
--		__key_link_end(dest_keyring, &ctx->index_key, edit);
-+		__key_link_end(dest_keyring, &key->index_key, edit);
- 	mutex_unlock(&user->cons_lock);
- 	*_key = key;
- 	kleave(" = 0 [%d]", key_serial(key));
-@@ -438,10 +446,13 @@ key_already_present:
- 	mutex_unlock(&key_construction_mutex);
- 	key = key_ref_to_ptr(key_ref);
- 	if (dest_keyring) {
-+		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-+		if (ret < 0)
-+			goto link_alloc_failed_unlocked;
- 		ret = __key_link_check_live_key(dest_keyring, key);
- 		if (ret == 0)
- 			__key_link(dest_keyring, key, &edit);
--		__key_link_end(dest_keyring, &ctx->index_key, edit);
-+		__key_link_end(dest_keyring, &key->index_key, edit);
- 		if (ret < 0)
- 			goto link_check_failed;
- 	}
-@@ -456,8 +467,10 @@ link_check_failed:
- 	kleave(" = %d [linkcheck]", ret);
- 	return ret;
- 
--link_prealloc_failed:
--	__key_link_end(dest_keyring, &ctx->index_key, edit);
-+link_alloc_failed:
-+	mutex_unlock(&key_construction_mutex);
-+link_alloc_failed_unlocked:
-+	__key_link_end(dest_keyring, &key->index_key, edit);
- link_lock_failed:
- 	mutex_unlock(&user->cons_lock);
- 	key_put(key);
+ 	inet->inet_id = get_random_u16();
+-- 
+2.39.2
+
 
 
