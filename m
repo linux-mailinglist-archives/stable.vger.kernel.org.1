@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B90D17612E2
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4109761223
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233975AbjGYLGU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45220 "EHLO
+        id S231941AbjGYK7v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233910AbjGYLGB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:01 -0400
+        with ESMTP id S233796AbjGYK71 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 917814227
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B93851FE3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FA7761656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3960AC433C7;
-        Tue, 25 Jul 2023 11:04:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55F8E61656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59129C433C8;
+        Tue, 25 Jul 2023 10:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283049;
-        bh=cvp4N1SVV1R7hATudZCJdO6PGCbejkamXcHFoSFEKW4=;
+        s=korg; t=1690282583;
+        bh=AL0LzlPmcDIGVrl0V9oSLUaMZbWPhfrJbnbn/gTQGJc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lygv+4gw7SQ6gqmmIDp2WVOa7r5XrIsCdIFhPK4V+6Z4X2DJj9ttDbeUuFxEJwnAf
-         +aobscJO7x33SpPlgJj/9mpxjefE+X9+Wtmh/kX2M2HeX2C9SLfky2efVszQIKE5dh
-         VRi82ptY6Tej3fOSVWlfkwLiK3YoyWrqHCoF+PMI=
+        b=InMjwX3Mdzq+IcWPHVcZQEeyTxgA3nGZ+K6UJx9ieBQ4q5YOBjb7dNpcJ2d1yJtys
+         KUGGoXz5uqRMt2Yvej11FZt5YE2M3jx1n4x+RqcFtDXj6gqy7f5JfN36Cw6wXfs2qZ
+         NduPh+YTsqZdPwXliHU0aO3QYFPCnORCHi/n30zM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/183] iavf: use internal state to free traffic IRQs
+Subject: [PATCH 6.4 181/227] bpf: Repeat check_max_stack_depth for async callbacks
 Date:   Tue, 25 Jul 2023 12:45:48 +0200
-Message-ID: <20230725104512.272455835@linuxfoundation.org>
+Message-ID: <20230725104522.317164268@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,63 +56,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit a77ed5c5b768e9649be240a2d864e5cd9c6a2015 ]
+[ Upstream commit b5e9ad522c4ccd32d322877515cff8d47ed731b9 ]
 
-If the system tries to close the netdev while iavf_reset_task() is
-running, __LINK_STATE_START will be cleared and netif_running() will
-return false in iavf_reinit_interrupt_scheme(). This will result in
-iavf_free_traffic_irqs() not being called and a leak as follows:
+While the check_max_stack_depth function explores call chains emanating
+from the main prog, which is typically enough to cover all possible call
+chains, it doesn't explore those rooted at async callbacks unless the
+async callback will have been directly called, since unlike non-async
+callbacks it skips their instruction exploration as they don't
+contribute to stack depth.
 
-    [7632.489326] remove_proc_entry: removing non-empty directory 'irq/999', leaking at least 'iavf-enp24s0f0v0-TxRx-0'
-    [7632.490214] WARNING: CPU: 0 PID: 10 at fs/proc/generic.c:718 remove_proc_entry+0x19b/0x1b0
+It could be the case that the async callback leads to a callchain which
+exceeds the stack depth, but this is never reachable while only
+exploring the entry point from main subprog. Hence, repeat the check for
+the main subprog *and* all async callbacks marked by the symbolic
+execution pass of the verifier, as execution of the program may begin at
+any of them.
 
-is shown when pci_disable_msix() is later called. Fix by using the
-internal adapter state. The traffic IRQs will always exist if
-state == __IAVF_RUNNING.
+Consider functions with following stack depths:
+main: 256
+async: 256
+foo: 256
 
-Fixes: 5b36e8d04b44 ("i40evf: Enable VF to request an alternate queue allocation")
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+main:
+    rX = async
+    bpf_timer_set_callback(...)
+
+async:
+    foo()
+
+Here, async is not descended as it does not contribute to stack depth of
+main (since it is referenced using bpf_pseudo_func and not
+bpf_pseudo_call). However, when async is invoked asynchronously, it will
+end up breaching the MAX_BPF_STACK limit by calling foo.
+
+Hence, in addition to main, we also need to explore call chains
+beginning at all async callback subprogs in a program.
+
+Fixes: 7ddc80a476c2 ("bpf: Teach stack depth check about async callbacks.")
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230717161530.1238-3-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 81676c3af4b36..104de9a071449 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1941,15 +1941,16 @@ static void iavf_free_rss(struct iavf_adapter *adapter)
- /**
-  * iavf_reinit_interrupt_scheme - Reallocate queues and vectors
-  * @adapter: board private structure
-+ * @running: true if adapter->state == __IAVF_RUNNING
-  *
-  * Returns 0 on success, negative on failure
-  **/
--static int iavf_reinit_interrupt_scheme(struct iavf_adapter *adapter)
-+static int iavf_reinit_interrupt_scheme(struct iavf_adapter *adapter, bool running)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index e95bfe45fd890..4fbfe1d086467 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5381,16 +5381,17 @@ static int update_stack_depth(struct bpf_verifier_env *env,
+  * Since recursion is prevented by check_cfg() this algorithm
+  * only needs a local stack of MAX_CALL_FRAMES to remember callsites
+  */
+-static int check_max_stack_depth(struct bpf_verifier_env *env)
++static int check_max_stack_depth_subprog(struct bpf_verifier_env *env, int idx)
  {
- 	struct net_device *netdev = adapter->netdev;
- 	int err;
+-	int depth = 0, frame = 0, idx = 0, i = 0, subprog_end;
+ 	struct bpf_subprog_info *subprog = env->subprog_info;
+ 	struct bpf_insn *insn = env->prog->insnsi;
++	int depth = 0, frame = 0, i, subprog_end;
+ 	bool tail_call_reachable = false;
+ 	int ret_insn[MAX_CALL_FRAMES];
+ 	int ret_prog[MAX_CALL_FRAMES];
+ 	int j;
  
--	if (netif_running(netdev))
-+	if (running)
- 		iavf_free_traffic_irqs(adapter);
- 	iavf_free_misc_irq(adapter);
- 	iavf_reset_interrupt_capability(adapter);
-@@ -3056,7 +3057,7 @@ static void iavf_reset_task(struct work_struct *work)
++	i = subprog[idx].start;
+ process_func:
+ 	/* protect against potential stack overflow that might happen when
+ 	 * bpf2bpf calls get combined with tailcalls. Limit the caller's stack
+@@ -5491,6 +5492,22 @@ static int check_max_stack_depth(struct bpf_verifier_env *env)
+ 	goto continue_func;
+ }
  
- 	if ((adapter->flags & IAVF_FLAG_REINIT_MSIX_NEEDED) ||
- 	    (adapter->flags & IAVF_FLAG_REINIT_ITR_NEEDED)) {
--		err = iavf_reinit_interrupt_scheme(adapter);
-+		err = iavf_reinit_interrupt_scheme(adapter, running);
- 		if (err)
- 			goto reset_err;
- 	}
++static int check_max_stack_depth(struct bpf_verifier_env *env)
++{
++	struct bpf_subprog_info *si = env->subprog_info;
++	int ret;
++
++	for (int i = 0; i < env->subprog_cnt; i++) {
++		if (!i || si[i].is_async_cb) {
++			ret = check_max_stack_depth_subprog(env, i);
++			if (ret < 0)
++				return ret;
++		}
++		continue;
++	}
++	return 0;
++}
++
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
+ static int get_callee_stack_depth(struct bpf_verifier_env *env,
+ 				  const struct bpf_insn *insn, int idx)
 -- 
 2.39.2
 
