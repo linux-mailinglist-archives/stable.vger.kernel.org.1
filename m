@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DECBA7614C2
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46AEA76160F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234445AbjGYLWe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:22:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
+        id S234797AbjGYLgO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:36:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234459AbjGYLWc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:32 -0400
+        with ESMTP id S234788AbjGYLgN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96F0C1BCF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0652419AA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D7826167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA722C433C7;
-        Tue, 25 Jul 2023 11:22:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C433616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C74DC433C8;
+        Tue, 25 Jul 2023 11:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284146;
-        bh=+1hMspF/G9VnTE1U8jAUe9oapUDtIFZeqHZj3czvEns=;
+        s=korg; t=1690284955;
+        bh=GEcaT8s0i/6RrhTANooKP3g61nMFEdcuojfO7me/7A8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F6u2sFPOisfElFlhjdD+69PmgJAmn0/PzuzakV0k3tn9lKAPO9Xoeby2PbCqWvppw
-         4iufov2zSHleKUXBG+9PBcgIL4D/bVN2pN/y5JY+ax2SyF7Pml4YjuY76LwINlKvul
-         smwMxLJt0AS3HDUR1XhG6zSxiZl8Rv63Bzr49xJM=
+        b=0wy2ukCGXkZ+KvkaVWbpy2dKnf/7+gmDgzKBeAz0rttgY4U5K9qF1EmygbiPgNzjG
+         44J0cr+hj01IP4wiilGotvLy4uJi2QIu55hL+c2U7O0TG0gqYpVY7kmSu0IVRxq+wP
+         7C3r+grU+Zy6BtDTGVODP6nYm7mrky5b7R1OZnPQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mantas Pucka <mantas@8devices.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 222/509] clk: qcom: gcc-ipq6018: Use floor ops for sdcc clocks
+        patches@lists.linux.dev,
+        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 008/313] drm/amdgpu: Validate VM ioctl flags.
 Date:   Tue, 25 Jul 2023 12:42:41 +0200
-Message-ID: <20230725104603.919057077@linuxfoundation.org>
+Message-ID: <20230725104521.547233723@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,37 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mantas Pucka <mantas@8devices.com>
+From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 
-[ Upstream commit 56e5ae0116aef87273cf1812d608645b076e4f02 ]
+commit a2b308044dcaca8d3e580959a4f867a1d5c37fac upstream.
 
-SDCC clocks must be rounded down to avoid overclocking the controller.
+None have been defined yet, so reject anybody setting any. Mesa sets
+it to 0 anyway.
 
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Mantas Pucka <mantas@8devices.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/1682413909-24927-1-git-send-email-mantas@8devices.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index 3f9c2f61a5d93..5c5d1b04ea7af 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -1654,7 +1654,7 @@ static struct clk_rcg2 sdcc1_apps_clk_src = {
- 		.name = "sdcc1_apps_clk_src",
- 		.parent_data = gcc_xo_gpll0_gpll2_gpll0_out_main_div2,
- 		.num_parents = 4,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_floor_ops,
- 	},
- };
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -3076,6 +3076,10 @@ int amdgpu_vm_ioctl(struct drm_device *d
+ 	struct amdgpu_fpriv *fpriv = filp->driver_priv;
+ 	int r;
  
--- 
-2.39.2
-
++	/* No valid flags defined yet */
++	if (args->in.flags)
++		return -EINVAL;
++
+ 	switch (args->in.op) {
+ 	case AMDGPU_VM_OP_RESERVE_VMID:
+ 		/* current, we only have requirement to reserve vmid from gfxhub */
 
 
