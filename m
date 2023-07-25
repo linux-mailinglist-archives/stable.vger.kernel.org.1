@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A50FA7614D0
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C1C7761152
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234455AbjGYLXM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60280 "EHLO
+        id S229662AbjGYKt6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:49:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234477AbjGYLW4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:56 -0400
+        with ESMTP id S232742AbjGYKtz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8AD19BB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4F41999;
+        Tue, 25 Jul 2023 03:49:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E40A0616A5
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1042C433C9;
-        Tue, 25 Jul 2023 11:22:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 05CF06166E;
+        Tue, 25 Jul 2023 10:49:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DDDC433C9;
+        Tue, 25 Jul 2023 10:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284168;
-        bh=V5W0Bn0qay+Bh1r5BUFiMvXV5Mz85bTKyqUZQmYwe7A=;
+        s=korg; t=1690282188;
+        bh=8/5W2GXxWmIbAvkf807Q61r5u9UpymPMwxCirb9fScE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HjQf4/MwCe3kLsQpQpPNWRaJs/4J4lz6hCZz8HJni+xB9Azev2HfP7X4ibJGfs2gu
-         rFVe2rm2Xn9gMm6OKkqjb3dO9DGkl9jLPCFxfWBambVhRkNdX5c+tDc/cK2/4WMw4D
-         IwHKsdQ/Wduek6kcYzZmmlytCfcVHBJpqMcOZZ7s=
+        b=UiTz9y2waYEqstR6nDVf264JUbeMKLK7wiC9sHZ2wSUdWKnLhRieP0P8w9w0PoG55
+         35Uz46eBqKlPyh0y44tvB4ztZbMHjlzWM93Zb7Nd7ZT6C/jT0S5kA2XLEwJ2c18Z2B
+         YI4ue0GQ8Isho8xbE8zC4OGiBHBHpcLDtH8Jm/dY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Xin Long <lucien.xin@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 260/509] sctp: fix potential deadlock on &net->sctp.addr_wq_lock
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        matoro <matoro_mailinglist_kernel@matoro.tk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-ia64@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 032/227] ia64: mmap: Consider pgoff when searching for free mapping
 Date:   Tue, 25 Jul 2023 12:43:19 +0200
-Message-ID: <20230725104605.655411899@linuxfoundation.org>
+Message-ID: <20230725104516.170600624@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,57 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 6feb37b3b06e9049e20dcf7e23998f92c9c5be9a ]
+commit 07e981137f17e5275b6fa5fd0c28b0ddb4519702 upstream.
 
-As &net->sctp.addr_wq_lock is also acquired by the timer
-sctp_addr_wq_timeout_handler() in protocal.c, the same lock acquisition
-at sctp_auto_asconf_init() seems should disable irq since it is called
-from sctp_accept() under process context.
+IA64 is the only architecture which does not consider the pgoff value when
+searching for a possible free memory region with vm_unmapped_area().
+Adding this seems to have no negative side effect on IA64, so add it now
+to make IA64 consistent with all other architectures.
 
-Possible deadlock scenario:
-sctp_accept()
-    -> sctp_sock_migrate()
-    -> sctp_auto_asconf_init()
-    -> spin_lock(&net->sctp.addr_wq_lock)
-        <timer interrupt>
-        -> sctp_addr_wq_timeout_handler()
-        -> spin_lock_bh(&net->sctp.addr_wq_lock); (deadlock here)
-
-This flaw was found using an experimental static analysis tool we are
-developing for irq-related deadlock.
-
-The tentative patch fix the potential deadlock by spin_lock_bh().
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Fixes: 34e5b0118685 ("sctp: delay auto_asconf init until binding the first addr")
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/r/20230627120340.19432-1-dg573847474@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.4
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: matoro <matoro_mailinglist_kernel@matoro.tk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-ia64@vger.kernel.org
+Link: https://lore.kernel.org/r/20230721152432.196382-3-deller@gmx.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/socket.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/ia64/kernel/sys_ia64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 4a7f811abae4e..534364bb871a3 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -362,9 +362,9 @@ static void sctp_auto_asconf_init(struct sctp_sock *sp)
- 	struct net *net = sock_net(&sp->inet.sk);
- 
- 	if (net->sctp.default_auto_asconf) {
--		spin_lock(&net->sctp.addr_wq_lock);
-+		spin_lock_bh(&net->sctp.addr_wq_lock);
- 		list_add_tail(&sp->auto_asconf_list, &net->sctp.auto_asconf_splist);
--		spin_unlock(&net->sctp.addr_wq_lock);
-+		spin_unlock_bh(&net->sctp.addr_wq_lock);
- 		sp->do_auto_asconf = 1;
- 	}
+diff --git a/arch/ia64/kernel/sys_ia64.c b/arch/ia64/kernel/sys_ia64.c
+index 6e948d015332..eb561cc93632 100644
+--- a/arch/ia64/kernel/sys_ia64.c
++++ b/arch/ia64/kernel/sys_ia64.c
+@@ -63,7 +63,7 @@ arch_get_unmapped_area (struct file *filp, unsigned long addr, unsigned long len
+ 	info.low_limit = addr;
+ 	info.high_limit = TASK_SIZE;
+ 	info.align_mask = align_mask;
+-	info.align_offset = 0;
++	info.align_offset = pgoff << PAGE_SHIFT;
+ 	return vm_unmapped_area(&info);
  }
+ 
 -- 
-2.39.2
+2.41.0
 
 
 
