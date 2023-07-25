@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A71376156A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B98187616E3
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234642AbjGYL2n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37258 "EHLO
+        id S231757AbjGYLoK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234474AbjGYL2m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB36FB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:41 -0700 (PDT)
+        with ESMTP id S235424AbjGYLnc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79392106
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F233B615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123F8C433C8;
-        Tue, 25 Jul 2023 11:28:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D641616BE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:42:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB47C433C8;
+        Tue, 25 Jul 2023 11:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284520;
-        bh=JqBU8t6FRCEE0mutgpPenOurlJXZu0j4miKHJ2HHlgs=;
+        s=korg; t=1690285344;
+        bh=aHV1WXDUL34Uipx+rq8uhgs2jmfOliZwbdfJUjyUh4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rus758c3Kp4IU7ztZ51gRIpLzoXjOC+pkoFrUVmFp+ppL9pV9X93SCctqlIt4CPy9
-         hIYV5qHjeEhjAJ2/EWFeu/b6eWe+Oilp6NQ2Eb+8qFE0TaxZVJrKILfubvRWhvUB8L
-         VYUQkdbeftCZJpTUywj56L+aupsxCU9PKIYceb8w=
+        b=yRxxiTE+zc99x+4hi+EBAx85RTGT11n71KpRKMNOEFEQK2gmaksZN0BCYdGmKfhG1
+         TncSRpIfFCYfwlt/4DflfrZs7U+LxOL3WwwduHLtRpoIPTIuUu0H6EuIapwXXzugab
+         OkwRB7CiLVh+o9warzpe62NO8MREhd2dkDNUktHQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Huang Pei <huangpei@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 386/509] MIPS: Loongson: Fix cpu_probe_loongson() again
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 172/313] fs: Establish locking order for unrelated directories
 Date:   Tue, 25 Jul 2023 12:45:25 +0200
-Message-ID: <20230725104611.418725702@linuxfoundation.org>
+Message-ID: <20230725104528.390217262@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,85 +54,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jan Kara <jack@suse.cz>
 
-commit 65fee014dc41a774bcd94896f3fb380bc39d8dda upstream.
+commit f23ce757185319886ca80c4864ce5f81ac6cc9e9 upstream.
 
-Commit 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
-move decode_configs() from the beginning of cpu_probe_loongson() to the
-end in order to fix FTLB configuration. However, it breaks the CPUCFG
-decoding because decode_configs() use "c->options = xxxx" rather than
-"c->options |= xxxx", all information get from CPUCFG by decode_cpucfg()
-is lost.
+Currently the locking order of inode locks for directories that are not
+in ancestor relationship is not defined because all operations that
+needed to lock two directories like this were serialized by
+sb->s_vfs_rename_mutex. However some filesystems need to lock two
+subdirectories for RENAME_EXCHANGE operations and for this we need the
+locking order established even for two tree-unrelated directories.
+Provide a helper function lock_two_inodes() that establishes lock
+ordering for any two inodes and use it in lock_two_directories().
 
-This causes error when creating a KVM guest on Loongson-3A4000:
-Exception Code: 4 not handled @ PC: 0000000087ad5981, inst: 0xcb7a1898 BadVaddr: 0x0 Status: 0x0
-
-Fix this by moving the c->cputype setting to the beginning and moving
-decode_configs() after that.
-
-Fixes: 7db5e9e9e5e6c10d7d ("MIPS: loongson64: fix FTLB configuration")
-Cc: stable@vger.kernel.org
-Cc: Huang Pei <huangpei@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230601105830.13168-4-jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/cpu-probe.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ fs/inode.c    |   42 ++++++++++++++++++++++++++++++++++++++++++
+ fs/internal.h |    2 ++
+ fs/namei.c    |    4 ++--
+ 3 files changed, 46 insertions(+), 2 deletions(-)
 
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1721,7 +1721,10 @@ static inline void decode_cpucfg(struct
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -1013,6 +1013,48 @@ void discard_new_inode(struct inode *ino
+ EXPORT_SYMBOL(discard_new_inode);
  
- static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
- {
-+	c->cputype = CPU_LOONGSON64;
+ /**
++ * lock_two_inodes - lock two inodes (may be regular files but also dirs)
++ *
++ * Lock any non-NULL argument. The caller must make sure that if he is passing
++ * in two directories, one is not ancestor of the other.  Zero, one or two
++ * objects may be locked by this function.
++ *
++ * @inode1: first inode to lock
++ * @inode2: second inode to lock
++ * @subclass1: inode lock subclass for the first lock obtained
++ * @subclass2: inode lock subclass for the second lock obtained
++ */
++void lock_two_inodes(struct inode *inode1, struct inode *inode2,
++		     unsigned subclass1, unsigned subclass2)
++{
++	if (!inode1 || !inode2) {
++		/*
++		 * Make sure @subclass1 will be used for the acquired lock.
++		 * This is not strictly necessary (no current caller cares) but
++		 * let's keep things consistent.
++		 */
++		if (!inode1)
++			swap(inode1, inode2);
++		goto lock;
++	}
 +
- 	/* All Loongson processors covered here define ExcCode 16 as GSExc. */
-+	decode_configs(c);
- 	c->options |= MIPS_CPU_GSEXCEX;
++	/*
++	 * If one object is directory and the other is not, we must make sure
++	 * to lock directory first as the other object may be its child.
++	 */
++	if (S_ISDIR(inode2->i_mode) == S_ISDIR(inode1->i_mode)) {
++		if (inode1 > inode2)
++			swap(inode1, inode2);
++	} else if (!S_ISDIR(inode1->i_mode))
++		swap(inode1, inode2);
++lock:
++	if (inode1)
++		inode_lock_nested(inode1, subclass1);
++	if (inode2 && inode2 != inode1)
++		inode_lock_nested(inode2, subclass2);
++}
++
++/**
+  * lock_two_nondirectories - take two i_mutexes on non-directory objects
+  *
+  * Lock any non-NULL argument that is not a directory.
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -138,6 +138,8 @@ extern int vfs_open(const struct path *,
+ extern long prune_icache_sb(struct super_block *sb, struct shrink_control *sc);
+ extern void inode_add_lru(struct inode *inode);
+ extern int dentry_needs_remove_privs(struct dentry *dentry);
++void lock_two_inodes(struct inode *inode1, struct inode *inode2,
++		     unsigned subclass1, unsigned subclass2);
  
- 	switch (c->processor_id & PRID_IMP_MASK) {
-@@ -1731,7 +1734,6 @@ static inline void cpu_probe_loongson(st
- 		case PRID_REV_LOONGSON2K_R1_1:
- 		case PRID_REV_LOONGSON2K_R1_2:
- 		case PRID_REV_LOONGSON2K_R1_3:
--			c->cputype = CPU_LOONGSON64;
- 			__cpu_name[cpu] = "Loongson-2K";
- 			set_elf_platform(cpu, "gs264e");
- 			set_isa(c, MIPS_CPU_ISA_M64R2);
-@@ -1744,14 +1746,12 @@ static inline void cpu_probe_loongson(st
- 		switch (c->processor_id & PRID_REV_MASK) {
- 		case PRID_REV_LOONGSON3A_R2_0:
- 		case PRID_REV_LOONGSON3A_R2_1:
--			c->cputype = CPU_LOONGSON64;
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
- 			set_isa(c, MIPS_CPU_ISA_M64R2);
- 			break;
- 		case PRID_REV_LOONGSON3A_R3_0:
- 		case PRID_REV_LOONGSON3A_R3_1:
--			c->cputype = CPU_LOONGSON64;
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
- 			set_isa(c, MIPS_CPU_ISA_M64R2);
-@@ -1771,7 +1771,6 @@ static inline void cpu_probe_loongson(st
- 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
- 		break;
- 	case PRID_IMP_LOONGSON_64G:
--		c->cputype = CPU_LOONGSON64;
- 		__cpu_name[cpu] = "ICT Loongson-3";
- 		set_elf_platform(cpu, "loongson3a");
- 		set_isa(c, MIPS_CPU_ISA_M64R2);
-@@ -1781,8 +1780,6 @@ static inline void cpu_probe_loongson(st
- 		panic("Unknown Loongson Processor ID!");
- 		break;
+ /*
+  * fs-writeback.c
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -2870,8 +2870,8 @@ struct dentry *lock_rename(struct dentry
+ 		return p;
  	}
--
--	decode_configs(c);
+ 
+-	inode_lock_nested(p1->d_inode, I_MUTEX_PARENT);
+-	inode_lock_nested(p2->d_inode, I_MUTEX_PARENT2);
++	lock_two_inodes(p1->d_inode, p2->d_inode,
++			I_MUTEX_PARENT, I_MUTEX_PARENT2);
+ 	return NULL;
  }
- #else
- static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu) { }
+ EXPORT_SYMBOL(lock_rename);
 
 
