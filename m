@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3C90761248
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF586761740
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233842AbjGYLA7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:00:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36054 "EHLO
+        id S232137AbjGYLqW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:46:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233843AbjGYLAc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9126B448A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:48 -0700 (PDT)
+        with ESMTP id S232142AbjGYLqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408DE1B8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FF5E61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400E0C433C7;
-        Tue, 25 Jul 2023 10:57:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CAB07616BF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6439C433CA;
+        Tue, 25 Jul 2023 11:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282667;
-        bh=kWMhUMf90TqnTj/EABY9rEBxF+Zy7P3ZVcUlSLokWws=;
+        s=korg; t=1690285576;
+        bh=I/hnvNXgmXjXkNsmNFnOqYTB3WBKnVF542oAU0Y75bc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fyah6WBWnZ/fn6QI1JHDbM0nu48lBa8CRn1pdTjrcqom7vJazPV2nNVNq/NXlRqVB
-         mWyF+mA1aAuGXpWABiJVRz1dpzgx1GMhFFj4TUe8M3/tZvt+gEAN9pg8I9k16kR8AE
-         kCnAk9aflUvT11SlU4Dwgkf1zmGIEsaJRtitqZLw=
+        b=WRpn7Vjb02lGRxilQAE+kQIQ2EHmq/adfSYUuL/7arM/GSyMwaG8wgPg0BiMEM70+
+         ofe4EfO55+jJ/aozQ125oq3qCO0vb0l3yTfDvCNmKfQ79DFubWrxSkMqRi0A6MKT3+
+         VhXB74g9oFXJ8JGOgWWgGGG/kQO6JnP8E1F5ydMs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 211/227] tcp: annotate data-races around tp->keepalive_probes
+Subject: [PATCH 5.4 225/313] net/sched: flower: Ensure both minimum and maximum ports are specified
 Date:   Tue, 25 Jul 2023 12:46:18 +0200
-Message-ID: <20230725104523.497001373@linuxfoundation.org>
+Message-ID: <20230725104530.784189868@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,67 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 6e5e1de616bf5f3df1769abc9292191dfad9110a ]
+[ Upstream commit d3f87278bcb80bd7f9519669d928b43320363d4f ]
 
-do_tcp_getsockopt() reads tp->keepalive_probes while another cpu
-might change its value.
+The kernel does not currently validate that both the minimum and maximum
+ports of a port range are specified. This can lead user space to think
+that a filter matching on a port range was successfully added, when in
+fact it was not. For example, with a patched (buggy) iproute2 that only
+sends the minimum port, the following commands do not return an error:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp src_port 100-200 action pass
+
+ # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp dst_port 100-200 action pass
+
+ # tc filter show dev swp1 ingress
+ filter protocol ip pref 1 flower chain 0
+ filter protocol ip pref 1 flower chain 0 handle 0x1
+   eth_type ipv4
+   ip_proto udp
+   not_in_hw
+         action order 1: gact action pass
+          random type none pass val 0
+          index 1 ref 1 bind 1
+
+ filter protocol ip pref 1 flower chain 0 handle 0x2
+   eth_type ipv4
+   ip_proto udp
+   not_in_hw
+         action order 1: gact action pass
+          random type none pass val 0
+          index 2 ref 1 bind 1
+
+Fix by returning an error unless both ports are specified:
+
+ # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp src_port 100-200 action pass
+ Error: Both min and max source ports must be specified.
+ We have an error talking to the kernel
+
+ # tc filter add dev swp1 ingress pref 1 proto ip flower ip_proto udp dst_port 100-200 action pass
+ Error: Both min and max destination ports must be specified.
+ We have an error talking to the kernel
+
+Fixes: 5c72299fba9d ("net: sched: cls_flower: Classify packets using port ranges")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h | 9 +++++++--
- net/ipv4/tcp.c    | 5 +++--
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ net/sched/cls_flower.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 45d50a40795da..f5c20afab6286 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1538,9 +1538,14 @@ static inline int keepalive_time_when(const struct tcp_sock *tp)
- static inline int keepalive_probes(const struct tcp_sock *tp)
- {
- 	struct net *net = sock_net((struct sock *)tp);
-+	int val;
-+
-+	/* Paired with WRITE_ONCE() in tcp_sock_set_keepcnt()
-+	 * and do_tcp_setsockopt().
-+	 */
-+	val = READ_ONCE(tp->keepalive_probes);
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index f0010e4850eb6..c92318f68f92d 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -735,6 +735,16 @@ static int fl_set_key_port_range(struct nlattr **tb, struct fl_flow_key *key,
+ 		       TCA_FLOWER_KEY_PORT_SRC_MAX, &mask->tp_range.tp_max.src,
+ 		       TCA_FLOWER_UNSPEC, sizeof(key->tp_range.tp_max.src));
  
--	return tp->keepalive_probes ? :
--		READ_ONCE(net->ipv4.sysctl_tcp_keepalive_probes);
-+	return val ? : READ_ONCE(net->ipv4.sysctl_tcp_keepalive_probes);
- }
- 
- static inline u32 keepalive_time_elapsed(const struct tcp_sock *tp)
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 514817119bd4d..cc7966cfad1a3 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3466,7 +3466,8 @@ int tcp_sock_set_keepcnt(struct sock *sk, int val)
- 		return -EINVAL;
- 
- 	lock_sock(sk);
--	tcp_sk(sk)->keepalive_probes = val;
-+	/* Paired with READ_ONCE() in keepalive_probes() */
-+	WRITE_ONCE(tcp_sk(sk)->keepalive_probes, val);
- 	release_sock(sk);
- 	return 0;
- }
-@@ -3674,7 +3675,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 		if (val < 1 || val > MAX_TCP_KEEPCNT)
- 			err = -EINVAL;
- 		else
--			tp->keepalive_probes = val;
-+			WRITE_ONCE(tp->keepalive_probes, val);
- 		break;
- 	case TCP_SYNCNT:
- 		if (val < 1 || val > MAX_TCP_SYNCNT)
++	if (mask->tp_range.tp_min.dst != mask->tp_range.tp_max.dst) {
++		NL_SET_ERR_MSG(extack,
++			       "Both min and max destination ports must be specified");
++		return -EINVAL;
++	}
++	if (mask->tp_range.tp_min.src != mask->tp_range.tp_max.src) {
++		NL_SET_ERR_MSG(extack,
++			       "Both min and max source ports must be specified");
++		return -EINVAL;
++	}
+ 	if (mask->tp_range.tp_min.dst && mask->tp_range.tp_max.dst &&
+ 	    htons(key->tp_range.tp_max.dst) <=
+ 	    htons(key->tp_range.tp_min.dst)) {
 -- 
 2.39.2
 
