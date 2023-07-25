@@ -2,54 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9081761131
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9CEA761618
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbjGYKsg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57214 "EHLO
+        id S234789AbjGYLgV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232085AbjGYKsc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:48:32 -0400
+        with ESMTP id S234806AbjGYLgS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074E41999
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:48:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656111BC5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84E176165E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:48:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69798C433C9;
-        Tue, 25 Jul 2023 10:48:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02B9061654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F81C433C9;
+        Tue, 25 Jul 2023 11:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282110;
-        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
+        s=korg; t=1690284963;
+        bh=6OFFlbbJPaKPL+BTbMv2sFQikdUwl0zMZzcGLtyUtvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t9ddt2GhO7uiW17oFDdwrv/vUtAhESGYtmNPNV4G1mmaM8/DmHVH+a60/A98IuG0n
-         T3D2n2BFAG3bvxnokNh4AUaaqHOy7DTHbexcBZadc8UUCraPJmMxymUQpxH69QcC2L
-         UCQ5LqvW1cIzFRx0SjvODBmEAlHysEhUz56PjPt4=
+        b=cX7HbFgL2Syept5QmIASdX6l02TLrCuBskc5HwAMKY1GYi1lsNzOmSqmhXTuPw34N
+         qEj6qfKJIB6a2ZpoEX+UeQP/MRpv9u6IoOcOhqd0WyfDM10guQuQAZtQj0c0YMFcoB
+         l77z7qAwF+sMT48dqntmHlDyYNzmFnkawHj/w+Ao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        regressions@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.4 012/227] perf probe: Add test for regression introduced by switch to die_get_decl_file()
-Date:   Tue, 25 Jul 2023 12:42:59 +0200
-Message-ID: <20230725104515.288406864@linuxfoundation.org>
+        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 027/313] ima: Fix build warnings
+Date:   Tue, 25 Jul 2023 12:43:00 +0200
+Message-ID: <20230725104522.299460572@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -64,112 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Georg Müller <georgmueller@gmx.net>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
+[ Upstream commit 95526d13038c2bbddd567a4d8e39fac42484e182 ]
 
-This patch adds a test to validate that 'perf probe' works for binaries
-where DWARF info is split into multiple CUs
+Fix build warnings (function parameters description) for
+ima_collect_modsig(), ima_match_policy() and ima_parse_add_rule().
 
-Signed-off-by: Georg Müller <georgmueller@gmx.net>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: regressions@lists.linux.dev
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 15588227e086 ("ima: Collect modsig") # v5.4+
+Fixes: 2fe5d6def167 ("ima: integrity appraisal extension") # v5.14+
+Fixes: 4af4662fa4a9 ("integrity: IMA policy") # v3.2+
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
- 1 file changed, 77 insertions(+)
- create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+ security/integrity/ima/ima_modsig.c | 3 +++
+ security/integrity/ima/ima_policy.c | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- /dev/null
-+++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
-@@ -0,0 +1,77 @@
-+#!/bin/bash
-+# test perf probe of function from different CU
-+# SPDX-License-Identifier: GPL-2.0
-+
-+set -e
-+
-+temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
-+
-+cleanup()
-+{
-+	trap - EXIT TERM INT
-+	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
-+		echo "--- Cleaning up ---"
-+		perf probe -x ${temp_dir}/testfile -d foo
-+		rm -f "${temp_dir}/"*
-+		rmdir "${temp_dir}"
-+	fi
-+}
-+
-+trap_cleanup()
-+{
-+        cleanup
-+        exit 1
-+}
-+
-+trap trap_cleanup EXIT TERM INT
-+
-+cat > ${temp_dir}/testfile-foo.h << EOF
-+struct t
-+{
-+  int *p;
-+  int c;
-+};
-+
-+extern int foo (int i, struct t *t);
-+EOF
-+
-+cat > ${temp_dir}/testfile-foo.c << EOF
-+#include "testfile-foo.h"
-+
-+int
-+foo (int i, struct t *t)
-+{
-+  int j, res = 0;
-+  for (j = 0; j < i && j < t->c; j++)
-+    res += t->p[j];
-+
-+  return res;
-+}
-+EOF
-+
-+cat > ${temp_dir}/testfile-main.c << EOF
-+#include "testfile-foo.h"
-+
-+static struct t g;
-+
-+int
-+main (int argc, char **argv)
-+{
-+  int i;
-+  int j[argc];
-+  g.c = argc;
-+  g.p = j;
-+  for (i = 0; i < argc; i++)
-+    j[i] = (int) argv[i][0];
-+  return foo (3, &g);
-+}
-+EOF
-+
-+gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
-+gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
-+gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
-+
-+perf probe -x ${temp_dir}/testfile --funcs foo
-+perf probe -x ${temp_dir}/testfile foo
-+
-+cleanup
+diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
+index d106885cc4955..5fb971efc6e10 100644
+--- a/security/integrity/ima/ima_modsig.c
++++ b/security/integrity/ima/ima_modsig.c
+@@ -109,6 +109,9 @@ int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
+ 
+ /**
+  * ima_collect_modsig - Calculate the file hash without the appended signature.
++ * @modsig: parsed module signature
++ * @buf: data to verify the signature on
++ * @size: data size
+  *
+  * Since the modsig is part of the file contents, the hash used in its signature
+  * isn't the same one ordinarily calculated by IMA. Therefore PKCS7 code
+diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+index 6df0436462ab7..e749403f07a8b 100644
+--- a/security/integrity/ima/ima_policy.c
++++ b/security/integrity/ima/ima_policy.c
+@@ -500,6 +500,7 @@ static int get_subaction(struct ima_rule_entry *rule, enum ima_hooks func)
+  * @secid: LSM secid of the task to be validated
+  * @func: IMA hook identifier
+  * @mask: requested action (MAY_READ | MAY_WRITE | MAY_APPEND | MAY_EXEC)
++ * @flags: IMA actions to consider (e.g. IMA_MEASURE | IMA_APPRAISE)
+  * @pcr: set the pcr to extend
+  * @template_desc: the template that should be used for this rule
+  *
+@@ -1266,7 +1267,7 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
+ 
+ /**
+  * ima_parse_add_rule - add a rule to ima_policy_rules
+- * @rule - ima measurement policy rule
++ * @rule: ima measurement policy rule
+  *
+  * Avoid locking by allowing just one writer at a time in ima_write_policy()
+  * Returns the length of the rule parsed, an error code on failure
+-- 
+2.39.2
+
 
 
