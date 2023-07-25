@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 785EC7611C9
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C08A7616B1
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232250AbjGYK4M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35758 "EHLO
+        id S234995AbjGYLlO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232357AbjGYKzp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:45 -0400
+        with ESMTP id S233894AbjGYLkz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B11E26BC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 882731FF5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AA4D61689
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56054C433C7;
-        Tue, 25 Jul 2023 10:53:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BF4F616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E43BC433C7;
+        Tue, 25 Jul 2023 11:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282415;
-        bh=y6bziz/MvdQ+aDDDtJgCjPL8YGD7r7BVYP/dHYkzrrk=;
+        s=korg; t=1690285241;
+        bh=zwPAKCtHd3UQM2xQ2KHaJGvz6SPo/bREsR18xXokdMc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t2J7a2Atkv2aaT8AKIiRNZzcwY85lAJro6cGRi2Yf4WD71hLyldz6IEEeiZqq/5di
-         JpjXvhOneoLgvn2EgAJT2CYzfMbO+sQZLQPNxc+wlhQCRzcii8q58pDBRamNPkl9BZ
-         okWDHZG+gA0IwwqbrCIDE4l1xJcuOZroCLgcyFlY=
+        b=n2aewpZd/EKO58NOz4nBPHOJuowmh39iTS9iVwUOsZ/C3ccngZ5b42VB0GwaqZByU
+         EBQMURWu2Zr8iGfpcKuHhIYVLcltC+taASeZXP0c+63RshxarTvLGR/uKSAzE1Yp9y
+         nJClzVKrwmKKCsaQun2xmcxJQlWd1efxDySO9z6U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abe Kohandel <abe.kohandel@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 121/227] spi: dw: Add compatible for Intel Mount Evans SoC
+        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 135/313] mfd: rt5033: Drop rt5033-battery sub-device
 Date:   Tue, 25 Jul 2023 12:44:48 +0200
-Message-ID: <20230725104519.824656366@linuxfoundation.org>
+Message-ID: <20230725104526.863116427@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,79 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Abe Kohandel <abe.kohandel@intel.com>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-[ Upstream commit 0760d5d0e9f0c0e2200a0323a61d1995bb745dee ]
+[ Upstream commit 43db1344e0f8c1eb687a1d6cd5b0de3009ab66cb ]
 
-The Intel Mount Evans SoC's Integrated Management Complex uses the SPI
-controller for access to a NOR SPI FLASH. However, the SoC doesn't
-provide a mechanism to override the native chip select signal.
+The fuel gauge in the RT5033 PMIC (rt5033-battery) has its own I2C bus
+and interrupt lines. Therefore, it is not part of the MFD device
+and needs to be specified separately in the device tree.
 
-This driver doesn't use DMA for memory operations when a chip select
-override is not provided due to the native chip select timing behavior.
-As a result no DMA configuration is done for the controller and this
-configuration is not tested.
-
-The controller also has an errata where a full TX FIFO can result in
-data corruption. The suggested workaround is to never completely fill
-the FIFO. The TX FIFO has a size of 32 so the fifo_len is set to 31.
-
-Signed-off-by: Abe Kohandel <abe.kohandel@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230606145402.474866-2-abe.kohandel@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0b271258544b ("mfd: rt5033: Add Richtek RT5033 driver core.")
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/6a8a19bc67b5be3732882e8131ad2ffcb546ac03.1684182964.git.jahau@rocketmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-dw-mmio.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/mfd/rt5033.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 15f5e9cb54ad4..5a38cb09a650d 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -236,6 +236,31 @@ static int dw_spi_intel_init(struct platform_device *pdev,
- 	return 0;
- }
- 
-+/*
-+ * The Intel Mount Evans SoC's Integrated Management Complex uses the
-+ * SPI controller for access to a NOR SPI FLASH. However, the SoC doesn't
-+ * provide a mechanism to override the native chip select signal.
-+ *
-+ * This driver doesn't use DMA for memory operations when a chip select
-+ * override is not provided due to the native chip select timing behavior.
-+ * As a result no DMA configuration is done for the controller and this
-+ * configuration is not tested.
-+ */
-+static int dw_spi_mountevans_imc_init(struct platform_device *pdev,
-+				      struct dw_spi_mmio *dwsmmio)
-+{
-+	/*
-+	 * The Intel Mount Evans SoC's Integrated Management Complex DW
-+	 * apb_ssi_v4.02a controller has an errata where a full TX FIFO can
-+	 * result in data corruption. The suggested workaround is to never
-+	 * completely fill the FIFO. The TX FIFO has a size of 32 so the
-+	 * fifo_len is set to 31.
-+	 */
-+	dwsmmio->dws.fifo_len = 31;
-+
-+	return 0;
-+}
-+
- static int dw_spi_canaan_k210_init(struct platform_device *pdev,
- 				   struct dw_spi_mmio *dwsmmio)
- {
-@@ -405,6 +430,10 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
- 	{ .compatible = "snps,dwc-ssi-1.01a", .data = dw_spi_hssi_init},
- 	{ .compatible = "intel,keembay-ssi", .data = dw_spi_intel_init},
- 	{ .compatible = "intel,thunderbay-ssi", .data = dw_spi_intel_init},
-+	{
-+		.compatible = "intel,mountevans-imc-ssi",
-+		.data = dw_spi_mountevans_imc_init,
-+	},
- 	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
- 	{ .compatible = "canaan,k210-spi", dw_spi_canaan_k210_init},
- 	{ .compatible = "amd,pensando-elba-spi", .data = dw_spi_elba_init},
+diff --git a/drivers/mfd/rt5033.c b/drivers/mfd/rt5033.c
+index 48381d9bf7403..302115dabff4b 100644
+--- a/drivers/mfd/rt5033.c
++++ b/drivers/mfd/rt5033.c
+@@ -41,9 +41,6 @@ static const struct mfd_cell rt5033_devs[] = {
+ 	{
+ 		.name = "rt5033-charger",
+ 		.of_compatible = "richtek,rt5033-charger",
+-	}, {
+-		.name = "rt5033-battery",
+-		.of_compatible = "richtek,rt5033-battery",
+ 	}, {
+ 		.name = "rt5033-led",
+ 		.of_compatible = "richtek,rt5033-led",
 -- 
 2.39.2
 
