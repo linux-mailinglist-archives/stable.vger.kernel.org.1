@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 418677611D1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E65697616D3
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:43:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232365AbjGYK4h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:56:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35774 "EHLO
+        id S231713AbjGYLnq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:43:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232380AbjGYK4N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A6C35AD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:55 -0700 (PDT)
+        with ESMTP id S235201AbjGYLnH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 814081FC2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B7AD6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACB1C433C7;
-        Tue, 25 Jul 2023 10:53:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBD6A61654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3E7C433C8;
+        Tue, 25 Jul 2023 11:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282402;
-        bh=jAp8mWG+a5X5KuvI4qyYtYYgwdNfhGImxiJ+pfJksXs=;
+        s=korg; t=1690285314;
+        bh=ZzxQtI0UhK87F9Vh/hkYFjwVCTmcHV9s1EIj50Yh3hk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mBfT9V265UOHeTkwW5IcDmiq01RU/79+GdpmK1C2Lq1kMjAKoH71rILEYicsT3FNX
-         i5NPhDRtRtSOn9+j0LdF+X4Rf+DDlC6WPhkgNqwbyjcXjMvTQ4ij5fcVy5n5gI0Fap
-         dl3crKvQwFb1xTNW1C8+kGuYkI8mh1vwV/1dWO5U=
+        b=KD1vE86QAtxEr6EnZLxD1NH2XT07mEUCPx03m61bEcN71XWVXRsfOpOlATsCZpoWo
+         Hv0XHZiGk94ljARyF69msXpHRJ8SVjlm+GBObcWUneLF2dSHBeb/CqPgHiKdjSDGLM
+         fpS4ItEnDG/QpsSgl5/JY2YL5eVvENKwZDug31Rw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 116/227] wifi: rtw88: sdio: Check the HISR RX_REQUEST bit in rtw_sdio_rx_isr()
+        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 130/313] usb: dwc3: qcom: Fix potential memory leak
 Date:   Tue, 25 Jul 2023 12:44:43 +0200
-Message-ID: <20230725104519.599914857@linuxfoundation.org>
+Message-ID: <20230725104526.641732420@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,91 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Vladislav Efanov <VEfanov@ispras.ru>
 
-[ Upstream commit e967229ead0e6c5047a1cfd5a0db58ceb930800b ]
+[ Upstream commit 097fb3ee710d4de83b8d4f5589e8ee13e0f0541e ]
 
-rtw_sdio_rx_isr() is responsible for receiving data from the wifi chip
-and is called from the SDIO interrupt handler when the interrupt status
-register (HISR) has the RX_REQUEST bit set. After the first batch of
-data has been processed by the driver the wifi chip may have more data
-ready to be read, which is managed by a loop in rtw_sdio_rx_isr().
+Function dwc3_qcom_probe() allocates memory for resource structure
+which is pointed by parent_res pointer. This memory is not
+freed. This leads to memory leak. Use stack memory to prevent
+memory leak.
 
-It turns out that there are cases where the RX buffer length (from the
-REG_SDIO_RX0_REQ_LEN register) does not match the data we receive. The
-following two cases were observed with a RTL8723DS card:
-- RX length is smaller than the total packet length including overhead
-  and actual data bytes (whose length is part of the buffer we read from
-  the wifi chip and is stored in rtw_rx_pkt_stat.pkt_len). This can
-  result in errors like:
-    skbuff: skb_over_panic: text:ffff8000011924ac len:3341 put:3341
-  (one case observed was: RX buffer length = 1536 bytes but
-   rtw_rx_pkt_stat.pkt_len = 1546 bytes, this is not valid as it means
-   we need to read beyond the end of the buffer)
-- RX length looks valid but rtw_rx_pkt_stat.pkt_len is zero
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Check if the RX_REQUEST is set in the HISR register for each iteration
-inside rtw_sdio_rx_isr(). This mimics what the RTL8723DS vendor driver
-does and makes the driver only read more data if the RX_REQUEST bit is
-set (which seems to be a way for the card's hardware or firmware to
-tell the host that data is ready to be processed).
-
-For RTW_WCPU_11AC chips this check is not needed. The RTL8822BS vendor
-driver for example states that this check is unnecessary (but still uses
-it) and the RTL8822CS drops this check entirely.
-
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230522202425.1827005-2-martin.blumenstingl@googlemail.com
+Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Acked-by: Shawn Guo <shawn.guo@linaro.org>
+Link: https://lore.kernel.org/r/20230517172518.442591-1-VEfanov@ispras.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/sdio.c | 24 ++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/dwc3-qcom.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index 06fce7c3addaa..2c1fb2dabd40a 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -998,9 +998,9 @@ static void rtw_sdio_rxfifo_recv(struct rtw_dev *rtwdev, u32 rx_len)
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 2dcdeb52fc293..7d3de23147fd5 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -574,6 +574,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	struct device		*dev = &pdev->dev;
+ 	struct dwc3_qcom	*qcom;
+ 	struct resource		*res, *parent_res = NULL;
++	struct resource		local_res;
+ 	int			ret, i;
+ 	bool			ignore_pipe_clk;
  
- static void rtw_sdio_rx_isr(struct rtw_dev *rtwdev)
- {
--	u32 rx_len, total_rx_bytes = 0;
-+	u32 rx_len, hisr, total_rx_bytes = 0;
+@@ -624,9 +625,8 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	if (np) {
+ 		parent_res = res;
+ 	} else {
+-		parent_res = kmemdup(res, sizeof(struct resource), GFP_KERNEL);
+-		if (!parent_res)
+-			return -ENOMEM;
++		memcpy(&local_res, res, sizeof(struct resource));
++		parent_res = &local_res;
  
--	while (total_rx_bytes < SZ_64K) {
-+	do {
- 		if (rtw_chip_wcpu_11n(rtwdev))
- 			rx_len = rtw_read16(rtwdev, REG_SDIO_RX0_REQ_LEN);
- 		else
-@@ -1012,7 +1012,25 @@ static void rtw_sdio_rx_isr(struct rtw_dev *rtwdev)
- 		rtw_sdio_rxfifo_recv(rtwdev, rx_len);
- 
- 		total_rx_bytes += rx_len;
--	}
-+
-+		if (rtw_chip_wcpu_11n(rtwdev)) {
-+			/* Stop if no more RX requests are pending, even if
-+			 * rx_len could be greater than zero in the next
-+			 * iteration. This is needed because the RX buffer may
-+			 * already contain data while either HW or FW are not
-+			 * done filling that buffer yet. Still reading the
-+			 * buffer can result in packets where
-+			 * rtw_rx_pkt_stat.pkt_len is zero or points beyond the
-+			 * end of the buffer.
-+			 */
-+			hisr = rtw_read32(rtwdev, REG_SDIO_HISR);
-+		} else {
-+			/* RTW_WCPU_11AC chips have improved hardware or
-+			 * firmware and can use rx_len unconditionally.
-+			 */
-+			hisr = REG_SDIO_HISR_RX_REQUEST;
-+		}
-+	} while (total_rx_bytes < SZ_64K && hisr & REG_SDIO_HISR_RX_REQUEST);
- }
- 
- static void rtw_sdio_handle_interrupt(struct sdio_func *sdio_func)
+ 		parent_res->start = res->start +
+ 			qcom->acpi_pdata->qscratch_base_offset;
 -- 
 2.39.2
 
