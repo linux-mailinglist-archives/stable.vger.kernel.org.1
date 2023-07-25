@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EED837611FF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A19F876154D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjGYK6i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:58:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35930 "EHLO
+        id S234586AbjGYL1W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:27:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233809AbjGYK6G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8574EC1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:14 -0700 (PDT)
+        with ESMTP id S234608AbjGYL1V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7D018F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 012E66166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FA8C433C8;
-        Tue, 25 Jul 2023 10:55:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 185A661648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B00FC433C8;
+        Tue, 25 Jul 2023 11:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282513;
-        bh=6e21b8Qble0eAKgTcaa4a5gWpmGf3lLsAXg66FM61Ig=;
+        s=korg; t=1690284439;
+        bh=p2CWBFnGCo34fM/0P4txOYXPWhUAaxsiEODE3Lc2D34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UtLj5ScrUry7a3kUqXNYXTlnhh6b6p1MHdspwmPU9lTOEhYl2ALUf9YaBTrYJpf5f
-         O+VGNyRgbhEum9bC0JJkAtbIVXoOZE9olMIah7VQN6SrwqVkktPaw6VXz+RwspGQtB
-         nSF11skSDT3REdeF4qnePNkpiOgo8UFEqDuywEc0=
+        b=e0i6VQuZekd2l3GgjC4AgtGd6QGpeLCGGMpPVlhXC9QKUPwFX5aQI5afjvFEeB7fu
+         p2CTn6X62oyvBK93mpTtimkw4vRC3z50SlUUy7qorgLk7vJsxiKRrGyDYawU1pyRXt
+         sF0DY5yHTrAvf2JPyAHro61Wqt2ebV+RXdRmhVks=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 129/227] wifi: iwlwifi: Add support for new PCI Id
+Subject: [PATCH 5.10 357/509] ipv6/addrconf: fix a potential refcount underflow for idev
 Date:   Tue, 25 Jul 2023 12:44:56 +0200
-Message-ID: <20230725104520.166418560@linuxfoundation.org>
+Message-ID: <20230725104610.075228786@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,41 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 35bd6f1d043d089fcb60450e1287cc65f0095787 ]
+[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
 
-Add support for the PCI Id 51F1 without IMR support.
+Now in addrconf_mod_rs_timer(), reference idev depends on whether
+rs_timer is not pending. Then modify rs_timer timeout.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230620125813.9800e652e789.Ic06a085832ac3f988c8ef07d856c8e281563295d@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+There is a time gap in [1], during which if the pending rs_timer
+becomes not pending. It will miss to hold idev, but the rs_timer
+is activated. Thus rs_timer callback function addrconf_rs_timer()
+will be executed and put idev later without holding idev. A refcount
+underflow issue for idev can be caused by this.
+
+	if (!timer_pending(&idev->rs_timer))
+		in6_dev_hold(idev);
+		  <--------------[1]
+	mod_timer(&idev->rs_timer, jiffies + when);
+
+To fix the issue, hold idev if mod_timer() return 0.
+
+Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/addrconf.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 79115eb1c2852..e9fe6cea891aa 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -495,6 +495,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x7AF0, PCI_ANY_ID, iwl_so_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x51F0, PCI_ANY_ID, iwl_so_long_latency_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x51F1, PCI_ANY_ID, iwl_so_long_latency_imr_trans_cfg)},
-+	{IWL_PCI_DEVICE(0x51F1, PCI_ANY_ID, iwl_so_long_latency_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x54F0, PCI_ANY_ID, iwl_so_long_latency_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x7F70, PCI_ANY_ID, iwl_so_trans_cfg)},
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index ed1e5bfc97b31..d5d10496b4aef 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -314,9 +314,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
+ static void addrconf_mod_rs_timer(struct inet6_dev *idev,
+ 				  unsigned long when)
+ {
+-	if (!timer_pending(&idev->rs_timer))
++	if (!mod_timer(&idev->rs_timer, jiffies + when))
+ 		in6_dev_hold(idev);
+-	mod_timer(&idev->rs_timer, jiffies + when);
+ }
  
-@@ -544,6 +545,7 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(0x51F0, 0x1551, iwl9560_2ac_cfg_soc, iwl9560_killer_1550i_160_name),
- 	IWL_DEV_INFO(0x51F0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
- 	IWL_DEV_INFO(0x51F0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
-+	IWL_DEV_INFO(0x51F1, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 	IWL_DEV_INFO(0x54F0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
- 	IWL_DEV_INFO(0x54F0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 	IWL_DEV_INFO(0x7A70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
+ static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
 -- 
 2.39.2
 
