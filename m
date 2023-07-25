@@ -2,47 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DDD676122F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8BD5761352
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233822AbjGYK75 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36042 "EHLO
+        id S234022AbjGYLJe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233405AbjGYK7i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:38 -0400
+        with ESMTP id S234128AbjGYLJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E72192136
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5345B2D56
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C8B06166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E393C433C8;
-        Tue, 25 Jul 2023 10:56:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDEB161681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FCDC433C7;
+        Tue, 25 Jul 2023 11:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282605;
-        bh=qQwSVXBDosH+ASN5sxRAD8udlYpbP+LkBtnoT2t09SI=;
+        s=korg; t=1690283300;
+        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kqZrwFu0Hmg+Y0RyORk5kMkr5DR0bHS6LQwPDcBPlXGTLMN1UMOzwYmvz65jDJKxo
-         pkWKN8PIAYM16HVLhdaR3sf59FusbvBi/gxvDEPuealdiz3MiJeXFdLNQ5Xr75K8/L
-         LtuzoJizDDHW+rQ44ggegh732+/LjmOl+29gVHYw=
+        b=ziffk8eSnj70mBYU/LCWvfRfENstpNg0MzUvqwzO+2O0DujaGhYJNu56ZCP4Cg9J0
+         r3eWxqXxIAwcTshJTyOczTpb5hViNK0tLbg6r6tb08ssJ2rVyICgdg3stXdYrWaEqD
+         SCbQf3BXiFeayuNug5cPtaas5NyBUQ5c9iAz2Dd8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 188/227] net: ipv4: Use kfree_sensitive instead of kfree
-Date:   Tue, 25 Jul 2023 12:45:55 +0200
-Message-ID: <20230725104522.590435520@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        regressions@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 5.15 05/78] perf probe: Add test for regression introduced by switch to die_get_decl_file()
+Date:   Tue, 25 Jul 2023 12:45:56 +0200
+Message-ID: <20230725104451.513695648@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,38 +64,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang Ming <machel@vivo.com>
+From: Georg Müller <georgmueller@gmx.net>
 
-[ Upstream commit daa751444fd9d4184270b1479d8af49aaf1a1ee6 ]
+commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
 
-key might contain private part of the key, so better use
-kfree_sensitive to free it.
+This patch adds a test to validate that 'perf probe' works for binaries
+where DWARF info is split into multiple CUs
 
-Fixes: 38320c70d282 ("[IPSEC]: Use crypto_aead and authenc in ESP")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Georg Müller <georgmueller@gmx.net>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/esp4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
+ 1 file changed, 77 insertions(+)
+ create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index ba06ed42e4284..2be2d49225573 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -1132,7 +1132,7 @@ static int esp_init_authenc(struct xfrm_state *x,
- 	err = crypto_aead_setkey(aead, key, keylen);
- 
- free_key:
--	kfree(key);
-+	kfree_sensitive(key);
- 
- error:
- 	return err;
--- 
-2.39.2
-
+--- /dev/null
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -0,0 +1,77 @@
++#!/bin/bash
++# test perf probe of function from different CU
++# SPDX-License-Identifier: GPL-2.0
++
++set -e
++
++temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
++
++cleanup()
++{
++	trap - EXIT TERM INT
++	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
++		echo "--- Cleaning up ---"
++		perf probe -x ${temp_dir}/testfile -d foo
++		rm -f "${temp_dir}/"*
++		rmdir "${temp_dir}"
++	fi
++}
++
++trap_cleanup()
++{
++        cleanup
++        exit 1
++}
++
++trap trap_cleanup EXIT TERM INT
++
++cat > ${temp_dir}/testfile-foo.h << EOF
++struct t
++{
++  int *p;
++  int c;
++};
++
++extern int foo (int i, struct t *t);
++EOF
++
++cat > ${temp_dir}/testfile-foo.c << EOF
++#include "testfile-foo.h"
++
++int
++foo (int i, struct t *t)
++{
++  int j, res = 0;
++  for (j = 0; j < i && j < t->c; j++)
++    res += t->p[j];
++
++  return res;
++}
++EOF
++
++cat > ${temp_dir}/testfile-main.c << EOF
++#include "testfile-foo.h"
++
++static struct t g;
++
++int
++main (int argc, char **argv)
++{
++  int i;
++  int j[argc];
++  g.c = argc;
++  g.p = j;
++  for (i = 0; i < argc; i++)
++    j[i] = (int) argv[i][0];
++  return foo (3, &g);
++}
++EOF
++
++gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
++gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
++gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
++
++perf probe -x ${temp_dir}/testfile --funcs foo
++perf probe -x ${temp_dir}/testfile foo
++
++cleanup
 
 
