@@ -2,54 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2685C76128C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8A67611B3
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233400AbjGYLDr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
+        id S230070AbjGYKzK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:55:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233928AbjGYLDV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:21 -0400
+        with ESMTP id S233043AbjGYKyS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07CD5BA0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173F91990
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1370461693
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE65FC433C7;
-        Tue, 25 Jul 2023 11:00:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7C1B61681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6103C433C7;
+        Tue, 25 Jul 2023 10:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282812;
-        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
+        s=korg; t=1690282349;
+        bh=ajFG5oZk8RW+Sz0tYhfE7EYLpgWyaxTS03WHuL7RGQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w3qoMft5IT7BrDDWbHS8aQTvWZOpjSuWW5atzYgr5cgfUnQkcOh8duFCGMBwbZ7Ok
-         v7psvp0Ae62snwYKITIgSbDvHxXnEpRf94X/W5IV0gVg/ydIa0WLpCD/3OLYlTq9zQ
-         /kpZZSueyZ4EI2lOth9cuU4V6FOqwPNm/74Iaa2Y=
+        b=JjvnAPOfOjvsllqxM0XoBpqbKmAmM4M3MoZgU96WFPjCbXar/Ke9KmrslhpUIYNoU
+         fIEWya3AFLxMEqZlKhKmKZS3kknSN3WuFd2VW4m1O0swJDUCALpLpzcL0YbNkWgeHs
+         HUFvXxCkP6jUqRrkN7sh/xFaHH95VuBeJrPCwwik=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        regressions@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.1 008/183] perf probe: Add test for regression introduced by switch to die_get_decl_file()
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 069/227] ASoC: codecs: wcd938x: fix codec initialisation race
 Date:   Tue, 25 Jul 2023 12:43:56 +0200
-Message-ID: <20230725104508.113776913@linuxfoundation.org>
+Message-ID: <20230725104517.621989567@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -64,112 +57,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Georg Müller <georgmueller@gmx.net>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
+commit 85a61b1ce461a3f62f1019e5e6423c393c542bff upstream.
 
-This patch adds a test to validate that 'perf probe' works for binaries
-where DWARF info is split into multiple CUs
+Make sure to resume the codec and soundwire device before trying to read
+the codec variant and configure the device during component probe.
 
-Signed-off-by: Georg Müller <georgmueller@gmx.net>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: regressions@lists.linux.dev
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+This specifically avoids interpreting (a masked and shifted) -EBUSY
+errno as the variant:
+
+	wcd938x_codec audio-codec: ASoC: error at soc_component_read_no_lock on audio-codec for register: [0x000034b0] -16
+
+when the soundwire device happens to be suspended, which in turn
+prevents some headphone controls from being registered.
+
+Fixes: 8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reported-by: Steev Klimaszewski <steev@kali.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230630120318.6571-1-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
- 1 file changed, 77 insertions(+)
- create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+ sound/soc/codecs/wcd938x.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- /dev/null
-+++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
-@@ -0,0 +1,77 @@
-+#!/bin/bash
-+# test perf probe of function from different CU
-+# SPDX-License-Identifier: GPL-2.0
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3095,6 +3095,10 @@ static int wcd938x_soc_codec_probe(struc
+ 
+ 	snd_soc_component_init_regmap(component, wcd938x->regmap);
+ 
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret < 0)
++		return ret;
 +
-+set -e
+ 	wcd938x->variant = snd_soc_component_read_field(component,
+ 						 WCD938X_DIGITAL_EFUSE_REG_0,
+ 						 WCD938X_ID_MASK);
+@@ -3112,6 +3116,8 @@ static int wcd938x_soc_codec_probe(struc
+ 			     (WCD938X_DIGITAL_INTR_LEVEL_0 + i), 0);
+ 	}
+ 
++	pm_runtime_put(dev);
 +
-+temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
-+
-+cleanup()
-+{
-+	trap - EXIT TERM INT
-+	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
-+		echo "--- Cleaning up ---"
-+		perf probe -x ${temp_dir}/testfile -d foo
-+		rm -f "${temp_dir}/"*
-+		rmdir "${temp_dir}"
-+	fi
-+}
-+
-+trap_cleanup()
-+{
-+        cleanup
-+        exit 1
-+}
-+
-+trap trap_cleanup EXIT TERM INT
-+
-+cat > ${temp_dir}/testfile-foo.h << EOF
-+struct t
-+{
-+  int *p;
-+  int c;
-+};
-+
-+extern int foo (int i, struct t *t);
-+EOF
-+
-+cat > ${temp_dir}/testfile-foo.c << EOF
-+#include "testfile-foo.h"
-+
-+int
-+foo (int i, struct t *t)
-+{
-+  int j, res = 0;
-+  for (j = 0; j < i && j < t->c; j++)
-+    res += t->p[j];
-+
-+  return res;
-+}
-+EOF
-+
-+cat > ${temp_dir}/testfile-main.c << EOF
-+#include "testfile-foo.h"
-+
-+static struct t g;
-+
-+int
-+main (int argc, char **argv)
-+{
-+  int i;
-+  int j[argc];
-+  g.c = argc;
-+  g.p = j;
-+  for (i = 0; i < argc; i++)
-+    j[i] = (int) argv[i][0];
-+  return foo (3, &g);
-+}
-+EOF
-+
-+gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
-+gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
-+gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
-+
-+perf probe -x ${temp_dir}/testfile --funcs foo
-+perf probe -x ${temp_dir}/testfile foo
-+
-+cleanup
+ 	wcd938x->hphr_pdm_wd_int = regmap_irq_get_virq(wcd938x->irq_chip,
+ 						       WCD938X_IRQ_HPHR_PDM_WD_INT);
+ 	wcd938x->hphl_pdm_wd_int = regmap_irq_get_virq(wcd938x->irq_chip,
 
 
