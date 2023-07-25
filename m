@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D067612FB
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC113761727
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234045AbjGYLHC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44848 "EHLO
+        id S231535AbjGYLp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232513AbjGYLGt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7432A1BE2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:17 -0700 (PDT)
+        with ESMTP id S231858AbjGYLp2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38D95F2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 085EA6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E8EC433C7;
-        Tue, 25 Jul 2023 11:05:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB2A261654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2639C433C7;
+        Tue, 25 Jul 2023 11:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283116;
-        bh=OaUTPOAX2x/OhpRBpO5t1XDmdXBZ+5MSIm3esZoWkKI=;
+        s=korg; t=1690285526;
+        bh=m3UyYIcDpY1Ky+z1Rg7NuWXzSbJ/8YqEC4DRu71xIfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HNkyRmslz9M10ojmsvHYaKH2C+le+VPxusqtdaZPQfk9nz2CfToP9Pq6ZOgXo6KSg
-         552Wwmif3QBq3IIJ9/CMywHAhY6C7K2EgcOMpgf2VyfkzbTZW9EmtaiqQivyqm8Ra4
-         2M2gLX3WFJJAd7/23Ypizmb2KXu3SNsUOCyWdYn4=
+        b=VmYNvYPmbNgqOYMiWskSWR4URiiRArD8ziK4XCAB3GJOi1ZfKvkMNZpeZh0hZZvni
+         KZ6+gul+DmJGKSU+86HGD72snMpRWJ+h+2L53XgKvkm7JhOLnNBU7eDfnvNklHkkz0
+         HaZaaR4yxkhdvYSndDBYKYY2DQMYh2DQMiGum6ao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/183] netfilter: nf_tables: cant schedule in nft_chain_validate
+Subject: [PATCH 5.4 219/313] platform/x86: wmi: use guid_t and guid_equal()
 Date:   Tue, 25 Jul 2023 12:46:12 +0200
-Message-ID: <20230725104513.089775254@linuxfoundation.org>
+Message-ID: <20230725104530.532584290@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,62 +56,172 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Barnabás Pőcze <pobrn@protonmail.com>
 
-[ Upstream commit 314c82841602a111c04a7210c21dc77e0d560242 ]
+[ Upstream commit 67f472fdacf4a691b1c3c20c27800b23ce31e2de ]
 
-Can be called via nft set element list iteration, which may acquire
-rcu and/or bh read lock (depends on set type).
+Instead of hard-coding a 16 long byte array,
+use the available `guid_t` type and related methods.
 
-BUG: sleeping function called from invalid context at net/netfilter/nf_tables_api.c:3353
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1232, name: nft
-preempt_count: 0, expected: 0
-RCU nest depth: 1, expected: 0
-2 locks held by nft/1232:
- #0: ffff8881180e3ea8 (&nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid
- #1: ffffffff83f5f540 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire
-Call Trace:
- nft_chain_validate
- nft_lookup_validate_setelem
- nft_pipapo_walk
- nft_lookup_validate
- nft_chain_validate
- nft_immediate_validate
- nft_chain_validate
- nf_tables_validate
- nf_tables_abort
-
-No choice but to move it to nf_tables_validate().
-
-Fixes: 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Barnabás Pőcze <pobrn@protonmail.com>
+Link: https://lore.kernel.org/r/20210904175450.156801-15-pobrn@protonmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: 028e6e204ace ("platform/x86: wmi: Break possible infinite loop when parsing GUID")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/wmi.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 58f14e4ef63d4..0bb1cc7ed5e99 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3500,8 +3500,6 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
- 			if (err < 0)
- 				return err;
- 		}
--
--		cond_resched();
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 7de866ca30e51..41a680b39f9d1 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -39,7 +39,7 @@ MODULE_LICENSE("GPL");
+ static LIST_HEAD(wmi_block_list);
+ 
+ struct guid_block {
+-	char guid[16];
++	guid_t guid;
+ 	union {
+ 		char object_id[2];
+ 		struct {
+@@ -120,7 +120,7 @@ static bool find_guid(const char *guid_string, struct wmi_block **out)
+ 	list_for_each_entry(wblock, &wmi_block_list, list) {
+ 		block = &wblock->gblock;
+ 
+-		if (memcmp(block->guid, &guid_input, 16) == 0) {
++		if (guid_equal(&block->guid, &guid_input)) {
+ 			if (out)
+ 				*out = wblock;
+ 			return true;
+@@ -144,7 +144,7 @@ static const void *find_guid_context(struct wmi_block *wblock,
+ 	while (*id->guid_string) {
+ 		if (guid_parse(id->guid_string, &guid_input))
+ 			continue;
+-		if (!memcmp(wblock->gblock.guid, &guid_input, 16))
++		if (guid_equal(&wblock->gblock.guid, &guid_input))
+ 			return id->context;
+ 		id++;
  	}
+@@ -456,7 +456,7 @@ EXPORT_SYMBOL_GPL(wmi_set_block);
+ 
+ static void wmi_dump_wdg(const struct guid_block *g)
+ {
+-	pr_info("%pUL:\n", g->guid);
++	pr_info("%pUL:\n", &g->guid);
+ 	if (g->flags & ACPI_WMI_EVENT)
+ 		pr_info("\tnotify_id: 0x%02X\n", g->notify_id);
+ 	else
+@@ -537,7 +537,7 @@ wmi_notify_handler handler, void *data)
+ 	list_for_each_entry(block, &wmi_block_list, list) {
+ 		acpi_status wmi_status;
+ 
+-		if (memcmp(block->gblock.guid, &guid_input, 16) == 0) {
++		if (guid_equal(&block->gblock.guid, &guid_input)) {
+ 			if (block->handler &&
+ 			    block->handler != wmi_notify_debug)
+ 				return AE_ALREADY_ACQUIRED;
+@@ -576,7 +576,7 @@ acpi_status wmi_remove_notify_handler(const char *guid)
+ 	list_for_each_entry(block, &wmi_block_list, list) {
+ 		acpi_status wmi_status;
+ 
+-		if (memcmp(block->gblock.guid, &guid_input, 16) == 0) {
++		if (guid_equal(&block->gblock.guid, &guid_input)) {
+ 			if (!block->handler ||
+ 			    block->handler == wmi_notify_debug)
+ 				return AE_NULL_ENTRY;
+@@ -682,7 +682,7 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct wmi_block *wblock = dev_to_wblock(dev);
+ 
+-	return sprintf(buf, "wmi:%pUL\n", wblock->gblock.guid);
++	return sprintf(buf, "wmi:%pUL\n", &wblock->gblock.guid);
+ }
+ static DEVICE_ATTR_RO(modalias);
+ 
+@@ -691,7 +691,7 @@ static ssize_t guid_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct wmi_block *wblock = dev_to_wblock(dev);
+ 
+-	return sprintf(buf, "%pUL\n", wblock->gblock.guid);
++	return sprintf(buf, "%pUL\n", &wblock->gblock.guid);
+ }
+ static DEVICE_ATTR_RO(guid);
+ 
+@@ -774,10 +774,10 @@ static int wmi_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+ 	struct wmi_block *wblock = dev_to_wblock(dev);
+ 
+-	if (add_uevent_var(env, "MODALIAS=wmi:%pUL", wblock->gblock.guid))
++	if (add_uevent_var(env, "MODALIAS=wmi:%pUL", &wblock->gblock.guid))
+ 		return -ENOMEM;
+ 
+-	if (add_uevent_var(env, "WMI_GUID=%pUL", wblock->gblock.guid))
++	if (add_uevent_var(env, "WMI_GUID=%pUL", &wblock->gblock.guid))
+ 		return -ENOMEM;
  
  	return 0;
-@@ -3525,6 +3523,8 @@ static int nft_table_validate(struct net *net, const struct nft_table *table)
- 		err = nft_chain_validate(&ctx, chain);
- 		if (err < 0)
- 			return err;
-+
-+		cond_resched();
+@@ -805,7 +805,7 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
+ 
+ 		if (WARN_ON(guid_parse(id->guid_string, &driver_guid)))
+ 			continue;
+-		if (!memcmp(&driver_guid, wblock->gblock.guid, 16))
++		if (guid_equal(&driver_guid, &wblock->gblock.guid))
+ 			return 1;
+ 
+ 		id++;
+@@ -1101,7 +1101,7 @@ static int wmi_create_device(struct device *wmi_bus_dev,
+ 	wblock->dev.dev.bus = &wmi_bus_type;
+ 	wblock->dev.dev.parent = wmi_bus_dev;
+ 
+-	dev_set_name(&wblock->dev.dev, "%pUL", wblock->gblock.guid);
++	dev_set_name(&wblock->dev.dev, "%pUL", &wblock->gblock.guid);
+ 
+ 	device_initialize(&wblock->dev.dev);
+ 
+@@ -1121,12 +1121,12 @@ static void wmi_free_devices(struct acpi_device *device)
+ 	}
+ }
+ 
+-static bool guid_already_parsed(struct acpi_device *device, const u8 *guid)
++static bool guid_already_parsed(struct acpi_device *device, const guid_t *guid)
+ {
+ 	struct wmi_block *wblock;
+ 
+ 	list_for_each_entry(wblock, &wmi_block_list, list) {
+-		if (memcmp(wblock->gblock.guid, guid, 16) == 0) {
++		if (guid_equal(&wblock->gblock.guid, guid)) {
+ 			/*
+ 			 * Because we historically didn't track the relationship
+ 			 * between GUIDs and ACPI nodes, we don't know whether
+@@ -1181,7 +1181,7 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		 * case yet, so for now, we'll just ignore the duplicate
+ 		 * for device creation.
+ 		 */
+-		if (guid_already_parsed(device, gblock[i].guid))
++		if (guid_already_parsed(device, &gblock[i].guid))
+ 			continue;
+ 
+ 		wblock = kzalloc(sizeof(struct wmi_block), GFP_KERNEL);
+@@ -1218,7 +1218,7 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		retval = device_add(&wblock->dev.dev);
+ 		if (retval) {
+ 			dev_err(wmi_bus_dev, "failed to register %pUL\n",
+-				wblock->gblock.guid);
++				&wblock->gblock.guid);
+ 			if (debug_event)
+ 				wmi_method_enable(wblock, 0);
+ 			list_del(&wblock->list);
+@@ -1332,7 +1332,7 @@ static void acpi_wmi_notify_handler(acpi_handle handle, u32 event,
  	}
  
- 	return 0;
+ 	if (debug_event)
+-		pr_info("DEBUG Event GUID: %pUL\n", wblock->gblock.guid);
++		pr_info("DEBUG Event GUID: %pUL\n", &wblock->gblock.guid);
+ 
+ 	acpi_bus_generate_netlink_event(
+ 		wblock->acpi_device->pnp.device_class,
 -- 
 2.39.2
 
