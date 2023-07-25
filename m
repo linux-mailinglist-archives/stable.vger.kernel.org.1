@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C4DC76150A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B7876119C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234557AbjGYLZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34326 "EHLO
+        id S232375AbjGYKxl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234554AbjGYLZB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:01 -0400
+        with ESMTP id S232465AbjGYKwl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7538899
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80ACC2684
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13539615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212F9C433C7;
-        Tue, 25 Jul 2023 11:24:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F0B761655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B188C433C8;
+        Tue, 25 Jul 2023 10:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284299;
-        bh=kAdIPoXISoq456+JMhGrPGLjtPKRLYA7ZLrqhBGAkkY=;
+        s=korg; t=1690282296;
+        bh=cG1lRn/5KJzvmgZc9fInGQG8X2KtbjDUXQ0m7WQClCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dj35ZwaNFyZ2u22OvoPMx/SrlaEUgCbt50TGjUUIisaQsBnpaVN8NgUrlXp8xSiJJ
-         3H4u3YDkLYuoBttdqugKOebGk+9cf+Zr+D5P5JHJ3TvsmVFu8I+zKZJfDyVKq9S4hf
-         UMQ6gup3cw3KNNeAvFbxivfDDaylc20dNqhd69dk=
+        b=mxli+r2NflprMfV+Puy1jbHIP7UfaAb6y2Ovwhwa5nSacNKLPTCQsi7qJiUi+fGSe
+         ORzV43uq5JSgcy7oUbzD0IXqh9BaH1NGoEhrhWGO6EEmgD3Dkp7toeEzS7qLlwKCEt
+         uOn4U8GXOu2Imv/v0ANa56xuLAIcVaJvrfgChBAo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 306/509] fs: no need to check source
-Date:   Tue, 25 Jul 2023 12:44:05 +0200
-Message-ID: <20230725104607.750970311@linuxfoundation.org>
+        patches@lists.linux.dev, Ye Bin <yebin10@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 079/227] [PATCH AUTOSEL 5.4 04/12] quota: fix warning in dqgrab()
+Date:   Tue, 25 Jul 2023 12:44:06 +0200
+Message-ID: <20230725104518.035117611@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +54,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+[ Upstream commit d6a95db3c7ad160bc16b89e36449705309b52bcb ]
 
-commit 66d8fc0539b0d49941f313c9509a8384e4245ac1 upstream.
+There's issue as follows when do fault injection:
+WARNING: CPU: 1 PID: 14870 at include/linux/quotaops.h:51 dquot_disable+0x13b7/0x18c0
+Modules linked in:
+CPU: 1 PID: 14870 Comm: fsconfig Not tainted 6.3.0-next-20230505-00006-g5107a9c821af-dirty #541
+RIP: 0010:dquot_disable+0x13b7/0x18c0
+RSP: 0018:ffffc9000acc79e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88825e41b980
+RDX: 0000000000000000 RSI: ffff88825e41b980 RDI: 0000000000000002
+RBP: ffff888179f68000 R08: ffffffff82087ca7 R09: 0000000000000000
+R10: 0000000000000001 R11: ffffed102f3ed026 R12: ffff888179f68130
+R13: ffff888179f68110 R14: dffffc0000000000 R15: ffff888179f68118
+FS:  00007f450a073740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe96f2efd8 CR3: 000000025c8ad000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ dquot_load_quota_sb+0xd53/0x1060
+ dquot_resume+0x172/0x230
+ ext4_reconfigure+0x1dc6/0x27b0
+ reconfigure_super+0x515/0xa90
+ __x64_sys_fsconfig+0xb19/0xd20
+ do_syscall_64+0x39/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-The @source inode must be valid. It is even checked via IS_SWAPFILE()
-above making it pretty clear. So no need to check it when we unlock.
+Above issue may happens as follows:
+ProcessA              ProcessB                    ProcessC
+sys_fsconfig
+  vfs_fsconfig_locked
+   reconfigure_super
+     ext4_remount
+      dquot_suspend -> suspend all type quota
 
-What doesn't need to exist is the @target inode. The lock_two_inodes()
-helper currently swaps the @inode1 and @inode2 arguments if @inode1 is
-NULL to have consistent lock class usage. However, we know that at least
-for vfs_rename() that @inode1 is @source and thus is never NULL as per
-above. We also know that @source is a different inode than @target as
-that is checked right at the beginning of vfs_rename(). So we know that
-@source is valid and locked and that @target is locked. So drop the
-check whether @source is non-NULL.
+                 sys_fsconfig
+                  vfs_fsconfig_locked
+                    reconfigure_super
+                     ext4_remount
+                      dquot_resume
+                       ret = dquot_load_quota_sb
+                        add_dquot_ref
+                                           do_open  -> open file O_RDWR
+                                            vfs_open
+                                             do_dentry_open
+                                              get_write_access
+                                               atomic_inc_unless_negative(&inode->i_writecount)
+                                              ext4_file_open
+                                               dquot_file_open
+                                                dquot_initialize
+                                                  __dquot_initialize
+                                                   dqget
+						    atomic_inc(&dquot->dq_count);
 
-Fixes: 28eceeda130f ("fs: Lock moved directories")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202307030026.9sE2pk2x-lkp@intel.com
-Message-Id: <20230703-vfs-rename-source-v1-1-37eebb29b65b@kernel.org>
-[brauner: use commit message from patch I sent concurrently]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+                          __dquot_initialize
+                           __dquot_initialize
+                            dqget
+                             if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+                               ext4_acquire_dquot
+			        -> Return error DQ_ACTIVE_B flag isn't set
+                         dquot_disable
+			  invalidate_dquots
+			   if (atomic_read(&dquot->dq_count))
+	                    dqgrab
+			     WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+	                      -> Trigger warning
+
+In the above scenario, 'dquot->dq_flags' has no DQ_ACTIVE_B is normal when
+dqgrab().
+To solve above issue just replace the dqgrab() use in invalidate_dquots() with
+atomic_inc(&dquot->dq_count).
+
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230605140731.2427629-3-yebin10@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namei.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/quota/dquot.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -4394,8 +4394,7 @@ int vfs_rename(struct inode *old_dir, st
- 			d_exchange(old_dentry, new_dentry);
- 	}
- out:
--	if (source)
--		inode_unlock(source);
-+	inode_unlock(source);
- 	if (target)
- 		inode_unlock(target);
- 	dput(new_dentry);
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -555,7 +555,7 @@ restart:
+ 			continue;
+ 		/* Wait for dquot users */
+ 		if (atomic_read(&dquot->dq_count)) {
+-			dqgrab(dquot);
++			atomic_inc(&dquot->dq_count);
+ 			spin_unlock(&dq_list_lock);
+ 			/*
+ 			 * Once dqput() wakes us up, we know it's time to free
 
 
