@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EB2476172C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AF7A7615B1
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231886AbjGYLpm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:45:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53438 "EHLO
+        id S234661AbjGYLcD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:32:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231126AbjGYLpl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BACA0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:41 -0700 (PDT)
+        with ESMTP id S234655AbjGYLcB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1B5F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3C9661698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1951C433C8;
-        Tue, 25 Jul 2023 11:45:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B177616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB49C433C7;
+        Tue, 25 Jul 2023 11:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285540;
-        bh=vWHef46qcdlYOvGvS13EIIo48y9FXxw+UjZebpaZVbc=;
+        s=korg; t=1690284715;
+        bh=qYbDD+a9cXTp5yjAjoNjoJZIPLLE/xIlfna+VD73tWc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ymgi0x6wjOOEn+Ys4E+z7F+mE90CfQ+G+DDV5Q5xksrhGA2JsGhrayhclFGSY2mAH
-         gs1L5hMxbon7KYiqaFLM9t8tCeBciiukRNvBsKzWvwkbbiOuDf3hM9liDJNvHPp66u
-         8OyOBodoL6srSITcVuS/+zOr1QOAafqmIcyD1Tzg=
+        b=LWhDjYkoECwB4ctA8u8VYQv1KoqM886uW2XG6fj5zNkSGV+6MIZsIGTn1N9R24JRp
+         4pG63hO0i8kTmSp3Rs+6uwWy6jM/wvbmeLQpEsJnvO/ZTE/ZuZVnaQPSJfHQI5i1XV
+         fRbMR4guLh4otjj7vW2RQoGFroy5mCmP4w46AYWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Zary <linux@zary.sk>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.4 241/313] PCI/PM: Avoid putting EloPOS E2/S2/H2 PCIe Ports in D3cold
+        patches@lists.linux.dev,
+        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 455/509] debugobjects: Recheck debug_objects_enabled before reporting
 Date:   Tue, 25 Jul 2023 12:46:34 +0200
-Message-ID: <20230725104531.497788256@linuxfoundation.org>
+Message-ID: <20230725104614.564398429@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,46 +57,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ondrej Zary <linux@zary.sk>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 9e30fd26f43b89cb6b4e850a86caa2e50dedb454 upstream.
+[ Upstream commit 8b64d420fe2450f82848178506d3e3a0bd195539 ]
 
-The quirk for Elo i2 introduced in commit 92597f97a40b ("PCI/PM: Avoid
-putting Elo i2 PCIe Ports in D3cold") is also needed by EloPOS E2/S2/H2
-which uses the same Continental Z2 board.
+syzbot is reporting false a positive ODEBUG message immediately after
+ODEBUG was disabled due to OOM.
 
-Change the quirk to match the board instead of system.
+  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
+  [ 1062.886755][ T5171] ------------[ cut here ]------------
+  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215715
-Link: https://lore.kernel.org/r/20230614074253.22318-1-linux@zary.sk
-Signed-off-by: Ondrej Zary <linux@zary.sk>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  CPU 0 [ T5171]                CPU 1 [T22911]
+  --------------                --------------
+  debug_object_assert_init() {
+    if (!debug_objects_enabled)
+      return;
+    db = get_bucket(addr);
+                                lookup_object_or_alloc() {
+                                  debug_objects_enabled = 0;
+                                  return NULL;
+                                }
+                                debug_objects_oom() {
+                                  pr_warn("Out of memory. ODEBUG disabled\n");
+                                  // all buckets get emptied here, and
+                                }
+    lookup_object_or_alloc(addr, db, descr, false, true) {
+      // this bucket is already empty.
+      return ERR_PTR(-ENOENT);
+    }
+    // Emits false positive warning.
+    debug_print_object(&o, "assert_init");
+  }
+
+Recheck debug_object_enabled in debug_print_object() to avoid that.
+
+Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ lib/debugobjects.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2617,13 +2617,13 @@ static const struct dmi_system_id bridge
- 	{
- 		/*
- 		 * Downstream device is not accessible after putting a root port
--		 * into D3cold and back into D0 on Elo i2.
-+		 * into D3cold and back into D0 on Elo Continental Z2 board
- 		 */
--		.ident = "Elo i2",
-+		.ident = "Elo Continental Z2",
- 		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Elo Touch Solutions"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Elo i2"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "RevB"),
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Elo Touch Solutions"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Geminilake"),
-+			DMI_MATCH(DMI_BOARD_VERSION, "Continental Z2"),
- 		},
- 	},
- #endif
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 4c39678c03ee5..4dd9283f6fea0 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -501,6 +501,15 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
+ 	const struct debug_obj_descr *descr = obj->descr;
+ 	static int limit;
+ 
++	/*
++	 * Don't report if lookup_object_or_alloc() by the current thread
++	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
++	 * concurrent thread turned off debug_objects_enabled and cleared
++	 * the hash buckets.
++	 */
++	if (!debug_objects_enabled)
++		return;
++
+ 	if (limit < 5 && descr != descr_test) {
+ 		void *hint = descr->debug_hint ?
+ 			descr->debug_hint(obj->object) : NULL;
+-- 
+2.39.2
+
 
 
