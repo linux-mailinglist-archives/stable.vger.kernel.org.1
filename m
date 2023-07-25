@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B080B7616F5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDD676122F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235055AbjGYLoZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52170 "EHLO
+        id S233822AbjGYK75 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235099AbjGYLnw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:52 -0400
+        with ESMTP id S233405AbjGYK7i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2A11BD8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E72192136
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF47F615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0483C433C8;
-        Tue, 25 Jul 2023 11:43:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C8B06166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E393C433C8;
+        Tue, 25 Jul 2023 10:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285429;
-        bh=8GAmZO/WqNL3QSuzG71YUw7pfjZGk59m96FiseWY6EY=;
+        s=korg; t=1690282605;
+        bh=qQwSVXBDosH+ASN5sxRAD8udlYpbP+LkBtnoT2t09SI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yp4XYsADTFXaF2nvpo46FgOHdzPiPNUgVWW04Ny5mjAftyMdfDwLiqjnfIi7PPgQP
-         MUU1w3ejGzCjYzztUjVCuBKcrYTVJVLaLYMvH2w2hM2QY74VBXhdaGdR34lpNUnIYM
-         siOqn3hvvq4J217MHNMxzaSZi27ijXLOHvcNoazM=
+        b=kqZrwFu0Hmg+Y0RyORk5kMkr5DR0bHS6LQwPDcBPlXGTLMN1UMOzwYmvz65jDJKxo
+         pkWKN8PIAYM16HVLhdaR3sf59FusbvBi/gxvDEPuealdiz3MiJeXFdLNQ5Xr75K8/L
+         LtuzoJizDDHW+rQ44ggegh732+/LjmOl+29gVHYw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, M A Ramdhan <ramdhan@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 202/313] net/sched: cls_fw: Fix improper refcount update leads to use-after-free
+Subject: [PATCH 6.4 188/227] net: ipv4: Use kfree_sensitive instead of kfree
 Date:   Tue, 25 Jul 2023 12:45:55 +0200
-Message-ID: <20230725104529.748573505@linuxfoundation.org>
+Message-ID: <20230725104522.590435520@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,59 +57,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: M A Ramdhan <ramdhan@starlabs.sg>
+From: Wang Ming <machel@vivo.com>
 
-[ Upstream commit 0323bce598eea038714f941ce2b22541c46d488f ]
+[ Upstream commit daa751444fd9d4184270b1479d8af49aaf1a1ee6 ]
 
-In the event of a failure in tcf_change_indev(), fw_set_parms() will
-immediately return an error after incrementing or decrementing
-reference counter in tcf_bind_filter().  If attacker can control
-reference counter to zero and make reference freed, leading to
-use after free.
+key might contain private part of the key, so better use
+kfree_sensitive to free it.
 
-In order to prevent this, move the point of possible failure above the
-point where the TC_FW_CLASSID is handled.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
-Signed-off-by: M A Ramdhan <ramdhan@starlabs.sg>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Message-ID: <20230705161530.52003-1-ramdhan@starlabs.sg>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 38320c70d282 ("[IPSEC]: Use crypto_aead and authenc in ESP")
+Signed-off-by: Wang Ming <machel@vivo.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_fw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/ipv4/esp4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index ec945294626a8..41f0898a5a565 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -210,11 +210,6 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
- 	if (err < 0)
- 		return err;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index ba06ed42e4284..2be2d49225573 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -1132,7 +1132,7 @@ static int esp_init_authenc(struct xfrm_state *x,
+ 	err = crypto_aead_setkey(aead, key, keylen);
  
--	if (tb[TCA_FW_CLASSID]) {
--		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
--		tcf_bind_filter(tp, &f->res, base);
--	}
--
- 	if (tb[TCA_FW_INDEV]) {
- 		int ret;
- 		ret = tcf_change_indev(net, tb[TCA_FW_INDEV], extack);
-@@ -231,6 +226,11 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
- 	} else if (head->mask != 0xFFFFFFFF)
- 		return err;
+ free_key:
+-	kfree(key);
++	kfree_sensitive(key);
  
-+	if (tb[TCA_FW_CLASSID]) {
-+		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
-+		tcf_bind_filter(tp, &f->res, base);
-+	}
-+
- 	return 0;
- }
- 
+ error:
+ 	return err;
 -- 
 2.39.2
 
