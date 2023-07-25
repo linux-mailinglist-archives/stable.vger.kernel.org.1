@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 328897612D6
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56897761719
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233949AbjGYLF4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
+        id S232533AbjGYLpG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:45:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233950AbjGYLFg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:36 -0400
+        with ESMTP id S232235AbjGYLoy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 115D72D48
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D863519AA;
+        Tue, 25 Jul 2023 04:44:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D45F615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A521C433C8;
-        Tue, 25 Jul 2023 11:03:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 760B16167D;
+        Tue, 25 Jul 2023 11:44:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886ABC433C8;
+        Tue, 25 Jul 2023 11:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283019;
-        bh=Z7sx/LMlKsKlgi0b4nfdQzVv+Hg1vujGoc5aCpjkY1U=;
+        s=korg; t=1690285492;
+        bh=VUvXtD3mAsd9SvWK99293oMfKo3EXSfZIzqDTE+w2PI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wOQ0nxQu0FUmAxFLC5HHYruXgbwhJH5QCj2MEUwYOrvzIuOiWCU/T6OYJt6fUX4Jf
-         vdyOQh9XVxbDh3YPKjPwo4lmo2wqaj6LLTynK/2KJpVlWcMjmb+d/PWgGpY98htoMv
-         mqTbcrt5Dn93jtgLNB9j+ihZe0ubec/Z5YRwYZ6I=
+        b=c2XZbQNrIuJwEbMOJ+l2EnoMVcKsGA4ZDMSIP1iBWNz2m+UCiDslUe1dYNuemKsMU
+         X979oc17SzB/3x0wVoYi8LUXjWbHSR0SC8u00EzceDMtqjgyonrTuLqnqUc7rY3kOe
+         Y8KnG9xqXd2eslUFWDia/SaSDNJNi2NtPOdgsBdU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Victor Nogueira <victor@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/183] net: sched: cls_matchall: Undo tcf_bind_filter in case of failure after mall_set_parms
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 185/313] netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
 Date:   Tue, 25 Jul 2023 12:45:38 +0200
-Message-ID: <20230725104511.931236420@linuxfoundation.org>
+Message-ID: <20230725104528.969552442@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,97 +53,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit b3d0e0489430735e2e7626aa37e6462cdd136e9d ]
+[ 26b5a5712eb85e253724e56a54c17f8519bd8e4e ]
 
-In case an error occurred after mall_set_parms executed successfully, we
-must undo the tcf_bind_filter call it issues.
+Add a new state to deal with rule expressions deactivation from the
+newrule error path, otherwise the anonymous set remains in the list in
+inactive state for the next generation. Mark the set/chain transaction
+as unbound so the abort path releases this object, set it as inactive in
+the next generation so it is not reachable anymore from this transaction
+and reference counter is dropped.
 
-Fix that by calling tcf_unbind_filter in err_replace_hw_filter label.
-
-Fixes: ec2507d2a306 ("net/sched: cls_matchall: Fix error path")
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_matchall.c | 35 ++++++++++++-----------------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
+ include/net/netfilter/nf_tables.h |    1 +
+ net/netfilter/nf_tables_api.c     |   27 +++++++++++++++++++++++----
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/cls_matchall.c b/net/sched/cls_matchall.c
-index 39a5d9c170def..43f8df5847414 100644
---- a/net/sched/cls_matchall.c
-+++ b/net/sched/cls_matchall.c
-@@ -157,26 +157,6 @@ static const struct nla_policy mall_policy[TCA_MATCHALL_MAX + 1] = {
- 	[TCA_MATCHALL_FLAGS]		= { .type = NLA_U32 },
- };
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -756,6 +756,7 @@ struct nft_expr_type {
  
--static int mall_set_parms(struct net *net, struct tcf_proto *tp,
--			  struct cls_mall_head *head,
--			  unsigned long base, struct nlattr **tb,
--			  struct nlattr *est, u32 flags, u32 fl_flags,
--			  struct netlink_ext_ack *extack)
--{
--	int err;
--
--	err = tcf_exts_validate_ex(net, tp, tb, est, &head->exts, flags,
--				   fl_flags, extack);
--	if (err < 0)
--		return err;
--
--	if (tb[TCA_MATCHALL_CLASSID]) {
--		head->res.classid = nla_get_u32(tb[TCA_MATCHALL_CLASSID]);
--		tcf_bind_filter(tp, &head->res, base);
--	}
--	return 0;
--}
--
- static int mall_change(struct net *net, struct sk_buff *in_skb,
- 		       struct tcf_proto *tp, unsigned long base,
- 		       u32 handle, struct nlattr **tca,
-@@ -185,6 +165,7 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
+ enum nft_trans_phase {
+ 	NFT_TRANS_PREPARE,
++	NFT_TRANS_PREPARE_ERROR,
+ 	NFT_TRANS_ABORT,
+ 	NFT_TRANS_COMMIT,
+ 	NFT_TRANS_RELEASE
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -137,7 +137,8 @@ static void nft_trans_destroy(struct nft
+ 	kfree(trans);
+ }
+ 
+-static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
++				 bool bind)
  {
- 	struct cls_mall_head *head = rtnl_dereference(tp->root);
- 	struct nlattr *tb[TCA_MATCHALL_MAX + 1];
-+	bool bound_to_filter = false;
- 	struct cls_mall_head *new;
- 	u32 userflags = 0;
- 	int err;
-@@ -224,11 +205,17 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
- 		goto err_alloc_percpu;
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -151,16 +152,26 @@ static void nft_set_trans_bind(const str
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWSET:
+ 			if (nft_trans_set(trans) == set)
+-				nft_trans_set_bound(trans) = true;
++				nft_trans_set_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+ 			if (nft_trans_elem_set(trans) == set)
+-				nft_trans_elem_set_bound(trans) = true;
++				nft_trans_elem_set_bound(trans) = bind;
+ 			break;
+ 		}
  	}
+ }
  
--	err = mall_set_parms(net, tp, new, base, tb, tca[TCA_RATE],
--			     flags, new->flags, extack);
--	if (err)
-+	err = tcf_exts_validate_ex(net, tp, tb, tca[TCA_RATE],
-+				   &new->exts, flags, new->flags, extack);
-+	if (err < 0)
- 		goto err_set_parms;
- 
-+	if (tb[TCA_MATCHALL_CLASSID]) {
-+		new->res.classid = nla_get_u32(tb[TCA_MATCHALL_CLASSID]);
-+		tcf_bind_filter(tp, &new->res, base);
-+		bound_to_filter = true;
-+	}
++static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, true);
++}
 +
- 	if (!tc_skip_hw(new->flags)) {
- 		err = mall_replace_hw_filter(tp, new, (unsigned long)new,
- 					     extack);
-@@ -244,6 +231,8 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
- 	return 0;
++static void nft_set_trans_unbind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, false);
++}
++
+ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *trans)
+ {
+ 	struct nftables_pernet *nft_net;
+@@ -2939,7 +2950,7 @@ static int nf_tables_newrule(struct net
  
- err_replace_hw_filter:
-+	if (bound_to_filter)
-+		tcf_unbind_filter(tp, &new->res);
- err_set_parms:
- 	free_percpu(new->pf);
- err_alloc_percpu:
--- 
-2.39.2
-
+ 	return 0;
+ err2:
+-	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+ 	nf_tables_rule_destroy(&ctx, rule);
+ err1:
+ 	for (i = 0; i < n; i++) {
+@@ -3959,6 +3970,13 @@ void nf_tables_deactivate_set(const stru
+ 			      enum nft_trans_phase phase)
+ {
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
++		nft_set_trans_unbind(ctx, set);
++		if (nft_set_is_anonymous(set))
++			nft_deactivate_next(ctx->net, set);
++
++		set->use--;
++		break;
+ 	case NFT_TRANS_PREPARE:
+ 		if (nft_set_is_anonymous(set))
+ 			nft_deactivate_next(ctx->net, set);
+@@ -5724,6 +5742,7 @@ void nf_tables_deactivate_flowtable(cons
+ 				    enum nft_trans_phase phase)
+ {
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
+ 	case NFT_TRANS_PREPARE:
+ 	case NFT_TRANS_ABORT:
+ 	case NFT_TRANS_RELEASE:
 
 
