@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC8D776122B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5BD7616FF
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233799AbjGYK7y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:59:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35980 "EHLO
+        id S235020AbjGYLoX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232326AbjGYK7a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16D41FF3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:35 -0700 (PDT)
+        with ESMTP id S235055AbjGYLnu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D801BE1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5080461656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A9BC433C7;
-        Tue, 25 Jul 2023 10:56:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78362616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AD4C433C9;
+        Tue, 25 Jul 2023 11:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282594;
-        bh=SqjiS7pFXRAnjlntQamOYggifF7cVL7N1pNqB2IEzL4=;
+        s=korg; t=1690285420;
+        bh=6RSC/1Um4v/gX+v3CBYYV17yXwAw6TpPCRfnfjf++KY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uisGxhkl/NBHOJz3o69smqRleixMGfDS7RzLCdSF50ihE570h1S+MgK2KZ0xvLQqu
-         Ap1xVe6StsxGyuAHnmUzESBNW410AdXkJUJTpTNEkBtvwXuxRuKc/mAYiMAibvp0We
-         i4DePyhauNt8jf07UZp++Zxsk1js2y1u5xo3K+U8=
+        b=oqm/ZewqsJjNjYviSERPezP0pmvNPtZuC5jqWn9/vdkriVfbsKQvFwf+5WdK3LOuR
+         18Ao6EMw8A5m0xdND766TJf1RR/5yKZdSMYf7+JBDNlRDIWGSpRlvd0V2YrZxiefDY
+         o92Ut+g+iIPSIXLaX1aZzX7ep4YuJl6+VBLarBBo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Antoine Tenart <atenart@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Prasad Koya <prasad@arista.com>,
+        Sasha Neftin <sasha.neftin@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 185/227] net: ipv4: use consistent txhash in TIME_WAIT and SYN_RECV
+Subject: [PATCH 5.4 199/313] igc: set TP bit in supported and advertising fields of ethtool_link_ksettings
 Date:   Tue, 25 Jul 2023 12:45:52 +0200
-Message-ID: <20230725104522.483559579@linuxfoundation.org>
+Message-ID: <20230725104529.630251269@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,132 +57,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Prasad Koya <prasad@arista.com>
 
-[ Upstream commit c0a8966e2bc7d31f77a7246947ebc09c1ff06066 ]
+[ Upstream commit 9ac3fc2f42e5ffa1e927dcbffb71b15fa81459e2 ]
 
-When using IPv4/TCP, skb->hash comes from sk->sk_txhash except in
-TIME_WAIT and SYN_RECV where it's not set in the reply skb from
-ip_send_unicast_reply. Those packets will have a mismatched hash with
-others from the same flow as their hashes will be 0. IPv6 does not have
-the same issue as the hash is set from the socket txhash in those cases.
+set TP bit in the 'supported' and 'advertising' fields. i225/226 parts
+only support twisted pair copper.
 
-This commits sets the hash in the reply skb from ip_send_unicast_reply,
-which makes the IPv4 code behaving like IPv6.
-
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 5e5265522a9a ("tcp: annotate data-races around tcp_rsk(req)->txhash")
+Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
+Signed-off-by: Prasad Koya <prasad@arista.com>
+Acked-by: Sasha Neftin <sasha.neftin@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h     |  2 +-
- net/ipv4/ip_output.c |  4 +++-
- net/ipv4/tcp_ipv4.c  | 14 +++++++++-----
- 3 files changed, 13 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index acec504c469a0..83a1a9bc3ceb1 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -282,7 +282,7 @@ void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
- 			   const struct ip_options *sopt,
- 			   __be32 daddr, __be32 saddr,
- 			   const struct ip_reply_arg *arg,
--			   unsigned int len, u64 transmit_time);
-+			   unsigned int len, u64 transmit_time, u32 txhash);
+diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+index cbcb8611ab50d..0a4e7f5f292ac 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
++++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+@@ -1668,6 +1668,8 @@ static int igc_get_link_ksettings(struct net_device *netdev,
+ 	/* twisted pair */
+ 	cmd->base.port = PORT_TP;
+ 	cmd->base.phy_address = hw->phy.addr;
++	ethtool_link_ksettings_add_link_mode(cmd, supported, TP);
++	ethtool_link_ksettings_add_link_mode(cmd, advertising, TP);
  
- #define IP_INC_STATS(net, field)	SNMP_INC_STATS64((net)->mib.ip_statistics, field)
- #define __IP_INC_STATS(net, field)	__SNMP_INC_STATS64((net)->mib.ip_statistics, field)
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 61892268e8a6c..a1bead441026e 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -1692,7 +1692,7 @@ void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
- 			   const struct ip_options *sopt,
- 			   __be32 daddr, __be32 saddr,
- 			   const struct ip_reply_arg *arg,
--			   unsigned int len, u64 transmit_time)
-+			   unsigned int len, u64 transmit_time, u32 txhash)
- {
- 	struct ip_options_data replyopts;
- 	struct ipcm_cookie ipc;
-@@ -1755,6 +1755,8 @@ void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
- 								arg->csum));
- 		nskb->ip_summed = CHECKSUM_NONE;
- 		nskb->mono_delivery_time = !!transmit_time;
-+		if (txhash)
-+			skb_set_hash(nskb, txhash, PKT_HASH_TYPE_L4);
- 		ip_push_pending_frames(sk, &fl4);
- 	}
- out:
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 434e5f0c8b99d..a64069077e388 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -692,6 +692,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 	u64 transmit_time = 0;
- 	struct sock *ctl_sk;
- 	struct net *net;
-+	u32 txhash = 0;
- 
- 	/* Never send a reset in response to a reset. */
- 	if (th->rst)
-@@ -829,6 +830,8 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 				   inet_twsk(sk)->tw_priority : sk->sk_priority;
- 		transmit_time = tcp_transmit_time(sk);
- 		xfrm_sk_clone_policy(ctl_sk, sk);
-+		txhash = (sk->sk_state == TCP_TIME_WAIT) ?
-+			 inet_twsk(sk)->tw_txhash : sk->sk_txhash;
- 	} else {
- 		ctl_sk->sk_mark = 0;
- 		ctl_sk->sk_priority = 0;
-@@ -837,7 +840,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 			      skb, &TCP_SKB_CB(skb)->header.h4.opt,
- 			      ip_hdr(skb)->saddr, ip_hdr(skb)->daddr,
- 			      &arg, arg.iov[0].iov_len,
--			      transmit_time);
-+			      transmit_time, txhash);
- 
- 	xfrm_sk_free_policy(ctl_sk);
- 	sock_net_set(ctl_sk, &init_net);
-@@ -859,7 +862,7 @@ static void tcp_v4_send_ack(const struct sock *sk,
- 			    struct sk_buff *skb, u32 seq, u32 ack,
- 			    u32 win, u32 tsval, u32 tsecr, int oif,
- 			    struct tcp_md5sig_key *key,
--			    int reply_flags, u8 tos)
-+			    int reply_flags, u8 tos, u32 txhash)
- {
- 	const struct tcphdr *th = tcp_hdr(skb);
- 	struct {
-@@ -935,7 +938,7 @@ static void tcp_v4_send_ack(const struct sock *sk,
- 			      skb, &TCP_SKB_CB(skb)->header.h4.opt,
- 			      ip_hdr(skb)->saddr, ip_hdr(skb)->daddr,
- 			      &arg, arg.iov[0].iov_len,
--			      transmit_time);
-+			      transmit_time, txhash);
- 
- 	sock_net_set(ctl_sk, &init_net);
- 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
-@@ -955,7 +958,8 @@ static void tcp_v4_timewait_ack(struct sock *sk, struct sk_buff *skb)
- 			tw->tw_bound_dev_if,
- 			tcp_twsk_md5_key(tcptw),
- 			tw->tw_transparent ? IP_REPLY_ARG_NOSRCCHECK : 0,
--			tw->tw_tos
-+			tw->tw_tos,
-+			tw->tw_txhash
- 			);
- 
- 	inet_twsk_put(tw);
-@@ -988,7 +992,7 @@ static void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
- 			0,
- 			tcp_md5_do_lookup(sk, l3index, addr, AF_INET),
- 			inet_rsk(req)->no_srccheck ? IP_REPLY_ARG_NOSRCCHECK : 0,
--			ip_hdr(skb)->tos);
-+			ip_hdr(skb)->tos, tcp_rsk(req)->txhash);
- }
- 
- /*
+ 	/* advertising link modes */
+ 	if (hw->phy.autoneg_advertised & ADVERTISE_10_HALF)
 -- 
 2.39.2
 
