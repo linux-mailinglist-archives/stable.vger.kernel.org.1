@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2662876164D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 488BC7614F5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234870AbjGYLiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45430 "EHLO
+        id S234519AbjGYLYK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:24:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234976AbjGYLiH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9FE1B8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:53 -0700 (PDT)
+        with ESMTP id S234524AbjGYLYJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12F919F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF48D616A2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B6EC433C8;
-        Tue, 25 Jul 2023 11:37:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48D3C615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B751C433C7;
+        Tue, 25 Jul 2023 11:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285072;
-        bh=WLyTltq15+uzAKupUJtsUwCi0KzfcH+ng1AdC8XKEbA=;
+        s=korg; t=1690284246;
+        bh=057Tf7Ddrff3EHdjjBGGd5b0ISMrwV/Wq1xGAUWrJGM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lzotKhrupcA0n2RHJgU2VN3iPXV5OxnnyFNYR7tbenmYQL/qwxaJzHyG+7B2SIxil
-         NIeyY6MMaVdQogTr5TF1Eeh7o9L0iX+off/ceOhF/Xg6U+GZpA7KCxUxOBO48fi6Yg
-         /ISnYysQqh3z/eJThe/vJP4yM8po3cof8TRwWCS8=
+        b=oe/rZGEM+bHAwxqi/wx2zM2CURsfjA5Ih2bcifXavdV5WwXULoEoVvYxebZUEBvd6
+         Lxzmi2ZFkAgqB1OBulCK7aVqksslCVINmRLV8H7KnCeErWrYO7kjen15nRP9HhtoRt
+         FoKwql9uaVqTLAHcAjnSKD6x/BZEFTWec8RYzd1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 074/313] Input: adxl34x - do not hardcode interrupt trigger type
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Coly Li <colyli@suse.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 288/509] bcache: Remove unnecessary NULL point check in node allocations
 Date:   Tue, 25 Jul 2023 12:43:47 +0200
-Message-ID: <20230725104524.164942351@linuxfoundation.org>
+Message-ID: <20230725104606.918815792@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,39 +54,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit e96220bce5176ed2309f77f061dcc0430b82b25e ]
+commit 028ddcac477b691dd9205c92f991cc15259d033e upstream.
 
-Instead of hardcoding IRQ trigger type to IRQF_TRIGGER_HIGH, let's
-respect the settings specified in the firmware description.
+Due to the previous fix of __bch_btree_node_alloc, the return value will
+never be a NULL pointer. So IS_ERR is enough to handle the failure
+situation. Fix it by replacing IS_ERR_OR_NULL check by an IS_ERR check.
 
-Fixes: e27c729219ad ("Input: add driver for ADXL345/346 Digital Accelerometers")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Acked-by: Michael Hennerich <michael.hennerich@analog.com>
-Link: https://lore.kernel.org/r/20230509203555.549158-1-marex@denx.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cafe56359144 ("bcache: A block layer cache")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20230615121223.22502-5-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/adxl34x.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/md/bcache/btree.c |   10 +++++-----
+ drivers/md/bcache/super.c |    4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/input/misc/adxl34x.c b/drivers/input/misc/adxl34x.c
-index 4cc4e8ff42b33..ad035c342cd3b 100644
---- a/drivers/input/misc/adxl34x.c
-+++ b/drivers/input/misc/adxl34x.c
-@@ -811,8 +811,7 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
- 	AC_WRITE(ac, POWER_CTL, 0);
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1138,7 +1138,7 @@ static struct btree *btree_node_alloc_re
+ {
+ 	struct btree *n = bch_btree_node_alloc(b->c, op, b->level, b->parent);
  
- 	err = request_threaded_irq(ac->irq, NULL, adxl34x_irq,
--				   IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--				   dev_name(dev), ac);
-+				   IRQF_ONESHOT, dev_name(dev), ac);
- 	if (err) {
- 		dev_err(dev, "irq %d busy?\n", ac->irq);
- 		goto err_free_mem;
--- 
-2.39.2
-
+-	if (!IS_ERR_OR_NULL(n)) {
++	if (!IS_ERR(n)) {
+ 		mutex_lock(&n->write_lock);
+ 		bch_btree_sort_into(&b->keys, &n->keys, &b->c->sort);
+ 		bkey_copy_key(&n->key, &b->key);
+@@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(struct btre
+ 	memset(new_nodes, 0, sizeof(new_nodes));
+ 	closure_init_stack(&cl);
+ 
+-	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
++	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
+ 		keys += r[nodes++].keys;
+ 
+ 	blocks = btree_default_blocks(b->c) * 2 / 3;
+@@ -1352,7 +1352,7 @@ static int btree_gc_coalesce(struct btre
+ 
+ 	for (i = 0; i < nodes; i++) {
+ 		new_nodes[i] = btree_node_alloc_replacement(r[i].b, NULL);
+-		if (IS_ERR_OR_NULL(new_nodes[i]))
++		if (IS_ERR(new_nodes[i]))
+ 			goto out_nocoalesce;
+ 	}
+ 
+@@ -1487,7 +1487,7 @@ out_nocoalesce:
+ 	bch_keylist_free(&keylist);
+ 
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR_OR_NULL(new_nodes[i])) {
++		if (!IS_ERR(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
+ 		}
+@@ -1669,7 +1669,7 @@ static int bch_btree_gc_root(struct btre
+ 	if (should_rewrite) {
+ 		n = btree_node_alloc_replacement(b, NULL);
+ 
+-		if (!IS_ERR_OR_NULL(n)) {
++		if (!IS_ERR(n)) {
+ 			bch_btree_node_write_sync(n);
+ 
+ 			bch_btree_set_root(n);
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1748,7 +1748,7 @@ static void cache_set_flush(struct closu
+ 	if (!IS_ERR_OR_NULL(c->gc_thread))
+ 		kthread_stop(c->gc_thread);
+ 
+-	if (!IS_ERR_OR_NULL(c->root))
++	if (!IS_ERR(c->root))
+ 		list_add(&c->root->list, &c->btree_cache);
+ 
+ 	/*
+@@ -2112,7 +2112,7 @@ static int run_cache_set(struct cache_se
+ 
+ 		err = "cannot allocate new btree root";
+ 		c->root = __bch_btree_node_alloc(c, NULL, 0, true, NULL);
+-		if (IS_ERR_OR_NULL(c->root))
++		if (IS_ERR(c->root))
+ 			goto err;
+ 
+ 		mutex_lock(&c->root->write_lock);
 
 
