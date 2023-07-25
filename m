@@ -2,51 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99CE276139A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CE317615E4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234203AbjGYLL4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
+        id S233076AbjGYLeR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234067AbjGYLLh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A463D3A88
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:11:02 -0700 (PDT)
+        with ESMTP id S234708AbjGYLeO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792F7199D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 274CA61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:11:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35773C433C7;
-        Tue, 25 Jul 2023 11:11:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1874461654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289FBC433C7;
+        Tue, 25 Jul 2023 11:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283461;
-        bh=fRI3sXWtzR95VmZ/f0kadgtIW5pQZhUSUfAsrWef7Q4=;
+        s=korg; t=1690284852;
+        bh=TMjuG92YZ7Q9xdZCo1fVODWXqbPkENVorPTMtKyX6Nw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D0SVyF3iqJwYtUEPXRxdYMs1KTFgVLeX7mx28I5e27xgxAUF5dNRClQcheMCF1R8d
-         1mEkQyDCBV8uHIPtqVt2lq7AEMopASOhCXfZuIzUyvC8nNMvc5moKM7pZVEzWtZKb/
-         fsqZje5hMcKEe55WJflPcWzLjPWWoIwnZAvLUvMw=
+        b=ex48hWM6nbsL9f4ZuSCEGu/aoneocuPT7tgNZp1L8YSfRa8ytUjvHQQyqoYq63o+N
+         RHcp4frHHr1HkEccNtalICFzDzxKw1XbO8Z4N+n3UbbCAyasuEgLcMn4Qg3T7NO+v4
+         SwwOHwYExgwqkYa0Rd6mPxXbdQiNCW1iIgjFxVLE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Nik P <npliashechnikov@gmail.com>,
+        Nathan Schulte <nmschulte@gmail.com>,
+        Friedrich Vock <friedrich.vock@gmx.de>, dridri85@gmail.com,
+        Jan Visser <starquake@linuxeverywhere.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 63/78] netfilter: nf_tables: skip bound chain in netns release path
+Subject: [PATCH 5.10 475/509] pinctrl: amd: Use amd_pinconf_set() for all config options
 Date:   Tue, 25 Jul 2023 12:46:54 +0200
-Message-ID: <20230725104453.713236055@linuxfoundation.org>
+Message-ID: <20230725104615.492570941@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,35 +60,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 751d460ccff3137212f47d876221534bf0490996 ]
+[ Upstream commit 635a750d958e158e17af0f524bedc484b27fbb93 ]
 
-Skip bound chain from netns release path, the rule that owns this chain
-releases these objects.
+On ASUS TUF A16 it is reported that the ITE5570 ACPI device connected to
+GPIO 7 is causing an interrupt storm.  This issue doesn't happen on
+Windows.
 
-Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Comparing the GPIO register configuration between Windows and Linux
+bit 20 has been configured as a pull up on Windows, but not on Linux.
+Checking GPIO declaration from the firmware it is clear it *should* have
+been a pull up on Linux as well.
+
+```
+GpioInt (Level, ActiveLow, Exclusive, PullUp, 0x0000,
+	 "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+{   // Pin list
+0x0007
+}
+```
+
+On Linux amd_gpio_set_config() is currently only used for programming
+the debounce. Actually the GPIO core calls it with all the arguments
+that are supported by a GPIO, pinctrl-amd just responds `-ENOTSUPP`.
+
+To solve this issue expand amd_gpio_set_config() to support the other
+arguments amd_pinconf_set() supports, namely `PIN_CONFIG_BIAS_PULL_DOWN`,
+`PIN_CONFIG_BIAS_PULL_UP`, and `PIN_CONFIG_DRIVE_STRENGTH`.
+
+Reported-by: Nik P <npliashechnikov@gmail.com>
+Reported-by: Nathan Schulte <nmschulte@gmail.com>
+Reported-by: Friedrich Vock <friedrich.vock@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+Reported-by: dridri85@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217493
+Link: https://lore.kernel.org/linux-input/20230530154058.17594-1-friedrich.vock@gmx.de/
+Tested-by: Jan Visser <starquake@linuxeverywhere.org>
+Fixes: 2956b5d94a76 ("pinctrl / gpio: Introduce .set_config() callback for GPIO chips")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230705133005.577-3-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/pinctrl-amd.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f04a69d74cb23..1cf075a4269a4 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10192,6 +10192,9 @@ static void __nft_release_table(struct net *net, struct nft_table *table)
- 	ctx.family = table->family;
- 	ctx.table = table;
- 	list_for_each_entry(chain, &table->chains, list) {
-+		if (nft_chain_is_bound(chain))
-+			continue;
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 0d71151575eef..3a05ebb9aa253 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -189,18 +189,6 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
+ 	return ret;
+ }
+ 
+-static int amd_gpio_set_config(struct gpio_chip *gc, unsigned offset,
+-			       unsigned long config)
+-{
+-	u32 debounce;
+-
+-	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
+-		return -ENOTSUPP;
+-
+-	debounce = pinconf_to_config_argument(config);
+-	return amd_gpio_set_debounce(gc, offset, debounce);
+-}
+-
+ #ifdef CONFIG_DEBUG_FS
+ static void amd_gpio_dbg_show(struct seq_file *s, struct gpio_chip *gc)
+ {
+@@ -676,7 +664,7 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+-				unsigned long *configs, unsigned num_configs)
++			   unsigned long *configs, unsigned int num_configs)
+ {
+ 	int i;
+ 	u32 arg;
+@@ -766,6 +754,20 @@ static int amd_pinconf_group_set(struct pinctrl_dev *pctldev,
+ 	return 0;
+ }
+ 
++static int amd_gpio_set_config(struct gpio_chip *gc, unsigned int pin,
++			       unsigned long config)
++{
++	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
 +
- 		ctx.chain = chain;
- 		list_for_each_entry_safe(rule, nr, &chain->rules, list) {
- 			list_del(&rule->list);
++	if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE) {
++		u32 debounce = pinconf_to_config_argument(config);
++
++		return amd_gpio_set_debounce(gc, pin, debounce);
++	}
++
++	return amd_pinconf_set(gpio_dev->pctrl, pin, &config, 1);
++}
++
+ static const struct pinconf_ops amd_pinconf_ops = {
+ 	.pin_config_get		= amd_pinconf_get,
+ 	.pin_config_set		= amd_pinconf_set,
 -- 
 2.39.2
 
