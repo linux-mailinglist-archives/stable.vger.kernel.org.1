@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D61A4761348
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9194E761711
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234140AbjGYLJW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
+        id S233769AbjGYLow (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234061AbjGYLJE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:04 -0400
+        with ESMTP id S232235AbjGYLod (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A4A72733
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AF01BC3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1983361648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A016C433C7;
-        Tue, 25 Jul 2023 11:07:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FBC06169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7294FC433C8;
+        Tue, 25 Jul 2023 11:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283272;
-        bh=F3eCiaUAcg3QHaoyKn6aMrx9ZXD5Er2WcoaCX3xk1aA=;
+        s=korg; t=1690285470;
+        bh=UK8mKXI5czYMUdAVuXkAmM/hNddSu923AOwf5JKBV7M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Omgj2qGxD+ijL3vgGCyyGAuf2xhBQE4NMaZJAX6is1S8Uswy8zRlN+yZ4AQlZeeCz
-         BTgomt3jHOdtFdwtuzmCDKEU4Gow66bWidonuHLkik4RlHqWID/UeTk+8+C8cxuLa+
-         SAbJkmHrF3vnIU74VNNZQGaW9H2kCGh89mZSdYY8=
+        b=bcjXdE5qYkgm0yR3CyY6v5DuqhitlMJ8TTimCI/6FG8v+yTqEz0IGWj6gZNC7mcX4
+         oHkY4IG7W5y8xWoSfcYyqX8pL2ckNO3GRvk9uweBDCB2djJEnydSCmwm8l2AEGQkQk
+         CMt6swX2deKTh9Uk9kSeFHGKp241WZcICWj3usvQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
-        Jocelyn Falempe <jfalempe@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.15 17/78] drm/client: Fix memory leak in drm_client_modeset_probe
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 215/313] ipv6/addrconf: fix a potential refcount underflow for idev
 Date:   Tue, 25 Jul 2023 12:46:08 +0200
-Message-ID: <20230725104452.007255820@linuxfoundation.org>
+Message-ID: <20230725104530.335053573@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit 2329cc7a101af1a844fbf706c0724c0baea38365 upstream.
+[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
 
-When a new mode is set to modeset->mode, the previous mode should be freed.
-This fixes the following kmemleak report:
+Now in addrconf_mod_rs_timer(), reference idev depends on whether
+rs_timer is not pending. Then modify rs_timer timeout.
 
-drm_mode_duplicate+0x45/0x220 [drm]
-drm_client_modeset_probe+0x944/0xf50 [drm]
-__drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
-drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
-drm_client_register+0x169/0x240 [drm]
-ast_pci_probe+0x142/0x190 [ast]
-local_pci_probe+0xdc/0x180
-work_for_cpu_fn+0x4e/0xa0
-process_one_work+0x8b7/0x1540
-worker_thread+0x70a/0xed0
-kthread+0x29f/0x340
-ret_from_fork+0x1f/0x30
+There is a time gap in [1], during which if the pending rs_timer
+becomes not pending. It will miss to hold idev, but the rs_timer
+is activated. Thus rs_timer callback function addrconf_rs_timer()
+will be executed and put idev later without holding idev. A refcount
+underflow issue for idev can be caused by this.
 
-cc: <stable@vger.kernel.org>
-Reported-by: Zhang Yi <yizhan@redhat.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-3-jfalempe@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	if (!timer_pending(&idev->rs_timer))
+		in6_dev_hold(idev);
+		  <--------------[1]
+	mod_timer(&idev->rs_timer, jiffies + when);
+
+To fix the issue, hold idev if mod_timer() return 0.
+
+Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/addrconf.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -865,6 +865,7 @@ int drm_client_modeset_probe(struct drm_
- 				break;
- 			}
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index a0123760fb2c7..46e3c939958bb 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -313,9 +313,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
+ static void addrconf_mod_rs_timer(struct inet6_dev *idev,
+ 				  unsigned long when)
+ {
+-	if (!timer_pending(&idev->rs_timer))
++	if (!mod_timer(&idev->rs_timer, jiffies + when))
+ 		in6_dev_hold(idev);
+-	mod_timer(&idev->rs_timer, jiffies + when);
+ }
  
-+			kfree(modeset->mode);
- 			modeset->mode = drm_mode_duplicate(dev, mode);
- 			drm_connector_get(connector);
- 			modeset->connectors[modeset->num_connectors++] = connector;
+ static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
+-- 
+2.39.2
+
 
 
