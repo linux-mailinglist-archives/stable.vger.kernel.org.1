@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99466761679
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91E307611B8
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234868AbjGYLjk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:39:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46916 "EHLO
+        id S231552AbjGYKzQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:55:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234906AbjGYLjg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:36 -0400
+        with ESMTP id S232396AbjGYKyh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D67B1BFB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1D8F469A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B579616A2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D506DC433C7;
-        Tue, 25 Jul 2023 11:39:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FFD661600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEFFC433C8;
+        Tue, 25 Jul 2023 10:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285172;
-        bh=U8EEByfvajNiVAgIJ+2+5/cZHcQSbO3jroEiEUB1msg=;
+        s=korg; t=1690282363;
+        bh=got4Ws7ggV3zCHMha0/hRrpZr/HWX1Nu4xkRbyQ7kEc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oZnupie4Y98Xl0i+iPuCsoIydLwPbD0u7qgyIDgrmMnGFNPGgF80mcMTlkEjFSCnJ
-         msXXCWsOzE/UtHxaFUIiLlLrgb9POqxdfJCg11XTLrgEH3KIoBMnS8bzTQcVY15jSu
-         cniNqIQcvC3L7V7oy2D4M6f6zRaxPaJz/ELPjLXI=
+        b=JzIn03R7itr7CzKZ6nHSvTmzw+6I7HIDfs4wdrfTJVTu9YWK/0fToJ/mJ/9SwOYRg
+         lHCB737NA9osD5QlnfwMscoPzzyVcAv03wCzQnUfFvQxWLyc6PLmJ+QjqV18LlY9FD
+         YtTzhUgZFpny03TxflTUSwuj30ZpPrlS+yqSQyr8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/313] hwrng: virtio - Fix race on data_avail and actual data
+Subject: [PATCH 6.4 095/227] btrfs: abort transaction at update_ref_for_cow() when ref count is zero
 Date:   Tue, 25 Jul 2023 12:44:22 +0200
-Message-ID: <20230725104525.711235596@linuxfoundation.org>
+Message-ID: <20230725104518.653215692@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,84 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ac52578d6e8d300dd50f790f29a24169b1edd26c ]
+[ Upstream commit eced687e224eb3cc5a501cf53ad9291337c8dbc5 ]
 
-The virtio rng device kicks off a new entropy request whenever the
-data available reaches zero.  When a new request occurs at the end
-of a read operation, that is, when the result of that request is
-only needed by the next reader, then there is a race between the
-writing of the new data and the next reader.
+At update_ref_for_cow() we are calling btrfs_handle_fs_error() if we find
+that the extent buffer has an unexpected ref count of zero, however we can
+simply use btrfs_abort_transaction(), which achieves the same purposes: to
+turn the fs to error state, abort the current transaction and turn the fs
+to RO mode as well. Besides that, btrfs_abort_transaction() also prints a
+stack trace which makes it more useful.
 
-This is because there is no synchronisation whatsoever between the
-writer and the reader.
+Also, as this is a very unexpected situation, indicating a serious
+corruption/inconsistency, tag the if branch as 'unlikely', set the error
+code to -EUCLEAN instead of -EROFS, and log an explicit message.
 
-Fix this by writing data_avail with smp_store_release and reading
-it with smp_load_acquire when we first enter read.  The subsequent
-reads are safe because they're either protected by the first load
-acquire, or by the completion mechanism.
-
-Also remove the redundant zeroing of data_idx in random_recv_done
-(data_idx must already be zero at this point) and data_avail in
-request_entropy (ditto).
-
-Reported-by: syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com
-Fixes: f7f510ec1957 ("virtio: An entropy device, as suggested by hpa.")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/virtio-rng.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/btrfs/ctree.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
-index f98e3ee5f8b03..145d7b1055c07 100644
---- a/drivers/char/hw_random/virtio-rng.c
-+++ b/drivers/char/hw_random/virtio-rng.c
-@@ -4,6 +4,7 @@
-  *  Copyright (C) 2007, 2008 Rusty Russell IBM Corporation
-  */
- 
-+#include <asm/barrier.h>
- #include <linux/err.h>
- #include <linux/hw_random.h>
- #include <linux/scatterlist.h>
-@@ -36,13 +37,13 @@ struct virtrng_info {
- static void random_recv_done(struct virtqueue *vq)
- {
- 	struct virtrng_info *vi = vq->vdev->priv;
-+	unsigned int len;
- 
- 	/* We can get spurious callbacks, e.g. shared IRQs + virtio_pci. */
--	if (!virtqueue_get_buf(vi->vq, &vi->data_avail))
-+	if (!virtqueue_get_buf(vi->vq, &len))
- 		return;
- 
--	vi->data_idx = 0;
--
-+	smp_store_release(&vi->data_avail, len);
- 	complete(&vi->have_data);
- }
- 
-@@ -51,7 +52,6 @@ static void request_entropy(struct virtrng_info *vi)
- 	struct scatterlist sg;
- 
- 	reinit_completion(&vi->have_data);
--	vi->data_avail = 0;
- 	vi->data_idx = 0;
- 
- 	sg_init_one(&sg, vi->data, sizeof(vi->data));
-@@ -87,7 +87,7 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
- 	read = 0;
- 
- 	/* copy available data */
--	if (vi->data_avail) {
-+	if (smp_load_acquire(&vi->data_avail)) {
- 		chunk = copy_data(vi, buf, size);
- 		size -= chunk;
- 		read += chunk;
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 4912d624ca3d3..886e661a218fc 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -417,9 +417,13 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
+ 					       &refs, &flags);
+ 		if (ret)
+ 			return ret;
+-		if (refs == 0) {
+-			ret = -EROFS;
+-			btrfs_handle_fs_error(fs_info, ret, NULL);
++		if (unlikely(refs == 0)) {
++			btrfs_crit(fs_info,
++		"found 0 references for tree block at bytenr %llu level %d root %llu",
++				   buf->start, btrfs_header_level(buf),
++				   btrfs_root_id(root));
++			ret = -EUCLEAN;
++			btrfs_abort_transaction(trans, ret);
+ 			return ret;
+ 		}
+ 	} else {
 -- 
 2.39.2
 
