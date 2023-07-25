@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 859B4760B2B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 09:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C583760B36
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 09:09:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231395AbjGYHIP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 03:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
+        id S231362AbjGYHJy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 03:09:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231387AbjGYHIO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 03:08:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2052ABD;
-        Tue, 25 Jul 2023 00:08:14 -0700 (PDT)
+        with ESMTP id S231967AbjGYHJn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 03:09:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6C4BF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 00:09:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B0C4C61129;
-        Tue, 25 Jul 2023 07:08:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C13C433C8;
-        Tue, 25 Jul 2023 07:08:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 220AF6116C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 07:09:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334C4C433C7;
+        Tue, 25 Jul 2023 07:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690268893;
-        bh=8ZO+dQLtUiBc7Ah68ZPlpmAFo7aFZA5cxmTFAGgJ4qQ=;
+        s=korg; t=1690268981;
+        bh=fqYhkXXcuyPfSB2JuvAMOBpsxXDWNcKLfegSBD0iUqQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tz1wvA2lxwAsPqVJtqbtnialvr10PrdMB1LuHZw47XVu1YM0unJi6kQQF1HczgJAC
-         UgCBGXe3vZUin1qlo5WT/CIIDHxsIwhiSfQOVdm+fbtH0LQleRIJ+PKVGgfNRODelI
-         Vn1hCwrXUEOBpUffiR2rRiCZMyPpXB1MXEfAN1XQ=
-Date:   Tue, 25 Jul 2023 09:08:10 +0200
+        b=FSRFNXb5RTCcvA7QZqv1IShvabILCRtDjnWhIdfWkG1EyICKDgwL6Oos0GtuQ53bl
+         H8mLyJCu6+bawMOApoJW8RxF3coZWy0wSQ2k1jgXmtQ2kULqjJTiuM0filjaDd1R86
+         sY4tuO0/+ss5SyGbVu8Om5a2Bbqulp14attwcMAI=
+Date:   Tue, 25 Jul 2023 09:09:38 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Alex Elder <elder@linaro.org>
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, dianders@chromium.org,
-        caleb.connolly@linaro.org, mka@chromium.org, evgreen@chromium.org,
-        andersson@kernel.org, quic_cpratapa@quicinc.com,
-        quic_avuyyuru@quicinc.com, quic_jponduru@quicinc.com,
-        quic_subashab@quicinc.com, elder@kernel.org,
-        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: ipa: only reset hashed tables when supported
-Message-ID: <2023072538-corned-falsify-d054@gregkh>
-References: <20230724224106.1688869-1-elder@linaro.org>
+To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [PATCH 6.4.y] i2c: busses: i2c-nomadik: Remove a useless call in
+ the remove function
+Message-ID: <2023072538-vacancy-retinal-73ea@gregkh>
+References: <2023072154-animal-dropkick-6a92@gregkh>
+ <62fe6800d41e04a4eb5adfa18a9e1090cbc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
+ <2023072303-ranking-wife-05ae@gregkh>
+ <e52e6a0b-205a-63cb-04dd-6f1c5f5c31f7@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230724224106.1688869-1-elder@linaro.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e52e6a0b-205a-63cb-04dd-6f1c5f5c31f7@wanadoo.fr>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,45 +56,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 05:41:06PM -0500, Alex Elder wrote:
-> Last year, the code that manages GSI channel transactions switched
-> from using spinlock-protected linked lists to using indexes into the
-> ring buffer used for a channel.  Recently, Google reported seeing
-> transaction reference count underflows occasionally during shutdown.
+On Mon, Jul 24, 2023 at 10:20:12PM +0200, Marion & Christophe JAILLET wrote:
 > 
-> Doug Anderson found a way to reproduce the issue reliably, and
-> bisected the issue to the commit that eliminated the linked lists
-> and the lock.  The root cause was ultimately determined to be
-> related to unused transactions being committed as part of the modem
-> shutdown cleanup activity.  Unused transactions are not normally
-> expected (except in error cases).
+> Le 23/07/2023 à 22:34, Greg KH a écrit :
+> > On Fri, Jul 21, 2023 at 07:47:41PM +0200, Christophe JAILLET wrote:
+> > > Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
+> > > driver"), there is no more request_mem_region() call in this driver.
+> > > 
+> > > So remove the release_mem_region() call from the remove function which is
+> > > likely a left over.
+> > > 
+> > > Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
+> > > Cc: <stable@vger.kernel.org> # v3.6+
+> > > Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> > > Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+> > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> > > ---
+> > > The patch below that should fix a merge conflict related to commit
+> > > 9c7174db4cdd1 ("i2c: nomadik: Use devm_clk_get_enabled()") has been
+> > > HAND MODIFIED.
+> > I don't understand, that commit is not in the stable trees.  What do you
+> > mean by "hand modified"?
 > 
-> The modem uses some ranges of IPA-resident memory, and whenever it
-> shuts down we zero those ranges.  In ipa_filter_reset_table() a
-> transaction is allocated to zero modem filter table entries.  If
-> hashing is not supported, hashed table memory should not be zeroed.
-> But currently nothing prevents that, and the result is an unused
-> transaction.  Something similar occurs when we zero routing table
-> entries for the modem.
 > 
-> By preventing any attempt to clear hashed tables when hashing is not
-> supported, the reference count underflow is avoided in this case.
+> I mean that I took the file initially generated by git format-patch when I
+> sent the patch against -next.
 > 
-> Note that there likely remains an issue with properly freeing unused
-> transactions (if they occur due to errors).  This patch addresses
-> only the underflows that Google originally reported.
+> I updated the diff context from this file and left everything else as-is.
+> I only added some (apparently unclear :) ) context below the ---.
 > 
-> Fixes: d338ae28d8a8 ("net: ipa: kill all other transaction lists")
-> Cc: <stable@vger.kernel.org>    # 6.1.x
-> Tested-by: Douglas Anderson <dianders@chromium.org>
-> Signed-off-by: Alex Elder <elder@linaro.org>
-> ---
->  drivers/net/ipa/ipa_table.c | 26 ++++++++++++++------------
->  1 file changed, 14 insertions(+), 12 deletions(-)
+> 
+> Yes, precisely.
+> My patch has been sent *after* 9c7174db4cdd1 in -next, and it depends on it.
+> 
+> The proposed modified patch for backport tries to deal with this missing
+> part in older branches.
+> 
+> If 9c7174db4cdd1 was also backported, I think that my patch would apply
+> cleanly.
+> 
+> 
+> > > I hope it is fine, but is provided as-is. Especially line numbers should be
+> > > wrong, but 'patch' should be able to deal with it. (sorry if it does not apply)
+> > > 
+> > > I guess that it should also apply to all previous branches.
+> > > 
+> > > I've left the commit description as it was. Not sure what to do with A-b and R-b
+> > > tags.
+> > Why isn't this needed in Linus's tree?
+> 
+> 
+> I never said that.
+> 
+> It is one of the first time, if not the first one, I update a patch to ease
+> backport.
+> I only sent something for 6.4.y, but it must be valid for other branches as
+> well. (i.e. # v3.6+)
 
-You sent 2 different versions of this patch?  Which one is for what
-tree?  Is this in Linus's tree already?  If so, what's the git id?
+But what is the patch in Linus's tree?  If it's not there yet, there's
+nothing we can do with this for stable backports.  If it is there, we
+need the git commit id in Linus's tree.
 
-confused,
+Still confused,
 
 greg k-h
