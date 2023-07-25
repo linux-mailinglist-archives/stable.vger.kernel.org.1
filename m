@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FFA761380
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F8476171C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234014AbjGYLLJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45410 "EHLO
+        id S231239AbjGYLpM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:45:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234016AbjGYLKn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:43 -0400
+        with ESMTP id S231661AbjGYLpF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AFF2697
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20A7312C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36D6261656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4812DC433CA;
-        Tue, 25 Jul 2023 11:09:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8FCB61648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5992C433C7;
+        Tue, 25 Jul 2023 11:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283391;
-        bh=yrv6HmnFI7qLpkxZ+Zf/k+iRFI6jcspQna8tD04S/D8=;
+        s=korg; t=1690285504;
+        bh=q1pKkVan38w0AKE4XnStE4ABGcvepNS8mkUWNhu3fgk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qECaizrOz1hzw0AJe7XJX04bpiKXzpEamDMdDvZzJKP6jC7SVqQaEGg1uf4N+OAhv
-         BI8TytfZvxyM2k10GTVSh5Wn43dfqHJsbeeoSwDnjmTjjbmbljrtFcIlbmxpsBX6UV
-         BYAWwH42vE+MGYR71gzLPn66aPJ8TT3LnwRulTjY=
+        b=yEWjT9vT8uO5k1gYltTUhvSH8kcNBez8No7U/oVHIL3zyd+OXaBwepMrn6thb8wzB
+         C3NIOieS+hljHe5pYpCvU8Nh/4pJdPHQkS4a1UThQExEQKWTuoB4C0uUABWPG05QiK
+         F/jVoExd7KaNdEPkcXaw1BHC8ombhFZ7xcuujdlg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>,
-        Ye Bin <yebin10@huawei.com>
-Subject: [PATCH 5.15 31/78] [PATCH AUTOSEL 4.14 3/9] quota: Properly disable quotas when add_dquot_ref() fails
+        Jan Visser <starquake@linuxeverywhere.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.4 229/313] pinctrl: amd: Only use special debounce behavior for GPIO 0
 Date:   Tue, 25 Jul 2023 12:46:22 +0200
-Message-ID: <20230725104452.511183102@linuxfoundation.org>
+Message-ID: <20230725104530.953655057@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 6a4e3363792e30177cc3965697e34ddcea8b900b ]
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-When add_dquot_ref() fails (usually due to IO error or ENOMEM), we want
-to disable quotas we are trying to enable. However dquot_disable() call
-was passed just the flags we are enabling so in case flags ==
-DQUOT_USAGE_ENABLED dquot_disable() call will just fail with EINVAL
-instead of properly disabling quotas. Fix the problem by always passing
-DQUOT_LIMITS_ENABLED | DQUOT_USAGE_ENABLED to dquot_disable() in this
-case.
+commit 0d5ace1a07f7e846d0f6d972af60d05515599d0b upstream.
 
-Reported-and-tested-by: Ye Bin <yebin10@huawei.com>
-Reported-by: syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230605140731.2427629-2-yebin10@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It's uncommon to use debounce on any other pin, but technically
+we should only set debounce to 0 when working off GPIO0.
+
+Cc: stable@vger.kernel.org
+Tested-by: Jan Visser <starquake@linuxeverywhere.org>
+Fixes: 968ab9261627 ("pinctrl: amd: Detect internal GPIO0 debounce handling")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230705133005.577-2-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-amd.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -2413,7 +2413,8 @@ int dquot_load_quota_sb(struct super_blo
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -125,9 +125,11 @@ static int amd_gpio_set_debounce(struct
+ 	raw_spin_lock_irqsave(&gpio_dev->lock, flags);
  
- 	error = add_dquot_ref(sb, type);
- 	if (error)
--		dquot_disable(sb, type, flags);
-+		dquot_disable(sb, type,
-+			      DQUOT_USAGE_ENABLED | DQUOT_LIMITS_ENABLED);
+ 	/* Use special handling for Pin0 debounce */
+-	pin_reg = readl(gpio_dev->base + WAKE_INT_MASTER_REG);
+-	if (pin_reg & INTERNAL_GPIO0_DEBOUNCE)
+-		debounce = 0;
++	if (offset == 0) {
++		pin_reg = readl(gpio_dev->base + WAKE_INT_MASTER_REG);
++		if (pin_reg & INTERNAL_GPIO0_DEBOUNCE)
++			debounce = 0;
++	}
  
- 	return error;
- out_fmt:
+ 	pin_reg = readl(gpio_dev->base + offset * 4);
+ 
 
 
