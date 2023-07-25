@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 620DE761562
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 785EC7611C9
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234639AbjGYL2Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:28:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37022 "EHLO
+        id S232250AbjGYK4M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234072AbjGYL2T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:19 -0400
+        with ESMTP id S232357AbjGYKzp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACA1F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B11E26BC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFC9A615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D75C433C8;
-        Tue, 25 Jul 2023 11:28:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AA4D61689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56054C433C7;
+        Tue, 25 Jul 2023 10:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284498;
-        bh=1Eq+fA3aGZ/kX/apZbxCaZ9eNZrqq4wmps9PUsYVrrc=;
+        s=korg; t=1690282415;
+        bh=y6bziz/MvdQ+aDDDtJgCjPL8YGD7r7BVYP/dHYkzrrk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Smc7vFFaBeM/fWjzX5Rg2SL8UMN5PkRg4iJfoSJL3/6y2SN0UBk9WWaKhMCqaIrai
-         +u+t8zo6dXp6vZl20LXxzsVBA1NXStt6mR8xEZu1G9wJP1l7jEQpGh0eZeVSBQ7K7x
-         L+TWLQZSZWSqVN2U1HdRvM7paV3fGQCMje/zn5gs=
+        b=t2J7a2Atkv2aaT8AKIiRNZzcwY85lAJro6cGRi2Yf4WD71hLyldz6IEEeiZqq/5di
+         JpjXvhOneoLgvn2EgAJT2CYzfMbO+sQZLQPNxc+wlhQCRzcii8q58pDBRamNPkl9BZ
+         okWDHZG+gA0IwwqbrCIDE4l1xJcuOZroCLgcyFlY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Michal Kubiak <michal.kubiak@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Abe Kohandel <abe.kohandel@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 348/509] net: bgmac: postpone turning IRQs off to avoid SoC hangs
-Date:   Tue, 25 Jul 2023 12:44:47 +0200
-Message-ID: <20230725104609.673090741@linuxfoundation.org>
+Subject: [PATCH 6.4 121/227] spi: dw: Add compatible for Intel Mount Evans SoC
+Date:   Tue, 25 Jul 2023 12:44:48 +0200
+Message-ID: <20230725104519.824656366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,50 +56,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Abe Kohandel <abe.kohandel@intel.com>
 
-[ Upstream commit e7731194fdf085f46d58b1adccfddbd0dfee4873 ]
+[ Upstream commit 0760d5d0e9f0c0e2200a0323a61d1995bb745dee ]
 
-Turning IRQs off is done by accessing Ethernet controller registers.
-That can't be done until device's clock is enabled. It results in a SoC
-hang otherwise.
+The Intel Mount Evans SoC's Integrated Management Complex uses the SPI
+controller for access to a NOR SPI FLASH. However, the SoC doesn't
+provide a mechanism to override the native chip select signal.
 
-This bug remained unnoticed for years as most bootloaders keep all
-Ethernet interfaces turned on. It seems to only affect a niche SoC
-family BCM47189. It has two Ethernet controllers but CFE bootloader uses
-only the first one.
+This driver doesn't use DMA for memory operations when a chip select
+override is not provided due to the native chip select timing behavior.
+As a result no DMA configuration is done for the controller and this
+configuration is not tested.
 
-Fixes: 34322615cbaa ("net: bgmac: Mask interrupts during probe")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The controller also has an errata where a full TX FIFO can result in
+data corruption. The suggested workaround is to never completely fill
+the FIFO. The TX FIFO has a size of 32 so the fifo_len is set to 31.
+
+Signed-off-by: Abe Kohandel <abe.kohandel@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230606145402.474866-2-abe.kohandel@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bgmac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw-mmio.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-index bb999e67d7736..ab8ee93316354 100644
---- a/drivers/net/ethernet/broadcom/bgmac.c
-+++ b/drivers/net/ethernet/broadcom/bgmac.c
-@@ -1492,8 +1492,6 @@ int bgmac_enet_probe(struct bgmac *bgmac)
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 15f5e9cb54ad4..5a38cb09a650d 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -236,6 +236,31 @@ static int dw_spi_intel_init(struct platform_device *pdev,
+ 	return 0;
+ }
  
- 	bgmac->in_init = true;
- 
--	bgmac_chip_intrs_off(bgmac);
--
- 	net_dev->irq = bgmac->irq;
- 	SET_NETDEV_DEV(net_dev, bgmac->dev);
- 	dev_set_drvdata(bgmac->dev, bgmac);
-@@ -1511,6 +1509,8 @@ int bgmac_enet_probe(struct bgmac *bgmac)
- 	 */
- 	bgmac_clk_enable(bgmac, 0);
- 
-+	bgmac_chip_intrs_off(bgmac);
++/*
++ * The Intel Mount Evans SoC's Integrated Management Complex uses the
++ * SPI controller for access to a NOR SPI FLASH. However, the SoC doesn't
++ * provide a mechanism to override the native chip select signal.
++ *
++ * This driver doesn't use DMA for memory operations when a chip select
++ * override is not provided due to the native chip select timing behavior.
++ * As a result no DMA configuration is done for the controller and this
++ * configuration is not tested.
++ */
++static int dw_spi_mountevans_imc_init(struct platform_device *pdev,
++				      struct dw_spi_mmio *dwsmmio)
++{
++	/*
++	 * The Intel Mount Evans SoC's Integrated Management Complex DW
++	 * apb_ssi_v4.02a controller has an errata where a full TX FIFO can
++	 * result in data corruption. The suggested workaround is to never
++	 * completely fill the FIFO. The TX FIFO has a size of 32 so the
++	 * fifo_len is set to 31.
++	 */
++	dwsmmio->dws.fifo_len = 31;
 +
- 	/* This seems to be fixing IRQ by assigning OOB #6 to the core */
- 	if (!(bgmac->feature_flags & BGMAC_FEAT_IDM_MASK)) {
- 		if (bgmac->feature_flags & BGMAC_FEAT_IRQ_ID_OOB_6)
++	return 0;
++}
++
+ static int dw_spi_canaan_k210_init(struct platform_device *pdev,
+ 				   struct dw_spi_mmio *dwsmmio)
+ {
+@@ -405,6 +430,10 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
+ 	{ .compatible = "snps,dwc-ssi-1.01a", .data = dw_spi_hssi_init},
+ 	{ .compatible = "intel,keembay-ssi", .data = dw_spi_intel_init},
+ 	{ .compatible = "intel,thunderbay-ssi", .data = dw_spi_intel_init},
++	{
++		.compatible = "intel,mountevans-imc-ssi",
++		.data = dw_spi_mountevans_imc_init,
++	},
+ 	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
+ 	{ .compatible = "canaan,k210-spi", dw_spi_canaan_k210_init},
+ 	{ .compatible = "amd,pensando-elba-spi", .data = dw_spi_elba_init},
 -- 
 2.39.2
 
