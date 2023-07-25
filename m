@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD30761662
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98DEB7614E3
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234816AbjGYLiy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46458 "EHLO
+        id S234477AbjGYLXn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234891AbjGYLix (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C990719A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:41 -0700 (PDT)
+        with ESMTP id S234501AbjGYLXl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F84E76
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F8056167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD5EC433C8;
-        Tue, 25 Jul 2023 11:38:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 271326168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3466FC433C9;
+        Tue, 25 Jul 2023 11:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285119;
-        bh=zX8SCKVYyBhiOBSOO6rnT1vBd7Yihj8ArNyQlEvwHj8=;
+        s=korg; t=1690284213;
+        bh=2s7RTo3VNv6TmVXLN6GEj8GSY4RWSlqZJQSydBtaFVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ePhlyDGFV62M0lrE9EUlhZ6AaK7/CnN+MUWU44y+CfY73yveLVvP696ZXFVPnO+qK
-         ZMl26viWZtvua/V3KtvFO6/oLIKiGV1oX2cY9Lck8HqKHudqeJpo6m+Flj3/li+oAP
-         fv7rrRAj8/xsbKvF3K/W4j33EQfKp7vsw5Eab1xk=
+        b=NKREstgOxifaXii978gBzpKtopwVYVbiLewvnCDbbR8Ee5wCK1955Eujlc7dmxMwV
+         BZEZSUudcwnA5bb9HjBU2qPUNGGtca5dvap7bOCo5eteeS5mLmtVUks1FlCu0pC7bc
+         LMl8h0PTla8jH6sbh/RZr4yLaXQCYQidArsGnixs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Artur Rojek <contact@artur-rojek.eu>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/313] netlink: do not hard code device address lenth in fdb dumps
+Subject: [PATCH 5.10 275/509] sh: dma: Fix DMA channel offset calculation
 Date:   Tue, 25 Jul 2023 12:43:34 +0200
-Message-ID: <20230725104523.673271750@linuxfoundation.org>
+Message-ID: <20230725104606.340970041@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,155 +56,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Artur Rojek <contact@artur-rojek.eu>
 
-[ Upstream commit aa5406950726e336c5c9585b09799a734b6e77bf ]
+[ Upstream commit e82e47584847129a20b8c9f4a1dcde09374fb0e0 ]
 
-syzbot reports that some netdev devices do not have a six bytes
-address [1]
+Various SoCs of the SH3, SH4 and SH4A family, which use this driver,
+feature a differing number of DMA channels, which can be distributed
+between up to two DMAC modules. The existing implementation fails to
+correctly accommodate for all those variations, resulting in wrong
+channel offset calculations and leading to kernel panics.
 
-Replace ETH_ALEN by dev->addr_len.
+Rewrite dma_base_addr() in order to properly calculate channel offsets
+in a DMAC module. Fix dmaor_read_reg() and dmaor_write_reg(), so that
+the correct DMAC module base is selected for the DMAOR register.
 
-[1] (Case of a device where dev->addr_len = 4)
-
-BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-BUG: KMSAN: kernel-infoleak in copyout+0xb8/0x100 lib/iov_iter.c:169
-instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-copyout+0xb8/0x100 lib/iov_iter.c:169
-_copy_to_iter+0x6d8/0x1d00 lib/iov_iter.c:536
-copy_to_iter include/linux/uio.h:206 [inline]
-simple_copy_to_iter+0x68/0xa0 net/core/datagram.c:513
-__skb_datagram_iter+0x123/0xdc0 net/core/datagram.c:419
-skb_copy_datagram_iter+0x5c/0x200 net/core/datagram.c:527
-skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
-netlink_recvmsg+0x4ae/0x15a0 net/netlink/af_netlink.c:1970
-sock_recvmsg_nosec net/socket.c:1019 [inline]
-sock_recvmsg net/socket.c:1040 [inline]
-____sys_recvmsg+0x283/0x7f0 net/socket.c:2722
-___sys_recvmsg+0x223/0x840 net/socket.c:2764
-do_recvmmsg+0x4f9/0xfd0 net/socket.c:2858
-__sys_recvmmsg net/socket.c:2937 [inline]
-__do_sys_recvmmsg net/socket.c:2960 [inline]
-__se_sys_recvmmsg net/socket.c:2953 [inline]
-__x64_sys_recvmmsg+0x397/0x490 net/socket.c:2953
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was stored to memory at:
-__nla_put lib/nlattr.c:1009 [inline]
-nla_put+0x1c6/0x230 lib/nlattr.c:1067
-nlmsg_populate_fdb_fill+0x2b8/0x600 net/core/rtnetlink.c:4071
-nlmsg_populate_fdb net/core/rtnetlink.c:4418 [inline]
-ndo_dflt_fdb_dump+0x616/0x840 net/core/rtnetlink.c:4456
-rtnl_fdb_dump+0x14ff/0x1fc0 net/core/rtnetlink.c:4629
-netlink_dump+0x9d1/0x1310 net/netlink/af_netlink.c:2268
-netlink_recvmsg+0xc5c/0x15a0 net/netlink/af_netlink.c:1995
-sock_recvmsg_nosec+0x7a/0x120 net/socket.c:1019
-____sys_recvmsg+0x664/0x7f0 net/socket.c:2720
-___sys_recvmsg+0x223/0x840 net/socket.c:2764
-do_recvmmsg+0x4f9/0xfd0 net/socket.c:2858
-__sys_recvmmsg net/socket.c:2937 [inline]
-__do_sys_recvmmsg net/socket.c:2960 [inline]
-__se_sys_recvmmsg net/socket.c:2953 [inline]
-__x64_sys_recvmmsg+0x397/0x490 net/socket.c:2953
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was created at:
-slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:716
-slab_alloc_node mm/slub.c:3451 [inline]
-__kmem_cache_alloc_node+0x4ff/0x8b0 mm/slub.c:3490
-kmalloc_trace+0x51/0x200 mm/slab_common.c:1057
-kmalloc include/linux/slab.h:559 [inline]
-__hw_addr_create net/core/dev_addr_lists.c:60 [inline]
-__hw_addr_add_ex+0x2e5/0x9e0 net/core/dev_addr_lists.c:118
-__dev_mc_add net/core/dev_addr_lists.c:867 [inline]
-dev_mc_add+0x9a/0x130 net/core/dev_addr_lists.c:885
-igmp6_group_added+0x267/0xbc0 net/ipv6/mcast.c:680
-ipv6_mc_up+0x296/0x3b0 net/ipv6/mcast.c:2754
-ipv6_mc_remap+0x1e/0x30 net/ipv6/mcast.c:2708
-addrconf_type_change net/ipv6/addrconf.c:3731 [inline]
-addrconf_notify+0x4d3/0x1d90 net/ipv6/addrconf.c:3699
-notifier_call_chain kernel/notifier.c:93 [inline]
-raw_notifier_call_chain+0xe4/0x430 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1935 [inline]
-call_netdevice_notifiers_extack net/core/dev.c:1973 [inline]
-call_netdevice_notifiers+0x1ee/0x2d0 net/core/dev.c:1987
-bond_enslave+0xccd/0x53f0 drivers/net/bonding/bond_main.c:1906
-do_set_master net/core/rtnetlink.c:2626 [inline]
-rtnl_newlink_create net/core/rtnetlink.c:3460 [inline]
-__rtnl_newlink net/core/rtnetlink.c:3660 [inline]
-rtnl_newlink+0x378c/0x40e0 net/core/rtnetlink.c:3673
-rtnetlink_rcv_msg+0x16a6/0x1840 net/core/rtnetlink.c:6395
-netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2546
-rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6413
-netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-netlink_unicast+0xf28/0x1230 net/netlink/af_netlink.c:1365
-netlink_sendmsg+0x122f/0x13d0 net/netlink/af_netlink.c:1913
-sock_sendmsg_nosec net/socket.c:724 [inline]
-sock_sendmsg net/socket.c:747 [inline]
-____sys_sendmsg+0x999/0xd50 net/socket.c:2503
-___sys_sendmsg+0x28d/0x3c0 net/socket.c:2557
-__sys_sendmsg net/socket.c:2586 [inline]
-__do_sys_sendmsg net/socket.c:2595 [inline]
-__se_sys_sendmsg net/socket.c:2593 [inline]
-__x64_sys_sendmsg+0x304/0x490 net/socket.c:2593
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Bytes 2856-2857 of 3500 are uninitialized
-Memory access of size 3500 starts at ffff888018d99104
-Data copied to user address 0000000020000480
-
-Fixes: d83b06036048 ("net: add fdb generic dump routine")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20230621174720.1845040-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7f47c7189b3e8f19 ("sh: dma: More legacy cpu dma chainsawing.")
+Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230527164452.64797-2-contact@artur-rojek.eu
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/sh/drivers/dma/dma-sh.c | 37 +++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 0b0107797e490..1db92a44548f0 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3586,7 +3586,7 @@ static int nlmsg_populate_fdb_fill(struct sk_buff *skb,
- 	ndm->ndm_ifindex = dev->ifindex;
- 	ndm->ndm_state   = ndm_state;
+diff --git a/arch/sh/drivers/dma/dma-sh.c b/arch/sh/drivers/dma/dma-sh.c
+index 96c626c2cd0a4..306fba1564e5e 100644
+--- a/arch/sh/drivers/dma/dma-sh.c
++++ b/arch/sh/drivers/dma/dma-sh.c
+@@ -18,6 +18,18 @@
+ #include <cpu/dma-register.h>
+ #include <cpu/dma.h>
  
--	if (nla_put(skb, NDA_LLADDR, ETH_ALEN, addr))
-+	if (nla_put(skb, NDA_LLADDR, dev->addr_len, addr))
- 		goto nla_put_failure;
- 	if (vid)
- 		if (nla_put(skb, NDA_VLAN, sizeof(u16), &vid))
-@@ -3600,10 +3600,10 @@ static int nlmsg_populate_fdb_fill(struct sk_buff *skb,
- 	return -EMSGSIZE;
- }
++/*
++ * Some of the SoCs feature two DMAC modules. In such a case, the channels are
++ * distributed equally among them.
++ */
++#ifdef	SH_DMAC_BASE1
++#define	SH_DMAC_NR_MD_CH	(CONFIG_NR_ONCHIP_DMA_CHANNELS / 2)
++#else
++#define	SH_DMAC_NR_MD_CH	CONFIG_NR_ONCHIP_DMA_CHANNELS
++#endif
++
++#define	SH_DMAC_CH_SZ		0x10
++
+ /*
+  * Define the default configuration for dual address memory-memory transfer.
+  * The 0x400 value represents auto-request, external->external.
+@@ -29,7 +41,7 @@ static unsigned long dma_find_base(unsigned int chan)
+ 	unsigned long base = SH_DMAC_BASE0;
  
--static inline size_t rtnl_fdb_nlmsg_size(void)
-+static inline size_t rtnl_fdb_nlmsg_size(const struct net_device *dev)
+ #ifdef SH_DMAC_BASE1
+-	if (chan >= 6)
++	if (chan >= SH_DMAC_NR_MD_CH)
+ 		base = SH_DMAC_BASE1;
+ #endif
+ 
+@@ -40,13 +52,13 @@ static unsigned long dma_base_addr(unsigned int chan)
  {
- 	return NLMSG_ALIGN(sizeof(struct ndmsg)) +
--	       nla_total_size(ETH_ALEN) +	/* NDA_LLADDR */
-+	       nla_total_size(dev->addr_len) +	/* NDA_LLADDR */
- 	       nla_total_size(sizeof(u16)) +	/* NDA_VLAN */
- 	       0;
+ 	unsigned long base = dma_find_base(chan);
+ 
+-	/* Normalize offset calculation */
+-	if (chan >= 9)
+-		chan -= 6;
+-	if (chan >= 4)
+-		base += 0x10;
++	chan = (chan % SH_DMAC_NR_MD_CH) * SH_DMAC_CH_SZ;
++
++	/* DMAOR is placed inside the channel register space. Step over it. */
++	if (chan >= DMAOR)
++		base += SH_DMAC_CH_SZ;
+ 
+-	return base + (chan * 0x10);
++	return base + chan;
  }
-@@ -3615,7 +3615,7 @@ static void rtnl_fdb_notify(struct net_device *dev, u8 *addr, u16 vid, int type,
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
  
--	skb = nlmsg_new(rtnl_fdb_nlmsg_size(), GFP_ATOMIC);
-+	skb = nlmsg_new(rtnl_fdb_nlmsg_size(dev), GFP_ATOMIC);
- 	if (!skb)
- 		goto errout;
+ #ifdef CONFIG_SH_DMA_IRQ_MULTI
+@@ -250,12 +262,11 @@ static int sh_dmac_get_dma_residue(struct dma_channel *chan)
+ #define NR_DMAOR	1
+ #endif
  
+-/*
+- * DMAOR bases are broken out amongst channel groups. DMAOR0 manages
+- * channels 0 - 5, DMAOR1 6 - 11 (optional).
+- */
+-#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n)*6))
+-#define dmaor_write_reg(n, data)	__raw_writew(data, dma_find_base(n)*6)
++#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n) * \
++						    SH_DMAC_NR_MD_CH) + DMAOR)
++#define dmaor_write_reg(n, data)	__raw_writew(data, \
++						     dma_find_base((n) * \
++						     SH_DMAC_NR_MD_CH) + DMAOR)
+ 
+ static inline int dmaor_reset(int no)
+ {
 -- 
 2.39.2
 
