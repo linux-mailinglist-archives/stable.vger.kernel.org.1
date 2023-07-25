@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37271761535
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 993BB7616C1
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234534AbjGYL0k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:26:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36004 "EHLO
+        id S234972AbjGYLmN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:42:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234532AbjGYL0j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:39 -0400
+        with ESMTP id S235026AbjGYLl5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A65E74
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC211990
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C2574616A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FAAC433CA;
-        Tue, 25 Jul 2023 11:26:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 04428616B0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F127C433C8;
+        Tue, 25 Jul 2023 11:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284395;
-        bh=U3T8hGPr7fGnLvKHuuJk2IUejR58suIjLT5kyk5bWyA=;
+        s=korg; t=1690285300;
+        bh=zaCEC6wOE3N+0sktKsE6ChVyr8tzsUio+Cw2td0aNIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fr2fkdXg72kyPi7zyh260VdGplm/9duc6CGB6a8I0dA4DDcqH42X6jjHnuv/IR1BE
-         OX0inQm3HZuIIKXIo1A1mEs01Fw8zHAslUIta1P/3UXfhnzEKWCiWFmpDke1mfuVmA
-         y+YT6q1voOY3sGaE3I1N7kc9/As++6V3EwPkoz+M=
+        b=U4Tn1RVXthBaJyE/lQ5JBruDWMHDjvWdAe21dQRNA+a6DZ+U50BraUX7nUsaLCM3p
+         qRWtDmMQA7nA+auyBo7B+KzjMfJprLKx2PJ2CZilckXUVeZOh8vWAviuEO84GI8wnP
+         hBjubDGrjRaBRxJ4C1DW9MOUx+kjdK14W2oLvj6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
-        Sasha Neftin <sasha.neftin@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 339/509] igc: Remove delay during TX ring configuration
+Subject: [PATCH 5.4 125/313] w1: fix loop in w1_fini()
 Date:   Tue, 25 Jul 2023 12:44:38 +0200
-Message-ID: <20230725104609.236273597@linuxfoundation.org>
+Message-ID: <20230725104526.423117064@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,44 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit cca28ceac7c7857bc2d313777017585aef00bcc4 ]
+[ Upstream commit 83f3fcf96fcc7e5405b37d9424c7ef26bfa203f8 ]
 
-Remove unnecessary delay during the TX ring configuration.
-This will cause delay, especially during link down and
-link up activity.
+The __w1_remove_master_device() function calls:
 
-Furthermore, old SKUs like as I225 will call the reset_adapter
-to reset the controller during TSN mode Gate Control List (GCL)
-setting. This will add more time to the configuration of the
-real-time use case.
+	list_del(&dev->w1_master_entry);
 
-It doesn't mentioned about this delay in the Software User Manual.
-It might have been ported from legacy code I210 in the past.
+So presumably this can cause an endless loop.
 
-Fixes: 13b5b7fd6a4a ("igc: Add support for Tx/Rx rings")
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Acked-by: Sasha Neftin <sasha.neftin@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 7785925dd8e0 ("[PATCH] w1: cleanups.")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/w1/w1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index a15e4b6d7fa40..2b51ee87a2def 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -600,7 +600,6 @@ static void igc_configure_tx_ring(struct igc_adapter *adapter,
- 	/* disable the queue */
- 	wr32(IGC_TXDCTL(reg_idx), 0);
- 	wrfl();
--	mdelay(10);
+diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+index 2a7970a10533e..e08f40c9d54c9 100644
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -1228,10 +1228,10 @@ static int __init w1_init(void)
  
- 	wr32(IGC_TDLEN(reg_idx),
- 	     ring->count * sizeof(union igc_adv_tx_desc));
+ static void __exit w1_fini(void)
+ {
+-	struct w1_master *dev;
++	struct w1_master *dev, *n;
+ 
+ 	/* Set netlink removal messages and some cleanup */
+-	list_for_each_entry(dev, &w1_masters, w1_master_entry)
++	list_for_each_entry_safe(dev, n, &w1_masters, w1_master_entry)
+ 		__w1_remove_master_device(dev);
+ 
+ 	w1_fini_netlink();
 -- 
 2.39.2
 
