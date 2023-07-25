@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86658761750
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E0B776132B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229968AbjGYLq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54580 "EHLO
+        id S234059AbjGYLIf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232528AbjGYLq5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D0F4B7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:56 -0700 (PDT)
+        with ESMTP id S234183AbjGYLIL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11BE64231
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D853261698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56F4C433C8;
-        Tue, 25 Jul 2023 11:46:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53E0F61655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60189C433C8;
+        Tue, 25 Jul 2023 11:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285615;
-        bh=ISR9S4vZPdq5WFeiApKOfjYXsUikkXLXinTGakbVcbE=;
+        s=korg; t=1690283205;
+        bh=Sjydewem4lWE94bofnn7EX0bK2iPboaTkPQkqODpAfo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ENZaZUlXF8Dq+oPfeCITYDhmpY1f8U0O0WwI6TCZ6bb6Qe6PqWJi98PqNxhp63C9S
-         leD8izYJwNR1Det7BtGOwTiVRnmVtNKwkJ4J7j6dP7Wg/CX/QRX/X+cgUbJUQRCtEK
-         OW0/9f+C4BqfGtks7VE95YK/8OhLCabhdYfLwNj0=
+        b=D6hMemKYFAgCibvg6KfvPuQJ/7nh4N8UlKJTiMen6nbLXFGnaKIDdJSTcg/RQvSKz
+         KLN3CC0+PFfCCajJGFHLVm1yz0EN/AQPqi8vRMq7J0cCfK6xDvBSg81Af4Gi5ia/md
+         khq8Dwyzu2oD+sYHoJCv3KmO1hKud8D29+lI171I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 5.4 251/313] misc: pci_endpoint_test: Re-init completion for every test
+        patches@lists.linux.dev, Ilya Leoshkevich <iii@linux.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>
+Subject: [PATCH 6.1 176/183] selftests/bpf: Fix sk_assign on s390x
 Date:   Tue, 25 Jul 2023 12:46:44 +0200
-Message-ID: <20230725104531.923829986@linuxfoundation.org>
+Message-ID: <20230725104514.072946038@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +55,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit fb620ae73b70c2f57b9d3e911fc24c024ba2324f upstream.
+[ Upstream commit 7ce878ca81bca7811e669db4c394b86780e0dbe4 ]
 
-The irq_raised completion used to detect the end of a test case is
-initialized when the test device is probed, but never reinitialized again
-before a test case. As a result, the irq_raised completion synchronization
-is effective only for the first ioctl test case executed. Any subsequent
-call to wait_for_completion() by another ioctl() call will immediately
-return, potentially too early, leading to false positive failures.
+sk_assign is failing on an s390x machine running Debian "bookworm" for
+2 reasons: legacy server_map definition and uninitialized addrlen in
+recvfrom() call.
 
-Fix this by reinitializing the irq_raised completion before starting a new
-ioctl() test command.
+Fix by adding a new-style server_map definition and dropping addrlen
+(recvfrom() allows NULL values for src_addr and addrlen).
 
-Link: https://lore.kernel.org/r/20230415023542.77601-16-dlemoal@kernel.org
-Fixes: 2c156ac71c6b ("misc: Add host side PCI driver for PCI test function device")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org
+Since the test should support tc built without libbpf, build the prog
+twice: with the old-style definition and with the new-style definition,
+then select the right one at runtime. This could be done at compile
+time too, but this would not be cross-compilation friendly.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230129190501.1624747-2-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/sk_assign.c        |   25 ++++++++++----
+ tools/testing/selftests/bpf/progs/test_sk_assign.c        |   11 ++++++
+ tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c |    3 +
+ 3 files changed, 33 insertions(+), 6 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -590,6 +590,10 @@ static long pci_endpoint_test_ioctl(stru
- 	struct pci_dev *pdev = test->pdev;
+--- a/tools/testing/selftests/bpf/prog_tests/sk_assign.c
++++ b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
+@@ -29,7 +29,23 @@ static int stop, duration;
+ static bool
+ configure_stack(void)
+ {
++	char tc_version[128];
+ 	char tc_cmd[BUFSIZ];
++	char *prog;
++	FILE *tc;
++
++	/* Check whether tc is built with libbpf. */
++	tc = popen("tc -V", "r");
++	if (CHECK_FAIL(!tc))
++		return false;
++	if (CHECK_FAIL(!fgets(tc_version, sizeof(tc_version), tc)))
++		return false;
++	if (strstr(tc_version, ", libbpf "))
++		prog = "test_sk_assign_libbpf.bpf.o";
++	else
++		prog = "test_sk_assign.bpf.o";
++	if (CHECK_FAIL(pclose(tc)))
++		return false;
  
- 	mutex_lock(&test->mutex);
-+
-+	reinit_completion(&test->irq_raised);
-+	test->last_irq = -ENODATA;
-+
- 	switch (cmd) {
- 	case PCITEST_BAR:
- 		bar = arg;
+ 	/* Move to a new networking namespace */
+ 	if (CHECK_FAIL(unshare(CLONE_NEWNET)))
+@@ -46,8 +62,8 @@ configure_stack(void)
+ 	/* Load qdisc, BPF program */
+ 	if (CHECK_FAIL(system("tc qdisc add dev lo clsact")))
+ 		return false;
+-	sprintf(tc_cmd, "%s %s %s %s", "tc filter add dev lo ingress bpf",
+-		       "direct-action object-file ./test_sk_assign.bpf.o",
++	sprintf(tc_cmd, "%s %s %s %s %s", "tc filter add dev lo ingress bpf",
++		       "direct-action object-file", prog,
+ 		       "section tc",
+ 		       (env.verbosity < VERBOSE_VERY) ? " 2>/dev/null" : "verbose");
+ 	if (CHECK(system(tc_cmd), "BPF load failed;",
+@@ -129,15 +145,12 @@ get_port(int fd)
+ static ssize_t
+ rcv_msg(int srv_client, int type)
+ {
+-	struct sockaddr_storage ss;
+ 	char buf[BUFSIZ];
+-	socklen_t slen;
+ 
+ 	if (type == SOCK_STREAM)
+ 		return read(srv_client, &buf, sizeof(buf));
+ 	else
+-		return recvfrom(srv_client, &buf, sizeof(buf), 0,
+-				(struct sockaddr *)&ss, &slen);
++		return recvfrom(srv_client, &buf, sizeof(buf), 0, NULL, NULL);
+ }
+ 
+ static int
+--- a/tools/testing/selftests/bpf/progs/test_sk_assign.c
++++ b/tools/testing/selftests/bpf/progs/test_sk_assign.c
+@@ -16,6 +16,16 @@
+ #include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_endian.h>
+ 
++#if defined(IPROUTE2_HAVE_LIBBPF)
++/* Use a new-style map definition. */
++struct {
++	__uint(type, BPF_MAP_TYPE_SOCKMAP);
++	__type(key, int);
++	__type(value, __u64);
++	__uint(pinning, LIBBPF_PIN_BY_NAME);
++	__uint(max_entries, 1);
++} server_map SEC(".maps");
++#else
+ /* Pin map under /sys/fs/bpf/tc/globals/<map name> */
+ #define PIN_GLOBAL_NS 2
+ 
+@@ -35,6 +45,7 @@ struct {
+ 	.max_elem = 1,
+ 	.pinning = PIN_GLOBAL_NS,
+ };
++#endif
+ 
+ char _license[] SEC("license") = "GPL";
+ 
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+@@ -0,0 +1,3 @@
++// SPDX-License-Identifier: GPL-2.0
++#define IPROUTE2_HAVE_LIBBPF
++#include "test_sk_assign.c"
 
 
