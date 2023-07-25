@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91DF4761338
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8447D7615AA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234125AbjGYLI7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
+        id S234648AbjGYLbw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:31:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233857AbjGYLIo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:44 -0400
+        with ESMTP id S234651AbjGYLbu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE381FE1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93E11BEE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 213CE61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3051FC433C7;
-        Tue, 25 Jul 2023 11:07:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5034C6168F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F53C433C8;
+        Tue, 25 Jul 2023 11:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283233;
-        bh=iFGkyUqUMH/5ObpqxsY3HOFO04rKa20Rx2vFuUL25gU=;
+        s=korg; t=1690284698;
+        bh=dq1+HV3swrdUEjVKh3IySCv1nLwlhLdp7/OR5kgkhLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qo4LFkhVJxt/9O2rERX46zEUw1WZ6tcv0ZDh1c/jDdG4ShmavN68zKWN7z0BfXzUX
-         pmGv3+iP2F6hUa1NS1bq23cMbiZJ9ksKQwFwTjZeoP0DxzF4tPurUBrPIuNQlYeddp
-         rPFHU1+PjuT2BR/Zkul2at7Gh0eVsc3v+zQdba2Y=
+        b=ty6V7uhZVi6SyrFtXCMe8dSaHLoF8Vh9s8X8zjnKz/gdpFd2Ci2x27Kz0GTApVu/5
+         7f9ByqDaORzmhhGQnB1QmB3bOjF0S5xtRJGcrKXqBBRNutoYOGaZOJMyJiDneb5ZwX
+         5NAI6n4hRlehoAmrQo0X3snzfA4BVx4ZWorpF4/c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/183] tcp: annotate data-races around icsk->icsk_user_timeout
+        patches@lists.linux.dev, YueHaibing <yuehaibing@huawei.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 450/509] can: bcm: Fix UAF in bcm_proc_show()
 Date:   Tue, 25 Jul 2023 12:46:29 +0200
-Message-ID: <20230725104513.608905253@linuxfoundation.org>
+Message-ID: <20230725104614.340656011@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +55,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 26023e91e12c68669db416b97234328a03d8e499 ]
+commit 55c3b96074f3f9b0aee19bf93cd71af7516582bb upstream.
 
-This field can be read locklessly from do_tcp_getsockopt()
+BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80
+Read of size 8 at addr ffff888155846230 by task cat/7862
 
-Fixes: dca43c75e7e5 ("tcp: Add TCP_USER_TIMEOUT socket option.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-11-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xd5/0x150
+ print_report+0xc1/0x5e0
+ kasan_report+0xba/0xf0
+ bcm_proc_show+0x969/0xa80
+ seq_read_iter+0x4f6/0x1260
+ seq_read+0x165/0x210
+ proc_reg_read+0x227/0x300
+ vfs_read+0x1d5/0x8d0
+ ksys_read+0x11e/0x240
+ do_syscall_64+0x35/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Allocated by task 7846:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x9e/0xa0
+ bcm_sendmsg+0x264b/0x44e0
+ sock_sendmsg+0xda/0x180
+ ____sys_sendmsg+0x735/0x920
+ ___sys_sendmsg+0x11d/0x1b0
+ __sys_sendmsg+0xfa/0x1d0
+ do_syscall_64+0x35/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Freed by task 7846:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x27/0x40
+ ____kasan_slab_free+0x161/0x1c0
+ slab_free_freelist_hook+0x119/0x220
+ __kmem_cache_free+0xb4/0x2e0
+ rcu_core+0x809/0x1bd0
+
+bcm_op is freed before procfs entry be removed in bcm_release(),
+this lead to bcm_proc_show() may read the freed bcm_op.
+
+Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://lore.kernel.org/all/20230715092543.15548-1-yuehaibing@huawei.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/can/bcm.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 6f3a494b965ae..b3a5ff311567b 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3406,7 +3406,7 @@ EXPORT_SYMBOL(tcp_sock_set_syncnt);
- void tcp_sock_set_user_timeout(struct sock *sk, u32 val)
- {
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1521,6 +1521,12 @@ static int bcm_release(struct socket *so
+ 
  	lock_sock(sk);
--	inet_csk(sk)->icsk_user_timeout = val;
-+	WRITE_ONCE(inet_csk(sk)->icsk_user_timeout, val);
- 	release_sock(sk);
- }
- EXPORT_SYMBOL(tcp_sock_set_user_timeout);
-@@ -3726,7 +3726,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 		if (val < 0)
- 			err = -EINVAL;
- 		else
--			icsk->icsk_user_timeout = val;
-+			WRITE_ONCE(icsk->icsk_user_timeout, val);
- 		break;
  
- 	case TCP_FASTOPEN:
-@@ -4243,7 +4243,7 @@ int do_tcp_getsockopt(struct sock *sk, int level,
- 		break;
++#if IS_ENABLED(CONFIG_PROC_FS)
++	/* remove procfs entry */
++	if (net->can.bcmproc_dir && bo->bcm_proc_read)
++		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
++#endif /* CONFIG_PROC_FS */
++
+ 	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
+ 		bcm_remove_op(op);
  
- 	case TCP_USER_TIMEOUT:
--		val = icsk->icsk_user_timeout;
-+		val = READ_ONCE(icsk->icsk_user_timeout);
- 		break;
+@@ -1556,12 +1562,6 @@ static int bcm_release(struct socket *so
+ 	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
+ 		bcm_remove_op(op);
  
- 	case TCP_FASTOPEN:
--- 
-2.39.2
-
+-#if IS_ENABLED(CONFIG_PROC_FS)
+-	/* remove procfs entry */
+-	if (net->can.bcmproc_dir && bo->bcm_proc_read)
+-		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
+-#endif /* CONFIG_PROC_FS */
+-
+ 	/* remove device reference */
+ 	if (bo->bound) {
+ 		bo->bound   = 0;
 
 
