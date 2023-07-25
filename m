@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED8276173F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E664176134A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230444AbjGYLq0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53882 "EHLO
+        id S234086AbjGYLJ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232201AbjGYLqY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB02E199D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:22 -0700 (PDT)
+        with ESMTP id S234084AbjGYLJI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15EF430E0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5922C616A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9F6C433C8;
-        Tue, 25 Jul 2023 11:46:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F299615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B053FC433C7;
+        Tue, 25 Jul 2023 11:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285581;
-        bh=C00KkHY+enJaF1a4oWABZtQ4k+DSDoeFw3y+avdKAHo=;
+        s=korg; t=1690283278;
+        bh=6W9tot0dUX7fqx9qMlA4fid9QiWn43P2mpeBPjyr2hg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ansbjlhn4F9V12etIZi34/vjXuKmiTh/0q28YAnYUHsAV7qmqHxz401gCFT+j9kDH
-         LoFnkr76OdzB5F4bZsdZ9pqDu9iJ3gOVaGaJH//VX1XyBwX7gJPOp+xWhZONDDl3vK
-         umKNIVygRojmDP4+d7BkQDt5JxMDhk2n7fHYi/Wc=
+        b=hpqXxbhuO3T4uOevCjKj5iAmcqsI9xxXnSuqZyjU73O3R2wD8kh8yCQHr20d+1esw
+         IlKryVakKmsFysA14gETzP3kjRFrLfmLG/jS1krXnCq1m8HVkSGFtlD9B/sgS/qsSE
+         udP2NJSAkwTWUQp0ZTJ6bKA1vJjUBtESxzHvIqZY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 217/313] platform/x86: wmi: Fix indentation in some cases
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Josip Pavic <josip.pavic@amd.com>,
+        Alan Liu <haoping.liu@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 5.15 19/78] drm/amd/display: Keep PHY active for DP displays on DCN31
 Date:   Tue, 25 Jul 2023 12:46:10 +0200
-Message-ID: <20230725104530.434264842@linuxfoundation.org>
+Message-ID: <20230725104452.074402960@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,48 +59,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 6701cc8f70710826a4de69cbb1f66c52db2c36ac ]
+commit 2387ccf43e3c6cb5dbd757c5ef410cca9f14b971 upstream.
 
-There is no need to split lines as they perfectly fit 80 character limit.
+[Why & How]
+Port of a change that went into DCN314 to keep the PHY enabled
+when we have a connected and active DP display.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 028e6e204ace ("platform/x86: wmi: Break possible infinite loop when parsing GUID")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The PHY can hang if PHY refclk is disabled inadvertently.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Josip Pavic <josip.pavic@amd.com>
+Acked-by: Alan Liu <haoping.liu@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/wmi.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 62b146af35679..1aa29d594b7ab 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -1122,8 +1122,7 @@ static void wmi_free_devices(struct acpi_device *device)
- 	}
- }
- 
--static bool guid_already_parsed(struct acpi_device *device,
--				const u8 *guid)
-+static bool guid_already_parsed(struct acpi_device *device, const u8 *guid)
- {
- 	struct wmi_block *wblock;
- 
-@@ -1333,10 +1332,8 @@ static void acpi_wmi_notify_handler(acpi_handle handle, u32 event,
- 		wblock->handler(event, wblock->handler_data);
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
+@@ -81,6 +81,11 @@ int dcn31_get_active_display_cnt_wa(
+ 				stream->signal == SIGNAL_TYPE_DVI_SINGLE_LINK ||
+ 				stream->signal == SIGNAL_TYPE_DVI_DUAL_LINK)
+ 			tmds_present = true;
++
++		/* Checking stream / link detection ensuring that PHY is active*/
++		if (dc_is_dp_signal(stream->signal) && !stream->dpms_off)
++			display_count++;
++
  	}
  
--	if (debug_event) {
--		pr_info("DEBUG Event GUID: %pUL\n",
--			wblock->gblock.guid);
--	}
-+	if (debug_event)
-+		pr_info("DEBUG Event GUID: %pUL\n", wblock->gblock.guid);
- 
- 	acpi_bus_generate_netlink_event(
- 		wblock->acpi_device->pnp.device_class,
--- 
-2.39.2
-
+ 	for (i = 0; i < dc->link_count; i++) {
 
 
