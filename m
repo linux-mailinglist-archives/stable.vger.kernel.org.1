@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72FA4761194
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FABC76127B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230502AbjGYKxg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59110 "EHLO
+        id S232978AbjGYLDI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232386AbjGYKv7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:51:59 -0400
+        with ESMTP id S233875AbjGYLCm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D437D212D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A56235AE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B45DF6165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A4AC433C9;
-        Tue, 25 Jul 2023 10:51:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28CC76168A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A268C433C9;
+        Tue, 25 Jul 2023 10:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282277;
-        bh=sB8sdujWmd6fVjrwSYp2RHiAsqzQgxgOzbntDtcbRDM=;
+        s=korg; t=1690282798;
+        bh=kL08v6k+4VwSs1sWESEZLI1l7hHdsF0qDoZKYKi4dZg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aJooWNZMx0AuGRaJIgEe6aKJt211c2K/3Kn08T2sAiK9WADh0Hz+1WeMIONx8IncB
-         teqHm4Y+pdZB53J50XUg/LUACHwQvIHO+XnGtrztaFZ4xhQ6EvZIDImF9sm6ejX9At
-         h62yV5PvCLArW52L5ecLeR2ofjvN+Tl89eallp+s=
+        b=ADEwQfaPEFPCGLd2Tc1bR2JLWo83dPHAsP+00bpv2rQNoJ5DBTsFgbFgwQcEny3H7
+         w/PB/nTJAIiV9ViPdJ+guUnggORu2wKInEQRYO/VUHj0wq7FBgqpzWiKdGuDYxZD7o
+         q84ffMY7iYetKlRGGgIFsMCDpe1dE66IvIFHni9c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 064/227] ASoC: qdsp6: audioreach: fix topology probe deferral
+        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
+        Christoffer Sandberg <cs@tuxedo.de>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 003/183] ALSA: hda/realtek: Add quirk for Clevo NS70AU
 Date:   Tue, 25 Jul 2023 12:43:51 +0200
-Message-ID: <20230725104517.396627533@linuxfoundation.org>
+Message-ID: <20230725104507.907104180@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,37 +55,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit 46ec420573cefa1fc98025e7e6841bdafd6f1e20 upstream.
+commit c250ef8954eda2024c8861c36e9fc1b589481fe7 upstream.
 
-Propagate errors when failing to load the topology component so that
-probe deferrals can be handled.
+Fixes headset detection on Clevo NS70AU.
 
-Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
-Cc: stable@vger.kernel.org      # 5.17
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230705123018.30903-3-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Co-developed-by: Werner Sembach <wse@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230718145722.10592-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/topology.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/qcom/qdsp6/topology.c
-+++ b/sound/soc/qcom/qdsp6/topology.c
-@@ -1277,8 +1277,8 @@ int audioreach_tplg_init(struct snd_soc_
- 
- 	ret = snd_soc_tplg_component_load(component, &audioreach_tplg_ops, fw);
- 	if (ret < 0) {
--		dev_err(dev, "tplg component load failed%d\n", ret);
--		ret = -EINVAL;
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(dev, "tplg component load failed: %d\n", ret);
- 	}
- 
- 	release_firmware(fw);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9645,6 +9645,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1558, 0x5157, "Clevo W517GU1", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x51a1, "Clevo NS50MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x51b1, "Clevo NS50AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x51b3, "Clevo NS70AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x5630, "Clevo NP50RNJS", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x70a1, "Clevo NB70T[HJK]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x70b3, "Clevo NK70SB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 
 
