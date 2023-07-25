@@ -2,55 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3047611FC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF1F7612D9
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230381AbjGYK6h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:58:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35884 "EHLO
+        id S233992AbjGYLGB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233780AbjGYK6B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F4C46A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:08 -0700 (PDT)
+        with ESMTP id S233959AbjGYLFm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B503C0D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4205161655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6F0C433C8;
-        Tue, 25 Jul 2023 10:55:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19DFC61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FA7C433C8;
+        Tue, 25 Jul 2023 11:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282507;
-        bh=WEOaO7BEOGhQyAmyLB1gu0n2EK/YGGXqFbag93UijTI=;
+        s=korg; t=1690283024;
+        bh=SVXIepzprOj4GTNIUVzAlMcKoqBpMHHjN6BooLpEXDw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HKPKJhNMCQDc7A4JXjmFPk/1wngUvDr/3HnIldVLuf0GBj4pB/rv0ql8B63ON+njv
-         7CV3g3XOZ+N35bhk4iYRwx3xu0nUQZQgAq4CcnrT8AlZM5C1puhSqlGQ75N9aYEylY
-         /46Xq44ODf51HkIDXSzyR0Dj8VJbuPdLV5910o8w=
+        b=eYtcBCA0ZONgVY6sF2Nl5RVvpW7LUAOnCWdzPMmm2y7AFD0fvZyN8dHoRFNu0f2KA
+         TTod+Cjwzb2ssnIbIFGkkYc86Ol1WqddWumijN0YNN6aqWhPpA5+w4I0Xqphl3DI3e
+         pCljni7/yFEdL9YHXzaxFpmKUqgSh/JhELZn+wGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Coin <hcoin@quietfountain.com>,
-        Ido Schimmel <idosch@idosch.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 154/227] bridge: Add extack warning when enabling STP in netns.
-Date:   Tue, 25 Jul 2023 12:45:21 +0200
-Message-ID: <20230725104521.295959054@linuxfoundation.org>
+Subject: [PATCH 6.1 094/183] pinctrl: renesas: rzg2l: Handle non-unique subnode names
+Date:   Tue, 25 Jul 2023 12:45:22 +0200
+Message-ID: <20230725104511.348325346@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,69 +55,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 56a16035bb6effb37177867cea94c13a8382f745 ]
+[ Upstream commit bfc374a145ae133613e05b9b89be561f169cb58d ]
 
-When we create an L2 loop on a bridge in netns, we will see packets storm
-even if STP is enabled.
+Currently, sd1 and sd0 have unique subnode names 'sd1_mux' and 'sd0_mux'.
+If we change these to non-unique subnode names such as 'mux' this can
+lead to the below conflict as the RZ/G2L pin control driver considers
+only the names of the subnodes.
 
-  # unshare -n
-  # ip link add br0 type bridge
-  # ip link add veth0 type veth peer name veth1
-  # ip link set veth0 master br0 up
-  # ip link set veth1 master br0 up
-  # ip link set br0 type bridge stp_state 1
-  # ip link set br0 up
-  # sleep 30
-  # ip -s link show br0
-  2: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 1000
-      link/ether b6:61:98:1c:1c:b5 brd ff:ff:ff:ff:ff:ff
-      RX: bytes  packets  errors  dropped missed  mcast
-      956553768  12861249 0       0       0       12861249  <-. Keep
-      TX: bytes  packets  errors  dropped carrier collsns     |  increasing
-      1027834    11951    0       0       0       0         <-'   rapidly
+   pinctrl-rzg2l 11030000.pinctrl: pin P47_0 already requested by 11c00000.mmc; cannot claim for 11c10000.mmc
+   pinctrl-rzg2l 11030000.pinctrl: pin-376 (11c10000.mmc) status -22
+   pinctrl-rzg2l 11030000.pinctrl: could not request pin 376 (P47_0) from group mux  on device pinctrl-rzg2l
+   renesas_sdhi_internal_dmac 11c10000.mmc: Error applying setting, reverse things back
 
-This is because llc_rcv() drops all packets in non-root netns and BPDU
-is dropped.
+Fix this by constructing unique names from the node names of both the
+pin control configuration node and its child node, where appropriate.
 
-Let's add extack warning when enabling STP in netns.
+Based on the work done by Geert for the RZ/V2M pinctrl driver.
 
-  # unshare -n
-  # ip link add br0 type bridge
-  # ip link set br0 type bridge stp_state 1
-  Warning: bridge: STP does not work in non-root netns.
-
-Note this commit will be reverted later when we namespacify the whole LLC
-infra.
-
-Fixes: e730c15519d0 ("[NET]: Make packet reception network namespace safe")
-Suggested-by: Harry Coin <hcoin@quietfountain.com>
-Link: https://lore.kernel.org/netdev/0f531295-e289-022d-5add-5ceffa0df9bc@quietfountain.com/
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230704111858.215278-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_stp_if.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 28 ++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/net/bridge/br_stp_if.c b/net/bridge/br_stp_if.c
-index 75204d36d7f90..b65962682771f 100644
---- a/net/bridge/br_stp_if.c
-+++ b/net/bridge/br_stp_if.c
-@@ -201,6 +201,9 @@ int br_stp_set_enabled(struct net_bridge *br, unsigned long val,
- {
- 	ASSERT_RTNL();
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index ca6303fc41f98..fd11d28e5a1e4 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -246,6 +246,7 @@ static int rzg2l_map_add_config(struct pinctrl_map *map,
  
-+	if (!net_eq(dev_net(br->dev), &init_net))
-+		NL_SET_ERR_MSG_MOD(extack, "STP does not work in non-root netns");
+ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 				   struct device_node *np,
++				   struct device_node *parent,
+ 				   struct pinctrl_map **map,
+ 				   unsigned int *num_maps,
+ 				   unsigned int *index)
+@@ -263,6 +264,7 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 	struct property *prop;
+ 	int ret, gsel, fsel;
+ 	const char **pin_fn;
++	const char *name;
+ 	const char *pin;
+ 
+ 	pinmux = of_find_property(np, "pinmux", NULL);
+@@ -346,8 +348,19 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 		psel_val[i] = MUX_FUNC(value);
+ 	}
+ 
++	if (parent) {
++		name = devm_kasprintf(pctrl->dev, GFP_KERNEL, "%pOFn.%pOFn",
++				      parent, np);
++		if (!name) {
++			ret = -ENOMEM;
++			goto done;
++		}
++	} else {
++		name = np->name;
++	}
 +
- 	if (br_mrp_enabled(br)) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "STP can't be enabled if MRP is already enabled");
+ 	/* Register a single pin group listing all the pins we read from DT */
+-	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, num_pinmux, NULL);
++	gsel = pinctrl_generic_add_group(pctldev, name, pins, num_pinmux, NULL);
+ 	if (gsel < 0) {
+ 		ret = gsel;
+ 		goto done;
+@@ -357,17 +370,16 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 	 * Register a single group function where the 'data' is an array PSEL
+ 	 * register values read from DT.
+ 	 */
+-	pin_fn[0] = np->name;
+-	fsel = pinmux_generic_add_function(pctldev, np->name, pin_fn, 1,
+-					   psel_val);
++	pin_fn[0] = name;
++	fsel = pinmux_generic_add_function(pctldev, name, pin_fn, 1, psel_val);
+ 	if (fsel < 0) {
+ 		ret = fsel;
+ 		goto remove_group;
+ 	}
+ 
+ 	maps[idx].type = PIN_MAP_TYPE_MUX_GROUP;
+-	maps[idx].data.mux.group = np->name;
+-	maps[idx].data.mux.function = np->name;
++	maps[idx].data.mux.group = name;
++	maps[idx].data.mux.function = name;
+ 	idx++;
+ 
+ 	dev_dbg(pctrl->dev, "Parsed %pOF with %d pins\n", np, num_pinmux);
+@@ -414,7 +426,7 @@ static int rzg2l_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	index = 0;
+ 
+ 	for_each_child_of_node(np, child) {
+-		ret = rzg2l_dt_subnode_to_map(pctldev, child, map,
++		ret = rzg2l_dt_subnode_to_map(pctldev, child, np, map,
+ 					      num_maps, &index);
+ 		if (ret < 0) {
+ 			of_node_put(child);
+@@ -423,7 +435,7 @@ static int rzg2l_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	}
+ 
+ 	if (*num_maps == 0) {
+-		ret = rzg2l_dt_subnode_to_map(pctldev, np, map,
++		ret = rzg2l_dt_subnode_to_map(pctldev, np, NULL, map,
+ 					      num_maps, &index);
+ 		if (ret < 0)
+ 			goto done;
 -- 
 2.39.2
 
