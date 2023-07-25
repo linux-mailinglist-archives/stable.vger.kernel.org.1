@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B796E7611EA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2552F7612B8
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233318AbjGYK5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:57:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35758 "EHLO
+        id S233938AbjGYLFS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231806AbjGYK5A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:00 -0400
+        with ESMTP id S233857AbjGYLFE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7EA4220
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656591FDA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02FD2615FE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A1AC433C8;
-        Tue, 25 Jul 2023 10:54:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8988E61654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE27C433C7;
+        Tue, 25 Jul 2023 11:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282471;
-        bh=1Q67qdk12FBuGwaaE5LJWkl7u8MfdyCJqcQiR0n6UsA=;
+        s=korg; t=1690282941;
+        bh=QCldKSRCuUDGHPV/X+YuHqMghAyLd4JfvxS3WWOupJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TJJk+V4KPVTPcC9se5Fc1E4po/+Z+5ZHzVTvcpQiB415wvClsXJkdVBOI+O3Jsgi6
-         Nk+X0ZfFgZkCFMXdXhpNSPkyHDTeRYK5qMG/sOD/fSwuTMOJwyRbyV6m+uNqhEOobQ
-         FsP9ld5U14pvyS5FND89EglgrzjY17wCCsF6WFzE=
+        b=BCPeKmmPpVktgsqKVgU0rXFBE+kkGhK2YAJ9QCVn8rb0YG4O2AbBrOPcydfAg8Wxv
+         N6xz8gAqT16yfk9q1AMKBxjJzeDyB3watmpwcGSmppfSIagrgxzGNadh7Of7JhnLEV
+         AXL3vVBdTm9lxhkliss4bMeJsiAVbqRI3o9Y93Kk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
+        kernel test robot <lkp@intel.com>,
+        Hao Lan <lanhao@huawei.com>, Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 142/227] pinctrl: renesas: rzg2l: Handle non-unique subnode names
+Subject: [PATCH 6.1 081/183] net: hns3: fix strncpy() not using dest-buf length as length issue
 Date:   Tue, 25 Jul 2023 12:45:09 +0200
-Message-ID: <20230725104520.757354299@linuxfoundation.org>
+Message-ID: <20230725104510.887994193@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,116 +56,138 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Hao Chen <chenhao418@huawei.com>
 
-[ Upstream commit bfc374a145ae133613e05b9b89be561f169cb58d ]
+[ Upstream commit 1cf3d5567f273a8746d1bade00633a93204f80f0 ]
 
-Currently, sd1 and sd0 have unique subnode names 'sd1_mux' and 'sd0_mux'.
-If we change these to non-unique subnode names such as 'mux' this can
-lead to the below conflict as the RZ/G2L pin control driver considers
-only the names of the subnodes.
+Now, strncpy() in hns3_dbg_fill_content() use src-length as copy-length,
+it may result in dest-buf overflow.
 
-   pinctrl-rzg2l 11030000.pinctrl: pin P47_0 already requested by 11c00000.mmc; cannot claim for 11c10000.mmc
-   pinctrl-rzg2l 11030000.pinctrl: pin-376 (11c10000.mmc) status -22
-   pinctrl-rzg2l 11030000.pinctrl: could not request pin 376 (P47_0) from group mux  on device pinctrl-rzg2l
-   renesas_sdhi_internal_dmac 11c10000.mmc: Error applying setting, reverse things back
+This patch is to fix intel compile warning for csky-linux-gcc (GCC) 12.1.0
+compiler.
 
-Fix this by constructing unique names from the node names of both the
-pin control configuration node and its child node, where appropriate.
+The warning reports as below:
 
-Based on the work done by Geert for the RZ/V2M pinctrl driver.
+hclge_debugfs.c:92:25: warning: 'strncpy' specified bound depends on
+the length of the source argument [-Wstringop-truncation]
 
-Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230704111858.215278-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+strncpy(pos, items[i].name, strlen(items[i].name));
+
+hclge_debugfs.c:90:25: warning: 'strncpy' output truncated before
+terminating nul copying as many bytes from a string as its length
+[-Wstringop-truncation]
+
+strncpy(pos, result[i], strlen(result[i]));
+
+strncpy() use src-length as copy-length, it may result in
+dest-buf overflow.
+
+So,this patch add some values check to avoid this issue.
+
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/lkml/202207170606.7WtHs9yS-lkp@intel.com/T/
+Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 28 ++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ .../ethernet/hisilicon/hns3/hns3_debugfs.c    | 31 ++++++++++++++-----
+ .../hisilicon/hns3/hns3pf/hclge_debugfs.c     | 29 ++++++++++++++---
+ 2 files changed, 48 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 9511d920565e9..b53d26167da52 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -249,6 +249,7 @@ static int rzg2l_map_add_config(struct pinctrl_map *map,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index bcccd82a2620f..f6ededec5a4fa 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -435,19 +435,36 @@ static void hns3_dbg_fill_content(char *content, u16 len,
+ 				  const struct hns3_dbg_item *items,
+ 				  const char **result, u16 size)
+ {
++#define HNS3_DBG_LINE_END_LEN	2
+ 	char *pos = content;
++	u16 item_len;
+ 	u16 i;
  
- static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 				   struct device_node *np,
-+				   struct device_node *parent,
- 				   struct pinctrl_map **map,
- 				   unsigned int *num_maps,
- 				   unsigned int *index)
-@@ -266,6 +267,7 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 	struct property *prop;
- 	int ret, gsel, fsel;
- 	const char **pin_fn;
-+	const char *name;
- 	const char *pin;
- 
- 	pinmux = of_find_property(np, "pinmux", NULL);
-@@ -349,8 +351,19 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 		psel_val[i] = MUX_FUNC(value);
- 	}
- 
-+	if (parent) {
-+		name = devm_kasprintf(pctrl->dev, GFP_KERNEL, "%pOFn.%pOFn",
-+				      parent, np);
-+		if (!name) {
-+			ret = -ENOMEM;
-+			goto done;
-+		}
-+	} else {
-+		name = np->name;
++	if (!len) {
++		return;
++	} else if (len <= HNS3_DBG_LINE_END_LEN) {
++		*pos++ = '\0';
++		return;
 +	}
 +
- 	/* Register a single pin group listing all the pins we read from DT */
--	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, num_pinmux, NULL);
-+	gsel = pinctrl_generic_add_group(pctldev, name, pins, num_pinmux, NULL);
- 	if (gsel < 0) {
- 		ret = gsel;
- 		goto done;
-@@ -360,17 +373,16 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 	 * Register a single group function where the 'data' is an array PSEL
- 	 * register values read from DT.
- 	 */
--	pin_fn[0] = np->name;
--	fsel = pinmux_generic_add_function(pctldev, np->name, pin_fn, 1,
--					   psel_val);
-+	pin_fn[0] = name;
-+	fsel = pinmux_generic_add_function(pctldev, name, pin_fn, 1, psel_val);
- 	if (fsel < 0) {
- 		ret = fsel;
- 		goto remove_group;
+ 	memset(content, ' ', len);
+-	for (i = 0; i < size; i++) {
+-		if (result)
+-			strncpy(pos, result[i], strlen(result[i]));
+-		else
+-			strncpy(pos, items[i].name, strlen(items[i].name));
++	len -= HNS3_DBG_LINE_END_LEN;
+ 
+-		pos += strlen(items[i].name) + items[i].interval;
++	for (i = 0; i < size; i++) {
++		item_len = strlen(items[i].name) + items[i].interval;
++		if (len < item_len)
++			break;
++
++		if (result) {
++			if (item_len < strlen(result[i]))
++				break;
++			strscpy(pos, result[i], strlen(result[i]));
++		} else {
++			strscpy(pos, items[i].name, strlen(items[i].name));
++		}
++		pos += item_len;
++		len -= item_len;
  	}
+-
+ 	*pos++ = '\n';
+ 	*pos++ = '\0';
+ }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+index 142415c84c6b2..0ebc21401b7c2 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+@@ -87,16 +87,35 @@ static void hclge_dbg_fill_content(char *content, u16 len,
+ 				   const struct hclge_dbg_item *items,
+ 				   const char **result, u16 size)
+ {
++#define HCLGE_DBG_LINE_END_LEN	2
+ 	char *pos = content;
++	u16 item_len;
+ 	u16 i;
  
- 	maps[idx].type = PIN_MAP_TYPE_MUX_GROUP;
--	maps[idx].data.mux.group = np->name;
--	maps[idx].data.mux.function = np->name;
-+	maps[idx].data.mux.group = name;
-+	maps[idx].data.mux.function = name;
- 	idx++;
- 
- 	dev_dbg(pctrl->dev, "Parsed %pOF with %d pins\n", np, num_pinmux);
-@@ -417,7 +429,7 @@ static int rzg2l_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	index = 0;
- 
- 	for_each_child_of_node(np, child) {
--		ret = rzg2l_dt_subnode_to_map(pctldev, child, map,
-+		ret = rzg2l_dt_subnode_to_map(pctldev, child, np, map,
- 					      num_maps, &index);
- 		if (ret < 0) {
- 			of_node_put(child);
-@@ -426,7 +438,7 @@ static int rzg2l_dt_node_to_map(struct pinctrl_dev *pctldev,
++	if (!len) {
++		return;
++	} else if (len <= HCLGE_DBG_LINE_END_LEN) {
++		*pos++ = '\0';
++		return;
++	}
++
+ 	memset(content, ' ', len);
++	len -= HCLGE_DBG_LINE_END_LEN;
++
+ 	for (i = 0; i < size; i++) {
+-		if (result)
+-			strncpy(pos, result[i], strlen(result[i]));
+-		else
+-			strncpy(pos, items[i].name, strlen(items[i].name));
+-		pos += strlen(items[i].name) + items[i].interval;
++		item_len = strlen(items[i].name) + items[i].interval;
++		if (len < item_len)
++			break;
++
++		if (result) {
++			if (item_len < strlen(result[i]))
++				break;
++			strscpy(pos, result[i], strlen(result[i]));
++		} else {
++			strscpy(pos, items[i].name, strlen(items[i].name));
++		}
++		pos += item_len;
++		len -= item_len;
  	}
- 
- 	if (*num_maps == 0) {
--		ret = rzg2l_dt_subnode_to_map(pctldev, np, map,
-+		ret = rzg2l_dt_subnode_to_map(pctldev, np, NULL, map,
- 					      num_maps, &index);
- 		if (ret < 0)
- 			goto done;
+ 	*pos++ = '\n';
+ 	*pos++ = '\0';
 -- 
 2.39.2
 
