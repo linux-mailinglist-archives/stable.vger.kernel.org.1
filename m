@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 052B176165E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88218761503
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234939AbjGYLic (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45858 "EHLO
+        id S234549AbjGYLYn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234905AbjGYLia (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D37C019AD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:26 -0700 (PDT)
+        with ESMTP id S234558AbjGYLYm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 093B018F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 60DFE616BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D53FC433C7;
-        Tue, 25 Jul 2023 11:38:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D966615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDD0C433C8;
+        Tue, 25 Jul 2023 11:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285105;
-        bh=6igU5C9a4k4ekv+7YRNWqswqGqEV3ddHmzoQjbDvAZ0=;
+        s=korg; t=1690284280;
+        bh=eTL3JeZsl9ggQ66BqDmrRCpuh4qWColUB938wXhCazQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KI5H4fJTAA5BvqA6yvgyFrAEBAjw6YNb6IJ8CT9A4DxKCGeam2kw/f5+xoEEy1zT1
-         gFvubZ5rhSHztMWW7r9oVeuqYhgvxZLxO2jnSKWvR4i9CDP83imAfuVi09bbxgv2XJ
-         M2sUw6HFBRxUOarZjQfcgEAny/bmEFFIH+mfstvI=
+        b=AFxAvBpL4z3Z1PBR3e2rtHse0bUAzdZIehYmvdtnB7CgGL0MoulQ04OMuUXFPWvTt
+         W020o3AT0s2rGuP5ap5ZmUXTd35kZ0sw+nZl8Wjl8HNn6Jdmy2wDdBYGwc4D/beoVK
+         GejN/MAME0lIr50nAfxM3q5cAOd6U2D06XkYhvXs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Brendan Cunningham <bcunningham@cornelisnetworks.com>,
-        Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/313] IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 299/509] fs: Lock moved directories
 Date:   Tue, 25 Jul 2023 12:43:58 +0200
-Message-ID: <20230725104524.640872821@linuxfoundation.org>
+Message-ID: <20230725104607.425191132@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,110 +54,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit fd8958efe8779d3db19c9124fce593ce681ac709 ]
+commit 28eceeda130f5058074dd007d9c59d2e8bc5af2e upstream.
 
-Fix three sources of error involving struct sdma_txreq.num_descs.
+When a directory is moved to a different directory, some filesystems
+(udf, ext4, ocfs2, f2fs, and likely gfs2, reiserfs, and others) need to
+update their pointer to the parent and this must not race with other
+operations on the directory. Lock the directories when they are moved.
+Although not all filesystems need this locking, we perform it in
+vfs_rename() because getting the lock ordering right is really difficult
+and we don't want to expose these locking details to filesystems.
 
-When _extend_sdma_tx_descs() extends the descriptor array, it uses the
-value of tx->num_descs to determine how many existing entries from the
-tx's original, internal descriptor array to copy to the newly allocated
-one.  As this value was incremented before the call, the copy loop will
-access one entry past the internal descriptor array, copying its contents
-into the corresponding slot in the new array.
-
-If the call to _extend_sdma_tx_descs() fails, _pad_smda_tx_descs() then
-invokes __sdma_tx_clean() which uses the value of tx->num_desc to drive a
-loop that unmaps all descriptor entries in use.  As this value was
-incremented before the call, the unmap loop will invoke sdma_unmap_desc()
-on a descriptor entry whose contents consist of whatever random data was
-copied into it during (1), leading to cascading further calls into the
-kernel and driver using arbitrary data.
-
-_sdma_close_tx() was using tx->num_descs instead of tx->num_descs - 1.
-
-Fix all of the above by:
-- Only increment .num_descs after .descp is extended.
-- Use .num_descs - 1 instead of .num_descs for last .descp entry.
-
-Fixes: f4d26d81ad7f ("staging/rdma/hfi1: Add coalescing support for SDMA TX descriptors")
-Link: https://lore.kernel.org/r/167656658879.2223096.10026561343022570690.stgit@awfm-02.cornelisnetworks.com
-Signed-off-by: Brendan Cunningham <bcunningham@cornelisnetworks.com>
-Signed-off-by: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
-Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230601105830.13168-5-jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/sdma.c |  4 ++--
- drivers/infiniband/hw/hfi1/sdma.h | 15 +++++++--------
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ Documentation/filesystems/directory-locking.rst |   26 ++++++++++++------------
+ fs/namei.c                                      |   22 ++++++++++++--------
+ 2 files changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/sdma.c b/drivers/infiniband/hw/hfi1/sdma.c
-index 2a684fc6056e1..057c9ffcd02e1 100644
---- a/drivers/infiniband/hw/hfi1/sdma.c
-+++ b/drivers/infiniband/hw/hfi1/sdma.c
-@@ -3203,8 +3203,7 @@ int _pad_sdma_tx_descs(struct hfi1_devdata *dd, struct sdma_txreq *tx)
- {
- 	int rval = 0;
+--- a/Documentation/filesystems/directory-locking.rst
++++ b/Documentation/filesystems/directory-locking.rst
+@@ -22,12 +22,11 @@ exclusive.
+ 3) object removal.  Locking rules: caller locks parent, finds victim,
+ locks victim and calls the method.  Locks are exclusive.
  
--	tx->num_desc++;
--	if ((unlikely(tx->num_desc == tx->desc_limit))) {
-+	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
- 		rval = _extend_sdma_tx_descs(dd, tx);
- 		if (rval) {
- 			__sdma_txclean(dd, tx);
-@@ -3217,6 +3216,7 @@ int _pad_sdma_tx_descs(struct hfi1_devdata *dd, struct sdma_txreq *tx)
- 		SDMA_MAP_NONE,
- 		dd->sdma_pad_phys,
- 		sizeof(u32) - (tx->packet_len & (sizeof(u32) - 1)));
-+	tx->num_desc++;
- 	_sdma_close_tx(dd, tx);
- 	return rval;
- }
-diff --git a/drivers/infiniband/hw/hfi1/sdma.h b/drivers/infiniband/hw/hfi1/sdma.h
-index 1e2e40f79cb20..6ac00755848db 100644
---- a/drivers/infiniband/hw/hfi1/sdma.h
-+++ b/drivers/infiniband/hw/hfi1/sdma.h
-@@ -672,14 +672,13 @@ static inline void sdma_txclean(struct hfi1_devdata *dd, struct sdma_txreq *tx)
- static inline void _sdma_close_tx(struct hfi1_devdata *dd,
- 				  struct sdma_txreq *tx)
- {
--	tx->descp[tx->num_desc].qw[0] |=
--		SDMA_DESC0_LAST_DESC_FLAG;
--	tx->descp[tx->num_desc].qw[1] |=
--		dd->default_desc1;
-+	u16 last_desc = tx->num_desc - 1;
-+
-+	tx->descp[last_desc].qw[0] |= SDMA_DESC0_LAST_DESC_FLAG;
-+	tx->descp[last_desc].qw[1] |= dd->default_desc1;
- 	if (tx->flags & SDMA_TXREQ_F_URGENT)
--		tx->descp[tx->num_desc].qw[1] |=
--			(SDMA_DESC1_HEAD_TO_HOST_FLAG |
--			 SDMA_DESC1_INT_REQ_FLAG);
-+		tx->descp[last_desc].qw[1] |= (SDMA_DESC1_HEAD_TO_HOST_FLAG |
-+					       SDMA_DESC1_INT_REQ_FLAG);
- }
+-4) rename() that is _not_ cross-directory.  Locking rules: caller locks
+-the parent and finds source and target.  In case of exchange (with
+-RENAME_EXCHANGE in flags argument) lock both.  In any case,
+-if the target already exists, lock it.  If the source is a non-directory,
+-lock it.  If we need to lock both, lock them in inode pointer order.
+-Then call the method.  All locks are exclusive.
++4) rename() that is _not_ cross-directory.  Locking rules: caller locks the
++parent and finds source and target.  We lock both (provided they exist).  If we
++need to lock two inodes of different type (dir vs non-dir), we lock directory
++first.  If we need to lock two inodes of the same type, lock them in inode
++pointer order.  Then call the method.  All locks are exclusive.
+ NB: we might get away with locking the source (and target in exchange
+ case) shared.
  
- static inline int _sdma_txadd_daddr(
-@@ -696,6 +695,7 @@ static inline int _sdma_txadd_daddr(
- 		type,
- 		addr, len);
- 	WARN_ON(len > tx->tlen);
-+	tx->num_desc++;
- 	tx->tlen -= len;
- 	/* special cases for last */
- 	if (!tx->tlen) {
-@@ -707,7 +707,6 @@ static inline int _sdma_txadd_daddr(
- 			_sdma_close_tx(dd, tx);
- 		}
+@@ -44,15 +43,17 @@ All locks are exclusive.
+ rules:
+ 
+ 	* lock the filesystem
+-	* lock parents in "ancestors first" order.
++	* lock parents in "ancestors first" order. If one is not ancestor of
++	  the other, lock them in inode pointer order.
+ 	* find source and target.
+ 	* if old parent is equal to or is a descendent of target
+ 	  fail with -ENOTEMPTY
+ 	* if new parent is equal to or is a descendent of source
+ 	  fail with -ELOOP
+-	* If it's an exchange, lock both the source and the target.
+-	* If the target exists, lock it.  If the source is a non-directory,
+-	  lock it.  If we need to lock both, do so in inode pointer order.
++	* Lock both the source and the target provided they exist. If we
++	  need to lock two inodes of different type (dir vs non-dir), we lock
++	  the directory first. If we need to lock two inodes of the same type,
++	  lock them in inode pointer order.
+ 	* call the method.
+ 
+ All ->i_rwsem are taken exclusive.  Again, we might get away with locking
+@@ -66,8 +67,9 @@ If no directory is its own ancestor, the
+ 
+ Proof:
+ 
+-	First of all, at any moment we have a partial ordering of the
+-	objects - A < B iff A is an ancestor of B.
++	First of all, at any moment we have a linear ordering of the
++	objects - A < B iff (A is an ancestor of B) or (B is not an ancestor
++        of A and ptr(A) < ptr(B)).
+ 
+ 	That ordering can change.  However, the following is true:
+ 
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -4264,7 +4264,7 @@ SYSCALL_DEFINE2(link, const char __user
+  *	   sb->s_vfs_rename_mutex. We might be more accurate, but that's another
+  *	   story.
+  *	c) we have to lock _four_ objects - parents and victim (if it exists),
+- *	   and source (if it is not a directory).
++ *	   and source.
+  *	   And that - after we got ->i_mutex on parents (until then we don't know
+  *	   whether the target exists).  Solution: try to be smart with locking
+  *	   order for inodes.  We rely on the fact that tree topology may change
+@@ -4341,10 +4341,16 @@ int vfs_rename(struct inode *old_dir, st
+ 
+ 	take_dentry_name_snapshot(&old_name, old_dentry);
+ 	dget(new_dentry);
+-	if (!is_dir || (flags & RENAME_EXCHANGE))
+-		lock_two_nondirectories(source, target);
+-	else if (target)
+-		inode_lock(target);
++	/*
++	 * Lock all moved children. Moved directories may need to change parent
++	 * pointer so they need the lock to prevent against concurrent
++	 * directory changes moving parent pointer. For regular files we've
++	 * historically always done this. The lockdep locking subclasses are
++	 * somewhat arbitrary but RENAME_EXCHANGE in particular can swap
++	 * regular files and directories so it's difficult to tell which
++	 * subclasses to use.
++	 */
++	lock_two_inodes(source, target, I_MUTEX_NORMAL, I_MUTEX_NONDIR2);
+ 
+ 	error = -EBUSY;
+ 	if (is_local_mountpoint(old_dentry) || is_local_mountpoint(new_dentry))
+@@ -4388,9 +4394,9 @@ int vfs_rename(struct inode *old_dir, st
+ 			d_exchange(old_dentry, new_dentry);
  	}
--	tx->num_desc++;
- 	return rval;
- }
- 
--- 
-2.39.2
-
+ out:
+-	if (!is_dir || (flags & RENAME_EXCHANGE))
+-		unlock_two_nondirectories(source, target);
+-	else if (target)
++	if (source)
++		inode_unlock(source);
++	if (target)
+ 		inode_unlock(target);
+ 	dput(new_dentry);
+ 	if (!error) {
 
 
