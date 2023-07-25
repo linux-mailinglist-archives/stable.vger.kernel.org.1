@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4551C7616BC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6A9F761208
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235042AbjGYLlw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:41:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48392 "EHLO
+        id S233386AbjGYK6w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:58:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235101AbjGYLlh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6192273A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:12 -0700 (PDT)
+        with ESMTP id S233848AbjGYK6L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E562A30C1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A717E61698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7E1C433C8;
-        Tue, 25 Jul 2023 11:41:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72D9D61602
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7226AC433D9;
+        Tue, 25 Jul 2023 10:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285272;
-        bh=RcfdmbWDG/Lc5CwFiM4wL+qWf1TA/0MFS70EarJslb8=;
+        s=korg; t=1690282521;
+        bh=82O17sxXXzuPYLGcWF4tN/DycdJSlQkvD6RvlBq4FhI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kWXOvvvkW2NsRV1PS5VZyqyFncK7ZAJERWy92uXn/XkCJHoxqzLxp0S78zRWJgDDb
-         9B3PJPgm+TnP3h0SX5nFkbmg5SXzC4iktKcVtFuDmege7pAxdP27tDb7JoWKAd2pwS
-         OwbycFRUpCp23vbp6tbc7O9Yam9/M7fEENNiErSA=
+        b=N8t+qK/ODEQpqshJBMLw+e/jgvQm1r+iqDeIiFNs1nBmDHkD5+HaA/OQreRkp6x+h
+         cvNyIE57L/DC9M0lhwhnkIgDgo893gvav5V2dvoYcWMFi5gi8Dz2J9x4zYzuaXHbmT
+         ly2ctQW01bSKkNuv9Ky7XiQnFWnCyoGR20HAeqM0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        patches@lists.linux.dev, Yi Kuo <yi@yikuo.dev>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 145/313] rtc: st-lpc: Release some resources in st_rtc_probe() in case of error
+Subject: [PATCH 6.4 131/227] wifi: iwlwifi: pcie: add device id 51F1 for killer 1675
 Date:   Tue, 25 Jul 2023 12:44:58 +0200
-Message-ID: <20230725104527.274070570@linuxfoundation.org>
+Message-ID: <20230725104520.265249962@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Yi Kuo <yi@yikuo.dev>
 
-[ Upstream commit 06c6e1b01d9261f03629cefd1f3553503291e6cf ]
+[ Upstream commit f4daceae4087bbb3e9a56044b44601d520d009d2 ]
 
-If an error occurs after clk_get(), the corresponding resources should be
-released.
+Intel Killer AX1675i/s with device id 51f1 would show
+"No config found for PCI dev 51f1/1672" in dmesg and refuse to work.
+Add the new device id 51F1 for 1675i/s to fix the issue.
 
-Use devm_clk_get() to fix it.
-
-Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/866af6adbc7454a7b4505eb6c28fbdc86ccff39e.1686251455.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Yi Kuo <yi@yikuo.dev>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230621130444.ee224675380b.I921c905e21e8d041ad808def8f454f27b5ebcd8b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-st-lpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
-index 27261b020f8dd..2031d042c5e44 100644
---- a/drivers/rtc/rtc-st-lpc.c
-+++ b/drivers/rtc/rtc-st-lpc.c
-@@ -231,7 +231,7 @@ static int st_rtc_probe(struct platform_device *pdev)
- 	enable_irq_wake(rtc->irq);
- 	disable_irq(rtc->irq);
- 
--	rtc->clk = clk_get(&pdev->dev, NULL);
-+	rtc->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(rtc->clk)) {
- 		dev_err(&pdev->dev, "Unable to request clock\n");
- 		return PTR_ERR(rtc->clk);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index e9fe6cea891aa..e086664a4eaca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -684,6 +684,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	IWL_DEV_INFO(0x2726, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
+ 	IWL_DEV_INFO(0x51F0, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
+ 	IWL_DEV_INFO(0x51F0, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
++	IWL_DEV_INFO(0x51F1, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
++	IWL_DEV_INFO(0x51F1, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
+ 	IWL_DEV_INFO(0x54F0, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
+ 	IWL_DEV_INFO(0x54F0, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
+ 	IWL_DEV_INFO(0x7A70, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
 -- 
 2.39.2
 
