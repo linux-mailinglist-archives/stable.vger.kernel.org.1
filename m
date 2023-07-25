@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DFA9761507
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CCD8761199
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234530AbjGYLYx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:24:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34230 "EHLO
+        id S231984AbjGYKxj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234527AbjGYLYw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:52 -0400
+        with ESMTP id S233775AbjGYKw0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42DFD99
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506CE1FCC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5C09615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F66C433C7;
-        Tue, 25 Jul 2023 11:24:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBD92615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB166C433C8;
+        Tue, 25 Jul 2023 10:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284291;
-        bh=VaIac/b24lORGIQ2sabFa4fVKrZIpwF2j10p8UjxkMw=;
+        s=korg; t=1690282288;
+        bh=OppGpa/h8ZlcbP30JHx3ga6YtaKYFCYpPH2X3hyxitk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rGmTePWq+tZfjFZjNUfgL93uJ0ipVntqjkrSAdDy4A926biMZHMBYZFB1za1clElo
-         TF85Ea7pPu0jsZr1icyWdxiiMEpSVbZ7ZRYWzOp1+AY0BbpazhoRqAiVKbiy7N2pYb
-         tdu7ut+T8ga1q3WP5sbvRE5UuWiLxRbx196uGFLU=
+        b=MF0jaej6JbxLlCjRXYhW7jlOSnjshpDeepeMOPrD7Hj7P3AhBSLy2sUw2twzsvCsb
+         DRHhSXuOQo+W6I9/9kP5pvwqYC16OiCCJK4IBjx4k0IFHhBYc85FPoK8bIPuSgX66e
+         Baz2AaTrfuvCHSBbMXvDvn00h2Z8LKBqSuhJPUBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        stable@kernel.org, Ricardo Ribalda Delgado <ribalda@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 303/509] ASoC: mediatek: mt8173: Fix snd_soc_component_initialize error path
-Date:   Tue, 25 Jul 2023 12:44:02 +0200
-Message-ID: <20230725104607.618664577@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        hackyzh002 <hackyzh002@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 076/227] [PATCH AUTOSEL 5.4 01/12] drm/radeon: Fix integer overflow in radeon_cs_parser_init
+Date:   Tue, 25 Jul 2023 12:44:03 +0200
+Message-ID: <20230725104517.921107823@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +57,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda Delgado <ribalda@chromium.org>
+[ Upstream commit f828b681d0cd566f86351c0b913e6cb6ed8c7b9c ]
 
-commit a46d37012a5be1737393b8f82fd35665e4556eee upstream.
+The type of size is unsigned, if size is 0x40000000, there will be an
+integer overflow, size will be zero after size *= sizeof(uint32_t),
+will cause uninitialized memory to be referenced later
 
-If the second component fails to initialize, cleanup the first on.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@kernel.org
-Fixes: f1b5bf07365d ("ASoC: mt2701/mt8173: replace platform to component")
-Signed-off-by: Ricardo Ribalda Delgado <ribalda@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230612-mt8173-fixup-v2-1-432aa99ce24d@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: hackyzh002 <hackyzh002@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8173/mt8173-afe-pcm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/radeon/radeon_cs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
-@@ -1162,14 +1162,14 @@ static int mt8173_afe_pcm_dev_probe(stru
- 	comp_hdmi = devm_kzalloc(&pdev->dev, sizeof(*comp_hdmi), GFP_KERNEL);
- 	if (!comp_hdmi) {
- 		ret = -ENOMEM;
--		goto err_pm_disable;
-+		goto err_cleanup_components;
- 	}
+--- a/drivers/gpu/drm/radeon/radeon_cs.c
++++ b/drivers/gpu/drm/radeon/radeon_cs.c
+@@ -270,7 +270,8 @@ int radeon_cs_parser_init(struct radeon_
+ {
+ 	struct drm_radeon_cs *cs = data;
+ 	uint64_t *chunk_array_ptr;
+-	unsigned size, i;
++	u64 size;
++	unsigned i;
+ 	u32 ring = RADEON_CS_RING_GFX;
+ 	s32 priority = 0;
  
- 	ret = snd_soc_component_initialize(comp_hdmi,
- 					   &mt8173_afe_hdmi_dai_component,
- 					   &pdev->dev);
- 	if (ret)
--		goto err_pm_disable;
-+		goto err_cleanup_components;
- 
- #ifdef CONFIG_DEBUG_FS
- 	comp_hdmi->debugfs_prefix = "hdmi";
 
 
