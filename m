@@ -2,60 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8BD5761352
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BFB0761308
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234022AbjGYLJe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45394 "EHLO
+        id S234050AbjGYLH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234128AbjGYLJU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5345B2D56
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:21 -0700 (PDT)
+        with ESMTP id S233979AbjGYLHJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD941270E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDEB161681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FCDC433C7;
-        Tue, 25 Jul 2023 11:08:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BDDD61656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66400C433C8;
+        Tue, 25 Jul 2023 11:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283300;
-        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
+        s=korg; t=1690283152;
+        bh=pOH/AnYFdh+7FnBn8CCYCqksboFsCkA+1derhDHiXVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ziffk8eSnj70mBYU/LCWvfRfENstpNg0MzUvqwzO+2O0DujaGhYJNu56ZCP4Cg9J0
-         r3eWxqXxIAwcTshJTyOczTpb5hViNK0tLbg6r6tb08ssJ2rVyICgdg3stXdYrWaEqD
-         SCbQf3BXiFeayuNug5cPtaas5NyBUQ5c9iAz2Dd8=
+        b=lN0pp1CQ4y2iWMAdoPXvq9Ow7b1D6h3kaslJ+ufa2HdR+2WbloR/NsBm1wiB5gxeT
+         TSpgPA9AyRRs4uFU6cp6Fjmq2ePl2vE/XORCTuF1MLzGLvabzXexuEms6+y2g0EDhb
+         zLRSvaRkKpqzxiVGurH3Re7eIZZPFhFbuR2UfUlk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        regressions@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 5.15 05/78] perf probe: Add test for regression introduced by switch to die_get_decl_file()
+        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/183] octeontx2-pf: Dont allocate BPIDs for LBK interfaces
 Date:   Tue, 25 Jul 2023 12:45:56 +0200
-Message-ID: <20230725104451.513695648@linuxfoundation.org>
+Message-ID: <20230725104512.544243616@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,112 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Georg Müller <georgmueller@gmx.net>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
+[ Upstream commit 8fcd7c7b3a38ab5e452f542fda8f7940e77e479a ]
 
-This patch adds a test to validate that 'perf probe' works for binaries
-where DWARF info is split into multiple CUs
+Current driver enables backpressure for LBK interfaces.
+But these interfaces do not support this feature.
+Hence, this patch fixes the issue by skipping the
+backpressure configuration for these interfaces.
 
-Signed-off-by: Georg Müller <georgmueller@gmx.net>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: regressions@lists.linux.dev
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool").
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Link: https://lore.kernel.org/r/20230716093741.28063-1-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
- 1 file changed, 77 insertions(+)
- create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- /dev/null
-+++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
-@@ -0,0 +1,77 @@
-+#!/bin/bash
-+# test perf probe of function from different CU
-+# SPDX-License-Identifier: GPL-2.0
-+
-+set -e
-+
-+temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
-+
-+cleanup()
-+{
-+	trap - EXIT TERM INT
-+	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
-+		echo "--- Cleaning up ---"
-+		perf probe -x ${temp_dir}/testfile -d foo
-+		rm -f "${temp_dir}/"*
-+		rmdir "${temp_dir}"
-+	fi
-+}
-+
-+trap_cleanup()
-+{
-+        cleanup
-+        exit 1
-+}
-+
-+trap trap_cleanup EXIT TERM INT
-+
-+cat > ${temp_dir}/testfile-foo.h << EOF
-+struct t
-+{
-+  int *p;
-+  int c;
-+};
-+
-+extern int foo (int i, struct t *t);
-+EOF
-+
-+cat > ${temp_dir}/testfile-foo.c << EOF
-+#include "testfile-foo.h"
-+
-+int
-+foo (int i, struct t *t)
-+{
-+  int j, res = 0;
-+  for (j = 0; j < i && j < t->c; j++)
-+    res += t->p[j];
-+
-+  return res;
-+}
-+EOF
-+
-+cat > ${temp_dir}/testfile-main.c << EOF
-+#include "testfile-foo.h"
-+
-+static struct t g;
-+
-+int
-+main (int argc, char **argv)
-+{
-+  int i;
-+  int j[argc];
-+  g.c = argc;
-+  g.p = j;
-+  for (i = 0; i < argc; i++)
-+    j[i] = (int) argv[i][0];
-+  return foo (3, &g);
-+}
-+EOF
-+
-+gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
-+gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
-+gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
-+
-+perf probe -x ${temp_dir}/testfile --funcs foo
-+perf probe -x ${temp_dir}/testfile foo
-+
-+cleanup
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index ed911d9946277..c236dba80ff1a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1452,8 +1452,9 @@ static int otx2_init_hw_resources(struct otx2_nic *pf)
+ 	if (err)
+ 		goto err_free_npa_lf;
+ 
+-	/* Enable backpressure */
+-	otx2_nix_config_bp(pf, true);
++	/* Enable backpressure for CGX mapped PF/VFs */
++	if (!is_otx2_lbkvf(pf->pdev))
++		otx2_nix_config_bp(pf, true);
+ 
+ 	/* Init Auras and pools used by NIX RQ, for free buffer ptrs */
+ 	err = otx2_rq_aura_pool_init(pf);
+-- 
+2.39.2
+
 
 
