@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24C3D761147
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C531B7615FE
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:35:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232986AbjGYKtb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57948 "EHLO
+        id S234741AbjGYLf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232376AbjGYKta (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:30 -0400
+        with ESMTP id S234732AbjGYLfV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:35:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92737173F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56569118
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27721615A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A9DC433C8;
-        Tue, 25 Jul 2023 10:49:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E002C616A8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE24FC433C8;
+        Tue, 25 Jul 2023 11:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282168;
-        bh=CW1YHLspWvSzcAVlQ1V3mBdlnP7+z0xe/Uqm0aDuToo=;
+        s=korg; t=1690284916;
+        bh=+SoqVG6RoguNPN15+w6YkeW507traoDvh9eGkjN/N3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o2jVAQ7rirbuhMOPgMmA5EgD2A/cDgY2v7X5Ky2nenk+DjtX8u6qqqTmb3HwjDmU3
-         r5z6yTnbQQERvLYb0EVtg87xcalaJR3Y90HtozuB2TjaR3MxF2Gy/1JXzpUjXRy4oN
-         BIEqO3QH6x2C59n8ZI+8rg5qb8z7BS/yZ/ZndVWw=
+        b=KACqRBhCqs3Xh5ZhqGVNUfhYqQwo/eYWCTgv6n0Ym0Y06EnnmNfhCjBFVjquWAYo+
+         p43ASf5vSf8BybWm5gshMM7aaFG2eQpGvFYXq+xZ1h7/G/dQ3ymE3GKI0Qdtaoag2V
+         LJ6vrm7dEX2neOjiafEakDRVnXi/Q8lOJhpOu3R8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Christoffer Sandberg <cs@tuxedo.de>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.4 004/227] ALSA: hda/realtek: Add quirk for Clevo NS70AU
+        patches@lists.linux.dev,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Rob Landley <rob@landley.net>, Marc Zyngier <maz@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 018/313] irqchip/jcore-aic: Fix missing allocation of IRQ descriptors
 Date:   Tue, 25 Jul 2023 12:42:51 +0200
-Message-ID: <20230725104514.976801634@linuxfoundation.org>
+Message-ID: <20230725104521.927672254@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,32 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-commit c250ef8954eda2024c8861c36e9fc1b589481fe7 upstream.
+[ Upstream commit 4848229494a323eeaab62eee5574ef9f7de80374 ]
 
-Fixes headset detection on Clevo NS70AU.
+The initialization function for the J-Core AIC aic_irq_of_init() is
+currently missing the call to irq_alloc_descs() which allocates and
+initializes all the IRQ descriptors. Add missing function call and
+return the error code from irq_alloc_descs() in case the allocation
+fails.
 
-Co-developed-by: Werner Sembach <wse@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230718145722.10592-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 981b58f66cfc ("irqchip/jcore-aic: Add J-Core AIC driver")
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: Rob Landley <rob@landley.net>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230510163343.43090-1-glaubitz@physik.fu-berlin.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-jcore-aic.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9647,6 +9647,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1558, 0x5157, "Clevo W517GU1", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x51a1, "Clevo NS50MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x51b1, "Clevo NS50AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1558, 0x51b3, "Clevo NS70AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x5630, "Clevo NP50RNJS", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x70a1, "Clevo NB70T[HJK]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x70b3, "Clevo NK70SB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
+index 5f47d8ee4ae39..b9dcc8e78c750 100644
+--- a/drivers/irqchip/irq-jcore-aic.c
++++ b/drivers/irqchip/irq-jcore-aic.c
+@@ -68,6 +68,7 @@ static int __init aic_irq_of_init(struct device_node *node,
+ 	unsigned min_irq = JCORE_AIC2_MIN_HWIRQ;
+ 	unsigned dom_sz = JCORE_AIC_MAX_HWIRQ+1;
+ 	struct irq_domain *domain;
++	int ret;
+ 
+ 	pr_info("Initializing J-Core AIC\n");
+ 
+@@ -100,6 +101,12 @@ static int __init aic_irq_of_init(struct device_node *node,
+ 	jcore_aic.irq_unmask = noop;
+ 	jcore_aic.name = "AIC";
+ 
++	ret = irq_alloc_descs(-1, min_irq, dom_sz - min_irq,
++			      of_node_to_nid(node));
++
++	if (ret < 0)
++		return ret;
++
+ 	domain = irq_domain_add_legacy(node, dom_sz - min_irq, min_irq, min_irq,
+ 				       &jcore_aic_irqdomain_ops,
+ 				       &jcore_aic);
+-- 
+2.39.2
+
 
 
