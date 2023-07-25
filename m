@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 104F1761319
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96211761356
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233957AbjGYLH5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
+        id S234171AbjGYLJn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233910AbjGYLHY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B5A3A84
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:05 -0700 (PDT)
+        with ESMTP id S234157AbjGYLJ3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8213C11
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 79B756166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4A4C433C8;
-        Tue, 25 Jul 2023 11:06:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 052A261648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18528C433C8;
+        Tue, 25 Jul 2023 11:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283163;
-        bh=FKZbOhdA7/68DKOEKNohWy4R+kHghKdMXoKva7FA37w=;
+        s=korg; t=1690283311;
+        bh=u0s5v0cHR+hs5cNgLiIluV/YDq29nb9yExBQ2TG2pYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Idd3VxRWF0jAusTmq0HxISIGAMzHAE1hMIbh1WXJaSL/+gZE07LZmr1/oDFJsgTwG
-         PwcGllH1uSbNQeKcKr8Ir7q0lXBsDe8TM8iXhBztFCN2p9NoeH36af/DBrk8Sq8R1g
-         KWRcK09vZaLwPP5jL5y5co0+eziqLULbDOP42x8c=
+        b=RCt6b4yC3LJ1V8RQQF0d7Fk8JcjDXSa47WvhaHbiSHM3LTBuqx6q7RjpvYAUolbia
+         0+1GzVC0WC94GaZa+e3lfMkX2hun2swMASFCCDIdIoqR1JrKpK8Fg0duVgg/jYl9Yw
+         UE51EER6mbdJ+KHgap7AAguAsur9nY6rTk+E42uE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kurt Kanzenbach <kurt@linutronix.de>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/183] igc: Avoid transmit queue timeout for XDP
+        patches@lists.linux.dev, Jonathan Katz <jkatz@eitmlabs.org>,
+        Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 5.15 09/78] fuse: ioctl: translate ENOSYS in outarg
 Date:   Tue, 25 Jul 2023 12:46:00 +0200
-Message-ID: <20230725104512.690877105@linuxfoundation.org>
+Message-ID: <20230725104451.685794071@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,61 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kurt Kanzenbach <kurt@linutronix.de>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 95b681485563c64585de78662ee52d06b7fa47d9 ]
+commit 6a567e920fd0451bf29abc418df96c3365925770 upstream.
 
-High XDP load triggers the netdev watchdog:
+Fuse shouldn't return ENOSYS from its ioctl implementation. If userspace
+responds with ENOSYS it should be translated to ENOTTY.
 
-|NETDEV WATCHDOG: enp3s0 (igc): transmit queue 2 timed out
+There are two ways to return an error from the IOCTL request:
 
-The reason is the Tx queue transmission start (txq->trans_start) is not updated
-in XDP code path. Therefore, add it for all XDP transmission functions.
+ - fuse_out_header.error
+ - fuse_ioctl_out.result
 
-Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 78adb4bcf99e ("igc: Prevent garbled TX queue with XDP ZEROCOPY")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit 02c0cab8e734 ("fuse: ioctl: translate ENOSYS") already fixed this
+issue for the first case, but missed the second case.  This patch fixes the
+second case.
+
+Reported-by: Jonathan Katz <jkatz@eitmlabs.org>
+Closes: https://lore.kernel.org/all/CALKgVmcC1VUV_gJVq70n--omMJZUb4HSh_FqvLTHgNBc+HCLFQ@mail.gmail.com/
+Fixes: 02c0cab8e734 ("fuse: ioctl: translate ENOSYS")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/fuse/ioctl.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 273941f90f066..ade4bde47c65a 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -2402,6 +2402,8 @@ static int igc_xdp_xmit_back(struct igc_adapter *adapter, struct xdp_buff *xdp)
- 	nq = txring_txq(ring);
+--- a/fs/fuse/ioctl.c
++++ b/fs/fuse/ioctl.c
+@@ -9,14 +9,23 @@
+ #include <linux/compat.h>
+ #include <linux/fileattr.h>
  
- 	__netif_tx_lock(nq, cpu);
-+	/* Avoid transmit queue timeout since we share it with the slow path */
-+	txq_trans_cond_update(nq);
- 	res = igc_xdp_init_tx_descriptor(ring, xdpf);
- 	__netif_tx_unlock(nq);
- 	return res;
-@@ -2804,6 +2806,9 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
- 
- 	__netif_tx_lock(nq, cpu);
- 
-+	/* Avoid transmit queue timeout since we share it with the slow path */
-+	txq_trans_cond_update(nq);
+-static ssize_t fuse_send_ioctl(struct fuse_mount *fm, struct fuse_args *args)
++static ssize_t fuse_send_ioctl(struct fuse_mount *fm, struct fuse_args *args,
++			       struct fuse_ioctl_out *outarg)
+ {
+-	ssize_t ret = fuse_simple_request(fm, args);
++	ssize_t ret;
 +
- 	budget = igc_desc_unused(ring);
- 
- 	while (xsk_tx_peek_desc(pool, &xdp_desc) && budget--) {
-@@ -6297,6 +6302,9 @@ static int igc_xdp_xmit(struct net_device *dev, int num_frames,
- 
- 	__netif_tx_lock(nq, cpu);
- 
-+	/* Avoid transmit queue timeout since we share it with the slow path */
-+	txq_trans_cond_update(nq);
++	args->out_args[0].size = sizeof(*outarg);
++	args->out_args[0].value = outarg;
 +
- 	drops = 0;
- 	for (i = 0; i < num_frames; i++) {
- 		int err;
--- 
-2.39.2
-
++	ret = fuse_simple_request(fm, args);
+ 
+ 	/* Translate ENOSYS, which shouldn't be returned from fs */
+ 	if (ret == -ENOSYS)
+ 		ret = -ENOTTY;
+ 
++	if (ret >= 0 && outarg->result == -ENOSYS)
++		outarg->result = -ENOTTY;
++
+ 	return ret;
+ }
+ 
+@@ -264,13 +273,11 @@ long fuse_do_ioctl(struct file *file, un
+ 	}
+ 
+ 	ap.args.out_numargs = 2;
+-	ap.args.out_args[0].size = sizeof(outarg);
+-	ap.args.out_args[0].value = &outarg;
+ 	ap.args.out_args[1].size = out_size;
+ 	ap.args.out_pages = true;
+ 	ap.args.out_argvar = true;
+ 
+-	transferred = fuse_send_ioctl(fm, &ap.args);
++	transferred = fuse_send_ioctl(fm, &ap.args, &outarg);
+ 	err = transferred;
+ 	if (transferred < 0)
+ 		goto out;
+@@ -399,12 +406,10 @@ static int fuse_priv_ioctl(struct inode
+ 	args.in_args[1].size = inarg.in_size;
+ 	args.in_args[1].value = ptr;
+ 	args.out_numargs = 2;
+-	args.out_args[0].size = sizeof(outarg);
+-	args.out_args[0].value = &outarg;
+ 	args.out_args[1].size = inarg.out_size;
+ 	args.out_args[1].value = ptr;
+ 
+-	err = fuse_send_ioctl(fm, &args);
++	err = fuse_send_ioctl(fm, &args, &outarg);
+ 	if (!err) {
+ 		if (outarg.result < 0)
+ 			err = outarg.result;
 
 
