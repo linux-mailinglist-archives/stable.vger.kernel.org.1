@@ -2,61 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB5376189A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 14:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B54A7618DD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 14:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjGYMpU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 08:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58886 "EHLO
+        id S231248AbjGYMwN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 08:52:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231381AbjGYMpU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 08:45:20 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F348719AA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 05:45:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690289116; x=1721825116;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0jSyA9z1hDlFtXfNkzSAavJr9Smsg+OsIh/YJM8gN4M=;
-  b=VrxIT1lbwFyEJ2pNMVpUVkxNjUQY0lonALuYkPX6f7InBNWY2FUExXDI
-   mJeXRAxjV7O8CVAlJgnAVbBj++PB4eagflenU/jfCOyoP3qbjx7RgiNvD
-   //Ln0rfXRq9Qp6mWZvJLvUkAPCZ6c8O56db3okRsFt5e1/AIsW5zym08W
-   suwHSojMjREsLzJ91KIS2EljjfHuXXispacFDDBJA0Un0IdMJ+SbJld9v
-   fH6DRShbj+WvvF1XyIVsCYSZ10eTB05u3PhW5BXSdK8dfreA2CGinQZUj
-   cEuUcffEZzQnm0fXSQQZYF7ljrT7SpCrMgFC8ihizWGGVtEp8yWf2bMlC
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="431511415"
-X-IronPort-AV: E=Sophos;i="6.01,230,1684825200"; 
-   d="scan'208";a="431511415"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 05:45:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="726106705"
-X-IronPort-AV: E=Sophos;i="6.01,230,1684825200"; 
-   d="scan'208";a="726106705"
-Received: from kshutemo-mobl.ger.corp.intel.com (HELO intel.com) ([10.249.37.237])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 05:45:14 -0700
-Date:   Tue, 25 Jul 2023 14:45:06 +0200
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc:     Andi Shyti <andi.shyti@linux.intel.com>,
-        Intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        stable@vger.kernel.org
-Subject: Re: [Intel-gfx] [PATCH] drm/i915: Avoid GGTT flushing on non-GGTT
- paths of i915_vma_pin_iomap
-Message-ID: <ZL/D0vd23NebU2+X@ashyti-mobl2.lan>
-References: <20230724125633.1490543-1-tvrtko.ursulin@linux.intel.com>
- <ZL7cBvXCdtx3yzkB@ashyti-mobl2.lan>
- <d76a8009-0193-9bc9-15d1-e672cb5bd3d6@linux.intel.com>
+        with ESMTP id S231936AbjGYMwM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 08:52:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A256EC4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 05:52:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FAF261700
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 12:52:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC08C433C8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 12:52:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690289530;
+        bh=TTjbltbFTPxIzqge8y31RgIrmx0F9/NGTFVmVWUAs64=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Z3pDiOI3bE29xPk3lEDMXVdAZ0049dwY3N7oqrbLVPaB95hNCxAgbTOlK4fIHa425
+         Ly2Xf2OcN3rlhdL368jBW8qq2hV8yOK63rFkrPDTEwRAFD6lULlkn+FnsZ0b7tQp3V
+         +gRxseyNpDA1g5YS6HSxO0qTzxTXTIQfB479N5f20Ak4IbYXy8evXYTfGJ7eKHgwOe
+         KlcizWQDI6bO1xaHNPxsCjcWadIs32DiS+L4YDxH7qWCxXjYVSQqKfAH/6HeKBkxvL
+         uRQSD801resBgP7XQl0fgzg7IPQYv3tjFGp0PWawWRJx13abYgodBqN0q6mSLtc/B+
+         BvU+Vvn3u2q/A==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2b72161c6e9so81873231fa.0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 05:52:10 -0700 (PDT)
+X-Gm-Message-State: ABy/qLY9OmlQH91Kb40Av41HYsTvojt6kqjTTD/BJcgV0YiJ8kaanyZ6
+        HyV3ahW8HcFSX3WHv+3IG1hE8T48btDdQ0dcg1w=
+X-Google-Smtp-Source: APBJJlF2hl4rILyWgCBlwhIJc2ynCJMSUyuferWCTCtZdc/YezQprT+BHOZGDNWtHaCwyjcmLWbfBU6uQENlxafOqQc=
+X-Received: by 2002:a05:6512:3d1c:b0:4ef:edb4:2c77 with SMTP id
+ d28-20020a0565123d1c00b004efedb42c77mr916102lfv.11.1690289528334; Tue, 25 Jul
+ 2023 05:52:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d76a8009-0193-9bc9-15d1-e672cb5bd3d6@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+References: <CAMj1kXHQkgRCt=W0FbZZ9qLVCaWisFhv9wJtYONjA3cEPdXMRQ@mail.gmail.com>
+ <2023072521-refurnish-grooving-fd36@gregkh>
+In-Reply-To: <2023072521-refurnish-grooving-fd36@gregkh>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 25 Jul 2023 14:51:56 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF55o_YZ=kshh5ALszN3ZWiKk+5LSNVQvSkjPaJNgh56g@mail.gmail.com>
+Message-ID: <CAMj1kXF55o_YZ=kshh5ALszN3ZWiKk+5LSNVQvSkjPaJNgh56g@mail.gmail.com>
+Subject: Re: backport request
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     "# 3.4.x" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,80 +62,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Tvrtko,
+On Tue, 25 Jul 2023 at 14:29, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Jul 25, 2023 at 01:13:34PM +0200, Ard Biesheuvel wrote:
+> > Please backport commit
+> >
+> > commit 9cf42bca30e98a1c6c9e8abf876940a551eaa3d1
+> > Author: Ard Biesheuvel <ardb@kernel.org>
+> > Date:   Tue Aug 2 11:00:16 2022 +0200
+> >
+> >     efi: libstub: use EFI_LOADER_CODE region when moving the kernel in memory
+> >
+> > to all active stable trees all the way back to v5.15. I will provide a
+> > separate backport for v5.10, and possibly a [much] larger set of
+> > backports for v5.4 for EFI boot support.
+>
+> Sure, but why?  That sounds like a new feature, if you want EFI boot
+> support, why not just move to a newer kernel tree?  What bug is this
+> fixing?
+>
 
-> > > Commit 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is available")
-> > > added a code path which does not map via GGTT, but was still setting the
-> > > ggtt write bit, and so triggering the GGTT flushing.
-> > > 
-> > > Fix it by not setting that bit unless the GGTT mapping path was used, and
-> > > replace the flush with wmb() in i915_vma_flush_writes().
-> > > 
-> > > This also works for the i915_gem_object_pin_map path added in
-> > > d976521a995a ("drm/i915: extend i915_vma_pin_iomap()").
-> > > 
-> > > It is hard to say if the fix has any observable effect, given that the
-> > > write-combine buffer gets flushed from intel_gt_flush_ggtt_writes too, but
-> > > apart from code clarity, skipping the needless GGTT flushing could be
-> > > beneficial on platforms with non-coherent GGTT. (See the code flow in
-> > > intel_gt_flush_ggtt_writes().)
-> > > 
-> > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > > Fixes: 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is available")
-> > > References: d976521a995a ("drm/i915: extend i915_vma_pin_iomap()")
-> > > Cc: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-> > > Cc: <stable@vger.kernel.org> # v5.14+
-> > > ---
-> > >   drivers/gpu/drm/i915/i915_vma.c | 6 +++++-
-> > >   1 file changed, 5 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
-> > > index ffb425ba591c..f2b626cd2755 100644
-> > > --- a/drivers/gpu/drm/i915/i915_vma.c
-> > > +++ b/drivers/gpu/drm/i915/i915_vma.c
-> > > @@ -602,7 +602,9 @@ void __iomem *i915_vma_pin_iomap(struct i915_vma *vma)
-> > >   	if (err)
-> > >   		goto err_unpin;
-> > > -	i915_vma_set_ggtt_write(vma);
-> > > +	if (!i915_gem_object_is_lmem(vma->obj) &&
-> > > +	    i915_vma_is_map_and_fenceable(vma))
-> > > +		i915_vma_set_ggtt_write(vma);
-> > >   	/* NB Access through the GTT requires the device to be awake. */
-> > >   	return page_mask_bits(ptr);
-> > > @@ -617,6 +619,8 @@ void i915_vma_flush_writes(struct i915_vma *vma)
-> > >   {
-> > >   	if (i915_vma_unset_ggtt_write(vma))
-> > >   		intel_gt_flush_ggtt_writes(vma->vm->gt);
-> > > +	else
-> > > +		wmb(); /* Just flush the write-combine buffer. */
-> > 
-> > is flush the right word? Can you expand more the explanation in
-> > this comment and why this point of synchronization is needed
-> > here? (I am even wondering if it is really needed).
-> 
-> If you are hinting flush isn't the right word then I am not remembering what
-> else do we use for it?
-> 
-> It is needed because i915_flush_writes()'s point AFAIU is to make sure CPU
-> writes after i915_vma_pin_iomap() have landed in RAM. All three methods the
-> latter can map the buffer are WC, therefore "flushing" of the WC buffer is
-> needed for former to do something (what it promises).
-> 
-> Currently the wmb() is in intel_gt_flush_ggtt_writes(). But only one of the
-> three mapping paths is via GGTT. So my logic is that calling it for paths
-> not interacting with GGTT is confusing and not needed.
-> 
-> > Anyway, it looks good:
-> > 
-> > Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-> 
-> Thanks. If you don't see a hole in my logic I can improve the comment. I
-> considered it initially but then thought it is obvious enough from looking
-> at the i915_vma_pin_iomap. I can comment it more.
+Perhaps it is something that the distros just needs to carry in their
+forks, then.
 
-The logic looks linear... my questions were more aiming at
-confirming my understanding and improving the comment around
-wmb().
+This is related to distro forks of grub and shim, and the royal mess
+they created on x86. We are making progress on the GRUB side to move
+to the much simpler and cleaner generic EFI stub support that works
+for x86, ARM, arm64, RISC-V and LoongArch. The problem is that the
+distros have a huge set of patches between them that turn shim, GRUB
+and the way x86 boots in a huge tangled mess, and they cannot phase
+those out as long as they need to support older kernels, and so they
+are now in a situation where they need to support all of the above.
+
+v5.4 is the only release where it is somewhat feasible to backport the
+changes [0] that would allow those GRUB out-of-tree hacks to be
+dropped. I.e., the number of backported patches is quite substantial
+but there are very few and minor conflicts, and the changes are
+confined to EFI code. Backporting this stuff from ~v5.8 to v5.4 would
+mean they can accelerate their phase out schedule by a year.
+(Actually, they asked me about v4.4 but anything older than v5.4 is
+really out of the question)
+
+In any case, I promised them to take a look and I did - I won't be the
+one pushing for this to get merged.
 
 Thanks,
-Andi
+Ard.
+
+
+
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-lf2-backport-x86
