@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7CC7612B2
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA33D7616C5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233886AbjGYLFH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39944 "EHLO
+        id S235033AbjGYLm2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233879AbjGYLEr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:47 -0400
+        with ESMTP id S235055AbjGYLmP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:42:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F0A5258
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562D41FFA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7156561682
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A5CC433C8;
-        Tue, 25 Jul 2023 11:02:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BAFD616B4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DA3C433C7;
+        Tue, 25 Jul 2023 11:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282923;
-        bh=BSVlODmCw0Yzs4ErthHT+yem3GJse266hrwu175P4ao=;
+        s=korg; t=1690285291;
+        bh=sefUEURaDsTgR3VbfwGGwIMar0H7cY3molzGLXN9Rko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TMsxmi/wcCr6v1aQmhQx/z4R9PzUQbzj+cnCYxKLJ9yinVeY//epcgLfGsr68X3FO
-         csb6z0N1gJgdN8G17KrQplog5BCQscB4RP7yqpGJDSPY/1sIe1WBrLyAxBtGDd6e00
-         zXwMIlHa/sJ+XGCZ1qYIXA5ssrg67MFYvY4JDRkY=
+        b=eQlbAzDQg7r32CeLnigUvBU5MGu6FPfRUxz9YWjJb9/Zu8he7cj9St7O2VZZoiOQX
+         8/GP6maQ7CdK1xx9jkreipUSHhzxR0eMpqG7IGMgA3UdVAoG48HqDFs1YCk5G+hC68
+         mocAlZl4Yf0zWFuk0sdm0jQiYI02YyswpsJhMDfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/183] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
+Subject: [PATCH 5.4 151/313] powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=y
 Date:   Tue, 25 Jul 2023 12:45:04 +0200
-Message-ID: <20230725104510.704821640@linuxfoundation.org>
+Message-ID: <20230725104527.544194357@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,68 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
+[ Upstream commit 39f49684036d24af800ff194c33c7b2653c591d7 ]
 
--Wstringop-overflow is legitimately warning us about extra_size
-pontentially being zero at some point, hence potenially ending
-up _allocating_ zero bytes of memory for extra pointer and then
-trying to access such object in a call to copy_from_user().
+In a randconfig with CONFIG_SERIAL_CPM=m and
+CONFIG_PPC_EARLY_DEBUG_CPM=y, there is a build error:
+ERROR: modpost: "udbg_putc" [drivers/tty/serial/cpm_uart/cpm_uart.ko] undefined!
 
-Fix this by adding a sanity check to ensure we never end up
-trying to allocate zero bytes of data for extra pointer, before
-continue executing the rest of the code in the function.
+Prevent the build error by allowing PPC_EARLY_DEBUG_CPM only when
+SERIAL_CPM=y.
 
-Address the following -Wstringop-overflow warning seen when built
-m68k architecture with allyesconfig configuration:
-                 from net/wireless/wext-core.c:11:
-In function '_copy_from_user',
-    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
-arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
-   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
-  153 |                 memset(to + (n - res), 0, res);
-      |                 ^~~~~~
-In function 'kmalloc',
-    inlined from 'kzalloc' at include/linux/slab.h:694:9,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
-include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
-  577 |         return __kmalloc(size, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~
-
-This help with the ongoing efforts to globally enable
--Wstringop-overflow.
-
-Link: https://github.com/KSPP/linux/issues/315
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: c374e00e17f1 ("[POWERPC] Add early debug console for CPM serial ports.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230701054714.30512-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/wext-core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/Kconfig.debug | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index fe8765c4075d3..8a4b85f96a13a 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -799,6 +799,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
- 		}
- 	}
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index 2ca9114fcf002..0c8436b06c494 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -234,7 +234,7 @@ config PPC_EARLY_DEBUG_40x
  
-+	/* Sanity-check to ensure we never end up _allocating_ zero
-+	 * bytes of data for extra.
-+	 */
-+	if (extra_size <= 0)
-+		return -EFAULT;
-+
- 	/* kzalloc() ensures NULL-termination for essid_compat. */
- 	extra = kzalloc(extra_size, GFP_KERNEL);
- 	if (!extra)
+ config PPC_EARLY_DEBUG_CPM
+ 	bool "Early serial debugging for Freescale CPM-based serial ports"
+-	depends on SERIAL_CPM
++	depends on SERIAL_CPM=y
+ 	help
+ 	  Select this to enable early debugging for Freescale chips
+ 	  using a CPM-based serial port.  This assumes that the bootwrapper
 -- 
 2.39.2
 
