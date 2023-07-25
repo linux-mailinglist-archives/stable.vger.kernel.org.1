@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DB067611C4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621537616DB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232696AbjGYKzx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35506 "EHLO
+        id S235034AbjGYLnt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:43:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232050AbjGYKzd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:33 -0400
+        with ESMTP id S235289AbjGYLnR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5CF49E0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C213D2129
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BED9D61680
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0556C433C8;
-        Tue, 25 Jul 2023 10:53:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1617C616BD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B77C433C8;
+        Tue, 25 Jul 2023 11:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282399;
-        bh=78qvTLDUDG6OaQx7QIgD9YGNmLb/OoQSvzOmqN15t8c=;
+        s=korg; t=1690285311;
+        bh=kMwtRJsKOpEIYUVeVvmxVb97dyoDVZQPFodIDkIcu4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F41YX6WUqX8pFBS5eyjqyZmQ2LUT0+26DrMpGzKNaQrzV4PAMYpQg5hfz2n8hsApw
-         DNyj+PWwqyGweW83NKtZsxIDcbHQhIms0pstNmW4hWEeWk7MjIGgYOlthQ8CjMRszF
-         9dRtjgEvZZcyFVsRAUQ43uv5699lXBzFEYddStTk=
+        b=zml7u0RcHDRhVb4x50iv7ZFcVYbM7tFRU04R1f7wSpu2nToeSCHCgSTqu9wdtwpEi
+         CKVsJKcGMnNvSc2twUBe1E3TlOyDlto6JESa94Lkg7+v5f4T8hGsTqNYY0hLYpZVUJ
+         OVS5xpT7Hzn7wl8D6a2V6PPE8Q55ZKIlKu7qhdJY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yonghong Song <yhs@meta.com>,
-        Stanislav Fomichev <sdf@google.com>,
-        Aditi Ghag <aditi.ghag@isovalent.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com,
+        Duoming Zhou <duoming@zju.edu.cn>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 115/227] bpf: tcp: Avoid taking fast sock lock in iterator
+Subject: [PATCH 5.4 129/313] media: usb: siano: Fix warning due to null work_func_t function pointer
 Date:   Tue, 25 Jul 2023 12:44:42 +0200
-Message-ID: <20230725104519.548163609@linuxfoundation.org>
+Message-ID: <20230725104526.601214417@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,150 +57,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aditi Ghag <aditi.ghag@isovalent.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 9378096e8a656fb5c4099b26b1370c56f056eab9 ]
+[ Upstream commit 6f489a966fbeb0da63d45c2c66a8957eab604bf6 ]
 
-This is a preparatory commit to replace `lock_sock_fast` with
-`lock_sock`,and facilitate BPF programs executed from the TCP sockets
-iterator to be able to destroy TCP sockets using the bpf_sock_destroy
-kfunc (implemented in follow-up commits).
+The previous commit ebad8e731c1c ("media: usb: siano: Fix use after
+free bugs caused by do_submit_urb") adds cancel_work_sync() in
+smsusb_stop_streaming(). But smsusb_stop_streaming() may be called,
+even if the work_struct surb->wq has not been initialized. As a result,
+the warning will occur. One of the processes that could lead to warning
+is shown below:
 
-Previously, BPF TCP iterator was acquiring the sock lock with BH
-disabled. This led to scenarios where the sockets hash table bucket lock
-can be acquired with BH enabled in some path versus disabled in other.
-In such situation, kernel issued a warning since it thinks that in the
-BH enabled path the same bucket lock *might* be acquired again in the
-softirq context (BH disabled), which will lead to a potential dead lock.
-Since bpf_sock_destroy also happens in a process context, the potential
-deadlock warning is likely a false alarm.
+smsusb_probe()
+  smsusb_init_device()
+    if (!dev->in_ep || !dev->out_ep || align < 0) {
+         smsusb_term_device(intf);
+           smsusb_stop_streaming()
+             cancel_work_sync(&dev->surbs[i].wq);
+               __cancel_work_timer()
+                 __flush_work()
+                   if (WARN_ON(!work->func)) // work->func is null
 
-Here is a snippet of annotated stack trace that motivated this change:
+The log reported by syzbot is shown below:
 
-```
-
-Possible interrupt unsafe locking scenario:
-
-      CPU0                    CPU1
-      ----                    ----
- lock(&h->lhash2[i].lock);
-                              local_bh_disable();
-                              lock(&h->lhash2[i].lock);
-kernel imagined possible scenario:
-  local_bh_disable();  /* Possible softirq */
-  lock(&h->lhash2[i].lock);
-*** Potential Deadlock ***
-
-process context:
-
-lock_acquire+0xcd/0x330
-_raw_spin_lock+0x33/0x40
-------> Acquire (bucket) lhash2.lock with BH enabled
-__inet_hash+0x4b/0x210
-inet_csk_listen_start+0xe6/0x100
-inet_listen+0x95/0x1d0
-__sys_listen+0x69/0xb0
-__x64_sys_listen+0x14/0x20
-do_syscall_64+0x3c/0x90
-entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-bpf_sock_destroy run from iterator:
-
-lock_acquire+0xcd/0x330
-_raw_spin_lock+0x33/0x40
-------> Acquire (bucket) lhash2.lock with BH disabled
-inet_unhash+0x9a/0x110
-tcp_set_state+0x6a/0x210
-tcp_abort+0x10d/0x200
-bpf_prog_6793c5ca50c43c0d_iter_tcp6_server+0xa4/0xa9
-bpf_iter_run_prog+0x1ff/0x340
-------> lock_sock_fast that acquires sock lock with BH disabled
-bpf_iter_tcp_seq_show+0xca/0x190
-bpf_seq_read+0x177/0x450
-
-```
-
-Also, Yonghong reported a deadlock for non-listening TCP sockets that
-this change resolves. Previously, `lock_sock_fast` held the sock spin
-lock with BH which was again being acquired in `tcp_abort`:
-
-```
-watchdog: BUG: soft lockup - CPU#0 stuck for 86s! [test_progs:2331]
-RIP: 0010:queued_spin_lock_slowpath+0xd8/0x500
+WARNING: CPU: 0 PID: 897 at kernel/workqueue.c:3066 __flush_work+0x798/0xa80 kernel/workqueue.c:3063
+Modules linked in:
+CPU: 0 PID: 897 Comm: kworker/0:2 Not tainted 6.2.0-rc1-syzkaller #0
+RIP: 0010:__flush_work+0x798/0xa80 kernel/workqueue.c:3066
+...
+RSP: 0018:ffffc9000464ebf8 EFLAGS: 00010246
+RAX: 1ffff11002dbb420 RBX: 0000000000000021 RCX: 1ffffffff204fa4e
+RDX: dffffc0000000000 RSI: 0000000000000001 RDI: ffff888016dda0e8
+RBP: ffffc9000464ed98 R08: 0000000000000001 R09: ffffffff90253b2f
+R10: 0000000000000001 R11: 0000000000000000 R12: ffff888016dda0e8
+R13: ffff888016dda0e8 R14: ffff888016dda100 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffd4331efe8 CR3: 000000000b48e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- _raw_spin_lock+0x84/0x90
- tcp_abort+0x13c/0x1f0
- bpf_prog_88539c5453a9dd47_iter_tcp6_client+0x82/0x89
- bpf_iter_run_prog+0x1aa/0x2c0
- ? preempt_count_sub+0x1c/0xd0
- ? from_kuid_munged+0x1c8/0x210
- bpf_iter_tcp_seq_show+0x14e/0x1b0
- bpf_seq_read+0x36c/0x6a0
+ __cancel_work_timer+0x315/0x460 kernel/workqueue.c:3160
+ smsusb_stop_streaming drivers/media/usb/siano/smsusb.c:182 [inline]
+ smsusb_term_device+0xda/0x2d0 drivers/media/usb/siano/smsusb.c:344
+ smsusb_init_device+0x400/0x9ce drivers/media/usb/siano/smsusb.c:419
+ smsusb_probe+0xbbd/0xc55 drivers/media/usb/siano/smsusb.c:567
+...
 
-bpf_iter_tcp_seq_show
-   lock_sock_fast
-     __lock_sock_fast
-       spin_lock_bh(&sk->sk_lock.slock);
-	/* * Fast path return with bottom halves disabled and * sock::sk_lock.slock held.* */
+This patch adds check before cancel_work_sync(). If surb->wq has not
+been initialized, the cancel_work_sync() will not be executed.
 
- ...
- tcp_abort
-   local_bh_disable();
-   spin_lock(&((sk)->sk_lock.slock)); // from bh_lock_sock(sk)
-
-```
-
-With the switch to `lock_sock`, it calls `spin_unlock_bh` before returning:
-
-```
-lock_sock
-    lock_sock_nested
-       spin_lock_bh(&sk->sk_lock.slock);
-       :
-       spin_unlock_bh(&sk->sk_lock.slock);
-```
-
-Acked-by: Yonghong Song <yhs@meta.com>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Aditi Ghag <aditi.ghag@isovalent.com>
-Link: https://lore.kernel.org/r/20230519225157.760788-2-aditi.ghag@isovalent.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reported-by: syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com
+Fixes: ebad8e731c1c ("media: usb: siano: Fix use after free bugs caused by do_submit_urb")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/usb/siano/smsusb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 06d2573685ca9..434e5f0c8b99d 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -2963,7 +2963,6 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
- 	struct bpf_iter_meta meta;
- 	struct bpf_prog *prog;
- 	struct sock *sk = v;
--	bool slow;
- 	uid_t uid;
- 	int ret;
+diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
+index 1db232a1063b9..0358cd1043877 100644
+--- a/drivers/media/usb/siano/smsusb.c
++++ b/drivers/media/usb/siano/smsusb.c
+@@ -179,7 +179,8 @@ static void smsusb_stop_streaming(struct smsusb_device_t *dev)
  
-@@ -2971,7 +2970,7 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
- 		return 0;
+ 	for (i = 0; i < MAX_URBS; i++) {
+ 		usb_kill_urb(&dev->surbs[i].urb);
+-		cancel_work_sync(&dev->surbs[i].wq);
++		if (dev->surbs[i].wq.func)
++			cancel_work_sync(&dev->surbs[i].wq);
  
- 	if (sk_fullsock(sk))
--		slow = lock_sock_fast(sk);
-+		lock_sock(sk);
- 
- 	if (unlikely(sk_unhashed(sk))) {
- 		ret = SEQ_SKIP;
-@@ -2995,7 +2994,7 @@ static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
- 
- unlock:
- 	if (sk_fullsock(sk))
--		unlock_sock_fast(sk, slow);
-+		release_sock(sk);
- 	return ret;
- 
- }
+ 		if (dev->surbs[i].cb) {
+ 			smscore_putbuffer(dev->coredev, dev->surbs[i].cb);
 -- 
 2.39.2
 
