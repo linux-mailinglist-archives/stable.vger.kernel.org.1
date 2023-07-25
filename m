@@ -2,46 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 246CB761521
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C2076167A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234604AbjGYLZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34960 "EHLO
+        id S234888AbjGYLjl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234606AbjGYLZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:49 -0400
+        with ESMTP id S234896AbjGYLjj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2780C1B8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD22119A0;
+        Tue, 25 Jul 2023 04:39:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6156B6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733DAC433C7;
-        Tue, 25 Jul 2023 11:25:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 534A961655;
+        Tue, 25 Jul 2023 11:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D190C433C7;
+        Tue, 25 Jul 2023 11:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284346;
-        bh=A0VUYKqzRrxwzR3M1QElXDTtrTxMCfDUFOteVPiTNzc=;
+        s=korg; t=1690285174;
+        bh=ZQnNCjT640KReZzz3zUGH4VsxqTdjx4LYaEPd5aJNJM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=07EGn/CBuWek6Tf5V+KRnUeFCtcR3E/+JSByozOoNniGVMGWEBE12eltchkwa6k7/
-         Ce7LMf7BDqatMAac/cD5Tl0wVLnIcxUGGtrBtPhdxH5dwU3ltnKeSJ++e5bWEwSdyp
-         wi5lzLAOXrqGbOkVuynX66HZzwmDyNudbskNGI5g=
+        b=0yrcpIbIHuSBfn+W6XgxA/FJyS6QbdXzmAqBIZHdFV2JZ96mLoZtpFTC734cHx1FA
+         hX5qozwDVfhRrsVaMODXmH4Ak4rsf+QQNtyRLj0mlD1FGlbPsUodLlBGUTsrKBQ2lS
+         OJHjTeiWP7bP9yOmpGauASHq1pwJdzz+Os219LU8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 324/509] netfilter: nf_tables: do not ignore genmask when looking up chain by id
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 110/313] crypto: nx - fix build warnings when DEBUG_FS is not enabled
 Date:   Tue, 25 Jul 2023 12:44:23 +0200
-Message-ID: <20230725104608.526175999@linuxfoundation.org>
+Message-ID: <20230725104525.764856542@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,120 +63,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 515ad530795c118f012539ed76d02bacfd426d89 upstream.
+[ Upstream commit b04b076fb56560b39d695ac3744db457e12278fd ]
 
-When adding a rule to a chain referring to its ID, if that chain had been
-deleted on the same batch, the rule might end up referring to a deleted
-chain.
+Fix build warnings when DEBUG_FS is not enabled by using an empty
+do-while loop instead of a value:
 
-This will lead to a WARNING like following:
+In file included from ../drivers/crypto/nx/nx.c:27:
+../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
+../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
+  173 | #define NX_DEBUGFS_INIT(drv)    (0)
+../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
+  573 |         NX_DEBUGFS_INIT(&nx_driver);
+../drivers/crypto/nx/nx.c: In function 'nx_remove':
+../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
+  174 | #define NX_DEBUGFS_FINI(drv)    (0)
+../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
+  793 |                 NX_DEBUGFS_FINI(&nx_driver);
 
-[   33.098431] ------------[ cut here ]------------
-[   33.098678] WARNING: CPU: 5 PID: 69 at net/netfilter/nf_tables_api.c:2037 nf_tables_chain_destroy+0x23d/0x260
-[   33.099217] Modules linked in:
-[   33.099388] CPU: 5 PID: 69 Comm: kworker/5:1 Not tainted 6.4.0+ #409
-[   33.099726] Workqueue: events nf_tables_trans_destroy_work
-[   33.100018] RIP: 0010:nf_tables_chain_destroy+0x23d/0x260
-[   33.100306] Code: 8b 7c 24 68 e8 64 9c ed fe 4c 89 e7 e8 5c 9c ed fe 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 89 c6 89 c7 c3 cc cc cc cc <0f> 0b 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 89 c6 89 c7
-[   33.101271] RSP: 0018:ffffc900004ffc48 EFLAGS: 00010202
-[   33.101546] RAX: 0000000000000001 RBX: ffff888006fc0a28 RCX: 0000000000000000
-[   33.101920] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[   33.102649] RBP: ffffc900004ffc78 R08: 0000000000000000 R09: 0000000000000000
-[   33.103018] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880135ef500
-[   33.103385] R13: 0000000000000000 R14: dead000000000122 R15: ffff888006fc0a10
-[   33.103762] FS:  0000000000000000(0000) GS:ffff888024c80000(0000) knlGS:0000000000000000
-[   33.104184] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   33.104493] CR2: 00007fe863b56a50 CR3: 00000000124b0001 CR4: 0000000000770ee0
-[   33.104872] PKRU: 55555554
-[   33.104999] Call Trace:
-[   33.105113]  <TASK>
-[   33.105214]  ? show_regs+0x72/0x90
-[   33.105371]  ? __warn+0xa5/0x210
-[   33.105520]  ? nf_tables_chain_destroy+0x23d/0x260
-[   33.105732]  ? report_bug+0x1f2/0x200
-[   33.105902]  ? handle_bug+0x46/0x90
-[   33.106546]  ? exc_invalid_op+0x19/0x50
-[   33.106762]  ? asm_exc_invalid_op+0x1b/0x20
-[   33.106995]  ? nf_tables_chain_destroy+0x23d/0x260
-[   33.107249]  ? nf_tables_chain_destroy+0x30/0x260
-[   33.107506]  nf_tables_trans_destroy_work+0x669/0x680
-[   33.107782]  ? mark_held_locks+0x28/0xa0
-[   33.107996]  ? __pfx_nf_tables_trans_destroy_work+0x10/0x10
-[   33.108294]  ? _raw_spin_unlock_irq+0x28/0x70
-[   33.108538]  process_one_work+0x68c/0xb70
-[   33.108755]  ? lock_acquire+0x17f/0x420
-[   33.108977]  ? __pfx_process_one_work+0x10/0x10
-[   33.109218]  ? do_raw_spin_lock+0x128/0x1d0
-[   33.109435]  ? _raw_spin_lock_irq+0x71/0x80
-[   33.109634]  worker_thread+0x2bd/0x700
-[   33.109817]  ? __pfx_worker_thread+0x10/0x10
-[   33.110254]  kthread+0x18b/0x1d0
-[   33.110410]  ? __pfx_kthread+0x10/0x10
-[   33.110581]  ret_from_fork+0x29/0x50
-[   33.110757]  </TASK>
-[   33.110866] irq event stamp: 1651
-[   33.111017] hardirqs last  enabled at (1659): [<ffffffffa206a209>] __up_console_sem+0x79/0xa0
-[   33.111379] hardirqs last disabled at (1666): [<ffffffffa206a1ee>] __up_console_sem+0x5e/0xa0
-[   33.111740] softirqs last  enabled at (1616): [<ffffffffa1f5d40e>] __irq_exit_rcu+0x9e/0xe0
-[   33.112094] softirqs last disabled at (1367): [<ffffffffa1f5d40e>] __irq_exit_rcu+0x9e/0xe0
-[   33.112453] ---[ end trace 0000000000000000 ]---
+Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
+enabled, so change the Makefile to accommodate that.
 
-This is due to the nft_chain_lookup_byid ignoring the genmask. After this
-change, adding the new rule will fail as it will not find the chain.
-
-Fixes: 837830a4b439 ("netfilter: nf_tables: add NFTA_RULE_CHAIN_ID attribute")
-Cc: stable@vger.kernel.org
-Reported-by: Mingi Cho of Theori working with ZDI
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
+Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Breno Leitão <leitao@debian.org>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/crypto/nx/Makefile | 2 +-
+ drivers/crypto/nx/nx.h     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2427,7 +2427,7 @@ err:
+diff --git a/drivers/crypto/nx/Makefile b/drivers/crypto/nx/Makefile
+index 015155da59c29..76139865d7fa1 100644
+--- a/drivers/crypto/nx/Makefile
++++ b/drivers/crypto/nx/Makefile
+@@ -1,7 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_CRYPTO_DEV_NX_ENCRYPT) += nx-crypto.o
+ nx-crypto-objs := nx.o \
+-		  nx_debugfs.o \
+ 		  nx-aes-cbc.o \
+ 		  nx-aes-ecb.o \
+ 		  nx-aes-gcm.o \
+@@ -11,6 +10,7 @@ nx-crypto-objs := nx.o \
+ 		  nx-sha256.o \
+ 		  nx-sha512.o
  
- static struct nft_chain *nft_chain_lookup_byid(const struct net *net,
- 					       const struct nft_table *table,
--					       const struct nlattr *nla)
-+					       const struct nlattr *nla, u8 genmask)
- {
- 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
- 	u32 id = ntohl(nla_get_be32(nla));
-@@ -2438,7 +2438,8 @@ static struct nft_chain *nft_chain_looku
++nx-crypto-$(CONFIG_DEBUG_FS) += nx_debugfs.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_PSERIES) += nx-compress-pseries.o nx-compress.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV) += nx-compress-powernv.o nx-compress.o
+ nx-compress-objs := nx-842.o
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index 7ecca168f8c48..5c77aba450cf8 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -169,8 +169,8 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
+ void nx_debugfs_init(struct nx_crypto_driver *);
+ void nx_debugfs_fini(struct nx_crypto_driver *);
+ #else
+-#define NX_DEBUGFS_INIT(drv)	(0)
+-#define NX_DEBUGFS_FINI(drv)	(0)
++#define NX_DEBUGFS_INIT(drv)	do {} while (0)
++#define NX_DEBUGFS_FINI(drv)	do {} while (0)
+ #endif
  
- 		if (trans->msg_type == NFT_MSG_NEWCHAIN &&
- 		    chain->table == table &&
--		    id == nft_trans_chain_id(trans))
-+		    id == nft_trans_chain_id(trans) &&
-+		    nft_active_genmask(chain, genmask))
- 			return chain;
- 	}
- 	return ERR_PTR(-ENOENT);
-@@ -3353,7 +3354,8 @@ static int nf_tables_newrule(struct net
- 			return -EOPNOTSUPP;
- 
- 	} else if (nla[NFTA_RULE_CHAIN_ID]) {
--		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID]);
-+		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID],
-+					      genmask);
- 		if (IS_ERR(chain)) {
- 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN_ID]);
- 			return PTR_ERR(chain);
-@@ -8937,7 +8939,8 @@ static int nft_verdict_init(const struct
- 						 genmask);
- 		} else if (tb[NFTA_VERDICT_CHAIN_ID]) {
- 			chain = nft_chain_lookup_byid(ctx->net, ctx->table,
--						      tb[NFTA_VERDICT_CHAIN_ID]);
-+						      tb[NFTA_VERDICT_CHAIN_ID],
-+						      genmask);
- 			if (IS_ERR(chain))
- 				return PTR_ERR(chain);
- 		} else {
+ #define NX_PAGE_NUM(x)		((u64)(x) & 0xfffffffffffff000ULL)
+-- 
+2.39.2
+
 
 
