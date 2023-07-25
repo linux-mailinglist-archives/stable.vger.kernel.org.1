@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A728676175E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF1876139D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232307AbjGYLrl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:47:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55042 "EHLO
+        id S234185AbjGYLMG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:12:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232523AbjGYLra (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:30 -0400
+        with ESMTP id S234148AbjGYLLv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B026E1FCE
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F1CF3C0C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:11:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3703161698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4444DC433C8;
-        Tue, 25 Jul 2023 11:47:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A60E61655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:11:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAE0C433C7;
+        Tue, 25 Jul 2023 11:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285645;
-        bh=mxLarf1TRptmHZBAAZlkqaC6CuI7tlBTROdn4jcbh+c=;
+        s=korg; t=1690283467;
+        bh=aZ/LmbksIkM5TA542SjHeC69sNOmqz7IT4hnIe14KaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JDHVhsyfKqduEJX2iTF4s0gXNmL8z2nn4SDH4Z6DD2UsLEZ5MvtGHYNbQHxcYwfbk
-         ITS3xSeOK/NXzphMh6QQ3Yjny6lEqbsD/Y2a5Uyvj/7rA1+oNhFNEKMh1nroF3KXPz
-         d3CVGsqkSRfkqtqWViKHzemeqH9XKMLCKna7AZ4g=
+        b=tGTLoa8SmdqsMmw9JBgNUXdmw5PsiSuS2uc7MVe21+xW3SD69SArOKFpQIIVKxEB3
+         G17Jt1gS2EO3P54zR6GXJpO4sIXV5LhxtezX7u78kmVl0YbaKLSi+0cNVykAi4NyQO
+         rf81zwJUeITvulcilF3ZxZfSV2suIAfLJk5+9igE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
-        Song Liu <song@kernel.org>, Jason Baron <jbaron@akamai.com>
-Subject: [PATCH 5.4 252/313] md/raid0: add discard support for the original layout
-Date:   Tue, 25 Jul 2023 12:46:45 +0200
-Message-ID: <20230725104531.962844162@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 55/78] tcp: annotate data-races around tcp_rsk(req)->ts_recent
+Date:   Tue, 25 Jul 2023 12:46:46 +0200
+Message-ID: <20230725104453.403200768@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,203 +57,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Baron <jbaron@akamai.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit e836007089ba8fdf24e636ef2b007651fb4582e6 upstream.
+[ Upstream commit eba20811f32652bc1a52d5e7cc403859b86390d9 ]
 
-We've found that using raid0 with the 'original' layout and discard
-enabled with different disk sizes (such that at least two zones are
-created) can result in data corruption. This is due to the fact that
-the discard handling in 'raid0_handle_discard()' assumes the 'alternate'
-layout. We've seen this corruption using ext4 but other filesystems are
-likely susceptible as well.
+TCP request sockets are lockless, tcp_rsk(req)->ts_recent
+can change while being read by another cpu as syzbot noticed.
 
-More specifically, while multiple zones are necessary to create the
-corruption, the corruption may not occur with multiple zones if they
-layout in such a way the layout matches what the 'alternate' layout
-would have produced. Thus, not all raid0 devices with the 'original'
-layout, different size disks and discard enabled will encounter this
-corruption.
+This is harmless, but we should annotate the known races.
 
-The 3.14 kernel inadvertently changed the raid0 disk layout for different
-size disks. Thus, running a pre-3.14 kernel and post-3.14 kernel on the
-same raid0 array could corrupt data. This lead to the creation of the
-'original' layout (to match the pre-3.14 layout) and the 'alternate' layout
-(to match the post 3.14 layout) in the 5.4 kernel time frame and an option
-to tell the kernel which layout to use (since it couldn't be autodetected).
-However, when the 'original' layout was added back to 5.4 discard support
-for the 'original' layout was not added leading this issue.
+Note that tcp_check_req() changes req->ts_recent a bit early,
+we might change this in the future.
 
-I've been able to reliably reproduce the corruption with the following
-test case:
+BUG: KCSAN: data-race in tcp_check_req / tcp_check_req
 
-1. create raid0 array with different size disks using original layout
-2. mkfs
-3. mount -o discard
-4. create lots of files
-5. remove 1/2 the files
-6. fstrim -a (or just the mount point for the raid0 array)
-7. umount
-8. fsck -fn /dev/md0 (spews all sorts of corruptions)
+write to 0xffff88813c8afb84 of 4 bytes by interrupt on cpu 1:
+tcp_check_req+0x694/0xc70 net/ipv4/tcp_minisocks.c:762
+tcp_v4_rcv+0x12db/0x1b70 net/ipv4/tcp_ipv4.c:2071
+ip_protocol_deliver_rcu+0x356/0x6d0 net/ipv4/ip_input.c:205
+ip_local_deliver_finish+0x13c/0x1a0 net/ipv4/ip_input.c:233
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_local_deliver+0xec/0x1c0 net/ipv4/ip_input.c:254
+dst_input include/net/dst.h:468 [inline]
+ip_rcv_finish net/ipv4/ip_input.c:449 [inline]
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_rcv+0x197/0x270 net/ipv4/ip_input.c:569
+__netif_receive_skb_one_core net/core/dev.c:5493 [inline]
+__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+do_softirq+0x7e/0xb0 kernel/softirq.c:472
+__local_bh_enable_ip+0x64/0x70 kernel/softirq.c:396
+local_bh_enable+0x1f/0x20 include/linux/bottom_half.h:33
+rcu_read_unlock_bh include/linux/rcupdate.h:843 [inline]
+__dev_queue_xmit+0xabb/0x1d10 net/core/dev.c:4271
+dev_queue_xmit include/linux/netdevice.h:3088 [inline]
+neigh_hh_output include/net/neighbour.h:528 [inline]
+neigh_output include/net/neighbour.h:542 [inline]
+ip_finish_output2+0x700/0x840 net/ipv4/ip_output.c:229
+ip_finish_output+0xf4/0x240 net/ipv4/ip_output.c:317
+NF_HOOK_COND include/linux/netfilter.h:292 [inline]
+ip_output+0xe5/0x1b0 net/ipv4/ip_output.c:431
+dst_output include/net/dst.h:458 [inline]
+ip_local_out net/ipv4/ip_output.c:126 [inline]
+__ip_queue_xmit+0xa4d/0xa70 net/ipv4/ip_output.c:533
+ip_queue_xmit+0x38/0x40 net/ipv4/ip_output.c:547
+__tcp_transmit_skb+0x1194/0x16e0 net/ipv4/tcp_output.c:1399
+tcp_transmit_skb net/ipv4/tcp_output.c:1417 [inline]
+tcp_write_xmit+0x13ff/0x2fd0 net/ipv4/tcp_output.c:2693
+__tcp_push_pending_frames+0x6a/0x1a0 net/ipv4/tcp_output.c:2877
+tcp_push_pending_frames include/net/tcp.h:1952 [inline]
+__tcp_sock_set_cork net/ipv4/tcp.c:3336 [inline]
+tcp_sock_set_cork+0xe8/0x100 net/ipv4/tcp.c:3343
+rds_tcp_xmit_path_complete+0x3b/0x40 net/rds/tcp_send.c:52
+rds_send_xmit+0xf8d/0x1420 net/rds/send.c:422
+rds_send_worker+0x42/0x1d0 net/rds/threads.c:200
+process_one_work+0x3e6/0x750 kernel/workqueue.c:2408
+worker_thread+0x5f2/0xa10 kernel/workqueue.c:2555
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-Let's fix this by adding proper discard support to the 'original' layout.
-The fix 'maps' the 'original' layout disks to the order in which they are
-read/written such that we can compare the disks in the same way that the
-current 'alternate' layout does. A 'disk_shift' field is added to
-'struct strip_zone'. This could be computed on the fly in
-raid0_handle_discard() but by adding this field, we save some computation
-in the discard path.
+read to 0xffff88813c8afb84 of 4 bytes by interrupt on cpu 0:
+tcp_check_req+0x32a/0xc70 net/ipv4/tcp_minisocks.c:622
+tcp_v4_rcv+0x12db/0x1b70 net/ipv4/tcp_ipv4.c:2071
+ip_protocol_deliver_rcu+0x356/0x6d0 net/ipv4/ip_input.c:205
+ip_local_deliver_finish+0x13c/0x1a0 net/ipv4/ip_input.c:233
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_local_deliver+0xec/0x1c0 net/ipv4/ip_input.c:254
+dst_input include/net/dst.h:468 [inline]
+ip_rcv_finish net/ipv4/ip_input.c:449 [inline]
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip_rcv+0x197/0x270 net/ipv4/ip_input.c:569
+__netif_receive_skb_one_core net/core/dev.c:5493 [inline]
+__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-Note we could also potentially fix this by re-ordering the disks in the
-zones that follow the first one, and then always read/writing them using
-the 'alternate' layout. However, that is seen as a more substantial change,
-and we are attempting the least invasive fix at this time to remedy the
-corruption.
+value changed: 0x1cd237f1 -> 0x1cd237f2
 
-I've verified the change using the reproducer mentioned above. Typically,
-the corruption is seen after less than 3 iterations, while the patch has
-run 500+ iterations.
-
-Cc: NeilBrown <neilb@suse.de>
-Cc: Song Liu <song@kernel.org>
-Fixes: c84a1372df92 ("md/raid0: avoid RAID0 data corruption due to layout confusion.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Baron <jbaron@akamai.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230623180523.1901230-1-jbaron@akamai.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230717144445.653164-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid0.c |   62 ++++++++++++++++++++++++++++++++++++++++++++++-------
- drivers/md/raid0.h |    1 
- 2 files changed, 55 insertions(+), 8 deletions(-)
+ net/ipv4/tcp_ipv4.c      | 2 +-
+ net/ipv4/tcp_minisocks.c | 9 ++++++---
+ net/ipv4/tcp_output.c    | 2 +-
+ net/ipv6/tcp_ipv6.c      | 2 +-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/md/raid0.c
-+++ b/drivers/md/raid0.c
-@@ -289,6 +289,18 @@ static int create_strip_zones(struct mdd
- 		goto abort;
- 	}
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 9ac6bca83fadb..87bdbb527930f 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -975,7 +975,7 @@ static void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
+ 			tcp_rsk(req)->rcv_nxt,
+ 			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
+ 			tcp_time_stamp_raw() + tcp_rsk(req)->ts_off,
+-			req->ts_recent,
++			READ_ONCE(req->ts_recent),
+ 			0,
+ 			tcp_md5_do_lookup(sk, l3index, addr, AF_INET),
+ 			inet_rsk(req)->no_srccheck ? IP_REPLY_ARG_NOSRCCHECK : 0,
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index aa67d5adcbca9..2606a5571116a 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -523,7 +523,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
+ 	newtp->max_window = newtp->snd_wnd;
  
-+	if (conf->layout == RAID0_ORIG_LAYOUT) {
-+		for (i = 1; i < conf->nr_strip_zones; i++) {
-+			sector_t first_sector = conf->strip_zone[i-1].zone_end;
-+
-+			sector_div(first_sector, mddev->chunk_sectors);
-+			zone = conf->strip_zone + i;
-+			/* disk_shift is first disk index used in the zone */
-+			zone->disk_shift = sector_div(first_sector,
-+						      zone->nb_dev);
-+		}
-+	}
-+
- 	pr_debug("md/raid0:%s: done.\n", mdname(mddev));
- 	*private_conf = conf;
+ 	if (newtp->rx_opt.tstamp_ok) {
+-		newtp->rx_opt.ts_recent = req->ts_recent;
++		newtp->rx_opt.ts_recent = READ_ONCE(req->ts_recent);
+ 		newtp->rx_opt.ts_recent_stamp = ktime_get_seconds();
+ 		newtp->tcp_header_len = sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED;
+ 	} else {
+@@ -586,7 +586,7 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+ 		tcp_parse_options(sock_net(sk), skb, &tmp_opt, 0, NULL);
  
-@@ -475,6 +487,20 @@ static inline int is_io_in_chunk_boundar
+ 		if (tmp_opt.saw_tstamp) {
+-			tmp_opt.ts_recent = req->ts_recent;
++			tmp_opt.ts_recent = READ_ONCE(req->ts_recent);
+ 			if (tmp_opt.rcv_tsecr)
+ 				tmp_opt.rcv_tsecr -= tcp_rsk(req)->ts_off;
+ 			/* We do not store true stamp, but it is not required,
+@@ -726,8 +726,11 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+ 
+ 	/* In sequence, PAWS is OK. */
+ 
++	/* TODO: We probably should defer ts_recent change once
++	 * we take ownership of @req.
++	 */
+ 	if (tmp_opt.saw_tstamp && !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
+-		req->ts_recent = tmp_opt.rcv_tsval;
++		WRITE_ONCE(req->ts_recent, tmp_opt.rcv_tsval);
+ 
+ 	if (TCP_SKB_CB(skb)->seq == tcp_rsk(req)->rcv_isn) {
+ 		/* Truncate SYN, it is out of window starting
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 1f39b56bbab32..d46fb6d7057bd 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -875,7 +875,7 @@ static unsigned int tcp_synack_options(const struct sock *sk,
+ 	if (likely(ireq->tstamp_ok)) {
+ 		opts->options |= OPTION_TS;
+ 		opts->tsval = tcp_skb_timestamp(skb) + tcp_rsk(req)->ts_off;
+-		opts->tsecr = req->ts_recent;
++		opts->tsecr = READ_ONCE(req->ts_recent);
+ 		remaining -= TCPOLEN_TSTAMP_ALIGNED;
  	}
+ 	if (likely(ireq->sack_ok)) {
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index b6f5a4474d8bc..c18fdddbfa09d 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1171,7 +1171,7 @@ static void tcp_v6_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
+ 			tcp_rsk(req)->rcv_nxt,
+ 			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
+ 			tcp_time_stamp_raw() + tcp_rsk(req)->ts_off,
+-			req->ts_recent, sk->sk_bound_dev_if,
++			READ_ONCE(req->ts_recent), sk->sk_bound_dev_if,
+ 			tcp_v6_md5_do_lookup(sk, &ipv6_hdr(skb)->saddr, l3index),
+ 			ipv6_get_dsfield(ipv6_hdr(skb)), 0, sk->sk_priority);
  }
- 
-+/*
-+ * Convert disk_index to the disk order in which it is read/written.
-+ *  For example, if we have 4 disks, they are numbered 0,1,2,3. If we
-+ *  write the disks starting at disk 3, then the read/write order would
-+ *  be disk 3, then 0, then 1, and then disk 2 and we want map_disk_shift()
-+ *  to map the disks as follows 0,1,2,3 => 1,2,3,0. So disk 0 would map
-+ *  to 1, 1 to 2, 2 to 3, and 3 to 0. That way we can compare disks in
-+ *  that 'output' space to understand the read/write disk ordering.
-+ */
-+static int map_disk_shift(int disk_index, int num_disks, int disk_shift)
-+{
-+	return ((disk_index + num_disks - disk_shift) % num_disks);
-+}
-+
- static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
- {
- 	struct r0conf *conf = mddev->private;
-@@ -488,7 +514,9 @@ static void raid0_handle_discard(struct
- 	sector_t end_disk_offset;
- 	unsigned int end_disk_index;
- 	unsigned int disk;
-+	sector_t orig_start, orig_end;
- 
-+	orig_start = start;
- 	zone = find_zone(conf, &start);
- 
- 	if (bio_end_sector(bio) > zone->zone_end) {
-@@ -502,6 +530,7 @@ static void raid0_handle_discard(struct
- 	} else
- 		end = bio_end_sector(bio);
- 
-+	orig_end = end;
- 	if (zone != conf->strip_zone)
- 		end = end - zone[-1].zone_end;
- 
-@@ -513,13 +542,26 @@ static void raid0_handle_discard(struct
- 	last_stripe_index = end;
- 	sector_div(last_stripe_index, stripe_size);
- 
--	start_disk_index = (int)(start - first_stripe_index * stripe_size) /
--		mddev->chunk_sectors;
-+	/* In the first zone the original and alternate layouts are the same */
-+	if ((conf->layout == RAID0_ORIG_LAYOUT) && (zone != conf->strip_zone)) {
-+		sector_div(orig_start, mddev->chunk_sectors);
-+		start_disk_index = sector_div(orig_start, zone->nb_dev);
-+		start_disk_index = map_disk_shift(start_disk_index,
-+						  zone->nb_dev,
-+						  zone->disk_shift);
-+		sector_div(orig_end, mddev->chunk_sectors);
-+		end_disk_index = sector_div(orig_end, zone->nb_dev);
-+		end_disk_index = map_disk_shift(end_disk_index,
-+						zone->nb_dev, zone->disk_shift);
-+	} else {
-+		start_disk_index = (int)(start - first_stripe_index * stripe_size) /
-+			mddev->chunk_sectors;
-+		end_disk_index = (int)(end - last_stripe_index * stripe_size) /
-+			mddev->chunk_sectors;
-+	}
- 	start_disk_offset = ((int)(start - first_stripe_index * stripe_size) %
- 		mddev->chunk_sectors) +
- 		first_stripe_index * mddev->chunk_sectors;
--	end_disk_index = (int)(end - last_stripe_index * stripe_size) /
--		mddev->chunk_sectors;
- 	end_disk_offset = ((int)(end - last_stripe_index * stripe_size) %
- 		mddev->chunk_sectors) +
- 		last_stripe_index * mddev->chunk_sectors;
-@@ -528,18 +570,22 @@ static void raid0_handle_discard(struct
- 		sector_t dev_start, dev_end;
- 		struct bio *discard_bio = NULL;
- 		struct md_rdev *rdev;
-+		int compare_disk;
-+
-+		compare_disk = map_disk_shift(disk, zone->nb_dev,
-+					      zone->disk_shift);
- 
--		if (disk < start_disk_index)
-+		if (compare_disk < start_disk_index)
- 			dev_start = (first_stripe_index + 1) *
- 				mddev->chunk_sectors;
--		else if (disk > start_disk_index)
-+		else if (compare_disk > start_disk_index)
- 			dev_start = first_stripe_index * mddev->chunk_sectors;
- 		else
- 			dev_start = start_disk_offset;
- 
--		if (disk < end_disk_index)
-+		if (compare_disk < end_disk_index)
- 			dev_end = (last_stripe_index + 1) * mddev->chunk_sectors;
--		else if (disk > end_disk_index)
-+		else if (compare_disk > end_disk_index)
- 			dev_end = last_stripe_index * mddev->chunk_sectors;
- 		else
- 			dev_end = end_disk_offset;
---- a/drivers/md/raid0.h
-+++ b/drivers/md/raid0.h
-@@ -6,6 +6,7 @@ struct strip_zone {
- 	sector_t zone_end;	/* Start of the next zone (in sectors) */
- 	sector_t dev_start;	/* Zone offset in real dev (in sectors) */
- 	int	 nb_dev;	/* # of devices attached to the zone */
-+	int	 disk_shift;	/* start disk for the original layout */
- };
- 
- /* Linux 3.14 (20d0189b101) made an unintended change to
+-- 
+2.39.2
+
 
 
