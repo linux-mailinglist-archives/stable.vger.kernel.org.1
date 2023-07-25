@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5282976136F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C570761324
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234124AbjGYLKt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44756 "EHLO
+        id S233983AbjGYLIY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231675AbjGYLKV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:21 -0400
+        with ESMTP id S234039AbjGYLH4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC651BF0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32991FDF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1358A61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E20AC433C9;
-        Tue, 25 Jul 2023 11:09:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5DB16166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56F4C433C8;
+        Tue, 25 Jul 2023 11:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283358;
-        bh=rkFAPEoG2NQsx3d65VRXSfyXQcGkdYLNr+2c7wiTYVc=;
+        s=korg; t=1690283186;
+        bh=F+Rwp7lGlZlOnx5BNDwDpIm65Wxqx7yEi8JJ53nH0vI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m5yJjhyiEhE1cKpZ/9snSxkiNKFSwVabsCCYxAOssjtM2wRgVMU0vkn60ZTzTQrcu
-         8CyK2dgi15dWSWfa4DQxpFbhW4IyyuAM21O9MLPuj1wppmZNqfITif/1twIQ84vLzS
-         6JrtIbBhSLYyy6wcfCadlpiaXJHnMmbZ/1ADQex8=
+        b=CoNnizZLVLBddldLzwElgffsI4Gn2gAP3IS/rCp2bm80pahnKeSENtklD04wKWCt2
+         R4IA9K7cnNzgPLLaempvS22XULXLHMK7j5eB40twXht5dZOswPTZD321MuWedCQUOY
+         WNm/OD6EPxrcn6qzSoKCiPwkaIZyNE/R8IETWk6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Golle <daniel@makrotopia.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 47/78] net: ethernet: mtk_eth_soc: handle probe deferral
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Subject: [PATCH 6.1 170/183] scripts/kallsyms: update the usage in the comment block
 Date:   Tue, 25 Jul 2023 12:46:38 +0200
-Message-ID: <20230725104453.100358749@linuxfoundation.org>
+Message-ID: <20230725104513.880881983@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,86 +54,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 1d6d537dc55d1f42d16290f00157ac387985b95b ]
+commit 79549da691edd4874c19d99c578a134471817c47 upstream.
 
-Move the call to of_get_ethdev_address to mtk_add_mac which is part of
-the probe function and can hence itself return -EPROBE_DEFER should
-of_get_ethdev_address return -EPROBE_DEFER. This allows us to entirely
-get rid of the mtk_init function.
+Commit 010a0aad39fc ("kallsyms: Correctly sequence symbols when
+CONFIG_LTO_CLANG=y") added --lto-clang, and updated the usage()
+function, but not the comment. Update it in the same way.
 
-The problem of of_get_ethdev_address returning -EPROBE_DEFER surfaced
-in situations in which the NVMEM provider holding the MAC address has
-not yet be loaded at the time mtk_eth_soc is initially probed. In this
-case probing of mtk_eth_soc should be deferred instead of falling back
-to use a random MAC address, so once the NVMEM provider becomes
-available probing can be repeated.
-
-Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 29 ++++++++-------------
- 1 file changed, 11 insertions(+), 18 deletions(-)
+ scripts/kallsyms.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index c55ba1d085e5b..50ee9d3d4c841 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -2612,23 +2612,6 @@ static int mtk_hw_deinit(struct mtk_eth *eth)
- 	return 0;
- }
- 
--static int __init mtk_init(struct net_device *dev)
--{
--	struct mtk_mac *mac = netdev_priv(dev);
--	struct mtk_eth *eth = mac->hw;
--	int ret;
--
--	ret = of_get_ethdev_address(mac->of_node, dev);
--	if (ret) {
--		/* If the mac address is invalid, use random mac address */
--		eth_hw_addr_random(dev);
--		dev_err(eth->dev, "generated random MAC address %pM\n",
--			dev->dev_addr);
--	}
--
--	return 0;
--}
--
- static void mtk_uninit(struct net_device *dev)
- {
- 	struct mtk_mac *mac = netdev_priv(dev);
-@@ -2956,7 +2939,6 @@ static const struct ethtool_ops mtk_ethtool_ops = {
- };
- 
- static const struct net_device_ops mtk_netdev_ops = {
--	.ndo_init		= mtk_init,
- 	.ndo_uninit		= mtk_uninit,
- 	.ndo_open		= mtk_open,
- 	.ndo_stop		= mtk_stop,
-@@ -3010,6 +2992,17 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	mac->hw = eth;
- 	mac->of_node = np;
- 
-+	err = of_get_ethdev_address(mac->of_node, eth->netdev[id]);
-+	if (err == -EPROBE_DEFER)
-+		return err;
-+
-+	if (err) {
-+		/* If the mac address is invalid, use random mac address */
-+		eth_hw_addr_random(eth->netdev[id]);
-+		dev_err(eth->dev, "generated random MAC address %pM\n",
-+			eth->netdev[id]->dev_addr);
-+	}
-+
- 	memset(mac->hwlro_ip, 0, sizeof(mac->hwlro_ip));
- 	mac->hwlro_ip_cnt = 0;
- 
--- 
-2.39.2
-
+--- a/scripts/kallsyms.c
++++ b/scripts/kallsyms.c
+@@ -6,7 +6,7 @@
+  * of the GNU General Public License, incorporated herein by reference.
+  *
+  * Usage: kallsyms [--all-symbols] [--absolute-percpu]
+- *                         [--base-relative] in.map > out.S
++ *                         [--base-relative] [--lto-clang] in.map > out.S
+  *
+  *      Table compression uses all the unused char codes on the symbols and
+  *  maps these to the most used substrings (tokens). For instance, it might
 
 
