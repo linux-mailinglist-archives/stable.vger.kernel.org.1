@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BC6761634
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF8EE7614DE
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234820AbjGYLhY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44368 "EHLO
+        id S234486AbjGYLX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234832AbjGYLhV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:37:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4004319B0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:08 -0700 (PDT)
+        with ESMTP id S234499AbjGYLX0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E98FA6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12913616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26059C433C7;
-        Tue, 25 Jul 2023 11:37:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C518B61699
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24D4C433C8;
+        Tue, 25 Jul 2023 11:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285027;
-        bh=2g7xh56sjjLMMXd7dgTfDDeUop4OtxiTXdNiXoC3MZ8=;
+        s=korg; t=1690284202;
+        bh=DDL4vmAtA78ty2CRmWwY8Kvfyv596MBSmvT+MP8JRjk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r+s5BkCkSnhzE5doLPlAX1Mr8slqXbBmaJiP6BJWU5fSBrDo42ah+vLisuHeKbf0h
-         jnJpLkLdn4FLKP/erb+ifbIIJFw2vq/mtqbp7E8YGk5tgc/T7REwz1cD4LFDCSgsw5
-         ZcezkeM9cXNz5FYkymWg9//i0FUcN33TXvz5VgKo=
+        b=mdjcJ5wgwQPG/tqm5kw9OM/6ZaNwkDeruqpl6HZeTuZr3B3iOFduda2DaVqvr9bP5
+         2UJQ/5Xi0zIQdTMhPcb6cZqdYNvf7llU0pY/UwyZKNUEmAK3mbukBntv63MNznriRu
+         u7M8nrGX3nR2I05mjMoL8avvqa3filCj/za7B+Q4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Edwin Peer <edwin.peer@broadcom.com>,
-        Edwin Peer <espeer@gmail.com>, Gal Pressman <gal@nvidia.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Pedro Tammela <pctammela@mojatatu.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/313] rtnetlink: extend RTEXT_FILTER_SKIP_STATS to IFLA_VF_INFO
-Date:   Tue, 25 Jul 2023 12:43:29 +0200
-Message-ID: <20230725104523.487489825@linuxfoundation.org>
+Subject: [PATCH 5.10 271/509] net/sched: act_pedit: Add size check for TCA_PEDIT_PARMS_EX
+Date:   Tue, 25 Jul 2023 12:43:30 +0200
+Message-ID: <20230725104606.159828433@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,164 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edwin Peer <edwin.peer@broadcom.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit fa0e21fa44438a0e856d42224bfa24641d37b979 ]
+[ Upstream commit 30c45b5361d39b4b793780ffac5538090b9e2eb1 ]
 
-This filter already exists for excluding IPv6 SNMP stats. Extend its
-definition to also exclude IFLA_VF_INFO stats in RTM_GETLINK.
+The attribute TCA_PEDIT_PARMS_EX is not be included in pedit_policy and
+one malicious user could fake a TCA_PEDIT_PARMS_EX whose length is
+smaller than the intended sizeof(struct tc_pedit). Hence, the
+dereference in tcf_pedit_init() could access dirty heap data.
 
-This patch constitutes a partial fix for a netlink attribute nesting
-overflow bug in IFLA_VFINFO_LIST. By excluding the stats when the
-requester doesn't need them, the truncation of the VF list is avoided.
+static int tcf_pedit_init(...)
+{
+  // ...
+  pattr = tb[TCA_PEDIT_PARMS]; // TCA_PEDIT_PARMS is included
+  if (!pattr)
+    pattr = tb[TCA_PEDIT_PARMS_EX]; // but this is not
 
-While it was technically only the stats added in commit c5a9f6f0ab40
-("net/core: Add drop counters to VF statistics") breaking the camel's
-back, the appreciable size of the stats data should never have been
-included without due consideration for the maximum number of VFs
-supported by PCI.
+  // ...
+  parm = nla_data(pattr);
 
-Fixes: 3b766cd83232 ("net/core: Add reading VF statistics through the PF netdevice")
-Fixes: c5a9f6f0ab40 ("net/core: Add drop counters to VF statistics")
-Signed-off-by: Edwin Peer <edwin.peer@broadcom.com>
-Cc: Edwin Peer <espeer@gmail.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://lore.kernel.org/r/20230611105108.122586-1-gal@nvidia.com
+  index = parm->index; // parm is able to be smaller than 4 bytes
+                       // and this dereference gets dirty skb_buff
+                       // data created in netlink_sendmsg
+}
+
+This commit adds TCA_PEDIT_PARMS_EX length in pedit_policy which avoid
+the above case, just like the TCA_PEDIT_PARMS.
+
+Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to the conventional network headers")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Link: https://lore.kernel.org/r/20230703110842.590282-1-linma@zju.edu.cn
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 96 +++++++++++++++++++++++---------------------
- 1 file changed, 51 insertions(+), 45 deletions(-)
+ net/sched/act_pedit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index da1ef00fc9cc2..0b0107797e490 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -922,24 +922,27 @@ static inline int rtnl_vfinfo_size(const struct net_device *dev,
- 			 nla_total_size(sizeof(struct ifla_vf_rate)) +
- 			 nla_total_size(sizeof(struct ifla_vf_link_state)) +
- 			 nla_total_size(sizeof(struct ifla_vf_rss_query_en)) +
--			 nla_total_size(0) + /* nest IFLA_VF_STATS */
--			 /* IFLA_VF_STATS_RX_PACKETS */
--			 nla_total_size_64bit(sizeof(__u64)) +
--			 /* IFLA_VF_STATS_TX_PACKETS */
--			 nla_total_size_64bit(sizeof(__u64)) +
--			 /* IFLA_VF_STATS_RX_BYTES */
--			 nla_total_size_64bit(sizeof(__u64)) +
--			 /* IFLA_VF_STATS_TX_BYTES */
--			 nla_total_size_64bit(sizeof(__u64)) +
--			 /* IFLA_VF_STATS_BROADCAST */
--			 nla_total_size_64bit(sizeof(__u64)) +
--			 /* IFLA_VF_STATS_MULTICAST */
--			 nla_total_size_64bit(sizeof(__u64)) +
--			 /* IFLA_VF_STATS_RX_DROPPED */
--			 nla_total_size_64bit(sizeof(__u64)) +
--			 /* IFLA_VF_STATS_TX_DROPPED */
--			 nla_total_size_64bit(sizeof(__u64)) +
- 			 nla_total_size(sizeof(struct ifla_vf_trust)));
-+		if (~ext_filter_mask & RTEXT_FILTER_SKIP_STATS) {
-+			size += num_vfs *
-+				(nla_total_size(0) + /* nest IFLA_VF_STATS */
-+				 /* IFLA_VF_STATS_RX_PACKETS */
-+				 nla_total_size_64bit(sizeof(__u64)) +
-+				 /* IFLA_VF_STATS_TX_PACKETS */
-+				 nla_total_size_64bit(sizeof(__u64)) +
-+				 /* IFLA_VF_STATS_RX_BYTES */
-+				 nla_total_size_64bit(sizeof(__u64)) +
-+				 /* IFLA_VF_STATS_TX_BYTES */
-+				 nla_total_size_64bit(sizeof(__u64)) +
-+				 /* IFLA_VF_STATS_BROADCAST */
-+				 nla_total_size_64bit(sizeof(__u64)) +
-+				 /* IFLA_VF_STATS_MULTICAST */
-+				 nla_total_size_64bit(sizeof(__u64)) +
-+				 /* IFLA_VF_STATS_RX_DROPPED */
-+				 nla_total_size_64bit(sizeof(__u64)) +
-+				 /* IFLA_VF_STATS_TX_DROPPED */
-+				 nla_total_size_64bit(sizeof(__u64)));
-+		}
- 		return size;
- 	} else
- 		return 0;
-@@ -1189,7 +1192,8 @@ static noinline_for_stack int rtnl_fill_stats(struct sk_buff *skb,
- static noinline_for_stack int rtnl_fill_vfinfo(struct sk_buff *skb,
- 					       struct net_device *dev,
- 					       int vfs_num,
--					       struct nlattr *vfinfo)
-+					       struct nlattr *vfinfo,
-+					       u32 ext_filter_mask)
- {
- 	struct ifla_vf_rss_query_en vf_rss_query_en;
- 	struct nlattr *vf, *vfstats, *vfvlanlist;
-@@ -1279,33 +1283,35 @@ static noinline_for_stack int rtnl_fill_vfinfo(struct sk_buff *skb,
- 		goto nla_put_vf_failure;
- 	}
- 	nla_nest_end(skb, vfvlanlist);
--	memset(&vf_stats, 0, sizeof(vf_stats));
--	if (dev->netdev_ops->ndo_get_vf_stats)
--		dev->netdev_ops->ndo_get_vf_stats(dev, vfs_num,
--						&vf_stats);
--	vfstats = nla_nest_start_noflag(skb, IFLA_VF_STATS);
--	if (!vfstats)
--		goto nla_put_vf_failure;
--	if (nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_PACKETS,
--			      vf_stats.rx_packets, IFLA_VF_STATS_PAD) ||
--	    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_PACKETS,
--			      vf_stats.tx_packets, IFLA_VF_STATS_PAD) ||
--	    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_BYTES,
--			      vf_stats.rx_bytes, IFLA_VF_STATS_PAD) ||
--	    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_BYTES,
--			      vf_stats.tx_bytes, IFLA_VF_STATS_PAD) ||
--	    nla_put_u64_64bit(skb, IFLA_VF_STATS_BROADCAST,
--			      vf_stats.broadcast, IFLA_VF_STATS_PAD) ||
--	    nla_put_u64_64bit(skb, IFLA_VF_STATS_MULTICAST,
--			      vf_stats.multicast, IFLA_VF_STATS_PAD) ||
--	    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_DROPPED,
--			      vf_stats.rx_dropped, IFLA_VF_STATS_PAD) ||
--	    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_DROPPED,
--			      vf_stats.tx_dropped, IFLA_VF_STATS_PAD)) {
--		nla_nest_cancel(skb, vfstats);
--		goto nla_put_vf_failure;
-+	if (~ext_filter_mask & RTEXT_FILTER_SKIP_STATS) {
-+		memset(&vf_stats, 0, sizeof(vf_stats));
-+		if (dev->netdev_ops->ndo_get_vf_stats)
-+			dev->netdev_ops->ndo_get_vf_stats(dev, vfs_num,
-+							  &vf_stats);
-+		vfstats = nla_nest_start_noflag(skb, IFLA_VF_STATS);
-+		if (!vfstats)
-+			goto nla_put_vf_failure;
-+		if (nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_PACKETS,
-+				      vf_stats.rx_packets, IFLA_VF_STATS_PAD) ||
-+		    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_PACKETS,
-+				      vf_stats.tx_packets, IFLA_VF_STATS_PAD) ||
-+		    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_BYTES,
-+				      vf_stats.rx_bytes, IFLA_VF_STATS_PAD) ||
-+		    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_BYTES,
-+				      vf_stats.tx_bytes, IFLA_VF_STATS_PAD) ||
-+		    nla_put_u64_64bit(skb, IFLA_VF_STATS_BROADCAST,
-+				      vf_stats.broadcast, IFLA_VF_STATS_PAD) ||
-+		    nla_put_u64_64bit(skb, IFLA_VF_STATS_MULTICAST,
-+				      vf_stats.multicast, IFLA_VF_STATS_PAD) ||
-+		    nla_put_u64_64bit(skb, IFLA_VF_STATS_RX_DROPPED,
-+				      vf_stats.rx_dropped, IFLA_VF_STATS_PAD) ||
-+		    nla_put_u64_64bit(skb, IFLA_VF_STATS_TX_DROPPED,
-+				      vf_stats.tx_dropped, IFLA_VF_STATS_PAD)) {
-+			nla_nest_cancel(skb, vfstats);
-+			goto nla_put_vf_failure;
-+		}
-+		nla_nest_end(skb, vfstats);
- 	}
--	nla_nest_end(skb, vfstats);
- 	nla_nest_end(skb, vf);
- 	return 0;
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index db0d3bff19eba..a44101b2f4419 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -26,6 +26,7 @@ static struct tc_action_ops act_pedit_ops;
  
-@@ -1338,7 +1344,7 @@ static noinline_for_stack int rtnl_fill_vf(struct sk_buff *skb,
- 		return -EMSGSIZE;
- 
- 	for (i = 0; i < num_vfs; i++) {
--		if (rtnl_fill_vfinfo(skb, dev, i, vfinfo))
-+		if (rtnl_fill_vfinfo(skb, dev, i, vfinfo, ext_filter_mask))
- 			return -EMSGSIZE;
- 	}
+ static const struct nla_policy pedit_policy[TCA_PEDIT_MAX + 1] = {
+ 	[TCA_PEDIT_PARMS]	= { .len = sizeof(struct tc_pedit) },
++	[TCA_PEDIT_PARMS_EX]	= { .len = sizeof(struct tc_pedit) },
+ 	[TCA_PEDIT_KEYS_EX]   = { .type = NLA_NESTED },
+ };
  
 -- 
 2.39.2
