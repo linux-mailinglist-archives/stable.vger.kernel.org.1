@@ -2,51 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B8076161D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4D7B761143
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234866AbjGYLgo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43452 "EHLO
+        id S232975AbjGYKtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234803AbjGYLgj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:39 -0400
+        with ESMTP id S232310AbjGYKtV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74DC1BFE;
-        Tue, 25 Jul 2023 04:36:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A7B710FD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98C72615BA;
-        Tue, 25 Jul 2023 11:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE60C433C7;
-        Tue, 25 Jul 2023 11:36:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B5996165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1391C433C7;
+        Tue, 25 Jul 2023 10:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284983;
-        bh=123xCEYGnpn+piNqbBZPYIz4kJgdrO9rqpOz9zcCZl0=;
+        s=korg; t=1690282157;
+        bh=iOCKfKU9VocYP1j5M+M3Voq4yNGshaueuJowx5mVEuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BRVSnKXvtUFV0M/OK1kpO400peUFxe4Z/cwmFv1UOs7VId7PwGHQGM9WrFYNlG+9H
-         jT8a5i8najN18IlbzLevmHp3La1gJK7PoLSafmrrVLLJyPhZ49qkP8X6KHw/LanfcX
-         9rdqoOR62oTmKNB7Wx4WhyvEMthfUhXhSvgZbYaM=
+        b=gAsGi4K3AA4S5lo3YA1f3ozRfojgPJVayLjRS/umnRVnsWzRuejq5fRgZxv4WZamY
+         HmHBxKGUfRlpm7z7ZNOXnIrac3IEpx976Uua3vrsYTwnGHlFwGeAo8lo02dgqg8vlm
+         uB49zfjcmRFauDkGbMe2Ch95A7IIPGlUN4peMyxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Fox Chen <mhchen@golf.ccl.itri.org.tw>,
-        de Melo <acme@conectiva.com.br>,
-        Gustavo Niemeyer <niemeyer@conectiva.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/313] wl3501_cs: Fix misspelling and provide missing documentation
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Xu Yilun <yilun.xu@intel.com>, stable@kernel.org
+Subject: [PATCH 6.4 028/227] regmap: Drop initial version of maximum transfer length fixes
 Date:   Tue, 25 Jul 2023 12:43:15 +0200
-Message-ID: <20230725104522.896757523@linuxfoundation.org>
+Message-ID: <20230725104515.986422469@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,64 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee.jones@linaro.org>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 8b8a6f8c3b50193d161c598a6784e721128d6dc3 ]
+commit bc64734825c59e18a27ac266b07e14944c111fd8 upstream.
 
-Fixes the following W=1 kernel build warning(s):
+When problems were noticed with the register address not being taken
+into account when limiting raw transfers with I2C devices we fixed this
+in the core.  Unfortunately it has subsequently been realised that a lot
+of buses were relying on the prior behaviour, partly due to unclear
+documentation not making it obvious what was intended in the core.  This
+is all more involved to fix than is sensible for a fix commit so let's
+just drop the original fixes, a separate commit will fix the originally
+observed problem in an I2C specific way
 
- In file included from drivers/net/wireless/wl3501_cs.c:57:
- drivers/net/wireless/wl3501_cs.c:143: warning: Function parameter or member 'reg_domain' not described in 'iw_valid_channel'
- drivers/net/wireless/wl3501_cs.c:143: warning: Excess function parameter 'reg_comain' description in 'iw_valid_channel'
- drivers/net/wireless/wl3501_cs.c:469: warning: Function parameter or member 'data' not described in 'wl3501_send_pkt'
- drivers/net/wireless/wl3501_cs.c:469: warning: Function parameter or member 'len' not described in 'wl3501_send_pkt'
-
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Fox Chen <mhchen@golf.ccl.itri.org.tw>
-Cc: de Melo <acme@conectiva.com.br>
-Cc: Gustavo Niemeyer <niemeyer@conectiva.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20201102112410.1049272-25-lee.jones@linaro.org
-Stable-dep-of: 391af06a02e7 ("wifi: wl3501_cs: Fix an error handling path in wl3501_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3981514180c9 ("regmap: Account for register length when chunking")
+Fixes: c8e796895e23 ("regmap: spi-avmm: Fix regmap_bus max_raw_write")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-1-80e2aed22e83@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/wl3501_cs.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/base/regmap/regmap-spi-avmm.c |    2 +-
+ drivers/base/regmap/regmap.c          |    6 ++----
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
-index cf67ea13dd8dc..115bb408d4f20 100644
---- a/drivers/net/wireless/wl3501_cs.c
-+++ b/drivers/net/wireless/wl3501_cs.c
-@@ -134,7 +134,7 @@ static const struct {
+--- a/drivers/base/regmap/regmap-spi-avmm.c
++++ b/drivers/base/regmap/regmap-spi-avmm.c
+@@ -660,7 +660,7 @@ static const struct regmap_bus regmap_sp
+ 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
+-	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
++	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
+ 	.free_context = spi_avmm_bridge_ctx_free,
+ };
  
- /**
-  * iw_valid_channel - validate channel in regulatory domain
-- * @reg_comain: regulatory domain
-+ * @reg_domain: regulatory domain
-  * @channel: channel to validate
-  *
-  * Returns 0 if invalid in the specified regulatory domain, non-zero if valid.
-@@ -458,11 +458,9 @@ static int wl3501_pwr_mgmt(struct wl3501_card *this, int suspend)
- /**
-  * wl3501_send_pkt - Send a packet.
-  * @this: Card
-- *
-- * Send a packet.
-- *
-- * data = Ethernet raw frame.  (e.g. data[0] - data[5] is Dest MAC Addr,
-+ * @data: Ethernet raw frame.  (e.g. data[0] - data[5] is Dest MAC Addr,
-  *                                   data[6] - data[11] is Src MAC Addr)
-+ * @len: Packet length
-  * Ref: IEEE 802.11
-  */
- static int wl3501_send_pkt(struct wl3501_card *this, u8 *data, u16 len)
--- 
-2.39.2
-
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -2082,8 +2082,6 @@ int _regmap_raw_write(struct regmap *map
+ 	size_t val_count = val_len / val_bytes;
+ 	size_t chunk_count, chunk_bytes;
+ 	size_t chunk_regs = val_count;
+-	size_t max_data = map->max_raw_write - map->format.reg_bytes -
+-			map->format.pad_bytes;
+ 	int ret, i;
+ 
+ 	if (!val_count)
+@@ -2091,8 +2089,8 @@ int _regmap_raw_write(struct regmap *map
+ 
+ 	if (map->use_single_write)
+ 		chunk_regs = 1;
+-	else if (map->max_raw_write && val_len > max_data)
+-		chunk_regs = max_data / val_bytes;
++	else if (map->max_raw_write && val_len > map->max_raw_write)
++		chunk_regs = map->max_raw_write / val_bytes;
+ 
+ 	chunk_count = val_count / chunk_regs;
+ 	chunk_bytes = chunk_regs * val_bytes;
 
 
