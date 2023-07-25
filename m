@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C08A7616B1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224137612A1
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234995AbjGYLlO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:41:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48658 "EHLO
+        id S233882AbjGYLEe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233894AbjGYLkz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:55 -0400
+        with ESMTP id S233881AbjGYLEV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 882731FF5
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D5C4C04
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BF4F616A2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E43BC433C7;
-        Tue, 25 Jul 2023 11:40:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F59061681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3BAC433C7;
+        Tue, 25 Jul 2023 11:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285241;
-        bh=zwPAKCtHd3UQM2xQ2KHaJGvz6SPo/bREsR18xXokdMc=;
+        s=korg; t=1690282885;
+        bh=ZOoUxsDyKwEulenjDn/1naBRUgbYK9tIpKiPvo2Coh8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n2aewpZd/EKO58NOz4nBPHOJuowmh39iTS9iVwUOsZ/C3ccngZ5b42VB0GwaqZByU
-         EBQMURWu2Zr8iGfpcKuHhIYVLcltC+taASeZXP0c+63RshxarTvLGR/uKSAzE1Yp9y
-         nJClzVKrwmKKCsaQun2xmcxJQlWd1efxDySO9z6U=
+        b=E9hiZXf3K7JGOf8uHqPtBk9MGGEaZa7Y3lOCqRdBVdwYhp4d4PTelFNo0meWEfOon
+         dSGKbIK7QBQSTrsnFBOgJ8j1XXOMO1jxBVhkEMaD3aTI2d7rQUJzXtyzHzexIhvb2j
+         Ya+k+sxP8LIUNNdG974JKvpDVY3GX5qhaEdzOG1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 135/313] mfd: rt5033: Drop rt5033-battery sub-device
+        patches@lists.linux.dev,
+        syzbot+f1faa20eec55e0c8644c@syzkaller.appspotmail.com,
+        Immad Mir <mirimmad17@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 060/183] [PATCH AUTOSEL 4.19 10/11] FS: JFS: Fix null-ptr-deref Read in txBegin
 Date:   Tue, 25 Jul 2023 12:44:48 +0200
-Message-ID: <20230725104526.863116427@linuxfoundation.org>
+Message-ID: <20230725104510.119968111@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephan Gerhold <stephan@gerhold.net>
+[ Upstream commit 47cfdc338d674d38f4b2f22b7612cc6a2763ba27 ]
 
-[ Upstream commit 43db1344e0f8c1eb687a1d6cd5b0de3009ab66cb ]
+ Syzkaller reported an issue where txBegin may be called
+ on a superblock in a read-only mounted filesystem which leads
+ to NULL pointer deref. This could be solved by checking if
+ the filesystem is read-only before calling txBegin, and returning
+ with appropiate error code.
 
-The fuel gauge in the RT5033 PMIC (rt5033-battery) has its own I2C bus
-and interrupt lines. Therefore, it is not part of the MFD device
-and needs to be specified separately in the device tree.
+Reported-By: syzbot+f1faa20eec55e0c8644c@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=be7e52c50c5182cc09a09ea6fc456446b2039de3
 
-Fixes: 0b271258544b ("mfd: rt5033: Add Richtek RT5033 driver core.")
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/6a8a19bc67b5be3732882e8131ad2ffcb546ac03.1684182964.git.jahau@rocketmail.com
+Signed-off-by: Immad Mir <mirimmad17@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/rt5033.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/jfs/namei.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mfd/rt5033.c b/drivers/mfd/rt5033.c
-index 48381d9bf7403..302115dabff4b 100644
---- a/drivers/mfd/rt5033.c
-+++ b/drivers/mfd/rt5033.c
-@@ -41,9 +41,6 @@ static const struct mfd_cell rt5033_devs[] = {
- 	{
- 		.name = "rt5033-charger",
- 		.of_compatible = "richtek,rt5033-charger",
--	}, {
--		.name = "rt5033-battery",
--		.of_compatible = "richtek,rt5033-battery",
- 	}, {
- 		.name = "rt5033-led",
- 		.of_compatible = "richtek,rt5033-led",
--- 
-2.39.2
-
+--- a/fs/jfs/namei.c
++++ b/fs/jfs/namei.c
+@@ -799,6 +799,11 @@ static int jfs_link(struct dentry *old_d
+ 	if (rc)
+ 		goto out;
+ 
++	if (isReadOnly(ip)) {
++		jfs_error(ip->i_sb, "read-only filesystem\n");
++		return -EROFS;
++	}
++
+ 	tid = txBegin(ip->i_sb, 0);
+ 
+ 	mutex_lock_nested(&JFS_IP(dir)->commit_mutex, COMMIT_MUTEX_PARENT);
 
 
