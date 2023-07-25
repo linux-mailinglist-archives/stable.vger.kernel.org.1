@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F342F7616EB
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A4A7612BB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231920AbjGYLoJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
+        id S232457AbjGYLFW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235425AbjGYLnc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3431FFB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:18 -0700 (PDT)
+        with ESMTP id S233901AbjGYLFJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3047C213F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49BCE616BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5995BC433C7;
-        Tue, 25 Jul 2023 11:43:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C15896166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1399C433C8;
+        Tue, 25 Jul 2023 11:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285389;
-        bh=LUtflLBUSoqiYk0KULtcNLJJ17yc4ut07UXC3ZdPNqE=;
+        s=korg; t=1690282949;
+        bh=xPpxSd+BUHmk9hyhHYEGIh361Yx46uQfzs0UzhG/CuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bDjkOzQEOrdO7X+HcVvODC7Ijb+qJiMostAJhB6VQ5mVODJVay90AZpi4ofkAVhD8
-         eC/+mAii2pmHUxE9I+FvD0PNBuDqJxqRgsK5JRGIJ5BofNxtpe2lhX6Jtu7ydhUKie
-         h+X45L2ijxJEKDbKa2sNWV3Emsvj2J3MVCg6mY3s=
+        b=tIrR8dDz6LInfrbl/xSJjv8SZCIO+MKFyKnOxs7TJuEHdByOANKHHzZa5tfJpxv+9
+         Ey1K3L9hJx67NfDylXAZ3QlUmRsWpe2FOIzaiLILRlFpyoUqCcD+4LDZ+UswsfbwK0
+         nq6ShGx0FiHJazYsw68EseXrLlgUOgCifHIKnBoM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 159/313] i2c: xiic: Defer xiic_wakeup() and __xiic_start_xfer() in xiic_process()
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 084/183] ASoC: codecs: wcd938x: fix dB range for HPHL and HPHR
 Date:   Tue, 25 Jul 2023 12:45:12 +0200
-Message-ID: <20230725104527.848600067@linuxfoundation.org>
+Message-ID: <20230725104510.988661990@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,109 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 743e227a895923c37a333eb2ebf3e391f00c406d ]
+[ Upstream commit c03226ba15fe3c42d13907ec7d8536396602557b ]
 
-The __xiic_start_xfer() manipulates the interrupt flags, xiic_wakeup()
-may result in return from xiic_xfer() early. Defer both to the end of
-the xiic_process() interrupt thread, so that they are executed after
-all the other interrupt bits handling completed and once it completely
-safe to perform changes to the interrupt bits in the hardware.
+dB range for HPHL and HPHR gains are from +6dB to -30dB in steps of
+1.5dB with register values range from 0 to 24.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Acked-by: Michal Simek <michal.simek@xilinx.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: cb6e45c9a0ad ("i2c: xiic: Don't try to handle more interrupt events after error")
+Current code maps these dB ranges incorrectly, fix them to allow proper
+volume setting.
+
+Fixes: e8ba1e05bdc0 ("ASoC: codecs: wcd938x: add basic controls")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230705125723.40464-1-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 37 ++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ sound/soc/codecs/wcd938x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index c92ea6990ec69..c3fcaf5decc74 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -353,6 +353,9 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 	struct xiic_i2c *i2c = dev_id;
- 	u32 pend, isr, ier;
- 	u32 clr = 0;
-+	int xfer_more = 0;
-+	int wakeup_req = 0;
-+	int wakeup_code = 0;
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index 7715040383840..2316481c2541b 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -210,7 +210,7 @@ struct wcd938x_priv {
+ };
  
- 	/* Get the interrupt Status from the IPIF. There is no clearing of
- 	 * interrupts in the IPIF. Interrupts must be cleared at the source.
-@@ -389,10 +392,14 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 		 */
- 		xiic_reinit(i2c);
+ static const SNDRV_CTL_TLVD_DECLARE_DB_MINMAX(ear_pa_gain, 600, -1800);
+-static const SNDRV_CTL_TLVD_DECLARE_DB_MINMAX(line_gain, 600, -3000);
++static const DECLARE_TLV_DB_SCALE(line_gain, -3000, 150, -3000);
+ static const SNDRV_CTL_TLVD_DECLARE_DB_MINMAX(analog_gain, 0, 3000);
  
--		if (i2c->rx_msg)
--			xiic_wakeup(i2c, STATE_ERROR);
--		if (i2c->tx_msg)
--			xiic_wakeup(i2c, STATE_ERROR);
-+		if (i2c->rx_msg) {
-+			wakeup_req = 1;
-+			wakeup_code = STATE_ERROR;
-+		}
-+		if (i2c->tx_msg) {
-+			wakeup_req = 1;
-+			wakeup_code = STATE_ERROR;
-+		}
- 	}
- 	if (pend & XIIC_INTR_RX_FULL_MASK) {
- 		/* Receive register/FIFO is full */
-@@ -426,8 +433,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 				i2c->tx_msg++;
- 				dev_dbg(i2c->adap.dev.parent,
- 					"%s will start next...\n", __func__);
--
--				__xiic_start_xfer(i2c);
-+				xfer_more = 1;
- 			}
- 		}
- 	}
-@@ -441,11 +447,13 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 		if (!i2c->tx_msg)
- 			goto out;
- 
--		if ((i2c->nmsgs == 1) && !i2c->rx_msg &&
--			xiic_tx_space(i2c) == 0)
--			xiic_wakeup(i2c, STATE_DONE);
-+		wakeup_req = 1;
-+
-+		if (i2c->nmsgs == 1 && !i2c->rx_msg &&
-+		    xiic_tx_space(i2c) == 0)
-+			wakeup_code = STATE_DONE;
- 		else
--			xiic_wakeup(i2c, STATE_ERROR);
-+			wakeup_code = STATE_ERROR;
- 	}
- 	if (pend & (XIIC_INTR_TX_EMPTY_MASK | XIIC_INTR_TX_HALF_MASK)) {
- 		/* Transmit register/FIFO is empty or ½ empty */
-@@ -469,7 +477,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 			if (i2c->nmsgs > 1) {
- 				i2c->nmsgs--;
- 				i2c->tx_msg++;
--				__xiic_start_xfer(i2c);
-+				xfer_more = 1;
- 			} else {
- 				xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
- 
-@@ -487,6 +495,13 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 	dev_dbg(i2c->adap.dev.parent, "%s clr: 0x%x\n", __func__, clr);
- 
- 	xiic_setreg32(i2c, XIIC_IISR_OFFSET, clr);
-+	if (xfer_more)
-+		__xiic_start_xfer(i2c);
-+	if (wakeup_req)
-+		xiic_wakeup(i2c, wakeup_code);
-+
-+	WARN_ON(xfer_more && wakeup_req);
-+
- 	mutex_unlock(&i2c->lock);
- 	return IRQ_HANDLED;
- }
+ struct wcd938x_mbhc_zdet_param {
+@@ -2662,8 +2662,8 @@ static const struct snd_kcontrol_new wcd938x_snd_controls[] = {
+ 		       wcd938x_get_swr_port, wcd938x_set_swr_port),
+ 	SOC_SINGLE_EXT("DSD_R Switch", WCD938X_DSD_R, 0, 1, 0,
+ 		       wcd938x_get_swr_port, wcd938x_set_swr_port),
+-	SOC_SINGLE_TLV("HPHL Volume", WCD938X_HPH_L_EN, 0, 0x18, 0, line_gain),
+-	SOC_SINGLE_TLV("HPHR Volume", WCD938X_HPH_R_EN, 0, 0x18, 0, line_gain),
++	SOC_SINGLE_TLV("HPHL Volume", WCD938X_HPH_L_EN, 0, 0x18, 1, line_gain),
++	SOC_SINGLE_TLV("HPHR Volume", WCD938X_HPH_R_EN, 0, 0x18, 1, line_gain),
+ 	WCD938X_EAR_PA_GAIN_TLV("EAR_PA Volume", WCD938X_ANA_EAR_COMPANDER_CTL,
+ 				2, 0x10, 0, ear_pa_gain),
+ 	SOC_SINGLE_EXT("ADC1 Switch", WCD938X_ADC1, 1, 1, 0,
 -- 
 2.39.2
 
