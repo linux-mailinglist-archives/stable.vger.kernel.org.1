@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C17D76142F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C559676143D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:17:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234245AbjGYLQ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:16:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54090 "EHLO
+        id S234150AbjGYLR1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:17:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234238AbjGYLQm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:16:42 -0400
+        with ESMTP id S234216AbjGYLRM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:17:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5443CE74
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:16:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7BB199C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:17:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2F3B6168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:16:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4CFC433CA;
-        Tue, 25 Jul 2023 11:16:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2A8261693
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:17:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12012C433C9;
+        Tue, 25 Jul 2023 11:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283799;
-        bh=56f1In5tbzygGHl5qDvchEX5W2hG6dnIKV1N39LOWoI=;
+        s=korg; t=1690283830;
+        bh=HGsENE10OoVv+A8hWrcMQwgYtpA7Ls/fWwInP6CuwQI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b+rYXzpcPea1l3uA8Ybxj3PfeTbzKAepiBDs8MpXxoqMuLd0gAuJGgGMZAAF5D3Em
-         C43mo/31TGOmxPSErjPP+0IyynXms6bunmJQ2gYupK7jLwdWhelUUI+cli1ExFvni0
-         GAVxmKIAP9Z8EGksSeXVXyUs3aTnchmlKe2VLGyw=
+        b=fJXi69SjtgXJvXRe+5bahAzhXnYIwbhUuKLNaM7lB90FXUqVUq5a8Xx934n4NcLNs
+         6t+8L2ILPfB8YdEq2A6gNm80m1Rr8GOtsTKdFyf+d0sKL164L7eqRo/Nd62KzqtTJm
+         cZl9j7TKCSxfwn0f985BS78nZpU9ozKFbIdPrm4s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/509] ARM: dts: gta04: Move model property out of pinctrl node
-Date:   Tue, 25 Jul 2023 12:40:58 +0200
-Message-ID: <20230725104559.132507276@linuxfoundation.org>
+Subject: [PATCH 5.10 120/509] arm64: dts: qcom: msm8916: correct camss unit address
+Date:   Tue, 25 Jul 2023 12:40:59 +0200
+Message-ID: <20230725104559.174120813@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
 References: <20230725104553.588743331@linuxfoundation.org>
@@ -56,39 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 4ffec92e70ac5097b9f67ec154065305b16a3b46 ]
+[ Upstream commit 48798d992ce276cf0d57bf75318daf8eabd02aa4 ]
 
-The model property should be at the top level, let's move it out
-of the pinctrl node.
+Match unit-address to reg entry to fix dtbs W=1 warnings:
 
-Fixes: d2eaf949d2c3 ("ARM: dts: omap3-gta04a5one: define GTA04A5 variant with OneNAND")
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+  Warning (simple_bus_reg): /soc@0/camss@1b00000: simple-bus unit address format error, expected "1b0ac00"
+
+Fixes: 58f479f90a7c ("arm64: dts: qcom: msm8916: Add CAMSS support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230419211856.79332-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap3-gta04a5one.dts | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/omap3-gta04a5one.dts b/arch/arm/boot/dts/omap3-gta04a5one.dts
-index 9db9fe67cd63b..95df45cc70c09 100644
---- a/arch/arm/boot/dts/omap3-gta04a5one.dts
-+++ b/arch/arm/boot/dts/omap3-gta04a5one.dts
-@@ -5,9 +5,11 @@
+diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+index c32e4a3833f23..5b79e4a373311 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1006,7 +1006,7 @@ dsi_phy0: dsi-phy@1a98300 {
+ 			};
+ 		};
  
- #include "omap3-gta04a5.dts"
- 
--&omap3_pmx_core {
-+/ {
- 	model = "Goldelico GTA04A5/Letux 2804 with OneNAND";
-+};
- 
-+&omap3_pmx_core {
- 	gpmc_pins: pinmux_gpmc_pins {
- 		pinctrl-single,pins = <
- 
+-		camss: camss@1b00000 {
++		camss: camss@1b0ac00 {
+ 			compatible = "qcom,msm8916-camss";
+ 			reg = <0x01b0ac00 0x200>,
+ 				<0x01b00030 0x4>,
 -- 
 2.39.2
 
