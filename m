@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 132B6761721
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B9BF761381
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230271AbjGYLpN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:45:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
+        id S234052AbjGYLLL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:11:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231435AbjGYLpI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:08 -0400
+        with ESMTP id S234114AbjGYLKr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76BD19A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF96326A5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DC6E615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81333C433C7;
-        Tue, 25 Jul 2023 11:45:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F31D61656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E34C433C7;
+        Tue, 25 Jul 2023 11:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285506;
-        bh=skF5nD74tf3Bzz55Ixw89W9t6ya2NhtNrV7fXgyfXRE=;
+        s=korg; t=1690283394;
+        bh=cG1lRn/5KJzvmgZc9fInGQG8X2KtbjDUXQ0m7WQClCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EbzocFL4WDeGZnV79+M5qQ3D0it5m9UjDCiGMZWITkkOL62n4llD/vb1r9+Db+lc7
-         dlyjvYNGnNREk8RmTkZ9vxdYXE0j3uCZVVro/GQEP9mB9r3bdVYhfAU9JkFhTOmUdO
-         liVmqU00PY9xvAFaXJzKxFZlWkvwbMGbgjPavEqk=
+        b=WOImJIk8/fYdbyBEZO6gaikKSn4JuTxa/SfdpEM5dtW4dgnabLLrVljeMk3Ue2FHq
+         ayv0eEwWAGCRYojQSwX2KbbOA0FGxaKzCU+P5qJX4swZMddd8S+f84Y6FoiDxYuafT
+         SUqABNe4y6E+y3IvMKMhQbNLiGYzfwagmNtejzzo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Berger <stefanb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.4 230/313] tpm: tpm_vtpm_proxy: fix a race condition in /dev/vtpmx creation
+        patches@lists.linux.dev, Ye Bin <yebin10@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 32/78] [PATCH AUTOSEL 4.14 4/9] quota: fix warning in dqgrab()
 Date:   Tue, 25 Jul 2023 12:46:23 +0200
-Message-ID: <20230725104530.994528379@linuxfoundation.org>
+Message-ID: <20230725104452.543303198@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,80 +54,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+[ Upstream commit d6a95db3c7ad160bc16b89e36449705309b52bcb ]
 
-commit f4032d615f90970d6c3ac1d9c0bce3351eb4445c upstream.
+There's issue as follows when do fault injection:
+WARNING: CPU: 1 PID: 14870 at include/linux/quotaops.h:51 dquot_disable+0x13b7/0x18c0
+Modules linked in:
+CPU: 1 PID: 14870 Comm: fsconfig Not tainted 6.3.0-next-20230505-00006-g5107a9c821af-dirty #541
+RIP: 0010:dquot_disable+0x13b7/0x18c0
+RSP: 0018:ffffc9000acc79e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88825e41b980
+RDX: 0000000000000000 RSI: ffff88825e41b980 RDI: 0000000000000002
+RBP: ffff888179f68000 R08: ffffffff82087ca7 R09: 0000000000000000
+R10: 0000000000000001 R11: ffffed102f3ed026 R12: ffff888179f68130
+R13: ffff888179f68110 R14: dffffc0000000000 R15: ffff888179f68118
+FS:  00007f450a073740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe96f2efd8 CR3: 000000025c8ad000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ dquot_load_quota_sb+0xd53/0x1060
+ dquot_resume+0x172/0x230
+ ext4_reconfigure+0x1dc6/0x27b0
+ reconfigure_super+0x515/0xa90
+ __x64_sys_fsconfig+0xb19/0xd20
+ do_syscall_64+0x39/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-/dev/vtpmx is made visible before 'workqueue' is initialized, which can
-lead to a memory corruption in the worst case scenario.
+Above issue may happens as follows:
+ProcessA              ProcessB                    ProcessC
+sys_fsconfig
+  vfs_fsconfig_locked
+   reconfigure_super
+     ext4_remount
+      dquot_suspend -> suspend all type quota
 
-Address this by initializing 'workqueue' as the very first step of the
-driver initialization.
+                 sys_fsconfig
+                  vfs_fsconfig_locked
+                    reconfigure_super
+                     ext4_remount
+                      dquot_resume
+                       ret = dquot_load_quota_sb
+                        add_dquot_ref
+                                           do_open  -> open file O_RDWR
+                                            vfs_open
+                                             do_dentry_open
+                                              get_write_access
+                                               atomic_inc_unless_negative(&inode->i_writecount)
+                                              ext4_file_open
+                                               dquot_file_open
+                                                dquot_initialize
+                                                  __dquot_initialize
+                                                   dqget
+						    atomic_inc(&dquot->dq_count);
 
-Cc: stable@vger.kernel.org
-Fixes: 6f99612e2500 ("tpm: Proxy driver for supporting multiple emulated TPMs")
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+                          __dquot_initialize
+                           __dquot_initialize
+                            dqget
+                             if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+                               ext4_acquire_dquot
+			        -> Return error DQ_ACTIVE_B flag isn't set
+                         dquot_disable
+			  invalidate_dquots
+			   if (atomic_read(&dquot->dq_count))
+	                    dqgrab
+			     WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+	                      -> Trigger warning
+
+In the above scenario, 'dquot->dq_flags' has no DQ_ACTIVE_B is normal when
+dqgrab().
+To solve above issue just replace the dqgrab() use in invalidate_dquots() with
+atomic_inc(&dquot->dq_count).
+
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230605140731.2427629-3-yebin10@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_vtpm_proxy.c |   30 +++++++-----------------------
- 1 file changed, 7 insertions(+), 23 deletions(-)
+ fs/quota/dquot.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_vtpm_proxy.c
-+++ b/drivers/char/tpm/tpm_vtpm_proxy.c
-@@ -693,37 +693,21 @@ static struct miscdevice vtpmx_miscdev =
- 	.fops = &vtpmx_fops,
- };
- 
--static int vtpmx_init(void)
--{
--	return misc_register(&vtpmx_miscdev);
--}
--
--static void vtpmx_cleanup(void)
--{
--	misc_deregister(&vtpmx_miscdev);
--}
--
- static int __init vtpm_module_init(void)
- {
- 	int rc;
- 
--	rc = vtpmx_init();
--	if (rc) {
--		pr_err("couldn't create vtpmx device\n");
--		return rc;
--	}
--
- 	workqueue = create_workqueue("tpm-vtpm");
- 	if (!workqueue) {
- 		pr_err("couldn't create workqueue\n");
--		rc = -ENOMEM;
--		goto err_vtpmx_cleanup;
-+		return -ENOMEM;
- 	}
- 
--	return 0;
--
--err_vtpmx_cleanup:
--	vtpmx_cleanup();
-+	rc = misc_register(&vtpmx_miscdev);
-+	if (rc) {
-+		pr_err("couldn't create vtpmx device\n");
-+		destroy_workqueue(workqueue);
-+	}
- 
- 	return rc;
- }
-@@ -731,7 +715,7 @@ err_vtpmx_cleanup:
- static void __exit vtpm_module_exit(void)
- {
- 	destroy_workqueue(workqueue);
--	vtpmx_cleanup();
-+	misc_deregister(&vtpmx_miscdev);
- }
- 
- module_init(vtpm_module_init);
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -555,7 +555,7 @@ restart:
+ 			continue;
+ 		/* Wait for dquot users */
+ 		if (atomic_read(&dquot->dq_count)) {
+-			dqgrab(dquot);
++			atomic_inc(&dquot->dq_count);
+ 			spin_unlock(&dq_list_lock);
+ 			/*
+ 			 * Once dqput() wakes us up, we know it's time to free
 
 
