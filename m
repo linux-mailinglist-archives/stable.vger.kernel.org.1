@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECC36761345
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC88761595
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233838AbjGYLJS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45590 "EHLO
+        id S234779AbjGYLao (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234137AbjGYLI7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:59 -0400
+        with ESMTP id S234780AbjGYLan (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0763426AD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE68EF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83C0361648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FDCC433C7;
-        Tue, 25 Jul 2023 11:07:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4434261648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504DFC433C8;
+        Tue, 25 Jul 2023 11:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283267;
-        bh=nZF5eHtWmCSAo1o00/9/b0UcRnKe+0CYWJFAVG3ukQ8=;
+        s=korg; t=1690284640;
+        bh=xKRkZmxvUuOC4+u+Y8elazlMac925G8ZZUEyBDFRG1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iIH8rsx4Bo6v2YJdE5MhNrDamqV0EUbe0ptx71IXxTBt6kx33ne81F7OScqvqwQRT
-         cBWk8fTslURE48L5cfoENkhqaLeyn+9hZHRVmg6WGx97yOkIzRI2Nm2IjVRG+ZWByH
-         tgPh9xCS53AsIqPjr888qtqhkV3XjF5Hg0GftiDI=
+        b=x5NBb62Qj1HJU6sDxtTyZDOV6NbJFnrgjgUOiiiucmkEtDvKt6YPmMV8NN/auf/Ns
+         8iSt5O5xWuBnnMMf52qep+F5om/HIcZLIucB9F9EirZK4A5Sfv5tpzRcE6i48wsl3B
+         CoXesjWEv4V6bzoyVTJprWP2xvhAMbd96Yf58vt0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 15/78] selftests: tc: add ConnTrack procfs kconfig
-Date:   Tue, 25 Jul 2023 12:46:06 +0200
-Message-ID: <20230725104451.935988951@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 428/509] tracing/probes: Fix not to count error code to total length
+Date:   Tue, 25 Jul 2023 12:46:07 +0200
+Message-ID: <20230725104613.305003167@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 031c99e71fedcce93b6785d38b7d287bf59e3952 upstream.
+commit b41326b5e0f82e93592c4366359917b5d67b529f upstream.
 
-When looking at the TC selftest reports, I noticed one test was failing
-because /proc/net/nf_conntrack was not available.
+Fix not to count the error code (which is minus value) to the total
+used length of array, because it can mess up the return code of
+process_fetch_insn_bottom(). Also clear the 'ret' value because it
+will be used for calculating next data_loc entry.
 
-  not ok 373 3992 - Add ct action triggering DNAT tuple conflict
-  	Could not match regex pattern. Verify command output:
-  cat: /proc/net/nf_conntrack: No such file or directory
+Link: https://lore.kernel.org/all/168908493827.123124.2175257289106364229.stgit@devnote2/
 
-It is only available if NF_CONNTRACK_PROCFS kconfig is set. So the issue
-can be fixed simply by adding it to the list of required kconfig.
-
-Fixes: e46905641316 ("tc-testing: add test for ct DNAT tuple collision")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/8819b154-2ba1-43c3-98a2-cbde20892023@moroto.mountain/
+Fixes: 9b960a38835f ("tracing: probeevent: Unify fetch_insn processing common part")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [1]
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Tested-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-3-1eb4fd3a96e7@tessares.net
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/tc-testing/config |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_probe_tmpl.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/tc-testing/config
-+++ b/tools/testing/selftests/tc-testing/config
-@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_MARK=y
- CONFIG_NF_CONNTRACK_ZONES=y
- CONFIG_NF_CONNTRACK_LABELS=y
-+CONFIG_NF_CONNTRACK_PROCFS=y
- CONFIG_NF_FLOW_TABLE=m
- CONFIG_NF_NAT=m
- 
+--- a/kernel/trace/trace_probe_tmpl.h
++++ b/kernel/trace/trace_probe_tmpl.h
+@@ -143,6 +143,8 @@ stage3:
+ array:
+ 	/* the last stage: Loop on array */
+ 	if (code->op == FETCH_OP_LP_ARRAY) {
++		if (ret < 0)
++			ret = 0;
+ 		total += ret;
+ 		if (++i < code->param) {
+ 			code = s3;
 
 
