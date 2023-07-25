@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B42D76172A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E3676125F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231684AbjGYLph (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:45:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
+        id S233846AbjGYLBk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbjGYLpg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B092A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:35 -0700 (PDT)
+        with ESMTP id S233867AbjGYLBR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250CB4EC8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E2A5616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B09BC433C7;
-        Tue, 25 Jul 2023 11:45:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A755861689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33CAC433C7;
+        Tue, 25 Jul 2023 10:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285534;
-        bh=sXegpGPqHMmGNpxmk3vhF8xe/linCITjF9IFYaCdfl4=;
+        s=korg; t=1690282726;
+        bh=SUVhGosHRum/jUQDTVrIuxx7+v2wL+1/fesjUUKby+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t9UgFb0EWpePTVWgrpS2JeYRq07+nWaXWAht0brjNrbGdRgoOkKK3uUl6F/Ot/8Du
-         NnwJECjfN4KzSfvS9pNvWMds8svgXCcMm+Xgluvf6+5awIWPC+X9GWvyTLG3F+0usc
-         towlrxKiyXRvl+u8J5CVGOWqc/pIBA9TaOCoBqkc=
+        b=BGqsLbLKHnt3C9tMkWBDZ5h5gu3JV9GoD1FV90hNBT3yZxeWa6l1bznvu4j8v7ylj
+         NIYiGXJSf6m+PfH5/kcYNbf9jwGda/0rX4BzRUS2opbVWt/KdYmxpmlDNQIWqTMpq2
+         8Hdu4LKGQm23nAzHwwra0DSaF5ZKqrlBd5DRJgN0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 239/313] ext4: only update i_reserved_data_blocks on successful block allocation
+        patches@lists.linux.dev, Marc Hartmayer <mhartmay@linux.ibm.com>,
+        Yu Kuai <yukuai3@huawei.com>,
+        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.4 225/227] scsi: sg: Fix checking return value of blk_get_queue()
 Date:   Tue, 25 Jul 2023 12:46:32 +0200
-Message-ID: <20230725104531.403916805@linuxfoundation.org>
+Message-ID: <20230725104524.013873253@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,92 +57,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit de25d6e9610a8b30cce9bbb19b50615d02ebca02 upstream.
+commit 80b6051085c5fedcb1dfd7b2562a63a83655c4d8 upstream.
 
-In our fault injection test, we create an ext4 file, migrate it to
-non-extent based file, then punch a hole and finally trigger a WARN_ON
-in the ext4_da_update_reserve_space():
+Commit fcaa174a9c99 ("scsi/sg: don't grab scsi host module reference") make
+a mess how blk_get_queue() is called, blk_get_queue() returns true on
+success while the caller expects it returns 0 on success.
 
-EXT4-fs warning (device sda): ext4_da_update_reserve_space:369:
-ino 14, used 11 with only 10 reserved data blocks
+Fix this problem and also add a corresponding error message on failure.
 
-When writing back a non-extent based file, if we enable delalloc, the
-number of reserved blocks will be subtracted from the number of blocks
-mapped by ext4_ind_map_blocks(), and the extent status tree will be
-updated. We update the extent status tree by first removing the old
-extent_status and then inserting the new extent_status. If the block range
-we remove happens to be in an extent, then we need to allocate another
-extent_status with ext4_es_alloc_extent().
-
-       use old    to remove   to add new
-    |----------|------------|------------|
-              old extent_status
-
-The problem is that the allocation of a new extent_status failed due to a
-fault injection, and __es_shrink() did not get free memory, resulting in
-a return of -ENOMEM. Then do_writepages() retries after receiving -ENOMEM,
-we map to the same extent again, and the number of reserved blocks is again
-subtracted from the number of blocks in that extent. Since the blocks in
-the same extent are subtracted twice, we end up triggering WARN_ON at
-ext4_da_update_reserve_space() because used > ei->i_reserved_data_blocks.
-
-For non-extent based file, we update the number of reserved blocks after
-ext4_ind_map_blocks() is executed, which causes a problem that when we call
-ext4_ind_map_blocks() to create a block, it doesn't always create a block,
-but we always reduce the number of reserved blocks. So we move the logic
-for updating reserved blocks to ext4_ind_map_blocks() to ensure that the
-number of reserved blocks is updated only after we do succeed in allocating
-some new blocks.
-
-Fixes: 5f634d064c70 ("ext4: Fix quota accounting error with fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: fcaa174a9c99 ("scsi/sg: don't grab scsi host module reference")
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Closes: https://lore.kernel.org/all/87lefv622n.fsf@linux.ibm.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230705024001.177585-1-yukuai1@huaweicloud.com
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/indirect.c |    8 ++++++++
- fs/ext4/inode.c    |   10 ----------
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ drivers/scsi/sg.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/indirect.c
-+++ b/fs/ext4/indirect.c
-@@ -636,6 +636,14 @@ int ext4_ind_map_blocks(handle_t *handle
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1496,9 +1496,10 @@ sg_add_device(struct device *cl_dev)
+ 	int error;
+ 	unsigned long iflags;
  
- 	ext4_update_inode_fsync_trans(handle, inode, 1);
- 	count = ar.len;
-+
-+	/*
-+	 * Update reserved blocks/metadata blocks after successful block
-+	 * allocation which had been deferred till now.
-+	 */
-+	if (flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE)
-+		ext4_da_update_reserve_space(inode, count, 1);
-+
- got_it:
- 	map->m_flags |= EXT4_MAP_MAPPED;
- 	map->m_pblk = le32_to_cpu(chain[depth-1].key);
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -669,16 +669,6 @@ found:
- 			 */
- 			ext4_clear_inode_state(inode, EXT4_STATE_EXT_MIGRATE);
- 		}
--
--		/*
--		 * Update reserved blocks/metadata blocks after successful
--		 * block allocation which had been deferred till now. We don't
--		 * support fallocate for non extent files. So we can update
--		 * reserve space here.
--		 */
--		if ((retval > 0) &&
--			(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE))
--			ext4_da_update_reserve_space(inode, retval, 1);
- 	}
+-	error = blk_get_queue(scsidp->request_queue);
+-	if (error)
+-		return error;
++	if (!blk_get_queue(scsidp->request_queue)) {
++		pr_warn("%s: get scsi_device queue failed\n", __func__);
++		return -ENODEV;
++	}
  
- 	if (retval > 0) {
+ 	error = -ENOMEM;
+ 	cdev = cdev_alloc();
 
 
