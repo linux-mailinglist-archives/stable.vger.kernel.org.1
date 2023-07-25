@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C570761324
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F77E7615B4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233983AbjGYLIY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
+        id S234381AbjGYLcK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:32:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234039AbjGYLH4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32991FDF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:26 -0700 (PDT)
+        with ESMTP id S234655AbjGYLcJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11027F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A5DB16166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56F4C433C8;
-        Tue, 25 Jul 2023 11:06:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9251761691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1962C433C8;
+        Tue, 25 Jul 2023 11:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283186;
-        bh=F+Rwp7lGlZlOnx5BNDwDpIm65Wxqx7yEi8JJ53nH0vI=;
+        s=korg; t=1690284727;
+        bh=8iZ/IcFNer4XtIaxLw0psL6H0vEqlWpQJYyxJ6i6qqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CoNnizZLVLBddldLzwElgffsI4Gn2gAP3IS/rCp2bm80pahnKeSENtklD04wKWCt2
-         R4IA9K7cnNzgPLLaempvS22XULXLHMK7j5eB40twXht5dZOswPTZD321MuWedCQUOY
-         WNm/OD6EPxrcn6qzSoKCiPwkaIZyNE/R8IETWk6k=
+        b=P9aO6P+GT1qhAi8bZxq05xS5nOi7P8xW6d0E0Dl368DdBTiIKmbw3D4lu06JQ1Nb2
+         rHGGdE53z5eIfTt5+l0Zcf0Wbe1p/j1ul8jw0Xt0eNUuRbbFDRe2+ojqjRDKufEfgo
+         x+zwytbe2xbplrZA1TWg4GfSQXsFhtkHJaKSob3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: [PATCH 6.1 170/183] scripts/kallsyms: update the usage in the comment block
+        patches@lists.linux.dev,
+        syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 459/509] posix-timers: Ensure timer ID search-loop limit is valid
 Date:   Tue, 25 Jul 2023 12:46:38 +0200
-Message-ID: <20230725104513.880881983@linuxfoundation.org>
+Message-ID: <20230725104614.766560949@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,31 +58,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 79549da691edd4874c19d99c578a134471817c47 upstream.
+[ Upstream commit 8ce8849dd1e78dadcee0ec9acbd259d239b7069f ]
 
-Commit 010a0aad39fc ("kallsyms: Correctly sequence symbols when
-CONFIG_LTO_CLANG=y") added --lto-clang, and updated the usage()
-function, but not the comment. Update it in the same way.
+posix_timer_add() tries to allocate a posix timer ID by starting from the
+cached ID which was stored by the last successful allocation.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is done in a loop searching the ID space for a free slot one by
+one. The loop has to terminate when the search wrapped around to the
+starting point.
+
+But that's racy vs. establishing the starting point. That is read out
+lockless, which leads to the following problem:
+
+CPU0	  	      	     	   CPU1
+posix_timer_add()
+  start = sig->posix_timer_id;
+  lock(hash_lock);
+  ...				   posix_timer_add()
+  if (++sig->posix_timer_id < 0)
+      			             start = sig->posix_timer_id;
+     sig->posix_timer_id = 0;
+
+So CPU1 can observe a negative start value, i.e. -1, and the loop break
+never happens because the condition can never be true:
+
+  if (sig->posix_timer_id == start)
+     break;
+
+While this is unlikely to ever turn into an endless loop as the ID space is
+huge (INT_MAX), the racy read of the start value caught the attention of
+KCSAN and Dmitry unearthed that incorrectness.
+
+Rewrite it so that all id operations are under the hash lock.
+
+Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kallsyms.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/sched/signal.h |  2 +-
+ kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
---- a/scripts/kallsyms.c
-+++ b/scripts/kallsyms.c
-@@ -6,7 +6,7 @@
-  * of the GNU General Public License, incorporated herein by reference.
-  *
-  * Usage: kallsyms [--all-symbols] [--absolute-percpu]
-- *                         [--base-relative] in.map > out.S
-+ *                         [--base-relative] [--lto-clang] in.map > out.S
-  *
-  *      Table compression uses all the unused char codes on the symbols and
-  *  maps these to the most used substrings (tokens). For instance, it might
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index ae60f838ebb92..2c634010cc7bd 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -125,7 +125,7 @@ struct signal_struct {
+ #ifdef CONFIG_POSIX_TIMERS
+ 
+ 	/* POSIX.1b Interval Timers */
+-	int			posix_timer_id;
++	unsigned int		next_posix_timer_id;
+ 	struct list_head	posix_timers;
+ 
+ 	/* ITIMER_REAL timer for the process */
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 6d12a724d2b6b..29569b1c3d8c8 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -140,25 +140,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
+ static int posix_timer_add(struct k_itimer *timer)
+ {
+ 	struct signal_struct *sig = current->signal;
+-	int first_free_id = sig->posix_timer_id;
+ 	struct hlist_head *head;
+-	int ret = -ENOENT;
++	unsigned int cnt, id;
+ 
+-	do {
++	/*
++	 * FIXME: Replace this by a per signal struct xarray once there is
++	 * a plan to handle the resulting CRIU regression gracefully.
++	 */
++	for (cnt = 0; cnt <= INT_MAX; cnt++) {
+ 		spin_lock(&hash_lock);
+-		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
+-		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
++		id = sig->next_posix_timer_id;
++
++		/* Write the next ID back. Clamp it to the positive space */
++		sig->next_posix_timer_id = (id + 1) & INT_MAX;
++
++		head = &posix_timers_hashtable[hash(sig, id)];
++		if (!__posix_timers_find(head, sig, id)) {
+ 			hlist_add_head_rcu(&timer->t_hash, head);
+-			ret = sig->posix_timer_id;
++			spin_unlock(&hash_lock);
++			return id;
+ 		}
+-		if (++sig->posix_timer_id < 0)
+-			sig->posix_timer_id = 0;
+-		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
+-			/* Loop over all possible ids completed */
+-			ret = -EAGAIN;
+ 		spin_unlock(&hash_lock);
+-	} while (ret == -ENOENT);
+-	return ret;
++	}
++	/* POSIX return code when no timer ID could be allocated */
++	return -EAGAIN;
+ }
+ 
+ static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
+-- 
+2.39.2
+
 
 
