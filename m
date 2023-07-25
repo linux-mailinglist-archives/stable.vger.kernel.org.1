@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9300A76116E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA15B761649
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbjGYKv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
+        id S233973AbjGYLiT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233771AbjGYKux (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:53 -0400
+        with ESMTP id S234835AbjGYLhv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:37:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0513D26AF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B1A19C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50CA66166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F764C433C8;
-        Tue, 25 Jul 2023 10:50:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BDBEC616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4CDC433C7;
+        Tue, 25 Jul 2023 11:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282235;
-        bh=XL9Urdfo/A7cpSPaDhGWGuuan9jOf8n4fE6u+KEAefo=;
+        s=korg; t=1690285061;
+        bh=L6Hom9C5n160SM3fowFgbwel/E+XaBaEycPmI6JaBAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AjYX4OI+kNEsAJsRF/I5ZDu4mVYnV0s4ULKajqFBFO/qxaqHbcOjS/EzfHEEu5p4P
-         Zizwhhd1WAHqyBirp7rsmtYaq3gLgHX8mwah4v7zsP3XYYT5QIXrkaNUDNp0qFVzug
-         yJrNfgDNGZgjay9oUpptHJ4xUSN/U/9WZocTxhh8=
+        b=iMrIp1c0lalzus1zdP4E79BZjbh7PwWHmjz0Z5b51FRu12W4dxrRrwmJjQQBqqZ4k
+         Ec8kyTJVG2efROdxcf9WUUDlDv6tvcWKPziBYqzas4Xp9xz3FQ5Wz54YrVZ4BAeY2P
+         UsYbe4PTj0fRQDyXWQcn6bf1IyIrkz8sTFhzilqk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
-        Shengjiu Wang <shengjiu.wang@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 056/227] ASoC: fsl_sai: Disable bit clock with transmitter
+        patches@lists.linux.dev,
+        syzbot+5da61cf6a9bc1902d422@syzkaller.appspotmail.com,
+        Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 070/313] netlink: Add __sock_i_ino() for __netlink_diag_dump().
 Date:   Tue, 25 Jul 2023 12:43:43 +0200
-Message-ID: <20230725104517.089302040@linuxfoundation.org>
+Message-ID: <20230725104524.005948723@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +58,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matus Gajdos <matuszpd@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 269f399dc19f0e5c51711c3ba3bd06e0ef6ef403 upstream.
+[ Upstream commit 25a9c8a4431c364f97f75558cb346d2ad3f53fbb ]
 
-Otherwise bit clock remains running writing invalid data to the DAC.
+syzbot reported a warning in __local_bh_enable_ip(). [0]
 
-Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230712124934.32232-1-matuszpd@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Commit 8d61f926d420 ("netlink: fix potential deadlock in
+netlink_set_err()") converted read_lock(&nl_table_lock) to
+read_lock_irqsave() in __netlink_diag_dump() to prevent a deadlock.
+
+However, __netlink_diag_dump() calls sock_i_ino() that uses
+read_lock_bh() and read_unlock_bh().  If CONFIG_TRACE_IRQFLAGS=y,
+read_unlock_bh() finally enables IRQ even though it should stay
+disabled until the following read_unlock_irqrestore().
+
+Using read_lock() in sock_i_ino() would trigger a lockdep splat
+in another place that was fixed in commit f064af1e500a ("net: fix
+a lockdep splat"), so let's add __sock_i_ino() that would be safe
+to use under BH disabled.
+
+[0]:
+WARNING: CPU: 0 PID: 5012 at kernel/softirq.c:376 __local_bh_enable_ip+0xbe/0x130 kernel/softirq.c:376
+Modules linked in:
+CPU: 0 PID: 5012 Comm: syz-executor487 Not tainted 6.4.0-rc7-syzkaller-00202-g6f68fc395f49 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+RIP: 0010:__local_bh_enable_ip+0xbe/0x130 kernel/softirq.c:376
+Code: 45 bf 01 00 00 00 e8 91 5b 0a 00 e8 3c 15 3d 00 fb 65 8b 05 ec e9 b5 7e 85 c0 74 58 5b 5d c3 65 8b 05 b2 b6 b4 7e 85 c0 75 a2 <0f> 0b eb 9e e8 89 15 3d 00 eb 9f 48 89 ef e8 6f 49 18 00 eb a8 0f
+RSP: 0018:ffffc90003a1f3d0 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: 0000000000000201 RCX: 1ffffffff1cf5996
+RDX: 0000000000000000 RSI: 0000000000000201 RDI: ffffffff8805c6f3
+RBP: ffffffff8805c6f3 R08: 0000000000000001 R09: ffff8880152b03a3
+R10: ffffed1002a56074 R11: 0000000000000005 R12: 00000000000073e4
+R13: dffffc0000000000 R14: 0000000000000002 R15: 0000000000000000
+FS:  0000555556726300(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000045ad50 CR3: 000000007c646000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ sock_i_ino+0x83/0xa0 net/core/sock.c:2559
+ __netlink_diag_dump+0x45c/0x790 net/netlink/diag.c:171
+ netlink_diag_dump+0xd6/0x230 net/netlink/diag.c:207
+ netlink_dump+0x570/0xc50 net/netlink/af_netlink.c:2269
+ __netlink_dump_start+0x64b/0x910 net/netlink/af_netlink.c:2374
+ netlink_dump_start include/linux/netlink.h:329 [inline]
+ netlink_diag_handler_dump+0x1ae/0x250 net/netlink/diag.c:238
+ __sock_diag_cmd net/core/sock_diag.c:238 [inline]
+ sock_diag_rcv_msg+0x31e/0x440 net/core/sock_diag.c:269
+ netlink_rcv_skb+0x165/0x440 net/netlink/af_netlink.c:2547
+ sock_diag_rcv+0x2a/0x40 net/core/sock_diag.c:280
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0x547/0x7f0 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x925/0xe30 net/netlink/af_netlink.c:1914
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg+0xde/0x190 net/socket.c:747
+ ____sys_sendmsg+0x71c/0x900 net/socket.c:2503
+ ___sys_sendmsg+0x110/0x1b0 net/socket.c:2557
+ __sys_sendmsg+0xf7/0x1c0 net/socket.c:2586
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f5303aaabb9
+Code: 28 c3 e8 2a 14 00 00 66 2e 0f 1f 84 00 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc7506e548 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5303aaabb9
+RDX: 0000000000000000 RSI: 0000000020000180 RDI: 0000000000000003
+RBP: 00007f5303a6ed60 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f5303a6edf0
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+Fixes: 8d61f926d420 ("netlink: fix potential deadlock in netlink_set_err()")
+Reported-by: syzbot+5da61cf6a9bc1902d422@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=5da61cf6a9bc1902d422
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230626164313.52528-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c |    2 +-
- sound/soc/fsl/fsl_sai.h |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ include/net/sock.h |  1 +
+ net/core/sock.c    | 17 ++++++++++++++---
+ net/netlink/diag.c |  2 +-
+ 3 files changed, 16 insertions(+), 4 deletions(-)
 
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -719,7 +719,7 @@ static void fsl_sai_config_disable(struc
- 	u32 xcsr, count = 100;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 87e57f81ee82b..ee8630d6abc16 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1863,6 +1863,7 @@ static inline void sock_graft(struct sock *sk, struct socket *parent)
+ }
  
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
--			   FSL_SAI_CSR_TERE, 0);
-+			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
+ kuid_t sock_i_uid(struct sock *sk);
++unsigned long __sock_i_ino(struct sock *sk);
+ unsigned long sock_i_ino(struct sock *sk);
  
- 	/* TERE will remain set till the end of current frame */
- 	do {
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -91,6 +91,7 @@
- /* SAI Transmit/Receive Control Register */
- #define FSL_SAI_CSR_TERE	BIT(31)
- #define FSL_SAI_CSR_SE		BIT(30)
-+#define FSL_SAI_CSR_BCE		BIT(28)
- #define FSL_SAI_CSR_FR		BIT(25)
- #define FSL_SAI_CSR_SR		BIT(24)
- #define FSL_SAI_CSR_xF_SHIFT	16
+ static inline kuid_t sock_net_uid(const struct net *net, const struct sock *sk)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 5e1dccbd61a60..d55eea5538bce 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2085,13 +2085,24 @@ kuid_t sock_i_uid(struct sock *sk)
+ }
+ EXPORT_SYMBOL(sock_i_uid);
+ 
+-unsigned long sock_i_ino(struct sock *sk)
++unsigned long __sock_i_ino(struct sock *sk)
+ {
+ 	unsigned long ino;
+ 
+-	read_lock_bh(&sk->sk_callback_lock);
++	read_lock(&sk->sk_callback_lock);
+ 	ino = sk->sk_socket ? SOCK_INODE(sk->sk_socket)->i_ino : 0;
+-	read_unlock_bh(&sk->sk_callback_lock);
++	read_unlock(&sk->sk_callback_lock);
++	return ino;
++}
++EXPORT_SYMBOL(__sock_i_ino);
++
++unsigned long sock_i_ino(struct sock *sk)
++{
++	unsigned long ino;
++
++	local_bh_disable();
++	ino = __sock_i_ino(sk);
++	local_bh_enable();
+ 	return ino;
+ }
+ EXPORT_SYMBOL(sock_i_ino);
+diff --git a/net/netlink/diag.c b/net/netlink/diag.c
+index 4143b2ea4195a..e4f21b1067bcc 100644
+--- a/net/netlink/diag.c
++++ b/net/netlink/diag.c
+@@ -168,7 +168,7 @@ static int __netlink_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
+ 				 NETLINK_CB(cb->skb).portid,
+ 				 cb->nlh->nlmsg_seq,
+ 				 NLM_F_MULTI,
+-				 sock_i_ino(sk)) < 0) {
++				 __sock_i_ino(sk)) < 0) {
+ 			ret = 1;
+ 			break;
+ 		}
+-- 
+2.39.2
+
 
 
