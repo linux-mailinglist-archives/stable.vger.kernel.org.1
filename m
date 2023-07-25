@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 533AC7616A8
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5271676129B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235047AbjGYLlC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:41:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48528 "EHLO
+        id S233809AbjGYLE2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:04:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235015AbjGYLku (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:50 -0400
+        with ESMTP id S233938AbjGYLEK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCC21FD7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7341844BC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DBAC615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE04C433BC;
-        Tue, 25 Jul 2023 11:40:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21EE06168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30471C433C8;
+        Tue, 25 Jul 2023 11:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285235;
-        bh=6ElYaEWY4zATLDUsCxHfuSlAzzeJ3YypEbToYLLYaSU=;
+        s=korg; t=1690282876;
+        bh=ukGA1Vff2vSyrYcpTgOyWEON3Kp/HGerFiKFo+6iV8U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wbxoICZAgRZrTmNdXg/I7GJ39GdsRpLgHcEYXWrF6C1xbZMtjeK6A3o0beV4cmyEZ
-         Wan7LBuYF6amOqZcyGRpRJJ3oMHH26nWTZzeg/v/sDgh7/BlP+4+Us/kqjW1ugMJ5C
-         pT9Va+GPMWS6hYwVXQ+CnZzBtLSLo2evziCC2GAM=
+        b=Uiqt1xPVCTUVQaESyU/Eq/zTBIhpaq23A/47lahcrV+Yy9Ij+CAb8hZNYjSJpjOFh
+         JEBj17HquAkXGjDVrP6fTrJSOuPJE6FbTIlIam8r27Yfylr85pFpAQejFInpp0OnuG
+         p4YbB3qrq4WBKIuVwLkatu6ZlQ0ngefcGFQ+4i2I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Yang <lidaxian@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
+        patches@lists.linux.dev,
+        syzbot+853a6f4dfa3cf37d3aea@syzkaller.appspotmail.com,
+        Yogesh <yogi.kernel@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 133/313] usb: phy: phy-tahvo: fix memory leak in tahvo_usb_probe()
+Subject: [PATCH 6.1 058/183] [PATCH AUTOSEL 4.19 08/11] fs: jfs: Fix UBSAN: array-index-out-of-bounds in dbAllocDmapLev
 Date:   Tue, 25 Jul 2023 12:44:46 +0200
-Message-ID: <20230725104526.769531804@linuxfoundation.org>
+Message-ID: <20230725104510.060335493@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Yang <lidaxian@hust.edu.cn>
+[ Upstream commit 4e302336d5ca1767a06beee7596a72d3bdc8d983 ]
 
-[ Upstream commit 342161c11403ea00e9febc16baab1d883d589d04 ]
+Syzkaller reported the following issue:
 
-Smatch reports:
-drivers/usb/phy/phy-tahvo.c: tahvo_usb_probe()
-warn: missing unwind goto?
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:1965:6
+index -84 is out of range for type 's8[341]' (aka 'signed char[341]')
+CPU: 1 PID: 4995 Comm: syz-executor146 Not tainted 6.4.0-rc6-syzkaller-00037-gb6dad5178cea #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
+ dbAllocDmapLev+0x3e5/0x430 fs/jfs/jfs_dmap.c:1965
+ dbAllocCtl+0x113/0x920 fs/jfs/jfs_dmap.c:1809
+ dbAllocAG+0x28f/0x10b0 fs/jfs/jfs_dmap.c:1350
+ dbAlloc+0x658/0xca0 fs/jfs/jfs_dmap.c:874
+ dtSplitUp fs/jfs/jfs_dtree.c:974 [inline]
+ dtInsert+0xda7/0x6b00 fs/jfs/jfs_dtree.c:863
+ jfs_create+0x7b6/0xbb0 fs/jfs/namei.c:137
+ lookup_open fs/namei.c:3492 [inline]
+ open_last_lookups fs/namei.c:3560 [inline]
+ path_openat+0x13df/0x3170 fs/namei.c:3788
+ do_filp_open+0x234/0x490 fs/namei.c:3818
+ do_sys_openat2+0x13f/0x500 fs/open.c:1356
+ do_sys_open fs/open.c:1372 [inline]
+ __do_sys_openat fs/open.c:1388 [inline]
+ __se_sys_openat fs/open.c:1383 [inline]
+ __x64_sys_openat+0x247/0x290 fs/open.c:1383
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f1f4e33f7e9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc21129578 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f1f4e33f7e9
+RDX: 000000000000275a RSI: 0000000020000040 RDI: 00000000ffffff9c
+RBP: 00007f1f4e2ff080 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f1f4e2ff110
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
-After geting irq, if ret < 0, it will return without error handling to
-free memory.
-Just add error handling to fix this problem.
+The bug occurs when the dbAllocDmapLev()function attempts to access
+dp->tree.stree[leafidx + LEAFIND] while the leafidx value is negative.
 
-Fixes: 0d45a1373e66 ("usb: phy: tahvo: add IRQ check")
-Signed-off-by: Li Yang <lidaxian@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230420140832.9110-1-lidaxian@hust.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To rectify this, the patch introduces a safeguard within the
+dbAllocDmapLev() function. A check has been added to verify if leafidx is
+negative. If it is, the function immediately returns an I/O error, preventing
+any further execution that could potentially cause harm.
+
+Tested via syzbot.
+
+Reported-by: syzbot+853a6f4dfa3cf37d3aea@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=ae2f5a27a07ae44b0f17
+Signed-off-by: Yogesh <yogi.kernel@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-tahvo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/phy/phy-tahvo.c b/drivers/usb/phy/phy-tahvo.c
-index a3e043e3e4aae..d0672b6712985 100644
---- a/drivers/usb/phy/phy-tahvo.c
-+++ b/drivers/usb/phy/phy-tahvo.c
-@@ -395,7 +395,7 @@ static int tahvo_usb_probe(struct platform_device *pdev)
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1959,6 +1959,9 @@ dbAllocDmapLev(struct bmap * bmp,
+ 	if (dbFindLeaf((dmtree_t *) & dp->tree, l2nb, &leafidx))
+ 		return -ENOSPC;
  
- 	tu->irq = ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		return ret;
-+		goto err_remove_phy;
- 	ret = request_threaded_irq(tu->irq, NULL, tahvo_usb_vbus_interrupt,
- 				   IRQF_ONESHOT,
- 				   "tahvo-vbus", tu);
--- 
-2.39.2
-
++	if (leafidx < 0)
++		return -EIO;
++
+ 	/* determine the block number within the file system corresponding
+ 	 * to the leaf at which free space was found.
+ 	 */
 
 
