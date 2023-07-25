@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCFCE761139
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76D7B7614D5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232151AbjGYKs4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57298 "EHLO
+        id S234451AbjGYLXP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233735AbjGYKsy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:48:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8A01999
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:48:50 -0700 (PDT)
+        with ESMTP id S234570AbjGYLXI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA3701AA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E77B86165E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:48:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CCDC433C8;
-        Tue, 25 Jul 2023 10:48:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92B466167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A600DC433C8;
+        Tue, 25 Jul 2023 11:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282129;
-        bh=AIfa/MlBSHM95jlgeLQiIFZfkQqu6AcjqRgUBlxyrlE=;
+        s=korg; t=1690284185;
+        bh=TmFCbMQWgCEViApQTymdYPsJYzjQtTcf9RdAopETO+g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CmaUw8UInIt9OGrzzX2omzeRlb9MegTVDZyZv2Y5nSy+cqaTj4jsUkyUzYUHH2qjs
-         QRLCnSqznkepLt2FXqIZyVBIybLGdsstSbDr5Iqr4FLhMFwNSKcGg1ChCkjpU0PO8w
-         seodU1b3Axh14b8PDyuhbigowg3HL2i2yprT7dSk=
+        b=M1DbMXWeh9RctxK1mDKYsbkXualvCkOhp/Mrnj9EsGAp2q+WXPNcf8ygwyZWUJN/6
+         fdTRtT6Z0BsJie2j55Pv7LF76YYJykCb7hTllBz6QEF9tDMm2XICeXlAl3FLZZSV7V
+         8psLM8a+bVE3DR40bPcQbiNujQzn3a8+QgnP7xog=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 019/227] btrfs: raid56: always verify the P/Q contents for scrub
-Date:   Tue, 25 Jul 2023 12:43:06 +0200
-Message-ID: <20230725104515.595590138@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Prashanth K <quic_prashk@quicinc.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 248/509] Revert "usb: common: usb-conn-gpio: Set last role to unknown before initial detection"
+Date:   Tue, 25 Jul 2023 12:43:07 +0200
+Message-ID: <20230725104605.101523538@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,117 +58,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qu Wenruo <wqu@suse.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 486c737f7fdc0c3f6464cf27ede811daec2769a1 upstream.
+[ Upstream commit df49f2a0ac4a34c0cb4b5c233fcfa0add644c43c ]
 
-[REGRESSION]
-Commit 75b470332965 ("btrfs: raid56: migrate recovery and scrub recovery
-path to use error_bitmap") changed the behavior of scrub_rbio().
+This reverts commit edd60d24bd858cef165274e4cd6cab43bdc58d15.
 
-Initially if we have no error reading the raid bio, we will assign
-@need_check to true, then finish_parity_scrub() would later verify the
-content of P/Q stripes before writeback.
+Heikki reports that this should not be a global flag just to work around
+one broken driver and should be fixed differently, so revert it.
 
-But after that commit we never verify the content of P/Q stripes and
-just writeback them.
-
-This can lead to unrepaired P/Q stripes during scrub, or already
-corrupted P/Q copied to the dev-replace target.
-
-[FIX]
-The situation is more complex than the regression, in fact the initial
-behavior is not 100% correct either.
-
-If we have the following rare case, it can still lead to the same
-problem using the old behavior:
-
-		0	16K	32K	48K	64K
-	Data 1:	|IIIIIII|                       |
-	Data 2:	|				|
-	Parity:	|	|CCCCCCC|		|
-
-Where "I" means IO error, "C" means corruption.
-
-In the above case, we're scrubbing the parity stripe, then read out all
-the contents of Data 1, Data 2, Parity stripes.
-
-But found IO error in Data 1, which leads to rebuild using Data 2 and
-Parity and got the correct data.
-
-In that case, we would not verify if the Parity is correct for range
-[16K, 32K).
-
-So here we have to always verify the content of Parity no matter if we
-did recovery or not.
-
-This patch would remove the @need_check parameter of
-finish_parity_scrub() completely, and would always do the P/Q
-verification before writeback.
-
-Fixes: 75b470332965 ("btrfs: raid56: migrate recovery and scrub recovery path to use error_bitmap")
-CC: stable@vger.kernel.org # 6.2+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Fixes: edd60d24bd85 ("usb: common: usb-conn-gpio: Set last role to unknown before initial detection")
+Link: https://lore.kernel.org/r/ZImE4L3YgABnCIsP@kuha.fi.intel.com
+Cc: Prashanth K <quic_prashk@quicinc.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/raid56.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/usb/cdns3/core.c                       | 2 --
+ drivers/usb/common/usb-conn-gpio.c             | 3 ---
+ drivers/usb/musb/jz4740.c                      | 2 --
+ drivers/usb/roles/intel-xhci-usb-role-switch.c | 2 --
+ include/linux/usb/role.h                       | 1 -
+ 5 files changed, 10 deletions(-)
 
---- a/fs/btrfs/raid56.c
-+++ b/fs/btrfs/raid56.c
-@@ -71,7 +71,7 @@ static void rmw_rbio_work_locked(struct
- static void index_rbio_pages(struct btrfs_raid_bio *rbio);
- static int alloc_rbio_pages(struct btrfs_raid_bio *rbio);
- 
--static int finish_parity_scrub(struct btrfs_raid_bio *rbio, int need_check);
-+static int finish_parity_scrub(struct btrfs_raid_bio *rbio);
- static void scrub_rbio_work_locked(struct work_struct *work);
- 
- static void free_raid_bio_pointers(struct btrfs_raid_bio *rbio)
-@@ -2404,7 +2404,7 @@ static int alloc_rbio_essential_pages(st
- 	return 0;
- }
- 
--static int finish_parity_scrub(struct btrfs_raid_bio *rbio, int need_check)
-+static int finish_parity_scrub(struct btrfs_raid_bio *rbio)
- {
- 	struct btrfs_io_context *bioc = rbio->bioc;
- 	const u32 sectorsize = bioc->fs_info->sectorsize;
-@@ -2445,9 +2445,6 @@ static int finish_parity_scrub(struct bt
- 	 */
- 	clear_bit(RBIO_CACHE_READY_BIT, &rbio->flags);
- 
--	if (!need_check)
--		goto writeback;
--
- 	p_sector.page = alloc_page(GFP_NOFS);
- 	if (!p_sector.page)
- 		return -ENOMEM;
-@@ -2516,7 +2513,6 @@ static int finish_parity_scrub(struct bt
- 		q_sector.page = NULL;
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index e5fe640b2bb01..8fe7420de033d 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -243,8 +243,6 @@ static enum usb_role cdns3_hw_role_state_machine(struct cdns3 *cdns)
+ 		if (!vbus)
+ 			role = USB_ROLE_NONE;
+ 		break;
+-	default:
+-		break;
  	}
  
--writeback:
- 	/*
- 	 * time to start writing.  Make bios for everything from the
- 	 * higher layers (the bio_list in our rbio) and our p/q.  Ignore
-@@ -2699,7 +2695,6 @@ static int scrub_assemble_read_bios(stru
+ 	dev_dbg(cdns->dev, "role %d -> %d\n", cdns->role, role);
+diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
+index 5754e467c16a8..c9545a4eff664 100644
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -276,9 +276,6 @@ static int usb_conn_probe(struct platform_device *pdev)
  
- static void scrub_rbio(struct btrfs_raid_bio *rbio)
- {
--	bool need_check = false;
- 	int sector_nr;
- 	int ret;
+ 	platform_set_drvdata(pdev, info);
  
-@@ -2722,7 +2717,7 @@ static void scrub_rbio(struct btrfs_raid
- 	 * We have every sector properly prepared. Can finish the scrub
- 	 * and writeback the good content.
- 	 */
--	ret = finish_parity_scrub(rbio, need_check);
-+	ret = finish_parity_scrub(rbio);
- 	wait_event(rbio->io_wait, atomic_read(&rbio->stripes_pending) == 0);
- 	for (sector_nr = 0; sector_nr < rbio->stripe_nsectors; sector_nr++) {
- 		int found_errors;
+-	/* Set last role to unknown before performing the initial detection */
+-	info->last_role = USB_ROLE_UNKNOWN;
+-
+ 	/* Perform initial detection */
+ 	usb_conn_queue_dwork(info, 0);
+ 
+diff --git a/drivers/usb/musb/jz4740.c b/drivers/usb/musb/jz4740.c
+index f283629091ec4..c4fe1f4cd17a3 100644
+--- a/drivers/usb/musb/jz4740.c
++++ b/drivers/usb/musb/jz4740.c
+@@ -91,8 +91,6 @@ static int jz4740_musb_role_switch_set(struct usb_role_switch *sw,
+ 	case USB_ROLE_HOST:
+ 		atomic_notifier_call_chain(&phy->notifier, USB_EVENT_ID, phy);
+ 		break;
+-	default:
+-		break;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/usb/roles/intel-xhci-usb-role-switch.c b/drivers/usb/roles/intel-xhci-usb-role-switch.c
+index 4d6a3dd06e011..5c96e929acea0 100644
+--- a/drivers/usb/roles/intel-xhci-usb-role-switch.c
++++ b/drivers/usb/roles/intel-xhci-usb-role-switch.c
+@@ -97,8 +97,6 @@ static int intel_xhci_usb_set_role(struct usb_role_switch *sw,
+ 		val |= SW_VBUS_VALID;
+ 		drd_config = DRD_CONFIG_STATIC_DEVICE;
+ 		break;
+-	default:
+-		break;
+ 	}
+ 	val |= SW_IDPIN_EN;
+ 	if (data->enable_sw_switch) {
+diff --git a/include/linux/usb/role.h b/include/linux/usb/role.h
+index aecfce46d3544..b9ccaeb8a4aef 100644
+--- a/include/linux/usb/role.h
++++ b/include/linux/usb/role.h
+@@ -11,7 +11,6 @@ enum usb_role {
+ 	USB_ROLE_NONE,
+ 	USB_ROLE_HOST,
+ 	USB_ROLE_DEVICE,
+-	USB_ROLE_UNKNOWN,
+ };
+ 
+ typedef int (*usb_role_switch_set_t)(struct usb_role_switch *sw,
+-- 
+2.39.2
+
 
 
