@@ -2,49 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF62761371
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE1FD761327
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233348AbjGYLKu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:10:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45754 "EHLO
+        id S234008AbjGYLI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234164AbjGYLKW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:22 -0400
+        with ESMTP id S234111AbjGYLIC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D868511A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCBA32D56
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C4E161681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8F5C433C7;
-        Tue, 25 Jul 2023 11:09:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53FB76166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63103C433C7;
+        Tue, 25 Jul 2023 11:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283366;
-        bh=gLTqB4l65oi/U7kUXSLVy307U8zYNQEjNWJj7k0BbDA=;
+        s=korg; t=1690283194;
+        bh=9r87TTasgyEeK4LxTmRM9tBC44ah+8MdYKpezQD3LPA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bKoMCNAvp+z1Dmpy/r+S9Jdvw0eN0lXE2rshK5YVO+rYZ2aIz3nr+SFCFcpbTHMS1
-         vFcf1X4J2x0tMNEk0yBEqRvoetuxxYyvgG9GMpvyVSFAPtQpcW124O6CuuE30XPShc
-         8StqWEFPkKMris3ZtyTHaflZRiAFH7sr2aRj98uY=
+        b=EXCBuGprrKG5ISqBmmfBuSv7wwnJgP/mzmf9v3JEQRuivNB0/sqrg2emQNLnQSXll
+         5sXZmcXRYjN32EVuFx8Kq7CyvrHQHh70/4K9JYmQRgnxE0OsrhRxnll+LjGQeXSzES
+         cR3NRFjrOTgmIeHYU7SGW8oaHA2V2aS4QFLspXtI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ding Hui <dinghui@sangfor.com.cn>,
-        Donglin Peng <pengdonglin@sangfor.com.cn>,
-        Huang Cun <huangcun@sangfor.com.cn>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 50/78] iavf: Fix out-of-bounds when setting channels on remove
+        patches@lists.linux.dev,
+        "andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
+        yhs@fb.com, mykolal@fb.com, luizcap@amazon.com, Eduard Zingerman" 
+        <eddyz87@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>
+Subject: [PATCH 6.1 173/183] bpf: aggressively forget precise markings during state checkpointing
 Date:   Tue, 25 Jul 2023 12:46:41 +0200
-Message-ID: <20230725104453.211541143@linuxfoundation.org>
+Message-ID: <20230725104513.973558731@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,160 +58,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ding Hui <dinghui@sangfor.com.cn>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 7c4bced3caa749ce468b0c5de711c98476b23a52 ]
+[ Upstream commit 7a830b53c17bbadcf99f778f28aaaa4e6c41df5f ]
 
-If we set channels greater during iavf_remove(), and waiting reset done
-would be timeout, then returned with error but changed num_active_queues
-directly, that will lead to OOB like the following logs. Because the
-num_active_queues is greater than tx/rx_rings[] allocated actually.
+Exploit the property of about-to-be-checkpointed state to be able to
+forget all precise markings up to that point even more aggressively. We
+now clear all potentially inherited precise markings right before
+checkpointing and branching off into child state. If any of children
+states require precise knowledge of any SCALAR register, those will be
+propagated backwards later on before this state is finalized, preserving
+correctness.
 
-Reproducer:
+There is a single selftests BPF program change, but tremendous one: 25x
+reduction in number of verified instructions and states in
+trace_virtqueue_add_sgs.
 
-  [root@host ~]# cat repro.sh
-  #!/bin/bash
+Cilium results are more modest, but happen across wider range of programs.
 
-  pf_dbsf="0000:41:00.0"
-  vf0_dbsf="0000:41:02.0"
-  g_pids=()
+SELFTESTS RESULTS
+=================
 
-  function do_set_numvf()
-  {
-      echo 2 >/sys/bus/pci/devices/${pf_dbsf}/sriov_numvfs
-      sleep $((RANDOM%3+1))
-      echo 0 >/sys/bus/pci/devices/${pf_dbsf}/sriov_numvfs
-      sleep $((RANDOM%3+1))
-  }
+$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results.csv ~/imprecise-aggressive-results.csv | grep -v '+0'
+File                 Program                  Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+-------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+loop6.bpf.linked1.o  trace_virtqueue_add_sgs           398057            15114   -382943 (-96.20%)              8717               336      -8381 (-96.15%)
+-------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
 
-  function do_set_channel()
-  {
-      local nic=$(ls -1 --indicator-style=none /sys/bus/pci/devices/${vf0_dbsf}/net/)
-      [ -z "$nic" ] && { sleep $((RANDOM%3)) ; return 1; }
-      ifconfig $nic 192.168.18.5 netmask 255.255.255.0
-      ifconfig $nic up
-      ethtool -L $nic combined 1
-      ethtool -L $nic combined 4
-      sleep $((RANDOM%3))
-  }
+CILIUM RESULTS
+==============
 
-  function on_exit()
-  {
-      local pid
-      for pid in "${g_pids[@]}"; do
-          kill -0 "$pid" &>/dev/null && kill "$pid" &>/dev/null
-      done
-      g_pids=()
-  }
+$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results-cilium.csv ~/imprecise-aggressive-results-cilium.csv | grep -v '+0'
+File           Program                           Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+-------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+bpf_host.o     tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
+bpf_host.o     tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
+bpf_host.o     tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_host.o     tail_nodeport_nat_ipv6_egress                3446             3406        -40 (-1.16%)               203               198          -5 (-2.46%)
+bpf_lxc.o      tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
+bpf_lxc.o      tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
+bpf_lxc.o      tail_ipv4_ct_egress                          5074             4897       -177 (-3.49%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv4_ct_ingress                         5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv4_ct_ingress_policy_only             5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv6_ct_egress                          4558             4536        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_ipv6_ct_ingress                         4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_ipv6_ct_ingress_policy_only             4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_overlay.o  tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_overlay.o  tail_nodeport_nat_ipv6_egress                3482             3442        -40 (-1.15%)               204               201          -3 (-1.47%)
+bpf_xdp.o      tail_nodeport_nat_egress_ipv4               17200            15619      -1581 (-9.19%)              1111              1010        -101 (-9.09%)
+-------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
 
-  trap "on_exit; exit" EXIT
-
-  while :; do do_set_numvf ; done &
-  g_pids+=($!)
-  while :; do do_set_channel ; done &
-  g_pids+=($!)
-
-  wait
-
-Result:
-
-[ 3506.152887] iavf 0000:41:02.0: Removing device
-[ 3510.400799] ==================================================================
-[ 3510.400820] BUG: KASAN: slab-out-of-bounds in iavf_free_all_tx_resources+0x156/0x160 [iavf]
-[ 3510.400823] Read of size 8 at addr ffff88b6f9311008 by task repro.sh/55536
-[ 3510.400823]
-[ 3510.400830] CPU: 101 PID: 55536 Comm: repro.sh Kdump: loaded Tainted: G           O     --------- -t - 4.18.0 #1
-[ 3510.400832] Hardware name: Powerleader PR2008AL/H12DSi-N6, BIOS 2.0 04/09/2021
-[ 3510.400835] Call Trace:
-[ 3510.400851]  dump_stack+0x71/0xab
-[ 3510.400860]  print_address_description+0x6b/0x290
-[ 3510.400865]  ? iavf_free_all_tx_resources+0x156/0x160 [iavf]
-[ 3510.400868]  kasan_report+0x14a/0x2b0
-[ 3510.400873]  iavf_free_all_tx_resources+0x156/0x160 [iavf]
-[ 3510.400880]  iavf_remove+0x2b6/0xc70 [iavf]
-[ 3510.400884]  ? iavf_free_all_rx_resources+0x160/0x160 [iavf]
-[ 3510.400891]  ? wait_woken+0x1d0/0x1d0
-[ 3510.400895]  ? notifier_call_chain+0xc1/0x130
-[ 3510.400903]  pci_device_remove+0xa8/0x1f0
-[ 3510.400910]  device_release_driver_internal+0x1c6/0x460
-[ 3510.400916]  pci_stop_bus_device+0x101/0x150
-[ 3510.400919]  pci_stop_and_remove_bus_device+0xe/0x20
-[ 3510.400924]  pci_iov_remove_virtfn+0x187/0x420
-[ 3510.400927]  ? pci_iov_add_virtfn+0xe10/0xe10
-[ 3510.400929]  ? pci_get_subsys+0x90/0x90
-[ 3510.400932]  sriov_disable+0xed/0x3e0
-[ 3510.400936]  ? bus_find_device+0x12d/0x1a0
-[ 3510.400953]  i40e_free_vfs+0x754/0x1210 [i40e]
-[ 3510.400966]  ? i40e_reset_all_vfs+0x880/0x880 [i40e]
-[ 3510.400968]  ? pci_get_device+0x7c/0x90
-[ 3510.400970]  ? pci_get_subsys+0x90/0x90
-[ 3510.400982]  ? pci_vfs_assigned.part.7+0x144/0x210
-[ 3510.400987]  ? __mutex_lock_slowpath+0x10/0x10
-[ 3510.400996]  i40e_pci_sriov_configure+0x1fa/0x2e0 [i40e]
-[ 3510.401001]  sriov_numvfs_store+0x214/0x290
-[ 3510.401005]  ? sriov_totalvfs_show+0x30/0x30
-[ 3510.401007]  ? __mutex_lock_slowpath+0x10/0x10
-[ 3510.401011]  ? __check_object_size+0x15a/0x350
-[ 3510.401018]  kernfs_fop_write+0x280/0x3f0
-[ 3510.401022]  vfs_write+0x145/0x440
-[ 3510.401025]  ksys_write+0xab/0x160
-[ 3510.401028]  ? __ia32_sys_read+0xb0/0xb0
-[ 3510.401031]  ? fput_many+0x1a/0x120
-[ 3510.401032]  ? filp_close+0xf0/0x130
-[ 3510.401038]  do_syscall_64+0xa0/0x370
-[ 3510.401041]  ? page_fault+0x8/0x30
-[ 3510.401043]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-[ 3510.401073] RIP: 0033:0x7f3a9bb842c0
-[ 3510.401079] Code: 73 01 c3 48 8b 0d d8 cb 2c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d 89 24 2d 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 fe dd 01 00 48 89 04 24
-[ 3510.401080] RSP: 002b:00007ffc05f1fe18 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[ 3510.401083] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f3a9bb842c0
-[ 3510.401085] RDX: 0000000000000002 RSI: 0000000002327408 RDI: 0000000000000001
-[ 3510.401086] RBP: 0000000002327408 R08: 00007f3a9be53780 R09: 00007f3a9c8a4700
-[ 3510.401086] R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000002
-[ 3510.401087] R13: 0000000000000001 R14: 00007f3a9be52620 R15: 0000000000000001
-[ 3510.401090]
-[ 3510.401093] Allocated by task 76795:
-[ 3510.401098]  kasan_kmalloc+0xa6/0xd0
-[ 3510.401099]  __kmalloc+0xfb/0x200
-[ 3510.401104]  iavf_init_interrupt_scheme+0x26f/0x1310 [iavf]
-[ 3510.401108]  iavf_watchdog_task+0x1d58/0x4050 [iavf]
-[ 3510.401114]  process_one_work+0x56a/0x11f0
-[ 3510.401115]  worker_thread+0x8f/0xf40
-[ 3510.401117]  kthread+0x2a0/0x390
-[ 3510.401119]  ret_from_fork+0x1f/0x40
-[ 3510.401122]  0xffffffffffffffff
-[ 3510.401123]
-
-In timeout handling, we should keep the original num_active_queues
-and reset num_req_queues to 0.
-
-Fixes: 4e5e6b5d9d13 ("iavf: Fix return of set the new channel count")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: Donglin Peng <pengdonglin@sangfor.com.cn>
-Cc: Huang Cun <huangcun@sangfor.com.cn>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20221104163649.121784-6-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c |   37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 461f5237a2f88..5af3ae68b7a14 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -1855,7 +1855,7 @@ static int iavf_set_channels(struct net_device *netdev,
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2813,6 +2813,31 @@ static void mark_all_scalars_precise(str
  	}
- 	if (i == IAVF_RESET_WAIT_COMPLETE_COUNT) {
- 		adapter->flags &= ~IAVF_FLAG_REINIT_ITR_NEEDED;
--		adapter->num_active_queues = num_req;
-+		adapter->num_req_queues = 0;
- 		return -EOPNOTSUPP;
- 	}
+ }
  
--- 
-2.39.2
-
++static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
++{
++	struct bpf_func_state *func;
++	struct bpf_reg_state *reg;
++	int i, j;
++
++	for (i = 0; i <= st->curframe; i++) {
++		func = st->frame[i];
++		for (j = 0; j < BPF_REG_FP; j++) {
++			reg = &func->regs[j];
++			if (reg->type != SCALAR_VALUE)
++				continue;
++			reg->precise = false;
++		}
++		for (j = 0; j < func->allocated_stack / BPF_REG_SIZE; j++) {
++			if (!is_spilled_reg(&func->stack[j]))
++				continue;
++			reg = &func->stack[j].spilled_ptr;
++			if (reg->type != SCALAR_VALUE)
++				continue;
++			reg->precise = false;
++		}
++	}
++}
++
+ /*
+  * __mark_chain_precision() backtracks BPF program instruction sequence and
+  * chain of verifier states making sure that register *regno* (if regno >= 0)
+@@ -2891,6 +2916,14 @@ static void mark_all_scalars_precise(str
+  * be imprecise. If any child state does require this register to be precise,
+  * we'll mark it precise later retroactively during precise markings
+  * propagation from child state to parent states.
++ *
++ * Skipping precise marking setting in current state is a mild version of
++ * relying on the above observation. But we can utilize this property even
++ * more aggressively by proactively forgetting any precise marking in the
++ * current state (which we inherited from the parent state), right before we
++ * checkpoint it and branch off into new child state. This is done by
++ * mark_all_scalars_imprecise() to hopefully get more permissive and generic
++ * finalized states which help in short circuiting more future states.
+  */
+ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
+ 				  int spi)
+@@ -12296,6 +12329,10 @@ next:
+ 	env->prev_jmps_processed = env->jmps_processed;
+ 	env->prev_insn_processed = env->insn_processed;
+ 
++	/* forget precise markings we inherited, see __mark_chain_precision */
++	if (env->bpf_capable)
++		mark_all_scalars_imprecise(env, cur);
++
+ 	/* add new state to the head of linked list */
+ 	new = &new_sl->state;
+ 	err = copy_verifier_state(new, cur);
 
 
