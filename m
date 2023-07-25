@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CE317615E4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E393C761747
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233076AbjGYLeR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
+        id S230164AbjGYLqo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:46:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234708AbjGYLeO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:14 -0400
+        with ESMTP id S232496AbjGYLqk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792F7199D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B53D1FC0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1874461654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289FBC433C7;
-        Tue, 25 Jul 2023 11:34:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D13E616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D5BC433C8;
+        Tue, 25 Jul 2023 11:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284852;
-        bh=TMjuG92YZ7Q9xdZCo1fVODWXqbPkENVorPTMtKyX6Nw=;
+        s=korg; t=1690285592;
+        bh=2hfMJ8Zaqm3fcLRIASPEyLifhYJD2imoplnniQ7buBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ex48hWM6nbsL9f4ZuSCEGu/aoneocuPT7tgNZp1L8YSfRa8ytUjvHQQyqoYq63o+N
-         RHcp4frHHr1HkEccNtalICFzDzxKw1XbO8Z4N+n3UbbCAyasuEgLcMn4Qg3T7NO+v4
-         SwwOHwYExgwqkYa0Rd6mPxXbdQiNCW1iIgjFxVLE=
+        b=r9+ZhG1P7Ysgs9t6cchyZN/Mhi2hOb02c4wHXmg2yFiaXYd4167k5eoVbPbETcB8W
+         L41VjsnDnbfsQCJ4qC58OcFng6QHdgvbOlPc9g7ay92CsoWX6m1z54bwXLUHQbqTe4
+         vODKbE20zVcbxArW5ytFmijhxuO4k4AugnWsMvTg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nik P <npliashechnikov@gmail.com>,
-        Nathan Schulte <nmschulte@gmail.com>,
-        Friedrich Vock <friedrich.vock@gmx.de>, dridri85@gmail.com,
-        Jan Visser <starquake@linuxeverywhere.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 475/509] pinctrl: amd: Use amd_pinconf_set() for all config options
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 5.4 261/313] Revert "8250: add support for ASIX devices with a FIFO bug"
 Date:   Tue, 25 Jul 2023 12:46:54 +0200
-Message-ID: <20230725104615.492570941@linuxfoundation.org>
+Message-ID: <20230725104532.339855333@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,108 +55,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-[ Upstream commit 635a750d958e158e17af0f524bedc484b27fbb93 ]
+commit a82d62f708545d22859584e0e0620da8e3759bbc upstream.
 
-On ASUS TUF A16 it is reported that the ITE5570 ACPI device connected to
-GPIO 7 is causing an interrupt storm.  This issue doesn't happen on
-Windows.
+This reverts commit eb26dfe8aa7eeb5a5aa0b7574550125f8aa4c3b3.
 
-Comparing the GPIO register configuration between Windows and Linux
-bit 20 has been configured as a pull up on Windows, but not on Linux.
-Checking GPIO declaration from the firmware it is clear it *should* have
-been a pull up on Linux as well.
+Commit eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO
+bug") merged on Jul 13, 2012 adds a quirk for PCI_VENDOR_ID_ASIX
+(0x9710). But that ID is the same as PCI_VENDOR_ID_NETMOS defined in
+1f8b061050c7 ("[PATCH] Netmos parallel/serial/combo support") merged
+on Mar 28, 2005. In pci_serial_quirks array, the NetMos entry always
+takes precedence over the ASIX entry even since it was initially
+merged, code in that commit is always unreachable.
 
-```
-GpioInt (Level, ActiveLow, Exclusive, PullUp, 0x0000,
-	 "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
-{   // Pin list
-0x0007
-}
-```
+In my tests, adding the FIFO workaround to pci_netmos_init() makes no
+difference, and the vendor driver also does not have such workaround.
+Given that the code was never used for over a decade, it's safe to
+revert it.
 
-On Linux amd_gpio_set_config() is currently only used for programming
-the debounce. Actually the GPIO core calls it with all the arguments
-that are supported by a GPIO, pinctrl-amd just responds `-ENOTSUPP`.
+Also, the real PCI_VENDOR_ID_ASIX should be 0x125b, which is used on
+their newer AX99100 PCIe serial controllers released on 2016. The FIFO
+workaround should not be intended for these newer controllers, and it
+was never implemented in vendor driver.
 
-To solve this issue expand amd_gpio_set_config() to support the other
-arguments amd_pinconf_set() supports, namely `PIN_CONFIG_BIAS_PULL_DOWN`,
-`PIN_CONFIG_BIAS_PULL_UP`, and `PIN_CONFIG_DRIVE_STRENGTH`.
-
-Reported-by: Nik P <npliashechnikov@gmail.com>
-Reported-by: Nathan Schulte <nmschulte@gmail.com>
-Reported-by: Friedrich Vock <friedrich.vock@gmx.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
-Reported-by: dridri85@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217493
-Link: https://lore.kernel.org/linux-input/20230530154058.17594-1-friedrich.vock@gmx.de/
-Tested-by: Jan Visser <starquake@linuxeverywhere.org>
-Fixes: 2956b5d94a76 ("pinctrl / gpio: Introduce .set_config() callback for GPIO chips")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Fixes: eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO bug")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230705133005.577-3-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230619155743.827859-1-jiaqing.zhao@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-amd.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/tty/serial/8250/8250.h      |    1 -
+ drivers/tty/serial/8250/8250_pci.c  |   19 -------------------
+ drivers/tty/serial/8250/8250_port.c |   11 +++--------
+ include/linux/serial_8250.h         |    1 -
+ 4 files changed, 3 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
-index 0d71151575eef..3a05ebb9aa253 100644
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -189,18 +189,6 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
- 	return ret;
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -87,7 +87,6 @@ struct serial8250_config {
+ #define UART_BUG_TXEN	(1 << 1)	/* UART has buggy TX IIR status */
+ #define UART_BUG_NOMSR	(1 << 2)	/* UART has buggy MSR status bits (Au1x00) */
+ #define UART_BUG_THRE	(1 << 3)	/* UART has buggy THRE reassertion */
+-#define UART_BUG_PARITY	(1 << 4)	/* UART mishandles parity if FIFO enabled */
+ 
+ 
+ #ifdef CONFIG_SERIAL_8250_SHARE_IRQ
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -1068,14 +1068,6 @@ static int pci_oxsemi_tornado_init(struc
+ 	return number_uarts;
  }
  
--static int amd_gpio_set_config(struct gpio_chip *gc, unsigned offset,
--			       unsigned long config)
+-static int pci_asix_setup(struct serial_private *priv,
+-		  const struct pciserial_board *board,
+-		  struct uart_8250_port *port, int idx)
 -{
--	u32 debounce;
--
--	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
--		return -ENOTSUPP;
--
--	debounce = pinconf_to_config_argument(config);
--	return amd_gpio_set_debounce(gc, offset, debounce);
+-	port->bugs |= UART_BUG_PARITY;
+-	return pci_default_setup(priv, board, port, idx);
 -}
 -
- #ifdef CONFIG_DEBUG_FS
- static void amd_gpio_dbg_show(struct seq_file *s, struct gpio_chip *gc)
- {
-@@ -676,7 +664,7 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
- }
+ /* Quatech devices have their own extra interface features */
  
- static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
--				unsigned long *configs, unsigned num_configs)
-+			   unsigned long *configs, unsigned int num_configs)
- {
- 	int i;
- 	u32 arg;
-@@ -766,6 +754,20 @@ static int amd_pinconf_group_set(struct pinctrl_dev *pctldev,
- 	return 0;
- }
+ struct quatech_feature {
+@@ -1872,7 +1864,6 @@ pci_moxa_setup(struct serial_private *pr
+ #define PCI_DEVICE_ID_WCH_CH355_4S	0x7173
+ #define PCI_VENDOR_ID_AGESTAR		0x5372
+ #define PCI_DEVICE_ID_AGESTAR_9375	0x6872
+-#define PCI_VENDOR_ID_ASIX		0x9710
+ #define PCI_DEVICE_ID_BROADCOM_TRUMANAGE 0x160a
+ #define PCI_DEVICE_ID_AMCC_ADDIDATA_APCI7800 0x818e
  
-+static int amd_gpio_set_config(struct gpio_chip *gc, unsigned int pin,
-+			       unsigned long config)
-+{
-+	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
-+
-+	if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE) {
-+		u32 debounce = pinconf_to_config_argument(config);
-+
-+		return amd_gpio_set_debounce(gc, pin, debounce);
-+	}
-+
-+	return amd_pinconf_set(gpio_dev->pctrl, pin, &config, 1);
-+}
-+
- static const struct pinconf_ops amd_pinconf_ops = {
- 	.pin_config_get		= amd_pinconf_get,
- 	.pin_config_set		= amd_pinconf_set,
--- 
-2.39.2
-
+@@ -2672,16 +2663,6 @@ static struct pci_serial_quirk pci_seria
+ 		.setup          = pci_wch_ch38x_setup,
+ 	},
+ 	/*
+-	 * ASIX devices with FIFO bug
+-	 */
+-	{
+-		.vendor		= PCI_VENDOR_ID_ASIX,
+-		.device		= PCI_ANY_ID,
+-		.subvendor	= PCI_ANY_ID,
+-		.subdevice	= PCI_ANY_ID,
+-		.setup		= pci_asix_setup,
+-	},
+-	/*
+ 	 * Broadcom TruManage (NetXtreme)
+ 	 */
+ 	{
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2535,11 +2535,8 @@ static unsigned char serial8250_compute_
+ 
+ 	if (c_cflag & CSTOPB)
+ 		cval |= UART_LCR_STOP;
+-	if (c_cflag & PARENB) {
++	if (c_cflag & PARENB)
+ 		cval |= UART_LCR_PARITY;
+-		if (up->bugs & UART_BUG_PARITY)
+-			up->fifo_bug = true;
+-	}
+ 	if (!(c_cflag & PARODD))
+ 		cval |= UART_LCR_EPAR;
+ #ifdef CMSPAR
+@@ -2646,8 +2643,7 @@ serial8250_do_set_termios(struct uart_po
+ 	up->lcr = cval;					/* Save computed LCR */
+ 
+ 	if (up->capabilities & UART_CAP_FIFO && port->fifosize > 1) {
+-		/* NOTE: If fifo_bug is not set, a user can set RX_trigger. */
+-		if ((baud < 2400 && !up->dma) || up->fifo_bug) {
++		if (baud < 2400 && !up->dma) {
+ 			up->fcr &= ~UART_FCR_TRIGGER_MASK;
+ 			up->fcr |= UART_FCR_TRIGGER_1;
+ 		}
+@@ -2983,8 +2979,7 @@ static int do_set_rxtrig(struct tty_port
+ 	struct uart_8250_port *up = up_to_u8250p(uport);
+ 	int rxtrig;
+ 
+-	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1 ||
+-	    up->fifo_bug)
++	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1)
+ 		return -EINVAL;
+ 
+ 	rxtrig = bytes_to_fcr_rxtrig(up, bytes);
+--- a/include/linux/serial_8250.h
++++ b/include/linux/serial_8250.h
+@@ -95,7 +95,6 @@ struct uart_8250_port {
+ 	struct list_head	list;		/* ports on this IRQ */
+ 	u32			capabilities;	/* port capabilities */
+ 	unsigned short		bugs;		/* port bugs */
+-	bool			fifo_bug;	/* min RX trigger if enabled */
+ 	unsigned int		tx_loadsz;	/* transmit fifo load size */
+ 	unsigned char		acr;
+ 	unsigned char		fcr;
 
 
