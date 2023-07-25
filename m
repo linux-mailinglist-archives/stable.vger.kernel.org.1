@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBE2761506
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E09D0761198
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234550AbjGYLYw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:24:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34228 "EHLO
+        id S231858AbjGYKxi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234570AbjGYLYv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8994313D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:49 -0700 (PDT)
+        with ESMTP id S233765AbjGYKwS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6BAF199D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA8BC61600
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C5CC433C8;
-        Tue, 25 Jul 2023 11:24:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D9D4615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDC6C433C8;
+        Tue, 25 Jul 2023 10:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284288;
-        bh=/qWJng5jEq1NWC8v/HXTW4fqXz0ACcuIAK+LqHxErho=;
+        s=korg; t=1690282282;
+        bh=+n7jWtt/AVrnnEbxRs+BVIcSLiwrPBysIFOlnGrvpWg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jiVrIRRXPhIKoIvSk0y3ZGD2yGDbEBRGI9Bnp6BWD80fFtVd/OTKKZOjHD78ywPyT
-         yFXb52gp0lgN9a4RAm0TlYH58/Ce9b9/8Ib43WWnF0lqjABOK5YACk/wtshq4p/ig0
-         Oqa8okHdirO29o8npTnXsQZwpIkUyabY774/s99s=
+        b=u1DXcMZEq7RjpLlaSSlYqQXXqRp6UD95ve0UK3dMc3ypDL4o3HEPnCYHRZ/mpmXhz
+         nhUmsH+7JgFwcod3pK9pw15FCCe9Q6FNCUVSg9053GkC2Eg41RXv+XJe44/TRsNEow
+         PSQxpeG0HZn8w4iaE9wERjz2POm9+F8B+3SC+CAk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        stable@kernel.org, Ricardo Ribalda Delgado <ribalda@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 302/509] ASoC: mediatek: mt8173: Fix irq error path
+        patches@lists.linux.dev, Xiang Chen <chenxiang66@hisilicon.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.4 074/227] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
 Date:   Tue, 25 Jul 2023 12:44:01 +0200
-Message-ID: <20230725104607.570888736@linuxfoundation.org>
+Message-ID: <20230725104517.826790437@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,53 +56,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda Delgado <ribalda@chromium.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit f9c058d14f4fe23ef523a7ff73734d51c151683c upstream.
+commit b321c31c9b7b309dcde5e8854b741c8e6a9a05f0 upstream.
 
-After reordering the irq probe, the error path was not properly done.
-Lets fix it.
+Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
+running a preemptible kernel, as it is possible that a vCPU is blocked
+without requesting a doorbell interrupt.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@kernel.org
-Fixes: 4cbb264d4e91 ("ASoC: mediatek: mt8173: Enable IRQ when pdata is ready")
-Signed-off-by: Ricardo Ribalda Delgado <ribalda@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230612-mt8173-fixup-v2-2-432aa99ce24d@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The issue is that any preemption that occurs between vgic_v4_put() and
+schedule() on the block path will mark the vPE as nonresident and *not*
+request a doorbell irq. This occurs because when the vcpu thread is
+resumed on its way to block, vcpu_load() will make the vPE resident
+again. Once the vcpu actually blocks, we don't request a doorbell
+anymore, and the vcpu won't be woken up on interrupt delivery.
+
+Fix it by tracking that we're entering WFI, and key the doorbell
+request on that flag. This allows us not to make the vPE resident
+when going through a preempt/schedule cycle, meaning we don't lose
+any state.
+
+Cc: stable@vger.kernel.org
+Fixes: 8e01d9a396e6 ("KVM: arm64: vgic-v4: Move the GICv4 residency flow to be driven by vcpu_load/put")
+Reported-by: Xiang Chen <chenxiang66@hisilicon.com>
+Suggested-by: Zenghui Yu <yuzenghui@huawei.com>
+Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+Co-developed-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20230713070657.3873244-1-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/mediatek/mt8173/mt8173-afe-pcm.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |    2 ++
+ arch/arm64/kvm/arm.c              |    6 ++++--
+ arch/arm64/kvm/vgic/vgic-v3.c     |    2 +-
+ arch/arm64/kvm/vgic/vgic-v4.c     |    7 +++++--
+ include/kvm/arm_vgic.h            |    2 +-
+ 5 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
-@@ -1072,6 +1072,10 @@ static int mt8173_afe_pcm_dev_probe(stru
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -701,6 +701,8 @@ struct kvm_vcpu_arch {
+ #define DBG_SS_ACTIVE_PENDING	__vcpu_single_flag(sflags, BIT(5))
+ /* PMUSERENR for the guest EL0 is on physical CPU */
+ #define PMUSERENR_ON_CPU	__vcpu_single_flag(sflags, BIT(6))
++/* WFI instruction trapped */
++#define IN_WFI			__vcpu_single_flag(sflags, BIT(7))
  
- 	afe->dev = &pdev->dev;
  
-+	irq_id = platform_get_irq(pdev, 0);
-+	if (irq_id <= 0)
-+		return irq_id < 0 ? irq_id : -ENXIO;
+ /* Pointer to the vcpu's SVE FFR for sve_{save,load}_state() */
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -704,13 +704,15 @@ void kvm_vcpu_wfi(struct kvm_vcpu *vcpu)
+ 	 */
+ 	preempt_disable();
+ 	kvm_vgic_vmcr_sync(vcpu);
+-	vgic_v4_put(vcpu, true);
++	vcpu_set_flag(vcpu, IN_WFI);
++	vgic_v4_put(vcpu);
+ 	preempt_enable();
+ 
+ 	kvm_vcpu_halt(vcpu);
+ 	vcpu_clear_flag(vcpu, IN_WFIT);
+ 
+ 	preempt_disable();
++	vcpu_clear_flag(vcpu, IN_WFI);
+ 	vgic_v4_load(vcpu);
+ 	preempt_enable();
+ }
+@@ -778,7 +780,7 @@ static int check_vcpu_requests(struct kv
+ 		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
+ 			/* The distributor enable bits were changed */
+ 			preempt_disable();
+-			vgic_v4_put(vcpu, false);
++			vgic_v4_put(vcpu);
+ 			vgic_v4_load(vcpu);
+ 			preempt_enable();
+ 		}
+--- a/arch/arm64/kvm/vgic/vgic-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-v3.c
+@@ -749,7 +749,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+ {
+ 	struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
+ 
+-	WARN_ON(vgic_v4_put(vcpu, false));
++	WARN_ON(vgic_v4_put(vcpu));
+ 
+ 	vgic_v3_vmcr_sync(vcpu);
+ 
+--- a/arch/arm64/kvm/vgic/vgic-v4.c
++++ b/arch/arm64/kvm/vgic/vgic-v4.c
+@@ -336,14 +336,14 @@ void vgic_v4_teardown(struct kvm *kvm)
+ 	its_vm->vpes = NULL;
+ }
+ 
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db)
++int vgic_v4_put(struct kvm_vcpu *vcpu)
+ {
+ 	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
+ 
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
+ 		return 0;
+ 
+-	return its_make_vpe_non_resident(vpe, need_db);
++	return its_make_vpe_non_resident(vpe, !!vcpu_get_flag(vcpu, IN_WFI));
+ }
+ 
+ int vgic_v4_load(struct kvm_vcpu *vcpu)
+@@ -354,6 +354,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
+ 		return 0;
+ 
++	if (vcpu_get_flag(vcpu, IN_WFI))
++		return 0;
 +
- 	afe->base_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(afe->base_addr))
- 		return PTR_ERR(afe->base_addr);
-@@ -1177,14 +1181,11 @@ static int mt8173_afe_pcm_dev_probe(stru
- 	if (ret)
- 		goto err_cleanup_components;
+ 	/*
+ 	 * Before making the VPE resident, make sure the redistributor
+ 	 * corresponding to our current CPU expects us here. See the
+--- a/include/kvm/arm_vgic.h
++++ b/include/kvm/arm_vgic.h
+@@ -431,7 +431,7 @@ int kvm_vgic_v4_unset_forwarding(struct
  
--	irq_id = platform_get_irq(pdev, 0);
--	if (irq_id <= 0)
--		return irq_id < 0 ? irq_id : -ENXIO;
- 	ret = devm_request_irq(afe->dev, irq_id, mt8173_afe_irq_handler,
- 			       0, "Afe_ISR_Handle", (void *)afe);
- 	if (ret) {
- 		dev_err(afe->dev, "could not request_irq\n");
--		goto err_pm_disable;
-+		goto err_cleanup_components;
- 	}
+ int vgic_v4_load(struct kvm_vcpu *vcpu);
+ void vgic_v4_commit(struct kvm_vcpu *vcpu);
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
++int vgic_v4_put(struct kvm_vcpu *vcpu);
  
- 	dev_info(&pdev->dev, "MT8173 AFE driver initialized.\n");
+ /* CPU HP callbacks */
+ void kvm_vgic_cpu_up(void);
 
 
