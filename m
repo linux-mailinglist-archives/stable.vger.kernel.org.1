@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 396BD7615BD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8556B761302
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232897AbjGYLce (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40432 "EHLO
+        id S234053AbjGYLHK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:07:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233004AbjGYLce (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3E3F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:33 -0700 (PDT)
+        with ESMTP id S234000AbjGYLG4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04FBF210A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D435361654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2128C433C8;
-        Tue, 25 Jul 2023 11:32:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97E5761681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A159AC433C7;
+        Tue, 25 Jul 2023 11:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284752;
-        bh=Udq6luzFCYdwtoHw5SqQw/3Ia3PXXOY2Yie7rp2sUh0=;
+        s=korg; t=1690283136;
+        bh=5cGbQRvb7Mw5mDYU91YWp5jP7WU39ce3xm02D3ruB4Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=atgupHwiP0x+cNjjXn8ZRglkJ/k364XQUaodkdom+1NdHCcElLwNQh9Emojr+2EUD
-         lHi2EHSAt2FUB5SniiXdvqtfi3i5SUG6WZJq1YyNAx1ac+0+Oz9Utpu+sVdhg3hMyM
-         WE+spVP5PN4/oq5HxeQ5BuT6iO5oQfRAR2aqWxlY=
+        b=GW3665fEquA+Rmm3h5I4WToVWzjrIw5gN3pD4uNKlNLCGfiAu2c/L8Qk4D6NCRR5E
+         cxVsx+WZ+/4o3TOKRIk6Z1LQYZPvuzByxLN2mXwQW49oo/Wn2NCfs9venfjTWCMHWd
+         1XxYHe80AK5W9U0r0x1fQlrc8hTtq/w3MBx7hORY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        "Joseph C. Sible" <josephcsible@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 440/509] ALSA: hda/realtek - remove 3k pull low procedure
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 151/183] Bluetooth: hci_sync: Avoid use-after-free in dbg for hci_remove_adv_monitor()
 Date:   Tue, 25 Jul 2023 12:46:19 +0200
-Message-ID: <20230725104613.884840028@linuxfoundation.org>
+Message-ID: <20230725104513.301595079@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,66 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kailang Yang <kailang@realtek.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 69ea4c9d02b7947cdd612335a61cc1a02e544ccd upstream.
+[ Upstream commit de6dfcefd107667ce2dbedf4d9337f5ed557a4a1 ]
 
-This was the ALC283 depop procedure.
-Maybe this procedure wasn't suitable with new codec.
-So, let us remove it. But HP 15z-fc000 must do 3k pull low. If it
-reboot with plugged headset,
-it will have errors show don't find codec error messages. Run 3k pull
-low will solve issues.
-So, let AMD chipset will run this for workarround.
+KASAN reports that there's a use-after-free in
+hci_remove_adv_monitor(). Trawling through the disassembly, you can
+see that the complaint is from the access in bt_dev_dbg() under the
+HCI_ADV_MONITOR_EXT_MSFT case. The problem case happens because
+msft_remove_monitor() can end up freeing the monitor
+structure. Specifically:
+  hci_remove_adv_monitor() ->
+  msft_remove_monitor() ->
+  msft_remove_monitor_sync() ->
+  msft_le_cancel_monitor_advertisement_cb() ->
+  hci_free_adv_monitor()
 
-Fixes: 5aec98913095 ("ALSA: hda/realtek - ALC236 headset MIC recording issue")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Reported-by: Joseph C. Sible <josephcsible@gmail.com>
-Closes: https://lore.kernel.org/r/CABpewhE4REgn9RJZduuEU6Z_ijXNeQWnrxO1tg70Gkw=F8qNYg@mail.gmail.com/
-Link: https://lore.kernel.org/r/4678992299664babac4403d9978e7ba7@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's fix the problem by just stashing the relevant data when it's
+still valid.
+
+Fixes: 7cf5c2978f23 ("Bluetooth: hci_sync: Refactor remove Adv Monitor")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -121,6 +121,7 @@ struct alc_spec {
- 	unsigned int ultra_low_power:1;
- 	unsigned int has_hs_key:1;
- 	unsigned int no_internal_mic_pin:1;
-+	unsigned int en_3kpull_low:1;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index be0e6865b340f..d034bf2a999e1 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1972,6 +1972,7 @@ static int hci_remove_adv_monitor(struct hci_dev *hdev,
+ 				  struct adv_monitor *monitor)
+ {
+ 	int status = 0;
++	int handle;
  
- 	/* for PLL fix */
- 	hda_nid_t pll_nid;
-@@ -3617,6 +3618,7 @@ static void alc256_shutup(struct hda_cod
- 	if (!hp_pin)
- 		hp_pin = 0x21;
+ 	switch (hci_get_adv_monitor_offload_ext(hdev)) {
+ 	case HCI_ADV_MONITOR_EXT_NONE: /* also goes here when powered off */
+@@ -1980,9 +1981,10 @@ static int hci_remove_adv_monitor(struct hci_dev *hdev,
+ 		goto free_monitor;
  
-+	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
- 	if (hp_pin_sense)
-@@ -3633,8 +3635,7 @@ static void alc256_shutup(struct hda_cod
- 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
- 	 * when booting with headset plugged. So skip setting it for the codec alc257
- 	 */
--	if (codec->core.vendor_id != 0x10ec0236 &&
--	    codec->core.vendor_id != 0x10ec0257)
-+	if (spec->en_3kpull_low)
- 		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
- 
- 	if (!spec->no_shutup_pins)
-@@ -10065,6 +10066,8 @@ static int patch_alc269(struct hda_codec
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0; /* ALC256 does not have any loopback mixer path */
-+		if (codec->bus->pci->vendor == PCI_VENDOR_ID_AMD)
-+			spec->en_3kpull_low = true;
+ 	case HCI_ADV_MONITOR_EXT_MSFT:
++		handle = monitor->handle;
+ 		status = msft_remove_monitor(hdev, monitor);
+ 		bt_dev_dbg(hdev, "%s remove monitor %d msft status %d",
+-			   hdev->name, monitor->handle, status);
++			   hdev->name, handle, status);
  		break;
- 	case 0x10ec0257:
- 		spec->codec_variant = ALC269_TYPE_ALC257;
+ 	}
+ 
+-- 
+2.39.2
+
 
 
