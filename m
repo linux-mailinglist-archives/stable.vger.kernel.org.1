@@ -2,45 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E776976158E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF3C076131B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234770AbjGYLaY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
+        id S233834AbjGYLIT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234775AbjGYLaX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:23 -0400
+        with ESMTP id S234049AbjGYLH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2776BF2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0A53A9D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98E8B615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42E6C433C8;
-        Tue, 25 Jul 2023 11:30:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 489AB61656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC60C433C8;
+        Tue, 25 Jul 2023 11:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284621;
-        bh=3hVOqhpUKBfp49UetUyXqNRvf0Ru5WVSLISE50cN978=;
+        s=korg; t=1690283166;
+        bh=CH+mpUKI7cVZxH1NTgcSC8N1o6cjpyQRK5eWfz/TduA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k0Y6SLylwKOQiayz4QI73q3MCchTKnQZ/MgqktBdf+F4FQQYjK+pJHe56iUnhlZCT
-         yY6UuG9v4JAgVl06nBlQvds/qCIC3qEg4Sz5ZVOtx7fHWXoT3ElRnNGzCwEArv5mSc
-         PiEUP5Wp9zkFQITTLTlPC+JAjnitbj7Hrt7RjJxA=
+        b=l7R8/HzX4YenE3UooqISpqHpX5557xGL65ggs04cGJZTeC7vKjCCLnfl51FK32z/c
+         1pfSA9CEiOrpWskO2hxfMrkima8Uq+8baVRYM5a3m3PST8GbNuUujaDs3H93GF49/B
+         +KXNLv6oSrcsn+6dJDACipdfmHPdhQzWSUS8VuI8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mohamed Khalfella <mkhalfella@purestorage.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 422/509] tracing/histograms: Add histograms to hist_vars if they have referenced variables
+        Florian Kauer <florian.kauer@linutronix.de>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
+        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 133/183] igc: Prevent garbled TX queue with XDP ZEROCOPY
 Date:   Tue, 25 Jul 2023 12:46:01 +0200
-Message-ID: <20230725104613.004154159@linuxfoundation.org>
+Message-ID: <20230725104512.730588035@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,127 +61,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
+From: Florian Kauer <florian.kauer@linutronix.de>
 
-commit 6018b585e8c6fa7d85d4b38d9ce49a5b67be7078 upstream.
+[ Upstream commit 78adb4bcf99effbb960c5f9091e2e062509d1030 ]
 
-Hist triggers can have referenced variables without having direct
-variables fields. This can be the case if referenced variables are added
-for trigger actions. In this case the newly added references will not
-have field variables. Not taking such referenced variables into
-consideration can result in a bug where it would be possible to remove
-hist trigger with variables being refenced. This will result in a bug
-that is easily reproducable like so
+In normal operation, each populated queue item has
+next_to_watch pointing to the last TX desc of the packet,
+while each cleaned item has it set to 0. In particular,
+next_to_use that points to the next (necessarily clean)
+item to use has next_to_watch set to 0.
 
-$ cd /sys/kernel/tracing
-$ echo 'synthetic_sys_enter char[] comm; long id' >> synthetic_events
-$ echo 'hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
-$ echo 'hist:keys=common_pid.execname,id.syscall:onmatch(raw_syscalls.sys_enter).synthetic_sys_enter($comm, id)' >> events/raw_syscalls/sys_enter/trigger
-$ echo '!hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
+When the TX queue is used both by an application using
+AF_XDP with ZEROCOPY as well as a second non-XDP application
+generating high traffic, the queue pointers can get in
+an invalid state where next_to_use points to an item
+where next_to_watch is NOT set to 0.
 
-[  100.263533] ==================================================================
-[  100.264634] BUG: KASAN: slab-use-after-free in resolve_var_refs+0xc7/0x180
-[  100.265520] Read of size 8 at addr ffff88810375d0f0 by task bash/439
-[  100.266320]
-[  100.266533] CPU: 2 PID: 439 Comm: bash Not tainted 6.5.0-rc1 #4
-[  100.267277] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
-[  100.268561] Call Trace:
-[  100.268902]  <TASK>
-[  100.269189]  dump_stack_lvl+0x4c/0x70
-[  100.269680]  print_report+0xc5/0x600
-[  100.270165]  ? resolve_var_refs+0xc7/0x180
-[  100.270697]  ? kasan_complete_mode_report_info+0x80/0x1f0
-[  100.271389]  ? resolve_var_refs+0xc7/0x180
-[  100.271913]  kasan_report+0xbd/0x100
-[  100.272380]  ? resolve_var_refs+0xc7/0x180
-[  100.272920]  __asan_load8+0x71/0xa0
-[  100.273377]  resolve_var_refs+0xc7/0x180
-[  100.273888]  event_hist_trigger+0x749/0x860
-[  100.274505]  ? kasan_save_stack+0x2a/0x50
-[  100.275024]  ? kasan_set_track+0x29/0x40
-[  100.275536]  ? __pfx_event_hist_trigger+0x10/0x10
-[  100.276138]  ? ksys_write+0xd1/0x170
-[  100.276607]  ? do_syscall_64+0x3c/0x90
-[  100.277099]  ? entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  100.277771]  ? destroy_hist_data+0x446/0x470
-[  100.278324]  ? event_hist_trigger_parse+0xa6c/0x3860
-[  100.278962]  ? __pfx_event_hist_trigger_parse+0x10/0x10
-[  100.279627]  ? __kasan_check_write+0x18/0x20
-[  100.280177]  ? mutex_unlock+0x85/0xd0
-[  100.280660]  ? __pfx_mutex_unlock+0x10/0x10
-[  100.281200]  ? kfree+0x7b/0x120
-[  100.281619]  ? ____kasan_slab_free+0x15d/0x1d0
-[  100.282197]  ? event_trigger_write+0xac/0x100
-[  100.282764]  ? __kasan_slab_free+0x16/0x20
-[  100.283293]  ? __kmem_cache_free+0x153/0x2f0
-[  100.283844]  ? sched_mm_cid_remote_clear+0xb1/0x250
-[  100.284550]  ? __pfx_sched_mm_cid_remote_clear+0x10/0x10
-[  100.285221]  ? event_trigger_write+0xbc/0x100
-[  100.285781]  ? __kasan_check_read+0x15/0x20
-[  100.286321]  ? __bitmap_weight+0x66/0xa0
-[  100.286833]  ? _find_next_bit+0x46/0xe0
-[  100.287334]  ? task_mm_cid_work+0x37f/0x450
-[  100.287872]  event_triggers_call+0x84/0x150
-[  100.288408]  trace_event_buffer_commit+0x339/0x430
-[  100.289073]  ? ring_buffer_event_data+0x3f/0x60
-[  100.292189]  trace_event_raw_event_sys_enter+0x8b/0xe0
-[  100.295434]  syscall_trace_enter.constprop.0+0x18f/0x1b0
-[  100.298653]  syscall_enter_from_user_mode+0x32/0x40
-[  100.301808]  do_syscall_64+0x1a/0x90
-[  100.304748]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  100.307775] RIP: 0033:0x7f686c75c1cb
-[  100.310617] Code: 73 01 c3 48 8b 0d 65 3c 10 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 21 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 35 3c 10 00 f7 d8 64 89 01 48
-[  100.317847] RSP: 002b:00007ffc60137a38 EFLAGS: 00000246 ORIG_RAX: 0000000000000021
-[  100.321200] RAX: ffffffffffffffda RBX: 000055f566469ea0 RCX: 00007f686c75c1cb
-[  100.324631] RDX: 0000000000000001 RSI: 0000000000000001 RDI: 000000000000000a
-[  100.328104] RBP: 00007ffc60137ac0 R08: 00007f686c818460 R09: 000000000000000a
-[  100.331509] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-[  100.334992] R13: 0000000000000007 R14: 000000000000000a R15: 0000000000000007
-[  100.338381]  </TASK>
+However, the implementation assumes at several places
+that this is never the case, so if it does hold,
+bad things happen. In particular, within the loop inside
+of igc_clean_tx_irq(), next_to_clean can overtake next_to_use.
+Finally, this prevents any further transmission via
+this queue and it never gets unblocked or signaled.
+Secondly, if the queue is in this garbled state,
+the inner loop of igc_clean_tx_ring() will never terminate,
+completely hogging a CPU core.
 
-We hit the bug because when second hist trigger has was created
-has_hist_vars() returned false because hist trigger did not have
-variables. As a result of that save_hist_vars() was not called to add
-the trigger to trace_array->hist_vars. Later on when we attempted to
-remove the first histogram find_any_var_ref() failed to detect it is
-being used because it did not find the second trigger in hist_vars list.
+The reason is that igc_xdp_xmit_zc() reads next_to_use
+before acquiring the lock, and writing it back
+(potentially unmodified) later. If it got modified
+before locking, the outdated next_to_use is written
+pointing to an item that was already used elsewhere
+(and thus next_to_watch got written).
 
-With this change we wait until trigger actions are created so we can take
-into consideration if hist trigger has variable references. Also, now we
-check the return value of save_hist_vars() and fail trigger creation if
-save_hist_vars() fails.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230712223021.636335-1-mkhalfella@purestorage.com
-
-Cc: stable@vger.kernel.org
-Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
-Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9acf59a752d4 ("igc: Enable TX via AF_XDP zero-copy")
+Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Kurt Kanzenbach <kurt@linutronix.de>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20230717175444.3217831-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5817,13 +5817,15 @@ static int event_hist_trigger_func(struc
- 	if (get_named_trigger_data(trigger_data))
- 		goto enable;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index ade4bde47c65a..2e091a4a065e7 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -2797,9 +2797,8 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
+ 	struct netdev_queue *nq = txring_txq(ring);
+ 	union igc_adv_tx_desc *tx_desc = NULL;
+ 	int cpu = smp_processor_id();
+-	u16 ntu = ring->next_to_use;
+ 	struct xdp_desc xdp_desc;
+-	u16 budget;
++	u16 budget, ntu;
  
--	if (has_hist_vars(hist_data))
--		save_hist_vars(hist_data);
--
- 	ret = create_actions(hist_data);
- 	if (ret)
- 		goto out_unreg;
+ 	if (!netif_carrier_ok(ring->netdev))
+ 		return;
+@@ -2809,6 +2808,7 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
+ 	/* Avoid transmit queue timeout since we share it with the slow path */
+ 	txq_trans_cond_update(nq);
  
-+	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
-+		if (save_hist_vars(hist_data))
-+			goto out_unreg;
-+	}
-+
- 	ret = tracing_map_init(hist_data->map);
- 	if (ret)
- 		goto out_unreg;
++	ntu = ring->next_to_use;
+ 	budget = igc_desc_unused(ring);
+ 
+ 	while (xsk_tx_peek_desc(pool, &xdp_desc) && budget--) {
+-- 
+2.39.2
+
 
 
