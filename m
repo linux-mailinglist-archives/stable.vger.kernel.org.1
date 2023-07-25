@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF21176157A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A8276121A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234756AbjGYL31 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37798 "EHLO
+        id S232859AbjGYK7c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234748AbjGYL31 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:27 -0400
+        with ESMTP id S233084AbjGYK6s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F648FB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F11530D8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A6A86168F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA319C433C8;
-        Tue, 25 Jul 2023 11:29:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0637061692
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E3A3C433B6;
+        Tue, 25 Jul 2023 10:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284565;
-        bh=u1AnOVF/RBvsTycPSYCOilZbzFhT5BMsFozY5aq81nk=;
+        s=korg; t=1690282558;
+        bh=MsTrwv9zrfFioSyDgA+KPH5fVSZjw+tVCtT0VARz5Oo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RVhm535PWoGAYH8Bdc2al9IgWu17qo9eLDE7sxK+ToKVR9uDGg2LhYSWT/6YP+Vgd
-         8VGLhYA2rLyDmsNm+o/2k7ZojI5Z3ujhpJ26V2uJq5NkQtZ5D4fB884ClgUSvG/S3T
-         u65ynQcycAmpC10PBCa83ND/rKaLAX396d59NoPg=
+        b=EU2O0wBNgg+EZ0xSjqF/2foca1JC7x89FpOiLYkEomjSnZJDKlDYFZHSkgEZWdzme
+         q7bSPDu7tQ5llA0CtXM0OsF+Q+gXyEeFNmvkcs4vHa4DCs8H0wOLrRcJySay0929nX
+         gBd2VKMmGQpwKGBMQ6LQyPkJ+IV4GE6nVcz3ily0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.10 401/509] PCI: rockchip: Fix legacy IRQ generation for RK3399 PCIe endpoint core
+        patches@lists.linux.dev,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 173/227] iavf: make functions static where possible
 Date:   Tue, 25 Jul 2023 12:45:40 +0200
-Message-ID: <20230725104612.107460942@linuxfoundation.org>
+Message-ID: <20230725104522.041900300@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,113 +57,223 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-commit 166e89d99dd85a856343cca51eee781b793801f2 upstream.
+[ Upstream commit a4aadf0f5905661cd25c366b96cc1c840f05b756 ]
 
-Fix legacy IRQ generation for RK3399 PCIe endpoint core according to
-the technical reference manual (TRM). Assert and deassert legacy
-interrupt (INTx) through the legacy interrupt control register
-("PCIE_CLIENT_LEGACY_INT_CTRL") instead of manually generating a PCIe
-message. The generation of the legacy interrupt was tested and validated
-with the PCIe endpoint test driver.
+Make all possible functions static.
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-8-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move iavf_force_wb() up to avoid forward declaration.
+
+Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: c2ed2403f12c ("iavf: Wait for reset in callbacks which trigger it")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |   45 +++++++-----------------------
- drivers/pci/controller/pcie-rockchip.h    |    6 +++-
- 2 files changed, 16 insertions(+), 35 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h      | 10 -----
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 14 +++----
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c | 43 ++++++++++-----------
+ drivers/net/ethernet/intel/iavf/iavf_txrx.h |  4 --
+ 4 files changed, 28 insertions(+), 43 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -347,48 +347,25 @@ static int rockchip_pcie_ep_get_msi(stru
- }
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 39d0fe76a38ff..f80f2735e6886 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -523,9 +523,6 @@ void iavf_schedule_request_stats(struct iavf_adapter *adapter);
+ void iavf_reset(struct iavf_adapter *adapter);
+ void iavf_set_ethtool_ops(struct net_device *netdev);
+ void iavf_update_stats(struct iavf_adapter *adapter);
+-void iavf_reset_interrupt_capability(struct iavf_adapter *adapter);
+-int iavf_init_interrupt_scheme(struct iavf_adapter *adapter);
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter);
+ void iavf_free_all_tx_resources(struct iavf_adapter *adapter);
+ void iavf_free_all_rx_resources(struct iavf_adapter *adapter);
  
- static void rockchip_pcie_ep_assert_intx(struct rockchip_pcie_ep *ep, u8 fn,
--					 u8 intx, bool is_asserted)
-+					 u8 intx, bool do_assert)
+@@ -579,17 +576,10 @@ void iavf_enable_vlan_stripping_v2(struct iavf_adapter *adapter, u16 tpid);
+ void iavf_disable_vlan_stripping_v2(struct iavf_adapter *adapter, u16 tpid);
+ void iavf_enable_vlan_insertion_v2(struct iavf_adapter *adapter, u16 tpid);
+ void iavf_disable_vlan_insertion_v2(struct iavf_adapter *adapter, u16 tpid);
+-int iavf_replace_primary_mac(struct iavf_adapter *adapter,
+-			     const u8 *new_mac);
+-void
+-iavf_set_vlan_offload_features(struct iavf_adapter *adapter,
+-			       netdev_features_t prev_features,
+-			       netdev_features_t features);
+ void iavf_add_fdir_filter(struct iavf_adapter *adapter);
+ void iavf_del_fdir_filter(struct iavf_adapter *adapter);
+ void iavf_add_adv_rss_cfg(struct iavf_adapter *adapter);
+ void iavf_del_adv_rss_cfg(struct iavf_adapter *adapter);
+ struct iavf_mac_filter *iavf_add_filter(struct iavf_adapter *adapter,
+ 					const u8 *macaddr);
+-int iavf_lock_timeout(struct mutex *lock, unsigned int msecs);
+ #endif /* _IAVF_H_ */
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index b698f8917f049..b24e54823e6ae 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -253,7 +253,7 @@ enum iavf_status iavf_free_virt_mem_d(struct iavf_hw *hw,
+  *
+  * Returns 0 on success, negative on failure
+  **/
+-int iavf_lock_timeout(struct mutex *lock, unsigned int msecs)
++static int iavf_lock_timeout(struct mutex *lock, unsigned int msecs)
  {
- 	struct rockchip_pcie *rockchip = &ep->rockchip;
--	u32 r = ep->max_regions - 1;
--	u32 offset;
--	u32 status;
--	u8 msg_code;
--
--	if (unlikely(ep->irq_pci_addr != ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR ||
--		     ep->irq_pci_fn != fn)) {
--		rockchip_pcie_prog_ep_ob_atu(rockchip, fn, r,
--					     AXI_WRAPPER_NOR_MSG,
--					     ep->irq_phys_addr, 0, 0);
--		ep->irq_pci_addr = ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR;
--		ep->irq_pci_fn = fn;
--	}
+ 	unsigned int wait, delay = 10;
  
- 	intx &= 3;
--	if (is_asserted) {
-+
-+	if (do_assert) {
- 		ep->irq_pending |= BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_ASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_ASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_PEND,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	} else {
- 		ep->irq_pending &= ~BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_DEASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_DEASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_NORMAL,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	}
--
--	status = rockchip_pcie_read(rockchip,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	status &= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--
--	if ((status != 0) ^ (ep->irq_pending != 0)) {
--		status ^= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--		rockchip_pcie_write(rockchip, status,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	}
--
--	offset =
--	   ROCKCHIP_PCIE_MSG_ROUTING(ROCKCHIP_PCIE_MSG_ROUTING_LOCAL_INTX) |
--	   ROCKCHIP_PCIE_MSG_CODE(msg_code) | ROCKCHIP_PCIE_MSG_NO_DATA;
--	writel(0, ep->irq_cpu_addr + offset);
+@@ -362,7 +362,7 @@ static void iavf_irq_disable(struct iavf_adapter *adapter)
+  * iavf_irq_enable_queues - Enable interrupt for all queues
+  * @adapter: board private structure
+  **/
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter)
++static void iavf_irq_enable_queues(struct iavf_adapter *adapter)
+ {
+ 	struct iavf_hw *hw = &adapter->hw;
+ 	int i;
+@@ -1003,8 +1003,8 @@ struct iavf_mac_filter *iavf_add_filter(struct iavf_adapter *adapter,
+  *
+  * Do not call this with mac_vlan_list_lock!
+  **/
+-int iavf_replace_primary_mac(struct iavf_adapter *adapter,
+-			     const u8 *new_mac)
++static int iavf_replace_primary_mac(struct iavf_adapter *adapter,
++				    const u8 *new_mac)
+ {
+ 	struct iavf_hw *hw = &adapter->hw;
+ 	struct iavf_mac_filter *f;
+@@ -1860,7 +1860,7 @@ static void iavf_free_q_vectors(struct iavf_adapter *adapter)
+  * @adapter: board private structure
+  *
+  **/
+-void iavf_reset_interrupt_capability(struct iavf_adapter *adapter)
++static void iavf_reset_interrupt_capability(struct iavf_adapter *adapter)
+ {
+ 	if (!adapter->msix_entries)
+ 		return;
+@@ -1875,7 +1875,7 @@ void iavf_reset_interrupt_capability(struct iavf_adapter *adapter)
+  * @adapter: board private structure to initialize
+  *
+  **/
+-int iavf_init_interrupt_scheme(struct iavf_adapter *adapter)
++static int iavf_init_interrupt_scheme(struct iavf_adapter *adapter)
+ {
+ 	int err;
+ 
+@@ -2174,7 +2174,7 @@ static int iavf_process_aq_command(struct iavf_adapter *adapter)
+  * the watchdog if any changes are requested to expedite the request via
+  * virtchnl.
+  **/
+-void
++static void
+ iavf_set_vlan_offload_features(struct iavf_adapter *adapter,
+ 			       netdev_features_t prev_features,
+ 			       netdev_features_t features)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+index e989feda133c1..8c5f6096b0022 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+@@ -54,7 +54,7 @@ static void iavf_unmap_and_free_tx_resource(struct iavf_ring *ring,
+  * iavf_clean_tx_ring - Free any empty Tx buffers
+  * @tx_ring: ring to be cleaned
+  **/
+-void iavf_clean_tx_ring(struct iavf_ring *tx_ring)
++static void iavf_clean_tx_ring(struct iavf_ring *tx_ring)
+ {
+ 	unsigned long bi_size;
+ 	u16 i;
+@@ -110,7 +110,7 @@ void iavf_free_tx_resources(struct iavf_ring *tx_ring)
+  * Since there is no access to the ring head register
+  * in XL710, we need to use our local copies
+  **/
+-u32 iavf_get_tx_pending(struct iavf_ring *ring, bool in_sw)
++static u32 iavf_get_tx_pending(struct iavf_ring *ring, bool in_sw)
+ {
+ 	u32 head, tail;
+ 
+@@ -127,6 +127,24 @@ u32 iavf_get_tx_pending(struct iavf_ring *ring, bool in_sw)
+ 	return 0;
  }
  
- static int rockchip_pcie_ep_send_legacy_irq(struct rockchip_pcie_ep *ep, u8 fn,
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -37,6 +37,11 @@
- #define   PCIE_CLIENT_MODE_EP            HIWORD_UPDATE(0x0040, 0)
- #define   PCIE_CLIENT_GEN_SEL_1		  HIWORD_UPDATE(0x0080, 0)
- #define   PCIE_CLIENT_GEN_SEL_2		  HIWORD_UPDATE_BIT(0x0080)
-+#define PCIE_CLIENT_LEGACY_INT_CTRL	(PCIE_CLIENT_BASE + 0x0c)
-+#define   PCIE_CLIENT_INT_IN_ASSERT		HIWORD_UPDATE_BIT(0x0002)
-+#define   PCIE_CLIENT_INT_IN_DEASSERT		HIWORD_UPDATE(0x0002, 0)
-+#define   PCIE_CLIENT_INT_PEND_ST_PEND		HIWORD_UPDATE_BIT(0x0001)
-+#define   PCIE_CLIENT_INT_PEND_ST_NORMAL	HIWORD_UPDATE(0x0001, 0)
- #define PCIE_CLIENT_SIDE_BAND_STATUS	(PCIE_CLIENT_BASE + 0x20)
- #define   PCIE_CLIENT_PHY_ST			BIT(12)
- #define PCIE_CLIENT_DEBUG_OUT_0		(PCIE_CLIENT_BASE + 0x3c)
-@@ -234,7 +239,6 @@
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_ME				BIT(16)
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP	BIT(24)
- #define ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR				0x1
--#define ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR		0x3
- #define ROCKCHIP_PCIE_EP_FUNC_BASE(fn)	(((fn) << 12) & GENMASK(19, 12))
- #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR0(fn, bar) \
- 	(PCIE_RC_RP_ATS_BASE + 0x0840 + (fn) * 0x0040 + (bar) * 0x0008)
++/**
++ * iavf_force_wb - Issue SW Interrupt so HW does a wb
++ * @vsi: the VSI we care about
++ * @q_vector: the vector on which to force writeback
++ **/
++static void iavf_force_wb(struct iavf_vsi *vsi, struct iavf_q_vector *q_vector)
++{
++	u32 val = IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
++		  IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK | /* set noitr */
++		  IAVF_VFINT_DYN_CTLN1_SWINT_TRIG_MASK |
++		  IAVF_VFINT_DYN_CTLN1_SW_ITR_INDX_ENA_MASK
++		  /* allow 00 to be written to the index */;
++
++	wr32(&vsi->back->hw,
++	     IAVF_VFINT_DYN_CTLN1(q_vector->reg_idx),
++	     val);
++}
++
+ /**
+  * iavf_detect_recover_hung - Function to detect and recover hung_queues
+  * @vsi:  pointer to vsi struct with tx queues
+@@ -352,25 +370,6 @@ static void iavf_enable_wb_on_itr(struct iavf_vsi *vsi,
+ 	q_vector->arm_wb_state = true;
+ }
+ 
+-/**
+- * iavf_force_wb - Issue SW Interrupt so HW does a wb
+- * @vsi: the VSI we care about
+- * @q_vector: the vector  on which to force writeback
+- *
+- **/
+-void iavf_force_wb(struct iavf_vsi *vsi, struct iavf_q_vector *q_vector)
+-{
+-	u32 val = IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
+-		  IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK | /* set noitr */
+-		  IAVF_VFINT_DYN_CTLN1_SWINT_TRIG_MASK |
+-		  IAVF_VFINT_DYN_CTLN1_SW_ITR_INDX_ENA_MASK
+-		  /* allow 00 to be written to the index */;
+-
+-	wr32(&vsi->back->hw,
+-	     IAVF_VFINT_DYN_CTLN1(q_vector->reg_idx),
+-	     val);
+-}
+-
+ static inline bool iavf_container_is_rx(struct iavf_q_vector *q_vector,
+ 					struct iavf_ring_container *rc)
+ {
+@@ -687,7 +686,7 @@ int iavf_setup_tx_descriptors(struct iavf_ring *tx_ring)
+  * iavf_clean_rx_ring - Free Rx buffers
+  * @rx_ring: ring to be cleaned
+  **/
+-void iavf_clean_rx_ring(struct iavf_ring *rx_ring)
++static void iavf_clean_rx_ring(struct iavf_ring *rx_ring)
+ {
+ 	unsigned long bi_size;
+ 	u16 i;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.h b/drivers/net/ethernet/intel/iavf/iavf_txrx.h
+index 2624bf6d009e3..7e6ee32d19b69 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_txrx.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.h
+@@ -442,15 +442,11 @@ static inline unsigned int iavf_rx_pg_order(struct iavf_ring *ring)
+ 
+ bool iavf_alloc_rx_buffers(struct iavf_ring *rxr, u16 cleaned_count);
+ netdev_tx_t iavf_xmit_frame(struct sk_buff *skb, struct net_device *netdev);
+-void iavf_clean_tx_ring(struct iavf_ring *tx_ring);
+-void iavf_clean_rx_ring(struct iavf_ring *rx_ring);
+ int iavf_setup_tx_descriptors(struct iavf_ring *tx_ring);
+ int iavf_setup_rx_descriptors(struct iavf_ring *rx_ring);
+ void iavf_free_tx_resources(struct iavf_ring *tx_ring);
+ void iavf_free_rx_resources(struct iavf_ring *rx_ring);
+ int iavf_napi_poll(struct napi_struct *napi, int budget);
+-void iavf_force_wb(struct iavf_vsi *vsi, struct iavf_q_vector *q_vector);
+-u32 iavf_get_tx_pending(struct iavf_ring *ring, bool in_sw);
+ void iavf_detect_recover_hung(struct iavf_vsi *vsi);
+ int __iavf_maybe_stop_tx(struct iavf_ring *tx_ring, int size);
+ bool __iavf_chk_linearize(struct sk_buff *skb);
+-- 
+2.39.2
+
 
 
