@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF18A7615E1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C08F676176E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234709AbjGYLeO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41550 "EHLO
+        id S231182AbjGYLsk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234695AbjGYLeJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 634F019BB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:05 -0700 (PDT)
+        with ESMTP id S232742AbjGYLrt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C893519AF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D31546169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E419EC433C7;
-        Tue, 25 Jul 2023 11:34:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B8F86167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEF2C433C8;
+        Tue, 25 Jul 2023 11:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284844;
-        bh=mF3M3Dqd5ebIGhwJQBGaTz6NnAcJObf2ZcJM3jTWKVc=;
+        s=korg; t=1690285667;
+        bh=OW8ZtS95zmE7n/YZvDijcnYIe+919f3l26uxfQkzhhA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eP4RMpfoiKLTWvFFd2NbRLXw0vrhIXc5LwnGcf6WdrVHHNYnXuOTWJcfY8kpvoyZB
-         NuTYlR7OxYhm1YfOzI2mlCL4TKOlKxnpe7gGF5cEdND2MTV6hpEbYWm6fVbp1g3Xrm
-         xv5AuLBw7Nuo+1YQNohpP0+uGuR48OG9jbr62e7o=
+        b=iWmMn0ozQ5fe8Rbzx5WB6HRzyY/gq678S7ic0S9hdUz9KRHKQegUhhWebMnKw7rqX
+         kEK69fQqT35tgpRyyJE5lAmPHqzmtq+0CEjalZMQana40+N/ixSHR+BB+et6/H9ccx
+         3YDgIVsNi8AeJlOdME3ENEij7qpTvECvV/VEqbI0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 472/509] igb: Fix igb_down hung on surprise removal
+        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.4 258/313] hwrng: imx-rngc - fix the timeout for init and self check
 Date:   Tue, 25 Jul 2023 12:46:51 +0200
-Message-ID: <20230725104615.363572131@linuxfoundation.org>
+Message-ID: <20230725104532.220978691@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,89 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit 004d25060c78fc31f66da0fa439c544dda1ac9d5 ]
+commit d744ae7477190967a3ddc289e2cd4ae59e8b1237 upstream.
 
-In a setup where a Thunderbolt hub connects to Ethernet and a display
-through USB Type-C, users may experience a hung task timeout when they
-remove the cable between the PC and the Thunderbolt hub.
-This is because the igb_down function is called multiple times when
-the Thunderbolt hub is unplugged. For example, the igb_io_error_detected
-triggers the first call, and the igb_remove triggers the second call.
-The second call to igb_down will block at napi_synchronize.
-Here's the call trace:
-    __schedule+0x3b0/0xddb
-    ? __mod_timer+0x164/0x5d3
-    schedule+0x44/0xa8
-    schedule_timeout+0xb2/0x2a4
-    ? run_local_timers+0x4e/0x4e
-    msleep+0x31/0x38
-    igb_down+0x12c/0x22a [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    __igb_close+0x6f/0x9c [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    igb_close+0x23/0x2b [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    __dev_close_many+0x95/0xec
-    dev_close_many+0x6e/0x103
-    unregister_netdevice_many+0x105/0x5b1
-    unregister_netdevice_queue+0xc2/0x10d
-    unregister_netdev+0x1c/0x23
-    igb_remove+0xa7/0x11c [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    pci_device_remove+0x3f/0x9c
-    device_release_driver_internal+0xfe/0x1b4
-    pci_stop_bus_device+0x5b/0x7f
-    pci_stop_bus_device+0x30/0x7f
-    pci_stop_bus_device+0x30/0x7f
-    pci_stop_and_remove_bus_device+0x12/0x19
-    pciehp_unconfigure_device+0x76/0xe9
-    pciehp_disable_slot+0x6e/0x131
-    pciehp_handle_presence_or_link_change+0x7a/0x3f7
-    pciehp_ist+0xbe/0x194
-    irq_thread_fn+0x22/0x4d
-    ? irq_thread+0x1fd/0x1fd
-    irq_thread+0x17b/0x1fd
-    ? irq_forced_thread_fn+0x5f/0x5f
-    kthread+0x142/0x153
-    ? __irq_get_irqchip_state+0x46/0x46
-    ? kthread_associate_blkcg+0x71/0x71
-    ret_from_fork+0x1f/0x30
+Fix the timeout that is used for the initialisation and for the self
+test. wait_for_completion_timeout expects a timeout in jiffies, but
+RNGC_TIMEOUT is in milliseconds. Call msecs_to_jiffies to do the
+conversion.
 
-In this case, igb_io_error_detected detaches the network interface
-and requests a PCIE slot reset, however, the PCIE reset callback is
-not being invoked and thus the Ethernet connection breaks down.
-As the PCIE error in this case is a non-fatal one, requesting a
-slot reset can be avoided.
-This patch fixes the task hung issue and preserves Ethernet
-connection by ignoring non-fatal PCIE errors.
-
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230620174732.4145155-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1d5449445bd0 ("hwrng: mx-rngc - add a driver for Freescale RNGC")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/char/hw_random/imx-rngc.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index c5f465814dec3..4465982100127 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -9453,6 +9453,11 @@ static pci_ers_result_t igb_io_error_detected(struct pci_dev *pdev,
- 	struct net_device *netdev = pci_get_drvdata(pdev);
- 	struct igb_adapter *adapter = netdev_priv(netdev);
+--- a/drivers/char/hw_random/imx-rngc.c
++++ b/drivers/char/hw_random/imx-rngc.c
+@@ -99,7 +99,7 @@ static int imx_rngc_self_test(struct imx
+ 	cmd = readl(rngc->base + RNGC_COMMAND);
+ 	writel(cmd | RNGC_CMD_SELF_TEST, rngc->base + RNGC_COMMAND);
  
-+	if (state == pci_channel_io_normal) {
-+		dev_warn(&pdev->dev, "Non-correctable non-fatal error reported.\n");
-+		return PCI_ERS_RESULT_CAN_RECOVER;
-+	}
-+
- 	netif_device_detach(netdev);
+-	ret = wait_for_completion_timeout(&rngc->rng_op_done, RNGC_TIMEOUT);
++	ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
+ 	if (!ret) {
+ 		imx_rngc_irq_mask_clear(rngc);
+ 		return -ETIMEDOUT;
+@@ -182,9 +182,7 @@ static int imx_rngc_init(struct hwrng *r
+ 		cmd = readl(rngc->base + RNGC_COMMAND);
+ 		writel(cmd | RNGC_CMD_SEED, rngc->base + RNGC_COMMAND);
  
- 	if (state == pci_channel_io_perm_failure)
--- 
-2.39.2
-
+-		ret = wait_for_completion_timeout(&rngc->rng_op_done,
+-				RNGC_TIMEOUT);
+-
++		ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
+ 		if (!ret) {
+ 			imx_rngc_irq_mask_clear(rngc);
+ 			return -ETIMEDOUT;
 
 
