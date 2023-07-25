@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 314137616B8
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03967611D7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235093AbjGYLle (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:41:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
+        id S233043AbjGYK4r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235092AbjGYLlN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 619801FFC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:53 -0700 (PDT)
+        with ESMTP id S232103AbjGYK4Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95A43A9D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52BED616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62281C433C8;
-        Tue, 25 Jul 2023 11:40:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44AB761680
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539D3C433C9;
+        Tue, 25 Jul 2023 10:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285249;
-        bh=+yRqOGx+1ShMjJWNWhZw24bxhZTcXzKn+wHD2XmyRW8=;
+        s=korg; t=1690282426;
+        bh=sB+XtJAYpsxpgs8eSEbivLDZHx106L5FQ9mAbaQJbvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HFxGBUidqCfWYx+07XKlxMPfJb/NHf2g1NKxqR9OussLsmb85q+BJF/dzL3tVk7kx
-         R5TqfCqZwwYpSabZ3k9k5Rvasr8v9dKb89l5HhnU6DL2bKZnS7DXxG1R+xp3b5f88E
-         uPXynpDtd8Yk1IKEFMVCCVJybv7rf+29Zv6MNFfE=
+        b=cCXMiImXK9V72Gew3wK3QlmP561q+NJfJAUlIlCxiXD9QYJUymM76Sj5Ov88lJ497
+         +aCxw9GFayq4XchzcTKGOLRrAU9v0bpy2EDxfGqcQJQMn2GA6/NdetQylTey+/QM9h
+         pbYMmX6ukfvZxkVHkIpK+Wjygdve6vSTd1MKT4s4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/313] mfd: intel-lpss: Add missing check for platform_get_resource
+        patches@lists.linux.dev,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 124/227] wifi: iwlwifi: mvm: fix potential array out of bounds access
 Date:   Tue, 25 Jul 2023 12:44:51 +0200
-Message-ID: <20230725104526.978482605@linuxfoundation.org>
+Message-ID: <20230725104519.946711193@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-[ Upstream commit d918e0d5824495a75d00b879118b098fcab36fdb ]
+[ Upstream commit 637452360ecde9ac972d19416e9606529576b302 ]
 
-Add the missing check for platform_get_resource and return error
-if it fails.
+Account for IWL_SEC_WEP_KEY_OFFSET when needed while verifying
+key_len size in iwl_mvm_sec_key_add().
 
-Fixes: 4b45efe85263 ("mfd: Add support for Intel Sunrisepoint LPSS devices")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230609014818.28475-1-jiasheng@iscas.ac.cn
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230613155501.f193b7493a93.I6948ba625b9318924b96a5e22602ac75d2bd0125@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss-acpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/intel-lpss-acpi.c b/drivers/mfd/intel-lpss-acpi.c
-index 045cbf0cbe53a..993e305a232c5 100644
---- a/drivers/mfd/intel-lpss-acpi.c
-+++ b/drivers/mfd/intel-lpss-acpi.c
-@@ -114,6 +114,9 @@ static int intel_lpss_acpi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+index 8853821b37168..1e659bd07392a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2022 Intel Corporation
++ * Copyright (C) 2022 - 2023 Intel Corporation
+  */
+ #include <linux/kernel.h>
+ #include <net/mac80211.h>
+@@ -179,9 +179,14 @@ int iwl_mvm_sec_key_add(struct iwl_mvm *mvm,
+ 		.u.add.key_flags = cpu_to_le32(key_flags),
+ 		.u.add.tx_seq = cpu_to_le64(atomic64_read(&keyconf->tx_pn)),
+ 	};
++	int max_key_len = sizeof(cmd.u.add.key);
+ 	int ret;
  
- 	info->mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!info->mem)
-+		return -ENODEV;
+-	if (WARN_ON(keyconf->keylen > sizeof(cmd.u.add.key)))
++	if (keyconf->cipher == WLAN_CIPHER_SUITE_WEP40 ||
++	    keyconf->cipher == WLAN_CIPHER_SUITE_WEP104)
++		max_key_len -= IWL_SEC_WEP_KEY_OFFSET;
 +
- 	info->irq = platform_get_irq(pdev, 0);
++	if (WARN_ON(keyconf->keylen > max_key_len))
+ 		return -EINVAL;
  
- 	ret = intel_lpss_probe(&pdev->dev, info);
+ 	if (WARN_ON(!sta_mask))
 -- 
 2.39.2
 
