@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5413176133F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE67A7615A6
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234063AbjGYLJE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45396 "EHLO
+        id S234644AbjGYLbc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:31:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234047AbjGYLIt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:49 -0400
+        with ESMTP id S234638AbjGYLbb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E139212B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7854E69
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A4FE6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39785C433C8;
-        Tue, 25 Jul 2023 11:07:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EB1861683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DA6C433C8;
+        Tue, 25 Jul 2023 11:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283247;
-        bh=CFOA766HsT/aL7tCzLKgx7YVm1zzdnfNA+sVuARSn9o=;
+        s=korg; t=1690284687;
+        bh=AsPTQrPzTDhdK/72JF3qBlfWN0iPBbmFkZvJ++WrSw8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ez7HZJ3yOMy/kwzwq3p7vIRUmxMdzLa3Uv8ljn5kmxgbaOLAF7jc4WMQ4xtvLklpM
-         cpiZEhT/Cj5wEzDu8f2rMDSFKp99RjocctJbfZOoeDz1dehGXYKiT1X+6RCvSXvr11
-         CmqXKTd52b3x0SHKjNmzFV/jFSYXklIv7K/St8kM=
+        b=zpljtYjyjV9Oc3wjC8IdLKyskGnkSI8R/1qBXLZwYg2iu24I1mJMwDKqAiORBMRIU
+         6unSaHRBa6DImjWKaDFGAY1Q2RHkbWJw2M4RVzOA/HTrXNQgwvEanYgSYYuxLO8wa9
+         Hy7PicqFLUKJz4wnaGWjtR/qBXwk21/FyHMEytLI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/183] tcp: annotate data-races around tp->keepalive_probes
-Date:   Tue, 25 Jul 2023 12:46:24 +0200
-Message-ID: <20230725104513.451284456@linuxfoundation.org>
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 446/509] selftests: tc: set timeout to 15 minutes
+Date:   Tue, 25 Jul 2023 12:46:25 +0200
+Message-ID: <20230725104614.170780728@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit 6e5e1de616bf5f3df1769abc9292191dfad9110a ]
+commit fda05798c22a354efde09a76bdfc276b2d591829 upstream.
 
-do_tcp_getsockopt() reads tp->keepalive_probes while another cpu
-might change its value.
+When looking for something else in LKFT reports [1], I noticed that the
+TC selftest ended with a timeout error:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-6-edumazet@google.com
+  not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
+
+The timeout had been introduced 3 years ago, see the Fixes commit below.
+
+This timeout is only in place when executing the selftests via the
+kselftests runner scripts. I guess this is not what most TC devs are
+using and nobody noticed the issue before.
+
+The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
+like it is plenty more time than what it takes in "normal" conditions.
+
+Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
+Cc: stable@vger.kernel.org
+Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tcp.h | 9 +++++++--
- net/ipv4/tcp.c    | 5 +++--
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/tc-testing/settings |    1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 tools/testing/selftests/tc-testing/settings
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index f39c44cbdfe62..9733d8e4f10af 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1535,9 +1535,14 @@ static inline int keepalive_time_when(const struct tcp_sock *tp)
- static inline int keepalive_probes(const struct tcp_sock *tp)
- {
- 	struct net *net = sock_net((struct sock *)tp);
-+	int val;
-+
-+	/* Paired with WRITE_ONCE() in tcp_sock_set_keepcnt()
-+	 * and do_tcp_setsockopt().
-+	 */
-+	val = READ_ONCE(tp->keepalive_probes);
- 
--	return tp->keepalive_probes ? :
--		READ_ONCE(net->ipv4.sysctl_tcp_keepalive_probes);
-+	return val ? : READ_ONCE(net->ipv4.sysctl_tcp_keepalive_probes);
- }
- 
- static inline u32 keepalive_time_elapsed(const struct tcp_sock *tp)
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index d19cfeb78392d..7d75928ea0f9c 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3463,7 +3463,8 @@ int tcp_sock_set_keepcnt(struct sock *sk, int val)
- 		return -EINVAL;
- 
- 	lock_sock(sk);
--	tcp_sk(sk)->keepalive_probes = val;
-+	/* Paired with READ_ONCE() in keepalive_probes() */
-+	WRITE_ONCE(tcp_sk(sk)->keepalive_probes, val);
- 	release_sock(sk);
- 	return 0;
- }
-@@ -3671,7 +3672,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 		if (val < 1 || val > MAX_TCP_KEEPCNT)
- 			err = -EINVAL;
- 		else
--			tp->keepalive_probes = val;
-+			WRITE_ONCE(tp->keepalive_probes, val);
- 		break;
- 	case TCP_SYNCNT:
- 		if (val < 1 || val > MAX_TCP_SYNCNT)
--- 
-2.39.2
-
+--- /dev/null
++++ b/tools/testing/selftests/tc-testing/settings
+@@ -0,0 +1 @@
++timeout=900
 
 
