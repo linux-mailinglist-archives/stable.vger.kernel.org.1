@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32275761307
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 132B6761721
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233914AbjGYLHZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45406 "EHLO
+        id S230271AbjGYLpN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233973AbjGYLHG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:06 -0400
+        with ESMTP id S231435AbjGYLpI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460E126B5
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76BD19A0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97FB461656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEE4C433C9;
-        Tue, 25 Jul 2023 11:05:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DC6E615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81333C433C7;
+        Tue, 25 Jul 2023 11:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283150;
-        bh=rESpSAXLLpkL8fKcfq33vMxzNM4rgXyHRy+ZYzqexes=;
+        s=korg; t=1690285506;
+        bh=skF5nD74tf3Bzz55Ixw89W9t6ya2NhtNrV7fXgyfXRE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K0IlYPDgmQzHNsaScJj20/Oa2krMF75ZEA5J+AxcGSJJbrIDGlnsXa0MW7uvU4ZwF
-         qHaPxV4vvqNYHHBLYAKzamv6srm6lpGLBHCPyv/wbQ1P18ZTu/sx++OYz00zMSOxkV
-         exzTMXSes7n4ragCiGXjVcbRYCbHe9zD2OAGrJKg=
+        b=EbzocFL4WDeGZnV79+M5qQ3D0it5m9UjDCiGMZWITkkOL62n4llD/vb1r9+Db+lc7
+         dlyjvYNGnNREk8RmTkZ9vxdYXE0j3uCZVVro/GQEP9mB9r3bdVYhfAU9JkFhTOmUdO
+         liVmqU00PY9xvAFaXJzKxFZlWkvwbMGbgjPavEqk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/183] tcp: annotate data-races around tp->keepalive_intvl
+        patches@lists.linux.dev, Stefan Berger <stefanb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 5.4 230/313] tpm: tpm_vtpm_proxy: fix a race condition in /dev/vtpmx creation
 Date:   Tue, 25 Jul 2023 12:46:23 +0200
-Message-ID: <20230725104513.420904677@linuxfoundation.org>
+Message-ID: <20230725104530.994528379@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,68 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
 
-[ Upstream commit 5ecf9d4f52ff2f1d4d44c9b68bc75688e82f13b4 ]
+commit f4032d615f90970d6c3ac1d9c0bce3351eb4445c upstream.
 
-do_tcp_getsockopt() reads tp->keepalive_intvl while another cpu
-might change its value.
+/dev/vtpmx is made visible before 'workqueue' is initialized, which can
+lead to a memory corruption in the worst case scenario.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address this by initializing 'workqueue' as the very first step of the
+driver initialization.
+
+Cc: stable@vger.kernel.org
+Fixes: 6f99612e2500 ("tpm: Proxy driver for supporting multiple emulated TPMs")
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tcp.h | 9 +++++++--
- net/ipv4/tcp.c    | 4 ++--
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/char/tpm/tpm_vtpm_proxy.c |   30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 397c248102415..f39c44cbdfe62 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1511,9 +1511,14 @@ void tcp_leave_memory_pressure(struct sock *sk);
- static inline int keepalive_intvl_when(const struct tcp_sock *tp)
+--- a/drivers/char/tpm/tpm_vtpm_proxy.c
++++ b/drivers/char/tpm/tpm_vtpm_proxy.c
+@@ -693,37 +693,21 @@ static struct miscdevice vtpmx_miscdev =
+ 	.fops = &vtpmx_fops,
+ };
+ 
+-static int vtpmx_init(void)
+-{
+-	return misc_register(&vtpmx_miscdev);
+-}
+-
+-static void vtpmx_cleanup(void)
+-{
+-	misc_deregister(&vtpmx_miscdev);
+-}
+-
+ static int __init vtpm_module_init(void)
  {
- 	struct net *net = sock_net((struct sock *)tp);
-+	int val;
-+
-+	/* Paired with WRITE_ONCE() in tcp_sock_set_keepintvl()
-+	 * and do_tcp_setsockopt().
-+	 */
-+	val = READ_ONCE(tp->keepalive_intvl);
+ 	int rc;
  
--	return tp->keepalive_intvl ? :
--		READ_ONCE(net->ipv4.sysctl_tcp_keepalive_intvl);
-+	return val ? : READ_ONCE(net->ipv4.sysctl_tcp_keepalive_intvl);
+-	rc = vtpmx_init();
+-	if (rc) {
+-		pr_err("couldn't create vtpmx device\n");
+-		return rc;
+-	}
+-
+ 	workqueue = create_workqueue("tpm-vtpm");
+ 	if (!workqueue) {
+ 		pr_err("couldn't create workqueue\n");
+-		rc = -ENOMEM;
+-		goto err_vtpmx_cleanup;
++		return -ENOMEM;
+ 	}
+ 
+-	return 0;
+-
+-err_vtpmx_cleanup:
+-	vtpmx_cleanup();
++	rc = misc_register(&vtpmx_miscdev);
++	if (rc) {
++		pr_err("couldn't create vtpmx device\n");
++		destroy_workqueue(workqueue);
++	}
+ 
+ 	return rc;
+ }
+@@ -731,7 +715,7 @@ err_vtpmx_cleanup:
+ static void __exit vtpm_module_exit(void)
+ {
+ 	destroy_workqueue(workqueue);
+-	vtpmx_cleanup();
++	misc_deregister(&vtpmx_miscdev);
  }
  
- static inline int keepalive_time_when(const struct tcp_sock *tp)
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index c0d7b226bca1a..d19cfeb78392d 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3451,7 +3451,7 @@ int tcp_sock_set_keepintvl(struct sock *sk, int val)
- 		return -EINVAL;
- 
- 	lock_sock(sk);
--	tcp_sk(sk)->keepalive_intvl = val * HZ;
-+	WRITE_ONCE(tcp_sk(sk)->keepalive_intvl, val * HZ);
- 	release_sock(sk);
- 	return 0;
- }
-@@ -3665,7 +3665,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 		if (val < 1 || val > MAX_TCP_KEEPINTVL)
- 			err = -EINVAL;
- 		else
--			tp->keepalive_intvl = val * HZ;
-+			WRITE_ONCE(tp->keepalive_intvl, val * HZ);
- 		break;
- 	case TCP_KEEPCNT:
- 		if (val < 1 || val > MAX_TCP_KEEPCNT)
--- 
-2.39.2
-
+ module_init(vtpm_module_init);
 
 
