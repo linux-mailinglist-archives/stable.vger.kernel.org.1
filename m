@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A46897611D4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 620DE761562
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232922AbjGYK4n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:56:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36022 "EHLO
+        id S234639AbjGYL2Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232560AbjGYK4V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DEAE4C10
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:58 -0700 (PDT)
+        with ESMTP id S234072AbjGYL2T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACA1F2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E0A06165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BB5C433C7;
-        Tue, 25 Jul 2023 10:53:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFC9A615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D75C433C8;
+        Tue, 25 Jul 2023 11:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282412;
-        bh=wKXr/dlvuwhoqG7NTqfII2N83LeUQF7/ue+SLfqzCUc=;
+        s=korg; t=1690284498;
+        bh=1Eq+fA3aGZ/kX/apZbxCaZ9eNZrqq4wmps9PUsYVrrc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2B8a3ZErK4DlgXbnNLMH6aECF/tDOeDrkN0lv1hfhGBdTGJ28mhUxUm6s/CFzC6XZ
-         +E8ioq9VrtuTtrSecIsIGAjsI/lwD0Jz0qAhHFu09IWavmnwLi5QbeMRskxrzaR4Ix
-         N0M1qkDhGDAUqext987WKJgVCfd8S9pCj46kSLM0=
+        b=Smc7vFFaBeM/fWjzX5Rg2SL8UMN5PkRg4iJfoSJL3/6y2SN0UBk9WWaKhMCqaIrai
+         +u+t8zo6dXp6vZl20LXxzsVBA1NXStt6mR8xEZu1G9wJP1l7jEQpGh0eZeVSBQ7K7x
+         L+TWLQZSZWSqVN2U1HdRvM7paV3fGQCMje/zn5gs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 120/227] wifi: mac80211_hwsim: Fix possible NULL dereference
+Subject: [PATCH 5.10 348/509] net: bgmac: postpone turning IRQs off to avoid SoC hangs
 Date:   Tue, 25 Jul 2023 12:44:47 +0200
-Message-ID: <20230725104519.772935768@linuxfoundation.org>
+Message-ID: <20230725104609.673090741@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 0cc80943ef518a1c51a1111e9346d1daf11dd545 ]
+[ Upstream commit e7731194fdf085f46d58b1adccfddbd0dfee4873 ]
 
-In a call to mac80211_hwsim_select_tx_link() the sta pointer might
-be NULL, thus need to check that it is not NULL before accessing it.
+Turning IRQs off is done by accessing Ethernet controller registers.
+That can't be done until device's clock is enabled. It results in a SoC
+hang otherwise.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230604120651.f4d889fc98c4.Iae85f527ed245a37637a874bb8b8c83d79812512@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This bug remained unnoticed for years as most bootloaders keep all
+Ethernet interfaces turned on. It seems to only affect a niche SoC
+family BCM47189. It has two Ethernet controllers but CFE bootloader uses
+only the first one.
+
+Fixes: 34322615cbaa ("net: bgmac: Mask interrupts during probe")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 4 ++--
+ drivers/net/ethernet/broadcom/bgmac.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 89c7a1420381d..ed5af63025979 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -4,7 +4,7 @@
-  * Copyright (c) 2008, Jouni Malinen <j@w1.fi>
-  * Copyright (c) 2011, Javier Lopez <jlopex@gmail.com>
-  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2022 Intel Corporation
-+ * Copyright (C) 2018 - 2023 Intel Corporation
-  */
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index bb999e67d7736..ab8ee93316354 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -1492,8 +1492,6 @@ int bgmac_enet_probe(struct bgmac *bgmac)
  
- /*
-@@ -1864,7 +1864,7 @@ mac80211_hwsim_select_tx_link(struct mac80211_hwsim_data *data,
+ 	bgmac->in_init = true;
  
- 	WARN_ON(is_multicast_ether_addr(hdr->addr1));
+-	bgmac_chip_intrs_off(bgmac);
+-
+ 	net_dev->irq = bgmac->irq;
+ 	SET_NETDEV_DEV(net_dev, bgmac->dev);
+ 	dev_set_drvdata(bgmac->dev, bgmac);
+@@ -1511,6 +1509,8 @@ int bgmac_enet_probe(struct bgmac *bgmac)
+ 	 */
+ 	bgmac_clk_enable(bgmac, 0);
  
--	if (WARN_ON_ONCE(!sta->valid_links))
-+	if (WARN_ON_ONCE(!sta || !sta->valid_links))
- 		return &vif->bss_conf;
- 
- 	for (i = 0; i < ARRAY_SIZE(vif->link_conf); i++) {
++	bgmac_chip_intrs_off(bgmac);
++
+ 	/* This seems to be fixing IRQ by assigning OOB #6 to the core */
+ 	if (!(bgmac->feature_flags & BGMAC_FEAT_IDM_MASK)) {
+ 		if (bgmac->feature_flags & BGMAC_FEAT_IRQ_ID_OOB_6)
 -- 
 2.39.2
 
