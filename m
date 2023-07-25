@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F44776139B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED2F9761748
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234196AbjGYLL7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50322 "EHLO
+        id S232214AbjGYLqq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:46:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234054AbjGYLLk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:40 -0400
+        with ESMTP id S232271AbjGYLqn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F543AA1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:11:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3AC91FD7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9D0C6165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:11:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F7EC433C7;
-        Tue, 25 Jul 2023 11:11:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 484C16169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582A5C433C8;
+        Tue, 25 Jul 2023 11:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283464;
-        bh=J1PTcIokG27FjcpogXJghJvm511ydhg3gwmC6H6Kk4U=;
+        s=korg; t=1690285595;
+        bh=2Boqgdv+d+CAbaPylFU5D9+yQB76GtZgHvvqAMNFois=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DBab0jaHSmDbioXNuR0db6xG6LvzBRiSc7dMVb6hHj+oZDc9aRQjplTQYUr/ocSiI
-         dmlQ1JFFQTNAvuOnrGIjI2XNEndDM/3UkeFlwGygJuSVEMZZoX0oFt8C86DGNVGtZP
-         FCB3vmmdB+wRLOUlrRFG1cIuYf6vkWElvS15HbCU=
+        b=dEkAc/Cl2pLedhJjBbcXxVWlv5/HBDwaxleWBGn3/+djGZGw2uRMlofp8R/Higu98
+         8n8hQ7GMU819X36j9U1H+NRkGCSRxyI6zlGcg9CVTJ5/I85/3IJElw+7jgviPAXLZD
+         i66ocFsp/6TgDxaUvnRIUua17sDuJ1h/rg4wM0QU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 64/78] netfilter: nf_tables: skip bound chain on rule flush
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 5.4 262/313] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() in case of error
 Date:   Tue, 25 Jul 2023 12:46:55 +0200
-Message-ID: <20230725104453.754046875@linuxfoundation.org>
+Message-ID: <20230725104532.390623539@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +57,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 6eaf41e87a223ae6f8e7a28d6e78384ad7e407f8 ]
+commit a9c09546e903f1068acfa38e1ee18bded7114b37 upstream.
 
-Skip bound chain when flushing table rules, the rule that owns this
-chain releases these objects.
+If clk_get_rate() fails, the clk that has just been allocated needs to be
+freed.
 
-Otherwise, the following warning is triggered:
-
-  WARNING: CPU: 2 PID: 1217 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
-  CPU: 2 PID: 1217 Comm: chain-flush Not tainted 6.1.39 #1
-  RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
-
-Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v3.3+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/samsung.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 1cf075a4269a4..e0e675313d8e1 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3795,6 +3795,8 @@ static int nf_tables_delrule(struct sk_buff *skb, const struct nfnl_info *info,
- 		list_for_each_entry(chain, &table->chains, list) {
- 			if (!nft_is_active_next(net, chain))
- 				continue;
-+			if (nft_chain_is_bound(chain))
-+				continue;
+--- a/drivers/tty/serial/samsung.c
++++ b/drivers/tty/serial/samsung.c
+@@ -1199,8 +1199,12 @@ static unsigned int s3c24xx_serial_getcl
+ 			continue;
  
- 			ctx.chain = chain;
- 			err = nft_delrule_by_chain(&ctx);
--- 
-2.39.2
-
+ 		rate = clk_get_rate(clk);
+-		if (!rate)
++		if (!rate) {
++			dev_err(ourport->port.dev,
++				"Failed to get clock rate for %s.\n", clkname);
++			clk_put(clk);
+ 			continue;
++		}
+ 
+ 		if (ourport->info->has_divslot) {
+ 			unsigned long div = rate / req_baud;
 
 
