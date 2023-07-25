@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A07A761197
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 829897616AC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231878AbjGYKxi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59138 "EHLO
+        id S234941AbjGYLkw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:40:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232968AbjGYKwZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:25 -0400
+        with ESMTP id S234972AbjGYLkm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F6B51BCC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9AE11BF8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E3D2615A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21105C433C8;
-        Tue, 25 Jul 2023 10:51:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35F4A61698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46814C433C8;
+        Tue, 25 Jul 2023 11:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282285;
-        bh=ylEI8XHrrxet1q9RqEr1GBUUUpJ6bWTne60S3R3C1E0=;
+        s=korg; t=1690285224;
+        bh=D429T2mjmVZIwc3ndvZEXn6r5WOeOQQaHYfXCS3drNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HX5d9LzYEDY3mZjW18DaQJmUHRiP9+ZoZo2/H4d+J31QRXVFHCiQtlUi7/xBDPe0t
-         WebPUVJcWdq12NEUV0/+oBETi5XbhmJi2iuANXUAK58NvPq9gvPMtjrU9tuMe2KNdB
-         Q5mZ5w2jk9yP0y1vhhHbylG71q+JpCNw3x+gAOrQ=
+        b=AXs5tD24dylc8GROu5PlJZrMDE+f9ruiEPb2J6fviU9dkUUiqF+AlZyH5FqzPYhdr
+         7kwP6V6plEVxy+7t+z5fhePyAYjulFZtTmDjfko3jw1ATOEPc+N0rVznin1RxEUBMi
+         qxQE36lcn3gStGa8zvL7t/UjDefqkCglYfSauEn0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Eric Whitney <enwlinux@gmail.com>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.4 075/227] ext4: correct inline offset when handling xattrs in inode body
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 089/313] drm/radeon: fix possible division-by-zero errors
 Date:   Tue, 25 Jul 2023 12:44:02 +0200
-Message-ID: <20230725104517.871894005@linuxfoundation.org>
+Message-ID: <20230725104524.803728479@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +56,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Whitney <enwlinux@gmail.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 6909cf5c4101214f4305a62d582a5b93c7e1eb9a upstream.
+[ Upstream commit 1becc57cd1a905e2aa0e1eca60d2a37744525c4a ]
 
-When run on a file system where the inline_data feature has been
-enabled, xfstests generic/269, generic/270, and generic/476 cause ext4
-to emit error messages indicating that inline directory entries are
-corrupted.  This occurs because the inline offset used to locate
-inline directory entries in the inode body is not updated when an
-xattr in that shared region is deleted and the region is shifted in
-memory to recover the space it occupied.  If the deleted xattr precedes
-the system.data attribute, which points to the inline directory entries,
-that attribute will be moved further up in the region.  The inline
-offset continues to point to whatever is located in system.data's former
-location, with unfortunate effects when used to access directory entries
-or (presumably) inline data in the inode body.
+Function rv740_get_decoded_reference_divider() may return 0 due to
+unpredictable reference divider value calculated in
+radeon_atom_get_clock_dividers(). This will lead to
+division-by-zero error once that value is used as a divider
+in calculating 'clk_s'.
+While unlikely, this issue should nonetheless be prevented so add a
+sanity check for such cases by testing 'decoded_ref' value against 0.
 
-Cc: stable@kernel.org
-Signed-off-by: Eric Whitney <enwlinux@gmail.com>
-Link: https://lore.kernel.org/r/20230522181520.1570360-1-enwlinux@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+v2: minor coding style fixes (Alex)
+In practice this should actually happen as the vbios should be
+properly populated.
+
+Fixes: 66229b200598 ("drm/radeon/kms: add dpm support for rv7xx (v4)")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/radeon/cypress_dpm.c | 8 ++++++--
+ drivers/gpu/drm/radeon/ni_dpm.c      | 8 ++++++--
+ drivers/gpu/drm/radeon/rv740_dpm.c   | 8 ++++++--
+ 3 files changed, 18 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1782,6 +1782,20 @@ static int ext4_xattr_set_entry(struct e
- 		memmove(here, (void *)here + size,
- 			(void *)last - (void *)here + sizeof(__u32));
- 		memset(last, 0, size);
+diff --git a/drivers/gpu/drm/radeon/cypress_dpm.c b/drivers/gpu/drm/radeon/cypress_dpm.c
+index 32ed60f1048bd..b31d65a6752f1 100644
+--- a/drivers/gpu/drm/radeon/cypress_dpm.c
++++ b/drivers/gpu/drm/radeon/cypress_dpm.c
+@@ -559,8 +559,12 @@ static int cypress_populate_mclk_value(struct radeon_device *rdev,
+ 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
+ 			u32 reference_clock = rdev->clock.mpll.reference_freq;
+ 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
+-			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
+-			u32 clk_v = ss.percentage *
++			u32 clk_s, clk_v;
 +
-+		/*
-+		 * Update i_inline_off - moved ibody region might contain
-+		 * system.data attribute.  Handling a failure here won't
-+		 * cause other complications for setting an xattr.
-+		 */
-+		if (!is_block && ext4_has_inline_data(inode)) {
-+			ret = ext4_find_inline_data_nolock(inode);
-+			if (ret) {
-+				ext4_warning_inode(inode,
-+					"unable to update i_inline_off");
-+				goto out;
-+			}
-+		}
- 	} else if (s->not_found) {
- 		/* Insert new name. */
- 		size_t size = EXT4_XATTR_LEN(name_len);
++			if (!decoded_ref)
++				return -EINVAL;
++			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
++			clk_v = ss.percentage *
+ 				(0x4000 * dividers.whole_fb_div + 0x800 * dividers.frac_fb_div) / (clk_s * 625);
+ 
+ 			mpll_ss1 &= ~CLKV_MASK;
+diff --git a/drivers/gpu/drm/radeon/ni_dpm.c b/drivers/gpu/drm/radeon/ni_dpm.c
+index 288ec3039bc2c..cad7a73a551f7 100644
+--- a/drivers/gpu/drm/radeon/ni_dpm.c
++++ b/drivers/gpu/drm/radeon/ni_dpm.c
+@@ -2241,8 +2241,12 @@ static int ni_populate_mclk_value(struct radeon_device *rdev,
+ 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
+ 			u32 reference_clock = rdev->clock.mpll.reference_freq;
+ 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
+-			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
+-			u32 clk_v = ss.percentage *
++			u32 clk_s, clk_v;
++
++			if (!decoded_ref)
++				return -EINVAL;
++			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
++			clk_v = ss.percentage *
+ 				(0x4000 * dividers.whole_fb_div + 0x800 * dividers.frac_fb_div) / (clk_s * 625);
+ 
+ 			mpll_ss1 &= ~CLKV_MASK;
+diff --git a/drivers/gpu/drm/radeon/rv740_dpm.c b/drivers/gpu/drm/radeon/rv740_dpm.c
+index 327d65a76e1f4..79b2de65e905e 100644
+--- a/drivers/gpu/drm/radeon/rv740_dpm.c
++++ b/drivers/gpu/drm/radeon/rv740_dpm.c
+@@ -250,8 +250,12 @@ int rv740_populate_mclk_value(struct radeon_device *rdev,
+ 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
+ 			u32 reference_clock = rdev->clock.mpll.reference_freq;
+ 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
+-			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
+-			u32 clk_v = 0x40000 * ss.percentage *
++			u32 clk_s, clk_v;
++
++			if (!decoded_ref)
++				return -EINVAL;
++			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
++			clk_v = 0x40000 * ss.percentage *
+ 				(dividers.whole_fb_div + (dividers.frac_fb_div / 8)) / (clk_s * 10000);
+ 
+ 			mpll_ss1 &= ~CLKV_MASK;
+-- 
+2.39.2
+
 
 
