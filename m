@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E25A47611D3
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8733B761297
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232541AbjGYK4m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:56:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35796 "EHLO
+        id S233940AbjGYLES (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:04:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229896AbjGYK4U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 822484C0E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:57 -0700 (PDT)
+        with ESMTP id S233850AbjGYLDz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D5649F9
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E15AC61697
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2704C433C8;
-        Tue, 25 Jul 2023 10:53:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 486346168A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1F6C433C7;
+        Tue, 25 Jul 2023 11:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282396;
-        bh=KK4AJoIaLPPm3zQMlhPjAJ75YEDERv0cDA6Wgc4knj4=;
+        s=korg; t=1690282862;
+        bh=yOyF1wLMW/x8Ufu4Q9NjpiC1go/ZDjm13J8aetj2wwk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=neJH+HnjAQZXfxg7+G0a3YImwbSg39hyxhle6gjmcrOjQHQMj7pJsMwRvlwndyy6x
-         lsF5EOnKJA0biIF5sJnJwDYYGJsoxaPTzucuTUP9/wmigNaMN7pfBkgeN1Pmv5yOU9
-         OfvX7a82MsnLVKKO4JyjsdSsScOKeqG31jh0aF+0=
+        b=f4OmD7WQSMKjCDQlLVb9FuMi6uBPu9XfhqpZRBLRYqT9fFz/PElm0QMzS3qaSOm9s
+         MqYQMMiPGOdTT9NXSSckkHS0ouxoCWxIsYGDQtZBNWsdeczsqyxW8O+ZmN7teNDjhu
+         N5KW9+Wo2f08wqXzefXtn1CkqmpXNo7Uf93DI7gI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+8b2a08dfbd25fd933d75@syzkaller.appspotmail.com,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 114/227] bpf: drop unnecessary user-triggerable WARN_ONCE in verifierl log
+        syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>,
+        Ye Bin <yebin10@huawei.com>
+Subject: [PATCH 6.1 053/183] [PATCH AUTOSEL 4.19 03/11] quota: Properly disable quotas when add_dquot_ref() fails
 Date:   Tue, 25 Jul 2023 12:44:41 +0200
-Message-ID: <20230725104519.493722641@linuxfoundation.org>
+Message-ID: <20230725104509.877448349@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,47 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrii Nakryiko <andrii@kernel.org>
+[ Upstream commit 6a4e3363792e30177cc3965697e34ddcea8b900b ]
 
-[ Upstream commit cff36398bd4c7d322d424433db437f3c3391c491 ]
+When add_dquot_ref() fails (usually due to IO error or ENOMEM), we want
+to disable quotas we are trying to enable. However dquot_disable() call
+was passed just the flags we are enabling so in case flags ==
+DQUOT_USAGE_ENABLED dquot_disable() call will just fail with EINVAL
+instead of properly disabling quotas. Fix the problem by always passing
+DQUOT_LIMITS_ENABLED | DQUOT_USAGE_ENABLED to dquot_disable() in this
+case.
 
-It's trivial for user to trigger "verifier log line truncated" warning,
-as verifier has a fixed-sized buffer of 1024 bytes (as of now), and there are at
-least two pieces of user-provided information that can be output through
-this buffer, and both can be arbitrarily sized by user:
-  - BTF names;
-  - BTF.ext source code lines strings.
-
-Verifier log buffer should be properly sized for typical verifier state
-output. But it's sort-of expected that this buffer won't be long enough
-in some circumstances. So let's drop the check. In any case code will
-work correctly, at worst truncating a part of a single line output.
-
-Reported-by: syzbot+8b2a08dfbd25fd933d75@syzkaller.appspotmail.com
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20230516180409.3549088-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-and-tested-by: Ye Bin <yebin10@huawei.com>
+Reported-by: syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230605140731.2427629-2-yebin10@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/log.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/quota/dquot.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/log.c b/kernel/bpf/log.c
-index 046ddff37a76d..850494423530e 100644
---- a/kernel/bpf/log.c
-+++ b/kernel/bpf/log.c
-@@ -62,9 +62,6 @@ void bpf_verifier_vlog(struct bpf_verifier_log *log, const char *fmt,
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2420,7 +2420,8 @@ int dquot_load_quota_sb(struct super_blo
  
- 	n = vscnprintf(log->kbuf, BPF_VERIFIER_TMP_LOG_SIZE, fmt, args);
+ 	error = add_dquot_ref(sb, type);
+ 	if (error)
+-		dquot_disable(sb, type, flags);
++		dquot_disable(sb, type,
++			      DQUOT_USAGE_ENABLED | DQUOT_LIMITS_ENABLED);
  
--	WARN_ONCE(n >= BPF_VERIFIER_TMP_LOG_SIZE - 1,
--		  "verifier log line truncated - local buffer too short\n");
--
- 	if (log->level == BPF_LOG_KERNEL) {
- 		bool newline = n > 0 && log->kbuf[n - 1] == '\n';
- 
--- 
-2.39.2
-
+ 	return error;
+ out_fmt:
 
 
