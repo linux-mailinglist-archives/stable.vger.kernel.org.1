@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2F94761786
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4583E76177B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233095AbjGYLs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56066 "EHLO
+        id S233173AbjGYLs6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:48:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232152AbjGYLsh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:37 -0400
+        with ESMTP id S232381AbjGYLsj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2711BE74
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19E7E74
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFA93616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD375C433C9;
-        Tue, 25 Jul 2023 11:48:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77A36616A9
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872B0C433C8;
+        Tue, 25 Jul 2023 11:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285715;
-        bh=DDt+tKU63snw0uZUGRLpM/0mQ1YBeLXD0yQis9FtCwE=;
+        s=korg; t=1690285717;
+        bh=++eqGgd4t70wMcvXPghnOqSek4JERooChTWThqW69Q0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mNTJzj7GCH576MoS2+PdzyM4RQrhtsz1Ezdd5++RoNMFqy8+6s058Dz2O6e9TmDFa
-         CP9LhaC4wYxTicHWiMf2JnOsQkp556X2WQB9el1rs6g1EQ7H+Bcmgl5hXHJORLj0KC
-         +LY+vbQFAcFtsDmXvmk5hqhzim77WFLnb1qvvJdo=
+        b=uCu1Bl+p1X13dvE8EbJ+hZK320lKUGpbheSvSDGu5mawu1lTtkR2WLJTZUW++SmIY
+         TwNHK1gv+IiUXeHvei6Vb3wDUibvBCfT/fR5KxYSjHzQfJ0JECNiEyVcHGIaZE7CGP
+         Yn+1DiTRKyaZUYc+nZeRJoPJa22tfoq+Bb5f8FoI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 304/313] llc: Dont drop packet from non-root netns.
-Date:   Tue, 25 Jul 2023 12:47:37 +0200
-Message-ID: <20230725104534.298735314@linuxfoundation.org>
+Subject: [PATCH 5.4 305/313] netfilter: nf_tables: fix spurious set element insertion failure
+Date:   Tue, 25 Jul 2023 12:47:38 +0200
+Message-ID: <20230725104534.330448574@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
 References: <20230725104521.167250627@linuxfoundation.org>
@@ -55,48 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 6631463b6e6673916d2481f692938f393148aa82 ]
+[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
 
-Now these upper layer protocol handlers can be called from llc_rcv()
-as sap->rcv_func(), which is registered by llc_sap_open().
+On some platforms there is a padding hole in the nft_verdict
+structure, between the verdict code and the chain pointer.
 
-  * function which is passed to register_8022_client()
-    -> no in-kernel user calls register_8022_client().
+On element insertion, if the new element clashes with an existing one and
+NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
+the data associated with duplicated element is the same as the existing
+one.  The data equality check uses memcmp.
 
-  * snap_rcv()
-    `- proto->rcvfunc() : registered by register_snap_client()
-       -> aarp_rcv() and atalk_rcv() drop packets from non-root netns
+For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
+padding area leads to spurious failure even if the verdict data is the
+same.
 
-  * stp_pdu_rcv()
-    `- garp_protos[]->rcv() : registered by stp_proto_register()
-       -> garp_pdu_rcv() and br_stp_rcv() are netns-aware
+This then makes the insertion fail with 'already exists' error, even
+though the new "key : data" matches an existing entry and userspace
+told the kernel that it doesn't want to receive an error indication.
 
-So, we can safely remove the netns restriction in llc_rcv().
-
-Fixes: e730c15519d0 ("[NET]: Make packet reception network namespace safe")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/llc_input.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
-index 82cb93f66b9bd..f9e801cc50f5e 100644
---- a/net/llc/llc_input.c
-+++ b/net/llc/llc_input.c
-@@ -162,9 +162,6 @@ int llc_rcv(struct sk_buff *skb, struct net_device *dev,
- 	void (*sta_handler)(struct sk_buff *skb);
- 	void (*sap_handler)(struct llc_sap *sap, struct sk_buff *skb);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 123ef398a10dc..a64aa888751cb 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7655,6 +7655,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
  
--	if (!net_eq(dev_net(dev), &init_net))
--		goto drop;
--
- 	/*
- 	 * When the interface is in promisc. mode, drop all the crap that it
- 	 * receives, do not try to analyse it.
+ 	if (!tb[NFTA_VERDICT_CODE])
+ 		return -EINVAL;
++
++	/* zero padding hole for memcmp */
++	memset(data, 0, sizeof(*data));
+ 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+ 
+ 	switch (data->verdict.code) {
 -- 
 2.39.2
 
