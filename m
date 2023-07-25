@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 760767612F4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D17476170E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234040AbjGYLGu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45198 "EHLO
+        id S232743AbjGYLop (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233906AbjGYLGd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C9649C4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:58 -0700 (PDT)
+        with ESMTP id S235096AbjGYLoa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:44:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C033F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:44:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A486161697
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B600DC433CA;
-        Tue, 25 Jul 2023 11:04:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F01616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3372DC433C7;
+        Tue, 25 Jul 2023 11:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283097;
-        bh=Zbsk50WPCS6LScNVx4opOWvJMGwEeTMKK3t83/GHmpo=;
+        s=korg; t=1690285462;
+        bh=B8No4OUOrcyOZObiQixiHbspa5vYCKqzOqocO+lQRro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DHSt0ASnVdxdbU9MQ1PPYgEbBP0vHZdzvvw1nEjtgrK7i+jSePrbDma9UgUNi/h4n
-         7AFzpQBbqRXIqjdisL5AsQNsLhjY2Afm72fB6Q3SY4WgEtHNrOxc9IfeRK/GU0rq5Z
-         6OY8W41g/51mlOjcKCLtM8lUOkggLm2dhmpfCQQE=
+        b=Agsp9+ZXgia+E/2aKH9FQvxTx1iS08cnlZ3dQGXUpO1Pmt3027JAEnngKuxGHWH8M
+         SDLivjkbzVDgmEkd4qsRTgKG1NYfvBDbCq3V51i4a4SVzNjZCYS6KL3QgvOq6Cxqjf
+         o2N9bgOUvpf8deIFuQElX59Dmf5h2ru53veadUdQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/183] net:ipv6: check return value of pskb_trim()
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 213/313] NTB: ntb_transport: fix possible memory leak while device_register() fails
 Date:   Tue, 25 Jul 2023 12:46:06 +0200
-Message-ID: <20230725104512.887787384@linuxfoundation.org>
+Message-ID: <20230725104530.253359060@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,36 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 4258faa130be4ea43e5e2d839467da421b8ff274 ]
+[ Upstream commit 8623ccbfc55d962e19a3537652803676ad7acb90 ]
 
-goto tx_err if an unexpected result is returned by pskb_tirm()
-in ip6erspan_tunnel_xmit().
+If device_register() returns error, the name allocated by
+dev_set_name() need be freed. As comment of device_register()
+says, it should use put_device() to give up the reference in
+the error path. So fix this by calling put_device(), then the
+name can be freed in kobject_cleanup(), and client_dev is freed
+in ntb_transport_client_release().
 
-Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_gre.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ntb/ntb_transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 216b40ccadae0..d3fba7d8dec4e 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -977,7 +977,8 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 		goto tx_err;
+diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+index 00a5d5764993c..3cc0e8ebcdd5c 100644
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -412,7 +412,7 @@ int ntb_transport_register_client_dev(char *device_name)
  
- 	if (skb->len > dev->mtu + dev->hard_header_len) {
--		pskb_trim(skb, dev->mtu + dev->hard_header_len);
-+		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
-+			goto tx_err;
- 		truncate = true;
- 	}
+ 		rc = device_register(dev);
+ 		if (rc) {
+-			kfree(client_dev);
++			put_device(dev);
+ 			goto err;
+ 		}
  
 -- 
 2.39.2
