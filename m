@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5271676129B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1520E7611C7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233809AbjGYLE2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40092 "EHLO
+        id S231577AbjGYK4I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233938AbjGYLEK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:10 -0400
+        with ESMTP id S231578AbjGYKzj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7341844BC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E1E26A1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21EE06168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30471C433C8;
-        Tue, 25 Jul 2023 11:01:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D129061656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CE9C433C7;
+        Tue, 25 Jul 2023 10:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282876;
-        bh=ukGA1Vff2vSyrYcpTgOyWEON3Kp/HGerFiKFo+6iV8U=;
+        s=korg; t=1690282410;
+        bh=gFbCG6CbCKiUU14JKyx5vb5FC2WgrJkn3Q9mi+Y9XMo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uiqt1xPVCTUVQaESyU/Eq/zTBIhpaq23A/47lahcrV+Yy9Ij+CAb8hZNYjSJpjOFh
-         JEBj17HquAkXGjDVrP6fTrJSOuPJE6FbTIlIam8r27Yfylr85pFpAQejFInpp0OnuG
-         p4YbB3qrq4WBKIuVwLkatu6ZlQ0ngefcGFQ+4i2I=
+        b=ODXcDvqJDlaSo3R/1xMza9aaeeB1HTEn9YJu4rWp6GVcpXso1Tzc3Uj3vEcdtXe0r
+         MH9Bbo4/ft6Keyj9ezXxTVAwfgqpxwDe7Nz9bBbdrL2GhakLwxB6uGIiKsIPeJJx6R
+         CM5UQGqEt0LXUoA9t48XMTT+Zf16vTByaA5n7+vc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+853a6f4dfa3cf37d3aea@syzkaller.appspotmail.com,
-        Yogesh <yogi.kernel@gmail.com>,
-        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/183] [PATCH AUTOSEL 4.19 08/11] fs: jfs: Fix UBSAN: array-index-out-of-bounds in dbAllocDmapLev
+Subject: [PATCH 6.4 119/227] wifi: ath11k: add support default regdb while searching board-2.bin for WCN6855
 Date:   Tue, 25 Jul 2023 12:44:46 +0200
-Message-ID: <20230725104510.060335493@linuxfoundation.org>
+Message-ID: <20230725104519.732644623@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,79 +55,136 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 4e302336d5ca1767a06beee7596a72d3bdc8d983 ]
+From: Wen Gong <quic_wgong@quicinc.com>
 
-Syzkaller reported the following issue:
+[ Upstream commit 88ca89202f8e8afb5225eb5244d79cd67c15d744 ]
 
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:1965:6
-index -84 is out of range for type 's8[341]' (aka 'signed char[341]')
-CPU: 1 PID: 4995 Comm: syz-executor146 Not tainted 6.4.0-rc6-syzkaller-00037-gb6dad5178cea #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
- dbAllocDmapLev+0x3e5/0x430 fs/jfs/jfs_dmap.c:1965
- dbAllocCtl+0x113/0x920 fs/jfs/jfs_dmap.c:1809
- dbAllocAG+0x28f/0x10b0 fs/jfs/jfs_dmap.c:1350
- dbAlloc+0x658/0xca0 fs/jfs/jfs_dmap.c:874
- dtSplitUp fs/jfs/jfs_dtree.c:974 [inline]
- dtInsert+0xda7/0x6b00 fs/jfs/jfs_dtree.c:863
- jfs_create+0x7b6/0xbb0 fs/jfs/namei.c:137
- lookup_open fs/namei.c:3492 [inline]
- open_last_lookups fs/namei.c:3560 [inline]
- path_openat+0x13df/0x3170 fs/namei.c:3788
- do_filp_open+0x234/0x490 fs/namei.c:3818
- do_sys_openat2+0x13f/0x500 fs/open.c:1356
- do_sys_open fs/open.c:1372 [inline]
- __do_sys_openat fs/open.c:1388 [inline]
- __se_sys_openat fs/open.c:1383 [inline]
- __x64_sys_openat+0x247/0x290 fs/open.c:1383
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f1f4e33f7e9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc21129578 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f1f4e33f7e9
-RDX: 000000000000275a RSI: 0000000020000040 RDI: 00000000ffffff9c
-RBP: 00007f1f4e2ff080 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f1f4e2ff110
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+Sometimes board-2.bin does not have the regdb data which matched the
+parameters such as vendor, device, subsystem-vendor, subsystem-device
+and etc. Add default regdb data with 'bus=%s' into board-2.bin for
+WCN6855, then ath11k use 'bus=pci' to search regdb data in board-2.bin
+for WCN6855.
 
-The bug occurs when the dbAllocDmapLev()function attempts to access
-dp->tree.stree[leafidx + LEAFIND] while the leafidx value is negative.
+kernel: [  122.515808] ath11k_pci 0000:03:00.0: boot using board name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
+kernel: [  122.517240] ath11k_pci 0000:03:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 6179564
+kernel: [  122.517280] ath11k_pci 0000:03:00.0: failed to fetch regdb data for bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262 from ath11k/WCN6855/hw2.0/board-2.bin
+kernel: [  122.517464] ath11k_pci 0000:03:00.0: boot using board name 'bus=pci'
+kernel: [  122.518901] ath11k_pci 0000:03:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 6179564
+kernel: [  122.518915] ath11k_pci 0000:03:00.0: board name
+kernel: [  122.518917] ath11k_pci 0000:03:00.0: 00000000: 62 75 73 3d 70 63 69                             bus=pci
+kernel: [  122.518918] ath11k_pci 0000:03:00.0: boot found match regdb data for name 'bus=pci'
+kernel: [  122.518920] ath11k_pci 0000:03:00.0: boot found regdb data for 'bus=pci'
+kernel: [  122.518921] ath11k_pci 0000:03:00.0: fetched regdb
 
-To rectify this, the patch introduces a safeguard within the
-dbAllocDmapLev() function. A check has been added to verify if leafidx is
-negative. If it is, the function immediately returns an I/O error, preventing
-any further execution that could potentially cause harm.
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 
-Tested via syzbot.
-
-Reported-by: syzbot+853a6f4dfa3cf37d3aea@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=ae2f5a27a07ae44b0f17
-Signed-off-by: Yogesh <yogi.kernel@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230517133959.8224-1-quic_wgong@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.c | 53 +++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1959,6 +1959,9 @@ dbAllocDmapLev(struct bmap * bmp,
- 	if (dbFindLeaf((dmtree_t *) & dp->tree, l2nb, &leafidx))
- 		return -ENOSPC;
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 9de23c11e18bb..8ab1a62351b98 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -962,7 +962,8 @@ int ath11k_core_check_dt(struct ath11k_base *ab)
+ }
  
-+	if (leafidx < 0)
-+		return -EIO;
+ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+-					   size_t name_len, bool with_variant)
++					   size_t name_len, bool with_variant,
++					   bool bus_type_mode)
+ {
+ 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
+ 	char variant[9 + ATH11K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
+@@ -973,15 +974,20 @@ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ 
+ 	switch (ab->id.bdf_search) {
+ 	case ATH11K_BDF_SEARCH_BUS_AND_BOARD:
+-		scnprintf(name, name_len,
+-			  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
+-			  ath11k_bus_str(ab->hif.bus),
+-			  ab->id.vendor, ab->id.device,
+-			  ab->id.subsystem_vendor,
+-			  ab->id.subsystem_device,
+-			  ab->qmi.target.chip_id,
+-			  ab->qmi.target.board_id,
+-			  variant);
++		if (bus_type_mode)
++			scnprintf(name, name_len,
++				  "bus=%s",
++				  ath11k_bus_str(ab->hif.bus));
++		else
++			scnprintf(name, name_len,
++				  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
++				  ath11k_bus_str(ab->hif.bus),
++				  ab->id.vendor, ab->id.device,
++				  ab->id.subsystem_vendor,
++				  ab->id.subsystem_device,
++				  ab->qmi.target.chip_id,
++				  ab->qmi.target.board_id,
++				  variant);
+ 		break;
+ 	default:
+ 		scnprintf(name, name_len,
+@@ -1000,13 +1006,19 @@ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ static int ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ 					 size_t name_len)
+ {
+-	return __ath11k_core_create_board_name(ab, name, name_len, true);
++	return __ath11k_core_create_board_name(ab, name, name_len, true, false);
+ }
+ 
+ static int ath11k_core_create_fallback_board_name(struct ath11k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath11k_core_create_board_name(ab, name, name_len, false);
++	return __ath11k_core_create_board_name(ab, name, name_len, false, false);
++}
 +
- 	/* determine the block number within the file system corresponding
- 	 * to the leaf at which free space was found.
- 	 */
++static int ath11k_core_create_bus_type_board_name(struct ath11k_base *ab, char *name,
++						  size_t name_len)
++{
++	return __ath11k_core_create_board_name(ab, name, name_len, false, true);
+ }
+ 
+ const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
+@@ -1310,7 +1322,7 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ 
+ int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ {
+-	char boardname[BOARD_NAME_SIZE];
++	char boardname[BOARD_NAME_SIZE], default_boardname[BOARD_NAME_SIZE];
+ 	int ret;
+ 
+ 	ret = ath11k_core_create_board_name(ab, boardname, BOARD_NAME_SIZE);
+@@ -1327,6 +1339,21 @@ int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd
+ 	if (!ret)
+ 		goto exit;
+ 
++	ret = ath11k_core_create_bus_type_board_name(ab, default_boardname,
++						     BOARD_NAME_SIZE);
++	if (ret) {
++		ath11k_dbg(ab, ATH11K_DBG_BOOT,
++			   "failed to create default board name for regdb: %d", ret);
++		goto exit;
++	}
++
++	ret = ath11k_core_fetch_board_data_api_n(ab, bd, default_boardname,
++						 ATH11K_BD_IE_REGDB,
++						 ATH11K_BD_IE_REGDB_NAME,
++						 ATH11K_BD_IE_REGDB_DATA);
++	if (!ret)
++		goto exit;
++
+ 	ret = ath11k_core_fetch_board_data_api_1(ab, bd, ATH11K_REGDB_FILE_NAME);
+ 	if (ret)
+ 		ath11k_dbg(ab, ATH11K_DBG_BOOT, "failed to fetch %s from %s\n",
+-- 
+2.39.2
+
 
 
