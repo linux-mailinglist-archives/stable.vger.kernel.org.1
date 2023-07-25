@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB13F7612D1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2083761573
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233824AbjGYLFp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40632 "EHLO
+        id S234677AbjGYL3H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:29:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233744AbjGYLFa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:30 -0400
+        with ESMTP id S234689AbjGYL3H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4172730EB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706ADF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB05561681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A82C433C8;
-        Tue, 25 Jul 2023 11:03:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F150C61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CFFC433C8;
+        Tue, 25 Jul 2023 11:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283005;
-        bh=7Aqdfft26SAgUbG2cQaETBdwcUJXP6+QPqFdd7U2Rkg=;
+        s=korg; t=1690284545;
+        bh=viQbu28BKhZYsbP+3JclZSbWNLzAYwxI0QvJNUO/MwI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=okPtYFEvPbXuYMMm8QcEE3efRX3ItxkROr1Nqkq0dbG65R6D6zAodnG9mJ9uQk0K7
-         ws5zSvoxjkghw9rzDib9XrdijAnRKXVZTSRW7T1oeyJqtFAW/rj41kte9sMxbNa9Ac
-         G0WfBtpq0iGPofJVRHAkqQQGsCr89tyxA9VqNdGg=
+        b=UsfqG6cLtUS3lFfa15lqZyX7gA+hOrG1SzO4bxiiaxWMued30trfNCUg0uTUd5eY4
+         O/6jFrL1K3p6L/ZZy+coaMAe8oJc/R8YARXfh/MVevNCpB7HDM1HeH5U9jSzRooHSR
+         my9XLqKu2wNTBCWDNxBjuh1iH4wpIpc5jZtJ44v4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tanmay Patil <t-patil@ti.com>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/183] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
+        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 394/509] hwrng: imx-rngc - fix the timeout for init and self check
 Date:   Tue, 25 Jul 2023 12:45:33 +0200
-Message-ID: <20230725104511.721694197@linuxfoundation.org>
+Message-ID: <20230725104611.787267130@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,77 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tanmay Patil <t-patil@ti.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit b685f1a58956fa36cc01123f253351b25bfacfda ]
+commit d744ae7477190967a3ddc289e2cd4ae59e8b1237 upstream.
 
-CPSW ALE has 75 bit ALE entries which are stored within three 32 bit words.
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions assume that the
-field will be strictly contained within one word. However, this is not
-guaranteed to be the case and it is possible for ALE field entries to span
-across up to two words at the most.
+Fix the timeout that is used for the initialisation and for the self
+test. wait_for_completion_timeout expects a timeout in jiffies, but
+RNGC_TIMEOUT is in milliseconds. Call msecs_to_jiffies to do the
+conversion.
 
-Fix the methods to handle getting/setting fields spanning up to two words.
-
-Fixes: db82173f23c5 ("netdev: driver: ethernet: add cpsw address lookup engine support")
-Signed-off-by: Tanmay Patil <t-patil@ti.com>
-[s-vadapalli@ti.com: rephrased commit message and added Fixes tag]
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1d5449445bd0 ("hwrng: mx-rngc - add a driver for Freescale RNGC")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/char/hw_random/imx-rngc.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 231370e9a8017..2647c18d40d95 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -106,23 +106,37 @@ struct cpsw_ale_dev_id {
+--- a/drivers/char/hw_random/imx-rngc.c
++++ b/drivers/char/hw_random/imx-rngc.c
+@@ -110,7 +110,7 @@ static int imx_rngc_self_test(struct imx
+ 	cmd = readl(rngc->base + RNGC_COMMAND);
+ 	writel(cmd | RNGC_CMD_SELF_TEST, rngc->base + RNGC_COMMAND);
  
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- {
--	int idx;
-+	int idx, idx2;
-+	u32 hi_val = 0;
+-	ret = wait_for_completion_timeout(&rngc->rng_op_done, RNGC_TIMEOUT);
++	ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
+ 	imx_rngc_irq_mask_clear(rngc);
+ 	if (!ret)
+ 		return -ETIMEDOUT;
+@@ -187,9 +187,7 @@ static int imx_rngc_init(struct hwrng *r
+ 		cmd = readl(rngc->base + RNGC_COMMAND);
+ 		writel(cmd | RNGC_CMD_SEED, rngc->base + RNGC_COMMAND);
  
- 	idx    = start / 32;
-+	idx2 = (start + bits - 1) / 32;
-+	/* Check if bits to be fetched exceed a word */
-+	if (idx != idx2) {
-+		idx2 = 2 - idx2; /* flip */
-+		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
-+	}
- 	start -= idx * 32;
- 	idx    = 2 - idx; /* flip */
--	return (ale_entry[idx] >> start) & BITMASK(bits);
-+	return (hi_val + (ale_entry[idx] >> start)) & BITMASK(bits);
- }
- 
- static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
- 				      u32 value)
- {
--	int idx;
-+	int idx, idx2;
- 
- 	value &= BITMASK(bits);
--	idx    = start / 32;
-+	idx = start / 32;
-+	idx2 = (start + bits - 1) / 32;
-+	/* Check if bits to be set exceed a word */
-+	if (idx != idx2) {
-+		idx2 = 2 - idx2; /* flip */
-+		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
-+		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
-+	}
- 	start -= idx * 32;
--	idx    = 2 - idx; /* flip */
-+	idx = 2 - idx; /* flip */
- 	ale_entry[idx] &= ~(BITMASK(bits) << start);
- 	ale_entry[idx] |=  (value << start);
- }
--- 
-2.39.2
-
+-		ret = wait_for_completion_timeout(&rngc->rng_op_done,
+-				RNGC_TIMEOUT);
+-
++		ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
+ 		if (!ret) {
+ 			ret = -ETIMEDOUT;
+ 			goto err;
 
 
