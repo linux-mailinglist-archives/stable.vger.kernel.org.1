@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 751CC761531
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F7276128A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234547AbjGYL0Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
+        id S233919AbjGYLDq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:03:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234532AbjGYL0X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:23 -0400
+        with ESMTP id S233927AbjGYLDV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3075187
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DADD3C3C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E41061648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCD5C433C8;
-        Tue, 25 Jul 2023 11:26:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F67F6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF3FC433C7;
+        Tue, 25 Jul 2023 11:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284380;
-        bh=a9RpELqf/DOyO4arVLcw5kILF8dh9hSQJ13OaL9/qac=;
+        s=korg; t=1690282840;
+        bh=05I2kwzK1/93wu/K1lWGDmcZTLQczAulW51VBr1QS8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PY6H2MARczTGpeihPcc9j9jKIo6uYiTgXOvvAJ7Cviyo8n6Rcnkb2fF+MCb2fzYGd
-         vOs2/Jf09KaJjm00cSLByW7xCZB0QtRiyUqOdwjvZYhi34uVRIsamx1ERjM2BQuqfU
-         OO5DGY5B56zrtAyrGme8HkMK3XsVq9fA/6UwXV3g=
+        b=Ezk6PQKhI44YmAbGtlWBSv5mW/66x6mnw7KXpbyfjT1EwvbQxMnqiORJfmTL81tkL
+         6MwcESjz1H5MXvDKM2rDXrETX0hCWVc+AGafNN6ZnUWtxljQVY9L2lNNlMOU3WZI9s
+         u7P2C1ILrI7Opi0QXRP/tQUkh1XiqRIeDh+ME8Lk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        UNGLinuxDriver@microchip.com, Moritz Fischer <moritzf@google.com>,
-        Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 335/509] net: lan743x: Dont sleep in atomic context
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 046/183] ASoC: codecs: wcd938x: fix missing mbhc init error handling
 Date:   Tue, 25 Jul 2023 12:44:34 +0200
-Message-ID: <20230725104609.043509217@linuxfoundation.org>
+Message-ID: <20230725104509.622745800@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,72 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moritz Fischer <moritzf@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 7a8227b2e76be506b2ac64d2beac950ca04892a5 upstream.
+commit 7dfae2631bfbdebecd35fe7b472ab3cc95c9ed66 upstream.
 
-dev_set_rx_mode() grabs a spin_lock, and the lan743x implementation
-proceeds subsequently to go to sleep using readx_poll_timeout().
+MBHC initialisation can fail so add the missing error handling to avoid
+dereferencing an error pointer when later configuring the jack:
 
-Introduce a helper wrapping the readx_poll_timeout_atomic() function
-and use it to replace the calls to readx_polL_timeout().
+    Unable to handle kernel paging request at virtual address fffffffffffffff8
 
-Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
-Cc: stable@vger.kernel.org
-Cc: Bryan Whitehead <bryan.whitehead@microchip.com>
-Cc: UNGLinuxDriver@microchip.com
-Signed-off-by: Moritz Fischer <moritzf@google.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230627035000.1295254-1-moritzf@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    pc : wcd_mbhc_start+0x28/0x380 [snd_soc_wcd_mbhc]
+    lr : wcd938x_codec_set_jack+0x28/0x48 [snd_soc_wcd938x]
+
+    Call trace:
+     wcd_mbhc_start+0x28/0x380 [snd_soc_wcd_mbhc]
+     wcd938x_codec_set_jack+0x28/0x48 [snd_soc_wcd938x]
+     snd_soc_component_set_jack+0x28/0x8c [snd_soc_core]
+     qcom_snd_wcd_jack_setup+0x7c/0x19c [snd_soc_qcom_common]
+     sc8280xp_snd_init+0x20/0x2c [snd_soc_sc8280xp]
+     snd_soc_link_init+0x28/0x90 [snd_soc_core]
+     snd_soc_bind_card+0x628/0xbfc [snd_soc_core]
+     snd_soc_register_card+0xec/0x104 [snd_soc_core]
+     devm_snd_soc_register_card+0x4c/0xa4 [snd_soc_core]
+     sc8280xp_platform_probe+0xf0/0x108 [snd_soc_sc8280xp]
+
+Fixes: bcee7ed09b8e ("ASoC: codecs: wcd938x: add Multi Button Headset Control support")
+Cc: stable@vger.kernel.org      # 5.15
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230703124701.11734-1-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c |   21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ sound/soc/codecs/wcd938x.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -83,6 +83,18 @@ static int lan743x_csr_light_reset(struc
- 				  !(data & HW_CFG_LRST_), 100000, 10000000);
- }
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -2625,6 +2625,8 @@ static int wcd938x_mbhc_init(struct snd_
+ 						     WCD938X_IRQ_HPHR_OCP_INT);
  
-+static int lan743x_csr_wait_for_bit_atomic(struct lan743x_adapter *adapter,
-+					   int offset, u32 bit_mask,
-+					   int target_value, int udelay_min,
-+					   int udelay_max, int count)
-+{
-+	u32 data;
-+
-+	return readx_poll_timeout_atomic(LAN743X_CSR_READ_OP, offset, data,
-+					 target_value == !!(data & bit_mask),
-+					 udelay_max, udelay_min * count);
-+}
-+
- static int lan743x_csr_wait_for_bit(struct lan743x_adapter *adapter,
- 				    int offset, u32 bit_mask,
- 				    int target_value, int usleep_min,
-@@ -678,8 +690,8 @@ static int lan743x_dp_write(struct lan74
- 	u32 dp_sel;
- 	int i;
+ 	wcd938x->wcd_mbhc = wcd_mbhc_init(component, &mbhc_cb, intr_ids, wcd_mbhc_fields, true);
++	if (IS_ERR(wcd938x->wcd_mbhc))
++		return PTR_ERR(wcd938x->wcd_mbhc);
  
--	if (lan743x_csr_wait_for_bit(adapter, DP_SEL, DP_SEL_DPRDY_,
--				     1, 40, 100, 100))
-+	if (lan743x_csr_wait_for_bit_atomic(adapter, DP_SEL, DP_SEL_DPRDY_,
-+					    1, 40, 100, 100))
- 		return -EIO;
- 	dp_sel = lan743x_csr_read(adapter, DP_SEL);
- 	dp_sel &= ~DP_SEL_MASK_;
-@@ -690,8 +702,9 @@ static int lan743x_dp_write(struct lan74
- 		lan743x_csr_write(adapter, DP_ADDR, addr + i);
- 		lan743x_csr_write(adapter, DP_DATA_0, buf[i]);
- 		lan743x_csr_write(adapter, DP_CMD, DP_CMD_WRITE_);
--		if (lan743x_csr_wait_for_bit(adapter, DP_SEL, DP_SEL_DPRDY_,
--					     1, 40, 100, 100))
-+		if (lan743x_csr_wait_for_bit_atomic(adapter, DP_SEL,
-+						    DP_SEL_DPRDY_,
-+						    1, 40, 100, 100))
- 			return -EIO;
- 	}
- 
+ 	snd_soc_add_component_controls(component, impedance_detect_controls,
+ 				       ARRAY_SIZE(impedance_detect_controls));
 
 
