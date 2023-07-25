@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E2D9761564
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC9E87611CA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234630AbjGYL2a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:28:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37080 "EHLO
+        id S232478AbjGYK4Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234656AbjGYL20 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:26 -0400
+        with ESMTP id S232489AbjGYKzs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF82DF2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29EAB49EF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5581F6168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DB0C433C9;
-        Tue, 25 Jul 2023 11:28:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED33C6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09177C433C7;
+        Tue, 25 Jul 2023 10:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284503;
-        bh=RgSE0qE2h/KTl9in6npmwVL9qrjon+wCQ1zimyt+u0M=;
+        s=korg; t=1690282418;
+        bh=hCkuT5beDrZIJ2wWaJoikeQdkijfyUCkg38TlOIYmcE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q33jissCCiQM4FqpKWdbALjTxId5lsevR4jQTGRn0Tja7ot//bYzNH+Wigl4sID9I
-         b7NsmBs8+RXc6oeGXeySO5yT9YEt3j1DOEGqP8GXJPuL6vLVMzvNgB56IlQlvTmiV8
-         TMxMdhQq4U6wlxt+SaAHoDyfwLHVfthuIHssVZj0=
+        b=oT8RSzKdwGl3HN+tu+BxeuV8GYnL0MxFHQOCooklrcGTs+UgTERuZdOZRV0BFBGaf
+         MuQ70CJVhlJPsKkxGYBvECVn2McORWhDhZb4MzOw9Y8U9DLRZDqcI893h83IFz4VzH
+         NcM1dZWou74QX1zHj0YekGMFEhDZ47SF3ABZn6Es=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Yufen <wangyufen@huawei.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        David Ahern <dsahern@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Balamurugan S <quic_bselvara@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 350/509] icmp6: Fix null-ptr-deref of ip6_null_entry->rt6i_idev in icmp6_dev().
+Subject: [PATCH 6.4 122/227] wifi: ath12k: Avoid NULL pointer access during management transmit cleanup
 Date:   Tue, 25 Jul 2023 12:44:49 +0200
-Message-ID: <20230725104609.764670822@linuxfoundation.org>
+Message-ID: <20230725104519.866938007@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,142 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Balamurugan S <quic_bselvara@quicinc.com>
 
-[ Upstream commit 2aaa8a15de73874847d62eb595c6683bface80fd ]
+[ Upstream commit 054b5580a36e435692c203c19abdcb9f7734320e ]
 
-With some IPv6 Ext Hdr (RPL, SRv6, etc.), we can send a packet that
-has the link-local address as src and dst IP and will be forwarded to
-an external IP in the IPv6 Ext Hdr.
+Currently 'ar' reference is not added in skb_cb.
+Though this is generally not used during transmit completion
+callbacks, on interface removal the remaining idr cleanup callback
+uses the ar pointer from skb_cb from management txmgmt_idr. Hence fill them
+during transmit call for proper usage to avoid NULL pointer dereference.
 
-For example, the script below generates a packet whose src IP is the
-link-local address and dst is updated to 11::.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-  # for f in $(find /proc/sys/net/ -name *seg6_enabled*); do echo 1 > $f; done
-  # python3
-  >>> from socket import *
-  >>> from scapy.all import *
-  >>>
-  >>> SRC_ADDR = DST_ADDR = "fe80::5054:ff:fe12:3456"
-  >>>
-  >>> pkt = IPv6(src=SRC_ADDR, dst=DST_ADDR)
-  >>> pkt /= IPv6ExtHdrSegmentRouting(type=4, addresses=["11::", "22::"], segleft=1)
-  >>>
-  >>> sk = socket(AF_INET6, SOCK_RAW, IPPROTO_RAW)
-  >>> sk.sendto(bytes(pkt), (DST_ADDR, 0))
-
-For such a packet, we call ip6_route_input() to look up a route for the
-next destination in these three functions depending on the header type.
-
-  * ipv6_rthdr_rcv()
-  * ipv6_rpl_srh_rcv()
-  * ipv6_srh_rcv()
-
-If no route is found, ip6_null_entry is set to skb, and the following
-dst_input(skb) calls ip6_pkt_drop().
-
-Finally, in icmp6_dev(), we dereference skb_rt6_info(skb)->rt6i_idev->dev
-as the input device is the loopback interface.  Then, we have to check if
-skb_rt6_info(skb)->rt6i_idev is NULL or not to avoid NULL pointer deref
-for ip6_null_entry.
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 0 PID: 157 Comm: python3 Not tainted 6.4.0-11996-gb121d614371c #35
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
-Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
-RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
-RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
-RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
-R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
-R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
-FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
-PKRU: 55555554
-Call Trace:
- <IRQ>
- ip6_pkt_drop (net/ipv6/route.c:4513)
- ipv6_rthdr_rcv (net/ipv6/exthdrs.c:640 net/ipv6/exthdrs.c:686)
- ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:437 (discriminator 5))
- ip6_input_finish (./include/linux/rcupdate.h:781 net/ipv6/ip6_input.c:483)
- __netif_receive_skb_one_core (net/core/dev.c:5455)
- process_backlog (./include/linux/rcupdate.h:781 net/core/dev.c:5895)
- __napi_poll (net/core/dev.c:6460)
- net_rx_action (net/core/dev.c:6529 net/core/dev.c:6660)
- __do_softirq (./arch/x86/include/asm/jump_label.h:27 ./include/linux/jump_label.h:207 ./include/trace/events/irq.h:142 kernel/softirq.c:554)
- do_softirq (kernel/softirq.c:454 kernel/softirq.c:441)
- </IRQ>
- <TASK>
- __local_bh_enable_ip (kernel/softirq.c:381)
- __dev_queue_xmit (net/core/dev.c:4231)
- ip6_finish_output2 (./include/net/neighbour.h:544 net/ipv6/ip6_output.c:135)
- rawv6_sendmsg (./include/net/dst.h:458 ./include/linux/netfilter.h:303 net/ipv6/raw.c:656 net/ipv6/raw.c:914)
- sock_sendmsg (net/socket.c:725 net/socket.c:748)
- __sys_sendto (net/socket.c:2134)
- __x64_sys_sendto (net/socket.c:2146 net/socket.c:2142 net/socket.c:2142)
- do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:120)
-RIP: 0033:0x7f9dc751baea
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
-RSP: 002b:00007ffe98712c38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007ffe98712cf8 RCX: 00007f9dc751baea
-RDX: 0000000000000060 RSI: 00007f9dc6460b90 RDI: 0000000000000003
-RBP: 00007f9dc56e8be0 R08: 00007ffe98712d70 R09: 000000000000001c
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: ffffffffc4653600 R14: 0000000000000001 R15: 00007f9dc6af5d1b
- </TASK>
-Modules linked in:
-CR2: 0000000000000000
- ---[ end trace 0000000000000000 ]---
-RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
-Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
-RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
-RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
-RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
-R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
-R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
-FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
-PKRU: 55555554
-Kernel panic - not syncing: Fatal exception in interrupt
-Kernel Offset: disabled
-
-Fixes: 4832c30d5458 ("net: ipv6: put host and anycast routes on device with address")
-Reported-by: Wang Yufen <wangyufen@huawei.com>
-Closes: https://lore.kernel.org/netdev/c41403a9-c2f6-3b7e-0c96-e1901e605cd0@huawei.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230518071046.14337-1-quic_bselvara@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/icmp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index fd1f896115c1e..d01165bb6a32b 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -429,7 +429,10 @@ static struct net_device *icmp6_dev(const struct sk_buff *skb)
- 	if (unlikely(dev->ifindex == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
- 		const struct rt6_info *rt6 = skb_rt6_info(skb);
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index ee792822b4113..58acfe8fdf8c0 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4425,6 +4425,7 @@ static int ath12k_mac_mgmt_tx_wmi(struct ath12k *ar, struct ath12k_vif *arvif,
+ 	int buf_id;
+ 	int ret;
  
--		if (rt6)
-+		/* The destination could be an external IP in Ext Hdr (SRv6, RPL, etc.),
-+		 * and ip6_null_entry could be set to skb if no route is found.
-+		 */
-+		if (rt6 && rt6->rt6i_idev)
- 			dev = rt6->rt6i_idev->dev;
- 	}
- 
++	ATH12K_SKB_CB(skb)->ar = ar;
+ 	spin_lock_bh(&ar->txmgmt_idr_lock);
+ 	buf_id = idr_alloc(&ar->txmgmt_idr, skb, 0,
+ 			   ATH12K_TX_MGMT_NUM_PENDING_MAX, GFP_ATOMIC);
 -- 
 2.39.2
 
