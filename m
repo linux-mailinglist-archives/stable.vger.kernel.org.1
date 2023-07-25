@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B39F476137E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0506776124A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234096AbjGYLLF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45376 "EHLO
+        id S233583AbjGYLBD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233808AbjGYLKl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:41 -0400
+        with ESMTP id S233527AbjGYLAk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0A62688
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7822D4E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BAC9A6165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D45C433C8;
-        Tue, 25 Jul 2023 11:09:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B917D61680
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA713C433C8;
+        Tue, 25 Jul 2023 10:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283386;
-        bh=OppGpa/h8ZlcbP30JHx3ga6YtaKYFCYpPH2X3hyxitk=;
+        s=korg; t=1690282673;
+        bh=mJfq2p5ZqmyVjPNRQmQlxmn4cXTm/uV598W1kffiFYY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0PrPuDYFQihW/WyddrRqUvYSgMOuqaiWn4GQ1DFaDPOEgt2DKHxBRalUkppMUg7cb
-         XUA+J1LNdztcTB2oY+wA/DehemfmyRUQ5rRfO2Cjs8o7XiQtMnASG2ZxlAXsHc915S
-         7qIOCtHHCXWzBMUtN5LHowKpOAjhOAFelRSWXxjM=
+        b=WGVx0CHAe4R77K+uQi7u4l/bK23xKyh4/+hG+PpNKBl89r5CAirnX0ZuEP3FMsuFH
+         nL4XljEwngBzRJkyS460XRql92pbb86mdDNiWbH12WhTyYDbKLY5SycU3zZy5vtQp9
+         QS1OB/GejhR/JWzCSnCArPWnY41Sx3MPseug4puU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        hackyzh002 <hackyzh002@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/78] [PATCH AUTOSEL 4.14 1/9] drm/radeon: Fix integer overflow in radeon_cs_parser_init
+Subject: [PATCH 6.4 213/227] tcp: annotate data-races around tp->linger2
 Date:   Tue, 25 Jul 2023 12:46:20 +0200
-Message-ID: <20230725104452.439305068@linuxfoundation.org>
+Message-ID: <20230725104523.565831972@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,31 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit f828b681d0cd566f86351c0b913e6cb6ed8c7b9c ]
+From: Eric Dumazet <edumazet@google.com>
 
-The type of size is unsigned, if size is 0x40000000, there will be an
-integer overflow, size will be zero after size *= sizeof(uint32_t),
-will cause uninitialized memory to be referenced later
+[ Upstream commit 9df5335ca974e688389c875546e5819778a80d59 ]
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: hackyzh002 <hackyzh002@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+do_tcp_getsockopt() reads tp->linger2 while another cpu
+might change its value.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_cs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/tcp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/radeon/radeon_cs.c
-+++ b/drivers/gpu/drm/radeon/radeon_cs.c
-@@ -270,7 +270,8 @@ int radeon_cs_parser_init(struct radeon_
- {
- 	struct drm_radeon_cs *cs = data;
- 	uint64_t *chunk_array_ptr;
--	unsigned size, i;
-+	u64 size;
-+	unsigned i;
- 	u32 ring = RADEON_CS_RING_GFX;
- 	s32 priority = 0;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 488cf4ae75fab..0ebe775bde688 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3694,11 +3694,11 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
  
+ 	case TCP_LINGER2:
+ 		if (val < 0)
+-			tp->linger2 = -1;
++			WRITE_ONCE(tp->linger2, -1);
+ 		else if (val > TCP_FIN_TIMEOUT_MAX / HZ)
+-			tp->linger2 = TCP_FIN_TIMEOUT_MAX;
++			WRITE_ONCE(tp->linger2, TCP_FIN_TIMEOUT_MAX);
+ 		else
+-			tp->linger2 = val * HZ;
++			WRITE_ONCE(tp->linger2, val * HZ);
+ 		break;
+ 
+ 	case TCP_DEFER_ACCEPT:
+@@ -4106,7 +4106,7 @@ int do_tcp_getsockopt(struct sock *sk, int level,
+ 			READ_ONCE(net->ipv4.sysctl_tcp_syn_retries);
+ 		break;
+ 	case TCP_LINGER2:
+-		val = tp->linger2;
++		val = READ_ONCE(tp->linger2);
+ 		if (val >= 0)
+ 			val = (val ? : READ_ONCE(net->ipv4.sysctl_tcp_fin_timeout)) / HZ;
+ 		break;
+-- 
+2.39.2
+
 
 
