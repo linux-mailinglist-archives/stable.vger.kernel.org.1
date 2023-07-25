@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE030761629
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9F876118C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234798AbjGYLhD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43946 "EHLO
+        id S230027AbjGYKxC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:53:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234684AbjGYLg7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F2810E7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:46 -0700 (PDT)
+        with ESMTP id S232696AbjGYKvb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:51:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C3530D6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A45DA616B0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69F3C433C7;
-        Tue, 25 Jul 2023 11:36:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68FE6615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D908C433C9;
+        Tue, 25 Jul 2023 10:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285005;
-        bh=KLo4viXHZ4dMlleTtve+fXKM/WH3MuMEeYx11aXMzEg=;
+        s=korg; t=1690282257;
+        bh=IM+y4rs41fzQhgjMRdtXgtwW1Bxoq3yKEq1I0qzxSoQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XZubYVMFWDBkP+X03pvVcTa1wHtExSHFyxbfwfvb6RPUfnCy8X+cT+N7xyH2Alw9l
-         KWjjebOjtZPXbZxkVW+0awJ+BONKoLdvn+L7oQBAy417X2OKJWk2LJ1gVp15PsIDjy
-         KKtokGJRQ4H6lP3FEePr53xlV9dYuStwgur1pyBA=
+        b=DgJSZaYnpUI4iWYVVYWwAPHwdlrciSXinhCtqM5iA88kij4k8C5Z5HnSKwLAWVILp
+         3D21NBvF01HbkrgSyF0Hh51b/M68xvR/qm+r4tgnduklS4NA0fCZFXey6jJGhVh6GZ
+         xvGsw9p4AdEw/RVw7XHxaU+5yHNxfwnypdDMVBqo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/313] wifi: ath9k: dont allow to overwrite ENDPOINT0 attributes
+        patches@lists.linux.dev, YueHaibing <yuehaibing@huawei.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.4 035/227] can: bcm: Fix UAF in bcm_proc_show()
 Date:   Tue, 25 Jul 2023 12:43:22 +0200
-Message-ID: <20230725104523.187713982@linuxfoundation.org>
+Message-ID: <20230725104516.296727229@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,51 +55,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 061b0cb9327b80d7a0f63a33e7c3e2a91a71f142 ]
+commit 55c3b96074f3f9b0aee19bf93cd71af7516582bb upstream.
 
-A bad USB device is able to construct a service connection response
-message with target endpoint being ENDPOINT0 which is reserved for
-HTC_CTRL_RSVD_SVC and should not be modified to be used for any other
-services.
+BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80
+Read of size 8 at addr ffff888155846230 by task cat/7862
 
-Reject such service connection responses.
+CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xd5/0x150
+ print_report+0xc1/0x5e0
+ kasan_report+0xba/0xf0
+ bcm_proc_show+0x969/0xa80
+ seq_read_iter+0x4f6/0x1260
+ seq_read+0x165/0x210
+ proc_reg_read+0x227/0x300
+ vfs_read+0x1d5/0x8d0
+ ksys_read+0x11e/0x240
+ do_syscall_64+0x35/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Allocated by task 7846:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x9e/0xa0
+ bcm_sendmsg+0x264b/0x44e0
+ sock_sendmsg+0xda/0x180
+ ____sys_sendmsg+0x735/0x920
+ ___sys_sendmsg+0x11d/0x1b0
+ __sys_sendmsg+0xfa/0x1d0
+ do_syscall_64+0x35/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Reported-by: syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230516150427.79469-1-pchelkin@ispras.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Freed by task 7846:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x27/0x40
+ ____kasan_slab_free+0x161/0x1c0
+ slab_free_freelist_hook+0x119/0x220
+ __kmem_cache_free+0xb4/0x2e0
+ rcu_core+0x809/0x1bd0
+
+bcm_op is freed before procfs entry be removed in bcm_release(),
+this lead to bcm_proc_show() may read the freed bcm_op.
+
+Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://lore.kernel.org/all/20230715092543.15548-1-yuehaibing@huawei.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_hst.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/can/bcm.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
-index fe62ff668f757..99667aba289df 100644
---- a/drivers/net/wireless/ath/ath9k/htc_hst.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
-@@ -114,7 +114,13 @@ static void htc_process_conn_rsp(struct htc_target *target,
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1526,6 +1526,12 @@ static int bcm_release(struct socket *so
  
- 	if (svc_rspmsg->status == HTC_SERVICE_SUCCESS) {
- 		epid = svc_rspmsg->endpoint_id;
--		if (epid < 0 || epid >= ENDPOINT_MAX)
+ 	lock_sock(sk);
+ 
++#if IS_ENABLED(CONFIG_PROC_FS)
++	/* remove procfs entry */
++	if (net->can.bcmproc_dir && bo->bcm_proc_read)
++		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
++#endif /* CONFIG_PROC_FS */
 +
-+		/* Check that the received epid for the endpoint to attach
-+		 * a new service is valid. ENDPOINT0 can't be used here as it
-+		 * is already reserved for HTC_CTRL_RSVD_SVC service and thus
-+		 * should not be modified.
-+		 */
-+		if (epid <= ENDPOINT0 || epid >= ENDPOINT_MAX)
- 			return;
+ 	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
+ 		bcm_remove_op(op);
  
- 		service_id = be16_to_cpu(svc_rspmsg->service_id);
--- 
-2.39.2
-
+@@ -1561,12 +1567,6 @@ static int bcm_release(struct socket *so
+ 	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
+ 		bcm_remove_op(op);
+ 
+-#if IS_ENABLED(CONFIG_PROC_FS)
+-	/* remove procfs entry */
+-	if (net->can.bcmproc_dir && bo->bcm_proc_read)
+-		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
+-#endif /* CONFIG_PROC_FS */
+-
+ 	/* remove device reference */
+ 	if (bo->bound) {
+ 		bo->bound   = 0;
 
 
