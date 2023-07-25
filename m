@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4421761525
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E207611D5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234605AbjGYL0A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:26:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35238 "EHLO
+        id S232560AbjGYK4o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234611AbjGYL0A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:00 -0400
+        with ESMTP id S232565AbjGYK4V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E467E69
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C5A4C12
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A5BCD61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8628C433C9;
-        Tue, 25 Jul 2023 11:25:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BA98615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5913AC433C7;
+        Tue, 25 Jul 2023 10:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284358;
-        bh=iAaUF0teOsbXKN3hXRk6oighR7kW2X2iLdln2artBEM=;
+        s=korg; t=1690282437;
+        bh=mAz3AHas66G18RPzS7JDee5JtFE3Vomik05GIdaTHOU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LCp6qM6HnvGlzowb6XEuckFli7nYYRC3BJ+RtHvLwxlkdBFDp3d0ZKFuzpCzcOiH3
-         2vlXfsl32QALbyiEISZRWG0AzRb1mmqMmiSGq+wFwG5BIVIX2/ZGEc2Sc7/FNK8yd1
-         Q5l3+CqMlKEOPrapyyhzNrdHZgDmSfxy4EseAdJ0=
+        b=OdKgP822qu+WnuiLw/x+m0pdHkyZLpO9IrwAhnJ8miKYXcLUF5im+hDBL5g1JXCRZ
+         hwYt70dnBQn00oeREKVbVp3B8V6Vl4ZKoMjvoyU05UxU08ZaC34seMYckpKm+qWDhJ
+         xryBPu2Z8Hn/MtFCkhSCUDaMG63axQhO5zr+AoEU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sherry Sun <sherry.sun@nxp.com>,
-        stable <stable@kernel.org>
-Subject: [PATCH 5.10 328/509] tty: serial: fsl_lpuart: add earlycon for imx8ulp platform
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 100/227] ACPI: video: Add backlight=native DMI quirk for Apple iMac11,3
 Date:   Tue, 25 Jul 2023 12:44:27 +0200
-Message-ID: <20230725104608.712052711@linuxfoundation.org>
+Message-ID: <20230725104518.875302741@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,29 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit e0edfdc15863ec80a1d9ac6e174dbccc00206dd0 upstream.
+[ Upstream commit 48436f2e9834b46b47b038b605c8142a1c07bc85 ]
 
-Add earlycon support for imx8ulp platform.
+Linux defaults to picking the non-working ACPI video backlight interface
+on the Apple iMac11,3 .
 
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230619080613.16522-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a DMI quirk to pick the working native radeon_bl0 interface instead.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2589,6 +2589,7 @@ OF_EARLYCON_DECLARE(lpuart, "fsl,vf610-l
- OF_EARLYCON_DECLARE(lpuart32, "fsl,ls1021a-lpuart", lpuart32_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,ls1028a-lpuart", ls1028a_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,imx7ulp-lpuart", lpuart32_imx_early_console_setup);
-+OF_EARLYCON_DECLARE(lpuart32, "fsl,imx8ulp-lpuart", lpuart32_imx_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,imx8qxp-lpuart", lpuart32_imx_early_console_setup);
- EARLYCON_DECLARE(lpuart, lpuart_early_console_setup);
- EARLYCON_DECLARE(lpuart32, lpuart32_early_console_setup);
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index bcc25d457581d..61586caebb01b 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -470,6 +470,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Apple iMac11,3 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "iMac11,3"),
++		},
++	},
+ 	{
+ 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
+ 	 .callback = video_detect_force_native,
+-- 
+2.39.2
+
 
 
