@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 675E7761728
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E111B76125C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231878AbjGYLpb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:45:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53404 "EHLO
+        id S233874AbjGYLBX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231858AbjGYLpa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04274B7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:30 -0700 (PDT)
+        with ESMTP id S233783AbjGYLBJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FB94C17
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8686E61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFEAC433C8;
-        Tue, 25 Jul 2023 11:45:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B3C46166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BEDC433C8;
+        Tue, 25 Jul 2023 10:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285529;
-        bh=QkIqMIBEK7cTRusjKc90W8ziCU5SwXP1/s/tEYTI1I8=;
+        s=korg; t=1690282720;
+        bh=2SVJn4FOxl0jvc2RUNGUb4Yxh/ugaK+lJ5vDm2e1Za0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZANQ5x9d+Gvq93bp9otWGj872LxAVoOko7x+zjRjg6igaIEiTC6hrjGDQNHMlzLjV
-         UNEp1BGVs9ENA9/AB4hjWTBz6fxJy36oEn4S3Gb2PkctgU6hPKeD33Jkae1IrXX+l9
-         95p4UlSwd4EtkBhof2WMlVLWEDvuECM+1eETNTE0=
+        b=E70SKrM947CMCNacm84M8rlzlYn/7lU/rOi+Xn7s0IgytSM5xMSz41cZ769XhYyia
+         /BhYwD/pS4cEMnCHX1MXnhtdOZTJDDY9LsJPBD/WbDt/bORGi7YIQYfGbC4VljlRHt
+         UqTE9l/IMM75bkn0jo7ddLNqsU9X7VvjlCVnMzu4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        stable@kernel.org, Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 237/313] ext4: fix wrong unit use in ext4_mb_clear_bb
+        patches@lists.linux.dev, Abe Kohandel <abe.kohandel@intel.com>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 223/227] spi: dw: Remove misleading comment for Mount Evans SoC
 Date:   Tue, 25 Jul 2023 12:46:30 +0200
-Message-ID: <20230725104531.302061284@linuxfoundation.org>
+Message-ID: <20230725104523.953007614@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,35 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Abe Kohandel <abe.kohandel@intel.com>
 
-commit 247c3d214c23dfeeeb892e91a82ac1188bdaec9f upstream.
+commit 5b6d0b91f84cff3f28724076f93f6f9e2ef8d775 upstream.
 
-Function ext4_issue_discard need count in cluster. Pass count_clusters
-instead of count to fix the mismatch.
+Remove a misleading comment about the DMA operations of the Intel Mount
+Evans SoC's SPI Controller as requested by Serge.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: stable@kernel.org
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-11-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Abe Kohandel <abe.kohandel@intel.com>
+Link: https://lore.kernel.org/linux-spi/20230606191333.247ucbf7h3tlooxf@mobilestation/
+Fixes: 0760d5d0e9f0 ("spi: dw: Add compatible for Intel Mount Evans SoC")
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/r/20230606231844.726272-1-abe.kohandel@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw-mmio.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4950,8 +4950,8 @@ do_more:
- 		 * them with group lock_held
- 		 */
- 		if (test_opt(sb, DISCARD)) {
--			err = ext4_issue_discard(sb, block_group, bit, count,
--						 NULL);
-+			err = ext4_issue_discard(sb, block_group, bit,
-+						 count_clusters, NULL);
- 			if (err && err != -EOPNOTSUPP)
- 				ext4_msg(sb, KERN_WARNING, "discard request in"
- 					 " group:%d block:%d count:%lu failed"
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -237,14 +237,7 @@ static int dw_spi_intel_init(struct plat
+ }
+ 
+ /*
+- * The Intel Mount Evans SoC's Integrated Management Complex uses the
+- * SPI controller for access to a NOR SPI FLASH. However, the SoC doesn't
+- * provide a mechanism to override the native chip select signal.
+- *
+- * This driver doesn't use DMA for memory operations when a chip select
+- * override is not provided due to the native chip select timing behavior.
+- * As a result no DMA configuration is done for the controller and this
+- * configuration is not tested.
++ * DMA-based mem ops are not configured for this device and are not tested.
+  */
+ static int dw_spi_mountevans_imc_init(struct platform_device *pdev,
+ 				      struct dw_spi_mmio *dwsmmio)
 
 
