@@ -2,51 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBC7476137C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A728676175E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234056AbjGYLLA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45574 "EHLO
+        id S232307AbjGYLrl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:47:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234091AbjGYLKg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:36 -0400
+        with ESMTP id S232523AbjGYLra (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C072137
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B026E1FCE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36B3B6165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451C8C433C7;
-        Tue, 25 Jul 2023 11:09:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3703161698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4444DC433C8;
+        Tue, 25 Jul 2023 11:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283380;
-        bh=vn1+6KUuDs5vuPg9PDSVYe/0BrWiVIUPjwT4JYb2ixo=;
+        s=korg; t=1690285645;
+        bh=mxLarf1TRptmHZBAAZlkqaC6CuI7tlBTROdn4jcbh+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dvz5cM8DolbMi6tBOUjPzklmCtZAOosQ9cC7dzRKQ7TE6A/Wc7MlKLzbk5ZJhoUIK
-         X41dnIADUE2BtKhAE5+RsaDmq+Lgw/xKedcLzPYTdwH3A6k7EBPJZfFGbx4VUQA/zS
-         0LZWhAUdVi4w4YIYXyU0Tl3cGFdDdPrYuDL90lBE=
+        b=JDHVhsyfKqduEJX2iTF4s0gXNmL8z2nn4SDH4Z6DD2UsLEZ5MvtGHYNbQHxcYwfbk
+         ITS3xSeOK/NXzphMh6QQ3Yjny6lEqbsD/Y2a5Uyvj/7rA1+oNhFNEKMh1nroF3KXPz
+         d3CVGsqkSRfkqtqWViKHzemeqH9XKMLCKna7AZ4g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Florian Kauer <florian.kauer@linutronix.de>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 54/78] igc: Prevent garbled TX queue with XDP ZEROCOPY
+        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
+        Song Liu <song@kernel.org>, Jason Baron <jbaron@akamai.com>
+Subject: [PATCH 5.4 252/313] md/raid0: add discard support for the original layout
 Date:   Tue, 25 Jul 2023 12:46:45 +0200
-Message-ID: <20230725104453.364066666@linuxfoundation.org>
+Message-ID: <20230725104531.962844162@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,73 +54,203 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Kauer <florian.kauer@linutronix.de>
+From: Jason Baron <jbaron@akamai.com>
 
-[ Upstream commit 78adb4bcf99effbb960c5f9091e2e062509d1030 ]
+commit e836007089ba8fdf24e636ef2b007651fb4582e6 upstream.
 
-In normal operation, each populated queue item has
-next_to_watch pointing to the last TX desc of the packet,
-while each cleaned item has it set to 0. In particular,
-next_to_use that points to the next (necessarily clean)
-item to use has next_to_watch set to 0.
+We've found that using raid0 with the 'original' layout and discard
+enabled with different disk sizes (such that at least two zones are
+created) can result in data corruption. This is due to the fact that
+the discard handling in 'raid0_handle_discard()' assumes the 'alternate'
+layout. We've seen this corruption using ext4 but other filesystems are
+likely susceptible as well.
 
-When the TX queue is used both by an application using
-AF_XDP with ZEROCOPY as well as a second non-XDP application
-generating high traffic, the queue pointers can get in
-an invalid state where next_to_use points to an item
-where next_to_watch is NOT set to 0.
+More specifically, while multiple zones are necessary to create the
+corruption, the corruption may not occur with multiple zones if they
+layout in such a way the layout matches what the 'alternate' layout
+would have produced. Thus, not all raid0 devices with the 'original'
+layout, different size disks and discard enabled will encounter this
+corruption.
 
-However, the implementation assumes at several places
-that this is never the case, so if it does hold,
-bad things happen. In particular, within the loop inside
-of igc_clean_tx_irq(), next_to_clean can overtake next_to_use.
-Finally, this prevents any further transmission via
-this queue and it never gets unblocked or signaled.
-Secondly, if the queue is in this garbled state,
-the inner loop of igc_clean_tx_ring() will never terminate,
-completely hogging a CPU core.
+The 3.14 kernel inadvertently changed the raid0 disk layout for different
+size disks. Thus, running a pre-3.14 kernel and post-3.14 kernel on the
+same raid0 array could corrupt data. This lead to the creation of the
+'original' layout (to match the pre-3.14 layout) and the 'alternate' layout
+(to match the post 3.14 layout) in the 5.4 kernel time frame and an option
+to tell the kernel which layout to use (since it couldn't be autodetected).
+However, when the 'original' layout was added back to 5.4 discard support
+for the 'original' layout was not added leading this issue.
 
-The reason is that igc_xdp_xmit_zc() reads next_to_use
-before acquiring the lock, and writing it back
-(potentially unmodified) later. If it got modified
-before locking, the outdated next_to_use is written
-pointing to an item that was already used elsewhere
-(and thus next_to_watch got written).
+I've been able to reliably reproduce the corruption with the following
+test case:
 
-Fixes: 9acf59a752d4 ("igc: Enable TX via AF_XDP zero-copy")
-Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
-Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
-Tested-by: Kurt Kanzenbach <kurt@linutronix.de>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230717175444.3217831-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. create raid0 array with different size disks using original layout
+2. mkfs
+3. mount -o discard
+4. create lots of files
+5. remove 1/2 the files
+6. fstrim -a (or just the mount point for the raid0 array)
+7. umount
+8. fsck -fn /dev/md0 (spews all sorts of corruptions)
+
+Let's fix this by adding proper discard support to the 'original' layout.
+The fix 'maps' the 'original' layout disks to the order in which they are
+read/written such that we can compare the disks in the same way that the
+current 'alternate' layout does. A 'disk_shift' field is added to
+'struct strip_zone'. This could be computed on the fly in
+raid0_handle_discard() but by adding this field, we save some computation
+in the discard path.
+
+Note we could also potentially fix this by re-ordering the disks in the
+zones that follow the first one, and then always read/writing them using
+the 'alternate' layout. However, that is seen as a more substantial change,
+and we are attempting the least invasive fix at this time to remedy the
+corruption.
+
+I've verified the change using the reproducer mentioned above. Typically,
+the corruption is seen after less than 3 iterations, while the patch has
+run 500+ iterations.
+
+Cc: NeilBrown <neilb@suse.de>
+Cc: Song Liu <song@kernel.org>
+Fixes: c84a1372df92 ("md/raid0: avoid RAID0 data corruption due to layout confusion.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230623180523.1901230-1-jbaron@akamai.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/raid0.c |   62 ++++++++++++++++++++++++++++++++++++++++++++++-------
+ drivers/md/raid0.h |    1 
+ 2 files changed, 55 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -2748,15 +2748,15 @@ static void igc_xdp_xmit_zc(struct igc_r
- 	struct netdev_queue *nq = txring_txq(ring);
- 	union igc_adv_tx_desc *tx_desc = NULL;
- 	int cpu = smp_processor_id();
--	u16 ntu = ring->next_to_use;
- 	struct xdp_desc xdp_desc;
--	u16 budget;
-+	u16 budget, ntu;
+--- a/drivers/md/raid0.c
++++ b/drivers/md/raid0.c
+@@ -289,6 +289,18 @@ static int create_strip_zones(struct mdd
+ 		goto abort;
+ 	}
  
- 	if (!netif_carrier_ok(ring->netdev))
- 		return;
++	if (conf->layout == RAID0_ORIG_LAYOUT) {
++		for (i = 1; i < conf->nr_strip_zones; i++) {
++			sector_t first_sector = conf->strip_zone[i-1].zone_end;
++
++			sector_div(first_sector, mddev->chunk_sectors);
++			zone = conf->strip_zone + i;
++			/* disk_shift is first disk index used in the zone */
++			zone->disk_shift = sector_div(first_sector,
++						      zone->nb_dev);
++		}
++	}
++
+ 	pr_debug("md/raid0:%s: done.\n", mdname(mddev));
+ 	*private_conf = conf;
  
- 	__netif_tx_lock(nq, cpu);
+@@ -475,6 +487,20 @@ static inline int is_io_in_chunk_boundar
+ 	}
+ }
  
-+	ntu = ring->next_to_use;
- 	budget = igc_desc_unused(ring);
++/*
++ * Convert disk_index to the disk order in which it is read/written.
++ *  For example, if we have 4 disks, they are numbered 0,1,2,3. If we
++ *  write the disks starting at disk 3, then the read/write order would
++ *  be disk 3, then 0, then 1, and then disk 2 and we want map_disk_shift()
++ *  to map the disks as follows 0,1,2,3 => 1,2,3,0. So disk 0 would map
++ *  to 1, 1 to 2, 2 to 3, and 3 to 0. That way we can compare disks in
++ *  that 'output' space to understand the read/write disk ordering.
++ */
++static int map_disk_shift(int disk_index, int num_disks, int disk_shift)
++{
++	return ((disk_index + num_disks - disk_shift) % num_disks);
++}
++
+ static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
+ {
+ 	struct r0conf *conf = mddev->private;
+@@ -488,7 +514,9 @@ static void raid0_handle_discard(struct
+ 	sector_t end_disk_offset;
+ 	unsigned int end_disk_index;
+ 	unsigned int disk;
++	sector_t orig_start, orig_end;
  
- 	while (xsk_tx_peek_desc(pool, &xdp_desc) && budget--) {
++	orig_start = start;
+ 	zone = find_zone(conf, &start);
+ 
+ 	if (bio_end_sector(bio) > zone->zone_end) {
+@@ -502,6 +530,7 @@ static void raid0_handle_discard(struct
+ 	} else
+ 		end = bio_end_sector(bio);
+ 
++	orig_end = end;
+ 	if (zone != conf->strip_zone)
+ 		end = end - zone[-1].zone_end;
+ 
+@@ -513,13 +542,26 @@ static void raid0_handle_discard(struct
+ 	last_stripe_index = end;
+ 	sector_div(last_stripe_index, stripe_size);
+ 
+-	start_disk_index = (int)(start - first_stripe_index * stripe_size) /
+-		mddev->chunk_sectors;
++	/* In the first zone the original and alternate layouts are the same */
++	if ((conf->layout == RAID0_ORIG_LAYOUT) && (zone != conf->strip_zone)) {
++		sector_div(orig_start, mddev->chunk_sectors);
++		start_disk_index = sector_div(orig_start, zone->nb_dev);
++		start_disk_index = map_disk_shift(start_disk_index,
++						  zone->nb_dev,
++						  zone->disk_shift);
++		sector_div(orig_end, mddev->chunk_sectors);
++		end_disk_index = sector_div(orig_end, zone->nb_dev);
++		end_disk_index = map_disk_shift(end_disk_index,
++						zone->nb_dev, zone->disk_shift);
++	} else {
++		start_disk_index = (int)(start - first_stripe_index * stripe_size) /
++			mddev->chunk_sectors;
++		end_disk_index = (int)(end - last_stripe_index * stripe_size) /
++			mddev->chunk_sectors;
++	}
+ 	start_disk_offset = ((int)(start - first_stripe_index * stripe_size) %
+ 		mddev->chunk_sectors) +
+ 		first_stripe_index * mddev->chunk_sectors;
+-	end_disk_index = (int)(end - last_stripe_index * stripe_size) /
+-		mddev->chunk_sectors;
+ 	end_disk_offset = ((int)(end - last_stripe_index * stripe_size) %
+ 		mddev->chunk_sectors) +
+ 		last_stripe_index * mddev->chunk_sectors;
+@@ -528,18 +570,22 @@ static void raid0_handle_discard(struct
+ 		sector_t dev_start, dev_end;
+ 		struct bio *discard_bio = NULL;
+ 		struct md_rdev *rdev;
++		int compare_disk;
++
++		compare_disk = map_disk_shift(disk, zone->nb_dev,
++					      zone->disk_shift);
+ 
+-		if (disk < start_disk_index)
++		if (compare_disk < start_disk_index)
+ 			dev_start = (first_stripe_index + 1) *
+ 				mddev->chunk_sectors;
+-		else if (disk > start_disk_index)
++		else if (compare_disk > start_disk_index)
+ 			dev_start = first_stripe_index * mddev->chunk_sectors;
+ 		else
+ 			dev_start = start_disk_offset;
+ 
+-		if (disk < end_disk_index)
++		if (compare_disk < end_disk_index)
+ 			dev_end = (last_stripe_index + 1) * mddev->chunk_sectors;
+-		else if (disk > end_disk_index)
++		else if (compare_disk > end_disk_index)
+ 			dev_end = last_stripe_index * mddev->chunk_sectors;
+ 		else
+ 			dev_end = end_disk_offset;
+--- a/drivers/md/raid0.h
++++ b/drivers/md/raid0.h
+@@ -6,6 +6,7 @@ struct strip_zone {
+ 	sector_t zone_end;	/* Start of the next zone (in sectors) */
+ 	sector_t dev_start;	/* Zone offset in real dev (in sectors) */
+ 	int	 nb_dev;	/* # of devices attached to the zone */
++	int	 disk_shift;	/* start disk for the original layout */
+ };
+ 
+ /* Linux 3.14 (20d0189b101) made an unintended change to
 
 
