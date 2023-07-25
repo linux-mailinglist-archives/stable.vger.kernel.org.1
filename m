@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9FC76158F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C72B3761341
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234776AbjGYLa1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38390 "EHLO
+        id S234078AbjGYLJG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234775AbjGYLa0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:26 -0400
+        with ESMTP id S234064AbjGYLIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFAFEFB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06266213C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F84C615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723CCC433C8;
-        Tue, 25 Jul 2023 11:30:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 81D6061693
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A4FC433B8;
+        Tue, 25 Jul 2023 11:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284623;
-        bh=yBASZaA9Lmmv8N12sFN4uW04pUiniD6BAOi9EbNojTw=;
+        s=korg; t=1690283255;
+        bh=z7BFixCmGewQxSmWKaXu1g8Afbx1mNqQk4aDvzsM6GE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1m8TlKhrozy+7KnVaHumewQXkUsxC7s2mUTRT6iJwbrtpSRiNapuqkc5UGCSrisbk
-         Xaxyihvoojciq0ShCqiyRJBE7xr/eA9pmn/1y2EfEgUqWaOSIzpWfoxNMqq8JJDp98
-         12UWwnRgyuLZqEeLtzGJYQo9RRMaJcfSA7cbFK1c=
+        b=iFpkwX53ZTd+PhcoMehX42+GODUF7Aszp28Nynxtxph4M/PrVz2Skw/xM2oQbjAuw
+         HEXRJ3dr/Lc1xnbBQeIVbQLHIL1GsOnj1mPp6Av//BLHwctZzPAwuvj2MRtrwPRpS5
+         V21VBQTW7cMW0RsUOMHFJO4mVt2F3cXBYdH62kZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Florent Revest <revest@chromium.org>
-Subject: [PATCH 5.10 423/509] samples: ftrace: Save required argument registers in sample trampolines
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 11/78] selftests: tc: add ct action kconfig dep
 Date:   Tue, 25 Jul 2023 12:46:02 +0200
-Message-ID: <20230725104613.046615520@linuxfoundation.org>
+Message-ID: <20230725104451.767895927@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,68 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florent Revest <revest@chromium.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 8564c315876ab86fcaf8e7f558d6a84cb2ce5590 upstream.
+commit 719b4774a8cb1a501e2d22a5a4a3a0a870e427d5 upstream.
 
-The ftrace-direct-too sample traces the handle_mm_fault function whose
-signature changed since the introduction of the sample. Since:
-commit bce617edecad ("mm: do page fault accounting in handle_mm_fault")
-handle_mm_fault now has 4 arguments. Therefore, the sample trampoline
-should save 4 argument registers.
+When looking for something else in LKFT reports [1], I noticed most of
+the tests were skipped because the "teardown stage" did not complete
+successfully.
 
-s390 saves all argument registers already so it does not need a change
-but x86_64 needs an extra push and pop.
+Pedro found out this is due to the fact CONFIG_NF_FLOW_TABLE is required
+but not listed in the 'config' file. Adding it to the list fixes the
+issues on LKFT side. CONFIG_NET_ACT_CT is now set to 'm' in the final
+kconfig.
 
-This also evolves the signature of the tracing function to make it
-mirror the signature of the traced function.
-
-Link: https://lkml.kernel.org/r/20230427140700.625241-2-revest@chromium.org
-
+Fixes: c34b961a2492 ("net/sched: act_ct: Create nf flow table per zone")
 Cc: stable@vger.kernel.org
-Fixes: bce617edecad ("mm: do page fault accounting in handle_mm_fault")
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Tested-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-2-1eb4fd3a96e7@tessares.net
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/ftrace/ftrace-direct-too.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ tools/testing/selftests/tc-testing/config |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/samples/ftrace/ftrace-direct-too.c
-+++ b/samples/ftrace/ftrace-direct-too.c
-@@ -4,14 +4,14 @@
- #include <linux/mm.h> /* for handle_mm_fault() */
- #include <linux/ftrace.h>
+--- a/tools/testing/selftests/tc-testing/config
++++ b/tools/testing/selftests/tc-testing/config
+@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_MARK=y
+ CONFIG_NF_CONNTRACK_ZONES=y
+ CONFIG_NF_CONNTRACK_LABELS=y
++CONFIG_NF_FLOW_TABLE=m
+ CONFIG_NF_NAT=m
  
--extern void my_direct_func(struct vm_area_struct *vma,
--			   unsigned long address, unsigned int flags);
-+extern void my_direct_func(struct vm_area_struct *vma, unsigned long address,
-+			   unsigned int flags, struct pt_regs *regs);
- 
--void my_direct_func(struct vm_area_struct *vma,
--			unsigned long address, unsigned int flags)
-+void my_direct_func(struct vm_area_struct *vma, unsigned long address,
-+		    unsigned int flags, struct pt_regs *regs)
- {
--	trace_printk("handle mm fault vma=%p address=%lx flags=%x\n",
--		     vma, address, flags);
-+	trace_printk("handle mm fault vma=%p address=%lx flags=%x regs=%p\n",
-+		     vma, address, flags, regs);
- }
- 
- extern void my_tramp(void *);
-@@ -26,7 +26,9 @@ asm (
- "	pushq %rdi\n"
- "	pushq %rsi\n"
- "	pushq %rdx\n"
-+"	pushq %rcx\n"
- "	call my_direct_func\n"
-+"	popq %rcx\n"
- "	popq %rdx\n"
- "	popq %rsi\n"
- "	popq %rdi\n"
+ CONFIG_NET_SCHED=y
 
 
