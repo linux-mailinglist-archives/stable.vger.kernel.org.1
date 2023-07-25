@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA34761164
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D3F9761165
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233762AbjGYKuq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58774 "EHLO
+        id S233764AbjGYKur (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233501AbjGYKuY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:24 -0400
+        with ESMTP id S233766AbjGYKu2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1118E1FC4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B3A1FFA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 973BB61600
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB384C433C8;
-        Tue, 25 Jul 2023 10:50:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52FB961648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6906BC433C8;
+        Tue, 25 Jul 2023 10:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282208;
-        bh=SIdMNdHwOykpvJw2UBDj+eDuA1AZO7AuF6tLVh2vUiY=;
+        s=korg; t=1690282210;
+        bh=d5u29PkFHU5M4AVwKAW5UzJ/SzyrOt0Mh00oKMvMpjU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N7ogXODkN3ybdm7MpbIWYHOiEaSTGmimgYi2xw/7++vT/6MH5IIjGtliySZvUNKY6
-         qfy0UDIqfuTaHZq+hbGywY9e9/aDATmL6KV0ZUb5mCU8k88/CxwnkXR/bIaR5FCYY7
-         j50/JcZjRdAJ9UG35QpQBvsQdGYClosmO9nPtJgY=
+        b=wHLy3i9dqRyMMkjWz/xoMLIY+7+BCqH5cdmi8OvaBMhcFv1yKtNSWeiT5wPD2E5wY
+         wZv5NdOZoacC6wKWuM9HqjW+a82Mb9rdzk4npNv7nowx8GFPyTvl7Wgq/awAp8lPWe
+         N29EaWuQNorSfQVkp6v6c+3EpSw35UNwCYojW2Jo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Ben Skeggs <bskeggs@redhat.com>,
         Karol Herbst <kherbst@redhat.com>
-Subject: [PATCH 6.4 047/227] drm/nouveau/disp: PIOR DP uses GPIO for HPD, not PMGR AUX interrupts
-Date:   Tue, 25 Jul 2023 12:43:34 +0200
-Message-ID: <20230725104516.749275114@linuxfoundation.org>
+Subject: [PATCH 6.4 048/227] drm/nouveau/kms/nv50-: init hpd_irq_lock for PIOR DP
+Date:   Tue, 25 Jul 2023 12:43:35 +0200
+Message-ID: <20230725104516.790119455@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
 References: <20230725104514.821564989@linuxfoundation.org>
@@ -56,61 +56,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Ben Skeggs <bskeggs@redhat.com>
 
-commit 2b5d1c29f6c4cb19369ef92881465e5ede75f4ef upstream.
+commit ea293f823a8805735d9e00124df81a8f448ed1ae upstream.
 
-Fixes crash on boards with ANX9805 TMDS/DP encoders.
+Fixes OOPS on boards with ANX9805 DP encoders.
 
 Cc: stable@vger.kernel.org # 6.4+
 Signed-off-by: Ben Skeggs <bskeggs@redhat.com>
 Reviewed-by: Karol Herbst <kherbst@redhat.com>
 Signed-off-by: Karol Herbst <kherbst@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230719044051.6975-2-skeggsb@gmail.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20230719044051.6975-3-skeggsb@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/engine/disp/uconn.c |   29 +++++++++++++++--------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/nouveau/dispnv50/disp.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/uconn.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/uconn.c
-@@ -81,20 +81,29 @@ nvkm_uconn_uevent(struct nvkm_object *ob
- 		return -ENOSYS;
+--- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+@@ -1873,6 +1873,8 @@ nv50_pior_destroy(struct drm_encoder *en
+ 	nvif_outp_dtor(&nv_encoder->outp);
  
- 	list_for_each_entry(outp, &conn->disp->outps, head) {
--		if (outp->info.connector == conn->index && outp->dp.aux) {
--			if (args->v0.types & NVIF_CONN_EVENT_V0_PLUG  ) bits |= NVKM_I2C_PLUG;
--			if (args->v0.types & NVIF_CONN_EVENT_V0_UNPLUG) bits |= NVKM_I2C_UNPLUG;
--			if (args->v0.types & NVIF_CONN_EVENT_V0_IRQ   ) bits |= NVKM_I2C_IRQ;
--
--			return nvkm_uevent_add(uevent, &device->i2c->event, outp->dp.aux->id, bits,
--					       nvkm_uconn_uevent_aux);
--		}
-+		if (outp->info.connector == conn->index)
-+			break;
-+	}
+ 	drm_encoder_cleanup(encoder);
 +
-+	if (&outp->head == &conn->disp->outps)
-+		return -EINVAL;
-+
-+	if (outp->dp.aux && !outp->info.location) {
-+		if (args->v0.types & NVIF_CONN_EVENT_V0_PLUG  ) bits |= NVKM_I2C_PLUG;
-+		if (args->v0.types & NVIF_CONN_EVENT_V0_UNPLUG) bits |= NVKM_I2C_UNPLUG;
-+		if (args->v0.types & NVIF_CONN_EVENT_V0_IRQ   ) bits |= NVKM_I2C_IRQ;
-+
-+		return nvkm_uevent_add(uevent, &device->i2c->event, outp->dp.aux->id, bits,
-+				       nvkm_uconn_uevent_aux);
- 	}
++	mutex_destroy(&nv_encoder->dp.hpd_irq_lock);
+ 	kfree(encoder);
+ }
  
- 	if (args->v0.types & NVIF_CONN_EVENT_V0_PLUG  ) bits |= NVKM_GPIO_HI;
- 	if (args->v0.types & NVIF_CONN_EVENT_V0_UNPLUG) bits |= NVKM_GPIO_LO;
--	if (args->v0.types & NVIF_CONN_EVENT_V0_IRQ)
--		return -EINVAL;
-+	if (args->v0.types & NVIF_CONN_EVENT_V0_IRQ) {
-+		/* TODO: support DP IRQ on ANX9805 and remove this hack. */
-+		if (!outp->info.location)
-+			return -EINVAL;
-+	}
+@@ -1917,6 +1919,8 @@ nv50_pior_create(struct drm_connector *c
+ 	nv_encoder->i2c = ddc;
+ 	nv_encoder->aux = aux;
  
- 	return nvkm_uevent_add(uevent, &device->gpio->event, conn->info.hpd, bits,
- 			       nvkm_uconn_uevent_gpio);
++	mutex_init(&nv_encoder->dp.hpd_irq_lock);
++
+ 	encoder = to_drm_encoder(nv_encoder);
+ 	encoder->possible_crtcs = dcbe->heads;
+ 	encoder->possible_clones = 0;
 
 
