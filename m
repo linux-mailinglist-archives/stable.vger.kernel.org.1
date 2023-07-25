@@ -2,52 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 676AB761615
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49FF87614E7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234788AbjGYLgW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43282 "EHLO
+        id S234501AbjGYLXx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234684AbjGYLgS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9B6A1BC3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:06 -0700 (PDT)
+        with ESMTP id S234510AbjGYLXw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C58819AA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7C64616AB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A4CC433C7;
-        Tue, 25 Jul 2023 11:36:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D2DE615FE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17116C433C8;
+        Tue, 25 Jul 2023 11:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284966;
-        bh=YFOP5Qgoht4cesuKR40BMktqIm1arh8Mf8W+8RQ0wkw=;
+        s=korg; t=1690284224;
+        bh=G9qlrBcJbNn2G7LkTxQCo96rTqU9FkPoHv0glkbqNhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QMZDnKbN9OczTI4jjxent38L18ow/KA6q/LbYyp/IId4m+NTWdhRzTiUI4etPdyXG
-         lD6UYWVHMeYFDhS2sRo9OWIuHD05Uzc+Kh6bakXz4GJWcVdpaPilYTs3RL3DzAMJ00
-         qe0KHCHyPyJGpDRHhNNJYaauJYU/ErAUme4m4/Dk=
+        b=r93zsgasO5q+BNTYE6WCoh2fZ+XSQZez0wK1SZuLXIe5gFraKjbEjJjxAIHdwddZW
+         8vJI8O+LCGkN77xzFO6pT6sQTo6uzSG/BQHtFVQsrGMtHw13Rc5a0VQ2CryV//48qG
+         7JNBQj0To4fe6OEX1LP8enJqP+GA3Q1z/XC/8E5M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Kees Cook <keescook@chromium.org>,
+        "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>,
+        Scott Branden <sbranden@broadcom.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 036/313] regulator: core: Streamline debugfs operations
+Subject: [PATCH 5.10 250/509] test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
 Date:   Tue, 25 Jul 2023 12:43:09 +0200
-Message-ID: <20230725104522.636136615@linuxfoundation.org>
+Message-ID: <20230725104605.183881078@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,98 +62,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit 08880713ceec023dd94d634f1e8902728c385939 ]
+[ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
 
-If CONFIG_DEBUG_FS is not set:
+In a couple of situations like
 
-    regulator: Failed to create debugfs directory
-    ...
-    regulator-dummy: Failed to create debugfs directory
+	name = kstrndup(buf, count, GFP_KERNEL);
+	if (!name)
+		return -ENOSPC;
 
-As per the comments for debugfs_create_dir(), errors returned by this
-function should be expected, and ignored:
+the error is not actually "No space left on device", but "Out of memory".
 
- * If debugfs is not enabled in the kernel, the value -%ENODEV will be
- * returned.
- *
- * NOTE: it's expected that most callers should _ignore_ the errors returned
- * by this function. Other debugfs functions handle the fact that the "dentry"
- * passed to them could be an error and they don't crash in that case.
- * Drivers should generally work fine even if debugfs fails to init anyway.
+It is semantically correct to return -ENOMEM in all failed kstrndup()
+and kzalloc() cases in this driver, as it is not a problem with disk
+space, but with kernel memory allocator failing allocation.
 
-Adhere to the debugfs spirit, and streamline all operations by:
-  1. Demoting the importance of the printed error messages to debug
-     level, like is already done in create_regulator(),
-  2. Further ignoring any returned errors, as by design, all debugfs
-     functions are no-ops when passed an error pointer.
+The semantically correct should be:
 
-Fixes: 2bf1c45be3b8f3a3 ("regulator: Fix error checking for debugfs_create_dir")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/2f8bb6e113359ddfab7b59e4d4274bd4c06d6d0a.1685013051.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+        name = kstrndup(buf, count, GFP_KERNEL);
+        if (!name)
+                return -ENOMEM;
+
+Cc: Dan Carpenter <error27@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Brian Norris <briannorris@chromium.org>
+Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
+Fixes: 0a8adf584759c ("test: add firmware_class loader test")
+Fixes: 548193cba2a7d ("test_firmware: add support for firmware_request_platform")
+Fixes: eb910947c82f9 ("test: firmware_class: add asynchronous request trigger")
+Fixes: 061132d2b9c95 ("test_firmware: add test custom fallback trigger")
+Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <20230606070808.9300-1-mirsad.todorovac@alu.unizg.hr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ lib/test_firmware.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 0ac9c763942f9..fe4b666edd037 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1710,19 +1710,17 @@ static struct regulator *create_regulator(struct regulator_dev *rdev,
+diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+index ed0455a9ded87..25dc9eb6c902b 100644
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -183,7 +183,7 @@ static int __kstrncpy(char **dst, const char *name, size_t count, gfp_t gfp)
+ {
+ 	*dst = kstrndup(name, count, gfp);
+ 	if (!*dst)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 	return count;
+ }
  
- 	if (err != -EEXIST)
- 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
--	if (IS_ERR(regulator->debugfs)) {
-+	if (IS_ERR(regulator->debugfs))
- 		rdev_dbg(rdev, "Failed to create debugfs directory\n");
--	} else {
--		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
--				   &regulator->uA_load);
--		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
--				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
--		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
--				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
--		debugfs_create_file("constraint_flags", 0444,
--				    regulator->debugfs, regulator,
--				    &constraint_flags_fops);
--	}
-+
-+	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
-+			   &regulator->uA_load);
-+	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
-+			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
-+	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
-+			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
-+	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
-+			    regulator, &constraint_flags_fops);
+@@ -606,7 +606,7 @@ static ssize_t trigger_request_store(struct device *dev,
  
- 	/*
- 	 * Check now if the regulator is an always on regulator - if
-@@ -4906,10 +4904,8 @@ static void rdev_init_debugfs(struct regulator_dev *rdev)
- 	}
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
  
- 	rdev->debugfs = debugfs_create_dir(rname, debugfs_root);
--	if (IS_ERR(rdev->debugfs)) {
--		rdev_warn(rdev, "Failed to create debugfs directory\n");
--		return;
--	}
-+	if (IS_ERR(rdev->debugfs))
-+		rdev_dbg(rdev, "Failed to create debugfs directory\n");
+ 	pr_info("loading '%s'\n", name);
  
- 	debugfs_create_u32("use_count", 0444, rdev->debugfs,
- 			   &rdev->use_count);
-@@ -5797,7 +5793,7 @@ static int __init regulator_init(void)
+@@ -654,7 +654,7 @@ static ssize_t trigger_request_platform_store(struct device *dev,
  
- 	debugfs_root = debugfs_create_dir("regulator", NULL);
- 	if (IS_ERR(debugfs_root))
--		pr_warn("regulator: Failed to create debugfs directory\n");
-+		pr_debug("regulator: Failed to create debugfs directory\n");
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
  
- #ifdef CONFIG_DEBUG_FS
- 	debugfs_create_file("supply_map", 0444, debugfs_root, NULL,
+ 	pr_info("inserting test platform fw '%s'\n", name);
+ 	efi_embedded_fw.name = name;
+@@ -707,7 +707,7 @@ static ssize_t trigger_async_request_store(struct device *dev,
+ 
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 
+ 	pr_info("loading '%s'\n", name);
+ 
+@@ -752,7 +752,7 @@ static ssize_t trigger_custom_fallback_store(struct device *dev,
+ 
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 
+ 	pr_info("loading '%s' using custom fallback mechanism\n", name);
+ 
+@@ -803,7 +803,7 @@ static int test_fw_run_batch_request(void *data)
+ 
+ 		test_buf = kzalloc(TEST_FIRMWARE_BUF_SIZE, GFP_KERNEL);
+ 		if (!test_buf)
+-			return -ENOSPC;
++			return -ENOMEM;
+ 
+ 		if (test_fw_config->partial)
+ 			req->rc = request_partial_firmware_into_buf
 -- 
 2.39.2
 
