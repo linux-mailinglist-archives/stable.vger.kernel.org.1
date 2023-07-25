@@ -2,114 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E240176241E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 23:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFDB776244A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 23:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229825AbjGYVI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 17:08:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51742 "EHLO
+        id S229441AbjGYVYq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 17:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbjGYVIZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 17:08:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C6A19A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 14:08:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6791B618E8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 21:08:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A928FC433C8;
-        Tue, 25 Jul 2023 21:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690319303;
-        bh=mFP4UYco3gOD5VKyaE0YzA7kaUtVPHKmet4Fc4mG02w=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=KJ8lTP6dOcczngeRimNEKGAjKevSsSSrB4XmesB0YrYxMZrDgFiSqzxRMJGxYq0eG
-         OCBFwq8IFfA4315z9VhHz+SpV8vl500TQP+L5GYKvt5dOHxxJ/79SV+FbXXkxbSXi2
-         fQIhx3yJ4aWWg5P79YYEszk17WSRmv+HnIcRVPfJMYWdv3yAcfuyA9AqeF8s1D8MU0
-         DOiGLdNNwCUyDphpBZ68MZ43v1qh7XyB4LYWP9f2CidFuwkaWjGM6L24ZMkWU66JpW
-         BbAPKy9x+kJ0+S+ZfmINbU723wzIVGPXff3wsSjsUQ00kHHBoOpgp6XUI3aBBxAVbH
-         nixNZGC6D5sUQ==
-Date:   Tue, 25 Jul 2023 14:08:22 -0700 (PDT)
-From:   Mat Martineau <martineau@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Geliang Tang <geliang.tang@suse.com>, netdev@vger.kernel.org,
-        mptcp@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] selftests: mptcp: join: only check for ip6tables
- if needed
-In-Reply-To: <2023072521-surfboard-starry-fbe8@gregkh>
-Message-ID: <1388a7a1-dbad-1653-d9eb-150fdd1ec746@kernel.org>
-References: <20230725-send-net-20230725-v1-0-6f60fe7137a9@kernel.org> <20230725-send-net-20230725-v1-1-6f60fe7137a9@kernel.org> <2023072521-surfboard-starry-fbe8@gregkh>
+        with ESMTP id S230348AbjGYVYp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 17:24:45 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4989F1FD2;
+        Tue, 25 Jul 2023 14:24:44 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-268030e1be7so1511063a91.3;
+        Tue, 25 Jul 2023 14:24:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690320284; x=1690925084;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DdGMZ3nhAKvZh4BY9rcT4I0j/MWs6ecPuO0p3nOu5rE=;
+        b=bXxSJZvblOKlLAgXGnD6CioO9LiWP5Dn1MW2LVqZutjTfDHbabWhItozvlSWlDsFa+
+         C4rtv9M0CQEn2oWgGowUbGgpOJyBp0OauQe0NxzdOtOf2oiyg2PJm6e9sbu/CKdjpuMQ
+         XAku9m0JPM0Obr9kR9ugRj3GNmZoQC6X1emWuO0+fSDiphVDxFNKP+Cv5QZ049yf5M1h
+         O1CnBI1lGrf16f1uS7zMN4iOXfjKZ2I66B9jLnWd8w8cTq77JOwY/v37XmOuSfNco7/d
+         xd3/ax/K2fu6MVCy6CTOYYjK/weD8JegDnuLK2Sxa/Gl9u+Ldg3hbteUowQWSJUuJpm5
+         LzCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690320284; x=1690925084;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DdGMZ3nhAKvZh4BY9rcT4I0j/MWs6ecPuO0p3nOu5rE=;
+        b=DQVFCvFuwidQaIjsPiRoNuyFBMlAgVK6QvRfx3YXCxiu9bqq4E9FVa3OE1rsqpIRZk
+         wuAyZKS0u7P6BFZgAM9xY1nYx/YnEWI+P3icXWhNPuUSAfCpxXqTM4POEQP7Ar8lbAKJ
+         +FmmdpyPVHoQYtr/FNt1wXWrFwdDufOZBIuh5pDO5X69/Vl+Gdwiietd7mngSc1+S2qa
+         u1ZnAsUkSjq3X0pkCWR+lD/llm0XXXBdvnARmxYhXuAYvtc13EZptTD/heJltfaodbXc
+         5OvbC0RAzV/lzRJ9+KOjL4044dOrH7Fz/8N+AoyJj9VsdHhvH12D3jnlrt9GIF1ndMNS
+         Rmeg==
+X-Gm-Message-State: ABy/qLYDB/WjWCe+6oUM8k6woWvK4Ah6ch/h/ZdWmlRmUOdm+zYBafOD
+        x61Yw81tkea9V0fAzpfCF4w=
+X-Google-Smtp-Source: APBJJlGfxPTf6vGPHwdCOZ2d046ZKGCGPMNe9DfRIkw+7ghicaW796dobYiDSByaxl43MNNWDEUopg==
+X-Received: by 2002:a17:90a:a607:b0:267:faba:705 with SMTP id c7-20020a17090aa60700b00267faba0705mr303108pjq.10.1690320283675;
+        Tue, 25 Jul 2023 14:24:43 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id 14-20020a17090a19ce00b0026851759e9csm30706pjj.29.2023.07.25.14.24.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Jul 2023 14:24:43 -0700 (PDT)
+Message-ID: <64eca0da-dfe1-fb61-27d8-1e873bfb6a66@gmail.com>
+Date:   Tue, 25 Jul 2023 14:24:41 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5.10 000/509] 5.10.188-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230725104553.588743331@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 25 Jul 2023, Greg KH wrote:
+On 7/25/23 03:38, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.188 release.
+> There are 509 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.188-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-> On Tue, Jul 25, 2023 at 11:34:55AM -0700, Mat Martineau wrote:
->> From: Matthieu Baerts <matthieu.baerts@tessares.net>
->>
->> If 'iptables-legacy' is available, 'ip6tables-legacy' command will be
->> used instead of 'ip6tables'. So no need to look if 'ip6tables' is
->> available in this case.
->>
->> Fixes: 0c4cd3f86a40 ("selftests: mptcp: join: use 'iptables-legacy' if available")
->> Acked-by: Paolo Abeni <pabeni@redhat.com>
->> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
->> Signed-off-by: Mat Martineau <martineau@kernel.org>
->> ---
->>  tools/testing/selftests/net/mptcp/mptcp_join.sh | 4 +---
->>  1 file changed, 1 insertion(+), 3 deletions(-)
->>
->> diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
->> index e6c9d5451c5b..3c2096ac97ef 100755
->> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
->> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
->> @@ -162,9 +162,7 @@ check_tools()
->>  	elif ! iptables -V &> /dev/null; then
->>  		echo "SKIP: Could not run all tests without iptables tool"
->>  		exit $ksft_skip
->> -	fi
->> -
->> -	if ! ip6tables -V &> /dev/null; then
->> +	elif ! ip6tables -V &> /dev/null; then
->>  		echo "SKIP: Could not run all tests without ip6tables tool"
->>  		exit $ksft_skip
->>  	fi
->>
->> --
->> 2.41.0
->>
->
-> <formletter>
->
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
->
-> </formletter>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Ugh, I did forget to add the "Cc: stable@vger.kernel.org" tag in the 
-commit messages for this series and only added in the email cc field.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Jakub/Paolo, if you apply the series as-is I can make sure these end up in 
-stable (as they likely will even without the cc tag). If you prefer I send 
-a v2 just let me know.
-
-
-- Mat
