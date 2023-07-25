@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FA2776167D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D71761524
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234891AbjGYLjr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:39:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46994 "EHLO
+        id S234607AbjGYLZ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:25:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234872AbjGYLjn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:43 -0400
+        with ESMTP id S234605AbjGYLZ5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62DAF10EC
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815AA19C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E258761698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1501C433C8;
-        Tue, 25 Jul 2023 11:39:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4F9C6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B0DC433C7;
+        Tue, 25 Jul 2023 11:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285180;
-        bh=SiT7wg+SW9p5jaHdr/jHcU7/TZiwfsNFTH59k0/g17s=;
+        s=korg; t=1690284355;
+        bh=dKi6yeEg+AEVKwezsYdxwD7jHXbMT4mYBYn61WdLx1o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zQ0FbgjcuFiPKEHZRNq2pylVfh/nhKM7UZ6sWLII6a27C6RQsL/enG6ABv072TiJ1
-         Msu0GtDuyAhMY8tlhfFuWKT2GAtXJrYMPi2szFm+Ebj2MVbJzxNhXdE3syze5olmNS
-         FC9nPCwG7bBoANoK9G9yAtW5Aq2m38shzsQPEaDI=
+        b=sjEZIqeZzUZxYgIQzTCYdALB0dWwyu/xIEE0wuIvdmEpseZLXjXA3aKkm6Z7zE66P
+         jlxPZFWo2Kprzu8R03m3/kfjnfNZztDkR1f8TUo/xGk2hBR2cmmIJR6YBCsTJdh4Nh
+         Dhd1nFypzWc1qZaHYaX++PZd8JaBj25IK5OvYaWE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/313] modpost: fix section mismatch message for R_ARM_{PC24,CALL,JUMP24}
-Date:   Tue, 25 Jul 2023 12:44:25 +0200
-Message-ID: <20230725104525.858054866@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Maxim Cournoyer <maxim.cournoyer@gmail.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 327/509] wireguard: netlink: send staged packets when setting initial private key
+Date:   Tue, 25 Jul 2023 12:44:26 +0200
+Message-ID: <20230725104608.660373769@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,106 +56,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit 56a24b8ce6a7f9c4a21b2276a8644f6f3d8fc14d ]
+commit f58d0a9b4c6a7a5199c3af967e43cc8b654604d4 upstream.
 
-addend_arm_rel() processes R_ARM_PC24, R_ARM_CALL, R_ARM_JUMP24 in a
-wrong way.
+Packets bound for peers can queue up prior to the device private key
+being set. For example, if persistent keepalive is set, a packet is
+queued up to be sent as soon as the device comes up. However, if the
+private key hasn't been set yet, the handshake message never sends, and
+no timer is armed to retry, since that would be pointless.
 
-Here, test code.
+But, if a user later sets a private key, the expectation is that those
+queued packets, such as a persistent keepalive, are actually sent. So
+adjust the configuration logic to account for this edge case, and add a
+test case to make sure this works.
 
-[test code for R_ARM_JUMP24]
+Maxim noticed this with a wg-quick(8) config to the tune of:
 
-  .section .init.text,"ax"
-  bar:
-          bx      lr
+    [Interface]
+    PostUp = wg set %i private-key somefile
 
-  .section .text,"ax"
-  .globl foo
-  foo:
-          b       bar
+    [Peer]
+    PublicKey = ...
+    Endpoint = ...
+    PersistentKeepalive = 25
 
-[test code for R_ARM_CALL]
+Here, the private key gets set after the device comes up using a PostUp
+script, triggering the bug.
 
-  .section .init.text,"ax"
-  bar:
-          bx      lr
-
-  .section .text,"ax"
-  .globl foo
-  foo:
-          push    {lr}
-          bl      bar
-          pop     {pc}
-
-If you compile it with ARM multi_v7_defconfig, modpost will show the
-symbol name, (unknown).
-
-  WARNING: modpost: vmlinux.o: section mismatch in reference: foo (section: .text) -> (unknown) (section: .init.text)
-
-(You need to use GNU linker instead of LLD to reproduce it.)
-
-Fix the code to make modpost show the correct symbol name.
-
-I imported (with adjustment) sign_extend32() from include/linux/bitops.h.
-
-The '+8' is the compensation for pc-relative instruction. It is
-documented in "ELF for the Arm Architecture" [1].
-
-  "If the relocation is pc-relative then compensation for the PC bias
-  (the PC value is 8 bytes ahead of the executing instruction in Arm
-  state and 4 bytes in Thumb state) must be encoded in the relocation
-  by the object producer."
-
-[1]: https://github.com/ARM-software/abi-aa/blob/main/aaelf32/aaelf32.rst
-
-Fixes: 56a974fa2d59 ("kbuild: make better section mismatch reports on arm")
-Fixes: 6e2e340b59d2 ("ARM: 7324/1: modpost: Fix section warnings for ARM for many compilers")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Cc: stable@vger.kernel.org
+Reported-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
+Tested-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
+Link: https://lore.kernel.org/wireguard/87fs7xtqrv.fsf@gmail.com/
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/modpost.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireguard/netlink.c            |   14 ++++++++-----
+ tools/testing/selftests/wireguard/netns.sh |   30 +++++++++++++++++++++++++----
+ 2 files changed, 35 insertions(+), 9 deletions(-)
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index ad955c45d7a53..75d76b8f50302 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -1812,12 +1812,20 @@ static int addend_386_rel(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Rela *r)
- #define	R_ARM_THM_JUMP19	51
- #endif
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -546,6 +546,7 @@ static int wg_set_device(struct sk_buff
+ 		u8 *private_key = nla_data(info->attrs[WGDEVICE_A_PRIVATE_KEY]);
+ 		u8 public_key[NOISE_PUBLIC_KEY_LEN];
+ 		struct wg_peer *peer, *temp;
++		bool send_staged_packets;
  
-+static int32_t sign_extend32(int32_t value, int index)
-+{
-+	uint8_t shift = 31 - index;
-+
-+	return (int32_t)(value << shift) >> shift;
-+}
-+
- static int addend_arm_rel(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Rela *r)
- {
- 	unsigned int r_typ = ELF_R_TYPE(r->r_info);
- 	Elf_Sym *sym = elf->symtab_start + ELF_R_SYM(r->r_info);
- 	void *loc = reloc_location(elf, sechdr, r);
- 	uint32_t inst;
-+	int32_t offset;
+ 		if (!crypto_memneq(wg->static_identity.static_private,
+ 				   private_key, NOISE_PUBLIC_KEY_LEN))
+@@ -564,14 +565,17 @@ static int wg_set_device(struct sk_buff
+ 		}
  
- 	switch (r_typ) {
- 	case R_ARM_ABS32:
-@@ -1827,6 +1835,10 @@ static int addend_arm_rel(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Rela *r)
- 	case R_ARM_PC24:
- 	case R_ARM_CALL:
- 	case R_ARM_JUMP24:
-+		inst = TO_NATIVE(*(uint32_t *)loc);
-+		offset = sign_extend32((inst & 0x00ffffff) << 2, 25);
-+		r->r_addend = offset + sym->st_value + 8;
-+		break;
- 	case R_ARM_THM_CALL:
- 	case R_ARM_THM_JUMP24:
- 	case R_ARM_THM_JUMP19:
--- 
-2.39.2
-
+ 		down_write(&wg->static_identity.lock);
+-		wg_noise_set_static_identity_private_key(&wg->static_identity,
+-							 private_key);
+-		list_for_each_entry_safe(peer, temp, &wg->peer_list,
+-					 peer_list) {
++		send_staged_packets = !wg->static_identity.has_identity && netif_running(wg->dev);
++		wg_noise_set_static_identity_private_key(&wg->static_identity, private_key);
++		send_staged_packets = send_staged_packets && wg->static_identity.has_identity;
++
++		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
++		list_for_each_entry_safe(peer, temp, &wg->peer_list, peer_list) {
+ 			wg_noise_precompute_static_static(peer);
+ 			wg_noise_expire_current_peer_keypairs(peer);
++			if (send_staged_packets)
++				wg_packet_send_staged_packets(peer);
+ 		}
+-		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
+ 		up_write(&wg->static_identity.lock);
+ 	}
+ skip_set_private_key:
+--- a/tools/testing/selftests/wireguard/netns.sh
++++ b/tools/testing/selftests/wireguard/netns.sh
+@@ -502,10 +502,32 @@ n2 bash -c 'printf 0 > /proc/sys/net/ipv
+ n1 ping -W 1 -c 1 192.168.241.2
+ [[ $(n2 wg show wg0 endpoints) == "$pub1	10.0.0.3:1" ]]
+ 
+-ip1 link del veth1
+-ip1 link del veth3
+-ip1 link del wg0
+-ip2 link del wg0
++ip1 link del dev veth3
++ip1 link del dev wg0
++ip2 link del dev wg0
++
++# Make sure persistent keep alives are sent when an adapter comes up
++ip1 link add dev wg0 type wireguard
++n1 wg set wg0 private-key <(echo "$key1") peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -eq 0 ]]
++ip1 link set dev wg0 up
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -gt 0 ]]
++ip1 link del dev wg0
++# This should also happen even if the private key is set later
++ip1 link add dev wg0 type wireguard
++n1 wg set wg0 peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -eq 0 ]]
++ip1 link set dev wg0 up
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -eq 0 ]]
++n1 wg set wg0 private-key <(echo "$key1")
++read _ _ tx_bytes < <(n1 wg show wg0 transfer)
++[[ $tx_bytes -gt 0 ]]
++ip1 link del dev veth1
++ip1 link del dev wg0
+ 
+ # We test that Netlink/IPC is working properly by doing things that usually cause split responses
+ ip0 link add dev wg0 type wireguard
 
 
