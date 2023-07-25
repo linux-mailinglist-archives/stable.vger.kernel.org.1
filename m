@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C059761578
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 328897612D6
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234720AbjGYL3V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
+        id S233949AbjGYLF4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbjGYL3V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:21 -0400
+        with ESMTP id S233950AbjGYLFg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655C2F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 115D72D48
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0549A6168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5E5C433C7;
-        Tue, 25 Jul 2023 11:29:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D45F615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A521C433C8;
+        Tue, 25 Jul 2023 11:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284559;
-        bh=Owi/QjIHX5cSUbEgRPggfw458L5ZgqIgxYoPhkQrOII=;
+        s=korg; t=1690283019;
+        bh=Z7sx/LMlKsKlgi0b4nfdQzVv+Hg1vujGoc5aCpjkY1U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hHr7jnAfj4uJE/ZiHV4QRAsRLzxePLELKZ9EXr6Hngdf6ywNhd/he2+jmGHv/uDOU
-         Ue9fab2stwSPvBdi2dZMR086T0pCORDeTYIzdTTP4DHEVvqFkUPFMuYWH7aXrbyYsR
-         eKv1+EevTr5ewozt3eGmXZfSvD56bB/av1xG68sc=
+        b=wOQ0nxQu0FUmAxFLC5HHYruXgbwhJH5QCj2MEUwYOrvzIuOiWCU/T6OYJt6fUX4Jf
+         vdyOQh9XVxbDh3YPKjPwo4lmo2wqaj6LLTynK/2KJpVlWcMjmb+d/PWgGpY98htoMv
+         mqTbcrt5Dn93jtgLNB9j+ihZe0ubec/Z5YRwYZ6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.10 399/509] PCI: rockchip: Write PCI Device ID to correct register
+        patches@lists.linux.dev, Victor Nogueira <victor@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/183] net: sched: cls_matchall: Undo tcf_bind_filter in case of failure after mall_set_parms
 Date:   Tue, 25 Jul 2023 12:45:38 +0200
-Message-ID: <20230725104612.017197271@linuxfoundation.org>
+Message-ID: <20230725104511.931236420@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,60 +58,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 1f1c42ece18de365c976a060f3c8eb481b038e3a upstream.
+[ Upstream commit b3d0e0489430735e2e7626aa37e6462cdd136e9d ]
 
-Write PCI Device ID (DID) to the correct register. The Device ID was not
-updated through the correct register. Device ID was written to a read-only
-register and therefore did not work. The Device ID is now set through the
-correct register. This is documented in the RK3399 TRM section 17.6.6.1.1
+In case an error occurred after mall_set_parms executed successfully, we
+must undo the tcf_bind_filter call it issues.
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-3-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix that by calling tcf_unbind_filter in err_replace_hw_filter label.
+
+Fixes: ec2507d2a306 ("net/sched: cls_matchall: Fix error path")
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++++--
- drivers/pci/controller/pcie-rockchip.h    |    2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ net/sched/cls_matchall.c | 35 ++++++++++++-----------------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -125,6 +125,7 @@ static void rockchip_pcie_prog_ep_ob_atu
- static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn,
- 					 struct pci_epf_header *hdr)
- {
-+	u32 reg;
- 	struct rockchip_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct rockchip_pcie *rockchip = &ep->rockchip;
+diff --git a/net/sched/cls_matchall.c b/net/sched/cls_matchall.c
+index 39a5d9c170def..43f8df5847414 100644
+--- a/net/sched/cls_matchall.c
++++ b/net/sched/cls_matchall.c
+@@ -157,26 +157,6 @@ static const struct nla_policy mall_policy[TCA_MATCHALL_MAX + 1] = {
+ 	[TCA_MATCHALL_FLAGS]		= { .type = NLA_U32 },
+ };
  
-@@ -137,8 +138,9 @@ static int rockchip_pcie_ep_write_header
- 				    PCIE_CORE_CONFIG_VENDOR);
+-static int mall_set_parms(struct net *net, struct tcf_proto *tp,
+-			  struct cls_mall_head *head,
+-			  unsigned long base, struct nlattr **tb,
+-			  struct nlattr *est, u32 flags, u32 fl_flags,
+-			  struct netlink_ext_ack *extack)
+-{
+-	int err;
+-
+-	err = tcf_exts_validate_ex(net, tp, tb, est, &head->exts, flags,
+-				   fl_flags, extack);
+-	if (err < 0)
+-		return err;
+-
+-	if (tb[TCA_MATCHALL_CLASSID]) {
+-		head->res.classid = nla_get_u32(tb[TCA_MATCHALL_CLASSID]);
+-		tcf_bind_filter(tp, &head->res, base);
+-	}
+-	return 0;
+-}
+-
+ static int mall_change(struct net *net, struct sk_buff *in_skb,
+ 		       struct tcf_proto *tp, unsigned long base,
+ 		       u32 handle, struct nlattr **tca,
+@@ -185,6 +165,7 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
+ {
+ 	struct cls_mall_head *head = rtnl_dereference(tp->root);
+ 	struct nlattr *tb[TCA_MATCHALL_MAX + 1];
++	bool bound_to_filter = false;
+ 	struct cls_mall_head *new;
+ 	u32 userflags = 0;
+ 	int err;
+@@ -224,11 +205,17 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
+ 		goto err_alloc_percpu;
  	}
  
--	rockchip_pcie_write(rockchip, hdr->deviceid << 16,
--			    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) + PCI_VENDOR_ID);
-+	reg = rockchip_pcie_read(rockchip, PCIE_EP_CONFIG_DID_VID);
-+	reg = (reg & 0xFFFF) | (hdr->deviceid << 16);
-+	rockchip_pcie_write(rockchip, reg, PCIE_EP_CONFIG_DID_VID);
+-	err = mall_set_parms(net, tp, new, base, tb, tca[TCA_RATE],
+-			     flags, new->flags, extack);
+-	if (err)
++	err = tcf_exts_validate_ex(net, tp, tb, tca[TCA_RATE],
++				   &new->exts, flags, new->flags, extack);
++	if (err < 0)
+ 		goto err_set_parms;
  
- 	rockchip_pcie_write(rockchip,
- 			    hdr->revid |
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -132,6 +132,8 @@
- #define PCIE_RC_RP_ATS_BASE		0x400000
- #define PCIE_RC_CONFIG_NORMAL_BASE	0x800000
- #define PCIE_RC_CONFIG_BASE		0xa00000
-+#define PCIE_EP_CONFIG_BASE		0xa00000
-+#define PCIE_EP_CONFIG_DID_VID		(PCIE_EP_CONFIG_BASE + 0x00)
- #define PCIE_RC_CONFIG_RID_CCR		(PCIE_RC_CONFIG_BASE + 0x08)
- #define   PCIE_RC_CONFIG_SCC_SHIFT		16
- #define PCIE_RC_CONFIG_DCR		(PCIE_RC_CONFIG_BASE + 0xc4)
++	if (tb[TCA_MATCHALL_CLASSID]) {
++		new->res.classid = nla_get_u32(tb[TCA_MATCHALL_CLASSID]);
++		tcf_bind_filter(tp, &new->res, base);
++		bound_to_filter = true;
++	}
++
+ 	if (!tc_skip_hw(new->flags)) {
+ 		err = mall_replace_hw_filter(tp, new, (unsigned long)new,
+ 					     extack);
+@@ -244,6 +231,8 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
+ 	return 0;
+ 
+ err_replace_hw_filter:
++	if (bound_to_filter)
++		tcf_unbind_filter(tp, &new->res);
+ err_set_parms:
+ 	free_percpu(new->pf);
+ err_alloc_percpu:
+-- 
+2.39.2
+
 
 
