@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10016761650
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83A56761170
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234841AbjGYLiU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45324 "EHLO
+        id S231846AbjGYKv3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:51:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234920AbjGYLiA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F891BF8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:47 -0700 (PDT)
+        with ESMTP id S233602AbjGYKvH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:51:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8402707
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4268461698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CFBC433C9;
-        Tue, 25 Jul 2023 11:37:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E67F861683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0254CC433C7;
+        Tue, 25 Jul 2023 10:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285066;
-        bh=RybqTSJzi4FIo+abIa7eRqW+uSupp2XZWUGQYRsODS8=;
+        s=korg; t=1690282241;
+        bh=77adc5SVl7E1ND7TOz6J7bIQirFFgeYL6VoNqh/F5OY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iFeWlHFhSuiW3TVHiV1iUFxhIcJhxeBs5YJ309129M5GBRtbcrklSGYMdekCJjm8N
-         3iW02voYkh9rJ2inVPoAWhO4cSB20BJc1Z47LesnacnE7nynbVyavgJalMkJ/obUw7
-         RK0HSno6MU1OZpA44lsq5yFywBnsLEZmdiwrquNg=
+        b=zIi9VMTMC3mNA9jYyNA7Z7/nT8x+9VDBwKmvwAzzzDOnmVoSWyrKlmC9AWoQXd8mm
+         Ifk/h0rLdlXuJ4PsVw5qB1SipkxiVQvUU+pmhBOCsFTRE4wwpv66i51OFbDPk9IEei
+         cTxDbRnfDbncTO5mQg/pbrZIe8IUUPW83urowMg8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luca Weiss <luca@z3ntu.xyz>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/313] Input: drv260x - sleep between polling GO bit
+        patches@lists.linux.dev, Sheetal <sheetal@nvidia.com>,
+        Mohan Kumar D <mkumard@nvidia.com>,
+        Sameer Pujar <spujar@nvidia.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 058/227] ASoC: tegra: Fix ADX byte map
 Date:   Tue, 25 Jul 2023 12:43:45 +0200
-Message-ID: <20230725104524.087528226@linuxfoundation.org>
+Message-ID: <20230725104517.165379903@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +56,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luca Weiss <luca@z3ntu.xyz>
+From: Sheetal <sheetal@nvidia.com>
 
-[ Upstream commit efef661dfa6bf8cbafe4cd6a97433fcef0118967 ]
+commit 6dfe70be0b0dec0f9297811501bec26c05fd96ad upstream.
 
-When doing the initial startup there's no need to poll without any
-delay and spam the I2C bus.
+Byte mask for channel-1 of stream-1 is not getting enabled and this
+causes failures during ADX use cases. This happens because the byte
+map value 0 matches the byte map array and put() callback returns
+without enabling the corresponding bits in the byte mask.
 
-Let's sleep 15ms between each attempt, which is the same time as used
-in the vendor driver.
+ADX supports 4 output streams and each stream can have a maximum of
+16 channels. Each byte in the input frame is uniquely mapped to a
+byte in one of these 4 outputs. This mapping is done with the help of
+byte map array via user space control setting. The byte map array
+size in the driver is 16 and each array element is of size 4 bytes.
+This corresponds to 64 byte map values.
 
-Fixes: 7132fe4f5687 ("Input: drv260x - add TI drv260x haptics driver")
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Link: https://lore.kernel.org/r/20230430-drv260x-improvements-v1-2-1fb28b4cc698@z3ntu.xyz
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Each byte in the byte map array can have any value between 0 to 255
+to enable the corresponding bits in the byte mask. The value 256 is
+used as a way to disable the byte map. However the byte map array
+element cannot store this value. The put() callback disables the byte
+mask for 256 value and byte map value is reset to 0 for this case.
+This causes problems during subsequent runs since put() callback,
+for value of 0, just returns without enabling the byte mask. In short,
+the problem is coming because 0 and 256 control values are stored as
+0 in the byte map array.
+
+Right now fix the put() callback by actually looking at the byte mask
+array state to identify if any change is needed and update the fields
+accordingly. The get() callback needs an update as well to return the
+correct control value that user has set before. Note that when user
+set 256, the value is stored as 0 and byte mask is disabled. So byte
+mask state is used to either return 256 or the value from byte map
+array.
+
+Given above, this looks bit complicated and all this happens because
+the byte map array is tightly packed and cannot actually store the 256
+value. Right now the priority is to fix the existing failure and a TODO
+item is put to improve this logic.
+
+Fixes: 3c97881b8c8a ("ASoC: tegra: Fix kcontrol put callback in ADX")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Reviewed-by: Mohan Kumar D <mkumard@nvidia.com>
+Reviewed-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://lore.kernel.org/r/1688015537-31682-3-git-send-email-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/drv260x.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/tegra/tegra210_adx.c |   34 ++++++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/input/misc/drv260x.c b/drivers/input/misc/drv260x.c
-index 79d7fa710a714..54002d1a446b7 100644
---- a/drivers/input/misc/drv260x.c
-+++ b/drivers/input/misc/drv260x.c
-@@ -435,6 +435,7 @@ static int drv260x_init(struct drv260x_data *haptics)
- 	}
+--- a/sound/soc/tegra/tegra210_adx.c
++++ b/sound/soc/tegra/tegra210_adx.c
+@@ -2,7 +2,7 @@
+ //
+ // tegra210_adx.c - Tegra210 ADX driver
+ //
+-// Copyright (c) 2021 NVIDIA CORPORATION.  All rights reserved.
++// Copyright (c) 2021-2023 NVIDIA CORPORATION.  All rights reserved.
  
- 	do {
-+		usleep_range(15000, 15500);
- 		error = regmap_read(haptics->regmap, DRV260X_GO, &cal_buf);
- 		if (error) {
- 			dev_err(&haptics->client->dev,
--- 
-2.39.2
-
+ #include <linux/clk.h>
+ #include <linux/device.h>
+@@ -175,10 +175,20 @@ static int tegra210_adx_get_byte_map(str
+ 	mc = (struct soc_mixer_control *)kcontrol->private_value;
+ 	enabled = adx->byte_mask[mc->reg / 32] & (1 << (mc->reg % 32));
+ 
++	/*
++	 * TODO: Simplify this logic to just return from bytes_map[]
++	 *
++	 * Presently below is required since bytes_map[] is
++	 * tightly packed and cannot store the control value of 256.
++	 * Byte mask state is used to know if 256 needs to be returned.
++	 * Note that for control value of 256, the put() call stores 0
++	 * in the bytes_map[] and disables the corresponding bit in
++	 * byte_mask[].
++	 */
+ 	if (enabled)
+ 		ucontrol->value.integer.value[0] = bytes_map[mc->reg];
+ 	else
+-		ucontrol->value.integer.value[0] = 0;
++		ucontrol->value.integer.value[0] = 256;
+ 
+ 	return 0;
+ }
+@@ -192,19 +202,19 @@ static int tegra210_adx_put_byte_map(str
+ 	int value = ucontrol->value.integer.value[0];
+ 	struct soc_mixer_control *mc =
+ 		(struct soc_mixer_control *)kcontrol->private_value;
++	unsigned int mask_val = adx->byte_mask[mc->reg / 32];
+ 
+-	if (value == bytes_map[mc->reg])
++	if (value >= 0 && value <= 255)
++		mask_val |= (1 << (mc->reg % 32));
++	else
++		mask_val &= ~(1 << (mc->reg % 32));
++
++	if (mask_val == adx->byte_mask[mc->reg / 32])
+ 		return 0;
+ 
+-	if (value >= 0 && value <= 255) {
+-		/* update byte map and enable slot */
+-		bytes_map[mc->reg] = value;
+-		adx->byte_mask[mc->reg / 32] |= (1 << (mc->reg % 32));
+-	} else {
+-		/* reset byte map and disable slot */
+-		bytes_map[mc->reg] = 0;
+-		adx->byte_mask[mc->reg / 32] &= ~(1 << (mc->reg % 32));
+-	}
++	/* Update byte map and slot */
++	bytes_map[mc->reg] = value % 256;
++	adx->byte_mask[mc->reg / 32] = mask_val;
+ 
+ 	return 1;
+ }
 
 
