@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C9F761725
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444FB7615A9
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231577AbjGYLpX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53352 "EHLO
+        id S234649AbjGYLbr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:31:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231535AbjGYLpW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94C59A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:21 -0700 (PDT)
+        with ESMTP id S234655AbjGYLbp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525171BD9
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28DC661654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34737C433C7;
-        Tue, 25 Jul 2023 11:45:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9382D615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3858C433C7;
+        Tue, 25 Jul 2023 11:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285520;
-        bh=n2NDlU/1mwXOiBseKVksErruWK7lg0rO2o201BIBVDk=;
+        s=korg; t=1690284696;
+        bh=Y1thFwVoES51AB1wPzTd0ivxRPqBzGtpvZ+MM/mJa3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CI1PWoZaBSdTsRYRFVYfuD9V1Gy32KNNV67Vgv54I317DG3hRr95asc5F2fRUCxh8
-         +5LXqrJeN3RWKS4Yr4KRBP4VhcleuqNHuNq0lMdviXo+tMjvsE6AXOvq+1oy7Nz6sP
-         he7mKfzxWGp1NXinCCHuf4GxSgOy7pwlGd/dLQ4s=
+        b=o2Iqo9YEJeP0RFEOTFo034CqMBwSW0OqCvfWSEpBAYyjcwwlu6g7cRCwvYwUFNLXG
+         PvKoflPJJU4y6DF1NRpe/TwfXGV34CjbwLgpUdSWfW4zOboFkQ/bowoY++vtV+q3JF
+         iULFMXbcMK1IbsfEwMXsdTnp/10VQtHeN4JLlcEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ding Hui <dinghui@sangfor.com.cn>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.4 235/313] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
+        patches@lists.linux.dev, stable@kernel.org,
+        Mark Brown <broonie@kernel.org>, Xu Yilun <yilun.xu@intel.com>
+Subject: [PATCH 5.10 449/509] regmap: Account for register length in SMBus I/O limits
 Date:   Tue, 25 Jul 2023 12:46:28 +0200
-Message-ID: <20230725104531.222219998@linuxfoundation.org>
+Message-ID: <20230725104614.308054086@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,142 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ding Hui <dinghui@sangfor.com.cn>
+From: Mark Brown <broonie@kernel.org>
 
-commit fc80fc2d4e39137869da3150ee169b40bf879287 upstream.
+commit 0c9d2eb5e94792fe64019008a04d4df5e57625af upstream.
 
-After the listener svc_sock is freed, and before invoking svc_tcp_accept()
-for the established child sock, there is a window that the newsock
-retaining a freed listener svc_sock in sk_user_data which cloning from
-parent. In the race window, if data is received on the newsock, we will
-observe use-after-free report in svc_tcp_listen_data_ready().
+The SMBus I2C buses have limits on the size of transfers they can do but
+do not factor in the register length meaning we may try to do a transfer
+longer than our length limit, the core will not take care of this.
+Future changes will factor this out into the core but there are a number
+of users that assume current behaviour so let's just do something
+conservative here.
 
-Reproduce by two tasks:
+This does not take account padding bits but practically speaking these
+are very rarely if ever used on I2C buses given that they generally run
+slowly enough to mean there's no issue.
 
-1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
-2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
-
-KASAN report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-  Read of size 8 at addr ffff888139d96228 by task nc/102553
-  CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
-  Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x33/0x50
-   print_address_description.constprop.0+0x27/0x310
-   print_report+0x3e/0x70
-   kasan_report+0xae/0xe0
-   svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-   tcp_data_queue+0x9f4/0x20e0
-   tcp_rcv_established+0x666/0x1f60
-   tcp_v4_do_rcv+0x51c/0x850
-   tcp_v4_rcv+0x23fc/0x2e80
-   ip_protocol_deliver_rcu+0x62/0x300
-   ip_local_deliver_finish+0x267/0x350
-   ip_local_deliver+0x18b/0x2d0
-   ip_rcv+0x2fb/0x370
-   __netif_receive_skb_one_core+0x166/0x1b0
-   process_backlog+0x24c/0x5e0
-   __napi_poll+0xa2/0x500
-   net_rx_action+0x854/0xc90
-   __do_softirq+0x1bb/0x5de
-   do_softirq+0xcb/0x100
-   </IRQ>
-   <TASK>
-   ...
-   </TASK>
-
-  Allocated by task 102371:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   __kasan_kmalloc+0x7b/0x90
-   svc_setup_socket+0x52/0x4f0 [sunrpc]
-   svc_addsock+0x20d/0x400 [sunrpc]
-   __write_ports_addfd+0x209/0x390 [nfsd]
-   write_ports+0x239/0x2c0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  Freed by task 102551:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   kasan_save_free_info+0x2a/0x50
-   __kasan_slab_free+0x106/0x190
-   __kmem_cache_free+0x133/0x270
-   svc_xprt_free+0x1e2/0x350 [sunrpc]
-   svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
-   nfsd_put+0x125/0x240 [nfsd]
-   nfsd_svc+0x2cb/0x3c0 [nfsd]
-   write_threads+0x1ac/0x2a0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
-if state != TCP_LISTEN, that will avoid dereferencing svsk for all
-child socket.
-
-Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
-Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-2-80e2aed22e83@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svcsock.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/base/regmap/regmap-i2c.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -728,12 +728,6 @@ static void svc_tcp_listen_data_ready(st
- 	dprintk("svc: socket %p TCP (listen) state change %d\n",
- 		sk, sk->sk_state);
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -242,8 +242,8 @@ static int regmap_i2c_smbus_i2c_read(voi
+ static const struct regmap_bus regmap_i2c_smbus_i2c_block = {
+ 	.write = regmap_i2c_smbus_i2c_write,
+ 	.read = regmap_i2c_smbus_i2c_read,
+-	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
+-	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
++	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 1,
++	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 1,
+ };
  
--	if (svsk) {
--		/* Refer to svc_setup_socket() for details. */
--		rmb();
--		svsk->sk_odata(sk);
--	}
--
- 	/*
- 	 * This callback may called twice when a new connection
- 	 * is established as a child socket inherits everything
-@@ -742,15 +736,20 @@ static void svc_tcp_listen_data_ready(st
- 	 *    when one of child sockets become ESTABLISHED.
- 	 * 2) data_ready method of the child socket may be called
- 	 *    when it receives data before the socket is accepted.
--	 * In case of 2, we should ignore it silently.
-+	 * In case of 2, we should ignore it silently and DO NOT
-+	 * dereference svsk.
- 	 */
--	if (sk->sk_state == TCP_LISTEN) {
--		if (svsk) {
--			set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
--			svc_xprt_enqueue(&svsk->sk_xprt);
--		} else
--			printk("svc: socket %p: no user data\n", sk);
--	}
-+	if (sk->sk_state != TCP_LISTEN)
-+		return;
-+
-+	if (svsk) {
-+		/* Refer to svc_setup_socket() for details. */
-+		rmb();
-+		svsk->sk_odata(sk);
-+		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
-+		svc_xprt_enqueue(&svsk->sk_xprt);
-+	} else
-+		printk("svc: socket %p: no user data\n", sk);
- }
+ static int regmap_i2c_smbus_i2c_write_reg16(void *context, const void *data,
+@@ -299,8 +299,8 @@ static int regmap_i2c_smbus_i2c_read_reg
+ static const struct regmap_bus regmap_i2c_smbus_i2c_block_reg16 = {
+ 	.write = regmap_i2c_smbus_i2c_write_reg16,
+ 	.read = regmap_i2c_smbus_i2c_read_reg16,
+-	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
+-	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
++	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 2,
++	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 2,
+ };
  
- /*
+ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
 
 
