@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D6A761598
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6946D76123E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234675AbjGYLa4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38606 "EHLO
+        id S231213AbjGYLA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234786AbjGYLaz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:55 -0400
+        with ESMTP id S230089AbjGYLAK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00BB5FB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C9D4210
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93FD36168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A337AC433C7;
-        Tue, 25 Jul 2023 11:30:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E6B361680
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7232BC433C9;
+        Tue, 25 Jul 2023 10:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284649;
-        bh=i5sluTStq7r+wroGsyPx/QwQws/MX1ToPGOjaSPzLKg=;
+        s=korg; t=1690282644;
+        bh=SxqVO9DJmTTxCMtdDTNUQFJpsJ4w+FUa0dIh+m3hjSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IAAX98i2PEGgnMkrQeTF/o+vofM8/6g+ZEWQffKtcLvjBpVQ2QHBAnQfijgUfcfEZ
-         X7duIwy64BHGmr4UZKHOe9rzeCKkgnRHCE8cieM+xdP9Ai1HU8dlusMbunYPIuZZDv
-         ufS27osVQ1SMXu99sTcuQ9RYgXih92j7IytP2C7s=
+        b=yozpELvhO1ROK1Q6q3Z4QV1bNmkNWj4zpJ8vLYFZUTZTT3wc4hoWNSXeyRpsphwJU
+         wzAHNmf1we/kNUoNqCgGeKziJzjy40xQBGPYj24aWvrqjHGr5KiRvDxvMHBOwIx0qH
+         0oOLfw/EdXV6kDiSB0sGwzaprOKYfGNuxqyZ2eBY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 431/509] scsi: qla2xxx: Fix buffer overrun
-Date:   Tue, 25 Jul 2023 12:46:10 +0200
-Message-ID: <20230725104613.448124571@linuxfoundation.org>
+        patches@lists.linux.dev, Siddh Raman Pant <code@siddh.me>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+37acd5d80d00d609d233@syzkaller.appspotmail.com
+Subject: [PATCH 6.4 204/227] Bluetooth: hci_conn: return ERR_PTR instead of NULL when there is no link
+Date:   Tue, 25 Jul 2023 12:46:11 +0200
+Message-ID: <20230725104523.218986215@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quinn Tran <qutran@marvell.com>
+From: Siddh Raman Pant <code@siddh.me>
 
-commit b68710a8094fdffe8dd4f7a82c82649f479bb453 upstream.
+[ Upstream commit b4066eb04bb67e7ff66e5aaab0db4a753f37eaad ]
 
-Klocwork warning: Buffer Overflow - Array Index Out of Bounds
+hci_connect_sco currently returns NULL when there is no link (i.e. when
+hci_conn_link() returns NULL).
 
-Driver uses fc_els_flogi to calculate size of buffer.  The actual buffer is
-nested inside of fc_els_flogi which is smaller.
+sco_connect() expects an ERR_PTR in case of any error (see line 266 in
+sco.c). Thus, hcon set as NULL passes through to sco_conn_add(), which
+tries to get hcon->hdev, resulting in dereferencing a NULL pointer as
+reported by syzkaller.
 
-Replace structure name to allow proper size calculation.
+The same issue exists for iso_connect_cis() calling hci_connect_cis().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus, make hci_connect_sco() and hci_connect_cis() return ERR_PTR
+instead of NULL.
+
+Reported-and-tested-by: syzbot+37acd5d80d00d609d233@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=37acd5d80d00d609d233
+Fixes: 06149746e720 ("Bluetooth: hci_conn: Add support for linking multiple hcon")
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -5107,7 +5107,7 @@ static void qla_get_login_template(scsi_
- 	__be32 *q;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 7b0c74ef93296..31c115b225e7e 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1684,7 +1684,7 @@ struct hci_conn *hci_connect_sco(struct hci_dev *hdev, int type, bdaddr_t *dst,
+ 	if (!link) {
+ 		hci_conn_drop(acl);
+ 		hci_conn_drop(sco);
+-		return NULL;
++		return ERR_PTR(-ENOLINK);
+ 	}
  
- 	memset(ha->init_cb, 0, ha->init_cb_size);
--	sz = min_t(int, sizeof(struct fc_els_flogi), ha->init_cb_size);
-+	sz = min_t(int, sizeof(struct fc_els_csp), ha->init_cb_size);
- 	rval = qla24xx_get_port_login_templ(vha, ha->init_cb_dma,
- 					    ha->init_cb, sz);
- 	if (rval != QLA_SUCCESS) {
+ 	sco->setting = setting;
+@@ -2256,7 +2256,7 @@ struct hci_conn *hci_connect_cis(struct hci_dev *hdev, bdaddr_t *dst,
+ 	if (!link) {
+ 		hci_conn_drop(le);
+ 		hci_conn_drop(cis);
+-		return NULL;
++		return ERR_PTR(-ENOLINK);
+ 	}
+ 
+ 	/* If LE is already connected and CIS handle is already set proceed to
+-- 
+2.39.2
+
 
 
