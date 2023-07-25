@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C97761760
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B6897615D9
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232944AbjGYLrw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:47:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55374 "EHLO
+        id S234687AbjGYLdr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:33:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232625AbjGYLrf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5946712C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:32 -0700 (PDT)
+        with ESMTP id S234673AbjGYLdq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD18B19F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC2DE61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03EEC433C7;
-        Tue, 25 Jul 2023 11:47:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B414615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B49CC433C8;
+        Tue, 25 Jul 2023 11:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285651;
-        bh=DnrOXR0TKMzAOf7o+KQ20lEK2e6hnduqo3p/IhGjV1U=;
+        s=korg; t=1690284824;
+        bh=5VFXx3C39PMQMlHae/LjuHkr4497WP2EMMz6y0oEslg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=la/Py/45oENUtsazCQzoMoui4OqR0XSlX20+CSz/SEU0v0JWXtax/yzKjTlwzyGJv
-         ZRa2bzBPvyS7zUkaRos8P/jvIwTMklY6RIf1v5yW4bwCLbTipzB1/UvdxJy+vymRNo
-         pvy9a0mTiSuP6UzzyPe9WMAWuIEA4nFC6C6+2L7Q=
+        b=ZlS9yVG9sUbfpwLnwCzJtXv2LrtsN65DUsYKpsoD1KM4VuGRrqOgcZiuaJSDNhLUw
+         oXG2FGGOj4HxcyoCRu23gzXo+jAu+Q6DP6FtyBevTSEtHm3ZYfl9YSpEckHwtFAd/J
+         cvdXEGzJWbHjs2oqmba1EZZNjk+SPNljQ6HZbWAs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YueHaibing <yuehaibing@huawei.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.4 280/313] can: bcm: Fix UAF in bcm_proc_show()
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 494/509] tcp: annotate data-races around tp->keepalive_time
 Date:   Tue, 25 Jul 2023 12:47:13 +0200
-Message-ID: <20230725104533.179065403@linuxfoundation.org>
+Message-ID: <20230725104616.375044127@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,92 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 55c3b96074f3f9b0aee19bf93cd71af7516582bb upstream.
+[ Upstream commit 4164245c76ff906c9086758e1c3f87082a7f5ef5 ]
 
-BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80
-Read of size 8 at addr ffff888155846230 by task cat/7862
+do_tcp_getsockopt() reads tp->keepalive_time while another cpu
+might change its value.
 
-CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xd5/0x150
- print_report+0xc1/0x5e0
- kasan_report+0xba/0xf0
- bcm_proc_show+0x969/0xa80
- seq_read_iter+0x4f6/0x1260
- seq_read+0x165/0x210
- proc_reg_read+0x227/0x300
- vfs_read+0x1d5/0x8d0
- ksys_read+0x11e/0x240
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Allocated by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x9e/0xa0
- bcm_sendmsg+0x264b/0x44e0
- sock_sendmsg+0xda/0x180
- ____sys_sendmsg+0x735/0x920
- ___sys_sendmsg+0x11d/0x1b0
- __sys_sendmsg+0xfa/0x1d0
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Freed by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x27/0x40
- ____kasan_slab_free+0x161/0x1c0
- slab_free_freelist_hook+0x119/0x220
- __kmem_cache_free+0xb4/0x2e0
- rcu_core+0x809/0x1bd0
-
-bcm_op is freed before procfs entry be removed in bcm_release(),
-this lead to bcm_proc_show() may read the freed bcm_op.
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/all/20230715092543.15548-1-yuehaibing@huawei.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/net/tcp.h | 7 +++++--
+ net/ipv4/tcp.c    | 3 ++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1523,6 +1523,12 @@ static int bcm_release(struct socket *so
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index e231101e5001b..92de7c049f19e 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1459,9 +1459,12 @@ static inline int keepalive_intvl_when(const struct tcp_sock *tp)
+ static inline int keepalive_time_when(const struct tcp_sock *tp)
+ {
+ 	struct net *net = sock_net((struct sock *)tp);
++	int val;
  
- 	lock_sock(sk);
- 
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+	/* remove procfs entry */
-+	if (net->can.bcmproc_dir && bo->bcm_proc_read)
-+		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
-+#endif /* CONFIG_PROC_FS */
+-	return tp->keepalive_time ? :
+-		READ_ONCE(net->ipv4.sysctl_tcp_keepalive_time);
++	/* Paired with WRITE_ONCE() in tcp_sock_set_keepidle_locked() */
++	val = READ_ONCE(tp->keepalive_time);
 +
- 	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
- 		bcm_remove_op(op);
++	return val ? : READ_ONCE(net->ipv4.sysctl_tcp_keepalive_time);
+ }
  
-@@ -1558,12 +1564,6 @@ static int bcm_release(struct socket *so
- 	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
- 		bcm_remove_op(op);
+ static inline int keepalive_probes(const struct tcp_sock *tp)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 39919d1436cea..053e4880d8f0f 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3093,7 +3093,8 @@ int tcp_sock_set_keepidle_locked(struct sock *sk, int val)
+ 	if (val < 1 || val > MAX_TCP_KEEPIDLE)
+ 		return -EINVAL;
  
--#if IS_ENABLED(CONFIG_PROC_FS)
--	/* remove procfs entry */
--	if (net->can.bcmproc_dir && bo->bcm_proc_read)
--		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
--#endif /* CONFIG_PROC_FS */
--
- 	/* remove device reference */
- 	if (bo->bound) {
- 		bo->bound   = 0;
+-	tp->keepalive_time = val * HZ;
++	/* Paired with WRITE_ONCE() in keepalive_time_when() */
++	WRITE_ONCE(tp->keepalive_time, val * HZ);
+ 	if (sock_flag(sk, SOCK_KEEPOPEN) &&
+ 	    !((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN))) {
+ 		u32 elapsed = keepalive_time_elapsed(tp);
+-- 
+2.39.2
+
 
 
