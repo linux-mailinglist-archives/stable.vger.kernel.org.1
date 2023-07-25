@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD70D76150B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D489D761271
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234554AbjGYLZF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34364 "EHLO
+        id S233758AbjGYLCe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234561AbjGYLZE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A0D97
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:03 -0700 (PDT)
+        with ESMTP id S233570AbjGYLCT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B21359DA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D56EC61600
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B25C433C8;
-        Tue, 25 Jul 2023 11:25:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A73FA61693
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48DCC433C7;
+        Tue, 25 Jul 2023 10:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284302;
-        bh=JJxJF42IJ8HH2dOOiJwY3UBKSEctPM+1Xq1ASdfXO00=;
+        s=korg; t=1690282762;
+        bh=GwBqOurlM2tcRF1iQQy1JmEMn2BDp1mQUdYiDLheDg4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w0KGJoojwoubRkrUELbfbDGfYkKqEIZd+BVKG8c39emk8LzaUdQZls4pGnJTVG0JW
-         87THy9bT2d2zHYmwQCQIFpuY1VI94mlJ38mqX2q2k/GruFu4aIdjIXDYRaLn6Z9E3z
-         /s6FThnLVBA/ojEF5zUDfhhvYv4Ely0xHscezojY=
+        b=NZ6fqGbf3uh8dfcdesY2yhKoTBSrV6A925UPtn9VTfY4mY3IR/hgHsbOGs4/4KIeU
+         efsRmvqb27Ale7CUpzEpggGBuaIR0sbMLskQk/gpr1S36GRMOaVr9IX/6vW042/sI5
+         8VxtK2ze+DIzVLYCy5HjnLDh64G2l57l3KnGQR4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Amir Goldstein <amir73il@gmail.com>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 307/509] fanotify: disallow mount/sb marks on kernel internal pseudo fs
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Xu Yilun <yilun.xu@intel.com>, stable@kernel.org
+Subject: [PATCH 6.1 018/183] regmap: Drop initial version of maximum transfer length fixes
 Date:   Tue, 25 Jul 2023 12:44:06 +0200
-Message-ID: <20230725104607.794023737@linuxfoundation.org>
+Message-ID: <20230725104508.525444884@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,74 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 69562eb0bd3e6bb8e522a7b254334e0fb30dff0c upstream.
+commit bc64734825c59e18a27ac266b07e14944c111fd8 upstream.
 
-Hopefully, nobody is trying to abuse mount/sb marks for watching all
-anonymous pipes/inodes.
+When problems were noticed with the register address not being taken
+into account when limiting raw transfers with I2C devices we fixed this
+in the core.  Unfortunately it has subsequently been realised that a lot
+of buses were relying on the prior behaviour, partly due to unclear
+documentation not making it obvious what was intended in the core.  This
+is all more involved to fix than is sensible for a fix commit so let's
+just drop the original fixes, a separate commit will fix the originally
+observed problem in an I2C specific way
 
-I cannot think of a good reason to allow this - it looks like an
-oversight that dated back to the original fanotify API.
-
-Link: https://lore.kernel.org/linux-fsdevel/20230628101132.kvchg544mczxv2pm@quack3/
-Fixes: 0ff21db9fcc3 ("fanotify: hooks the fanotify_mark syscall to the vfsmount code")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230629042044.25723-1-amir73il@gmail.com>
-[backport to 5.x.y]
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Fixes: 3981514180c9 ("regmap: Account for register length when chunking")
+Fixes: c8e796895e23 ("regmap: spi-avmm: Fix regmap_bus max_raw_write")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-1-80e2aed22e83@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/fanotify/fanotify_user.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/base/regmap/regmap-spi-avmm.c |    2 +-
+ drivers/base/regmap/regmap.c          |    6 ++----
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1090,8 +1090,11 @@ static int fanotify_test_fid(struct path
- 	return 0;
- }
+--- a/drivers/base/regmap/regmap-spi-avmm.c
++++ b/drivers/base/regmap/regmap-spi-avmm.c
+@@ -660,7 +660,7 @@ static const struct regmap_bus regmap_sp
+ 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
+-	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
++	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
+ 	.free_context = spi_avmm_bridge_ctx_free,
+ };
  
--static int fanotify_events_supported(struct path *path, __u64 mask)
-+static int fanotify_events_supported(struct path *path, __u64 mask,
-+				     unsigned int flags)
- {
-+	unsigned int mark_type = flags & FANOTIFY_MARK_TYPE_BITS;
-+
- 	/*
- 	 * Some filesystems such as 'proc' acquire unusual locks when opening
- 	 * files. For them fanotify permission events have high chances of
-@@ -1103,6 +1106,21 @@ static int fanotify_events_supported(str
- 	if (mask & FANOTIFY_PERM_EVENTS &&
- 	    path->mnt->mnt_sb->s_type->fs_flags & FS_DISALLOW_NOTIFY_PERM)
- 		return -EINVAL;
-+
-+	/*
-+	 * mount and sb marks are not allowed on kernel internal pseudo fs,
-+	 * like pipe_mnt, because that would subscribe to events on all the
-+	 * anonynous pipes in the system.
-+	 *
-+	 * SB_NOUSER covers all of the internal pseudo fs whose objects are not
-+	 * exposed to user's mount namespace, but there are other SB_KERNMOUNT
-+	 * fs, like nsfs, debugfs, for which the value of allowing sb and mount
-+	 * mark is questionable. For now we leave them alone.
-+	 */
-+	if (mark_type != FAN_MARK_INODE &&
-+	    path->mnt->mnt_sb->s_flags & SB_NOUSER)
-+		return -EINVAL;
-+
- 	return 0;
- }
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -2064,8 +2064,6 @@ int _regmap_raw_write(struct regmap *map
+ 	size_t val_count = val_len / val_bytes;
+ 	size_t chunk_count, chunk_bytes;
+ 	size_t chunk_regs = val_count;
+-	size_t max_data = map->max_raw_write - map->format.reg_bytes -
+-			map->format.pad_bytes;
+ 	int ret, i;
  
-@@ -1218,7 +1236,7 @@ static int do_fanotify_mark(int fanotify
- 		goto fput_and_out;
+ 	if (!val_count)
+@@ -2073,8 +2071,8 @@ int _regmap_raw_write(struct regmap *map
  
- 	if (flags & FAN_MARK_ADD) {
--		ret = fanotify_events_supported(&path, mask);
-+		ret = fanotify_events_supported(&path, mask, flags);
- 		if (ret)
- 			goto path_put_and_out;
- 	}
+ 	if (map->use_single_write)
+ 		chunk_regs = 1;
+-	else if (map->max_raw_write && val_len > max_data)
+-		chunk_regs = max_data / val_bytes;
++	else if (map->max_raw_write && val_len > map->max_raw_write)
++		chunk_regs = map->max_raw_write / val_bytes;
+ 
+ 	chunk_count = val_count / chunk_regs;
+ 	chunk_bytes = chunk_regs * val_bytes;
 
 
