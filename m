@@ -2,57 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 416E676131A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABB0776133E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233921AbjGYLIT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45448 "EHLO
+        id S234143AbjGYLJE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234058AbjGYLH0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:07:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0593AAD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:10 -0700 (PDT)
+        with ESMTP id S234049AbjGYLIt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FC79212D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A57D61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1867AC433C9;
-        Tue, 25 Jul 2023 11:06:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8D2261681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB414C433C8;
+        Tue, 25 Jul 2023 11:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283169;
-        bh=NVexi4RCXQOkn4bxYFYiy3feuHNz+cAUdIR7vQnMzBE=;
+        s=korg; t=1690283250;
+        bh=/6LNG1D1+ecXz36nMmKvtcpOR2TM2aIryufo85/JiE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rdTsv4TKidKgCF4jy59VHRaRgg9VgkcPKA8xKLMVNs7lASDCwLtH9yI/oQsEpTyBG
-         /6Sx/T907yZnABIj/4A5ioFxTLZ2h/ur6F9WHNFbDtnRFx3Ni2I46wNLS8WTKuTCGh
-         Ujv9zJRS0hfBVTZVuxFNhq/LQRMiMhmLCeZ3FRE8=
+        b=V/uEhpfzwEeHPUE33AjbAzBkMBsQacL21PZhwYAAbTiHsdXpT2mI95P0Fb9dfwwP+
+         HzPLIz3796l7aszFhVefY8tvMTtaTwiAXumVgESUaiTLiETkGmqUpI6bTbvLunsxLS
+         1vf/MT9klCUrAQSBKluNmSpsH6xV0b/qCpnYy3+0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marcin Szycik <marcin.szycik@linux.intel.com>,
-        Dawid Wesierski <dawidx.wesierski@intel.com>,
-        Sylwester Dziedziuch <sylwesterx.dziedziuch@intel.com>,
-        Kamil Maziarz <kamil.maziarz@intel.com>,
-        Mateusz Palczewski <mateusz.palczewski@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/183] iavf: Wait for reset in callbacks which trigger it
+        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
+        "Joseph C. Sible" <josephcsible@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 01/78] ALSA: hda/realtek - remove 3k pull low procedure
 Date:   Tue, 25 Jul 2023 12:45:52 +0200
-Message-ID: <20230725104512.395244474@linuxfoundation.org>
+Message-ID: <20230725104451.337387537@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,253 +57,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit c2ed2403f12c74a74a0091ed5d830e72c58406e8 ]
+commit 69ea4c9d02b7947cdd612335a61cc1a02e544ccd upstream.
 
-There was a fail when trying to add the interface to bonding
-right after changing the MTU on the interface. It was caused
-by bonding interface unable to open the interface due to
-interface being in __RESETTING state because of MTU change.
+This was the ALC283 depop procedure.
+Maybe this procedure wasn't suitable with new codec.
+So, let us remove it. But HP 15z-fc000 must do 3k pull low. If it
+reboot with plugged headset,
+it will have errors show don't find codec error messages. Run 3k pull
+low will solve issues.
+So, let AMD chipset will run this for workarround.
 
-Add new reset_waitqueue to indicate that reset has finished.
-
-Add waiting for reset to finish in callbacks which trigger hw reset:
-iavf_set_priv_flags(), iavf_change_mtu() and iavf_set_ringparam().
-We use a 5000ms timeout period because on Hyper-V based systems,
-this operation takes around 3000-4000ms. In normal circumstances,
-it doesn't take more than 500ms to complete.
-
-Add a function iavf_wait_for_reset() to reuse waiting for reset code and
-use it also in iavf_set_channels(), which already waits for reset.
-We don't use error handling in iavf_set_channels() as this could
-cause the device to be in incorrect state if the reset was scheduled
-but hit timeout or the waitng function was interrupted by a signal.
-
-Fixes: 4e5e6b5d9d13 ("iavf: Fix return of set the new channel count")
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Co-developed-by: Dawid Wesierski <dawidx.wesierski@intel.com>
-Signed-off-by: Dawid Wesierski <dawidx.wesierski@intel.com>
-Signed-off-by: Sylwester Dziedziuch <sylwesterx.dziedziuch@intel.com>
-Signed-off-by: Kamil Maziarz <kamil.maziarz@intel.com>
-Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5aec98913095 ("ALSA: hda/realtek - ALC236 headset MIC recording issue")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Reported-by: Joseph C. Sible <josephcsible@gmail.com>
+Closes: https://lore.kernel.org/r/CABpewhE4REgn9RJZduuEU6Z_ijXNeQWnrxO1tg70Gkw=F8qNYg@mail.gmail.com/
+Link: https://lore.kernel.org/r/4678992299664babac4403d9978e7ba7@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h        |  2 +
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 31 ++++++-----
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 51 ++++++++++++++++++-
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   |  1 +
- 4 files changed, 68 insertions(+), 17 deletions(-)
+ sound/pci/hda/patch_realtek.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index a716ed6bb787d..2fe44e865d0a2 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -257,6 +257,7 @@ struct iavf_adapter {
- 	struct work_struct adminq_task;
- 	struct delayed_work client_task;
- 	wait_queue_head_t down_waitqueue;
-+	wait_queue_head_t reset_waitqueue;
- 	wait_queue_head_t vc_waitqueue;
- 	struct iavf_q_vector *q_vectors;
- 	struct list_head vlan_filter_list;
-@@ -582,4 +583,5 @@ void iavf_add_adv_rss_cfg(struct iavf_adapter *adapter);
- void iavf_del_adv_rss_cfg(struct iavf_adapter *adapter);
- struct iavf_mac_filter *iavf_add_filter(struct iavf_adapter *adapter,
- 					const u8 *macaddr);
-+int iavf_wait_for_reset(struct iavf_adapter *adapter);
- #endif /* _IAVF_H_ */
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 4746ee517c75a..73219c5069290 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -484,6 +484,7 @@ static int iavf_set_priv_flags(struct net_device *netdev, u32 flags)
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 	u32 orig_flags, new_flags, changed_flags;
-+	int ret = 0;
- 	u32 i;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -120,6 +120,7 @@ struct alc_spec {
+ 	unsigned int ultra_low_power:1;
+ 	unsigned int has_hs_key:1;
+ 	unsigned int no_internal_mic_pin:1;
++	unsigned int en_3kpull_low:1;
  
- 	orig_flags = READ_ONCE(adapter->flags);
-@@ -533,10 +534,13 @@ static int iavf_set_priv_flags(struct net_device *netdev, u32 flags)
- 		if (netif_running(netdev)) {
- 			adapter->flags |= IAVF_FLAG_RESET_NEEDED;
- 			queue_work(adapter->wq, &adapter->reset_task);
-+			ret = iavf_wait_for_reset(adapter);
-+			if (ret)
-+				netdev_warn(netdev, "Changing private flags timeout or interrupted waiting for reset");
- 		}
- 	}
+ 	/* for PLL fix */
+ 	hda_nid_t pll_nid;
+@@ -3616,6 +3617,7 @@ static void alc256_shutup(struct hda_cod
+ 	if (!hp_pin)
+ 		hp_pin = 0x21;
  
--	return 0;
-+	return ret;
- }
++	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
  
- /**
-@@ -627,6 +631,7 @@ static int iavf_set_ringparam(struct net_device *netdev,
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 	u32 new_rx_count, new_tx_count;
-+	int ret = 0;
+ 	if (hp_pin_sense)
+@@ -3632,8 +3634,7 @@ static void alc256_shutup(struct hda_cod
+ 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
+ 	 * when booting with headset plugged. So skip setting it for the codec alc257
+ 	 */
+-	if (codec->core.vendor_id != 0x10ec0236 &&
+-	    codec->core.vendor_id != 0x10ec0257)
++	if (spec->en_3kpull_low)
+ 		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
  
- 	if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
- 		return -EINVAL;
-@@ -673,9 +678,12 @@ static int iavf_set_ringparam(struct net_device *netdev,
- 	if (netif_running(netdev)) {
- 		adapter->flags |= IAVF_FLAG_RESET_NEEDED;
- 		queue_work(adapter->wq, &adapter->reset_task);
-+		ret = iavf_wait_for_reset(adapter);
-+		if (ret)
-+			netdev_warn(netdev, "Changing ring parameters timeout or interrupted waiting for reset");
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- /**
-@@ -1830,7 +1838,7 @@ static int iavf_set_channels(struct net_device *netdev,
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 	u32 num_req = ch->combined_count;
--	int i;
-+	int ret = 0;
- 
- 	if ((adapter->vf_res->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_ADQ) &&
- 	    adapter->num_tc) {
-@@ -1854,20 +1862,11 @@ static int iavf_set_channels(struct net_device *netdev,
- 	adapter->flags |= IAVF_FLAG_REINIT_ITR_NEEDED;
- 	iavf_schedule_reset(adapter);
- 
--	/* wait for the reset is done */
--	for (i = 0; i < IAVF_RESET_WAIT_COMPLETE_COUNT; i++) {
--		msleep(IAVF_RESET_WAIT_MS);
--		if (adapter->flags & IAVF_FLAG_RESET_PENDING)
--			continue;
--		break;
--	}
--	if (i == IAVF_RESET_WAIT_COMPLETE_COUNT) {
--		adapter->flags &= ~IAVF_FLAG_REINIT_ITR_NEEDED;
--		adapter->num_req_queues = 0;
--		return -EOPNOTSUPP;
--	}
-+	ret = iavf_wait_for_reset(adapter);
-+	if (ret)
-+		netdev_warn(netdev, "Changing channel count timeout or interrupted waiting for reset");
- 
--	return 0;
-+	return ret;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index d5b1dcfe0ccdd..c2739071149de 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -166,6 +166,45 @@ static struct iavf_adapter *iavf_pdev_to_adapter(struct pci_dev *pdev)
- 	return netdev_priv(pci_get_drvdata(pdev));
- }
- 
-+/**
-+ * iavf_is_reset_in_progress - Check if a reset is in progress
-+ * @adapter: board private structure
-+ */
-+static bool iavf_is_reset_in_progress(struct iavf_adapter *adapter)
-+{
-+	if (adapter->state == __IAVF_RESETTING ||
-+	    adapter->flags & (IAVF_FLAG_RESET_PENDING |
-+			      IAVF_FLAG_RESET_NEEDED))
-+		return true;
-+
-+	return false;
-+}
-+
-+/**
-+ * iavf_wait_for_reset - Wait for reset to finish.
-+ * @adapter: board private structure
-+ *
-+ * Returns 0 if reset finished successfully, negative on timeout or interrupt.
-+ */
-+int iavf_wait_for_reset(struct iavf_adapter *adapter)
-+{
-+	int ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
-+					!iavf_is_reset_in_progress(adapter),
-+					msecs_to_jiffies(5000));
-+
-+	/* If ret < 0 then it means wait was interrupted.
-+	 * If ret == 0 then it means we got a timeout while waiting
-+	 * for reset to finish.
-+	 * If ret > 0 it means reset has finished.
-+	 */
-+	if (ret > 0)
-+		return 0;
-+	else if (ret < 0)
-+		return -EINTR;
-+	else
-+		return -EBUSY;
-+}
-+
- /**
-  * iavf_allocate_dma_mem_d - OS specific memory alloc for shared code
-  * @hw:   pointer to the HW structure
-@@ -3161,6 +3200,7 @@ static void iavf_reset_task(struct work_struct *work)
- 
- 	adapter->flags &= ~IAVF_FLAG_REINIT_ITR_NEEDED;
- 
-+	wake_up(&adapter->reset_waitqueue);
- 	mutex_unlock(&adapter->client_lock);
- 	mutex_unlock(&adapter->crit_lock);
- 
-@@ -4325,6 +4365,7 @@ static int iavf_close(struct net_device *netdev)
- static int iavf_change_mtu(struct net_device *netdev, int new_mtu)
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
-+	int ret = 0;
- 
- 	netdev_dbg(netdev, "changing MTU from %d to %d\n",
- 		   netdev->mtu, new_mtu);
-@@ -4337,9 +4378,14 @@ static int iavf_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (netif_running(netdev)) {
- 		adapter->flags |= IAVF_FLAG_RESET_NEEDED;
- 		queue_work(adapter->wq, &adapter->reset_task);
-+		ret = iavf_wait_for_reset(adapter);
-+		if (ret < 0)
-+			netdev_warn(netdev, "MTU change interrupted waiting for reset");
-+		else if (ret)
-+			netdev_warn(netdev, "MTU change timed out waiting for reset");
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- #define NETIF_VLAN_OFFLOAD_FEATURES	(NETIF_F_HW_VLAN_CTAG_RX | \
-@@ -4942,6 +4988,9 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	/* Setup the wait queue for indicating transition to down status */
- 	init_waitqueue_head(&adapter->down_waitqueue);
- 
-+	/* Setup the wait queue for indicating transition to running state */
-+	init_waitqueue_head(&adapter->reset_waitqueue);
-+
- 	/* Setup the wait queue for indicating virtchannel events */
- 	init_waitqueue_head(&adapter->vc_waitqueue);
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index 7b34111fd4eb1..eec7ac3b7f6ee 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2285,6 +2285,7 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 	case VIRTCHNL_OP_ENABLE_QUEUES:
- 		/* enable transmits */
- 		iavf_irq_enable(adapter, true);
-+		wake_up(&adapter->reset_waitqueue);
- 		adapter->flags &= ~IAVF_FLAG_QUEUES_DISABLED;
+ 	if (!spec->no_shutup_pins)
+@@ -10146,6 +10147,8 @@ static int patch_alc269(struct hda_codec
+ 		spec->shutup = alc256_shutup;
+ 		spec->init_hook = alc256_init;
+ 		spec->gen.mixer_nid = 0; /* ALC256 does not have any loopback mixer path */
++		if (codec->bus->pci->vendor == PCI_VENDOR_ID_AMD)
++			spec->en_3kpull_low = true;
  		break;
- 	case VIRTCHNL_OP_DISABLE_QUEUES:
--- 
-2.39.2
-
+ 	case 0x10ec0257:
+ 		spec->codec_variant = ALC269_TYPE_ALC257;
 
 
