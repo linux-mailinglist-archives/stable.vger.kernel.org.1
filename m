@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 186497612FD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1813B76134F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233901AbjGYLHE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:07:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
+        id S233959AbjGYLJc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233950AbjGYLGu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72CE1FC9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:22 -0700 (PDT)
+        with ESMTP id S233878AbjGYLJS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1E601990
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74AA96165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88921C433C8;
-        Tue, 25 Jul 2023 11:05:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 839C56166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE18C433C7;
+        Tue, 25 Jul 2023 11:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283121;
-        bh=oMBXcJ6yFPrwvWEd8i16R4DZMDLGxPqfkH47v+9aR8w=;
+        s=korg; t=1690283291;
+        bh=Hu12iaAicKd7TV8MzyaeZORoCOrhi459rrEy/ahJKyE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VavmsrswK7A6Ah3ZqtU8+9VTJ3ho6+L4RLc/3lB9o7iniPYAzSAsWqJQ8tbRyFD29
-         HoKyY+FJlx0vWhbfa3Y1DoyPJdGXUncH53tffBdeQuezooF6CoWAG1NuqEe3COhQgk
-         A6MQJQ9DRHTp6vip9FCnzWYspiWAndQ70GvNOK20=
+        b=Nqnia8utSNgAsHamWqYVyMs+mNaJiioF57ckrQkZAreLJgmmOh1lVrfYywt2P+Ct6
+         rM2Gr3+N0C74UPzly2qBy/CCoa+EWGlOUvdpYrnOacpc/31qMnwaxIUq4WXdlq9FGv
+         thU/tAuzGo0Ok4FhfsMONUVAEoa8TLrtSUxrKYMA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/183] netfilter: nf_tables: skip bound chain in netns release path
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 23/78] ASoC: codecs: wcd938x: fix resource leaks on component remove
 Date:   Tue, 25 Jul 2023 12:46:14 +0200
-Message-ID: <20230725104513.149906779@linuxfoundation.org>
+Message-ID: <20230725104452.216579249@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,37 +56,151 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 751d460ccff3137212f47d876221534bf0490996 ]
+commit a3406f87775fee986876e03f93a84385f54d5999 upstream.
 
-Skip bound chain from netns release path, the rule that owns this chain
-releases these objects.
+Make sure to release allocated resources on component probe failure and
+on remove.
 
-Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is specifically needed to allow probe deferrals of the sound card
+which otherwise fails when reprobing the codec component:
+
+    snd-sc8280xp sound: ASoC: failed to instantiate card -517
+    genirq: Flags mismatch irq 289. 00002001 (HPHR PDM WD INT) vs. 00002001 (HPHR PDM WD INT)
+    wcd938x_codec audio-codec: Failed to request HPHR WD interrupt (-16)
+    genirq: Flags mismatch irq 290. 00002001 (HPHL PDM WD INT) vs. 00002001 (HPHL PDM WD INT)
+    wcd938x_codec audio-codec: Failed to request HPHL WD interrupt (-16)
+    genirq: Flags mismatch irq 291. 00002001 (AUX PDM WD INT) vs. 00002001 (AUX PDM WD INT)
+    wcd938x_codec audio-codec: Failed to request Aux WD interrupt (-16)
+    genirq: Flags mismatch irq 292. 00002001 (mbhc sw intr) vs. 00002001 (mbhc sw intr)
+    wcd938x_codec audio-codec: Failed to request mbhc interrupts -16
+
+Fixes: 8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
+Cc: stable@vger.kernel.org	# 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230705123018.30903-5-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/wcd938x.c |   55 +++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 48 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 0bb1cc7ed5e99..f621c5e48747b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10398,6 +10398,9 @@ static void __nft_release_table(struct net *net, struct nft_table *table)
- 	ctx.family = table->family;
- 	ctx.table = table;
- 	list_for_each_entry(chain, &table->chains, list) {
-+		if (nft_chain_is_bound(chain))
-+			continue;
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3629,6 +3629,14 @@ static int wcd938x_mbhc_init(struct snd_
+ 
+ 	return 0;
+ }
 +
- 		ctx.chain = chain;
- 		list_for_each_entry_safe(rule, nr, &chain->rules, list) {
- 			list_del(&rule->list);
--- 
-2.39.2
-
++static void wcd938x_mbhc_deinit(struct snd_soc_component *component)
++{
++	struct wcd938x_priv *wcd938x = snd_soc_component_get_drvdata(component);
++
++	wcd_mbhc_deinit(wcd938x->wcd_mbhc);
++}
++
+ /* END MBHC */
+ 
+ static const struct snd_kcontrol_new wcd938x_snd_controls[] = {
+@@ -4109,20 +4117,26 @@ static int wcd938x_soc_codec_probe(struc
+ 	ret = request_threaded_irq(wcd938x->hphr_pdm_wd_int, NULL, wcd938x_wd_handle_irq,
+ 				   IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 				   "HPHR PDM WD INT", wcd938x);
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "Failed to request HPHR WD interrupt (%d)\n", ret);
++		goto err_free_clsh_ctrl;
++	}
+ 
+ 	ret = request_threaded_irq(wcd938x->hphl_pdm_wd_int, NULL, wcd938x_wd_handle_irq,
+ 				   IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 				   "HPHL PDM WD INT", wcd938x);
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "Failed to request HPHL WD interrupt (%d)\n", ret);
++		goto err_free_hphr_pdm_wd_int;
++	}
+ 
+ 	ret = request_threaded_irq(wcd938x->aux_pdm_wd_int, NULL, wcd938x_wd_handle_irq,
+ 				   IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 				   "AUX PDM WD INT", wcd938x);
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "Failed to request Aux WD interrupt (%d)\n", ret);
++		goto err_free_hphl_pdm_wd_int;
++	}
+ 
+ 	/* Disable watchdog interrupt for HPH and AUX */
+ 	disable_irq_nosync(wcd938x->hphr_pdm_wd_int);
+@@ -4137,7 +4151,7 @@ static int wcd938x_soc_codec_probe(struc
+ 			dev_err(component->dev,
+ 				"%s: Failed to add snd ctrls for variant: %d\n",
+ 				__func__, wcd938x->variant);
+-			goto err;
++			goto err_free_aux_pdm_wd_int;
+ 		}
+ 		break;
+ 	case WCD9385:
+@@ -4147,7 +4161,7 @@ static int wcd938x_soc_codec_probe(struc
+ 			dev_err(component->dev,
+ 				"%s: Failed to add snd ctrls for variant: %d\n",
+ 				__func__, wcd938x->variant);
+-			goto err;
++			goto err_free_aux_pdm_wd_int;
+ 		}
+ 		break;
+ 	default:
+@@ -4155,12 +4169,38 @@ static int wcd938x_soc_codec_probe(struc
+ 	}
+ 
+ 	ret = wcd938x_mbhc_init(component);
+-	if (ret)
++	if (ret) {
+ 		dev_err(component->dev,  "mbhc initialization failed\n");
+-err:
++		goto err_free_aux_pdm_wd_int;
++	}
++
++	return 0;
++
++err_free_aux_pdm_wd_int:
++	free_irq(wcd938x->aux_pdm_wd_int, wcd938x);
++err_free_hphl_pdm_wd_int:
++	free_irq(wcd938x->hphl_pdm_wd_int, wcd938x);
++err_free_hphr_pdm_wd_int:
++	free_irq(wcd938x->hphr_pdm_wd_int, wcd938x);
++err_free_clsh_ctrl:
++	wcd_clsh_ctrl_free(wcd938x->clsh_info);
++
+ 	return ret;
+ }
+ 
++static void wcd938x_soc_codec_remove(struct snd_soc_component *component)
++{
++	struct wcd938x_priv *wcd938x = snd_soc_component_get_drvdata(component);
++
++	wcd938x_mbhc_deinit(component);
++
++	free_irq(wcd938x->aux_pdm_wd_int, wcd938x);
++	free_irq(wcd938x->hphl_pdm_wd_int, wcd938x);
++	free_irq(wcd938x->hphr_pdm_wd_int, wcd938x);
++
++	wcd_clsh_ctrl_free(wcd938x->clsh_info);
++}
++
+ static int wcd938x_codec_set_jack(struct snd_soc_component *comp,
+ 				  struct snd_soc_jack *jack, void *data)
+ {
+@@ -4177,6 +4217,7 @@ static int wcd938x_codec_set_jack(struct
+ static const struct snd_soc_component_driver soc_codec_dev_wcd938x = {
+ 	.name = "wcd938x_codec",
+ 	.probe = wcd938x_soc_codec_probe,
++	.remove = wcd938x_soc_codec_remove,
+ 	.controls = wcd938x_snd_controls,
+ 	.num_controls = ARRAY_SIZE(wcd938x_snd_controls),
+ 	.dapm_widgets = wcd938x_dapm_widgets,
 
 
