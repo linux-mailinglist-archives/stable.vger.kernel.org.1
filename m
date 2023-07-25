@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C61907612AF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59CFF761553
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233836AbjGYLFB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41108 "EHLO
+        id S233468AbjGYL1i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233954AbjGYLEm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:42 -0400
+        with ESMTP id S233338AbjGYL1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:27:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7762C19BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16FDE99
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:27:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FDDE6165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F087C433C7;
-        Tue, 25 Jul 2023 11:01:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AAE626168F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:27:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8F5C433C7;
+        Tue, 25 Jul 2023 11:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282915;
-        bh=GrdR5Q7vdb3BWDoBJBU9/vUbDinfvJzNkbJ2rHQ4WyA=;
+        s=korg; t=1690284456;
+        bh=elINvdTGNj+d2nHQGXlZIfCTgjU8uJktCzkoFBPnAOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f8f+4+ZEbj2EpE5wn2fof/BN10Z3prazeos+HxpoECArP1lo4CFuB3WquW9vjCQ/X
-         2F6as2OvsV6mxGuNEvbRHpAy0nZPxi3TKMDjgii0O3saoLKXKBDNa2Bs9wxdVvGPj8
-         3SINZtZYaYMo4fD0GEnhzuRqCE8sPjq1uq9Eyvg4=
+        b=EJKzNO7YfvyXe7zZYH5jAt+A/D5Og2riQtxHaitnWV+iBxi23VbclQ+rixbLMi2lg
+         9jUaAaa5mvd9o5ilAVYMGxJx0s3UcYiL6tqGAJ34aMc8sHN2ylQitCb6vysIl4zjd4
+         9ksnxMCvCnoDcWHsJNoWb4qV2WEl61ZSwIntOljg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, P Praneesh <quic_ppranees@quicinc.com>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev,
+        Florian Kauer <florian.kauer@linutronix.de>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/183] wifi: ath11k: fix memory leak in WMI firmware stats
+Subject: [PATCH 5.10 362/509] igc: Fix launchtime before start of cycle
 Date:   Tue, 25 Jul 2023 12:45:01 +0200
-Message-ID: <20230725104510.592632760@linuxfoundation.org>
+Message-ID: <20230725104610.291361100@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,61 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Florian Kauer <florian.kauer@linutronix.de>
 
-[ Upstream commit 6aafa1c2d3e3fea2ebe84c018003f2a91722e607 ]
+[ Upstream commit c1bca9ac0bcb355be11354c2e68bc7bf31f5ac5a ]
 
-Memory allocated for firmware pdev, vdev and beacon statistics
-are not released during rmmod.
+It is possible (verified on a running system) that frames are processed
+by igc_tx_launchtime with a txtime before the start of the cycle
+(baset_est).
 
-Fix it by calling ath11k_fw_stats_free() function before hardware
-unregister.
+However, the result of txtime - baset_est is written into a u32,
+leading to a wrap around to a positive number. The following
+launchtime > 0 check will only branch to executing launchtime = 0
+if launchtime is already 0.
 
-While at it, avoid calling ath11k_fw_stats_free() while processing
-the firmware stats received in the WMI event because the local list
-is getting spliced and reinitialised and hence there are no elements
-in the list after splicing.
+Fix it by using a s32 before checking launchtime > 0.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230606091128.14202-1-quic_adisi@quicinc.com
+Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
+Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 1 +
- drivers/net/wireless/ath/ath11k/wmi.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index b19d44b3f5dfb..cb77dd6ce9665 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -9279,6 +9279,7 @@ void ath11k_mac_destroy(struct ath11k_base *ab)
- 		if (!ar)
- 			continue;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 2b51ee87a2def..051b1048eb41b 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -905,7 +905,7 @@ static __le32 igc_tx_launchtime(struct igc_ring *ring, ktime_t txtime,
+ 	ktime_t base_time = adapter->base_time;
+ 	ktime_t now = ktime_get_clocktai();
+ 	ktime_t baset_est, end_of_cycle;
+-	u32 launchtime;
++	s32 launchtime;
+ 	s64 n;
  
-+		ath11k_fw_stats_free(&ar->fw_stats);
- 		ieee80211_free_hw(ar->hw);
- 		pdev->ar = NULL;
- 	}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index fad9f8d308a20..3e0a47f4a3ebd 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -7590,6 +7590,11 @@ static void ath11k_update_stats_event(struct ath11k_base *ab, struct sk_buff *sk
- 	rcu_read_unlock();
- 	spin_unlock_bh(&ar->data_lock);
- 
-+	/* Since the stats's pdev, vdev and beacon list are spliced and reinitialised
-+	 * at this point, no need to free the individual list.
-+	 */
-+	return;
-+
- free:
- 	ath11k_fw_stats_free(&stats);
- }
+ 	n = div64_s64(ktime_sub_ns(now, base_time), cycle_time);
 -- 
 2.39.2
 
