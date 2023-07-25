@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 624E576165C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9257614E2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234882AbjGYLil (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
+        id S234493AbjGYLXl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234979AbjGYLig (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06471BC5
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:32 -0700 (PDT)
+        with ESMTP id S234490AbjGYLXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C117F1BD3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D90746167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E91C433C7;
-        Tue, 25 Jul 2023 11:38:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49BD96169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57426C433C8;
+        Tue, 25 Jul 2023 11:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285111;
-        bh=OmlgHkTgcO40lh3YtL5BvMsSPDii/mgvejWo3Bjnrss=;
+        s=korg; t=1690284210;
+        bh=J19Qaday07Uv44WYgE9dAlg5dZV0n7ZkTIbcQ0Wbe34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pVrY9UkRLKpNMHxBPZmyaUiTCLTIXYtSg5ZruykBd8ipvsd+dkOq0u0x/7f+0CiN7
-         xTxb2ladDEoae0Rs72/g1PaCNgrdNjZjhlNjGUnbLgWwkpnUy3oCMYj8TMiTYY6GwV
-         AbiIkRQ1Jhnb/+dPLzNkBPnX29xtenRlR5mpzACo=
+        b=lT2hIRekWRfTK9B50mbha1Tg+gGdW5Hj/M3WJZUy8atBOGm+IZvQW61Xc8KaIPBeX
+         CkX8F96tt5rCw7XC1X1XKJ9sJrNPbW/fE+2oE7438xXz8YX/6Xqsw703y2RhS77kF2
+         Fn+Mpy4wIwq5xB7e+9f5Q5bzWejGmm7u7JKBF5YM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a7d200a347f912723e5c@syzkaller.appspotmail.com,
-        Eric Dumazet <edumazet@google.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Alexandra Winter <wintera@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        Thorsten Winkler <twinkler@linux.ibm.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/313] netlink: fix potential deadlock in netlink_set_err()
+Subject: [PATCH 5.10 274/509] s390/qeth: Fix vipa deletion
 Date:   Tue, 25 Jul 2023 12:43:33 +0200
-Message-ID: <20230725104523.627533595@linuxfoundation.org>
+Message-ID: <20230725104606.294431311@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,115 +58,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thorsten Winkler <twinkler@linux.ibm.com>
 
-[ Upstream commit 8d61f926d42045961e6b65191c09e3678d86a9cf ]
+[ Upstream commit 80de809bd35e2a8999edf9f5aaa2d8de18921f11 ]
 
-syzbot reported a possible deadlock in netlink_set_err() [1]
+Change boolean parameter of function "qeth_l3_vipa_store" inside the
+"qeth_l3_dev_vipa_del4_store" function from "true" to "false" because
+"true" is used for adding a virtual ip address and "false" for deleting.
 
-A similar issue was fixed in commit 1d482e666b8e ("netlink: disable IRQs
-for netlink_lock_table()") in netlink_lock_table()
+Fixes: 2390166a6b45 ("s390/qeth: clean up L3 sysfs code")
 
-This patch adds IRQ safety to netlink_set_err() and __netlink_diag_dump()
-which were not covered by cited commit.
-
-[1]
-
-WARNING: possible irq lock inversion dependency detected
-6.4.0-rc6-syzkaller-00240-g4e9f0ec38852 #0 Not tainted
-
-syz-executor.2/23011 just changed the state of lock:
-ffffffff8e1a7a58 (nl_table_lock){.+.?}-{2:2}, at: netlink_set_err+0x2e/0x3a0 net/netlink/af_netlink.c:1612
-but this lock was taken by another, SOFTIRQ-safe lock in the past:
- (&local->queue_stop_reason_lock){..-.}-{2:2}
-
-and interrupts could create inverse lock ordering between them.
-
-other info that might help us debug this:
- Possible interrupt unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(nl_table_lock);
-                               local_irq_disable();
-                               lock(&local->queue_stop_reason_lock);
-                               lock(nl_table_lock);
-  <Interrupt>
-    lock(&local->queue_stop_reason_lock);
-
- *** DEADLOCK ***
-
-Fixes: 1d482e666b8e ("netlink: disable IRQs for netlink_lock_table()")
-Reported-by: syzbot+a7d200a347f912723e5c@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=a7d200a347f912723e5c
-Link: https://lore.kernel.org/netdev/000000000000e38d1605fea5747e@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Link: https://lore.kernel.org/r/20230621154337.1668594-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: Thorsten Winkler <twinkler@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 5 +++--
- net/netlink/diag.c       | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/s390/net/qeth_l3_sys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index bf7e300e8c25d..29eabd45b832a 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1601,6 +1601,7 @@ static int do_one_set_err(struct sock *sk, struct netlink_set_err_data *p)
- int netlink_set_err(struct sock *ssk, u32 portid, u32 group, int code)
+diff --git a/drivers/s390/net/qeth_l3_sys.c b/drivers/s390/net/qeth_l3_sys.c
+index 997fbb7006a7c..316f8622f3ccb 100644
+--- a/drivers/s390/net/qeth_l3_sys.c
++++ b/drivers/s390/net/qeth_l3_sys.c
+@@ -652,7 +652,7 @@ static QETH_DEVICE_ATTR(vipa_add4, add4, 0644,
+ static ssize_t qeth_l3_dev_vipa_del4_store(struct device *dev,
+ 		struct device_attribute *attr, const char *buf, size_t count)
  {
- 	struct netlink_set_err_data info;
-+	unsigned long flags;
- 	struct sock *sk;
- 	int ret = 0;
- 
-@@ -1610,12 +1611,12 @@ int netlink_set_err(struct sock *ssk, u32 portid, u32 group, int code)
- 	/* sk->sk_err wants a positive error value */
- 	info.code = -code;
- 
--	read_lock(&nl_table_lock);
-+	read_lock_irqsave(&nl_table_lock, flags);
- 
- 	sk_for_each_bound(sk, &nl_table[ssk->sk_protocol].mc_list)
- 		ret += do_one_set_err(sk, &info);
- 
--	read_unlock(&nl_table_lock);
-+	read_unlock_irqrestore(&nl_table_lock, flags);
- 	return ret;
+-	return qeth_l3_vipa_store(dev, buf, true, count, QETH_PROT_IPV4);
++	return qeth_l3_vipa_store(dev, buf, false, count, QETH_PROT_IPV4);
  }
- EXPORT_SYMBOL(netlink_set_err);
-diff --git a/net/netlink/diag.c b/net/netlink/diag.c
-index c6255eac305c7..4143b2ea4195a 100644
---- a/net/netlink/diag.c
-+++ b/net/netlink/diag.c
-@@ -94,6 +94,7 @@ static int __netlink_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 	struct net *net = sock_net(skb->sk);
- 	struct netlink_diag_req *req;
- 	struct netlink_sock *nlsk;
-+	unsigned long flags;
- 	struct sock *sk;
- 	int num = 2;
- 	int ret = 0;
-@@ -152,7 +153,7 @@ static int __netlink_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 	num++;
  
- mc_list:
--	read_lock(&nl_table_lock);
-+	read_lock_irqsave(&nl_table_lock, flags);
- 	sk_for_each_bound(sk, &tbl->mc_list) {
- 		if (sk_hashed(sk))
- 			continue;
-@@ -173,7 +174,7 @@ static int __netlink_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 		}
- 		num++;
- 	}
--	read_unlock(&nl_table_lock);
-+	read_unlock_irqrestore(&nl_table_lock, flags);
- 
- done:
- 	cb->args[0] = num;
+ static QETH_DEVICE_ATTR(vipa_del4, del4, 0200, NULL,
 -- 
 2.39.2
 
