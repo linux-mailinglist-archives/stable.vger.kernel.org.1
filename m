@@ -2,103 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF6DF7612AE
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A778876119B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233536AbjGYLE5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40856 "EHLO
+        id S232386AbjGYKxl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233744AbjGYLCp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F194759F9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:09 -0700 (PDT)
+        with ESMTP id S233806AbjGYKw4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:52:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 688532694
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 927F861691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9AFC433C8;
-        Tue, 25 Jul 2023 10:59:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEADD6165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE311C433C7;
+        Tue, 25 Jul 2023 10:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282765;
-        bh=gY2O4OejYZflq8TBnu4xEho1T1hdrYsxXyWdaBA/HUU=;
+        s=korg; t=1690282299;
+        bh=m7Io54fmYDg36Tp8yZlBPzDKDzgO0S3ivyQ39AOR0So=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cpq3RiZHFOblmGD5xSQTui9CHo4DtvVMSJ9OzjWEwvi6Pr5oRqxLy/dMPG/EC5atI
-         FCluoKe7nO3Ajf32+3iPw9Fzz4XSqp7CVLCVeuGRCb2zgKjlbCbWTdYcMtdQi39ITF
-         5F9sEY0FYXFu5S9DI95CDMZdp4+OifeBfQAzj7DM=
+        b=h7c9E+Ve9WVb7oxYGi87vG7+0ihA85G8Dpts7NL9g2SvXRFpA6yH9oO4H1Aoyq/O0
+         u2a97+/2ToNmHrBIS4PO7LzhY8i38wNIsThxnLVeCuB3NWbzN33albGnKNw+2JrImh
+         OPie+wHdfGIo/nVThD+i5RKXOE74F46CXYjRn7R0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cyril Brulebois <cyril@debamax.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Helge Deller <deller@gmx.de>,
-        =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.1 019/183] of: Preserve "of-display" device name for compatibility
+        patches@lists.linux.dev,
+        Marco Morandini <marco.morandini@polimi.it>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 080/227] [PATCH AUTOSEL 5.4 05/12] HID: add quirk for 03f0:464a HP Elite Presenter Mouse
 Date:   Tue, 25 Jul 2023 12:44:07 +0200
-Message-ID: <20230725104508.566050356@linuxfoundation.org>
+Message-ID: <20230725104518.078815109@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Herring <robh@kernel.org>
+[ Upstream commit 0db117359e47750d8bd310d19f13e1c4ef7fc26a ]
 
-commit 0bb8f49cd2cc8cb32ac51189ff9fcbe7ec3d9d65 upstream.
+HP Elite Presenter Mouse HID Record Descriptor shows
+two mouses (Repord ID 0x1 and 0x2), one keypad (Report ID 0x5),
+two Consumer Controls (Report IDs 0x6 and 0x3).
+Previous to this commit it registers one mouse, one keypad
+and one Consumer Control, and it was usable only as a
+digitl laser pointer (one of the two mouses). This patch defines
+the 464a USB device ID and enables the HID_QUIRK_MULTI_INPUT
+quirk for it, allowing to use the device both as a mouse
+and a digital laser pointer.
 
-Since commit 241d2fb56a18 ("of: Make OF framebuffer device names unique"),
-as spotted by Frédéric Bonnard, the historical "of-display" device is
-gone: the updated logic creates "of-display.0" instead, then as many
-"of-display.N" as required.
-
-This means that offb no longer finds the expected device, which prevents
-the Debian Installer from setting up its interface, at least on ppc64el.
-
-Fix this by keeping "of-display" for the first device and "of-display.N"
-for subsequent devices.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217328
-Link: https://bugs.debian.org/1033058
-Fixes: 241d2fb56a18 ("of: Make OF framebuffer device names unique")
-Cc: stable@vger.kernel.org
-Cc: Cyril Brulebois <cyril@debamax.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Helge Deller <deller@gmx.de>
-Acked-by: Helge Deller <deller@gmx.de>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
-Link: https://lore.kernel.org/r/20230710174007.2291013-1-robh@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marco Morandini <marco.morandini@polimi.it>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/platform.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    |    1 +
+ drivers/hid/hid-quirks.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -557,7 +557,7 @@ static int __init of_platform_default_po
- 			if (!of_get_property(node, "linux,opened", NULL) ||
- 			    !of_get_property(node, "linux,boot-display", NULL))
- 				continue;
--			dev = of_platform_device_create(node, "of-display.0", NULL);
-+			dev = of_platform_device_create(node, "of-display", NULL);
- 			of_node_put(node);
- 			if (WARN_ON(!dev))
- 				return -ENOMEM;
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -620,6 +620,7 @@
+ #define USB_DEVICE_ID_UGCI_FIGHTING	0x0030
+ 
+ #define USB_VENDOR_ID_HP		0x03f0
++#define USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A		0x464a
+ #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A	0x0a4a
+ #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A	0x0b4a
+ #define USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE		0x134a
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -96,6 +96,7 @@ static const struct hid_device_id hid_qu
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A096), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A293), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A), HID_QUIRK_ALWAYS_POLL },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE_094A), HID_QUIRK_ALWAYS_POLL },
 
 
