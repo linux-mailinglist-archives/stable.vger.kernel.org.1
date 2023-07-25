@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D45761238
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A277B761353
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232473AbjGYLAT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:00:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35810 "EHLO
+        id S234042AbjGYLJg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233204AbjGYK7y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61AD13C0F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:09 -0700 (PDT)
+        with ESMTP id S234043AbjGYLJW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F36D35AE
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBF0561682
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A53C433C8;
-        Tue, 25 Jul 2023 10:57:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE38761682
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96DBC433C7;
+        Tue, 25 Jul 2023 11:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282628;
-        bh=lr5SBft2HyWfjTIMJdMDdBSxdhyEArlnj2K+0xvoVsg=;
+        s=korg; t=1690283303;
+        bh=Q44RtPYxS7QTNh9PJlDFzuljPnDwxak+TeDoKM0XMlg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NgL2boZrDVABBFCgPRRt+wWvbFBh9xw+X7ecXpI8y/EHNVNpIDIOYf2xvd+HBOkxK
-         y8MiX5WhgJ6cZ8T5MR1aytn7oa3CEa/yoQ3twlZejCltMq2BBCLrJQA3x4PsUgQPEV
-         5XbQ5XXJBoEsB3ejAjvqUyjif4yOQMqFvK4qAO4c=
+        b=R0d2Ks96dWOQ5hAKoUE/F+HjjoZJvFdaD868wllpQ9v6ee46kCKCWaXhyEDf9PEsI
+         yKQdh0a7xvH1O8EiRsisYNKD6S0R+OjxWjmKFhP4L/oOPKHPCNqfbxdckbsxiGEHBg
+         LsMdveY/rLJ6Dimnn7PQTUyRN31J16/grK04+EiQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 190/227] Revert "tcp: avoid the lookup process failing to get sk in ehash table"
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Qu Wenruo <wqu@suse.com>, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 06/78] btrfs: fix warning when putting transaction with qgroups enabled after abort
 Date:   Tue, 25 Jul 2023 12:45:57 +0200
-Message-ID: <20230725104522.666836633@linuxfoundation.org>
+Message-ID: <20230725104451.564919329@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,112 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 81b3ade5d2b98ad6e0a473b0e1e420a801275592 ]
+commit aa84ce8a78a1a5c10cdf9c7a5fb0c999fbc2c8d6 upstream.
 
-This reverts commit 3f4ca5fafc08881d7a57daa20449d171f2887043.
+If we have a transaction abort with qgroups enabled we get a warning
+triggered when doing the final put on the transaction, like this:
 
-Commit 3f4ca5fafc08 ("tcp: avoid the lookup process failing to get sk in
-ehash table") reversed the order in how a socket is inserted into ehash
-to fix an issue that ehash-lookup could fail when reqsk/full sk/twsk are
-swapped.  However, it introduced another lookup failure.
+  [552.6789] ------------[ cut here ]------------
+  [552.6815] WARNING: CPU: 4 PID: 81745 at fs/btrfs/transaction.c:144 btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6817] Modules linked in: btrfs blake2b_generic xor (...)
+  [552.6819] CPU: 4 PID: 81745 Comm: btrfs-transacti Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [552.6819] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [552.6819] RIP: 0010:btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6821] Code: bd a0 01 00 (...)
+  [552.6821] RSP: 0018:ffffa168c0527e28 EFLAGS: 00010286
+  [552.6821] RAX: ffff936042caed00 RBX: ffff93604a3eb448 RCX: 0000000000000000
+  [552.6821] RDX: ffff93606421b028 RSI: ffffffff92ff0878 RDI: ffff93606421b010
+  [552.6821] RBP: ffff93606421b000 R08: 0000000000000000 R09: ffffa168c0d07c20
+  [552.6821] R10: 0000000000000000 R11: ffff93608dc52950 R12: ffffa168c0527e70
+  [552.6821] R13: ffff93606421b000 R14: ffff93604a3eb420 R15: ffff93606421b028
+  [552.6821] FS:  0000000000000000(0000) GS:ffff93675fb00000(0000) knlGS:0000000000000000
+  [552.6821] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [552.6821] CR2: 0000558ad262b000 CR3: 000000014feda005 CR4: 0000000000370ee0
+  [552.6822] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [552.6822] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [552.6822] Call Trace:
+  [552.6822]  <TASK>
+  [552.6822]  ? __warn+0x80/0x130
+  [552.6822]  ? btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6824]  ? report_bug+0x1f4/0x200
+  [552.6824]  ? handle_bug+0x42/0x70
+  [552.6824]  ? exc_invalid_op+0x14/0x70
+  [552.6824]  ? asm_exc_invalid_op+0x16/0x20
+  [552.6824]  ? btrfs_put_transaction+0x123/0x130 [btrfs]
+  [552.6826]  btrfs_cleanup_transaction+0xe7/0x5e0 [btrfs]
+  [552.6828]  ? _raw_spin_unlock_irqrestore+0x23/0x40
+  [552.6828]  ? try_to_wake_up+0x94/0x5e0
+  [552.6828]  ? __pfx_process_timeout+0x10/0x10
+  [552.6828]  transaction_kthread+0x103/0x1d0 [btrfs]
+  [552.6830]  ? __pfx_transaction_kthread+0x10/0x10 [btrfs]
+  [552.6832]  kthread+0xee/0x120
+  [552.6832]  ? __pfx_kthread+0x10/0x10
+  [552.6832]  ret_from_fork+0x29/0x50
+  [552.6832]  </TASK>
+  [552.6832] ---[ end trace 0000000000000000 ]---
 
-The full socket in ehash is allocated from a slab with SLAB_TYPESAFE_BY_RCU
-and does not have SOCK_RCU_FREE, so the socket could be reused even while
-it is being referenced on another CPU doing RCU lookup.
+This corresponds to this line of code:
 
-Let's say a socket is reused and inserted into the same hash bucket during
-lookup.  After the blamed commit, a new socket is inserted at the end of
-the list.  If that happens, we will skip sockets placed after the previous
-position of the reused socket, resulting in ehash lookup failure.
+  void btrfs_put_transaction(struct btrfs_transaction *transaction)
+  {
+      (...)
+          WARN_ON(!RB_EMPTY_ROOT(
+                          &transaction->delayed_refs.dirty_extent_root));
+      (...)
+  }
 
-As described in Documentation/RCU/rculist_nulls.rst, we should insert a
-new socket at the head of the list to avoid such an issue.
+The warning happens because btrfs_qgroup_destroy_extent_records(), called
+in the transaction abort path, we free all entries from the rbtree
+"dirty_extent_root" with rbtree_postorder_for_each_entry_safe(), but we
+don't actually empty the rbtree - it's still pointing to nodes that were
+freed.
 
-This issue, the swap-lookup-failure, and another variant reported in [0]
-can all be handled properly by adding a locked ehash lookup suggested by
-Eric Dumazet [1].
+So set the rbtree's root node to NULL to avoid this warning (assign
+RB_ROOT).
 
-However, this issue could occur for every packet, thus more likely than
-the other two races, so let's revert the change for now.
-
-Link: https://lore.kernel.org/netdev/20230606064306.9192-1-duanmuquan@baidu.com/ [0]
-Link: https://lore.kernel.org/netdev/CANn89iK8snOz8TYOhhwfimC7ykYA78GA3Nyv8x06SZYa1nKdyA@mail.gmail.com/ [1]
-Fixes: 3f4ca5fafc08 ("tcp: avoid the lookup process failing to get sk in ehash table")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230717215918.15723-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 81f7eb00ff5b ("btrfs: destroy qgroup extent records on transaction abort")
+CC: stable@vger.kernel.org # 5.10+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_hashtables.c    | 17 ++---------------
- net/ipv4/inet_timewait_sock.c |  8 ++++----
- 2 files changed, 6 insertions(+), 19 deletions(-)
+ fs/btrfs/qgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index e7391bf310a75..0819d6001b9ab 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -650,20 +650,8 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	spin_lock(lock);
- 	if (osk) {
- 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
--		ret = sk_hashed(osk);
--		if (ret) {
--			/* Before deleting the node, we insert a new one to make
--			 * sure that the look-up-sk process would not miss either
--			 * of them and that at least one node would exist in ehash
--			 * table all the time. Otherwise there's a tiny chance
--			 * that lookup process could find nothing in ehash table.
--			 */
--			__sk_nulls_add_node_tail_rcu(sk, list);
--			sk_nulls_del_node_init_rcu(osk);
--		}
--		goto unlock;
--	}
--	if (found_dup_sk) {
-+		ret = sk_nulls_del_node_init_rcu(osk);
-+	} else if (found_dup_sk) {
- 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
- 		if (*found_dup_sk)
- 			ret = false;
-@@ -672,7 +660,6 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	if (ret)
- 		__sk_nulls_add_node_rcu(sk, list);
- 
--unlock:
- 	spin_unlock(lock);
- 
- 	return ret;
-diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
-index 40052414c7c71..2c1b245dba8e8 100644
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -88,10 +88,10 @@ void inet_twsk_put(struct inet_timewait_sock *tw)
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -4342,4 +4342,5 @@ void btrfs_qgroup_destroy_extent_records
+ 		ulist_free(entry->old_roots);
+ 		kfree(entry);
+ 	}
++	*root = RB_ROOT;
  }
- EXPORT_SYMBOL_GPL(inet_twsk_put);
- 
--static void inet_twsk_add_node_tail_rcu(struct inet_timewait_sock *tw,
--					struct hlist_nulls_head *list)
-+static void inet_twsk_add_node_rcu(struct inet_timewait_sock *tw,
-+				   struct hlist_nulls_head *list)
- {
--	hlist_nulls_add_tail_rcu(&tw->tw_node, list);
-+	hlist_nulls_add_head_rcu(&tw->tw_node, list);
- }
- 
- static void inet_twsk_add_bind_node(struct inet_timewait_sock *tw,
-@@ -144,7 +144,7 @@ void inet_twsk_hashdance(struct inet_timewait_sock *tw, struct sock *sk,
- 
- 	spin_lock(lock);
- 
--	inet_twsk_add_node_tail_rcu(tw, &ehead->chain);
-+	inet_twsk_add_node_rcu(tw, &ehead->chain);
- 
- 	/* Step 3: Remove SK from hash chain */
- 	if (__sk_nulls_del_node_init_rcu(sk))
--- 
-2.39.2
-
 
 
