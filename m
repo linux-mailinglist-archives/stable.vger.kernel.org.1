@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D477611DA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8FB97612A5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232747AbjGYK4z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:56:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
+        id S233937AbjGYLEm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:04:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230372AbjGYK42 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:28 -0400
+        with ESMTP id S233827AbjGYLE3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79ED64C15
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EE25FD9
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDE076165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC75C433C8;
-        Tue, 25 Jul 2023 10:53:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97F016164D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A432DC433C7;
+        Tue, 25 Jul 2023 11:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282432;
-        bh=MY2QVCepyYKb6djDRwYxhF8cokHoC5u9Fkge0FG6BME=;
+        s=korg; t=1690282896;
+        bh=EuYZDRqvaRDTXZe54PnMnFdlT0OO8E4mdcFCHt03pfY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=affYCILQpDC3zSX88d/XeAKcji6/cDmdg8+Ko4AeIbmAAcJ/3bM5MQdnoSJ4p8CCj
-         RO+zfnyprlPWw66nN99OEspmMHS8QJWyNe3cyXr8C85z2I7MhryazEEktTX+J4fgVf
-         1twrfLvAMDSvVLT4of+PSRcIH509fXyWlFeDNJGs=
+        b=gmfU7JJdXplDjGr01hSa76Bgz+tU10BawjR1xM8YgVNb7c9EI9wy6aEr8AmSEKSdJ
+         oljOTLMpIKFbprCb/m0xYq0MC5Mdk5Xu1KZRNwnB3DiH0NxTdUr7a3AwZqOfFzNRqo
+         komwQ3o47/hYynxgjcO8K3xeNFCFUjuA1uFdwE3c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 098/227] ACPI: button: Add lid disable DMI quirk for Nextbook Ares 8A
+        patches@lists.linux.dev, Andreas Henriksson <andreas@fatal.se>,
+        Fabio Estevam <festevam@denx.de>,
+        Shengjiu Wang <shengjiu.wang@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 037/183] ASoC: fsl_sai: Revert "ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode"
 Date:   Tue, 25 Jul 2023 12:44:25 +0200
-Message-ID: <20230725104518.796952645@linuxfoundation.org>
+Message-ID: <20230725104509.275093624@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 4fd5556608bfa9c2bf276fc115ef04288331aded ]
+commit 86867aca7330e4fbcfa2a117e20b48bbb6c758a9 upstream.
 
-The LID0 device on the Nextbook Ares 8A tablet always reports lid
-closed causing userspace to suspend the device as soon as booting
-is complete.
+This reverts commit ff87d619ac180444db297f043962a5c325ded47b.
 
-Add a DMI quirk to disable the broken lid functionality.
+Andreas reports that on an i.MX8MP-based system where MCLK needs to be
+used as an input, the MCLK pin is actually an output, despite not having
+the 'fsl,sai-mclk-direction-output' property present in the devicetree.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is caused by commit ff87d619ac18 ("ASoC: fsl_sai: Enable
+MCTL_MCLK_EN bit for master mode") that sets FSL_SAI_MCTL_MCLK_EN
+unconditionally for imx8mm/8mn/8mp/93, causing the MCLK to always
+be configured as output.
+
+FSL_SAI_MCTL_MCLK_EN corresponds to the MOE (MCLK Output Enable) bit
+of register MCR and the drivers sets it when the
+'fsl,sai-mclk-direction-output' devicetree property is present.
+
+Revert the commit to allow SAI to use MCLK as input as well.
+
+Cc: stable@vger.kernel.org
+Fixes: ff87d619ac18 ("ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode")
+Reported-by: Andreas Henriksson <andreas@fatal.se>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://lore.kernel.org/r/20230706221827.1938990-1-festevam@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/button.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/soc/fsl/fsl_sai.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index 475e1eddfa3b4..ef77c14c72a92 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -77,6 +77,15 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
- 		},
- 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_DISABLED,
- 	},
-+	{
-+		/* Nextbook Ares 8A tablet, _LID device always reports lid closed */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "M882"),
-+		},
-+		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_DISABLED,
-+	},
- 	{
- 		/*
- 		 * Lenovo Yoga 9 14ITL5, initial notification of the LID device
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 5e09f634c61b..54b4bf3744c6 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -507,12 +507,6 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
+ 				   savediv / 2 - 1);
+ 	}
+ 
+-	if (sai->soc_data->max_register >= FSL_SAI_MCTL) {
+-		/* SAI is in master mode at this point, so enable MCLK */
+-		regmap_update_bits(sai->regmap, FSL_SAI_MCTL,
+-				   FSL_SAI_MCTL_MCLK_EN, FSL_SAI_MCTL_MCLK_EN);
+-	}
+-
+ 	return 0;
+ }
+ 
 -- 
-2.39.2
+2.41.0
 
 
 
