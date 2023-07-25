@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB0776133E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC8D776122B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234143AbjGYLJE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45392 "EHLO
+        id S233799AbjGYK7y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:59:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbjGYLIt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FC79212D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:31 -0700 (PDT)
+        with ESMTP id S232326AbjGYK7a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:59:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16D41FF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:56:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D8D2261681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB414C433C8;
-        Tue, 25 Jul 2023 11:07:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5080461656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:56:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A9BC433C7;
+        Tue, 25 Jul 2023 10:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283250;
-        bh=/6LNG1D1+ecXz36nMmKvtcpOR2TM2aIryufo85/JiE8=;
+        s=korg; t=1690282594;
+        bh=SqjiS7pFXRAnjlntQamOYggifF7cVL7N1pNqB2IEzL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V/uEhpfzwEeHPUE33AjbAzBkMBsQacL21PZhwYAAbTiHsdXpT2mI95P0Fb9dfwwP+
-         HzPLIz3796l7aszFhVefY8tvMTtaTwiAXumVgESUaiTLiETkGmqUpI6bTbvLunsxLS
-         1vf/MT9klCUrAQSBKluNmSpsH6xV0b/qCpnYy3+0=
+        b=uisGxhkl/NBHOJz3o69smqRleixMGfDS7RzLCdSF50ihE570h1S+MgK2KZ0xvLQqu
+         Ap1xVe6StsxGyuAHnmUzESBNW410AdXkJUJTpTNEkBtvwXuxRuKc/mAYiMAibvp0We
+         i4DePyhauNt8jf07UZp++Zxsk1js2y1u5xo3K+U8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        "Joseph C. Sible" <josephcsible@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 01/78] ALSA: hda/realtek - remove 3k pull low procedure
+        patches@lists.linux.dev, Antoine Tenart <atenart@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 185/227] net: ipv4: use consistent txhash in TIME_WAIT and SYN_RECV
 Date:   Tue, 25 Jul 2023 12:45:52 +0200
-Message-ID: <20230725104451.337387537@linuxfoundation.org>
+Message-ID: <20230725104522.483559579@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,66 +56,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kailang Yang <kailang@realtek.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit 69ea4c9d02b7947cdd612335a61cc1a02e544ccd upstream.
+[ Upstream commit c0a8966e2bc7d31f77a7246947ebc09c1ff06066 ]
 
-This was the ALC283 depop procedure.
-Maybe this procedure wasn't suitable with new codec.
-So, let us remove it. But HP 15z-fc000 must do 3k pull low. If it
-reboot with plugged headset,
-it will have errors show don't find codec error messages. Run 3k pull
-low will solve issues.
-So, let AMD chipset will run this for workarround.
+When using IPv4/TCP, skb->hash comes from sk->sk_txhash except in
+TIME_WAIT and SYN_RECV where it's not set in the reply skb from
+ip_send_unicast_reply. Those packets will have a mismatched hash with
+others from the same flow as their hashes will be 0. IPv6 does not have
+the same issue as the hash is set from the socket txhash in those cases.
 
-Fixes: 5aec98913095 ("ALSA: hda/realtek - ALC236 headset MIC recording issue")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Reported-by: Joseph C. Sible <josephcsible@gmail.com>
-Closes: https://lore.kernel.org/r/CABpewhE4REgn9RJZduuEU6Z_ijXNeQWnrxO1tg70Gkw=F8qNYg@mail.gmail.com/
-Link: https://lore.kernel.org/r/4678992299664babac4403d9978e7ba7@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commits sets the hash in the reply skb from ip_send_unicast_reply,
+which makes the IPv4 code behaving like IPv6.
+
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 5e5265522a9a ("tcp: annotate data-races around tcp_rsk(req)->txhash")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/net/ip.h     |  2 +-
+ net/ipv4/ip_output.c |  4 +++-
+ net/ipv4/tcp_ipv4.c  | 14 +++++++++-----
+ 3 files changed, 13 insertions(+), 7 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -120,6 +120,7 @@ struct alc_spec {
- 	unsigned int ultra_low_power:1;
- 	unsigned int has_hs_key:1;
- 	unsigned int no_internal_mic_pin:1;
-+	unsigned int en_3kpull_low:1;
+diff --git a/include/net/ip.h b/include/net/ip.h
+index acec504c469a0..83a1a9bc3ceb1 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -282,7 +282,7 @@ void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
+ 			   const struct ip_options *sopt,
+ 			   __be32 daddr, __be32 saddr,
+ 			   const struct ip_reply_arg *arg,
+-			   unsigned int len, u64 transmit_time);
++			   unsigned int len, u64 transmit_time, u32 txhash);
  
- 	/* for PLL fix */
- 	hda_nid_t pll_nid;
-@@ -3616,6 +3617,7 @@ static void alc256_shutup(struct hda_cod
- 	if (!hp_pin)
- 		hp_pin = 0x21;
+ #define IP_INC_STATS(net, field)	SNMP_INC_STATS64((net)->mib.ip_statistics, field)
+ #define __IP_INC_STATS(net, field)	__SNMP_INC_STATS64((net)->mib.ip_statistics, field)
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 61892268e8a6c..a1bead441026e 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1692,7 +1692,7 @@ void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
+ 			   const struct ip_options *sopt,
+ 			   __be32 daddr, __be32 saddr,
+ 			   const struct ip_reply_arg *arg,
+-			   unsigned int len, u64 transmit_time)
++			   unsigned int len, u64 transmit_time, u32 txhash)
+ {
+ 	struct ip_options_data replyopts;
+ 	struct ipcm_cookie ipc;
+@@ -1755,6 +1755,8 @@ void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
+ 								arg->csum));
+ 		nskb->ip_summed = CHECKSUM_NONE;
+ 		nskb->mono_delivery_time = !!transmit_time;
++		if (txhash)
++			skb_set_hash(nskb, txhash, PKT_HASH_TYPE_L4);
+ 		ip_push_pending_frames(sk, &fl4);
+ 	}
+ out:
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 434e5f0c8b99d..a64069077e388 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -692,6 +692,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
+ 	u64 transmit_time = 0;
+ 	struct sock *ctl_sk;
+ 	struct net *net;
++	u32 txhash = 0;
  
-+	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	/* Never send a reset in response to a reset. */
+ 	if (th->rst)
+@@ -829,6 +830,8 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
+ 				   inet_twsk(sk)->tw_priority : sk->sk_priority;
+ 		transmit_time = tcp_transmit_time(sk);
+ 		xfrm_sk_clone_policy(ctl_sk, sk);
++		txhash = (sk->sk_state == TCP_TIME_WAIT) ?
++			 inet_twsk(sk)->tw_txhash : sk->sk_txhash;
+ 	} else {
+ 		ctl_sk->sk_mark = 0;
+ 		ctl_sk->sk_priority = 0;
+@@ -837,7 +840,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
+ 			      skb, &TCP_SKB_CB(skb)->header.h4.opt,
+ 			      ip_hdr(skb)->saddr, ip_hdr(skb)->daddr,
+ 			      &arg, arg.iov[0].iov_len,
+-			      transmit_time);
++			      transmit_time, txhash);
  
- 	if (hp_pin_sense)
-@@ -3632,8 +3634,7 @@ static void alc256_shutup(struct hda_cod
- 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
- 	 * when booting with headset plugged. So skip setting it for the codec alc257
- 	 */
--	if (codec->core.vendor_id != 0x10ec0236 &&
--	    codec->core.vendor_id != 0x10ec0257)
-+	if (spec->en_3kpull_low)
- 		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
+ 	xfrm_sk_free_policy(ctl_sk);
+ 	sock_net_set(ctl_sk, &init_net);
+@@ -859,7 +862,7 @@ static void tcp_v4_send_ack(const struct sock *sk,
+ 			    struct sk_buff *skb, u32 seq, u32 ack,
+ 			    u32 win, u32 tsval, u32 tsecr, int oif,
+ 			    struct tcp_md5sig_key *key,
+-			    int reply_flags, u8 tos)
++			    int reply_flags, u8 tos, u32 txhash)
+ {
+ 	const struct tcphdr *th = tcp_hdr(skb);
+ 	struct {
+@@ -935,7 +938,7 @@ static void tcp_v4_send_ack(const struct sock *sk,
+ 			      skb, &TCP_SKB_CB(skb)->header.h4.opt,
+ 			      ip_hdr(skb)->saddr, ip_hdr(skb)->daddr,
+ 			      &arg, arg.iov[0].iov_len,
+-			      transmit_time);
++			      transmit_time, txhash);
  
- 	if (!spec->no_shutup_pins)
-@@ -10146,6 +10147,8 @@ static int patch_alc269(struct hda_codec
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0; /* ALC256 does not have any loopback mixer path */
-+		if (codec->bus->pci->vendor == PCI_VENDOR_ID_AMD)
-+			spec->en_3kpull_low = true;
- 		break;
- 	case 0x10ec0257:
- 		spec->codec_variant = ALC269_TYPE_ALC257;
+ 	sock_net_set(ctl_sk, &init_net);
+ 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
+@@ -955,7 +958,8 @@ static void tcp_v4_timewait_ack(struct sock *sk, struct sk_buff *skb)
+ 			tw->tw_bound_dev_if,
+ 			tcp_twsk_md5_key(tcptw),
+ 			tw->tw_transparent ? IP_REPLY_ARG_NOSRCCHECK : 0,
+-			tw->tw_tos
++			tw->tw_tos,
++			tw->tw_txhash
+ 			);
+ 
+ 	inet_twsk_put(tw);
+@@ -988,7 +992,7 @@ static void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
+ 			0,
+ 			tcp_md5_do_lookup(sk, l3index, addr, AF_INET),
+ 			inet_rsk(req)->no_srccheck ? IP_REPLY_ARG_NOSRCCHECK : 0,
+-			ip_hdr(skb)->tos);
++			ip_hdr(skb)->tos, tcp_rsk(req)->txhash);
+ }
+ 
+ /*
+-- 
+2.39.2
+
 
 
