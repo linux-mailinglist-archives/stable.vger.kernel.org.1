@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EAD0761517
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8579E761674
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234593AbjGYLZg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34680 "EHLO
+        id S234876AbjGYLjb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234597AbjGYLZf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE7E613D;
-        Tue, 25 Jul 2023 04:25:33 -0700 (PDT)
+        with ESMTP id S234896AbjGYLjU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7429B10EC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65FAC6166E;
-        Tue, 25 Jul 2023 11:25:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79131C433C7;
-        Tue, 25 Jul 2023 11:25:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 018E1615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C381C433C7;
+        Tue, 25 Jul 2023 11:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284332;
-        bh=IWBoDHMDl92qNmaLZ6dH47zNmuusT9RUCSmnaSfZVwQ=;
+        s=korg; t=1690285158;
+        bh=vNOoSPRscg/tXNGYCdKCZb2FEiom6L8h8GSvXW0s2t4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gt8K5/f9gzIVYlV7qcbNJV97B6psl/+YoSuD2w6SwsHsWTATA5BtwvM59Xhpn4vwJ
-         3m0zjBtkPqAvE5hf1T9Ta/DptlXBAHkyRCXuI+gIDa5o+GaHRV9O94gSoAy9KSHwvC
-         Pwdalpxd938GrxkvkuX1cf1NyXD3MHicQwPk8EYk=
+        b=CyGCQp25sVJW7PokbYKQsBMq9ss/JJuwgnK7faVh9USMwA8YUrZt3XWG0HXhdNVHU
+         6HJGTewaF2K/mjq4NjcgRrLMPOBmQ27+xz3czLa2tFbOL9juLzv2SVJoamv/8IbHNl
+         xuSTtHa19wz/SmiHz1oJbiXlx7L15ClXMiqJcV0k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 319/509] netfilter: nftables: rename set element data activation/deactivation functions
+        patches@lists.linux.dev, Laurent Vivier <lvivier@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 105/313] hwrng: virtio - add an internal buffer
 Date:   Tue, 25 Jul 2023 12:44:18 +0200
-Message-ID: <20230725104608.305294211@linuxfoundation.org>
+Message-ID: <20230725104525.525832679@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,89 +55,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Laurent Vivier <lvivier@redhat.com>
 
-[ Upstream commit f8bb7889af58d8e74d2d61c76b1418230f1610fa ]
+[ Upstream commit bf3175bc50a3754dc427e2f5046e17a9fafc8be7 ]
 
-Rename:
+hwrng core uses two buffers that can be mixed in the
+virtio-rng queue.
 
-- nft_set_elem_activate() to nft_set_elem_data_activate().
-- nft_set_elem_deactivate() to nft_set_elem_data_deactivate().
+If the buffer is provided with wait=0 it is enqueued in the
+virtio-rng queue but unused by the caller.
+On the next call, core provides another buffer but the
+first one is filled instead and the new one queued.
+And the caller reads the data from the new one that is not
+updated, and the data in the first one are lost.
 
-To prepare for updates in the set element infrastructure to add support
-for the special catch-all element.
+To avoid this mix, virtio-rng needs to use its own unique
+internal buffer at a cost of a data copy to the caller buffer.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Link: https://lore.kernel.org/r/20211028101111.128049-2-lvivier@redhat.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: ac52578d6e8d ("hwrng: virtio - Fix race on data_avail and actual data")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/char/hw_random/virtio-rng.c | 43 ++++++++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 10 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5270,8 +5270,8 @@ void nft_set_elem_destroy(const struct n
- }
- EXPORT_SYMBOL_GPL(nft_set_elem_destroy);
+diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
+index 718d8c0876506..23149e94d621f 100644
+--- a/drivers/char/hw_random/virtio-rng.c
++++ b/drivers/char/hw_random/virtio-rng.c
+@@ -17,13 +17,20 @@ static DEFINE_IDA(rng_index_ida);
+ struct virtrng_info {
+ 	struct hwrng hwrng;
+ 	struct virtqueue *vq;
+-	struct completion have_data;
+ 	char name[25];
+-	unsigned int data_avail;
+ 	int index;
+ 	bool busy;
+ 	bool hwrng_register_done;
+ 	bool hwrng_removed;
++	/* data transfer */
++	struct completion have_data;
++	unsigned int data_avail;
++	/* minimal size returned by rng_buffer_size() */
++#if SMP_CACHE_BYTES < 32
++	u8 data[32];
++#else
++	u8 data[SMP_CACHE_BYTES];
++#endif
+ };
  
--/* Only called from commit path, nft_set_elem_deactivate() already deals with
-- * the refcounting from the preparation phase.
-+/* Only called from commit path, nft_setelem_data_deactivate() already deals
-+ * with the refcounting from the preparation phase.
-  */
- static void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
- 				       const struct nft_set *set, void *elem)
-@@ -5649,9 +5649,9 @@ void nft_data_hold(const struct nft_data
- 	}
+ static void random_recv_done(struct virtqueue *vq)
+@@ -38,14 +45,14 @@ static void random_recv_done(struct virtqueue *vq)
  }
  
--static void nft_set_elem_activate(const struct net *net,
--				  const struct nft_set *set,
--				  struct nft_set_elem *elem)
-+static void nft_setelem_data_activate(const struct net *net,
-+				      const struct nft_set *set,
-+				      struct nft_set_elem *elem)
+ /* The host will fill any buffer we give it with sweet, sweet randomness. */
+-static void register_buffer(struct virtrng_info *vi, u8 *buf, size_t size)
++static void register_buffer(struct virtrng_info *vi)
  {
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct scatterlist sg;
  
-@@ -5661,9 +5661,9 @@ static void nft_set_elem_activate(const
- 		(*nft_set_ext_obj(ext))->use++;
+-	sg_init_one(&sg, buf, size);
++	sg_init_one(&sg, vi->data, sizeof(vi->data));
+ 
+ 	/* There should always be room for one buffer. */
+-	virtqueue_add_inbuf(vi->vq, &sg, 1, buf, GFP_KERNEL);
++	virtqueue_add_inbuf(vi->vq, &sg, 1, vi->data, GFP_KERNEL);
+ 
+ 	virtqueue_kick(vi->vq);
+ }
+@@ -54,6 +61,8 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
+ {
+ 	int ret;
+ 	struct virtrng_info *vi = (struct virtrng_info *)rng->priv;
++	unsigned int chunk;
++	size_t read;
+ 
+ 	if (vi->hwrng_removed)
+ 		return -ENODEV;
+@@ -61,19 +70,33 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
+ 	if (!vi->busy) {
+ 		vi->busy = true;
+ 		reinit_completion(&vi->have_data);
+-		register_buffer(vi, buf, size);
++		register_buffer(vi);
+ 	}
+ 
+ 	if (!wait)
+ 		return 0;
+ 
+-	ret = wait_for_completion_killable(&vi->have_data);
+-	if (ret < 0)
+-		return ret;
++	read = 0;
++	while (size != 0) {
++		ret = wait_for_completion_killable(&vi->have_data);
++		if (ret < 0)
++			return ret;
++
++		chunk = min_t(unsigned int, size, vi->data_avail);
++		memcpy(buf + read, vi->data, chunk);
++		read += chunk;
++		size -= chunk;
++		vi->data_avail = 0;
++
++		if (size != 0) {
++			reinit_completion(&vi->have_data);
++			register_buffer(vi);
++		}
++	}
+ 
+ 	vi->busy = false;
+ 
+-	return vi->data_avail;
++	return read;
  }
  
--static void nft_set_elem_deactivate(const struct net *net,
--				    const struct nft_set *set,
--				    struct nft_set_elem *elem)
-+static void nft_setelem_data_deactivate(const struct net *net,
-+					const struct nft_set *set,
-+					struct nft_set_elem *elem)
- {
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
- 
-@@ -5740,7 +5740,7 @@ static int nft_del_setelem(struct nft_ct
- 	kfree(elem.priv);
- 	elem.priv = priv;
- 
--	nft_set_elem_deactivate(ctx->net, set, &elem);
-+	nft_setelem_data_deactivate(ctx->net, set, &elem);
- 
- 	nft_trans_elem(trans) = elem;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
-@@ -5774,7 +5774,7 @@ static int nft_flush_set(const struct nf
- 	}
- 	set->ndeact++;
- 
--	nft_set_elem_deactivate(ctx->net, set, elem);
-+	nft_setelem_data_deactivate(ctx->net, set, elem);
- 	nft_trans_elem_set(trans) = set;
- 	nft_trans_elem(trans) = *elem;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
-@@ -8413,7 +8413,7 @@ static int __nf_tables_abort(struct net
- 		case NFT_MSG_DELSETELEM:
- 			te = (struct nft_trans_elem *)trans->data;
- 
--			nft_set_elem_activate(net, te->set, &te->elem);
-+			nft_setelem_data_activate(net, te->set, &te->elem);
- 			te->set->ops->activate(net, te->set, &te->elem);
- 			te->set->ndeact--;
- 
+ static void virtio_cleanup(struct hwrng *rng)
+-- 
+2.39.2
+
 
 
