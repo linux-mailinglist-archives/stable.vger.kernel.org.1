@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 619A4761240
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F57A7612FC
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:07:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233795AbjGYLA3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35936 "EHLO
+        id S233984AbjGYLHD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230287AbjGYLAP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:15 -0400
+        with ESMTP id S234039AbjGYLGu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D3A421C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:57:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE731BE6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:05:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E193A6168A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F413FC433C9;
-        Tue, 25 Jul 2023 10:57:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B81EB6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:05:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA89C433C7;
+        Tue, 25 Jul 2023 11:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282650;
-        bh=1zwcQE97x2gLZQL1/8vkF6CzptRzoEIUt6w0zFv9bUQ=;
+        s=korg; t=1690283119;
+        bh=LkSgrYh9qg9+9mxTG4LBWEYyqSZlpQBzShWSlZ/9Br8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UBqKSr7LoUVFF77Al87QJkMw636GMifT07vOufs2ZG5WB8WIOmhNZFga0PkuPHZ/V
-         duTruSGtqb5gHva3vrgPNq1BS51PS46BY1mTByzhSXvVVcI554yTD6/B56mWrVn8pR
-         wqgSIB2ltIruDqzZ9QiyaDJ2b0uhJ8R8NZ28JDxk=
+        b=bg41yOFctqPqEsARXn3+smt6PP2ILBaeK9Kq1FisVM7hKWhhGl+ih3b85B0Af94pv
+         WXtnM7KfO3z0Cgku3OuaMrvCMrscPjagDnDoi5Fmss26kCGfGVCA/XqaLcagsXndvN
+         Sojr2ej1hnsZnAUUhU3ouZlq7Oo82LbtkpcPPgow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Holland <johnbholland@icloud.com>,
-        =?UTF-8?q?Tomasz=20Mo=C5=84?= <tomasz.mon@nordicsemi.no>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, lonial con <kongln9170@gmail.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 206/227] Bluetooth: btusb: Fix bluetooth on Intel Macbook 2014
+Subject: [PATCH 6.1 145/183] netfilter: nft_set_pipapo: fix improper element removal
 Date:   Tue, 25 Jul 2023 12:46:13 +0200
-Message-ID: <20230725104523.287662466@linuxfoundation.org>
+Message-ID: <20230725104513.119327300@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,42 +56,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tomasz Moń <tomasz.mon@nordicsemi.no>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 95b7015433053cd5f648ad2a7b8f43b2c99c949a ]
+[ Upstream commit 87b5a5c209405cb6b57424cdfa226a6dbd349232 ]
 
-Commit c13380a55522 ("Bluetooth: btusb: Do not require hardcoded
-interface numbers") inadvertedly broke bluetooth on Intel Macbook 2014.
-The intention was to keep behavior intact when BTUSB_IFNUM_2 is set and
-otherwise allow any interface numbers. The problem is that the new logic
-condition omits the case where bInterfaceNumber is 0.
+end key should be equal to start unless NFT_SET_EXT_KEY_END is present.
 
-Fix BTUSB_IFNUM_2 handling by allowing both interface number 0 and 2
-when the flag is set.
+Its possible to add elements that only have a start key
+("{ 1.0.0.0 . 2.0.0.0 }") without an internval end.
 
-Fixes: c13380a55522 ("Bluetooth: btusb: Do not require hardcoded interface numbers")
-Reported-by: John Holland <johnbholland@icloud.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217651
-Signed-off-by: Tomasz Moń <tomasz.mon@nordicsemi.no>
-Tested-by: John Holland<johnbholland@icloud.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Insertion treats this via:
+
+if (nft_set_ext_exists(ext, NFT_SET_EXT_KEY_END))
+   end = (const u8 *)nft_set_ext_key_end(ext)->data;
+else
+   end = start;
+
+but removal side always uses nft_set_ext_key_end().
+This is wrong and leads to garbage remaining in the set after removal
+next lookup/insert attempt will give:
+
+BUG: KASAN: slab-use-after-free in pipapo_get+0x8eb/0xb90
+Read of size 1 at addr ffff888100d50586 by task nft-pipapo_uaf_/1399
+Call Trace:
+ kasan_report+0x105/0x140
+ pipapo_get+0x8eb/0xb90
+ nft_pipapo_insert+0x1dc/0x1710
+ nf_tables_newsetelem+0x31f5/0x4e00
+ ..
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Reported-by: lonial con <kongln9170@gmail.com>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_set_pipapo.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 2a8e2bb038f58..50e23762ec5e9 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4099,6 +4099,7 @@ static int btusb_probe(struct usb_interface *intf,
- 	BT_DBG("intf %p id %p", intf, id);
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 0452ee586c1cc..a81829c10feab 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1930,7 +1930,11 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
+ 		int i, start, rules_fx;
  
- 	if ((id->driver_info & BTUSB_IFNUM_2) &&
-+	    (intf->cur_altsetting->desc.bInterfaceNumber != 0) &&
- 	    (intf->cur_altsetting->desc.bInterfaceNumber != 2))
- 		return -ENODEV;
+ 		match_start = data;
+-		match_end = (const u8 *)nft_set_ext_key_end(&e->ext)->data;
++
++		if (nft_set_ext_exists(&e->ext, NFT_SET_EXT_KEY_END))
++			match_end = (const u8 *)nft_set_ext_key_end(&e->ext)->data;
++		else
++			match_end = data;
  
+ 		start = first_rule;
+ 		rules_fx = rules_f0;
 -- 
 2.39.2
 
