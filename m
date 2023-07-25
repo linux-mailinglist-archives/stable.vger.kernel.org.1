@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D8A67611B3
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8C076165F
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230070AbjGYKzK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59122 "EHLO
+        id S234838AbjGYLi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233043AbjGYKyS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:18 -0400
+        with ESMTP id S234882AbjGYLiW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173F91990
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D77FA0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7C1B61681
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6103C433C7;
-        Tue, 25 Jul 2023 10:52:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0C2161600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E269DC433C8;
+        Tue, 25 Jul 2023 11:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282349;
-        bh=ajFG5oZk8RW+Sz0tYhfE7EYLpgWyaxTS03WHuL7RGQA=;
+        s=korg; t=1690285100;
+        bh=sKN2YdZrnp92FbPJrHWZaSLtk3FKt0PSQyyWdlyVc70=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JjvnAPOfOjvsllqxM0XoBpqbKmAmM4M3MoZgU96WFPjCbXar/Ke9KmrslhpUIYNoU
-         fIEWya3AFLxMEqZlKhKmKZS3kknSN3WuFd2VW4m1O0swJDUCALpLpzcL0YbNkWgeHs
-         HUFvXxCkP6jUqRrkN7sh/xFaHH95VuBeJrPCwwik=
+        b=cQRiMkWqWfh8JQ78AiOS1xKu4zQ0v5o9tFqX8sIGNDlWRQeWH52HOnaBamwb/9rT2
+         6wreJEEnlivtrnW3GJjHgnHvmP4bpbZ0UP99xPYpG6KlRj3+01G9IfTwhBv3yfvCmf
+         7C/l4G85bwzJB3lF0aioRbLbUgiY9ju3p3ssr3jc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Steev Klimaszewski <steev@kali.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 069/227] ASoC: codecs: wcd938x: fix codec initialisation race
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 083/313] ASoC: es8316: Do not set rate constraints for unsupported MCLKs
 Date:   Tue, 25 Jul 2023 12:43:56 +0200
-Message-ID: <20230725104517.621989567@linuxfoundation.org>
+Message-ID: <20230725104524.544361361@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,54 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 85a61b1ce461a3f62f1019e5e6423c393c542bff upstream.
+[ Upstream commit 60413129ee2b38a80347489270af7f6e1c1de4d0 ]
 
-Make sure to resume the codec and soundwire device before trying to read
-the codec variant and configure the device during component probe.
+When using the codec through the generic audio graph card, there are at
+least two calls of es8316_set_dai_sysclk(), with the effect of limiting
+the allowed sample rates according to the MCLK/LRCK ratios supported by
+the codec:
 
-This specifically avoids interpreting (a masked and shifted) -EBUSY
-errno as the variant:
+1. During audio card setup, to set the initial MCLK - see
+   asoc_simple_init_dai().
 
-	wcd938x_codec audio-codec: ASoC: error at soc_component_read_no_lock on audio-codec for register: [0x000034b0] -16
+2. Before opening a stream, to update MCLK, according to the stream
+   sample rate and the multiplication factor - see
+   asoc_simple_hw_params().
 
-when the soundwire device happens to be suspended, which in turn
-prevents some headphone controls from being registered.
+In some cases the initial MCLK might be set to a frequency that doesn't
+match any of the supported ratios, e.g. 12287999 instead of 12288000,
+which is only 1 Hz below the supported clock, as that is what the
+hardware reports. This creates an empty list of rate constraints, which
+is further passed to snd_pcm_hw_constraint_list() via
+es8316_pcm_startup(), and causes the following error on the very first
+access of the sound card:
 
-Fixes: 8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
-Cc: stable@vger.kernel.org      # 5.14
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reported-by: Steev Klimaszewski <steev@kali.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230630120318.6571-1-johan+linaro@kernel.org
+  $ speaker-test -D hw:Analog,0 -F S16_LE -c 2 -t wav
+  Broken configuration for playback: no configurations available: Invalid argument
+  Setting of hwparams failed: Invalid argument
+
+Note that all subsequent retries succeed thanks to the updated MCLK set
+at point 2 above, which uses a computed frequency value instead of a
+reading from the hardware registers. Normally this would have mitigated
+the issue, but es8316_pcm_startup() executes before the 2nd call to
+es8316_set_dai_sysclk(), hence it cannot make use of the updated
+constraints.
+
+Since es8316_pcm_hw_params() performs anyway a final validation of MCLK
+against the stream sample rate and the supported MCLK/LRCK ratios, fix
+the issue by ensuring that sysclk_constraints list is only set when at
+least one supported sample rate is autodetected by the codec.
+
+Fixes: b8b88b70875a ("ASoC: add es8316 codec driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://lore.kernel.org/r/20230530181140.483936-3-cristian.ciocaltea@collabora.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd938x.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/soc/codecs/es8316.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -3095,6 +3095,10 @@ static int wcd938x_soc_codec_probe(struc
+diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
+index 9be667e76e552..131f41cccbe65 100644
+--- a/sound/soc/codecs/es8316.c
++++ b/sound/soc/codecs/es8316.c
+@@ -369,13 +369,11 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
+ 	int count = 0;
  
- 	snd_soc_component_init_regmap(component, wcd938x->regmap);
+ 	es8316->sysclk = freq;
++	es8316->sysclk_constraints.list = NULL;
++	es8316->sysclk_constraints.count = 0;
  
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	wcd938x->variant = snd_soc_component_read_field(component,
- 						 WCD938X_DIGITAL_EFUSE_REG_0,
- 						 WCD938X_ID_MASK);
-@@ -3112,6 +3116,8 @@ static int wcd938x_soc_codec_probe(struc
- 			     (WCD938X_DIGITAL_INTR_LEVEL_0 + i), 0);
+-	if (freq == 0) {
+-		es8316->sysclk_constraints.list = NULL;
+-		es8316->sysclk_constraints.count = 0;
+-
++	if (freq == 0)
+ 		return 0;
+-	}
+ 
+ 	ret = clk_set_rate(es8316->mclk, freq);
+ 	if (ret)
+@@ -391,8 +389,10 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
+ 			es8316->allowed_rates[count++] = freq / ratio;
  	}
  
-+	pm_runtime_put(dev);
-+
- 	wcd938x->hphr_pdm_wd_int = regmap_irq_get_virq(wcd938x->irq_chip,
- 						       WCD938X_IRQ_HPHR_PDM_WD_INT);
- 	wcd938x->hphl_pdm_wd_int = regmap_irq_get_virq(wcd938x->irq_chip,
+-	es8316->sysclk_constraints.list = es8316->allowed_rates;
+-	es8316->sysclk_constraints.count = count;
++	if (count) {
++		es8316->sysclk_constraints.list = es8316->allowed_rates;
++		es8316->sysclk_constraints.count = count;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.39.2
+
 
 
