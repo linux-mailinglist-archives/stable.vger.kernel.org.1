@@ -2,104 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CAEF76233E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 22:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3DD47623BD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 22:43:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230301AbjGYUX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 16:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57474 "EHLO
+        id S229923AbjGYUmV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 16:42:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230391AbjGYUX5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 16:23:57 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C160F1BFB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 13:23:52 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id e9e14a558f8ab-348d1c94fdaso2618585ab.1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 13:23:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1690316632; x=1690921432;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ekXDyu2W+pCKzA6ZAQknA6XM9JTHKiWVdWhsFDDvJUA=;
-        b=QboRsgZykf/WnZjlKNFIN/S2pglH2OzfBn/nsy42tx+qUli5k6sEBISiUnQXfCbAuw
-         z69x9S67FxlW7gseYBqznVOtt/S1w2cyuzBosY50bZ3WYntpUFv4+j4JzW2dKxFyH7kS
-         BQmO9NK17KswAr66QwyyOsFuP7EqdfWX1qjKE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690316632; x=1690921432;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ekXDyu2W+pCKzA6ZAQknA6XM9JTHKiWVdWhsFDDvJUA=;
-        b=XdUbyGQBorlxo8BjtP7n7VvfJNV/5NVrD+b/RTtO7GddYg+MvXbhvYLwPtGiR8A2Su
-         jWGHRdJfTR1OU85IHPw8jC3NsmgW9PxmhH/pFvPj5rKGaEI1NmY4iNlw+vrET5yMQyqk
-         rUCl4rPw55phwl//fSByaYKzOhaP5D5rKPELVxS3/d43f4Pb9RAmT16Egj3vDodZqSIQ
-         RYeOZ18ks1cyEo6ubAIxBY5CXAUobl6W4/PIyPUqYM1qTgRyOMWcT8xkLF9SWU5UtkLx
-         C8bT+1hudoQQk0CD6PNBUBDDi8eEKlMII5u0qcfYVYleP531WxjCoyaFifIFhVAlTMxO
-         OgWQ==
-X-Gm-Message-State: ABy/qLZ/VWXAWb4rRU+Ccg0oUtcqL6lgzx6xWZq0bhMZyFcScTSMrRbI
-        kFZmewAfVNmqe9tDc2zGlKzy+g==
-X-Google-Smtp-Source: APBJJlFawHnEv9Uo5PwnXb9VgmrQbNuvCV5tcjp+P1JlUsIYrHnf20uurj9FhnExYC5nCVWA284fLg==
-X-Received: by 2002:a05:6602:14d2:b0:783:6ec1:65f6 with SMTP id b18-20020a05660214d200b007836ec165f6mr16017816iow.1.1690316632219;
-        Tue, 25 Jul 2023 13:23:52 -0700 (PDT)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id m22-20020a02c896000000b0042b37dda71asm3609505jao.136.2023.07.25.13.23.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jul 2023 13:23:52 -0700 (PDT)
-Message-ID: <2f5942e6-8f10-e785-bdce-f1ce4bb1f131@linuxfoundation.org>
-Date:   Tue, 25 Jul 2023 14:23:51 -0600
+        with ESMTP id S231550AbjGYUmE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 16:42:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4C61BC8;
+        Tue, 25 Jul 2023 13:42:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67ACF6187D;
+        Tue, 25 Jul 2023 20:42:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D5FC433C7;
+        Tue, 25 Jul 2023 20:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690317720;
+        bh=O/gvRDbAo1+qfKzhqxHNd4QCmaOLg095hAsSaLBvB7A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=U96/uUjVNsF5ZPDGSmjhAi26ndBRdrgmoQUvoxGViq/F45bF6m/0ghSMSUlD3rsyH
+         SuIdyXiKVU3xtfMkbawyJa8Dc7JX2Z8BSukRNX0olo4fK01QMrP13nvgAQyqO6zWrY
+         il9tCMbFbgVhzSawQ6AxivfEkOJYU7/f3RgXs7gomFRGoTOjBnMTUtKjY+GM6hAxxB
+         qLfaHj1zxDlC5z7ghFeTZxLrVaxFbJpuBXH3AG2CYEu2JaK4hBQb91+UCT3sY+S+sw
+         QLF98JAaL1/BD+kNNjXGNc1XKB9nTGw/t65+Rg6+MtGp744za8emZA6qMpelK7Gd40
+         joGdvGkdGhBBA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
+        John Fastabend <john.fastabend@gmail.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Yonghong Song <yhs@fb.com>, KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Dave Marchevsky <davemarchevsky@fb.com>,
+        David Vernet <void@manifault.com>,
+        Kees Cook <keescook@chromium.org>, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: [PATCH] [v4] bpf: fix bpf_probe_read_kernel prototype mismatch
+Date:   Tue, 25 Jul 2023 22:41:12 +0200
+Message-Id: <20230725204149.3411961-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 5.4 000/313] 5.4.251-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/25/23 04:42, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.251 release.
-> There are 313 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.251-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: Arnd Bergmann <arnd@arndb.de>
 
-Compiled and booted on my test system. No dmesg regressions.
+bpf_probe_read_kernel() has a __weak definition in core.c and another
+definition with an incompatible prototype in kernel/trace/bpf_trace.c,
+when CONFIG_BPF_EVENTS is enabled.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Since the two are incompatible, there cannot be a shared declaration in
+a header file, but the lack of a prototype causes a W=1 warning:
 
-thanks,
--- Shuah
+kernel/bpf/core.c:1638:12: error: no previous prototype for 'bpf_probe_read_kernel' [-Werror=missing-prototypes]
+
+On 32-bit architectures, the local prototype
+
+u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
+
+passes arguments in other registers as the one in bpf_trace.c
+
+BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
+            const void *, unsafe_ptr)
+
+which uses 64-bit arguments in pairs of registers.
+
+As both versions of the function are fairly simple and only really
+differ in one line, just move them into a header file as an inline
+function that does not add any overhead for the bpf_trace.c callers
+and actually avoids a function call for the other one.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/ac25cb0f-b804-1649-3afb-1dc6138c2716@iogearbox.net/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+--
+v4: rewrite again to use a shared inline helper
+v3: clarify changelog text further.
+v2: rewrite completely to fix the mismatch.
+---
+ include/linux/bpf.h      | 12 ++++++++++++
+ kernel/bpf/core.c        | 10 ++--------
+ kernel/trace/bpf_trace.c | 11 -----------
+ 3 files changed, 14 insertions(+), 19 deletions(-)
+
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index ceaa8c23287fc..abe75063630b8 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2661,6 +2661,18 @@ static inline void bpf_dynptr_set_rdonly(struct bpf_dynptr_kern *ptr)
+ }
+ #endif /* CONFIG_BPF_SYSCALL */
+ 
++static __always_inline int
++bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
++{
++	int ret = -EFAULT;
++
++	if (IS_ENABLED(CONFIG_BPF_EVENTS))
++		ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
++	if (unlikely(ret < 0))
++		memset(dst, 0, size);
++	return ret;
++}
++
+ void __bpf_free_used_btfs(struct bpf_prog_aux *aux,
+ 			  struct btf_mod_pair *used_btfs, u32 len);
+ 
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index dd70c58c9d3a3..9cdf53bfb8bd3 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1634,12 +1634,6 @@ bool bpf_opcode_in_insntable(u8 code)
+ }
+ 
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
+-u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
+-{
+-	memset(dst, 0, size);
+-	return -EFAULT;
+-}
+-
+ /**
+  *	___bpf_prog_run - run eBPF program on a given context
+  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
+@@ -1930,8 +1924,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 		DST = *(SIZE *)(unsigned long) (SRC + insn->off);	\
+ 		CONT;							\
+ 	LDX_PROBE_MEM_##SIZEOP:						\
+-		bpf_probe_read_kernel(&DST, sizeof(SIZE),		\
+-				      (const void *)(long) (SRC + insn->off));	\
++		bpf_probe_read_kernel_common(&DST, sizeof(SIZE),	\
++			      (const void *)(long) (SRC + insn->off));	\
+ 		DST = *((SIZE *)&DST);					\
+ 		CONT;
+ 
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index c92eb8c6ff08d..83bde2475ae54 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -223,17 +223,6 @@ const struct bpf_func_proto bpf_probe_read_user_str_proto = {
+ 	.arg3_type	= ARG_ANYTHING,
+ };
+ 
+-static __always_inline int
+-bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
+-{
+-	int ret;
+-
+-	ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
+-	if (unlikely(ret < 0))
+-		memset(dst, 0, size);
+-	return ret;
+-}
+-
+ BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
+ 	   const void *, unsafe_ptr)
+ {
+-- 
+2.39.2
+
