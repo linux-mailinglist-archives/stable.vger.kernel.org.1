@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07E177616A4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6470A7611BF
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234989AbjGYLky (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48344 "EHLO
+        id S232039AbjGYKzm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234993AbjGYLko (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 813D21FC6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:28 -0700 (PDT)
+        with ESMTP id S232091AbjGYKzX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C547E1FD2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FECF616B5
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174D1C433CD;
-        Tue, 25 Jul 2023 11:40:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61F1461691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E8CC433C8;
+        Tue, 25 Jul 2023 10:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285227;
-        bh=l89wX/sYB90K0n/wo1MOR8O5IwE68oRLCuAuE9ANbLk=;
+        s=korg; t=1690282376;
+        bh=PR80scmzQp4U0vGt2Ne4nKASw/hrc6FoWE374ZYdT9I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b/HTDRL8o5j4Vf7OSPXYk7HY93ybcX2IWSZmkboPVLqM0AXY3aRu8VQhUHetqIQCf
-         V8pre02+GurTHw+NFiN+PTclQikhtTNMDHQ7EDTo6ipyIBusLV3cLoJQyGb1UDfP6M
-         BBx4DhgP8zp2/fHX8+9CbJjiCUyzR/sUNsE+kk+k=
+        b=T13oD6CdmGnPmrr/7xDqd91yEUBpsgN8G+ifGpztMhjmrbHx0m8GqN++Be8a0YFTP
+         JRSY7iWtv8zXoCl9VIHo18bbMGPR3LgbCEtswsPbxCWDAnXwCNP/Ud2tS+G545oKnz
+         NBHYWPmCiJCVQ8TwZnYoDHrRJVX+V3tet4j0Zqv0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.4 122/313] usb: dwc3: gadget: Propagate core init errors to UDC during pullup
+        patches@lists.linux.dev,
+        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Willy Tarreau <w@1wt.eu>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 108/227] tools/nolibc: ensure stack protector guard is never zero
 Date:   Tue, 25 Jul 2023 12:44:35 +0200
-Message-ID: <20230725104526.290440017@linuxfoundation.org>
+Message-ID: <20230725104519.241763797@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,52 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit c0aabed9cabe057309779a9e26fe86a113d24dad upstream.
+[ Upstream commit 88fc7eb54ecc6db8b773341ce39ad201066fa7da ]
 
-In scenarios where pullup relies on resume (get sync) to initialize
-the controller and set the run stop bit, then core_init is followed by
-gadget_resume which will eventually set run stop bit.
+The all-zero pattern is one of the more probable out-of-bound writes so
+add a special case to not accidentally accept it.
 
-But in cases where the core_init fails, the return value is not sent
-back to udc appropriately. So according to UDC the controller has
-started but in reality we never set the run stop bit.
+Also it enables the reliable detection of stack protector initialization
+during testing.
 
-On systems like Android, there are uevents sent to HAL depending on
-whether the configfs_bind / configfs_disconnect were invoked. In the
-above mentioned scnenario, if the core init fails, the run stop won't
-be set and the cable plug-out won't result in generation of any
-disconnect event and userspace would never get any uevent regarding
-cable plug out and we never call pullup(0) again. Furthermore none of
-the next Plug-In/Plug-Out's would be known to configfs.
-
-Return back the appropriate result to UDC to let the userspace/
-configfs know that the pullup failed so they can take appropriate
-action.
-
-Fixes: 77adb8bdf422 ("usb: dwc3: gadget: Allow runtime suspend if UDC unbinded")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Message-ID: <20230618120949.14868-1-quic_kriskura@quicinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/include/nolibc/stackprotector.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2077,7 +2077,9 @@ static int dwc3_gadget_pullup(struct usb
- 	ret = pm_runtime_get_sync(dwc->dev);
- 	if (!ret || ret < 0) {
- 		pm_runtime_put(dwc->dev);
--		return 0;
-+		if (ret < 0)
-+			pm_runtime_set_suspended(dwc->dev);
-+		return ret;
- 	}
+diff --git a/tools/include/nolibc/stackprotector.h b/tools/include/nolibc/stackprotector.h
+index d119cbbbc256f..9890e86c26172 100644
+--- a/tools/include/nolibc/stackprotector.h
++++ b/tools/include/nolibc/stackprotector.h
+@@ -45,8 +45,9 @@ __attribute__((weak,no_stack_protector,section(".text.nolibc_stack_chk")))
+ void __stack_chk_init(void)
+ {
+ 	my_syscall3(__NR_getrandom, &__stack_chk_guard, sizeof(__stack_chk_guard), 0);
+-	/* a bit more randomness in case getrandom() fails */
+-	__stack_chk_guard ^= (uintptr_t) &__stack_chk_guard;
++	/* a bit more randomness in case getrandom() fails, ensure the guard is never 0 */
++	if (__stack_chk_guard != (uintptr_t) &__stack_chk_guard)
++		__stack_chk_guard ^= (uintptr_t) &__stack_chk_guard;
+ }
+ #endif // defined(NOLIBC_STACKPROTECTOR)
  
- 	if (dwc->pullups_connected == is_on) {
+-- 
+2.39.2
+
 
 
