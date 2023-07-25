@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AF0A7611F7
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B967612C0
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232222AbjGYK6e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:58:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36032 "EHLO
+        id S233508AbjGYLFZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232489AbjGYK5q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABBD244BF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:57 -0700 (PDT)
+        with ESMTP id S233774AbjGYLFN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D75F10F1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2786961465
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3438CC433C8;
-        Tue, 25 Jul 2023 10:54:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDFB26164D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CA9C433C8;
+        Tue, 25 Jul 2023 11:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282496;
-        bh=hgIB7wDY7o7xJ/mD4Iwu80nvl03r5+RTjcaRzqfmX3k=;
+        s=korg; t=1690282963;
+        bh=2cyAQeAOa8jCNa54bjU26PFjrtmdWOf7Z38Cb80t/+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2o/I4eFVnW8/hYzmz+TZmfnYF/x7plsTMHC6OMaVg14d3NJgyzBPqY+U4XQFvHgs6
-         JcC3YimmV7Vg2XM0DpXkFZTpGcFKSJxbcTwyVFCYiXFO41cfQ6lMLu26kK10hPyP35
-         SPOmdt58OA+VeN7KXXujOKnbIOTk+xdZPhpPpWjs=
+        b=JTL7urvILQltVdZl1mQvDojJ59V+Rgnu8rCxNFLn2DumW7ZZkv2wd8nCk8B4qUqbA
+         l+90llel3xKgP5DEiyKFliznv0ktfwvkRR5adOebGdjmSDXlodOxc/AzBrijOTONeC
+         Y8RY89g/NOwAaH6Un7p+rkqf49oTbWI5i2In0Gvs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
+        Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 150/227] smb: client: fix missed ses refcounting
+Subject: [PATCH 6.1 089/183] sched/psi: Rename existing poll members in preparation
 Date:   Tue, 25 Jul 2023 12:45:17 +0200
-Message-ID: <20230725104521.111120972@linuxfoundation.org>
+Message-ID: <20230725104511.169871547@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,99 +56,430 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
 
-[ Upstream commit bf99f6be2d20146942bce6f9e90a0ceef12cbc1e ]
+[ Upstream commit 65457b74aa9437418e552e8d52d7112d4f9901a6 ]
 
-Use new cifs_smb_ses_inc_refcount() helper to get an active reference
-of @ses and @ses->dfs_root_ses (if set).  This will prevent
-@ses->dfs_root_ses of being put in the next call to cifs_put_smb_ses()
-and thus potentially causing an use-after-free bug.
+Renaming in PSI implementation to make a clear distinction between
+privileged and unprivileged triggers code to be implemented in the
+next patch.
 
-Fixes: 8e3554150d6c ("cifs: fix sharing of DFS connections")
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lore.kernel.org/r/20230330105418.77061-3-cerasuolodomenico@gmail.com
+Stable-dep-of: aff037078eca ("sched/psi: use kernfs polling functions for PSI trigger polling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/dfs.c           | 26 ++++++++++----------------
- fs/smb/client/smb2transport.c |  2 +-
- 2 files changed, 11 insertions(+), 17 deletions(-)
+ include/linux/psi_types.h |  36 ++++-----
+ kernel/sched/psi.c        | 163 +++++++++++++++++++-------------------
+ 2 files changed, 100 insertions(+), 99 deletions(-)
 
-diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
-index 26d14dd0482ef..cf83617236d8b 100644
---- a/fs/smb/client/dfs.c
-+++ b/fs/smb/client/dfs.c
-@@ -66,6 +66,12 @@ static int get_session(struct cifs_mount_ctx *mnt_ctx, const char *full_path)
- 	return rc;
+diff --git a/include/linux/psi_types.h b/include/linux/psi_types.h
+index 1e0a0d7ace3af..1819afa8b1987 100644
+--- a/include/linux/psi_types.h
++++ b/include/linux/psi_types.h
+@@ -175,26 +175,26 @@ struct psi_group {
+ 	u64 total[NR_PSI_AGGREGATORS][NR_PSI_STATES - 1];
+ 	unsigned long avg[NR_PSI_STATES - 1][3];
+ 
+-	/* Monitor work control */
+-	struct task_struct __rcu *poll_task;
+-	struct timer_list poll_timer;
+-	wait_queue_head_t poll_wait;
+-	atomic_t poll_wakeup;
+-	atomic_t poll_scheduled;
++	/* Monitor RT polling work control */
++	struct task_struct __rcu *rtpoll_task;
++	struct timer_list rtpoll_timer;
++	wait_queue_head_t rtpoll_wait;
++	atomic_t rtpoll_wakeup;
++	atomic_t rtpoll_scheduled;
+ 
+ 	/* Protects data used by the monitor */
+-	struct mutex trigger_lock;
+-
+-	/* Configured polling triggers */
+-	struct list_head triggers;
+-	u32 nr_triggers[NR_PSI_STATES - 1];
+-	u32 poll_states;
+-	u64 poll_min_period;
+-
+-	/* Total stall times at the start of monitor activation */
+-	u64 polling_total[NR_PSI_STATES - 1];
+-	u64 polling_next_update;
+-	u64 polling_until;
++	struct mutex rtpoll_trigger_lock;
++
++	/* Configured RT polling triggers */
++	struct list_head rtpoll_triggers;
++	u32 rtpoll_nr_triggers[NR_PSI_STATES - 1];
++	u32 rtpoll_states;
++	u64 rtpoll_min_period;
++
++	/* Total stall times at the start of RT polling monitor activation */
++	u64 rtpoll_total[NR_PSI_STATES - 1];
++	u64 rtpoll_next_update;
++	u64 rtpoll_until;
+ };
+ 
+ #else /* CONFIG_PSI */
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index fe9269f1d2a46..a3d0b5cf797ab 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -189,14 +189,14 @@ static void group_init(struct psi_group *group)
+ 	INIT_DELAYED_WORK(&group->avgs_work, psi_avgs_work);
+ 	mutex_init(&group->avgs_lock);
+ 	/* Init trigger-related members */
+-	atomic_set(&group->poll_scheduled, 0);
+-	mutex_init(&group->trigger_lock);
+-	INIT_LIST_HEAD(&group->triggers);
+-	group->poll_min_period = U32_MAX;
+-	group->polling_next_update = ULLONG_MAX;
+-	init_waitqueue_head(&group->poll_wait);
+-	timer_setup(&group->poll_timer, poll_timer_fn, 0);
+-	rcu_assign_pointer(group->poll_task, NULL);
++	atomic_set(&group->rtpoll_scheduled, 0);
++	mutex_init(&group->rtpoll_trigger_lock);
++	INIT_LIST_HEAD(&group->rtpoll_triggers);
++	group->rtpoll_min_period = U32_MAX;
++	group->rtpoll_next_update = ULLONG_MAX;
++	init_waitqueue_head(&group->rtpoll_wait);
++	timer_setup(&group->rtpoll_timer, poll_timer_fn, 0);
++	rcu_assign_pointer(group->rtpoll_task, NULL);
  }
  
-+/*
-+ * Track individual DFS referral servers used by new DFS mount.
-+ *
-+ * On success, their lifetime will be shared by final tcon (dfs_ses_list).
-+ * Otherwise, they will be put by dfs_put_root_smb_sessions() in cifs_mount().
-+ */
- static int add_root_smb_session(struct cifs_mount_ctx *mnt_ctx)
- {
- 	struct smb3_fs_context *ctx = mnt_ctx->fs_ctx;
-@@ -80,11 +86,12 @@ static int add_root_smb_session(struct cifs_mount_ctx *mnt_ctx)
- 		INIT_LIST_HEAD(&root_ses->list);
+ void __init psi_init(void)
+@@ -440,11 +440,11 @@ static u64 update_triggers(struct psi_group *group, u64 now)
+ 	 * On subsequent updates, calculate growth deltas and let
+ 	 * watchers know when their specified thresholds are exceeded.
+ 	 */
+-	list_for_each_entry(t, &group->triggers, node) {
++	list_for_each_entry(t, &group->rtpoll_triggers, node) {
+ 		u64 growth;
+ 		bool new_stall;
  
- 		spin_lock(&cifs_tcp_ses_lock);
--		ses->ses_count++;
-+		cifs_smb_ses_inc_refcount(ses);
- 		spin_unlock(&cifs_tcp_ses_lock);
- 		root_ses->ses = ses;
- 		list_add_tail(&root_ses->list, &mnt_ctx->dfs_ses_list);
+-		new_stall = group->polling_total[t->state] != total[t->state];
++		new_stall = group->rtpoll_total[t->state] != total[t->state];
+ 
+ 		/* Check for stall activity or a previous threshold breach */
+ 		if (!new_stall && !t->pending_event)
+@@ -486,10 +486,10 @@ static u64 update_triggers(struct psi_group *group, u64 now)
  	}
-+	/* Select new DFS referral server so that new referrals go through it */
- 	ctx->dfs_root_ses = ses;
+ 
+ 	if (update_total)
+-		memcpy(group->polling_total, total,
+-				sizeof(group->polling_total));
++		memcpy(group->rtpoll_total, total,
++				sizeof(group->rtpoll_total));
+ 
+-	return now + group->poll_min_period;
++	return now + group->rtpoll_min_period;
+ }
+ 
+ static u64 update_averages(struct psi_group *group, u64 now)
+@@ -582,53 +582,53 @@ static void init_triggers(struct psi_group *group, u64 now)
+ {
+ 	struct psi_trigger *t;
+ 
+-	list_for_each_entry(t, &group->triggers, node)
++	list_for_each_entry(t, &group->rtpoll_triggers, node)
+ 		window_reset(&t->win, now,
+ 				group->total[PSI_POLL][t->state], 0);
+-	memcpy(group->polling_total, group->total[PSI_POLL],
+-		   sizeof(group->polling_total));
+-	group->polling_next_update = now + group->poll_min_period;
++	memcpy(group->rtpoll_total, group->total[PSI_POLL],
++		   sizeof(group->rtpoll_total));
++	group->rtpoll_next_update = now + group->rtpoll_min_period;
+ }
+ 
+ /* Schedule polling if it's not already scheduled or forced. */
+-static void psi_schedule_poll_work(struct psi_group *group, unsigned long delay,
++static void psi_schedule_rtpoll_work(struct psi_group *group, unsigned long delay,
+ 				   bool force)
+ {
+ 	struct task_struct *task;
+ 
+ 	/*
+ 	 * atomic_xchg should be called even when !force to provide a
+-	 * full memory barrier (see the comment inside psi_poll_work).
++	 * full memory barrier (see the comment inside psi_rtpoll_work).
+ 	 */
+-	if (atomic_xchg(&group->poll_scheduled, 1) && !force)
++	if (atomic_xchg(&group->rtpoll_scheduled, 1) && !force)
+ 		return;
+ 
+ 	rcu_read_lock();
+ 
+-	task = rcu_dereference(group->poll_task);
++	task = rcu_dereference(group->rtpoll_task);
+ 	/*
+ 	 * kworker might be NULL in case psi_trigger_destroy races with
+ 	 * psi_task_change (hotpath) which can't use locks
+ 	 */
+ 	if (likely(task))
+-		mod_timer(&group->poll_timer, jiffies + delay);
++		mod_timer(&group->rtpoll_timer, jiffies + delay);
+ 	else
+-		atomic_set(&group->poll_scheduled, 0);
++		atomic_set(&group->rtpoll_scheduled, 0);
+ 
+ 	rcu_read_unlock();
+ }
+ 
+-static void psi_poll_work(struct psi_group *group)
++static void psi_rtpoll_work(struct psi_group *group)
+ {
+ 	bool force_reschedule = false;
+ 	u32 changed_states;
+ 	u64 now;
+ 
+-	mutex_lock(&group->trigger_lock);
++	mutex_lock(&group->rtpoll_trigger_lock);
+ 
+ 	now = sched_clock();
+ 
+-	if (now > group->polling_until) {
++	if (now > group->rtpoll_until) {
+ 		/*
+ 		 * We are either about to start or might stop polling if no
+ 		 * state change was recorded. Resetting poll_scheduled leaves
+@@ -638,7 +638,7 @@ static void psi_poll_work(struct psi_group *group)
+ 		 * should be negligible and polling_next_update still keeps
+ 		 * updates correctly on schedule.
+ 		 */
+-		atomic_set(&group->poll_scheduled, 0);
++		atomic_set(&group->rtpoll_scheduled, 0);
+ 		/*
+ 		 * A task change can race with the poll worker that is supposed to
+ 		 * report on it. To avoid missing events, ensure ordering between
+@@ -667,9 +667,9 @@ static void psi_poll_work(struct psi_group *group)
+ 
+ 	collect_percpu_times(group, PSI_POLL, &changed_states);
+ 
+-	if (changed_states & group->poll_states) {
++	if (changed_states & group->rtpoll_states) {
+ 		/* Initialize trigger windows when entering polling mode */
+-		if (now > group->polling_until)
++		if (now > group->rtpoll_until)
+ 			init_triggers(group, now);
+ 
+ 		/*
+@@ -677,50 +677,50 @@ static void psi_poll_work(struct psi_group *group)
+ 		 * minimum tracking window as long as monitor states are
+ 		 * changing.
+ 		 */
+-		group->polling_until = now +
+-			group->poll_min_period * UPDATES_PER_WINDOW;
++		group->rtpoll_until = now +
++			group->rtpoll_min_period * UPDATES_PER_WINDOW;
+ 	}
+ 
+-	if (now > group->polling_until) {
+-		group->polling_next_update = ULLONG_MAX;
++	if (now > group->rtpoll_until) {
++		group->rtpoll_next_update = ULLONG_MAX;
+ 		goto out;
+ 	}
+ 
+-	if (now >= group->polling_next_update)
+-		group->polling_next_update = update_triggers(group, now);
++	if (now >= group->rtpoll_next_update)
++		group->rtpoll_next_update = update_triggers(group, now);
+ 
+-	psi_schedule_poll_work(group,
+-		nsecs_to_jiffies(group->polling_next_update - now) + 1,
++	psi_schedule_rtpoll_work(group,
++		nsecs_to_jiffies(group->rtpoll_next_update - now) + 1,
+ 		force_reschedule);
+ 
+ out:
+-	mutex_unlock(&group->trigger_lock);
++	mutex_unlock(&group->rtpoll_trigger_lock);
+ }
+ 
+-static int psi_poll_worker(void *data)
++static int psi_rtpoll_worker(void *data)
+ {
+ 	struct psi_group *group = (struct psi_group *)data;
+ 
+ 	sched_set_fifo_low(current);
+ 
+ 	while (true) {
+-		wait_event_interruptible(group->poll_wait,
+-				atomic_cmpxchg(&group->poll_wakeup, 1, 0) ||
++		wait_event_interruptible(group->rtpoll_wait,
++				atomic_cmpxchg(&group->rtpoll_wakeup, 1, 0) ||
+ 				kthread_should_stop());
+ 		if (kthread_should_stop())
+ 			break;
+ 
+-		psi_poll_work(group);
++		psi_rtpoll_work(group);
+ 	}
  	return 0;
  }
-@@ -244,7 +251,6 @@ static int __dfs_mount_share(struct cifs_mount_ctx *mnt_ctx)
- int dfs_mount_share(struct cifs_mount_ctx *mnt_ctx, bool *isdfs)
+ 
+ static void poll_timer_fn(struct timer_list *t)
  {
- 	struct smb3_fs_context *ctx = mnt_ctx->fs_ctx;
--	struct cifs_ses *ses;
- 	bool nodfs = ctx->nodfs;
- 	int rc;
+-	struct psi_group *group = from_timer(group, t, poll_timer);
++	struct psi_group *group = from_timer(group, t, rtpoll_timer);
  
-@@ -278,20 +284,8 @@ int dfs_mount_share(struct cifs_mount_ctx *mnt_ctx, bool *isdfs)
- 	}
- 
- 	*isdfs = true;
--	/*
--	 * Prevent DFS root session of being put in the first call to
--	 * cifs_mount_put_conns().  If another DFS root server was not found
--	 * while chasing the referrals (@ctx->dfs_root_ses == @ses), then we
--	 * can safely put extra refcount of @ses.
--	 */
--	ses = mnt_ctx->ses;
--	mnt_ctx->ses = NULL;
--	mnt_ctx->server = NULL;
--	rc = __dfs_mount_share(mnt_ctx);
--	if (ses == ctx->dfs_root_ses)
--		cifs_put_smb_ses(ses);
--
--	return rc;
-+	add_root_smb_session(mnt_ctx);
-+	return __dfs_mount_share(mnt_ctx);
+-	atomic_set(&group->poll_wakeup, 1);
+-	wake_up_interruptible(&group->poll_wait);
++	atomic_set(&group->rtpoll_wakeup, 1);
++	wake_up_interruptible(&group->rtpoll_wait);
  }
  
- /* Update dfs referral path of superblock */
-diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
-index 22954a9c7a6c7..355e8700530fc 100644
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -159,7 +159,7 @@ smb2_find_smb_ses_unlocked(struct TCP_Server_Info *server, __u64 ses_id)
- 			spin_unlock(&ses->ses_lock);
- 			continue;
+ static void record_times(struct psi_group_cpu *groupc, u64 now)
+@@ -851,8 +851,8 @@ static void psi_group_change(struct psi_group *group, int cpu,
+ 
+ 	write_seqcount_end(&groupc->seq);
+ 
+-	if (state_mask & group->poll_states)
+-		psi_schedule_poll_work(group, 1, false);
++	if (state_mask & group->rtpoll_states)
++		psi_schedule_rtpoll_work(group, 1, false);
+ 
+ 	if (wake_clock && !delayed_work_pending(&group->avgs_work))
+ 		schedule_delayed_work(&group->avgs_work, PSI_FREQ);
+@@ -1005,8 +1005,8 @@ void psi_account_irqtime(struct task_struct *task, u32 delta)
+ 
+ 		write_seqcount_end(&groupc->seq);
+ 
+-		if (group->poll_states & (1 << PSI_IRQ_FULL))
+-			psi_schedule_poll_work(group, 1, false);
++		if (group->rtpoll_states & (1 << PSI_IRQ_FULL))
++			psi_schedule_rtpoll_work(group, 1, false);
+ 	} while ((group = group->parent));
+ }
+ #endif
+@@ -1101,7 +1101,7 @@ void psi_cgroup_free(struct cgroup *cgroup)
+ 	cancel_delayed_work_sync(&cgroup->psi->avgs_work);
+ 	free_percpu(cgroup->psi->pcpu);
+ 	/* All triggers must be removed by now */
+-	WARN_ONCE(cgroup->psi->poll_states, "psi: trigger leak\n");
++	WARN_ONCE(cgroup->psi->rtpoll_states, "psi: trigger leak\n");
+ 	kfree(cgroup->psi);
+ }
+ 
+@@ -1302,29 +1302,29 @@ struct psi_trigger *psi_trigger_create(struct psi_group *group,
+ 	init_waitqueue_head(&t->event_wait);
+ 	t->pending_event = false;
+ 
+-	mutex_lock(&group->trigger_lock);
++	mutex_lock(&group->rtpoll_trigger_lock);
+ 
+-	if (!rcu_access_pointer(group->poll_task)) {
++	if (!rcu_access_pointer(group->rtpoll_task)) {
+ 		struct task_struct *task;
+ 
+-		task = kthread_create(psi_poll_worker, group, "psimon");
++		task = kthread_create(psi_rtpoll_worker, group, "psimon");
+ 		if (IS_ERR(task)) {
+ 			kfree(t);
+-			mutex_unlock(&group->trigger_lock);
++			mutex_unlock(&group->rtpoll_trigger_lock);
+ 			return ERR_CAST(task);
  		}
--		++ses->ses_count;
-+		cifs_smb_ses_inc_refcount(ses);
- 		spin_unlock(&ses->ses_lock);
- 		return ses;
+-		atomic_set(&group->poll_wakeup, 0);
++		atomic_set(&group->rtpoll_wakeup, 0);
+ 		wake_up_process(task);
+-		rcu_assign_pointer(group->poll_task, task);
++		rcu_assign_pointer(group->rtpoll_task, task);
  	}
+ 
+-	list_add(&t->node, &group->triggers);
+-	group->poll_min_period = min(group->poll_min_period,
++	list_add(&t->node, &group->rtpoll_triggers);
++	group->rtpoll_min_period = min(group->rtpoll_min_period,
+ 		div_u64(t->win.size, UPDATES_PER_WINDOW));
+-	group->nr_triggers[t->state]++;
+-	group->poll_states |= (1 << t->state);
++	group->rtpoll_nr_triggers[t->state]++;
++	group->rtpoll_states |= (1 << t->state);
+ 
+-	mutex_unlock(&group->trigger_lock);
++	mutex_unlock(&group->rtpoll_trigger_lock);
+ 
+ 	return t;
+ }
+@@ -1349,51 +1349,52 @@ void psi_trigger_destroy(struct psi_trigger *t)
+ 	 */
+ 	wake_up_pollfree(&t->event_wait);
+ 
+-	mutex_lock(&group->trigger_lock);
++	mutex_lock(&group->rtpoll_trigger_lock);
+ 
+ 	if (!list_empty(&t->node)) {
+ 		struct psi_trigger *tmp;
+ 		u64 period = ULLONG_MAX;
+ 
+ 		list_del(&t->node);
+-		group->nr_triggers[t->state]--;
+-		if (!group->nr_triggers[t->state])
+-			group->poll_states &= ~(1 << t->state);
++		group->rtpoll_nr_triggers[t->state]--;
++		if (!group->rtpoll_nr_triggers[t->state])
++			group->rtpoll_states &= ~(1 << t->state);
+ 		/* reset min update period for the remaining triggers */
+-		list_for_each_entry(tmp, &group->triggers, node)
++		list_for_each_entry(tmp, &group->rtpoll_triggers, node)
+ 			period = min(period, div_u64(tmp->win.size,
+ 					UPDATES_PER_WINDOW));
+-		group->poll_min_period = period;
+-		/* Destroy poll_task when the last trigger is destroyed */
+-		if (group->poll_states == 0) {
+-			group->polling_until = 0;
++		group->rtpoll_min_period = period;
++		/* Destroy rtpoll_task when the last trigger is destroyed */
++		if (group->rtpoll_states == 0) {
++			group->rtpoll_until = 0;
+ 			task_to_destroy = rcu_dereference_protected(
+-					group->poll_task,
+-					lockdep_is_held(&group->trigger_lock));
+-			rcu_assign_pointer(group->poll_task, NULL);
+-			del_timer(&group->poll_timer);
++					group->rtpoll_task,
++					lockdep_is_held(&group->rtpoll_trigger_lock));
++			rcu_assign_pointer(group->rtpoll_task, NULL);
++			del_timer(&group->rtpoll_timer);
+ 		}
+ 	}
+ 
+-	mutex_unlock(&group->trigger_lock);
++	mutex_unlock(&group->rtpoll_trigger_lock);
+ 
+ 	/*
+-	 * Wait for psi_schedule_poll_work RCU to complete its read-side
++	 * Wait for psi_schedule_rtpoll_work RCU to complete its read-side
+ 	 * critical section before destroying the trigger and optionally the
+-	 * poll_task.
++	 * rtpoll_task.
+ 	 */
+ 	synchronize_rcu();
+ 	/*
+-	 * Stop kthread 'psimon' after releasing trigger_lock to prevent a
+-	 * deadlock while waiting for psi_poll_work to acquire trigger_lock
++	 * Stop kthread 'psimon' after releasing rtpoll_trigger_lock to prevent
++	 * a deadlock while waiting for psi_rtpoll_work to acquire
++	 * rtpoll_trigger_lock
+ 	 */
+ 	if (task_to_destroy) {
+ 		/*
+ 		 * After the RCU grace period has expired, the worker
+-		 * can no longer be found through group->poll_task.
++		 * can no longer be found through group->rtpoll_task.
+ 		 */
+ 		kthread_stop(task_to_destroy);
+-		atomic_set(&group->poll_scheduled, 0);
++		atomic_set(&group->rtpoll_scheduled, 0);
+ 	}
+ 	kfree(t);
+ }
 -- 
 2.39.2
 
