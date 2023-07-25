@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAD947611A2
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 797517614FA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231411AbjGYKyH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:54:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59194 "EHLO
+        id S234504AbjGYLY1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:24:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233570AbjGYKxP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:15 -0400
+        with ESMTP id S234550AbjGYLYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2C41FC4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76393187
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 29A826165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DCFC433C8;
-        Tue, 25 Jul 2023 10:51:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14BFF61683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2671DC433C7;
+        Tue, 25 Jul 2023 11:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282307;
-        bh=NbDyiOzobj0QDpgxz/hVnzRfoukAlOHY5YWkvSJnopU=;
+        s=korg; t=1690284260;
+        bh=fw7gtaO7VWMP2U69iW7gj0jAUyFQ9sQlJzmIwwTNChE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OzMVOL/Phy1yIxw45PFTzg5xFS8Br+gG2lWPYleGIXILr7P1j6euj/x76Ws4j+5R7
-         VK05QQC/Jq5eddhXuX/E101+XnK3lhjhgpRt6Oo62sAKx/Z04QzCthW0kbskuZA/6c
-         02wFSw74Iou1B5hEb+yp76kj+CP7XozPUiVy5aAE=
+        b=cqkkaTKDTvpmwiYyz1ZrnX2CPpt+lFA2Pvl8+x2cQUBFvCQdizjE4TPlPhblAvz+e
+         JmM3GDf+pPEwgltzMebL1xzi0NVwz/hK14bqgfdG2tLWzRXHVTQNJcrTe/aJiiWhDw
+         Gbar6j7oZLr5yLExs4LF74n3hskxl6HCk0DX0Ep8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sheetal <sheetal@nvidia.com>,
-        Mohan Kumar D <mkumard@nvidia.com>,
-        Sameer Pujar <spujar@nvidia.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 065/227] ASoC: tegra: Fix AMX byte map
+        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
+        Hugh Dickins <hughd@google.com>,
+        David Howells <dhowells@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 293/509] shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs
 Date:   Tue, 25 Jul 2023 12:43:52 +0200
-Message-ID: <20230725104517.436888919@linuxfoundation.org>
+Message-ID: <20230725104607.155838199@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,125 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sheetal <sheetal@nvidia.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-commit 49bd7b08149417a30aa7d92c8c85b3518de44a76 upstream.
+commit 36ce9d76b0a93bae799e27e4f5ac35478c676592 upstream.
 
-Byte mask for channel-1 of stream-1 is not getting enabled and this
-causes failures during AMX use cases. This happens because the byte
-map value 0 matches the byte map array and put() callback returns
-without enabling the corresponding bits in the byte mask.
+As the ramfs-based tmpfs uses ramfs_init_fs_context() for the
+init_fs_context method, which allocates fc->s_fs_info, use ramfs_kill_sb()
+to free it and avoid a memory leak.
 
-AMX supports 4 input streams and each stream can take a maximum of
-16 channels. Each byte in the output frame is uniquely mapped to a
-byte in one of these 4 inputs. This mapping is done with the help of
-byte map array via user space control setting. The byte map array
-size in the driver is 16 and each array element is of size 4 bytes.
-This corresponds to 64 byte map values.
-
-Each byte in the byte map array can have any value between 0 to 255
-to enable the corresponding bits in the byte mask. The value 256 is
-used as a way to disable the byte map. However the byte map array
-element cannot store this value. The put() callback disables the byte
-mask for 256 value and byte map value is reset to 0 for this case.
-This causes problems during subsequent runs since put() callback,
-for value of 0, just returns without enabling the byte mask. In short,
-the problem is coming because 0 and 256 control values are stored as
-0 in the byte map array.
-
-Right now fix the put() callback by actually looking at the byte mask
-array state to identify if any change is needed and update the fields
-accordingly. The get() callback needs an update as well to return the
-correct control value that user has set before. Note that when user
-sets 256, the value is stored as 0 and byte mask is disabled. So byte
-mask state is used to either return 256 or the value from byte map
-array.
-
-Given above, this looks bit complicated and all this happens because
-the byte map array is tightly packed and cannot actually store the 256
-value. Right now the priority is to fix the existing failure and a TODO
-item is put to improve this logic.
-
-Fixes: 8db78ace1ba8 ("ASoC: tegra: Fix kcontrol put callback in AMX")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Reviewed-by: Mohan Kumar D <mkumard@nvidia.com>
-Reviewed-by: Sameer Pujar <spujar@nvidia.com>
-Link: https://lore.kernel.org/r/1688015537-31682-2-git-send-email-spujar@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lkml.kernel.org/r/20230607161523.2876433-1-roberto.sassu@huaweicloud.com
+Fixes: c3b1b1cbf002 ("ramfs: add support for "mode=" mount option")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/tegra/tegra210_amx.c |   40 ++++++++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ fs/ramfs/inode.c      |    2 +-
+ include/linux/ramfs.h |    1 +
+ mm/shmem.c            |    2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/sound/soc/tegra/tegra210_amx.c
-+++ b/sound/soc/tegra/tegra210_amx.c
-@@ -2,7 +2,7 @@
- //
- // tegra210_amx.c - Tegra210 AMX driver
- //
--// Copyright (c) 2021 NVIDIA CORPORATION.  All rights reserved.
-+// Copyright (c) 2021-2023 NVIDIA CORPORATION.  All rights reserved.
- 
- #include <linux/clk.h>
- #include <linux/device.h>
-@@ -203,10 +203,20 @@ static int tegra210_amx_get_byte_map(str
- 	else
- 		enabled = amx->byte_mask[0] & (1 << reg);
- 
-+	/*
-+	 * TODO: Simplify this logic to just return from bytes_map[]
-+	 *
-+	 * Presently below is required since bytes_map[] is
-+	 * tightly packed and cannot store the control value of 256.
-+	 * Byte mask state is used to know if 256 needs to be returned.
-+	 * Note that for control value of 256, the put() call stores 0
-+	 * in the bytes_map[] and disables the corresponding bit in
-+	 * byte_mask[].
-+	 */
- 	if (enabled)
- 		ucontrol->value.integer.value[0] = bytes_map[reg];
- 	else
--		ucontrol->value.integer.value[0] = 0;
-+		ucontrol->value.integer.value[0] = 256;
- 
+--- a/fs/ramfs/inode.c
++++ b/fs/ramfs/inode.c
+@@ -264,7 +264,7 @@ int ramfs_init_fs_context(struct fs_cont
  	return 0;
  }
-@@ -221,25 +231,19 @@ static int tegra210_amx_put_byte_map(str
- 	unsigned char *bytes_map = (unsigned char *)&amx->map;
- 	int reg = mc->reg;
- 	int value = ucontrol->value.integer.value[0];
-+	unsigned int mask_val = amx->byte_mask[reg / 32];
  
--	if (value == bytes_map[reg])
-+	if (value >= 0 && value <= 255)
-+		mask_val |= (1 << (reg % 32));
-+	else
-+		mask_val &= ~(1 << (reg % 32));
-+
-+	if (mask_val == amx->byte_mask[reg / 32])
- 		return 0;
+-static void ramfs_kill_sb(struct super_block *sb)
++void ramfs_kill_sb(struct super_block *sb)
+ {
+ 	kfree(sb->s_fs_info);
+ 	kill_litter_super(sb);
+--- a/include/linux/ramfs.h
++++ b/include/linux/ramfs.h
+@@ -7,6 +7,7 @@
+ struct inode *ramfs_get_inode(struct super_block *sb, const struct inode *dir,
+ 	 umode_t mode, dev_t dev);
+ extern int ramfs_init_fs_context(struct fs_context *fc);
++extern void ramfs_kill_sb(struct super_block *sb);
  
--	if (value >= 0 && value <= 255) {
--		/* Update byte map and enable slot */
--		bytes_map[reg] = value;
--		if (reg > 31)
--			amx->byte_mask[1] |= (1 << (reg - 32));
--		else
--			amx->byte_mask[0] |= (1 << reg);
--	} else {
--		/* Reset byte map and disable slot */
--		bytes_map[reg] = 0;
--		if (reg > 31)
--			amx->byte_mask[1] &= ~(1 << (reg - 32));
--		else
--			amx->byte_mask[0] &= ~(1 << reg);
--	}
-+	/* Update byte map and slot */
-+	bytes_map[reg] = value % 256;
-+	amx->byte_mask[reg / 32] = mask_val;
+ #ifdef CONFIG_MMU
+ static inline int
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4128,7 +4128,7 @@ static struct file_system_type shmem_fs_
+ 	.name		= "tmpfs",
+ 	.init_fs_context = ramfs_init_fs_context,
+ 	.parameters	= ramfs_fs_parameters,
+-	.kill_sb	= kill_litter_super,
++	.kill_sb	= ramfs_kill_sb,
+ 	.fs_flags	= FS_USERNS_MOUNT,
+ };
  
- 	return 1;
- }
 
 
