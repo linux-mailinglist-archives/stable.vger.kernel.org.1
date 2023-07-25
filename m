@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E453C7614FD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A2107611B4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234543AbjGYLYb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:24:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33796 "EHLO
+        id S230203AbjGYKzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234538AbjGYLYa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB0E797
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:29 -0700 (PDT)
+        with ESMTP id S232891AbjGYKyR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2922116
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 493B76167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3C5C433C9;
-        Tue, 25 Jul 2023 11:24:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA3B36165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC106C433C8;
+        Tue, 25 Jul 2023 10:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284268;
-        bh=8m6eav4SntL9E9lvTwD8myAVuBHyodsZr0FeIXrhjMo=;
+        s=korg; t=1690282346;
+        bh=PYZ24E6ZDFJRfuCgUGbQDtHOmvWNEBI5BdcBoLSRUWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ti5PZBpRXa86sgsIZpqCMaW5nf4bfjfucTBnLDXZd7WeEDaTl+6hPKz4uPVC5tg2a
-         dIV8ECuvqXVS5oWNa+/vt0zrKkXZ/3923FJeGVQ/xRFC/fwPauXuaFoa8KQ9JtWHE9
-         AIG4M1aLBHKsMz2szL/yA17tGfjXBmJYbDQkOdqg=
+        b=DOyLBOjyiPL2FYLfD2Vj1YOwbo3geW8/QKlR6iftHGY0XmAHTbmfuwI2M+OrnWYCj
+         ibKqjLy4bUD3JEaFI7uT/D/X2lfbWiwP2GG936eO5vp89qPaFjM/jo/PXE/Ujbcz5t
+         2gCCpt0BAMTQkYvbMZetaO4zt0VItWQPfUhB35oM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ted Tso <tytso@mit.edu>,
-        Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 296/509] ext4: Remove ext4 locking of moved directory
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 068/227] ASoC: codecs: wcd934x: fix resource leaks on component remove
 Date:   Tue, 25 Jul 2023 12:43:55 +0200
-Message-ID: <20230725104607.288640820@linuxfoundation.org>
+Message-ID: <20230725104517.580528681@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,58 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 3658840cd363f2be094f5dfd2f0b174a9055dd0f upstream.
+commit 798590cc7d3c2b5f3a7548d96dd4d8a081c1bc39 upstream.
 
-Remove locking of moved directory in ext4_rename2(). We will take care
-of it in VFS instead. This effectively reverts commit 0813299c586b
-("ext4: Fix possible corruption when moving a directory") and followup
-fixes.
+Make sure to release allocated MBHC resources also on component remove.
 
-CC: Ted Tso <tytso@mit.edu>
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230601105830.13168-1-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This is specifically needed to allow probe deferrals of the sound card
+which otherwise fails when reprobing the codec component.
+
+Fixes: 9fb9b1690f0b ("ASoC: codecs: wcd934x: add mbhc support")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230705123018.30903-6-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c |   17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ sound/soc/codecs/wcd934x.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -3863,19 +3863,10 @@ static int ext4_rename(struct inode *old
- 			return retval;
- 	}
+--- a/sound/soc/codecs/wcd934x.c
++++ b/sound/soc/codecs/wcd934x.c
+@@ -3044,6 +3044,17 @@ static int wcd934x_mbhc_init(struct snd_
  
--	/*
--	 * We need to protect against old.inode directory getting converted
--	 * from inline directory format into a normal one.
--	 */
--	if (S_ISDIR(old.inode->i_mode))
--		inode_lock_nested(old.inode, I_MUTEX_NONDIR2);
--
- 	old.bh = ext4_find_entry(old.dir, &old.dentry->d_name, &old.de,
- 				 &old.inlined);
--	if (IS_ERR(old.bh)) {
--		retval = PTR_ERR(old.bh);
--		goto unlock_moved_dir;
--	}
-+	if (IS_ERR(old.bh))
-+		return PTR_ERR(old.bh);
+ 	return 0;
+ }
++
++static void wcd934x_mbhc_deinit(struct snd_soc_component *component)
++{
++	struct wcd934x_codec *wcd = snd_soc_component_get_drvdata(component);
++
++	if (!wcd->mbhc)
++		return;
++
++	wcd_mbhc_deinit(wcd->mbhc);
++}
++
+ static int wcd934x_comp_probe(struct snd_soc_component *component)
+ {
+ 	struct wcd934x_codec *wcd = dev_get_drvdata(component->dev);
+@@ -3077,6 +3088,7 @@ static void wcd934x_comp_remove(struct s
+ {
+ 	struct wcd934x_codec *wcd = dev_get_drvdata(comp->dev);
  
- 	/*
- 	 *  Check for inode number is _not_ due to possible IO errors.
-@@ -4065,10 +4056,6 @@ release_bh:
- 	brelse(old.bh);
- 	brelse(new.bh);
- 
--unlock_moved_dir:
--	if (S_ISDIR(old.inode->i_mode))
--		inode_unlock(old.inode);
--
- 	return retval;
++	wcd934x_mbhc_deinit(comp);
+ 	wcd_clsh_ctrl_free(wcd->clsh_ctrl);
  }
  
 
