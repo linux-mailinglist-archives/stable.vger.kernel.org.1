@@ -2,59 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C2076167A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A864D7611CF
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234888AbjGYLjl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:39:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45858 "EHLO
+        id S231963AbjGYK4f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234896AbjGYLjj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD22119A0;
-        Tue, 25 Jul 2023 04:39:35 -0700 (PDT)
+        with ESMTP id S232327AbjGYK4L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A5926AD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 534A961655;
-        Tue, 25 Jul 2023 11:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D190C433C7;
-        Tue, 25 Jul 2023 11:39:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3760761696
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AFAC433C9;
+        Tue, 25 Jul 2023 10:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285174;
-        bh=ZQnNCjT640KReZzz3zUGH4VsxqTdjx4LYaEPd5aJNJM=;
+        s=korg; t=1690282393;
+        bh=tGp4zoRTHZFydLQpY97lO2J5nwJIaXPmwemte6zGCdA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0yrcpIbIHuSBfn+W6XgxA/FJyS6QbdXzmAqBIZHdFV2JZ96mLoZtpFTC734cHx1FA
-         hX5qozwDVfhRrsVaMODXmH4Ak4rsf+QQNtyRLj0mlD1FGlbPsUodLlBGUTsrKBQ2lS
-         OJHjTeiWP7bP9yOmpGauASHq1pwJdzz+Os219LU8=
+        b=BYKhLhQTpKB4zd+en58AwxePVk2tT9l7Dp+xL/jvEwTPcpnTV+w9zwa7q2ay66V2t
+         MBwaQR18/itVOn4L4qUc3bH0/VkhGgcI6BoteaNqNMRSdRnyaQPMP9tq7yrhZDmAMq
+         sw+VDRW/9Cx4VYhywOtpDTQ3R++7B7umv8KT/4z0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 110/313] crypto: nx - fix build warnings when DEBUG_FS is not enabled
+        patches@lists.linux.dev, Will Shiu <Will.Shiu@mediatek.com>,
+        Gao Xiang <xiang@kernel.org>,
+        Sandeep Dhavale <dhavale@google.com>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 096/227] erofs: Fix detection of atomic context
 Date:   Tue, 25 Jul 2023 12:44:23 +0200
-Message-ID: <20230725104525.764856542@linuxfoundation.org>
+Message-ID: <20230725104518.701629025@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,83 +58,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sandeep Dhavale <dhavale@google.com>
 
-[ Upstream commit b04b076fb56560b39d695ac3744db457e12278fd ]
+[ Upstream commit 12d0a24afd9ea58e581ea64d64e066f2027b28d9 ]
 
-Fix build warnings when DEBUG_FS is not enabled by using an empty
-do-while loop instead of a value:
+Current check for atomic context is not sufficient as
+z_erofs_decompressqueue_endio can be called under rcu lock
+from blk_mq_flush_plug_list(). See the stacktrace [1]
 
-In file included from ../drivers/crypto/nx/nx.c:27:
-../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
-../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
-  173 | #define NX_DEBUGFS_INIT(drv)    (0)
-../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
-  573 |         NX_DEBUGFS_INIT(&nx_driver);
-../drivers/crypto/nx/nx.c: In function 'nx_remove':
-../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
-  174 | #define NX_DEBUGFS_FINI(drv)    (0)
-../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
-  793 |                 NX_DEBUGFS_FINI(&nx_driver);
+In such case we should hand off the decompression work for async
+processing rather than trying to do sync decompression in current
+context. Patch fixes the detection by checking for
+rcu_read_lock_any_held() and while at it use more appropriate
+!in_task() check than in_atomic().
 
-Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
-enabled, so change the Makefile to accommodate that.
+Background: Historically erofs would always schedule a kworker for
+decompression which would incur the scheduling cost regardless of
+the context. But z_erofs_decompressqueue_endio() may not always
+be in atomic context and we could actually benefit from doing the
+decompression in z_erofs_decompressqueue_endio() if we are in
+thread context, for example when running with dm-verity.
+This optimization was later added in patch [2] which has shown
+improvement in performance benchmarks.
 
-Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
-Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Breno Leitão <leitao@debian.org>
-Cc: Nayna Jain <nayna@linux.ibm.com>
-Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-crypto@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+==============================================
+[1] Problem stacktrace
+[name:core&]BUG: sleeping function called from invalid context at kernel/locking/mutex.c:291
+[name:core&]in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1615, name: CpuMonitorServi
+[name:core&]preempt_count: 0, expected: 0
+[name:core&]RCU nest depth: 1, expected: 0
+CPU: 7 PID: 1615 Comm: CpuMonitorServi Tainted: G S      W  OE      6.1.25-android14-5-maybe-dirty-mainline #1
+Hardware name: MT6897 (DT)
+Call trace:
+ dump_backtrace+0x108/0x15c
+ show_stack+0x20/0x30
+ dump_stack_lvl+0x6c/0x8c
+ dump_stack+0x20/0x48
+ __might_resched+0x1fc/0x308
+ __might_sleep+0x50/0x88
+ mutex_lock+0x2c/0x110
+ z_erofs_decompress_queue+0x11c/0xc10
+ z_erofs_decompress_kickoff+0x110/0x1a4
+ z_erofs_decompressqueue_endio+0x154/0x180
+ bio_endio+0x1b0/0x1d8
+ __dm_io_complete+0x22c/0x280
+ clone_endio+0xe4/0x280
+ bio_endio+0x1b0/0x1d8
+ blk_update_request+0x138/0x3a4
+ blk_mq_plug_issue_direct+0xd4/0x19c
+ blk_mq_flush_plug_list+0x2b0/0x354
+ __blk_flush_plug+0x110/0x160
+ blk_finish_plug+0x30/0x4c
+ read_pages+0x2fc/0x370
+ page_cache_ra_unbounded+0xa4/0x23c
+ page_cache_ra_order+0x290/0x320
+ do_sync_mmap_readahead+0x108/0x2c0
+ filemap_fault+0x19c/0x52c
+ __do_fault+0xc4/0x114
+ handle_mm_fault+0x5b4/0x1168
+ do_page_fault+0x338/0x4b4
+ do_translation_fault+0x40/0x60
+ do_mem_abort+0x60/0xc8
+ el0_da+0x4c/0xe0
+ el0t_64_sync_handler+0xd4/0xfc
+ el0t_64_sync+0x1a0/0x1a4
+
+[2] Link: https://lore.kernel.org/all/20210317035448.13921-1-huangjianan@oppo.com/
+
+Reported-by: Will Shiu <Will.Shiu@mediatek.com>
+Suggested-by: Gao Xiang <xiang@kernel.org>
+Signed-off-by: Sandeep Dhavale <dhavale@google.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://lore.kernel.org/r/20230621220848.3379029-1-dhavale@google.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/nx/Makefile | 2 +-
- drivers/crypto/nx/nx.h     | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/erofs/zdata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/nx/Makefile b/drivers/crypto/nx/Makefile
-index 015155da59c29..76139865d7fa1 100644
---- a/drivers/crypto/nx/Makefile
-+++ b/drivers/crypto/nx/Makefile
-@@ -1,7 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_CRYPTO_DEV_NX_ENCRYPT) += nx-crypto.o
- nx-crypto-objs := nx.o \
--		  nx_debugfs.o \
- 		  nx-aes-cbc.o \
- 		  nx-aes-ecb.o \
- 		  nx-aes-gcm.o \
-@@ -11,6 +10,7 @@ nx-crypto-objs := nx.o \
- 		  nx-sha256.o \
- 		  nx-sha512.o
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 997ca4b32e87f..4a1c238600c52 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1411,7 +1411,7 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ 	if (atomic_add_return(bios, &io->pending_bios))
+ 		return;
+ 	/* Use (kthread_)work and sync decompression for atomic contexts only */
+-	if (in_atomic() || irqs_disabled()) {
++	if (!in_task() || irqs_disabled() || rcu_read_lock_any_held()) {
+ #ifdef CONFIG_EROFS_FS_PCPU_KTHREAD
+ 		struct kthread_worker *worker;
  
-+nx-crypto-$(CONFIG_DEBUG_FS) += nx_debugfs.o
- obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_PSERIES) += nx-compress-pseries.o nx-compress.o
- obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV) += nx-compress-powernv.o nx-compress.o
- nx-compress-objs := nx-842.o
-diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
-index 7ecca168f8c48..5c77aba450cf8 100644
---- a/drivers/crypto/nx/nx.h
-+++ b/drivers/crypto/nx/nx.h
-@@ -169,8 +169,8 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
- void nx_debugfs_init(struct nx_crypto_driver *);
- void nx_debugfs_fini(struct nx_crypto_driver *);
- #else
--#define NX_DEBUGFS_INIT(drv)	(0)
--#define NX_DEBUGFS_FINI(drv)	(0)
-+#define NX_DEBUGFS_INIT(drv)	do {} while (0)
-+#define NX_DEBUGFS_FINI(drv)	do {} while (0)
- #endif
- 
- #define NX_PAGE_NUM(x)		((u64)(x) & 0xfffffffffffff000ULL)
 -- 
 2.39.2
 
