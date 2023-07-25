@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF78F761391
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C2D7761759
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234099AbjGYLLg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49940 "EHLO
+        id S232977AbjGYLrc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:47:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233808AbjGYLLW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40711FEB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:40 -0700 (PDT)
+        with ESMTP id S232834AbjGYLrT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC761BE1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C71861655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D672C433C7;
-        Tue, 25 Jul 2023 11:10:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DEE2616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80990C433C8;
+        Tue, 25 Jul 2023 11:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283439;
-        bh=XVFKjGUw27pqHaTGOxos+pOAVpK/ZolEXYxWbWIuVbI=;
+        s=korg; t=1690285631;
+        bh=tmJw3cLcouXM2+H+MvX6qdpvxlpeNrOSijpNHCjKdyM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XJD3aBT5uQS685gPfpRE1Y0SMlEE9hTRRMvQt1LU6Fz9FBU2cocMWlZWZyp5Dmb8P
-         ZK4UHykg5MKQ5ePFQ53VrLaBwEfRR3vLrDNdmEWYAqIaVCBQYtk++dpIQNW3dSwky8
-         km7nhGnNpTNaihUkpyl2CMuyEBVtDYCu3g72HiVQ=
+        b=DvOnRF3UNnnYc31Vfh2u4CRQSyFtn9VubAtDXhH2Npo8M/5dgeiWS6mjjumXqHcqB
+         TjqrhJGN1I4POkV95IJxp+hcDB7IqIQEsHurUGsbjKt4YbI+0qhJxouL7WBoI36bRF
+         BwIkbcaQ+/akb89+1rZ7clWKA20KB8dHJdw1f9EE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Zhang Yi <yi.zhang@huawei.com>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 76/78] jbd2: recheck chechpointing non-dirty buffer
+        patches@lists.linux.dev, Manish Rangankar <mrangankar@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 274/313] scsi: qla2xxx: Remove unused nvme_ls_waitq wait queue
 Date:   Tue, 25 Jul 2023 12:47:07 +0200
-Message-ID: <20230725104454.221311267@linuxfoundation.org>
+Message-ID: <20230725104532.919789161@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,191 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Manish Rangankar <mrangankar@marvell.com>
 
-commit c2d6fd9d6f35079f1669f0100f05b46708c74b7f upstream.
+commit 20fce500b232b970e40312a9c97e7f3b6d7a709c upstream.
 
-There is a long-standing metadata corruption issue that happens from
-time to time, but it's very difficult to reproduce and analyse, benefit
-from the JBD2_CYCLE_RECORD option, we found out that the problem is the
-checkpointing process miss to write out some buffers which are raced by
-another do_get_write_access(). Looks below for detail.
+System crash when qla2x00_start_sp(sp) returns error code EGAIN and wake_up
+gets called for uninitialized wait queue sp->nvme_ls_waitq.
 
-jbd2_log_do_checkpoint() //transaction X
- //buffer A is dirty and not belones to any transaction
- __buffer_relink_io() //move it to the IO list
- __flush_batch()
-  write_dirty_buffer()
-                             do_get_write_access()
-                             clear_buffer_dirty
-                             __jbd2_journal_file_buffer()
-                             //add buffer A to a new transaction Y
-   lock_buffer(bh)
-   //doesn't write out
- __jbd2_journal_remove_checkpoint()
- //finish checkpoint except buffer A
- //filesystem corrupt if the new transaction Y isn't fully write out.
+    qla2xxx [0000:37:00.1]-2121:5: Returning existing qpair of ffff8ae2c0513400 for idx=0
+    qla2xxx [0000:37:00.1]-700e:5: qla2x00_start_sp failed = 11
+    BUG: unable to handle kernel NULL pointer dereference at 0000000000000000
+    PGD 0 P4D 0
+    Oops: 0000 [#1] SMP NOPTI
+    Hardware name: HPE ProLiant DL360 Gen10/ProLiant DL360 Gen10, BIOS U32 09/03/2021
+    Workqueue: nvme-wq nvme_fc_connect_ctrl_work [nvme_fc]
+    RIP: 0010:__wake_up_common+0x4c/0x190
+    RSP: 0018:ffff95f3e0cb7cd0 EFLAGS: 00010086
+    RAX: 0000000000000000 RBX: ffff8b08d3b26328 RCX: 0000000000000000
+    RDX: 0000000000000001 RSI: 0000000000000003 RDI: ffff8b08d3b26320
+    RBP: 0000000000000001 R08: 0000000000000000 R09: ffffffffffffffe8
+    R10: 0000000000000000 R11: ffff95f3e0cb7a60 R12: ffff95f3e0cb7d20
+    R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
+    FS:  0000000000000000(0000) GS:ffff8b2fdf6c0000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 0000000000000000 CR3: 0000002f1e410002 CR4: 00000000007706e0
+    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    PKRU: 55555554
+    Call Trace:
+     __wake_up_common_lock+0x7c/0xc0
+     qla_nvme_ls_req+0x355/0x4c0 [qla2xxx]
+     ? __nvme_fc_send_ls_req+0x260/0x380 [nvme_fc]
+     ? nvme_fc_send_ls_req.constprop.42+0x1a/0x45 [nvme_fc]
+     ? nvme_fc_connect_ctrl_work.cold.63+0x1e3/0xa7d [nvme_fc]
 
-Due to the t_checkpoint_list walking loop in jbd2_log_do_checkpoint()
-have already handles waiting for buffers under IO and re-added new
-transaction to complete commit, and it also removing cleaned buffers,
-this makes sure the list will eventually get empty. So it's fine to
-leave buffers on the t_checkpoint_list while flushing out and completely
-stop using the t_checkpoint_io_list.
+Remove unused nvme_ls_waitq wait queue. nvme_ls_waitq logic was removed
+previously in the commits tagged Fixed: below.
 
+Fixes: 219d27d7147e ("scsi: qla2xxx: Fix race conditions in the code for aborting SCSI commands")
+Fixes: 5621b0dd7453 ("scsi: qla2xxx: Simpify unregistration of FC-NVMe local/remote ports")
 Cc: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Tested-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230615074633.12721-1-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c |  102 ++++++++++++++-------------------------------------
- 1 file changed, 29 insertions(+), 73 deletions(-)
+ drivers/scsi/qla2xxx/qla_def.h  |    1 -
+ drivers/scsi/qla2xxx/qla_nvme.c |    3 ---
+ 2 files changed, 4 deletions(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -58,28 +58,6 @@ static inline void __buffer_unlink(struc
- }
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -593,7 +593,6 @@ typedef struct srb {
+ 	uint8_t pad[3];
+ 	struct kref cmd_kref;	/* need to migrate ref_count over to this */
+ 	void *priv;
+-	wait_queue_head_t nvme_ls_waitq;
+ 	struct fc_port *fcport;
+ 	struct scsi_qla_host *vha;
+ 	unsigned int start_timer:1;
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -318,7 +318,6 @@ static int qla_nvme_ls_req(struct nvme_f
+ 	if (rval != QLA_SUCCESS) {
+ 		ql_log(ql_log_warn, vha, 0x700e,
+ 		    "qla2x00_start_sp failed = %d\n", rval);
+-		wake_up(&sp->nvme_ls_waitq);
+ 		sp->priv = NULL;
+ 		priv->sp = NULL;
+ 		qla2x00_rel_sp(sp);
+@@ -563,7 +562,6 @@ static int qla_nvme_post_cmd(struct nvme
+ 	if (!sp)
+ 		return -EBUSY;
  
- /*
-- * Move a buffer from the checkpoint list to the checkpoint io list
-- *
-- * Called with j_list_lock held
-- */
--static inline void __buffer_relink_io(struct journal_head *jh)
--{
--	transaction_t *transaction = jh->b_cp_transaction;
--
--	__buffer_unlink_first(jh);
--
--	if (!transaction->t_checkpoint_io_list) {
--		jh->b_cpnext = jh->b_cpprev = jh;
--	} else {
--		jh->b_cpnext = transaction->t_checkpoint_io_list;
--		jh->b_cpprev = transaction->t_checkpoint_io_list->b_cpprev;
--		jh->b_cpprev->b_cpnext = jh;
--		jh->b_cpnext->b_cpprev = jh;
--	}
--	transaction->t_checkpoint_io_list = jh;
--}
--
--/*
-  * Check a checkpoint buffer could be release or not.
-  *
-  * Requires j_list_lock
-@@ -183,6 +161,7 @@ __flush_batch(journal_t *journal, int *b
- 		struct buffer_head *bh = journal->j_chkpt_bhs[i];
- 		BUFFER_TRACE(bh, "brelse");
- 		__brelse(bh);
-+		journal->j_chkpt_bhs[i] = NULL;
- 	}
- 	*batch_count = 0;
- }
-@@ -242,6 +221,11 @@ restart:
- 		jh = transaction->t_checkpoint_list;
- 		bh = jh2bh(jh);
- 
-+		/*
-+		 * The buffer may be writing back, or flushing out in the
-+		 * last couple of cycles, or re-adding into a new transaction,
-+		 * need to check it again until it's unlocked.
-+		 */
- 		if (buffer_locked(bh)) {
- 			get_bh(bh);
- 			spin_unlock(&journal->j_list_lock);
-@@ -287,28 +271,32 @@ restart:
- 		}
- 		if (!buffer_dirty(bh)) {
- 			BUFFER_TRACE(bh, "remove from checkpoint");
--			if (__jbd2_journal_remove_checkpoint(jh))
--				/* The transaction was released; we're done */
-+			/*
-+			 * If the transaction was released or the checkpoint
-+			 * list was empty, we're done.
-+			 */
-+			if (__jbd2_journal_remove_checkpoint(jh) ||
-+			    !transaction->t_checkpoint_list)
- 				goto out;
--			continue;
-+		} else {
-+			/*
-+			 * We are about to write the buffer, it could be
-+			 * raced by some other transaction shrink or buffer
-+			 * re-log logic once we release the j_list_lock,
-+			 * leave it on the checkpoint list and check status
-+			 * again to make sure it's clean.
-+			 */
-+			BUFFER_TRACE(bh, "queue");
-+			get_bh(bh);
-+			J_ASSERT_BH(bh, !buffer_jwrite(bh));
-+			journal->j_chkpt_bhs[batch_count++] = bh;
-+			transaction->t_chp_stats.cs_written++;
-+			transaction->t_checkpoint_list = jh->b_cpnext;
- 		}
--		/*
--		 * Important: we are about to write the buffer, and
--		 * possibly block, while still holding the journal
--		 * lock.  We cannot afford to let the transaction
--		 * logic start messing around with this buffer before
--		 * we write it to disk, as that would break
--		 * recoverability.
--		 */
--		BUFFER_TRACE(bh, "queue");
--		get_bh(bh);
--		J_ASSERT_BH(bh, !buffer_jwrite(bh));
--		journal->j_chkpt_bhs[batch_count++] = bh;
--		__buffer_relink_io(jh);
--		transaction->t_chp_stats.cs_written++;
-+
- 		if ((batch_count == JBD2_NR_BATCH) ||
--		    need_resched() ||
--		    spin_needbreak(&journal->j_list_lock))
-+		    need_resched() || spin_needbreak(&journal->j_list_lock) ||
-+		    jh2bh(transaction->t_checkpoint_list) == journal->j_chkpt_bhs[0])
- 			goto unlock_and_flush;
- 	}
- 
-@@ -322,38 +310,6 @@ restart:
- 			goto restart;
- 	}
- 
--	/*
--	 * Now we issued all of the transaction's buffers, let's deal
--	 * with the buffers that are out for I/O.
--	 */
--restart2:
--	/* Did somebody clean up the transaction in the meanwhile? */
--	if (journal->j_checkpoint_transactions != transaction ||
--	    transaction->t_tid != this_tid)
--		goto out;
--
--	while (transaction->t_checkpoint_io_list) {
--		jh = transaction->t_checkpoint_io_list;
--		bh = jh2bh(jh);
--		if (buffer_locked(bh)) {
--			get_bh(bh);
--			spin_unlock(&journal->j_list_lock);
--			wait_on_buffer(bh);
--			/* the journal_head may have gone by now */
--			BUFFER_TRACE(bh, "brelse");
--			__brelse(bh);
--			spin_lock(&journal->j_list_lock);
--			goto restart2;
--		}
--
--		/*
--		 * Now in whatever state the buffer currently is, we
--		 * know that it has been written out and so we can
--		 * drop it from the list
--		 */
--		if (__jbd2_journal_remove_checkpoint(jh))
--			break;
--	}
- out:
- 	spin_unlock(&journal->j_list_lock);
- 	result = jbd2_cleanup_journal_tail(journal);
+-	init_waitqueue_head(&sp->nvme_ls_waitq);
+ 	kref_init(&sp->cmd_kref);
+ 	spin_lock_init(&priv->cmd_lock);
+ 	sp->priv = (void *)priv;
+@@ -581,7 +579,6 @@ static int qla_nvme_post_cmd(struct nvme
+ 	if (rval != QLA_SUCCESS) {
+ 		ql_log(ql_log_warn, vha, 0x212d,
+ 		    "qla2x00_start_nvme_mq failed = %d\n", rval);
+-		wake_up(&sp->nvme_ls_waitq);
+ 		sp->priv = NULL;
+ 		priv->sp = NULL;
+ 		qla2xxx_rel_qpair_sp(sp->qpair, sp);
 
 
