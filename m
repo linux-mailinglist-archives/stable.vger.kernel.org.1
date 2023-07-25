@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F0BF761374
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB6F76132D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233251AbjGYLKx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:10:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44786 "EHLO
+        id S234085AbjGYLIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231906AbjGYLKZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:10:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B66F1FF6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:09:36 -0700 (PDT)
+        with ESMTP id S234201AbjGYLIN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB224486
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:06:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F32C61655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:09:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7DAC433C8;
-        Tue, 25 Jul 2023 11:09:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 131586165D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:06:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2651CC433C8;
+        Tue, 25 Jul 2023 11:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283375;
-        bh=7ZD9hrdf9B/Pb53kpRBr5HwiiGH5RsIwc/8hc4NVMSM=;
+        s=korg; t=1690283208;
+        bh=tgnsHJ9YqVLtmmG/jw9s6JujDvIT+tZrfAB2EzFUGAs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mV3pkpJnJhHAaOyOwIlXIDfADa2gGANHZau3rVmr3sIC3Sebp7h/heoBwJaCVXOET
-         DVNKMwmQxny6W147umYK6Ez3HUhn8JbnIGzg1nqL1otx8JmIC5WZ5r1D2a52ST+u4t
-         r9wO88+3+2VUSFs05eEHautGAUWUqqjwFqHFbih8=
+        b=XDS69u9m2e9ZL4Q6mjx/1eLDJJ2lwDysyDzz+zM+PT8e4DSiCVRVoOBSnqEcumtzp
+         G56PnoX7Xb/OOY2MwZbCeveqbjKW9i839wyNWAqCG1OVZ1545+lysJJgHVKgqIeFH5
+         dFutq0bHn3GBBDhPBBtGj/yovVRLJf6X4JLlhqXc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 53/78] bpf: Fix subprog idx logic in check_max_stack_depth
-Date:   Tue, 25 Jul 2023 12:46:44 +0200
-Message-ID: <20230725104453.333927864@linuxfoundation.org>
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 177/183] drm/amd/display: use max_dsc_bpp in amdgpu_dm
+Date:   Tue, 25 Jul 2023 12:46:45 +0200
+Message-ID: <20230725104514.107483956@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,75 +57,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit ba7b3e7d5f9014be65879ede8fd599cb222901c9 ]
+commit 6e5abe94c6eb9b281398e39819217e8fdd1c336f upstream.
 
-The assignment to idx in check_max_stack_depth happens once we see a
-bpf_pseudo_call or bpf_pseudo_func. This is not an issue as the rest of
-the code performs a few checks and then pushes the frame to the frame
-stack, except the case of async callbacks. If the async callback case
-causes the loop iteration to be skipped, the idx assignment will be
-incorrect on the next iteration of the loop. The value stored in the
-frame stack (as the subprogno of the current subprog) will be incorrect.
+Since, the quirk is handled in the DRM core now, we can use that value
+instead of the internal value.
 
-This leads to incorrect checks and incorrect tail_call_reachable
-marking. Save the target subprog in a new variable and only assign to
-idx once we are done with the is_async_cb check which may skip pushing
-of frame to the frame stack and subsequent stack depth checks and tail
-call markings.
-
-Fixes: 7ddc80a476c2 ("bpf: Teach stack depth check about async callbacks.")
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20230717161530.1238-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           |    6 ++----
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   11 +++++++++--
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index bd31aa6407a78..e1848a2a7230a 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3744,7 +3744,7 @@ static int check_max_stack_depth(struct bpf_verifier_env *env)
- continue_func:
- 	subprog_end = subprog[idx + 1].start;
- 	for (; i < subprog_end; i++) {
--		int next_insn;
-+		int next_insn, sidx;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5714,16 +5714,14 @@ static void apply_dsc_policy_for_stream(
+ {
+ 	struct drm_connector *drm_connector = &aconnector->base;
+ 	uint32_t link_bandwidth_kbps;
+-	uint32_t max_dsc_target_bpp_limit_override = 0;
+ 	struct dc *dc = sink->ctx->dc;
+ 	uint32_t max_supported_bw_in_kbps, timing_bw_in_kbps;
+ 	uint32_t dsc_max_supported_bw_in_kbps;
++	uint32_t max_dsc_target_bpp_limit_override =
++		drm_connector->display_info.max_dsc_bpp;
  
- 		if (!bpf_pseudo_call(insn + i) && !bpf_pseudo_func(insn + i))
- 			continue;
-@@ -3754,14 +3754,14 @@ static int check_max_stack_depth(struct bpf_verifier_env *env)
+ 	link_bandwidth_kbps = dc_link_bandwidth_kbps(aconnector->dc_link,
+ 							dc_link_get_link_cap(aconnector->dc_link));
+-	if (stream->link && stream->link->local_sink)
+-		max_dsc_target_bpp_limit_override =
+-			stream->link->local_sink->edid_caps.panel_patch.max_dsc_target_bpp_limit;
  
- 		/* find the callee */
- 		next_insn = i + insn[i].imm + 1;
--		idx = find_subprog(env, next_insn);
--		if (idx < 0) {
-+		sidx = find_subprog(env, next_insn);
-+		if (sidx < 0) {
- 			WARN_ONCE(1, "verifier bug. No program starts at insn %d\n",
- 				  next_insn);
- 			return -EFAULT;
- 		}
--		if (subprog[idx].is_async_cb) {
--			if (subprog[idx].has_tail_call) {
-+		if (subprog[sidx].is_async_cb) {
-+			if (subprog[sidx].has_tail_call) {
- 				verbose(env, "verifier bug. subprog has tail_call and async cb\n");
- 				return -EFAULT;
- 			}
-@@ -3770,6 +3770,7 @@ static int check_max_stack_depth(struct bpf_verifier_env *env)
- 				continue;
- 		}
- 		i = next_insn;
-+		idx = sidx;
+ 	/* Set DSC policy according to dsc_clock_en */
+ 	dc_dsc_policy_set_enable_dsc_when_not_needed(
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -673,15 +673,18 @@ static void set_dsc_configs_from_fairnes
+ 		int count,
+ 		int k)
+ {
++	struct drm_connector *drm_connector;
+ 	int i;
  
- 		if (subprog[idx].has_tail_call)
- 			tail_call_reachable = true;
--- 
-2.39.2
-
+ 	for (i = 0; i < count; i++) {
++		drm_connector = &params[i].aconnector->base;
++
+ 		memset(&params[i].timing->dsc_cfg, 0, sizeof(params[i].timing->dsc_cfg));
+ 		if (vars[i + k].dsc_enabled && dc_dsc_compute_config(
+ 					params[i].sink->ctx->dc->res_pool->dscs[0],
+ 					&params[i].sink->dsc_caps.dsc_dec_caps,
+ 					params[i].sink->ctx->dc->debug.dsc_min_slice_height_override,
+-					params[i].sink->edid_caps.panel_patch.max_dsc_target_bpp_limit,
++					drm_connector->display_info.max_dsc_bpp,
+ 					0,
+ 					params[i].timing,
+ 					&params[i].timing->dsc_cfg)) {
+@@ -723,12 +726,16 @@ static int bpp_x16_from_pbn(struct dsc_m
+ 	struct dc_dsc_config dsc_config;
+ 	u64 kbps;
+ 
++	struct drm_connector *drm_connector = &param.aconnector->base;
++	uint32_t max_dsc_target_bpp_limit_override =
++		drm_connector->display_info.max_dsc_bpp;
++
+ 	kbps = div_u64((u64)pbn * 994 * 8 * 54, 64);
+ 	dc_dsc_compute_config(
+ 			param.sink->ctx->dc->res_pool->dscs[0],
+ 			&param.sink->dsc_caps.dsc_dec_caps,
+ 			param.sink->ctx->dc->debug.dsc_min_slice_height_override,
+-			param.sink->edid_caps.panel_patch.max_dsc_target_bpp_limit,
++			max_dsc_target_bpp_limit_override,
+ 			(int) kbps, param.timing, &dsc_config);
+ 
+ 	return dsc_config.bits_per_pixel;
 
 
