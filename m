@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6277614AC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9FD76114C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234419AbjGYLVl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:21:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
+        id S233247AbjGYKtl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234428AbjGYLVk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B15D13D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:40 -0700 (PDT)
+        with ESMTP id S229662AbjGYKtk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157F11990
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 94B1F615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A167BC433C7;
-        Tue, 25 Jul 2023 11:21:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A74A16167E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DB0C433C7;
+        Tue, 25 Jul 2023 10:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284099;
-        bh=8l7XzQtqX4yokLfq9O14GJE+di7RNty3J2FSe+cOSuk=;
+        s=korg; t=1690282177;
+        bh=/WSUJ4MZNBXEQFat0hm3g+FgNhjj2koOuWzKQ0ebEsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cCxJj2aPTPTKMUxqR6JhQZloeHREMXY0eWA/wXC1mt5Zl/L8b3PlGLxp3+CbMq71h
-         20q3zpisrWqmLBujbqbeiHewEhkvALeIC8NxrnV+dW6qGEFBNKyhp4c+sqzF8primn
-         vaiXJiaPJOHRC5cBYaf+h7KhupGE5QD3BemYkesE=
+        b=ZeFrHeRDI7T+5UwUitYb0vZy+ZZHmFM1ilLlORImQVPAfhqISTiNQh75jZS07Hh/1
+         qqdvwKvqvOARtkIxIEnNVnVdev3rWR2oqBYPIMfrdrcsfSliyrCpdiod+LVfJXMstT
+         BIaHTmk5G6Rqq9VSlG8g1do7wGrm1Etie7gkg37E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/509] usb: hide unused usbfs_notify_suspend/resume functions
-Date:   Tue, 25 Jul 2023 12:42:53 +0200
-Message-ID: <20230725104604.474721965@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 007/227] mm/mlock: fix vma iterator conversion of apply_vma_lock_flags()
+Date:   Tue, 25 Jul 2023 12:42:54 +0200
+Message-ID: <20230725104515.107130597@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,52 +56,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-[ Upstream commit 8e6bd945e6dde64fbc60ec3fe252164493a8d3a2 ]
+commit 2658f94d679243209889cdfa8de3743cde1abea9 upstream.
 
-The declaration is in an #ifdef, which causes warnings when building
-with 'make W=1' and without CONFIG_PM:
+apply_vma_lock_flags() calls mlock_fixup(), which could merge the VMA
+after where the vma iterator is located.  Although this is not an issue,
+the next iteration of the loop will check the start of the vma to be equal
+to the locally saved 'tmp' variable and cause an incorrect failure
+scenario.  Fix the error by setting tmp to the end of the vma iterator
+value before restarting the loop.
 
-drivers/usb/core/devio.c:742:6: error: no previous prototype for 'usbfs_notify_suspend'
-drivers/usb/core/devio.c:747:6: error: no previous prototype for 'usbfs_notify_resume'
+There is also a potential of the error code being overwritten when the
+loop terminates early.  Fix the return issue by directly returning when an
+error is encountered since there is nothing to undo after the loop.
 
-Use the same #ifdef check around the function definitions to avoid
-the warnings and slightly shrink the USB core.
-
-Fixes: 7794f486ed0b ("usbfs: Add ioctls for runtime power management")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230516202103.558301-1-arnd@kernel.org
+Link: https://lkml.kernel.org/r/20230711175020.4091336-1-Liam.Howlett@oracle.com
+Fixes: 37598f5a9d8b ("mlock: convert mlock to vma iterator")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+  Link: https://lore.kernel.org/linux-mm/50341ca1-d582-b33a-e3d0-acb08a65166f@arm.com/
+Tested-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/devio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/mlock.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
-index 2fe29319de441..1b95035d179f3 100644
---- a/drivers/usb/core/devio.c
-+++ b/drivers/usb/core/devio.c
-@@ -734,6 +734,7 @@ static int driver_resume(struct usb_interface *intf)
- 	return 0;
- }
- 
-+#ifdef CONFIG_PM
- /* The following routines apply to the entire device, not interfaces */
- void usbfs_notify_suspend(struct usb_device *udev)
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -471,7 +471,6 @@ static int apply_vma_lock_flags(unsigned
  {
-@@ -752,6 +753,7 @@ void usbfs_notify_resume(struct usb_device *udev)
- 	}
- 	mutex_unlock(&usbfs_mutex);
- }
-+#endif
+ 	unsigned long nstart, end, tmp;
+ 	struct vm_area_struct *vma, *prev;
+-	int error;
+ 	VMA_ITERATOR(vmi, current->mm, start);
  
- struct usb_driver usbfs_driver = {
- 	.name =		"usbfs",
--- 
-2.39.2
-
+ 	VM_BUG_ON(offset_in_page(start));
+@@ -492,6 +491,7 @@ static int apply_vma_lock_flags(unsigned
+ 	nstart = start;
+ 	tmp = vma->vm_start;
+ 	for_each_vma_range(vmi, vma, end) {
++		int error;
+ 		vm_flags_t newflags;
+ 
+ 		if (vma->vm_start != tmp)
+@@ -505,14 +505,15 @@ static int apply_vma_lock_flags(unsigned
+ 			tmp = end;
+ 		error = mlock_fixup(&vmi, vma, &prev, nstart, tmp, newflags);
+ 		if (error)
+-			break;
++			return error;
++		tmp = vma_iter_end(&vmi);
+ 		nstart = tmp;
+ 	}
+ 
+-	if (vma_iter_end(&vmi) < end)
++	if (tmp < end)
+ 		return -ENOMEM;
+ 
+-	return error;
++	return 0;
+ }
+ 
+ /*
 
 
