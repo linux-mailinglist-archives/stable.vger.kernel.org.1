@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0487C761336
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6739F7615A8
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234113AbjGYLI4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:08:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45538 "EHLO
+        id S234646AbjGYLbm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjGYLIm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:42 -0400
+        with ESMTP id S234649AbjGYLbl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6A9E1FCF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39811BC5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7D9A61682
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B66C433C9;
-        Tue, 25 Jul 2023 11:07:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D468461683
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E595CC433C8;
+        Tue, 25 Jul 2023 11:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283228;
-        bh=9H8tz5In6TRmMACrNPIwdy35IEoT0yRWpVg9PDcDAh4=;
+        s=korg; t=1690284693;
+        bh=E9+dGMy3fJodDACSOm+ZWJKZ5Nc0pVVZC4430Oytqqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UFGeGZNQLFeSCo5uT0RtComRqGgpB4qwdQw6mEDsna09ZkApEKXRw1CcP6U/Rb5rA
-         KN8tOjjJKFY8U2zmRiIaNWabO9DRuWcDfPo+MIBjqR1abiiEu6o04v1+WzCuv5bImx
-         pOnK0vtJB3VDiZt4puFOMtoPNNNuDUUrtn/I1jIM=
+        b=uLQy6ZU16X7d9BSH8EnFZC0h0T/rXgrn8gt7Bu8TsulI33r3/dMh1wLJpv57TQ0ro
+         xHdjX5V9Qr9EexE/LrPX4iApRPQqjDzeMzawHC6vrY8otOaGpmedKb5uSJpoliZPaM
+         xDuiUX0X4V+6A1qv1f1iKLAgjbb0l8D28VAiicEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/183] tcp: annotate data-races around rskq_defer_accept
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Xu Yilun <yilun.xu@intel.com>, stable@kernel.org
+Subject: [PATCH 5.10 448/509] regmap: Drop initial version of maximum transfer length fixes
 Date:   Tue, 25 Jul 2023 12:46:27 +0200
-Message-ID: <20230725104513.540617439@linuxfoundation.org>
+Message-ID: <20230725104614.258303721@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit ae488c74422fb1dcd807c0201804b3b5e8a322a3 ]
+commit bc64734825c59e18a27ac266b07e14944c111fd8 upstream.
 
-do_tcp_getsockopt() reads rskq_defer_accept while another cpu
-might change its value.
+When problems were noticed with the register address not being taken
+into account when limiting raw transfers with I2C devices we fixed this
+in the core.  Unfortunately it has subsequently been realised that a lot
+of buses were relying on the prior behaviour, partly due to unclear
+documentation not making it obvious what was intended in the core.  This
+is all more involved to fix than is sensible for a fix commit so let's
+just drop the original fixes, a separate commit will fix the originally
+observed problem in an I2C specific way
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-9-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3981514180c9 ("regmap: Account for register length when chunking")
+Fixes: c8e796895e23 ("regmap: spi-avmm: Fix regmap_bus max_raw_write")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-1-80e2aed22e83@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/base/regmap/regmap-spi-avmm.c |    2 +-
+ drivers/base/regmap/regmap.c          |    6 ++----
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 363535b6ece83..bc3ad48f92389 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3700,9 +3700,9 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+--- a/drivers/base/regmap/regmap-spi-avmm.c
++++ b/drivers/base/regmap/regmap-spi-avmm.c
+@@ -666,7 +666,7 @@ static const struct regmap_bus regmap_sp
+ 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
+-	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
++	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
+ 	.free_context = spi_avmm_bridge_ctx_free,
+ };
  
- 	case TCP_DEFER_ACCEPT:
- 		/* Translate value in seconds to number of retransmits */
--		icsk->icsk_accept_queue.rskq_defer_accept =
--			secs_to_retrans(val, TCP_TIMEOUT_INIT / HZ,
--					TCP_RTO_MAX / HZ);
-+		WRITE_ONCE(icsk->icsk_accept_queue.rskq_defer_accept,
-+			   secs_to_retrans(val, TCP_TIMEOUT_INIT / HZ,
-+					   TCP_RTO_MAX / HZ));
- 		break;
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1998,8 +1998,6 @@ int _regmap_raw_write(struct regmap *map
+ 	size_t val_count = val_len / val_bytes;
+ 	size_t chunk_count, chunk_bytes;
+ 	size_t chunk_regs = val_count;
+-	size_t max_data = map->max_raw_write - map->format.reg_bytes -
+-			map->format.pad_bytes;
+ 	int ret, i;
  
- 	case TCP_WINDOW_CLAMP:
-@@ -4104,8 +4104,9 @@ int do_tcp_getsockopt(struct sock *sk, int level,
- 			val = (val ? : READ_ONCE(net->ipv4.sysctl_tcp_fin_timeout)) / HZ;
- 		break;
- 	case TCP_DEFER_ACCEPT:
--		val = retrans_to_secs(icsk->icsk_accept_queue.rskq_defer_accept,
--				      TCP_TIMEOUT_INIT / HZ, TCP_RTO_MAX / HZ);
-+		val = READ_ONCE(icsk->icsk_accept_queue.rskq_defer_accept);
-+		val = retrans_to_secs(val, TCP_TIMEOUT_INIT / HZ,
-+				      TCP_RTO_MAX / HZ);
- 		break;
- 	case TCP_WINDOW_CLAMP:
- 		val = tp->window_clamp;
--- 
-2.39.2
-
+ 	if (!val_count)
+@@ -2007,8 +2005,8 @@ int _regmap_raw_write(struct regmap *map
+ 
+ 	if (map->use_single_write)
+ 		chunk_regs = 1;
+-	else if (map->max_raw_write && val_len > max_data)
+-		chunk_regs = max_data / val_bytes;
++	else if (map->max_raw_write && val_len > map->max_raw_write)
++		chunk_regs = map->max_raw_write / val_bytes;
+ 
+ 	chunk_count = val_count / chunk_regs;
+ 	chunk_bytes = chunk_regs * val_bytes;
 
 
