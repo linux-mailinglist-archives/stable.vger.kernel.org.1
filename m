@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27441761534
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37271761535
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234495AbjGYL0e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35902 "EHLO
+        id S234534AbjGYL0k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234548AbjGYL0d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:33 -0400
+        with ESMTP id S234532AbjGYL0j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B054510C7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A65E74
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16BD06166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F47C433CC;
-        Tue, 25 Jul 2023 11:26:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C2574616A3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FAAC433CA;
+        Tue, 25 Jul 2023 11:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284389;
-        bh=f/8Y2iZ+vbxvVeiVyBwtFk38Qa/Q33tDHdoWyOdmzvk=;
+        s=korg; t=1690284395;
+        bh=U3T8hGPr7fGnLvKHuuJk2IUejR58suIjLT5kyk5bWyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fShqOuGWox/V6XNTAZbnIPaBfi5zigDVKowPO4NWORTFjvea9OvKxqfPiY2jAiAq4
-         jB8IqalOGuGY7CkT4/L+rbJqxyX9ssNSPW4vP1wT712z7exCgfF+boyiqhDJ+y0i+y
-         ECwG4a+0wWBCJFZAJC9oi9RCe4FOehNn7X/BKG2E=
+        b=Fr2fkdXg72kyPi7zyh260VdGplm/9duc6CGB6a8I0dA4DDcqH42X6jjHnuv/IR1BE
+         OX0inQm3HZuIIKXIo1A1mEs01Fw8zHAslUIta1P/3UXfhnzEKWCiWFmpDke1mfuVmA
+         y+YT6q1voOY3sGaE3I1N7kc9/As++6V3EwPkoz+M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
+        patches@lists.linux.dev,
+        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
+        Sasha Neftin <sasha.neftin@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 338/509] drm/panel: simple: Add Powertip PH800480T013 drm_display_mode flags
-Date:   Tue, 25 Jul 2023 12:44:37 +0200
-Message-ID: <20230725104609.184075420@linuxfoundation.org>
+Subject: [PATCH 5.10 339/509] igc: Remove delay during TX ring configuration
+Date:   Tue, 25 Jul 2023 12:44:38 +0200
+Message-ID: <20230725104609.236273597@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
 References: <20230725104553.588743331@linuxfoundation.org>
@@ -56,36 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
 
-[ Upstream commit 1c519980aced3da1fae37c1339cf43b24eccdee7 ]
+[ Upstream commit cca28ceac7c7857bc2d313777017585aef00bcc4 ]
 
-Add missing drm_display_mode DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC
-flags. Those are used by various bridges in the pipeline to correctly
-configure its sync signals polarity.
+Remove unnecessary delay during the TX ring configuration.
+This will cause delay, especially during link down and
+link up activity.
 
-Fixes: d69de69f2be1 ("drm/panel: simple: Add Powertip PH800480T013 panel")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230615201602.565948-1-marex@denx.de
+Furthermore, old SKUs like as I225 will call the reset_adapter
+to reset the controller during TSN mode Gate Control List (GCL)
+setting. This will add more time to the configuration of the
+real-time use case.
+
+It doesn't mentioned about this delay in the Software User Manual.
+It might have been ported from legacy code I210 in the past.
+
+Fixes: 13b5b7fd6a4a ("igc: Add support for Tx/Rx rings")
+Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Acked-by: Sasha Neftin <sasha.neftin@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index ffda99c204356..7b69f81444ebd 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -3153,6 +3153,7 @@ static const struct drm_display_mode powertip_ph800480t013_idf02_mode = {
- 	.vsync_start = 480 + 49,
- 	.vsync_end = 480 + 49 + 2,
- 	.vtotal = 480 + 49 + 2 + 22,
-+	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
- };
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index a15e4b6d7fa40..2b51ee87a2def 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -600,7 +600,6 @@ static void igc_configure_tx_ring(struct igc_adapter *adapter,
+ 	/* disable the queue */
+ 	wr32(IGC_TXDCTL(reg_idx), 0);
+ 	wrfl();
+-	mdelay(10);
  
- static const struct panel_desc powertip_ph800480t013_idf02  = {
+ 	wr32(IGC_TDLEN(reg_idx),
+ 	     ring->count * sizeof(union igc_adv_tx_desc));
 -- 
 2.39.2
 
