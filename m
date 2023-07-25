@@ -2,53 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED4157614B2
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9081761131
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234428AbjGYLWE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
+        id S231918AbjGYKsg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:48:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234448AbjGYLV5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39A6613D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:56 -0700 (PDT)
+        with ESMTP id S232085AbjGYKsc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:48:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074E41999
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:48:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A4C061600
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF54C433C8;
-        Tue, 25 Jul 2023 11:21:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 84E176165E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69798C433C9;
+        Tue, 25 Jul 2023 10:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284115;
-        bh=bI7w2jO6T9iXGj+U4OdYtSctNP3OGYp0WAORTYbTihA=;
+        s=korg; t=1690282110;
+        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vKijGzr/UQp4iGnYC4XO1PtRWagSx98zDAhJR1ye1tnfQ82mFB6+bsFRTip7cqCZ4
-         Eo7haeYKCp1AjAexdrzsY9mz2G/jl3F8cU6BoJaXTnD7wIIxUOO722gZxsLKU8+BLq
-         EHWuAqPuy1fXXMsK3NUDzWcbdx4ncTJYhXRmXF+8=
+        b=t9ddt2GhO7uiW17oFDdwrv/vUtAhESGYtmNPNV4G1mmaM8/DmHVH+a60/A98IuG0n
+         T3D2n2BFAG3bvxnokNh4AUaaqHOy7DTHbexcBZadc8UUCraPJmMxymUQpxH69QcC2L
+         UCQ5LqvW1cIzFRx0SjvODBmEAlHysEhUz56PjPt4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/509] media: venus: helpers: Fix ALIGN() of non power of two
+        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        regressions@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.4 012/227] perf probe: Add test for regression introduced by switch to die_get_decl_file()
 Date:   Tue, 25 Jul 2023 12:42:59 +0200
-Message-ID: <20230725104604.740823113@linuxfoundation.org>
+Message-ID: <20230725104515.288406864@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,51 +64,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+From: Georg Müller <georgmueller@gmx.net>
 
-[ Upstream commit 927e78ac8bc58155316cf6f46026e1912bbbbcfc ]
+commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
 
-ALIGN() expects its second argument to be a power of 2, otherwise
-incorrect results are produced for some inputs. The output can be
-both larger or smaller than what is expected.
+This patch adds a test to validate that 'perf probe' works for binaries
+where DWARF info is split into multiple CUs
 
-For example, ALIGN(304, 192) equals 320 instead of 384, and
-ALIGN(65, 192) equals 256 instead of 192.
-
-However, nestling two ALIGN() as is done in this case seem to only
-produce results equal to or bigger than the expected result if ALIGN()
-had handled non powers of two, and that in turn results in framesizes
-that are either the correct size or too large.
-
-Fortunately, since 192 * 4 / 3 equals 256, it turns out that one ALIGN()
-is sufficient.
-
-Fixes: ab1eda449c6e ("media: venus: vdec: handle 10bit bitstreams")
-Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Georg Müller <georgmueller@gmx.net>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/helpers.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
+ 1 file changed, 77 insertions(+)
+ create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
 
-diff --git a/drivers/media/platform/qcom/venus/helpers.c b/drivers/media/platform/qcom/venus/helpers.c
-index 5ca3920237c5a..5fdce5f07364e 100644
---- a/drivers/media/platform/qcom/venus/helpers.c
-+++ b/drivers/media/platform/qcom/venus/helpers.c
-@@ -917,8 +917,8 @@ static u32 get_framesize_raw_yuv420_tp10_ubwc(u32 width, u32 height)
- 	u32 extradata = SZ_16K;
- 	u32 size;
- 
--	y_stride = ALIGN(ALIGN(width, 192) * 4 / 3, 256);
--	uv_stride = ALIGN(ALIGN(width, 192) * 4 / 3, 256);
-+	y_stride = ALIGN(width * 4 / 3, 256);
-+	uv_stride = ALIGN(width * 4 / 3, 256);
- 	y_sclines = ALIGN(height, 16);
- 	uv_sclines = ALIGN((height + 1) >> 1, 16);
- 
--- 
-2.39.2
-
+--- /dev/null
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -0,0 +1,77 @@
++#!/bin/bash
++# test perf probe of function from different CU
++# SPDX-License-Identifier: GPL-2.0
++
++set -e
++
++temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
++
++cleanup()
++{
++	trap - EXIT TERM INT
++	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
++		echo "--- Cleaning up ---"
++		perf probe -x ${temp_dir}/testfile -d foo
++		rm -f "${temp_dir}/"*
++		rmdir "${temp_dir}"
++	fi
++}
++
++trap_cleanup()
++{
++        cleanup
++        exit 1
++}
++
++trap trap_cleanup EXIT TERM INT
++
++cat > ${temp_dir}/testfile-foo.h << EOF
++struct t
++{
++  int *p;
++  int c;
++};
++
++extern int foo (int i, struct t *t);
++EOF
++
++cat > ${temp_dir}/testfile-foo.c << EOF
++#include "testfile-foo.h"
++
++int
++foo (int i, struct t *t)
++{
++  int j, res = 0;
++  for (j = 0; j < i && j < t->c; j++)
++    res += t->p[j];
++
++  return res;
++}
++EOF
++
++cat > ${temp_dir}/testfile-main.c << EOF
++#include "testfile-foo.h"
++
++static struct t g;
++
++int
++main (int argc, char **argv)
++{
++  int i;
++  int j[argc];
++  g.c = argc;
++  g.p = j;
++  for (i = 0; i < argc; i++)
++    j[i] = (int) argv[i][0];
++  return foo (3, &g);
++}
++EOF
++
++gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
++gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
++gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
++
++perf probe -x ${temp_dir}/testfile --funcs foo
++perf probe -x ${temp_dir}/testfile foo
++
++cleanup
 
 
