@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CDA37616A7
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35EAD7611D0
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234953AbjGYLk6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48370 "EHLO
+        id S232327AbjGYK4g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234997AbjGYLkq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:46 -0400
+        with ESMTP id S232343AbjGYK4M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1248A18F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FA435AC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5132616A4
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE511C433C9;
-        Tue, 25 Jul 2023 11:40:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 518F461699
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601ACC433C9;
+        Tue, 25 Jul 2023 10:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285230;
-        bh=HCLC33ytXoiSdWk3Ec1uvJNOlRf9UoaIabqVUoLJ/zk=;
+        s=korg; t=1690282404;
+        bh=bsIpwQvhW2RhrlbPNicfEQTyjy9SKxY4Qebwl+FT3bM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xMHbks/Sm+mKVGYi2iPmFPjzwPdAL8KfBYndKFIUHi7Ok6bLWyxHH98qXnIj+B1VX
-         WR+Hp3EZ2F3Yt4kX1t2xK122Fdgge6Gk8XB5rw3I9FssxEw/5IC3OgKmeVj4B+hMls
-         9A02oPTlZ3f3mLO7n34YQH62L1e4nZPTMZwT0KJQ=
+        b=qBsSrLrE3w+ZFRbzq6kaW2h4Klx8lQ1kXSJTemXe0GKwRVi6o0gbpNQ5UpSQXm+Ag
+         vUiwtr3VxY5V7aeKYq4Ix8ibJd8YS4Da93LLWVZL85op57Qz0V2UI3Ydwu/+SQ5nUF
+         CzH34tRH6Qsf3dhie8a+N401SFnRPKNquQeczdak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
+        syzbot+958967f249155967d42a@syzkaller.appspotmail.com,
+        Yonghong Song <yhs@fb.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 131/313] extcon: Fix kernel doc of property fields to avoid warnings
+Subject: [PATCH 6.4 117/227] bpf: Silence a warning in btf_type_id_size()
 Date:   Tue, 25 Jul 2023 12:44:44 +0200
-Message-ID: <20230725104526.687557554@linuxfoundation.org>
+Message-ID: <20230725104519.640640169@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +57,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Yonghong Song <yhs@fb.com>
 
-[ Upstream commit 7e77e0b7a9f4cdf91cb0950749b40c840ea63efc ]
+[ Upstream commit e6c2f594ed961273479505b42040782820190305 ]
 
-Kernel documentation has to be synchronized with a code, otherwise
-the validator is not happy:
+syzbot reported a warning in [1] with the following stacktrace:
+  WARNING: CPU: 0 PID: 5005 at kernel/bpf/btf.c:1988 btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
+  ...
+  RIP: 0010:btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
+  ...
+  Call Trace:
+   <TASK>
+   map_check_btf kernel/bpf/syscall.c:1024 [inline]
+   map_create+0x1157/0x1860 kernel/bpf/syscall.c:1198
+   __sys_bpf+0x127f/0x5420 kernel/bpf/syscall.c:5040
+   __do_sys_bpf kernel/bpf/syscall.c:5162 [inline]
+   __se_sys_bpf kernel/bpf/syscall.c:5160 [inline]
+   __x64_sys_bpf+0x79/0xc0 kernel/bpf/syscall.c:5160
+   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+   do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-     Function parameter or member 'usb_propval' not described in 'extcon_cable'
-     Function parameter or member 'chg_propval' not described in 'extcon_cable'
-     Function parameter or member 'jack_propval' not described in 'extcon_cable'
-     Function parameter or member 'disp_propval' not described in 'extcon_cable'
+With the following btf
+  [1] DECL_TAG 'a' type_id=4 component_idx=-1
+  [2] PTR '(anon)' type_id=0
+  [3] TYPE_TAG 'a' type_id=2
+  [4] VAR 'a' type_id=3, linkage=static
+and when the bpf_attr.btf_key_type_id = 1 (DECL_TAG),
+the following WARN_ON_ONCE in btf_type_id_size() is triggered:
+  if (WARN_ON_ONCE(!btf_type_is_modifier(size_type) &&
+                   !btf_type_is_var(size_type)))
+          return NULL;
 
-Describe the fields added in the past.
+Note that 'return NULL' is the correct behavior as we don't want
+a DECL_TAG type to be used as a btf_{key,value}_type_id even
+for the case like 'DECL_TAG -> STRUCT'. So there
+is no correctness issue here, we just want to silence warning.
 
-Fixes: 067c1652e7a7 ("extcon: Add the support for extcon property according to extcon type")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+To silence the warning, I added DECL_TAG as one of kinds in
+btf_type_nosize() which will cause btf_type_id_size() returning
+NULL earlier without the warning.
+
+  [1] https://lore.kernel.org/bpf/000000000000e0df8d05fc75ba86@google.com/
+
+Reported-by: syzbot+958967f249155967d42a@syzkaller.appspotmail.com
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20230530205029.264910-1-yhs@fb.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/extcon.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/bpf/btf.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
-index 6b905c3d30f4f..00ad8b637749b 100644
---- a/drivers/extcon/extcon.c
-+++ b/drivers/extcon/extcon.c
-@@ -196,6 +196,10 @@ static const struct __extcon_info {
-  * @attr_name:		"name" sysfs entry
-  * @attr_state:		"state" sysfs entry
-  * @attrs:		the array pointing to attr_name and attr_state for attr_g
-+ * @usb_propval:	the array of USB connector properties
-+ * @chg_propval:	the array of charger connector properties
-+ * @jack_propval:	the array of jack connector properties
-+ * @disp_propval:	the array of display connector properties
-  */
- struct extcon_cable {
- 	struct extcon_dev *edev;
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 25ca17a8e1964..8b4e92439d1d6 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -485,25 +485,26 @@ static bool btf_type_is_fwd(const struct btf_type *t)
+ 	return BTF_INFO_KIND(t->info) == BTF_KIND_FWD;
+ }
+ 
+-static bool btf_type_nosize(const struct btf_type *t)
++static bool btf_type_is_datasec(const struct btf_type *t)
+ {
+-	return btf_type_is_void(t) || btf_type_is_fwd(t) ||
+-	       btf_type_is_func(t) || btf_type_is_func_proto(t);
++	return BTF_INFO_KIND(t->info) == BTF_KIND_DATASEC;
+ }
+ 
+-static bool btf_type_nosize_or_null(const struct btf_type *t)
++static bool btf_type_is_decl_tag(const struct btf_type *t)
+ {
+-	return !t || btf_type_nosize(t);
++	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
+ }
+ 
+-static bool btf_type_is_datasec(const struct btf_type *t)
++static bool btf_type_nosize(const struct btf_type *t)
+ {
+-	return BTF_INFO_KIND(t->info) == BTF_KIND_DATASEC;
++	return btf_type_is_void(t) || btf_type_is_fwd(t) ||
++	       btf_type_is_func(t) || btf_type_is_func_proto(t) ||
++	       btf_type_is_decl_tag(t);
+ }
+ 
+-static bool btf_type_is_decl_tag(const struct btf_type *t)
++static bool btf_type_nosize_or_null(const struct btf_type *t)
+ {
+-	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
++	return !t || btf_type_nosize(t);
+ }
+ 
+ static bool btf_type_is_decl_tag_target(const struct btf_type *t)
 -- 
 2.39.2
 
