@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E6FE7614C8
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA88E761622
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234457AbjGYLWx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:22:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60198 "EHLO
+        id S234824AbjGYLgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234461AbjGYLWw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F5D113D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:43 -0700 (PDT)
+        with ESMTP id S234849AbjGYLgl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F281FC9
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 60A8761683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ABFC433C8;
-        Tue, 25 Jul 2023 11:22:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35453615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48885C433C7;
+        Tue, 25 Jul 2023 11:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284162;
-        bh=8Nnn97DCnqLRIxpHK2YTlcG/3PR0HKmq/IZWCQNH5wM=;
+        s=korg; t=1690284988;
+        bh=E9ya2b8KKo6LsDW5/vDtj4VE+cNW082YVEEQRaTG4kc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z/2uT2m/awflfQ4BpQNHiWKIYIc2mOHDaHStXNpW4+QDQB6zQpBKz9A3ct2iaXHKR
-         7I1LNXu6GIML3X//HezlLZlWGj0AZzg7iWXT2LD0uelcRnawiRRcaIncsC0dHddNeb
-         AV9BZLFTy8TbNq7Fd4P4IxS1FhDUqLG8M9ONj5/E=
+        b=CBFEdXgf2aufXQwsT1Jnk4u/5MmFCejkyf7inxfwE6BA+OUnXZ4JIvtJLiRBOryaC
+         sC7pC3cc3UKLcDGKdZLoT+xSsLPfKqPl97ZfIjpW71/fkuaP3v9hBrws4dNpgj33W6
+         p2jItJ+Cj915+OHkeCGWtpwb13aKBwvy/CqicipM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 258/509] rtc: st-lpc: Release some resources in st_rtc_probe() in case of error
+Subject: [PATCH 5.4 044/313] wl3501_cs: use eth_hw_addr_set()
 Date:   Tue, 25 Jul 2023 12:43:17 +0200
-Message-ID: <20230725104605.568805922@linuxfoundation.org>
+Message-ID: <20230725104522.987345068@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 06c6e1b01d9261f03629cefd1f3553503291e6cf ]
+[ Upstream commit 18774612246d036c04ce9fee7f67192f96f48725 ]
 
-If an error occurs after clk_get(), the corresponding resources should be
-released.
+Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
+of VLANs...") introduced a rbtree for faster Ethernet address look
+up. To maintain netdev->dev_addr in this tree we need to make all
+the writes to it got through appropriate helpers.
 
-Use devm_clk_get() to fix it.
-
-Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/866af6adbc7454a7b4505eb6c28fbdc86ccff39e.1686251455.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20211018235021.1279697-15-kuba@kernel.org
+Stable-dep-of: 391af06a02e7 ("wifi: wl3501_cs: Fix an error handling path in wl3501_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-st-lpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/wl3501_cs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
-index 7d53f7e2febcc..c4ea3f3f08844 100644
---- a/drivers/rtc/rtc-st-lpc.c
-+++ b/drivers/rtc/rtc-st-lpc.c
-@@ -228,7 +228,7 @@ static int st_rtc_probe(struct platform_device *pdev)
- 	enable_irq_wake(rtc->irq);
- 	disable_irq(rtc->irq);
+diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+index 115bb408d4f20..ae660f25a0e5a 100644
+--- a/drivers/net/wireless/wl3501_cs.c
++++ b/drivers/net/wireless/wl3501_cs.c
+@@ -1945,8 +1945,7 @@ static int wl3501_config(struct pcmcia_device *link)
+ 		goto failed;
+ 	}
  
--	rtc->clk = clk_get(&pdev->dev, NULL);
-+	rtc->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(rtc->clk)) {
- 		dev_err(&pdev->dev, "Unable to request clock\n");
- 		return PTR_ERR(rtc->clk);
+-	for (i = 0; i < 6; i++)
+-		dev->dev_addr[i] = ((char *)&this->mac_addr)[i];
++	eth_hw_addr_set(dev, this->mac_addr);
+ 
+ 	/* print probe information */
+ 	printk(KERN_INFO "%s: wl3501 @ 0x%3.3x, IRQ %d, "
 -- 
 2.39.2
 
