@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B28527612A6
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B735B76167E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233845AbjGYLEo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41078 "EHLO
+        id S234890AbjGYLjs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:39:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233838AbjGYLEb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:31 -0400
+        with ESMTP id S234895AbjGYLjp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8316E4C3E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C03B11B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5504861654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68484C433C8;
-        Tue, 25 Jul 2023 11:01:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF8EA616A4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFA1C433C8;
+        Tue, 25 Jul 2023 11:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282898;
-        bh=M586/vG9QOeG42Mal7DWSYeNE7dWDgLHU0Ky3WPrwuA=;
+        s=korg; t=1690285183;
+        bh=36xunk0bCtU8L7nauYx48DMxyHj6svzZAjQ5zjRTUT8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PahDcMXHcimt1twx7JfJPOah5H+Mii4m6+8C428M2DtUJZBiXYexNeTSoKY5/yLaX
-         M0+bRZT8oThyaJG+0csgiqM/dKD2F2UZAkHICjuxA374OvyG1lK6GsJCv93o7IkPwx
-         XR4RiC6r55Ty0UFga8XLO16RLwOT+PYJR42U4NTY=
+        b=g25krBOROicMJ5dIR+Xcv/VxAXERJXqcFwQMMSY4pmu6jBNnZpBieocl+SQ/INfez
+         REO47KqT7wWj/74OVdM/SiAD/QVeviE73kT5EWQEZXlnzetoUQnRL4hGzO1Sn+FiCu
+         Ln2gaJGETbvQxQwaYWnduXKPt9/CRauwZsjukFOE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sheetal <sheetal@nvidia.com>,
-        Mohan Kumar D <mkumard@nvidia.com>,
-        Sameer Pujar <spujar@nvidia.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 038/183] ASoC: tegra: Fix ADX byte map
+        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 113/313] crypto: skcipher - unify the crypto_has_skcipher*() functions
 Date:   Tue, 25 Jul 2023 12:44:26 +0200
-Message-ID: <20230725104509.307153270@linuxfoundation.org>
+Message-ID: <20230725104525.907419883@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,124 +55,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sheetal <sheetal@nvidia.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit 6dfe70be0b0dec0f9297811501bec26c05fd96ad upstream.
+[ Upstream commit d3ca75a8b3d77f2788e6c119ea7c3e3a1ab1e1ca ]
 
-Byte mask for channel-1 of stream-1 is not getting enabled and this
-causes failures during ADX use cases. This happens because the byte
-map value 0 matches the byte map array and put() callback returns
-without enabling the corresponding bits in the byte mask.
+crypto_has_skcipher() and crypto_has_skcipher2() do the same thing: they
+check for the availability of an algorithm of type skcipher, blkcipher,
+or ablkcipher, which also meets any non-type constraints the caller
+specified.  And they have exactly the same prototype.
 
-ADX supports 4 output streams and each stream can have a maximum of
-16 channels. Each byte in the input frame is uniquely mapped to a
-byte in one of these 4 outputs. This mapping is done with the help of
-byte map array via user space control setting. The byte map array
-size in the driver is 16 and each array element is of size 4 bytes.
-This corresponds to 64 byte map values.
+Therefore, eliminate the redundancy by removing crypto_has_skcipher()
+and renaming crypto_has_skcipher2() to crypto_has_skcipher().
 
-Each byte in the byte map array can have any value between 0 to 255
-to enable the corresponding bits in the byte mask. The value 256 is
-used as a way to disable the byte map. However the byte map array
-element cannot store this value. The put() callback disables the byte
-mask for 256 value and byte map value is reset to 0 for this case.
-This causes problems during subsequent runs since put() callback,
-for value of 0, just returns without enabling the byte mask. In short,
-the problem is coming because 0 and 256 control values are stored as
-0 in the byte map array.
-
-Right now fix the put() callback by actually looking at the byte mask
-array state to identify if any change is needed and update the fields
-accordingly. The get() callback needs an update as well to return the
-correct control value that user has set before. Note that when user
-set 256, the value is stored as 0 and byte mask is disabled. So byte
-mask state is used to either return 256 or the value from byte map
-array.
-
-Given above, this looks bit complicated and all this happens because
-the byte map array is tightly packed and cannot actually store the 256
-value. Right now the priority is to fix the existing failure and a TODO
-item is put to improve this logic.
-
-Fixes: 3c97881b8c8a ("ASoC: tegra: Fix kcontrol put callback in ADX")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Reviewed-by: Mohan Kumar D <mkumard@nvidia.com>
-Reviewed-by: Sameer Pujar <spujar@nvidia.com>
-Link: https://lore.kernel.org/r/1688015537-31682-3-git-send-email-spujar@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: efbc7764c444 ("crypto: marvell/cesa - Fix type mismatch warning")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/tegra/tegra210_adx.c | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ crypto/skcipher.c         |  4 ++--
+ include/crypto/skcipher.h | 19 +------------------
+ 2 files changed, 3 insertions(+), 20 deletions(-)
 
-diff --git a/sound/soc/tegra/tegra210_adx.c b/sound/soc/tegra/tegra210_adx.c
-index bd0b10c70c4c..7d003f0c8d0f 100644
---- a/sound/soc/tegra/tegra210_adx.c
-+++ b/sound/soc/tegra/tegra210_adx.c
-@@ -2,7 +2,7 @@
- //
- // tegra210_adx.c - Tegra210 ADX driver
- //
--// Copyright (c) 2021 NVIDIA CORPORATION.  All rights reserved.
-+// Copyright (c) 2021-2023 NVIDIA CORPORATION.  All rights reserved.
- 
- #include <linux/clk.h>
- #include <linux/device.h>
-@@ -175,10 +175,20 @@ static int tegra210_adx_get_byte_map(struct snd_kcontrol *kcontrol,
- 	mc = (struct soc_mixer_control *)kcontrol->private_value;
- 	enabled = adx->byte_mask[mc->reg / 32] & (1 << (mc->reg % 32));
- 
-+	/*
-+	 * TODO: Simplify this logic to just return from bytes_map[]
-+	 *
-+	 * Presently below is required since bytes_map[] is
-+	 * tightly packed and cannot store the control value of 256.
-+	 * Byte mask state is used to know if 256 needs to be returned.
-+	 * Note that for control value of 256, the put() call stores 0
-+	 * in the bytes_map[] and disables the corresponding bit in
-+	 * byte_mask[].
-+	 */
- 	if (enabled)
- 		ucontrol->value.integer.value[0] = bytes_map[mc->reg];
- 	else
--		ucontrol->value.integer.value[0] = 0;
-+		ucontrol->value.integer.value[0] = 256;
- 
- 	return 0;
+diff --git a/crypto/skcipher.c b/crypto/skcipher.c
+index 22753c1c72022..233678d078169 100644
+--- a/crypto/skcipher.c
++++ b/crypto/skcipher.c
+@@ -1017,12 +1017,12 @@ struct crypto_sync_skcipher *crypto_alloc_sync_skcipher(
  }
-@@ -192,19 +202,19 @@ static int tegra210_adx_put_byte_map(struct snd_kcontrol *kcontrol,
- 	int value = ucontrol->value.integer.value[0];
- 	struct soc_mixer_control *mc =
- 		(struct soc_mixer_control *)kcontrol->private_value;
-+	unsigned int mask_val = adx->byte_mask[mc->reg / 32];
+ EXPORT_SYMBOL_GPL(crypto_alloc_sync_skcipher);
  
--	if (value == bytes_map[mc->reg])
-+	if (value >= 0 && value <= 255)
-+		mask_val |= (1 << (mc->reg % 32));
-+	else
-+		mask_val &= ~(1 << (mc->reg % 32));
-+
-+	if (mask_val == adx->byte_mask[mc->reg / 32])
- 		return 0;
- 
--	if (value >= 0 && value <= 255) {
--		/* update byte map and enable slot */
--		bytes_map[mc->reg] = value;
--		adx->byte_mask[mc->reg / 32] |= (1 << (mc->reg % 32));
--	} else {
--		/* reset byte map and disable slot */
--		bytes_map[mc->reg] = 0;
--		adx->byte_mask[mc->reg / 32] &= ~(1 << (mc->reg % 32));
--	}
-+	/* Update byte map and slot */
-+	bytes_map[mc->reg] = value % 256;
-+	adx->byte_mask[mc->reg / 32] = mask_val;
- 
- 	return 1;
+-int crypto_has_skcipher2(const char *alg_name, u32 type, u32 mask)
++int crypto_has_skcipher(const char *alg_name, u32 type, u32 mask)
+ {
+ 	return crypto_type_has_alg(alg_name, &crypto_skcipher_type2,
+ 				   type, mask);
  }
+-EXPORT_SYMBOL_GPL(crypto_has_skcipher2);
++EXPORT_SYMBOL_GPL(crypto_has_skcipher);
+ 
+ static int skcipher_prepare_alg(struct skcipher_alg *alg)
+ {
+diff --git a/include/crypto/skcipher.h b/include/crypto/skcipher.h
+index 0bce6005d325d..6514e32e7c2fd 100644
+--- a/include/crypto/skcipher.h
++++ b/include/crypto/skcipher.h
+@@ -220,30 +220,13 @@ static inline void crypto_free_sync_skcipher(struct crypto_sync_skcipher *tfm)
+  * crypto_has_skcipher() - Search for the availability of an skcipher.
+  * @alg_name: is the cra_name / name or cra_driver_name / driver name of the
+  *	      skcipher
+- * @type: specifies the type of the cipher
+- * @mask: specifies the mask for the cipher
+- *
+- * Return: true when the skcipher is known to the kernel crypto API; false
+- *	   otherwise
+- */
+-static inline int crypto_has_skcipher(const char *alg_name, u32 type,
+-					u32 mask)
+-{
+-	return crypto_has_alg(alg_name, crypto_skcipher_type(type),
+-			      crypto_skcipher_mask(mask));
+-}
+-
+-/**
+- * crypto_has_skcipher2() - Search for the availability of an skcipher.
+- * @alg_name: is the cra_name / name or cra_driver_name / driver name of the
+- *	      skcipher
+  * @type: specifies the type of the skcipher
+  * @mask: specifies the mask for the skcipher
+  *
+  * Return: true when the skcipher is known to the kernel crypto API; false
+  *	   otherwise
+  */
+-int crypto_has_skcipher2(const char *alg_name, u32 type, u32 mask);
++int crypto_has_skcipher(const char *alg_name, u32 type, u32 mask);
+ 
+ static inline const char *crypto_skcipher_driver_name(
+ 	struct crypto_skcipher *tfm)
 -- 
-2.41.0
+2.39.2
 
 
 
