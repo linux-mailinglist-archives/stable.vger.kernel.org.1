@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01DD1761625
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A50FA7614D0
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234783AbjGYLg5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43878 "EHLO
+        id S234455AbjGYLXM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234819AbjGYLgs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:48 -0400
+        with ESMTP id S234477AbjGYLW4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E82EE211C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8AD19BB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 693A861655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7829BC433C8;
-        Tue, 25 Jul 2023 11:36:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E40A0616A5
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1042C433C9;
+        Tue, 25 Jul 2023 11:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284996;
-        bh=hrMI2h1c06JO3SNxITp5DiYl+L6M7s9Z5kRILGvh2qs=;
+        s=korg; t=1690284168;
+        bh=V5W0Bn0qay+Bh1r5BUFiMvXV5Mz85bTKyqUZQmYwe7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nKo0zUrmi4HFTeqRzQb3leVxS91Onm2MfTmyauUm3VLsX31DHnZLrGHxoPFYM3Etn
-         MGRyALOATZe3hubZZbwvknni2ffbgnW/1xeS5D3bjzRMr3sontw9l4K2F3qTPwKVma
-         66TwdAwapUprMCaekT6HYKBLEQklT/HCQK0m9t+0=
+        b=HjQf4/MwCe3kLsQpQpPNWRaJs/4J4lz6hCZz8HJni+xB9Azev2HfP7X4ibJGfs2gu
+         rFVe2rm2Xn9gMm6OKkqjb3dO9DGkl9jLPCFxfWBambVhRkNdX5c+tDc/cK2/4WMw4D
+         IwHKsdQ/Wduek6kcYzZmmlytCfcVHBJpqMcOZZ7s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 046/313] wifi: ray_cs: Utilize strnlen() in parse_addr()
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 260/509] sctp: fix potential deadlock on &net->sctp.addr_wq_lock
 Date:   Tue, 25 Jul 2023 12:43:19 +0200
-Message-ID: <20230725104523.056347346@linuxfoundation.org>
+Message-ID: <20230725104605.655411899@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 9e8e9187673cb24324f9165dd47b2b28f60b0b10 ]
+[ Upstream commit 6feb37b3b06e9049e20dcf7e23998f92c9c5be9a ]
 
-Instead of doing simple operations and using an additional variable on stack,
-utilize strnlen() and reuse len variable.
+As &net->sctp.addr_wq_lock is also acquired by the timer
+sctp_addr_wq_timeout_handler() in protocal.c, the same lock acquisition
+at sctp_auto_asconf_init() seems should disable irq since it is called
+from sctp_accept() under process context.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20220603164414.48436-1-andriy.shevchenko@linux.intel.com
-Stable-dep-of: 4f8d66a9fb2e ("wifi: ray_cs: Fix an error handling path in ray_probe()")
+Possible deadlock scenario:
+sctp_accept()
+    -> sctp_sock_migrate()
+    -> sctp_auto_asconf_init()
+    -> spin_lock(&net->sctp.addr_wq_lock)
+        <timer interrupt>
+        -> sctp_addr_wq_timeout_handler()
+        -> spin_lock_bh(&net->sctp.addr_wq_lock); (deadlock here)
+
+This flaw was found using an experimental static analysis tool we are
+developing for irq-related deadlock.
+
+The tentative patch fix the potential deadlock by spin_lock_bh().
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Fixes: 34e5b0118685 ("sctp: delay auto_asconf init until binding the first addr")
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/r/20230627120340.19432-1-dg573847474@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ray_cs.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ net/sctp/socket.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
-index 3836d6ac53049..29dd303a7beae 100644
---- a/drivers/net/wireless/ray_cs.c
-+++ b/drivers/net/wireless/ray_cs.c
-@@ -1641,31 +1641,29 @@ static void authenticate_timeout(struct timer_list *t)
- /*===========================================================================*/
- static int parse_addr(char *in_str, UCHAR *out)
- {
-+	int i, k;
- 	int len;
--	int i, j, k;
- 	int status;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 4a7f811abae4e..534364bb871a3 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -362,9 +362,9 @@ static void sctp_auto_asconf_init(struct sctp_sock *sp)
+ 	struct net *net = sock_net(&sp->inet.sk);
  
- 	if (in_str == NULL)
- 		return 0;
--	if ((len = strlen(in_str)) < 2)
-+	len = strnlen(in_str, ADDRLEN * 2 + 1) - 1;
-+	if (len < 1)
- 		return 0;
- 	memset(out, 0, ADDRLEN);
- 
- 	status = 1;
--	j = len - 1;
--	if (j > 12)
--		j = 12;
- 	i = 5;
- 
--	while (j > 0) {
--		if ((k = hex_to_bin(in_str[j--])) != -1)
-+	while (len > 0) {
-+		if ((k = hex_to_bin(in_str[len--])) != -1)
- 			out[i] = k;
- 		else
- 			return 0;
- 
--		if (j == 0)
-+		if (len == 0)
- 			break;
--		if ((k = hex_to_bin(in_str[j--])) != -1)
-+		if ((k = hex_to_bin(in_str[len--])) != -1)
- 			out[i] += k << 4;
- 		else
- 			return 0;
+ 	if (net->sctp.default_auto_asconf) {
+-		spin_lock(&net->sctp.addr_wq_lock);
++		spin_lock_bh(&net->sctp.addr_wq_lock);
+ 		list_add_tail(&sp->auto_asconf_list, &net->sctp.auto_asconf_splist);
+-		spin_unlock(&net->sctp.addr_wq_lock);
++		spin_unlock_bh(&net->sctp.addr_wq_lock);
+ 		sp->do_auto_asconf = 1;
+ 	}
+ }
 -- 
 2.39.2
 
