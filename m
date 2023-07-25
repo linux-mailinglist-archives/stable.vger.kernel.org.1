@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96211761356
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E776976158E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234171AbjGYLJn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
+        id S234770AbjGYLaY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234157AbjGYLJ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8213C11
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:32 -0700 (PDT)
+        with ESMTP id S234775AbjGYLaX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2776BF2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 052A261648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18528C433C8;
-        Tue, 25 Jul 2023 11:08:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98E8B615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42E6C433C8;
+        Tue, 25 Jul 2023 11:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283311;
-        bh=u0s5v0cHR+hs5cNgLiIluV/YDq29nb9yExBQ2TG2pYE=;
+        s=korg; t=1690284621;
+        bh=3hVOqhpUKBfp49UetUyXqNRvf0Ru5WVSLISE50cN978=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RCt6b4yC3LJ1V8RQQF0d7Fk8JcjDXSa47WvhaHbiSHM3LTBuqx6q7RjpvYAUolbia
-         0+1GzVC0WC94GaZa+e3lfMkX2hun2swMASFCCDIdIoqR1JrKpK8Fg0duVgg/jYl9Yw
-         UE51EER6mbdJ+KHgap7AAguAsur9nY6rTk+E42uE=
+        b=k0Y6SLylwKOQiayz4QI73q3MCchTKnQZ/MgqktBdf+F4FQQYjK+pJHe56iUnhlZCT
+         yY6UuG9v4JAgVl06nBlQvds/qCIC3qEg4Sz5ZVOtx7fHWXoT3ElRnNGzCwEArv5mSc
+         PiEUP5Wp9zkFQITTLTlPC+JAjnitbj7Hrt7RjJxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan Katz <jkatz@eitmlabs.org>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.15 09/78] fuse: ioctl: translate ENOSYS in outarg
-Date:   Tue, 25 Jul 2023 12:46:00 +0200
-Message-ID: <20230725104451.685794071@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mohamed Khalfella <mkhalfella@purestorage.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 422/509] tracing/histograms: Add histograms to hist_vars if they have referenced variables
+Date:   Tue, 25 Jul 2023 12:46:01 +0200
+Message-ID: <20230725104613.004154159@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,88 +55,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-commit 6a567e920fd0451bf29abc418df96c3365925770 upstream.
+commit 6018b585e8c6fa7d85d4b38d9ce49a5b67be7078 upstream.
 
-Fuse shouldn't return ENOSYS from its ioctl implementation. If userspace
-responds with ENOSYS it should be translated to ENOTTY.
+Hist triggers can have referenced variables without having direct
+variables fields. This can be the case if referenced variables are added
+for trigger actions. In this case the newly added references will not
+have field variables. Not taking such referenced variables into
+consideration can result in a bug where it would be possible to remove
+hist trigger with variables being refenced. This will result in a bug
+that is easily reproducable like so
 
-There are two ways to return an error from the IOCTL request:
+$ cd /sys/kernel/tracing
+$ echo 'synthetic_sys_enter char[] comm; long id' >> synthetic_events
+$ echo 'hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
+$ echo 'hist:keys=common_pid.execname,id.syscall:onmatch(raw_syscalls.sys_enter).synthetic_sys_enter($comm, id)' >> events/raw_syscalls/sys_enter/trigger
+$ echo '!hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
 
- - fuse_out_header.error
- - fuse_ioctl_out.result
+[  100.263533] ==================================================================
+[  100.264634] BUG: KASAN: slab-use-after-free in resolve_var_refs+0xc7/0x180
+[  100.265520] Read of size 8 at addr ffff88810375d0f0 by task bash/439
+[  100.266320]
+[  100.266533] CPU: 2 PID: 439 Comm: bash Not tainted 6.5.0-rc1 #4
+[  100.267277] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
+[  100.268561] Call Trace:
+[  100.268902]  <TASK>
+[  100.269189]  dump_stack_lvl+0x4c/0x70
+[  100.269680]  print_report+0xc5/0x600
+[  100.270165]  ? resolve_var_refs+0xc7/0x180
+[  100.270697]  ? kasan_complete_mode_report_info+0x80/0x1f0
+[  100.271389]  ? resolve_var_refs+0xc7/0x180
+[  100.271913]  kasan_report+0xbd/0x100
+[  100.272380]  ? resolve_var_refs+0xc7/0x180
+[  100.272920]  __asan_load8+0x71/0xa0
+[  100.273377]  resolve_var_refs+0xc7/0x180
+[  100.273888]  event_hist_trigger+0x749/0x860
+[  100.274505]  ? kasan_save_stack+0x2a/0x50
+[  100.275024]  ? kasan_set_track+0x29/0x40
+[  100.275536]  ? __pfx_event_hist_trigger+0x10/0x10
+[  100.276138]  ? ksys_write+0xd1/0x170
+[  100.276607]  ? do_syscall_64+0x3c/0x90
+[  100.277099]  ? entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  100.277771]  ? destroy_hist_data+0x446/0x470
+[  100.278324]  ? event_hist_trigger_parse+0xa6c/0x3860
+[  100.278962]  ? __pfx_event_hist_trigger_parse+0x10/0x10
+[  100.279627]  ? __kasan_check_write+0x18/0x20
+[  100.280177]  ? mutex_unlock+0x85/0xd0
+[  100.280660]  ? __pfx_mutex_unlock+0x10/0x10
+[  100.281200]  ? kfree+0x7b/0x120
+[  100.281619]  ? ____kasan_slab_free+0x15d/0x1d0
+[  100.282197]  ? event_trigger_write+0xac/0x100
+[  100.282764]  ? __kasan_slab_free+0x16/0x20
+[  100.283293]  ? __kmem_cache_free+0x153/0x2f0
+[  100.283844]  ? sched_mm_cid_remote_clear+0xb1/0x250
+[  100.284550]  ? __pfx_sched_mm_cid_remote_clear+0x10/0x10
+[  100.285221]  ? event_trigger_write+0xbc/0x100
+[  100.285781]  ? __kasan_check_read+0x15/0x20
+[  100.286321]  ? __bitmap_weight+0x66/0xa0
+[  100.286833]  ? _find_next_bit+0x46/0xe0
+[  100.287334]  ? task_mm_cid_work+0x37f/0x450
+[  100.287872]  event_triggers_call+0x84/0x150
+[  100.288408]  trace_event_buffer_commit+0x339/0x430
+[  100.289073]  ? ring_buffer_event_data+0x3f/0x60
+[  100.292189]  trace_event_raw_event_sys_enter+0x8b/0xe0
+[  100.295434]  syscall_trace_enter.constprop.0+0x18f/0x1b0
+[  100.298653]  syscall_enter_from_user_mode+0x32/0x40
+[  100.301808]  do_syscall_64+0x1a/0x90
+[  100.304748]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  100.307775] RIP: 0033:0x7f686c75c1cb
+[  100.310617] Code: 73 01 c3 48 8b 0d 65 3c 10 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 21 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 35 3c 10 00 f7 d8 64 89 01 48
+[  100.317847] RSP: 002b:00007ffc60137a38 EFLAGS: 00000246 ORIG_RAX: 0000000000000021
+[  100.321200] RAX: ffffffffffffffda RBX: 000055f566469ea0 RCX: 00007f686c75c1cb
+[  100.324631] RDX: 0000000000000001 RSI: 0000000000000001 RDI: 000000000000000a
+[  100.328104] RBP: 00007ffc60137ac0 R08: 00007f686c818460 R09: 000000000000000a
+[  100.331509] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+[  100.334992] R13: 0000000000000007 R14: 000000000000000a R15: 0000000000000007
+[  100.338381]  </TASK>
 
-Commit 02c0cab8e734 ("fuse: ioctl: translate ENOSYS") already fixed this
-issue for the first case, but missed the second case.  This patch fixes the
-second case.
+We hit the bug because when second hist trigger has was created
+has_hist_vars() returned false because hist trigger did not have
+variables. As a result of that save_hist_vars() was not called to add
+the trigger to trace_array->hist_vars. Later on when we attempted to
+remove the first histogram find_any_var_ref() failed to detect it is
+being used because it did not find the second trigger in hist_vars list.
 
-Reported-by: Jonathan Katz <jkatz@eitmlabs.org>
-Closes: https://lore.kernel.org/all/CALKgVmcC1VUV_gJVq70n--omMJZUb4HSh_FqvLTHgNBc+HCLFQ@mail.gmail.com/
-Fixes: 02c0cab8e734 ("fuse: ioctl: translate ENOSYS")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+With this change we wait until trigger actions are created so we can take
+into consideration if hist trigger has variable references. Also, now we
+check the return value of save_hist_vars() and fail trigger creation if
+save_hist_vars() fails.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230712223021.636335-1-mkhalfella@purestorage.com
+
+Cc: stable@vger.kernel.org
+Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/ioctl.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ kernel/trace/trace_events_hist.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/fuse/ioctl.c
-+++ b/fs/fuse/ioctl.c
-@@ -9,14 +9,23 @@
- #include <linux/compat.h>
- #include <linux/fileattr.h>
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5817,13 +5817,15 @@ static int event_hist_trigger_func(struc
+ 	if (get_named_trigger_data(trigger_data))
+ 		goto enable;
  
--static ssize_t fuse_send_ioctl(struct fuse_mount *fm, struct fuse_args *args)
-+static ssize_t fuse_send_ioctl(struct fuse_mount *fm, struct fuse_args *args,
-+			       struct fuse_ioctl_out *outarg)
- {
--	ssize_t ret = fuse_simple_request(fm, args);
-+	ssize_t ret;
+-	if (has_hist_vars(hist_data))
+-		save_hist_vars(hist_data);
+-
+ 	ret = create_actions(hist_data);
+ 	if (ret)
+ 		goto out_unreg;
+ 
++	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
++		if (save_hist_vars(hist_data))
++			goto out_unreg;
++	}
 +
-+	args->out_args[0].size = sizeof(*outarg);
-+	args->out_args[0].value = outarg;
-+
-+	ret = fuse_simple_request(fm, args);
- 
- 	/* Translate ENOSYS, which shouldn't be returned from fs */
- 	if (ret == -ENOSYS)
- 		ret = -ENOTTY;
- 
-+	if (ret >= 0 && outarg->result == -ENOSYS)
-+		outarg->result = -ENOTTY;
-+
- 	return ret;
- }
- 
-@@ -264,13 +273,11 @@ long fuse_do_ioctl(struct file *file, un
- 	}
- 
- 	ap.args.out_numargs = 2;
--	ap.args.out_args[0].size = sizeof(outarg);
--	ap.args.out_args[0].value = &outarg;
- 	ap.args.out_args[1].size = out_size;
- 	ap.args.out_pages = true;
- 	ap.args.out_argvar = true;
- 
--	transferred = fuse_send_ioctl(fm, &ap.args);
-+	transferred = fuse_send_ioctl(fm, &ap.args, &outarg);
- 	err = transferred;
- 	if (transferred < 0)
- 		goto out;
-@@ -399,12 +406,10 @@ static int fuse_priv_ioctl(struct inode
- 	args.in_args[1].size = inarg.in_size;
- 	args.in_args[1].value = ptr;
- 	args.out_numargs = 2;
--	args.out_args[0].size = sizeof(outarg);
--	args.out_args[0].value = &outarg;
- 	args.out_args[1].size = inarg.out_size;
- 	args.out_args[1].value = ptr;
- 
--	err = fuse_send_ioctl(fm, &args);
-+	err = fuse_send_ioctl(fm, &args, &outarg);
- 	if (!err) {
- 		if (outarg.result < 0)
- 			err = outarg.result;
+ 	ret = tracing_map_init(hist_data->map);
+ 	if (ret)
+ 		goto out_unreg;
 
 
