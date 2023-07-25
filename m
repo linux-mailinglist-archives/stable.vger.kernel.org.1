@@ -2,51 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DA73761217
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C059761578
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233789AbjGYK70 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
+        id S234720AbjGYL3V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:29:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233955AbjGYK62 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:28 -0400
+        with ESMTP id S234734AbjGYL3V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB041FE5
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655C2F2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F91D61655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFFBC433C8;
-        Tue, 25 Jul 2023 10:55:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0549A6168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5E5C433C7;
+        Tue, 25 Jul 2023 11:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282550;
-        bh=7T7RpaPmHWLW3VeJp9GuJnXf3KVjyD/E2lrJVlC4/qU=;
+        s=korg; t=1690284559;
+        bh=Owi/QjIHX5cSUbEgRPggfw458L5ZgqIgxYoPhkQrOII=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m4CZnQs2HQefMWYrASgVqBaMIFIQeMdX6q5i/LuqN66LzQ3LfvpzjrLilzAwIIGKJ
-         MgEe1Cx4+nk/KnXIpjHAazJp5lCDJIe7kGs0CC/9gN9r1PXH2tWSw5eYIzd39PxAAk
-         pV7Dn8hz7bjn7+Ic4+snST9loNAyy9us2SP5Xyus=
+        b=hHr7jnAfj4uJE/ZiHV4QRAsRLzxePLELKZ9EXr6Hngdf6ywNhd/he2+jmGHv/uDOU
+         Ue9fab2stwSPvBdi2dZMR086T0pCORDeTYIzdTTP4DHEVvqFkUPFMuYWH7aXrbyYsR
+         eKv1+EevTr5ewozt3eGmXZfSvD56bB/av1xG68sc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ding Hui <dinghui@sangfor.com.cn>,
-        Donglin Peng <pengdonglin@sangfor.com.cn>,
-        Huang Cun <huangcun@sangfor.com.cn>,
-        Simon Horman <simon.horman@corigine.com>,
-        Madhu Chittim <madhu.chittim@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 170/227] iavf: Fix use-after-free in free_netdev
-Date:   Tue, 25 Jul 2023 12:45:37 +0200
-Message-ID: <20230725104521.928557738@linuxfoundation.org>
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 5.10 399/509] PCI: rockchip: Write PCI Device ID to correct register
+Date:   Tue, 25 Jul 2023 12:45:38 +0200
+Message-ID: <20230725104612.017197271@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,215 +55,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ding Hui <dinghui@sangfor.com.cn>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit 5f4fa1672d98fe99d2297b03add35346f1685d6b ]
+commit 1f1c42ece18de365c976a060f3c8eb481b038e3a upstream.
 
-We do netif_napi_add() for all allocated q_vectors[], but potentially
-do netif_napi_del() for part of them, then kfree q_vectors and leave
-invalid pointers at dev->napi_list.
+Write PCI Device ID (DID) to the correct register. The Device ID was not
+updated through the correct register. Device ID was written to a read-only
+register and therefore did not work. The Device ID is now set through the
+correct register. This is documented in the RK3399 TRM section 17.6.6.1.1
 
-Reproducer:
-
-  [root@host ~]# cat repro.sh
-  #!/bin/bash
-
-  pf_dbsf="0000:41:00.0"
-  vf0_dbsf="0000:41:02.0"
-  g_pids=()
-
-  function do_set_numvf()
-  {
-      echo 2 >/sys/bus/pci/devices/${pf_dbsf}/sriov_numvfs
-      sleep $((RANDOM%3+1))
-      echo 0 >/sys/bus/pci/devices/${pf_dbsf}/sriov_numvfs
-      sleep $((RANDOM%3+1))
-  }
-
-  function do_set_channel()
-  {
-      local nic=$(ls -1 --indicator-style=none /sys/bus/pci/devices/${vf0_dbsf}/net/)
-      [ -z "$nic" ] && { sleep $((RANDOM%3)) ; return 1; }
-      ifconfig $nic 192.168.18.5 netmask 255.255.255.0
-      ifconfig $nic up
-      ethtool -L $nic combined 1
-      ethtool -L $nic combined 4
-      sleep $((RANDOM%3))
-  }
-
-  function on_exit()
-  {
-      local pid
-      for pid in "${g_pids[@]}"; do
-          kill -0 "$pid" &>/dev/null && kill "$pid" &>/dev/null
-      done
-      g_pids=()
-  }
-
-  trap "on_exit; exit" EXIT
-
-  while :; do do_set_numvf ; done &
-  g_pids+=($!)
-  while :; do do_set_channel ; done &
-  g_pids+=($!)
-
-  wait
-
-Result:
-
-[ 4093.900222] ==================================================================
-[ 4093.900230] BUG: KASAN: use-after-free in free_netdev+0x308/0x390
-[ 4093.900232] Read of size 8 at addr ffff88b4dc145640 by task repro.sh/6699
-[ 4093.900233]
-[ 4093.900236] CPU: 10 PID: 6699 Comm: repro.sh Kdump: loaded Tainted: G           O     --------- -t - 4.18.0 #1
-[ 4093.900238] Hardware name: Powerleader PR2008AL/H12DSi-N6, BIOS 2.0 04/09/2021
-[ 4093.900239] Call Trace:
-[ 4093.900244]  dump_stack+0x71/0xab
-[ 4093.900249]  print_address_description+0x6b/0x290
-[ 4093.900251]  ? free_netdev+0x308/0x390
-[ 4093.900252]  kasan_report+0x14a/0x2b0
-[ 4093.900254]  free_netdev+0x308/0x390
-[ 4093.900261]  iavf_remove+0x825/0xd20 [iavf]
-[ 4093.900265]  pci_device_remove+0xa8/0x1f0
-[ 4093.900268]  device_release_driver_internal+0x1c6/0x460
-[ 4093.900271]  pci_stop_bus_device+0x101/0x150
-[ 4093.900273]  pci_stop_and_remove_bus_device+0xe/0x20
-[ 4093.900275]  pci_iov_remove_virtfn+0x187/0x420
-[ 4093.900277]  ? pci_iov_add_virtfn+0xe10/0xe10
-[ 4093.900278]  ? pci_get_subsys+0x90/0x90
-[ 4093.900280]  sriov_disable+0xed/0x3e0
-[ 4093.900282]  ? bus_find_device+0x12d/0x1a0
-[ 4093.900290]  i40e_free_vfs+0x754/0x1210 [i40e]
-[ 4093.900298]  ? i40e_reset_all_vfs+0x880/0x880 [i40e]
-[ 4093.900299]  ? pci_get_device+0x7c/0x90
-[ 4093.900300]  ? pci_get_subsys+0x90/0x90
-[ 4093.900306]  ? pci_vfs_assigned.part.7+0x144/0x210
-[ 4093.900309]  ? __mutex_lock_slowpath+0x10/0x10
-[ 4093.900315]  i40e_pci_sriov_configure+0x1fa/0x2e0 [i40e]
-[ 4093.900318]  sriov_numvfs_store+0x214/0x290
-[ 4093.900320]  ? sriov_totalvfs_show+0x30/0x30
-[ 4093.900321]  ? __mutex_lock_slowpath+0x10/0x10
-[ 4093.900323]  ? __check_object_size+0x15a/0x350
-[ 4093.900326]  kernfs_fop_write+0x280/0x3f0
-[ 4093.900329]  vfs_write+0x145/0x440
-[ 4093.900330]  ksys_write+0xab/0x160
-[ 4093.900332]  ? __ia32_sys_read+0xb0/0xb0
-[ 4093.900334]  ? fput_many+0x1a/0x120
-[ 4093.900335]  ? filp_close+0xf0/0x130
-[ 4093.900338]  do_syscall_64+0xa0/0x370
-[ 4093.900339]  ? page_fault+0x8/0x30
-[ 4093.900341]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-[ 4093.900357] RIP: 0033:0x7f16ad4d22c0
-[ 4093.900359] Code: 73 01 c3 48 8b 0d d8 cb 2c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d 89 24 2d 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 fe dd 01 00 48 89 04 24
-[ 4093.900360] RSP: 002b:00007ffd6491b7f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[ 4093.900362] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f16ad4d22c0
-[ 4093.900363] RDX: 0000000000000002 RSI: 0000000001a41408 RDI: 0000000000000001
-[ 4093.900364] RBP: 0000000001a41408 R08: 00007f16ad7a1780 R09: 00007f16ae1f2700
-[ 4093.900364] R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000002
-[ 4093.900365] R13: 0000000000000001 R14: 00007f16ad7a0620 R15: 0000000000000001
-[ 4093.900367]
-[ 4093.900368] Allocated by task 820:
-[ 4093.900371]  kasan_kmalloc+0xa6/0xd0
-[ 4093.900373]  __kmalloc+0xfb/0x200
-[ 4093.900376]  iavf_init_interrupt_scheme+0x63b/0x1320 [iavf]
-[ 4093.900380]  iavf_watchdog_task+0x3d51/0x52c0 [iavf]
-[ 4093.900382]  process_one_work+0x56a/0x11f0
-[ 4093.900383]  worker_thread+0x8f/0xf40
-[ 4093.900384]  kthread+0x2a0/0x390
-[ 4093.900385]  ret_from_fork+0x1f/0x40
-[ 4093.900387]  0xffffffffffffffff
-[ 4093.900387]
-[ 4093.900388] Freed by task 6699:
-[ 4093.900390]  __kasan_slab_free+0x137/0x190
-[ 4093.900391]  kfree+0x8b/0x1b0
-[ 4093.900394]  iavf_free_q_vectors+0x11d/0x1a0 [iavf]
-[ 4093.900397]  iavf_remove+0x35a/0xd20 [iavf]
-[ 4093.900399]  pci_device_remove+0xa8/0x1f0
-[ 4093.900400]  device_release_driver_internal+0x1c6/0x460
-[ 4093.900401]  pci_stop_bus_device+0x101/0x150
-[ 4093.900402]  pci_stop_and_remove_bus_device+0xe/0x20
-[ 4093.900403]  pci_iov_remove_virtfn+0x187/0x420
-[ 4093.900404]  sriov_disable+0xed/0x3e0
-[ 4093.900409]  i40e_free_vfs+0x754/0x1210 [i40e]
-[ 4093.900415]  i40e_pci_sriov_configure+0x1fa/0x2e0 [i40e]
-[ 4093.900416]  sriov_numvfs_store+0x214/0x290
-[ 4093.900417]  kernfs_fop_write+0x280/0x3f0
-[ 4093.900418]  vfs_write+0x145/0x440
-[ 4093.900419]  ksys_write+0xab/0x160
-[ 4093.900420]  do_syscall_64+0xa0/0x370
-[ 4093.900421]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-[ 4093.900422]  0xffffffffffffffff
-[ 4093.900422]
-[ 4093.900424] The buggy address belongs to the object at ffff88b4dc144200
-                which belongs to the cache kmalloc-8k of size 8192
-[ 4093.900425] The buggy address is located 5184 bytes inside of
-                8192-byte region [ffff88b4dc144200, ffff88b4dc146200)
-[ 4093.900425] The buggy address belongs to the page:
-[ 4093.900427] page:ffffea00d3705000 refcount:1 mapcount:0 mapping:ffff88bf04415c80 index:0x0 compound_mapcount: 0
-[ 4093.900430] flags: 0x10000000008100(slab|head)
-[ 4093.900433] raw: 0010000000008100 dead000000000100 dead000000000200 ffff88bf04415c80
-[ 4093.900434] raw: 0000000000000000 0000000000030003 00000001ffffffff 0000000000000000
-[ 4093.900434] page dumped because: kasan: bad access detected
-[ 4093.900435]
-[ 4093.900435] Memory state around the buggy address:
-[ 4093.900436]  ffff88b4dc145500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900437]  ffff88b4dc145580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900438] >ffff88b4dc145600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900438]                                            ^
-[ 4093.900439]  ffff88b4dc145680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900440]  ffff88b4dc145700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[ 4093.900440] ==================================================================
-
-Although the patch #2 (of 2) can avoid the issue triggered by this
-repro.sh, there still are other potential risks that if num_active_queues
-is changed to less than allocated q_vectors[] by unexpected, the
-mismatched netif_napi_add/del() can also cause UAF.
-
-Since we actually call netif_napi_add() for all allocated q_vectors
-unconditionally in iavf_alloc_q_vectors(), so we should fix it by
-letting netif_napi_del() match to netif_napi_add().
-
-Fixes: 5eae00c57f5e ("i40evf: main driver core")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: Donglin Peng <pengdonglin@sangfor.com.cn>
-Cc: Huang Cun <huangcun@sangfor.com.cn>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230418074700.1083505-3-rick.wertenbroek@gmail.com
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/pci/controller/pcie-rockchip-ep.c |    6 ++++--
+ drivers/pci/controller/pcie-rockchip.h    |    2 ++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 4a66873882d12..601de8e8f3654 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1840,19 +1840,16 @@ static int iavf_alloc_q_vectors(struct iavf_adapter *adapter)
- static void iavf_free_q_vectors(struct iavf_adapter *adapter)
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -125,6 +125,7 @@ static void rockchip_pcie_prog_ep_ob_atu
+ static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn,
+ 					 struct pci_epf_header *hdr)
  {
- 	int q_idx, num_q_vectors;
--	int napi_vectors;
++	u32 reg;
+ 	struct rockchip_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct rockchip_pcie *rockchip = &ep->rockchip;
  
- 	if (!adapter->q_vectors)
- 		return;
- 
- 	num_q_vectors = adapter->num_msix_vectors - NONQ_VECS;
--	napi_vectors = adapter->num_active_queues;
- 
- 	for (q_idx = 0; q_idx < num_q_vectors; q_idx++) {
- 		struct iavf_q_vector *q_vector = &adapter->q_vectors[q_idx];
- 
--		if (q_idx < napi_vectors)
--			netif_napi_del(&q_vector->napi);
-+		netif_napi_del(&q_vector->napi);
+@@ -137,8 +138,9 @@ static int rockchip_pcie_ep_write_header
+ 				    PCIE_CORE_CONFIG_VENDOR);
  	}
- 	kfree(adapter->q_vectors);
- 	adapter->q_vectors = NULL;
--- 
-2.39.2
-
+ 
+-	rockchip_pcie_write(rockchip, hdr->deviceid << 16,
+-			    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) + PCI_VENDOR_ID);
++	reg = rockchip_pcie_read(rockchip, PCIE_EP_CONFIG_DID_VID);
++	reg = (reg & 0xFFFF) | (hdr->deviceid << 16);
++	rockchip_pcie_write(rockchip, reg, PCIE_EP_CONFIG_DID_VID);
+ 
+ 	rockchip_pcie_write(rockchip,
+ 			    hdr->revid |
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -132,6 +132,8 @@
+ #define PCIE_RC_RP_ATS_BASE		0x400000
+ #define PCIE_RC_CONFIG_NORMAL_BASE	0x800000
+ #define PCIE_RC_CONFIG_BASE		0xa00000
++#define PCIE_EP_CONFIG_BASE		0xa00000
++#define PCIE_EP_CONFIG_DID_VID		(PCIE_EP_CONFIG_BASE + 0x00)
+ #define PCIE_RC_CONFIG_RID_CCR		(PCIE_RC_CONFIG_BASE + 0x08)
+ #define   PCIE_RC_CONFIG_SCC_SHIFT		16
+ #define PCIE_RC_CONFIG_DCR		(PCIE_RC_CONFIG_BASE + 0xc4)
 
 
