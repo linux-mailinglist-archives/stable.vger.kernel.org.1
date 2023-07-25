@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8207614D3
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F2576162A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:37:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234470AbjGYLXO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
+        id S234806AbjGYLhE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234538AbjGYLXF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940031BE6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:00 -0700 (PDT)
+        with ESMTP id S234835AbjGYLhA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:37:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CABEE76
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 157B2616A2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257ECC433C8;
-        Tue, 25 Jul 2023 11:22:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E71C61655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5F3C433C8;
+        Tue, 25 Jul 2023 11:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284179;
-        bh=ruDTvUEfpxSI5BxAppgBqtvyJ8Vo1qZdKq24H9i+1zQ=;
+        s=korg; t=1690285007;
+        bh=hrQDleQjtraVK5ODyKDsg1EWZfeHjKzXlIALr2w61Gs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XNkAevRki4rCYQFsv3QR7w0v4RhcihBtFzWSQEQ+HWdo7V4A+KDVFeFutH/wgPR9m
-         35g1y/AR8PbXQMBJ1te0Fg8GaC5Y1ALrM+raN76jiYFLGrXl2xY4Siy6rPFF7g5vHc
-         uKaszJf4HLGU4TqH+qrkMHS3vEGySwSi8cTGKFmk=
+        b=Ue9d81HuaJ7rtg8JQIASDg7INPO6t+JmaJKqLzdA1R1UluK8Bnh/MJY5fO++ar2zA
+         gIICVSLim0FmVBWqqTHrif8+kJfgJfNx65Wq82WpucJgVsHmV0UjPGR65P76NDqXW6
+         3C7UKJ97z2sM1Ez8MQcW9QASfqJ9KYJcPF+nBNc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 264/509] mailbox: ti-msgmgr: Fill non-message tx data fields with 0x0
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 050/313] wifi: rsi: Do not set MMC_PM_KEEP_POWER in shutdown
 Date:   Tue, 25 Jul 2023 12:43:23 +0200
-Message-ID: <20230725104605.842030904@linuxfoundation.org>
+Message-ID: <20230725104523.236460433@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,73 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nishanth Menon <nm@ti.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 1b712f18c461bd75f018033a15cf381e712806b5 ]
+[ Upstream commit e74f562328b03fbe9cf438f958464dff3a644dfc ]
 
-Sec proxy/message manager data buffer is 60 bytes with the last of the
-registers indicating transmission completion. This however poses a bit
-of a challenge.
+It makes no sense to set MMC_PM_KEEP_POWER in shutdown. The flag
+indicates to the MMC subsystem to keep the slot powered on during
+suspend, but in shutdown the slot should actually be powered off.
+Drop this call.
 
-The backing memory for sec_proxy / message manager is regular memory,
-and all sec proxy does is to trigger a burst of all 60 bytes of data
-over to the target thread backing ring accelerator. It doesn't do a
-memory scrub when it moves data out in the burst. When we transmit
-multiple messages, remnants of previous message is also transmitted
-which results in some random data being set in TISCI fields of
-messages that have been expanded forward.
-
-The entire concept of backward compatibility hinges on the fact that
-the unused message fields remain 0x0 allowing for 0x0 value to be
-specially considered when backward compatibility of message extension
-is done.
-
-So, instead of just writing the completion register, we continue
-to fill the message buffer up with 0x0 (note: for partial message
-involving completion, we already do this).
-
-This allows us to scale and introduce ABI changes back also work with
-other boot stages that may have left data in the internal memory.
-
-While at this, be consistent and explicit with the data_reg pointer
-increment.
-
-Fixes: aace66b170ce ("mailbox: Introduce TI message manager driver")
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Fixes: 063848c3e155 ("rsi: sdio: Add WOWLAN support for S5 shutdown state")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230527222859.273768-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/ti-msgmgr.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/rsi/rsi_91x_sdio.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/mailbox/ti-msgmgr.c b/drivers/mailbox/ti-msgmgr.c
-index 0130628f4d9db..535fe73ce3109 100644
---- a/drivers/mailbox/ti-msgmgr.c
-+++ b/drivers/mailbox/ti-msgmgr.c
-@@ -385,14 +385,20 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
- 		/* Ensure all unused data is 0 */
- 		data_trail &= 0xFFFFFFFF >> (8 * (sizeof(u32) - trail_bytes));
- 		writel(data_trail, data_reg);
--		data_reg++;
-+		data_reg += sizeof(u32);
- 	}
-+
- 	/*
- 	 * 'data_reg' indicates next register to write. If we did not already
- 	 * write on tx complete reg(last reg), we must do so for transmit
-+	 * In addition, we also need to make sure all intermediate data
-+	 * registers(if any required), are reset to 0 for TISCI backward
-+	 * compatibility to be maintained.
- 	 */
--	if (data_reg <= qinst->queue_buff_end)
--		writel(0, qinst->queue_buff_end);
-+	while (data_reg <= qinst->queue_buff_end) {
-+		writel(0, data_reg);
-+		data_reg += sizeof(u32);
-+	}
+diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+index 4fe837090cdae..22b0567ad8261 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
++++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+@@ -1479,9 +1479,6 @@ static void rsi_shutdown(struct device *dev)
+ 	if (sdev->write_fail)
+ 		rsi_dbg(INFO_ZONE, "###### Device is not ready #######\n");
  
- 	return 0;
+-	if (rsi_set_sdio_pm_caps(adapter))
+-		rsi_dbg(INFO_ZONE, "Setting power management caps failed\n");
+-
+ 	rsi_dbg(INFO_ZONE, "***** RSI module shut down *****\n");
  }
+ 
 -- 
 2.39.2
 
