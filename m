@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91D637614AF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84107761605
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234438AbjGYLV6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58916 "EHLO
+        id S234785AbjGYLfl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:35:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234452AbjGYLVx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:53 -0400
+        with ESMTP id S234731AbjGYLff (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:35:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F761BDA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0567419F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E399661699
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E05C433C7;
-        Tue, 25 Jul 2023 11:21:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C91C6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA3BC433C8;
+        Tue, 25 Jul 2023 11:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284107;
-        bh=swAHfD33s/u/gSMbygOmXiXwI1iruQiIsLbB4A8hkKg=;
+        s=korg; t=1690284932;
+        bh=ODi63Xwm3mmXxtPPz5x2wbMoKn+Y4E+kDa1K5VRjd6Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eawGiPZ6Kc/IrWM84J6/w0xM8uHPPsKtcfXxsVDrhZ4Emflvl5rF69KmM1AVK6cxY
-         vmprU6zwrMfFECBHjAOcS2jgrOT2VxvQ52SfYiIFvuRtlkWkxu1a+2sA4PJPcPy9lX
-         AP/H86y0H60ZuNbxn7Gd1UR41JYniyKBPUaKDIvw=
+        b=MDaaukb28X69AmhQtn/njQccbZ22HxK7JVIZ5LgIn9pkkZn58K6euoB9U3+YsvgyA
+         Ky+Lx5Jho9J0HtLxPM7PzR8vJR/vVZs7S6MKNorrLk8hPgv/76K/bTpLGzfgM7OIqC
+         GzcgxTN48DyzhtZkJFyjUD+2/7X9dvqiVmvXMI+Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Muchun Song <songmuchun@bytedance.com>,
-        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 237/509] kernfs: fix missing kernfs_idr_lock to remove an ID from the IDR
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 023/313] powercap: RAPL: Fix CONFIG_IOSF_MBI dependency
 Date:   Tue, 25 Jul 2023 12:42:56 +0200
-Message-ID: <20230725104604.602358425@linuxfoundation.org>
+Message-ID: <20230725104522.123976049@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 30480b988f88c279752f3202a26b6fee5f586aef ]
+[ Upstream commit 4658fe81b3f8afe8adf37734ec5fe595d90415c6 ]
 
-The root->ino_idr is supposed to be protected by kernfs_idr_lock, fix
-it.
+After commit 3382388d7148 ("intel_rapl: abstract RAPL common code"),
+accessing to IOSF_MBI interface is done in the RAPL common code.
 
-Fixes: 488dee96bb62 ("kernfs: allow creating kernfs objects with arbitrary uid/gid")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20230523024017.24851-1-songmuchun@bytedance.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus it is the CONFIG_INTEL_RAPL_CORE that has dependency of
+CONFIG_IOSF_MBI, while CONFIG_INTEL_RAPL_MSR does not.
+
+This problem was not exposed previously because all the previous RAPL
+common code users, aka, the RAPL MSR and MMIO I/F drivers, have
+CONFIG_IOSF_MBI selected.
+
+Fix the CONFIG_IOSF_MBI dependency in RAPL code. This also fixes a build
+time failure when the RAPL TPMI I/F driver is introduced without
+selecting CONFIG_IOSF_MBI.
+
+x86_64-linux-ld: vmlinux.o: in function `set_floor_freq_atom':
+intel_rapl_common.c:(.text+0x2dac9b8): undefined reference to `iosf_mbi_write'
+x86_64-linux-ld: intel_rapl_common.c:(.text+0x2daca66): undefined reference to `iosf_mbi_read'
+
+Reference to iosf_mbi.h is also removed from the RAPL MSR I/F driver.
+
+Fixes: 3382388d7148 ("intel_rapl: abstract RAPL common code")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/all/20230601213246.3271412-1-arnd@kernel.org
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/kernfs/dir.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/powercap/Kconfig          | 4 +++-
+ drivers/powercap/intel_rapl_msr.c | 1 -
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index 8b3c86a502daa..c91ee05cce74f 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -679,7 +679,9 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
- 	return kn;
+diff --git a/drivers/powercap/Kconfig b/drivers/powercap/Kconfig
+index dc1c1381d7fa9..61fd5dfaf7a0f 100644
+--- a/drivers/powercap/Kconfig
++++ b/drivers/powercap/Kconfig
+@@ -18,10 +18,12 @@ if POWERCAP
+ # Client driver configurations go here.
+ config INTEL_RAPL_CORE
+ 	tristate
++	depends on PCI
++	select IOSF_MBI
  
-  err_out3:
-+	spin_lock(&kernfs_idr_lock);
- 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
-+	spin_unlock(&kernfs_idr_lock);
-  err_out2:
- 	kmem_cache_free(kernfs_node_cache, kn);
-  err_out1:
+ config INTEL_RAPL
+ 	tristate "Intel RAPL Support via MSR Interface"
+-	depends on X86 && IOSF_MBI
++	depends on X86 && PCI
+ 	select INTEL_RAPL_CORE
+ 	---help---
+ 	  This enables support for the Intel Running Average Power Limit (RAPL)
+diff --git a/drivers/powercap/intel_rapl_msr.c b/drivers/powercap/intel_rapl_msr.c
+index d5487965bdfe9..6091e462626a4 100644
+--- a/drivers/powercap/intel_rapl_msr.c
++++ b/drivers/powercap/intel_rapl_msr.c
+@@ -22,7 +22,6 @@
+ #include <linux/processor.h>
+ #include <linux/platform_device.h>
+ 
+-#include <asm/iosf_mbi.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/intel-family.h>
+ 
 -- 
 2.39.2
 
