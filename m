@@ -2,56 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D231176175A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65685761392
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232992AbjGYLrc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:47:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55332 "EHLO
+        id S234036AbjGYLLj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232742AbjGYLrU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B373411F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:15 -0700 (PDT)
+        with ESMTP id S234025AbjGYLLZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2431BD1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 289AF6167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7F5C433C8;
-        Tue, 25 Jul 2023 11:47:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B9C5D61681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B53C433C7;
+        Tue, 25 Jul 2023 11:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285634;
-        bh=gbFXmIFnU9PLyfTvzHYYcuKQjES7dc/aVfKMxdAGFUU=;
+        s=korg; t=1690283442;
+        bh=UOkvdbcB5rFaYzdNfibnsHEEx2hrm6PZ3PCYD4WqR2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QpW0DwuleymvyMEGSKfkyZ5NSkxg8xttyXSIoX94yR+t1JJP71wugT3asSQuwjEiX
-         PcXYRYD+VcXqXIAak1/bjW/QwzzvY6eRp7NP0nhabXwbVMcUYcqnSg12swvm6xx2S5
-         YpeemKtO9QVSjHsYAA3DYHfnPdZugbOth1KuhmEU=
+        b=VY5EsiJX72tXb51SxQBqEFZTFl+rYz/OSBhH3wcUbNVpBqS2F14aR5/5SyIrrSAJo
+         KACFwKm9u5eykT4fWYelQH2j4D9K5/usHA8rzZ0IGN5QwNYVUq14vJDMjl406Tn8cO
+         LOTjk2DPHJEtkkmsPNWbQCK85jcSXZ0ViQg/7/OY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, shanzhulig <shanzhulig@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, stable@kernel.org,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.4 275/313] drm/atomic: Fix potential use-after-free in nonblocking commits
+        patches@lists.linux.dev,
+        Mohamed Khalfella <mkhalfella@purestorage.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 77/78] tracing/histograms: Return an error if we fail to add histogram to hist_vars list
 Date:   Tue, 25 Jul 2023 12:47:08 +0200
-Message-ID: <20230725104532.969627955@linuxfoundation.org>
+Message-ID: <20230725104454.260696527@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,91 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-commit 4e076c73e4f6e90816b30fcd4a0d7ab365087255 upstream.
+commit 4b8b3905165ef98386a3c06f196c85d21292d029 upstream.
 
-This requires a bit of background.  Properly done a modeset driver's
-unload/remove sequence should be
+Commit 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if
+they have referenced variables") added a check to fail histogram creation
+if save_hist_vars() failed to add histogram to hist_vars list. But the
+commit failed to set ret to failed return code before jumping to
+unregister histogram, fix it.
 
-	drm_dev_unplug();
-	drm_atomic_helper_shutdown();
-	drm_dev_put();
+Link: https://lore.kernel.org/linux-trace-kernel/20230714203341.51396-1-mkhalfella@purestorage.com
 
-The trouble is that the drm_dev_unplugged() checks are by design racy,
-they do not synchronize against all outstanding ioctl.  This is because
-those ioctl could block forever (both for modeset and for driver
-specific ioctls), leading to deadlocks in hotunplug.  Instead the code
-sections that touch the hardware need to be annotated with
-drm_dev_enter/exit, to avoid accessing hardware resources after the
-unload/remove has finished.
-
-To avoid use-after-free issues all the involved userspace visible
-objects are supposed to hold a reference on the underlying drm_device,
-like drm_file does.
-
-The issue now is that we missed one, the atomic modeset ioctl can be run
-in a nonblocking fashion, and in that case it cannot rely on the implied
-drm_device reference provided by the ioctl calling context.  This can
-result in a use-after-free if an nonblocking atomic commit is carefully
-raced against a driver unload.
-
-Fix this by unconditionally grabbing a drm_device reference for any
-drm_atomic_state structures.  Strictly speaking this isn't required for
-blocking commits and TEST_ONLY calls, but it's the simpler approach.
-
-Thanks to shanzhulig for the initial idea of grabbing an unconditional
-reference, I just added comments, a condensed commit message and fixed a
-minor potential issue in where exactly we drop the final reference.
-
-Reported-by: shanzhulig <shanzhulig@gmail.com>
-Suggested-by: shanzhulig <shanzhulig@gmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: stable@kernel.org
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if they have referenced variables")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_atomic.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events_hist.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_atomic.c
-+++ b/drivers/gpu/drm/drm_atomic.c
-@@ -97,6 +97,12 @@ drm_atomic_state_init(struct drm_device
- 	if (!state->planes)
- 		goto fail;
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5949,7 +5949,8 @@ static int event_hist_trigger_func(struc
+ 		goto out_unreg;
  
-+	/*
-+	 * Because drm_atomic_state can be committed asynchronously we need our
-+	 * own reference and cannot rely on the on implied by drm_file in the
-+	 * ioctl call.
-+	 */
-+	drm_dev_get(dev);
- 	state->dev = dev;
- 
- 	DRM_DEBUG_ATOMIC("Allocated atomic state %p\n", state);
-@@ -256,7 +262,8 @@ EXPORT_SYMBOL(drm_atomic_state_clear);
- void __drm_atomic_state_free(struct kref *ref)
- {
- 	struct drm_atomic_state *state = container_of(ref, typeof(*state), ref);
--	struct drm_mode_config *config = &state->dev->mode_config;
-+	struct drm_device *dev = state->dev;
-+	struct drm_mode_config *config = &dev->mode_config;
- 
- 	drm_atomic_state_clear(state);
- 
-@@ -268,6 +275,8 @@ void __drm_atomic_state_free(struct kref
- 		drm_atomic_state_default_release(state);
- 		kfree(state);
+ 	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
+-		if (save_hist_vars(hist_data))
++		ret = save_hist_vars(hist_data);
++		if (ret)
+ 			goto out_unreg;
  	}
-+
-+	drm_dev_put(dev);
- }
- EXPORT_SYMBOL(__drm_atomic_state_free);
  
 
 
