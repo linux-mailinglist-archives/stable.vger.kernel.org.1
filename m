@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07457761590
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B147612DE
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234775AbjGYLa3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38414 "EHLO
+        id S234006AbjGYLGR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234777AbjGYLa3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD218FB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:27 -0700 (PDT)
+        with ESMTP id S233861AbjGYLF4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F028C4208
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52C836169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC4BC433C7;
-        Tue, 25 Jul 2023 11:30:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D109A6164D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09DDC433C8;
+        Tue, 25 Jul 2023 11:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284626;
-        bh=kYfjBfpg127aEw0UjikM7Tord5pzcpe0kBi/voQBIds=;
+        s=korg; t=1690283041;
+        bh=1XeDw4OdYLZSeLMwsfwmY4myXT098xFwcPj5JHF7uZs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bSqdhGw8a/Q2TAe3B7sIBywY1LzHQelDcgHkPjO/M5CBHs2pwi03RFzWRI8+ghvQm
-         twmc5mhxL9Ux3iqA9Ml34wtqFjppKb+XsQiuvzdBlQ7LCZKaN/BzzraVLjkzszMp+6
-         iSAl1YoGB6WwOKylQ3foCOztv07CZfpiVSkeY36Q=
+        b=itRQRSgx9+IZ5RV4tN6SMYEYYWfMVKbtpqPcfYNOj0lJ4k2co4qY29+Pk3c9vmiuP
+         kAg6YT4vL3/4viPkAtlqaZ8iwYFf4/S0fF6NFCXwv8cvm1rpcx4fR5B4RkVmxDPfYb
+         IfkxXVtogCGVH9Z9k8a2K7WaD6x3B1kuC/S5Q2WA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
-        Song Liu <song@kernel.org>, Jason Baron <jbaron@akamai.com>
-Subject: [PATCH 5.10 406/509] md/raid0: add discard support for the original layout
+        patches@lists.linux.dev, Tristram Ha <Tristram.Ha@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 117/183] net: dsa: microchip: correct KSZ8795 static MAC table access
 Date:   Tue, 25 Jul 2023 12:45:45 +0200
-Message-ID: <20230725104612.312839228@linuxfoundation.org>
+Message-ID: <20230725104512.171866416@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,203 +57,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Baron <jbaron@akamai.com>
+From: Tristram Ha <Tristram.Ha@microchip.com>
 
-commit e836007089ba8fdf24e636ef2b007651fb4582e6 upstream.
+[ Upstream commit 4bdf79d686b49ac49373b36466acfb93972c7d7c ]
 
-We've found that using raid0 with the 'original' layout and discard
-enabled with different disk sizes (such that at least two zones are
-created) can result in data corruption. This is due to the fact that
-the discard handling in 'raid0_handle_discard()' assumes the 'alternate'
-layout. We've seen this corruption using ext4 but other filesystems are
-likely susceptible as well.
+The KSZ8795 driver code was modified to use on KSZ8863/73, which has
+different register definitions.  Some of the new KSZ8795 register
+information are wrong compared to previous code.
 
-More specifically, while multiple zones are necessary to create the
-corruption, the corruption may not occur with multiple zones if they
-layout in such a way the layout matches what the 'alternate' layout
-would have produced. Thus, not all raid0 devices with the 'original'
-layout, different size disks and discard enabled will encounter this
-corruption.
+KSZ8795 also behaves differently in that the STATIC_MAC_TABLE_USE_FID
+and STATIC_MAC_TABLE_FID bits are off by 1 when doing MAC table reading
+than writing.  To compensate that a special code was added to shift the
+register value by 1 before applying those bits.  This is wrong when the
+code is running on KSZ8863, so this special code is only executed when
+KSZ8795 is detected.
 
-The 3.14 kernel inadvertently changed the raid0 disk layout for different
-size disks. Thus, running a pre-3.14 kernel and post-3.14 kernel on the
-same raid0 array could corrupt data. This lead to the creation of the
-'original' layout (to match the pre-3.14 layout) and the 'alternate' layout
-(to match the post 3.14 layout) in the 5.4 kernel time frame and an option
-to tell the kernel which layout to use (since it couldn't be autodetected).
-However, when the 'original' layout was added back to 5.4 discard support
-for the 'original' layout was not added leading this issue.
-
-I've been able to reliably reproduce the corruption with the following
-test case:
-
-1. create raid0 array with different size disks using original layout
-2. mkfs
-3. mount -o discard
-4. create lots of files
-5. remove 1/2 the files
-6. fstrim -a (or just the mount point for the raid0 array)
-7. umount
-8. fsck -fn /dev/md0 (spews all sorts of corruptions)
-
-Let's fix this by adding proper discard support to the 'original' layout.
-The fix 'maps' the 'original' layout disks to the order in which they are
-read/written such that we can compare the disks in the same way that the
-current 'alternate' layout does. A 'disk_shift' field is added to
-'struct strip_zone'. This could be computed on the fly in
-raid0_handle_discard() but by adding this field, we save some computation
-in the discard path.
-
-Note we could also potentially fix this by re-ordering the disks in the
-zones that follow the first one, and then always read/writing them using
-the 'alternate' layout. However, that is seen as a more substantial change,
-and we are attempting the least invasive fix at this time to remedy the
-corruption.
-
-I've verified the change using the reproducer mentioned above. Typically,
-the corruption is seen after less than 3 iterations, while the patch has
-run 500+ iterations.
-
-Cc: NeilBrown <neilb@suse.de>
-Cc: Song Liu <song@kernel.org>
-Fixes: c84a1372df92 ("md/raid0: avoid RAID0 data corruption due to layout confusion.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Baron <jbaron@akamai.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230623180523.1901230-1-jbaron@akamai.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4b20a07e103f ("net: dsa: microchip: ksz8795: add support for ksz88xx chips")
+Signed-off-by: Tristram Ha <Tristram.Ha@microchip.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid0.c |   62 ++++++++++++++++++++++++++++++++++++++++++++++-------
- drivers/md/raid0.h |    1 
- 2 files changed, 55 insertions(+), 8 deletions(-)
+ drivers/net/dsa/microchip/ksz8795.c    | 8 +++++++-
+ drivers/net/dsa/microchip/ksz_common.c | 8 ++++----
+ drivers/net/dsa/microchip/ksz_common.h | 7 +++++++
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/md/raid0.c
-+++ b/drivers/md/raid0.c
-@@ -274,6 +274,18 @@ static int create_strip_zones(struct mdd
- 		goto abort;
- 	}
- 
-+	if (conf->layout == RAID0_ORIG_LAYOUT) {
-+		for (i = 1; i < conf->nr_strip_zones; i++) {
-+			sector_t first_sector = conf->strip_zone[i-1].zone_end;
+diff --git a/drivers/net/dsa/microchip/ksz8795.c b/drivers/net/dsa/microchip/ksz8795.c
+index 6639fae56da7f..c63e082dc57dc 100644
+--- a/drivers/net/dsa/microchip/ksz8795.c
++++ b/drivers/net/dsa/microchip/ksz8795.c
+@@ -437,7 +437,13 @@ static int ksz8_r_sta_mac_table(struct ksz_device *dev, u16 addr,
+ 		(data_hi & masks[STATIC_MAC_TABLE_FWD_PORTS]) >>
+ 			shifts[STATIC_MAC_FWD_PORTS];
+ 	alu->is_override = (data_hi & masks[STATIC_MAC_TABLE_OVERRIDE]) ? 1 : 0;
+-	data_hi >>= 1;
 +
-+			sector_div(first_sector, mddev->chunk_sectors);
-+			zone = conf->strip_zone + i;
-+			/* disk_shift is first disk index used in the zone */
-+			zone->disk_shift = sector_div(first_sector,
-+						      zone->nb_dev);
-+		}
-+	}
-+
- 	pr_debug("md/raid0:%s: done.\n", mdname(mddev));
- 	*private_conf = conf;
- 
-@@ -427,6 +439,20 @@ static void raid0_free(struct mddev *mdd
- 	kfree(conf);
++	/* KSZ8795 family switches have STATIC_MAC_TABLE_USE_FID and
++	 * STATIC_MAC_TABLE_FID definitions off by 1 when doing read on the
++	 * static MAC table compared to doing write.
++	 */
++	if (ksz_is_ksz87xx(dev))
++		data_hi >>= 1;
+ 	alu->is_static = true;
+ 	alu->is_use_fid = (data_hi & masks[STATIC_MAC_TABLE_USE_FID]) ? 1 : 0;
+ 	alu->fid = (data_hi & masks[STATIC_MAC_TABLE_FID]) >>
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 3d59298eaa5cf..8c492d56d2c36 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -286,13 +286,13 @@ static const u32 ksz8795_masks[] = {
+ 	[STATIC_MAC_TABLE_VALID]	= BIT(21),
+ 	[STATIC_MAC_TABLE_USE_FID]	= BIT(23),
+ 	[STATIC_MAC_TABLE_FID]		= GENMASK(30, 24),
+-	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(26),
+-	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(24, 20),
++	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(22),
++	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(20, 16),
+ 	[DYNAMIC_MAC_TABLE_ENTRIES_H]	= GENMASK(6, 0),
+-	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(8),
++	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(7),
+ 	[DYNAMIC_MAC_TABLE_NOT_READY]	= BIT(7),
+ 	[DYNAMIC_MAC_TABLE_ENTRIES]	= GENMASK(31, 29),
+-	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(26, 20),
++	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(22, 16),
+ 	[DYNAMIC_MAC_TABLE_SRC_PORT]	= GENMASK(26, 24),
+ 	[DYNAMIC_MAC_TABLE_TIMESTAMP]	= GENMASK(28, 27),
+ 	[P_MII_TX_FLOW_CTRL]		= BIT(5),
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index 9cfa179575ce8..d1b2db8e65331 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -512,6 +512,13 @@ static inline void ksz_regmap_unlock(void *__mtx)
+ 	mutex_unlock(mtx);
  }
  
-+/*
-+ * Convert disk_index to the disk order in which it is read/written.
-+ *  For example, if we have 4 disks, they are numbered 0,1,2,3. If we
-+ *  write the disks starting at disk 3, then the read/write order would
-+ *  be disk 3, then 0, then 1, and then disk 2 and we want map_disk_shift()
-+ *  to map the disks as follows 0,1,2,3 => 1,2,3,0. So disk 0 would map
-+ *  to 1, 1 to 2, 2 to 3, and 3 to 0. That way we can compare disks in
-+ *  that 'output' space to understand the read/write disk ordering.
-+ */
-+static int map_disk_shift(int disk_index, int num_disks, int disk_shift)
++static inline bool ksz_is_ksz87xx(struct ksz_device *dev)
 +{
-+	return ((disk_index + num_disks - disk_shift) % num_disks);
++	return dev->chip_id == KSZ8795_CHIP_ID ||
++	       dev->chip_id == KSZ8794_CHIP_ID ||
++	       dev->chip_id == KSZ8765_CHIP_ID;
 +}
 +
- static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
+ static inline bool ksz_is_ksz88x3(struct ksz_device *dev)
  {
- 	struct r0conf *conf = mddev->private;
-@@ -440,7 +466,9 @@ static void raid0_handle_discard(struct
- 	sector_t end_disk_offset;
- 	unsigned int end_disk_index;
- 	unsigned int disk;
-+	sector_t orig_start, orig_end;
- 
-+	orig_start = start;
- 	zone = find_zone(conf, &start);
- 
- 	if (bio_end_sector(bio) > zone->zone_end) {
-@@ -454,6 +482,7 @@ static void raid0_handle_discard(struct
- 	} else
- 		end = bio_end_sector(bio);
- 
-+	orig_end = end;
- 	if (zone != conf->strip_zone)
- 		end = end - zone[-1].zone_end;
- 
-@@ -465,13 +494,26 @@ static void raid0_handle_discard(struct
- 	last_stripe_index = end;
- 	sector_div(last_stripe_index, stripe_size);
- 
--	start_disk_index = (int)(start - first_stripe_index * stripe_size) /
--		mddev->chunk_sectors;
-+	/* In the first zone the original and alternate layouts are the same */
-+	if ((conf->layout == RAID0_ORIG_LAYOUT) && (zone != conf->strip_zone)) {
-+		sector_div(orig_start, mddev->chunk_sectors);
-+		start_disk_index = sector_div(orig_start, zone->nb_dev);
-+		start_disk_index = map_disk_shift(start_disk_index,
-+						  zone->nb_dev,
-+						  zone->disk_shift);
-+		sector_div(orig_end, mddev->chunk_sectors);
-+		end_disk_index = sector_div(orig_end, zone->nb_dev);
-+		end_disk_index = map_disk_shift(end_disk_index,
-+						zone->nb_dev, zone->disk_shift);
-+	} else {
-+		start_disk_index = (int)(start - first_stripe_index * stripe_size) /
-+			mddev->chunk_sectors;
-+		end_disk_index = (int)(end - last_stripe_index * stripe_size) /
-+			mddev->chunk_sectors;
-+	}
- 	start_disk_offset = ((int)(start - first_stripe_index * stripe_size) %
- 		mddev->chunk_sectors) +
- 		first_stripe_index * mddev->chunk_sectors;
--	end_disk_index = (int)(end - last_stripe_index * stripe_size) /
--		mddev->chunk_sectors;
- 	end_disk_offset = ((int)(end - last_stripe_index * stripe_size) %
- 		mddev->chunk_sectors) +
- 		last_stripe_index * mddev->chunk_sectors;
-@@ -480,18 +522,22 @@ static void raid0_handle_discard(struct
- 		sector_t dev_start, dev_end;
- 		struct bio *discard_bio = NULL;
- 		struct md_rdev *rdev;
-+		int compare_disk;
-+
-+		compare_disk = map_disk_shift(disk, zone->nb_dev,
-+					      zone->disk_shift);
- 
--		if (disk < start_disk_index)
-+		if (compare_disk < start_disk_index)
- 			dev_start = (first_stripe_index + 1) *
- 				mddev->chunk_sectors;
--		else if (disk > start_disk_index)
-+		else if (compare_disk > start_disk_index)
- 			dev_start = first_stripe_index * mddev->chunk_sectors;
- 		else
- 			dev_start = start_disk_offset;
- 
--		if (disk < end_disk_index)
-+		if (compare_disk < end_disk_index)
- 			dev_end = (last_stripe_index + 1) * mddev->chunk_sectors;
--		else if (disk > end_disk_index)
-+		else if (compare_disk > end_disk_index)
- 			dev_end = last_stripe_index * mddev->chunk_sectors;
- 		else
- 			dev_end = end_disk_offset;
---- a/drivers/md/raid0.h
-+++ b/drivers/md/raid0.h
-@@ -6,6 +6,7 @@ struct strip_zone {
- 	sector_t zone_end;	/* Start of the next zone (in sectors) */
- 	sector_t dev_start;	/* Zone offset in real dev (in sectors) */
- 	int	 nb_dev;	/* # of devices attached to the zone */
-+	int	 disk_shift;	/* start disk for the original layout */
- };
- 
- /* Linux 3.14 (20d0189b101) made an unintended change to
+ 	return dev->chip_id == KSZ8830_CHIP_ID;
+-- 
+2.39.2
+
 
 
