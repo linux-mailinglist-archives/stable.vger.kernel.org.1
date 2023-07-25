@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B9987611EC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535597616F7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232357AbjGYK5d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35926 "EHLO
+        id S235094AbjGYLoD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232215AbjGYK5E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EACF1422B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:34 -0700 (PDT)
+        with ESMTP id S235398AbjGYLna (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B694F2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C513261655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37C8C433C7;
-        Tue, 25 Jul 2023 10:54:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E65AF615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E3EC433C8;
+        Tue, 25 Jul 2023 11:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282474;
-        bh=D8OvjMNbXf5I8VZ2grsUsdo7cqXlD7tyBnT5irW8Ngs=;
+        s=korg; t=1690285381;
+        bh=WpK5JFOCiF6DwXb5P466/JraED6r5Xf2KsSaKhz7uJc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IN83s3dbBvEGke+JhPCOuOLxwVy2UnX5yambIjb1UxeFqjJhHn06ueTStRwLI49fZ
-         gl66Q1LnVfrx7z+TzgtXEPlj6Oo6N8Y6wr7fDDar8E+SGrX1pDZ2qlDAYcO+BVttWA
-         3dagf8AxJkdcDq5UTPYeS5d+TYrZl+ezdFcaZi7w=
+        b=yMzm2LJOGaxTpjKYdIYyrIjNscRDgr4Kv42UQTWrcmlx9GFnANg1jV7zHpZrc8Wkl
+         UgqdL5+EAqc4tT5Zvwynz7B4I8mbO1PGhHl4L4fuWjA/LnCDLOrgHzr6BhV06T0ojl
+         gpBt58Lqqb+UTXwjVKNKGu3wJh/wwkqJwszeZF28=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 143/227] spi: bcm63xx: fix max prepend length
+Subject: [PATCH 5.4 157/313] net: dsa: tag_sja1105: fix MAC DA patching from meta frames
 Date:   Tue, 25 Jul 2023 12:45:10 +0200
-Message-ID: <20230725104520.803963296@linuxfoundation.org>
+Message-ID: <20230725104527.767562609@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,45 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 5158814cbb37bbb38344b3ecddc24ba2ed0365f2 ]
+[ Upstream commit 1dcf6efd5f0c1f4496b3ef7ec5a7db104a53b38c ]
 
-The command word is defined as following:
+The SJA1105 manual says that at offset 4 into the meta frame payload we
+have "MAC destination byte 2" and at offset 5 we have "MAC destination
+byte 1". These are counted from the LSB, so byte 1 is h_dest[ETH_HLEN-2]
+aka h_dest[4] and byte 2 is h_dest[ETH_HLEN-3] aka h_dest[3].
 
-    /* Command */
-    #define SPI_CMD_COMMAND_SHIFT           0
-    #define SPI_CMD_DEVICE_ID_SHIFT         4
-    #define SPI_CMD_PREPEND_BYTE_CNT_SHIFT  8
-    #define SPI_CMD_ONE_BYTE_SHIFT          11
-    #define SPI_CMD_ONE_WIRE_SHIFT          12
+The sja1105_meta_unpack() function decodes these the other way around,
+so a frame with MAC DA 01:80:c2:11:22:33 is received by the network
+stack as having 01:80:c2:22:11:33.
 
-If the prepend byte count field starts at bit 8, and the next defined
-bit is SPI_CMD_ONE_BYTE at bit 11, it can be at most 3 bits wide, and
-thus the max value is 7, not 15.
-
-Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://lore.kernel.org/r/20230629071453.62024-1-jonas.gorski@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e53e18a6fe4d ("net: dsa: sja1105: Receive and decode meta frames")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dsa/tag_sja1105.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 9aecb77c3d892..07b5b71b23520 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -126,7 +126,7 @@ enum bcm63xx_regs_spi {
- 	SPI_MSG_DATA_SIZE,
- };
- 
--#define BCM63XX_SPI_MAX_PREPEND		15
-+#define BCM63XX_SPI_MAX_PREPEND		7
- 
- #define BCM63XX_SPI_MAX_CS		8
- #define BCM63XX_SPI_BUS_NUM		0
+diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
+index 12f3ce52e62eb..836a75030a520 100644
+--- a/net/dsa/tag_sja1105.c
++++ b/net/dsa/tag_sja1105.c
+@@ -48,8 +48,8 @@ static void sja1105_meta_unpack(const struct sk_buff *skb,
+ 	 * a unified unpacking command for both device series.
+ 	 */
+ 	packing(buf,     &meta->tstamp,     31, 0, 4, UNPACK, 0);
+-	packing(buf + 4, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
+-	packing(buf + 5, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
++	packing(buf + 4, &meta->dmac_byte_3, 7, 0, 1, UNPACK, 0);
++	packing(buf + 5, &meta->dmac_byte_4, 7, 0, 1, UNPACK, 0);
+ 	packing(buf + 6, &meta->source_port, 7, 0, 1, UNPACK, 0);
+ 	packing(buf + 7, &meta->switch_id,   7, 0, 1, UNPACK, 0);
+ }
 -- 
 2.39.2
 
