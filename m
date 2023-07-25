@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CD5776155D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89047612BA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234624AbjGYL2V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:28:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36988 "EHLO
+        id S233955AbjGYLFV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234689AbjGYL2F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:28:05 -0400
+        with ESMTP id S233895AbjGYLFI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D06997
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:28:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76587213C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3629B61691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:28:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416FEC433C8;
-        Tue, 25 Jul 2023 11:28:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1254C6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2034AC433C7;
+        Tue, 25 Jul 2023 11:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284483;
-        bh=S5xdVl+uaT7ygnqQV8S8z6qH835ziR8pkTsPX0E1uCY=;
+        s=korg; t=1690282946;
+        bh=/bi/n13EhkQIvQMtuRSki9i9QSE/wiahr4R11XxqrSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BDyvK9GH1JauNmb/KzPYaXPcFXO/T/hcjIHV6b3Cw7AwEAsEClJnlZNJWZcDJdxSY
-         vCyVlf2xMtCJVPIHX4m2s6KRCTZO1LWmlD5st8NdhHrZrVMcT9ZfIHkbKhVwugzqSj
-         EtWq9FVaOecYqfkO2fVlNrr1hWT6YglsZW62p1Pk=
+        b=Q6ou0OR2CIT980cB0Uq40HDbrcXGie42rDvpTVLWXy2IXyU80mkShxdReyriPzqdH
+         VEo1tvThrZuHAqUnHqGjfaPBTHmzJu3T520o2T9lU7jm8Ai0ik+DJNzO4Q4uZkXJts
+         BUDU3tR1lRMzCum1FZ3bhMwgo4ffXYx248hiSRf0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 371/509] netdevsim: fix uninitialized data in nsim_dev_trap_fa_cookie_write()
-Date:   Tue, 25 Jul 2023 12:45:10 +0200
-Message-ID: <20230725104610.696901091@linuxfoundation.org>
+Subject: [PATCH 6.1 083/183] ASoC: codecs: wcd938x: fix mbhc impedance loglevel
+Date:   Tue, 25 Jul 2023 12:45:11 +0200
+Message-ID: <20230725104510.948513134@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,53 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit f72207a5c0dbaaf6921cf9a6c0d2fd0bc249ea78 ]
+[ Upstream commit e5ce198bd5c6923b6a51e1493b1401f84c24b26d ]
 
-The simple_write_to_buffer() function is designed to handle partial
-writes.  It returns negatives on error, otherwise it returns the number
-of bytes that were able to be copied.  This code doesn't check the
-return properly.  We only know that the first byte is written, the rest
-of the buffer might be uninitialized.
+Demote the MBHC impedance measurement printk, which is not an error
+message, from error to debug level.
 
-There is no need to use the simple_write_to_buffer() function.
-Partial writes are prohibited by the "if (*ppos != 0)" check at the
-start of the function.  Just use memdup_user() and copy the whole
-buffer.
+While at it, fix the capitalisation of "ohm" and add the missing space
+before the opening parenthesis.
 
-Fixes: d3cbb907ae57 ("netdevsim: add ACL trap reporting cookie as a metadata")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/7c1f950b-3a7d-4252-82a6-876e53078ef7@moroto.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bcee7ed09b8e ("ASoC: codecs: wcd938x: add Multi Button Headset Control support")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230630142717.5314-2-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ sound/soc/codecs/wcd938x.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 9bbecf4d159b4..bcf354719745c 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -149,13 +149,10 @@ static ssize_t nsim_dev_trap_fa_cookie_write(struct file *file,
- 	cookie_len = (count - 1) / 2;
- 	if ((count - 1) % 2)
- 		return -EINVAL;
--	buf = kmalloc(count, GFP_KERNEL | __GFP_NOWARN);
--	if (!buf)
--		return -ENOMEM;
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index df0b3ac7f1321..7715040383840 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -2165,8 +2165,8 @@ static inline void wcd938x_mbhc_get_result_params(struct wcd938x_priv *wcd938x,
+ 	else if (x1 < minCode_param[noff])
+ 		*zdet = WCD938X_ZDET_FLOATING_IMPEDANCE;
  
--	ret = simple_write_to_buffer(buf, count, ppos, data, count);
--	if (ret < 0)
--		goto free_buf;
-+	buf = memdup_user(data, count);
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
- 
- 	fa_cookie = kmalloc(sizeof(*fa_cookie) + cookie_len,
- 			    GFP_KERNEL | __GFP_NOWARN);
+-	pr_err("%s: d1=%d, c1=%d, x1=0x%x, z_val=%d(milliOhm)\n",
+-		__func__, d1, c1, x1, *zdet);
++	pr_debug("%s: d1=%d, c1=%d, x1=0x%x, z_val=%d (milliohm)\n",
++		 __func__, d1, c1, x1, *zdet);
+ ramp_down:
+ 	i = 0;
+ 	while (x1) {
 -- 
 2.39.2
 
