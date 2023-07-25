@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CA3B761144
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D83B376161C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232310AbjGYKtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57886 "EHLO
+        id S234805AbjGYLgr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:36:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232085AbjGYKtW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:22 -0400
+        with ESMTP id S234837AbjGYLgk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F70A199D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EDFF19A1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D178B61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BF6C433C7;
-        Tue, 25 Jul 2023 10:49:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 604F6616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605C2C433C8;
+        Tue, 25 Jul 2023 11:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282160;
-        bh=VWiTmx6BDqPGzbJYxmgGfqy+5Zj3hmfmWHi+FwPP+Uw=;
+        s=korg; t=1690284985;
+        bh=X2Z3fXH9hNjGOpxXMEPew/8kY6PU0vQGKcqmx/x8P+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JuedpjKHypMiX4pyaYfmm9rtTVqYKzymjJHcGcFq1WOi1Xvo4Gcp1Rux7JqEInf2B
-         I37ymlBB8Ch/QJFkVxttQBhWeE2FGuRLvvio5YXWRcers6OIo6W6z+lVyVGnAV01zu
-         yglrzaS+waWz6/y88yNz/UncVaLGGHoSbiYddBoI=
+        b=2sR6D/qB77R6YChfVbwMnHIino/GiItkbmrqnBZAOlSALp0J0jLdgB0alwTqs7WY2
+         GgUtZRVQUckPfxBWw0j/NdlqrzQ/Wf6roJpOVn38OEkvNj4HnTuf9KOd5KJMGK+75e
+         BFdH0W5pjf0HDG5211qdr+1raFotyXaJr9K2U4jE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Holger Dengler <dengler@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.4 029/227] s390/zcrypt: fix reply buffer calculations for CCA replies
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 043/313] net: create netdev->dev_addr assignment helpers
 Date:   Tue, 25 Jul 2023 12:43:16 +0200
-Message-ID: <20230725104516.038444406@linuxfoundation.org>
+Message-ID: <20230725104522.947712618@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,93 +55,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 4cfca532ddc3474b3fc42592d0e4237544344b1a upstream.
+[ Upstream commit 48eab831ae8b9f7002a533fa4235eed63ea1f1a3 ]
 
-The length information for available buffer space for CCA
-replies is covered with two fields in the T6 header prepended
-on each CCA reply: fromcardlen1 and fromcardlen2. The sum of
-these both values must not exceed the AP bus limit for this
-card (24KB for CEX8, 12KB CEX7 and older) minus the always
-present headers.
+Recent work on converting address list to a tree made it obvious
+we need an abstraction around writing netdev->dev_addr. Without
+such abstraction updating the main device address is invisible
+to the core.
 
-The current code adjusted the fromcardlen2 value in case
-of exceeding the AP bus limit when there was a non-zero
-value given from userspace. Some tests now showed that this
-was the wrong assumption. Instead the userspace value given for
-this field should always be trusted and if the sum of the
-two fields exceeds the AP bus limit for this card the first
-field fromcardlen1 should be adjusted instead.
+Introduce a number of helpers which for now just wrap memcpy()
+but in the future can make necessary changes to the address
+tree.
 
-So now the calculation is done with this new insight in mind.
-Also some additional checks for overflow have been introduced
-and some comments to provide some documentation for future
-maintainers of this complicated calculation code.
-
-Furthermore the 128 bytes of fix overhead which is used
-in the current code is not correct. Investigations showed
-that for a reply always the same two header structs are
-prepended before a possible payload. So this is also fixed
-with this patch.
-
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 391af06a02e7 ("wifi: wl3501_cs: Fix an error handling path in wl3501_probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/zcrypt_msgtype6.c |   33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ include/linux/etherdevice.h | 12 ++++++++++++
+ include/linux/netdevice.h   | 18 ++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
---- a/drivers/s390/crypto/zcrypt_msgtype6.c
-+++ b/drivers/s390/crypto/zcrypt_msgtype6.c
-@@ -1111,23 +1111,36 @@ static long zcrypt_msgtype6_send_cprb(bo
- 				      struct ica_xcRB *xcrb,
- 				      struct ap_message *ap_msg)
- {
--	int rc;
- 	struct response_type *rtype = ap_msg->private;
- 	struct {
- 		struct type6_hdr hdr;
- 		struct CPRBX cprbx;
- 		/* ... more data blocks ... */
- 	} __packed * msg = ap_msg->msg;
-+	unsigned int max_payload_size;
-+	int rc, delta;
+diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
+index 0f1e95240c0c0..66b89189a1e2e 100644
+--- a/include/linux/etherdevice.h
++++ b/include/linux/etherdevice.h
+@@ -288,6 +288,18 @@ static inline void ether_addr_copy(u8 *dst, const u8 *src)
+ #endif
+ }
  
--	/*
--	 * Set the queue's reply buffer length minus 128 byte padding
--	 * as reply limit for the card firmware.
--	 */
--	msg->hdr.fromcardlen1 = min_t(unsigned int, msg->hdr.fromcardlen1,
--				      zq->reply.bufsize - 128);
--	if (msg->hdr.fromcardlen2)
--		msg->hdr.fromcardlen2 =
--			zq->reply.bufsize - msg->hdr.fromcardlen1 - 128;
-+	/* calculate maximum payload for this card and msg type */
-+	max_payload_size = zq->reply.bufsize - sizeof(struct type86_fmt2_msg);
++/**
++ * eth_hw_addr_set - Assign Ethernet address to a net_device
++ * @dev: pointer to net_device structure
++ * @addr: address to assign
++ *
++ * Assign given address to the net_device, addr_assign_type is not changed.
++ */
++static inline void eth_hw_addr_set(struct net_device *dev, const u8 *addr)
++{
++	ether_addr_copy(dev->dev_addr, addr);
++}
 +
-+	/* limit each of the two from fields to the maximum payload size */
-+	msg->hdr.fromcardlen1 = min(msg->hdr.fromcardlen1, max_payload_size);
-+	msg->hdr.fromcardlen2 = min(msg->hdr.fromcardlen2, max_payload_size);
-+
-+	/* calculate delta if the sum of both exceeds max payload size */
-+	delta = msg->hdr.fromcardlen1 + msg->hdr.fromcardlen2
-+		- max_payload_size;
-+	if (delta > 0) {
-+		/*
-+		 * Sum exceeds maximum payload size, prune fromcardlen1
-+		 * (always trust fromcardlen2)
-+		 */
-+		if (delta > msg->hdr.fromcardlen1) {
-+			rc = -EINVAL;
-+			goto out;
-+		}
-+		msg->hdr.fromcardlen1 -= delta;
-+	}
+ /**
+  * eth_hw_addr_inherit - Copy dev_addr from another net_device
+  * @dst: pointer to net_device to copy dev_addr to
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 8dea4b53d664d..bf623f0e04d64 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -4189,6 +4189,24 @@ void __hw_addr_unsync_dev(struct netdev_hw_addr_list *list,
+ void __hw_addr_init(struct netdev_hw_addr_list *list);
  
- 	init_completion(&rtype->work);
- 	rc = ap_queue_message(zq->queue, ap_msg);
+ /* Functions used for device addresses handling */
++static inline void
++__dev_addr_set(struct net_device *dev, const u8 *addr, size_t len)
++{
++	memcpy(dev->dev_addr, addr, len);
++}
++
++static inline void dev_addr_set(struct net_device *dev, const u8 *addr)
++{
++	__dev_addr_set(dev, addr, dev->addr_len);
++}
++
++static inline void
++dev_addr_mod(struct net_device *dev, unsigned int offset,
++	     const u8 *addr, size_t len)
++{
++	memcpy(&dev->dev_addr[offset], addr, len);
++}
++
+ int dev_addr_add(struct net_device *dev, const unsigned char *addr,
+ 		 unsigned char addr_type);
+ int dev_addr_del(struct net_device *dev, const unsigned char *addr,
+-- 
+2.39.2
+
 
 
