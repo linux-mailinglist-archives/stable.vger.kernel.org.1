@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 608AD76174E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 952D1761389
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232454AbjGYLq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54562 "EHLO
+        id S234105AbjGYLLX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:11:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232546AbjGYLqy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:54 -0400
+        with ESMTP id S234106AbjGYLLI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50555F3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D0519AA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 305F2616B0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA70C433C8;
-        Tue, 25 Jul 2023 11:46:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F64E61656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DE2C433C7;
+        Tue, 25 Jul 2023 11:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285609;
-        bh=FPpZBvQ16T2wt7Opf5Bcpg2tHBMN1i+mP6FKx1ql+ZM=;
+        s=korg; t=1690283417;
+        bh=+6aTzBbfZvzgvnTZ/zjebS3a3ELsuymSrxzF/L+okDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dzEo3inW/0pu0AX8PISpOE9VtsWkdMvRfGJXpr5+cI5Zul9h+xQwYKi5QEoyTxMR4
-         stOS33I2889p3EttXYdA06pgwzLr48sGGuybw0R57psgBxay+5pKaYlt50/q6/T1DH
-         GXoIK0qq/xzIZNDYRy/wkX55Kgt+04zYt2/N+vvg=
+        b=1Vbbsv/7bSG/DWGoP/MUfd4qWUA5WzSYkWJG78+EUJUAJuvTOPW+Ky9ZkggQDr1Za
+         i0KWExGN8SDNqtmf94P7Icqd23cjZ8zIW/FKjIuVM32Ltk1fNz8ShsSL4lzZzPqjVh
+         h/KaDBR//cZOEvIMGk+zunVatwe278ZX449EKq3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mateusz Stachyra <m.stachyra@samsung.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.4 267/313] tracing: Fix null pointer dereference in tracing_err_log_open()
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 69/78] tcp: annotate data-races around icsk->icsk_syn_retries
 Date:   Tue, 25 Jul 2023 12:47:00 +0200
-Message-ID: <20230725104532.599952948@linuxfoundation.org>
+Message-ID: <20230725104453.951944352@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,61 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mateusz Stachyra <m.stachyra@samsung.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 02b0095e2fbbc060560c1065f86a211d91e27b26 upstream.
+[ Upstream commit 3a037f0f3c4bfe44518f2fbb478aa2f99a9cd8bb ]
 
-Fix an issue in function 'tracing_err_log_open'.
-The function doesn't call 'seq_open' if the file is opened only with
-write permissions, which results in 'file->private_data' being left as null.
-If we then use 'lseek' on that opened file, 'seq_lseek' dereferences
-'file->private_data' in 'mutex_lock(&m->lock)', resulting in a kernel panic.
-Writing to this node requires root privileges, therefore this bug
-has very little security impact.
+do_tcp_getsockopt() and reqsk_timer_handler() read
+icsk->icsk_syn_retries while another cpu might change its value.
 
-Tracefs node: /sys/kernel/tracing/error_log
-
-Example Kernel panic:
-
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000038
-Call trace:
- mutex_lock+0x30/0x110
- seq_lseek+0x34/0xb8
- __arm64_sys_lseek+0x6c/0xb8
- invoke_syscall+0x58/0x13c
- el0_svc_common+0xc4/0x10c
- do_el0_svc+0x24/0x98
- el0_svc+0x24/0x88
- el0t_64_sync_handler+0x84/0xe4
- el0t_64_sync+0x1b4/0x1b8
-Code: d503201f aa0803e0 aa1f03e1 aa0103e9 (c8e97d02)
----[ end trace 561d1b49c12cf8a5 ]---
-Kernel panic - not syncing: Oops: Fatal exception
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230703155237eucms1p4dfb6a19caa14c79eb6c823d127b39024@eucms1p4
-Link: https://lore.kernel.org/linux-trace-kernel/20230704102706eucms1p30d7ecdcc287f46ad67679fc8491b2e0f@eucms1p3
-
-Cc: stable@vger.kernel.org
-Fixes: 8a062902be725 ("tracing: Add tracing error log")
-Signed-off-by: Mateusz Stachyra <m.stachyra@samsung.com>
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/inet_connection_sock.c | 2 +-
+ net/ipv4/tcp.c                  | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7263,7 +7263,7 @@ static const struct file_operations trac
- 	.open           = tracing_err_log_open,
- 	.write		= tracing_err_log_write,
- 	.read           = seq_read,
--	.llseek         = seq_lseek,
-+	.llseek         = tracing_lseek,
- 	.release        = tracing_err_log_release,
- };
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 4fb0506430774..c770719797e12 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -833,7 +833,7 @@ static void reqsk_timer_handler(struct timer_list *t)
  
+ 	icsk = inet_csk(sk_listener);
+ 	net = sock_net(sk_listener);
+-	max_syn_ack_retries = icsk->icsk_syn_retries ? :
++	max_syn_ack_retries = READ_ONCE(icsk->icsk_syn_retries) ? :
+ 		READ_ONCE(net->ipv4.sysctl_tcp_synack_retries);
+ 	/* Normally all the openreqs are young and become mature
+ 	 * (i.e. converted to established socket) for first timeout.
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 994ac3cd50e1d..4077b456e3838 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3296,7 +3296,7 @@ int tcp_sock_set_syncnt(struct sock *sk, int val)
+ 		return -EINVAL;
+ 
+ 	lock_sock(sk);
+-	inet_csk(sk)->icsk_syn_retries = val;
++	WRITE_ONCE(inet_csk(sk)->icsk_syn_retries, val);
+ 	release_sock(sk);
+ 	return 0;
+ }
+@@ -3577,7 +3577,7 @@ static int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+ 		if (val < 1 || val > MAX_TCP_SYNCNT)
+ 			err = -EINVAL;
+ 		else
+-			icsk->icsk_syn_retries = val;
++			WRITE_ONCE(icsk->icsk_syn_retries, val);
+ 		break;
+ 
+ 	case TCP_SAVE_SYN:
+@@ -3991,7 +3991,7 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
+ 		val = keepalive_probes(tp);
+ 		break;
+ 	case TCP_SYNCNT:
+-		val = icsk->icsk_syn_retries ? :
++		val = READ_ONCE(icsk->icsk_syn_retries) ? :
+ 			READ_ONCE(net->ipv4.sysctl_tcp_syn_retries);
+ 		break;
+ 	case TCP_LINGER2:
+-- 
+2.39.2
+
 
 
