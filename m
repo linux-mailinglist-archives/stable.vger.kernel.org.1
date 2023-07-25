@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46AF47611DF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D4277612B1
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232957AbjGYK5M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:57:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36072 "EHLO
+        id S233860AbjGYLFF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:05:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232834AbjGYK4p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:45 -0400
+        with ESMTP id S233949AbjGYLEp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BD14201
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250071BD7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:02:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBDEA6168F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7C8C433C7;
-        Tue, 25 Jul 2023 10:54:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A549E6168A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:02:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC2EC433C8;
+        Tue, 25 Jul 2023 11:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282454;
-        bh=hOd7AXocUVJghEqJQCP6+ACdxpASkwQEtsmHIA7kHKg=;
+        s=korg; t=1690282921;
+        bh=tuiAPWSGsj8CpKlD4MIYlrZCU2z67dmDNxy4V+3MrIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ILxfg9HNvzKSCRV5aMDGpZP4wjCEzmx8Lv71sp0yAw2jmCFy1rGtR+GX/yQ77j7cl
-         KYlsEUxNp0VQiO6xk2+n28xLxtc70kXWyiLJpVZ6sLOogEpOL2KE4zrxAzMJyYDQyC
-         UZoKgNDZE+7ms5XPvr3m/zRh9IZaLT4fIlR3+l3w=
+        b=ytOVUGGBUQtEk7wVYIZR8Hzeh58WGakss7gkPSNkaojLr69uJc2KfLYZX2x9fbK/M
+         2rExKKetMeRsfLUQ+Xky4SmLAvOuw7Xv2r8wqKOYyaBUKBFjhsdJnAPPeuJMUGbgZd
+         9NV5FzBSFKRZJUWceoNCDAfDzsv0B95qfLGVCJ5A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Petr Oros <poros@redhat.com>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 136/227] ASoC: codecs: wcd938x: fix dB range for HPHL and HPHR
+Subject: [PATCH 6.1 075/183] devlink: report devlink_port_type_warn source device
 Date:   Tue, 25 Jul 2023 12:45:03 +0200
-Message-ID: <20230725104520.484665592@linuxfoundation.org>
+Message-ID: <20230725104510.655608833@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,49 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit c03226ba15fe3c42d13907ec7d8536396602557b ]
+[ Upstream commit a52305a81d6bb74b90b400dfa56455d37872fe4b ]
 
-dB range for HPHL and HPHR gains are from +6dB to -30dB in steps of
-1.5dB with register values range from 0 to 24.
+devlink_port_type_warn is scheduled for port devlink and warning
+when the port type is not set. But from this warning it is not easy
+found out which device (driver) has no devlink port set.
 
-Current code maps these dB ranges incorrectly, fix them to allow proper
-volume setting.
+[ 3709.975552] Type was not set for devlink port.
+[ 3709.975579] WARNING: CPU: 1 PID: 13092 at net/devlink/leftover.c:6775 devlink_port_type_warn+0x11/0x20
+[ 3709.993967] Modules linked in: openvswitch nf_conncount nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nfnetlink bluetooth rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs vhost_net vhost vhost_iotlb tap tun bridge stp llc qrtr intel_rapl_msr intel_rapl_common i10nm_edac nfit libnvdimm x86_pkg_temp_thermal mlx5_ib intel_powerclamp coretemp dell_wmi ledtrig_audio sparse_keymap ipmi_ssif kvm_intel ib_uverbs rfkill ib_core video kvm iTCO_wdt acpi_ipmi intel_vsec irqbypass ipmi_si iTCO_vendor_support dcdbas ipmi_devintf mei_me ipmi_msghandler rapl mei intel_cstate isst_if_mmio isst_if_mbox_pci dell_smbios intel_uncore isst_if_common i2c_i801 dell_wmi_descriptor wmi_bmof i2c_smbus intel_pch_thermal pcspkr acpi_power_meter xfs libcrc32c sd_mod sg nvme_tcp mgag200 i2c_algo_bit nvme_fabrics drm_shmem_helper drm_kms_helper nvme syscopyarea ahci sysfillrect sysimgblt nvme_core fb_sys_fops crct10dif_pclmul libahci mlx5_core sfc crc32_pclmul nvme_common drm
+[ 3709.994030]  crc32c_intel mtd t10_pi mlxfw libata tg3 mdio megaraid_sas psample ghash_clmulni_intel pci_hyperv_intf wmi dm_multipath sunrpc dm_mirror dm_region_hash dm_log dm_mod be2iscsi bnx2i cnic uio cxgb4i cxgb4 tls libcxgbi libcxgb qla4xxx iscsi_boot_sysfs iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi fuse
+[ 3710.108431] CPU: 1 PID: 13092 Comm: kworker/1:1 Kdump: loaded Not tainted 5.14.0-319.el9.x86_64 #1
+[ 3710.108435] Hardware name: Dell Inc. PowerEdge R750/0PJ80M, BIOS 1.8.2 09/14/2022
+[ 3710.108437] Workqueue: events devlink_port_type_warn
+[ 3710.108440] RIP: 0010:devlink_port_type_warn+0x11/0x20
+[ 3710.108443] Code: 84 76 fe ff ff 48 c7 03 20 0e 1a ad 31 c0 e9 96 fd ff ff 66 0f 1f 44 00 00 0f 1f 44 00 00 48 c7 c7 18 24 4e ad e8 ef 71 62 ff <0f> 0b c3 cc cc cc cc 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 f6 87
+[ 3710.108445] RSP: 0018:ff3b6d2e8b3c7e90 EFLAGS: 00010282
+[ 3710.108447] RAX: 0000000000000000 RBX: ff366d6580127080 RCX: 0000000000000027
+[ 3710.108448] RDX: 0000000000000027 RSI: 00000000ffff86de RDI: ff366d753f41f8c8
+[ 3710.108449] RBP: ff366d658ff5a0c0 R08: ff366d753f41f8c0 R09: ff3b6d2e8b3c7e18
+[ 3710.108450] R10: 0000000000000001 R11: 0000000000000023 R12: ff366d753f430600
+[ 3710.108451] R13: ff366d753f436900 R14: 0000000000000000 R15: ff366d753f436905
+[ 3710.108452] FS:  0000000000000000(0000) GS:ff366d753f400000(0000) knlGS:0000000000000000
+[ 3710.108453] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 3710.108454] CR2: 00007f1c57bc74e0 CR3: 000000111d26a001 CR4: 0000000000773ee0
+[ 3710.108456] PKRU: 55555554
+[ 3710.108457] Call Trace:
+[ 3710.108458]  <TASK>
+[ 3710.108459]  process_one_work+0x1e2/0x3b0
+[ 3710.108466]  ? rescuer_thread+0x390/0x390
+[ 3710.108468]  worker_thread+0x50/0x3a0
+[ 3710.108471]  ? rescuer_thread+0x390/0x390
+[ 3710.108473]  kthread+0xdd/0x100
+[ 3710.108477]  ? kthread_complete_and_exit+0x20/0x20
+[ 3710.108479]  ret_from_fork+0x1f/0x30
+[ 3710.108485]  </TASK>
+[ 3710.108486] ---[ end trace 1b4b23cd0c65d6a0 ]---
 
-Fixes: e8ba1e05bdc0 ("ASoC: codecs: wcd938x: add basic controls")
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230705125723.40464-1-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+After patch:
+[  402.473064] ice 0000:41:00.0: Type was not set for devlink port.
+[  402.473064] ice 0000:41:00.1: Type was not set for devlink port.
+
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20230615095447.8259-1-poros@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd938x.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/devlink.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
-index 8bb6a5ff7b0f6..4a0b990f56e12 100644
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -210,7 +210,7 @@ struct wcd938x_priv {
- };
+diff --git a/net/core/devlink.c b/net/core/devlink.c
+index 2aa77d4b80d0a..5a4a4b34ac15c 100644
+--- a/net/core/devlink.c
++++ b/net/core/devlink.c
+@@ -9826,7 +9826,10 @@ EXPORT_SYMBOL_GPL(devlink_free);
  
- static const SNDRV_CTL_TLVD_DECLARE_DB_MINMAX(ear_pa_gain, 600, -1800);
--static const SNDRV_CTL_TLVD_DECLARE_DB_MINMAX(line_gain, 600, -3000);
-+static const DECLARE_TLV_DB_SCALE(line_gain, -3000, 150, -3000);
- static const SNDRV_CTL_TLVD_DECLARE_DB_MINMAX(analog_gain, 0, 3000);
+ static void devlink_port_type_warn(struct work_struct *work)
+ {
+-	WARN(true, "Type was not set for devlink port.");
++	struct devlink_port *port = container_of(to_delayed_work(work),
++						 struct devlink_port,
++						 type_warn_dw);
++	dev_warn(port->devlink->dev, "Type was not set for devlink port.");
+ }
  
- struct wcd938x_mbhc_zdet_param {
-@@ -2662,8 +2662,8 @@ static const struct snd_kcontrol_new wcd938x_snd_controls[] = {
- 		       wcd938x_get_swr_port, wcd938x_set_swr_port),
- 	SOC_SINGLE_EXT("DSD_R Switch", WCD938X_DSD_R, 0, 1, 0,
- 		       wcd938x_get_swr_port, wcd938x_set_swr_port),
--	SOC_SINGLE_TLV("HPHL Volume", WCD938X_HPH_L_EN, 0, 0x18, 0, line_gain),
--	SOC_SINGLE_TLV("HPHR Volume", WCD938X_HPH_R_EN, 0, 0x18, 0, line_gain),
-+	SOC_SINGLE_TLV("HPHL Volume", WCD938X_HPH_L_EN, 0, 0x18, 1, line_gain),
-+	SOC_SINGLE_TLV("HPHR Volume", WCD938X_HPH_R_EN, 0, 0x18, 1, line_gain),
- 	WCD938X_EAR_PA_GAIN_TLV("EAR_PA Volume", WCD938X_ANA_EAR_COMPANDER_CTL,
- 				2, 0x10, 0, ear_pa_gain),
- 	SOC_SINGLE_EXT("ADC1 Switch", WCD938X_ADC1, 1, 1, 0,
+ static bool devlink_port_type_should_warn(struct devlink_port *devlink_port)
 -- 
 2.39.2
 
