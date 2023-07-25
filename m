@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B1876126B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 757C9761505
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233818AbjGYLCV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40800 "EHLO
+        id S234558AbjGYLYt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233833AbjGYLCE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8EDA1FD6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:23 -0700 (PDT)
+        with ESMTP id S234567AbjGYLYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D6713D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D71B61689
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6B1C433C8;
-        Tue, 25 Jul 2023 10:59:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3109B6166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4141CC433C8;
+        Tue, 25 Jul 2023 11:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282745;
-        bh=+Lrr2QBCzXLYzHCb6BsVRVYjkB81rtr0uy5TsCVFiQA=;
+        s=korg; t=1690284285;
+        bh=rf+1gI0LLedOGo4MgaprYi2hs1BWYASYfIho4UBy+MA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y5RPBsNnBBARLUw36LG1HCICO0QG/ETK7jP2S5kMbwyTjEtNqWPIafqB+GbjVRsyK
-         HLA3JQ2j9KtlibhTWJSunq+prAx4nDCSLJ+5SV0OZmnTkfq6GrQlStp9YA/sVTHFrx
-         MVGmRxCq+x/CxK+gK41wJdhAIstu3A8y6DzC3W3A=
+        b=GKez2KDStgFayBrK5SO428DapMjhgCwS2uY0HeHPWtmfFR27dbbmywoc6NNcHuxt9
+         WpSX5MyXYCGp00BCV5QLraML741X5PlbbbvXd+KyoaUAcB1/zqmqg33SsRDfX7amaf
+         yy+6SIjyLUP08p+GoOrmgPgBuz1zwlEFy8NWa5G8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Josef Bacik <josef@toxicpanda.com>,
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
         David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 012/183] btrfs: set_page_extent_mapped after read_folio in btrfs_cont_expand
+Subject: [PATCH 5.10 301/509] btrfs: fix race when deleting quota root from the dirty cow roots list
 Date:   Tue, 25 Jul 2023 12:44:00 +0200
-Message-ID: <20230725104508.266706795@linuxfoundation.org>
+Message-ID: <20230725104607.528109388@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,98 +54,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 17b17fcd6d446b95904a6929c40012ee7f0afc0c upstream.
+commit b31cb5a6eb7a48b0a7bfdf06832b1fd5088d8c79 upstream.
 
-While trying to get the subpage blocksize tests running, I hit the
-following panic on generic/476
+When disabling quotas we are deleting the quota root from the list
+fs_info->dirty_cowonly_roots without taking the lock that protects it,
+which is struct btrfs_fs_info::trans_lock. This unsynchronized list
+manipulation may cause chaos if there's another concurrent manipulation
+of this list, such as when adding a root to it with
+ctree.c:add_root_to_dirty_list().
 
-  assertion failed: PagePrivate(page) && page->private, in fs/btrfs/subpage.c:229
-  kernel BUG at fs/btrfs/subpage.c:229!
-  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-  CPU: 1 PID: 1453 Comm: fsstress Not tainted 6.4.0-rc7+ #12
-  Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20230301gitf80f052277c8-26.fc38 03/01/2023
-  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-  pc : btrfs_subpage_assert+0xbc/0xf0
-  lr : btrfs_subpage_assert+0xbc/0xf0
-  Call trace:
-   btrfs_subpage_assert+0xbc/0xf0
-   btrfs_subpage_clear_checked+0x38/0xc0
-   btrfs_page_clear_checked+0x48/0x98
-   btrfs_truncate_block+0x5d0/0x6a8
-   btrfs_cont_expand+0x5c/0x528
-   btrfs_write_check.isra.0+0xf8/0x150
-   btrfs_buffered_write+0xb4/0x760
-   btrfs_do_write_iter+0x2f8/0x4b0
-   btrfs_file_write_iter+0x1c/0x30
-   do_iter_readv_writev+0xc8/0x158
-   do_iter_write+0x9c/0x210
-   vfs_iter_write+0x24/0x40
-   iter_file_splice_write+0x224/0x390
-   direct_splice_actor+0x38/0x68
-   splice_direct_to_actor+0x12c/0x260
-   do_splice_direct+0x90/0xe8
-   generic_copy_file_range+0x50/0x90
-   vfs_copy_file_range+0x29c/0x470
-   __arm64_sys_copy_file_range+0xcc/0x498
-   invoke_syscall.constprop.0+0x80/0xd8
-   do_el0_svc+0x6c/0x168
-   el0_svc+0x50/0x1b0
-   el0t_64_sync_handler+0x114/0x120
-   el0t_64_sync+0x194/0x198
+This can result in all sorts of weird failures caused by a race, such as
+the following crash:
 
-This happens because during btrfs_cont_expand we'll get a page, set it
-as mapped, and if it's not Uptodate we'll read it.  However between the
-read and re-locking the page we could have called release_folio() on the
-page, but left the page in the file mapping.  release_folio() can clear
-the page private, and thus further down we blow up when we go to modify
-the subpage bits.
+  [337571.278245] general protection fault, probably for non-canonical address 0xdead000000000108: 0000 [#1] PREEMPT SMP PTI
+  [337571.278933] CPU: 1 PID: 115447 Comm: btrfs Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [337571.279153] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+  [337571.279572] RIP: 0010:commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.279928] Code: 85 38 06 00 (...)
+  [337571.280363] RSP: 0018:ffff9f63446efba0 EFLAGS: 00010206
+  [337571.280582] RAX: ffff942d98ec2638 RBX: ffff9430b82b4c30 RCX: 0000000449e1c000
+  [337571.280798] RDX: dead000000000100 RSI: ffff9430021e4900 RDI: 0000000000036070
+  [337571.281015] RBP: ffff942d98ec2000 R08: ffff942d98ec2000 R09: 000000000000015b
+  [337571.281254] R10: 0000000000000009 R11: 0000000000000001 R12: ffff942fe8fbf600
+  [337571.281476] R13: ffff942dabe23040 R14: ffff942dabe20800 R15: ffff942d92cf3b48
+  [337571.281723] FS:  00007f478adb7340(0000) GS:ffff94349fa40000(0000) knlGS:0000000000000000
+  [337571.281950] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [337571.282184] CR2: 00007f478ab9a3d5 CR3: 000000001e02c001 CR4: 0000000000370ee0
+  [337571.282416] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [337571.282647] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [337571.282874] Call Trace:
+  [337571.283101]  <TASK>
+  [337571.283327]  ? __die_body+0x1b/0x60
+  [337571.283570]  ? die_addr+0x39/0x60
+  [337571.283796]  ? exc_general_protection+0x22e/0x430
+  [337571.284022]  ? asm_exc_general_protection+0x22/0x30
+  [337571.284251]  ? commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.284531]  btrfs_commit_transaction+0x42e/0xf90 [btrfs]
+  [337571.284803]  ? _raw_spin_unlock+0x15/0x30
+  [337571.285031]  ? release_extent_buffer+0x103/0x130 [btrfs]
+  [337571.285305]  reset_balance_state+0x152/0x1b0 [btrfs]
+  [337571.285578]  btrfs_balance+0xa50/0x11e0 [btrfs]
+  [337571.285864]  ? __kmem_cache_alloc_node+0x14a/0x410
+  [337571.286086]  btrfs_ioctl+0x249a/0x3320 [btrfs]
+  [337571.286358]  ? mod_objcg_state+0xd2/0x360
+  [337571.286577]  ? refill_obj_stock+0xb0/0x160
+  [337571.286798]  ? seq_release+0x25/0x30
+  [337571.287016]  ? __rseq_handle_notify_resume+0x3ba/0x4b0
+  [337571.287235]  ? percpu_counter_add_batch+0x2e/0xa0
+  [337571.287455]  ? __x64_sys_ioctl+0x88/0xc0
+  [337571.287675]  __x64_sys_ioctl+0x88/0xc0
+  [337571.287901]  do_syscall_64+0x38/0x90
+  [337571.288126]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  [337571.288352] RIP: 0033:0x7f478aaffe9b
 
-Fix this by putting the set_page_extent_mapped() after the read.  This
-is safe because read_folio() will call set_page_extent_mapped() before
-it does the read, and then if we clear page private but leave it on the
-mapping we're completely safe re-setting set_page_extent_mapped().  With
-this patch I can now run generic/476 without panicing.
+So fix this by locking struct btrfs_fs_info::trans_lock before deleting
+the quota root from that list.
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/btrfs/qgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4913,9 +4913,6 @@ again:
- 		ret = -ENOMEM;
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1270,7 +1270,9 @@ int btrfs_quota_disable(struct btrfs_fs_
  		goto out;
  	}
--	ret = set_page_extent_mapped(page);
--	if (ret < 0)
--		goto out_unlock;
  
- 	if (!PageUptodate(page)) {
- 		ret = btrfs_read_folio(NULL, page_folio(page));
-@@ -4930,6 +4927,17 @@ again:
- 			goto out_unlock;
- 		}
- 	}
-+
-+	/*
-+	 * We unlock the page after the io is completed and then re-lock it
-+	 * above.  release_folio() could have come in between that and cleared
-+	 * PagePrivate(), but left the page in the mapping.  Set the page mapped
-+	 * here to make sure it's properly set for the subpage stuff.
-+	 */
-+	ret = set_page_extent_mapped(page);
-+	if (ret < 0)
-+		goto out_unlock;
-+
- 	wait_on_page_writeback(page);
++	spin_lock(&fs_info->trans_lock);
+ 	list_del(&quota_root->dirty_list);
++	spin_unlock(&fs_info->trans_lock);
  
- 	lock_extent(io_tree, block_start, block_end, &cached_state);
+ 	btrfs_tree_lock(quota_root->node);
+ 	btrfs_clean_tree_block(quota_root->node);
 
 
