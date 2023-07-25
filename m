@@ -2,107 +2,306 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3832C761EBF
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F54761FA5
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbjGYQk4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 12:40:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36436 "EHLO
+        id S232511AbjGYQyh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 12:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229874AbjGYQkz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:40:55 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 615A11BD9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:40:53 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-5222bc91838so3773184a12.0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:40:53 -0700 (PDT)
+        with ESMTP id S232520AbjGYQye (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:54:34 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646E72707
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:54:09 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b9e9765f2cso30007925ad.3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:54:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690303252; x=1690908052;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lZ1gnj/eC9nPxCfASLTwleokcx+2HhZFD7BYZMiPCig=;
-        b=yshi3Yy26azevSvOfouSdf9Wu4rv7nf7RJxkOLZE9hEzz8eGGgT2wjQ0tab+JthoyV
-         aX5ZX6m2opqmjqwp8Yh+QqDyz3TNiF7t6Ax5rmOPmOKNs8TEarkcEACu07DY6P0HiLhz
-         XxBFEh2CB17X/WhdlPZGUfks0TLdQcr2V/S31bdb2A/HBrmO+KfAfEet+pYPbQXZbIea
-         Sr3A/EPLN5R0HtqJEMv4mVQbBBay9VJncju5kpfBYeUDFEq/CZ7fxoFvvIlPb/C4gZKi
-         NhqhhnGNlX6WUSUvf6V14vvEv/SCcow6UqYakh1AUt8kjX/uKs+7QcaBQ1Z76f7djd0U
-         QZbg==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690304046; x=1690908846;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=angaVt7zR77Ij+ufzWbreH0G4uYiV7/pGEBlmASavJM=;
+        b=rHOXEX46ZMQY8Zl2Qy0OoX5uCVeQr023Q7dyfW0KburPlvoHgl/taWBpbXhHwP+OAM
+         TziETOu8ho3OZvx4o04RKEwrxioM45mqtcuD039i68hLXThCXPalDKRxGh5hd2725ob/
+         lVD0vZ2ZSNqjOyzYfR5SbiilyNyIsDCDbGfnLy8mSj6DqKB9U8wYDePVf5S/6dAt9+A5
+         7llARxq6xirvv0f2qXdjxonZCdTwdtPe4cw8a+anNoxIvmryqSruBhNN7SGAPKfsLXCa
+         lEQhG0qBF+S4EJy5on2aG6dV91izcQlLnz39NsmO33xEShCCc3u42BYsAVD8Hw27V7Vu
+         UNsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690303252; x=1690908052;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1690304046; x=1690908846;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lZ1gnj/eC9nPxCfASLTwleokcx+2HhZFD7BYZMiPCig=;
-        b=eA+MKbwRUAi7f8WZ0M/g4rw7tv8mCCBJZ5Ly5AwZV39O9i/KoWWiHNzOWEQyKfC21b
-         quVuvSNPLKRKB9yrHdX7qZqsMXVoD6A5MndiWc9FyGtD55pCr0LUf9awwMlV8N/kKQwe
-         1mraGI9+GGnRaba6GaWMevDRJfj7n0JFE64WyjDqu1dgoQG3vvmhcfsJ8iOVvYB0cdvN
-         a+HkwI5OhoeNfwgHrFdBhKUZp5xvyBK01POABXD+e3HV1oFTXM8OK53x/KDixr+sjLWC
-         Yfqlk3E+aRjbSf243yVRaMzFEvSR0dYs/kbLf7ZXc8J1Xa3X6cDK50ezQm6myaDtkgy5
-         rMBg==
-X-Gm-Message-State: ABy/qLZCvw0C6Ww8fJRP+reSpcs2FWQwa9wgfci3Cr0KuS+y8VTXlIcR
-        rdUv+0R5qyZv625yQUiyViGZXw==
-X-Google-Smtp-Source: APBJJlG4Sl5G/jl6rzAdn8mnLSMnXi6DUFJxmlhJ0JxMpiqnb3gh+i39RHSwylVMpVzM1pcbHLbIXg==
-X-Received: by 2002:a17:906:649a:b0:993:d616:7ca9 with SMTP id e26-20020a170906649a00b00993d6167ca9mr13955552ejm.23.1690303251816;
-        Tue, 25 Jul 2023 09:40:51 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id s8-20020a170906960800b0099316c56db9sm8331201ejx.127.2023.07.25.09.40.49
+        bh=angaVt7zR77Ij+ufzWbreH0G4uYiV7/pGEBlmASavJM=;
+        b=cJ3uvCfKQ80B3MVBmy6MZIKA6HTUqoz5ikmgW9TlzVqS+tZxottgg7fZ5epKK5jUrp
+         /qe4WxtPn76Wpi4VI+I0iNBwGvuyisAteDCdpmq8pAM4LTFZ8PAdC3eg1qSKgIYa+cIj
+         bwHN2KmNAOEoLC6GHblNYqpwPNAczkn5xk2PQssaDt42NNcj/nQJ5ZLNA5M8tWfECJ+I
+         wAHzUQ+iOsCzAmqA+lpBrYz+D7L4O7dyivx4pXhYXL5v9GKGEemkxndNvM34NvoVGSao
+         FgriSxmy5eN77l1JI1GAdct0npObjVDF+m5NixEzktTUCUaQZh8ZT6+df9Ly+IFOqDEV
+         70DA==
+X-Gm-Message-State: ABy/qLZbN7qe3fPIm2M4QN/Q9gu7kmajL3uiHEMZXh+E7Qpx0AP7LqFq
+        NyDanmjkewnGZv7V4EyzdUO69+DjF0tULDEQmRI7wg==
+X-Google-Smtp-Source: APBJJlGCAlM0eShFrISiW7EyjAiAZJhRAPR06IoFYEZ7/10ulOMwp6hjkL4NJ6Id/epKZ7aAYYanrw==
+X-Received: by 2002:a17:902:cec7:b0:1bb:3406:a612 with SMTP id d7-20020a170902cec700b001bb3406a612mr11959931plg.57.1690304045660;
+        Tue, 25 Jul 2023 09:54:05 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id n18-20020a170902969200b001b694140d96sm11265418plp.170.2023.07.25.09.54.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 09:40:51 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] regulator: dt-bindings: qcom,rpm: fix pattern for children
-Date:   Tue, 25 Jul 2023 18:40:47 +0200
-Message-Id: <20230725164047.368892-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        Tue, 25 Jul 2023 09:54:05 -0700 (PDT)
+Message-ID: <64bffe2d.170a0220.77247.4544@mx.google.com>
+Date:   Tue, 25 Jul 2023 09:54:05 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Kernel: v5.10.187-510-g4a64f03701033
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 18 warnings (v5.10.187-510-g4a64f03701033)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The "or" (|) in regular expression must be within parentheses,
-otherwise it is not really an "or" and it matches supplies:
+stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 18 warnings (=
+v5.10.187-510-g4a64f03701033)
 
-  qcom-apq8060-dragonboard.dtb: regulators-1: vdd_ncp-supply: [[34]] is not of type 'object'
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.187-510-g4a64f03701033/
 
-Fixes: fde0e25b71a9 ("dt-bindings: regulators: convert non-smd RPM Regulators bindings to dt-schema")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.187-510-g4a64f03701033
+Git Commit: 4a64f03701033c39271bac1039ff76ef15ae50a3
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 1 warning
+    defconfig+arm64-chromebook (gcc-10): 1 warning
+
+arm:
+    imx_v6_v7_defconfig (gcc-10): 1 warning
+    multi_v5_defconfig (gcc-10): 1 warning
+    multi_v7_defconfig (gcc-10): 1 warning
+    omap2plus_defconfig (gcc-10): 1 warning
+    vexpress_defconfig (gcc-10): 1 warning
+
+i386:
+    i386_defconfig (gcc-10): 1 warning
+
+mips:
+    32r2el_defconfig (gcc-10): 2 warnings
+
+riscv:
+    defconfig (gcc-10): 1 warning
+    rv32_defconfig (gcc-10): 5 warnings
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    13   fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=
+=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
+without a cast [-Wint-conversion]
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
+ing, 0 section mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 5 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
 ---
- .../devicetree/bindings/regulator/qcom,rpm-regulator.yaml       | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/regulator/qcom,rpm-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,rpm-regulator.yaml
-index 8a08698e3484..b4eb4001eb3d 100644
---- a/Documentation/devicetree/bindings/regulator/qcom,rpm-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/qcom,rpm-regulator.yaml
-@@ -49,7 +49,7 @@ patternProperties:
-   ".*-supply$":
-     description: Input supply phandle(s) for this node
- 
--  "^((s|l|lvs)[0-9]*)|(s[1-2][a-b])|(ncp)|(mvs)|(usb-switch)|(hdmi-switch)$":
-+  "^((s|l|lvs)[0-9]*|s[1-2][a-b]|ncp|mvs|usb-switch|hdmi-switch)$":
-     description: List of regulators and its properties
-     $ref: regulator.yaml#
-     unevaluatedProperties: false
--- 
-2.34.1
-
+For more info write to <info@kernelci.org>
