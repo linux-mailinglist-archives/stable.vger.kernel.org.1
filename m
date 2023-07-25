@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F5527615E2
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1498761397
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233482AbjGYLeP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41572 "EHLO
+        id S234208AbjGYLLw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:11:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234698AbjGYLeK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0550911B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:08 -0700 (PDT)
+        with ESMTP id S234044AbjGYLLe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30FD12121
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9832861655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA148C433C7;
-        Tue, 25 Jul 2023 11:34:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 81B9F61655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E00FC433C7;
+        Tue, 25 Jul 2023 11:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284847;
-        bh=NO5AxKQDmp5oI1YUAgPvVsFiDo24T8oemBuXl+K/GN4=;
+        s=korg; t=1690283455;
+        bh=VtctIqOPF+Ekrq/P/V9J48Xehmf2fN6mGYpqIOh7GVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MZzINVdTfGq3JZTbvgbt87fPMLJEgfasrA7ocepRE+3Q4HbeAZjKYDRaCfoH1Fbzo
-         6kvtX3b/lmYjKMiCa4jNdGIT78gffbkGyMXvq77jhzBTHHnTl9eyxh+LnfuX2XiKOd
-         M6fD3CCbyHjN+y7VplLKhJ356LLzT7FmD6683xzY=
+        b=MR2tY6zcNpBmY/Np5MQhOMv3AKf7Y6zExHQ0L1cOCTWE56SHmBufzM9fsxAVNUWLJ
+         rxoFSfc1Wp3zxyQwzuSBgzB8qCfe9NCQCdsQBVU9MRMEUpxrAFzuxLO1HJnNBuYZBx
+         qy8JzXpn2Py0cF4A9EpC1rU0iSuCqeazcQCcjA7g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 473/509] spi: bcm63xx: fix max prepend length
+Subject: [PATCH 5.15 61/78] netfilter: nf_tables: fix spurious set element insertion failure
 Date:   Tue, 25 Jul 2023 12:46:52 +0200
-Message-ID: <20230725104615.411333152@linuxfoundation.org>
+Message-ID: <20230725104453.636809995@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,45 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 5158814cbb37bbb38344b3ecddc24ba2ed0365f2 ]
+[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
 
-The command word is defined as following:
+On some platforms there is a padding hole in the nft_verdict
+structure, between the verdict code and the chain pointer.
 
-    /* Command */
-    #define SPI_CMD_COMMAND_SHIFT           0
-    #define SPI_CMD_DEVICE_ID_SHIFT         4
-    #define SPI_CMD_PREPEND_BYTE_CNT_SHIFT  8
-    #define SPI_CMD_ONE_BYTE_SHIFT          11
-    #define SPI_CMD_ONE_WIRE_SHIFT          12
+On element insertion, if the new element clashes with an existing one and
+NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
+the data associated with duplicated element is the same as the existing
+one.  The data equality check uses memcmp.
 
-If the prepend byte count field starts at bit 8, and the next defined
-bit is SPI_CMD_ONE_BYTE at bit 11, it can be at most 3 bits wide, and
-thus the max value is 7, not 15.
+For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
+padding area leads to spurious failure even if the verdict data is the
+same.
 
-Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://lore.kernel.org/r/20230629071453.62024-1-jonas.gorski@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This then makes the insertion fail with 'already exists' error, even
+though the new "key : data" matches an existing entry and userspace
+told the kernel that it doesn't want to receive an error indication.
+
+Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 96d075e633f43..d36384fef0d71 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -126,7 +126,7 @@ enum bcm63xx_regs_spi {
- 	SPI_MSG_DATA_SIZE,
- };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 04b7c4e595200..f04a69d74cb23 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9908,6 +9908,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
  
--#define BCM63XX_SPI_MAX_PREPEND		15
-+#define BCM63XX_SPI_MAX_PREPEND		7
+ 	if (!tb[NFTA_VERDICT_CODE])
+ 		return -EINVAL;
++
++	/* zero padding hole for memcmp */
++	memset(data, 0, sizeof(*data));
+ 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
  
- #define BCM63XX_SPI_MAX_CS		8
- #define BCM63XX_SPI_BUS_NUM		0
+ 	switch (data->verdict.code) {
 -- 
 2.39.2
 
