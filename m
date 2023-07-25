@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC1F761690
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C0C76119E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234969AbjGYLkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47830 "EHLO
+        id S232465AbjGYKxm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234974AbjGYLkQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:40:16 -0400
+        with ESMTP id S232012AbjGYKxF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AB5F1FC2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:40:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5133D26B1
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 681396156E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C7CC433B9;
-        Tue, 25 Jul 2023 11:40:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5A6B61655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53D7C433C7;
+        Tue, 25 Jul 2023 10:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285210;
-        bh=MO0uyxFgUDb4VQhYerPQ5URvu2DlAFJz2joEd8nYHOA=;
+        s=korg; t=1690282302;
+        bh=LAeXTFwr9cWZIJeZFT1oEGrJ78/BcXY7TR8Vq8WhwoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nlJBmc8VG7kpKyC8Cpq+YkLLVKvdYB11fOv2LCbfKvDEIOnOidscIOb8a1bdCUZlk
-         d/etEy3kV/CcOP323+G//AjVhXNEDnhttWgRc5QlUbPvtLLHs0bIt0CI41+LPKgybh
-         FZQlQK2ErpaOqGc7gFMCaygcVEh2l5zZ0bwHAPZY=
+        b=VTfBo40tjwtNgiriza7TB6FpAqUhWMH2DY05JkbBYlUEMZ4cZme4P2QnJ2rPmLycq
+         BkC7iVgLcxkkbEq8RSLr/N6LEhKGMxEhDB1fRiOErAea/1l5+1CA1pVPpOvR+v/Rhi
+         lHznVHIReMWHaL2E8Ga5bG/aUlNkJYRjMPs/jp5E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 094/313] ASoC: imx-audmix: check return value of devm_kasprintf()
-Date:   Tue, 25 Jul 2023 12:44:07 +0200
-Message-ID: <20230725104525.034147437@linuxfoundation.org>
+Subject: [PATCH 6.4 081/227] [PATCH AUTOSEL 5.4 06/12] ovl: check type and offset of struct vfsmount in ovl_entry
+Date:   Tue, 25 Jul 2023 12:44:08 +0200
+Message-ID: <20230725104518.110398180@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,66 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+[ Upstream commit f723edb8a532cd26e1ff0a2b271d73762d48f762 ]
 
-[ Upstream commit 2f76e1d6ca524a888d29aafe29f2ad2003857971 ]
+Porting overlayfs to the new amount api I started experiencing random
+crashes that couldn't be explained easily. So after much debugging and
+reasoning it became clear that struct ovl_entry requires the point to
+struct vfsmount to be the first member and of type struct vfsmount.
 
-devm_kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+During the port I added a new member at the beginning of struct
+ovl_entry which broke all over the place in the form of random crashes
+and cache corruptions. While there's a comment in ovl_free_fs() to the
+effect of "Hack! Reuse ofs->layers as a vfsmount array before freeing
+it" there's no such comment on struct ovl_entry which makes this easy to
+trip over.
 
-Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230614121509.443926-1-claudiu.beznea@microchip.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add a comment and two static asserts for both the offset and the type of
+pointer in struct ovl_entry.
+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-audmix.c | 9 +++++++++
+ fs/overlayfs/ovl_entry.h |    9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index 71590ca6394b9..08c044a72250a 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -230,6 +230,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -32,6 +32,7 @@ struct ovl_sb {
+ };
  
- 		dai_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s%s",
- 					  fe_name_pref, args.np->full_name + 1);
-+		if (!dai_name)
-+			return -ENOMEM;
+ struct ovl_layer {
++	/* ovl_free_fs() relies on @mnt being the first member! */
+ 	struct vfsmount *mnt;
+ 	/* Trap in ovl inode cache */
+ 	struct inode *trap;
+@@ -42,6 +43,14 @@ struct ovl_layer {
+ 	int fsid;
+ };
  
- 		dev_info(pdev->dev.parent, "DAI FE name:%s\n", dai_name);
- 
-@@ -238,6 +240,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 			capture_dai_name =
- 				devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
- 					       dai_name, "CPU-Capture");
-+			if (!capture_dai_name)
-+				return -ENOMEM;
- 		}
- 
- 		priv->dai[i].cpus = &dlc[0];
-@@ -268,6 +272,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 				       "AUDMIX-Playback-%d", i);
- 		be_cp = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 				       "AUDMIX-Capture-%d", i);
-+		if (!be_name || !be_pb || !be_cp)
-+			return -ENOMEM;
- 
- 		priv->dai[num_dai + i].cpus = &dlc[3];
- 		priv->dai[num_dai + i].codecs = &dlc[4];
-@@ -295,6 +301,9 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 		priv->dapm_routes[i].source =
- 			devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
- 				       dai_name, "CPU-Playback");
-+		if (!priv->dapm_routes[i].source)
-+			return -ENOMEM;
++/*
++ * ovl_free_fs() relies on @mnt being the first member when unmounting
++ * the private mounts created for each layer. Let's check both the
++ * offset and type.
++ */
++static_assert(offsetof(struct ovl_layer, mnt) == 0);
++static_assert(__same_type(typeof_member(struct ovl_layer, mnt), struct vfsmount *));
 +
- 		priv->dapm_routes[i].sink = be_pb;
- 		priv->dapm_routes[num_dai + i].source   = be_pb;
- 		priv->dapm_routes[num_dai + i].sink     = be_cp;
--- 
-2.39.2
-
+ struct ovl_path {
+ 	const struct ovl_layer *layer;
+ 	struct dentry *dentry;
 
 
