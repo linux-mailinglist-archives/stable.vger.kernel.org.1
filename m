@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 797517614FA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6368761656
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234504AbjGYLY1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33796 "EHLO
+        id S234916AbjGYLiY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234550AbjGYLYX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:23 -0400
+        with ESMTP id S235031AbjGYLiM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76393187
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A0FA11B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14BFF61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2671DC433C7;
-        Tue, 25 Jul 2023 11:24:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B9B061698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872B7C433C9;
+        Tue, 25 Jul 2023 11:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284260;
-        bh=fw7gtaO7VWMP2U69iW7gj0jAUyFQ9sQlJzmIwwTNChE=;
+        s=korg; t=1690285088;
+        bh=LRZStCNcElYMHKUGTAoewPgjzAaILevTZ9ChUcjr/7U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cqkkaTKDTvpmwiYyz1ZrnX2CPpt+lFA2Pvl8+x2cQUBFvCQdizjE4TPlPhblAvz+e
-         JmM3GDf+pPEwgltzMebL1xzi0NVwz/hK14bqgfdG2tLWzRXHVTQNJcrTe/aJiiWhDw
-         Gbar6j7oZLr5yLExs4LF74n3hskxl6HCk0DX0Ep8=
+        b=IhtjimMru7xR9UmUqhTdABcVxhI9EXXGRhErrEytlbcIC+HpU1ceJCN0qT4SEl/AY
+         CzKtyPEJmetI6zi4OI5ZHAaLVcvTOZAnZ6pHymfkLbm6JbFlf2Jo0WSxh25BBS26M6
+         r7O5C/NkFTdJlgjqT22o9BHE1MAJC7tU6LQL+vT0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Hugh Dickins <hughd@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 293/509] shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs
+        patches@lists.linux.dev,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 079/313] drm/panel: simple: fix active size for Ampire AM-480272H3TMQW-T01H
 Date:   Tue, 25 Jul 2023 12:43:52 +0200
-Message-ID: <20230725104607.155838199@linuxfoundation.org>
+Message-ID: <20230725104524.359691028@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,60 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit 36ce9d76b0a93bae799e27e4f5ac35478c676592 upstream.
+[ Upstream commit f24b49550814fdee4a98b9552e35e243ccafd4a8 ]
 
-As the ramfs-based tmpfs uses ramfs_init_fs_context() for the
-init_fs_context method, which allocates fc->s_fs_info, use ramfs_kill_sb()
-to free it and avoid a memory leak.
+The previous setting was related to the overall dimension and not to the
+active display area.
+In the "PHYSICAL SPECIFICATIONS" section, the datasheet shows the
+following parameters:
 
-Link: https://lkml.kernel.org/r/20230607161523.2876433-1-roberto.sassu@huaweicloud.com
-Fixes: c3b1b1cbf002 ("ramfs: add support for "mode=" mount option")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ ----------------------------------------------------------
+|       Item        |         Specifications        | unit |
+ ----------------------------------------------------------
+| Display area      | 98.7 (W) x 57.5 (H)           |  mm  |
+ ----------------------------------------------------------
+| Overall dimension | 105.5(W) x 67.2(H) x 4.96(D)  |  mm  |
+ ----------------------------------------------------------
+
+Fixes: 966fea78adf2 ("drm/panel: simple: Add support for Ampire AM-480272H3TMQW-T01H")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+[narmstrong: fixed Fixes commit id length]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230516085039.3797303-1-dario.binacchi@amarulasolutions.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ramfs/inode.c      |    2 +-
- include/linux/ramfs.h |    1 +
- mm/shmem.c            |    2 +-
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ramfs/inode.c
-+++ b/fs/ramfs/inode.c
-@@ -264,7 +264,7 @@ int ramfs_init_fs_context(struct fs_cont
- 	return 0;
- }
- 
--static void ramfs_kill_sb(struct super_block *sb)
-+void ramfs_kill_sb(struct super_block *sb)
- {
- 	kfree(sb->s_fs_info);
- 	kill_litter_super(sb);
---- a/include/linux/ramfs.h
-+++ b/include/linux/ramfs.h
-@@ -7,6 +7,7 @@
- struct inode *ramfs_get_inode(struct super_block *sb, const struct inode *dir,
- 	 umode_t mode, dev_t dev);
- extern int ramfs_init_fs_context(struct fs_context *fc);
-+extern void ramfs_kill_sb(struct super_block *sb);
- 
- #ifdef CONFIG_MMU
- static inline int
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4128,7 +4128,7 @@ static struct file_system_type shmem_fs_
- 	.name		= "tmpfs",
- 	.init_fs_context = ramfs_init_fs_context,
- 	.parameters	= ramfs_fs_parameters,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= ramfs_kill_sb,
- 	.fs_flags	= FS_USERNS_MOUNT,
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 312a3c4e23318..ec0085e664365 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -531,8 +531,8 @@ static const struct panel_desc ampire_am_480272h3tmqw_t01h = {
+ 	.num_modes = 1,
+ 	.bpc = 8,
+ 	.size = {
+-		.width = 105,
+-		.height = 67,
++		.width = 99,
++		.height = 58,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
  };
- 
+-- 
+2.39.2
+
 
 
