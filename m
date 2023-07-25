@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F0D761616
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB64C7614EA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234821AbjGYLgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43400 "EHLO
+        id S234512AbjGYLX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234793AbjGYLgV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7105199C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:12 -0700 (PDT)
+        with ESMTP id S234509AbjGYLX4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C791B8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44744616AF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D504C433C8;
-        Tue, 25 Jul 2023 11:36:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFC5261691
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF89C433C7;
+        Tue, 25 Jul 2023 11:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284971;
-        bh=795XjNeKTIUuV2hjpNON2NWXeeZ7ellz9oGaPgUy2ug=;
+        s=korg; t=1690284230;
+        bh=ig4R60prGrQS1rLLv0Q9aNv9X50c8B1yKfTsH8g1I1E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q/4Sg/K8mQeE1ymSYWnBxt3DAI+1KfT52cTAJeGyh8j6/4tuZ26nWcJHVxM8SlyE5
-         ywQCx0AiqHy3gaaTTOuPVLH9Gj2Ti8zO7c0okSF/mqr/sa9hiqyruY6OceWVyZV2ph
-         mVNhGrLn1krqDa1nBllyR+itsWi3CftBIBsNwbA0=
+        b=0gnAE3Ky/tlOE8aKMyEgjHRv8M5G8HWclgoKJADnQLRFg07fU+qLx7v4Ay5/1Y7Ih
+         5Fk5iChs1bjayp3BIXpB4VjRYbmDyBZYTC/duHxxzjdOZiMhityMR4rSNjCrw8FwQ5
+         zhce/3czk03aUPBJIwZDPPJL1XEHr7TI5u1FT8nA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/313] wifi: orinoco: Fix an error handling path in orinoco_cs_probe()
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 252/509] mfd: stmfx: Nullify stmfx->vdd in case of error
 Date:   Tue, 25 Jul 2023 12:43:11 +0200
-Message-ID: <20230725104522.715078738@linuxfoundation.org>
+Message-ID: <20230725104605.274302707@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,56 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit 67a81d911c01225f426cc6bee2373df044c1a9b7 ]
+[ Upstream commit 7c81582c0bccb4757186176f0ee12834597066ad ]
 
-Should orinoco_cs_config() fail, some resources need to be released as
-already done in the remove function.
+Nullify stmfx->vdd in case devm_regulator_get_optional() returns an error.
+And simplify code by returning an error only if return code is not -ENODEV,
+which means there is no vdd regulator and it is not an issue.
 
-While at it, remove a useless and erroneous comment. The probe is
-orinoco_cs_probe(), not orinoco_cs_attach().
-
-Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/e24735ce4d82901d5f7ea08419eea53bfdde3d65.1684568286.git.christophe.jaillet@wanadoo.fr
+Fixes: d75846ed08e6 ("mfd: stmfx: Fix dev_err_probe() call in stmfx_chip_init()")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Link: https://lore.kernel.org/r/20230609092804.793100-2-amelie.delaunay@foss.st.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intersil/orinoco/orinoco_cs.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/mfd/stmfx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_cs.c b/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
-index a956f965a1e5e..03bfd2482656c 100644
---- a/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
-+++ b/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
-@@ -96,6 +96,7 @@ orinoco_cs_probe(struct pcmcia_device *link)
- {
- 	struct orinoco_private *priv;
- 	struct orinoco_pccard *card;
-+	int ret;
+diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
+index 41e74b5dd9901..b45d7b0b842c5 100644
+--- a/drivers/mfd/stmfx.c
++++ b/drivers/mfd/stmfx.c
+@@ -330,9 +330,8 @@ static int stmfx_chip_init(struct i2c_client *client)
+ 	stmfx->vdd = devm_regulator_get_optional(&client->dev, "vdd");
+ 	ret = PTR_ERR_OR_ZERO(stmfx->vdd);
+ 	if (ret) {
+-		if (ret == -ENODEV)
+-			stmfx->vdd = NULL;
+-		else
++		stmfx->vdd = NULL;
++		if (ret != -ENODEV)
+ 			return dev_err_probe(&client->dev, ret, "Failed to get VDD regulator\n");
+ 	}
  
- 	priv = alloc_orinocodev(sizeof(*card), &link->dev,
- 				orinoco_cs_hard_reset, NULL);
-@@ -107,8 +108,16 @@ orinoco_cs_probe(struct pcmcia_device *link)
- 	card->p_dev = link;
- 	link->priv = priv;
- 
--	return orinoco_cs_config(link);
--}				/* orinoco_cs_attach */
-+	ret = orinoco_cs_config(link);
-+	if (ret)
-+		goto err_free_orinocodev;
-+
-+	return 0;
-+
-+err_free_orinocodev:
-+	free_orinocodev(priv);
-+	return ret;
-+}
- 
- static void orinoco_cs_detach(struct pcmcia_device *link)
- {
 -- 
 2.39.2
 
