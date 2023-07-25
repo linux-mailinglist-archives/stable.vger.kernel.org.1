@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AABF76116B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B01C7761645
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231842AbjGYKvF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:51:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59126 "EHLO
+        id S234847AbjGYLhm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:37:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233633AbjGYKul (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418771BE2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:28 -0700 (PDT)
+        with ESMTP id S234858AbjGYLhi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:37:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D40C1199C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:37:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CFE9161656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E450FC433C8;
-        Tue, 25 Jul 2023 10:50:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10A966166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:37:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEB0C433C7;
+        Tue, 25 Jul 2023 11:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282227;
-        bh=ezgSoTYi1g+jNIZ/5p3EVpILf5wKaxdEdsiJU++VcMI=;
+        s=korg; t=1690285055;
+        bh=JWFMFDUM3Ckr6zmYOqwt1PqWm0hPrktiv9T+27tD0z4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ufeqCQSqmqaMFinXTWMHBuT7MaGu1xE40WM0HJzUjDkskVPzLGjiOgtK918aqgSDB
-         uyoX/4fD1J6QQiRYTrm2Am9Tuw8HXZxufKDIgF/0LsjM53dpvvmmRqya3EohekIvA2
-         4ez71qfDkYWLiaI14mvUWBhd+rQND9GKNLpyIRxA=
+        b=Skumz2tmpGji/Bo4Ljqw8C1i7w1mhUwnXfe0Srv/WVdv2yLOnOO4y7U8xpGYqF1g0
+         9uTIYcWhT5C1hzuoWj/X2czNtdkS0wOO/lkn/k4xVjRNAgBlsX9WECWZQrdh/P3Lfi
+         rQ0grhz0v9CE9ExrqaaSPBeCBUfbjnRESYNfJdM4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alvin Lee <alvin.lee2@amd.com>, Alan Liu <haoping.liu@amd.com>,
-        Zhikai Zhai <zhikai.zhai@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.4 053/227] drm/amd/display: Disable MPC split by default on special asic
-Date:   Tue, 25 Jul 2023 12:43:40 +0200
-Message-ID: <20230725104516.975763338@linuxfoundation.org>
+        "Ilia.Gavrilov" <Ilia.Gavrilov@infotecs.ru>,
+        Simon Horman <simon.horman@corigine.com>,
+        Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 068/313] netfilter: nf_conntrack_sip: fix the ct_sip_parse_numerical_param() return value.
+Date:   Tue, 25 Jul 2023 12:43:41 +0200
+Message-ID: <20230725104523.934068277@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,42 +58,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Ilia.Gavrilov <Ilia.Gavrilov@infotecs.ru>
 
-commit a460beefe77d780ac48f19d39333852a7f93ffc1 upstream.
+[ Upstream commit f188d30087480eab421cd8ca552fb15f55d57f4d ]
 
-[WHY]
-All of pipes will be used when the MPC split enable on the dcn
-which just has 2 pipes. Then MPO enter will trigger the minimal
-transition which need programe dcn from 2 pipes MPC split to 2
-pipes MPO. This action will cause lag if happen frequently.
+ct_sip_parse_numerical_param() returns only 0 or 1 now.
+But process_register_request() and process_register_response() imply
+checking for a negative value if parsing of a numerical header parameter
+failed.
+The invocation in nf_nat_sip() looks correct:
+ 	if (ct_sip_parse_numerical_param(...) > 0 &&
+ 	    ...) { ... }
 
-[HOW]
-Disable the MPC split for the platform which dcn resource is limited
+Make the return value of the function ct_sip_parse_numerical_param()
+a tristate to fix all the cases
+a) return 1 if value is found; *val is set
+b) return 0 if value is not found; *val is unchanged
+c) return -1 on error; *val is undefined
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Alan Liu <haoping.liu@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
+
+Fixes: 0f32a40fc91a ("[NETFILTER]: nf_conntrack_sip: create signalling expectations")
+Signed-off-by: Ilia.Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn303/dcn303_resource.c |    2 +-
+ net/netfilter/nf_conntrack_sip.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn303/dcn303_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn303/dcn303_resource.c
-@@ -65,7 +65,7 @@ static const struct dc_debug_options deb
- 		.timing_trace = false,
- 		.clock_trace = true,
- 		.disable_pplib_clock_request = true,
--		.pipe_split_policy = MPC_SPLIT_DYNAMIC,
-+		.pipe_split_policy = MPC_SPLIT_AVOID,
- 		.force_single_disp_pipe_split = false,
- 		.disable_dcc = DCC_ENABLE,
- 		.vsr_support = true,
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 78fd9122b70c7..751df19fe0f8a 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -611,7 +611,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
+ 	start += strlen(name);
+ 	*val = simple_strtoul(start, &end, 0);
+ 	if (start == end)
+-		return 0;
++		return -1;
+ 	if (matchoff && matchlen) {
+ 		*matchoff = start - dptr;
+ 		*matchlen = end - start;
+-- 
+2.39.2
+
 
 
