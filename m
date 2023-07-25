@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C350761140
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE657614EB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232142AbjGYKtN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57614 "EHLO
+        id S234509AbjGYLX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232085AbjGYKtL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:11 -0400
+        with ESMTP id S234523AbjGYLX5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A50F199D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E67519A0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D1706165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15FBC433C7;
-        Tue, 25 Jul 2023 10:49:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EDE76166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D958C433C8;
+        Tue, 25 Jul 2023 11:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282149;
-        bh=AsPTQrPzTDhdK/72JF3qBlfWN0iPBbmFkZvJ++WrSw8=;
+        s=korg; t=1690284232;
+        bh=XI6M1w5VTDzPH3F6KzFd7It1qhsg/ujnH8pfIcWkUwM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NZn39+4llKCkHcsM9PMBz9O6lpfVrx+bTeMevgZo6BF8Zedev3AxXe++OzsWvy2JI
-         QtcAAGXyLKDX/5tbAwI0KuCKEMzFT0nvKkq5fT/zsGO/C7xfM2Ix1axvdXBZ2y0vfX
-         hwIIyCiuQaP3+mPwpFzU/Rw40aHXOFp9dA98e1gg=
+        b=0S/e/z5dQ2tkcuPKsH+yATLbLiF+ktR5/+CmSoYsEMccdyW01N5h+el2fleEeWiPT
+         9GUckceaiUruSWrMV6wguUG3A3xm8m1agVCy+n2IYspgyfT/97YyPbZMVGngOOOlA+
+         w+1UHCoj2cqCRxS8FgNmyWLGjjFijuNSubF9wJ4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 025/227] selftests: tc: set timeout to 15 minutes
+        patches@lists.linux.dev, Pierre Morel <pmorel@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 253/509] KVM: s390: vsie: fix the length of APCB bitmap
 Date:   Tue, 25 Jul 2023 12:43:12 +0200
-Message-ID: <20230725104515.848152416@linuxfoundation.org>
+Message-ID: <20230725104605.321382563@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Pierre Morel <pmorel@linux.ibm.com>
 
-commit fda05798c22a354efde09a76bdfc276b2d591829 upstream.
+[ Upstream commit 246be7d2720ea9a795b576067ecc5e5c7a1e7848 ]
 
-When looking for something else in LKFT reports [1], I noticed that the
-TC selftest ended with a timeout error:
+bit_and() uses the count of bits as the woking length.
+Fix the previous implementation and effectively use
+the right bitmap size.
 
-  not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
+Fixes: 19fd83a64718 ("KVM: s390: vsie: allow CRYCB FORMAT-1")
+Fixes: 56019f9aca22 ("KVM: s390: vsie: Allow CRYCB FORMAT-2")
 
-The timeout had been introduced 3 years ago, see the Fixes commit below.
-
-This timeout is only in place when executing the selftests via the
-kselftests runner scripts. I guess this is not what most TC devs are
-using and nobody noticed the issue before.
-
-The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
-like it is plenty more time than what it takes in "normal" conditions.
-
-Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
-Cc: stable@vger.kernel.org
-Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
-Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
-Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Reviewed-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/kvm/20230511094719.9691-1-pmorel@linux.ibm.com/
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/tc-testing/settings |    1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 tools/testing/selftests/tc-testing/settings
+ arch/s390/kvm/vsie.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- /dev/null
-+++ b/tools/testing/selftests/tc-testing/settings
-@@ -0,0 +1 @@
-+timeout=900
+diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+index ff58decfef5e8..192eacc8fbb7a 100644
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -168,7 +168,8 @@ static int setup_apcb00(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
+ 			    sizeof(struct kvm_s390_apcb0)))
+ 		return -EFAULT;
+ 
+-	bitmap_and(apcb_s, apcb_s, apcb_h, sizeof(struct kvm_s390_apcb0));
++	bitmap_and(apcb_s, apcb_s, apcb_h,
++		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb0));
+ 
+ 	return 0;
+ }
+@@ -190,7 +191,8 @@ static int setup_apcb11(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
+ 			    sizeof(struct kvm_s390_apcb1)))
+ 		return -EFAULT;
+ 
+-	bitmap_and(apcb_s, apcb_s, apcb_h, sizeof(struct kvm_s390_apcb1));
++	bitmap_and(apcb_s, apcb_s, apcb_h,
++		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb1));
+ 
+ 	return 0;
+ }
+-- 
+2.39.2
+
 
 
