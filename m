@@ -2,155 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDF567623B9
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 22:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 569EE7623BF
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 22:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjGYUlw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 16:41:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39814 "EHLO
+        id S230343AbjGYUmX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 16:42:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbjGYUls (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 16:41:48 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 345032689
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 13:41:31 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-55b78bf0423so235104a12.0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 13:41:31 -0700 (PDT)
+        with ESMTP id S231629AbjGYUmO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 16:42:14 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA830E47;
+        Tue, 25 Jul 2023 13:42:13 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-68336d06620so5568998b3a.1;
+        Tue, 25 Jul 2023 13:42:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1690317690; x=1690922490;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1690317733; x=1690922533;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Xd197zsSg9byA+gtYY75PYv4PIpS4ScWUJr+SOEaPEM=;
-        b=xl4dH5CGqhoV5/HN8hK6N+4etLpucHHq4G9VlaeKK8uvjul5Z/3LuFG1OD/Rfcz+sO
-         uHf7afQUl1Tthg+k5cPu2YgUFebiZVCO/DxxnveJFa9AHFPfSAYF1fLM4PYI54/0GGo5
-         VUE9hE7iKU16JNnoaNraeXZ6GOYSyXiM7GLdfKPn7ZCGF9KD9mVTh7iQpEM4VgnKqE7p
-         vVNIw8+J0GHerrl222WKkLQ/mnZf3Gr4izxT5xb1ceNHdVnKrjfY8QFTv6Rbgf0fBaSU
-         82taJJKewtqC6i9PxeYYzylgs6QAkLzJs01A+lKDtBTZxnx79bPI2jMSSwx/7kfcXKlS
-         30/g==
+        bh=MQmJ/m2T/ydxcjfile7If/e4KOGCFPlQ1iZlkwg8KdI=;
+        b=ZTx1BqZcaa8x9126EESFJ9eCw2x2YHm5MpXp7fNkpRvehfLHMQiyKDZp6K5seJ02q0
+         D1Sk+7R37/Qvm5jz+CQJPMRWOVXL0w2xSavdoktlx9i6HhDFX7/8NE0M/FdSmemLdCKz
+         Y9YYIUaXJox8uMbkyTWfeD917IqIh/tgAHxSJLNbRSczQpQ1Ere/p2KPgowDU0U2t1hn
+         QEvIB0J4kQQm73XqTx/DqCD3/tNRQ89KBMk5etIBTVyuvUa6+gkoTReAFMTcte3Bp0+0
+         o8Jblij4548dpo2/F8OuNwoRRQfYtlTly6E25PII9lgIRff+zew1hSWVLe0UhjMaLofj
+         XvFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690317690; x=1690922490;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1690317733; x=1690922533;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xd197zsSg9byA+gtYY75PYv4PIpS4ScWUJr+SOEaPEM=;
-        b=lq5vbcDx6MwPkK+FjxS9a2WrQ5wlthTKiuxfpVU5CTnsjwpt5hFw7ZnIU8Nqm0mgWd
-         oqaMH9C9UTWLHyHjpWVIWmRjt4LmFzHmRALCDPCgf4vl2F31okXCjjXyCUBUV9Twb7og
-         oKyEqD0F7LK64DJ0o94OB1elwPUZXZJQkRYZpvF92UW3xwYQMfkRxbnf/inqx6nZbK42
-         0EgRqhS4tXtfRfQs9zQhtGN8G55+X7rGsx5hf3ecBg6igL/NddqzIUharHGzbRLX8bMw
-         hFpyQ7fsoK3gPwD0JoxwHApl0mb7MuEpzNFHycXOKboO0/I3QgYC5C1qI8l1KwlUszon
-         tsNg==
-X-Gm-Message-State: ABy/qLb8VujibXbVOKRDG4bnA3EBdmgpX4rxhI44xBlsAL7lH3ClmwNq
-        oXuesGCz/mT+9Bp/CLsjPJ2g/g==
-X-Google-Smtp-Source: APBJJlGPbdn55TJ/ACLjAXMuc5kiyNCY/o3ex3y0A9z/PF+QuLC9SNBb24UIyrxP9luq09vyJ55JlQ==
-X-Received: by 2002:a17:902:e84f:b0:1b8:50a9:6874 with SMTP id t15-20020a170902e84f00b001b850a96874mr279130plg.5.1690317690440;
-        Tue, 25 Jul 2023 13:41:30 -0700 (PDT)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id y10-20020a170902700a00b001bbb598b8bbsm2796408plk.41.2023.07.25.13.41.29
+        bh=MQmJ/m2T/ydxcjfile7If/e4KOGCFPlQ1iZlkwg8KdI=;
+        b=kMWwaPJNMXoXlk8DI44HX4Hlpn4DG+gaDwCA0EHZFJ2i8ZBD8rPQ4RVUu1XpX7kxqP
+         RdYtA0SUjfH694UcpGDmySTDE0X1fU3IVfF+Eb5B22JH3IutBujcvm7qxyo67jh0dz/8
+         CXOVBOv6YpnbzLvVOQTDGEEGOlKMVIZJ/pkR5fWObXDO5aqK0c76keHJVSxKiG7tYypt
+         R4Jos+/z6orkDv+cF8DQvvRQckCtSqScGNn3HohFmEHcQufFDB5vXoAbr3iqmZpT5aRU
+         UMsFq0Wbxh9+9Mr7x5FKOdaA/XoUqojx/b68PFEcXBPZ14e1NMmSF+zgmUOXkQmlLtYW
+         Ghcw==
+X-Gm-Message-State: ABy/qLbrdgq3T14ywocDnt05OzoC8lH6DlDSCT8+B4tloBnN4fpRttNo
+        LG7NRhcVHJKMrxtsT/Wn0hs=
+X-Google-Smtp-Source: APBJJlGCgl8X3aUEZlPeeAoAG21g/VkFzj3agq1zYPsrFu6uYCaZjbOHh41AK/Zr67xCbEHs7RNM9A==
+X-Received: by 2002:a05:6a20:8408:b0:133:96c9:fb3b with SMTP id c8-20020a056a20840800b0013396c9fb3bmr189930pzd.45.1690317733116;
+        Tue, 25 Jul 2023 13:42:13 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id z24-20020a63ac58000000b005533b6cb3a6sm10962157pgn.16.2023.07.25.13.42.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jul 2023 13:41:29 -0700 (PDT)
-Message-ID: <8d1069bf-4c0b-22be-e4c4-5f2b1eb1f7e8@kernel.dk>
-Date:   Tue, 25 Jul 2023 14:41:28 -0600
+        Tue, 25 Jul 2023 13:42:12 -0700 (PDT)
+Message-ID: <f96821af-113c-0f56-8576-b84616db4233@gmail.com>
+Date:   Tue, 25 Jul 2023 13:42:10 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] file: always lock position
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christian Brauner <brauner@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-scheren-absegnen-8c807c760ba1@brauner>
- <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
- <20230724-gebessert-wortwahl-195daecce8f0@brauner>
- <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
- <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
- <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
- <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
- <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
- <20230724-geadelt-nachrangig-07e431a2f3a4@brauner>
- <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
- <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
- <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
+Subject: Re: [PATCH 5.4 000/313] 5.4.251-rc1 review
 Content-Language: en-US
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230725104521.167250627@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/25/23 12:30?PM, Linus Torvalds wrote:
-> On Mon, 24 Jul 2023 at 15:57, Jens Axboe <axboe@kernel.dk> wrote:
->>
->> On 7/24/23 4:25?PM, Linus Torvalds wrote:
->>> This sentence still worries me.
->>>
->>> Those fixed files had better have their own refcounts from being
->>> fixed. So the rules really shouldn't change in any way what-so-ever.
->>> So what exactly are you alluding to?
->>
->> They do, but they only have a single reference, which is what fixes them
->> into the io_uring file table for fixed files. With the patch from the
->> top of this thread, that should then be fine as we don't need to
->> artificially elevator the ref count more than that.
+On 7/25/23 03:42, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.251 release.
+> There are 313 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> No.
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
 > 
-> The patch from the top of this thread cannot *possibly* matter for a
-> io_uring fixed file.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.251-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
 > 
-> The fdget_pos() always gets the file pointer from the file table. But
-> that means that it is guaranteed to have a refcount of at least one.
+> thanks,
 > 
-> If io_uring fixed file holds a reference (and not holding a reference
-> would be a huge bug), that in turn means that the minimum refcount is
-> now two.
+> greg k-h
 
-Right, but what if the original app closes the file descriptor? Now you
-have the io_uring file table still holding a reference to it, but it'd
-just be 1. Which is enough to keep it alive, but you can still have
-multiple IOs inflight against this file.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Obviously using the file position is wonky with async IO to begin with,
-exactly because you can have multiple IOs in flight to it at the same
-time. You can make it work by specifying ordering constraints, but that
-is obviously also totally messy and not really a valid use case. Just
-don't use the file position at that point.
-
-Some libraries are limited though and want to use file positions with
-async IO, and they generally get to keep both pieces if they do and
-don't treat it as sync IO (or serialized, at least) at that point.
-
-> So the code in fdget_pos() is correct, with or without the patch.
-> 
-> The *only* problem is when something actually violates the refcounting
-> rules. Sadly, that's exactly what pidfd_getfd() does, and can
-> basically make a private file pointer be non-private without
-> synchronizing with the original owner of the fd.
-> 
-> Now, io_uring may have had its own problems, if it tried to
-> re-implement some io_uring-specific version of fdget_pos() for the
-> fixed file case, and thought that it could use the file_count() == 1
-> trick when it *wasn't* also a file table entry.
->
-> But that would be an independent bug from copy-and-pasting code
-> without taking the surrounding rules into account.
-
-We never made any assumptions on the file_count() for the file, exactly
-because the count of it means nothing to io_uring in terms of whether we
-can have concurrent IO to it or not.
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Jens Axboe
+Florian
 
