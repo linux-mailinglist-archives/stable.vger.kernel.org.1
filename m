@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17407761734
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 904A17615B7
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbjGYLqD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53562 "EHLO
+        id S229502AbjGYLcS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbjGYLqC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:02 -0400
+        with ESMTP id S232624AbjGYLcR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99855199C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E3D1F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F1FF61654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD45C433C7;
-        Tue, 25 Jul 2023 11:45:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F174261654
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DE8C433C7;
+        Tue, 25 Jul 2023 11:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285559;
-        bh=201jJYxxD13Lo3iHBMxpxzZcHPgTs9n9hCDf361ujKk=;
+        s=korg; t=1690284735;
+        bh=x7QgD5cbrpnxYXtiHTDilUKOuTppJo9uI3sOZCIeioE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=be/3MXwSuJxY5/Y+ng+uV2ttdOY7XwhIPvsA28e2s6GjG0fjDcF8oTT5cb7duRzQM
-         xNjdaCYBuwgfWiN0Wk9AYTQlNpoDqR+e/ghM41OpcC9E3qD78dL9UyUX4CucFjSV4c
-         Z6RgcpwhwAEA6+waIxZAhVpM3xuTgeN33HDScOAg=
+        b=ymmqA3ygHvdijZfXa9uOBu4DZEbJSOQoMw9HHrdsW1ud3VsHyJP37mY0DeZI8+hGN
+         4ezaicAnIop7WlNeyMkmvUC/J6YIe4oz9F/6gGFycaE2326oqHXhTCra9lpM4q/mkg
+         4YcOKgJxN2sDc4wnbElSm1rcOVacCxZvwsT+SzVo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.4 247/313] PCI: rockchip: Fix legacy IRQ generation for RK3399 PCIe endpoint core
-Date:   Tue, 25 Jul 2023 12:46:40 +0200
-Message-ID: <20230725104531.758150458@linuxfoundation.org>
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 462/509] ACPI: video: Add backlight=native DMI quirk for Apple iMac11,3
+Date:   Tue, 25 Jul 2023 12:46:41 +0200
+Message-ID: <20230725104614.907411520@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,113 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 166e89d99dd85a856343cca51eee781b793801f2 upstream.
+[ Upstream commit 48436f2e9834b46b47b038b605c8142a1c07bc85 ]
 
-Fix legacy IRQ generation for RK3399 PCIe endpoint core according to
-the technical reference manual (TRM). Assert and deassert legacy
-interrupt (INTx) through the legacy interrupt control register
-("PCIE_CLIENT_LEGACY_INT_CTRL") instead of manually generating a PCIe
-message. The generation of the legacy interrupt was tested and validated
-with the PCIe endpoint test driver.
+Linux defaults to picking the non-working ACPI video backlight interface
+on the Apple iMac11,3 .
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-8-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a DMI quirk to pick the working native radeon_bl0 interface instead.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |   45 +++++++-----------------------
- drivers/pci/controller/pcie-rockchip.h    |    6 +++-
- 2 files changed, 16 insertions(+), 35 deletions(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -346,48 +346,25 @@ static int rockchip_pcie_ep_get_msi(stru
- }
- 
- static void rockchip_pcie_ep_assert_intx(struct rockchip_pcie_ep *ep, u8 fn,
--					 u8 intx, bool is_asserted)
-+					 u8 intx, bool do_assert)
- {
- 	struct rockchip_pcie *rockchip = &ep->rockchip;
--	u32 r = ep->max_regions - 1;
--	u32 offset;
--	u32 status;
--	u8 msg_code;
--
--	if (unlikely(ep->irq_pci_addr != ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR ||
--		     ep->irq_pci_fn != fn)) {
--		rockchip_pcie_prog_ep_ob_atu(rockchip, fn, r,
--					     AXI_WRAPPER_NOR_MSG,
--					     ep->irq_phys_addr, 0, 0);
--		ep->irq_pci_addr = ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR;
--		ep->irq_pci_fn = fn;
--	}
- 
- 	intx &= 3;
--	if (is_asserted) {
-+
-+	if (do_assert) {
- 		ep->irq_pending |= BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_ASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_ASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_PEND,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	} else {
- 		ep->irq_pending &= ~BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_DEASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_DEASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_NORMAL,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	}
--
--	status = rockchip_pcie_read(rockchip,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	status &= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--
--	if ((status != 0) ^ (ep->irq_pending != 0)) {
--		status ^= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--		rockchip_pcie_write(rockchip, status,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	}
--
--	offset =
--	   ROCKCHIP_PCIE_MSG_ROUTING(ROCKCHIP_PCIE_MSG_ROUTING_LOCAL_INTX) |
--	   ROCKCHIP_PCIE_MSG_CODE(msg_code) | ROCKCHIP_PCIE_MSG_NO_DATA;
--	writel(0, ep->irq_cpu_addr + offset);
- }
- 
- static int rockchip_pcie_ep_send_legacy_irq(struct rockchip_pcie_ep *ep, u8 fn,
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -37,6 +37,11 @@
- #define   PCIE_CLIENT_MODE_EP            HIWORD_UPDATE(0x0040, 0)
- #define   PCIE_CLIENT_GEN_SEL_1		  HIWORD_UPDATE(0x0080, 0)
- #define   PCIE_CLIENT_GEN_SEL_2		  HIWORD_UPDATE_BIT(0x0080)
-+#define PCIE_CLIENT_LEGACY_INT_CTRL	(PCIE_CLIENT_BASE + 0x0c)
-+#define   PCIE_CLIENT_INT_IN_ASSERT		HIWORD_UPDATE_BIT(0x0002)
-+#define   PCIE_CLIENT_INT_IN_DEASSERT		HIWORD_UPDATE(0x0002, 0)
-+#define   PCIE_CLIENT_INT_PEND_ST_PEND		HIWORD_UPDATE_BIT(0x0001)
-+#define   PCIE_CLIENT_INT_PEND_ST_NORMAL	HIWORD_UPDATE(0x0001, 0)
- #define PCIE_CLIENT_SIDE_BAND_STATUS	(PCIE_CLIENT_BASE + 0x20)
- #define   PCIE_CLIENT_PHY_ST			BIT(12)
- #define PCIE_CLIENT_DEBUG_OUT_0		(PCIE_CLIENT_BASE + 0x3c)
-@@ -234,7 +239,6 @@
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_ME				BIT(16)
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP	BIT(24)
- #define ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR				0x1
--#define ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR		0x3
- #define ROCKCHIP_PCIE_EP_FUNC_BASE(fn)	(((fn) << 12) & GENMASK(19, 12))
- #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR0(fn, bar) \
- 	(PCIE_RC_RP_ATS_BASE + 0x0840 + (fn) * 0x0040 + (bar) * 0x0008)
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 038542b3a80a7..872b5351f0d8f 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -332,6 +332,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Apple iMac11,3 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "iMac11,3"),
++		},
++	},
+ 	{
+ 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
+ 	 .callback = video_detect_force_native,
+-- 
+2.39.2
+
 
 
