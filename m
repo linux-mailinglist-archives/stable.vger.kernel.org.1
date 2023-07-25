@@ -2,306 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F54761FA5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 18:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF9F762106
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232511AbjGYQyh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 12:54:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47826 "EHLO
+        id S232241AbjGYSIO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 14:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232520AbjGYQye (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 12:54:34 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646E72707
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:54:09 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b9e9765f2cso30007925ad.3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 09:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690304046; x=1690908846;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=angaVt7zR77Ij+ufzWbreH0G4uYiV7/pGEBlmASavJM=;
-        b=rHOXEX46ZMQY8Zl2Qy0OoX5uCVeQr023Q7dyfW0KburPlvoHgl/taWBpbXhHwP+OAM
-         TziETOu8ho3OZvx4o04RKEwrxioM45mqtcuD039i68hLXThCXPalDKRxGh5hd2725ob/
-         lVD0vZ2ZSNqjOyzYfR5SbiilyNyIsDCDbGfnLy8mSj6DqKB9U8wYDePVf5S/6dAt9+A5
-         7llARxq6xirvv0f2qXdjxonZCdTwdtPe4cw8a+anNoxIvmryqSruBhNN7SGAPKfsLXCa
-         lEQhG0qBF+S4EJy5on2aG6dV91izcQlLnz39NsmO33xEShCCc3u42BYsAVD8Hw27V7Vu
-         UNsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690304046; x=1690908846;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=angaVt7zR77Ij+ufzWbreH0G4uYiV7/pGEBlmASavJM=;
-        b=cJ3uvCfKQ80B3MVBmy6MZIKA6HTUqoz5ikmgW9TlzVqS+tZxottgg7fZ5epKK5jUrp
-         /qe4WxtPn76Wpi4VI+I0iNBwGvuyisAteDCdpmq8pAM4LTFZ8PAdC3eg1qSKgIYa+cIj
-         bwHN2KmNAOEoLC6GHblNYqpwPNAczkn5xk2PQssaDt42NNcj/nQJ5ZLNA5M8tWfECJ+I
-         wAHzUQ+iOsCzAmqA+lpBrYz+D7L4O7dyivx4pXhYXL5v9GKGEemkxndNvM34NvoVGSao
-         FgriSxmy5eN77l1JI1GAdct0npObjVDF+m5NixEzktTUCUaQZh8ZT6+df9Ly+IFOqDEV
-         70DA==
-X-Gm-Message-State: ABy/qLZbN7qe3fPIm2M4QN/Q9gu7kmajL3uiHEMZXh+E7Qpx0AP7LqFq
-        NyDanmjkewnGZv7V4EyzdUO69+DjF0tULDEQmRI7wg==
-X-Google-Smtp-Source: APBJJlGCAlM0eShFrISiW7EyjAiAZJhRAPR06IoFYEZ7/10ulOMwp6hjkL4NJ6Id/epKZ7aAYYanrw==
-X-Received: by 2002:a17:902:cec7:b0:1bb:3406:a612 with SMTP id d7-20020a170902cec700b001bb3406a612mr11959931plg.57.1690304045660;
-        Tue, 25 Jul 2023 09:54:05 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id n18-20020a170902969200b001b694140d96sm11265418plp.170.2023.07.25.09.54.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 09:54:05 -0700 (PDT)
-Message-ID: <64bffe2d.170a0220.77247.4544@mx.google.com>
-Date:   Tue, 25 Jul 2023 09:54:05 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S232838AbjGYSIL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:08:11 -0400
+Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD56D10EF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:08 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id OMS6qYF8QeA2LOMS6qL8YT; Tue, 25 Jul 2023 20:08:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1690308487;
+        bh=dvViFuXuJeLE1liWekkSjehQZfC703FFbZZyHgKFhdg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=o4FdgcCjgO/BAqlxG3TnvsA5LXbml4OaDAD9p6F7CyXWAJ4qwojbGDYtGBEsu146o
+         zmqKNxn/DrC4WpPBYR0H1Ue2QQqLtVp9mirorJKP+QPUQ4SOfFKBAKCAv74Pvyx4kh
+         q/j3UV530q4zpw4GCjMOEQRBWEvPeL0M4Yytzodm5TkiGcUgAkPUbYMoAyHCIEpjJA
+         I3A5ZWdzNKJk80wxn+29A3Lm5mREbQj2JnmqAbS2BptHXLmvC75T2lhdb7kANFyW3L
+         961erEjrdWnZhEBhH8VRI/L3DsNXFHg2pxBk1M3xz3slvHWIWVmJAtc8AbnGHcFn6c
+         ZN+zFmXTpQnNA==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 25 Jul 2023 20:08:07 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <c2e1b927-fd0e-2865-c0b1-f8aab4cb6833@wanadoo.fr>
+Date:   Tue, 25 Jul 2023 20:08:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Kernel: v5.10.187-510-g4a64f03701033
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 18 warnings (v5.10.187-510-g4a64f03701033)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.4.y] i2c: busses: i2c-nomadik: Remove a useless call in
+ the remove function
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>
+References: <2023072154-animal-dropkick-6a92@gregkh>
+ <62fe6800d41e04a4eb5adfa18a9e1090cbc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
+ <2023072303-ranking-wife-05ae@gregkh>
+ <e52e6a0b-205a-63cb-04dd-6f1c5f5c31f7@wanadoo.fr>
+ <2023072538-vacancy-retinal-73ea@gregkh>
+Content-Language: fr, en-US
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <2023072538-vacancy-retinal-73ea@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 18 warnings (=
-v5.10.187-510-g4a64f03701033)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.187-510-g4a64f03701033/
+Le 25/07/2023 à 09:09, Greg KH a écrit :
+> On Mon, Jul 24, 2023 at 10:20:12PM +0200, Marion & Christophe JAILLET wrote:
+>> Le 23/07/2023 à 22:34, Greg KH a écrit :
+>>> On Fri, Jul 21, 2023 at 07:47:41PM +0200, Christophe JAILLET wrote:
+>>>> Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
+>>>> driver"), there is no more request_mem_region() call in this driver.
+>>>>
+>>>> So remove the release_mem_region() call from the remove function which is
+>>>> likely a left over.
+>>>>
+>>>> Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
+>>>> Cc: <stable@vger.kernel.org> # v3.6+
+>>>> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+>>>> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+>>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>>> ---
+>>>> The patch below that should fix a merge conflict related to commit
+>>>> 9c7174db4cdd1 ("i2c: nomadik: Use devm_clk_get_enabled()") has been
+>>>> HAND MODIFIED.
+>>> I don't understand, that commit is not in the stable trees.  What do you
+>>> mean by "hand modified"?
+>>
+>> I mean that I took the file initially generated by git format-patch when I
+>> sent the patch against -next.
+>>
+>> I updated the diff context from this file and left everything else as-is.
+>> I only added some (apparently unclear :) ) context below the ---.
+>>
+>>
+>> Yes, precisely.
+>> My patch has been sent *after* 9c7174db4cdd1 in -next, and it depends on it.
+>>
+>> The proposed modified patch for backport tries to deal with this missing
+>> part in older branches.
+>>
+>> If 9c7174db4cdd1 was also backported, I think that my patch would apply
+>> cleanly.
+>>
+>>
+>>>> I hope it is fine, but is provided as-is. Especially line numbers should be
+>>>> wrong, but 'patch' should be able to deal with it. (sorry if it does not apply)
+>>>>
+>>>> I guess that it should also apply to all previous branches.
+>>>>
+>>>> I've left the commit description as it was. Not sure what to do with A-b and R-b
+>>>> tags.
+>>> Why isn't this needed in Linus's tree?
+>>
+>> I never said that.
+>>
+>> It is one of the first time, if not the first one, I update a patch to ease
+>> backport.
+>> I only sent something for 6.4.y, but it must be valid for other branches as
+>> well. (i.e. # v3.6+)
+> But what is the patch in Linus's tree?  If it's not there yet, there's
+> nothing we can do with this for stable backports.  If it is there, we
+> need the git commit id in Linus's tree.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.187-510-g4a64f03701033
-Git Commit: 4a64f03701033c39271bac1039ff76ef15ae50a3
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 1 warning
-    defconfig+arm64-chromebook (gcc-10): 1 warning
-
-arm:
-    imx_v6_v7_defconfig (gcc-10): 1 warning
-    multi_v5_defconfig (gcc-10): 1 warning
-    multi_v7_defconfig (gcc-10): 1 warning
-    omap2plus_defconfig (gcc-10): 1 warning
-    vexpress_defconfig (gcc-10): 1 warning
-
-i386:
-    i386_defconfig (gcc-10): 1 warning
-
-mips:
-    32r2el_defconfig (gcc-10): 2 warnings
-
-riscv:
-    defconfig (gcc-10): 1 warning
-    rv32_defconfig (gcc-10): 5 warnings
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+Not sure to understand what you need.
 
 
-Warnings summary:
+In torvalds/linux.git/ :
+======================
 
-    13   fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=
-=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
-without a cast [-Wint-conversion]
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
+My initial patch is with the same commit id:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=05f933d5f7318b03ff2028c1704dc867ac16f2c7
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+The patch that cause the merge issue with older trees is this one. The 
+patch above depends on it:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=9c7174db4cdd111e10d19eed5c36fd978a14c8a2
 
-Detailed per-defconfig build reports:
+The patch in Fixes:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=235602146ec9c1882edf1ccc68389c1176be8198
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sec=
-tion mismatches
 
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
+In stable/linux.git/ :
+====================
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+My initial patch is with the same commit id:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=05f933d5f7318b03ff2028c1704dc867ac16f2c7
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+The patch that cause the merge issue with older trees is this one. The 
+patch above depends on it:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=9c7174db4cdd111e10d19eed5c36fd978a14c8a2
 
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
-smatches
+The patch in Fixes:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?id=235602146ec9c1882edf1ccc68389c1176be8198
 
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
-smatches
+In stable/linux.git/?h=linux-6.4.y :
+==================================
 
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
+My patch and the one it depends one are available there, obviously.
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
-ing, 0 section mismatches
+The patch in Fixes:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/i2c/busses/i2c-nomadik.c?h=linux-6.4.y&id=235602146ec9c1882edf1ccc68389c1176be8198
 
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+The patch sent as "[PATCH 6.4.y] i2c: busses: i2c-nomadik:..." is commit 
+05f933d5f731 + a need part of 9c7174db4cdd.
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
-n mismatches
+If 9c7174db4cdd is backported as well (and applies cleanly), 
+05f933d5f731 should also work un-modified.
 
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
+> Still confused,
 
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
+Confused as well.
 
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
+CJ
 
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 5 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    fs/ext4/ioctl.c:634:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
-m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
- a cast [-Wint-conversion]
-
----
-For more info write to <info@kernelci.org>
+> greg k-h
