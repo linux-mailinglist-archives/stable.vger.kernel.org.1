@@ -2,52 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A2107611B4
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2685C76128C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230203AbjGYKzM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
+        id S233400AbjGYLDr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232891AbjGYKyR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:54:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2922116
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:27 -0700 (PDT)
+        with ESMTP id S233928AbjGYLDV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07CD5BA0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA3B36165C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC106C433C8;
-        Tue, 25 Jul 2023 10:52:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1370461693
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE65FC433C7;
+        Tue, 25 Jul 2023 11:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282346;
-        bh=PYZ24E6ZDFJRfuCgUGbQDtHOmvWNEBI5BdcBoLSRUWw=;
+        s=korg; t=1690282812;
+        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DOyLBOjyiPL2FYLfD2Vj1YOwbo3geW8/QKlR6iftHGY0XmAHTbmfuwI2M+OrnWYCj
-         ibKqjLy4bUD3JEaFI7uT/D/X2lfbWiwP2GG936eO5vp89qPaFjM/jo/PXE/Ujbcz5t
-         2gCCpt0BAMTQkYvbMZetaO4zt0VItWQPfUhB35oM=
+        b=w3qoMft5IT7BrDDWbHS8aQTvWZOpjSuWW5atzYgr5cgfUnQkcOh8duFCGMBwbZ7Ok
+         v7psvp0Ae62snwYKITIgSbDvHxXnEpRf94X/W5IV0gVg/ydIa0WLpCD/3OLYlTq9zQ
+         /kpZZSueyZ4EI2lOth9cuU4V6FOqwPNm/74Iaa2Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 068/227] ASoC: codecs: wcd934x: fix resource leaks on component remove
-Date:   Tue, 25 Jul 2023 12:43:55 +0200
-Message-ID: <20230725104517.580528681@linuxfoundation.org>
+        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        regressions@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.1 008/183] perf probe: Add test for regression introduced by switch to die_get_decl_file()
+Date:   Tue, 25 Jul 2023 12:43:56 +0200
+Message-ID: <20230725104508.113776913@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,54 +64,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Georg Müller <georgmueller@gmx.net>
 
-commit 798590cc7d3c2b5f3a7548d96dd4d8a081c1bc39 upstream.
+commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
 
-Make sure to release allocated MBHC resources also on component remove.
+This patch adds a test to validate that 'perf probe' works for binaries
+where DWARF info is split into multiple CUs
 
-This is specifically needed to allow probe deferrals of the sound card
-which otherwise fails when reprobing the codec component.
-
-Fixes: 9fb9b1690f0b ("ASoC: codecs: wcd934x: add mbhc support")
-Cc: stable@vger.kernel.org      # 5.14
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230705123018.30903-6-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Georg Müller <georgmueller@gmx.net>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd934x.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
+ 1 file changed, 77 insertions(+)
+ create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
 
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -3044,6 +3044,17 @@ static int wcd934x_mbhc_init(struct snd_
- 
- 	return 0;
- }
+--- /dev/null
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -0,0 +1,77 @@
++#!/bin/bash
++# test perf probe of function from different CU
++# SPDX-License-Identifier: GPL-2.0
 +
-+static void wcd934x_mbhc_deinit(struct snd_soc_component *component)
++set -e
++
++temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
++
++cleanup()
 +{
-+	struct wcd934x_codec *wcd = snd_soc_component_get_drvdata(component);
-+
-+	if (!wcd->mbhc)
-+		return;
-+
-+	wcd_mbhc_deinit(wcd->mbhc);
++	trap - EXIT TERM INT
++	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
++		echo "--- Cleaning up ---"
++		perf probe -x ${temp_dir}/testfile -d foo
++		rm -f "${temp_dir}/"*
++		rmdir "${temp_dir}"
++	fi
 +}
 +
- static int wcd934x_comp_probe(struct snd_soc_component *component)
- {
- 	struct wcd934x_codec *wcd = dev_get_drvdata(component->dev);
-@@ -3077,6 +3088,7 @@ static void wcd934x_comp_remove(struct s
- {
- 	struct wcd934x_codec *wcd = dev_get_drvdata(comp->dev);
- 
-+	wcd934x_mbhc_deinit(comp);
- 	wcd_clsh_ctrl_free(wcd->clsh_ctrl);
- }
- 
++trap_cleanup()
++{
++        cleanup
++        exit 1
++}
++
++trap trap_cleanup EXIT TERM INT
++
++cat > ${temp_dir}/testfile-foo.h << EOF
++struct t
++{
++  int *p;
++  int c;
++};
++
++extern int foo (int i, struct t *t);
++EOF
++
++cat > ${temp_dir}/testfile-foo.c << EOF
++#include "testfile-foo.h"
++
++int
++foo (int i, struct t *t)
++{
++  int j, res = 0;
++  for (j = 0; j < i && j < t->c; j++)
++    res += t->p[j];
++
++  return res;
++}
++EOF
++
++cat > ${temp_dir}/testfile-main.c << EOF
++#include "testfile-foo.h"
++
++static struct t g;
++
++int
++main (int argc, char **argv)
++{
++  int i;
++  int j[argc];
++  g.c = argc;
++  g.p = j;
++  for (i = 0; i < argc; i++)
++    j[i] = (int) argv[i][0];
++  return foo (3, &g);
++}
++EOF
++
++gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
++gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
++gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
++
++perf probe -x ${temp_dir}/testfile --funcs foo
++perf probe -x ${temp_dir}/testfile foo
++
++cleanup
 
 
