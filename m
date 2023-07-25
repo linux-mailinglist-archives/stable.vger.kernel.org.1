@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C40FB76128D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27441761534
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233856AbjGYLD4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39860 "EHLO
+        id S234495AbjGYL0e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:26:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233865AbjGYLDk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FF35BA3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:49 -0700 (PDT)
+        with ESMTP id S234548AbjGYL0d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B054510C7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78E8B61648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E8FC433C8;
-        Tue, 25 Jul 2023 11:00:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16BD06166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F47C433CC;
+        Tue, 25 Jul 2023 11:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282848;
-        bh=DpOJRYfnmcE6Hy9vkDLX+n5ar5jCFUO4Gg36MOE27+4=;
+        s=korg; t=1690284389;
+        bh=f/8Y2iZ+vbxvVeiVyBwtFk38Qa/Q33tDHdoWyOdmzvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eGgxcP4DgE7HhcRmEZQ0a0PrnKH5M/mc7iiGIVtXzkyzOnH+kVHEk0Y+n0/xMkgWk
-         uhazxH/eezt18kDE8ByVAZs6n7wUH59h56pSnm8TRiEZHK1nCjJIiHRnCrxTKWf1QW
-         e14Yxfp1ahcD9vpcuPb853diEFyZeZvSJpYbWwy8=
+        b=fShqOuGWox/V6XNTAZbnIPaBfi5zigDVKowPO4NWORTFjvea9OvKxqfPiY2jAiAq4
+         jB8IqalOGuGY7CkT4/L+rbJqxyX9ssNSPW4vP1wT712z7exCgfF+boyiqhDJ+y0i+y
+         ECwG4a+0wWBCJFZAJC9oi9RCe4FOehNn7X/BKG2E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Steev Klimaszewski <steev@kali.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 049/183] ASoC: codecs: wcd938x: fix soundwire initialisation race
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 338/509] drm/panel: simple: Add Powertip PH800480T013 drm_display_mode flags
 Date:   Tue, 25 Jul 2023 12:44:37 +0200
-Message-ID: <20230725104509.730991868@linuxfoundation.org>
+Message-ID: <20230725104609.184075420@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,55 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Marek Vasut <marex@denx.de>
 
-commit 6f49256897083848ce9a59651f6b53fc80462397 upstream.
+[ Upstream commit 1c519980aced3da1fae37c1339cf43b24eccdee7 ]
 
-Make sure that the soundwire device used for register accesses has been
-enumerated and initialised before trying to read the codec variant
-during component probe.
+Add missing drm_display_mode DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC
+flags. Those are used by various bridges in the pipeline to correctly
+configure its sync signals polarity.
 
-This specifically avoids interpreting (a masked and shifted) -EBUSY
-errno as the variant:
-
-	wcd938x_codec audio-codec: ASoC: error at soc_component_read_no_lock on audio-codec for register: [0x000034b0] -16
-
-in case the soundwire device has not yet been initialised, which in turn
-prevents some headphone controls from being registered.
-
-Fixes: 8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
-Cc: stable@vger.kernel.org	# 5.14
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reported-by: Steev Klimaszewski <steev@kali.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Steev Klimaszewski <steev@kali.org>
-Link: https://lore.kernel.org/r/20230701094723.29379-1-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d69de69f2be1 ("drm/panel: simple: Add Powertip PH800480T013 panel")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230615201602.565948-1-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd938x.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/panel/panel-simple.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -3090,9 +3090,18 @@ static int wcd938x_irq_init(struct wcd93
- static int wcd938x_soc_codec_probe(struct snd_soc_component *component)
- {
- 	struct wcd938x_priv *wcd938x = snd_soc_component_get_drvdata(component);
-+	struct sdw_slave *tx_sdw_dev = wcd938x->tx_sdw_dev;
- 	struct device *dev = component->dev;
-+	unsigned long time_left;
- 	int ret, i;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index ffda99c204356..7b69f81444ebd 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -3153,6 +3153,7 @@ static const struct drm_display_mode powertip_ph800480t013_idf02_mode = {
+ 	.vsync_start = 480 + 49,
+ 	.vsync_end = 480 + 49 + 2,
+ 	.vtotal = 480 + 49 + 2 + 22,
++	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
+ };
  
-+	time_left = wait_for_completion_timeout(&tx_sdw_dev->initialization_complete,
-+						msecs_to_jiffies(2000));
-+	if (!time_left) {
-+		dev_err(dev, "soundwire device init timeout\n");
-+		return -ETIMEDOUT;
-+	}
-+
- 	snd_soc_component_init_regmap(component, wcd938x->regmap);
- 
- 	ret = pm_runtime_resume_and_get(dev);
+ static const struct panel_desc powertip_ph800480t013_idf02  = {
+-- 
+2.39.2
+
 
 
