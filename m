@@ -2,117 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A002761B7D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 16:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F4E761C01
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 16:41:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233104AbjGYOYj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 10:24:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36352 "EHLO
+        id S229862AbjGYOlM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 10:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232756AbjGYOYN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 10:24:13 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584D31FD0;
-        Tue, 25 Jul 2023 07:24:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=g0IqX97ybKTf/1b9IfX3fw+nZZPbUPYVvGhnzhAVJ8Y=; b=pVcCfG1AwTomWwXVPD7r4jxRGU
-        B/5S7VPHwaXRCk/ZVjqQ2SNREx5scDcbFadla50G56j3/2qnYuN4di0p1Xd2QR/Gmmssgu2hN4+nQ
-        TfhxAkQeRMdwp61/l82tavR3r5rve126tdTSxdeXh5aKK5vuVSIPcyRMYehKF1IFqDLw=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:34256 helo=localhost.localdomain)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1qOIxF-0003Kt-VE; Tue, 25 Jul 2023 10:24:02 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     gregkh@linuxfoundation.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        isaac.true@canonical.com, jesse.sung@canonical.com,
-        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com
-Cc:     linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hugo@hugovil.com,
-        linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
-Date:   Tue, 25 Jul 2023 10:23:39 -0400
-Message-Id: <20230725142343.1724130-8-hugo@hugovil.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230725142343.1724130-1-hugo@hugovil.com>
-References: <20230725142343.1724130-1-hugo@hugovil.com>
+        with ESMTP id S229591AbjGYOlL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 10:41:11 -0400
+Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2395C2709
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 07:40:45 -0700 (PDT)
+Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-483e175352cso1786069e0c.2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 07:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690296035; x=1690900835;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6jl5+LreKnh1yykcifdBl1Q5Q7VSb/IZl7szWKJ4qmg=;
+        b=Mj6Q7S1oyu3AZqRp93gZmaewJj5yosETUiPOwu6KNnAU+nygtqcGHXHS1UU+geok/s
+         YzBpQH6kzLq5IkR6AfJT0/eMZ1TCjFgvX2L/rH6CsYW7p6ni8+18gn7hYAbu02W6twzB
+         PK8Q7AQvCBjxO6t5+P7GsdfZHHMzx0qPZKRXKh/lOoYeRIWdXHRNcPBNBm/Seixu5fam
+         2bCnldqL1PEiWNAZ5GkXmiXRqaGWVdWLHTJ8C8fc0gj0eJuAA9snKlL1e7sdA3pjf80m
+         oxZ0549lzTrUUA9AJCjFqFrjqTYYG/kSX3j2oD4m8n17OC5B0ihqwoQ1HvWiql6DPFuv
+         47JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690296035; x=1690900835;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6jl5+LreKnh1yykcifdBl1Q5Q7VSb/IZl7szWKJ4qmg=;
+        b=NogvA3yZCha6FHjnPgRFgEicun/P96+GIrgXcUOp+pCIWRrms0yVWnzIjuE3mqmaK7
+         3JUZeBk/JlMo7Wf4FRdmOAEJ+uXkG3YOvi3Y+f+K3LRmWk1ioeLbLttPdNSHF9aWHfqr
+         DvsxSdV1YRovBgcX8MTNhw3dARclqMP1z87ubVXRegYSivk9RADRBTbq2Y2su6AL6fvm
+         nGyFbUI1ohhcpv9QKdxzKbvNuBvY1oyEGHiIaFWa4ejYDjSx9zfd88dXZf5XjjRv2O80
+         lHDEjbCWHgmGcc6sfjhsGCwgYeoKsnvifHKLZWOlsQ6MUt/QXoNE2XVq6gxALHG7BQR+
+         fnGg==
+X-Gm-Message-State: ABy/qLaa89GUYwr5UR+ZYXkZMCwLV+DXymMPMnzK9PCBzYEkIbn5cUNh
+        pDPWFU04MswJvkXKI2GOLQtycYCxc8R/etPZQ4OS/g==
+X-Google-Smtp-Source: APBJJlFV7dvTCeRGn11UfmRwNmuLCKBZhzcl8QTcjtuYmrQjASgxv35b4LwwCFqfZmlNl6OUiU2x+8GQyQCnUVlFY2o=
+X-Received: by 2002:a1f:4191:0:b0:471:b18a:f9e5 with SMTP id
+ o139-20020a1f4191000000b00471b18af9e5mr4357499vka.4.1690296035612; Tue, 25
+ Jul 2023 07:40:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
+References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 25 Jul 2023 20:10:24 +0530
+Message-ID: <CA+G9fYs217H+k5pNx_uobpHmg0vM4qRk9UT_OKspxn5d-NoNqA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/509] 5.10.188-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        clang-built-linux <llvm@lists.linux.dev>,
+        linux-ext4 <linux-ext4@vger.kernel.org>,
+        "Theodore Ts'o" <tytso@mit.edu>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Chao Yu <chao@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
-Subject: [PATCH v9 07/10] serial: sc16is7xx: fix bug when first setting GPIO direction
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On Tue, 25 Jul 2023 at 16:42, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.188 release.
+> There are 509 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.188-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-When configuring a pin as an output pin with a value of logic 0, we
-end up as having a value of logic 1 on the output pin. Setting a
-logic 0 a second time (or more) after that will correctly output a
-logic 0 on the output pin.
+Following commit caused build failures on all the architectures,
 
-By default, all GPIO pins are configured as inputs. When we enter
-sc16is7xx_gpio_direction_output() for the first time, we first set the
-desired value in IOSTATE, and then we configure the pin as an output.
-The datasheet states that writing to IOSTATE register will trigger a
-transfer of the value to the I/O pin configured as output, so if the
-pin is configured as an input, nothing will be transferred.
+> Chao Yu <chao@kernel.org>
+>     ext4: fix to check return value of freeze_bdev() in ext4_shutdown()
 
-Therefore, set the direction first in IODIR, and then set the desired
-value in IOSTATE.
+ext4: fix to check return value of freeze_bdev() in ext4_shutdown()
+commit c4d13222afd8a64bf11bc7ec68645496ee8b54b9 upstream
 
-This is what is done in NXP application note AN10587.
+make --silent --keep-going --jobs=8
+O=/home/tuxbuild/.cache/tuxmake/builds/2/build ARCH=x86_64 SRCARCH=x86
+CROSS_COMPILE=x86_64-linux-gnu- 'HOSTCC=sccache clang' 'CC=sccache
+clang' LLVM=1 LLVM_IAS=1
+/builds/linux/fs/ext4/ioctl.c:634:7: error: incompatible pointer to
+integer conversion assigning to 'int' from 'struct super_block *'
+[-Wint-conversion]
+                ret = freeze_bdev(sb->s_bdev);
+                    ^ ~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[3]: *** [/builds/linux/scripts/Makefile.build:286: fs/ext4/ioctl.o] Error 1
 
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
----
- drivers/tty/serial/sc16is7xx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index bc0a288f258d..07ae889db296 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1342,9 +1342,18 @@ static int sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
- 		state |= BIT(offset);
- 	else
- 		state &= ~BIT(offset);
--	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
-+
-+	/*
-+	 * If we write IOSTATE first, and then IODIR, the output value is not
-+	 * transferred to the corresponding I/O pin.
-+	 * The datasheet states that each register bit will be transferred to
-+	 * the corresponding I/O pin programmed as output when writing to
-+	 * IOSTATE. Therefore, configure direction first with IODIR, and then
-+	 * set value after with IOSTATE.
-+	 */
- 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
- 			      BIT(offset));
-+	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
- 
- 	return 0;
- }
--- 
-2.30.2
 
+--
+Linaro LKFT
+https://lkft.linaro.org
