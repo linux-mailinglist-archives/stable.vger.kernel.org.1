@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABEAC7615D1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF78F761391
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234666AbjGYLda (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
+        id S234099AbjGYLLg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234671AbjGYLd3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:29 -0400
+        with ESMTP id S233808AbjGYLLW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1217F118
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40711FEB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BF11615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B27C433C9;
-        Tue, 25 Jul 2023 11:33:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C71861655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D672C433C7;
+        Tue, 25 Jul 2023 11:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284808;
-        bh=a5f0Vi97/jJDkYzHRFqUqJYXqQi2mLiNM+ab67O5H+A=;
+        s=korg; t=1690283439;
+        bh=XVFKjGUw27pqHaTGOxos+pOAVpK/ZolEXYxWbWIuVbI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dntcK6jveLu46nGBjLwgVUIJOv/Ah7lj3Id2SFX+Lw0vzNcnWW8m4kQDEoXtp6R8y
-         VXz+43sRw0AvUTOKIdli9yS3tK7zkgsmyHNLqSm5sPaT8NxavWrVzvDdwP3QYbyiNe
-         4V1mWf7ZXlYYk5TlLCZQN9iUbgHfcrQEsHNV3iF4=
+        b=XJD3aBT5uQS685gPfpRE1Y0SMlEE9hTRRMvQt1LU6Fz9FBU2cocMWlZWZyp5Dmb8P
+         ZK4UHykg5MKQ5ePFQ53VrLaBwEfRR3vLrDNdmEWYAqIaVCBQYtk++dpIQNW3dSwky8
+         km7nhGnNpTNaihUkpyl2CMuyEBVtDYCu3g72HiVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 488/509] netfilter: nf_tables: fix spurious set element insertion failure
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Zhang Yi <yi.zhang@huawei.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 76/78] jbd2: recheck chechpointing non-dirty buffer
 Date:   Tue, 25 Jul 2023 12:47:07 +0200
-Message-ID: <20230725104616.080641491@linuxfoundation.org>
+Message-ID: <20230725104454.221311267@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +56,191 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
+commit c2d6fd9d6f35079f1669f0100f05b46708c74b7f upstream.
 
-On some platforms there is a padding hole in the nft_verdict
-structure, between the verdict code and the chain pointer.
+There is a long-standing metadata corruption issue that happens from
+time to time, but it's very difficult to reproduce and analyse, benefit
+from the JBD2_CYCLE_RECORD option, we found out that the problem is the
+checkpointing process miss to write out some buffers which are raced by
+another do_get_write_access(). Looks below for detail.
 
-On element insertion, if the new element clashes with an existing one and
-NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
-the data associated with duplicated element is the same as the existing
-one.  The data equality check uses memcmp.
+jbd2_log_do_checkpoint() //transaction X
+ //buffer A is dirty and not belones to any transaction
+ __buffer_relink_io() //move it to the IO list
+ __flush_batch()
+  write_dirty_buffer()
+                             do_get_write_access()
+                             clear_buffer_dirty
+                             __jbd2_journal_file_buffer()
+                             //add buffer A to a new transaction Y
+   lock_buffer(bh)
+   //doesn't write out
+ __jbd2_journal_remove_checkpoint()
+ //finish checkpoint except buffer A
+ //filesystem corrupt if the new transaction Y isn't fully write out.
 
-For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
-padding area leads to spurious failure even if the verdict data is the
-same.
+Due to the t_checkpoint_list walking loop in jbd2_log_do_checkpoint()
+have already handles waiting for buffers under IO and re-added new
+transaction to complete commit, and it also removing cleaned buffers,
+this makes sure the list will eventually get empty. So it's fine to
+leave buffers on the t_checkpoint_list while flushing out and completely
+stop using the t_checkpoint_io_list.
 
-This then makes the insertion fail with 'already exists' error, even
-though the new "key : data" matches an existing entry and userspace
-told the kernel that it doesn't want to receive an error indication.
-
-Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Tested-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/jbd2/checkpoint.c |  102 ++++++++++++++-------------------------------------
+ 1 file changed, 29 insertions(+), 73 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index d56f5d7fa5455..9c3a9e3f1ede9 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8914,6 +8914,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -58,28 +58,6 @@ static inline void __buffer_unlink(struc
+ }
  
- 	if (!tb[NFTA_VERDICT_CODE])
- 		return -EINVAL;
+ /*
+- * Move a buffer from the checkpoint list to the checkpoint io list
+- *
+- * Called with j_list_lock held
+- */
+-static inline void __buffer_relink_io(struct journal_head *jh)
+-{
+-	transaction_t *transaction = jh->b_cp_transaction;
+-
+-	__buffer_unlink_first(jh);
+-
+-	if (!transaction->t_checkpoint_io_list) {
+-		jh->b_cpnext = jh->b_cpprev = jh;
+-	} else {
+-		jh->b_cpnext = transaction->t_checkpoint_io_list;
+-		jh->b_cpprev = transaction->t_checkpoint_io_list->b_cpprev;
+-		jh->b_cpprev->b_cpnext = jh;
+-		jh->b_cpnext->b_cpprev = jh;
+-	}
+-	transaction->t_checkpoint_io_list = jh;
+-}
+-
+-/*
+  * Check a checkpoint buffer could be release or not.
+  *
+  * Requires j_list_lock
+@@ -183,6 +161,7 @@ __flush_batch(journal_t *journal, int *b
+ 		struct buffer_head *bh = journal->j_chkpt_bhs[i];
+ 		BUFFER_TRACE(bh, "brelse");
+ 		__brelse(bh);
++		journal->j_chkpt_bhs[i] = NULL;
+ 	}
+ 	*batch_count = 0;
+ }
+@@ -242,6 +221,11 @@ restart:
+ 		jh = transaction->t_checkpoint_list;
+ 		bh = jh2bh(jh);
+ 
++		/*
++		 * The buffer may be writing back, or flushing out in the
++		 * last couple of cycles, or re-adding into a new transaction,
++		 * need to check it again until it's unlocked.
++		 */
+ 		if (buffer_locked(bh)) {
+ 			get_bh(bh);
+ 			spin_unlock(&journal->j_list_lock);
+@@ -287,28 +271,32 @@ restart:
+ 		}
+ 		if (!buffer_dirty(bh)) {
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+-			if (__jbd2_journal_remove_checkpoint(jh))
+-				/* The transaction was released; we're done */
++			/*
++			 * If the transaction was released or the checkpoint
++			 * list was empty, we're done.
++			 */
++			if (__jbd2_journal_remove_checkpoint(jh) ||
++			    !transaction->t_checkpoint_list)
+ 				goto out;
+-			continue;
++		} else {
++			/*
++			 * We are about to write the buffer, it could be
++			 * raced by some other transaction shrink or buffer
++			 * re-log logic once we release the j_list_lock,
++			 * leave it on the checkpoint list and check status
++			 * again to make sure it's clean.
++			 */
++			BUFFER_TRACE(bh, "queue");
++			get_bh(bh);
++			J_ASSERT_BH(bh, !buffer_jwrite(bh));
++			journal->j_chkpt_bhs[batch_count++] = bh;
++			transaction->t_chp_stats.cs_written++;
++			transaction->t_checkpoint_list = jh->b_cpnext;
+ 		}
+-		/*
+-		 * Important: we are about to write the buffer, and
+-		 * possibly block, while still holding the journal
+-		 * lock.  We cannot afford to let the transaction
+-		 * logic start messing around with this buffer before
+-		 * we write it to disk, as that would break
+-		 * recoverability.
+-		 */
+-		BUFFER_TRACE(bh, "queue");
+-		get_bh(bh);
+-		J_ASSERT_BH(bh, !buffer_jwrite(bh));
+-		journal->j_chkpt_bhs[batch_count++] = bh;
+-		__buffer_relink_io(jh);
+-		transaction->t_chp_stats.cs_written++;
 +
-+	/* zero padding hole for memcmp */
-+	memset(data, 0, sizeof(*data));
- 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+ 		if ((batch_count == JBD2_NR_BATCH) ||
+-		    need_resched() ||
+-		    spin_needbreak(&journal->j_list_lock))
++		    need_resched() || spin_needbreak(&journal->j_list_lock) ||
++		    jh2bh(transaction->t_checkpoint_list) == journal->j_chkpt_bhs[0])
+ 			goto unlock_and_flush;
+ 	}
  
- 	switch (data->verdict.code) {
--- 
-2.39.2
-
+@@ -322,38 +310,6 @@ restart:
+ 			goto restart;
+ 	}
+ 
+-	/*
+-	 * Now we issued all of the transaction's buffers, let's deal
+-	 * with the buffers that are out for I/O.
+-	 */
+-restart2:
+-	/* Did somebody clean up the transaction in the meanwhile? */
+-	if (journal->j_checkpoint_transactions != transaction ||
+-	    transaction->t_tid != this_tid)
+-		goto out;
+-
+-	while (transaction->t_checkpoint_io_list) {
+-		jh = transaction->t_checkpoint_io_list;
+-		bh = jh2bh(jh);
+-		if (buffer_locked(bh)) {
+-			get_bh(bh);
+-			spin_unlock(&journal->j_list_lock);
+-			wait_on_buffer(bh);
+-			/* the journal_head may have gone by now */
+-			BUFFER_TRACE(bh, "brelse");
+-			__brelse(bh);
+-			spin_lock(&journal->j_list_lock);
+-			goto restart2;
+-		}
+-
+-		/*
+-		 * Now in whatever state the buffer currently is, we
+-		 * know that it has been written out and so we can
+-		 * drop it from the list
+-		 */
+-		if (__jbd2_journal_remove_checkpoint(jh))
+-			break;
+-	}
+ out:
+ 	spin_unlock(&journal->j_list_lock);
+ 	result = jbd2_cleanup_journal_tail(journal);
 
 
