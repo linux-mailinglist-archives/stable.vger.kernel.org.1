@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82B507611A8
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56BD276166E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbjGYKyL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
+        id S234879AbjGYLj1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:39:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233836AbjGYKxb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:31 -0400
+        with ESMTP id S234938AbjGYLjR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:39:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C2035B7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:52:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 023B71FF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:39:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3554361689
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:52:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D10C433C7;
-        Tue, 25 Jul 2023 10:52:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7353615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:39:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7187C433C8;
+        Tue, 25 Jul 2023 11:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282321;
-        bh=MnKKb8StfWMmOZ5+R5GfGAQpND9o4Xu1jxEIPsTVKLM=;
+        s=korg; t=1690285147;
+        bh=JPhPJMEqpI3yAdGNr/D7ak29afTLkdrdAudnZxzZafg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L5i8kTlqwVSgSRKMvwiw01PjA3EYzg0gtM7IMGzBRMyPDd5PJHMlvHr1lO/mp/rQb
-         rSHFHW3S71hwEAw6zRj2/eMXz4wE6Wx1WRGW49r+9mrF/iSf8vWyFmnuDsKWzxLMtQ
-         J6dBWlZpnKJe9OtCDHEibB53Zz8ZSGjpuSkfoQcg=
+        b=ryRtL/P3UNEKbPNAbhp+JEE54EOHFhoUV87gN5A8snukjypxeHdrgydv5e22r9XQV
+         jvsnOrSm8rxxlHSdeeuUI6YVkMT9bnF1sfMM9EDX3UCCyIul1g7wZ8AQFEcnObpAPK
+         FC9M4Ptqe713pUB1LTSHiwv7kTIRs5TchRuI9HWc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Immad Mir <mirimmad17@gmail.com>,
-        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        patches@lists.linux.dev,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 087/227] [PATCH AUTOSEL 5.4 12/12] FS: JFS: Check for read-only mounted filesystem in txBegin
+Subject: [PATCH 5.4 101/313] pinctrl: cherryview: Return correct value if pin in push-pull mode
 Date:   Tue, 25 Jul 2023 12:44:14 +0200
-Message-ID: <20230725104518.343142769@linuxfoundation.org>
+Message-ID: <20230725104525.340481640@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 95e2b352c03b0a86c5717ba1d24ea20969abcacc ]
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
- This patch adds a check for read-only mounted filesystem
- in txBegin before starting a transaction potentially saving
- from NULL pointer deref.
+[ Upstream commit 5835196a17be5cfdcad0b617f90cf4abe16951a4 ]
 
-Signed-off-by: Immad Mir <mirimmad17@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Currently the getter returns ENOTSUPP on pin configured in
+the push-pull mode. Fix this by adding the missed switch case.
+
+Fixes: ccdf81d08dbe ("pinctrl: cherryview: add option to set open-drain pin config")
+Fixes: 6e08d6bbebeb ("pinctrl: Add Intel Cherryview/Braswell pin controller support")
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_txnmgr.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/intel/pinctrl-cherryview.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index c8ce7f1bc5942..6f6a5b9203d3f 100644
---- a/fs/jfs/jfs_txnmgr.c
-+++ b/fs/jfs/jfs_txnmgr.c
-@@ -354,6 +354,11 @@ tid_t txBegin(struct super_block *sb, int flag)
- 	jfs_info("txBegin: flag = 0x%x", flag);
- 	log = JFS_SBI(sb)->log;
+diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
+index 8f06445a8e39c..2b48901f1b2af 100644
+--- a/drivers/pinctrl/intel/pinctrl-cherryview.c
++++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
+@@ -1021,11 +1021,6 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned int pin,
  
-+	if (!log) {
-+		jfs_error(sb, "read-only filesystem\n");
-+		return 0;
-+	}
+ 		break;
+ 
+-	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
+-		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
+-			return -EINVAL;
+-		break;
+-
+ 	case PIN_CONFIG_BIAS_HIGH_IMPEDANCE: {
+ 		u32 cfg;
+ 
+@@ -1035,6 +1030,16 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned int pin,
+ 			return -EINVAL;
+ 
+ 		break;
 +
- 	TXN_LOCK();
++	case PIN_CONFIG_DRIVE_PUSH_PULL:
++		if (ctrl1 & CHV_PADCTRL1_ODEN)
++			return -EINVAL;
++		break;
++
++	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
++		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
++			return -EINVAL;
++		break;
+ 	}
  
- 	INCREMENT(TxStat.txBegin);
+ 	default:
 -- 
 2.39.2
 
