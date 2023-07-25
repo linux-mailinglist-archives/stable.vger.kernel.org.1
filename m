@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B49576152A
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD83761285
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234517AbjGYL0O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35422 "EHLO
+        id S233816AbjGYLDg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234489AbjGYL0M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:26:12 -0400
+        with ESMTP id S233812AbjGYLDM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E5119A1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:26:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39EDB4219
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5636C6169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:26:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F39C433CB;
-        Tue, 25 Jul 2023 11:26:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CD4761648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2F1C433C8;
+        Tue, 25 Jul 2023 11:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284369;
-        bh=F7PoIq55H4DQZ0kzjQ/vJZDTCsckSefymbwhRlMQaOY=;
+        s=korg; t=1690282829;
+        bh=gsqR/Q+5vVYY4oDeA8IFdrUxI7ZAFi4fmbx+UrzjTXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FPIb/2u93Hud2wwuwFQGcYQ8zln5V8eOWWaAZO4vzh6981W09B2/EhBoPVRXTf4L/
-         yMoAz8cYcDC3eD0qYgUUOO77pUUYgAYZBxQ0nXyrDuWu5FAUzhQHHHUyzzlXUKpa+s
-         LLoDjdX/bYMsMHR8OdcMvuQS5w3Ho/FTN5HuFMJw=
+        b=waYkII9S4mx82bPqwqHCv3XrYfAK8xEtrDmmW6AOueIcQJli+9sg22OtZWW5OQvd/
+         SGjmC7w11h+OP8L4YiiCke9BTwMGqpU/OsjYi9fybp9Stpf3TB0ojjg1YzjZGRvLe4
+         JIxKwL7DJF++bNvGnsOuD6xueK+3FCd9aZnOYYxs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Subject: [PATCH 5.10 331/509] rcu-tasks: Simplify trc_read_check_handler() atomic operations
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 042/183] ASoC: codecs: wcd-mbhc-v2: fix resource leaks on component remove
 Date:   Tue, 25 Jul 2023 12:44:30 +0200
-Message-ID: <20230725104608.860158097@linuxfoundation.org>
+Message-ID: <20230725104509.451704865@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,89 +56,157 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Paul E. McKenney" <paulmck@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 96017bf9039763a2e02dcc6adaa18592cd73a39d ]
+commit a5475829adcc600bc69ee9ff7c9e3e43fb4f8d30 upstream.
 
-Currently, trc_wait_for_one_reader() atomically increments
-the trc_n_readers_need_end counter before sending the IPI
-invoking trc_read_check_handler().  All failure paths out of
-trc_read_check_handler() and also from the smp_call_function_single()
-within trc_wait_for_one_reader() must carefully atomically decrement
-this counter.  This is more complex than it needs to be.
+The MBHC resources must be released on component probe failure and
+removal so can not be tied to the lifetime of the component device.
 
-This commit therefore simplifies things and saves a few lines of
-code by dispensing with the atomic decrements in favor of having
-trc_read_check_handler() do the atomic increment only in the success case.
-In theory, this represents no change in functionality.
+This is specifically needed to allow probe deferrals of the sound card
+which otherwise fails when reprobing the codec component:
 
-Cc: <stable@vger.kernel.org> # 5.10.x
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+    snd-sc8280xp sound: ASoC: failed to instantiate card -517
+    genirq: Flags mismatch irq 299. 00002001 (mbhc sw intr) vs. 00002001 (mbhc sw intr)
+    wcd938x_codec audio-codec: Failed to request mbhc interrupts -16
+    wcd938x_codec audio-codec: mbhc initialization failed
+    wcd938x_codec audio-codec: ASoC: error at snd_soc_component_probe on audio-codec: -16
+    snd-sc8280xp sound: ASoC: failed to instantiate card -16
+
+Fixes: 0e5c9e7ff899 ("ASoC: codecs: wcd: add multi button Headset detection support")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230705123018.30903-7-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tasks.h |   20 +++-----------------
- 1 file changed, 3 insertions(+), 17 deletions(-)
+ sound/soc/codecs/wcd-mbhc-v2.c |   57 +++++++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 16 deletions(-)
 
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -841,32 +841,24 @@ static void trc_read_check_handler(void
- 
- 	// If the task is no longer running on this CPU, leave.
- 	if (unlikely(texp != t)) {
--		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
--			wake_up(&trc_wait);
- 		goto reset_ipi; // Already on holdout list, so will check later.
+--- a/sound/soc/codecs/wcd-mbhc-v2.c
++++ b/sound/soc/codecs/wcd-mbhc-v2.c
+@@ -1454,7 +1454,7 @@ struct wcd_mbhc *wcd_mbhc_init(struct sn
+ 		return ERR_PTR(-EINVAL);
  	}
  
- 	// If the task is not in a read-side critical section, and
- 	// if this is the last reader, awaken the grace-period kthread.
- 	if (likely(!READ_ONCE(t->trc_reader_nesting))) {
--		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
--			wake_up(&trc_wait);
--		// Mark as checked after decrement to avoid false
--		// positives on the above WARN_ON_ONCE().
- 		WRITE_ONCE(t->trc_reader_checked, true);
- 		goto reset_ipi;
- 	}
- 	// If we are racing with an rcu_read_unlock_trace(), try again later.
--	if (unlikely(READ_ONCE(t->trc_reader_nesting) < 0)) {
--		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
--			wake_up(&trc_wait);
-+	if (unlikely(READ_ONCE(t->trc_reader_nesting) < 0))
- 		goto reset_ipi;
--	}
- 	WRITE_ONCE(t->trc_reader_checked, true);
+-	mbhc = devm_kzalloc(dev, sizeof(*mbhc), GFP_KERNEL);
++	mbhc = kzalloc(sizeof(*mbhc), GFP_KERNEL);
+ 	if (!mbhc)
+ 		return ERR_PTR(-ENOMEM);
  
- 	// Get here if the task is in a read-side critical section.  Set
- 	// its state so that it will awaken the grace-period kthread upon
- 	// exit from that critical section.
-+	atomic_inc(&trc_n_readers_need_end); // One more to wait on.
- 	WARN_ON_ONCE(READ_ONCE(t->trc_reader_special.b.need_qs));
- 	WRITE_ONCE(t->trc_reader_special.b.need_qs, true);
+@@ -1474,61 +1474,76 @@ struct wcd_mbhc *wcd_mbhc_init(struct sn
  
-@@ -960,21 +952,15 @@ static void trc_wait_for_one_reader(stru
- 		if (per_cpu(trc_ipi_to_cpu, cpu) || t->trc_ipi_to_cpu >= 0)
- 			return;
+ 	INIT_WORK(&mbhc->correct_plug_swch, wcd_correct_swch_plug);
  
--		atomic_inc(&trc_n_readers_need_end);
- 		per_cpu(trc_ipi_to_cpu, cpu) = true;
- 		t->trc_ipi_to_cpu = cpu;
- 		rcu_tasks_trace.n_ipis++;
--		if (smp_call_function_single(cpu,
--					     trc_read_check_handler, t, 0)) {
-+		if (smp_call_function_single(cpu, trc_read_check_handler, t, 0)) {
- 			// Just in case there is some other reason for
- 			// failure than the target CPU being offline.
- 			rcu_tasks_trace.n_ipis_fails++;
- 			per_cpu(trc_ipi_to_cpu, cpu) = false;
- 			t->trc_ipi_to_cpu = cpu;
--			if (atomic_dec_and_test(&trc_n_readers_need_end)) {
--				WARN_ON_ONCE(1);
--				wake_up(&trc_wait);
--			}
- 		}
- 	}
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_sw_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_sw_intr, NULL,
+ 					wcd_mbhc_mech_plug_detect_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"mbhc sw intr", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_mbhc;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_press_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_press_intr, NULL,
+ 					wcd_mbhc_btn_press_handler,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Button Press detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_sw_intr;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_release_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_release_intr, NULL,
+ 					wcd_mbhc_btn_release_handler,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Button Release detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_btn_press_intr;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
+ 					wcd_mbhc_adc_hs_ins_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Elect Insert", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_btn_release_intr;
+ 
+ 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_ins_intr);
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
+ 					wcd_mbhc_adc_hs_rem_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"Elect Remove", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_hs_ins_intr;
+ 
+ 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_rem_intr);
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_left_ocp, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->hph_left_ocp, NULL,
+ 					wcd_mbhc_hphl_ocp_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"HPH_L OCP detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_hs_rem_intr;
+ 
+-	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_right_ocp, NULL,
++	ret = request_threaded_irq(mbhc->intr_ids->hph_right_ocp, NULL,
+ 					wcd_mbhc_hphr_ocp_irq,
+ 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+ 					"HPH_R OCP detect", mbhc);
+ 	if (ret)
+-		goto err;
++		goto err_free_hph_left_ocp;
+ 
+ 	return mbhc;
+-err:
++
++err_free_hph_left_ocp:
++	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
++err_free_hs_rem_intr:
++	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
++err_free_hs_ins_intr:
++	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
++err_free_btn_release_intr:
++	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
++err_free_btn_press_intr:
++	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
++err_free_sw_intr:
++	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
++err_free_mbhc:
++	kfree(mbhc);
++
+ 	dev_err(dev, "Failed to request mbhc interrupts %d\n", ret);
+ 
+ 	return ERR_PTR(ret);
+@@ -1537,9 +1552,19 @@ EXPORT_SYMBOL(wcd_mbhc_init);
+ 
+ void wcd_mbhc_deinit(struct wcd_mbhc *mbhc)
+ {
++	free_irq(mbhc->intr_ids->hph_right_ocp, mbhc);
++	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
++	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
++
+ 	mutex_lock(&mbhc->lock);
+ 	wcd_cancel_hs_detect_plug(mbhc,	&mbhc->correct_plug_swch);
+ 	mutex_unlock(&mbhc->lock);
++
++	kfree(mbhc);
  }
+ EXPORT_SYMBOL(wcd_mbhc_deinit);
+ 
 
 
