@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FEC77614D9
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16625761154
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234476AbjGYLXR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:23:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
+        id S233160AbjGYKuA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:50:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234486AbjGYLXQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:16 -0400
+        with ESMTP id S232356AbjGYKt6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E41187
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4841BC3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68B6F6166E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77438C433C8;
-        Tue, 25 Jul 2023 11:23:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B6261600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75C6C433C8;
+        Tue, 25 Jul 2023 10:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284193;
-        bh=s9hCqoAOYd7yaRktaLVB5vJ0aIi6qGYDYHbUqAacesk=;
+        s=korg; t=1690282191;
+        bh=fBbc3fg8Ybz07UT0TqBEvEuHPRM0Bc2QgEfyWV2y8SE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HNQooHx+d8JKl6oKi/AWbJcndUi7laPwnAFh6B8jOB9ISYvpUfjuzImeyo7HI0Ef7
-         JrPkE0EKibXyE9bVNQBpmOj9DjDDkCas/WZtHpwvgvf2rIDe4n3kkRvMbPtehiYCKw
-         jEWiEsS8v6dtlLzCI60bS0ucEjMs4M2In32urqnU=
+        b=nPVNfwEUQDocntbgWk9wuigr7T/MUiPY2c7NEcopHfi5qejKeTY3/+VtoB501m7vs
+         QlCa4uaIMbiMq3MVpzBTqr265/+pC0P1C3HyXaYhGI7hS+uO1nYSQGF84KuV+XVPbh
+         1z34mFeLO1GoBFmoUO/uOWhF/WvNzzTQoG9zBXCg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 268/509] net: bridge: keep ports without IFF_UNICAST_FLT in BR_PROMISC mode
-Date:   Tue, 25 Jul 2023 12:43:27 +0200
-Message-ID: <20230725104606.022355418@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
+        Jeffrey Hugo <quic_jhugo@quicinc.com>
+Subject: [PATCH 6.4 041/227] accel/qaic: tighten bounds checking in decode_message()
+Date:   Tue, 25 Jul 2023 12:43:28 +0200
+Message-ID: <20230725104516.520059159@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,198 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6ca3c005d0604e8d2b439366e3923ea58db99641 ]
+commit 51b56382ed2a2b03347372272362b3baa623ed1e upstream.
 
-According to the synchronization rules for .ndo_get_stats() as seen in
-Documentation/networking/netdevices.rst, acquiring a plain spin_lock()
-should not be illegal, but the bridge driver implementation makes it so.
+Copy the bounds checking from encode_message() to decode_message().
 
-After running these commands, I am being faced with the following
-lockdep splat:
+This patch addresses the following concerns.  Ensure that there is
+enough space for at least one header so that we don't have a negative
+size later.
 
-$ ip link add link swp0 name macsec0 type macsec encrypt on && ip link set swp0 up
-$ ip link add dev br0 type bridge vlan_filtering 1 && ip link set br0 up
-$ ip link set macsec0 master br0 && ip link set macsec0 up
+	if (msg_hdr_len < sizeof(*trans_hdr))
 
-  ========================================================
-  WARNING: possible irq lock inversion dependency detected
-  6.4.0-04295-g31b577b4bd4a #603 Not tainted
-  --------------------------------------------------------
-  swapper/1/0 just changed the state of lock:
-  ffff6bd348724cd8 (&br->lock){+.-.}-{3:3}, at: br_forward_delay_timer_expired+0x34/0x198
-  but this lock took another, SOFTIRQ-unsafe lock in the past:
-   (&ocelot->stats_lock){+.+.}-{3:3}
+Ensure that we have enough space to read the next header from the
+msg->data.
 
-  and interrupts could create inverse lock ordering between them.
+	if (msg_len > msg_hdr_len - sizeof(*trans_hdr))
+		return -EINVAL;
 
-  other info that might help us debug this:
-  Chain exists of:
-    &br->lock --> &br->hash_lock --> &ocelot->stats_lock
+Check that the trans_hdr->len is not below the minimum size:
 
-   Possible interrupt unsafe locking scenario:
+	if (hdr_len < sizeof(*trans_hdr))
 
-         CPU0                    CPU1
-         ----                    ----
-    lock(&ocelot->stats_lock);
-                                 local_irq_disable();
-                                 lock(&br->lock);
-                                 lock(&br->hash_lock);
-    <Interrupt>
-      lock(&br->lock);
+This minimum check ensures that we don't corrupt memory in
+decode_passthrough() when we do.
 
-   *** DEADLOCK ***
+	memcpy(out_trans->data, in_trans->data, len - sizeof(in_trans->hdr));
 
-(details about the 3 locks skipped)
+And finally, use size_add() to prevent an integer overflow:
 
-swp0 is instantiated by drivers/net/dsa/ocelot/felix.c, and this
-only matters to the extent that its .ndo_get_stats64() method calls
-spin_lock(&ocelot->stats_lock).
+	if (size_add(msg_len, hdr_len) > msg_hdr_len)
 
-Documentation/locking/lockdep-design.rst says:
-
-| A lock is irq-safe means it was ever used in an irq context, while a lock
-| is irq-unsafe means it was ever acquired with irq enabled.
-
-(...)
-
-| Furthermore, the following usage based lock dependencies are not allowed
-| between any two lock-classes::
-|
-|    <hardirq-safe>   ->  <hardirq-unsafe>
-|    <softirq-safe>   ->  <softirq-unsafe>
-
-Lockdep marks br->hash_lock as softirq-safe, because it is sometimes
-taken in softirq context (for example br_fdb_update() which runs in
-NET_RX softirq), and when it's not in softirq context it blocks softirqs
-by using spin_lock_bh().
-
-Lockdep marks ocelot->stats_lock as softirq-unsafe, because it never
-blocks softirqs from running, and it is never taken from softirq
-context. So it can always be interrupted by softirqs.
-
-There is a call path through which a function that holds br->hash_lock:
-fdb_add_hw_addr() will call a function that acquires ocelot->stats_lock:
-ocelot_port_get_stats64(). This can be seen below:
-
-ocelot_port_get_stats64+0x3c/0x1e0
-felix_get_stats64+0x20/0x38
-dsa_slave_get_stats64+0x3c/0x60
-dev_get_stats+0x74/0x2c8
-rtnl_fill_stats+0x4c/0x150
-rtnl_fill_ifinfo+0x5cc/0x7b8
-rtmsg_ifinfo_build_skb+0xe4/0x150
-rtmsg_ifinfo+0x5c/0xb0
-__dev_notify_flags+0x58/0x200
-__dev_set_promiscuity+0xa0/0x1f8
-dev_set_promiscuity+0x30/0x70
-macsec_dev_change_rx_flags+0x68/0x88
-__dev_set_promiscuity+0x1a8/0x1f8
-__dev_set_rx_mode+0x74/0xa8
-dev_uc_add+0x74/0xa0
-fdb_add_hw_addr+0x68/0xd8
-fdb_add_local+0xc4/0x110
-br_fdb_add_local+0x54/0x88
-br_add_if+0x338/0x4a0
-br_add_slave+0x20/0x38
-do_setlink+0x3a4/0xcb8
-rtnl_newlink+0x758/0x9d0
-rtnetlink_rcv_msg+0x2f0/0x550
-netlink_rcv_skb+0x128/0x148
-rtnetlink_rcv+0x24/0x38
-
-the plain English explanation for it is:
-
-The macsec0 bridge port is created without p->flags & BR_PROMISC,
-because it is what br_manage_promisc() decides for a VLAN filtering
-bridge with a single auto port.
-
-As part of the br_add_if() procedure, br_fdb_add_local() is called for
-the MAC address of the device, and this results in a call to
-dev_uc_add() for macsec0 while the softirq-safe br->hash_lock is taken.
-
-Because macsec0 does not have IFF_UNICAST_FLT, dev_uc_add() ends up
-calling __dev_set_promiscuity() for macsec0, which is propagated by its
-implementation, macsec_dev_change_rx_flags(), to the lower device: swp0.
-This triggers the call path:
-
-dev_set_promiscuity(swp0)
--> rtmsg_ifinfo()
-   -> dev_get_stats()
-      -> ocelot_port_get_stats64()
-
-with a calling context that lockdep doesn't like (br->hash_lock held).
-
-Normally we don't see this, because even though many drivers that can be
-bridge ports don't support IFF_UNICAST_FLT, we need a driver that
-
-(a) doesn't support IFF_UNICAST_FLT, *and*
-(b) it forwards the IFF_PROMISC flag to another driver, and
-(c) *that* driver implements ndo_get_stats64() using a softirq-unsafe
-    spinlock.
-
-Condition (b) is necessary because the first __dev_set_rx_mode() calls
-__dev_set_promiscuity() with "bool notify=false", and thus, the
-rtmsg_ifinfo() code path won't be entered.
-
-The same criteria also hold true for DSA switches which don't report
-IFF_UNICAST_FLT. When the DSA master uses a spin_lock() in its
-ndo_get_stats64() method, the same lockdep splat can be seen.
-
-I think the deadlock possibility is real, even though I didn't reproduce
-it, and I'm thinking of the following situation to support that claim:
-
-fdb_add_hw_addr() runs on a CPU A, in a context with softirqs locally
-disabled and br->hash_lock held, and may end up attempting to acquire
-ocelot->stats_lock.
-
-In parallel, ocelot->stats_lock is currently held by a thread B (say,
-ocelot_check_stats_work()), which is interrupted while holding it by a
-softirq which attempts to lock br->hash_lock.
-
-Thread B cannot make progress because br->hash_lock is held by A. Whereas
-thread A cannot make progress because ocelot->stats_lock is held by B.
-
-When taking the issue at face value, the bridge can avoid that problem
-by simply making the ports promiscuous from a code path with a saner
-calling context (br->hash_lock not held). A bridge port without
-IFF_UNICAST_FLT is going to become promiscuous as soon as we call
-dev_uc_add() on it (which we do unconditionally), so why not be
-preemptive and make it promiscuous right from the beginning, so as to
-not be taken by surprise.
-
-With this, we've broken the links between code that holds br->hash_lock
-or br->lock and code that calls into the ndo_change_rx_flags() or
-ndo_get_stats64() ops of the bridge port.
-
-Fixes: 2796d0c648c9 ("bridge: Automatically manage port promiscuous mode.")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 129776ac2e38 ("accel/qaic: Add control path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Cc: stable@vger.kernel.org # 6.4.x
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/ZK0Q5nbLyDO7kJa+@moroto
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_if.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/accel/qaic/qaic_control.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-index 1d87bf51f3840..e35488fde9c85 100644
---- a/net/bridge/br_if.c
-+++ b/net/bridge/br_if.c
-@@ -157,8 +157,9 @@ void br_manage_promisc(struct net_bridge *br)
- 			 * This lets us disable promiscuous mode and write
- 			 * this config to hw.
- 			 */
--			if (br->auto_cnt == 0 ||
--			    (br->auto_cnt == 1 && br_auto_port(p)))
-+			if ((p->dev->priv_flags & IFF_UNICAST_FLT) &&
-+			    (br->auto_cnt == 0 ||
-+			     (br->auto_cnt == 1 && br_auto_port(p))))
- 				br_port_clear_promisc(p);
- 			else
- 				br_port_set_promisc(p);
--- 
-2.39.2
-
+--- a/drivers/accel/qaic/qaic_control.c
++++ b/drivers/accel/qaic/qaic_control.c
+@@ -959,15 +959,23 @@ static int decode_message(struct qaic_de
+ 	int ret;
+ 	int i;
+ 
+-	if (msg_hdr_len > QAIC_MANAGE_MAX_MSG_LENGTH)
++	if (msg_hdr_len < sizeof(*trans_hdr) ||
++	    msg_hdr_len > QAIC_MANAGE_MAX_MSG_LENGTH)
+ 		return -EINVAL;
+ 
+ 	user_msg->len = 0;
+ 	user_msg->count = le32_to_cpu(msg->hdr.count);
+ 
+ 	for (i = 0; i < user_msg->count; ++i) {
++		u32 hdr_len;
++
++		if (msg_len > msg_hdr_len - sizeof(*trans_hdr))
++			return -EINVAL;
++
+ 		trans_hdr = (struct wire_trans_hdr *)(msg->data + msg_len);
+-		if (msg_len + le32_to_cpu(trans_hdr->len) > msg_hdr_len)
++		hdr_len = le32_to_cpu(trans_hdr->len);
++		if (hdr_len < sizeof(*trans_hdr) ||
++		    size_add(msg_len, hdr_len) > msg_hdr_len)
+ 			return -EINVAL;
+ 
+ 		switch (le32_to_cpu(trans_hdr->type)) {
 
 
