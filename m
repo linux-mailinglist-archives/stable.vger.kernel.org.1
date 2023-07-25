@@ -2,91 +2,198 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DDFB761799
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 935AB761347
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbjGYLtv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56782 "EHLO
+        id S234039AbjGYLJV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232915AbjGYLth (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:49:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64FE2100
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:49:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E7F53616B8
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:49:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010F4C433C7;
-        Tue, 25 Jul 2023 11:49:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285762;
-        bh=muaiRA8EAOUTZfNMbKhI9NoscaLHjh51MDIEvfz0emA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ffbjShFI64l3B1DvGzgR4fIBLZeaE0W1hGQNUVxs/xJLl1w+2P4ogPOErjY9v0xXx
-         nFsPIgrkrHS4TNC2nCD5c3EJ3n31FZ5cvzFOiFcZcX+T9LS8JN7X4Br8AievhySYwz
-         SAeOKnLB8UWUxCQ+ZOFz6gX/UTf2NkhH4XE0jrIs=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mohamed Khalfella <mkhalfella@purestorage.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.4 313/313] tracing/histograms: Return an error if we fail to add histogram to hist_vars list
-Date:   Tue, 25 Jul 2023 12:47:46 +0200
-Message-ID: <20230725104534.676992797@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S234043AbjGYLJD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:03 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7624E2723
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690283272; x=1721819272;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=MbwrlzR2nBAf8yW26gKmeIuSipCpJV13OLbSoeJjYVg=;
+  b=L39l/wDm2ekjbkdGXnuZZd4LW2yO5cpxq4aIzk4vx2M5pdzc3KU08gkB
+   ZjL07d1vMd44s1A8zRRCHTSYo+reLU6kiyZoZ4RbfRWSkpinbpfNuwtlS
+   zg6Z3ZhF/OiyBTwKgJrfo+c5nedK6+H5Cl0QW3cznFKH9jwNz53HJStB0
+   zinxXlJEMhGUKToORRqnJS0V3JFFfZ0Fx5JKFofog8uAZjmqOmYHM/cat
+   k5qRIVTrpbq2nLsHmbD+yYEQirpwM5RQJ37vJdtUDHisRtVEKaJAjlDkz
+   g/syq38E62kU4wI5bsJBT9vm8IM9RGaEJXoj+Q6iVRrGHzTR2RTZaYssH
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="454070327"
+X-IronPort-AV: E=Sophos;i="6.01,230,1684825200"; 
+   d="scan'208";a="454070327"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 04:07:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="755706703"
+X-IronPort-AV: E=Sophos;i="6.01,230,1684825200"; 
+   d="scan'208";a="755706703"
+Received: from grdarcy-mobl1.ger.corp.intel.com (HELO [10.213.228.4]) ([10.213.228.4])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 04:07:48 -0700
+Message-ID: <6bc73c01-a7fc-9a7f-5d26-0dd25ebc4a76@linux.intel.com>
+Date:   Tue, 25 Jul 2023 12:07:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] drm/i915: Avoid GGTT flushing on non-GGTT paths of
+ i915_vma_pin_iomap
+Content-Language: en-US
+To:     "Sripada, Radhakrishna" <radhakrishna.sripada@intel.com>,
+        "Intel-gfx@lists.freedesktop.org" <Intel-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+Cc:     "Ursulin, Tvrtko" <tvrtko.ursulin@intel.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20230724125633.1490543-1-tvrtko.ursulin@linux.intel.com>
+ <DM4PR11MB5971B9E535C39E2C7F7314BC8702A@DM4PR11MB5971.namprd11.prod.outlook.com>
+From:   Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Organization: Intel Corporation UK Plc
+In-Reply-To: <DM4PR11MB5971B9E535C39E2C7F7314BC8702A@DM4PR11MB5971.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
+        NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-commit 4b8b3905165ef98386a3c06f196c85d21292d029 upstream.
+On 25/07/2023 00:38, Sripada, Radhakrishna wrote:
+> Hi Tvrtko,
+> 
+> The changes makes sense and based on the description looks good.
+> I am bit skeptical about the exec buffer failure reported by ci hence,
+> withholding the r-b for now. If you believe the CI failure is unrelated
+> please feel free to add my r-b.
 
-Commit 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if
-they have referenced variables") added a check to fail histogram creation
-if save_hist_vars() failed to add histogram to hist_vars list. But the
-commit failed to set ret to failed return code before jumping to
-unregister histogram, fix it.
+This failure:
+https://intel-gfx-ci.01.org/tree/drm-tip/Patchwork_121236v1/shard-snb7/igt@gem_ppgtt@blt-vs-render-ctxn.html
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230714203341.51396-1-mkhalfella@purestorage.com
+Test or machine is not entirely stable looking at it's history, but with 
+a couple different failure signatures:
 
-Cc: stable@vger.kernel.org
-Fixes: 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if they have referenced variables")
-Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- kernel/trace/trace_events_hist.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+https://intel-gfx-ci.01.org/tree/drm-tip/igt@gem_ppgtt@blt-vs-render-ctxn.html
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -6428,7 +6428,8 @@ static int event_hist_trigger_func(struc
- 		goto out_unreg;
- 
- 	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
--		if (save_hist_vars(hist_data))
-+		ret = save_hist_vars(hist_data);
-+		if (ret)
- 			goto out_unreg;
- 	}
- 
+But agreed that we need to be careful. I requested a re-run for a start.
 
+> On a side note on platforms with non-coherent ggtt do we really
+> need to use the barriers twice under intel_gt_flush_ggtt_writes?
 
+You mean:
+
+intel_gt_flush_ggtt_writes()
+{
+	...
+	wmb();
+	...
+	intel_gt_chipset_flush();
+		wmb();
+
+?
+
+I'd guess it is not needed twice on the intel_gt_flush_ggtt_writes() 
+path, but happens to be like that for direct callers of 
+intel_gt_chipset_flush().
+
+Maybe there is scope to tidy this all, for instance the first direct 
+caller I opened does this:
+
+rpcs_query_batch()
+{
+...
+	__i915_gem_object_flush_map(rpcs, 0, 64);
+	i915_gem_object_unpin_map(rpcs);
+
+	intel_gt_chipset_flush(vma->vm->gt);
+
+Where I think __i915_gem_object_flush_map() could actually do the right 
+thing and issue a flush appropriate for the mapping that was used. But 
+it is work and double flush does not really harm. I don't think it does 
+at least.
+
+Regards,
+
+Tvrtko
+
+> 
+> --Radhakrishna(RK) Sripada
+> 
+>> -----Original Message-----
+>> From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+>> Sent: Monday, July 24, 2023 5:57 AM
+>> To: Intel-gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org
+>> Cc: Ursulin, Tvrtko <tvrtko.ursulin@intel.com>; Sripada, Radhakrishna
+>> <radhakrishna.sripada@intel.com>; stable@vger.kernel.org
+>> Subject: [PATCH] drm/i915: Avoid GGTT flushing on non-GGTT paths of
+>> i915_vma_pin_iomap
+>>
+>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> Commit 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is
+>> available")
+>> added a code path which does not map via GGTT, but was still setting the
+>> ggtt write bit, and so triggering the GGTT flushing.
+>>
+>> Fix it by not setting that bit unless the GGTT mapping path was used, and
+>> replace the flush with wmb() in i915_vma_flush_writes().
+>>
+>> This also works for the i915_gem_object_pin_map path added in
+>> d976521a995a ("drm/i915: extend i915_vma_pin_iomap()").
+>>
+>> It is hard to say if the fix has any observable effect, given that the
+>> write-combine buffer gets flushed from intel_gt_flush_ggtt_writes too, but
+>> apart from code clarity, skipping the needless GGTT flushing could be
+>> beneficial on platforms with non-coherent GGTT. (See the code flow in
+>> intel_gt_flush_ggtt_writes().)
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> Fixes: 4bc91dbde0da ("drm/i915/lmem: Bypass aperture when lmem is
+>> available")
+>> References: d976521a995a ("drm/i915: extend i915_vma_pin_iomap()")
+>> Cc: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+>> Cc: <stable@vger.kernel.org> # v5.14+
+>> ---
+>>   drivers/gpu/drm/i915/i915_vma.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/i915/i915_vma.c
+>> b/drivers/gpu/drm/i915/i915_vma.c
+>> index ffb425ba591c..f2b626cd2755 100644
+>> --- a/drivers/gpu/drm/i915/i915_vma.c
+>> +++ b/drivers/gpu/drm/i915/i915_vma.c
+>> @@ -602,7 +602,9 @@ void __iomem *i915_vma_pin_iomap(struct i915_vma
+>> *vma)
+>>   	if (err)
+>>   		goto err_unpin;
+>>
+>> -	i915_vma_set_ggtt_write(vma);
+>> +	if (!i915_gem_object_is_lmem(vma->obj) &&
+>> +	    i915_vma_is_map_and_fenceable(vma))
+>> +		i915_vma_set_ggtt_write(vma);
+>>
+>>   	/* NB Access through the GTT requires the device to be awake. */
+>>   	return page_mask_bits(ptr);
+>> @@ -617,6 +619,8 @@ void i915_vma_flush_writes(struct i915_vma *vma)
+>>   {
+>>   	if (i915_vma_unset_ggtt_write(vma))
+>>   		intel_gt_flush_ggtt_writes(vma->vm->gt);
+>> +	else
+>> +		wmb(); /* Just flush the write-combine buffer. */
+>>   }
+>>
+>>   void i915_vma_unpin_iomap(struct i915_vma *vma)
+>> --
+>> 2.39.2
+> 
