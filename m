@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED2F9761748
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B65DD7615C4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232214AbjGYLqq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53882 "EHLO
+        id S233144AbjGYLdV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:33:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232271AbjGYLqn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3AC91FD7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:36 -0700 (PDT)
+        with ESMTP id S234683AbjGYLcy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:32:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C582811B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:32:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 484C16169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582A5C433C8;
-        Tue, 25 Jul 2023 11:46:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5842461648
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:32:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F9FC433C7;
+        Tue, 25 Jul 2023 11:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285595;
-        bh=2Boqgdv+d+CAbaPylFU5D9+yQB76GtZgHvvqAMNFois=;
+        s=korg; t=1690284771;
+        bh=FgvJfqLvXR8WoecEqowYUX6JXTZyworzHUOyGf8weDQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dEkAc/Cl2pLedhJjBbcXxVWlv5/HBDwaxleWBGn3/+djGZGw2uRMlofp8R/Higu98
-         8n8hQ7GMU819X36j9U1H+NRkGCSRxyI6zlGcg9CVTJ5/I85/3IJElw+7jgviPAXLZD
-         i66ocFsp/6TgDxaUvnRIUua17sDuJ1h/rg4wM0QU=
+        b=k0IYkuy5Nw/QRHQcWE3tNweQuDjSXUMuPFUnIPW1715Ak3hWQZf1DtfszMHzzU1Vx
+         blDqtXnQFnzJhMHRsvOHWVFkBpdrjWupTToB7nPEuHB0vdQbxW1HVFhyY65m4uPhBC
+         sfQiMYPaEg+r4OrCXObZ+67CtlXubNB3LAHOypFY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 5.4 262/313] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() in case of error
+        patches@lists.linux.dev, Tanmay Patil <t-patil@ti.com>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 476/509] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
 Date:   Tue, 25 Jul 2023 12:46:55 +0200
-Message-ID: <20230725104532.390623539@linuxfoundation.org>
+Message-ID: <20230725104615.543195461@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,40 +56,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Tanmay Patil <t-patil@ti.com>
 
-commit a9c09546e903f1068acfa38e1ee18bded7114b37 upstream.
+[ Upstream commit b685f1a58956fa36cc01123f253351b25bfacfda ]
 
-If clk_get_rate() fails, the clk that has just been allocated needs to be
-freed.
+CPSW ALE has 75 bit ALE entries which are stored within three 32 bit words.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions assume that the
+field will be strictly contained within one word. However, this is not
+guaranteed to be the case and it is possible for ALE field entries to span
+across up to two words at the most.
 
-Cc: <stable@vger.kernel.org> # v3.3+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the methods to handle getting/setting fields spanning up to two words.
+
+Fixes: db82173f23c5 ("netdev: driver: ethernet: add cpsw address lookup engine support")
+Signed-off-by: Tanmay Patil <t-patil@ti.com>
+[s-vadapalli@ti.com: rephrased commit message and added Fixes tag]
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/samsung.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/samsung.c
-+++ b/drivers/tty/serial/samsung.c
-@@ -1199,8 +1199,12 @@ static unsigned int s3c24xx_serial_getcl
- 			continue;
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index a6a455c326288..73efc8b453643 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -104,23 +104,37 @@ struct cpsw_ale_dev_id {
  
- 		rate = clk_get_rate(clk);
--		if (!rate)
-+		if (!rate) {
-+			dev_err(ourport->port.dev,
-+				"Failed to get clock rate for %s.\n", clkname);
-+			clk_put(clk);
- 			continue;
-+		}
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ {
+-	int idx;
++	int idx, idx2;
++	u32 hi_val = 0;
  
- 		if (ourport->info->has_divslot) {
- 			unsigned long div = rate / req_baud;
+ 	idx    = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be fetched exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
++	}
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+-	return (ale_entry[idx] >> start) & BITMASK(bits);
++	return (hi_val + (ale_entry[idx] >> start)) & BITMASK(bits);
+ }
+ 
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx;
++	int idx, idx2;
+ 
+ 	value &= BITMASK(bits);
+-	idx    = start / 32;
++	idx = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be set exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++	}
+ 	start -= idx * 32;
+-	idx    = 2 - idx; /* flip */
++	idx = 2 - idx; /* flip */
+ 	ale_entry[idx] &= ~(BITMASK(bits) << start);
+ 	ale_entry[idx] |=  (value << start);
+ }
+-- 
+2.39.2
+
 
 
