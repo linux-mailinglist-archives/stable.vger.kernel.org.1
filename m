@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DFF97614EC
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69060761621
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234522AbjGYLYA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33332 "EHLO
+        id S234857AbjGYLgm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234515AbjGYLX7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:23:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74BD19AA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:23:56 -0700 (PDT)
+        with ESMTP id S234809AbjGYLg0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D897C1BF6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:36:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 474BA615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CFFC433C7;
-        Tue, 25 Jul 2023 11:23:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA0B961600
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:36:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CF4C433CD;
+        Tue, 25 Jul 2023 11:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284235;
-        bh=NyAdYL3puK8Z0+vIaY8L9hEWumESJZ4u1TPX2pr7yvE=;
+        s=korg; t=1690284980;
+        bh=ry/yoa4ge2tw6XcEMV2M9mMlgluVEOFdhrP51A8ozVU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0OWmLtOxSg+kCYCjFjGvH40iNk6Sw8tMW46yptMjPY9VhWUd1R4GXymfBjfQmhuvI
-         hf37jaWz+EGEhZjbgkzaCdTO9kr9zo8+QAMVszMBn3Q9L8iYEgdPpieI5qsDF5I/yd
-         y51pG5APdRk5kzJTaTJhG5HYkPPJZSs/DkgqvlXQ=
+        b=iwzH7NUtdD1Tnbq1K2rcjusXUMIDZ/hUmY4K0cP3iEjXSV6ns+wY/7gWtJXyWyUed
+         PXLVzN5oYC+DJBrdS+8yrAL0lVT7kbuVky0tvbhVrWbIydvKOq3arwkC8WmvBzM97B
+         45nGEoEPBBzJpRim4G4t8OWZgt3AUhUiNlYOmRbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 254/509] mfd: stmpe: Only disable the regulators if they are enabled
-Date:   Tue, 25 Jul 2023 12:43:13 +0200
-Message-ID: <20230725104605.370040747@linuxfoundation.org>
+        patches@lists.linux.dev, Alex Dewar <alex.dewar90@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 041/313] wl3501_cs: Remove unnecessary NULL check
+Date:   Tue, 25 Jul 2023 12:43:14 +0200
+Message-ID: <20230725104522.851710014@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,43 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Alex Dewar <alex.dewar90@gmail.com>
 
-[ Upstream commit 104d32bd81f620bb9f67fbf7d1159c414e89f05f ]
+[ Upstream commit 1d2a85382282e7c77cbde5650335c3ffc6073fa1 ]
 
-In stmpe_probe(), if some regulator_enable() calls fail, probing continues
-and there is only a dev_warn().
+In wl3501_detach(), link->priv is checked for a NULL value before being
+passed to free_netdev(). However, it cannot be NULL at this point as it
+has already been passed to other functions, so just remove the check.
 
-So, if stmpe_probe() is called the regulator may not be enabled. It is
-cleaner to test it before calling regulator_disable() in the remove
-function.
-
-Fixes: 9c9e321455fb ("mfd: stmpe: add optional regulators")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/8de3aaf297931d655b9ad6aed548f4de8b85425a.1686998575.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
+Addresses-Coverity: CID 710499: Null pointer dereferences (REVERSE_INULL)
+Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20200926174558.9436-1-alex.dewar90@gmail.com
+Stable-dep-of: 391af06a02e7 ("wifi: wl3501_cs: Fix an error handling path in wl3501_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/stmpe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/wl3501_cs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
-index 508349399f8af..7f758fb60c1fa 100644
---- a/drivers/mfd/stmpe.c
-+++ b/drivers/mfd/stmpe.c
-@@ -1494,9 +1494,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
+diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+index b66c7d4798977..cf67ea13dd8dc 100644
+--- a/drivers/net/wireless/wl3501_cs.c
++++ b/drivers/net/wireless/wl3501_cs.c
+@@ -1437,9 +1437,7 @@ static void wl3501_detach(struct pcmcia_device *link)
+ 	wl3501_release(link);
  
- int stmpe_remove(struct stmpe *stmpe)
- {
--	if (!IS_ERR(stmpe->vio))
-+	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
- 		regulator_disable(stmpe->vio);
--	if (!IS_ERR(stmpe->vcc))
-+	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
- 		regulator_disable(stmpe->vcc);
+ 	unregister_netdev(dev);
+-
+-	if (link->priv)
+-		free_netdev(link->priv);
++	free_netdev(dev);
+ }
  
- 	__stmpe_disable(stmpe, STMPE_BLOCK_ADC);
+ static int wl3501_get_name(struct net_device *dev, struct iw_request_info *info,
 -- 
 2.39.2
 
