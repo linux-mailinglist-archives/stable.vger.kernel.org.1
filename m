@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1566761779
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF00776178A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232492AbjGYLsy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56018 "EHLO
+        id S233499AbjGYLtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235132AbjGYLs0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7709210E2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:25 -0700 (PDT)
+        with ESMTP id S230331AbjGYLtK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:49:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89DB1FC4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7058616A9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F23C433C9;
-        Tue, 25 Jul 2023 11:48:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3215661655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434CEC433C8;
+        Tue, 25 Jul 2023 11:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285704;
-        bh=PWDzMBwMIVOwIvG9gOS+iovgyIhZkL5OLKV69ONEYJQ=;
+        s=korg; t=1690285734;
+        bh=Kg764/fQnGf9//IqecEFoW9xsUZGmY/CZTvSAa9ylzE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I48lyi5Dn2NI1ygtTqRYAqZVt+94B47Va1Imgd7fmveANChv0QXh1Vx6GaDW+3k2d
-         wjk3EDpPNZcrou1CqxQheejb9FruAoWkqbwQija75D145uEvCSCMOG8RXfovbnHNWQ
-         e1/dtQywvQuaFQexqk+b6PT74wKZG6lU2l+AFME8=
+        b=zGNIaCWxu9fV3uMIlLRado+WFj8DyY3F7IWRxQAO0VtX1CcEWzpEaaMHa/NbaPWBR
+         thP96iiWEuPWDG/ExCy+4USKoTbMDVNmDYkK+qFcnc/ppQN35QXTnMkHfGopRZtHES
+         9QlBBkgDYybbCuQKm1g06h45pQouhzXwPnkioM+I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Eric Whitney <enwlinux@gmail.com>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 283/313] ext4: correct inline offset when handling xattrs in inode body
-Date:   Tue, 25 Jul 2023 12:47:16 +0200
-Message-ID: <20230725104533.321155259@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 284/313] debugobjects: Recheck debug_objects_enabled before reporting
+Date:   Tue, 25 Jul 2023 12:47:17 +0200
+Message-ID: <20230725104533.367229441@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
 References: <20230725104521.167250627@linuxfoundation.org>
@@ -44,8 +47,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,54 +57,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Whitney <enwlinux@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 6909cf5c4101214f4305a62d582a5b93c7e1eb9a upstream.
+[ Upstream commit 8b64d420fe2450f82848178506d3e3a0bd195539 ]
 
-When run on a file system where the inline_data feature has been
-enabled, xfstests generic/269, generic/270, and generic/476 cause ext4
-to emit error messages indicating that inline directory entries are
-corrupted.  This occurs because the inline offset used to locate
-inline directory entries in the inode body is not updated when an
-xattr in that shared region is deleted and the region is shifted in
-memory to recover the space it occupied.  If the deleted xattr precedes
-the system.data attribute, which points to the inline directory entries,
-that attribute will be moved further up in the region.  The inline
-offset continues to point to whatever is located in system.data's former
-location, with unfortunate effects when used to access directory entries
-or (presumably) inline data in the inode body.
+syzbot is reporting false a positive ODEBUG message immediately after
+ODEBUG was disabled due to OOM.
 
-Cc: stable@kernel.org
-Signed-off-by: Eric Whitney <enwlinux@gmail.com>
-Link: https://lore.kernel.org/r/20230522181520.1570360-1-enwlinux@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
+  [ 1062.886755][ T5171] ------------[ cut here ]------------
+  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
+
+  CPU 0 [ T5171]                CPU 1 [T22911]
+  --------------                --------------
+  debug_object_assert_init() {
+    if (!debug_objects_enabled)
+      return;
+    db = get_bucket(addr);
+                                lookup_object_or_alloc() {
+                                  debug_objects_enabled = 0;
+                                  return NULL;
+                                }
+                                debug_objects_oom() {
+                                  pr_warn("Out of memory. ODEBUG disabled\n");
+                                  // all buckets get emptied here, and
+                                }
+    lookup_object_or_alloc(addr, db, descr, false, true) {
+      // this bucket is already empty.
+      return ERR_PTR(-ENOENT);
+    }
+    // Emits false positive warning.
+    debug_print_object(&o, "assert_init");
+  }
+
+Recheck debug_object_enabled in debug_print_object() to avoid that.
+
+Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ lib/debugobjects.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1742,6 +1742,20 @@ static int ext4_xattr_set_entry(struct e
- 		memmove(here, (void *)here + size,
- 			(void *)last - (void *)here + sizeof(__u32));
- 		memset(last, 0, size);
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 26fa04335537b..b0e4301d74954 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -474,6 +474,15 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
+ 	struct debug_obj_descr *descr = obj->descr;
+ 	static int limit;
+ 
++	/*
++	 * Don't report if lookup_object_or_alloc() by the current thread
++	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
++	 * concurrent thread turned off debug_objects_enabled and cleared
++	 * the hash buckets.
++	 */
++	if (!debug_objects_enabled)
++		return;
 +
-+		/*
-+		 * Update i_inline_off - moved ibody region might contain
-+		 * system.data attribute.  Handling a failure here won't
-+		 * cause other complications for setting an xattr.
-+		 */
-+		if (!is_block && ext4_has_inline_data(inode)) {
-+			ret = ext4_find_inline_data_nolock(inode);
-+			if (ret) {
-+				ext4_warning_inode(inode,
-+					"unable to update i_inline_off");
-+				goto out;
-+			}
-+		}
- 	} else if (s->not_found) {
- 		/* Insert new name. */
- 		size_t size = EXT4_XATTR_LEN(name_len);
+ 	if (limit < 5 && descr != descr_test) {
+ 		void *hint = descr->debug_hint ?
+ 			descr->debug_hint(obj->object) : NULL;
+-- 
+2.39.2
+
 
 
