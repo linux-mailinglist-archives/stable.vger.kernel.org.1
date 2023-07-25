@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 635B87614C0
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66ABA76160D
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234447AbjGYLWa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:22:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59598 "EHLO
+        id S234746AbjGYLgF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234452AbjGYLWY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:22:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A867A6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:22:21 -0700 (PDT)
+        with ESMTP id S234684AbjGYLgF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:36:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62EF71BD7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:35:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DC3E615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE3AC433C7;
-        Tue, 25 Jul 2023 11:22:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 052616166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:35:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8D1C433C8;
+        Tue, 25 Jul 2023 11:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284140;
-        bh=gbepNwzUiPT8KkoIjbwymTet91H+gx3Nw+PekQtK9vk=;
+        s=korg; t=1690284949;
+        bh=puvGtCHrfFjPOy2iCaOxBGZxvH48hW5OyqAOqpcDZmI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dmB4kvWGeP9M+ifUwCSOl9YVID6BVluhAJHE/o0UUiVqn5lLBTYHvbOPauzFCgOip
-         hnLJxSHThDxVdq94hOVNraBAIQ3TxKnd4dHa4/Qw4onqFocRs6i4zz2bR3b1fydNJH
-         KB23OXGyL+0PO7WGr7/R1cg/xuc11CdRSGT9os2g=
+        b=ddXxWJE0uOo50la/ilGcNINIa4j1Rsd6vlVMkXJeB+sJ0rcQfB2GtFHqxsBr55tOt
+         YrbHdUXHg7jx4snMre0ggce1RMM00hop35BgahxHEmNnY4Bk58ou2pUPEHgdLC3Zp3
+         mM20g6rRzxqEMJOwerb5Q31cKBhSCXTg4tb0UKXw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Landley <rob@landley.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 220/509] sh: j2: Use ioremap() to translate device tree address into kernel memory
+        patches@lists.linux.dev, Chris Wilson <chris@chris-wilson.co.uk>,
+        =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
+Subject: [PATCH 5.4 006/313] drm/i915: Initialise outparam for error return from wait_for_register
 Date:   Tue, 25 Jul 2023 12:42:39 +0200
-Message-ID: <20230725104603.827289228@linuxfoundation.org>
+Message-ID: <20230725104521.465745459@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,43 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-[ Upstream commit bc9d1f0cecd2407cfb2364a7d4be2f52d1d46a9d ]
+commit b79ffa914ede785a721f42d8ee3ce7b8eeede2bb upstream.
 
-Addresses the following warning when building j2_defconfig:
+Just in case the caller passes in 0 for both slow&fast timeouts, make
+sure we initialise the stack value returned. Add an assert so that we
+don't make the mistake of passing 0 timeouts for the wait.
 
-arch/sh/kernel/cpu/sh2/probe.c: In function 'scan_cache':
-arch/sh/kernel/cpu/sh2/probe.c:24:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-   24 |  j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
-      |
+drivers/gpu/drm/i915/intel_uncore.c:2011 __intel_wait_for_register_fw() error: uninitialized symbol 'reg_value'.
 
-Fixes: 5a846abad07f ("sh: add support for J-Core J2 processor")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Rob Landley <rob@landley.net>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230503125746.331835-1-glaubitz@physik.fu-berlin.de
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20200916105022.28316-1-chris@chris-wilson.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/kernel/cpu/sh2/probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/intel_uncore.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sh/kernel/cpu/sh2/probe.c b/arch/sh/kernel/cpu/sh2/probe.c
-index d342ea08843f6..70a07f4f2142f 100644
---- a/arch/sh/kernel/cpu/sh2/probe.c
-+++ b/arch/sh/kernel/cpu/sh2/probe.c
-@@ -21,7 +21,7 @@ static int __init scan_cache(unsigned long node, const char *uname,
- 	if (!of_flat_dt_is_compatible(node, "jcore,cache"))
- 		return 0;
+--- a/drivers/gpu/drm/i915/intel_uncore.c
++++ b/drivers/gpu/drm/i915/intel_uncore.c
+@@ -1926,13 +1926,14 @@ int __intel_wait_for_register_fw(struct
+ 				 unsigned int slow_timeout_ms,
+ 				 u32 *out_value)
+ {
+-	u32 reg_value;
++	u32 reg_value = 0;
+ #define done (((reg_value = intel_uncore_read_fw(uncore, reg)) & mask) == value)
+ 	int ret;
  
--	j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
-+	j2_ccr_base = ioremap(of_flat_dt_translate_address(node), 4);
+ 	/* Catch any overuse of this function */
+ 	might_sleep_if(slow_timeout_ms);
+ 	GEM_BUG_ON(fast_timeout_us > 20000);
++	GEM_BUG_ON(!fast_timeout_us && !slow_timeout_ms);
  
- 	return 1;
- }
--- 
-2.39.2
-
+ 	ret = -ETIMEDOUT;
+ 	if (fast_timeout_us && fast_timeout_us <= 20000)
 
 
