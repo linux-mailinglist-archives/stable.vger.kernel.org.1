@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FEA576114D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E10D7614AE
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231129AbjGYKtq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58070 "EHLO
+        id S234434AbjGYLVz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:21:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231608AbjGYKtm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:49:42 -0400
+        with ESMTP id S234443AbjGYLVx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B12199E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:49:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7655B19AD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 777026166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:49:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852A0C433C7;
-        Tue, 25 Jul 2023 10:49:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 311506167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE16C433C7;
+        Tue, 25 Jul 2023 11:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282179;
-        bh=GZQE/dUV8fdTiQPsmFVhYmZtTkdqJkiPLIUXQKPkJ84=;
+        s=korg; t=1690284104;
+        bh=HaBgYXY2kiHj3nSgJee2RC8MPmA+pZaBWOzGw6WgdN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VniHKW/bk3J0OH6jyP11Ac2QBtFPNeU1Nt3sIlnXSSmY3X07kLpQYVV47iEnT21R7
-         V9jQrXUKQ9NrddHoEt4TVmsHp2OlWVfKWcAbFH0lQmMBnZ5jfdN1uAFEuLe2GL8ln7
-         W5sAwFXilPMchCc0rrMx7hxxu9s+bdpLkpfnhJ1k=
+        b=sa2qcIqsyMVcCu609KLeTFuGR8FzPyv54qZ12c267RVot+NJ4sh6LEO+VksHH5sWf
+         Q4OdNwx1oZBf9Qx0jt/TES5CkTUGHkZy5U1KYvoV8KcH0QHY7QRLgwLHfpL6aGUjJO
+         1iFmA8IoCFum3bxwfgKIf9oa5MzQ+57LhSVD8688=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 008/227] maple_tree: fix node allocation testing on 32 bit
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 236/509] serial: 8250: lock port for UART_IER access in omap8250_irq()
 Date:   Tue, 25 Jul 2023 12:42:55 +0200
-Message-ID: <20230725104515.136899892@linuxfoundation.org>
+Message-ID: <20230725104604.566609564@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit ef5c3de5211b5a3a8102b25aa83eb4cde65ac2fd upstream.
+[ Upstream commit 25614735a647693c1260f253dc3ab32127697806 ]
 
-Internal node counting was altered and the 64 bit test was updated,
-however the 32bit test was missed.
+omap8250_irq() accesses UART_IER. This register is modified twice
+by each console write (serial8250_console_write()) under the port
+lock. omap8250_irq() must also take the port lock to guanentee
+synchronized access to UART_IER.
 
-Restore the 32bit test to a functional state.
+Since the port lock is already being taken for the stop_rx() callback
+and since it is safe to call cancel_delayed_work() while holding the
+port lock, simply extend the port lock region to include UART_IER
+access.
 
-Link: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
-Link: https://lkml.kernel.org/r/20230712173916.168805-2-Liam.Howlett@oracle.com
-Fixes: 541e06b772c1 ("maple_tree: remove GFP_ZERO from kmem_cache_alloc() and kmem_cache_alloc_bulk()")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1fe0e1fa3209 ("serial: 8250_omap: Handle optional overrun-throttle-ms property")
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230525093159.223817-8-john.ogness@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/radix-tree/maple.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/8250/8250_omap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/tools/testing/radix-tree/maple.c
-+++ b/tools/testing/radix-tree/maple.c
-@@ -206,9 +206,9 @@ static noinline void check_new_node(stru
- 				e = i - 1;
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index 6043d4fa08cc2..af39a2c4c2eee 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -653,17 +653,18 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
+ 	if ((lsr & UART_LSR_OE) && up->overrun_backoff_time_ms > 0) {
+ 		unsigned long delay;
+ 
++		/* Synchronize UART_IER access against the console. */
++		spin_lock(&port->lock);
+ 		up->ier = port->serial_in(port, UART_IER);
+ 		if (up->ier & (UART_IER_RLSI | UART_IER_RDI)) {
+-			spin_lock(&port->lock);
+ 			port->ops->stop_rx(port);
+-			spin_unlock(&port->lock);
  		} else {
- 			if (i >= 4)
--				e = i - 4;
--			else if (i == 3)
--				e = i - 2;
-+				e = i - 3;
-+			else if (i >= 1)
-+				e = i - 1;
- 			else
- 				e = 0;
+ 			/* Keep restarting the timer until
+ 			 * the input overrun subsides.
+ 			 */
+ 			cancel_delayed_work(&up->overrun_backoff);
  		}
++		spin_unlock(&port->lock);
+ 
+ 		delay = msecs_to_jiffies(up->overrun_backoff_time_ms);
+ 		schedule_delayed_work(&up->overrun_backoff, delay);
+-- 
+2.39.2
+
 
 
