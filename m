@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C04B76158D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40CF0761253
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234772AbjGYLaU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38342 "EHLO
+        id S232767AbjGYLBR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjGYLaU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:20 -0400
+        with ESMTP id S233839AbjGYLA7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A92FB
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745B0E7
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C169961683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08EAC433C7;
-        Tue, 25 Jul 2023 11:30:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 095386165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19641C433C7;
+        Tue, 25 Jul 2023 10:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284618;
-        bh=4wTjTmdO5Xx1pVjMDzCbxMIE5fMT5jewO5B38Vy3So4=;
+        s=korg; t=1690282698;
+        bh=pHqVaIRZYYRT6M61Ebs6I3DaScTo5Ys/ScJc5Kba/GY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qlyHZmgHkLZ8FeMahM6Lbhl0L/mJzL7g8j+fbkozUNYyM35JL6pFknpj9M2mqwIH8
-         lSaMP/edRd11K1cJIsU49aZjyUc8Kxg8WeSq1OHhAomhCNZj1pSfvwjG2KS+nv7Ikb
-         g99sAU6L87rHHX39k2tzKs4M+S6SLEJ+qdROKXmw=
+        b=XWENA1o3+GHikq/EF4j26oC420LriEvMhNNhoR+CaZgNCdwlNbaU/1KsORZgVnv4S
+         uOV584cEeEuoGwWzTLCloIqf2ArIDv4U+DxwzhSIbNt0t5ksIJps7bVL6OBXavrzUo
+         qkf7bpDxDk1haAgTdG9qbpsFEp/xFSq+4sCGpebQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        CKI <cki-project@redhat.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 5.10 421/509] s390/decompressor: fix misaligned symbol build error
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 193/227] llc: Dont drop packet from non-root netns.
 Date:   Tue, 25 Jul 2023 12:46:00 +0200
-Message-ID: <20230725104612.952742506@linuxfoundation.org>
+Message-ID: <20230725104522.803845506@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,53 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 938f0c35d7d93a822ab9c9728e3205e8e57409d0 upstream.
+[ Upstream commit 6631463b6e6673916d2481f692938f393148aa82 ]
 
-Nathan Chancellor reported a kernel build error on Fedora 39:
+Now these upper layer protocol handlers can be called from llc_rcv()
+as sap->rcv_func(), which is registered by llc_sap_open().
 
-$ clang --version | head -1
-clang version 16.0.5 (Fedora 16.0.5-1.fc39)
+  * function which is passed to register_8022_client()
+    -> no in-kernel user calls register_8022_client().
 
-$ s390x-linux-gnu-ld --version | head -1
-GNU ld version 2.40-1.fc39
+  * snap_rcv()
+    `- proto->rcvfunc() : registered by register_snap_client()
+       -> aarp_rcv() and atalk_rcv() drop packets from non-root netns
 
-$ make -skj"$(nproc)" ARCH=s390 CC=clang CROSS_COMPILE=s390x-linux-gnu- olddefconfig all
-s390x-linux-gnu-ld: arch/s390/boot/startup.o(.text+0x5b4): misaligned symbol `_decompressor_end' (0x35b0f) for relocation R_390_PC32DBL
-make[3]: *** [.../arch/s390/boot/Makefile:78: arch/s390/boot/vmlinux] Error 1
+  * stp_pdu_rcv()
+    `- garp_protos[]->rcv() : registered by stp_proto_register()
+       -> garp_pdu_rcv() and br_stp_rcv() are netns-aware
 
-It turned out that the problem with misaligned symbols on s390 was fixed
-with commit 80ddf5ce1c92 ("s390: always build relocatable kernel") for the
-kernel image, but did not take into account that the decompressor uses its
-own set of CFLAGS, which come without -fPIE.
+So, we can safely remove the netns restriction in llc_rcv().
 
-Add the -fPIE flag also to the decompresser CFLAGS to fix this.
-
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Reported-by: CKI <cki-project@redhat.com>
-Suggested-by: Ulrich Weigand <Ulrich.Weigand@de.ibm.com>
-Link: https://github.com/ClangBuiltLinux/linux/issues/1747
-Link: https://lore.kernel.org/32935.123062114500601371@us-mta-9.us.mimecast.lan/
-Link: https://lore.kernel.org/r/20230622125508.1068457-1-hca@linux.ibm.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e730c15519d0 ("[NET]: Make packet reception network namespace safe")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ net/llc/llc_input.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -29,6 +29,7 @@ KBUILD_CFLAGS_DECOMPRESSOR += -fno-delet
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
- KBUILD_CFLAGS_DECOMPRESSOR += -ffreestanding
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-stack-protector
-+KBUILD_CFLAGS_DECOMPRESSOR += -fPIE
- KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-disable-warning, address-of-packed-member)
- KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),-g)
- KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO_DWARF4), $(call cc-option, -gdwarf-4,))
+diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
+index c309b72a58779..7cac441862e21 100644
+--- a/net/llc/llc_input.c
++++ b/net/llc/llc_input.c
+@@ -163,9 +163,6 @@ int llc_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	void (*sta_handler)(struct sk_buff *skb);
+ 	void (*sap_handler)(struct llc_sap *sap, struct sk_buff *skb);
+ 
+-	if (!net_eq(dev_net(dev), &init_net))
+-		goto drop;
+-
+ 	/*
+ 	 * When the interface is in promisc. mode, drop all the crap that it
+ 	 * receives, do not try to analyse it.
+-- 
+2.39.2
+
 
 
