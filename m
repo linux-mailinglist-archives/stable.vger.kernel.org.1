@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE5276133B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E912E7615AD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234029AbjGYLJD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45382 "EHLO
+        id S234635AbjGYLb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:31:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234038AbjGYLIs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED752118
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:23 -0700 (PDT)
+        with ESMTP id S234638AbjGYLb6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62FCCE74
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DE886165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEE2C433C7;
-        Tue, 25 Jul 2023 11:07:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB47C6169A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26DDC433C8;
+        Tue, 25 Jul 2023 11:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283242;
-        bh=XVFKjGUw27pqHaTGOxos+pOAVpK/ZolEXYxWbWIuVbI=;
+        s=korg; t=1690284707;
+        bh=dZ1WMYtoGzG/ORHegjjw/aXCzTkwgnTo3F8NyxTxSHw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Memn2+x14I+P4ZEs5U2FsYZC8wT+o0NMgGT/4v4ufGX2kHwHGFRdL95b3oWtDO1PQ
-         /DN742yy/MSYl1BUCyZgqYRZznyGkFU4EENtdmSO6lACO00PIjDzxSHtjMif+xKW0o
-         WioKyxLRQUvUMChpFBDWfNu8Ru0xzCisPttwkPho=
+        b=eruFPI2aLfw3JXdSYII7dSOrzPyeajmJMFOFIP/9UFuww9jwKdATpqvtgc11UnTsk
+         zQ5UOPoRcn00S5iMNMj0Nqy764qGTiZv41GEIlTFwdSFx7ntEIp1pRxBy2yGOdfg+1
+         vAdLCKbU8liw13G5T8riYEY+YWwN3j0zxnShrhgE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Zhang Yi <yi.zhang@huawei.com>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 164/183] jbd2: recheck chechpointing non-dirty buffer
+        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
+        Shengjiu Wang <shengjiu.wang@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 453/509] ASoC: fsl_sai: Disable bit clock with transmitter
 Date:   Tue, 25 Jul 2023 12:46:32 +0200
-Message-ID: <20230725104513.699803414@linuxfoundation.org>
+Message-ID: <20230725104614.475702645@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,191 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Matus Gajdos <matuszpd@gmail.com>
 
-commit c2d6fd9d6f35079f1669f0100f05b46708c74b7f upstream.
+commit 269f399dc19f0e5c51711c3ba3bd06e0ef6ef403 upstream.
 
-There is a long-standing metadata corruption issue that happens from
-time to time, but it's very difficult to reproduce and analyse, benefit
-from the JBD2_CYCLE_RECORD option, we found out that the problem is the
-checkpointing process miss to write out some buffers which are raced by
-another do_get_write_access(). Looks below for detail.
+Otherwise bit clock remains running writing invalid data to the DAC.
 
-jbd2_log_do_checkpoint() //transaction X
- //buffer A is dirty and not belones to any transaction
- __buffer_relink_io() //move it to the IO list
- __flush_batch()
-  write_dirty_buffer()
-                             do_get_write_access()
-                             clear_buffer_dirty
-                             __jbd2_journal_file_buffer()
-                             //add buffer A to a new transaction Y
-   lock_buffer(bh)
-   //doesn't write out
- __jbd2_journal_remove_checkpoint()
- //finish checkpoint except buffer A
- //filesystem corrupt if the new transaction Y isn't fully write out.
-
-Due to the t_checkpoint_list walking loop in jbd2_log_do_checkpoint()
-have already handles waiting for buffers under IO and re-added new
-transaction to complete commit, and it also removing cleaned buffers,
-this makes sure the list will eventually get empty. So it's fine to
-leave buffers on the t_checkpoint_list while flushing out and completely
-stop using the t_checkpoint_io_list.
-
+Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 Cc: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Tested-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230712124934.32232-1-matuszpd@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c |  102 ++++++++++++++-------------------------------------
- 1 file changed, 29 insertions(+), 73 deletions(-)
+ sound/soc/fsl/fsl_sai.c |    2 +-
+ sound/soc/fsl/fsl_sai.h |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -58,28 +58,6 @@ static inline void __buffer_unlink(struc
- }
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -552,7 +552,7 @@ static void fsl_sai_config_disable(struc
+ 	u32 xcsr, count = 100;
  
- /*
-- * Move a buffer from the checkpoint list to the checkpoint io list
-- *
-- * Called with j_list_lock held
-- */
--static inline void __buffer_relink_io(struct journal_head *jh)
--{
--	transaction_t *transaction = jh->b_cp_transaction;
--
--	__buffer_unlink_first(jh);
--
--	if (!transaction->t_checkpoint_io_list) {
--		jh->b_cpnext = jh->b_cpprev = jh;
--	} else {
--		jh->b_cpnext = transaction->t_checkpoint_io_list;
--		jh->b_cpprev = transaction->t_checkpoint_io_list->b_cpprev;
--		jh->b_cpprev->b_cpnext = jh;
--		jh->b_cpnext->b_cpprev = jh;
--	}
--	transaction->t_checkpoint_io_list = jh;
--}
--
--/*
-  * Check a checkpoint buffer could be release or not.
-  *
-  * Requires j_list_lock
-@@ -183,6 +161,7 @@ __flush_batch(journal_t *journal, int *b
- 		struct buffer_head *bh = journal->j_chkpt_bhs[i];
- 		BUFFER_TRACE(bh, "brelse");
- 		__brelse(bh);
-+		journal->j_chkpt_bhs[i] = NULL;
- 	}
- 	*batch_count = 0;
- }
-@@ -242,6 +221,11 @@ restart:
- 		jh = transaction->t_checkpoint_list;
- 		bh = jh2bh(jh);
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+-			   FSL_SAI_CSR_TERE, 0);
++			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
  
-+		/*
-+		 * The buffer may be writing back, or flushing out in the
-+		 * last couple of cycles, or re-adding into a new transaction,
-+		 * need to check it again until it's unlocked.
-+		 */
- 		if (buffer_locked(bh)) {
- 			get_bh(bh);
- 			spin_unlock(&journal->j_list_lock);
-@@ -287,28 +271,32 @@ restart:
- 		}
- 		if (!buffer_dirty(bh)) {
- 			BUFFER_TRACE(bh, "remove from checkpoint");
--			if (__jbd2_journal_remove_checkpoint(jh))
--				/* The transaction was released; we're done */
-+			/*
-+			 * If the transaction was released or the checkpoint
-+			 * list was empty, we're done.
-+			 */
-+			if (__jbd2_journal_remove_checkpoint(jh) ||
-+			    !transaction->t_checkpoint_list)
- 				goto out;
--			continue;
-+		} else {
-+			/*
-+			 * We are about to write the buffer, it could be
-+			 * raced by some other transaction shrink or buffer
-+			 * re-log logic once we release the j_list_lock,
-+			 * leave it on the checkpoint list and check status
-+			 * again to make sure it's clean.
-+			 */
-+			BUFFER_TRACE(bh, "queue");
-+			get_bh(bh);
-+			J_ASSERT_BH(bh, !buffer_jwrite(bh));
-+			journal->j_chkpt_bhs[batch_count++] = bh;
-+			transaction->t_chp_stats.cs_written++;
-+			transaction->t_checkpoint_list = jh->b_cpnext;
- 		}
--		/*
--		 * Important: we are about to write the buffer, and
--		 * possibly block, while still holding the journal
--		 * lock.  We cannot afford to let the transaction
--		 * logic start messing around with this buffer before
--		 * we write it to disk, as that would break
--		 * recoverability.
--		 */
--		BUFFER_TRACE(bh, "queue");
--		get_bh(bh);
--		J_ASSERT_BH(bh, !buffer_jwrite(bh));
--		journal->j_chkpt_bhs[batch_count++] = bh;
--		__buffer_relink_io(jh);
--		transaction->t_chp_stats.cs_written++;
-+
- 		if ((batch_count == JBD2_NR_BATCH) ||
--		    need_resched() ||
--		    spin_needbreak(&journal->j_list_lock))
-+		    need_resched() || spin_needbreak(&journal->j_list_lock) ||
-+		    jh2bh(transaction->t_checkpoint_list) == journal->j_chkpt_bhs[0])
- 			goto unlock_and_flush;
- 	}
- 
-@@ -322,38 +310,6 @@ restart:
- 			goto restart;
- 	}
- 
--	/*
--	 * Now we issued all of the transaction's buffers, let's deal
--	 * with the buffers that are out for I/O.
--	 */
--restart2:
--	/* Did somebody clean up the transaction in the meanwhile? */
--	if (journal->j_checkpoint_transactions != transaction ||
--	    transaction->t_tid != this_tid)
--		goto out;
--
--	while (transaction->t_checkpoint_io_list) {
--		jh = transaction->t_checkpoint_io_list;
--		bh = jh2bh(jh);
--		if (buffer_locked(bh)) {
--			get_bh(bh);
--			spin_unlock(&journal->j_list_lock);
--			wait_on_buffer(bh);
--			/* the journal_head may have gone by now */
--			BUFFER_TRACE(bh, "brelse");
--			__brelse(bh);
--			spin_lock(&journal->j_list_lock);
--			goto restart2;
--		}
--
--		/*
--		 * Now in whatever state the buffer currently is, we
--		 * know that it has been written out and so we can
--		 * drop it from the list
--		 */
--		if (__jbd2_journal_remove_checkpoint(jh))
--			break;
--	}
- out:
- 	spin_unlock(&journal->j_list_lock);
- 	result = jbd2_cleanup_journal_tail(journal);
+ 	/* TERE will remain set till the end of current frame */
+ 	do {
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -87,6 +87,7 @@
+ /* SAI Transmit/Receive Control Register */
+ #define FSL_SAI_CSR_TERE	BIT(31)
+ #define FSL_SAI_CSR_SE		BIT(30)
++#define FSL_SAI_CSR_BCE		BIT(28)
+ #define FSL_SAI_CSR_FR		BIT(25)
+ #define FSL_SAI_CSR_SR		BIT(24)
+ #define FSL_SAI_CSR_xF_SHIFT	16
 
 
