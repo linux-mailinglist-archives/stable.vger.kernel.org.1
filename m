@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6FEB761511
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9300A76116E
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbjGYLZT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:25:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34466 "EHLO
+        id S230174AbjGYKv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:51:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234578AbjGYLZS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:18 -0400
+        with ESMTP id S233771AbjGYKux (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F0C297
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0513D26AF
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ADEFB61691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF6DC433C7;
-        Tue, 25 Jul 2023 11:25:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50CA66166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F764C433C8;
+        Tue, 25 Jul 2023 10:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284316;
-        bh=ncm47kN3BwJFRAHE6jPJSDPvZdoJEvavTY6EptC6jg0=;
+        s=korg; t=1690282235;
+        bh=XL9Urdfo/A7cpSPaDhGWGuuan9jOf8n4fE6u+KEAefo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MwnOQlUKZ7WuCLNeF7hgRqEV4bO/dHvTCgj0hhp15MS5OJk1I4qRmIf+nocgfO4MF
-         g+fPRDRzwUrm89pT0lZCIzv9oVdbdUE2AvcgJ3/2kPgqP6IudrEBiooC5bSOyp1UIW
-         UTGJdeCZ9nhQjHUIkIWsW/CP+HNCre77gjuml8VA=
+        b=AjYX4OI+kNEsAJsRF/I5ZDu4mVYnV0s4ULKajqFBFO/qxaqHbcOjS/EzfHEEu5p4P
+         Zizwhhd1WAHqyBirp7rsmtYaq3gLgHX8mwah4v7zsP3XYYT5QIXrkaNUDNp0qFVzug
+         yJrNfgDNGZgjay9oUpptHJ4xUSN/U/9WZocTxhh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 284/509] mmc: core: disable TRIM on Micron MTFC4GACAJCN-1M
+        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
+        Shengjiu Wang <shengjiu.wang@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 056/227] ASoC: fsl_sai: Disable bit clock with transmitter
 Date:   Tue, 25 Jul 2023 12:43:43 +0200
-Message-ID: <20230725104606.739386473@linuxfoundation.org>
+Message-ID: <20230725104517.089302040@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,44 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robert Marko <robimarko@gmail.com>
+From: Matus Gajdos <matuszpd@gmail.com>
 
-commit dbfbddcddcebc9ce8a08757708d4e4a99d238e44 upstream.
+commit 269f399dc19f0e5c51711c3ba3bd06e0ef6ef403 upstream.
 
-It seems that Micron MTFC4GACAJCN-1M despite advertising TRIM support does
-not work when the core is trying to use REQ_OP_WRITE_ZEROES.
+Otherwise bit clock remains running writing invalid data to the DAC.
 
-We are seeing the following errors in OpenWrt under 6.1 on Qnap Qhora 301W
-that we did not previously have and tracked it down to REQ_OP_WRITE_ZEROES:
-[   18.085950] I/O error, dev loop0, sector 596 op 0x9:(WRITE_ZEROES) flags 0x800 phys_seg 0 prio class 2
-
-Disabling TRIM makes the error go away, so lets add a quirk for this eMMC
-to disable TRIM.
-
-Signed-off-by: Robert Marko <robimarko@gmail.com>
+Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230530213259.1776512-1-robimarko@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20230712124934.32232-1-matuszpd@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/quirks.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/fsl/fsl_sai.c |    2 +-
+ sound/soc/fsl/fsl_sai.h |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -107,6 +107,13 @@ static const struct mmc_fixup __maybe_un
- 		  MMC_QUIRK_TRIM_BROKEN),
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -719,7 +719,7 @@ static void fsl_sai_config_disable(struc
+ 	u32 xcsr, count = 100;
  
- 	/*
-+	 * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
-+	 * support being used to offload WRITE_ZEROES.
-+	 */
-+	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
-+		  MMC_QUIRK_TRIM_BROKEN),
-+
-+	/*
- 	 * Some SD cards reports discard support while they don't
- 	 */
- 	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+-			   FSL_SAI_CSR_TERE, 0);
++			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
+ 
+ 	/* TERE will remain set till the end of current frame */
+ 	do {
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -91,6 +91,7 @@
+ /* SAI Transmit/Receive Control Register */
+ #define FSL_SAI_CSR_TERE	BIT(31)
+ #define FSL_SAI_CSR_SE		BIT(30)
++#define FSL_SAI_CSR_BCE		BIT(28)
+ #define FSL_SAI_CSR_FR		BIT(25)
+ #define FSL_SAI_CSR_SR		BIT(24)
+ #define FSL_SAI_CSR_xF_SHIFT	16
 
 
