@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AD31761776
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951177615F0
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232302AbjGYLso (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54964 "EHLO
+        id S234710AbjGYLes (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:34:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233429AbjGYLsD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:03 -0400
+        with ESMTP id S234701AbjGYLer (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A275F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF62EF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38D33616A9
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A790C433C8;
-        Tue, 25 Jul 2023 11:48:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49C2261655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5697BC433C8;
+        Tue, 25 Jul 2023 11:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285681;
-        bh=m5V4VViDpcT/XNsvqKaxlZt8RzBckQhvVeebGBjQ6bc=;
+        s=korg; t=1690284885;
+        bh=/XQaFhL4r8dNnPLMSDwybwdCqAgX4tU5/TVn/31asX4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EiAwFBG36oJ5xZZaluCwDECqlVAkWka1rRPavESlbk3Dmi2Mmz/RfO9s1VeFN9hBr
-         6I9eQKW4itgvf833j/inEnAwZP/3HQXzmZwr3S74WkftJSW/jxQMqPrTEEqpVmEHeh
-         e3B0I83VfFbptcoEX1CqX/ZF2mDf+mwYGi5JPo78=
+        b=AOlKRAfIUFSOVDGzL48du/o6MGLTwD5a2TVXa9JWB8OQj7H+ZNHVHAAEHTcL5jpw4
+         yOiMCKdumLbspQnL26ZcmxWFXqotlCalQ+v1bxDF+Ef4FU5D21klwxZhPpGwuOj6Rn
+         tkFhbCCYbvbxmJCxBsVV7gnKTjFKFMMLLvcEfqUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 293/313] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 507/509] tracing: Fix memory leak of iter->temp when reading trace_pipe
 Date:   Tue, 25 Jul 2023 12:47:26 +0200
-Message-ID: <20230725104533.803975271@linuxfoundation.org>
+Message-ID: <20230725104616.925151974@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,70 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
+commit d5a821896360cc8b93a15bd888fabc858c038dc0 upstream.
 
--Wstringop-overflow is legitimately warning us about extra_size
-pontentially being zero at some point, hence potenially ending
-up _allocating_ zero bytes of memory for extra pointer and then
-trying to access such object in a call to copy_from_user().
+kmemleak reports:
+  unreferenced object 0xffff88814d14e200 (size 256):
+    comm "cat", pid 336, jiffies 4294871818 (age 779.490s)
+    hex dump (first 32 bytes):
+      04 00 01 03 00 00 00 00 08 00 00 00 00 00 00 00  ................
+      0c d8 c8 9b ff ff ff ff 04 5a ca 9b ff ff ff ff  .........Z......
+    backtrace:
+      [<ffffffff9bdff18f>] __kmalloc+0x4f/0x140
+      [<ffffffff9bc9238b>] trace_find_next_entry+0xbb/0x1d0
+      [<ffffffff9bc9caef>] trace_print_lat_context+0xaf/0x4e0
+      [<ffffffff9bc94490>] print_trace_line+0x3e0/0x950
+      [<ffffffff9bc95499>] tracing_read_pipe+0x2d9/0x5a0
+      [<ffffffff9bf03a43>] vfs_read+0x143/0x520
+      [<ffffffff9bf04c2d>] ksys_read+0xbd/0x160
+      [<ffffffff9d0f0edf>] do_syscall_64+0x3f/0x90
+      [<ffffffff9d2000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Fix this by adding a sanity check to ensure we never end up
-trying to allocate zero bytes of data for extra pointer, before
-continue executing the rest of the code in the function.
+when reading file 'trace_pipe', 'iter->temp' is allocated or relocated
+in trace_find_next_entry() but not freed before 'trace_pipe' is closed.
 
-Address the following -Wstringop-overflow warning seen when built
-m68k architecture with allyesconfig configuration:
-                 from net/wireless/wext-core.c:11:
-In function '_copy_from_user',
-    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
-arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
-   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
-  153 |                 memset(to + (n - res), 0, res);
-      |                 ^~~~~~
-In function 'kmalloc',
-    inlined from 'kzalloc' at include/linux/slab.h:694:9,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
-include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
-  577 |         return __kmalloc(size, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~
+To fix it, free 'iter->temp' in tracing_release_pipe().
 
-This help with the ongoing efforts to globally enable
--Wstringop-overflow.
+Link: https://lore.kernel.org/linux-trace-kernel/20230713141435.1133021-1-zhengyejian1@huawei.com
 
-Link: https://github.com/KSPP/linux/issues/315
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ff895103a84ab ("tracing: Save off entry when peeking at next entry")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[Fix conflict due to lack of 649e72070cbbb8600eb823833e4748f5a0815116]
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/wext-core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/trace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 76a80a41615be..a57f54bc0e1a7 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -796,6 +796,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
- 		}
- 	}
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6250,6 +6250,7 @@ static int tracing_release_pipe(struct i
+ 	mutex_unlock(&trace_types_lock);
  
-+	/* Sanity-check to ensure we never end up _allocating_ zero
-+	 * bytes of data for extra.
-+	 */
-+	if (extra_size <= 0)
-+		return -EFAULT;
-+
- 	/* kzalloc() ensures NULL-termination for essid_compat. */
- 	extra = kzalloc(extra_size, GFP_KERNEL);
- 	if (!extra)
--- 
-2.39.2
-
+ 	free_cpumask_var(iter->started);
++	kfree(iter->temp);
+ 	mutex_destroy(&iter->mutex);
+ 	kfree(iter);
+ 
 
 
