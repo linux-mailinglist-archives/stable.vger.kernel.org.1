@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8DFB7615A1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6920D7616E2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234657AbjGYLbT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:31:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38938 "EHLO
+        id S231572AbjGYLoV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:44:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234648AbjGYLbQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:31:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030F211B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:31:14 -0700 (PDT)
+        with ESMTP id S232954AbjGYLns (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B231FCA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70B0C61691
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:31:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840E7C433C8;
-        Tue, 25 Jul 2023 11:31:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B47C0616A8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7636C433C9;
+        Tue, 25 Jul 2023 11:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284673;
-        bh=DEsM9goeA5erYJmmoCQgktM0pcTvsqb83PwOFVB4Qog=;
+        s=korg; t=1690285418;
+        bh=2qNzO/N6lZfImWv8UCXJZAYJybhSuCEiHeMN08k1+JU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gh2YUInmxb3pi5goTAWTTcQefeZe8lit6tycxDyAZHC67Cqk4tTuXgRHbTDnZtvT0
-         2EQ3BTWs3aRlZIJ3byMVTMYqQWIyF52un7PbRvxnOrboFuQwB2GE6SZHS2RUYngKNh
-         YKtZSOFhiZ+RktIBnFz5lA+gkFKaCF3oM7Wqyq80=
+        b=CyNOetuS2XEN4beAUSqx1g4cMkTMMZoJ0WkjYO+WuUquvXjUnt+z2q2o7s+EiRtOf
+         3AF9/stCnedz+okbih4zbu8B/lxfzA+SvJWGQi6ekao/s+M8hWmiSa65ex5QNVnGqq
+         QrQ28JrOz5NRuKKb/ZNNXAP2RKgIpN08wZSAXLM0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 5.10 412/509] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() in case of error
+        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
+        Sasha Neftin <sasha.neftin@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 198/313] igc: Remove delay during TX ring configuration
 Date:   Tue, 25 Jul 2023 12:45:51 +0200
-Message-ID: <20230725104612.560311377@linuxfoundation.org>
+Message-ID: <20230725104529.580059999@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,40 +58,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
 
-commit a9c09546e903f1068acfa38e1ee18bded7114b37 upstream.
+[ Upstream commit cca28ceac7c7857bc2d313777017585aef00bcc4 ]
 
-If clk_get_rate() fails, the clk that has just been allocated needs to be
-freed.
+Remove unnecessary delay during the TX ring configuration.
+This will cause delay, especially during link down and
+link up activity.
 
-Cc: <stable@vger.kernel.org> # v3.3+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Furthermore, old SKUs like as I225 will call the reset_adapter
+to reset the controller during TSN mode Gate Control List (GCL)
+setting. This will add more time to the configuration of the
+real-time use case.
+
+It doesn't mentioned about this delay in the Software User Manual.
+It might have been ported from legacy code I210 in the past.
+
+Fixes: 13b5b7fd6a4a ("igc: Add support for Tx/Rx rings")
+Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Acked-by: Sasha Neftin <sasha.neftin@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/samsung_tty.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -1313,8 +1313,12 @@ static unsigned int s3c24xx_serial_getcl
- 			continue;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index b8297a63a7fd2..3839ca8bdf6dd 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -610,7 +610,6 @@ static void igc_configure_tx_ring(struct igc_adapter *adapter,
+ 	/* disable the queue */
+ 	wr32(IGC_TXDCTL(reg_idx), 0);
+ 	wrfl();
+-	mdelay(10);
  
- 		rate = clk_get_rate(clk);
--		if (!rate)
-+		if (!rate) {
-+			dev_err(ourport->port.dev,
-+				"Failed to get clock rate for %s.\n", clkname);
-+			clk_put(clk);
- 			continue;
-+		}
- 
- 		if (ourport->info->has_divslot) {
- 			unsigned long div = rate / req_baud;
+ 	wr32(IGC_TDLEN(reg_idx),
+ 	     ring->count * sizeof(union igc_adv_tx_desc));
+-- 
+2.39.2
+
 
 
