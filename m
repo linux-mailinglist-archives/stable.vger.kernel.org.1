@@ -2,292 +2,344 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FF40761D66
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 17:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39D0A761DA4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 17:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232676AbjGYPaX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 11:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53074 "EHLO
+        id S232210AbjGYPvC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 11:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231770AbjGYPaW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 11:30:22 -0400
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EBD1BF6
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 08:30:20 -0700 (PDT)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-3461163c0b6so31737705ab.2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 08:30:20 -0700 (PDT)
+        with ESMTP id S231787AbjGYPvB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 11:51:01 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B474B1FE6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 08:50:59 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6687096c6ddso3263888b3a.0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 08:50:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1690299019; x=1690903819;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xhE9XsD0g4wx9dsqDGPYdjP8oiwA1xffTts0iPPbMaA=;
-        b=hffYucyNVb6seRbWvm88DN0MQEUtnnUOfJ7cFeaeu6oJAP7n/EyIn7PV3SlKi35ocP
-         tuShb7yd4UPwIuPuZiSR3ImMOUuxWI+eIkdUyk4lAVtCn224h5bNa5wSO9gjlsbAcrLK
-         oE5d2JiTKfDZZ2f81SHs76WCFgkbQ4QFMDXqo=
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690300259; x=1690905059;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=gaBvso5o9Y9CJR6kwSHtdjWDlsLKlvXdPz6ZG3/nTos=;
+        b=GQAvVSFJUgeRtuw6pT0XtmchWvmeRJ59GOgyA6NHWR6RdoFOLSx+3QimYWpfgW9kAe
+         0ZeWHXTs+z3pUuRHls+6IKNbOnbnKG8zcWzSzRz6EOdi1ocHQnDxX+prTzJQwOxR/Ste
+         +17a0ur21z1zi9e7GXDh6NFwlmOZ4GEIfPrneDAI0y20hUjhOvsCQW5Awc1cZ9MaM/0u
+         ta16Bi6O2Y8lRRyXIcyP4c2sSVrqEzWBk4/FR6SpKGauyqpmt/RteIsvbdkiO5aqU9FN
+         Aw7HLMsc8yY1Liwao/vgeInIc4qXVaeQUeVZ2E052G/7r8UoF84BuutGXbLwdHp/WWG+
+         X93w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690299019; x=1690903819;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xhE9XsD0g4wx9dsqDGPYdjP8oiwA1xffTts0iPPbMaA=;
-        b=ZH0y5D1+bU5sRnE6IiiRgaR3AT+l65NYkAQxANFaqLoiphwqTEB7q3pGActtHrp9eB
-         4nP07G/0vUgs9Ep7fdAnXtM9cXtnVEwYu6k3GhGNnYYmw40ZaNPHsa11bp50WBtUzktY
-         RRMBn6a12f3qYFWyQg5kUF6PEjMkLJN32572mZ/Qs65nw2RY4DILFtD6WSKMw+KLWJV8
-         GBbsMwSTUWxDbaKyLKWds3OUf/6TAilcBQfIeuhHn9YoF7j201VPndTWKEmjkIdG2/JK
-         5qts+eOGl8WsqkZosUKkmO026aTmiI9/nJ6R9Moy/cd5P/qrL78+BRcntroIO9t+ZXd1
-         qFSA==
-X-Gm-Message-State: ABy/qLYZwd5nlU5vd7MKTzq+pdSizjOR0/nB0YydIk6Rdx4LnOhWHtt7
-        fdU4U/iccGXcrHDO9P9KVmNmgA==
-X-Google-Smtp-Source: APBJJlF980/aWeGYxbmv80Q7LAOlsMhc6nJ1dNtflz0Vn/hhdE73EUikUDV04ieSdRKXVjLgo6V2CQ==
-X-Received: by 2002:a05:6e02:d4c:b0:348:d775:a382 with SMTP id h12-20020a056e020d4c00b00348d775a382mr2972955ilj.28.1690299018593;
-        Tue, 25 Jul 2023 08:30:18 -0700 (PDT)
-Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id y9-20020a92d209000000b00345d10ea524sm3773299ily.65.2023.07.25.08.30.17
+        d=1e100.net; s=20221208; t=1690300259; x=1690905059;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gaBvso5o9Y9CJR6kwSHtdjWDlsLKlvXdPz6ZG3/nTos=;
+        b=euwGOcRwmTiK4V1Qyrsdkx2tUWa44b1gkqReC5MjeaxYJLkDBpMUY6BBWqfzC3wmA6
+         Ru4756+ddfN+GZ6nKU6/GMxpQiddyJigB5m2MyiALOkOtG5UnJ4zwwFS3Tdzat1h3NI7
+         TILE9jDE+vQRGbkhl/KEKWUcd/pqQtbxO9uAJnQQI5Fb0tGDDyjZM0pT8L+wgeotuPx3
+         v3S4WsV1PyRfJ+eJp2OuGlYFvI9xG71Z1l90YL85c+01S5HsVRYGgVgbXxQMtuvq3JZK
+         XhfeeH11hn4OpnuZs+lvtHtle66piexolI7GrC9f43F4ESKsrpVPPJA0I5hvofXz5mZa
+         CgQA==
+X-Gm-Message-State: ABy/qLYCXUZ7wCBaRoQEpLgs9g2o9NNgMihpuMs6aQuKwM0mQypUk7s1
+        YOH/GGsav+/gnZnN6O5q1tTsZRdIUJP4B6WpylR0/Q==
+X-Google-Smtp-Source: APBJJlFTClhzEBuvfrCWhgq+0haPG6p2SJfTvJbSRMlF2B1pB0dBFTsDJZmXddOe8R8LjKHFcD1L7Q==
+X-Received: by 2002:a05:6a20:8410:b0:13a:59b1:c88b with SMTP id c16-20020a056a20841000b0013a59b1c88bmr7628095pzd.45.1690300258564;
+        Tue, 25 Jul 2023 08:50:58 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id 15-20020aa7920f000000b006829b27f252sm10004978pfo.93.2023.07.25.08.50.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 08:30:17 -0700 (PDT)
-Date:   Tue, 25 Jul 2023 15:30:17 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        rcu@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [BUG] Re: Linux 6.4.4
-Message-ID: <20230725153017.GA1191712@google.com>
-References: <4b231ce5-7bb8-4abf-9c40-04aa676d1e45@paulmck-laptop>
- <123C6650-490B-4D08-96B4-39B118AD0054@joelfernandes.org>
- <fa417689-cf91-4687-8308-3ffe6759cf1d@paulmck-laptop>
+        Tue, 25 Jul 2023 08:50:57 -0700 (PDT)
+Message-ID: <64bfef61.a70a0220.2e4b.1d03@mx.google.com>
+Date:   Tue, 25 Jul 2023 08:50:57 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa417689-cf91-4687-8308-3ffe6759cf1d@paulmck-laptop>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Kernel: v4.14.320-148-g4d14b3a1f7602
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 36 warnings (v4.14.320-148-g4d14b3a1f7602)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 04:17:32PM -0700, Paul E. McKenney wrote:
-> On Mon, Jul 24, 2023 at 07:04:14PM -0400, Joel Fernandes wrote:
-> > 
-> > 
-> > > On Jul 24, 2023, at 12:00 PM, Paul E. McKenney <paulmck@kernel.org> wrote:
-> > > 
-> > > ﻿On Mon, Jul 24, 2023 at 09:36:02AM -0400, Joel Fernandes wrote:
-> > >>> On Sun, Jul 23, 2023 at 11:35 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> > >>> 
-> > >>> On Mon, Jul 24, 2023 at 12:32:57AM +0000, Joel Fernandes wrote:
-> > >>>> On Sun, Jul 23, 2023 at 10:19:27AM -0700, Paul E. McKenney wrote:
-> > >>>>> On Sun, Jul 23, 2023 at 10:50:26AM -0400, Joel Fernandes wrote:
-> > >>>>>> 
-> > >>>>>> 
-> > >>>>>> On 7/22/23 13:27, Paul E. McKenney wrote:
-> > >>>>>> [..]
-> > >>>>>>> 
-> > >>>>>>> OK, if this kernel is non-preemptible, you are not running TREE03,
-> > >>>>>>> correct?
-> > >>>>>>> 
-> > >>>>>>>> Next plan of action is to get sched_waking stack traces since I have a
-> > >>>>>>>> very reliable repro of this now.
-> > >>>>>>> 
-> > >>>>>>> Too much fun!  ;-)
-> > >>>>>> 
-> > >>>>>> For TREE07 issue, it is actually the schedule_timeout_interruptible(1)
-> > >>>>>> in stutter_wait() that is beating up the CPU0 for 4 seconds.
-> > >>>>>> 
-> > >>>>>> This is very similar to the issue I fixed in New year in d52d3a2bf408
-> > >>>>>> ("torture: Fix hang during kthread shutdown phase")
-> > >>>>> 
-> > >>>>> Agreed, if there are enough kthreads, and all the kthreads are on a
-> > >>>>> single CPU, this could consume that CPU.
-> > >>>>> 
-> > >>>>>> Adding a cond_resched() there also did not help.
-> > >>>>>> 
-> > >>>>>> I think the issue is the stutter thread fails to move spt forward
-> > >>>>>> because it does not get CPU time. But spt == 1 should be very brief
-> > >>>>>> AFAIU. I was wondering if we could set that to RT.
-> > >>>>> 
-> > >>>>> Or just use a single hrtimer-based wait for each kthread?
-> > >>>> 
-> > >>>> [Joel]
-> > >>>> Yes this might be better, but there's still the issue that spt may not be set
-> > >>>> back to 0 in some future release where the thread gets starved.
-> > >>> 
-> > >>> But if each thread knows the absolute time at which the current stutter
-> > >>> period is supposed to end, there should not be any need for the spt
-> > >>> variable, correct?
-> > >> 
-> > >> Yes.
-> > >> 
-> > >>>>>> But also maybe the following will cure it like it did for the shutdown
-> > >>>>>> issue, giving the stutter thread just enough CPU time to move spt forward.
-> > >>>>>> 
-> > >>>>>> Now I am trying the following and will let it run while I go do other
-> > >>>>>> family related things. ;)
-> > >>>>> 
-> > >>>>> Good point, if this avoids the problem, that gives a strong indication
-> > >>>>> that your hypothesis on the root cause is correct.
-> > >>>> 
-> > >>>> [Joel]
-> > >>>> And the TREE07 issue is gone with that change!
-> > >> [...]
-> > >>>> Let me know what you think, thanks!
-> > >>> 
-> > >>> If we can make the stutter kthread set an absolute time for the current
-> > >>> stutter period to end, then we should be able to simplify the code quite
-> > >>> a bit and get rid of the CPU consumption entirely.  (Give or take the
-> > >>> possible need for a given thread to check whether it was erroneously
-> > >>> awakened early.)
-> > >>> 
-> > >>> But what specifically did you have in mind?
-> > >> 
-> > >> I was thinking of a 2 counter approach storing the absolute time. Use
-> > >> an alternative counter for different stuttering sessions. But yes,
-> > >> generally I agree with the absolute time idea. What do you think Paul?
-> > >> 
-> > >> Do we want to just do  the simpler schedule_timeout at HZ / 20 to keep stable
-> > >> green, and do the absolute-time approach for mainline? That might be better
-> > >> from a process PoV. But I think stable requires patches to be upstream. Greg?
-> > >> 
-> > >> I will try to send out patches this week to discuss this, thanks,
-> > > 
-> > > Heh!!!
-> > > 
-> > > Me, I was just thinking of mainline.  ;-)
-> > 
-> > Turns out it is simple enough for both mainline and stable :-).
-> > Will test more and send it out soon.
-> 
-> Woo-hoo!!!  Some times you get lucky!
+stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 36 warnings (=
+v4.14.320-148-g4d14b3a1f7602)
 
-Better luck today than yesterday since yesterday a Linux distro update
-stalled my development. :-). Thanks to backups that I got back up quickly..
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.320-148-g4d14b3a1f7602/
 
-Here is the mostly tested patch as preview. I am running the full suite now
-after confirming it fixed TREE07. Looks OK? (I also confirmed with prints
-that stuttering timing is the same as before).
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.320-148-g4d14b3a1f7602
+Git Commit: 4d14b3a1f760251272f7a9165b287fab894b4ed5
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
----8<-----------------------
+Warnings Detected:
 
-From: Joel Fernandes <joelaf@google.com>
-Subject: [PATCH] rcutorture: Fix stuttering races and other issues
+arc:
 
-The stuttering code isn't functioning as expected. Ideally, it should
-pause the torture threads for a designated period before resuming. Yet,
-it fails to halt the test for the correct duration. Additionally, a race
-condition exists, potentially causing the stuttering code to pause for
-an extended period if the 'spt' variable is non-zero due to the stutter
-orchestration thread's inadequate CPU time.
+arm64:
+    defconfig (gcc-10): 1 warning
+    defconfig+arm64-chromebook (gcc-10): 1 warning
 
-Moreover, over-stuttering can hinder RCU's progress on TREE07 kernels.
-This happens as the stuttering code may run within a softirq due to RCU
-callbacks. Consequently, ksoftirqd keeps a CPU busy for several seconds,
-thus obstructing RCU's progress. This situation triggers a warning
-message in the logs:
+arm:
+    imx_v6_v7_defconfig (gcc-10): 1 warning
+    multi_v5_defconfig (gcc-10): 1 warning
+    multi_v7_defconfig (gcc-10): 1 warning
+    omap2plus_defconfig (gcc-10): 1 warning
+    vexpress_defconfig (gcc-10): 1 warning
 
-[ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 3 warnings
 
-This warning suggests that an RCU torture object, although invisible to
-RCU readers, couldn't make it past the pipe array and be freed -- a
-strong indication that there weren't enough grace periods during the
-stutter interval.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-To address these issues, this patch sets the "stutter end" time to an
-absolute point in the future set by the main stutter thread. This is
-then used for waiting in stutter_wait(). While the stutter thread still
-defines this absolute time, the waiters' waiting logic doesn't rely on
-the stutter thread receiving sufficient CPU time to halt the stuttering
-as the halting is now self-controlled.
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 6 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 6 warnings
 
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+
+Warnings summary:
+
+    11   fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=
+=99 from =E2=80=98struct super_block *=E2=80=99 makes integer from pointer =
+without a cast [-Wint-conversion]
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+    2    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.c=
+onstprop.0()+0x73: return with modified stack frame
+    2    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.c=
+onstprop.0()+0x0: stack state mismatch: cfa1=3D7+104 cfa2=3D7+8
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
+ing, 0 section mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 6 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
+rop.0()+0x73: return with modified stack frame
+    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
+rop.0()+0x0: stack state mismatch: cfa1=3D7+104 cfa2=3D7+8
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+6 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    fs/ext4/ioctl.c:523:7: warning: assignment to =E2=80=98int=E2=80=99 fro=
+m =E2=80=98struct super_block *=E2=80=99 makes integer from pointer without=
+ a cast [-Wint-conversion]
+    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
+rop.0()+0x73: return with modified stack frame
+    drivers/gpu/drm/drm_edid.o: warning: objtool: validate_displayid.constp=
+rop.0()+0x0: stack state mismatch: cfa1=3D7+104 cfa2=3D7+8
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- kernel/torture.c | 46 +++++++++++++---------------------------------
- 1 file changed, 13 insertions(+), 33 deletions(-)
-
-diff --git a/kernel/torture.c b/kernel/torture.c
-index 68dba4ecab5c..63f8f2a7d960 100644
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -719,7 +719,7 @@ static void torture_shutdown_cleanup(void)
-  * suddenly applied to or removed from the system.
-  */
- static struct task_struct *stutter_task;
--static int stutter_pause_test;
-+static ktime_t stutter_till_abs_time;
- static int stutter;
- static int stutter_gap;
- 
-@@ -729,30 +729,17 @@ static int stutter_gap;
-  */
- bool stutter_wait(const char *title)
- {
--	unsigned int i = 0;
- 	bool ret = false;
--	int spt;
-+	ktime_t now_ns, till_ns;
- 
- 	cond_resched_tasks_rcu_qs();
--	spt = READ_ONCE(stutter_pause_test);
--	for (; spt; spt = READ_ONCE(stutter_pause_test)) {
--		if (!ret && !rt_task(current)) {
--			sched_set_normal(current, MAX_NICE);
--			ret = true;
--		}
--		if (spt == 1) {
--			torture_hrtimeout_jiffies(1, NULL);
--		} else if (spt == 2) {
--			while (READ_ONCE(stutter_pause_test)) {
--				if (!(i++ & 0xffff))
--					torture_hrtimeout_us(10, 0, NULL);
--				cond_resched();
--			}
--		} else {
--			torture_hrtimeout_jiffies(round_jiffies_relative(HZ), NULL);
--		}
--		torture_shutdown_absorb(title);
-+	now_ns = ktime_get();
-+	till_ns = READ_ONCE(stutter_till_abs_time);
-+	if (till_ns && ktime_before(now_ns, till_ns)) {
-+		torture_hrtimeout_ns(ktime_sub(till_ns, now_ns), 0, NULL);
-+		ret = true;
- 	}
-+	torture_shutdown_absorb(title);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(stutter_wait);
-@@ -763,23 +750,16 @@ EXPORT_SYMBOL_GPL(stutter_wait);
-  */
- static int torture_stutter(void *arg)
- {
--	DEFINE_TORTURE_RANDOM(rand);
--	int wtime;
-+	ktime_t till_ns;
- 
- 	VERBOSE_TOROUT_STRING("torture_stutter task started");
- 	do {
- 		if (!torture_must_stop() && stutter > 1) {
--			wtime = stutter;
--			if (stutter > 2) {
--				WRITE_ONCE(stutter_pause_test, 1);
--				wtime = stutter - 3;
--				torture_hrtimeout_jiffies(wtime, &rand);
--				wtime = 2;
--			}
--			WRITE_ONCE(stutter_pause_test, 2);
--			torture_hrtimeout_jiffies(wtime, NULL);
-+			till_ns = ktime_add_ns(ktime_get(),
-+					       jiffies_to_nsecs(stutter));
-+			WRITE_ONCE(stutter_till_abs_time, till_ns);
-+			torture_hrtimeout_jiffies(stutter - 1, NULL);
- 		}
--		WRITE_ONCE(stutter_pause_test, 0);
- 		if (!torture_must_stop())
- 			torture_hrtimeout_jiffies(stutter_gap, NULL);
- 		torture_shutdown_absorb("torture_stutter");
--- 
-2.41.0.487.g6d72f3e995-goog
-
+For more info write to <info@kernelci.org>
