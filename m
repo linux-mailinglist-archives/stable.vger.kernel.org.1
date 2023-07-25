@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAAD67615F5
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 014097614A3
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:21:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234715AbjGYLe7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41992 "EHLO
+        id S234416AbjGYLVR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:21:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234713AbjGYLe6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:58 -0400
+        with ESMTP id S234415AbjGYLVQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:21:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AF6F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A28B6
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:21:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58B8661654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607C4C433C7;
-        Tue, 25 Jul 2023 11:34:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6DAA6167D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:21:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72D8C433C8;
+        Tue, 25 Jul 2023 11:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284896;
-        bh=XLzMb0wM1Y2u1E7kcyTO4T+7L8efK7+kIQXf6jdqsMQ=;
+        s=korg; t=1690284074;
+        bh=QI5qMOurc9gYaqovOLPCtbjWe1yRZiSoHClNmCcwJvQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q8mZqNua1fFblg5KxvyvpUZSdOWquWMdIDg+moJC3uw8GmXUg+MgwtyO1lmSMW5RE
-         Ffos+if7YH7ZCX8zHnG9wc5HmhoaWhsGf7DzHJWvdnwOwmHKpEGt95VHHAZWgFUMmq
-         T0l8mhK4T8EeXdsb4xQk9lmOm45bOTHChbmg4CH0=
+        b=Q2PjSbIos3uUc6kaOCa1K8ff7E4z/lO3kExR+5yKT+lV149Tp9Mbu0BL4EuzE7NA3
+         mAuo6pM35rMceCiY+7q23qy0s4R/3MUM/FDnTFDOxgov0Q/nxQGfR6EIBw3rbizeqd
+         oX3u35L0jBP2810K5CogUCh7qeqCiAuJbY4Q2I1A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shawn Wang <shawnwang@linux.alibaba.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
+        patches@lists.linux.dev,
+        Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 011/313] x86/resctrl: Only show tasks pid in current pid namespace
-Date:   Tue, 25 Jul 2023 12:42:44 +0200
-Message-ID: <20230725104521.665175970@linuxfoundation.org>
+Subject: [PATCH 5.10 226/509] clk: qcom: reset: Allow specifying custom reset delay
+Date:   Tue, 25 Jul 2023 12:42:45 +0200
+Message-ID: <20230725104604.119547418@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,53 +56,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shawn Wang <shawnwang@linux.alibaba.com>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit 2997d94b5dd0e8b10076f5e0b6f18410c73e28bd ]
+[ Upstream commit 2cb8a39b6781ea23accd1fa93b3ad000d0948aec ]
 
-When writing a task id to the "tasks" file in an rdtgroup,
-rdtgroup_tasks_write() treats the pid as a number in the current pid
-namespace. But when reading the "tasks" file, rdtgroup_tasks_show() shows
-the list of global pids from the init namespace, which is confusing and
-incorrect.
+The amount of time required between asserting and deasserting the reset
+signal can vary depending on the involved hardware component. Sometimes
+1 us might not be enough and a larger delay is necessary to conform to
+the specifications.
 
-To be more robust, let the "tasks" file only show pids in the current pid
-namespace.
+Usually this is worked around in the consuming drivers, by replacing
+reset_control_reset() with a sequence of reset_control_assert(), waiting
+for a custom delay, followed by reset_control_deassert().
 
-Fixes: e02737d5b826 ("x86/intel_rdt: Add tasks files")
-Signed-off-by: Shawn Wang <shawnwang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Acked-by: Fenghua Yu <fenghua.yu@intel.com>
-Tested-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lore.kernel.org/all/20230116071246.97717-1-shawnwang@linux.alibaba.com/
+However, in some cases the driver making use of the reset is generic and
+can be used with different reset controllers. In this case the reset
+time requirement is better handled directly by the reset controller
+driver.
+
+Make this possible by adding an "udelay" field to the qcom_reset_map
+that allows setting a different reset delay (in microseconds).
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20220706134132.3623415-4-stephan.gerhold@kernkonzept.com
+Stable-dep-of: 349b5bed539b ("clk: qcom: ipq6018: fix networking resets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/reset.c | 4 +++-
+ drivers/clk/qcom/reset.h | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 9de55fd77937c..91016bb18d4f9 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -715,11 +715,15 @@ static ssize_t rdtgroup_tasks_write(struct kernfs_open_file *of,
- static void show_rdt_tasks(struct rdtgroup *r, struct seq_file *s)
- {
- 	struct task_struct *p, *t;
-+	pid_t pid;
+diff --git a/drivers/clk/qcom/reset.c b/drivers/clk/qcom/reset.c
+index 819d194be8f7b..2a16adb572d2b 100644
+--- a/drivers/clk/qcom/reset.c
++++ b/drivers/clk/qcom/reset.c
+@@ -13,8 +13,10 @@
  
- 	rcu_read_lock();
- 	for_each_process_thread(p, t) {
--		if (is_closid_match(t, r) || is_rmid_match(t, r))
--			seq_printf(s, "%d\n", t->pid);
-+		if (is_closid_match(t, r) || is_rmid_match(t, r)) {
-+			pid = task_pid_vnr(t);
-+			if (pid)
-+				seq_printf(s, "%d\n", pid);
-+		}
- 	}
- 	rcu_read_unlock();
+ static int qcom_reset(struct reset_controller_dev *rcdev, unsigned long id)
+ {
++	struct qcom_reset_controller *rst = to_qcom_reset_controller(rcdev);
++
+ 	rcdev->ops->assert(rcdev, id);
+-	udelay(1);
++	udelay(rst->reset_map[id].udelay ?: 1); /* use 1 us as default */
+ 	rcdev->ops->deassert(rcdev, id);
+ 	return 0;
  }
+diff --git a/drivers/clk/qcom/reset.h b/drivers/clk/qcom/reset.h
+index 2a08b5e282c77..b8c113582072b 100644
+--- a/drivers/clk/qcom/reset.h
++++ b/drivers/clk/qcom/reset.h
+@@ -11,6 +11,7 @@
+ struct qcom_reset_map {
+ 	unsigned int reg;
+ 	u8 bit;
++	u8 udelay;
+ };
+ 
+ struct regmap;
 -- 
 2.39.2
 
