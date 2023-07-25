@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A45F5761702
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48DB7611FB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235029AbjGYLnz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:43:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51558 "EHLO
+        id S232383AbjGYK6g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:58:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235340AbjGYLnX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:23 -0400
+        with ESMTP id S233753AbjGYK56 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CEEF199C
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E510246A0
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C715E616B1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:42:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D118FC433C8;
-        Tue, 25 Jul 2023 11:42:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73C5961602
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E70C433C8;
+        Tue, 25 Jul 2023 10:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285328;
-        bh=4iBhBua5VTcaQUPnhSJNVAhz8Pu/fhaFC56ICZbraHY=;
+        s=korg; t=1690282504;
+        bh=rCB54jxJ+ubOFQuZcXRM95cHTBcbiF/yIxDrQALb38M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=stmpWBuFE/MIeujmAVOTh/WaMPAY90+5KlfL6Wkq8dINh5/1H+ahVAeYe6m8WrrKe
-         UhPrVcdBst4afLs4MIa6tIScNFCfJMHIh1VAOqGPiLvxaeYPhx1ZbvJhpmDxh/v1Rc
-         is990Vhk5QDZx42OLgmtwTSrWXrs4TzZCll1QKxw=
+        b=GALtYA43VdDWllpy5sn1ZUO1ciMVVfh/xlxyDcbwDW4ZsNjYdTyiDY+M/3BK/PLrJ
+         OhtPdKq0/dB8NrqhpY9dalIJpYUIEhncqxQVft0OSuZ9E1xy7Pmu3HhKV/f2GyH3Rd
+         b1T2Q2Mam/Z8UwQTbGg75bnrULaqp12tTklswswY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Coly Li <colyli@suse.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 166/313] bcache: Remove unnecessary NULL point check in node allocations
-Date:   Tue, 25 Jul 2023 12:45:19 +0200
-Message-ID: <20230725104528.114859134@linuxfoundation.org>
+        patches@lists.linux.dev, Tanmay Patil <t-patil@ti.com>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 153/227] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
+Date:   Tue, 25 Jul 2023 12:45:20 +0200
+Message-ID: <20230725104521.252382653@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,92 +56,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Tanmay Patil <t-patil@ti.com>
 
-commit 028ddcac477b691dd9205c92f991cc15259d033e upstream.
+[ Upstream commit b685f1a58956fa36cc01123f253351b25bfacfda ]
 
-Due to the previous fix of __bch_btree_node_alloc, the return value will
-never be a NULL pointer. So IS_ERR is enough to handle the failure
-situation. Fix it by replacing IS_ERR_OR_NULL check by an IS_ERR check.
+CPSW ALE has 75 bit ALE entries which are stored within three 32 bit words.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions assume that the
+field will be strictly contained within one word. However, this is not
+guaranteed to be the case and it is possible for ALE field entries to span
+across up to two words at the most.
 
-Fixes: cafe56359144 ("bcache: A block layer cache")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20230615121223.22502-5-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the methods to handle getting/setting fields spanning up to two words.
+
+Fixes: db82173f23c5 ("netdev: driver: ethernet: add cpsw address lookup engine support")
+Signed-off-by: Tanmay Patil <t-patil@ti.com>
+[s-vadapalli@ti.com: rephrased commit message and added Fixes tag]
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/btree.c |   10 +++++-----
- drivers/md/bcache/super.c |    4 ++--
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1186,7 +1186,7 @@ static struct btree *btree_node_alloc_re
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 0c5e783e574c4..64bf22cd860c9 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -106,23 +106,37 @@ struct cpsw_ale_dev_id {
+ 
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
  {
- 	struct btree *n = bch_btree_node_alloc(b->c, op, b->level, b->parent);
+-	int idx;
++	int idx, idx2;
++	u32 hi_val = 0;
  
--	if (!IS_ERR_OR_NULL(n)) {
-+	if (!IS_ERR(n)) {
- 		mutex_lock(&n->write_lock);
- 		bch_btree_sort_into(&b->keys, &n->keys, &b->c->sort);
- 		bkey_copy_key(&n->key, &b->key);
-@@ -1389,7 +1389,7 @@ static int btree_gc_coalesce(struct btre
- 	memset(new_nodes, 0, sizeof(new_nodes));
- 	closure_init_stack(&cl);
+ 	idx    = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be fetched exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
++	}
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+-	return (ale_entry[idx] >> start) & BITMASK(bits);
++	return (hi_val + (ale_entry[idx] >> start)) & BITMASK(bits);
+ }
  
--	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
-+	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
- 		keys += r[nodes++].keys;
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx;
++	int idx, idx2;
  
- 	blocks = btree_default_blocks(b->c) * 2 / 3;
-@@ -1401,7 +1401,7 @@ static int btree_gc_coalesce(struct btre
- 
- 	for (i = 0; i < nodes; i++) {
- 		new_nodes[i] = btree_node_alloc_replacement(r[i].b, NULL);
--		if (IS_ERR_OR_NULL(new_nodes[i]))
-+		if (IS_ERR(new_nodes[i]))
- 			goto out_nocoalesce;
- 	}
- 
-@@ -1536,7 +1536,7 @@ out_nocoalesce:
- 	bch_keylist_free(&keylist);
- 
- 	for (i = 0; i < nodes; i++)
--		if (!IS_ERR_OR_NULL(new_nodes[i])) {
-+		if (!IS_ERR(new_nodes[i])) {
- 			btree_node_free(new_nodes[i]);
- 			rw_unlock(true, new_nodes[i]);
- 		}
-@@ -1718,7 +1718,7 @@ static int bch_btree_gc_root(struct btre
- 	if (should_rewrite) {
- 		n = btree_node_alloc_replacement(b, NULL);
- 
--		if (!IS_ERR_OR_NULL(n)) {
-+		if (!IS_ERR(n)) {
- 			bch_btree_node_write_sync(n);
- 
- 			bch_btree_set_root(n);
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1633,7 +1633,7 @@ static void cache_set_flush(struct closu
- 	if (!IS_ERR_OR_NULL(c->gc_thread))
- 		kthread_stop(c->gc_thread);
- 
--	if (!IS_ERR_OR_NULL(c->root))
-+	if (!IS_ERR(c->root))
- 		list_add(&c->root->list, &c->btree_cache);
- 
- 	/*
-@@ -2000,7 +2000,7 @@ static int run_cache_set(struct cache_se
- 
- 		err = "cannot allocate new btree root";
- 		c->root = __bch_btree_node_alloc(c, NULL, 0, true, NULL);
--		if (IS_ERR_OR_NULL(c->root))
-+		if (IS_ERR(c->root))
- 			goto err;
- 
- 		mutex_lock(&c->root->write_lock);
+ 	value &= BITMASK(bits);
+-	idx    = start / 32;
++	idx = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be set exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++	}
+ 	start -= idx * 32;
+-	idx    = 2 - idx; /* flip */
++	idx = 2 - idx; /* flip */
+ 	ale_entry[idx] &= ~(BITMASK(bits) << start);
+ 	ale_entry[idx] |=  (value << start);
+ }
+-- 
+2.39.2
+
 
 
