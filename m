@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B2DC761729
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CC9576133A
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231330AbjGYLpe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53416 "EHLO
+        id S234010AbjGYLJA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbjGYLpd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:45:33 -0400
+        with ESMTP id S233979AbjGYLIq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D52A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:45:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40E2D1FF3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56479616A3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647B0C433C8;
-        Tue, 25 Jul 2023 11:45:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D2D4A6166F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE5EC433C8;
+        Tue, 25 Jul 2023 11:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285531;
-        bh=Ts5CTHouB7nMG/VBtow7XPerY1s7TERH2nhdJdwbnBg=;
+        s=korg; t=1690283239;
+        bh=sgiXb5rYqzt7/yH49o/1J+SEM7p0rmUfJ5BbMBXIZzg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TQozVrijDNff0nLEVw3TTDITTfoU4gGRvba1mk/tiWBoqRuaN8U7u2xvwwnVRGAvQ
-         F5ivuxm+ntZyORkMorEBSIi6jZAN5a0Mug8zHZWpnoqZYybw77wZsDuP2tJoAXpMVr
-         Dwc3Onb2PMplA5On5MLgT1WF2BtpsgyASUc59hZk=
+        b=a+c1gDJPkv9cYaJ/8+3gBMZrs7BkPthUPelwJmPa6+Sw8H+kcoWZ1SOtMcumQmIiS
+         aWITbbRgs5ciu76+0JnIgPVvdsHqWOFODKGGZ2hGn4vVZi3gKlFI6l9kqB+x5c/cJF
+         ZVqx4YJE/LS1zbC57aSE+G+ReTzwSOzab2xb5zJs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Chao Yu <chao@kernel.org>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 238/313] ext4: fix to check return value of freeze_bdev() in ext4_shutdown()
+        patches@lists.linux.dev,
+        "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 163/183] net: phy: prevent stale pointer dereference in phy_init()
 Date:   Tue, 25 Jul 2023 12:46:31 +0200
-Message-ID: <20230725104531.352489233@linuxfoundation.org>
+Message-ID: <20230725104513.669513303@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +57,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit c4d13222afd8a64bf11bc7ec68645496ee8b54b9 upstream.
+[ Upstream commit 1c613beaf877c0c0d755853dc62687e2013e55c4 ]
 
-freeze_bdev() can fail due to a lot of reasons, it needs to check its
-reason before later process.
+mdio_bus_init() and phy_driver_register() both have error paths, and if
+those are ever hit, ethtool will have a stale pointer to the
+phy_ethtool_phy_ops stub structure, which references memory from a
+module that failed to load (phylib).
 
-Fixes: 783d94854499 ("ext4: add EXT4_IOC_GOINGDOWN ioctl")
-Cc: stable@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20230606073203.1310389-1-chao@kernel.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It is probably hard to force an error in this code path even manually,
+but the error teardown path of phy_init() should be the same as
+phy_exit(), which is now simply not the case.
+
+Fixes: 55d8f053ce1b ("net: phy: Register ethtool PHY operations")
+Link: https://lore.kernel.org/netdev/ZLaiJ4G6TaJYGJyU@shell.armlinux.org.uk/
+Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20230720000231.1939689-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ioctl.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/fs/ext4/ioctl.c
-+++ b/fs/ext4/ioctl.c
-@@ -573,6 +573,7 @@ static int ext4_shutdown(struct super_bl
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 7fbb0904b3c0f..82f74f96eba29 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3252,23 +3252,30 @@ static int __init phy_init(void)
  {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	__u32 flags;
-+	int ret;
+ 	int rc;
  
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -591,7 +592,9 @@ static int ext4_shutdown(struct super_bl
++	ethtool_set_ethtool_phy_ops(&phy_ethtool_phy_ops);
++
+ 	rc = mdio_bus_init();
+ 	if (rc)
+-		return rc;
++		goto err_ethtool_phy_ops;
  
- 	switch (flags) {
- 	case EXT4_GOING_FLAGS_DEFAULT:
--		freeze_bdev(sb->s_bdev);
-+		ret = freeze_bdev(sb->s_bdev);
-+		if (ret)
-+			return ret;
- 		set_bit(EXT4_FLAGS_SHUTDOWN, &sbi->s_ext4_flags);
- 		thaw_bdev(sb->s_bdev, sb);
- 		break;
+-	ethtool_set_ethtool_phy_ops(&phy_ethtool_phy_ops);
+ 	features_init();
+ 
+ 	rc = phy_driver_register(&genphy_c45_driver, THIS_MODULE);
+ 	if (rc)
+-		goto err_c45;
++		goto err_mdio_bus;
+ 
+ 	rc = phy_driver_register(&genphy_driver, THIS_MODULE);
+-	if (rc) {
+-		phy_driver_unregister(&genphy_c45_driver);
++	if (rc)
++		goto err_c45;
++
++	return 0;
++
+ err_c45:
+-		mdio_bus_exit();
+-	}
++	phy_driver_unregister(&genphy_c45_driver);
++err_mdio_bus:
++	mdio_bus_exit();
++err_ethtool_phy_ops:
++	ethtool_set_ethtool_phy_ops(NULL);
+ 
+ 	return rc;
+ }
+-- 
+2.39.2
+
 
 
