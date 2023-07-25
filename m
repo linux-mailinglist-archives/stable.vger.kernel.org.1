@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05743761589
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D45B7761259
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234510AbjGYLaL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38216 "EHLO
+        id S233843AbjGYLBV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjGYLaJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:09 -0400
+        with ESMTP id S233409AbjGYLBD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11680F2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193664696
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3CBA61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E201C433C9;
-        Tue, 25 Jul 2023 11:30:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BD2361689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC87C433C7;
+        Tue, 25 Jul 2023 10:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284607;
-        bh=uHjJDVnXuPXzUGaFpRPD2RjDaLhzCd7Z9ZebcGvk7FY=;
+        s=korg; t=1690282714;
+        bh=DFaPSBA1ZA/iANkpPfRHuTJyemHtiQDdjfjyzIkuzp8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZmQlQzgazzp1jkndmZnx1PDLiV8mDZFy2HULbGG6S5/3da37Lhw5H5ePXS9aEro3N
-         XPZZ3tMft64GjdRgN5m8SdpN7WPVndG53mqaQMGWWQAWMa3hP5lIBFDw3lNzHST0qK
-         nvNraUnkt3FKjC1aseGBrh6g3ERP8fUfkf6PkvNY=
+        b=iKqiUumAk7Zly+1a2DqOXPBXsMqEXGdftHwreaFU+J8g46fGWZxsEOYMxDVI/Li4S
+         ZTATcoS9kA05fSFuyec6MLu8c+ivtLGHDX+65M5y1o3Pbk1StNXsaJ8q5BKVVS1KNH
+         mxDjgucdkOj+FcCH6F3nCI3heF/uMNQyLG6zEPn0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.10 417/509] xhci: Fix TRB prefetch issue of ZHAOXIN hosts
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 189/227] net:ipv6: check return value of pskb_trim()
 Date:   Tue, 25 Jul 2023 12:45:56 +0200
-Message-ID: <20230725104612.784102284@linuxfoundation.org>
+Message-ID: <20230725104522.625529304@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,71 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-commit 2a865a652299f5666f3b785cbe758c5f57453036 upstream.
+[ Upstream commit 4258faa130be4ea43e5e2d839467da421b8ff274 ]
 
-On some ZHAOXIN hosts, xHCI will prefetch TRB for performance
-improvement. However this TRB prefetch mechanism may cross page boundary,
-which may access memory not allocated by xHCI driver. In order to fix
-this issue, two pages was allocated for a segment and only the first
-page will be used. And add a quirk XHCI_ZHAOXIN_TRB_FETCH for this issue.
+goto tx_err if an unexpected result is returned by pskb_tirm()
+in ip6erspan_tunnel_xmit().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Message-ID: <20230602144009.1225632-10-mathias.nyman@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c |    8 ++++++--
- drivers/usb/host/xhci-pci.c |    7 ++++++-
- drivers/usb/host/xhci.h     |    1 +
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ net/ipv6/ip6_gre.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2472,8 +2472,12 @@ int xhci_mem_init(struct xhci_hcd *xhci,
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
--			TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
-+	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
-+				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
-+	else
-+		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
-+				TRB_SEGMENT_SIZE, TRB_SEGMENT_SIZE, xhci->page_size);
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index da80974ad23ae..070d87abf7c02 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -955,7 +955,8 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 		goto tx_err;
  
- 	/* See Table 46 and Note on Figure 55 */
- 	xhci->device_pool = dma_pool_create("xHCI input/output contexts", dev,
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -331,8 +331,13 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
--		if (pdev->device == 0x9202)
-+		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
-+			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+		}
-+
-+		if (pdev->device == 0x9203)
-+			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
+ 	if (skb->len > dev->mtu + dev->hard_header_len) {
+-		pskb_trim(skb, dev->mtu + dev->hard_header_len);
++		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
++			goto tx_err;
+ 		truncate = true;
  	}
  
- 	/* xHC spec requires PCI devices to support D3hot and D3cold */
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1895,6 +1895,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
-+#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
+-- 
+2.39.2
+
 
 
