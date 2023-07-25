@@ -2,81 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB0976179B
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8047617BA
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:54:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232549AbjGYLuj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:50:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57106 "EHLO
+        id S229896AbjGYLx7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:53:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233225AbjGYLuI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:50:08 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EBB21FFF;
-        Tue, 25 Jul 2023 04:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690285776; x=1690890576; i=rwarsow@gmx.de;
- bh=NpgYHY92yhV2ghhqvnhRZPVQ8bxQDuTD6hTJWP8TYdc=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=gE+y/NKTe3o5dRCCb8hq6xVu32ZaPoXV7eFJqtuHDDFfWXjpyluFI6glF3ZqK8sak52Qmuk
- 4Y3dW9HT39Z+rhTM0pKrP9VYySBa30A6mPXveONOs1dDwlJNP72mwLnouQtkevuPMZ5dYYnPM
- WHZCT+DGtdCZmS064aKjhQLAU5PXzwyc5w1tmR7DZm//Har1EQBX6SkE937Xy/ZoRP6Jfgux4
- ZePc3u3Eis+1SlLmBU7q1rCma6vy4vrGoXYFZiPPH4Pqi6wrkn9PfFBBTcFnkxfYUIVjvWU44
- htxRokk8KO8A6PD8/lV08utRS5GRtiYsZaOCIID1/DVmvPNnPe/A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.33.156]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MhlKs-1pkVsl3Zjs-00dnR9; Tue, 25
- Jul 2023 13:49:35 +0200
-Message-ID: <c2f6b497-873c-cd0d-ea36-4d8c6ebe4f39@gmx.de>
-Date:   Tue, 25 Jul 2023 13:49:35 +0200
+        with ESMTP id S233718AbjGYLxP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:53:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D111FDB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690285936;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1d9XrWUr6h5ZZ3eMEqmHNPzG0+CAi7370MvRNAuFWgE=;
+        b=Y6UtDEciGowGnKanh5GG49gaexJQ2tVjy4qwNqkxYr0zmfD0VSyBZjsqw5mCL4idNBC2VQ
+        xoiPdy3hmp4b7A7xpWz2pdF1FG12SgH3VtGnDKdT153E5/Gl22fGeHCOYrxIIovptzVlD0
+        03wDl7/W8dOkYP+3OEtpCJW4PzotFMo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-168-lkzulrT4Neqqj6QYDIcBRw-1; Tue, 25 Jul 2023 07:52:15 -0400
+X-MC-Unique: lkzulrT4Neqqj6QYDIcBRw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 27707856506;
+        Tue, 25 Jul 2023 11:52:15 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.193.157])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 259D710E5E;
+        Tue, 25 Jul 2023 11:52:14 +0000 (UTC)
+From:   Jocelyn Falempe <jfalempe@redhat.com>
+To:     stable@vger.kernel.org
+Cc:     Jocelyn Falempe <jfalempe@redhat.com>,
+        Zhang Yi <yizhan@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 4.14.y] drm/client: Fix memory leak in drm_client_target_cloned
+Date:   Tue, 25 Jul 2023 13:51:31 +0200
+Message-ID: <20230725115203.88879-1-jfalempe@redhat.com>
+In-Reply-To: <2023072327-repost-magma-4171@gregkh>
+References: <2023072327-repost-magma-4171@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:1uLTZrxHFwwSE5x+jFwl5SSnFtvfxBgotAsj0XJVKmc1faTAKvB
- w2RSRjL71j3vfxhfK6UKJaJk10bsV5+GxYjnQHZP1W667QAW4VMqRLOnHTMdgEqbidGoWv8
- bk0ZXAWn8YuPVyNLkmL1MdHtOGbPosjUpPR2Frr6Vrr6a7Gc+9LUUf4ie1JIVXfM+ErVR5K
- sOy1I+skfLmJsTRUwqT6w==
-UI-OutboundReport: notjunk:1;M01:P0:vGgSNf3lHVk=;9KTRvt63Rlr3Ki1DZijNpMG+bwO
- axHoHk9itTrBagkbt9YY9EMbrCfGJ3JKVF+cB8kve0CGMtYB7J84vBKb9N9+oB5HeS9axD9mM
- z6GX729HJiM2TRTNKeHg3CJBxEN/svYM3Oea4/xqaKqWZox9EhTzQzLMfRncFrYs4Xtyy2aze
- EPejHA59g+5FKmRY+QVV+VCqOAQakFJl9kJuXX3Eih7rS/n+kplv80McMd1TSPqnsBzbbZPY0
- HQbSo+ADcJctkTnp1ygahMfV62KRXTwPLcqTCjknEPnltEqjQkIqaEygRfcnsFf62E+/aISbz
- JUT8KFHYUDv3ESqN8G+6BLp7HaBDX7XSGBpaQdZN+gsKwMMwVZ4sEpR/5fyhp6JCU9s5EeRrE
- BOHezYvSQ0ewyKR987JEixPpRQg1D/pdIC/u6T2xZYh9tMI0mzetfSUIOcvPdvVkePd36ufC/
- saC0n1E/rWgohWn1HeXxCG/M0l7Usemd5LRWTt+ih7g6YdkXagP/cC4v/5yizpYntjrhZMxzS
- AQClXaRSlRiMdV+1iB+ziwdB9qqD7WnVniJYpRdeOSD40puR+k9ehjK3wMskFdXtnkmOxsO+7
- IjpB0YLVOduvyzFxmwZMgbmTq5/axLwV4nk7ZMfWlEvxdBIMujscUEqrzAikB8/2rFoAH5GSZ
- bHKIkhUkxlC2JEg0oRqy1hur8BYUxrKUOjKDZt/m5sKBzfk3A/lBxxcMLskQ1ERJBUtUC9QxY
- 2kH9aYUbxGagY/HvZMSEI3XCODZkN984aQpz2gxb+MElGhG+TkwagHdP+/LyXruCIVvKm50+T
- vwmqxPdK/FgPhP28tocomc+pbrfgexfVZ6qt+37TcsCfQorq2RumrJNgaaXZc0igsh+YAHCY/
- R1iFL+cb56iRFriT1HPDeM17WCcgVRoUH++yh7YZjMcAoYfFdhdVh1nFHVirSPRMggEWDYYDI
- QpCzJn7cQOGxhDSHMFp6s4boPLU=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+dmt_mode is allocated and never freed in this function.
+It was found with the ast driver, but most drivers using generic fbdev
+setup are probably affected.
 
-6.4.7-rc1
+This fixes the following kmemleak report:
+  backtrace:
+    [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
+    [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
+    [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
+    [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
+    [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
+    [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
+    [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
+    [<00000000987f19bb>] local_pci_probe+0xdc/0x180
+    [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
+    [<0000000000b85301>] process_one_work+0x8b7/0x1540
+    [<000000003375b17c>] worker_thread+0x70a/0xed0
+    [<00000000b0d43cd9>] kthread+0x29f/0x340
+    [<000000008d770833>] ret_from_fork+0x1f/0x30
+unreferenced object 0xff11000333089a00 (size 128):
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake, i5-11400)
+cc: <stable@vger.kernel.org>
+Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
+Reported-by: Zhang Yi <yizhan@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
+(cherry picked from commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03)
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+---
+ drivers/gpu/drm/drm_fb_helper.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index fbf7f28d9df9..e8d0dbe92048 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -2112,6 +2112,9 @@ static bool drm_target_cloned(struct drm_fb_helper *fb_helper,
+ 	can_clone = true;
+ 	dmt_mode = drm_mode_find_dmt(fb_helper->dev, 1024, 768, 60, false);
+ 
++	if (!dmt_mode)
++		goto fail;
++
+ 	drm_fb_helper_for_each_connector(fb_helper, i) {
+ 		if (!enabled[i])
+ 			continue;
+@@ -2124,11 +2127,13 @@ static bool drm_target_cloned(struct drm_fb_helper *fb_helper,
+ 		if (!modes[i])
+ 			can_clone = false;
+ 	}
++	kfree(dmt_mode);
+ 
+ 	if (can_clone) {
+ 		DRM_DEBUG_KMS("can clone using 1024x768\n");
+ 		return true;
+ 	}
++fail:
+ 	DRM_INFO("kms: can't enable cloning when we probably wanted to.\n");
+ 	return false;
+ }
+-- 
+2.41.0
 
