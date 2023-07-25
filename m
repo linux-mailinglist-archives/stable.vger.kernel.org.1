@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC9FB7616CD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2E47611BD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235005AbjGYLno (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:43:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51004 "EHLO
+        id S231935AbjGYKzk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:55:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235149AbjGYLnB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:01 -0400
+        with ESMTP id S231906AbjGYKzV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:55:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C3E19F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:42:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949F0212A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C38AC615BA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01D3C433C7;
-        Tue, 25 Jul 2023 11:41:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 749E56168A
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8624AC433C8;
+        Tue, 25 Jul 2023 10:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285303;
-        bh=gbepNwzUiPT8KkoIjbwymTet91H+gx3Nw+PekQtK9vk=;
+        s=korg; t=1690282390;
+        bh=BexxG2lZ5WAp9/2OZ/6koNrHIJR87KMDErz2xXYCLm8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cswMGsnft0ivg/szTxMWWqKygp8S46/WlNz2bjJdiAHU4eTSkSJTjVctfOp83bgKq
-         oMFwgvhunMN8WBdM48iSmYjFeWgJNqreNt9nnxWLfHPPlUW/5gdXFuCigfSjeiHO9S
-         NlJWCaJ6Z6S88TCvzUeOPsyeN12laEXAwGwLavNg=
+        b=Kwd9Ndx0Bpn6iwHyK9FCpjDCoESut1x7FYDuBKA+JzavkZaDqTxeXndQPGVHLlvvC
+         6ioj3iknHR+pdZJ66mmVM1T9IVz1AJp7e8s4K67PRP8Lh3MOXTvrqGoIQDAnO75dry
+         blq49ok+9q5E0QJP0ASDR/F3y5ZgdLfZaqTtexoY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Landley <rob@landley.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 126/313] sh: j2: Use ioremap() to translate device tree address into kernel memory
-Date:   Tue, 25 Jul 2023 12:44:39 +0200
-Message-ID: <20230725104526.471203501@linuxfoundation.org>
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 113/227] spi: cadence-quadspi: Add compatible for AMD Pensando Elba SoC
+Date:   Tue, 25 Jul 2023 12:44:40 +0200
+Message-ID: <20230725104519.457191028@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,41 +53,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+From: Brad Larson <blarson@amd.com>
 
-[ Upstream commit bc9d1f0cecd2407cfb2364a7d4be2f52d1d46a9d ]
+[ Upstream commit f5c2f9f9584353bc816d76a65c97dd03dc61678c ]
 
-Addresses the following warning when building j2_defconfig:
+The AMD Pensando Elba SoC has the Cadence QSPI controller integrated.
 
-arch/sh/kernel/cpu/sh2/probe.c: In function 'scan_cache':
-arch/sh/kernel/cpu/sh2/probe.c:24:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-   24 |  j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
-      |
+The quirk CQSPI_NEEDS_APB_AHB_HAZARD_WAR is added and if enabled
+a dummy readback from the controller is performed to ensure
+synchronization.
 
-Fixes: 5a846abad07f ("sh: add support for J-Core J2 processor")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Rob Landley <rob@landley.net>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230503125746.331835-1-glaubitz@physik.fu-berlin.de
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Brad Larson <blarson@amd.com
+Link: https://lore.kernel.org/r/20230515181606.65953-8-blarson@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/cpu/sh2/probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/arch/sh/kernel/cpu/sh2/probe.c b/arch/sh/kernel/cpu/sh2/probe.c
-index d342ea08843f6..70a07f4f2142f 100644
---- a/arch/sh/kernel/cpu/sh2/probe.c
-+++ b/arch/sh/kernel/cpu/sh2/probe.c
-@@ -21,7 +21,7 @@ static int __init scan_cache(unsigned long node, const char *uname,
- 	if (!of_flat_dt_is_compatible(node, "jcore,cache"))
- 		return 0;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 32449bef4415a..abf10f92415dc 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -40,6 +40,7 @@
+ #define CQSPI_SUPPORT_EXTERNAL_DMA	BIT(2)
+ #define CQSPI_NO_SUPPORT_WR_COMPLETION	BIT(3)
+ #define CQSPI_SLOW_SRAM		BIT(4)
++#define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
  
--	j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
-+	j2_ccr_base = ioremap(of_flat_dt_translate_address(node), 4);
+ /* Capabilities */
+ #define CQSPI_SUPPORTS_OCTAL		BIT(0)
+@@ -90,6 +91,7 @@ struct cqspi_st {
+ 	u32			pd_dev_id;
+ 	bool			wr_completion;
+ 	bool			slow_sram;
++	bool			apb_ahb_hazard;
+ };
  
- 	return 1;
- }
+ struct cqspi_driver_platdata {
+@@ -1027,6 +1029,13 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
+ 	if (cqspi->wr_delay)
+ 		ndelay(cqspi->wr_delay);
+ 
++	/*
++	 * If a hazard exists between the APB and AHB interfaces, perform a
++	 * dummy readback from the controller to ensure synchronization.
++	 */
++	if (cqspi->apb_ahb_hazard)
++		readl(reg_base + CQSPI_REG_INDIRECTWR);
++
+ 	while (remaining > 0) {
+ 		size_t write_words, mod_bytes;
+ 
+@@ -1754,6 +1763,8 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			cqspi->wr_completion = false;
+ 		if (ddata->quirks & CQSPI_SLOW_SRAM)
+ 			cqspi->slow_sram = true;
++		if (ddata->quirks & CQSPI_NEEDS_APB_AHB_HAZARD_WAR)
++			cqspi->apb_ahb_hazard = true;
+ 
+ 		if (of_device_is_compatible(pdev->dev.of_node,
+ 					    "xlnx,versal-ospi-1.0")) {
+@@ -1888,6 +1899,10 @@ static const struct cqspi_driver_platdata jh7110_qspi = {
+ 	.quirks = CQSPI_DISABLE_DAC_MODE,
+ };
+ 
++static const struct cqspi_driver_platdata pensando_cdns_qspi = {
++	.quirks = CQSPI_NEEDS_APB_AHB_HAZARD_WAR | CQSPI_DISABLE_DAC_MODE,
++};
++
+ static const struct of_device_id cqspi_dt_ids[] = {
+ 	{
+ 		.compatible = "cdns,qspi-nor",
+@@ -1917,6 +1932,10 @@ static const struct of_device_id cqspi_dt_ids[] = {
+ 		.compatible = "starfive,jh7110-qspi",
+ 		.data = &jh7110_qspi,
+ 	},
++	{
++		.compatible = "amd,pensando-elba-qspi",
++		.data = &pensando_cdns_qspi,
++	},
+ 	{ /* end of table */ }
+ };
+ 
 -- 
 2.39.2
 
