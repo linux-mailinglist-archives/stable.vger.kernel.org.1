@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6247576120D
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B977616C0
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:42:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229896AbjGYK7A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36072 "EHLO
+        id S234978AbjGYLmM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:42:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233874AbjGYK6O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:58:14 -0400
+        with ESMTP id S235014AbjGYLlz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:41:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD841BD7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7DCC2698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:41:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07D546168A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:55:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14320C433C8;
-        Tue, 25 Jul 2023 10:55:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C0A9B616A8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:41:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D4FC433C8;
+        Tue, 25 Jul 2023 11:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282533;
-        bh=nIQ4YBRHmPVAtle3mFBtgXxKRh1Hb9Iu5x34z0wIWOY=;
+        s=korg; t=1690285283;
+        bh=nlcHhYtZiFD5TM/spWp18eh0NAcb0qk4Uf8+xots7WU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jkKBqVdomFXoBfwRHW9nK/sTVxsdztIWqnde0zm2bSx2twgHDVw+c/4H+jWqyJ0uD
-         2xl5EI8rfbL+W6BosnRdRy6oZ+bB7TirqJOgYYOSCP3S/Rgc5zWpd+fE+KnBZq6ilK
-         Yuj7uveL+c1ZewjsBKVLiI0Csyp6Iqaqj+yVHHfU=
+        b=SLKZaLFoJO/iy9+b1UbQ9z9+N7bZCkWpgwVJRcJkOFkEf6YWI+Q3LlQR0rVs7xLgf
+         6kFQQu2LyPRIsFpETGMt/aS/7wW/vbPPVNtLSws8NRzzmETf6/cRSDoGQxtbaXP0iF
+         3d+kFAprNlBjoY2h4PVLj0wZekSJNz2H7rO8zW7c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 135/227] ASoC: codecs: wcd938x: fix mbhc impedance loglevel
+Subject: [PATCH 5.4 149/313] mailbox: ti-msgmgr: Fill non-message tx data fields with 0x0
 Date:   Tue, 25 Jul 2023 12:45:02 +0200
-Message-ID: <20230725104520.446159664@linuxfoundation.org>
+Message-ID: <20230725104527.453682143@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit e5ce198bd5c6923b6a51e1493b1401f84c24b26d ]
+[ Upstream commit 1b712f18c461bd75f018033a15cf381e712806b5 ]
 
-Demote the MBHC impedance measurement printk, which is not an error
-message, from error to debug level.
+Sec proxy/message manager data buffer is 60 bytes with the last of the
+registers indicating transmission completion. This however poses a bit
+of a challenge.
 
-While at it, fix the capitalisation of "ohm" and add the missing space
-before the opening parenthesis.
+The backing memory for sec_proxy / message manager is regular memory,
+and all sec proxy does is to trigger a burst of all 60 bytes of data
+over to the target thread backing ring accelerator. It doesn't do a
+memory scrub when it moves data out in the burst. When we transmit
+multiple messages, remnants of previous message is also transmitted
+which results in some random data being set in TISCI fields of
+messages that have been expanded forward.
 
-Fixes: bcee7ed09b8e ("ASoC: codecs: wcd938x: add Multi Button Headset Control support")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230630142717.5314-2-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The entire concept of backward compatibility hinges on the fact that
+the unused message fields remain 0x0 allowing for 0x0 value to be
+specially considered when backward compatibility of message extension
+is done.
+
+So, instead of just writing the completion register, we continue
+to fill the message buffer up with 0x0 (note: for partial message
+involving completion, we already do this).
+
+This allows us to scale and introduce ABI changes back also work with
+other boot stages that may have left data in the internal memory.
+
+While at this, be consistent and explicit with the data_reg pointer
+increment.
+
+Fixes: aace66b170ce ("mailbox: Introduce TI message manager driver")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd938x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/ti-msgmgr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
-index 0ff8f784b5eca..8bb6a5ff7b0f6 100644
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -2165,8 +2165,8 @@ static inline void wcd938x_mbhc_get_result_params(struct wcd938x_priv *wcd938x,
- 	else if (x1 < minCode_param[noff])
- 		*zdet = WCD938X_ZDET_FLOATING_IMPEDANCE;
+diff --git a/drivers/mailbox/ti-msgmgr.c b/drivers/mailbox/ti-msgmgr.c
+index 88047d835211c..75f14b624ca22 100644
+--- a/drivers/mailbox/ti-msgmgr.c
++++ b/drivers/mailbox/ti-msgmgr.c
+@@ -385,14 +385,20 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
+ 		/* Ensure all unused data is 0 */
+ 		data_trail &= 0xFFFFFFFF >> (8 * (sizeof(u32) - trail_bytes));
+ 		writel(data_trail, data_reg);
+-		data_reg++;
++		data_reg += sizeof(u32);
+ 	}
++
+ 	/*
+ 	 * 'data_reg' indicates next register to write. If we did not already
+ 	 * write on tx complete reg(last reg), we must do so for transmit
++	 * In addition, we also need to make sure all intermediate data
++	 * registers(if any required), are reset to 0 for TISCI backward
++	 * compatibility to be maintained.
+ 	 */
+-	if (data_reg <= qinst->queue_buff_end)
+-		writel(0, qinst->queue_buff_end);
++	while (data_reg <= qinst->queue_buff_end) {
++		writel(0, data_reg);
++		data_reg += sizeof(u32);
++	}
  
--	pr_err("%s: d1=%d, c1=%d, x1=0x%x, z_val=%d(milliOhm)\n",
--		__func__, d1, c1, x1, *zdet);
-+	pr_debug("%s: d1=%d, c1=%d, x1=0x%x, z_val=%d (milliohm)\n",
-+		 __func__, d1, c1, x1, *zdet);
- ramp_down:
- 	i = 0;
- 	while (x1) {
+ 	return 0;
+ }
 -- 
 2.39.2
 
