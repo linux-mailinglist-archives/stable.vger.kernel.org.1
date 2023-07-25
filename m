@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9577A7612F1
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7064A761592
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234026AbjGYLGq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44768 "EHLO
+        id S234777AbjGYLaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233839AbjGYLG3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:06:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5A146AF
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:04:52 -0700 (PDT)
+        with ESMTP id S234779AbjGYLae (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F72AFB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 148FF61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:04:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29450C433C7;
-        Tue, 25 Jul 2023 11:04:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 017F66168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEF5C433C7;
+        Tue, 25 Jul 2023 11:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283091;
-        bh=yKDZSjGttAMGNcMkQMseXjFpn+bgnbDsLyx3kfhe30A=;
+        s=korg; t=1690284632;
+        bh=UG1YKvRIcSp5/OIOura65NX/CutYs+be35KJ2vHYDV0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vMsp1066pDJlKIdo/uO8ExDyB/+3fR1Q9Q4FvBCh2kATj8lpaf+h6nDvMJHRN0GyR
-         btjzYO+/o3kMDMYF/3c8aRw4LRhnB8e8X8dzq8Kc/aXc1NWAInLcuf0s8nv4UOAsdD
-         14m3ZRwsGDiZj+ClW3S6zQ01vAtT/jiR7KgW0gJ8=
+        b=S0wC4Qp1QB80va+NSPDrZrVH+8Y5tQsFg/OhJLmFm/UeoyJ8DH6ks7XfRCk2LCsiO
+         d7dtQXQR4yF7ABfJK+F96r3Ai2eNCYQlKDVaYPj4bUVtrnuiPVFGABHcUan27z5XEW
+         xvpiT6lm1vmIn8GXG1CNidBbTzZyq+ik22Kjpcs8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/183] tcp: annotate data-races around tcp_rsk(req)->ts_recent
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 425/509] ring-buffer: Fix deadloop issue on reading trace_pipe
 Date:   Tue, 25 Jul 2023 12:46:04 +0200
-Message-ID: <20230725104512.821115628@linuxfoundation.org>
+Message-ID: <20230725104613.143844949@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,184 +54,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit eba20811f32652bc1a52d5e7cc403859b86390d9 ]
+commit 7e42907f3a7b4ce3a2d1757f6d78336984daf8f5 upstream.
 
-TCP request sockets are lockless, tcp_rsk(req)->ts_recent
-can change while being read by another cpu as syzbot noticed.
+Soft lockup occurs when reading file 'trace_pipe':
 
-This is harmless, but we should annotate the known races.
+  watchdog: BUG: soft lockup - CPU#6 stuck for 22s! [cat:4488]
+  [...]
+  RIP: 0010:ring_buffer_empty_cpu+0xed/0x170
+  RSP: 0018:ffff88810dd6fc48 EFLAGS: 00000246
+  RAX: 0000000000000000 RBX: 0000000000000246 RCX: ffffffff93d1aaeb
+  RDX: ffff88810a280040 RSI: 0000000000000008 RDI: ffff88811164b218
+  RBP: ffff88811164b218 R08: 0000000000000000 R09: ffff88815156600f
+  R10: ffffed102a2acc01 R11: 0000000000000001 R12: 0000000051651901
+  R13: 0000000000000000 R14: ffff888115e49500 R15: 0000000000000000
+  [...]
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f8d853c2000 CR3: 000000010dcd8000 CR4: 00000000000006e0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  Call Trace:
+   __find_next_entry+0x1a8/0x4b0
+   ? peek_next_entry+0x250/0x250
+   ? down_write+0xa5/0x120
+   ? down_write_killable+0x130/0x130
+   trace_find_next_entry_inc+0x3b/0x1d0
+   tracing_read_pipe+0x423/0xae0
+   ? tracing_splice_read_pipe+0xcb0/0xcb0
+   vfs_read+0x16b/0x490
+   ksys_read+0x105/0x210
+   ? __ia32_sys_pwrite64+0x200/0x200
+   ? switch_fpu_return+0x108/0x220
+   do_syscall_64+0x33/0x40
+   entry_SYSCALL_64_after_hwframe+0x61/0xc6
 
-Note that tcp_check_req() changes req->ts_recent a bit early,
-we might change this in the future.
+Through the vmcore, I found it's because in tracing_read_pipe(),
+ring_buffer_empty_cpu() found some buffer is not empty but then it
+cannot read anything due to "rb_num_of_entries() == 0" always true,
+Then it infinitely loop the procedure due to user buffer not been
+filled, see following code path:
 
-BUG: KCSAN: data-race in tcp_check_req / tcp_check_req
+  tracing_read_pipe() {
+    ... ...
+    waitagain:
+      tracing_wait_pipe() // 1. find non-empty buffer here
+      trace_find_next_entry_inc()  // 2. loop here try to find an entry
+        __find_next_entry()
+          ring_buffer_empty_cpu();  // 3. find non-empty buffer
+          peek_next_entry()  // 4. but peek always return NULL
+            ring_buffer_peek()
+              rb_buffer_peek()
+                rb_get_reader_page()
+                  // 5. because rb_num_of_entries() == 0 always true here
+                  //    then return NULL
+      // 6. user buffer not been filled so goto 'waitgain'
+      //    and eventually leads to an deadloop in kernel!!!
+  }
 
-write to 0xffff88813c8afb84 of 4 bytes by interrupt on cpu 1:
-tcp_check_req+0x694/0xc70 net/ipv4/tcp_minisocks.c:762
-tcp_v4_rcv+0x12db/0x1b70 net/ipv4/tcp_ipv4.c:2071
-ip_protocol_deliver_rcu+0x356/0x6d0 net/ipv4/ip_input.c:205
-ip_local_deliver_finish+0x13c/0x1a0 net/ipv4/ip_input.c:233
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ip_local_deliver+0xec/0x1c0 net/ipv4/ip_input.c:254
-dst_input include/net/dst.h:468 [inline]
-ip_rcv_finish net/ipv4/ip_input.c:449 [inline]
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ip_rcv+0x197/0x270 net/ipv4/ip_input.c:569
-__netif_receive_skb_one_core net/core/dev.c:5493 [inline]
-__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5607
-process_backlog+0x21f/0x380 net/core/dev.c:5935
-__napi_poll+0x60/0x3b0 net/core/dev.c:6498
-napi_poll net/core/dev.c:6565 [inline]
-net_rx_action+0x32b/0x750 net/core/dev.c:6698
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-do_softirq+0x7e/0xb0 kernel/softirq.c:472
-__local_bh_enable_ip+0x64/0x70 kernel/softirq.c:396
-local_bh_enable+0x1f/0x20 include/linux/bottom_half.h:33
-rcu_read_unlock_bh include/linux/rcupdate.h:843 [inline]
-__dev_queue_xmit+0xabb/0x1d10 net/core/dev.c:4271
-dev_queue_xmit include/linux/netdevice.h:3088 [inline]
-neigh_hh_output include/net/neighbour.h:528 [inline]
-neigh_output include/net/neighbour.h:542 [inline]
-ip_finish_output2+0x700/0x840 net/ipv4/ip_output.c:229
-ip_finish_output+0xf4/0x240 net/ipv4/ip_output.c:317
-NF_HOOK_COND include/linux/netfilter.h:292 [inline]
-ip_output+0xe5/0x1b0 net/ipv4/ip_output.c:431
-dst_output include/net/dst.h:458 [inline]
-ip_local_out net/ipv4/ip_output.c:126 [inline]
-__ip_queue_xmit+0xa4d/0xa70 net/ipv4/ip_output.c:533
-ip_queue_xmit+0x38/0x40 net/ipv4/ip_output.c:547
-__tcp_transmit_skb+0x1194/0x16e0 net/ipv4/tcp_output.c:1399
-tcp_transmit_skb net/ipv4/tcp_output.c:1417 [inline]
-tcp_write_xmit+0x13ff/0x2fd0 net/ipv4/tcp_output.c:2693
-__tcp_push_pending_frames+0x6a/0x1a0 net/ipv4/tcp_output.c:2877
-tcp_push_pending_frames include/net/tcp.h:1952 [inline]
-__tcp_sock_set_cork net/ipv4/tcp.c:3336 [inline]
-tcp_sock_set_cork+0xe8/0x100 net/ipv4/tcp.c:3343
-rds_tcp_xmit_path_complete+0x3b/0x40 net/rds/tcp_send.c:52
-rds_send_xmit+0xf8d/0x1420 net/rds/send.c:422
-rds_send_worker+0x42/0x1d0 net/rds/threads.c:200
-process_one_work+0x3e6/0x750 kernel/workqueue.c:2408
-worker_thread+0x5f2/0xa10 kernel/workqueue.c:2555
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+By some analyzing, I found that when resetting ringbuffer, the 'entries'
+of its pages are not all cleared (see rb_reset_cpu()). Then when reducing
+the ringbuffer, and if some reduced pages exist dirty 'entries' data, they
+will be added into 'cpu_buffer->overrun' (see rb_remove_pages()), which
+cause wrong 'overrun' count and eventually cause the deadloop issue.
 
-read to 0xffff88813c8afb84 of 4 bytes by interrupt on cpu 0:
-tcp_check_req+0x32a/0xc70 net/ipv4/tcp_minisocks.c:622
-tcp_v4_rcv+0x12db/0x1b70 net/ipv4/tcp_ipv4.c:2071
-ip_protocol_deliver_rcu+0x356/0x6d0 net/ipv4/ip_input.c:205
-ip_local_deliver_finish+0x13c/0x1a0 net/ipv4/ip_input.c:233
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ip_local_deliver+0xec/0x1c0 net/ipv4/ip_input.c:254
-dst_input include/net/dst.h:468 [inline]
-ip_rcv_finish net/ipv4/ip_input.c:449 [inline]
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ip_rcv+0x197/0x270 net/ipv4/ip_input.c:569
-__netif_receive_skb_one_core net/core/dev.c:5493 [inline]
-__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5607
-process_backlog+0x21f/0x380 net/core/dev.c:5935
-__napi_poll+0x60/0x3b0 net/core/dev.c:6498
-napi_poll net/core/dev.c:6565 [inline]
-net_rx_action+0x32b/0x750 net/core/dev.c:6698
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
-smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+To fix it, we need to clear every pages in rb_reset_cpu().
 
-value changed: 0x1cd237f1 -> 0x1cd237f2
+Link: https://lore.kernel.org/linux-trace-kernel/20230708225144.3785600-1-zhengyejian1@huawei.com
 
-Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230717144445.653164-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a5fb833172eca ("ring-buffer: Fix uninitialized read_stamp")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_ipv4.c      | 2 +-
- net/ipv4/tcp_minisocks.c | 9 ++++++---
- net/ipv4/tcp_output.c    | 2 +-
- net/ipv6/tcp_ipv6.c      | 2 +-
- 4 files changed, 9 insertions(+), 6 deletions(-)
+ kernel/trace/ring_buffer.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index e5df50b3e23a0..d49a66b271d52 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -988,7 +988,7 @@ static void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
- 			tcp_rsk(req)->rcv_nxt,
- 			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
- 			tcp_time_stamp_raw() + tcp_rsk(req)->ts_off,
--			req->ts_recent,
-+			READ_ONCE(req->ts_recent),
- 			0,
- 			tcp_md5_do_lookup(sk, l3index, addr, AF_INET),
- 			inet_rsk(req)->no_srccheck ? IP_REPLY_ARG_NOSRCCHECK : 0,
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index f281eab7fd125..42844d20da020 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -537,7 +537,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
- 	newtp->max_window = newtp->snd_wnd;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -4954,28 +4954,34 @@ unsigned long ring_buffer_size(struct tr
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_size);
  
- 	if (newtp->rx_opt.tstamp_ok) {
--		newtp->rx_opt.ts_recent = req->ts_recent;
-+		newtp->rx_opt.ts_recent = READ_ONCE(req->ts_recent);
- 		newtp->rx_opt.ts_recent_stamp = ktime_get_seconds();
- 		newtp->tcp_header_len = sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED;
- 	} else {
-@@ -601,7 +601,7 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
- 		tcp_parse_options(sock_net(sk), skb, &tmp_opt, 0, NULL);
++static void rb_clear_buffer_page(struct buffer_page *page)
++{
++	local_set(&page->write, 0);
++	local_set(&page->entries, 0);
++	rb_init_page(page->page);
++	page->read = 0;
++}
++
+ static void
+ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
+ {
++	struct buffer_page *page;
++
+ 	rb_head_page_deactivate(cpu_buffer);
  
- 		if (tmp_opt.saw_tstamp) {
--			tmp_opt.ts_recent = req->ts_recent;
-+			tmp_opt.ts_recent = READ_ONCE(req->ts_recent);
- 			if (tmp_opt.rcv_tsecr)
- 				tmp_opt.rcv_tsecr -= tcp_rsk(req)->ts_off;
- 			/* We do not store true stamp, but it is not required,
-@@ -740,8 +740,11 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+ 	cpu_buffer->head_page
+ 		= list_entry(cpu_buffer->pages, struct buffer_page, list);
+-	local_set(&cpu_buffer->head_page->write, 0);
+-	local_set(&cpu_buffer->head_page->entries, 0);
+-	local_set(&cpu_buffer->head_page->page->commit, 0);
+-
+-	cpu_buffer->head_page->read = 0;
++	rb_clear_buffer_page(cpu_buffer->head_page);
++	list_for_each_entry(page, cpu_buffer->pages, list) {
++		rb_clear_buffer_page(page);
++	}
  
- 	/* In sequence, PAWS is OK. */
+ 	cpu_buffer->tail_page = cpu_buffer->head_page;
+ 	cpu_buffer->commit_page = cpu_buffer->head_page;
  
-+	/* TODO: We probably should defer ts_recent change once
-+	 * we take ownership of @req.
-+	 */
- 	if (tmp_opt.saw_tstamp && !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
--		req->ts_recent = tmp_opt.rcv_tsval;
-+		WRITE_ONCE(req->ts_recent, tmp_opt.rcv_tsval);
+ 	INIT_LIST_HEAD(&cpu_buffer->reader_page->list);
+ 	INIT_LIST_HEAD(&cpu_buffer->new_pages);
+-	local_set(&cpu_buffer->reader_page->write, 0);
+-	local_set(&cpu_buffer->reader_page->entries, 0);
+-	local_set(&cpu_buffer->reader_page->page->commit, 0);
+-	cpu_buffer->reader_page->read = 0;
++	rb_clear_buffer_page(cpu_buffer->reader_page);
  
- 	if (TCP_SKB_CB(skb)->seq == tcp_rsk(req)->rcv_isn) {
- 		/* Truncate SYN, it is out of window starting
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 693a29d3f43bd..26bd039f9296f 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -876,7 +876,7 @@ static unsigned int tcp_synack_options(const struct sock *sk,
- 	if (likely(ireq->tstamp_ok)) {
- 		opts->options |= OPTION_TS;
- 		opts->tsval = tcp_skb_timestamp(skb) + tcp_rsk(req)->ts_off;
--		opts->tsecr = req->ts_recent;
-+		opts->tsecr = READ_ONCE(req->ts_recent);
- 		remaining -= TCPOLEN_TSTAMP_ALIGNED;
- 	}
- 	if (likely(ireq->sack_ok)) {
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 0dcb06a1fe044..d9253aa764fae 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1130,7 +1130,7 @@ static void tcp_v6_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
- 			tcp_rsk(req)->rcv_nxt,
- 			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
- 			tcp_time_stamp_raw() + tcp_rsk(req)->ts_off,
--			req->ts_recent, sk->sk_bound_dev_if,
-+			READ_ONCE(req->ts_recent), sk->sk_bound_dev_if,
- 			tcp_v6_md5_do_lookup(sk, &ipv6_hdr(skb)->saddr, l3index),
- 			ipv6_get_dsfield(ipv6_hdr(skb)), 0, sk->sk_priority,
- 			READ_ONCE(tcp_rsk(req)->txhash));
--- 
-2.39.2
-
+ 	local_set(&cpu_buffer->entries_bytes, 0);
+ 	local_set(&cpu_buffer->overrun, 0);
 
 
