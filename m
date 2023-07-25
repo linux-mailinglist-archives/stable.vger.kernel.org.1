@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 411C27612CD
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E897616F6
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233960AbjGYLFn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:05:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41006 "EHLO
+        id S233619AbjGYLnw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:43:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233943AbjGYLFY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:05:24 -0400
+        with ESMTP id S235322AbjGYLnV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB71D2117
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:03:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7BB19F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3037561656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB5BC433C9;
-        Tue, 25 Jul 2023 11:03:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC065616CC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:42:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA15EC433C7;
+        Tue, 25 Jul 2023 11:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282999;
-        bh=5rFX++yQ3ops7B5OLtfgW79n4CG48egKMCYjC6yV/lE=;
+        s=korg; t=1690285364;
+        bh=oNuO6TdTZ41kx83o/GjpI1i99THSyHnaxA6cAnaBQAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oaw3zfcLgBqLycby3hwXVW88mA0rB5d/4rGoIz0CuIRKPPd3qDL7M/NmddXZ4vObW
-         /RrUZg3k4vb8ffFpRD4s5XFyHKbm/YGSxCjLE3pmocja89Y5WwFga0FD8ZKPKmYz4E
-         NKVndQf7FYYRwbp30ZHXW66ojQZZ9xRuNSvsRrNs=
+        b=qsCgymP1pSexMvKDhdKR90rnNe6iQkjEp1zyOBpk5uAnZUFCR1SKJERZ/ST/6zqpo
+         JZyH1+AeXqFaI3WSbobCk7GdtFDTJCqC9G1D8Wojz09RVKdQeoqJQiMBjtT2aeIIy4
+         hkSc7VQdFWyPuGRu1WYc0KhNnxCTbjeo5I2njhkQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Yonghong Song <yhs@fb.com>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/183] kallsyms: strip LTO-only suffixes from promoted global functions
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.4 178/313] block: add overflow checks for Amiga partition support
 Date:   Tue, 25 Jul 2023 12:45:31 +0200
-Message-ID: <20230725104511.646178298@linuxfoundation.org>
+Message-ID: <20230725104528.640127273@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,104 +57,204 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yonghong Song <yhs@fb.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit 8cc32a9bbf2934d90762d9de0187adcb5ad46a11 ]
+commit b6f3f28f604ba3de4724ad82bea6adb1300c0b5f upstream.
 
-Commit 6eb4bd92c1ce ("kallsyms: strip LTO suffixes from static functions")
-stripped all function/variable suffixes started with '.' regardless
-of whether those suffixes are generated at LTO mode or not. In fact,
-as far as I know, in LTO mode, when a static function/variable is
-promoted to the global scope, '.llvm.<...>' suffix is added.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-The existing mechanism breaks live patch for a LTO kernel even if
-no <symbol>.llvm.<...> symbols are involved. For example, for the following
-kernel symbols:
-  $ grep bpf_verifier_vlog /proc/kallsyms
-  ffffffff81549f60 t bpf_verifier_vlog
-  ffffffff8268b430 d bpf_verifier_vlog._entry
-  ffffffff8282a958 d bpf_verifier_vlog._entry_ptr
-  ffffffff82e12a1f d bpf_verifier_vlog.__already_done
-'bpf_verifier_vlog' is a static function. '_entry', '_entry_ptr' and
-'__already_done' are static variables used inside 'bpf_verifier_vlog',
-so llvm promotes them to file-level static with prefix 'bpf_verifier_vlog.'.
-Note that the func-level to file-level static function promotion also
-happens without LTO.
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
-Given a symbol name 'bpf_verifier_vlog', with LTO kernel, current mechanism will
-return 4 symbols to live patch subsystem which current live patching
-subsystem cannot handle it. With non-LTO kernel, only one symbol
-is returned.
+Bail out if sector addresses overflow 32 bits on kernels without LBD
+support.
 
-In [1], we have a lengthy discussion, the suggestion is to separate two
-cases:
-  (1). new symbols with suffix which are generated regardless of whether
-       LTO is enabled or not, and
-  (2). new symbols with suffix generated only when LTO is enabled.
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted (now resubmitted as patch 1 in this series).
+This patch adds additional error checking and warning messages.
 
-The cleanup_symbol_name() should only remove suffixes for case (2).
-Case (1) should not be changed so it can work uniformly with or without LTO.
-
-This patch removed LTO-only suffix '.llvm.<...>' so live patching and
-tracing should work the same way for non-LTO kernel.
-The cleanup_symbol_name() in scripts/kallsyms.c is also changed to have the same
-filtering pattern so both kernel and kallsyms tool have the same
-expectation on the order of symbols.
-
- [1] https://lore.kernel.org/live-patching/20230615170048.2382735-1-song@kernel.org/T/#u
-
-Fixes: 6eb4bd92c1ce ("kallsyms: strip LTO suffixes from static functions")
-Reported-by: Song Liu <song@kernel.org>
-Signed-off-by: Yonghong Song <yhs@fb.com>
-Reviewed-by: Zhen Lei <thunder.leizhen@huawei.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230628181926.4102448-1-yhs@fb.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Christoph Hellwig <hch@infradead.org>
+Link: https://lore.kernel.org/r/20230620201725.7020-4-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kallsyms.c  | 5 ++---
- scripts/kallsyms.c | 6 +++---
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ block/partitions/amiga.c |  103 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 85 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-index ba351dfa109b6..676328a7c8c75 100644
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -174,11 +174,10 @@ static bool cleanup_symbol_name(char *s)
- 	 * LLVM appends various suffixes for local functions and variables that
- 	 * must be promoted to global scope as part of LTO.  This can break
- 	 * hooking of static functions with kprobes. '.' is not a valid
--	 * character in an identifier in C. Suffixes observed:
-+	 * character in an identifier in C. Suffixes only in LLVM LTO observed:
- 	 * - foo.llvm.[0-9a-f]+
--	 * - foo.[0-9a-f]+
- 	 */
--	res = strchr(s, '.');
-+	res = strstr(s, ".llvm.");
- 	if (res) {
- 		*res = '\0';
- 		return true;
-diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-index 67ef9aa14a770..51edc73e2ebf8 100644
---- a/scripts/kallsyms.c
-+++ b/scripts/kallsyms.c
-@@ -432,10 +432,10 @@ static void cleanup_symbol_name(char *s)
- 	 * ASCII[_]   = 5f
- 	 * ASCII[a-z] = 61,7a
- 	 *
--	 * As above, replacing '.' with '\0' does not affect the main sorting,
--	 * but it helps us with subsorting.
-+	 * As above, replacing the first '.' in ".llvm." with '\0' does not
-+	 * affect the main sorting, but it helps us with subsorting.
- 	 */
--	p = strchr(s, '.');
-+	p = strstr(s, ".llvm.");
- 	if (p)
- 		*p = '\0';
- }
--- 
-2.39.2
-
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -11,11 +11,19 @@
+ #define pr_fmt(fmt) fmt
+ 
+ #include <linux/types.h>
++#include <linux/mm_types.h>
++#include <linux/overflow.h>
+ #include <linux/affs_hardblocks.h>
+ 
+ #include "check.h"
+ #include "amiga.h"
+ 
++/* magic offsets in partition DosEnvVec */
++#define NR_HD	3
++#define NR_SECT	5
++#define LO_CYL	9
++#define HI_CYL	10
++
+ static __inline__ u32
+ checksum_block(__be32 *m, int size)
+ {
+@@ -32,9 +40,12 @@ int amiga_partition(struct parsed_partit
+ 	unsigned char *data;
+ 	struct RigidDiskBlock *rdb;
+ 	struct PartitionBlock *pb;
+-	sector_t start_sect, nr_sects;
+-	int blk, part, res = 0;
+-	int blksize = 1;	/* Multiplier for disk block size */
++	u64 start_sect, nr_sects;
++	sector_t blk, end_sect;
++	u32 cylblk;		/* rdb_CylBlocks = nr_heads*sect_per_track */
++	u32 nr_hd, nr_sect, lo_cyl, hi_cyl;
++	int part, res = 0;
++	unsigned int blksize = 1;	/* Multiplier for disk block size */
+ 	int slot = 1;
+ 	char b[BDEVNAME_SIZE];
+ 
+@@ -44,7 +55,7 @@ int amiga_partition(struct parsed_partit
+ 		data = read_part_sector(state, blk, &sect);
+ 		if (!data) {
+ 			if (warn_no_part)
+-				pr_err("Dev %s: unable to read RDB block %d\n",
++				pr_err("Dev %s: unable to read RDB block %llu\n",
+ 				       bdevname(state->bdev, b), blk);
+ 			res = -1;
+ 			goto rdb_done;
+@@ -61,12 +72,12 @@ int amiga_partition(struct parsed_partit
+ 		*(__be32 *)(data+0xdc) = 0;
+ 		if (checksum_block((__be32 *)data,
+ 				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
+-			pr_err("Trashed word at 0xd0 in block %d ignored in checksum calculation\n",
++			pr_err("Trashed word at 0xd0 in block %llu ignored in checksum calculation\n",
+ 			       blk);
+ 			break;
+ 		}
+ 
+-		pr_err("Dev %s: RDB in block %d has bad checksum\n",
++		pr_err("Dev %s: RDB in block %llu has bad checksum\n",
+ 		       bdevname(state->bdev, b), blk);
+ 	}
+ 
+@@ -83,11 +94,16 @@ int amiga_partition(struct parsed_partit
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+ 	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
+-		blk *= blksize;	/* Read in terms partition table understands */
++		/* Read in terms partition table understands */
++		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
++			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
++				bdevname(state->bdev, b), blk, part);
++			break;
++		}
+ 		data = read_part_sector(state, blk, &sect);
+ 		if (!data) {
+ 			if (warn_no_part)
+-				pr_err("Dev %s: unable to read partition block %d\n",
++				pr_err("Dev %s: unable to read partition block %llu\n",
+ 				       bdevname(state->bdev, b), blk);
+ 			res = -1;
+ 			goto rdb_done;
+@@ -99,19 +115,70 @@ int amiga_partition(struct parsed_partit
+ 		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
+ 			continue;
+ 
+-		/* Tell Kernel about it */
++		/* RDB gives us more than enough rope to hang ourselves with,
++		 * many times over (2^128 bytes if all fields max out).
++		 * Some careful checks are in order, so check for potential
++		 * overflows.
++		 * We are multiplying four 32 bit numbers to one sector_t!
++		 */
++
++		nr_hd   = be32_to_cpu(pb->pb_Environment[NR_HD]);
++		nr_sect = be32_to_cpu(pb->pb_Environment[NR_SECT]);
++
++		/* CylBlocks is total number of blocks per cylinder */
++		if (check_mul_overflow(nr_hd, nr_sect, &cylblk)) {
++			pr_err("Dev %s: heads*sects %u overflows u32, skipping partition!\n",
++				bdevname(state->bdev, b), cylblk);
++			continue;
++		}
++
++		/* check for consistency with RDB defined CylBlocks */
++		if (cylblk > be32_to_cpu(rdb->rdb_CylBlocks)) {
++			pr_warn("Dev %s: cylblk %u > rdb_CylBlocks %u!\n",
++				bdevname(state->bdev, b), cylblk,
++				be32_to_cpu(rdb->rdb_CylBlocks));
++		}
++
++		/* RDB allows for variable logical block size -
++		 * normalize to 512 byte blocks and check result.
++		 */
++
++		if (check_mul_overflow(cylblk, blksize, &cylblk)) {
++			pr_err("Dev %s: partition %u bytes per cyl. overflows u32, skipping partition!\n",
++				bdevname(state->bdev, b), part);
++			continue;
++		}
++
++		/* Calculate partition start and end. Limit of 32 bit on cylblk
++		 * guarantees no overflow occurs if LBD support is enabled.
++		 */
++
++		lo_cyl = be32_to_cpu(pb->pb_Environment[LO_CYL]);
++		start_sect = ((u64) lo_cyl * cylblk);
++
++		hi_cyl = be32_to_cpu(pb->pb_Environment[HI_CYL]);
++		nr_sects = (((u64) hi_cyl - lo_cyl + 1) * cylblk);
+ 
+-		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
+-			   be32_to_cpu(pb->pb_Environment[9])) *
+-			   be32_to_cpu(pb->pb_Environment[3]) *
+-			   be32_to_cpu(pb->pb_Environment[5]) *
+-			   blksize;
+ 		if (!nr_sects)
+ 			continue;
+-		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
+-			     be32_to_cpu(pb->pb_Environment[3]) *
+-			     be32_to_cpu(pb->pb_Environment[5]) *
+-			     blksize;
++
++		/* Warn user if partition end overflows u32 (AmigaDOS limit) */
++
++		if ((start_sect + nr_sects) > UINT_MAX) {
++			pr_warn("Dev %s: partition %u (%llu-%llu) needs 64 bit device support!\n",
++				bdevname(state->bdev, b), part,
++				start_sect, start_sect + nr_sects);
++		}
++
++		if (check_add_overflow(start_sect, nr_sects, &end_sect)) {
++			pr_err("Dev %s: partition %u (%llu-%llu) needs LBD device support, skipping partition!\n",
++				bdevname(state->bdev, b), part,
++				start_sect, end_sect);
++			continue;
++		}
++
++		/* Tell Kernel about it */
++
+ 		put_partition(state,slot++,start_sect,nr_sects);
+ 		{
+ 			/* Be even more informative to aid mounting */
 
 
