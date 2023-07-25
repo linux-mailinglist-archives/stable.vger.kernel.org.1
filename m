@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32B6A7611AA
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB9E761272
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231929AbjGYKyK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58396 "EHLO
+        id S233813AbjGYLCi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:02:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233576AbjGYKx2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:28 -0400
+        with ESMTP id S232457AbjGYLCY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF22B1FF3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6907799
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7794261655
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85803C433C8;
-        Tue, 25 Jul 2023 10:51:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 489C461689
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55592C433C8;
+        Tue, 25 Jul 2023 10:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282315;
-        bh=iO1tp8FRW3x4TNqZ9g1+D+nfkFV4q2uer9zbYAKca4w=;
+        s=korg; t=1690282781;
+        bh=p86FKTaCv156ZBMTJC2vFEVIUJWfeMNtL7FQCSkegt4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ADvfUbofm3Xfr8mgt9B/5s4QZgFl7XJTGtlvDYkX6X1Pv6Vqg7KVjb5Wcig8UBdbf
-         m1O33xBnTzu7mctwmeVQXQfZq87YAdoqvQYTJVROkb3eV1boV7kZfnLdXNmG6dQZ5+
-         uIRH0qwe5SfvKDVYPnTQmX3xSiFGnk53Y3f8mKdg=
+        b=CYR7Sm/Lt6e1m5fRzfHwlWFJdOPDA+1ALjWa9nBCGjMWJDkQxRYV1KM0xb8naUCOc
+         Ccx/XqpnN8HYryNyVddy0hjGmGMwM0mQ6PusaO6xXBf4kP6xDKo+yu1b6lLSNy58Fv
+         AmeS1W5wnh2ZbKiSwqHf4URnv8rRSGLOLY63XLvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 085/227] [PATCH AUTOSEL 5.4 10/12] MIPS: dec: prom: Address -Warray-bounds warning
+        John Whittington <git@jbrengineering.co.uk>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 024/183] can: gs_usb: gs_can_open(): improve error handling
 Date:   Tue, 25 Jul 2023 12:44:12 +0200
-Message-ID: <20230725104518.266704627@linuxfoundation.org>
+Message-ID: <20230725104508.763623999@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+References: <20230725104507.756981058@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,52 +55,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 7b191b9b55df2a844bd32d1d380f47a7df1c2896 ]
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-Zero-length arrays are deprecated, and we are replacing them with flexible
-array members instead. So, replace zero-length array with flexible-array
-member in struct memmap.
+commit 2603be9e8167ddc7bea95dcfab9ffc33414215aa upstream.
 
-Address the following warning found after building (with GCC-13) mips64
-with decstation_64_defconfig:
-In function 'rex_setup_memory_region',
-    inlined from 'prom_meminit' at arch/mips/dec/prom/memory.c:91:3:
-arch/mips/dec/prom/memory.c:72:31: error: array subscript i is outside array bounds of 'unsigned char[0]' [-Werror=array-bounds=]
-   72 |                 if (bm->bitmap[i] == 0xff)
-      |                     ~~~~~~~~~~^~~
-In file included from arch/mips/dec/prom/memory.c:16:
-./arch/mips/include/asm/dec/prom.h: In function 'prom_meminit':
-./arch/mips/include/asm/dec/prom.h:73:23: note: while referencing 'bitmap'
-   73 |         unsigned char bitmap[0];
+The gs_usb driver handles USB devices with more than 1 CAN channel.
+The RX path for all channels share the same bulk endpoint (the
+transmitted bulk data encodes the channel number). These per-device
+resources are allocated and submitted by the first opened channel.
 
-This helps with the ongoing efforts to globally enable -Warray-bounds.
+During this allocation, the resources are either released immediately
+in case of a failure or the URBs are anchored. All anchored URBs are
+finally killed with gs_usb_disconnect().
 
-This results in no differences in binary output.
+Currently, gs_can_open() returns with an error if the allocation of a
+URB or a buffer fails. However, if usb_submit_urb() fails, the driver
+continues with the URBs submitted so far, even if no URBs were
+successfully submitted.
 
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/323
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Treat every error as fatal and free all allocated resources
+immediately.
+
+Switch to goto-style error handling, to prepare the driver for more
+per-device resource allocation.
+
+Cc: stable@vger.kernel.org
+Cc: John Whittington <git@jbrengineering.co.uk>
+Link: https://lore.kernel.org/all/20230716-gs_usb-fix-time-stamp-counter-v1-1-9017cefcd9d5@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/dec/prom.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c |   31 ++++++++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/include/asm/dec/prom.h b/arch/mips/include/asm/dec/prom.h
-index 1e1247add1cf8..908e96e3a3117 100644
---- a/arch/mips/include/asm/dec/prom.h
-+++ b/arch/mips/include/asm/dec/prom.h
-@@ -70,7 +70,7 @@ static inline bool prom_is_rex(u32 magic)
-  */
- typedef struct {
- 	int pagesize;
--	unsigned char bitmap[0];
-+	unsigned char bitmap[];
- } memmap;
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -833,6 +833,7 @@ static int gs_can_open(struct net_device
+ 		.mode = cpu_to_le32(GS_CAN_MODE_START),
+ 	};
+ 	struct gs_host_frame *hf;
++	struct urb *urb = NULL;
+ 	u32 ctrlmode;
+ 	u32 flags = 0;
+ 	int rc, i;
+@@ -858,13 +859,14 @@ static int gs_can_open(struct net_device
  
+ 	if (!parent->active_channels) {
+ 		for (i = 0; i < GS_MAX_RX_URBS; i++) {
+-			struct urb *urb;
+ 			u8 *buf;
  
--- 
-2.39.2
-
+ 			/* alloc rx urb */
+ 			urb = usb_alloc_urb(0, GFP_KERNEL);
+-			if (!urb)
+-				return -ENOMEM;
++			if (!urb) {
++				rc = -ENOMEM;
++				goto out_usb_kill_anchored_urbs;
++			}
+ 
+ 			/* alloc rx buffer */
+ 			buf = kmalloc(dev->parent->hf_size_rx,
+@@ -872,8 +874,8 @@ static int gs_can_open(struct net_device
+ 			if (!buf) {
+ 				netdev_err(netdev,
+ 					   "No memory left for USB buffer\n");
+-				usb_free_urb(urb);
+-				return -ENOMEM;
++				rc = -ENOMEM;
++				goto out_usb_free_urb;
+ 			}
+ 
+ 			/* fill, anchor, and submit rx urb */
+@@ -896,9 +898,7 @@ static int gs_can_open(struct net_device
+ 				netdev_err(netdev,
+ 					   "usb_submit failed (err=%d)\n", rc);
+ 
+-				usb_unanchor_urb(urb);
+-				usb_free_urb(urb);
+-				break;
++				goto out_usb_unanchor_urb;
+ 			}
+ 
+ 			/* Drop reference,
+@@ -944,7 +944,8 @@ static int gs_can_open(struct net_device
+ 		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 			gs_usb_timestamp_stop(dev);
+ 		dev->can.state = CAN_STATE_STOPPED;
+-		return rc;
++
++		goto out_usb_kill_anchored_urbs;
+ 	}
+ 
+ 	parent->active_channels++;
+@@ -952,6 +953,18 @@ static int gs_can_open(struct net_device
+ 		netif_start_queue(netdev);
+ 
+ 	return 0;
++
++out_usb_unanchor_urb:
++	usb_unanchor_urb(urb);
++out_usb_free_urb:
++	usb_free_urb(urb);
++out_usb_kill_anchored_urbs:
++	if (!parent->active_channels)
++		usb_kill_anchored_urbs(&dev->tx_submitted);
++
++	close_candev(netdev);
++
++	return rc;
+ }
+ 
+ static int gs_can_close(struct net_device *netdev)
 
 
