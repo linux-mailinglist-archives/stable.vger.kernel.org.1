@@ -2,46 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E637D7616F9
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56397611F2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232329AbjGYLoG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:44:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51570 "EHLO
+        id S230409AbjGYK6b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235423AbjGYLnc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:43:32 -0400
+        with ESMTP id S229874AbjGYK5Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F1C2105
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:43:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 889712116
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:54:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21E1461654
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:43:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34924C433C7;
-        Tue, 25 Jul 2023 11:43:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E93B86166F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF429C433C8;
+        Tue, 25 Jul 2023 10:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285392;
-        bh=WxoOYF56tYy/ZrNceZOrgG786rXMdVj5fr7mUVLNFI4=;
+        s=korg; t=1690282485;
+        bh=iXwbbWYHtCbyGhHnwsiItwAgGDSVUNs61f2DFbQTuu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B7052Ke9lV66HQHAc3MD2zIqotV60OUe2OFmCVuUxzgBB8O4enFjF3N/AZc1gvaj2
-         7xqQjQRYaalwSZ6uYW/7MhwnArRg/TsPpEWD0YdF7pbxUTDRIUHxCbPkhvyuqCt4YN
-         CKT8g/7Vm3QWCkctPtppmemQzpB///ndGyEb5OKw=
+        b=SqMbBEhQuXnplj6TSYQaBnxCiSmjZGcIEaXYHkifqBZHbnWhcqeEYqX5u4wdjZiNl
+         TZBk2nLmWOCK+1iT6UM8TCenz7KNQeP8c+/E9r2bPyT/Z3MeBPmnZUJwaSRuua30zE
+         6qjj811TRZ4vi3zmnGfXMrqU/VFcVGDGT/aroupA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Robert Hancock <robert.hancock@calian.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 160/313] i2c: xiic: Dont try to handle more interrupt events after error
+        Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+        James Clark <james.clark@arm.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        coresight@lists.linaro.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 146/227] perf build: Fix library not found error when using CSLIBS
 Date:   Tue, 25 Jul 2023 12:45:13 +0200
-Message-ID: <20230725104527.880689224@linuxfoundation.org>
+Message-ID: <20230725104520.926343410@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,58 +65,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit cb6e45c9a0ad9e0f8664fd06db0227d185dc76ab ]
+[ Upstream commit 1feece2780ac2f8de45177fe53979726cee4b3d1 ]
 
-In xiic_process, it is possible that error events such as arbitration
-lost or TX error can be raised in conjunction with other interrupt flags
-such as TX FIFO empty or bus not busy. Error events result in the
-controller being reset and the error returned to the calling request,
-but the function could potentially try to keep handling the other
-events, such as by writing more messages into the TX FIFO. Since the
-transaction has already failed, this is not helpful and will just cause
-issues.
+-L only specifies the search path for libraries directly provided in the
+link line with -l. Because -lopencsd isn't specified, it's only linked
+because it's a dependency of -lopencsd_c_api. Dependencies like this are
+resolved using the default system search paths or -rpath-link=... rather
+than -L. This means that compilation only works if OpenCSD is installed
+to the system rather than provided with the CSLIBS (-L) option.
 
-This problem has been present ever since:
+This could be fixed by adding -Wl,-rpath-link=$(CSLIBS) but that is less
+conventional than just adding -lopencsd to the link line so that it uses
+-L. -lopencsd seems to have been removed in commit ed17b1914978eddb
+("perf tools: Drop requirement for libstdc++.so for libopencsd check")
+because it was thought that there was a chance compilation would work
+even if it didn't exist, but I think that only applies to libstdc++ so
+there is no harm to add it back. libopencsd.so and libopencsd_c_api.so
+would always exist together.
 
-commit 7f9906bd7f72 ("i2c: xiic: Service all interrupts in isr")
+Testing
+=======
 
-which allowed non-error events to be handled after errors, but became
-more obvious after:
+The following scenarios now all work:
 
-commit 743e227a8959 ("i2c: xiic: Defer xiic_wakeup() and
-__xiic_start_xfer() in xiic_process()")
+ * Cross build with OpenCSD installed
+ * Cross build using CSLIBS=...
+ * Native build with OpenCSD installed
+ * Native build using CSLIBS=...
+ * Static cross build with OpenCSD installed
+ * Static cross build with CSLIBS=...
 
-which reworked the code to add a WARN_ON which triggers if both the
-xfer_more and wakeup_req flags were set, since this combination is
-not supposed to happen, but was occurring in this scenario.
+Committer testing:
 
-Skip further interrupt handling after error flags are detected to avoid
-this problem.
+  ⬢[acme@toolbox perf-tools]$ alias m
+  alias m='make -k BUILD_BPF_SKEL=1 CORESIGHT=1 O=/tmp/build/perf-tools -C tools/perf install-bin && git status && perf test python ;  perf record -o /dev/null sleep 0.01 ; perf stat --null sleep 0.01'
+  ⬢[acme@toolbox perf-tools]$ ldd ~/bin/perf | grep csd
+  	libopencsd_c_api.so.1 => /lib64/libopencsd_c_api.so.1 (0x00007fd49c44e000)
+  	libopencsd.so.1 => /lib64/libopencsd.so.1 (0x00007fd49bd56000)
+  ⬢[acme@toolbox perf-tools]$ cat /etc/redhat-release
+  Fedora release 36 (Thirty Six)
+  ⬢[acme@toolbox perf-tools]$
 
-Fixes: 7f9906bd7f72 ("i2c: xiic: Service all interrupts in isr")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: ed17b1914978eddb ("perf tools: Drop requirement for libstdc++.so for libopencsd check")
+Reported-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Uwe Kleine-König <uwe@kleine-koenig.org>
+Cc: coresight@lists.linaro.org
+Closes: https://lore.kernel.org/linux-arm-kernel/56905d7a-a91e-883a-b707-9d5f686ba5f1@arm.com/
+Link: https://lore.kernel.org/all/36cc4dc6-bf4b-1093-1c0a-876e368af183@kleine-koenig.org/
+Link: https://lore.kernel.org/r/20230707154546.456720-1-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/Makefile.config | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index c3fcaf5decc74..6bcb46cc28cdf 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -400,6 +400,8 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 			wakeup_req = 1;
- 			wakeup_code = STATE_ERROR;
- 		}
-+		/* don't try to handle other events */
-+		goto out;
- 	}
- 	if (pend & XIIC_INTR_RX_FULL_MASK) {
- 		/* Receive register/FIFO is full */
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index a794d9eca93d8..72f068682c9a2 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -155,9 +155,9 @@ FEATURE_CHECK_LDFLAGS-libcrypto = -lcrypto
+ ifdef CSINCLUDES
+   LIBOPENCSD_CFLAGS := -I$(CSINCLUDES)
+ endif
+-OPENCSDLIBS := -lopencsd_c_api
++OPENCSDLIBS := -lopencsd_c_api -lopencsd
+ ifeq ($(findstring -static,${LDFLAGS}),-static)
+-  OPENCSDLIBS += -lopencsd -lstdc++
++  OPENCSDLIBS += -lstdc++
+ endif
+ ifdef CSLIBS
+   LIBOPENCSD_LDFLAGS := -L$(CSLIBS)
 -- 
 2.39.2
 
