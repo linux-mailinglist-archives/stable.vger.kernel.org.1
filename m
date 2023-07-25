@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FB70761250
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5D176158C
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233815AbjGYLBN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40832 "EHLO
+        id S234774AbjGYLaR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233811AbjGYLA4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3286B423B
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:11 -0700 (PDT)
+        with ESMTP id S234770AbjGYLaR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:30:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52316FB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:30:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA55C61602
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D0DC433C8;
-        Tue, 25 Jul 2023 10:58:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E57A8616A2
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:30:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0311FC433C7;
+        Tue, 25 Jul 2023 11:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282690;
-        bh=/4pcWYRPPV61hjvHKgmW0csiHAsUpHHE5ABVPWvVPis=;
+        s=korg; t=1690284615;
+        bh=AiHQvf9AX43ZmG5wHf2rOHUaAGqJRg4EKec6N6YVfX4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mbD9r7WusBO5xWcExehdEWqG3EQwNSHce/tSmu5T63fN5DlIms3CKLzxfvsEoNDLQ
-         kNDJTwW/VJMBH76u2TLvsfGZvRYfp/gzO9IVIl0NXM3asnuIA16JZ5uwJfKqumiHMY
-         j9AuFVT41dhs3y5+H7iJa+cRgn6GtHXtCHN4yRSk=
+        b=HLpfZkhyzxg01MXgN7Ces6trM/dM1XGuFE+RUlMEwUqdVUszLRxy6FwBUpj6hiY0R
+         RPdK32u9Z2MZAf2RGVIkxFNNpg0MF0J5C6ovMWx2h48B0gTvbp2lyAgKfYlMu0NT9F
+         P2WLLMtf11RkTXe941IVkBhDvj/m0t9CSLDq8nQ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 192/227] fbdev: au1200fb: Fix missing IRQ check in au1200fb_drv_probe
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 5.10 420/509] Revert "8250: add support for ASIX devices with a FIFO bug"
 Date:   Tue, 25 Jul 2023 12:45:59 +0200
-Message-ID: <20230725104522.759996477@linuxfoundation.org>
+Message-ID: <20230725104612.902134356@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,40 +55,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-[ Upstream commit 4e88761f5f8c7869f15a2046b1a1116f4fab4ac8 ]
+commit a82d62f708545d22859584e0e0620da8e3759bbc upstream.
 
-This func misses checking for platform_get_irq()'s call and may passes the
-negative error codes to request_irq(), which takes unsigned IRQ #,
-causing it to fail with -EINVAL, overriding an original error code.
+This reverts commit eb26dfe8aa7eeb5a5aa0b7574550125f8aa4c3b3.
 
-Fix this by stop calling request_irq() with invalid IRQ #s.
+Commit eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO
+bug") merged on Jul 13, 2012 adds a quirk for PCI_VENDOR_ID_ASIX
+(0x9710). But that ID is the same as PCI_VENDOR_ID_NETMOS defined in
+1f8b061050c7 ("[PATCH] Netmos parallel/serial/combo support") merged
+on Mar 28, 2005. In pci_serial_quirks array, the NetMos entry always
+takes precedence over the ASIX entry even since it was initially
+merged, code in that commit is always unreachable.
 
-Fixes: 1630d85a8312 ("au1200fb: fix hardcoded IRQ")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In my tests, adding the FIFO workaround to pci_netmos_init() makes no
+difference, and the vendor driver also does not have such workaround.
+Given that the code was never used for over a decade, it's safe to
+revert it.
+
+Also, the real PCI_VENDOR_ID_ASIX should be 0x125b, which is used on
+their newer AX99100 PCIe serial controllers released on 2016. The FIFO
+workaround should not be intended for these newer controllers, and it
+was never implemented in vendor driver.
+
+Fixes: eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO bug")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230619155743.827859-1-jiaqing.zhao@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/au1200fb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/8250/8250.h      |    1 -
+ drivers/tty/serial/8250/8250_pci.c  |   19 -------------------
+ drivers/tty/serial/8250/8250_port.c |   11 +++--------
+ include/linux/serial_8250.h         |    1 -
+ 4 files changed, 3 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/video/fbdev/au1200fb.c b/drivers/video/fbdev/au1200fb.c
-index aed88ce45bf09..d8f085d4ede30 100644
---- a/drivers/video/fbdev/au1200fb.c
-+++ b/drivers/video/fbdev/au1200fb.c
-@@ -1732,6 +1732,9 @@ static int au1200fb_drv_probe(struct platform_device *dev)
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -87,7 +87,6 @@ struct serial8250_config {
+ #define UART_BUG_TXEN	(1 << 1)	/* UART has buggy TX IIR status */
+ #define UART_BUG_NOMSR	(1 << 2)	/* UART has buggy MSR status bits (Au1x00) */
+ #define UART_BUG_THRE	(1 << 3)	/* UART has buggy THRE reassertion */
+-#define UART_BUG_PARITY	(1 << 4)	/* UART mishandles parity if FIFO enabled */
+ #define UART_BUG_TXRACE	(1 << 5)	/* UART Tx fails to set remote DR */
  
- 	/* Now hook interrupt too */
- 	irq = platform_get_irq(dev, 0);
-+	if (irq < 0)
-+		return irq;
-+
- 	ret = request_irq(irq, au1200fb_handle_irq,
- 			  IRQF_SHARED, "lcd", (void *)dev);
- 	if (ret) {
--- 
-2.39.2
-
+ 
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -1044,14 +1044,6 @@ static int pci_oxsemi_tornado_init(struc
+ 	return number_uarts;
+ }
+ 
+-static int pci_asix_setup(struct serial_private *priv,
+-		  const struct pciserial_board *board,
+-		  struct uart_8250_port *port, int idx)
+-{
+-	port->bugs |= UART_BUG_PARITY;
+-	return pci_default_setup(priv, board, port, idx);
+-}
+-
+ /* Quatech devices have their own extra interface features */
+ 
+ struct quatech_feature {
+@@ -1874,7 +1866,6 @@ pci_moxa_setup(struct serial_private *pr
+ #define PCI_DEVICE_ID_WCH_CH355_4S	0x7173
+ #define PCI_VENDOR_ID_AGESTAR		0x5372
+ #define PCI_DEVICE_ID_AGESTAR_9375	0x6872
+-#define PCI_VENDOR_ID_ASIX		0x9710
+ #define PCI_DEVICE_ID_BROADCOM_TRUMANAGE 0x160a
+ #define PCI_DEVICE_ID_AMCC_ADDIDATA_APCI7800 0x818e
+ 
+@@ -2685,16 +2676,6 @@ static struct pci_serial_quirk pci_seria
+ 		.setup          = pci_wch_ch38x_setup,
+ 	},
+ 	/*
+-	 * ASIX devices with FIFO bug
+-	 */
+-	{
+-		.vendor		= PCI_VENDOR_ID_ASIX,
+-		.device		= PCI_ANY_ID,
+-		.subvendor	= PCI_ANY_ID,
+-		.subdevice	= PCI_ANY_ID,
+-		.setup		= pci_asix_setup,
+-	},
+-	/*
+ 	 * Broadcom TruManage (NetXtreme)
+ 	 */
+ 	{
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2577,11 +2577,8 @@ static unsigned char serial8250_compute_
+ 
+ 	if (c_cflag & CSTOPB)
+ 		cval |= UART_LCR_STOP;
+-	if (c_cflag & PARENB) {
++	if (c_cflag & PARENB)
+ 		cval |= UART_LCR_PARITY;
+-		if (up->bugs & UART_BUG_PARITY)
+-			up->fifo_bug = true;
+-	}
+ 	if (!(c_cflag & PARODD))
+ 		cval |= UART_LCR_EPAR;
+ #ifdef CMSPAR
+@@ -2744,8 +2741,7 @@ serial8250_do_set_termios(struct uart_po
+ 	up->lcr = cval;					/* Save computed LCR */
+ 
+ 	if (up->capabilities & UART_CAP_FIFO && port->fifosize > 1) {
+-		/* NOTE: If fifo_bug is not set, a user can set RX_trigger. */
+-		if ((baud < 2400 && !up->dma) || up->fifo_bug) {
++		if (baud < 2400 && !up->dma) {
+ 			up->fcr &= ~UART_FCR_TRIGGER_MASK;
+ 			up->fcr |= UART_FCR_TRIGGER_1;
+ 		}
+@@ -3081,8 +3077,7 @@ static int do_set_rxtrig(struct tty_port
+ 	struct uart_8250_port *up = up_to_u8250p(uport);
+ 	int rxtrig;
+ 
+-	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1 ||
+-	    up->fifo_bug)
++	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1)
+ 		return -EINVAL;
+ 
+ 	rxtrig = bytes_to_fcr_rxtrig(up, bytes);
+--- a/include/linux/serial_8250.h
++++ b/include/linux/serial_8250.h
+@@ -98,7 +98,6 @@ struct uart_8250_port {
+ 	struct list_head	list;		/* ports on this IRQ */
+ 	u32			capabilities;	/* port capabilities */
+ 	unsigned short		bugs;		/* port bugs */
+-	bool			fifo_bug;	/* min RX trigger if enabled */
+ 	unsigned int		tx_loadsz;	/* transmit fifo load size */
+ 	unsigned char		acr;
+ 	unsigned char		fcr;
 
 
