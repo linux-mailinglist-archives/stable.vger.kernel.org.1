@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8742F76138C
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A7637615CD
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234199AbjGYLL3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:11:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45752 "EHLO
+        id S234664AbjGYLdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234127AbjGYLLO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEB8C10F1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:26 -0700 (PDT)
+        with ESMTP id S234863AbjGYLdS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D36F3
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 40F6F6166F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D082C433C8;
-        Tue, 25 Jul 2023 11:10:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73C5061655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DD8C433C8;
+        Tue, 25 Jul 2023 11:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283425;
-        bh=cBpYCpLaI+9OgvbFaVO0Daks6ibu6Xk2STIlbexfbko=;
+        s=korg; t=1690284796;
+        bh=3EsGSstY+qqV5SRBQZVjiZAXemYqRBaE8rwfnEv8uzc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qTX/cpwbNJ1UOp7iY44Pq+osc3mn6F9+9ey1nXNuYF9JEQNntoF3Aufcnj/ta+T/1
-         OALwLiZ2pRszmU8TxcBfjrl5KRzl4m/Opp1SxFqqn23ZvtjX08caXPogdDPGUwTI2l
-         yJIcy0+No86gLUJZIW6tWFeo+FUq51bzrrTXG9C0=
+        b=pDyrygQ6tpyQCNgavBjKvVZnamkQiApDF/1GIfknLDVns+Ddbvk/5Vx7aHX0h5kGu
+         bmJRhvkfVzsMNI3CdO8H3Abr+hK50Wvp9GXuX1PKhORldho23dBU2ePUNRYRw/AAuA
+         SqixqdS3KcWXQksfQNvT6AxnbCmrc3dswpIxiDe0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 72/78] tcp: annotate data-races around tp->notsent_lowat
-Date:   Tue, 25 Jul 2023 12:47:03 +0200
-Message-ID: <20230725104454.065898956@linuxfoundation.org>
+Subject: [PATCH 5.10 485/509] Revert "tcp: avoid the lookup process failing to get sk in ehash table"
+Date:   Tue, 25 Jul 2023 12:47:04 +0200
+Message-ID: <20230725104615.943471942@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,62 +55,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 1aeb87bc1440c5447a7fa2d6e3c2cca52cbd206b ]
+[ Upstream commit 81b3ade5d2b98ad6e0a473b0e1e420a801275592 ]
 
-tp->notsent_lowat can be read locklessly from do_tcp_getsockopt()
-and tcp_poll().
+This reverts commit 3f4ca5fafc08881d7a57daa20449d171f2887043.
 
-Fixes: c9bee3b7fdec ("tcp: TCP_NOTSENT_LOWAT socket option")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-10-edumazet@google.com
+Commit 3f4ca5fafc08 ("tcp: avoid the lookup process failing to get sk in
+ehash table") reversed the order in how a socket is inserted into ehash
+to fix an issue that ehash-lookup could fail when reqsk/full sk/twsk are
+swapped.  However, it introduced another lookup failure.
+
+The full socket in ehash is allocated from a slab with SLAB_TYPESAFE_BY_RCU
+and does not have SOCK_RCU_FREE, so the socket could be reused even while
+it is being referenced on another CPU doing RCU lookup.
+
+Let's say a socket is reused and inserted into the same hash bucket during
+lookup.  After the blamed commit, a new socket is inserted at the end of
+the list.  If that happens, we will skip sockets placed after the previous
+position of the reused socket, resulting in ehash lookup failure.
+
+As described in Documentation/RCU/rculist_nulls.rst, we should insert a
+new socket at the head of the list to avoid such an issue.
+
+This issue, the swap-lookup-failure, and another variant reported in [0]
+can all be handled properly by adding a locked ehash lookup suggested by
+Eric Dumazet [1].
+
+However, this issue could occur for every packet, thus more likely than
+the other two races, so let's revert the change for now.
+
+Link: https://lore.kernel.org/netdev/20230606064306.9192-1-duanmuquan@baidu.com/ [0]
+Link: https://lore.kernel.org/netdev/CANn89iK8snOz8TYOhhwfimC7ykYA78GA3Nyv8x06SZYa1nKdyA@mail.gmail.com/ [1]
+Fixes: 3f4ca5fafc08 ("tcp: avoid the lookup process failing to get sk in ehash table")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230717215918.15723-1-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h | 6 +++++-
- net/ipv4/tcp.c    | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ net/ipv4/inet_hashtables.c    | 17 ++---------------
+ net/ipv4/inet_timewait_sock.c |  8 ++++----
+ 2 files changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index fe58b089f0b16..d8920f84f0a8d 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2012,7 +2012,11 @@ void __tcp_v4_send_check(struct sk_buff *skb, __be32 saddr, __be32 daddr);
- static inline u32 tcp_notsent_lowat(const struct tcp_sock *tp)
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index 79bf550c9dfc5..ad050f8476b8e 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -571,20 +571,8 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	spin_lock(lock);
+ 	if (osk) {
+ 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
+-		ret = sk_hashed(osk);
+-		if (ret) {
+-			/* Before deleting the node, we insert a new one to make
+-			 * sure that the look-up-sk process would not miss either
+-			 * of them and that at least one node would exist in ehash
+-			 * table all the time. Otherwise there's a tiny chance
+-			 * that lookup process could find nothing in ehash table.
+-			 */
+-			__sk_nulls_add_node_tail_rcu(sk, list);
+-			sk_nulls_del_node_init_rcu(osk);
+-		}
+-		goto unlock;
+-	}
+-	if (found_dup_sk) {
++		ret = sk_nulls_del_node_init_rcu(osk);
++	} else if (found_dup_sk) {
+ 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
+ 		if (*found_dup_sk)
+ 			ret = false;
+@@ -593,7 +581,6 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	if (ret)
+ 		__sk_nulls_add_node_rcu(sk, list);
+ 
+-unlock:
+ 	spin_unlock(lock);
+ 
+ 	return ret;
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index a00102d7c7fd4..c411c87ae865f 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -81,10 +81,10 @@ void inet_twsk_put(struct inet_timewait_sock *tw)
+ }
+ EXPORT_SYMBOL_GPL(inet_twsk_put);
+ 
+-static void inet_twsk_add_node_tail_rcu(struct inet_timewait_sock *tw,
+-					struct hlist_nulls_head *list)
++static void inet_twsk_add_node_rcu(struct inet_timewait_sock *tw,
++				   struct hlist_nulls_head *list)
  {
- 	struct net *net = sock_net((struct sock *)tp);
--	return tp->notsent_lowat ?: READ_ONCE(net->ipv4.sysctl_tcp_notsent_lowat);
-+	u32 val;
-+
-+	val = READ_ONCE(tp->notsent_lowat);
-+
-+	return val ?: READ_ONCE(net->ipv4.sysctl_tcp_notsent_lowat);
+-	hlist_nulls_add_tail_rcu(&tw->tw_node, list);
++	hlist_nulls_add_head_rcu(&tw->tw_node, list);
  }
  
- bool tcp_stream_memory_free(const struct sock *sk, int wake);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 29661f7e372d9..95e3e32d211a7 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3669,7 +3669,7 @@ static int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 		err = tcp_repair_set_window(tp, optval, optlen);
- 		break;
- 	case TCP_NOTSENT_LOWAT:
--		tp->notsent_lowat = val;
-+		WRITE_ONCE(tp->notsent_lowat, val);
- 		sk->sk_write_space(sk);
- 		break;
- 	case TCP_INQ:
-@@ -4161,7 +4161,7 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
- 		val = tcp_time_stamp_raw() + tp->tsoffset;
- 		break;
- 	case TCP_NOTSENT_LOWAT:
--		val = tp->notsent_lowat;
-+		val = READ_ONCE(tp->notsent_lowat);
- 		break;
- 	case TCP_INQ:
- 		val = tp->recvmsg_inq;
+ static void inet_twsk_add_bind_node(struct inet_timewait_sock *tw,
+@@ -120,7 +120,7 @@ void inet_twsk_hashdance(struct inet_timewait_sock *tw, struct sock *sk,
+ 
+ 	spin_lock(lock);
+ 
+-	inet_twsk_add_node_tail_rcu(tw, &ehead->chain);
++	inet_twsk_add_node_rcu(tw, &ehead->chain);
+ 
+ 	/* Step 3: Remove SK from hash chain */
+ 	if (__sk_nulls_del_node_init_rcu(sk))
 -- 
 2.39.2
 
