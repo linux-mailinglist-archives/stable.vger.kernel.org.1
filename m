@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ABC1761355
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB70761250
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234097AbjGYLJl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45756 "EHLO
+        id S233815AbjGYLBN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234153AbjGYLJ0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:09:26 -0400
+        with ESMTP id S233811AbjGYLA4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:00:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B33E3ABD
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:08:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3286B423B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 458AA61656
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:08:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57830C433C8;
-        Tue, 25 Jul 2023 11:08:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA55C61602
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D0DC433C8;
+        Tue, 25 Jul 2023 10:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283308;
-        bh=4YizPSOdcxOpe26SPgmpteg0DlIe9dzzGvuk8AGEH0w=;
+        s=korg; t=1690282690;
+        bh=/4pcWYRPPV61hjvHKgmW0csiHAsUpHHE5ABVPWvVPis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1v3VAgruh1xa78A14kXWPJdqH7YWFZA+NvMjbRas79McaxGu6wbkzA80qtQkIygHW
-         pa7DWYFD9X7uDMwUecroCzNJ4QnHRsL4VX5nKBMoWdXAOk/BNft0cgSRFrN8ZdlVzt
-         PKnnjUdTmITzD+F/ABhdulifCadtlLToermPanf4=
+        b=mbD9r7WusBO5xWcExehdEWqG3EQwNSHce/tSmu5T63fN5DlIms3CKLzxfvsEoNDLQ
+         kNDJTwW/VJMBH76u2TLvsfGZvRYfp/gzO9IVIl0NXM3asnuIA16JZ5uwJfKqumiHMY
+         j9AuFVT41dhs3y5+H7iJa+cRgn6GtHXtCHN4yRSk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Anand Jain <anand.jain@oracle.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 08/78] btrfs: zoned: fix memory leak after finding block group with super blocks
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 192/227] fbdev: au1200fb: Fix missing IRQ check in au1200fb_drv_probe
 Date:   Tue, 25 Jul 2023 12:45:59 +0200
-Message-ID: <20230725104451.648547994@linuxfoundation.org>
+Message-ID: <20230725104522.759996477@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,38 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit f1a07c2b4e2c473ec322b8b9ece071b8c88a3512 upstream.
+[ Upstream commit 4e88761f5f8c7869f15a2046b1a1116f4fab4ac8 ]
 
-At exclude_super_stripes(), if we happen to find a block group that has
-super blocks mapped to it and we are on a zoned filesystem, we error out
-as this is not supposed to happen, indicating either a bug or maybe some
-memory corruption for example. However we are exiting the function without
-freeing the memory allocated for the logical address of the super blocks.
-Fix this by freeing the logical address.
+This func misses checking for platform_get_irq()'s call and may passes the
+negative error codes to request_irq(), which takes unsigned IRQ #,
+causing it to fail with -EINVAL, overriding an original error code.
 
-Fixes: 12659251ca5d ("btrfs: implement log-structured superblock for ZONED mode")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by stop calling request_irq() with invalid IRQ #s.
+
+Fixes: 1630d85a8312 ("au1200fb: fix hardcoded IRQ")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/au1200fb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1855,6 +1855,7 @@ static int exclude_super_stripes(struct
+diff --git a/drivers/video/fbdev/au1200fb.c b/drivers/video/fbdev/au1200fb.c
+index aed88ce45bf09..d8f085d4ede30 100644
+--- a/drivers/video/fbdev/au1200fb.c
++++ b/drivers/video/fbdev/au1200fb.c
+@@ -1732,6 +1732,9 @@ static int au1200fb_drv_probe(struct platform_device *dev)
  
- 		/* Shouldn't have super stripes in sequential zones */
- 		if (zoned && nr) {
-+			kfree(logical);
- 			btrfs_err(fs_info,
- 			"zoned: block group %llu must not contain super block",
- 				  cache->start);
+ 	/* Now hook interrupt too */
+ 	irq = platform_get_irq(dev, 0);
++	if (irq < 0)
++		return irq;
++
+ 	ret = request_irq(irq, au1200fb_handle_irq,
+ 			  IRQF_SHARED, "lcd", (void *)dev);
+ 	if (ret) {
+-- 
+2.39.2
+
 
 
