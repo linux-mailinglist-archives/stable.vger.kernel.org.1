@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9987615E8
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41CF376178B
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233754AbjGYLe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41734 "EHLO
+        id S232507AbjGYLsr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:48:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234697AbjGYLeZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:34:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C25F18F
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:34:24 -0700 (PDT)
+        with ESMTP id S233698AbjGYLsJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:48:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E36BC
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:48:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FD686169A
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C437C433C8;
-        Tue, 25 Jul 2023 11:34:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC38A616A9
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:48:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8853C433C7;
+        Tue, 25 Jul 2023 11:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284863;
-        bh=coAbf52WCRWqzTFA4dObFQZO+GMaXUyMy2H8GfOyIYI=;
+        s=korg; t=1690285687;
+        bh=yY6o2+9jF9APMP5GP+geqS/D3HcXNdIB/Q2s0PvUX+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vfw8WJMKzCtizZBrP8PPB4hMi/JXOi9FleF2VWk5Vs3Vbove7RpsEewNGMs0wv724
-         IibdDHs56jcQEKJut/UIAFj1K1ZPMcHnrcE9Ouk0erb5u3FmpHqNFFYVNwOZlvqT9r
-         QvheHzLRMWJ6eLeHDVOhCGVzorIZADTq+hbf5LOA=
+        b=RYFS3q2MkjPOoD1femS6XL4SjTNbgmACigcgHFwHwTMsTBmafxCU8djmwFsQeQGAT
+         KMk4VqBCZdMUTlMGkpyrYxwEpgw8rQNKS2PKlBxG4fWiZmg7fT+qet5S0/DApnP+mV
+         q7PCJi/lW5pXLu9OxxJ3d3MyJO6ITd9AfG5Binzw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>
-Subject: [PATCH 5.10 509/509] ftrace: Fix possible warning on checking all pages used in ftrace_process_locs()
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.4 295/313] igb: Fix igb_down hung on surprise removal
 Date:   Tue, 25 Jul 2023 12:47:28 +0200
-Message-ID: <20230725104617.032266049@linuxfoundation.org>
+Message-ID: <20230725104533.898207000@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,131 +58,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-commit 26efd79c4624294e553aeaa3439c646729bad084 upstream.
+[ Upstream commit 004d25060c78fc31f66da0fa439c544dda1ac9d5 ]
 
-As comments in ftrace_process_locs(), there may be NULL pointers in
-mcount_loc section:
- > Some architecture linkers will pad between
- > the different mcount_loc sections of different
- > object files to satisfy alignments.
- > Skip any NULL pointers.
+In a setup where a Thunderbolt hub connects to Ethernet and a display
+through USB Type-C, users may experience a hung task timeout when they
+remove the cable between the PC and the Thunderbolt hub.
+This is because the igb_down function is called multiple times when
+the Thunderbolt hub is unplugged. For example, the igb_io_error_detected
+triggers the first call, and the igb_remove triggers the second call.
+The second call to igb_down will block at napi_synchronize.
+Here's the call trace:
+    __schedule+0x3b0/0xddb
+    ? __mod_timer+0x164/0x5d3
+    schedule+0x44/0xa8
+    schedule_timeout+0xb2/0x2a4
+    ? run_local_timers+0x4e/0x4e
+    msleep+0x31/0x38
+    igb_down+0x12c/0x22a [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    __igb_close+0x6f/0x9c [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    igb_close+0x23/0x2b [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    __dev_close_many+0x95/0xec
+    dev_close_many+0x6e/0x103
+    unregister_netdevice_many+0x105/0x5b1
+    unregister_netdevice_queue+0xc2/0x10d
+    unregister_netdev+0x1c/0x23
+    igb_remove+0xa7/0x11c [igb 6615058754948bfde0bf01429257eb59f13030d4]
+    pci_device_remove+0x3f/0x9c
+    device_release_driver_internal+0xfe/0x1b4
+    pci_stop_bus_device+0x5b/0x7f
+    pci_stop_bus_device+0x30/0x7f
+    pci_stop_bus_device+0x30/0x7f
+    pci_stop_and_remove_bus_device+0x12/0x19
+    pciehp_unconfigure_device+0x76/0xe9
+    pciehp_disable_slot+0x6e/0x131
+    pciehp_handle_presence_or_link_change+0x7a/0x3f7
+    pciehp_ist+0xbe/0x194
+    irq_thread_fn+0x22/0x4d
+    ? irq_thread+0x1fd/0x1fd
+    irq_thread+0x17b/0x1fd
+    ? irq_forced_thread_fn+0x5f/0x5f
+    kthread+0x142/0x153
+    ? __irq_get_irqchip_state+0x46/0x46
+    ? kthread_associate_blkcg+0x71/0x71
+    ret_from_fork+0x1f/0x30
 
-After commit 20e5227e9f55 ("ftrace: allow NULL pointers in mcount_loc"),
-NULL pointers will be accounted when allocating ftrace pages but skipped
-before adding into ftrace pages, this may result in some pages not being
-used. Then after commit 706c81f87f84 ("ftrace: Remove extra helper
-functions"), warning may occur at:
-  WARN_ON(pg->next);
+In this case, igb_io_error_detected detaches the network interface
+and requests a PCIE slot reset, however, the PCIE reset callback is
+not being invoked and thus the Ethernet connection breaks down.
+As the PCIE error in this case is a non-fatal one, requesting a
+slot reset can be avoided.
+This patch fixes the task hung issue and preserves Ethernet
+connection by ignoring non-fatal PCIE errors.
 
-To fix it, only warn for case that no pointers skipped but pages not used
-up, then free those unused pages after releasing ftrace_lock.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230712060452.3175675-1-zhengyejian1@huawei.com
-
-Cc: stable@vger.kernel.org
-Fixes: 706c81f87f84 ("ftrace: Remove extra helper functions")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230620174732.4145155-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |   45 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -3196,6 +3196,22 @@ static int ftrace_allocate_records(struc
- 	return cnt;
- }
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 00d66a6e5c6e5..8c6c0d9c7f766 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -9028,6 +9028,11 @@ static pci_ers_result_t igb_io_error_detected(struct pci_dev *pdev,
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
  
-+static void ftrace_free_pages(struct ftrace_page *pages)
-+{
-+	struct ftrace_page *pg = pages;
++	if (state == pci_channel_io_normal) {
++		dev_warn(&pdev->dev, "Non-correctable non-fatal error reported.\n");
++		return PCI_ERS_RESULT_CAN_RECOVER;
++	}
 +
-+	while (pg) {
-+		if (pg->records) {
-+			free_pages((unsigned long)pg->records, pg->order);
-+			ftrace_number_of_pages -= 1 << pg->order;
-+		}
-+		pages = pg->next;
-+		kfree(pg);
-+		pg = pages;
-+		ftrace_number_of_groups--;
-+	}
-+}
-+
- static struct ftrace_page *
- ftrace_allocate_pages(unsigned long num_to_init)
- {
-@@ -3234,17 +3250,7 @@ ftrace_allocate_pages(unsigned long num_
- 	return start_pg;
+ 	netif_device_detach(netdev);
  
-  free_pages:
--	pg = start_pg;
--	while (pg) {
--		if (pg->records) {
--			free_pages((unsigned long)pg->records, pg->order);
--			ftrace_number_of_pages -= 1 << pg->order;
--		}
--		start_pg = pg->next;
--		kfree(pg);
--		pg = start_pg;
--		ftrace_number_of_groups--;
--	}
-+	ftrace_free_pages(start_pg);
- 	pr_info("ftrace: FAILED to allocate memory for functions\n");
- 	return NULL;
- }
-@@ -6190,9 +6196,11 @@ static int ftrace_process_locs(struct mo
- 			       unsigned long *start,
- 			       unsigned long *end)
- {
-+	struct ftrace_page *pg_unuse = NULL;
- 	struct ftrace_page *start_pg;
- 	struct ftrace_page *pg;
- 	struct dyn_ftrace *rec;
-+	unsigned long skipped = 0;
- 	unsigned long count;
- 	unsigned long *p;
- 	unsigned long addr;
-@@ -6246,8 +6254,10 @@ static int ftrace_process_locs(struct mo
- 		 * object files to satisfy alignments.
- 		 * Skip any NULL pointers.
- 		 */
--		if (!addr)
-+		if (!addr) {
-+			skipped++;
- 			continue;
-+		}
- 
- 		end_offset = (pg->index+1) * sizeof(pg->records[0]);
- 		if (end_offset > PAGE_SIZE << pg->order) {
-@@ -6261,8 +6271,10 @@ static int ftrace_process_locs(struct mo
- 		rec->ip = addr;
- 	}
- 
--	/* We should have used all pages */
--	WARN_ON(pg->next);
-+	if (pg->next) {
-+		pg_unuse = pg->next;
-+		pg->next = NULL;
-+	}
- 
- 	/* Assign the last page to ftrace_pages */
- 	ftrace_pages = pg;
-@@ -6284,6 +6296,11 @@ static int ftrace_process_locs(struct mo
-  out:
- 	mutex_unlock(&ftrace_lock);
- 
-+	/* We should have used all pages unless we skipped some */
-+	if (pg_unuse) {
-+		WARN_ON(!skipped);
-+		ftrace_free_pages(pg_unuse);
-+	}
- 	return ret;
- }
- 
+ 	if (state == pci_channel_io_perm_failure)
+-- 
+2.39.2
+
 
 
