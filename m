@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27439761162
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A673D761652
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231516AbjGYKuj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:50:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58722 "EHLO
+        id S234877AbjGYLiX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233565AbjGYKuV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:21 -0400
+        with ESMTP id S235007AbjGYLiK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BB81FC7
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 636481AA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34069616A1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C592C4167D;
-        Tue, 25 Jul 2023 10:50:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43E8361682
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FF1C433C7;
+        Tue, 25 Jul 2023 11:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282202;
-        bh=xooRu0cCCOEw1oT9me3jZBrlvMDLb5FEYYhjeHL0XAY=;
+        s=korg; t=1690285080;
+        bh=TjsRewEaKFCTwtlIaimnxVUcIxvQHaIYwGzmsVp3d9k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uLeQMGgU5eyVdTVjjtNw7khnRI6ep8XEc6lOTw0Q/D20F6eJn12swsUwvCELxcX+i
-         5m6XpXzK84XF+yASHkhlyFWPDL27WMMlx82A98iDIXQRlg09zZiqsQ0PMDi8fy+aSr
-         A9VVDVlmsoiZOu2xAKa51LkbQ0mnj5I6DUhEVSN8=
+        b=2q6IR8xGKL9SzT48IixLMNfY0ze0c7mXJcyBteDLJ5oXjklmPrFnMZysZ1pFcnbxG
+         eOGjSw6/ltVAoPxnWFwTUxW//IfZ5Bj/M43OxViuFucvKX4TPE4HGz4gSWuWDrj4oo
+         FNUknwNNir5vp/JPiJu3i9CWyxLtXtQBTsuLY+rE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kenneth Feng <kenneth.feng@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.4 045/227] drm/amdgpu/pm: make gfxclock consistent for sienna cichlid
+        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 059/313] wifi: ath9k: convert msecs to jiffies where needed
 Date:   Tue, 25 Jul 2023 12:43:32 +0200
-Message-ID: <20230725104516.667140025@linuxfoundation.org>
+Message-ID: <20230725104523.591477818@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit a4eb11824170d742531998f4ebd1c6a18b63db47 upstream.
+[ Upstream commit 2aa083acea9f61be3280184384551178f510ff51 ]
 
-Use average gfxclock for consistency with other dGPUs.
+Since 'ieee80211_queue_delayed_work()' expects timeout in
+jiffies and not milliseconds, 'msecs_to_jiffies()' should
+be used in 'ath_restart_work()' and '__ath9k_flush()'.
 
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d63ffc45c5d3 ("ath9k: rename tx_complete_work to hw_check_work")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230613134655.248728-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -1927,12 +1927,16 @@ static int sienna_cichlid_read_sensor(st
- 		*size = 4;
- 		break;
- 	case AMDGPU_PP_SENSOR_GFX_MCLK:
--		ret = sienna_cichlid_get_current_clk_freq_by_table(smu, SMU_UCLK, (uint32_t *)data);
-+		ret = sienna_cichlid_get_smu_metrics_data(smu,
-+							  METRICS_CURR_UCLK,
-+							  (uint32_t *)data);
- 		*(uint32_t *)data *= 100;
- 		*size = 4;
- 		break;
- 	case AMDGPU_PP_SENSOR_GFX_SCLK:
--		ret = sienna_cichlid_get_current_clk_freq_by_table(smu, SMU_GFXCLK, (uint32_t *)data);
-+		ret = sienna_cichlid_get_smu_metrics_data(smu,
-+							  METRICS_AVERAGE_GFXCLK,
-+							  (uint32_t *)data);
- 		*(uint32_t *)data *= 100;
- 		*size = 4;
- 		break;
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 4e606a4b19f2d..5968fcec11737 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -200,7 +200,7 @@ void ath_cancel_work(struct ath_softc *sc)
+ void ath_restart_work(struct ath_softc *sc)
+ {
+ 	ieee80211_queue_delayed_work(sc->hw, &sc->hw_check_work,
+-				     ATH_HW_CHECK_POLL_INT);
++				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
+ 
+ 	if (AR_SREV_9340(sc->sc_ah) || AR_SREV_9330(sc->sc_ah))
+ 		ieee80211_queue_delayed_work(sc->hw, &sc->hw_pll_work,
+@@ -2228,7 +2228,7 @@ void __ath9k_flush(struct ieee80211_hw *hw, u32 queues, bool drop,
+ 	}
+ 
+ 	ieee80211_queue_delayed_work(hw, &sc->hw_check_work,
+-				     ATH_HW_CHECK_POLL_INT);
++				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
+ }
+ 
+ static bool ath9k_tx_frames_pending(struct ieee80211_hw *hw)
+-- 
+2.39.2
+
 
 
