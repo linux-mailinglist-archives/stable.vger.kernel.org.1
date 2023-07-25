@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD35761745
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A31B8761398
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:11:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232201AbjGYLqj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:46:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53902 "EHLO
+        id S233437AbjGYLLy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:11:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232546AbjGYLqe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:46:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 138D1A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:46:31 -0700 (PDT)
+        with ESMTP id S234167AbjGYLLf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:11:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFD9935B8
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:10:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A555A6167D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:46:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B989BC433C8;
-        Tue, 25 Jul 2023 11:46:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5464761681
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:10:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FA2C433CB;
+        Tue, 25 Jul 2023 11:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285590;
-        bh=UEXJ3fbx8etc1Ydp4Z9DA0Iej5T633509STnRX/d/8w=;
+        s=korg; t=1690283458;
+        bh=LkSgrYh9qg9+9mxTG4LBWEYyqSZlpQBzShWSlZ/9Br8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JvbsF04dmnJbnbnG6XAxybGELYyUv9h3mFDfmCuAluyIM/p3KD2xFe8vsjW6Bb5uV
-         xQwb92Qp5PsO0u1P5msMbQIr2QFt9e9Vim+0VcvKSLE0/DG4pb9hiZCQukk7VeP67o
-         1aSu//eMNgwSrnxnxDeQxDNKkjkHKOcxLpP6luF8=
+        b=NMZZwQTuk7rVUt6r0WQUbgP9wH9Fu4X5NHTQ+eScDAnYzmn7Tv63Urgtz6y0BKXP5
+         9iWjaMu1YVEFljOTpBGUUZObi4Mp8oRWavWiZ8y7H1QLUvXYGI1dE9XV5QMZElvVL7
+         hbVLnJpfBsK0zjTMD2l+pDAUyV/ln4wa1H15lf1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, George Stark <GNStark@sberdevices.ru>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 260/313] meson saradc: fix clock divider mask length
+        patches@lists.linux.dev, lonial con <kongln9170@gmail.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 62/78] netfilter: nft_set_pipapo: fix improper element removal
 Date:   Tue, 25 Jul 2023 12:46:53 +0200
-Message-ID: <20230725104532.300186463@linuxfoundation.org>
+Message-ID: <20230725104453.673354557@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+References: <20230725104451.275227789@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: George Stark <gnstark@sberdevices.ru>
+From: Florian Westphal <fw@strlen.de>
 
-commit c57fa0037024c92c2ca34243e79e857da5d2c0a9 upstream.
+[ Upstream commit 87b5a5c209405cb6b57424cdfa226a6dbd349232 ]
 
-According to the datasheets of supported meson SoCs length of ADC_CLK_DIV
-field is 6-bit. Although all supported SoCs have the register
-with that field documented later SoCs use external clock rather than
-ADC internal clock so this patch affects only meson8 family (S8* SoCs).
+end key should be equal to start unless NFT_SET_EXT_KEY_END is present.
 
-Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
-Signed-off-by: George Stark <GNStark@sberdevices.ru>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20230606165357.42417-1-gnstark@sberdevices.ru
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Its possible to add elements that only have a start key
+("{ 1.0.0.0 . 2.0.0.0 }") without an internval end.
+
+Insertion treats this via:
+
+if (nft_set_ext_exists(ext, NFT_SET_EXT_KEY_END))
+   end = (const u8 *)nft_set_ext_key_end(ext)->data;
+else
+   end = start;
+
+but removal side always uses nft_set_ext_key_end().
+This is wrong and leads to garbage remaining in the set after removal
+next lookup/insert attempt will give:
+
+BUG: KASAN: slab-use-after-free in pipapo_get+0x8eb/0xb90
+Read of size 1 at addr ffff888100d50586 by task nft-pipapo_uaf_/1399
+Call Trace:
+ kasan_report+0x105/0x140
+ pipapo_get+0x8eb/0xb90
+ nft_pipapo_insert+0x1dc/0x1710
+ nf_tables_newsetelem+0x31f5/0x4e00
+ ..
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Reported-by: lonial con <kongln9170@gmail.com>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/meson_saradc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -71,7 +71,7 @@
- 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_COUNT_MASK	GENMASK(20, 18)
- 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_FILTER_TB_MASK	GENMASK(17, 16)
- 	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_SHIFT		10
--	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		5
-+	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		6
- 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_SEL_MASK		GENMASK(9, 8)
- 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_MASK		GENMASK(7, 0)
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 0452ee586c1cc..a81829c10feab 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1930,7 +1930,11 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
+ 		int i, start, rules_fx;
  
+ 		match_start = data;
+-		match_end = (const u8 *)nft_set_ext_key_end(&e->ext)->data;
++
++		if (nft_set_ext_exists(&e->ext, NFT_SET_EXT_KEY_END))
++			match_end = (const u8 *)nft_set_ext_key_end(&e->ext)->data;
++		else
++			match_end = data;
+ 
+ 		start = first_rule;
+ 		rules_fx = rules_f0;
+-- 
+2.39.2
+
 
 
