@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E55776126E
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2839761509
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233890AbjGYLC3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:02:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
+        id S234527AbjGYLY6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233867AbjGYLCL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:02:11 -0400
+        with ESMTP id S234552AbjGYLY6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:24:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C865E2688
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:59:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE549D
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:24:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EE6561696
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:59:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216B4C433C7;
-        Tue, 25 Jul 2023 10:59:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52FE4615BA
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62039C433C8;
+        Tue, 25 Jul 2023 11:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282756;
-        bh=AsPTQrPzTDhdK/72JF3qBlfWN0iPBbmFkZvJ++WrSw8=;
+        s=korg; t=1690284296;
+        bh=01jCrS5B+z6Nw4qJZ5yxfHzFJ9JmhhnKwbAGUAnjkPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sjABqDCfUzbNy6zoZlLgwm4XBXbs/32MCKxlQC9EuZWVphdhBjr9PXMEnA1WXgT7S
-         6pZwJ7pt7/2gbt8RMuEffEKGJCbLZlq0GM/s/onPJlNEiOzKOLsU4YXyNcLJwJLo5/
-         4u1Mb6GbI69NI1P17knAepNcF4j6AmAMcU9QzQ4k=
+        b=exVN0x/uY3oj40/wijBUTzGwVn04uNU5BzsZCUjt3I9PxYKiLg2SXcLPT+QvumFfM
+         QrMsIp5MpdO9VICxH0WYZnVW97jJgELOmGyiL36Bo5zMch8CvhmxwZ4/JWs6Mq4KlE
+         PffMqQ4caBzWV3rDeKSqfTXwgL2wmnFPijZ7rhgk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 016/183] selftests: tc: set timeout to 15 minutes
+        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 305/509] leds: trigger: netdev: Recheck NETDEV_LED_MODE_LINKUP on dev rename
 Date:   Tue, 25 Jul 2023 12:44:04 +0200
-Message-ID: <20230725104508.449571059@linuxfoundation.org>
+Message-ID: <20230725104607.707753777@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-commit fda05798c22a354efde09a76bdfc276b2d591829 upstream.
+commit cee4bd16c3195a701be683f7da9e88c6e11acb73 upstream.
 
-When looking for something else in LKFT reports [1], I noticed that the
-TC selftest ended with a timeout error:
+Dev can be renamed also while up for supported device. We currently
+wrongly clear the NETDEV_LED_MODE_LINKUP flag on NETDEV_CHANGENAME
+event.
 
-  not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
+Fix this by rechecking if the carrier is ok on NETDEV_CHANGENAME and
+correctly set the NETDEV_LED_MODE_LINKUP bit.
 
-The timeout had been introduced 3 years ago, see the Fixes commit below.
-
-This timeout is only in place when executing the selftests via the
-kselftests runner scripts. I guess this is not what most TC devs are
-using and nobody noticed the issue before.
-
-The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
-like it is plenty more time than what it takes in "normal" conditions.
-
-Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
-Cc: stable@vger.kernel.org
-Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
-Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
-Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Reviewed-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5f820ed52371 ("leds: trigger: netdev: fix handling on interface rename")
+Cc: stable@vger.kernel.org # v5.5+
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20230419210743.3594-2-ansuelsmth@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/tc-testing/settings |    1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 tools/testing/selftests/tc-testing/settings
+ drivers/leds/trigger/ledtrig-netdev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- /dev/null
-+++ b/tools/testing/selftests/tc-testing/settings
-@@ -0,0 +1 @@
-+timeout=900
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -318,6 +318,9 @@ static int netdev_trig_notify(struct not
+ 	clear_bit(NETDEV_LED_MODE_LINKUP, &trigger_data->mode);
+ 	switch (evt) {
+ 	case NETDEV_CHANGENAME:
++		if (netif_carrier_ok(dev))
++			set_bit(NETDEV_LED_MODE_LINKUP, &trigger_data->mode);
++		fallthrough;
+ 	case NETDEV_REGISTER:
+ 		if (trigger_data->net_dev)
+ 			dev_put(trigger_data->net_dev);
 
 
