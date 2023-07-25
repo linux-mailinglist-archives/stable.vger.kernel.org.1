@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6956676129F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A46897611D4
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:56:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233855AbjGYLEc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41108 "EHLO
+        id S232922AbjGYK4n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:56:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233853AbjGYLES (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:04:18 -0400
+        with ESMTP id S232560AbjGYK4V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:56:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D7B46A0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:01:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DEAE4C10
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:53:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC9E561696
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:01:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02123C433C8;
-        Tue, 25 Jul 2023 11:01:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E0A06165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:53:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BB5C433C7;
+        Tue, 25 Jul 2023 10:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282879;
-        bh=Twd8ayarVB1qE1t1WLkgVnSABqdKRoM0XPuE0blvbhk=;
+        s=korg; t=1690282412;
+        bh=wKXr/dlvuwhoqG7NTqfII2N83LeUQF7/ue+SLfqzCUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qau42L6ZaMxlcTFkw4JXgiypGr9aNMODiSm23WWa9uns5TGwxN5yo/Q2JfAykADCA
-         2YCfPGJXVzjUlKPzsWsb5WXYoBn3HCGp5is05d8uf18qgnj8NIhX9o5xX3x4X0haJ5
-         KFhb3z41w3Q5OXWI2RLW/a+fPgQvtBKZ2Sa1Spw8=
+        b=2B8a3ZErK4DlgXbnNLMH6aECF/tDOeDrkN0lv1hfhGBdTGJ28mhUxUm6s/CFzC6XZ
+         +E8ioq9VrtuTtrSecIsIGAjsI/lwD0Jz0qAhHFu09IWavmnwLi5QbeMRskxrzaR4Ix
+         N0M1qkDhGDAUqext987WKJgVCfd8S9pCj46kSLM0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/183] [PATCH AUTOSEL 4.19 09/11] MIPS: dec: prom: Address -Warray-bounds warning
+Subject: [PATCH 6.4 120/227] wifi: mac80211_hwsim: Fix possible NULL dereference
 Date:   Tue, 25 Jul 2023 12:44:47 +0200
-Message-ID: <20230725104510.090721253@linuxfoundation.org>
+Message-ID: <20230725104519.772935768@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 7b191b9b55df2a844bd32d1d380f47a7df1c2896 ]
+From: Ilan Peer <ilan.peer@intel.com>
 
-Zero-length arrays are deprecated, and we are replacing them with flexible
-array members instead. So, replace zero-length array with flexible-array
-member in struct memmap.
+[ Upstream commit 0cc80943ef518a1c51a1111e9346d1daf11dd545 ]
 
-Address the following warning found after building (with GCC-13) mips64
-with decstation_64_defconfig:
-In function 'rex_setup_memory_region',
-    inlined from 'prom_meminit' at arch/mips/dec/prom/memory.c:91:3:
-arch/mips/dec/prom/memory.c:72:31: error: array subscript i is outside array bounds of 'unsigned char[0]' [-Werror=array-bounds=]
-   72 |                 if (bm->bitmap[i] == 0xff)
-      |                     ~~~~~~~~~~^~~
-In file included from arch/mips/dec/prom/memory.c:16:
-./arch/mips/include/asm/dec/prom.h: In function 'prom_meminit':
-./arch/mips/include/asm/dec/prom.h:73:23: note: while referencing 'bitmap'
-   73 |         unsigned char bitmap[0];
+In a call to mac80211_hwsim_select_tx_link() the sta pointer might
+be NULL, thus need to check that it is not NULL before accessing it.
 
-This helps with the ongoing efforts to globally enable -Warray-bounds.
-
-This results in no differences in binary output.
-
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/323
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230604120651.f4d889fc98c4.Iae85f527ed245a37637a874bb8b8c83d79812512@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/dec/prom.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/dec/prom.h
-+++ b/arch/mips/include/asm/dec/prom.h
-@@ -70,7 +70,7 @@ static inline bool prom_is_rex(u32 magic
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 89c7a1420381d..ed5af63025979 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -4,7 +4,7 @@
+  * Copyright (c) 2008, Jouni Malinen <j@w1.fi>
+  * Copyright (c) 2011, Javier Lopez <jlopex@gmail.com>
+  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2022 Intel Corporation
++ * Copyright (C) 2018 - 2023 Intel Corporation
   */
- typedef struct {
- 	int pagesize;
--	unsigned char bitmap[0];
-+	unsigned char bitmap[];
- } memmap;
  
+ /*
+@@ -1864,7 +1864,7 @@ mac80211_hwsim_select_tx_link(struct mac80211_hwsim_data *data,
  
+ 	WARN_ON(is_multicast_ether_addr(hdr->addr1));
+ 
+-	if (WARN_ON_ONCE(!sta->valid_links))
++	if (WARN_ON_ONCE(!sta || !sta->valid_links))
+ 		return &vif->bss_conf;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(vif->link_conf); i++) {
+-- 
+2.39.2
+
 
 
