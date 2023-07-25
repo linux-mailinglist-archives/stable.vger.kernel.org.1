@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D3F9761165
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9215761664
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233764AbjGYKur (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58506 "EHLO
+        id S234865AbjGYLiz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:38:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233766AbjGYKu2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:28 -0400
+        with ESMTP id S234898AbjGYLix (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:38:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B3A1FFA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6964E19BB
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:38:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52FB961648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6906BC433C8;
-        Tue, 25 Jul 2023 10:50:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EBCBF61698
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:38:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089A8C433C9;
+        Tue, 25 Jul 2023 11:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282210;
-        bh=d5u29PkFHU5M4AVwKAW5UzJ/SzyrOt0Mh00oKMvMpjU=;
+        s=korg; t=1690285122;
+        bh=TToWLbmurN6TPpsJ7EXIoQxnBuWhKrh0iNzgNqvxOHc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wHLy3i9dqRyMMkjWz/xoMLIY+7+BCqH5cdmi8OvaBMhcFv1yKtNSWeiT5wPD2E5wY
-         wZv5NdOZoacC6wKWuM9HqjW+a82Mb9rdzk4npNv7nowx8GFPyTvl7Wgq/awAp8lPWe
-         N29EaWuQNorSfQVkp6v6c+3EpSw35UNwCYojW2Jo=
+        b=OebqWhp3OXkhD9OWozhdJ+lN9SR3vQB0gnCc6riZ6vq4NeS9CUxCqjQvG+TyWh9NP
+         j/UQhEHwdsSH0VSEFhMi734l/Bc/knHevACMJtcZ4qxkKF4wGaFqVMgNqfuzbLi9UT
+         YKM6/GpGC7Z6gGmtQOpj3bIvoUf84/q2fZf4P374=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>
-Subject: [PATCH 6.4 048/227] drm/nouveau/kms/nv50-: init hpd_irq_lock for PIOR DP
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 062/313] selftests: rtnetlink: remove netdevsim device after ipsec offload test
 Date:   Tue, 25 Jul 2023 12:43:35 +0200
-Message-ID: <20230725104516.790119455@linuxfoundation.org>
+Message-ID: <20230725104523.708575192@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
+References: <20230725104521.167250627@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ben Skeggs <bskeggs@redhat.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit ea293f823a8805735d9e00124df81a8f448ed1ae upstream.
+[ Upstream commit 5f789f103671fec3733ebe756e56adf15c90c21d ]
 
-Fixes OOPS on boards with ANX9805 DP encoders.
+On systems where netdevsim is built-in or loaded before the test
+starts, kci_test_ipsec_offload doesn't remove the netdevsim device it
+created during the test.
 
-Cc: stable@vger.kernel.org # 6.4+
-Signed-off-by: Ben Skeggs <bskeggs@redhat.com>
-Reviewed-by: Karol Herbst <kherbst@redhat.com>
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230719044051.6975-3-skeggsb@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e05b2d141fef ("netdevsim: move netdev creation/destruction to dev probe")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/e1cb94f4f82f4eca4a444feec4488a1323396357.1687466906.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/disp.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/net/rtnetlink.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-@@ -1873,6 +1873,8 @@ nv50_pior_destroy(struct drm_encoder *en
- 	nvif_outp_dtor(&nv_encoder->outp);
+diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
+index 911c549f186fb..3b929e031f59c 100755
+--- a/tools/testing/selftests/net/rtnetlink.sh
++++ b/tools/testing/selftests/net/rtnetlink.sh
+@@ -833,6 +833,7 @@ EOF
+ 	fi
  
- 	drm_encoder_cleanup(encoder);
-+
-+	mutex_destroy(&nv_encoder->dp.hpd_irq_lock);
- 	kfree(encoder);
- }
+ 	# clean up any leftovers
++	echo 0 > /sys/bus/netdevsim/del_device
+ 	$probed && rmmod netdevsim
  
-@@ -1917,6 +1919,8 @@ nv50_pior_create(struct drm_connector *c
- 	nv_encoder->i2c = ddc;
- 	nv_encoder->aux = aux;
- 
-+	mutex_init(&nv_encoder->dp.hpd_irq_lock);
-+
- 	encoder = to_drm_encoder(nv_encoder);
- 	encoder->possible_crtcs = dcbe->heads;
- 	encoder->possible_clones = 0;
+ 	if [ $ret -ne 0 ]; then
+-- 
+2.39.2
+
 
 
