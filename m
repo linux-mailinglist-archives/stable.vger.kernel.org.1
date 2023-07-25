@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7AD7761166
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06E76761515
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233768AbjGYKus (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 06:50:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58862 "EHLO
+        id S234592AbjGYLZe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233770AbjGYKu3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:50:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730AF2106
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:50:14 -0700 (PDT)
+        with ESMTP id S234578AbjGYLZ3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:25:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F20E18F
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:25:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10E1961648
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9B6C433C7;
-        Tue, 25 Jul 2023 10:50:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BDC926168E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD263C433C7;
+        Tue, 25 Jul 2023 11:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282213;
-        bh=Gwuv9sdKf0MLjye6unTscqreNr2+mNE7wSo+lcCE+24=;
+        s=korg; t=1690284327;
+        bh=AFuRqf1zSedcw9lxN25E/Ctio7fLi4I48lxwiuI1Eas=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VNnoPwc7AS1e5A/kq8qCk6giDt9DBfHwNJGx7XRxDfEAoks/x0i1lJg9YR2q3cJSn
-         bvehYhSg/vYLowhCaNGkxCux/iHQVJw4J9cXmfyirzKOhiliek6rM+ZsrH/fV9dMx7
-         TZbmaD+dOhm++YTp3Kl29NayE76Gf0q4ZVcD9nlU=
+        b=H3as2fDTAEO0JJtoB7hzPiv+bbazql/X/k8csNu4JpvtdGWhrB0PZZlK9BaamAbY6
+         WOeGAds1WmYOFFjW0hIF0F6CXon/n/q7PNwjz53qALOP8cL0JeKkTO4nXWIj50CcP0
+         2x5lfz4hraM8cRVG5kNxCYPtzFPtd+NovJxuB2zc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>
-Subject: [PATCH 6.4 049/227] drm/nouveau/i2c: fix number of aux event slots
-Date:   Tue, 25 Jul 2023 12:43:36 +0200
-Message-ID: <20230725104516.831173243@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Robert Hancock <robert.hancock@calian.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 278/509] i2c: xiic: Dont try to handle more interrupt events after error
+Date:   Tue, 25 Jul 2023 12:43:37 +0200
+Message-ID: <20230725104606.477779701@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-References: <20230725104514.821564989@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,83 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ben Skeggs <bskeggs@redhat.com>
+From: Robert Hancock <robert.hancock@calian.com>
 
-commit 752a281032b2d6f4564be827e082bde6f7d2fd4f upstream.
+[ Upstream commit cb6e45c9a0ad9e0f8664fd06db0227d185dc76ab ]
 
-This was completely bogus before, using maximum DCB device index rather
-than maximum AUX ID to size the buffer that stores event refcounts.
+In xiic_process, it is possible that error events such as arbitration
+lost or TX error can be raised in conjunction with other interrupt flags
+such as TX FIFO empty or bus not busy. Error events result in the
+controller being reset and the error returned to the calling request,
+but the function could potentially try to keep handling the other
+events, such as by writing more messages into the TX FIFO. Since the
+transaction has already failed, this is not helpful and will just cause
+issues.
 
-*Pretty* unlikely to have been an actual problem on most configurations,
-that is, unless you've got one of the rare boards that have off-chip DP.
+This problem has been present ever since:
 
-There, it'll likely crash.
+commit 7f9906bd7f72 ("i2c: xiic: Service all interrupts in isr")
 
-Cc: stable@vger.kernel.org # 6.4+
-Signed-off-by: Ben Skeggs <bskeggs@redhat.com>
-Reviewed-by: Karol Herbst <kherbst@redhat.com>
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230719044051.6975-1-skeggsb@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+which allowed non-error events to be handled after errors, but became
+more obvious after:
+
+commit 743e227a8959 ("i2c: xiic: Defer xiic_wakeup() and
+__xiic_start_xfer() in xiic_process()")
+
+which reworked the code to add a WARN_ON which triggers if both the
+xfer_more and wakeup_req flags were set, since this combination is
+not supposed to happen, but was occurring in this scenario.
+
+Skip further interrupt handling after error flags are detected to avoid
+this problem.
+
+Fixes: 7f9906bd7f72 ("i2c: xiic: Service all interrupts in isr")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/include/nvkm/subdev/i2c.h |  4 ++--
- drivers/gpu/drm/nouveau/nvkm/subdev/i2c/base.c    | 11 +++++++++--
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-xiic.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/i2c.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/i2c.h
-index 40a1065ae626..ef441dfdea09 100644
---- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/i2c.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/i2c.h
-@@ -16,7 +16,7 @@ struct nvkm_i2c_bus {
- 	const struct nvkm_i2c_bus_func *func;
- 	struct nvkm_i2c_pad *pad;
- #define NVKM_I2C_BUS_CCB(n) /* 'n' is ccb index */                           (n)
--#define NVKM_I2C_BUS_EXT(n) /* 'n' is dcb external encoder type */ ((n) + 0x100)
-+#define NVKM_I2C_BUS_EXT(n) /* 'n' is dcb external encoder type */  ((n) + 0x10)
- #define NVKM_I2C_BUS_PRI /* ccb primary comm. port */                        -1
- #define NVKM_I2C_BUS_SEC /* ccb secondary comm. port */                      -2
- 	int id;
-@@ -38,7 +38,7 @@ struct nvkm_i2c_aux {
- 	const struct nvkm_i2c_aux_func *func;
- 	struct nvkm_i2c_pad *pad;
- #define NVKM_I2C_AUX_CCB(n) /* 'n' is ccb index */                           (n)
--#define NVKM_I2C_AUX_EXT(n) /* 'n' is dcb external encoder type */ ((n) + 0x100)
-+#define NVKM_I2C_AUX_EXT(n) /* 'n' is dcb external encoder type */  ((n) + 0x10)
- 	int id;
- 
- 	struct mutex mutex;
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/i2c/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/i2c/base.c
-index 976539de4220..731b2f68d3db 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/i2c/base.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/i2c/base.c
-@@ -260,10 +260,11 @@ nvkm_i2c_new_(const struct nvkm_i2c_func *func, struct nvkm_device *device,
- {
- 	struct nvkm_bios *bios = device->bios;
- 	struct nvkm_i2c *i2c;
-+	struct nvkm_i2c_aux *aux;
- 	struct dcb_i2c_entry ccbE;
- 	struct dcb_output dcbE;
- 	u8 ver, hdr;
--	int ret, i;
-+	int ret, i, ids;
- 
- 	if (!(i2c = *pi2c = kzalloc(sizeof(*i2c), GFP_KERNEL)))
- 		return -ENOMEM;
-@@ -406,5 +407,11 @@ nvkm_i2c_new_(const struct nvkm_i2c_func *func, struct nvkm_device *device,
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index 8b93c22f3c400..568e97c3896d1 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -422,6 +422,8 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
+ 			wakeup_req = 1;
+ 			wakeup_code = STATE_ERROR;
  		}
++		/* don't try to handle other events */
++		goto out;
  	}
- 
--	return nvkm_event_init(&nvkm_i2c_intr_func, &i2c->subdev, 4, i, &i2c->event);
-+	ids = 0;
-+	list_for_each_entry(aux, &i2c->aux, head)
-+		ids = max(ids, aux->id + 1);
-+	if (!ids)
-+		return 0;
-+
-+	return nvkm_event_init(&nvkm_i2c_intr_func, &i2c->subdev, 4, ids, &i2c->event);
- }
+ 	if (pend & XIIC_INTR_RX_FULL_MASK) {
+ 		/* Receive register/FIFO is full */
 -- 
-2.41.0
+2.39.2
 
 
 
