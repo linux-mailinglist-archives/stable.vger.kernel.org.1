@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABA1D761771
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA9657615DB
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:34:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjGYLsk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55188 "EHLO
+        id S234678AbjGYLd5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232984AbjGYLrz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:47:55 -0400
+        with ESMTP id S234695AbjGYLdz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:33:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FBA19AA
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:47:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2824611B
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:33:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1F3261698
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:47:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02532C433C8;
-        Tue, 25 Jul 2023 11:47:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2CDF61655
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF30C433C8;
+        Tue, 25 Jul 2023 11:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690285673;
-        bh=oJ6H9kXR8J1ND8PogLeoSBwVvGCl2EtCN7RfLjY9upo=;
+        s=korg; t=1690284833;
+        bh=ZknIXTGme+516XjQD57xXVVQU9/BYcybhU/cvZzy/Wo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GYC4XpKlZAYFvI3fKzgQcl2kG72p/uZQSKsKEFSUBMTAEqnqPIJa0ocVPEmDofySb
-         G/q7kvWU0JVUeCzNwfoFlIYJU4xgcIfeKyJLHInU8Awclbdh9SfZBFjkFMkz74+5x7
-         w98zP766KDaaINWn2WLZjpfYq6XkAewF8guYrE44=
+        b=xakvajEWx+LW3+83kRNI7g4sSplD9hJCvESb4nmgcZjtYZew1dezJ3EdE3+5gXBQ1
+         F6TBLiQVdX8SO/xJ8bEMUd4y0L6PTaN8mbkMtG3jnR7R8Sbg6XjoHH9fIcL+DFDOAC
+         CuoyJvLA0zmURx8IgYpxPZ8M/E1Q3fLPTVfAQjQE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
-        Jocelyn Falempe <jfalempe@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.4 282/313] drm/client: Fix memory leak in drm_client_modeset_probe
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 496/509] tcp: annotate data-races around tp->keepalive_probes
 Date:   Tue, 25 Jul 2023 12:47:15 +0200
-Message-ID: <20230725104533.270597281@linuxfoundation.org>
+Message-ID: <20230725104616.469681776@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104521.167250627@linuxfoundation.org>
-References: <20230725104521.167250627@linuxfoundation.org>
+In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
+References: <20230725104553.588743331@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 2329cc7a101af1a844fbf706c0724c0baea38365 upstream.
+[ Upstream commit 6e5e1de616bf5f3df1769abc9292191dfad9110a ]
 
-When a new mode is set to modeset->mode, the previous mode should be freed.
-This fixes the following kmemleak report:
+do_tcp_getsockopt() reads tp->keepalive_probes while another cpu
+might change its value.
 
-drm_mode_duplicate+0x45/0x220 [drm]
-drm_client_modeset_probe+0x944/0xf50 [drm]
-__drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
-drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
-drm_client_register+0x169/0x240 [drm]
-ast_pci_probe+0x142/0x190 [ast]
-local_pci_probe+0xdc/0x180
-work_for_cpu_fn+0x4e/0xa0
-process_one_work+0x8b7/0x1540
-worker_thread+0x70a/0xed0
-kthread+0x29f/0x340
-ret_from_fork+0x1f/0x30
-
-cc: <stable@vger.kernel.org>
-Reported-by: Zhang Yi <yizhan@redhat.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-3-jfalempe@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230719212857.3943972-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/tcp.h | 9 +++++++--
+ net/ipv4/tcp.c    | 5 +++--
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -790,6 +790,7 @@ int drm_client_modeset_probe(struct drm_
- 				break;
- 			}
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 428f84f6e0d0c..be81a930b91fa 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1475,9 +1475,14 @@ static inline int keepalive_time_when(const struct tcp_sock *tp)
+ static inline int keepalive_probes(const struct tcp_sock *tp)
+ {
+ 	struct net *net = sock_net((struct sock *)tp);
++	int val;
++
++	/* Paired with WRITE_ONCE() in tcp_sock_set_keepcnt()
++	 * and do_tcp_setsockopt().
++	 */
++	val = READ_ONCE(tp->keepalive_probes);
  
-+			kfree(modeset->mode);
- 			modeset->mode = drm_mode_duplicate(dev, mode);
- 			drm_connector_get(connector);
- 			modeset->connectors[modeset->num_connectors++] = connector;
+-	return tp->keepalive_probes ? :
+-		READ_ONCE(net->ipv4.sysctl_tcp_keepalive_probes);
++	return val ? : READ_ONCE(net->ipv4.sysctl_tcp_keepalive_probes);
+ }
+ 
+ static inline u32 keepalive_time_elapsed(const struct tcp_sock *tp)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b5a05b0984146..80212bb0400c2 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3138,7 +3138,8 @@ int tcp_sock_set_keepcnt(struct sock *sk, int val)
+ 		return -EINVAL;
+ 
+ 	lock_sock(sk);
+-	tcp_sk(sk)->keepalive_probes = val;
++	/* Paired with READ_ONCE() in keepalive_probes() */
++	WRITE_ONCE(tcp_sk(sk)->keepalive_probes, val);
+ 	release_sock(sk);
+ 	return 0;
+ }
+@@ -3330,7 +3331,7 @@ static int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+ 		if (val < 1 || val > MAX_TCP_KEEPCNT)
+ 			err = -EINVAL;
+ 		else
+-			tp->keepalive_probes = val;
++			WRITE_ONCE(tp->keepalive_probes, val);
+ 		break;
+ 	case TCP_SYNCNT:
+ 		if (val < 1 || val > MAX_TCP_SYNCNT)
+-- 
+2.39.2
+
 
 
