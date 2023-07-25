@@ -2,225 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AEBA7621C7
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0A8E7621C8
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 20:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbjGYSuP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 14:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49136 "EHLO
+        id S230192AbjGYSur (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 14:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjGYSuO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:50:14 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F291BC2
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:50:12 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1bb775625e2so1145165ad.1
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:50:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690311012; x=1690915812;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=o5xhlxGEciICrpf0FcyGddC4Vw0Sbuv5sLXo1epkNUA=;
-        b=oI9g3bUBoo274PWD5ZO5MYWPd58zD4BvIYrq/0W0kOFIeQYLWOam+U9vRWvHhmkD4p
-         uRflMG/VNe7/uPpJ6+skG/UN2vEUBw9lUOdnUtBpbuMWd4DT2OyNXdqW2BJFh1xEi2Zy
-         7+GfaELDnvfQyzkOxkl/XWkSOYzsmVRPCKvz5Xl2bE7WW63yXGSU9hqP3focf5Lsf7rt
-         DagfMv98xbDfRrcWNGZO4RBLyTdgsSfIdiJ0GwXD2+EtKqErL7s8gRCxYRwfQSBbepnL
-         /XOSVI6+pc0ArYGxKfplT4JKCWsUCKjBy38xCGBRlP521o4ucyrLPt3yqZZ64FeA9AGx
-         uQDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690311012; x=1690915812;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o5xhlxGEciICrpf0FcyGddC4Vw0Sbuv5sLXo1epkNUA=;
-        b=fI7bhBUoWASatd97Y47/397XYKq4qcr/gSqlPW2ColrE1OPxPgcNHKNzpbcKExHuoz
-         y3XjIB0jla6giuySYm+SZBCIGME3/Cy8mV1AvZDnvIZ8g6+GmJYCa8E35IuwqeiKHziT
-         Q2SMgORwKNPeHpEovrCPP1Jvz1m/clW83NwkAUBsmzSSb7/5byu6xzoeDy2Z8aSdsPgn
-         IkNlW/hOp/J98WzOlgH00vF7fXPZwan76yCGYnicwEfJjcVj/7iFz47UQTMEkc1HW8HK
-         0koNgVCfCuA3Z/CG3qshJd74NIlyG2vj0Um1hoku38nHaHADHhdY+5iQeUr2QdAJugAW
-         MtRw==
-X-Gm-Message-State: ABy/qLbJXGSATXURSfY0SgbAo1TCW4zjmUlK5putKoGSf00/mE79vs3s
-        6YFOXDfvr5JVEJytVFpFR+Qr+zTO2U/Tux3t2kZbRw==
-X-Google-Smtp-Source: APBJJlFEN8eQPVjL8U8KwMp6/uqQvoqS5ErmqLf9c2G365p5HPRVEVdRkpyduoRVybEFQtyWMoPRAQ==
-X-Received: by 2002:a17:902:da87:b0:1b8:954c:1fb with SMTP id j7-20020a170902da8700b001b8954c01fbmr56740plx.7.1690311010481;
-        Tue, 25 Jul 2023 11:50:10 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id g4-20020a170902c38400b001b8b26fa6a9sm342329plg.19.2023.07.25.11.50.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 11:50:09 -0700 (PDT)
-Message-ID: <64c01961.170a0220.8befb.155b@mx.google.com>
-Date:   Tue, 25 Jul 2023 11:50:09 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229459AbjGYSur (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 14:50:47 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 297C619AD
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:50:46 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id DD51F1F38C;
+        Tue, 25 Jul 2023 18:50:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1690311044; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yflSHrM/7ZrA3cNrHkIst3Ykk290hSPumnqNEi5LzRs=;
+        b=ZbBsGU11PvT1+oIS5U9p2+uZmPe3NrsR9Xyc4hTM2tsnXy1wqOA2aPT1aHlPDDEGyUprD+
+        Fk4D58VKfaVdSDhe54bN7KqqGvPoz8BQfTD+vKC9c2X1qZ9ks6C2GsdcFZuzRJn3h3AGd5
+        XCR+vxPdDBkUz24l3eXV60aqNKPRQd0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1690311044;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yflSHrM/7ZrA3cNrHkIst3Ykk290hSPumnqNEi5LzRs=;
+        b=Ku61Mn4xUD++n+ZcI0f300XV2tADC+3q4hvNzOsp/PFeAG9dEA1ZXSrIeYRZhO/jSlzPsu
+        /R25oZaCicIPmxCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BAB1613487;
+        Tue, 25 Jul 2023 18:50:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id bLOOLIQZwGQ9fgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 25 Jul 2023 18:50:44 +0000
+Message-ID: <77a41226-b671-1895-6182-457f7fee9bda@suse.de>
+Date:   Tue, 25 Jul 2023 20:50:43 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Kernel: v6.1.41-184-gb3f8a9d2b1371
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.41-184-gb3f8a9d2b1371)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] drm/shmem-helper: Reset vma->vm_ops before calling
+ dma_buf_mmap()
+Content-Language: en-US
+To:     Boris Brezillon <boris.brezillon@collabora.com>,
+        dri-devel@lists.freedesktop.org
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>, stable@vger.kernel.org,
+        Roman Stratiienko <roman.stratiienko@globallogic.com>
+References: <20230724112610.60974-1-boris.brezillon@collabora.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230724112610.60974-1-boris.brezillon@collabora.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------2RAtmm0UdYst3US6QvqHJVbd"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.41-184-gb3f8a9d2b1371)
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------2RAtmm0UdYst3US6QvqHJVbd
+Content-Type: multipart/mixed; boundary="------------ivtOjhe6YB0FypaNcq46p9vk";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Boris Brezillon <boris.brezillon@collabora.com>,
+ dri-devel@lists.freedesktop.org
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>, stable@vger.kernel.org,
+ Roman Stratiienko <roman.stratiienko@globallogic.com>
+Message-ID: <77a41226-b671-1895-6182-457f7fee9bda@suse.de>
+Subject: Re: [PATCH] drm/shmem-helper: Reset vma->vm_ops before calling
+ dma_buf_mmap()
+References: <20230724112610.60974-1-boris.brezillon@collabora.com>
+In-Reply-To: <20230724112610.60974-1-boris.brezillon@collabora.com>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.41-184-gb3f8a9d2b1371/
+--------------ivtOjhe6YB0FypaNcq46p9vk
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.41-184-gb3f8a9d2b1371
-Git Commit: b3f8a9d2b13712777c36667183b782dd7efa5039
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+SGkNCg0KQW0gMjQuMDcuMjMgdW0gMTM6MjYgc2NocmllYiBCb3JpcyBCcmV6aWxsb246DQo+
+IFRoZSBkbWEtYnVmIGJhY2tlbmQgaXMgc3VwcG9zZWQgdG8gcHJvdmlkZSBpdHMgb3duIHZt
+X29wcywgYnV0IHNvbWUNCj4gaW1wbGVtZW50YXRpb24ganVzdCBoYXZlIG5vdGhpbmcgc3Bl
+Y2lhbCB0byBkbyBhbmQgbGVhdmUgdm1fb3BzDQo+IHVudG91Y2hlZCwgcHJvYmFibHkgZXhw
+ZWN0aW5nIHRoaXMgZmllbGQgdG8gYmUgemVybyBpbml0aWFsaXplZCAodGhpcw0KPiBpcyB0
+aGUgY2FzZSB3aXRoIHRoZSBzeXN0ZW1faGVhcCBpbXBsZW1lbnRhdGlvbiBmb3IgaW5zdGFu
+Y2UpLg0KPiBMZXQncyByZXNldCB2bWEtPnZtX29wcyB0byBOVUxMIHRvIGtlZXAgdGhpbmdz
+IHdvcmtpbmcgd2l0aCB0aGVzZQ0KPiBpbXBsZW1lbnRhdGlvbnMuDQoNClRoYW5rcyBmb3Ig
+eW91ciBwYXRjaC4gVGhpcyBidWcgY291bGQgYWZmZWN0IGEgbnVtYmVyIG9mIEdFTSANCmlt
+cGxlbWVudGF0aW9ucy4gSW5zdGVhZCBvZiBmaXhpbmcgdGhpcyBpbmRpdmlkdWFsbHksIGNv
+dWxkIHdlIHNldCB0aGUgDQpmaWVsZHMgY29uZGl0aW9uYWxseSBhdA0KDQogDQpodHRwczov
+L2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni40L3NvdXJjZS9kcml2ZXJzL2dwdS9kcm0v
+ZHJtX2dlbS5jI0wxMDQyDQoNCj8NCg0KU29tZXRoaW5nIGxpa2UNCg0KICAgaWYgKCFvYmpl
+Y3QtPmltcG9ydF9hdHRhY2gpIHsNCiAgICAgdm1hLT5wcml2ID0NCiAgICAgdm1hLT5vcHMg
+PQ0KICAgfQ0KDQpwbHVzIGEgZGVzY3JpcHRpdmUgY29tbWVudCBsaWtlIHRoZSBvbmUgeW91
+IGhhdmUgaW4geW91ciBwYXRjaC4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4g
+Rml4ZXM6IDI2ZDNhYzNjYjA0ZCAoImRybS9zaG1lbS1oZWxwZXJzOiBSZWRpcmVjdCBtbWFw
+IGZvciBpbXBvcnRlZCBkbWEtYnVmIikNCj4gQ2M6IDxzdGFibGVAdmdlci5rZXJuZWwub3Jn
+Pg0KPiBDYzogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBmZndsbC5jaD4NCj4gUmVw
+b3J0ZWQtYnk6IFJvbWFuIFN0cmF0aWllbmtvIDxyb21hbi5zdHJhdGlpZW5rb0BnbG9iYWxs
+b2dpYy5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMuYnJl
+emlsbG9uQGNvbGxhYm9yYS5jb20+DQo+IC0tLQ0KPiAgIGRyaXZlcnMvZ3B1L2RybS9kcm1f
+Z2VtX3NobWVtX2hlbHBlci5jIHwgNiArKysrKysNCj4gICAxIGZpbGUgY2hhbmdlZCwgNiBp
+bnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJtL2RybV9n
+ZW1fc2htZW1faGVscGVyLmMgYi9kcml2ZXJzL2dwdS9kcm0vZHJtX2dlbV9zaG1lbV9oZWxw
+ZXIuYw0KPiBpbmRleCA0ZWE2NTA3YTc3ZTUuLmJhYWYwZTBmZWIwNiAxMDA2NDQNCj4gLS0t
+IGEvZHJpdmVycy9ncHUvZHJtL2RybV9nZW1fc2htZW1faGVscGVyLmMNCj4gKysrIGIvZHJp
+dmVycy9ncHUvZHJtL2RybV9nZW1fc2htZW1faGVscGVyLmMNCj4gQEAgLTYyMyw3ICs2MjMs
+MTMgQEAgaW50IGRybV9nZW1fc2htZW1fbW1hcChzdHJ1Y3QgZHJtX2dlbV9zaG1lbV9vYmpl
+Y3QgKnNobWVtLCBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QNCj4gICAJaW50IHJldDsNCj4gICAN
+Cj4gICAJaWYgKG9iai0+aW1wb3J0X2F0dGFjaCkgew0KPiArCQkvKiBSZXNldCBib3RoIHZt
+X29wcyBhbmQgdm1fcHJpdmF0ZV9kYXRhLCBzbyB3ZSBkb24ndCBlbmQgdXAgd2l0aA0KPiAr
+CQkgKiB2bV9vcHMgcG9pbnRpbmcgdG8gb3VyIGltcGxlbWVudGF0aW9uIGlmIHRoZSBkbWEt
+YnVmIGJhY2tlbmQNCj4gKwkJICogZG9lc24ndCBzZXQgdGhvc2UgZmllbGRzLg0KPiArCQkg
+Ki8NCj4gICAJCXZtYS0+dm1fcHJpdmF0ZV9kYXRhID0gTlVMTDsNCj4gKwkJdm1hLT52bV9v
+cHMgPSBOVUxMOw0KPiArDQo+ICAgCQlyZXQgPSBkbWFfYnVmX21tYXAob2JqLT5kbWFfYnVm
+LCB2bWEsIDApOw0KPiAgIA0KPiAgIAkJLyogRHJvcCB0aGUgcmVmZXJlbmNlIGRybV9nZW1f
+bW1hcF9vYmooKSBhY3F1aXJlZC4qLw0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFw
+aGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55
+IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpH
+RjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBN
+b2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
 
-Warnings Detected:
+--------------ivtOjhe6YB0FypaNcq46p9vk--
 
-arc:
+--------------2RAtmm0UdYst3US6QvqHJVbd
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-arm64:
+-----BEGIN PGP SIGNATURE-----
 
-arm:
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmTAGYMFAwAAAAAACgkQlh/E3EQov+CJ
+Fw/+L8VLenUfBFUFhJfRDdgqlUzxi2WdsiD1wI56Pk7rYL5Fw/reJt68Na1jjvnht1mlHiAT6LUS
+wdswkaDLemIurdgsM//0JB0sdMjsMG/T0AghuTOzj+zp1UvbvAw/92y92rrX6QHUagZ+ed/GigjA
+zAPfwTdc2T4KapweDx8imXv/0QLGYxKugWFd6YEvQD2jdIJtZDHFPcVso5W4S2ZeFN0sGWPUJGUf
+QGptSRLu7rNt9w79m5+7SiiKvmgabtWHry9/sRy1V3qr6ej7bF4lap6VDGDv1xKi97whDT7kJe2N
+Hn+tNaD3M4qYBrV4eOmNtHQuUcxnDrQ5tNZTkqKAVhoCDbHk1wyBOiP1FhOC7wbJKo/656civjUf
+YilTLONXQ6NbJixEd9XpINbGnIEHY06FBOzOj/xdN6t+MKoJU+tw8za7glUVFTjE6knb61lEg2+R
+GBUX3vaL4uSys5t30YYYRy0Ts7rKfuzLNJ0j5qgwu4AzZEOamGQDy3DhmZJAoZyJzRJU91IqL02U
+QPE3C01gHzl75MJ6shrMhHsf3DX5RiviBUP6IkS4uD2YKhEiXANBOvJU6B+Bm7HHbvij5dBd0/7n
+o5534eXIMMRcAS1Py35yghnazRjHV+0L8IxbaVplYKMJ4zWpgPA1KV/qPAAEUS/Dei+vc8GAAJF1
+2tE=
+=UAUu
+-----END PGP SIGNATURE-----
 
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+--------------2RAtmm0UdYst3US6QvqHJVbd--
