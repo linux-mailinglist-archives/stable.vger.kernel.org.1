@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B095761340
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43393761255
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234069AbjGYLJF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:09:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44728 "EHLO
+        id S233527AbjGYLBT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 07:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234058AbjGYLIu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:08:50 -0400
+        with ESMTP id S233829AbjGYLBA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:01:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31AD02139
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:07:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1CB4480
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:58:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4CE76165D
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:07:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4050C433C8;
-        Tue, 25 Jul 2023 11:07:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C79761656
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:58:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B98BC433C7;
+        Tue, 25 Jul 2023 10:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690283253;
-        bh=AsPTQrPzTDhdK/72JF3qBlfWN0iPBbmFkZvJ++WrSw8=;
+        s=korg; t=1690282703;
+        bh=Tmuq9A3rps73VjOMuot8WXSUTDBOPVUyBTIemHKrvO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jES5m2eOfHLYUN03GN10TS3CM4eD1wp7dYyujnddW6tTDCo2Mj4io2uSibYYpjFtd
-         jGVInVB8cAS3Pp1KAnymcI73Dhhf+vtW6Xj7KK+tjObuoHePUR3CWl9pXLUErGTSTx
-         sZXkfZjK8wzLTQLzw1CB53UtTEnA6SotLuyXX0Xw=
+        b=nXlh/xyJka0iulWAY7cjNv/9DkQfw+gen82wKyELTWkYME+m8ydnoCbPIu7J53iUw
+         mDz+uF9zdkiIoWirOVdJ9qsAxYaAslsWI7b4WSllPvKVeqpN6n7GAqjJ7rGUo9iDuQ
+         LRB+uxJbYyRyzFaS09xhpRQZb4DssHv8jYdIsUh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 10/78] selftests: tc: set timeout to 15 minutes
-Date:   Tue, 25 Jul 2023 12:46:01 +0200
-Message-ID: <20230725104451.715707033@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 195/227] netfilter: nf_tables: fix spurious set element insertion failure
+Date:   Tue, 25 Jul 2023 12:46:02 +0200
+Message-ID: <20230725104522.883723772@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
-References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Florian Westphal <fw@strlen.de>
 
-commit fda05798c22a354efde09a76bdfc276b2d591829 upstream.
+[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
 
-When looking for something else in LKFT reports [1], I noticed that the
-TC selftest ended with a timeout error:
+On some platforms there is a padding hole in the nft_verdict
+structure, between the verdict code and the chain pointer.
 
-  not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
+On element insertion, if the new element clashes with an existing one and
+NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
+the data associated with duplicated element is the same as the existing
+one.  The data equality check uses memcmp.
 
-The timeout had been introduced 3 years ago, see the Fixes commit below.
+For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
+padding area leads to spurious failure even if the verdict data is the
+same.
 
-This timeout is only in place when executing the selftests via the
-kselftests runner scripts. I guess this is not what most TC devs are
-using and nobody noticed the issue before.
+This then makes the insertion fail with 'already exists' error, even
+though the new "key : data" matches an existing entry and userspace
+told the kernel that it doesn't want to receive an error indication.
 
-The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
-like it is plenty more time than what it takes in "normal" conditions.
-
-Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
-Cc: stable@vger.kernel.org
-Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
-Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
-Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Reviewed-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/tc-testing/settings |    1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 tools/testing/selftests/tc-testing/settings
+ net/netfilter/nf_tables_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- /dev/null
-+++ b/tools/testing/selftests/tc-testing/settings
-@@ -0,0 +1 @@
-+timeout=900
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 18546f9b2a63a..51909bcc181fa 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10482,6 +10482,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+ 
+ 	if (!tb[NFTA_VERDICT_CODE])
+ 		return -EINVAL;
++
++	/* zero padding hole for memcmp */
++	memset(data, 0, sizeof(*data));
+ 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+ 
+ 	switch (data->verdict.code) {
+-- 
+2.39.2
+
 
 
