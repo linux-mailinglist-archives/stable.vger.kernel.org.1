@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DE2C761287
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAD947611A2
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233867AbjGYLDl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:03:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39860 "EHLO
+        id S231411AbjGYKyH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:54:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233873AbjGYLDQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:03:16 -0400
+        with ESMTP id S233570AbjGYKxP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:53:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135FA49C0
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:00:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2C41FC4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:51:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 033EC61683
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:00:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E669C433C9;
-        Tue, 25 Jul 2023 11:00:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29A826165C
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:51:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DCFC433C8;
+        Tue, 25 Jul 2023 10:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690282801;
-        bh=D59vORNl4tvgos08fD82d8V6msc+xVEjrVrVrR/W/FY=;
+        s=korg; t=1690282307;
+        bh=NbDyiOzobj0QDpgxz/hVnzRfoukAlOHY5YWkvSJnopU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lxpoWaCWL+dKOSavv+1x0RGBEN8aq4FPnWL3MLiiNHbxTE0a64wQD/DckVGfqZ3Iz
-         TqXwdemUtkublaNuHXI+d042hFxLK0k+SdyfkAzwYmfh5uDi8FXvA8XYAH01aDnKK9
-         F5C0HwPOBxjhWdyz9+Gbk9tyDGSW8bGLBkUwBvu8=
+        b=OzMVOL/Phy1yIxw45PFTzg5xFS8Br+gG2lWPYleGIXILr7P1j6euj/x76Ws4j+5R7
+         VK05QQC/Jq5eddhXuX/E101+XnK3lhjhgpRt6Oo62sAKx/Z04QzCthW0kbskuZA/6c
+         02wFSw74Iou1B5hEb+yp76kj+CP7XozPUiVy5aAE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luka Guzenko <l.guzenko@web.de>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 004/183] ALSA: hda/realtek: Enable Mute LED on HP Laptop 15s-eq2xxx
+        patches@lists.linux.dev, Sheetal <sheetal@nvidia.com>,
+        Mohan Kumar D <mkumard@nvidia.com>,
+        Sameer Pujar <spujar@nvidia.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 065/227] ASoC: tegra: Fix AMX byte map
 Date:   Tue, 25 Jul 2023 12:43:52 +0200
-Message-ID: <20230725104507.954752329@linuxfoundation.org>
+Message-ID: <20230725104517.436888919@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
-References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +56,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luka Guzenko <l.guzenko@web.de>
+From: Sheetal <sheetal@nvidia.com>
 
-commit 0659400f18c0e6c0c69d74fe5d09e7f6fbbd52a2 upstream.
+commit 49bd7b08149417a30aa7d92c8c85b3518de44a76 upstream.
 
-The HP Laptop 15s-eq2xxx uses ALC236 codec and controls the mute LED using
-COEF 0x07 index 1. No existing quirk covers this configuration.
-Adds a new quirk and enables it for the device.
+Byte mask for channel-1 of stream-1 is not getting enabled and this
+causes failures during AMX use cases. This happens because the byte
+map value 0 matches the byte map array and put() callback returns
+without enabling the corresponding bits in the byte mask.
 
-Signed-off-by: Luka Guzenko <l.guzenko@web.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230718161241.393181-1-l.guzenko@web.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+AMX supports 4 input streams and each stream can take a maximum of
+16 channels. Each byte in the output frame is uniquely mapped to a
+byte in one of these 4 inputs. This mapping is done with the help of
+byte map array via user space control setting. The byte map array
+size in the driver is 16 and each array element is of size 4 bytes.
+This corresponds to 64 byte map values.
+
+Each byte in the byte map array can have any value between 0 to 255
+to enable the corresponding bits in the byte mask. The value 256 is
+used as a way to disable the byte map. However the byte map array
+element cannot store this value. The put() callback disables the byte
+mask for 256 value and byte map value is reset to 0 for this case.
+This causes problems during subsequent runs since put() callback,
+for value of 0, just returns without enabling the byte mask. In short,
+the problem is coming because 0 and 256 control values are stored as
+0 in the byte map array.
+
+Right now fix the put() callback by actually looking at the byte mask
+array state to identify if any change is needed and update the fields
+accordingly. The get() callback needs an update as well to return the
+correct control value that user has set before. Note that when user
+sets 256, the value is stored as 0 and byte mask is disabled. So byte
+mask state is used to either return 256 or the value from byte map
+array.
+
+Given above, this looks bit complicated and all this happens because
+the byte map array is tightly packed and cannot actually store the 256
+value. Right now the priority is to fix the existing failure and a TODO
+item is put to improve this logic.
+
+Fixes: 8db78ace1ba8 ("ASoC: tegra: Fix kcontrol put callback in AMX")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Reviewed-by: Mohan Kumar D <mkumard@nvidia.com>
+Reviewed-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://lore.kernel.org/r/1688015537-31682-2-git-send-email-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ sound/soc/tegra/tegra210_amx.c |   40 ++++++++++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4624,6 +4624,21 @@ static void alc236_fixup_hp_mute_led_coe
- 	}
- }
+--- a/sound/soc/tegra/tegra210_amx.c
++++ b/sound/soc/tegra/tegra210_amx.c
+@@ -2,7 +2,7 @@
+ //
+ // tegra210_amx.c - Tegra210 AMX driver
+ //
+-// Copyright (c) 2021 NVIDIA CORPORATION.  All rights reserved.
++// Copyright (c) 2021-2023 NVIDIA CORPORATION.  All rights reserved.
  
-+static void alc236_fixup_hp_mute_led_coefbit2(struct hda_codec *codec,
-+					  const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
+ #include <linux/clk.h>
+ #include <linux/device.h>
+@@ -203,10 +203,20 @@ static int tegra210_amx_get_byte_map(str
+ 	else
+ 		enabled = amx->byte_mask[0] & (1 << reg);
+ 
++	/*
++	 * TODO: Simplify this logic to just return from bytes_map[]
++	 *
++	 * Presently below is required since bytes_map[] is
++	 * tightly packed and cannot store the control value of 256.
++	 * Byte mask state is used to know if 256 needs to be returned.
++	 * Note that for control value of 256, the put() call stores 0
++	 * in the bytes_map[] and disables the corresponding bit in
++	 * byte_mask[].
++	 */
+ 	if (enabled)
+ 		ucontrol->value.integer.value[0] = bytes_map[reg];
+ 	else
+-		ucontrol->value.integer.value[0] = 0;
++		ucontrol->value.integer.value[0] = 256;
+ 
+ 	return 0;
+ }
+@@ -221,25 +231,19 @@ static int tegra210_amx_put_byte_map(str
+ 	unsigned char *bytes_map = (unsigned char *)&amx->map;
+ 	int reg = mc->reg;
+ 	int value = ucontrol->value.integer.value[0];
++	unsigned int mask_val = amx->byte_mask[reg / 32];
+ 
+-	if (value == bytes_map[reg])
++	if (value >= 0 && value <= 255)
++		mask_val |= (1 << (reg % 32));
++	else
++		mask_val &= ~(1 << (reg % 32));
 +
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mute_led_polarity = 0;
-+		spec->mute_led_coef.idx = 0x07;
-+		spec->mute_led_coef.mask = 1;
-+		spec->mute_led_coef.on = 1;
-+		spec->mute_led_coef.off = 0;
-+		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
-+	}
-+}
-+
- /* turn on/off mic-mute LED per capture hook by coef bit */
- static int coef_micmute_led_set(struct led_classdev *led_cdev,
- 				enum led_brightness brightness)
-@@ -7134,6 +7149,7 @@ enum {
- 	ALC285_FIXUP_HP_GPIO_LED,
- 	ALC285_FIXUP_HP_MUTE_LED,
- 	ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED,
-+	ALC236_FIXUP_HP_MUTE_LED_COEFBIT2,
- 	ALC236_FIXUP_HP_GPIO_LED,
- 	ALC236_FIXUP_HP_MUTE_LED,
- 	ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF,
-@@ -8557,6 +8573,10 @@ static const struct hda_fixup alc269_fix
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_spectre_x360_mute_led,
- 	},
-+	[ALC236_FIXUP_HP_MUTE_LED_COEFBIT2] = {
-+	    .type = HDA_FIXUP_FUNC,
-+	    .v.func = alc236_fixup_hp_mute_led_coefbit2,
-+	},
- 	[ALC236_FIXUP_HP_GPIO_LED] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc236_fixup_hp_gpio_led,
-@@ -9441,6 +9461,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x886d, "HP ZBook Fury 17.3 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x8870, "HP ZBook Fury 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x8873, "HP ZBook Studio 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
-+	SND_PCI_QUIRK(0x103c, 0x887a, "HP Laptop 15s-eq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x888d, "HP ZBook Power 15.6 inch G8 Mobile Workstation PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8895, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
++	if (mask_val == amx->byte_mask[reg / 32])
+ 		return 0;
+ 
+-	if (value >= 0 && value <= 255) {
+-		/* Update byte map and enable slot */
+-		bytes_map[reg] = value;
+-		if (reg > 31)
+-			amx->byte_mask[1] |= (1 << (reg - 32));
+-		else
+-			amx->byte_mask[0] |= (1 << reg);
+-	} else {
+-		/* Reset byte map and disable slot */
+-		bytes_map[reg] = 0;
+-		if (reg > 31)
+-			amx->byte_mask[1] &= ~(1 << (reg - 32));
+-		else
+-			amx->byte_mask[0] &= ~(1 << reg);
+-	}
++	/* Update byte map and slot */
++	bytes_map[reg] = value % 256;
++	amx->byte_mask[reg / 32] = mask_val;
+ 
+ 	return 1;
+ }
 
 
