@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E88C76157F
-	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 13:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78F2D7611F8
+	for <lists+stable@lfdr.de>; Tue, 25 Jul 2023 12:58:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234760AbjGYL3l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 07:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37912 "EHLO
+        id S232343AbjGYK6e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 06:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234757AbjGYL3k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 07:29:40 -0400
+        with ESMTP id S233576AbjGYK5x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 06:57:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA46DF3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 04:29:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB0D30D4
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 03:55:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 894766168E
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 11:29:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C13C433C9;
-        Tue, 25 Jul 2023 11:29:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECD906166E
+        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 10:54:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077FFC433C8;
+        Tue, 25 Jul 2023 10:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690284579;
-        bh=5SgpnhGk4+eD3nwKX40aXp+YciGG/1jEXiIi031QuRE=;
+        s=korg; t=1690282499;
+        bh=+T2APAff6FBhsswG1DGZLYN6qJb84D8IgwdNqPq2n9g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1oogJqHCyDN1Tc7z7FRVJNyoZ0oYAIytnIrZ046/1/GVwYFlj54MSDTj22Vr8y//c
-         aK7JsKBBcUoNIlvudDEu3US7YGfbesLFY9zFyLlJq29PoV72rzAbaL41++q7485DOg
-         jYiaVumkq45NG+AjLBCvrsanjohFpCAnrDhUOO5M=
+        b=0uBMNtaQGwTseTJK4yGpFVw2Ln3g0aDpTVBGf9zJbNdHwAcMj5ca6DrtdyWwkIUUE
+         7cQ1Mnoq5kDDD2U1E4a4wZ959XkT31mFpYedEwth6BiLiNBUr4S8xU6GlHOx3+qPP7
+         T1izDhJmusnxQoJnT4x3VkfVIzILEiPsl8PUcVXI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.10 378/509] pinctrl: amd: Detect internal GPIO0 debounce handling
-Date:   Tue, 25 Jul 2023 12:45:17 +0200
-Message-ID: <20230725104611.033110032@linuxfoundation.org>
+        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 151/227] arm64: Fix HFGxTR_EL2 field naming
+Date:   Tue, 25 Jul 2023 12:45:18 +0200
+Message-ID: <20230725104521.161399602@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725104553.588743331@linuxfoundation.org>
-References: <20230725104553.588743331@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
+References: <20230725104514.821564989@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,77 +57,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 968ab9261627fa305307e3935ca1a32fcddd36cb upstream.
+[ Upstream commit 55b87b74996383230586f4f9f801ae304c70e649 ]
 
-commit 4e5a04be88fe ("pinctrl: amd: disable and mask interrupts on probe")
-had a mistake in loop iteration 63 that it would clear offset 0xFC instead
-of 0x100.  Offset 0xFC is actually `WAKE_INT_MASTER_REG`.  This was
-clearing bits 13 and 15 from the register which significantly changed the
-expected handling for some platforms for GPIO0.
+The HFGxTR_EL2 fields do not always follow the naming described
+in the spec, nor do they match the name of the register they trap
+in the rest of the kernel.
 
-commit b26cd9325be4 ("pinctrl: amd: Disable and mask interrupts on resume")
-actually fixed this bug, but lead to regressions on Lenovo Z13 and some
-other systems.  This is because there was no handling in the driver for bit
-15 debounce behavior.
+It is a bit sad that they were written by hand despite the availability
+of a machine readable version...
 
-Quoting a public BKDG:
-```
-EnWinBlueBtn. Read-write. Reset: 0. 0=GPIO0 detect debounced power button;
-Power button override is 4 seconds. 1=GPIO0 detect debounced power button
-in S3/S5/S0i3, and detect "pressed less than 2 seconds" and "pressed 2~10
-seconds" in S0; Power button override is 10 seconds
-```
-
-Cross referencing the same master register in Windows it's obvious that
-Windows doesn't use debounce values in this configuration.  So align the
-Linux driver to do this as well.  This fixes wake on lid when
-WAKE_INT_MASTER_REG is properly programmed.
-
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217315
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230421120625.3366-2-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc077e7facbe ("arm64/sysreg: Convert HFG[RW]TR_EL2 to automatic generation")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20230703130416.1495307-1-maz@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |    7 +++++++
- drivers/pinctrl/pinctrl-amd.h |    1 +
- 2 files changed, 8 insertions(+)
+ arch/arm64/tools/sysreg | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -126,6 +126,12 @@ static int amd_gpio_set_debounce(struct
- 	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index c9a0d1fa32090..930c8cc0812fc 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -1890,7 +1890,7 @@ Field	0	SM
+ EndSysreg
  
- 	raw_spin_lock_irqsave(&gpio_dev->lock, flags);
-+
-+	/* Use special handling for Pin0 debounce */
-+	pin_reg = readl(gpio_dev->base + WAKE_INT_MASTER_REG);
-+	if (pin_reg & INTERNAL_GPIO0_DEBOUNCE)
-+		debounce = 0;
-+
- 	pin_reg = readl(gpio_dev->base + offset * 4);
- 
- 	if (debounce) {
-@@ -215,6 +221,7 @@ static void amd_gpio_dbg_show(struct seq
- 	char *output_value;
- 	char *output_enable;
- 
-+	seq_printf(s, "WAKE_INT_MASTER_REG: 0x%08x\n", readl(gpio_dev->base + WAKE_INT_MASTER_REG));
- 	for (bank = 0; bank < gpio_dev->hwbank_num; bank++) {
- 		seq_printf(s, "GPIO bank%d\t", bank);
- 
---- a/drivers/pinctrl/pinctrl-amd.h
-+++ b/drivers/pinctrl/pinctrl-amd.h
-@@ -17,6 +17,7 @@
- #define AMD_GPIO_PINS_BANK3     32
- 
- #define WAKE_INT_MASTER_REG 0xfc
-+#define INTERNAL_GPIO0_DEBOUNCE (1 << 15)
- #define EOI_MASK (1 << 29)
- 
- #define WAKE_INT_STATUS_REG0 0x2f8
+ SysregFields	HFGxTR_EL2
+-Field	63	nAMIAIR2_EL1
++Field	63	nAMAIR2_EL1
+ Field	62	nMAIR2_EL1
+ Field	61	nS2POR_EL1
+ Field	60	nPOR_EL1
+@@ -1905,9 +1905,9 @@ Field	52	nGCS_EL0
+ Res0	51
+ Field	50	nACCDATA_EL1
+ Field	49	ERXADDR_EL1
+-Field	48	EXRPFGCDN_EL1
+-Field	47	EXPFGCTL_EL1
+-Field	46	EXPFGF_EL1
++Field	48	ERXPFGCDN_EL1
++Field	47	ERXPFGCTL_EL1
++Field	46	ERXPFGF_EL1
+ Field	45	ERXMISCn_EL1
+ Field	44	ERXSTATUS_EL1
+ Field	43	ERXCTLR_EL1
+@@ -1922,8 +1922,8 @@ Field	35	TPIDR_EL0
+ Field	34	TPIDRRO_EL0
+ Field	33	TPIDR_EL1
+ Field	32	TCR_EL1
+-Field	31	SCTXNUM_EL0
+-Field	30	SCTXNUM_EL1
++Field	31	SCXTNUM_EL0
++Field	30	SCXTNUM_EL1
+ Field	29	SCTLR_EL1
+ Field	28	REVIDR_EL1
+ Field	27	PAR_EL1
+-- 
+2.39.2
+
 
 
