@@ -2,30 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4D70763FC6
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 21:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C90B1763FDE
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 21:42:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbjGZTex (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 15:34:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
+        id S229957AbjGZTmC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 15:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjGZTew (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 15:34:52 -0400
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19F2E73;
-        Wed, 26 Jul 2023 12:34:50 -0700 (PDT)
-Received: from [192.168.0.107] (unknown [114.249.159.178])
-        by APP-05 (Coremail) with SMTP id zQCowABnbrI4dcFk8hvfDg--.59552S2;
-        Thu, 27 Jul 2023 03:34:16 +0800 (CST)
-Message-ID: <10231b81-ea42-26d0-4c11-92851229e658@iscas.ac.cn>
-Date:   Thu, 27 Jul 2023 03:34:16 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-Content-Language: en-US
-To:     Conor Dooley <conor@kernel.org>
+        with ESMTP id S230484AbjGZTmC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 15:42:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E2B2122;
+        Wed, 26 Jul 2023 12:42:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A632E61CB6;
+        Wed, 26 Jul 2023 19:42:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B7AC433CA;
+        Wed, 26 Jul 2023 19:41:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690400520;
+        bh=SM4xFHkPLeUYUDMk/9j+ThiUSf7Itm0vPEQ3iXBVLgo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ElWae17LIL3ZjRjRJXy/dQ7BFoY5mDXR8EYlpt8e5IXLirZDeY3zOTjSVvcfozF0n
+         Pp9g67p+19OOs1WR+914dOcQ2Mu/NYN2K/OrTB7AFk2HF/EmJ4bO+YgHqNyhM7QCqs
+         6QIYBofrsYqyXRjerY6xOn0bizf1S6k7kKJgkC5H69mm9JrjTP8qAvzcePWPPbnHmC
+         nJIsV4PiqfLu0bt5TO+vnfh73PvpmH8f39K2gUwFthE8hbD6Hy3DT0dDa+XOLyzrM4
+         0E6pn7fhijboRyJjP8xRwiQisD/w2cRpOPh8FXihFMSqQAoy0RhncUKhrd61Uu3+Lj
+         yn8W2D/iX+GDQ==
+Date:   Wed, 26 Jul 2023 20:41:55 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Mingzheng Xing <xingmingzheng@iscas.ac.cn>
 Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
@@ -34,156 +43,81 @@ Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
         Tom Rix <trix@redhat.com>, Bin Meng <bmeng@tinylab.org>,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and
+ binutils
+Message-ID: <20230726-armchair-evasive-427dd245a9fe@spud>
 References: <20230726174524.340952-1-xingmingzheng@iscas.ac.cn>
  <20230726-outclass-parade-2ccea9f6688a@spud>
-From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Organization: ISCAS
-In-Reply-To: <20230726-outclass-parade-2ccea9f6688a@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: zQCowABnbrI4dcFk8hvfDg--.59552S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxKw43Xw15uF1DJFy8urykXwb_yoW7XrW5pr
-        W3CFyUCr4rXw48G3Wft34UWa4Yyrs3J3y8Jr43Kw1Uu3sxZF1FgrWkKw4agFyDZrZ3Gr40
-        vr1xu3ZYvw1qvaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvlb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4
-        A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-        Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-        c7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-        W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-        1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-        IIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-        x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
-        DU0xZFpf9x07beAp5UUUUU=
-X-Originating-IP: [114.249.159.178]
-X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiCgYECmTBJBelrwAAse
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+ <10231b81-ea42-26d0-4c11-92851229e658@iscas.ac.cn>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="/XgSBHUpeXMHM/69"
+Content-Disposition: inline
+In-Reply-To: <10231b81-ea42-26d0-4c11-92851229e658@iscas.ac.cn>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/27/23 02:02, Conor Dooley wrote:
-> On Thu, Jul 27, 2023 at 01:45:24AM +0800, Mingzheng Xing wrote:
->> Binutils-2.38 and GCC-12.1.0 bump[0] default ISA spec to newer version
->> 20191213 which moves some instructions from the I extension to the
->> Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
->> that version, we should turn on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->> to cope with the new changes.
->>
->> The case of clang is special[1][2], where older clang versions (<17) need
->> to be rolled back to old ISA spec to fix it. And the less common case,
->> since older GCC versions (<11.1.0) did not support zicsr and zifencei
-> Can you provide a link to explain why this is 11.1.0 in particular?
 
-Okay, I can add it in commit message. gcc-11.1.0 is particular
-because it add support zicsr and zifencei extension for -march[1].
+--/XgSBHUpeXMHM/69
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Link: 
-https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 
-[1]
+On Thu, Jul 27, 2023 at 03:34:16AM +0800, Mingzheng Xing wrote:
+> On 7/27/23 02:02, Conor Dooley wrote:
 
->> extension for -march, also requires a fallback to cope with it.
->>
->> For more information, please refer to:
->> commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
->> commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
->> Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [0]
->> Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org [1]
->> Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org [2]
->> Link: https://lore.kernel.org/all/20230725170405.251011-1-xingmingzheng@iscas.ac.cn
-> This shouldn't be here, you don't link to your old patches.
+> > This is still broken for:
+> > CONFIG_CLANG_VERSION=3D0
+> > CONFIG_AS_IS_GNU=3Dy
+> > CONFIG_AS_VERSION=3D23500
+> > CONFIG_LD_IS_BFD=3Dy
+> > CONFIG_LD_VERSION=3D23500
+>=20
+> Do you mean that these CONFIG_* will cause kernel
+> compilation errors when paired with certain versions of GCC?
+> Or perhaps I misunderstood your meaning.
 
-My bad, I will fix it.
+No, this section is generated by kconfig, although I messed up my
+trimming of the list & accidentally removed the gcc version, rather
+than the clang version. Here's the full thing:
 
->
->> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-> This is still broken for:
-> CONFIG_CLANG_VERSION=0
-> CONFIG_AS_IS_GNU=y
-> CONFIG_AS_VERSION=23500
-> CONFIG_LD_IS_BFD=y
-> CONFIG_LD_VERSION=23500
+CONFIG_CC_VERSION_TEXT=3D"riscv64-unknown-linux-gnu-gcc (g2ee5e430018) 12.2=
+=2E0"
+CONFIG_CC_IS_GCC=3Dy
+CONFIG_GCC_VERSION=3D120200
+CONFIG_CLANG_VERSION=3D0
+CONFIG_AS_IS_GNU=3Dy
+CONFIG_AS_VERSION=3D23500
+CONFIG_LD_IS_BFD=3Dy
+CONFIG_LD_VERSION=3D23500
+CONFIG_LLD_VERSION=3D0
+CONFIG_CC_CAN_LINK=3Dy
+CONFIG_CC_CAN_LINK_STATIC=3Dy
+CONFIG_CC_HAS_ASM_GOTO_OUTPUT=3Dy
+CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT=3Dy
+CONFIG_CC_HAS_ASM_INLINE=3Dy
+CONFIG_CC_HAS_NO_PROFILE_FN_ATTR=3Dy
+CONFIG_PAHOLE_VERSION=3D0
+CONFIG_CONSTRUCTORS=3Dy
+CONFIG_IRQ_WORK=3Dy
+CONFIG_BUILDTIME_TABLE_SORT=3Dy
 
-Do you mean that these CONFIG_* will cause kernel
-compilation errors when paired with certain versions of GCC?
-Or perhaps I misunderstood your meaning.
+--/XgSBHUpeXMHM/69
+Content-Type: application/pgp-signature; name="signature.asc"
 
->
-> Please don't post a v2 while there is still ongoing discussion on the
-> v1. I'll try to reply here tomorrow with a diff you can fold in to fix
-> the problem.
+-----BEGIN PGP SIGNATURE-----
 
-Okay, thanks for your review.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMF3AwAKCRB4tDGHoIJi
+0ox+AQD2N9SfZLE1Y7/Z6Yk1dCe3++FevTh0MNY9GYKvQ6Xo9AEAxQ43w781k2ON
+DCdKUNVCSHPYrmD5riGkYr4LgtXcHgw=
+=8aCt
+-----END PGP SIGNATURE-----
 
-> Thanks,
-> Conor.
->
->> ---
->>
->> v2:
->> - Update the Kconfig help text and commit message.
->> - Add considerations for low version gcc case.
->>
->> Sorry for the formatting error on my mailing list reply.
->>
->>   arch/riscv/Kconfig | 23 +++++++++++++----------
->>   1 file changed, 13 insertions(+), 10 deletions(-)
->>
->> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
->> index 4c07b9189c86..08afd47de157 100644
->> --- a/arch/riscv/Kconfig
->> +++ b/arch/riscv/Kconfig
->> @@ -570,24 +570,27 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
->>   config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->>   	def_bool y
->>   	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
->> -	depends on AS_IS_GNU && AS_VERSION >= 23800
->> +	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
->> +	depends on GCC_VERSION >= 120100 || (AS_IS_GNU && AS_VERSION >= 23800)
->>   	help
->> -	  Newer binutils versions default to ISA spec version 20191213 which
->> -	  moves some instructions from the I extension to the Zicsr and Zifencei
->> -	  extensions.
->> +	  Binutils-2.38 and GCC-12.1.0 bump default ISA spec to newer version
->> +	  20191213 which moves some instructions from the I extension to the
->> +	  Zicsr and Zifencei extensions.
->>   
->>   config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
->>   	def_bool y
->>   	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->>   	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
->> -	depends on CC_IS_CLANG && CLANG_VERSION < 170000
->> +	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
->> +	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || \
->> +		   (CC_IS_GCC && GCC_VERSION < 110100)
->>   	help
->> -	  Certain versions of clang do not support zicsr and zifencei via -march
->> -	  but newer versions of binutils require it for the reasons noted in the
->> -	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
->> +	  Certain versions of clang (or GCC) do not support zicsr and zifencei via
->> +	  -march but newer versions of binutils require it for the reasons noted
->> +	  in the help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
->>   	  option causes an older ISA spec compatible with these older versions
->> -	  of clang to be passed to GAS, which has the same result as passing zicsr
->> -	  and zifencei to -march.
->> +	  of clang (or GCC) to be passed to GAS, which has the same result as
->> +	  passing zicsr and zifencei to -march.
->>   
->>   config FPU
->>   	bool "FPU support"
->> -- 
->> 2.34.1
->>
->>
->> _______________________________________________
->> linux-riscv mailing list
->> linux-riscv@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-riscv
-
+--/XgSBHUpeXMHM/69--
