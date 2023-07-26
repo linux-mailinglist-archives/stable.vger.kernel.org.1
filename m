@@ -2,137 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D239A763DE7
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 19:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0778763DEE
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 19:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231191AbjGZRqz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 13:46:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41948 "EHLO
+        id S229703AbjGZRuV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 13:50:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232066AbjGZRqs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 13:46:48 -0400
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE5F2D7B;
-        Wed, 26 Jul 2023 10:46:40 -0700 (PDT)
-Received: from xmz-huawei.. (unknown [114.249.159.178])
-        by APP-03 (Coremail) with SMTP id rQCowABXd2TfW8Fkh6U1Dg--.53842S2;
-        Thu, 27 Jul 2023 01:46:07 +0800 (CST)
-From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-To:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>
-Cc:     Bin Meng <bmeng@tinylab.org>, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        stable@vger.kernel.org, Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Subject: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and binutils
-Date:   Thu, 27 Jul 2023 01:45:24 +0800
-Message-Id: <20230726174524.340952-1-xingmingzheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229685AbjGZRuU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 13:50:20 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4504BF
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 10:50:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690393819; x=1721929819;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=g/pOf/x2n5QOVcoOhpu3qVIn7iXK2aHYEq2SSib4X9Y=;
+  b=Iyst/MeNqojpCtUpY49kPf8MpcozRclKDjbLhmpyxFf1vmRB5nsm0aL9
+   5DA8hjBhY08zqFmqWIC+VxaTRc656+/KlxGHz2tfITNtTFCOYs53tlCae
+   JPZwhLuOGqw2E4gjrsBcr/kYcSOo3R9lZyleaR4ZZfrTEwLYtYVXAwCKv
+   vcUECcVBo+9JQDoLvk5McYHbRqFwasE3MoUITxLw3ModFNpgFpf6m1GRK
+   Qaqad93Zp549PiJocRxMdidMekfAkmvyf/pRGLcBUKNQAaYmPOpDLl/lL
+   FM4uIzl/9NsWmStKxwlizBBUUd8RkrLsAAmU6LcUzduVpWdbdt2Wcvtn0
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="358087014"
+X-IronPort-AV: E=Sophos;i="6.01,232,1684825200"; 
+   d="scan'208";a="358087014"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 10:50:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="796670839"
+X-IronPort-AV: E=Sophos;i="6.01,232,1684825200"; 
+   d="scan'208";a="796670839"
+Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 26 Jul 2023 10:50:18 -0700
+Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qOieP-0001A0-1Z;
+        Wed, 26 Jul 2023 17:50:17 +0000
+Date:   Thu, 27 Jul 2023 01:49:59 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and
+ binutils
+Message-ID: <ZMFcx/wHKG+Lbjnt@c507f7d2ae6a>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: rQCowABXd2TfW8Fkh6U1Dg--.53842S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXw1kGry5ZFWrCrWUKryrCrg_yoWrJFWfpr
-        ZxCryUGrs5X3ykGr1fJw4UW34Yyws5J3y8WrW7Kw15u3sxAFy0gr9Yyw42qFyUAFZ7Kw4q
-        9w1S93ZYq3Z0yaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-        6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-        4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-        n2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
-        0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFyl
-        IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
-        AFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
-        6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdHU
-        DUUUUU=
-X-Originating-IP: [114.249.159.178]
-X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiCQgECmTBJKN66QAAs+
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230726174524.340952-1-xingmingzheng@iscas.ac.cn>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Binutils-2.38 and GCC-12.1.0 bump[0] default ISA spec to newer version
-20191213 which moves some instructions from the I extension to the
-Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
-that version, we should turn on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
-to cope with the new changes.
+Hi,
 
-The case of clang is special[1][2], where older clang versions (<17) need
-to be rolled back to old ISA spec to fix it. And the less common case,
-since older GCC versions (<11.1.0) did not support zicsr and zifencei
-extension for -march, also requires a fallback to cope with it.
+Thanks for your patch.
 
-For more information, please refer to:
-commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
-commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [0]
-Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org [1]
-Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org [2]
-Link: https://lore.kernel.org/all/20230725170405.251011-1-xingmingzheng@iscas.ac.cn
-Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
----
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-v2:
-- Update the Kconfig help text and commit message.
-- Add considerations for low version gcc case.
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and binutils
+Link: https://lore.kernel.org/stable/20230726174524.340952-1-xingmingzheng%40iscas.ac.cn
 
-Sorry for the formatting error on my mailing list reply.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
- arch/riscv/Kconfig | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
-
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 4c07b9189c86..08afd47de157 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -570,24 +570,27 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
- config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	def_bool y
- 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
--	depends on AS_IS_GNU && AS_VERSION >= 23800
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
-+	depends on GCC_VERSION >= 120100 || (AS_IS_GNU && AS_VERSION >= 23800)
- 	help
--	  Newer binutils versions default to ISA spec version 20191213 which
--	  moves some instructions from the I extension to the Zicsr and Zifencei
--	  extensions.
-+	  Binutils-2.38 and GCC-12.1.0 bump default ISA spec to newer version
-+	  20191213 which moves some instructions from the I extension to the
-+	  Zicsr and Zifencei extensions.
- 
- config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
- 	def_bool y
- 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
--	depends on CC_IS_CLANG && CLANG_VERSION < 170000
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
-+	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || \
-+		   (CC_IS_GCC && GCC_VERSION < 110100)
- 	help
--	  Certain versions of clang do not support zicsr and zifencei via -march
--	  but newer versions of binutils require it for the reasons noted in the
--	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
-+	  Certain versions of clang (or GCC) do not support zicsr and zifencei via
-+	  -march but newer versions of binutils require it for the reasons noted
-+	  in the help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
- 	  option causes an older ISA spec compatible with these older versions
--	  of clang to be passed to GAS, which has the same result as passing zicsr
--	  and zifencei to -march.
-+	  of clang (or GCC) to be passed to GAS, which has the same result as
-+	  passing zicsr and zifencei to -march.
- 
- config FPU
- 	bool "FPU support"
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
