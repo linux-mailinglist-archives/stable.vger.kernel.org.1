@@ -2,89 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87CE8763800
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81480763810
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234329AbjGZNrk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 09:47:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53788 "EHLO
+        id S230274AbjGZNvT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 09:51:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233947AbjGZNrd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:47:33 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9161D2698;
-        Wed, 26 Jul 2023 06:47:31 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qOerP-00056F-UN; Wed, 26 Jul 2023 15:47:27 +0200
-Message-ID: <6b66dd9a-8bd5-2882-9168-8e6e0848c454@leemhuis.info>
-Date:   Wed, 26 Jul 2023 15:47:27 +0200
+        with ESMTP id S231218AbjGZNvR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:51:17 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C486E10CB
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:51:15 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-5221f3affe4so5562726a12.0
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690379474; x=1690984274;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tIhYLeZ/AvTN8kR+5vNpauR4Wf3o9xkm+OqIGcJs9/I=;
+        b=vBnTaVEJ2jwTWY7J+NesQ0lewu44wXXo7E/hvzdL7AFMERp40ftcDfIpgyZDx2XPdB
+         JWGyp5nlZO5z+0Me0ALWzaggRmlfb6kws89iDstu6gkV9jJ4jk+4iALFlk00iUbiYFCm
+         dgNrboT2Rkh0dRMi9Lmz/rwJN6Jq6c9I/R/HLB/2eudP/baY9qMa5oSU5jVuCnm2ZOxM
+         2y8bEmMyFuGSRahIBkrmDUoQmlM4x/rK2+xYnq6TqeNMjv1beBC6xUuH90FvZaTvJvF5
+         7zJbq7QZryG/pIFNoBEADCAsjk1bIsAkJBUqwGWvUvN7hHtUh2QEoRGVQZoiRcuG3m0Q
+         Kzrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690379474; x=1690984274;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tIhYLeZ/AvTN8kR+5vNpauR4Wf3o9xkm+OqIGcJs9/I=;
+        b=EVGJbB0fon4hzXANM6kmkHomstB4m72civsOXhjGfG4t08Vn/O05VCt3DXHbXAbib/
+         gEs9heUSQsPDrSqCCaNKH1yrcP8ssaT42vfHeMR2GpwxqUNNJE7xTYUVEODjoKghYNuP
+         Kt+p6rfuDYgXHEh3JUgvls4CAgYgdF+5ZpofouenfQhDhNEYG3ohaVifyf8rre+aQUSR
+         Ih/PooVvogJz8TNh1G69Wskaj5zyCfODjY0WRpLf7BQVJ9aY/0f2pl0ZMwJy+G+WHvBP
+         DpaCAS1ULf0iQRSAQUKl63Di4G/iHtOexMik7+PZMKh9URMPGSakxPSqpqh98UART2L/
+         V9Rw==
+X-Gm-Message-State: ABy/qLZBbA6tQv915AfmlW/ONg5gt/M+YG5WOFGNl4UkrQxrHaH2bJa2
+        ESuFvi2IQuX7oeDB448kQbPbWQ==
+X-Google-Smtp-Source: APBJJlE3XUp6LxM7F9jLtrJnhL99uqsHOekOGy/0IAfecfZkux5XWlJHMhpCk9hXQ7OV0HvlGJCuhA==
+X-Received: by 2002:a17:907:75d0:b0:997:e9a3:9c59 with SMTP id jl16-20020a17090775d000b00997e9a39c59mr1781711ejc.6.1690379474146;
+        Wed, 26 Jul 2023 06:51:14 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id r9-20020a170906364900b0098669cc16b2sm9584108ejb.83.2023.07.26.06.51.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Jul 2023 06:51:13 -0700 (PDT)
+Message-ID: <1f535f2f-1c93-c939-8ddf-b4d119e26688@linaro.org>
+Date:   Wed, 26 Jul 2023 15:51:11 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Scsi_bus_resume+0x0/0x90 returns -5 when resuming from s3 sleep
-Content-Language: en-US, de-DE
-To:     TW <dalzot@gmail.com>
-Cc:     regressions@lists.linux.dev,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v6 2/2] arm64: dts: qcom: sdm845-db845c: Mark cont splash
+ memory region as reserved
+Content-Language: en-US
+To:     Amit Pundir <amit.pundir@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Bryan Donoghue <bryan.odonoghue@linaro.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>
+Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        dt <devicetree@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+References: <20230726132719.2117369-1-amit.pundir@linaro.org>
+ <20230726132719.2117369-2-amit.pundir@linaro.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230726132719.2117369-2-amit.pundir@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1690379251;0ba84a27;
-X-HE-SMSGID: 1qOerP-00056F-UN
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
-
-On 26.07.23 13:54, TW wrote:
-> I have been having issues with the 6.x series of kernels resuming from
-> suspend with one of my drives. Far as I can tell it has trouble with the
-> cache on the drive when coming out of s3 sleep. Tried a few different
-> distros (Manjaro, OpenMandriva Rome, EndeavourOS) all that give the same
-> error message. It appears to work fine on the 5.15 kernel just fine
-> however.
+On 26/07/2023 15:27, Amit Pundir wrote:
+> Adding a reserved memory region for the framebuffer memory
+> (the splash memory region set up by the bootloader).
 > 
-> This is the error or errors that I have been getting and assume has been
-> holding up the system from resuming from suspend.
->
-> Jul 20 04:13:41 rageworks kernel: ata10.00: device reported invalid CHS sector 0
-> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: [sdc] Start/Stop Unit failed: Result: hostbyte=DID_OK driverbyte=DRIVER_OK
-> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: [sdc] Sense Key : Illegal Request [current]
-> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: [sdc] Add. Sense: Unaligned write command
-> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x90 returns -5
-> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: PM: failed to resume async: error -5 
+> It fixes a kernel panic (arm-smmu: Unhandled context fault
+> at this particular memory region) reported on DB845c running
+> v5.10.y.
+> 
+> Cc: stable@vger.kernel.org # v5.10+
+> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> ---
 
-Thx for your report. I CCed a few people, with a bit of luck they have
-an idea. But I doubt it. If no one replies you likely will need a
-bisection to find the root of the problem. But before going down that
-route you want to check if latest mainline kernel (vanilla!) works better.
 
-FWIW, this is not my area of expertise, so the following might be a
-misleading comment, but the problem looks somewhat similar to this one
-that iirc was never solved:
-https://bugzilla.kernel.org/show_bug.cgi?id=216087
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> Jul 20 04:12:51 rageworks systemd[1]: nvidia-suspend.service: Deactivated successfully.
-> Jul 20 04:12:51 rageworks systemd[1]: Finished NVIDIA system suspend actions.
-> Jul 20 04:12:51 rageworks systemd[1]: Starting System Suspend... 
+Best regards,
+Krzysztof
 
-That sounds like you are using out-of tree drivers which can cause all
-sorts of issues. Please recheck if the problem happens without those as
-well and do not use them in all further tests to debug the issue.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
