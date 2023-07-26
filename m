@@ -2,99 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7CE27636D6
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 14:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D7E876373E
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233165AbjGZMy4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 08:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55676 "EHLO
+        id S233582AbjGZNOB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 09:14:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234452AbjGZMxS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 08:53:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F100E10B;
-        Wed, 26 Jul 2023 05:53:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DA886173F;
-        Wed, 26 Jul 2023 12:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A3AC433C9;
-        Wed, 26 Jul 2023 12:53:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690375996;
-        bh=sJaZr1EtZGmMfy8pOqJTpEvOTmMp/9ov8PWPEb9SnFk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XszFAHj6mkRDzhEtllc9G12deNNS7xO33I0rufGCstmhQVUZwrGCezcpojynELGnw
-         9P6Hwx1z9UiVVq06rc2uEnIIjVyVTs7KOq8/k0A+uyXcLWtGchHJ9TX9A4b5jS3jU3
-         y0Oqsk5j2Hg3HCpKSiNklD9Akhh6pnfppJbeB3NP5BIsFa4bAG3r9bf5XZAnFT3g/i
-         CaqRV5fZfk6fsPX0OngwbZ56SdWSNLRamo8VzP09ReYERoqdJP42ZCurUMJXI1SDVV
-         FLkrKDQfuc0EAca1YTu3iHIn/hIwAuLMngBSVoZK6z7q6kxp9C1tUhPtNoGFnSmarV
-         +mtgJFYWoH44g==
-Date:   Wed, 26 Jul 2023 14:53:11 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     David Laight <David.Laight@ACULAB.COM>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] file: always lock position
-Message-ID: <20230726-wehmut-komodowaran-1e45910515b4@brauner>
-References: <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
- <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
- <20230724-geadelt-nachrangig-07e431a2f3a4@brauner>
- <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
- <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
- <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
- <8d1069bf-4c0b-22be-e4c4-5f2b1eb1f7e8@kernel.dk>
- <CAHk-=whMEd2J5otKf76zuO831sXi4OtgyBTozq_wE43q92=EiQ@mail.gmail.com>
- <20230726-antik-abwinken-87647ff63ec8@brauner>
- <081f95b2428049999cc2c0f55a46075f@AcuMS.aculab.com>
+        with ESMTP id S229959AbjGZNOA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:14:00 -0400
+Received: from qproxy1-pub.mail.unifiedlayer.com (qproxy1-pub.mail.unifiedlayer.com [173.254.64.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CAED1FDA
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:13:59 -0700 (PDT)
+Received: from outbound-ss-820.bluehost.com (outbound-ss-820.bluehost.com [69.89.24.241])
+        by qproxy1.mail.unifiedlayer.com (Postfix) with ESMTP id BFDDD8033B76
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 13:13:58 +0000 (UTC)
+Received: from cmgw15.mail.unifiedlayer.com (unknown [10.0.90.130])
+        by progateway2.mail.pro1.eigbox.com (Postfix) with ESMTP id 6A6B6100492A3
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 13:13:58 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id OeL0qxwDWDsKwOeL0qL5kW; Wed, 26 Jul 2023 13:13:58 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=b8J3XvKx c=1 sm=1 tr=0 ts=64c11c16
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10:nop_charset_1 a=ws7JD89P4LkA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=mdOrbuIhtOySShl96DIA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=+95HJXvGghmTnL384aEvqOb5KQL+7mrY/jgSEYmqwoY=; b=rmL0IRnVHKNMI8TzW2DyGirujq
+        Vn0W2eDMvrydAly6HVk4lxYesYLVA5EJtXxTDLg0DnyBzxBnqg10HmGUQ0BTCydxrcwI/0HuSiJnp
+        09P2JB9rrWdImYN2XA/w10V5uj7MrND2bZBYVVrlF5ynqQnfY8ovKuFLi1D5hXov6EVxeIyBanSSC
+        abG0+/i9gzxKl5ZwaZInTp9er+ULgoA3Jjz4uKn32MHFBKYf/k71PxcPkQ5XSU+JkACXeLu9NHvIa
+        zoTrt0gPv+Q1A/FIsh6Ctd5Qp8JWDRBjvL0hMmjlWf8krIaubbmtLUN55jVVi3vIB6LCQHZ+noH/P
+        RKs++yag==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:49500 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qOeKz-0048G9-1d;
+        Wed, 26 Jul 2023 07:13:57 -0600
+Subject: Re: [PATCH 6.1 000/183] 6.1.42-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <52560da2-a3ba-362f-670e-2bc444ff2ca5@w6rz.net>
+Date:   Wed, 26 Jul 2023 06:13:55 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <081f95b2428049999cc2c0f55a46075f@AcuMS.aculab.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qOeKz-0048G9-1d
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:49500
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 10:31:07AM +0000, David Laight wrote:
-> From: Christian Brauner
-> > Sent: 26 July 2023 09:37
-> ...
-> > Yes, and to summarize which I tried in my description for the commit.
-> > The getdents support patchset would have introduced a bug because the
-> > patchset copied the fdget_pos() file_count(file) > 1 optimization into
-> > io_uring.
-> > 
-> > That works fine as long as the original file descriptor used to register
-> > the fixed file is kept. The locking will work correctly as
-> > file_count(file) > 1 and no races are possible neither via getdent calls
-> > using the original file descriptor nor via io_uring using the fixed file
-> > or even mixing both.
-> > 
-> > But as soon as the original file descriptor is closed the f_count for
-> > the file drops back to 1 but continues to be usable from io_uring via
-> > the fixed file. Now the optimization that the patchset wanted to copy
-> > over would cause bugs as multiple racing getdent requests would be
-> > possible using the fixed file.
-> 
-> Could the io_uring code grab two references?
-> That would stop the optimisation without affecting any
-> normal code paths?
+On 7/25/23 3:43 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.42 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.42-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-io_uring doesn't use fdget variants and can't for it's purposes as fdget
-is for short term references while io_uring holds on to the file. This
-whole thing was about the logic that was copied in a patchset not the
-actual helper itself. I thought that was clear from "copied the [...]
-optimization into io_uring". It should just not do that.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+
+Tested-by: Ron Economos <re@w6rz.net>
+
