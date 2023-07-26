@@ -2,68 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A14763CF4
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 18:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77A7F763CFA
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 18:54:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbjGZQxd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 12:53:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37944 "EHLO
+        id S230296AbjGZQyL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 12:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjGZQxd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 12:53:33 -0400
-X-Greylist: delayed 260 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 26 Jul 2023 09:53:31 PDT
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC74106;
-        Wed, 26 Jul 2023 09:53:30 -0700 (PDT)
-Received: from [192.168.0.107] (unknown [114.249.159.178])
-        by APP-05 (Coremail) with SMTP id zQCowADHi+h5T8Fk8GbYDg--.58865S2;
-        Thu, 27 Jul 2023 00:53:13 +0800 (CST)
-Message-ID: <29a02277-81ca-8874-e28a-0a31c4e73459@iscas.ac.cn>
-Date:   Thu, 27 Jul 2023 00:53:13 +0800
+        with ESMTP id S229919AbjGZQyK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 12:54:10 -0400
+Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A946826A6
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 09:54:08 -0700 (PDT)
+Received: by mail-vk1-xa34.google.com with SMTP id 71dfb90a1353d-48642c1607bso13253e0c.0
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 09:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690390447; x=1690995247;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l1Ud4xqP5nkcbT5GKuYNAcPWbp+qIOEpFRn8TEyuTR4=;
+        b=uAQJO9Y7aK/Xx14i40eQ12DBo4ncfbEYufIzV4tBGwMns0gBvVx13OxJQwokCn+LW+
+         3JY4JxwVps3hWob17Cd/I960fxHow2OldIkyj9727U3m9nZy5KdJXeI59+sQPsaSwD3c
+         Os2xh0ZCR6rrWmgZZcMBAUKzHH/YyhKYbych2csHZJahxDTKh+ft4rh7WrnKgB69x6Iv
+         fpaeNj72u424cnrKtDbGxpBC12KWKBf5KhoqmT73enm9TnfEmW7JBlEbQCI8A7gA/slZ
+         GmLgCbENar2x7KDg2+Tzxvv2r9hyCOIsizBdcWDrpHqLpxTu2btwxamJ1df0I3e1Ifo7
+         hiRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690390447; x=1690995247;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l1Ud4xqP5nkcbT5GKuYNAcPWbp+qIOEpFRn8TEyuTR4=;
+        b=L/ax2F9Awr9euhIBEhG1Ne9Ov9mCTmH2FxMHUnkffqBXIKBKd6X7B8Av/JquyEQoos
+         +22duNRLDkaaNeGV+6+K2DxdBFsNgTbkVCXRHC20ucKoyZa4sY6MmDo1W6EeJTYJahNG
+         NP29As1sTqMWcnxKlTSs2Sz9wImai+3EXIRdbGoP6NjZ8rfC9NEQbKqdZ+4Pl5AzSgI8
+         N7idgc/OORRG89cdiquayd3TFiaBZtASnBV4nUiGGqUDf1EcKiNO3vqQsKMzurxWUisc
+         8uz/Cx6DqAkOopwjli9pbaQhV6N9n+22vahmYCnzkCWONhlyfiYpNnV0+1roCnhdm2FT
+         dBbA==
+X-Gm-Message-State: ABy/qLZjIv2m7JsAmRSgZHxIBsoy3hRBqcU4wkj5OUyLBfEXgsIt2wcL
+        jee+OVZKMQ85vd5dIL0JUFlfcbs5ElgoS71keOJckg==
+X-Google-Smtp-Source: APBJJlFaEX/3W3iFpn5QK5fhlrSRrfhlg42PFev+G3+gvgN+2bnEQiwgQCj3IvYw/kaVM+4pmC01br8Z9QPrsQYyurc=
+X-Received: by 2002:a1f:600f:0:b0:486:4338:33ec with SMTP id
+ u15-20020a1f600f000000b00486433833ecmr1863820vkb.11.1690390447618; Wed, 26
+ Jul 2023 09:54:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Subject: Re: [PATCH] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-To:     Conor Dooley <conor@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Bin Meng <bmeng@tinylab.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, stable@vger.kernel.org
-References: <20230725170405.251011-1-xingmingzheng@iscas.ac.cn>
- <20230725172344.GA1445373@dev-arch.thelio-3990X>
- <20230725-skating-agent-b092f2257ca1@spud>
-Content-Language: en-US
-Organization: ISCAS
-In-Reply-To: <20230725-skating-agent-b092f2257ca1@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowADHi+h5T8Fk8GbYDg--.58865S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Ww4rXr15Gr4xZF4kCr17ZFb_yoWxXrWkpr
-        W3GFn0krsYqrWxCr1vyw1UWa4FvrZ5G3y5WryUG34Utrs8uF92gr1v9r42gFyDZFsakw1Y
-        vr1S9FWkWwn8ZaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvlb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4
-        A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
-        Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-        c7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-        W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-        1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-        IIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-        x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
-        DU0xZFpf9x07b0a0QUUUUU=
-X-Originating-IP: [114.249.159.178]
-X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiCQoECmTBJKNhJAAAsq
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+References: <20230726045247.338066179@linuxfoundation.org>
+In-Reply-To: <20230726045247.338066179@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 26 Jul 2023 22:23:56 +0530
+Message-ID: <CA+G9fYvK5Zz4b2hh64SwZMh4YED=ssDYkbwTUrThP4wS8aSs6A@mail.gmail.com>
+Subject: Re: [PATCH 5.4 000/310] 5.4.251-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,135 +73,160 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/26/23 02:57, Conor Dooley wrote:
-> On Tue, Jul 25, 2023 at 10:23:44AM -0700, Nathan Chancellor wrote:
->> Hi Mingzheng,
->>
->> Thanks for the patch!
->>
->> On Wed, Jul 26, 2023 at 01:04:05AM +0800, Mingzheng Xing wrote:
->>> When compiling the kernel with the toolchain composed of GCC >= 12.1.0 and
->>> binutils < 2.38, default ISA spec used when building binutils and GCC, the
->>> following build failure will appear because the
->>> CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI is not turned on.
->>> (i.e, gcc-12.1.0 and binutils-2.36, or gcc-12.3.0 and binutils-2.37, use
->>> default ISA spec.)
->>>
->>>    CC      arch/riscv/kernel/vdso/vgettimeofday.o
->>>    <<BUILDDIR>>/arch/riscv/include/asm/vdso/gettimeofday.h: Assembler messages:
->>>    <<BUILDDIR>>/arch/riscv/include/asm/vdso/gettimeofday.h:79: Error: unrecognized opcode `csrr a5,0xc01'
->> The gift that keeps on giving :/
->>
->>> Binutils has updated the default ISA spec version, and the community has
->>> responded well to this[1][2][3], but it appears that this is not over yet.
->>>
->>> We also need to consider the situation of binutils < 2.38 but
->>> GCC >= 12.1.0, since the combination between different versions of GCC and
->>> binutils is not unique, which is to some extent flexible. GCC release
->>> 12.1.0 updated the default ISA spec version in GCC commit[4].
->> I suspect this combination is not too common because binutils 2.38 came
->> out before GCC 12.1.0 but as you note, it is obviously possible. What
->> toolchain has this combination in the wild, which would be helpful for
->> documentation purposes?
-> Yeah, that'd be great to know, at least the other niche stuff that we
-> are working around had a clear use-case (testing LLVM in debian containers)
-> whereas there's no clear user for this.
-> That's doubly interesting, as this patch seems to break things for binutils
-> < 2.35, and if we have to make a trade-off between those too, then it'd
-> be good to be able to weigh up the options.
-> Do we perhaps need the misa-spec workaround instead for this case?
-> Haven't tested that though, trying to dig myself out of email backlog.
-Well, what I encountered use-case was a temporary thing caused by the
-inconsistent pace of distro package upgrades, but it really happened and
-took quite a bit of time to explore why. There are sites like [1] that count
-the "Successful Builds" between different GCC and binutils releases,
-(Though they don't seem to be updated much...), but it seems to indicate
-that all kinds of available pairings are possible.
-
-Before replying to the e-mail, I tested some "extreme" cases and things
-seemed to be a little clearer.
-
-1. binutils-2.38 and GCC-12.1.0 each changed default ISA spec version,
-     updating from 2.2 to 20191213.
-
-2. binutils>=2.38 or GCC>=12.1.0
-     when meet any of these it is recommended to turn on
-     TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI, the good outweighs
-     the bad. (My personal understanding.)
-
-3. (Extreme case) binutils>=2.38 AND GCC<11.1.0
-     GCC-11.1.0 starts to support zicsr and zifencei extension for 
--march[2].
-     In this case just turn on TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
-     (Otherwise compiling the kernel will report an error whether
-     TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI is turned on or not.)
-
-4. (Extreme case) GCC>=12.1.0, binutils<2.36
-     I tested GCC-12.1.0 + binutils-2.36 and it compiles the kernel 
-fine(after
-     hitting this patch). Also tested GCC-12.1.0 + binutils2.35 and
-     GCC-12.1.0 + binutils-2.34.0, but both pairings gave errors and failed
-     to produce a usable toolchain (Default ISA versions used). It seems 
-safe
-     to assume that GCC-12.1.0 + binutils<2.35 is almost non-existent.
-
-I'm no expert on toolchains, so thanks for correcting me if I'm wrong 
-somewhere...
-
-[1] https://wiki.osdev.org/Cross-Compiler_Successful_Builds
-[2] 
-https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
->>> For more information, please refer to:
->>>
->>> commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
->>> commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
->>>
->>> [1]:https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/aE1ZeHHCYf4
->>> [2]:https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
->>> [3]:https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
->>> [4]:https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
-> btw, please make these regular Link: tags (with a [N] at EOL) and drop
-> the space between them and the sign off. Also, this probably needs to be
-> CC:stable@vger.kernel.org  too.
-OK, I'll fix it.
-
-Thanks,
-Mingzheng.
-> Cheers,
-> Conor.
+On Wed, 26 Jul 2023 at 10:24, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
->>> Signed-off-by: Mingzheng Xing<xingmingzheng@iscas.ac.cn>
->>> ---
->>>   arch/riscv/Kconfig | 6 +++++-
->>>   1 file changed, 5 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
->>> index 4c07b9189c86..b49cea30f6cc 100644
->>> --- a/arch/riscv/Kconfig
->>> +++ b/arch/riscv/Kconfig
->>> @@ -570,11 +570,15 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
->>>   config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->>>   	def_bool y
->>>   	#https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
->>> -	depends on AS_IS_GNU && AS_VERSION >= 23800
->>> +	#https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
->>> +	depends on CC_IS_GCC && GCC_VERSION >= 120100 || \
->>> +		   AS_IS_GNU && AS_VERSION >= 23800
->> GCC_VERSION will be 0 for clang, so you don't need the CC_IS_GCC check.
->> With that change, this should be able to stay on one line:
->>
->>      depends on GCC_VERSION >= 120100 || (AS_IS_GNU && AS_VERSION >= 23800)
->>
->>>   	help
->>>   	  Newer binutils versions default to ISA spec version 20191213 which
->>>   	  moves some instructions from the I extension to the Zicsr and Zifencei
->>>   	  extensions.
->>> +	  Similarly, GCC release 12.1.0 has changed the default ISA spec version to
->>> +	  20191213, so the above situation requires this option to be enabled.
->>>   
->>>   config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
->>>   	def_bool y
->>> -- 
->>> 2.34.1
->>>
+> This is the start of the stable review cycle for the 5.4.251 release.
+> There are 310 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 28 Jul 2023 04:51:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.4.251-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
+
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 5.4.251-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.4.y
+* git commit: 25e11282f51e116ed3658f586a175a559364ab39
+* git describe: v5.4.250-311-g25e11282f51e
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
+50-311-g25e11282f51e
+
+## Test Regressions (compared to v5.4.249)
+
+## Metric Regressions (compared to v5.4.249)
+
+## Test Fixes (compared to v5.4.249)
+
+## Metric Fixes (compared to v5.4.249)
+
+## Test result summary
+total: 104377, pass: 85830, fail: 1143, skip: 17339, xfail: 65
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 143 passed, 2 failed
+* arm64: 45 total, 41 passed, 4 failed
+* i386: 28 total, 20 passed, 8 failed
+* mips: 27 total, 27 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 30 total, 30 passed, 0 failed
+* riscv: 12 total, 12 passed, 0 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 38 total, 36 passed, 2 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
