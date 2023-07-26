@@ -2,160 +2,193 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3439F762899
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 04:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D647628BB
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 04:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbjGZCJ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 22:09:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52218 "EHLO
+        id S230244AbjGZC14 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 22:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjGZCJ4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 22:09:56 -0400
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F3E2126
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 19:09:54 -0700 (PDT)
-Received: by mail-pf1-x44a.google.com with SMTP id d2e1a72fcca58-686b9ab01a8so675804b3a.3
-        for <stable@vger.kernel.org>; Tue, 25 Jul 2023 19:09:54 -0700 (PDT)
+        with ESMTP id S230450AbjGZC1z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 22:27:55 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0A4268E;
+        Tue, 25 Jul 2023 19:27:53 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1bb775625e2so3387535ad.1;
+        Tue, 25 Jul 2023 19:27:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690337394; x=1690942194;
-        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=m/nV3g6W736EPXRjXQLJgCrEvEP4ZKlAHmzn9beuWG8=;
-        b=KOLtmsS8P0ISZmL9jvfLjbYpz6z6ythWieakQSytridy4l9RIZTuXjSPJpt8CHXZKN
-         l4WF323TNy8bK8QXEC5mFPCJ0BoeNcjmnBCTbPA6EeorPzBQ0nvim+BDLdNzymy6LBbv
-         zERjEydmWyz3FmRGS0EqwwjOOmiQ5VGrvLMAvhctwQfs7R9eamLMn7lG9mfd9srlCSt5
-         D8i9twjaJ72g0Q88YH0HweOB/GLlWL6k9o4MPW+Dr9B/UNHkb/0SCxwPkE1mqv7ocFLP
-         iCSUuGaqLwE5TtrbwudOD+4dvc9gruNE7Yr/CjPVYAlT+D/4uEUaEVSMkCxEzq9GSf7V
-         0mMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690337394; x=1690942194;
-        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=gmail.com; s=20221208; t=1690338473; x=1690943273;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=m/nV3g6W736EPXRjXQLJgCrEvEP4ZKlAHmzn9beuWG8=;
-        b=Is8o03MsUVNrv+95f3qlvve1QQECswb7s2Ag5ssXh9f5Y2vIvGO5eDQldIGcc6vTVE
-         Pf93vql/WNyDa8KyBxGXt44LwGhR7lu0Y5Kt+/KuiKkkIpaYPpuTfctxlTPthMW7FdW7
-         dDAEDfvQZmddIBQumD28pHGNbGhfzu5w+HXX2/RzpBbLueq/xLmixlT58mtv8krE2R8G
-         XiGudNdHVaZOQK9YC1iSMTkMBsCKM0jcaWhemQ/QaiAEatul6WPGFuRs65aVyPJxHBfj
-         eyemlEeLRrc62htS2/DnDbzmk/Zt2v70WCPozGE6mY751HX9TSyfGEjwGvHTBXRfLEvQ
-         3ICQ==
-X-Gm-Message-State: ABy/qLYs8jorQ8Oq5RIhd1MqCgiloUjuYk+IouEZFQSC2ErjQWh6rvN2
-        Ea2Kt8FlLCPONXimpFzs89wNcuAG22mL230=
-X-Google-Smtp-Source: APBJJlEYaQMIalvi3YO/cmF8SvDsq27tctdkZurvNZhkWwYzZa3gzT4XKHO+LrzLsg8TEuEI6wAE20CmjRgnU7E=
-X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
- (user=rdbabiera job=sendgmr) by 2002:a05:6a00:1803:b0:682:5748:2e88 with SMTP
- id y3-20020a056a00180300b0068257482e88mr7393pfa.0.1690337393881; Tue, 25 Jul
- 2023 19:09:53 -0700 (PDT)
-Date:   Wed, 26 Jul 2023 02:09:44 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
-Message-ID: <20230726020946.1409565-1-rdbabiera@google.com>
-Subject: [PATCH v1] usb: typec: bus: verify partner exists in typec_altmode_attention
-From:   RD Babiera <rdbabiera@google.com>
+        bh=cwDd3FlNAcnu8OFFd4jReM06wRpoPnJZwl+5W5GMCH8=;
+        b=ck2GKHTewdEYt75S/Q3bPinu+2zxdRzwh3/beFXNA0/X83Ez57jCP9dYvkW/+zhGio
+         as8OdTMgop4uWh2onq8chERlN9SC6Cq/7ft3rC03pWHOcCuPloabYZk1kqx5np9Oj/Oe
+         4E+YZeaRxlPYMJLQu7FhLfjji4DXSR0h4vgvsL+TFc0fMqvMX8ebRahTzoKaCEzYeGdh
+         fv4FePoEPBuoytPEcs2iRQeBi76j3Ue1UK7Jg63CqNc1I7TiCQ3AbB+viC9VFOmudtVh
+         DRbtCsYiZXMS53DMhUjPIVZBWXWMp0UQPyCy5QjmPMt6XluOva+HIHMbHs1O/COyO7ez
+         TV8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690338473; x=1690943273;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cwDd3FlNAcnu8OFFd4jReM06wRpoPnJZwl+5W5GMCH8=;
+        b=eqNNY9BYol1WtUVhgq8KS0ZFwhAVqV8U4eEGj9u7xVMvEuYrsqd+2hjLZD00/PI0Og
+         PXHNqBIgQOorQMN5GHNY7YUjylhg48pLEircM3jEboykLm1j8rz1sGmA6mvFeiXZEjgQ
+         GQmHPKrjUv5TQ11PKsESoYq97RqVtBJLc3Vg0TdUY8SCKvbezGoJb7ldR98JHoHr0K+R
+         VQ5uy5ppIRAP1rsswpPrtHAbsdOzP4FMK8oaGWqBdBD+J8qfNNbIP06/dy9cmd76MKx/
+         GMF85HzVAs2spDOAGkHFc1fZZDoSmPblauzu1iw/JbOLvLaLDvdqRFfSuRDy19Ihb/P8
+         EELQ==
+X-Gm-Message-State: ABy/qLYO2/Ds7Z0MVRVRqC36w22NGopcyQbakk0F+Gqw4g15LPceCMzB
+        TqBx4Y1EoXu+/kCx3B7sQ0rwbnOsU9Q=
+X-Google-Smtp-Source: APBJJlFrLybNmFITvVjFHWux/7QmVErofzURl8PlBaki744McktGFjv/4vfFGyZoRFLy9JLC2hrqAQ==
+X-Received: by 2002:a17:902:d4c9:b0:1b9:e23b:bb6a with SMTP id o9-20020a170902d4c900b001b9e23bbb6amr968439plg.11.1690338472601;
+        Tue, 25 Jul 2023 19:27:52 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id m24-20020a170902bb9800b001bb9b5e86b7sm5787630pls.91.2023.07.25.19.27.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Jul 2023 19:27:52 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <13b9a16f-0f26-23a4-1e2e-5b1cf9cb4070@roeck-us.net>
+Date:   Tue, 25 Jul 2023 19:27:50 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To:     RD Babiera <rdbabiera@google.com>
 Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-        badhri@google.com, linux@roeck-us.net, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MISSING_HEADERS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no version=3.4.6
+        badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230726020946.1409565-1-rdbabiera@google.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v1] usb: typec: bus: verify partner exists in
+ typec_altmode_attention
+In-Reply-To: <20230726020946.1409565-1-rdbabiera@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Some usb hubs will negotiate DisplayPort Alt mode with the device
-but will then negotiate a data role swap after entering the alt
-mode. The data role swap causes the device to unregister all alt
-modes, however the usb hub will still send Attention messages
-even after failing to reregister the Alt Mode. type_altmode_attention
-currently does not verify whether or not a device's altmode partner
-exists, which results in a NULL pointer error when dereferencing
-the typec_altmode and typec_altmode_ops belonging to the altmode
-partner.
+On 7/25/23 19:09, RD Babiera wrote:
+> Some usb hubs will negotiate DisplayPort Alt mode with the device
+> but will then negotiate a data role swap after entering the alt
+> mode. The data role swap causes the device to unregister all alt
+> modes, however the usb hub will still send Attention messages
+> even after failing to reregister the Alt Mode. type_altmode_attention
+> currently does not verify whether or not a device's altmode partner
+> exists, which results in a NULL pointer error when dereferencing
+> the typec_altmode and typec_altmode_ops belonging to the altmode
+> partner.
+> 
 
-This patch verifies the presence of a device's altmode partner
-before sending the Attention message to the Alt Mode driver. It
-also changes the return type from void to int so errors can be
-logged at the tcpm level.
+Is this theory or actually observed ?
 
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
----
- drivers/usb/typec/bus.c           | 12 ++++++++++--
- drivers/usb/typec/tcpm/tcpm.c     |  5 ++++-
- include/linux/usb/typec_altmode.h |  2 +-
- 3 files changed, 15 insertions(+), 4 deletions(-)
+> This patch verifies the presence of a device's altmode partner
+> before sending the Attention message to the Alt Mode driver. It
+> also changes the return type from void to int so errors can be
+> logged at the tcpm level.
+> 
+> Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
+> ---
+>   drivers/usb/typec/bus.c           | 12 ++++++++++--
+>   drivers/usb/typec/tcpm/tcpm.c     |  5 ++++-
+>   include/linux/usb/typec_altmode.h |  2 +-
+>   3 files changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
+> index fe5b9a2e61f5..2f1823e16b3b 100644
+> --- a/drivers/usb/typec/bus.c
+> +++ b/drivers/usb/typec/bus.c
+> @@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
+>    *
+>    * Notifies the partner of @adev about Attention command.
+>    */
+> -void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
+> +int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
+>   {
+> -	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
+> +	struct altmode *partner = to_altmode(adev)->partner;
+> +	struct typec_altmode *pdev = &partner->adev;
 
-diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-index fe5b9a2e61f5..2f1823e16b3b 100644
---- a/drivers/usb/typec/bus.c
-+++ b/drivers/usb/typec/bus.c
-@@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
-  *
-  * Notifies the partner of @adev about Attention command.
-  */
--void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-+int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
- {
--	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-+	struct altmode *partner = to_altmode(adev)->partner;
-+	struct typec_altmode *pdev = &partner->adev;
-+
-+	if (!partner || !pdev)
-+		return -ENODEV;
- 
- 	if (pdev->ops && pdev->ops->attention)
- 		pdev->ops->attention(pdev, vdo);
-+	else
-+		return -EOPNOTSUPP;
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(typec_altmode_attention);
- 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 829d75ebab42..be37a662e54d 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1791,6 +1791,7 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
- 	u32 p[PD_MAX_PAYLOAD];
- 	u32 response[8] = { };
- 	int i, rlen = 0;
-+	int ret;
- 
- 	for (i = 0; i < cnt; i++)
- 		p[i] = le32_to_cpu(payload[i]);
-@@ -1877,7 +1878,9 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
- 			}
- 			break;
- 		case ADEV_ATTENTION:
--			typec_altmode_attention(adev, p[1]);
-+			ret = typec_altmode_attention(adev, p[1]);
-+			if (ret)
-+				tcpm_log(port, "altmode_attention failed ret:%d", ret);
- 			break;
- 		}
- 	}
-diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
-index 350d49012659..28aeef8f9e7b 100644
---- a/include/linux/usb/typec_altmode.h
-+++ b/include/linux/usb/typec_altmode.h
-@@ -67,7 +67,7 @@ struct typec_altmode_ops {
- 
- int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
- int typec_altmode_exit(struct typec_altmode *altmode);
--void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-+int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
- int typec_altmode_vdm(struct typec_altmode *altmode,
- 		      const u32 header, const u32 *vdo, int count);
- int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
+This dereferences partner
 
-base-commit: fdf0eaf11452d72945af31804e2a1048ee1b574c
--- 
-2.41.0.487.g6d72f3e995-goog
+> +
+> +	if (!partner || !pdev)
+
+... and then checks if partner is NULL.
+
+On top of that, pdev is not NULL even if partner is NULL because
+adev is not the first element of struct altmode.
+
+In summary, this code and the check as implemented does not make
+sense. Maybe partner can be NULL, but pdev will never be NULL.
+
+> +		return -ENODEV;
+>   
+>   	if (pdev->ops && pdev->ops->attention)
+>   		pdev->ops->attention(pdev, vdo);
+> +	else
+> +		return -EOPNOTSUPP;
+> +
+
+So far this was explicitly permitted. Now it will log an error each time it is
+observed. I do not see the point of this log message; obviously it was
+not intended to be considered an error, and I do not understand why it should
+suddenly be one that is worth clogging the log.
+
+Guenter
+
+> +	return 0;
+>   }
+>   EXPORT_SYMBOL_GPL(typec_altmode_attention);
+>   
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 829d75ebab42..be37a662e54d 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -1791,6 +1791,7 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
+>   	u32 p[PD_MAX_PAYLOAD];
+>   	u32 response[8] = { };
+>   	int i, rlen = 0;
+> +	int ret;
+>   
+>   	for (i = 0; i < cnt; i++)
+>   		p[i] = le32_to_cpu(payload[i]);
+> @@ -1877,7 +1878,9 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
+>   			}
+>   			break;
+>   		case ADEV_ATTENTION:
+> -			typec_altmode_attention(adev, p[1]);
+> +			ret = typec_altmode_attention(adev, p[1]);
+> +			if (ret)
+> +				tcpm_log(port, "altmode_attention failed ret:%d", ret);
+>   			break;
+>   		}
+>   	}
+> diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
+> index 350d49012659..28aeef8f9e7b 100644
+> --- a/include/linux/usb/typec_altmode.h
+> +++ b/include/linux/usb/typec_altmode.h
+> @@ -67,7 +67,7 @@ struct typec_altmode_ops {
+>   
+>   int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
+>   int typec_altmode_exit(struct typec_altmode *altmode);
+> -void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
+> +int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
+>   int typec_altmode_vdm(struct typec_altmode *altmode,
+>   		      const u32 header, const u32 *vdo, int count);
+>   int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
+> 
+> base-commit: fdf0eaf11452d72945af31804e2a1048ee1b574c
 
