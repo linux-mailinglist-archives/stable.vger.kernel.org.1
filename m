@@ -2,91 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81480763810
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF3CB7638EB
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 16:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230274AbjGZNvT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 09:51:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
+        id S233373AbjGZOUP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 10:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231218AbjGZNvR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:51:17 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C486E10CB
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:51:15 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-5221f3affe4so5562726a12.0
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:51:15 -0700 (PDT)
+        with ESMTP id S232529AbjGZOUF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 10:20:05 -0400
+Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B4EBDB
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 07:20:04 -0700 (PDT)
+Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-48642c1607bso600177e0c.0
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 07:20:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690379474; x=1690984274;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tIhYLeZ/AvTN8kR+5vNpauR4Wf3o9xkm+OqIGcJs9/I=;
-        b=vBnTaVEJ2jwTWY7J+NesQ0lewu44wXXo7E/hvzdL7AFMERp40ftcDfIpgyZDx2XPdB
-         JWGyp5nlZO5z+0Me0ALWzaggRmlfb6kws89iDstu6gkV9jJ4jk+4iALFlk00iUbiYFCm
-         dgNrboT2Rkh0dRMi9Lmz/rwJN6Jq6c9I/R/HLB/2eudP/baY9qMa5oSU5jVuCnm2ZOxM
-         2y8bEmMyFuGSRahIBkrmDUoQmlM4x/rK2+xYnq6TqeNMjv1beBC6xUuH90FvZaTvJvF5
-         7zJbq7QZryG/pIFNoBEADCAsjk1bIsAkJBUqwGWvUvN7hHtUh2QEoRGVQZoiRcuG3m0Q
-         Kzrg==
+        d=linaro.org; s=google; t=1690381203; x=1690986003;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XuNc2mBif+BIOHURuwHXxEfwwUubFU0eTRxo/J2Xwpo=;
+        b=NgAq6jTZRRUWgC9KwhgNd4VCGwpjlUXNLlWg3/b8GQcdidBn4j/KphpHayQVGb4Pas
+         pjoRK0loIAm1WNcE2WhzIENBnygJgddqYQUZU7/Ewit4BolBS++Uk/wQeT0NhFAXNFe/
+         2WirQoG+RKGmIU2+c2WqZEqhY02GAXwIrHhNINWNuLzOyJIEMwOmjI3CGb33mvvzZLfl
+         6W+PCe7IRhII+crLls1eXvFyOGBknTST1hQIfNc0ZmVOobLm9Lada6jKMr99cyfJ7QbQ
+         Ehd5dPNKuyaxRoy8TlaQPsjizsN/pZEgOj8S7Rx8bDtjSLdVqu/MWi5jMfZ5H/Ok8VX2
+         qvtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690379474; x=1690984274;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tIhYLeZ/AvTN8kR+5vNpauR4Wf3o9xkm+OqIGcJs9/I=;
-        b=EVGJbB0fon4hzXANM6kmkHomstB4m72civsOXhjGfG4t08Vn/O05VCt3DXHbXAbib/
-         gEs9heUSQsPDrSqCCaNKH1yrcP8ssaT42vfHeMR2GpwxqUNNJE7xTYUVEODjoKghYNuP
-         Kt+p6rfuDYgXHEh3JUgvls4CAgYgdF+5ZpofouenfQhDhNEYG3ohaVifyf8rre+aQUSR
-         Ih/PooVvogJz8TNh1G69Wskaj5zyCfODjY0WRpLf7BQVJ9aY/0f2pl0ZMwJy+G+WHvBP
-         DpaCAS1ULf0iQRSAQUKl63Di4G/iHtOexMik7+PZMKh9URMPGSakxPSqpqh98UART2L/
-         V9Rw==
-X-Gm-Message-State: ABy/qLZBbA6tQv915AfmlW/ONg5gt/M+YG5WOFGNl4UkrQxrHaH2bJa2
-        ESuFvi2IQuX7oeDB448kQbPbWQ==
-X-Google-Smtp-Source: APBJJlE3XUp6LxM7F9jLtrJnhL99uqsHOekOGy/0IAfecfZkux5XWlJHMhpCk9hXQ7OV0HvlGJCuhA==
-X-Received: by 2002:a17:907:75d0:b0:997:e9a3:9c59 with SMTP id jl16-20020a17090775d000b00997e9a39c59mr1781711ejc.6.1690379474146;
-        Wed, 26 Jul 2023 06:51:14 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id r9-20020a170906364900b0098669cc16b2sm9584108ejb.83.2023.07.26.06.51.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jul 2023 06:51:13 -0700 (PDT)
-Message-ID: <1f535f2f-1c93-c939-8ddf-b4d119e26688@linaro.org>
-Date:   Wed, 26 Jul 2023 15:51:11 +0200
+        d=1e100.net; s=20221208; t=1690381203; x=1690986003;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XuNc2mBif+BIOHURuwHXxEfwwUubFU0eTRxo/J2Xwpo=;
+        b=jFb+1ZRNSjgRXYSE4ioYG7tEkD6hJiIsCwEe3m8O97DU8RNttu9TgwmhtZzsoT1rh9
+         Nn8lnId8bdDJFhKS+9BFFg8d1x6peWgvFgvcRQoK0I2NFqejj2mK1aJC3ggENfsQsE/z
+         iknTGINg+9SnvNB7ojO87NHPOlqTswuFiDpWW/Oerkvu1BOgkSPUaKaBgZUGXqckodkm
+         eoCB0tyJmJIcPUQonYkoirg+5eDxZ//CiePnUJ4ef+DoYqaWdljwy9+SeyWyiICtsvTg
+         fIB827drsMDLXDSE7VF8N9eHweENJiX1qWk2wYDCkbdiIbM9AyZACR3Wv+ogeGD+SfcJ
+         RAzg==
+X-Gm-Message-State: ABy/qLafslwQwy/06sX17kINKMO8SP0iIGX8/XCMWBMPICrT2nuHbjTL
+        AqGRbuk9aqcud+Slxs48dXSPX4eBhY0leu52GS5WnQ==
+X-Google-Smtp-Source: APBJJlE3pdkBqKvbvyhlZC3z8P845HDU/BelwH4LpjEKE7V+540n769YZU7DhB1GE07skqLUqDBCTIlapB2gEGwv40I=
+X-Received: by 2002:a1f:3d8b:0:b0:471:5427:39a5 with SMTP id
+ k133-20020a1f3d8b000000b00471542739a5mr1460808vka.10.1690381203231; Wed, 26
+ Jul 2023 07:20:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v6 2/2] arm64: dts: qcom: sdm845-db845c: Mark cont splash
- memory region as reserved
-Content-Language: en-US
-To:     Amit Pundir <amit.pundir@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Bryan Donoghue <bryan.odonoghue@linaro.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>
-Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <20230726132719.2117369-1-amit.pundir@linaro.org>
- <20230726132719.2117369-2-amit.pundir@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230726132719.2117369-2-amit.pundir@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+References: <20230725104451.275227789@linuxfoundation.org>
+In-Reply-To: <20230725104451.275227789@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 26 Jul 2023 19:49:51 +0530
+Message-ID: <CA+G9fYvKc0eAvrt8oN7TY2UaEWxnM1Me16vaAjCpyR36gABw1Q@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/78] 5.15.123-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -95,22 +73,173 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 26/07/2023 15:27, Amit Pundir wrote:
-> Adding a reserved memory region for the framebuffer memory
-> (the splash memory region set up by the bootloader).
-> 
-> It fixes a kernel panic (arm-smmu: Unhandled context fault
-> at this particular memory region) reported on DB845c running
-> v5.10.y.
-> 
-> Cc: stable@vger.kernel.org # v5.10+
-> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> ---
+On Tue, 25 Jul 2023 at 16:38, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.123 release.
+> There are 78 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.123-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Best regards,
-Krzysztof
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 5.15.123-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 3bef1500d246a00c075b244b6bb5849082569081
+* git describe: v5.15.122-79-g3bef1500d246
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.122-79-g3bef1500d246
+
+## Test Regressions (compared to v5.15.121)
+
+## Metric Regressions (compared to v5.15.121)
+
+## Test Fixes (compared to v5.15.121)
+
+## Metric Fixes (compared to v5.15.121)
+
+## Test result summary
+total: 108059, pass: 88081, fail: 2274, skip: 17614, xfail: 90
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 114 total, 113 passed, 1 failed
+* arm64: 42 total, 40 passed, 2 failed
+* i386: 32 total, 30 passed, 2 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* riscv: 8 total, 8 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 35 total, 33 passed, 2 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
