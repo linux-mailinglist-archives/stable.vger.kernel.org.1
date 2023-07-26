@@ -2,62 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53440762EFB
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1903C762F05
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232915AbjGZIAt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 04:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47182 "EHLO
+        id S232525AbjGZIBt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 04:01:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232988AbjGZIAR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:00:17 -0400
-X-Greylist: delayed 489 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 26 Jul 2023 00:51:28 PDT
-Received: from mail.slitrig.pl (mail.slitrig.pl [51.38.127.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEC146AC
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 00:51:27 -0700 (PDT)
-Received: by mail.slitrig.pl (Postfix, from userid 1002)
-        id 68F9CA3975; Wed, 26 Jul 2023 07:41:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=slitrig.pl; s=mail;
-        t=1690357278; bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
-        h=Date:From:To:Subject:From;
-        b=jOo4Tuz3+aol4hrPbob7GrcRKCggEoye3ENvXMW9zkVQH+8jHtjHC+VBiKdtMef0F
-         SeoN1mzosqPI7srOkJGFBjfK9PEw7wcl7pjf0mnAmb7ZR9fKlT53gkmBhl6BxBzwaM
-         PtyrYCX1Wt+lbjBP8P/bL6md68lOF9jnQxhzFeQWUIuBfPNRZ8AN1gyl0CX1+LLXK9
-         8aGQivM/0ZyTMZQRhLfhRr+v7Rf5Mu9DDBgRZtsf5fDa93iA1Gjo+0UdY9GSbCSh2A
-         xUGVxWnfJ/KL93G4nilhjLg9EeB/SYJjiVDb8kmiS3T8AnDe9Ry+O7kWjKZzHQCqeW
-         8R2a/wEe+blRw==
-Received: by slitrig.pl for <stable@vger.kernel.org>; Wed, 26 Jul 2023 07:40:48 GMT
-Message-ID: <20230726064520-0.1.b2.vv9j.0.o5iohk1lom@slitrig.pl>
-Date:   Wed, 26 Jul 2023 07:40:48 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@slitrig.pl>
-To:     <stable@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.slitrig.pl
+        with ESMTP id S232578AbjGZIBN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:01:13 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAA753A87
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 00:53:07 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fbc1218262so63652775e9.3
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 00:53:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690357986; x=1690962786;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v9TJeEMNRCv2DgCOuJM1bBGc8b3D58xXpaHuqfHRQK8=;
+        b=pq4Brhj55ONYmo8UszaBri7HNV1FDePeR8ylO84tUQWnC1hEsyv2pej6cyTBETJXQD
+         wGM/HNoMSqqxKkeNBKInkKlPysEn/Pv1FhMUeRcOIhu3UD8diovitZKQph8yEgOHVC9E
+         PdOMG4qNqQHm5mTSx/uYKcomYZ9J4xkdBt3O5NA3ue9qhh2pyTtYsjYvB/pgE94oszlP
+         aTEyES+NgWstAmIgOqT95rVsP6NvGYQ9qLroWIbjzjTiI3pnfErDZjeQrps3d2ZNdM2l
+         D63AC0v2pVy2nU3zxtvkZ27WRwP2sD304/B6woWo1k4NfF67Gq6sdsJC1gBORzwqHJyu
+         rmmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690357986; x=1690962786;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v9TJeEMNRCv2DgCOuJM1bBGc8b3D58xXpaHuqfHRQK8=;
+        b=enP12XWOBFo0oROxppLwqU9rlTqrHhFzDFAAL8Yob/YNmKyPlnx0w9nm5HIBTspaV/
+         D6xXvEgshq3GRyLy0C/AOxKoFZeJqkJz+0by27TrGI1XPWJlYoMaZJKnAMhrQkXdC5+A
+         DFZ1QMQ0UMQ4EZfUNMac01JNZlostIZerang9fWA7WHv3rFLTLbbSvbsO4XzEpjabJ3z
+         xnM2c09aEUU6XLzDym3Ld1MlgqDTaugnD1iChZGoXpbHV1wrGJcSHKtZw5dEhkavKr7g
+         GdkSCGHuFa2ccXgp/KFA02nl6bCxRNK3e0baHemeTY3AwIt89B7F4MhiBlVFS83d6jAc
+         ScIw==
+X-Gm-Message-State: ABy/qLaJTj1LE0TQg3cd24jfuIfv6JtZelz69e1jJCFZ92a6ISIxvAeo
+        Yu36mKw1pv1hOBLCK0Zdy/9/5g==
+X-Google-Smtp-Source: APBJJlE3xLWWa4x2NUcgPXxOGOScoCjYHAfSUUOory2sLtH0JMctp8AXJ4TIsUaWGm4w9kkkgzOeBw==
+X-Received: by 2002:a05:600c:2212:b0:3f9:b8df:26ae with SMTP id z18-20020a05600c221200b003f9b8df26aemr766600wml.34.1690357986164;
+        Wed, 26 Jul 2023 00:53:06 -0700 (PDT)
+Received: from 1.. ([79.115.63.48])
+        by smtp.gmail.com with ESMTPSA id h14-20020a05600c260e00b003fbca942499sm1264346wma.14.2023.07.26.00.53.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jul 2023 00:53:05 -0700 (PDT)
+From:   Tudor Ambarus <tudor.ambarus@linaro.org>
+To:     tkuw584924@gmail.com, takahiro.kuwano@infineon.com,
+        michael@walle.cc
+Cc:     pratyush@kernel.org, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org, bacem.daassi@infineon.com,
+        miquel.raynal@bootlin.com, richard@nod.at,
+        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v4 02/11] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT
+Date:   Wed, 26 Jul 2023 10:52:48 +0300
+Message-Id: <20230726075257.12985-3-tudor.ambarus@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230726075257.12985-1-tudor.ambarus@linaro.org>
+References: <20230726075257.12985-1-tudor.ambarus@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1944; i=tudor.ambarus@linaro.org; h=from:subject; bh=kVZ7aQId7ERSbIGrhSxOKuGFZinAOtskWkM0179Q9K8=; b=owGbwMvMwMXoHervvrRX5CXjabUkhpQDF657tM2J2u3zateCRqbvR/N9o4sVnHQOfA0s2Pm+w 138zsSYTkZjFgZGLgZZMUUWWSetU+f5TuTGyf67DzOIlQlkCgMXpwBMpPAA+/+ckoQ31xSlePsW SdUvdJtreiBl1928qPwPBxxn73n6JmVvsiZ3SsHGvSGWSS3XRNbw/C5V3bR338nN0x2mL/DLbEo RfcUm72IhOTfsM7+2B4Omq9j5P97d/X1OW8+WhJbJvdO69W+Z3ArWl+3Jbzb9XBzsV+EbrO2qYe Lxs1PkDYfB1BX+s+fGHZoSXNO3R6OrhV3sRtDvM7dvTjnuPtlBzTW58pF3y5r8NIu/rW1n57JKf eKq4p69vMAo8Fjrgcu6a46JcptVCooefnJYUF7w05Il5d0CniVBOS4fWjK7rY3Ewg/Wslkr5S91 7tzOwvNznbDed55S2+LfvzgvbFtluXPyvyqeD5tj/DgdAA==
+X-Developer-Key: i=tudor.ambarus@linaro.org; a=openpgp; fpr=280B06FD4CAAD2980C46DDDF4DB1B079AD29CF3D
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dzie=C5=84 dobry,
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+CFR2V[7] is assigned to Flash's address mode (3- or 4-ybte) and must not
+be changed when writing MEMLAT (CFR2V[3:0]). CFR2V shall be used in a read,
+update, write back fashion.
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/mtd/spi-nor/spansion.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 6b2532ed053c..6460d2247bdf 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2014, Freescale Semiconductor, Inc.
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/device.h>
+ #include <linux/mtd/spi-nor.h>
+ 
+@@ -28,6 +29,7 @@
+ #define SPINOR_REG_CYPRESS_CFR2			0x3
+ #define SPINOR_REG_CYPRESS_CFR2V					\
+ 	(SPINOR_REG_CYPRESS_VREG + SPINOR_REG_CYPRESS_CFR2)
++#define SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK	GENMASK(3, 0)
+ #define SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24	0xb
+ #define SPINOR_REG_CYPRESS_CFR2_ADRBYT		BIT(7)
+ #define SPINOR_REG_CYPRESS_CFR3			0x4
+@@ -161,8 +163,18 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
+ 	int ret;
+ 	u8 addr_mode_nbytes = nor->params->addr_mode_nbytes;
+ 
++	op = (struct spi_mem_op)
++		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
++					  SPINOR_REG_CYPRESS_CFR2V, 0, buf);
++
++	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
++	if (ret)
++		return ret;
++
+ 	/* Use 24 dummy cycles for memory array reads. */
+-	*buf = SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24;
++	*buf &= ~SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK;
++	*buf |= FIELD_PREP(SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK,
++			   SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24);
+ 	op = (struct spi_mem_op)
+ 		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
+ 					  SPINOR_REG_CYPRESS_CFR2V, 1, buf);
+-- 
+2.34.1
 
-
-Pozdrawiam serdecznie
-Wiktor Nurek
