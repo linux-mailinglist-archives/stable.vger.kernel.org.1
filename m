@@ -2,68 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB447763D02
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 18:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA3A763D05
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 18:56:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230112AbjGZQzg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 12:55:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39524 "EHLO
+        id S229674AbjGZQ4F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 12:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbjGZQzf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 12:55:35 -0400
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA95211F;
-        Wed, 26 Jul 2023 09:55:33 -0700 (PDT)
-Received: from [192.168.0.107] (unknown [114.249.159.178])
-        by APP-05 (Coremail) with SMTP id zQCowABHTxf0T8Fk333YDg--.1863S2;
-        Thu, 27 Jul 2023 00:55:16 +0800 (CST)
-Message-ID: <a07f237a-20a2-06f0-3e20-0f4cd783649f@iscas.ac.cn>
-Date:   Thu, 27 Jul 2023 00:55:16 +0800
+        with ESMTP id S231782AbjGZQ4E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 12:56:04 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95BF2122
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 09:56:02 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fb4146e8deso71469895e9.0
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 09:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1690390561; x=1690995361;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OvAjR0RXHM04KUJ6xxCJ44wdutKfbrznolrywQynBpo=;
+        b=gPwP9cYRLI0/1gC41/q0Jr1CR+IIW/JfihuYlKTz6f1PIWZsBE4GWpAfaLaFhEyytR
+         CYpCDGHk9Ii3BArGl1u6QVhv99WT29cLgu4WFyRo00fiyjblJ2o8ZmEZw+fEZFXAX2qH
+         YNxbvjaDKjv2Nr6vLfYvMMFHWM1ajt7DKwKgY8OkzErEGYQGvKbUaQ/1ghfx0ImKEt42
+         mhBQcoVIx8y6MWA1uKvlnJzHMr1CItEY6WyuyjvcZlEpu2mePaEy+iKsPcpYWx8IkHg0
+         ae+ZdG4YbafgUyI3eUWg1N7kBW+JsIaCSsmHxglrEpjhQw10RPTfFREtqMaySoEc437B
+         8EWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690390561; x=1690995361;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OvAjR0RXHM04KUJ6xxCJ44wdutKfbrznolrywQynBpo=;
+        b=iIF44k6MOw7ym8flhMoPcXlwd8SmVMHOBcSpUxNdTkLtOalmMzpKl4G8VcJ8q4ug3s
+         IcGUB8n2ElrppqUeU87btGFfXw5HGwubhOCxHw3oef/1EZ/V4EvOrxPyrfYSmKOnzsXe
+         ux3ZfwJifLYclLH/J/lKmimjZQAn1Mw5+bN/LGrXTFieFg5KeLArJsvkOCZvKNjO6L8T
+         XRuBWMKH7MScmBJhQoC7JQN2gpLz5cqXSALsHjmxMnFYUPZN16H3Y5UdrYY6FETPWhaT
+         4g5n4rxc9ZS84HcwqAHhQIDg/YcCVF8pXsAvLq1z1ZKoQzAXlZCxFeunDhF+sn9VPxzb
+         DKnw==
+X-Gm-Message-State: ABy/qLajd1Lk7o8yrfW85Xk1sDNfXlIZrtlISgCWMBcD856hc/Dji1Cg
+        r4ceZTM5IICfmrhM74uM7Si52eBbV+hamwd73XsQRw==
+X-Google-Smtp-Source: APBJJlFZaWVgnC5lijJh7fd8a8IJb7AppjBkSzd3XWZpfjlQoT2ThDwfuz0ZndSG10EC2aQOL/dPxg==
+X-Received: by 2002:a7b:cb85:0:b0:3fb:a100:2581 with SMTP id m5-20020a7bcb85000000b003fba1002581mr1972489wmi.14.1690390561164;
+        Wed, 26 Jul 2023 09:56:01 -0700 (PDT)
+Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
+        by smtp.gmail.com with ESMTPSA id v4-20020adff684000000b0031431fb40fasm20339564wrp.89.2023.07.26.09.56.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jul 2023 09:56:00 -0700 (PDT)
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
+Cc:     MPTCP Upstream <mptcp@lists.linux.dev>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        "David S . Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10.y] selftests: mptcp: depend on SYN_COOKIES
+Date:   Wed, 26 Jul 2023 18:55:47 +0200
+Message-Id: <20230726165547.1843478-1-matthieu.baerts@tessares.net>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <2023072148-curry-reboot-ef1c@gregkh>
+References: <2023072148-curry-reboot-ef1c@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Subject: Re: [PATCH] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-To:     Conor Dooley <conor@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Bin Meng <bmeng@tinylab.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, stable@vger.kernel.org
-References: <20230725170405.251011-1-xingmingzheng@iscas.ac.cn>
- <20230725172344.GA1445373@dev-arch.thelio-3990X>
- <20230725-skating-agent-b092f2257ca1@spud>
- <20230725-name-aggregate-5de303072c9d@spud>
-Content-Language: en-US
-Organization: ISCAS
-In-Reply-To: <20230725-name-aggregate-5de303072c9d@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: zQCowABHTxf0T8Fk333YDg--.1863S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxKw43Aw4DWrWrAFy7tw4rAFb_yoW7ArW7p3
-        9xGFn0krs5XrWxCwn7tw1UWFyFq395GrW5Wr1UG34Yvrn0vFyxKr4v9w4j9FyDZrs3Cw1j
-        vr1S9Fyavw1DZaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvlb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4
-        A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8Jw
-        Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-        c7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-        W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-        1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-        IIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-        x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
-        DU0xZFpf9x07beeHgUUUUU=
-X-Originating-IP: [114.249.159.178]
-X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiAxMECmTBI3VlbwAAsn
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1463; i=matthieu.baerts@tessares.net;
+ h=from:subject; bh=2V6BadWEVF2toXt/TZLyy8JYT+hyGsJg+tcwRdua7i4=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkwVATFMr+9A3nqTxhAuKGCWRGG0ZnyIEQjiCvN
+ Ao3n4/D6d+JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZMFQEwAKCRD2t4JPQmmg
+ c1hsD/94P9qqvMpmGPeiqNVlr17wEufbCbmnR4TeyI+oH9A5ov+f9jhVA92IRu/tM+3wqfHPJi7
+ qOXk2w/dvOkpimz0hXTIQb+k3IsdllPwlMxP7Uilayq3C1oP2sVqvmbrSwaQ97ZthAWrLv70+r2
+ IaWE9/ey+KXKn3uvOwk8eqY6hzpr7556QyTWk5TqMs9nziWXVGuVHxyooBKrKIhZyBzNdgqq16Q
+ n6oSQN4ceXA6PINVbtBSoLmbsNwe4Qbz7aPJfjkh90WCFXUs3N8iJaU+hJE87j7H8VyOkzDJ3yK
+ KameI0FWPnquFhw89e20+sLOP6HAuURDfJuVKab1V2rZ0raZNeKPCZwiQsULQgiODUk2Sz95EIv
+ m0Dk0MNOaJHw+v600dF2m+/+1ev1NhSYkKbYD7e2Hdzp+L3xxJpyvmkfB2d0eqGTRPsCyGuGVsB
+ u7QBzrTpTP7iOd9jXZhqm7HDCLkDZSKWel1MbrmlmfmZ/+jHvBG6yD4ytVhdwZprX91iXkOOhV5
+ 3eKBiGTGlFEp0Wc9xiNsxIS1N+/Iup+SLYVKH+9mKHZosHP5B5Awh2DnPYG3s4lynNE4bJ5BKD0
+ ErTddcGkuqK2BmZ+AHViYdAR17YTHXpLDlP7IQ2msa92SwNil+pwEvp0Zhu5oPYGfmLATgQj1z2 7+zq4u/Ah7lb70Q==
+X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,104 +86,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/26/23 06:17, Conor Dooley wrote:
-> On Tue, Jul 25, 2023 at 07:57:54PM +0100, Conor Dooley wrote:
->> On Tue, Jul 25, 2023 at 10:23:44AM -0700, Nathan Chancellor wrote:
->>> On Wed, Jul 26, 2023 at 01:04:05AM +0800, Mingzheng Xing wrote:
->>>> When compiling the kernel with the toolchain composed of GCC >= 12.1.0 and
->>>> binutils < 2.38, default ISA spec used when building binutils and GCC, the
->>>> following build failure will appear because the
->>>> CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI is not turned on.
->>>> (i.e, gcc-12.1.0 and binutils-2.36, or gcc-12.3.0 and binutils-2.37, use
->>>> default ISA spec.)
->>>>
->>>>    CC      arch/riscv/kernel/vdso/vgettimeofday.o
->>>>    <<BUILDDIR>>/arch/riscv/include/asm/vdso/gettimeofday.h: Assembler messages:
->>>>    <<BUILDDIR>>/arch/riscv/include/asm/vdso/gettimeofday.h:79: Error: unrecognized opcode `csrr a5,0xc01'
->>> The gift that keeps on giving :/
->>>
->>>> Binutils has updated the default ISA spec version, and the community has
->>>> responded well to this[1][2][3], but it appears that this is not over yet.
-> Also, I just noticed this comment. I disagree with the wording "well",
-> and more like "with weeping and gnashing of teeth" ;) This stuff is a
-> huge pain in the ass, and mixing toolchains between LLVM & GNU stuff (or
-> using an older binutils with a newer GCC) really makes it a lot worse.
-At least in the usual way , except in my unusual case...
-> Thanks for submitting a fix for this so that Nathan or I didn't have to!
-Hopefully this patch will make things better.
->>>> We also need to consider the situation of binutils < 2.38 but
->>>> GCC >= 12.1.0, since the combination between different versions of GCC and
->>>> binutils is not unique, which is to some extent flexible. GCC release
->>>> 12.1.0 updated the default ISA spec version in GCC commit[4].
->>> I suspect this combination is not too common because binutils 2.38 came
->>> out before GCC 12.1.0 but as you note, it is obviously possible. What
->>> toolchain has this combination in the wild, which would be helpful for
->>> documentation purposes?
->> Yeah, that'd be great to know, at least the other niche stuff that we
->> are working around had a clear use-case (testing LLVM in debian containers)
->> whereas there's no clear user for this.
->> That's doubly interesting, as this patch seems to break things for binutils
->> < 2.35, and if we have to make a trade-off between those too, then it'd
->> be good to be able to weigh up the options.
->> Do we perhaps need the misa-spec workaround instead for this case?
->> Haven't tested that though, trying to dig myself out of email backlog.
-> I don't think the misa-spec stuff is what we need actually. Instead, the
-> workaround/fix that this patch implements just needs to be constrained to
-> versions of GAS greater than 2.35.
-I'm sorry, I didn't quite understand this, could you provide some more
-information, thank you very much!
-I'll change the handling in v2. After testing it myself, it seems to 
-work fine.
+commit 6c8880fcaa5c45355179b759c1d11737775e31fc upstream.
 
-Thanks,
-Mingzheng.
-> Thanks,
-> Conor.
->
->>>> For more information, please refer to:
->>>>
->>>> commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
->>>> commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
->>>>
->>>> [1]:https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/aE1ZeHHCYf4
->>>> [2]:https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
->>>> [3]:https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
->>>> [4]:https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
->> btw, please make these regular Link: tags (with a [N] at EOL) and drop
->> the space between them and the sign off. Also, this probably needs to be
->> CC:stable@vger.kernel.org  too.
->>>> Signed-off-by: Mingzheng Xing<xingmingzheng@iscas.ac.cn>
->>>> ---
->>>>   arch/riscv/Kconfig | 6 +++++-
->>>>   1 file changed, 5 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
->>>> index 4c07b9189c86..b49cea30f6cc 100644
->>>> --- a/arch/riscv/Kconfig
->>>> +++ b/arch/riscv/Kconfig
->>>> @@ -570,11 +570,15 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
->>>>   config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->>>>   	def_bool y
->>>>   	#https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
->>>> -	depends on AS_IS_GNU && AS_VERSION >= 23800
->>>> +	#https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
->>>> +	depends on CC_IS_GCC && GCC_VERSION >= 120100 || \
->>>> +		   AS_IS_GNU && AS_VERSION >= 23800
->>> GCC_VERSION will be 0 for clang, so you don't need the CC_IS_GCC check.
->>> With that change, this should be able to stay on one line:
->>>
->>>      depends on GCC_VERSION >= 120100 || (AS_IS_GNU && AS_VERSION >= 23800)
->>>
->>>>   	help
->>>>   	  Newer binutils versions default to ISA spec version 20191213 which
->>>>   	  moves some instructions from the I extension to the Zicsr and Zifencei
->>>>   	  extensions.
->>>> +	  Similarly, GCC release 12.1.0 has changed the default ISA spec version to
->>>> +	  20191213, so the above situation requires this option to be enabled.
->>>>   
->>>>   config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
->>>>   	def_bool y
->>>> -- 
->>>> 2.34.1
->>>>
+MPTCP selftests are using TCP SYN Cookies for quite a while now, since
+v5.9.
+
+Some CIs don't have this config option enabled and this is causing
+issues in the tests:
+
+  # ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP     (duration   167ms) sysctl: cannot stat /proc/sys/net/ipv4/tcp_syncookies: No such file or directory
+  # [ OK ]./mptcp_connect.sh: line 554: [: -eq: unary operator expected
+
+There is no impact in the results but the test is not doing what it is
+supposed to do.
+
+Fixes: fed61c4b584c ("selftests: mptcp: make 2nd net namespace use tcp syn cookies unconditionally")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+---
+Backport notes:
+  - We don't have kconfig that have been added later, that's normal.
+  - Only added the new kconfig dep then.
+---
+ tools/testing/selftests/net/mptcp/config | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
+index 1a4c11a444d9..8867c40258b5 100644
+--- a/tools/testing/selftests/net/mptcp/config
++++ b/tools/testing/selftests/net/mptcp/config
+@@ -6,3 +6,4 @@ CONFIG_INET_DIAG=m
+ CONFIG_INET_MPTCP_DIAG=m
+ CONFIG_VETH=y
+ CONFIG_NET_SCH_NETEM=m
++CONFIG_SYN_COOKIES=y
+-- 
+2.40.1
 
