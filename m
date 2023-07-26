@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5240763226
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 11:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4921376322F
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 11:31:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232151AbjGZJbU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 05:31:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47312 "EHLO
+        id S232130AbjGZJbv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 05:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231747AbjGZJat (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 05:30:49 -0400
+        with ESMTP id S232387AbjGZJbe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 05:31:34 -0400
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 090FE1FF3;
-        Wed, 26 Jul 2023 02:29:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4798F2D43;
+        Wed, 26 Jul 2023 02:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1690363764; x=1721899764;
+  t=1690363808; x=1721899808;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=l0UaXd8dxL8pcDlKqm2/iYLRu2YGyE+6AlZwryvSv9A=;
-  b=KAUbPg6OULG1qTpM6gRJ7y6u0GrJlYhkcEpXZR5SKpBkbzsQ6B5KcaYC
-   /xsOzxtF4fOqAy41gLs7GH7hTBNs/l4O80EPhoAWS7oUDfVOVjmAsylkM
-   pOd5YiRWoAotg8Ep+8Xn0lbinsIHi7ecjbWq20CQIeoafe+Wws0L81dOt
-   46FcHSFyJRVbOOx6X/hL8G8DTCEAb179Q7JngLV9iemst5S/RUoeTeF/B
-   V3bj5I6zn/h8hmQkmYSiUML3avslfD+RHYUSd8/LYIpUHr+Aep+olCfC5
-   KteBQEXVQD5Vj7jHVdbKjHqIpGXLwocgyRrTqM8mTdyrdK542+Yoo+MuA
-   Q==;
+  bh=VW/0RWz6OcJOAZAaREALwLaePcsp+WLwKLmTB+u9ah0=;
+  b=OMM1IKZ7w4vxeV6K1n0rO4Jkl4IdV9U6kaaBEZgs0GYq+A30GoyS1FGJ
+   TXmRvc9wT1wtKz4E8Lta5Xfbq7/rK8TriG8m2T6umUeOmmFJTl4k32QHY
+   b//GaGibOY1hlQeybMO+d4K8hpVDYRdFPndbhCYy95YqWurj/hvjQyXVZ
+   RXV7rhcE97k9J1MYTnxnu3YOhD7pl2c6950mrwa14aAJI4PVEzixxUe18
+   1G639Hlytg5OoVH4SMMd8hfmfhfcUWhtJAuaL/A/g2bUVsIvbUw5Y+bqy
+   vYM0Abyp8HC6ou3ZRoWBlaElHiulXSwotz7Tfy+ExRV3/Y8DJxbsOPBt6
+   w==;
 X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="asc'?scan'208";a="163273367"
+   d="asc'?scan'208";a="222289979"
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 26 Jul 2023 02:29:22 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 26 Jul 2023 02:30:05 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Wed, 26 Jul 2023 02:29:21 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server (version=TLS1_2,
+ 15.1.2507.21; Wed, 26 Jul 2023 02:30:04 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Wed, 26 Jul 2023 02:29:18 -0700
-Date:   Wed, 26 Jul 2023 10:28:44 +0100
+ Transport; Wed, 26 Jul 2023 02:30:01 -0700
+Date:   Wed, 26 Jul 2023 10:29:27 +0100
 From:   Conor Dooley <conor.dooley@microchip.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
@@ -52,14 +52,14 @@ CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
         <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
         <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
         <rwarsow@gmx.de>, <conor@kernel.org>
-Subject: Re: [PATCH 6.1 000/183] 6.1.42-rc1 review
-Message-ID: <20230726-rockiness-gigabyte-5a7cdbcbb0bd@wendy>
-References: <20230725104507.756981058@linuxfoundation.org>
+Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
+Message-ID: <20230726-preheated-carried-ac1a34bd7a4d@wendy>
+References: <20230725104514.821564989@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="f1CyDS59SEKSqCi6"
+        protocol="application/pgp-signature"; boundary="abJNtELWpQ4Opme6"
 Content-Disposition: inline
-In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
@@ -71,13 +71,13 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---f1CyDS59SEKSqCi6
+--abJNtELWpQ4Opme6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jul 25, 2023 at 12:43:48PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.42 release.
-> There are 183 patches in this series, all will be posted as a response
+On Tue, Jul 25, 2023 at 12:42:47PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.7 release.
+> There are 227 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
@@ -86,15 +86,15 @@ Tested-by: Conor Dooley <conor.dooley@microchip.com>
 Thanks,
 Conor.
 
---f1CyDS59SEKSqCi6
+--abJNtELWpQ4Opme6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMDnTAAKCRB4tDGHoIJi
-0l+sAQCBJlJFhCJ2oHjDIioOotqXhBCiUF93fXmG0HRQvs4qnwEA3Vkn+sTnjD1+
-Cf0GDGcx9WxJG4YwZVjL28GWA0RyOw0=
-=NZzc
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMDndwAKCRB4tDGHoIJi
+0g9/AP0SMHkzqogQdYkeeBflvBCt2FWwRe8w/lFrXn/a38pq0AEAj7dkaHrDxhAN
+FIThd1J2wavJkGHq3MEHsN6LzE6V7QM=
+=+gnl
 -----END PGP SIGNATURE-----
 
---f1CyDS59SEKSqCi6--
+--abJNtELWpQ4Opme6--
