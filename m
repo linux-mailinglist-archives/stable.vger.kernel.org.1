@@ -2,75 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B89AE76272C
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 01:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE77C7627A8
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 02:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbjGYXFb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 25 Jul 2023 19:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57128 "EHLO
+        id S229541AbjGZAN2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 25 Jul 2023 20:13:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231294AbjGYXFa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 19:05:30 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A1DE47;
-        Tue, 25 Jul 2023 16:05:25 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6689430d803so3759773b3a.0;
-        Tue, 25 Jul 2023 16:05:25 -0700 (PDT)
+        with ESMTP id S229459AbjGZAN1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 25 Jul 2023 20:13:27 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 589FA26A5;
+        Tue, 25 Jul 2023 17:13:26 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b974031aeaso70788761fa.0;
+        Tue, 25 Jul 2023 17:13:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690326325; x=1690931125;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5+Rj5HE+U7eILrOCnywUgryQcn05XBMLVDPwImnu2yQ=;
-        b=fdLyJVPOR/Q7tVlvJo9S4VR7dGrlRV+GhT9Tia9yYAq+3mpyNrJ42gC7S34jT8qQIh
-         nSEuAvM9051/3Vj1Z7Tl+qFsp41VWqUylatlnrcdsQ8F+n2aoPv7f0bha4ZDy6HeJ18t
-         4YFIm5JXkn0nFRbJWowSE1aRhwOcgTQFPDibwfFffEovnBMuKcxIuHYaCt08oUoO9kfn
-         ZytoPsiBND2zT05LtikjbUpq+OrEVUqZp4tPwHhBlL4M3fq7H7xVGffFJQfrcy67SXAs
-         QzjO5sjRRGj1Y6K91mpcj670616djZ9e5Pq3MzrNaN8HGWJ4JQHM6BUoqauwdGgPWk6m
-         I/ug==
+        d=gmail.com; s=20221208; t=1690330404; x=1690935204;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SDDgReAJCptzk/DJeO2qgJGBxlxZ6C3u8/sdB5PsuSs=;
+        b=NFMTJ48ZTXZ3BuqMksqg9ZujmiD9svp900Tn10XqWhtaXlz7wScIzrd8Jgd454WVLK
+         uYpzBAX2b0sFiL3RG/cv4adyRHORKmjeic0cKoXrpB9jlWQSr0qatayodB+PfnFxQ0+p
+         Xxrl5g11QEIHxJuWRvJtIDDMwVrVWgC6PGs/3zqBPomBj1KC2gytgiYAdsKCuBn+kWfM
+         AxJ5YPk/rr0eeYCZvcyZs1WCD8R8bFNkfkL6nQERobJGyGzXNFMCVypGU6u5FphvgK7Q
+         hOVuBYpAWoio/qCpN9x9t0fUC+1U07Ip3K2/KhDqtC3kvxz3y0xqDYWu59rm0/rwnUPB
+         q+vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690326325; x=1690931125;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5+Rj5HE+U7eILrOCnywUgryQcn05XBMLVDPwImnu2yQ=;
-        b=bV8FYvd2JysDNBuAVYJS+Le5TBtIbzZJrvqInS4KrMBs74ZRO1cPJP3efZhsW8HZVv
-         Nv+yJP0D4pA0vCxhocZhsuGWG9QGJ94WyzDHAemHIH9E8M66IKdxGWW0J4R8bYh+yc/4
-         sgPy8BwEbFgxIshGWdcUepaeq2KTd54XajcCTfBYn++0jM+THuHqjvo34Wiv/xEecYHg
-         Bd7MocAWHyOIbaKbX7o0chmmyWqv4oVk8alxIoCaRXN0jEsAFDj1RXFio7WxeRTwyGDa
-         1Yp4a/e4NkoKBlrxem+OKYVfw5fDwrB9tvObQVkXj33XNiuxSOaGtgA+KMYCM+bc7HyN
-         NlsQ==
-X-Gm-Message-State: ABy/qLZ3+3XIudwubJNyAyH1ArINPgGKBCUSOl5QPmScHdxsfWmaRiei
-        vG1NN0BHJa5Iln/5geYw7RE=
-X-Google-Smtp-Source: APBJJlHi3dgidEaSE0dFIGHL5Now0nZ4TpUmbeH8G3nq5VuJfWmw5hdmCqVsCKwY6/udTT+GDgUapQ==
-X-Received: by 2002:a05:6a20:9697:b0:133:ec83:598 with SMTP id hp23-20020a056a20969700b00133ec830598mr308514pzc.28.1690326325180;
-        Tue, 25 Jul 2023 16:05:25 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id c16-20020aa78810000000b006828ee9fdaesm10082027pfo.127.2023.07.25.16.05.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jul 2023 16:05:24 -0700 (PDT)
-Message-ID: <19226f61-7e47-eaab-f463-50b88ae1f2f0@gmail.com>
-Date:   Tue, 25 Jul 2023 16:05:22 -0700
+        d=1e100.net; s=20221208; t=1690330404; x=1690935204;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SDDgReAJCptzk/DJeO2qgJGBxlxZ6C3u8/sdB5PsuSs=;
+        b=Ent2ZRxncg6TXUMrsiUWZPsvDR3rjVKEFuLl71m+wasNXSgzQtuk107j1sO6XrSqXE
+         mQT0DZQlssUu34Y55Xmrc7lszVa1S+rvTPKHbFSfI7NN6mg5RjftVW9+e0SUsWWpqlMr
+         BOU9Flx+XPmZWejdlpT5KD8IkccJZeTAzJQ4+QUH6UH3axfg2esbFWdQgWhUnHL9Lk2M
+         XDtqWPsbUcteeHsUpt4tLhkK/jlcSzjTrYhRVzHbFoWSAreXd2nyD2ChCrPFKeTD+/nA
+         apGBxEzcPalqEcfA7l5TMZuZEsGc80tkjyVRvIbBO3i3CUdFNxWfqYJjDfmNE+/V32gw
+         rlng==
+X-Gm-Message-State: ABy/qLZXOvG6wmKi/hyO0jH9yqWgSFzimMU64VzP/7iKUgPoby4k+PIa
+        6ePeFf8eoP4EeTMgwl3FIciZmA1rMh2A6dgNDXo=
+X-Google-Smtp-Source: APBJJlGcaZlSQGitPhosly4Hm5s7GQ7lGgaDenwkub/4S31WdbNSvy0xDUbss4wWpG8k18MQek0MG+wMtVlp+Y1o8vQ=
+X-Received: by 2002:a2e:2c0a:0:b0:2b6:effd:9a3b with SMTP id
+ s10-20020a2e2c0a000000b002b6effd9a3bmr210034ljs.24.1690330404155; Tue, 25 Jul
+ 2023 17:13:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230725104514.821564989@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230725104514.821564989@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+References: <20230725084206.580930-1-jolsa@kernel.org> <20230725084206.580930-3-jolsa@kernel.org>
+In-Reply-To: <20230725084206.580930-3-jolsa@kernel.org>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Tue, 25 Jul 2023 17:13:12 -0700
+Message-ID: <CAADnVQJLjS4WXz7Dod0Sc1iZFuJOnqByEwwN3ukAWtbRhOE9DA@mail.gmail.com>
+Subject: Re: [PATCHv3 bpf 2/2] bpf: Disable preemption in bpf_event_output
+To:     Jiri Olsa <jolsa@kernel.org>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        stable <stable@vger.kernel.org>, Hou Tao <houtao1@huawei.com>,
+        bpf <bpf@vger.kernel.org>, Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -79,29 +76,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/25/23 03:42, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.7 release.
-> There are 227 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, Jul 25, 2023 at 1:42=E2=80=AFAM Jiri Olsa <jolsa@kernel.org> wrote:
+>
+> We received report [1] of kernel crash, which is caused by
+> using nesting protection without disabled preemption.
+>
+> The bpf_event_output can be called by programs executed by
+> bpf_prog_run_array_cg function that disabled migration but
+> keeps preemption enabled.
+>
+> This can cause task to be preempted by another one inside the
+> nesting protection and lead eventually to two tasks using same
+> perf_sample_data buffer and cause crashes like:
+>
+>   BUG: kernel NULL pointer dereference, address: 0000000000000001
+>   #PF: supervisor instruction fetch in kernel mode
+>   #PF: error_code(0x0010) - not-present page
+>   ...
+>   ? perf_output_sample+0x12a/0x9a0
+>   ? finish_task_switch.isra.0+0x81/0x280
+>   ? perf_event_output+0x66/0xa0
+>   ? bpf_event_output+0x13a/0x190
+>   ? bpf_event_output_data+0x22/0x40
+>   ? bpf_prog_dfc84bbde731b257_cil_sock4_connect+0x40a/0xacb
+>   ? xa_load+0x87/0xe0
+>   ? __cgroup_bpf_run_filter_sock_addr+0xc1/0x1a0
+>   ? release_sock+0x3e/0x90
+>   ? sk_setsockopt+0x1a1/0x12f0
+>   ? udp_pre_connect+0x36/0x50
+>   ? inet_dgram_connect+0x93/0xa0
+>   ? __sys_connect+0xb4/0xe0
+>   ? udp_setsockopt+0x27/0x40
+>   ? __pfx_udp_push_pending_frames+0x10/0x10
+>   ? __sys_setsockopt+0xdf/0x1a0
+>   ? __x64_sys_connect+0xf/0x20
+>   ? do_syscall_64+0x3a/0x90
+>   ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
+>
+> Fixing this by disabling preemption in bpf_event_output.
+>
+> [1] https://github.com/cilium/cilium/issues/26756
+> Cc: stable@vger.kernel.org
+> Reported-by: Oleg "livelace" Popov <o.popov@livelace.ru>
+> Closes: https://github.com/cilium/cilium/issues/26756
+> Fixes: 2a916f2f546c ("bpf: Use migrate_disable/enable in array macros and=
+ cgroup/lirc code.")
+> Acked-by: Hou Tao <houtao1@huawei.com>
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+>  kernel/trace/bpf_trace.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+> index 14c9a1a548c9..6826ebf750b0 100644
+> --- a/kernel/trace/bpf_trace.c
+> +++ b/kernel/trace/bpf_trace.c
+> @@ -720,7 +720,6 @@ static DEFINE_PER_CPU(struct bpf_trace_sample_data, b=
+pf_misc_sds);
+>  u64 bpf_event_output(struct bpf_map *map, u64 flags, void *meta, u64 met=
+a_size,
+>                      void *ctx, u64 ctx_size, bpf_ctx_copy_t ctx_copy)
+>  {
+> -       int nest_level =3D this_cpu_inc_return(bpf_event_output_nest_leve=
+l);
+>         struct perf_raw_frag frag =3D {
+>                 .copy           =3D ctx_copy,
+>                 .size           =3D ctx_size,
+> @@ -737,8 +736,13 @@ u64 bpf_event_output(struct bpf_map *map, u64 flags,=
+ void *meta, u64 meta_size,
+>         };
+>         struct perf_sample_data *sd;
+>         struct pt_regs *regs;
+> +       int nest_level;
+>         u64 ret;
+>
+> +       preempt_disable();
+> +
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Removed extra empty line here and in patch 1 and applied.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Thanks!
 
+> +       nest_level =3D this_cpu_inc_return(bpf_event_output_nest_level);
+> +
+>         if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(bpf_misc_sds.sds))) {
+>                 ret =3D -EBUSY;
+>                 goto out;
+> @@ -753,6 +757,7 @@ u64 bpf_event_output(struct bpf_map *map, u64 flags, =
+void *meta, u64 meta_size,
+>         ret =3D __bpf_perf_event_output(regs, map, flags, sd);
+>  out:
+>         this_cpu_dec(bpf_event_output_nest_level);
+> +       preempt_enable();
+>         return ret;
+>  }
+>
+> --
+> 2.41.0
+>
