@@ -2,158 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24ECA76424D
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 00:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B3F764254
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 01:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbjGZW5Q convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 26 Jul 2023 18:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42348 "EHLO
+        id S229824AbjGZXGc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 19:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230232AbjGZW5P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 18:57:15 -0400
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64EE271D;
-        Wed, 26 Jul 2023 15:57:14 -0700 (PDT)
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-7878e573827so11624839f.1;
-        Wed, 26 Jul 2023 15:57:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690412234; x=1691017034;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PCmsUfocE9nW+Ujffe8WMtyaTbfPSG5Ra3w/88GS7Cs=;
-        b=Y1pGY9gxRxZgx8o/K7Q7Wu7fC+AERx1rMm4PQ27QsCE7apgo1FUm2W4WeHFyuUGpRa
-         BLzZc/INEOD7i2RVK78fDDOxM2wuIgvrgsPe8qsF82O59hehZu1vFwxR/GAcoCPiH92u
-         euwATkOHp0R267sxXTPUt2AWzo1dCXWRqX76r70QwdWidDS+0HJuJz5XsHblZIhYqUvd
-         e4A9NMk795NPmUAiLp5ROq1eOT9bRa5nKU+Zrm8OuZGL5oyeghv2HPcTXW/MnCeI8/S2
-         D9HWEc724L8+LvtuYa7cW9yUfR35wh5AjWBA3Iet/dI5BDsF23qFu0nXcZgLkIslxjYE
-         A6mg==
-X-Gm-Message-State: ABy/qLY6XjMngTS8ESoermipv85ii0GrHk+TtjW7mi+Ej9i1u91RxQGP
-        fzLiY56GeLeZ3gy0oN9Z6k+3fmoU6swfMv65NvQ=
-X-Google-Smtp-Source: APBJJlHh2gUCZiBJFkBIROZc3Z1R5phzbX2MgRI7IChXg2C2q6TW7eiEAOCTDJz5b3e5CQMyu3m2/tYQ9TdHHFdG4cs=
-X-Received: by 2002:a05:6602:42ca:b0:783:63ac:25cf with SMTP id
- ce10-20020a05660242ca00b0078363ac25cfmr3470921iob.7.1690412233786; Wed, 26
- Jul 2023 15:57:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230726133642.750342-1-namhyung@kernel.org> <CAP-5=fWM9Fhq5WvsBf2n=hGwwwRDt3-mUQ=_qzu8qYGtD1OeWQ@mail.gmail.com>
-In-Reply-To: <CAP-5=fWM9Fhq5WvsBf2n=hGwwwRDt3-mUQ=_qzu8qYGtD1OeWQ@mail.gmail.com>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Wed, 26 Jul 2023 15:57:02 -0700
-Message-ID: <CAM9d7citVc4ad65MLBWxvE-_AbwxO1DQWHf5w+ofSgWnWSx=Fw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] perf build: Update build rule for generated files
-To:     Ian Rogers <irogers@google.com>
-Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-perf-users@vger.kernel.org,
-        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229553AbjGZXGb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 19:06:31 -0400
+Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 956661737
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 16:06:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=adeXy24LwyLPD7w2tMgIdpcV0wWeY6swswqHtjOUS1E=;
+ b=QFBjjb+nrYTVxk07MnTP8AI9i6bAkdHx4YupESzDL6HfH3AGXHp+/gg2W1FVXl2v8FAwwpJkCdvJ
+   UqKJYJng8jCsZkOMkNuAmSA28eqzzOiCMkgGB7g1/Sby7XpMUNGhyWMGA3gvyjP3K3VeHf/fr3DU
+   q0aRsxBS0i1/VUX55LC8UVb5CWIN2lEymChi0KkGcRCjI8AO1tUJgcj1jJ+tvmaGOQoRdzq984wg
+   s7etIboh49c1AJglAvsX25smStTnHnKqnqEAFfwbXyinoo0j6wOjDwpxw3tciC06wNi7E1r2Hpm1
+   OkiN3/RSag0nnQcdM3t+4JmksI99Zj9cnn10jw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=adeXy24LwyLPD7w2tMgIdpcV0wWeY6swswqHtjOUS1E=;
+ b=Yahznc3qgH06ZEqH69Ka73YVus52i6LkjQNaGiAVz7shcyqTXVO4p++c5/3Cx5527Bxmb8Ot+vpT
+   Bbctjxy4lxT9gMv8Zb7mYCjKSyWhsF0XmeaUpvJu9mVs86J4TVA8SRn42ljzA+j3rlNQ2Li+qvPi
+   TuVSSh1Nm0Bh29XRc/JYqjqzwDDzrvJ5T2NOD9yCaeJHJace+Kc7/m5daK6Hj//AnPRQBEboh1R+
+   sBxA3xmBYfT6f3fRyasVzneh7yjFupeEZL4blaDp69GnnxPvoD/O39jnzSqNsqdsAIHy2Zv/81V7
+   Haoa3lKeF92dFNEAbRT/krprdtPsavx8VV9BLA==
+Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230629 64bit (built Jun 29
+ 2023))
+ with ESMTPS id <0RYF00GX8EUS06A0@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for stable@vger.kernel.org; Wed, 26 Jul 2023 23:06:28 +0000 (GMT)
+Message-id: <5fbe6ee8-f907-ffec-7c6d-400aa74eaf20@augustwikerfors.se>
+Date:   Thu, 27 Jul 2023 01:06:25 +0200
+MIME-version: 1.0
+From:   August Wikerfors <git@augustwikerfors.se>
+Subject: Re: [PATCH 6.4 102/227] ACPI: resource: Remove "Zen" specific match
+ and quirks
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        evilsnoo@proton.me, ruinairas1992@gmail.com, nmschulte@gmail.com,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Werner Sembach <wse@tuxedocomputers.com>,
+        Chuanhong Guo <gch981213@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+References: <20230725104514.821564989@linuxfoundation.org>
+ <20230725104518.968673115@linuxfoundation.org>
+Content-language: en-US
+In-reply-to: <20230725104518.968673115@linuxfoundation.org>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+Reporting-Meta: AAHVxkMB8SvPYfOC9e8d1PrwcKCnkwiggtN+41vRCQYWzqY8j5IHfVKfMunb/qoh
+ TQL5PuhsxN3XpcD4ScJvfJHk1VBxEuKwp/4w86Noyl/hyembW/uSUS3u6v6Dvqt3
+ jf/WtZiPlFzIPaxonZnj9Ho0gxSxwvf3dzeYE/alF7NO3bJIqgWKUOyGJaI9mG9+
+ TY93hiR1Daf1hw+ikOhaaM3xgxscNOuMbAYz1aQRy2VPA8tVOKMTk6I8rybXX88Y
+ OMU3PEWb6CrzNaiPvf3d995eH6zMop+9kq6FMvrtrNV1aeiFZEhexQ7ouldPWNVd
+ 94izcgWDbCP5WOEfUD8wHGibjWSEPUqQK1eQa0Hszj2ZLsFjlkFMjKu/qr07GlQB
+ MobU9nK1l4rUcEMiVnGQ995TKV35fu9Ef22LY4JhUBb5xhVVGFKNhxXDjf7RMnOs vy0=
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Ian,
+Hi,
 
-On Wed, Jul 26, 2023 at 8:48 AM Ian Rogers <irogers@google.com> wrote:
->
-> On Wed, Jul 26, 2023 at 6:36 AM Namhyung Kim <namhyung@kernel.org> wrote:
-> >
-> > The bison and flex generate C files from the source (.y and .l)
-> > files.  When O= option is used, they are saved in a separate directory
-> > but the default build rule assumes the .C files are in the source
-> > directory.  So it might read invalid file if there are generated files
-> > from an old version.  The same is true for the pmu-events files.
-> >
-> > For example, the following command would cause a build failure:
-> >
-> >   $ git checkout v6.3
-> >   $ make -C tools/perf  # build in the same directory
-> >
-> >   $ git checkout v6.5-rc2
-> >   $ mkdir build  # create a build directory
-> >   $ make -C tools/perf O=build  # build in a different directory but it
-> >                                 # refers files in the source directory
-> >
-> > Let's update the build rule to specify those cases explicitly to depend
-> > on the files in the output directory.
-> >
-> > Note that it's not a complete fix and it needs the next patch for the
-> > include path too.
-> >
-> > Fixes: 80eeb67fe577 ("perf jevents: Program to convert JSON file")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-> > ---
-> >  tools/build/Makefile.build  | 8 ++++++++
-> >  tools/perf/pmu-events/Build | 4 ++++
-> >  2 files changed, 12 insertions(+)
-> >
-> > diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
-> > index 89430338a3d9..f9396696fcbf 100644
-> > --- a/tools/build/Makefile.build
-> > +++ b/tools/build/Makefile.build
-> > @@ -117,6 +117,14 @@ $(OUTPUT)%.s: %.c FORCE
-> >         $(call rule_mkdir)
-> >         $(call if_changed_dep,cc_s_c)
-> >
-> > +$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
-> > +       $(call rule_mkdir)
-> > +       $(call if_changed_dep,$(host)cc_o_c)
-> > +
-> > +$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
-> > +       $(call rule_mkdir)
-> > +       $(call if_changed_dep,$(host)cc_o_c)
-> > +
->
-> Hi Namhyung,
->
-> as we have:
-> ```
-> $(OUTPUT)%.o: %.c FORCE
->        $(call rule_mkdir)
->        $(call if_changed_dep,$(host)cc_o_c)
-> ```
-> I'm not sure what the 2 additional rules achieve.
+On 2023-07-25 12:44, Greg Kroah-Hartman wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> [ Upstream commit a9c4a912b7dc7ff922d4b9261160c001558f9755 ]
+> 
+> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
+> AMD Zen platforms") attempted to overhaul the override logic so it
+> didn't apply on X86 AMD Zen systems.  This was intentional so that
+> systems would prefer DSDT values instead of default MADT value for
+> IRQ 1 on Ryzen 6000 systems which typically uses ActiveLow for IRQ1.
+> 
+> This turned out to be a bad assumption because several vendors
+> add Interrupt Source Override but don't fix the DSDT. A pile of
+> quirks was collecting that proved this wasn't sustaintable.
+> 
+> Furthermore some vendors have used ActiveHigh for IRQ1.
+> To solve this problem revert the following commits:
+> * commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
+> GMxRGxx")
+> * commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7")
+> * commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad")
+> * commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
+> * commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen
+> platforms")
 
-The above rule assumes the .c files are in the source directory
-(without $(OUTPUT) prefix).  It caused a trouble when the
-flex and bison files are generated in the output directory and
-you have an old version of them in the source directory.
+Unfortunately this breaks the keyboard on Lenovo Yoga 7 14ARB7:
+https://lore.kernel.org/all/596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se/
+https://github.com/tomsom/yoga-linux/issues/47
 
-
->
-> >  # Gather build data:
-> >  #   obj-y        - list of build objects
-> >  #   subdir-y     - list of directories to nest
-> > diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
-> > index 150765f2baee..f38a27765604 100644
-> > --- a/tools/perf/pmu-events/Build
-> > +++ b/tools/perf/pmu-events/Build
-> > @@ -35,3 +35,7 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(JEVENTS_PY) $(METRIC_PY) $(METRIC_TEST_L
-> >         $(call rule_mkdir)
-> >         $(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
-> >  endif
-> > +
-> > +$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
-> > +       $(call rule_mkdir)
-> > +       $(call if_changed_dep,$(host)cc_o_c)
->
-> If we add this, do the Makefile.build changes still need to happen?
-
-The Makefile.build changes are specific to flex and bison files.
-So yes, we need this for pmu-events.c to work properly with O=
-option.
-
-Thanks,
-Namhyung
+Regards,
+August Wikerfors
