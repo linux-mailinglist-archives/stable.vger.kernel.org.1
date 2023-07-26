@@ -2,135 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92061762FE0
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEB03763030
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233285AbjGZIbV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 04:31:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39346 "EHLO
+        id S233413AbjGZIpt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 04:45:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232834AbjGZIaw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:30:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7D47EC5
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 01:20:53 -0700 (PDT)
+        with ESMTP id S232397AbjGZIpV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:45:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FE54E4;
+        Wed, 26 Jul 2023 01:36:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 197AC6181E
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 08:20:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26294C433C8;
-        Wed, 26 Jul 2023 08:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690359652;
-        bh=vKz3zTjgldWPQFBQByl0zn5xjeuCuaVJvSQvQYbJw/A=;
-        h=Subject:To:From:Date:From;
-        b=dGUQwgVMv0aZyo7XIhNJtsUUTUfJeYqvBKvHStPxKfZTKZIEaR4CBzzXn/F6k40IH
-         gCry89yJ0Rb7HFEQFYYTO/Lf33QP9X17+m0pCNAR+bMMNaKC1uwjnYJgWUWWpApnLf
-         2+9ucONwY6vgSTnwfOJQ6oux0ZbRZkjJTWlX53dg=
-Subject: patch "usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0" added to usb-next
-To:     xu.yang_2@nxp.com, gregkh@linuxfoundation.org,
-        peter.chen@kernel.org, stable@vger.kernel.org
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 26 Jul 2023 10:20:20 +0200
-Message-ID: <2023072620-shabby-cognitive-5dc7@gregkh>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1637A61876;
+        Wed, 26 Jul 2023 08:36:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83F9C433C8;
+        Wed, 26 Jul 2023 08:36:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690360602;
+        bh=3GlqyY7ypdrd9XrUgZY7qfg/u44TMTUBNKPVjbSg/SE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bWXeSZyl4iTP+6W28CAgdid2jQ8mzv+lgOehgwlr7yioXG4f/MsLy4iqzS5wSDT32
+         MV83MJhzw04CUCJl/CkmoLr5z2noBw28fRJGywwWTw569MR+DkPC4bMZbbRtxzlkCW
+         +06OGRyhJdo4qCo3o4kfVkM3BCq1162cCP843dHSOlFDeGAH4tdHM+fldAUXE6PcyR
+         96Xnn/o9lyUyFtBiYbI4dXRyU2Kg3oLNUNErY+kdMAAX/dHyXZUPA4lpne400Ae0/D
+         C1mEZLDIyugZ+SAUin4W/b2HiWqzpA8CARzXen8xDgEw6kp+HMDARcLG0FT9xTsflw
+         rCBHU7mvYTAdw==
+Date:   Wed, 26 Jul 2023 10:36:37 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] file: always lock position
+Message-ID: <20230726-antik-abwinken-87647ff63ec8@brauner>
+References: <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
+ <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+ <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
+ <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
+ <20230724-geadelt-nachrangig-07e431a2f3a4@brauner>
+ <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
+ <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
+ <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
+ <8d1069bf-4c0b-22be-e4c4-5f2b1eb1f7e8@kernel.dk>
+ <CAHk-=whMEd2J5otKf76zuO831sXi4OtgyBTozq_wE43q92=EiQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whMEd2J5otKf76zuO831sXi4OtgyBTozq_wE43q92=EiQ@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Jul 25, 2023 at 01:51:37PM -0700, Linus Torvalds wrote:
+> On Tue, 25 Jul 2023 at 13:41, Jens Axboe <axboe@kernel.dk> wrote:
+> >
+> > Right, but what if the original app closes the file descriptor? Now you
+> > have the io_uring file table still holding a reference to it, but it'd
+> > just be 1. Which is enough to keep it alive, but you can still have
+> > multiple IOs inflight against this file.
+> 
+> Note that fdget_pos() fundamentally only works on file descriptors
+> that are there - it's literally looking them up in the file table as
+> it goes along. And it looks at the count of the file description as it
+> is looked up. So that refcount is guaranteed to exist.
+> 
+> If the file has been closed, fdget_pos() will just fail because it
+> doesn't find it.
+> 
+> And if it's then closed *afterwards*, that's fine and doesn't affect
+> anything, because the locking has been done and we saved away the
+> status bit as FDPUT_POS_UNLOCK, so the code knows to unlock even if
+> the file descriptor in the meantime has turned back to having just a
+> single refcount.
 
-This is a note to let you know that I've just added the patch titled
+Yes, and to summarize which I tried in my description for the commit.
+The getdents support patchset would have introduced a bug because the
+patchset copied the fdget_pos() file_count(file) > 1 optimization into
+io_uring.
 
-    usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
+That works fine as long as the original file descriptor used to register
+the fixed file is kept. The locking will work correctly as
+file_count(file) > 1 and no races are possible neither via getdent calls
+using the original file descriptor nor via io_uring using the fixed file
+or even mixing both.
 
-to my usb git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
-in the usb-next branch.
+But as soon as the original file descriptor is closed the f_count for
+the file drops back to 1 but continues to be usable from io_uring via
+the fixed file. Now the optimization that the patchset wanted to copy
+over would cause bugs as multiple racing getdent requests would be
+possible using the fixed file.
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+The simple thing ofc is that io_uring just always grabs the position
+lock and never does this optimization. The authors were just unaware
+because it wasn't obvious to them that fixed files would not work with
+the optimization.
 
-The patch will also be merged in the next major kernel release
-during the merge window.
-
-If you have any questions about this process, please let me know.
-
-
-From 36668515d56bf73f06765c71e08c8f7465f1e5c4 Mon Sep 17 00:00:00 2001
-From: Xu Yang <xu.yang_2@nxp.com>
-Date: Tue, 27 Jun 2023 19:21:24 +0800
-Subject: usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
-
-In current driver, the value of tuning parameter will not take effect
-if samsung,picophy-* is assigned as 0. Because 0 is also a valid value
-acccording to the description of USB_PHY_CFG1 register, this will improve
-the logic to let it work.
-
-Fixes: 58a3cefb3840 ("usb: chipidea: imx: add two samsung picophy parameters tuning implementation")
-cc: <stable@vger.kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230627112126.1882666-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/usb/chipidea/ci_hdrc_imx.c | 10 ++++++----
- drivers/usb/chipidea/usbmisc_imx.c |  6 ++++--
- 2 files changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index aa2aebed8e2d..c251a4f34879 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -176,10 +176,12 @@ static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
- 	if (of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI)
- 		data->ulpi = 1;
- 
--	of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
--			&data->emp_curr_control);
--	of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
--			&data->dc_vol_level_adjust);
-+	if (of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
-+			&data->emp_curr_control))
-+		data->emp_curr_control = -1;
-+	if (of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
-+			&data->dc_vol_level_adjust))
-+		data->dc_vol_level_adjust = -1;
- 
- 	return data;
- }
-diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-index e8a712e5abad..c4165f061e42 100644
---- a/drivers/usb/chipidea/usbmisc_imx.c
-+++ b/drivers/usb/chipidea/usbmisc_imx.c
-@@ -660,13 +660,15 @@ static int usbmisc_imx7d_init(struct imx_usbmisc_data *data)
- 			usbmisc->base + MX7D_USBNC_USB_CTRL2);
- 		/* PHY tuning for signal quality */
- 		reg = readl(usbmisc->base + MX7D_USB_OTG_PHY_CFG1);
--		if (data->emp_curr_control && data->emp_curr_control <=
-+		if (data->emp_curr_control >= 0 &&
-+			data->emp_curr_control <=
- 			(TXPREEMPAMPTUNE0_MASK >> TXPREEMPAMPTUNE0_BIT)) {
- 			reg &= ~TXPREEMPAMPTUNE0_MASK;
- 			reg |= (data->emp_curr_control << TXPREEMPAMPTUNE0_BIT);
- 		}
- 
--		if (data->dc_vol_level_adjust && data->dc_vol_level_adjust <=
-+		if (data->dc_vol_level_adjust >= 0 &&
-+			data->dc_vol_level_adjust <=
- 			(TXVREFTUNE0_MASK >> TXVREFTUNE0_BIT)) {
- 			reg &= ~TXVREFTUNE0_MASK;
- 			reg |= (data->dc_vol_level_adjust << TXVREFTUNE0_BIT);
--- 
-2.41.0
-
-
+I caught that during review but then immediately realized that the
+file_count(file) > 1 optimization was unfortunately broken in another
+way, which ultimately led to this commit.
