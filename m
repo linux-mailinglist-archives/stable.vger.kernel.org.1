@@ -2,173 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FEBC762F2A
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D056762F45
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232932AbjGZIGl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 04:06:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49136 "EHLO
+        id S232380AbjGZII7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 04:08:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231391AbjGZIGM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:06:12 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D4304490
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 00:57:54 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: bbrezillon)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 56C9C6607115;
-        Wed, 26 Jul 2023 08:57:53 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1690358273;
-        bh=N2O26sXW+3neyTVNvx6UPXNi7HVo1l52a8zTy/Ppwvg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ccKxWSHuBg+g1lGWxk0lMmbj56df5eGcG/vWUxstJFiqMnE8635EgTxGQxLDzTUg5
-         LlUUu1DyjpnGBhIa+14ga9P8BKpOIBKQiB+6/ByL6dfL3e4ZY5hOhDRaPpQfatDtgc
-         a9OyPl3sJodJSUBnFJzHFVZHu+4Ln6+9VrvWuAveu7q5XuNEvL23d5/C2Dt1Rrsor1
-         7VD7FZK0TSVDbyyW9B75OOR13KTjG/SQDpA1Jx31gumEwxMwmmdGlw7nKruoylbR8N
-         dhMyqD0kTaYkJwL8hBjM1di26hKP5fRFSFsMPTiczzYnq/QOaUhN7f7xH34c84i3+s
-         Cq6xYXir7u8Pw==
-Date:   Wed, 26 Jul 2023 09:57:50 +0200
-From:   Boris Brezillon <boris.brezillon@collabora.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     dri-devel@lists.freedesktop.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>, stable@vger.kernel.org,
-        Roman Stratiienko <roman.stratiienko@globallogic.com>
-Subject: Re: [PATCH] drm/shmem-helper: Reset vma->vm_ops before calling
- dma_buf_mmap()
-Message-ID: <20230726095750.51b1e7e0@collabora.com>
-In-Reply-To: <77a41226-b671-1895-6182-457f7fee9bda@suse.de>
-References: <20230724112610.60974-1-boris.brezillon@collabora.com>
-        <77a41226-b671-1895-6182-457f7fee9bda@suse.de>
-Organization: Collabora
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S233276AbjGZIIP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:08:15 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2094.outbound.protection.outlook.com [40.107.92.94])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2EC41FC9;
+        Wed, 26 Jul 2023 01:01:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=D1e6g/Nym2aSIAFdrUEzQgS98lIeXBdN/ie5hRQP+SsVpL8ocFXHv5xly5qxHtTVMA5N1lt5ZvaaVuOkmf9eserJ5/sdTy1y8/jpdpn2R4FybjcrMSvbkx4BRTSlcWyjO5+c8To5+abyPTltCkUO53gWXYPOETUUlPJPiz3pFPBnTSJK3Hg7Z97akUkd4iQMkma/Mx/hHgE7pROPOu8IzqIyBPl/WQvmp7NC/gOia8+oBq25FEHCiGiJG+yOA/WB/4ZvXez4kmazI+mfn5HMfPsaHvORGX3wX7Cl5drmwZYiN+3+cc5IGtY3ADbnINZcAP/wDZ82neT5GheAfLfIGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yiXpaJ+STegM3GCLwRzoyO2t4P6/8a3dgzlhDwgZPmU=;
+ b=Nm2ve+TSThdj1Kt7v9BN8XznzmSaQAMqjIT8BBWD/ByDb8tVjs7jZC2ccma6cPJ5njVbDfb9lH7a00I6DulhSWlkS/jqihPxharPQiLXn6i10lfPpkW+XmWdWmR9ixNLBNGGZ88OS1zBiaPGV35QfOiC5XvB+X1em4C9IVsEw9yLC1Pa2abiPZ8mr3cDSzSI11o5mOhW1kI2kkfzGKQlyx6fT1amETsGGDwMyThfkncoeEdQ+3dYy2BnFChxBwGbFIdM/EVDzpIge740N3MqdMdfQIo3h7D9KJDLHxARyYwwl93aHXBGcgu9sMIYZqzR1hu+RNkWNRRtBVFs1VlfpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yiXpaJ+STegM3GCLwRzoyO2t4P6/8a3dgzlhDwgZPmU=;
+ b=AkxWeEbUGV9NQ4EhDy74T0MUqG04GvcyODIO2tfcUNTgkTuBMh3eAXu6j8ObyQpDg3mKk8cvIDTNaX2fFTr9Z69iY7WSK278kuOlKotFjmcJG69jCNh/7AkdZwxYOmhTPUu/AdzY5leLbPMYmPqo/vr+IPvirTnckffM8RBm7DM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from SA1PR01MB8131.prod.exchangelabs.com (2603:10b6:806:325::8) by
+ SA3PR01MB7988.prod.exchangelabs.com (2603:10b6:806:304::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6609.25; Wed, 26 Jul 2023 08:00:33 +0000
+Received: from SA1PR01MB8131.prod.exchangelabs.com
+ ([fe80::ad0:68f6:fb88:bf5a]) by SA1PR01MB8131.prod.exchangelabs.com
+ ([fe80::ad0:68f6:fb88:bf5a%7]) with mapi id 15.20.6609.032; Wed, 26 Jul 2023
+ 08:00:33 +0000
+From:   Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+To:     linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
+Cc:     patches@amperecomputing.com, jarkko.nikula@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
+        jsd@semihalf.com, tamnguyenchi@os.amperecomputing.com,
+        chuong@os.amperecomputing.com, darren@os.amperecomputing.com,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v2 1/2] i2c: designware: Correct length byte validation logic
+Date:   Wed, 26 Jul 2023 15:00:00 +0700
+Message-Id: <20230726080001.337353-2-tamnguyenchi@os.amperecomputing.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230726080001.337353-1-tamnguyenchi@os.amperecomputing.com>
+References: <20230726080001.337353-1-tamnguyenchi@os.amperecomputing.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG3P274CA0014.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::26)
+ To SA1PR01MB8131.prod.exchangelabs.com (2603:10b6:806:325::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR01MB8131:EE_|SA3PR01MB7988:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c9fd108-d6a7-46e8-de9a-08db8dae6369
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: H4ySfHAqf7GU3zNi5yYyhvXpM7UIcN37PSRaCZ6AT0CExbcC264dWS4NJEVwCLuDmPRrY44EKKhF0vp0+7EOlBWFFYOlJLX61Ti2sHl4FeD48L4NNOsWZotrI1sBc+0U66JJNCahTUR3ml2CVAeIhKp+2fg5C69qQDD7ci8PXL8ump2Vx+vW9buRHrvTqYy/rgKk1B820mz2e+/wIumbNikGC+BduU8SbOuTa1y9SWBTGGxQ6qAdsYjcYALiwKxFCPFgfbTmjlz+yamUoV53aT4KAxFRwQXNFx9rTCDDUsp2zUl2ML+OnkjrAX/AC++R7pCxg3gQ/M2Qrl0ViLq7Y6Hv7ySS4VZ7o3Y9G+xfwLRCElm5ELvNbMGxrzt1KBrXJAuPhThYs4wqD2/C1qsysakMP+NU5soSWUyRpa2xvYmXzdvB8mBluP50ZtvqwFG0vwGRaLNhpoETOP0sULbMaGM1euf0whsI1U4wCq6Jlu6E9lxYK3iWBZTpWQQ01TJVaaYshH+ojdIZFqidExwIFzu6PLkEKgiCPqUQRgi2AP27uZE21LMAoa212x133d+HbswakxRm+YHIR2SWSa8iSksPsu8gEWRBTVbWd2cLfcM5ZD+UTsHy6D1SR+Ke+IDr
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR01MB8131.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39850400004)(396003)(346002)(136003)(376002)(451199021)(2906002)(83380400001)(2616005)(86362001)(38350700002)(38100700002)(6486002)(6506007)(1076003)(41300700001)(52116002)(66476007)(66946007)(316002)(66556008)(4326008)(186003)(6666004)(26005)(6512007)(8936002)(8676002)(478600001)(5660300002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NkKP70Wlryf5Wy/ysnOYiyEaQcWQxLJ7/YzX5Uv6DokiOh2Vu4n1aizf6qul?=
+ =?us-ascii?Q?SkyuvIfks0t9RGd017zwOfAbtE9QVj+M377YmpnPr+ogiTC8DbVib6ZFvMzB?=
+ =?us-ascii?Q?NxfB/8dkU04P5HPxk9v0vFbx+4MY8c9oZFgdB7zERHn9jsS9MWIpd/oAqooS?=
+ =?us-ascii?Q?oUjugiuqIQhz2Igk+m8iDUdUgfNUIl6OEaS4fmgmR4Zy+NzhLMqEzN2TfH2m?=
+ =?us-ascii?Q?MLIlWg88CwIm0432bXACpwCtL7jM/dKlfYGHW5B8nts6M4JbZQrWSDOPVofS?=
+ =?us-ascii?Q?hTtIZYNt2NtMHxaYsx91IzLjsExXUdWyzpvdVR+12KHibjRIQ7qjyHmUz54G?=
+ =?us-ascii?Q?LQ2AuyJYTxnwzx4gtgw83Wd+YQen7VdYlDRISOroV5LZKD79XHzPm5juJqme?=
+ =?us-ascii?Q?gAcEzgRLkanSGXMRyHddfsR/nEH3ea40FVnwINAb6uPSbson/LWaVcETN+pJ?=
+ =?us-ascii?Q?Z4ndyu3bWjrsOlMh2O/X8qQQhUTALum7k2tlLyemjZlPY6XkFLhIihP7VpN9?=
+ =?us-ascii?Q?wFGLQUlcH2PmCwNV/y5Lgz3S+RuyQHX2oxRFsDCFAUOJLawlEn4AXJwgh9+x?=
+ =?us-ascii?Q?1JXgK+WY/2KMMjYaTS+bZ46X+61nlRwbGC6ue+M0JnG5DA/4TFZ4d5oe8jy9?=
+ =?us-ascii?Q?DPhZl4mgenaOaFzyE1zI5vaPBRBdbPZOLgsyKqXr4KPcMZ88G2yjYfaQI56R?=
+ =?us-ascii?Q?QRM3awZFNihEBFfIr1Iw3o0YzT1xPZ/BxhxvLh30hDB8h453WccIMe6pkVss?=
+ =?us-ascii?Q?362SUhALI+xS+R8QdHNCPFnJsUwU/yjUALx37Fon5vQEp8DfUayEw/Do+/YS?=
+ =?us-ascii?Q?aCDkMo+U88q3Pq5ZVQ5nXmv1eXL9FbtHpcc4eDBc1YLBNwhsw8rAGjatMrXn?=
+ =?us-ascii?Q?1CNhBIeMFKA9kCRaHJoyEqMbi/9vPLy4CDoLG8QSPkDkm2cVVsrHeOEf8wmi?=
+ =?us-ascii?Q?o1tQsnEVFdyi8RugupA9gUrtgKQkEkJNEqV9eZ08Qa425HkpRWo0/6USbxW1?=
+ =?us-ascii?Q?MUAVYYdrS4h+Odbkb99NBiX5UYb4l9CfgNiG2vIFftdKxAw7dXcG/4XfvGr2?=
+ =?us-ascii?Q?WbV9r7Vu+f+/k3H95Kjbc2OSw7NiWA68YJzdU2fArOyVX5dZi5NHj72ZHgzg?=
+ =?us-ascii?Q?QMEoeBetdnQ0rU8h9uQhK4jd+BLJXfNc5C1hkNs90rJBpPDdxrnLoR/2smOJ?=
+ =?us-ascii?Q?YgsEC4LGhznMScnUB/AD90mALiO46SVitWYYhZqG9WKs/yjJOssqr5WOUc6V?=
+ =?us-ascii?Q?C65y5Y12KSni2fsdh6sQkfqyb9ImbQVBnhJbn16ZeVpQ+YjLOJ0bOzTgtyO3?=
+ =?us-ascii?Q?HFFVPl+MZwbgUtxTJYbH9k8ddfmyO6in+tPZ1oZ3hrHH16bYZp9Wx8GSsWRm?=
+ =?us-ascii?Q?x0HMGFsQBe8ayoPUZLKZz9sV/Ge1Yi3R2I7E+p1trKp+pum3fbJBjk9nlAZw?=
+ =?us-ascii?Q?M2F1b63Ww9LrcCqF6A2tzANKCxSMncj4z0tT6SwR8g6tLt7WoKCM1CibNsmh?=
+ =?us-ascii?Q?wcuGPny3KCwz7kD07mcBrsWoplfChDrfGFiW815A8eO72AXGss9iKftLEFIh?=
+ =?us-ascii?Q?gxvKYKJHHhDHcOZC+wR9hnoOQ26lpbI2aS5dnxPjxdZWFtlKGXi/nTfFNYcB?=
+ =?us-ascii?Q?Rl3jwq2kC3Fx4KhTHlvq4LxZRLs27rCh20PvfU/w6Skt?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c9fd108-d6a7-46e8-de9a-08db8dae6369
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR01MB8131.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2023 08:00:33.6776
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nmEG/McPC+GQgsrvdZzksRaBkgBt2m1zRNPc7PmFVrbaWcsZBR2ELX6ywJXSH2/KIMxzEcIPhTiwG9ZN9KITpXNDbvx/eSAWzuVX0/lfzU4gFjDWQmrwpqTWDpfn+e9v
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR01MB7988
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 25 Jul 2023 20:50:43 +0200
-Thomas Zimmermann <tzimmermann@suse.de> wrote:
+From: Quan Nguyen <quan@os.amperecomputing.com>
 
-> Hi
-> 
-> Am 24.07.23 um 13:26 schrieb Boris Brezillon:
-> > The dma-buf backend is supposed to provide its own vm_ops, but some
-> > implementation just have nothing special to do and leave vm_ops
-> > untouched, probably expecting this field to be zero initialized (this
-> > is the case with the system_heap implementation for instance).
-> > Let's reset vma->vm_ops to NULL to keep things working with these
-> > implementations.  
-> 
-> Thanks for your patch. This bug could affect a number of GEM 
-> implementations.
+Commit 0daede80f870 ("i2c: designware: Convert driver to using regmap API")
+changes the logic to validate the whole 32-bit return value of
+DW_IC_DATA_CMD register instead of 8-bit LSB without reason.
 
-The one I found that is probably hit by the same problem is
-exynos_drm_gem.c, but there might be others...
+Later, commit f53f15ba5a85 ("i2c: designware: Get right data length"),
+introduced partial fix but not enough because the "tmp > 0" still test
+tmp as 32-bit value and is wrong in case the IC_DATA_CMD[11] is set.
 
-> Instead of fixing this individually, could we set the 
-> fields conditionally at
-> 
->  
-> https://elixir.bootlin.com/linux/v6.4/source/drivers/gpu/drm/drm_gem.c#L1042
-> 
-> ?
-> 
-> Something like
-> 
->    if (!object->import_attach) {
+Revert the logic to just before commit 0daede80f870
+("i2c: designware: Convert driver to using regmap API").
 
-If guess you meant the opposite: if (object->import_attach)
+Fixes: f53f15ba5a85 ("i2c: designware: Get right data length")
+Fixes: 0daede80f870 ("i2c: designware: Convert driver to using regmap API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
+---
+ drivers/i2c/busses/i2c-designware-master.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
->      vma->priv =
->      vma->ops =
->    }
-
-I suspect it will break other drivers relying on the fact vma->vm_ops
-is auto-magically assigned to obj->funcs->vm_ops, even for prime
-buffers. The one I'm looking at right now is amdgpu: it has its own way
-of mapping imported dma-bufs, and resetting vma->vm_ops to NULL means
-the ttm layer will fallback to the default ttm_bo_vm_ops, which is not
-what amdgpu wants.
-
-AFAICT, etnaviv is in the same situtation, though it's probably easier
-to fix, given the open/close hooks for imported objects doesn't do much.
-
-TLDR; yes, it'd be great to have this 'fix' moved at the core level, or
-even have a dedicated path for dma-buf objects, but I fear it's going
-to fall apart if we do that.
-
-One option would be to add a dma_buf_vm_ops field to
-drm_gem_object_funcs, add a
-DRM_GEM_OBJ_FUNCS_SET_VM_OPS(vm_ops, dma_buf_vm_ops) macro that would
-assign both dma_buf_vm_ops and vm_ops, patch all existing drivers
-to use this macro (mechanical change where we assign both fields to the
-same value, so we don't break anything, but don't fix broken
-implementations either). Once this is in place, we can have the
-following in drm_gem_mmap_obj():
-
-	vma->vm_ops = object->import_attach ?
-		      object->funcs->dma_buf_vm_ops :
-		      object->funcs->vm_ops;
-	vma->vm_private_data = vma->vm_ops ? obj : NULL;
-
-And then we can specialize the shmem and exynos implementations
-(actually, any implementation that's entirely deferring the mmap to the
-dma-buf layer), so they explicitly set dma_buf_vm_ops to NULL.
-
-Honestly, I'm not sure this is better than manually assigning
-vma->vm_ops to NULL in the driver mmap function, but at least people
-will have to consider it when they write their driver ('do I want
-the same mmap behavior for dmabuf and !dmabuf?').
-
-Anyway, I think this fix is worth applying, because it's self-contained
-and easy to backport. We can discuss and sort out how we want to fix the
-problem more generically later on.
-
-> 
-> plus a descriptive comment like the one you have in your patch.
-> 
-> Best regards
-> Thomas
-> 
-> > 
-> > Fixes: 26d3ac3cb04d ("drm/shmem-helpers: Redirect mmap for imported dma-buf")
-> > Cc: <stable@vger.kernel.org>
-> > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> > Reported-by: Roman Stratiienko <roman.stratiienko@globallogic.com>
-> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > ---
-> >   drivers/gpu/drm/drm_gem_shmem_helper.c | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > index 4ea6507a77e5..baaf0e0feb06 100644
-> > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > @@ -623,7 +623,13 @@ int drm_gem_shmem_mmap(struct drm_gem_shmem_object *shmem, struct vm_area_struct
-> >   	int ret;
-> >   
-> >   	if (obj->import_attach) {
-> > +		/* Reset both vm_ops and vm_private_data, so we don't end up with
-> > +		 * vm_ops pointing to our implementation if the dma-buf backend
-> > +		 * doesn't set those fields.
-> > +		 */
-> >   		vma->vm_private_data = NULL;
-> > +		vma->vm_ops = NULL;
-> > +
-> >   		ret = dma_buf_mmap(obj->dma_buf, vma, 0);
-> >   
-> >   		/* Drop the reference drm_gem_mmap_obj() acquired.*/  
-> 
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index 55ea91a63382..e96276d1b002 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -526,9 +526,10 @@ i2c_dw_read(struct dw_i2c_dev *dev)
+ 			u32 flags = msgs[dev->msg_read_idx].flags;
+ 
+ 			regmap_read(dev->map, DW_IC_DATA_CMD, &tmp);
++			tmp &= DW_IC_DATA_CMD_DAT;
+ 			/* Ensure length byte is a valid value */
+ 			if (flags & I2C_M_RECV_LEN &&
+-			    (tmp & DW_IC_DATA_CMD_DAT) <= I2C_SMBUS_BLOCK_MAX && tmp > 0) {
++			    tmp <= I2C_SMBUS_BLOCK_MAX && tmp > 0) {
+ 				len = i2c_dw_recv_len(dev, tmp);
+ 			}
+ 			*buf++ = tmp;
+-- 
+2.25.1
 
