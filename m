@@ -2,165 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3A976374B
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1F4763789
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233726AbjGZNP6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 09:15:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38792 "EHLO
+        id S234088AbjGZN1f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 09:27:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233773AbjGZNP5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:15:57 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 728F92116;
-        Wed, 26 Jul 2023 06:15:52 -0700 (PDT)
-Received: by linux.microsoft.com (Postfix, from userid 1099)
-        id B563F2380B2A; Wed, 26 Jul 2023 06:15:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B563F2380B2A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1690377351;
-        bh=Wqnb20SDFORmtDVRPX87x6Jx5KDYTWewVkDQYdSXXFY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=H+YGra79D8ILxE5srJJv/wdhDg/dhZ0G2Ee9cuwvDj55kudKyeo3byWOkcuCgNgY/
-         1PWAefM+T237dGXpG7HJ4/98WBWpl1x+wTGZpFIVAs3cdZ7J6xne8Sg7pU3rcmzf25
-         t496/+ftnM17hLEjvkk1pVbBwc+Bw9mAlZ2nnxBs=
-From:   Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-To:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
-        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
-        ssengar@linux.microsoft.com, vkuznets@redhat.com,
-        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Cc:     schakrabarti@microsoft.com,
-        Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-        stable@vger.kernel.org
-Subject: [PATCH V6 net] net: mana: Fix MANA VF unload when hardware is
-Date:   Wed, 26 Jul 2023 06:15:36 -0700
-Message-Id: <1690377336-1353-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230055AbjGZN1f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:27:35 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A661FF7
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:27:33 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-686daaa5f1fso396431b3a.3
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:27:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690378053; x=1690982853;
+        h=content-transfer-encoding:author:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=89pDHiQuuTGBrFn4u+2m7Al4Ng6hp0tFQ+lBB6CO7z8=;
+        b=QzQQ58weFbx13ZPAeX9zmEbDZELDz9db2Ffpc0ES48wh1SJYJGC4Z2mdgS9QFKcYfO
+         EabPeQPjzH93WOaUBhAtkLfpQ3qbdX/+1G87al+3Q5xmyFbaDRV3hVxCGMYSpyUMdfdk
+         SyWTu/4g62HL7jgUwfP6IzAYd+1kBjxQ2ZBj0cyjtR3MfioY1dvqcN0S42qhUi891/mp
+         iNhSgV2sGLEGsDaTfPYotDDu1U5WpavGIR/hLewOnsoO71VMS07S1voZF0xDbMO39Oq3
+         nK5sdySJ+brI4wBWZEfQpyLbixODkMRrttYeWAE6L/LQ4i9Y9DVlzorkIcr8BVHwDaa4
+         Zqbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690378053; x=1690982853;
+        h=content-transfer-encoding:author:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=89pDHiQuuTGBrFn4u+2m7Al4Ng6hp0tFQ+lBB6CO7z8=;
+        b=LY2VKFfEg+clMQCk8RHalFG51iFJ+GaktOhhzPa+J/7o+3G8zd/3dBkZt84iIseKR6
+         07c1JmRDeop+42Kloqf5mNFHsKYktw7MVLZFrXPBWRt+24LiFNyuvT9xBBJUoo/T3PZV
+         ptuVTVTplJpDnPtxU/wa6EvM/MRlFieuFVtyNHELJsTOdzIK0hSGTSHnR1nKe/fSYkZq
+         2VpgiD4+N7lua4B7GoP6zfHaDXyP17+qdLRpXkx9IJFwzHUsgd+13Ck0g8YqEd23ZEVu
+         e82oBBnmSSBXU7NSE+dgl9CKBbFVmJRvZhAJTapbYOiKNY5rAL7EUP5u2MmvtZt9R59p
+         tL9w==
+X-Gm-Message-State: ABy/qLZBhrm8zkUgR0KDE3bDDB7Eod4Y0fFKPPxxCySslqyXlO7+YlWL
+        f7btL6BTzEZuWuay57shblsEdg==
+X-Google-Smtp-Source: APBJJlFizJ74bxiKNwhoKoBmbCLVamjSoW8dbcj9VNixsovbSS+Bhsm7WcaYIWUOWupkeWiuWFNlRA==
+X-Received: by 2002:a05:6a00:194c:b0:686:dff6:50f with SMTP id s12-20020a056a00194c00b00686dff6050fmr944702pfk.8.1690378053122;
+        Wed, 26 Jul 2023 06:27:33 -0700 (PDT)
+Received: from x-wing.lan ([49.207.50.231])
+        by smtp.gmail.com with ESMTPSA id x52-20020a056a000bf400b00682ba300cd1sm11485918pfu.29.2023.07.26.06.27.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jul 2023 06:27:32 -0700 (PDT)
+From:   Amit Pundir <amit.pundir@linaro.org>
+To:     Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Bryan Donoghue <bryan.odonoghue@linaro.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>
+Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        dt <devicetree@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: [PATCH v6 2/2] arm64: dts: qcom: sdm845-db845c: Mark cont splash memory region as reserved
+Date:   Wed, 26 Jul 2023 18:57:19 +0530
+Message-Id: <20230726132719.2117369-2-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230726132719.2117369-1-amit.pundir@linaro.org>
+References: <20230726132719.2117369-1-amit.pundir@linaro.org>
+MIME-Version: 1.0
+Author: Amit Pundir <amit.pundir@linaro.org>
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
-hardware to complete any inflight packets and set the pending send count
-to zero. But if the hardware has failed, mana_dealloc_queues()
-could wait forever.
+Adding a reserved memory region for the framebuffer memory
+(the splash memory region set up by the bootloader).
 
-Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
-which is a somewhat arbitrary value that is more than long enough for
-functional hardware to complete any sends.
+It fixes a kernel panic (arm-smmu: Unhandled context fault
+at this particular memory region) reported on DB845c running
+v5.10.y.
 
-Cc: stable@vger.kernel.org
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Cc: stable@vger.kernel.org # v5.10+
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
-V5 -> V6:
-* Added pcie_flr to reset the pci after timeout.
-* Fixed the position of changelog.
-* Removed unused variable like cq.
+v6: Collected review tag, updated commit message for the
+    context and marked for stable kernel versions.
 
-V4 -> V5:
-* Added fixes tag
-* Changed the usleep_range from static to incremental value.
-* Initialized timeout in the begining.
+v5: Re-sending with updated dt-bindings patch in mdss-common
+    schema.
 
-V3 -> V4:
-* Removed the unnecessary braces from mana_dealloc_queues().
+v4: Re-sending this along with a new dt-bindings patch to
+    document memory-region property in qcom,sdm845-mdss
+    schema and keep dtbs_check happy.
 
-V2 -> V3:
-* Removed the unnecessary braces from mana_dealloc_queues().
+v3: Point this reserved region to MDSS.
 
-V1 -> V2:
-* Added net branch
-* Removed the typecasting to (struct mana_context*) of void pointer
-* Repositioned timeout variable in mana_dealloc_queues()
-* Repositioned vf_unload_timeout in mana_context struct, to utilise the
- 6 bytes hole
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 38 +++++++++++++++++--
- 1 file changed, 34 insertions(+), 4 deletions(-)
+v2: Updated commit message.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index a499e460594b..ea039e2d4c4b 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -8,6 +8,7 @@
- #include <linux/ethtool.h>
- #include <linux/filter.h>
- #include <linux/mm.h>
-+#include <linux/pci.h>
+There was some dicussion on v1 but it didn't go anywhere,
+https://lore.kernel.org/linux-kernel/20230124182857.1524912-1-amit.pundir@linaro.org/T/#u.
+The general consensus is that this memory should be freed and be
+made resuable but that (releasing this piece of memory) has been
+tried before and it is not trivial to return the reserved memory
+node to the system RAM pool in this case.
+
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+index d6b464cb61d6..f546f6f57c1e 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+@@ -101,6 +101,14 @@ hdmi_con: endpoint {
+ 		};
+ 	};
  
- #include <net/checksum.h>
- #include <net/ip6_checksum.h>
-@@ -2345,9 +2346,12 @@ int mana_attach(struct net_device *ndev)
- static int mana_dealloc_queues(struct net_device *ndev)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
-+	unsigned long timeout = jiffies + 120 * HZ;
- 	struct gdma_dev *gd = apc->ac->gdma_dev;
- 	struct mana_txq *txq;
-+	struct sk_buff *skb;
- 	int i, err;
-+	u32 tsleep;
- 
- 	if (apc->port_is_up)
- 		return -EINVAL;
-@@ -2363,15 +2367,41 @@ static int mana_dealloc_queues(struct net_device *ndev)
- 	 * to false, but it doesn't matter since mana_start_xmit() drops any
- 	 * new packets due to apc->port_is_up being false.
- 	 *
--	 * Drain all the in-flight TX packets
-+	 * Drain all the in-flight TX packets.
-+	 * A timeout of 120 seconds for all the queues is used.
-+	 * This will break the while loop when h/w is not responding.
-+	 * This value of 120 has been decided here considering max
-+	 * number of queues.
- 	 */
++	reserved-memory {
++		/* Cont splash region set up by the bootloader */
++		cont_splash_mem: framebuffer@9d400000 {
++			reg = <0x0 0x9d400000 0x0 0x2400000>;
++			no-map;
++		};
++	};
 +
- 	for (i = 0; i < apc->num_queues; i++) {
- 		txq = &apc->tx_qp[i].txq;
--
--		while (atomic_read(&txq->pending_sends) > 0)
--			usleep_range(1000, 2000);
-+		tsleep = 1000;
-+		while (atomic_read(&txq->pending_sends) > 0 &&
-+		       time_before(jiffies, timeout)) {
-+			usleep_range(tsleep, tsleep + 1000);
-+			tsleep <<= 1;
-+		}
-+		if (atomic_read(&txq->pending_sends)) {
-+			err  = pcie_flr(to_pci_dev(gd->gdma_context->dev));
-+			if (err) {
-+				netdev_err(ndev, "flr failed %d with %d pkts pending in txq %u\n",
-+					   err, atomic_read(&txq->pending_sends),
-+					   txq->gdma_txq_id);
-+			}
-+			break;
-+		}
- 	}
+ 	lt9611_1v8: lt9611-vdd18-regulator {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "LT9611_1V8";
+@@ -506,6 +514,7 @@ &i2c14 {
+ };
  
-+	for (i = 0; i < apc->num_queues; i++) {
-+		txq = &apc->tx_qp[i].txq;
-+		while (atomic_read(&txq->pending_sends)) {
-+			skb = skb_dequeue(&txq->pending_skbs);
-+			mana_unmap_skb(skb, apc);
-+			dev_consume_skb_any(skb);
-+			atomic_sub(1, &txq->pending_sends);
-+		}
-+	}
- 	/* We're 100% sure the queues can no longer be woken up, because
- 	 * we're sure now mana_poll_tx_cq() can't be running.
- 	 */
+ &mdss {
++	memory-region = <&cont_splash_mem>;
+ 	status = "okay";
+ };
+ 
 -- 
-2.34.1
+2.25.1
 
