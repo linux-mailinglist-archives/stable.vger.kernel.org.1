@@ -2,156 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB1F4763789
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82A5F7637B1
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 15:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234088AbjGZN1f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 09:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44750 "EHLO
+        id S233453AbjGZNgv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 09:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbjGZN1f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:27:35 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A661FF7
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:27:33 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-686daaa5f1fso396431b3a.3
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 06:27:33 -0700 (PDT)
+        with ESMTP id S231758AbjGZNgu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 09:36:50 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D6A1734;
+        Wed, 26 Jul 2023 06:36:49 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1bb81809ca8so35380325ad.3;
+        Wed, 26 Jul 2023 06:36:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690378053; x=1690982853;
-        h=content-transfer-encoding:author:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=89pDHiQuuTGBrFn4u+2m7Al4Ng6hp0tFQ+lBB6CO7z8=;
-        b=QzQQ58weFbx13ZPAeX9zmEbDZELDz9db2Ffpc0ES48wh1SJYJGC4Z2mdgS9QFKcYfO
-         EabPeQPjzH93WOaUBhAtkLfpQ3qbdX/+1G87al+3Q5xmyFbaDRV3hVxCGMYSpyUMdfdk
-         SyWTu/4g62HL7jgUwfP6IzAYd+1kBjxQ2ZBj0cyjtR3MfioY1dvqcN0S42qhUi891/mp
-         iNhSgV2sGLEGsDaTfPYotDDu1U5WpavGIR/hLewOnsoO71VMS07S1voZF0xDbMO39Oq3
-         nK5sdySJ+brI4wBWZEfQpyLbixODkMRrttYeWAE6L/LQ4i9Y9DVlzorkIcr8BVHwDaa4
-         Zqbg==
+        d=gmail.com; s=20221208; t=1690378609; x=1690983409;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=gYgt2/L5v2iTxYlRyElhhZxpEQdszhBpRfoZ9bvFiQ0=;
+        b=cc+iIay/ECUUq2pHo33gxd4ADnap2aPJzZM2OBywjK7f+VDRd1WJuOxS7c6n9Q7ZYX
+         fR4V3H1u8u+4i4JlE5fZwItEwJ8c5gLPRtmyo4wIGDY4I74cL9fi0puRyvoPVDG5kchY
+         MIdU+wVuzneuLtM5doFCVEuZuvGwpdAvIbcflbNd+WB+bVKPyaxKU46Y5Sw05gCDtmOJ
+         l6anyIffgIvqiITu4Bns3vF7CAsi8KZFdlHTS8EPisT85e5Vxw+6grzUvglcRdOR0hKU
+         bUxryPE8Il+DhsnQv6g9XDQA1JOca6j/I9LS6MN1zNm47Mdo9qab6hDwxGv0LsBnUtmU
+         YGYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690378053; x=1690982853;
-        h=content-transfer-encoding:author:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=89pDHiQuuTGBrFn4u+2m7Al4Ng6hp0tFQ+lBB6CO7z8=;
-        b=LY2VKFfEg+clMQCk8RHalFG51iFJ+GaktOhhzPa+J/7o+3G8zd/3dBkZt84iIseKR6
-         07c1JmRDeop+42Kloqf5mNFHsKYktw7MVLZFrXPBWRt+24LiFNyuvT9xBBJUoo/T3PZV
-         ptuVTVTplJpDnPtxU/wa6EvM/MRlFieuFVtyNHELJsTOdzIK0hSGTSHnR1nKe/fSYkZq
-         2VpgiD4+N7lua4B7GoP6zfHaDXyP17+qdLRpXkx9IJFwzHUsgd+13Ck0g8YqEd23ZEVu
-         e82oBBnmSSBXU7NSE+dgl9CKBbFVmJRvZhAJTapbYOiKNY5rAL7EUP5u2MmvtZt9R59p
-         tL9w==
-X-Gm-Message-State: ABy/qLZBhrm8zkUgR0KDE3bDDB7Eod4Y0fFKPPxxCySslqyXlO7+YlWL
-        f7btL6BTzEZuWuay57shblsEdg==
-X-Google-Smtp-Source: APBJJlFizJ74bxiKNwhoKoBmbCLVamjSoW8dbcj9VNixsovbSS+Bhsm7WcaYIWUOWupkeWiuWFNlRA==
-X-Received: by 2002:a05:6a00:194c:b0:686:dff6:50f with SMTP id s12-20020a056a00194c00b00686dff6050fmr944702pfk.8.1690378053122;
-        Wed, 26 Jul 2023 06:27:33 -0700 (PDT)
-Received: from x-wing.lan ([49.207.50.231])
-        by smtp.gmail.com with ESMTPSA id x52-20020a056a000bf400b00682ba300cd1sm11485918pfu.29.2023.07.26.06.27.27
+        d=1e100.net; s=20221208; t=1690378609; x=1690983409;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gYgt2/L5v2iTxYlRyElhhZxpEQdszhBpRfoZ9bvFiQ0=;
+        b=G1NNdhkpQvkvtA2wkj2UO6RFn578CXuX0RCGF10UUiJ06jzFQZHkLa7bSqDMcOH1EF
+         MAppjIX6LMqBSFeI0bUwq+IEvL2uk7AZEw3CfwsU6xse7lk+BRIPzftJNUlBQHqnXQNK
+         m4xsnEPd3pcjmPBj9F5P6xfRZj/CLb9jv4KHhy3De9OvGWITWRHM78ItuEIo7xEX0rrD
+         V06ZJA8XeOsr97zOmgjXPY0W3dX02C8QGfK1HGR2S8m0ilXOtrilfdpILpaDPhlb7iO5
+         7SmVZ8fiK6UX8OovQhRk/voH5haZ0wBmLy7goimgsANw+sYHFOvkUVmuw3wcUvIRuecG
+         ZR/g==
+X-Gm-Message-State: ABy/qLZ+VJqXO07FbOM/N+Q4wcdM1hcC+xztI54NmJG08WVR8bKrCKXa
+        21G3tW4sHU9XfwtehH1ARZg=
+X-Google-Smtp-Source: APBJJlEpN1bPsnxPRND9LmzHt5o47i8k3Fn9HUNUfEcvha9GSBEaVJ0F0bDgj9ExYJlu7Ub8tl8QCw==
+X-Received: by 2002:a17:902:b08a:b0:1b8:c972:606c with SMTP id p10-20020a170902b08a00b001b8c972606cmr1869361plr.57.1690378608925;
+        Wed, 26 Jul 2023 06:36:48 -0700 (PDT)
+Received: from bangji.roam.corp.google.com ([114.129.115.132])
+        by smtp.gmail.com with ESMTPSA id q8-20020a170902b10800b001b8baa83639sm13206369plr.200.2023.07.26.06.36.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jul 2023 06:27:32 -0700 (PDT)
-From:   Amit Pundir <amit.pundir@linaro.org>
-To:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Bryan Donoghue <bryan.odonoghue@linaro.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>
-Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: [PATCH v6 2/2] arm64: dts: qcom: sdm845-db845c: Mark cont splash memory region as reserved
-Date:   Wed, 26 Jul 2023 18:57:19 +0530
-Message-Id: <20230726132719.2117369-2-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230726132719.2117369-1-amit.pundir@linaro.org>
-References: <20230726132719.2117369-1-amit.pundir@linaro.org>
+        Wed, 26 Jul 2023 06:36:48 -0700 (PDT)
+Sender: Namhyung Kim <namhyung@gmail.com>
+From:   Namhyung Kim <namhyung@kernel.org>
+To:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>
+Cc:     Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org,
+        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH 1/2] perf build: Update build rule for generated files
+Date:   Wed, 26 Jul 2023 06:36:41 -0700
+Message-ID: <20230726133642.750342-1-namhyung@kernel.org>
+X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
 MIME-Version: 1.0
-Author: Amit Pundir <amit.pundir@linaro.org>
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Adding a reserved memory region for the framebuffer memory
-(the splash memory region set up by the bootloader).
+The bison and flex generate C files from the source (.y and .l)
+files.  When O= option is used, they are saved in a separate directory
+but the default build rule assumes the .C files are in the source
+directory.  So it might read invalid file if there are generated files
+from an old version.  The same is true for the pmu-events files.
 
-It fixes a kernel panic (arm-smmu: Unhandled context fault
-at this particular memory region) reported on DB845c running
-v5.10.y.
+For example, the following command would cause a build failure:
 
-Cc: stable@vger.kernel.org # v5.10+
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+  $ git checkout v6.3
+  $ make -C tools/perf  # build in the same directory
+
+  $ git checkout v6.5-rc2
+  $ mkdir build  # create a build directory
+  $ make -C tools/perf O=build  # build in a different directory but it
+                                # refers files in the source directory
+
+Let's update the build rule to specify those cases explicitly to depend
+on the files in the output directory.
+
+Note that it's not a complete fix and it needs the next patch for the
+include path too.
+
+Fixes: 80eeb67fe577 ("perf jevents: Program to convert JSON file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 ---
-v6: Collected review tag, updated commit message for the
-    context and marked for stable kernel versions.
+ tools/build/Makefile.build  | 8 ++++++++
+ tools/perf/pmu-events/Build | 4 ++++
+ 2 files changed, 12 insertions(+)
 
-v5: Re-sending with updated dt-bindings patch in mdss-common
-    schema.
-
-v4: Re-sending this along with a new dt-bindings patch to
-    document memory-region property in qcom,sdm845-mdss
-    schema and keep dtbs_check happy.
-
-v3: Point this reserved region to MDSS.
-
-v2: Updated commit message.
-
-There was some dicussion on v1 but it didn't go anywhere,
-https://lore.kernel.org/linux-kernel/20230124182857.1524912-1-amit.pundir@linaro.org/T/#u.
-The general consensus is that this memory should be freed and be
-made resuable but that (releasing this piece of memory) has been
-tried before and it is not trivial to return the reserved memory
-node to the system RAM pool in this case.
-
- arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-index d6b464cb61d6..f546f6f57c1e 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-@@ -101,6 +101,14 @@ hdmi_con: endpoint {
- 		};
- 	};
+diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+index 89430338a3d9..f9396696fcbf 100644
+--- a/tools/build/Makefile.build
++++ b/tools/build/Makefile.build
+@@ -117,6 +117,14 @@ $(OUTPUT)%.s: %.c FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed_dep,cc_s_c)
  
-+	reserved-memory {
-+		/* Cont splash region set up by the bootloader */
-+		cont_splash_mem: framebuffer@9d400000 {
-+			reg = <0x0 0x9d400000 0x0 0x2400000>;
-+			no-map;
-+		};
-+	};
++$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
++	$(call rule_mkdir)
++	$(call if_changed_dep,$(host)cc_o_c)
 +
- 	lt9611_1v8: lt9611-vdd18-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "LT9611_1V8";
-@@ -506,6 +514,7 @@ &i2c14 {
- };
- 
- &mdss {
-+	memory-region = <&cont_splash_mem>;
- 	status = "okay";
- };
- 
++$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
++	$(call rule_mkdir)
++	$(call if_changed_dep,$(host)cc_o_c)
++
+ # Gather build data:
+ #   obj-y        - list of build objects
+ #   subdir-y     - list of directories to nest
+diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+index 150765f2baee..f38a27765604 100644
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -35,3 +35,7 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(JEVENTS_PY) $(METRIC_PY) $(METRIC_TEST_L
+ 	$(call rule_mkdir)
+ 	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
+ endif
++
++$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
++	$(call rule_mkdir)
++	$(call if_changed_dep,$(host)cc_o_c)
 -- 
-2.25.1
+2.41.0.487.g6d72f3e995-goog
 
