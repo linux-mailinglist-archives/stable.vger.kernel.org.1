@@ -2,116 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2201763969
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 16:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35B19763B8B
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 17:48:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232127AbjGZOmH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 10:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32938 "EHLO
+        id S234926AbjGZPsj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 11:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbjGZOmG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 10:42:06 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE4A10DB;
-        Wed, 26 Jul 2023 07:42:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690382526; x=1721918526;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ZxC6gwU9yWXdN1PqA4ssVDQ/brLW7zgoTQ9uUdeKKU0=;
-  b=YGTAty6qe2KoxsufowERzMEv90MeNvzx/g0Isz5AwL2k773qtPVWbJkf
-   ltrPfnXVv0gKmLrgyBc+VupmH2z+/P/rrXw8BvDH0R8b2N6G6Ehl9rC4T
-   pbyQTbC5u8o4FDNEd/KiHaSblrpW+Zpl3IOxfJrKJLMOJnsbECuMrwwan
-   27LADtK7QBxbZTHJwbUZw1sTfVLE37w0Afyn18Ax/lno2Dra58vEfDRVf
-   MBpHtPns02M/tw5VypDSWgUBs2CFnAjetcd58yyWIqENdlTetvSAavKhR
-   j/k2l7Z/SmRPnKHRpt32iPT0b9jDYEkYeeDwvGiwFYrQ7+QPgSx2N+Uzz
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="371645477"
-X-IronPort-AV: E=Sophos;i="6.01,232,1684825200"; 
-   d="scan'208";a="371645477"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 07:42:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="756270101"
-X-IronPort-AV: E=Sophos;i="6.01,232,1684825200"; 
-   d="scan'208";a="756270101"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 26 Jul 2023 07:42:02 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qOfiD-00BKUL-0p;
-        Wed, 26 Jul 2023 17:42:01 +0300
-Date:   Wed, 26 Jul 2023 17:42:00 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Ruihong Luo <colorsu1922@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        stable@vger.kernel.org, luoruihong@xiaomi.com,
-        weipengliang@xiaomi.com, wengjinfei@xiaomi.com
-Subject: Re: [PATCH v4] serial: 8250_dw: Preserve original value of DLF
- register
-Message-ID: <ZMEwuMLQlwABZeRo@smile.fi.intel.com>
-References: <20230713004235.35904-1-colorsu1922@gmail.com>
- <5fac4a28-ff70-d6e6-dcee-8cb45916789@linux.intel.com>
- <ZLFAD8lblUA6/cVd@smile.fi.intel.com>
- <2023072546-ladies-landlord-8a6d@gregkh>
+        with ESMTP id S234618AbjGZPsi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 11:48:38 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB760196
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 08:48:37 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-40631c5b9e9so329071cf.1
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 08:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690386517; x=1690991317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ut/OLnGvSUcwp0SDm9TE1oM6DEmiwkjd+qReZtNtjNs=;
+        b=VsS+2GiOBjBU/fbu4y4kSJp6AV2eQoMCG8HLnqx5YVCQ6dz4wXNHlG/wrkMUWoU+1N
+         5NsTHjtRSOeEI7EjrarEoKoSfeUje2rhD6MqK6XOlvSBKxsbBiUo2oMCPDVRRP+wgqam
+         OCCg45w5yTGvagFVGfYZ+wyFAOOoX0mH6mt0gis4jrHBVRSanpz1UNksHFElZw2RMJfH
+         99uCJc0gi0RmDxn7Euktt6eVzsygxYcASLsE5xndnEPx8WFd/yvibJ7RqtgmUp9TSaoN
+         jAbJlkDX6Dwg/rYYKHOcYh8NVLFdrnJ8XFVBpi74jwU7G69V1HHZP6ZkZeUL0UW5cApK
+         hm6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690386517; x=1690991317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ut/OLnGvSUcwp0SDm9TE1oM6DEmiwkjd+qReZtNtjNs=;
+        b=WD4YNFu67amPE2mYXXlxPUAd31vMeNgz0oO92jX3Sql3QvU/X5v7KydRLQSneFhSdA
+         oylZ1yYd+27zwwBqKmhodY3Slr9B2v5l47Wrx/SpJ5Ocm3dKLfasdmla+jVj1PQenD4f
+         pLFalbeaGg+61XazDNZ8DtsyqS4x4e9K8wYGolYaaf/e0hR8Q5LIkLdzzP/Kmf0+fDt0
+         3fPY+44B2mHKnplFAYzKG+qkjcrTJwDYxNsLkSq7JYmzt6WI2j/TH9eNqO4ThF8zFgXV
+         lS52IR+OGFVxXVct4VKAMlrQaO33HTPP+S7KLsGsefEw/Ty68hsGW8z2V1/2V+kX4kZ7
+         4kgQ==
+X-Gm-Message-State: ABy/qLbwxrjfItnry5n7L3BU+7OcnGrb4iHcEbnwgdju7Vw5q8nDo24T
+        +J4v4o7wr0t8LrshoKDp8q8qADpIK4LXpzd+zY+ziA==
+X-Google-Smtp-Source: APBJJlFAmkaXOtb8THGu7IQnr+RHR95akaw9tZl1QWkzbkFdkoRezoi/bskARgwANoV0jMaM1qFSCot+pg+R8e2pRCo=
+X-Received: by 2002:ac8:7f56:0:b0:405:3a65:b3d6 with SMTP id
+ g22-20020ac87f56000000b004053a65b3d6mr509723qtk.13.1690386516582; Wed, 26 Jul
+ 2023 08:48:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023072546-ladies-landlord-8a6d@gregkh>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230726133642.750342-1-namhyung@kernel.org>
+In-Reply-To: <20230726133642.750342-1-namhyung@kernel.org>
+From:   Ian Rogers <irogers@google.com>
+Date:   Wed, 26 Jul 2023 08:48:24 -0700
+Message-ID: <CAP-5=fWM9Fhq5WvsBf2n=hGwwwRDt3-mUQ=_qzu8qYGtD1OeWQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] perf build: Update build rule for generated files
+To:     Namhyung Kim <namhyung@kernel.org>
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org,
+        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 25, 2023 at 08:31:17PM +0200, Greg Kroah-Hartman wrote:
-> On Fri, Jul 14, 2023 at 03:31:11PM +0300, Andy Shevchenko wrote:
-> > On Fri, Jul 14, 2023 at 03:07:42PM +0300, Ilpo Järvinen wrote:
-> > > On Thu, 13 Jul 2023, Ruihong Luo wrote:
-> > > 
-> > > > Preserve the original value of the Divisor Latch Fraction (DLF) register.
-> > > > When the DLF register is modified without preservation, it can disrupt
-> > > > the baudrate settings established by firmware or bootloader, leading to
-> > > > data corruption and the generation of unreadable or distorted characters.
-> > > > 
-> > > > Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
-> > 
-> > > You forgot to add:
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > 
-> > It's there. Just not in the commit message. It's fine.
-> 
-> No it isn't, that's not how to have a patch added to the stable tree, as
-> my form letter says:
-> 
-> <formletter>
-> 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
-> 
-> </formletter>
-> 
-> I'll go fix it up by hand...
+On Wed, Jul 26, 2023 at 6:36=E2=80=AFAM Namhyung Kim <namhyung@kernel.org> =
+wrote:
+>
+> The bison and flex generate C files from the source (.y and .l)
+> files.  When O=3D option is used, they are saved in a separate directory
+> but the default build rule assumes the .C files are in the source
+> directory.  So it might read invalid file if there are generated files
+> from an old version.  The same is true for the pmu-events files.
+>
+> For example, the following command would cause a build failure:
+>
+>   $ git checkout v6.3
+>   $ make -C tools/perf  # build in the same directory
+>
+>   $ git checkout v6.5-rc2
+>   $ mkdir build  # create a build directory
+>   $ make -C tools/perf O=3Dbuild  # build in a different directory but it
+>                                 # refers files in the source directory
+>
+> Let's update the build rule to specify those cases explicitly to depend
+> on the files in the output directory.
+>
+> Note that it's not a complete fix and it needs the next patch for the
+> include path too.
+>
+> Fixes: 80eeb67fe577 ("perf jevents: Program to convert JSON file")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> ---
+>  tools/build/Makefile.build  | 8 ++++++++
+>  tools/perf/pmu-events/Build | 4 ++++
+>  2 files changed, 12 insertions(+)
+>
+> diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+> index 89430338a3d9..f9396696fcbf 100644
+> --- a/tools/build/Makefile.build
+> +++ b/tools/build/Makefile.build
+> @@ -117,6 +117,14 @@ $(OUTPUT)%.s: %.c FORCE
+>         $(call rule_mkdir)
+>         $(call if_changed_dep,cc_s_c)
+>
+> +$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
+> +       $(call rule_mkdir)
+> +       $(call if_changed_dep,$(host)cc_o_c)
+> +
+> +$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
+> +       $(call rule_mkdir)
+> +       $(call if_changed_dep,$(host)cc_o_c)
+> +
 
-Good to know, thank you for the clarification!
+Hi Namhyung,
 
+as we have:
+```
+$(OUTPUT)%.o: %.c FORCE
+       $(call rule_mkdir)
+       $(call if_changed_dep,$(host)cc_o_c)
+```
+I'm not sure what the 2 additional rules achieve.
 
--- 
-With Best Regards,
-Andy Shevchenko
+>  # Gather build data:
+>  #   obj-y        - list of build objects
+>  #   subdir-y     - list of directories to nest
+> diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+> index 150765f2baee..f38a27765604 100644
+> --- a/tools/perf/pmu-events/Build
+> +++ b/tools/perf/pmu-events/Build
+> @@ -35,3 +35,7 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(JEVENTS_PY) $(M=
+ETRIC_PY) $(METRIC_TEST_L
+>         $(call rule_mkdir)
+>         $(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $=
+(JEVENTS_MODEL) pmu-events/arch $@
+>  endif
+> +
+> +$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
+> +       $(call rule_mkdir)
+> +       $(call if_changed_dep,$(host)cc_o_c)
 
+If we add this, do the Makefile.build changes still need to happen?
 
+Thanks,
+Ian
+
+> --
+> 2.41.0.487.g6d72f3e995-goog
+>
