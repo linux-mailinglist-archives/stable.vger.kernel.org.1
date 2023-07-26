@@ -2,216 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76AE1763DBA
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 19:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D239A763DE7
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 19:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230480AbjGZRee (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 13:34:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34846 "EHLO
+        id S231191AbjGZRqz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 13:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbjGZRed (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 13:34:33 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C75926A0
-        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 10:34:32 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id B8F3B1F385;
-        Wed, 26 Jul 2023 17:34:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1690392870; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cPeaM5RCt2kKxNokrRLD8Q5hQr3w4HW9atCJK3gluWc=;
-        b=1UxT7nE4/kK4iNIz7HNnPR7aKJWZVYMdkb/e/1w8ux8eBWjmTeqCaiXXAFRUouInQJdLde
-        AEiMpPWSNNj95GusDS8KRSrVVVC9ZxREcMc5ZIlHOm42+sSQvtsaw2IxCqVWRwwvNNkSfD
-        fptiNUbQgWVNStq9RST++olQYOXlkrI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1690392870;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cPeaM5RCt2kKxNokrRLD8Q5hQr3w4HW9atCJK3gluWc=;
-        b=RYdPKqmOSORBO9hjEryKYiONpoXzU3RbuSejX4Vx2I78ZCGiYj3GOfi5urKb8BaPXekZgz
-        mO0rD2/cdOURa9Bw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8EF92139BD;
-        Wed, 26 Jul 2023 17:34:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 0ozVISZZwWTZZQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 26 Jul 2023 17:34:30 +0000
-Message-ID: <bfb0d72d-16a1-9eb6-2fd9-3bbd4237c014@suse.de>
-Date:   Wed, 26 Jul 2023 19:34:29 +0200
+        with ESMTP id S232066AbjGZRqs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 13:46:48 -0400
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE5F2D7B;
+        Wed, 26 Jul 2023 10:46:40 -0700 (PDT)
+Received: from xmz-huawei.. (unknown [114.249.159.178])
+        by APP-03 (Coremail) with SMTP id rQCowABXd2TfW8Fkh6U1Dg--.53842S2;
+        Thu, 27 Jul 2023 01:46:07 +0800 (CST)
+From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+To:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>
+Cc:     Bin Meng <bmeng@tinylab.org>, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        stable@vger.kernel.org, Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Subject: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and binutils
+Date:   Thu, 27 Jul 2023 01:45:24 +0800
+Message-Id: <20230726174524.340952-1-xingmingzheng@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] drm/shmem-helper: Reset vma->vm_ops before calling
- dma_buf_mmap()
-Content-Language: en-US
-To:     Boris Brezillon <boris.brezillon@collabora.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>, stable@vger.kernel.org,
-        Roman Stratiienko <roman.stratiienko@globallogic.com>
-References: <20230724112610.60974-1-boris.brezillon@collabora.com>
- <77a41226-b671-1895-6182-457f7fee9bda@suse.de>
- <20230726095750.51b1e7e0@collabora.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230726095750.51b1e7e0@collabora.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------en6sbTSAwk4PuLVnv7qNNPVz"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: rQCowABXd2TfW8Fkh6U1Dg--.53842S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXw1kGry5ZFWrCrWUKryrCrg_yoWrJFWfpr
+        ZxCryUGrs5X3ykGr1fJw4UW34Yyws5J3y8WrW7Kw15u3sxAFy0gr9Yyw42qFyUAFZ7Kw4q
+        9w1S93ZYq3Z0yaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+        6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+        4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+        n2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+        0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFyl
+        IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+        AFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+        6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdHU
+        DUUUUU=
+X-Originating-IP: [114.249.159.178]
+X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiCQgECmTBJKN66QAAs+
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------en6sbTSAwk4PuLVnv7qNNPVz
-Content-Type: multipart/mixed; boundary="------------C2IowLUitjNOkqvIkin0gWwy";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, Daniel Vetter <daniel.vetter@ffwll.ch>,
- stable@vger.kernel.org, Roman Stratiienko <roman.stratiienko@globallogic.com>
-Message-ID: <bfb0d72d-16a1-9eb6-2fd9-3bbd4237c014@suse.de>
-Subject: Re: [PATCH] drm/shmem-helper: Reset vma->vm_ops before calling
- dma_buf_mmap()
-References: <20230724112610.60974-1-boris.brezillon@collabora.com>
- <77a41226-b671-1895-6182-457f7fee9bda@suse.de>
- <20230726095750.51b1e7e0@collabora.com>
-In-Reply-To: <20230726095750.51b1e7e0@collabora.com>
+Binutils-2.38 and GCC-12.1.0 bump[0] default ISA spec to newer version
+20191213 which moves some instructions from the I extension to the
+Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
+that version, we should turn on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+to cope with the new changes.
 
---------------C2IowLUitjNOkqvIkin0gWwy
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+The case of clang is special[1][2], where older clang versions (<17) need
+to be rolled back to old ISA spec to fix it. And the less common case,
+since older GCC versions (<11.1.0) did not support zicsr and zifencei
+extension for -march, also requires a fallback to cope with it.
 
-SGkNCg0KQW0gMjYuMDcuMjMgdW0gMDk6NTcgc2NocmllYiBCb3JpcyBCcmV6aWxsb246DQo+
-IE9uIFR1ZSwgMjUgSnVsIDIwMjMgMjA6NTA6NDMgKzAyMDANCj4gVGhvbWFzIFppbW1lcm1h
-bm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+IHdyb3RlOg0KPiANCj4+IEhpDQo+Pg0KPj4gQW0g
-MjQuMDcuMjMgdW0gMTM6MjYgc2NocmllYiBCb3JpcyBCcmV6aWxsb246DQo+Pj4gVGhlIGRt
-YS1idWYgYmFja2VuZCBpcyBzdXBwb3NlZCB0byBwcm92aWRlIGl0cyBvd24gdm1fb3BzLCBi
-dXQgc29tZQ0KPj4+IGltcGxlbWVudGF0aW9uIGp1c3QgaGF2ZSBub3RoaW5nIHNwZWNpYWwg
-dG8gZG8gYW5kIGxlYXZlIHZtX29wcw0KPj4+IHVudG91Y2hlZCwgcHJvYmFibHkgZXhwZWN0
-aW5nIHRoaXMgZmllbGQgdG8gYmUgemVybyBpbml0aWFsaXplZCAodGhpcw0KPj4+IGlzIHRo
-ZSBjYXNlIHdpdGggdGhlIHN5c3RlbV9oZWFwIGltcGxlbWVudGF0aW9uIGZvciBpbnN0YW5j
-ZSkuDQo+Pj4gTGV0J3MgcmVzZXQgdm1hLT52bV9vcHMgdG8gTlVMTCB0byBrZWVwIHRoaW5n
-cyB3b3JraW5nIHdpdGggdGhlc2UNCj4+PiBpbXBsZW1lbnRhdGlvbnMuDQo+Pg0KPj4gVGhh
-bmtzIGZvciB5b3VyIHBhdGNoLiBUaGlzIGJ1ZyBjb3VsZCBhZmZlY3QgYSBudW1iZXIgb2Yg
-R0VNDQo+PiBpbXBsZW1lbnRhdGlvbnMuDQo+IA0KPiBUaGUgb25lIEkgZm91bmQgdGhhdCBp
-cyBwcm9iYWJseSBoaXQgYnkgdGhlIHNhbWUgcHJvYmxlbSBpcw0KPiBleHlub3NfZHJtX2dl
-bS5jLCBidXQgdGhlcmUgbWlnaHQgYmUgb3RoZXJzLi4uDQo+IA0KPj4gSW5zdGVhZCBvZiBm
-aXhpbmcgdGhpcyBpbmRpdmlkdWFsbHksIGNvdWxkIHdlIHNldCB0aGUNCj4+IGZpZWxkcyBj
-b25kaXRpb25hbGx5IGF0DQo+Pg0KPj4gICANCj4+IGh0dHBzOi8vZWxpeGlyLmJvb3RsaW4u
-Y29tL2xpbnV4L3Y2LjQvc291cmNlL2RyaXZlcnMvZ3B1L2RybS9kcm1fZ2VtLmMjTDEwNDIN
-Cj4+DQo+PiA/DQo+Pg0KPj4gU29tZXRoaW5nIGxpa2UNCj4+DQo+PiAgICAgaWYgKCFvYmpl
-Y3QtPmltcG9ydF9hdHRhY2gpIHsNCj4gDQo+IElmIGd1ZXNzIHlvdSBtZWFudCB0aGUgb3Bw
-b3NpdGU6IGlmIChvYmplY3QtPmltcG9ydF9hdHRhY2gpDQoNCk5vLCB3ZSdkIHdhbnQgdG8g
-YXNzaWduIGlmZiBpdCdzIG5vdCBhbiBpbXBvcnRlZCBidWZmZXIuDQoNCj4gDQo+PiAgICAg
-ICB2bWEtPnByaXYgPQ0KPj4gICAgICAgdm1hLT5vcHMgPQ0KPj4gICAgIH0NCj4gDQo+IEkg
-c3VzcGVjdCBpdCB3aWxsIGJyZWFrIG90aGVyIGRyaXZlcnMgcmVseWluZyBvbiB0aGUgZmFj
-dCB2bWEtPnZtX29wcw0KPiBpcyBhdXRvLW1hZ2ljYWxseSBhc3NpZ25lZCB0byBvYmotPmZ1
-bmNzLT52bV9vcHMsIGV2ZW4gZm9yIHByaW1lDQo+IGJ1ZmZlcnMuIFRoZSBvbmUgSSdtIGxv
-b2tpbmcgYXQgcmlnaHQgbm93IGlzIGFtZGdwdTogaXQgaGFzIGl0cyBvd24gd2F5DQo+IG9m
-IG1hcHBpbmcgaW1wb3J0ZWQgZG1hLWJ1ZnMsIGFuZCByZXNldHRpbmcgdm1hLT52bV9vcHMg
-dG8gTlVMTCBtZWFucw0KPiB0aGUgdHRtIGxheWVyIHdpbGwgZmFsbGJhY2sgdG8gdGhlIGRl
-ZmF1bHQgdHRtX2JvX3ZtX29wcywgd2hpY2ggaXMgbm90DQo+IHdoYXQgYW1kZ3B1IHdhbnRz
-Lg0KPiANCj4gQUZBSUNULCBldG5hdml2IGlzIGluIHRoZSBzYW1lIHNpdHV0YXRpb24sIHRo
-b3VnaCBpdCdzIHByb2JhYmx5IGVhc2llcg0KPiB0byBmaXgsIGdpdmVuIHRoZSBvcGVuL2Ns
-b3NlIGhvb2tzIGZvciBpbXBvcnRlZCBvYmplY3RzIGRvZXNuJ3QgZG8gbXVjaC4NCj4gDQo+
-IFRMRFI7IHllcywgaXQnZCBiZSBncmVhdCB0byBoYXZlIHRoaXMgJ2ZpeCcgbW92ZWQgYXQg
-dGhlIGNvcmUgbGV2ZWwsIG9yDQo+IGV2ZW4gaGF2ZSBhIGRlZGljYXRlZCBwYXRoIGZvciBk
-bWEtYnVmIG9iamVjdHMsIGJ1dCBJIGZlYXIgaXQncyBnb2luZw0KPiB0byBmYWxsIGFwYXJ0
-IGlmIHdlIGRvIHRoYXQuDQoNCkkgc2VlLiBTbyBmb3IgdGhlIGN1cnJlbnQgcGF0Y2gsIHlv
-dSBjYW4gYWRkDQoNClJldmlld2VkLWJ5OiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1h
-bm5Ac3VzZS5kZT4NCg0KSSB0aGluayB3ZSBzaG91bGQga2VlcCB0aGUgZ2VuZXJhbCBzb2x1
-dGlvbiBpbiBtaW5kLiBNYXliZSB0aGlzIGNhbiBiZSANCnRyaWVkIGxhdGVyLg0KDQpCZXN0
-IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiBPbmUgb3B0aW9uIHdvdWxkIGJlIHRvIGFkZCBh
-IGRtYV9idWZfdm1fb3BzIGZpZWxkIHRvDQo+IGRybV9nZW1fb2JqZWN0X2Z1bmNzLCBhZGQg
-YQ0KPiBEUk1fR0VNX09CSl9GVU5DU19TRVRfVk1fT1BTKHZtX29wcywgZG1hX2J1Zl92bV9v
-cHMpIG1hY3JvIHRoYXQgd291bGQNCj4gYXNzaWduIGJvdGggZG1hX2J1Zl92bV9vcHMgYW5k
-IHZtX29wcywgcGF0Y2ggYWxsIGV4aXN0aW5nIGRyaXZlcnMNCj4gdG8gdXNlIHRoaXMgbWFj
-cm8gKG1lY2hhbmljYWwgY2hhbmdlIHdoZXJlIHdlIGFzc2lnbiBib3RoIGZpZWxkcyB0byB0
-aGUNCj4gc2FtZSB2YWx1ZSwgc28gd2UgZG9uJ3QgYnJlYWsgYW55dGhpbmcsIGJ1dCBkb24n
-dCBmaXggYnJva2VuDQo+IGltcGxlbWVudGF0aW9ucyBlaXRoZXIpLiBPbmNlIHRoaXMgaXMg
-aW4gcGxhY2UsIHdlIGNhbiBoYXZlIHRoZQ0KPiBmb2xsb3dpbmcgaW4gZHJtX2dlbV9tbWFw
-X29iaigpOg0KPiANCj4gCXZtYS0+dm1fb3BzID0gb2JqZWN0LT5pbXBvcnRfYXR0YWNoID8N
-Cj4gCQkgICAgICBvYmplY3QtPmZ1bmNzLT5kbWFfYnVmX3ZtX29wcyA6DQo+IAkJICAgICAg
-b2JqZWN0LT5mdW5jcy0+dm1fb3BzOw0KPiAJdm1hLT52bV9wcml2YXRlX2RhdGEgPSB2bWEt
-PnZtX29wcyA/IG9iaiA6IE5VTEw7DQo+IA0KPiBBbmQgdGhlbiB3ZSBjYW4gc3BlY2lhbGl6
-ZSB0aGUgc2htZW0gYW5kIGV4eW5vcyBpbXBsZW1lbnRhdGlvbnMNCj4gKGFjdHVhbGx5LCBh
-bnkgaW1wbGVtZW50YXRpb24gdGhhdCdzIGVudGlyZWx5IGRlZmVycmluZyB0aGUgbW1hcCB0
-byB0aGUNCj4gZG1hLWJ1ZiBsYXllciksIHNvIHRoZXkgZXhwbGljaXRseSBzZXQgZG1hX2J1
-Zl92bV9vcHMgdG8gTlVMTC4NCj4gDQo+IEhvbmVzdGx5LCBJJ20gbm90IHN1cmUgdGhpcyBp
-cyBiZXR0ZXIgdGhhbiBtYW51YWxseSBhc3NpZ25pbmcNCj4gdm1hLT52bV9vcHMgdG8gTlVM
-TCBpbiB0aGUgZHJpdmVyIG1tYXAgZnVuY3Rpb24sIGJ1dCBhdCBsZWFzdCBwZW9wbGUNCj4g
-d2lsbCBoYXZlIHRvIGNvbnNpZGVyIGl0IHdoZW4gdGhleSB3cml0ZSB0aGVpciBkcml2ZXIg
-KCdkbyBJIHdhbnQNCj4gdGhlIHNhbWUgbW1hcCBiZWhhdmlvciBmb3IgZG1hYnVmIGFuZCAh
-ZG1hYnVmPycpLg0KPiANCj4gQW55d2F5LCBJIHRoaW5rIHRoaXMgZml4IGlzIHdvcnRoIGFw
-cGx5aW5nLCBiZWNhdXNlIGl0J3Mgc2VsZi1jb250YWluZWQNCj4gYW5kIGVhc3kgdG8gYmFj
-a3BvcnQuIFdlIGNhbiBkaXNjdXNzIGFuZCBzb3J0IG91dCBob3cgd2Ugd2FudCB0byBmaXgg
-dGhlDQo+IHByb2JsZW0gbW9yZSBnZW5lcmljYWxseSBsYXRlciBvbi4NCj4gDQo+Pg0KPj4g
-cGx1cyBhIGRlc2NyaXB0aXZlIGNvbW1lbnQgbGlrZSB0aGUgb25lIHlvdSBoYXZlIGluIHlv
-dXIgcGF0Y2guDQo+Pg0KPj4gQmVzdCByZWdhcmRzDQo+PiBUaG9tYXMNCj4+DQo+Pj4NCj4+
-PiBGaXhlczogMjZkM2FjM2NiMDRkICgiZHJtL3NobWVtLWhlbHBlcnM6IFJlZGlyZWN0IG1t
-YXAgZm9yIGltcG9ydGVkIGRtYS1idWYiKQ0KPj4+IENjOiA8c3RhYmxlQHZnZXIua2VybmVs
-Lm9yZz4NCj4+PiBDYzogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBmZndsbC5jaD4N
-Cj4+PiBSZXBvcnRlZC1ieTogUm9tYW4gU3RyYXRpaWVua28gPHJvbWFuLnN0cmF0aWllbmtv
-QGdsb2JhbGxvZ2ljLmNvbT4NCj4+PiBTaWduZWQtb2ZmLWJ5OiBCb3JpcyBCcmV6aWxsb24g
-PGJvcmlzLmJyZXppbGxvbkBjb2xsYWJvcmEuY29tPg0KPj4+IC0tLQ0KPj4+ICAgIGRyaXZl
-cnMvZ3B1L2RybS9kcm1fZ2VtX3NobWVtX2hlbHBlci5jIHwgNiArKysrKysNCj4+PiAgICAx
-IGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspDQo+Pj4NCj4+PiBkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9ncHUvZHJtL2RybV9nZW1fc2htZW1faGVscGVyLmMgYi9kcml2ZXJzL2dwdS9k
-cm0vZHJtX2dlbV9zaG1lbV9oZWxwZXIuYw0KPj4+IGluZGV4IDRlYTY1MDdhNzdlNS4uYmFh
-ZjBlMGZlYjA2IDEwMDY0NA0KPj4+IC0tLSBhL2RyaXZlcnMvZ3B1L2RybS9kcm1fZ2VtX3No
-bWVtX2hlbHBlci5jDQo+Pj4gKysrIGIvZHJpdmVycy9ncHUvZHJtL2RybV9nZW1fc2htZW1f
-aGVscGVyLmMNCj4+PiBAQCAtNjIzLDcgKzYyMywxMyBAQCBpbnQgZHJtX2dlbV9zaG1lbV9t
-bWFwKHN0cnVjdCBkcm1fZ2VtX3NobWVtX29iamVjdCAqc2htZW0sIHN0cnVjdCB2bV9hcmVh
-X3N0cnVjdA0KPj4+ICAgIAlpbnQgcmV0Ow0KPj4+ICAgIA0KPj4+ICAgIAlpZiAob2JqLT5p
-bXBvcnRfYXR0YWNoKSB7DQo+Pj4gKwkJLyogUmVzZXQgYm90aCB2bV9vcHMgYW5kIHZtX3By
-aXZhdGVfZGF0YSwgc28gd2UgZG9uJ3QgZW5kIHVwIHdpdGgNCj4+PiArCQkgKiB2bV9vcHMg
-cG9pbnRpbmcgdG8gb3VyIGltcGxlbWVudGF0aW9uIGlmIHRoZSBkbWEtYnVmIGJhY2tlbmQN
-Cj4+PiArCQkgKiBkb2Vzbid0IHNldCB0aG9zZSBmaWVsZHMuDQo+Pj4gKwkJICovDQo+Pj4g
-ICAgCQl2bWEtPnZtX3ByaXZhdGVfZGF0YSA9IE5VTEw7DQo+Pj4gKwkJdm1hLT52bV9vcHMg
-PSBOVUxMOw0KPj4+ICsNCj4+PiAgICAJCXJldCA9IGRtYV9idWZfbW1hcChvYmotPmRtYV9i
-dWYsIHZtYSwgMCk7DQo+Pj4gICAgDQo+Pj4gICAgCQkvKiBEcm9wIHRoZSByZWZlcmVuY2Ug
-ZHJtX2dlbV9tbWFwX29iaigpIGFjcXVpcmVkLiovDQo+Pg0KPiANCg0KLS0gDQpUaG9tYXMg
-WmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBT
-b2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJu
-YmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNE
-b25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
+For more information, please refer to:
+commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
+commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [0]
+Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org [1]
+Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org [2]
+Link: https://lore.kernel.org/all/20230725170405.251011-1-xingmingzheng@iscas.ac.cn
+Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+---
 
---------------C2IowLUitjNOkqvIkin0gWwy--
+v2:
+- Update the Kconfig help text and commit message.
+- Add considerations for low version gcc case.
 
---------------en6sbTSAwk4PuLVnv7qNNPVz
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+Sorry for the formatting error on my mailing list reply.
 
------BEGIN PGP SIGNATURE-----
+ arch/riscv/Kconfig | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmTBWSUFAwAAAAAACgkQlh/E3EQov+Ab
-fA//f6EXiBuYBSKGhfZg+roAvYbvj63sHnp9Yed+NmmjoUdNbwziDt2wrjbyNphTpUqW5Q3YKFJw
-biY31/1Y4p0ZAGWK3+2z+r/KL+vBpuCKmzYuT6JHCyOEKHESX81we1+DPngeg7ZIxAd3RZGi6CD7
-s4n1vc6vR6285MAbfE5vnvwJAjns0ajgpQ0rOky4z9awJSZMCH0kC4HbPZJBVC/VsmKwwceq07TD
-Fh28X9Sbt8FKjjF9PyWjVuZXphstC9lTAuHA8tfZ23pg8xBH1/0iUpg4yDYCkDzEyUF8jSwkFBMn
-Fs7a58I2CUGIspXaATkEr2y0WahPUUykTaYalqXgOchxPSLgpBPY5Sqn2zUGZf1XzOr2f6UYM9Xc
-ruW45noUFSPX0SlYokI2PKcq5Ga4JXbd94AFyAYWjXGhY2NX1pgQ/c8lQ3B9+eJol/JKc0eJPtkA
-HcNieAPjfRlsgXkQJ32DLBUv2O3SGkX9vEKbya3x/AwkPELVHKZPC3b0czjmMz9YVPm0tlUfQ9yi
-82r9uUxbt9xHYvFccZ3CjqBoUPyAhXYWb8GlpavBL20Xiu83AFbvRs3eEXUt0VL0HpdyLAfn+Nhy
-TMjjf+MoXpxTbrZrDYyw0dY1JyHYiyrVOvoaAjag+bSSsxlXCp3R1ZRqoGqlZm4cTYY6ylMGBMB2
-5Tg=
-=J+xq
------END PGP SIGNATURE-----
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 4c07b9189c86..08afd47de157 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -570,24 +570,27 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
+ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	def_bool y
+ 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
+-	depends on AS_IS_GNU && AS_VERSION >= 23800
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
++	depends on GCC_VERSION >= 120100 || (AS_IS_GNU && AS_VERSION >= 23800)
+ 	help
+-	  Newer binutils versions default to ISA spec version 20191213 which
+-	  moves some instructions from the I extension to the Zicsr and Zifencei
+-	  extensions.
++	  Binutils-2.38 and GCC-12.1.0 bump default ISA spec to newer version
++	  20191213 which moves some instructions from the I extension to the
++	  Zicsr and Zifencei extensions.
+ 
+ config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+ 	def_bool y
+ 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+-	depends on CC_IS_CLANG && CLANG_VERSION < 170000
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
++	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || \
++		   (CC_IS_GCC && GCC_VERSION < 110100)
+ 	help
+-	  Certain versions of clang do not support zicsr and zifencei via -march
+-	  but newer versions of binutils require it for the reasons noted in the
+-	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
++	  Certain versions of clang (or GCC) do not support zicsr and zifencei via
++	  -march but newer versions of binutils require it for the reasons noted
++	  in the help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
+ 	  option causes an older ISA spec compatible with these older versions
+-	  of clang to be passed to GAS, which has the same result as passing zicsr
+-	  and zifencei to -march.
++	  of clang (or GCC) to be passed to GAS, which has the same result as
++	  passing zicsr and zifencei to -march.
+ 
+ config FPU
+ 	bool "FPU support"
+-- 
+2.34.1
 
---------------en6sbTSAwk4PuLVnv7qNNPVz--
