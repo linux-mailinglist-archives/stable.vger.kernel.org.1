@@ -2,54 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD82C762F39
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2CDD762F81
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbjGZIIX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 04:08:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53854 "EHLO
+        id S231535AbjGZITD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 04:19:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232462AbjGZIHf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:07:35 -0400
+        with ESMTP id S231499AbjGZISK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:18:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B5519AF;
-        Wed, 26 Jul 2023 01:00:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5062D65BA;
+        Wed, 26 Jul 2023 01:07:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4672D61811;
-        Wed, 26 Jul 2023 08:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A0BB3C433CC;
-        Wed, 26 Jul 2023 08:00:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D580F617DC;
+        Wed, 26 Jul 2023 08:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2E0C433C7;
+        Wed, 26 Jul 2023 08:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690358420;
-        bh=yWSdPYZf5W9vc3gmJ8AeUrtS+Dz7ZzMlfiBA1k/PSzI=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=j6JF2nTKGzruBY9zlzjprZUkOx05r/FtY7z9wG7MmFibR04VWBH3m9joSHdmdnUz+
-         VT96uUaGn8z941+xreQmV0JVYbmr7FxFku8joWyNW/q+EG5Zw+AZuY6BBVw5oQmYKY
-         yRuPtzf4yfIxPiuJpmzbTYujm4sWjXFUG5AJfoVUY6Q/k1KQXtlasn9mXQyicCTvJ3
-         qW+Ypq/oFqjkiJycXY3jXqFw5oVhHysmf2bxRkvwsMK+3bXgJypiZxPF8pAGSkf1q2
-         bwQJPLKNe/1OOkHTDYZbDk1lLNB/9MikhLZHI62nwZtB210MtHL+WkGeooqozOxAx7
-         m1p8Ecyo52U7w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 84EA5C691D7;
-        Wed, 26 Jul 2023 08:00:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1690358872;
+        bh=sYGys+As+WzO7HPivnhbGc7rlbLg8G36b1mQc6Z54F4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ANGSY0Zohh8cCdjyv8A36pZwjTY898mMpbfB/T+s1SzUn+J8lHtZjcW0HVEFZ4Qxx
+         U7bWHewzEk1uCGB/3UhNS5PXxje8UiftUv4R6Q+48gxxmf0Mat7GStYwzmkbq8uY+g
+         jx+VI1l/YDN3rTGNcP/i8X27mQ9+uUIZu/+19rib681CSOcFVx0K+o+8vPKxqg+9NM
+         3tl/i8elTGX4dw6sCrc789roP9u3KOXOmVKw8oOM/FCfAPTtcnVL1b80K0wLEs1ES0
+         kU2Ti8qS2zW3rmck9ItcvT8MGjttg+FpM0SKYPVkXVYE7Ohy43/vkpiF6ko4KYaMb3
+         W+ltYbBp0nZsw==
+Date:   Wed, 26 Jul 2023 10:07:47 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] file: always lock position
+Message-ID: <20230726-einverleiben-kroch-f2521aefed39@brauner>
+References: <20230724-gebessert-wortwahl-195daecce8f0@brauner>
+ <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
+ <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
+ <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
+ <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
+ <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
+ <20230724-geadelt-nachrangig-07e431a2f3a4@brauner>
+ <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
+ <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
+ <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [net PATCH 1/4] net: dsa: qca8k: enable use_single_write for qca8xxx
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169035842054.6334.15739257039093388104.git-patchwork-notify@kernel.org>
-Date:   Wed, 26 Jul 2023 08:00:20 +0000
-References: <20230724032531.15998-1-ansuelsmth@gmail.com>
-In-Reply-To: <20230724032531.15998-1-ansuelsmth@gmail.com>
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     andrew@lunn.ch, f.fainelli@gmail.com, olteanv@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, hi@atinb.me, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, broonie@kernel.org,
-        stable@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,34 +66,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Mon, 24 Jul 2023 05:25:28 +0200 you wrote:
-> The qca8xxx switch supports 2 way to write reg values, a slow way using
-> mdio and a fast way by sending specially crafted mgmt packet to
-> read/write reg.
+On Tue, Jul 25, 2023 at 11:30:32AM -0700, Linus Torvalds wrote:
+> On Mon, 24 Jul 2023 at 15:57, Jens Axboe <axboe@kernel.dk> wrote:
+> >
+> > On 7/24/23 4:25?PM, Linus Torvalds wrote:
+> > > This sentence still worries me.
+> > >
+> > > Those fixed files had better have their own refcounts from being
+> > > fixed. So the rules really shouldn't change in any way what-so-ever.
+> > > So what exactly are you alluding to?
+> >
+> > They do, but they only have a single reference, which is what fixes them
+> > into the io_uring file table for fixed files. With the patch from the
+> > top of this thread, that should then be fine as we don't need to
+> > artificially elevator the ref count more than that.
 > 
-> The fast way can support up to 32 bytes of data as eth packet are used
-> to send/receive.
+> No.
 > 
-> [...]
+> The patch from the top of this thread cannot *possibly* matter for a
+> io_uring fixed file.
 
-Here is the summary with links:
-  - [net,1/4] net: dsa: qca8k: enable use_single_write for qca8xxx
-    https://git.kernel.org/netdev/net/c/2c39dd025da4
-  - [net,2/4] net: dsa: qca8k: fix search_and_insert wrong handling of new rule
-    https://git.kernel.org/netdev/net/c/80248d416089
-  - [net,3/4] net: dsa: qca8k: fix broken search_and_del
-    https://git.kernel.org/netdev/net/c/ae70dcb9d9ec
-  - [net,4/4] net: dsa: qca8k: fix mdb add/del case with 0 VID
-    https://git.kernel.org/netdev/net/c/dfd739f182b0
+Yeah, the patch doesn't matter for fixed files. But they copied the
+logic from fdget_pos() which was the problem.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> 
+> The fdget_pos() always gets the file pointer from the file table. But
+> that means that it is guaranteed to have a refcount of at least one.
+> 
+> If io_uring fixed file holds a reference (and not holding a reference
+> would be a huge bug), that in turn means that the minimum refcount is
+> now two.
+> 
+> So the code in fdget_pos() is correct, with or without the patch.
 
+Yes.
 
+> 
+> The *only* problem is when something actually violates the refcounting
+> rules. Sadly, that's exactly what pidfd_getfd() does, and can
+> basically make a private file pointer be non-private without
+> synchronizing with the original owner of the fd.
+> 
+> Now, io_uring may have had its own problems, if it tried to
+> re-implement some io_uring-specific version of fdget_pos() for the
+> fixed file case, and thought that it could use the file_count() == 1
+> trick when it *wasn't* also a file table entry.
+
+Yes, that's what one of the patch versions did and what I pointed out
+won't work and what ultimately led me to discover the pidfd_getfd() bug.
+(That's also btw, why my explanation was long.)
+
+> 
+> But that would be an independent bug from copy-and-pasting code
+> without taking the surrounding rules into account.
+
+Yes, exactly what I said in the review.
