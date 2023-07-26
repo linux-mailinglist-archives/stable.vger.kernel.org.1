@@ -2,122 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2CDD762F81
-	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92061762FE0
+	for <lists+stable@lfdr.de>; Wed, 26 Jul 2023 10:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231535AbjGZITD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Jul 2023 04:19:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60468 "EHLO
+        id S233285AbjGZIbV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Jul 2023 04:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231499AbjGZISK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:18:10 -0400
+        with ESMTP id S232834AbjGZIaw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Jul 2023 04:30:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5062D65BA;
-        Wed, 26 Jul 2023 01:07:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7D47EC5
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 01:20:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D580F617DC;
-        Wed, 26 Jul 2023 08:07:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2E0C433C7;
-        Wed, 26 Jul 2023 08:07:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690358872;
-        bh=sYGys+As+WzO7HPivnhbGc7rlbLg8G36b1mQc6Z54F4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ANGSY0Zohh8cCdjyv8A36pZwjTY898mMpbfB/T+s1SzUn+J8lHtZjcW0HVEFZ4Qxx
-         U7bWHewzEk1uCGB/3UhNS5PXxje8UiftUv4R6Q+48gxxmf0Mat7GStYwzmkbq8uY+g
-         jx+VI1l/YDN3rTGNcP/i8X27mQ9+uUIZu/+19rib681CSOcFVx0K+o+8vPKxqg+9NM
-         3tl/i8elTGX4dw6sCrc789roP9u3KOXOmVKw8oOM/FCfAPTtcnVL1b80K0wLEs1ES0
-         kU2Ti8qS2zW3rmck9ItcvT8MGjttg+FpM0SKYPVkXVYE7Ohy43/vkpiF6ko4KYaMb3
-         W+ltYbBp0nZsw==
-Date:   Wed, 26 Jul 2023 10:07:47 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] file: always lock position
-Message-ID: <20230726-einverleiben-kroch-f2521aefed39@brauner>
-References: <20230724-gebessert-wortwahl-195daecce8f0@brauner>
- <CAHk-=wiZRxy3983r_nvWG4JP=w+Wi623WA9W6i2GXoTi+=6zWg@mail.gmail.com>
- <20230724-eckpunkte-melden-fc35b97d1c11@brauner>
- <CAHk-=wijcZGxrw8+aukW-m2YRGn5AUWfZsPSscez7w7_EqfuGQ@mail.gmail.com>
- <790fbcff-9831-e5cf-2aaf-1983d9c2cffe@kernel.dk>
- <CAHk-=wgqLGdTs5hBDskY4HjizPVYJ0cA6=-dwRR3TpJY7GZG3A@mail.gmail.com>
- <20230724-geadelt-nachrangig-07e431a2f3a4@brauner>
- <CAHk-=wjKXJhW3ZYtd1n9mhK8-8Ni=LSWoytkx2F5c5q=DiX1cA@mail.gmail.com>
- <4b382446-82b6-f31a-2f22-3e812273d45f@kernel.dk>
- <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 197AC6181E
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 08:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26294C433C8;
+        Wed, 26 Jul 2023 08:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690359652;
+        bh=vKz3zTjgldWPQFBQByl0zn5xjeuCuaVJvSQvQYbJw/A=;
+        h=Subject:To:From:Date:From;
+        b=dGUQwgVMv0aZyo7XIhNJtsUUTUfJeYqvBKvHStPxKfZTKZIEaR4CBzzXn/F6k40IH
+         gCry89yJ0Rb7HFEQFYYTO/Lf33QP9X17+m0pCNAR+bMMNaKC1uwjnYJgWUWWpApnLf
+         2+9ucONwY6vgSTnwfOJQ6oux0ZbRZkjJTWlX53dg=
+Subject: patch "usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0" added to usb-next
+To:     xu.yang_2@nxp.com, gregkh@linuxfoundation.org,
+        peter.chen@kernel.org, stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 26 Jul 2023 10:20:20 +0200
+Message-ID: <2023072620-shabby-cognitive-5dc7@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wg8gY+oBoehMop2G8wq2L0ciApZEOOMpiPCL=6gxBgx=g@mail.gmail.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 25, 2023 at 11:30:32AM -0700, Linus Torvalds wrote:
-> On Mon, 24 Jul 2023 at 15:57, Jens Axboe <axboe@kernel.dk> wrote:
-> >
-> > On 7/24/23 4:25?PM, Linus Torvalds wrote:
-> > > This sentence still worries me.
-> > >
-> > > Those fixed files had better have their own refcounts from being
-> > > fixed. So the rules really shouldn't change in any way what-so-ever.
-> > > So what exactly are you alluding to?
-> >
-> > They do, but they only have a single reference, which is what fixes them
-> > into the io_uring file table for fixed files. With the patch from the
-> > top of this thread, that should then be fine as we don't need to
-> > artificially elevator the ref count more than that.
-> 
-> No.
-> 
-> The patch from the top of this thread cannot *possibly* matter for a
-> io_uring fixed file.
 
-Yeah, the patch doesn't matter for fixed files. But they copied the
-logic from fdget_pos() which was the problem.
+This is a note to let you know that I've just added the patch titled
 
-> 
-> The fdget_pos() always gets the file pointer from the file table. But
-> that means that it is guaranteed to have a refcount of at least one.
-> 
-> If io_uring fixed file holds a reference (and not holding a reference
-> would be a huge bug), that in turn means that the minimum refcount is
-> now two.
-> 
-> So the code in fdget_pos() is correct, with or without the patch.
+    usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
 
-Yes.
+to my usb git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+in the usb-next branch.
 
-> 
-> The *only* problem is when something actually violates the refcounting
-> rules. Sadly, that's exactly what pidfd_getfd() does, and can
-> basically make a private file pointer be non-private without
-> synchronizing with the original owner of the fd.
-> 
-> Now, io_uring may have had its own problems, if it tried to
-> re-implement some io_uring-specific version of fdget_pos() for the
-> fixed file case, and thought that it could use the file_count() == 1
-> trick when it *wasn't* also a file table entry.
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-Yes, that's what one of the patch versions did and what I pointed out
-won't work and what ultimately led me to discover the pidfd_getfd() bug.
-(That's also btw, why my explanation was long.)
+The patch will also be merged in the next major kernel release
+during the merge window.
 
-> 
-> But that would be an independent bug from copy-and-pasting code
-> without taking the surrounding rules into account.
+If you have any questions about this process, please let me know.
 
-Yes, exactly what I said in the review.
+
+From 36668515d56bf73f06765c71e08c8f7465f1e5c4 Mon Sep 17 00:00:00 2001
+From: Xu Yang <xu.yang_2@nxp.com>
+Date: Tue, 27 Jun 2023 19:21:24 +0800
+Subject: usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
+
+In current driver, the value of tuning parameter will not take effect
+if samsung,picophy-* is assigned as 0. Because 0 is also a valid value
+acccording to the description of USB_PHY_CFG1 register, this will improve
+the logic to let it work.
+
+Fixes: 58a3cefb3840 ("usb: chipidea: imx: add two samsung picophy parameters tuning implementation")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230627112126.1882666-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/usb/chipidea/ci_hdrc_imx.c | 10 ++++++----
+ drivers/usb/chipidea/usbmisc_imx.c |  6 ++++--
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index aa2aebed8e2d..c251a4f34879 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -176,10 +176,12 @@ static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
+ 	if (of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI)
+ 		data->ulpi = 1;
+ 
+-	of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
+-			&data->emp_curr_control);
+-	of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
+-			&data->dc_vol_level_adjust);
++	if (of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
++			&data->emp_curr_control))
++		data->emp_curr_control = -1;
++	if (of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
++			&data->dc_vol_level_adjust))
++		data->dc_vol_level_adjust = -1;
+ 
+ 	return data;
+ }
+diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
+index e8a712e5abad..c4165f061e42 100644
+--- a/drivers/usb/chipidea/usbmisc_imx.c
++++ b/drivers/usb/chipidea/usbmisc_imx.c
+@@ -660,13 +660,15 @@ static int usbmisc_imx7d_init(struct imx_usbmisc_data *data)
+ 			usbmisc->base + MX7D_USBNC_USB_CTRL2);
+ 		/* PHY tuning for signal quality */
+ 		reg = readl(usbmisc->base + MX7D_USB_OTG_PHY_CFG1);
+-		if (data->emp_curr_control && data->emp_curr_control <=
++		if (data->emp_curr_control >= 0 &&
++			data->emp_curr_control <=
+ 			(TXPREEMPAMPTUNE0_MASK >> TXPREEMPAMPTUNE0_BIT)) {
+ 			reg &= ~TXPREEMPAMPTUNE0_MASK;
+ 			reg |= (data->emp_curr_control << TXPREEMPAMPTUNE0_BIT);
+ 		}
+ 
+-		if (data->dc_vol_level_adjust && data->dc_vol_level_adjust <=
++		if (data->dc_vol_level_adjust >= 0 &&
++			data->dc_vol_level_adjust <=
+ 			(TXVREFTUNE0_MASK >> TXVREFTUNE0_BIT)) {
+ 			reg &= ~TXVREFTUNE0_MASK;
+ 			reg |= (data->dc_vol_level_adjust << TXVREFTUNE0_BIT);
+-- 
+2.41.0
+
+
