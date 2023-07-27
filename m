@@ -2,45 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 557F3765CEB
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 22:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1852C765CED
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 22:08:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232628AbjG0UHo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 16:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43914 "EHLO
+        id S232651AbjG0UIE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 16:08:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232649AbjG0UHn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 16:07:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A431BC3;
-        Thu, 27 Jul 2023 13:07:41 -0700 (PDT)
+        with ESMTP id S232693AbjG0UHx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 16:07:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238AC2D67;
+        Thu, 27 Jul 2023 13:07:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA47D61EF0;
-        Thu, 27 Jul 2023 20:07:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBFBC433C8;
-        Thu, 27 Jul 2023 20:07:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E92B761F2C;
+        Thu, 27 Jul 2023 20:07:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E3CC433C8;
+        Thu, 27 Jul 2023 20:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1690488460;
-        bh=HPrpBONYZdCgcjM6Mk389I4+iKMfMzbdMyBjE+79eGI=;
+        s=korg; t=1690488466;
+        bh=9BZIzuHWzkDj93gqPp9KbSuEWukw8rcv7zB2vtAU1aA=;
         h=Date:To:From:Subject:From;
-        b=hsBhVWRcBBNovy7fTGTZzu/cjkB98vDm9447qt7kzyb2qqaBlqbye+OYq7EXf9P9J
-         0taduXgMXdvyaAkE0lqsgIDMX4eTSuqnA/eOBxbvfYCzCZsyUWEjHYl46brrjk8W9x
-         zME8iEEOzrPtoJyvTn3FBLBzYAgebxHHCLyBlrMI=
-Date:   Thu, 27 Jul 2023 13:07:39 -0700
-To:     mm-commits@vger.kernel.org, yang.guang5@zte.com.cn,
-        stable@vger.kernel.org, richard@nod.at, lkp@intel.com,
-        linux@rasmusvillemoes.dk, johannes@sipsolutions.net,
-        Jason@zx2c4.com, herve.codina@bootlin.com,
-        anton.ivanov@cambridgegreys.com, andriy.shevchenko@linux.intel.com,
-        akpm@linux-foundation.org
+        b=xfd1JmbO8tTHx/CeN+vpgUCAtjaFIwrTZgiRdTwiTbUqqJ37I9Ec7hlueRr2c7RMY
+         4z6G3WS5npRGCJCqzul08Ecin+nHemL1oINfd+P7gD3dNb0OYLvm+SmLYLT5yk8Mik
+         2ZEFXvrXervzO0j3D82i4h9knXRFiieZwGwCiHzw=
+Date:   Thu, 27 Jul 2023 13:07:45 -0700
+To:     mm-commits@vger.kernel.org, surenb@google.com,
+        stable@vger.kernel.org, jannh@google.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] revert-um-use-swap-to-make-code-cleaner.patch removed from -mm tree
-Message-Id: <20230727200740.2BBFBC433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Subject: [merged mm-hotfixes-stable] mm-fix-memory-ordering-for-mm_lock_seq-and-vm_lock_seq.patch removed from -mm tree
+Message-Id: <20230727200746.41E3CC433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,83 +47,229 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: Revert "um: Use swap() to make code cleaner"
+     Subject: mm: fix memory ordering for mm_lock_seq and vm_lock_seq
 has been removed from the -mm tree.  Its filename was
-     revert-um-use-swap-to-make-code-cleaner.patch
+     mm-fix-memory-ordering-for-mm_lock_seq-and-vm_lock_seq.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Revert "um: Use swap() to make code cleaner"
-Date: Mon, 24 Jul 2023 17:31:31 +0300
+From: Jann Horn <jannh@google.com>
+Subject: mm: fix memory ordering for mm_lock_seq and vm_lock_seq
+Date: Sat, 22 Jul 2023 00:51:07 +0200
 
-This reverts commit 9b0da3f22307af693be80f5d3a89dc4c7f360a85.
+mm->mm_lock_seq effectively functions as a read/write lock; therefore it
+must be used with acquire/release semantics.
 
-The sigio.c is clearly user space code which is handled by
-arch/um/scripts/Makefile.rules (see USER_OBJS rule).
+A specific example is the interaction between userfaultfd_register() and
+lock_vma_under_rcu().
 
-The above mentioned commit simply broke this agreement,
-we may not use Linux kernel internal headers in them without
-thorough thinking.
+userfaultfd_register() does the following from the point where it changes
+a VMA's flags to the point where concurrent readers are permitted again
+(in a simple scenario where only a single private VMA is accessed and no
+merging/splitting is involved):
 
-Hence, revert the wrong commit.
+userfaultfd_register
+  userfaultfd_set_vm_flags
+    vm_flags_reset
+      vma_start_write
+        down_write(&vma->vm_lock->lock)
+        vma->vm_lock_seq = mm_lock_seq [marks VMA as busy]
+        up_write(&vma->vm_lock->lock)
+      vm_flags_init
+        [sets VM_UFFD_* in __vm_flags]
+  vma->vm_userfaultfd_ctx.ctx = ctx
+  mmap_write_unlock
+    vma_end_write_all
+      WRITE_ONCE(mm->mm_lock_seq, mm->mm_lock_seq + 1) [unlocks VMA]
 
-Link: https://lkml.kernel.org/r/20230724143131.30090-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202307212304.cH79zJp1-lkp@intel.com/
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Herve Codina <herve.codina@bootlin.com>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Yang Guang <yang.guang5@zte.com.cn>
+There are no memory barriers in between the __vm_flags update and the
+mm->mm_lock_seq update that unlocks the VMA, so the unlock can be
+reordered to above the `vm_flags_init()` call, which means from the
+perspective of a concurrent reader, a VMA can be marked as a userfaultfd
+VMA while it is not VMA-locked.  That's bad, we definitely need a
+store-release for the unlock operation.
+
+The non-atomic write to vma->vm_lock_seq in vma_start_write() is mostly
+fine because all accesses to vma->vm_lock_seq that matter are always
+protected by the VMA lock.  There is a racy read in vma_start_read()
+though that can tolerate false-positives, so we should be using
+WRITE_ONCE() to keep things tidy and data-race-free (including for KCSAN).
+
+On the other side, lock_vma_under_rcu() works as follows in the relevant
+region for locking and userfaultfd check:
+
+lock_vma_under_rcu
+  vma_start_read
+    vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq) [early bailout]
+    down_read_trylock(&vma->vm_lock->lock)
+    vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq) [main check]
+  userfaultfd_armed
+    checks vma->vm_flags & __VM_UFFD_FLAGS
+
+Here, the interesting aspect is how far down the mm->mm_lock_seq read can
+be reordered - if this read is reordered down below the vma->vm_flags
+access, this could cause lock_vma_under_rcu() to partly operate on
+information that was read while the VMA was supposed to be locked.  To
+prevent this kind of downwards bleeding of the mm->mm_lock_seq read, we
+need to read it with a load-acquire.
+
+Some of the comment wording is based on suggestions by Suren.
+
+BACKPORT WARNING: One of the functions changed by this patch (which I've
+written against Linus' tree) is vma_try_start_write(), but this function
+no longer exists in mm/mm-everything.  I don't know whether the merged
+version of this patch will be ordered before or after the patch that
+removes vma_try_start_write().  If you're backporting this patch to a tree
+with vma_try_start_write(), make sure this patch changes that function.
+
+Link: https://lkml.kernel.org/r/20230721225107.942336-1-jannh@google.com
+Fixes: 5e31275cc997 ("mm: add per-VMA lock and helper functions to control it")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/um/os-Linux/sigio.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/mm.h        |   29 +++++++++++++++++++++++------
+ include/linux/mm_types.h  |   28 ++++++++++++++++++++++++++++
+ include/linux/mmap_lock.h |   10 ++++++++--
+ 3 files changed, 59 insertions(+), 8 deletions(-)
 
---- a/arch/um/os-Linux/sigio.c~revert-um-use-swap-to-make-code-cleaner
-+++ a/arch/um/os-Linux/sigio.c
-@@ -3,7 +3,6 @@
-  * Copyright (C) 2002 - 2008 Jeff Dike (jdike@{addtoit,linux.intel}.com)
-  */
- 
--#include <linux/minmax.h>
- #include <unistd.h>
- #include <errno.h>
- #include <fcntl.h>
-@@ -51,7 +50,7 @@ static struct pollfds all_sigio_fds;
- 
- static int write_sigio_thread(void *unused)
+--- a/include/linux/mmap_lock.h~mm-fix-memory-ordering-for-mm_lock_seq-and-vm_lock_seq
++++ a/include/linux/mmap_lock.h
+@@ -76,8 +76,14 @@ static inline void mmap_assert_write_loc
+ static inline void vma_end_write_all(struct mm_struct *mm)
  {
--	struct pollfds *fds;
-+	struct pollfds *fds, tmp;
- 	struct pollfd *p;
- 	int i, n, respond_fd;
- 	char c;
-@@ -78,7 +77,9 @@ static int write_sigio_thread(void *unus
- 					       "write_sigio_thread : "
- 					       "read on socket failed, "
- 					       "err = %d\n", errno);
--				swap(current_poll, next_poll);
-+				tmp = current_poll;
-+				current_poll = next_poll;
-+				next_poll = tmp;
- 				respond_fd = sigio_private[1];
- 			}
- 			else {
+ 	mmap_assert_write_locked(mm);
+-	/* No races during update due to exclusive mmap_lock being held */
+-	WRITE_ONCE(mm->mm_lock_seq, mm->mm_lock_seq + 1);
++	/*
++	 * Nobody can concurrently modify mm->mm_lock_seq due to exclusive
++	 * mmap_lock being held.
++	 * We need RELEASE semantics here to ensure that preceding stores into
++	 * the VMA take effect before we unlock it with this store.
++	 * Pairs with ACQUIRE semantics in vma_start_read().
++	 */
++	smp_store_release(&mm->mm_lock_seq, mm->mm_lock_seq + 1);
+ }
+ #else
+ static inline void vma_end_write_all(struct mm_struct *mm) {}
+--- a/include/linux/mm.h~mm-fix-memory-ordering-for-mm_lock_seq-and-vm_lock_seq
++++ a/include/linux/mm.h
+@@ -641,8 +641,14 @@ static inline void vma_numab_state_free(
+  */
+ static inline bool vma_start_read(struct vm_area_struct *vma)
+ {
+-	/* Check before locking. A race might cause false locked result. */
+-	if (vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
++	/*
++	 * Check before locking. A race might cause false locked result.
++	 * We can use READ_ONCE() for the mm_lock_seq here, and don't need
++	 * ACQUIRE semantics, because this is just a lockless check whose result
++	 * we don't rely on for anything - the mm_lock_seq read against which we
++	 * need ordering is below.
++	 */
++	if (READ_ONCE(vma->vm_lock_seq) == READ_ONCE(vma->vm_mm->mm_lock_seq))
+ 		return false;
+ 
+ 	if (unlikely(down_read_trylock(&vma->vm_lock->lock) == 0))
+@@ -653,8 +659,13 @@ static inline bool vma_start_read(struct
+ 	 * False unlocked result is impossible because we modify and check
+ 	 * vma->vm_lock_seq under vma->vm_lock protection and mm->mm_lock_seq
+ 	 * modification invalidates all existing locks.
++	 *
++	 * We must use ACQUIRE semantics for the mm_lock_seq so that if we are
++	 * racing with vma_end_write_all(), we only start reading from the VMA
++	 * after it has been unlocked.
++	 * This pairs with RELEASE semantics in vma_end_write_all().
+ 	 */
+-	if (unlikely(vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
++	if (unlikely(vma->vm_lock_seq == smp_load_acquire(&vma->vm_mm->mm_lock_seq))) {
+ 		up_read(&vma->vm_lock->lock);
+ 		return false;
+ 	}
+@@ -676,7 +687,7 @@ static bool __is_vma_write_locked(struct
+ 	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
+ 	 * mm->mm_lock_seq can't be concurrently modified.
+ 	 */
+-	*mm_lock_seq = READ_ONCE(vma->vm_mm->mm_lock_seq);
++	*mm_lock_seq = vma->vm_mm->mm_lock_seq;
+ 	return (vma->vm_lock_seq == *mm_lock_seq);
+ }
+ 
+@@ -688,7 +699,13 @@ static inline void vma_start_write(struc
+ 		return;
+ 
+ 	down_write(&vma->vm_lock->lock);
+-	vma->vm_lock_seq = mm_lock_seq;
++	/*
++	 * We should use WRITE_ONCE() here because we can have concurrent reads
++	 * from the early lockless pessimistic check in vma_start_read().
++	 * We don't really care about the correctness of that early check, but
++	 * we should use WRITE_ONCE() for cleanliness and to keep KCSAN happy.
++	 */
++	WRITE_ONCE(vma->vm_lock_seq, mm_lock_seq);
+ 	up_write(&vma->vm_lock->lock);
+ }
+ 
+@@ -702,7 +719,7 @@ static inline bool vma_try_start_write(s
+ 	if (!down_write_trylock(&vma->vm_lock->lock))
+ 		return false;
+ 
+-	vma->vm_lock_seq = mm_lock_seq;
++	WRITE_ONCE(vma->vm_lock_seq, mm_lock_seq);
+ 	up_write(&vma->vm_lock->lock);
+ 	return true;
+ }
+--- a/include/linux/mm_types.h~mm-fix-memory-ordering-for-mm_lock_seq-and-vm_lock_seq
++++ a/include/linux/mm_types.h
+@@ -514,6 +514,20 @@ struct vm_area_struct {
+ 	};
+ 
+ #ifdef CONFIG_PER_VMA_LOCK
++	/*
++	 * Can only be written (using WRITE_ONCE()) while holding both:
++	 *  - mmap_lock (in write mode)
++	 *  - vm_lock->lock (in write mode)
++	 * Can be read reliably while holding one of:
++	 *  - mmap_lock (in read or write mode)
++	 *  - vm_lock->lock (in read or write mode)
++	 * Can be read unreliably (using READ_ONCE()) for pessimistic bailout
++	 * while holding nothing (except RCU to keep the VMA struct allocated).
++	 *
++	 * This sequence counter is explicitly allowed to overflow; sequence
++	 * counter reuse can only lead to occasional unnecessary use of the
++	 * slowpath.
++	 */
+ 	int vm_lock_seq;
+ 	struct vma_lock *vm_lock;
+ 
+@@ -679,6 +693,20 @@ struct mm_struct {
+ 					  * by mmlist_lock
+ 					  */
+ #ifdef CONFIG_PER_VMA_LOCK
++		/*
++		 * This field has lock-like semantics, meaning it is sometimes
++		 * accessed with ACQUIRE/RELEASE semantics.
++		 * Roughly speaking, incrementing the sequence number is
++		 * equivalent to releasing locks on VMAs; reading the sequence
++		 * number can be part of taking a read lock on a VMA.
++		 *
++		 * Can be modified under write mmap_lock using RELEASE
++		 * semantics.
++		 * Can be read with no other protection when holding write
++		 * mmap_lock.
++		 * Can be read with ACQUIRE semantics if not holding write
++		 * mmap_lock.
++		 */
+ 		int mm_lock_seq;
+ #endif
+ 
 _
 
-Patches currently in -mm which might be from andriy.shevchenko@linux.intel.com are
+Patches currently in -mm which might be from jannh@google.com are
 
-kernelh-split-out-count_args-and-concatenate-to-argsh.patch
-x86-asm-replace-custom-count_args-concatenate-implementations.patch
-arm64-smccc-replace-custom-count_args-concatenate-implementations.patch
-genetlink-replace-custom-concatenate-implementation.patch
+mm-dont-drop-vma-locks-in-mm_drop_all_locks.patch
 
