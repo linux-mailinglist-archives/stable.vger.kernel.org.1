@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25F48765417
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 14:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E126676542C
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 14:40:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233221AbjG0MfK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 08:35:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41268 "EHLO
+        id S232802AbjG0MkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 08:40:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231157AbjG0MfJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 08:35:09 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1DDA0
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 05:35:07 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 2E762C0002;
-        Thu, 27 Jul 2023 12:35:06 +0000 (UTC)
+        with ESMTP id S230455AbjG0MkP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 08:40:15 -0400
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9432E1AA
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 05:40:13 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id C27441C0003;
+        Thu, 27 Jul 2023 12:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1690461306;
+        t=1690461612;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h93jn3U6DsNlo1Pc72mNW1zIJgTE/LJ+OzKnxhBh7Q8=;
-        b=KJw08vVzSpJsstC71ZKqj1E5dHMfsyGbGbkr1cIK3ig5PCILItztmuOAlmrz1nCwZ3Zq5D
-        7hhwsEyuw+A65N+BF29LwhWDx2aTxEN/DCNzZZ8WpnWJ/qsnJuVBu4DwMp8qDbON72i2jN
-        gE+4Ddgu07AuG4RP8i4dZdsdoKhRaE2oJtdxqbzJHcy7tIUYhSzfcjbNLkdg13jp4FANst
-        TSuKAzmR/zmVIuguWv7YCSqBpBtDsOmdARfDxGbPPI9XqzgKGniIsGT8mjfPbLEdhcWYL6
-        KByxrAFHBf+jNwkCHjqjm6RnA720mano2uDkc1zSsZJVTFdci3iElb2gvGPMDQ==
+        bh=ACbp1OZFDUJy9r8hr8wH8esFbApT2wuUBXR8Kt5oAjo=;
+        b=nfIjQ5ur/HTOk139RPEDmVWMVw39rXkNr0aPKqNQdFTNmBjZXf60CH+HtmrOpU2awM5yOE
+        Uyjoz5OkTlJvW6f12j42dVMKcSM7GjZTc1hOU3Ht2B4tZQ75tp+ViahpVwY2+TsN5cKLN1
+        UT3r6IYOamkdHUv4/88vYp2sK4lyw82fscTdjOYm8Sovymgv/D06ACdhdAXGJvPx33ZqK6
+        JMUSMwKw49Ni6JPJ8ThOxLGizZ6A+TCaMT9LZxJnyytnCEDSJMWbMbJd+TjxENZRKZgz+3
+        T/KQu4VbIjV79/egnJSXNcSudA7eKrp9dqT35YLtU3Fq0ZVsPxm0QwEoxn2rdA==
 From:   Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 To:     stable@vger.kernel.org
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH 5.4.y] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
-Date:   Thu, 27 Jul 2023 14:34:55 +0200
-Message-ID: <20230727123455.676122-1-thomas.petazzoni@bootlin.com>
+Subject: [PATCH 4.19.y] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
+Date:   Thu, 27 Jul 2023 14:40:02 +0200
+Message-ID: <20230727124002.701881-1-thomas.petazzoni@bootlin.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023072304-tripping-clean-8cd5@gregkh>
-References: <2023072304-tripping-clean-8cd5@gregkh>
+In-Reply-To: <2023072306-polyester-reproach-45e3@gregkh>
+References: <2023072306-polyester-reproach-45e3@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: thomas.petazzoni@bootlin.com
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -84,10 +84,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
  3 files changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/sound/soc/codecs/cs42l51-i2c.c b/sound/soc/codecs/cs42l51-i2c.c
-index 70260e0a8f09..3ff73367897d 100644
+index 4b5731a41876..cd93e93a5983 100644
 --- a/sound/soc/codecs/cs42l51-i2c.c
 +++ b/sound/soc/codecs/cs42l51-i2c.c
-@@ -19,6 +19,12 @@ static struct i2c_device_id cs42l51_i2c_id[] = {
+@@ -23,6 +23,12 @@ static struct i2c_device_id cs42l51_i2c_id[] = {
  };
  MODULE_DEVICE_TABLE(i2c, cs42l51_i2c_id);
  
@@ -101,12 +101,12 @@ index 70260e0a8f09..3ff73367897d 100644
  			     const struct i2c_device_id *id)
  {
 diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
-index cdd7ae90c2b5..07371e32167c 100644
+index 5080d7a3c279..662f1f85ba36 100644
 --- a/sound/soc/codecs/cs42l51.c
 +++ b/sound/soc/codecs/cs42l51.c
-@@ -811,13 +811,6 @@ int __maybe_unused cs42l51_resume(struct device *dev)
+@@ -563,13 +563,6 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
  }
- EXPORT_SYMBOL_GPL(cs42l51_resume);
+ EXPORT_SYMBOL_GPL(cs42l51_probe);
  
 -const struct of_device_id cs42l51_of_match[] = {
 -	{ .compatible = "cirrus,cs42l51", },
@@ -119,13 +119,13 @@ index cdd7ae90c2b5..07371e32167c 100644
  MODULE_DESCRIPTION("Cirrus Logic CS42L51 ALSA SoC Codec Driver");
  MODULE_LICENSE("GPL");
 diff --git a/sound/soc/codecs/cs42l51.h b/sound/soc/codecs/cs42l51.h
-index 9d06cf7f8876..4f13c38484b7 100644
+index 0ca805492ac4..8c55bf384bc6 100644
 --- a/sound/soc/codecs/cs42l51.h
 +++ b/sound/soc/codecs/cs42l51.h
-@@ -16,7 +16,6 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap);
- int cs42l51_remove(struct device *dev);
- int __maybe_unused cs42l51_suspend(struct device *dev);
- int __maybe_unused cs42l51_resume(struct device *dev);
+@@ -22,7 +22,6 @@ struct device;
+ 
+ extern const struct regmap_config cs42l51_regmap;
+ int cs42l51_probe(struct device *dev, struct regmap *regmap);
 -extern const struct of_device_id cs42l51_of_match[];
  
  #define CS42L51_CHIP_ID			0x1B
