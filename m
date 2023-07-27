@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61412765405
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 14:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C2B8765415
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 14:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233652AbjG0Md4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 08:33:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40264 "EHLO
+        id S233740AbjG0Mel (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 08:34:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231157AbjG0Mdz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 08:33:55 -0400
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD015A0
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 05:33:53 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 01791E000A;
-        Thu, 27 Jul 2023 12:33:51 +0000 (UTC)
+        with ESMTP id S231157AbjG0Mek (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 08:34:40 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228AC1AA
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 05:34:37 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 11036240009;
+        Thu, 27 Jul 2023 12:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1690461232;
+        t=1690461276;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
         bh=OpsCaCYqt5gJs4h1gEavCYWkvzbBcnCiF1zmeN0QFCg=;
-        b=KyjCrIOosLTyCja38LJuUUP2Er1pB67GgMPrchLLpNRxuvUnqAniKevEU7Xc1IOZoTV3fw
-        sWs9CCnkoExUB/FgsWzmFaZbXBGfQ1Bvq/cnrhNCdC7AuWXvIbRvOo+rgaGEJ5k0JQ5pZq
-        jLZCbxmgzPZgyWch6Dje9sqyWnfTM4E/7/PKvkWUV9b2FwrgWyTaJGtAnePQs+gTtu1eBY
-        c9mUKSJDeJ6TAgkpQvVJysLOfQIbswd6C8ff/oMjUOlY6Y5ISPeO4ZFHfFRUkKzCHf1Cn7
-        x3dptD+DmwrpR0QUz90tawRJCgGFcRsZYlja55gqfU49qtXENI0LwxPkDaiVNQ==
+        b=Uz4Arck4gshILQEV03swsKnvykgW2FTH4Qv9rjeC8tZtxER4UK5L+55UHb8eMuRbo9Fm3D
+        eyDD4mW0jXF0jYi+mHQce4eAfxot8GN7T457oZFL/euEeR1EdeSHESOf8PBrbbJt15RE6S
+        6DkjeH5+0JxBA+UKxAcQUXWp1pIev5kB/Bim+Kuw2CfNiah1WkiTfi5osJY4pxj/wfdIpt
+        7c/LSAZ4305EZVOY+POsR2oVxAdR7Bl7KI+bpcv1EfSf+/SEoSpG4jn51GiDysaO/OFRHx
+        yOObaXt0TYPeSkoR5IT2KdvPo3ImKnHzM4xndYk7Cylp1RBd4JgeKSyDG0ikUg==
 From:   Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 To:     stable@vger.kernel.org
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH 5.15.y] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
-Date:   Thu, 27 Jul 2023 14:33:39 +0200
-Message-ID: <20230727123339.675734-1-thomas.petazzoni@bootlin.com>
+Subject: [PATCH 5.10.y] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
+Date:   Thu, 27 Jul 2023 14:34:22 +0200
+Message-ID: <20230727123422.675965-1-thomas.petazzoni@bootlin.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023072301-online-accent-4365@gregkh>
-References: <2023072301-online-accent-4365@gregkh>
+In-Reply-To: <2023072302-prancing-correct-152e@gregkh>
+References: <2023072302-prancing-correct-152e@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: thomas.petazzoni@bootlin.com
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
