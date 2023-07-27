@@ -2,163 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E56F765D85
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 22:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B916765E31
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 23:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231675AbjG0Ul7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 16:41:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33190 "EHLO
+        id S231919AbjG0V3r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 17:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjG0Ul6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 16:41:58 -0400
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6937B2D45;
-        Thu, 27 Jul 2023 13:41:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1690490518; x=1722026518;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=WLNg3ybLSGLXd9RmQLt1k/NytHNJA5YP1EVjXUFQdvo=;
-  b=eFz6oiDF68ekHW/M7mEscNlkg1HBW176W9Xs42HZXkoksH5Wlk+nvgte
-   JPhz9irxT79QQSCac8rSCoxzz9L5gAR1+cOKHXMkfnrAXEgbREJhwMNSp
-   B7RYtk53FED2KSu8rICT3GF9OrBHfdXjjqnQ1CgeL10NgC7Mnro0G+DZ+
-   w=;
-X-IronPort-AV: E=Sophos;i="6.01,235,1684800000"; 
-   d="scan'208";a="342172117"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2c-m6i4x-fa5fe5fb.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 20:41:56 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2c-m6i4x-fa5fe5fb.us-west-2.amazon.com (Postfix) with ESMTPS id 2863640DC3;
-        Thu, 27 Jul 2023 20:41:55 +0000 (UTC)
-Received: from EX19D046UWB002.ant.amazon.com (10.13.139.181) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Thu, 27 Jul 2023 20:41:50 +0000
-Received: from EX19MTAUEB001.ant.amazon.com (10.252.135.35) by
- EX19D046UWB002.ant.amazon.com (10.13.139.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Thu, 27 Jul 2023 20:41:49 +0000
-Received: from dev-dsk-shaoyi-2b-b6ac9e9c.us-west-2.amazon.com (10.189.91.91)
- by mail-relay.amazon.com (10.252.135.35) with Microsoft SMTP Server id
- 15.2.1118.30 via Frontend Transport; Thu, 27 Jul 2023 20:41:49 +0000
-Received: by dev-dsk-shaoyi-2b-b6ac9e9c.us-west-2.amazon.com (Postfix, from userid 13116433)
-        id 512B722508; Thu, 27 Jul 2023 20:41:49 +0000 (UTC)
-Date:   Thu, 27 Jul 2023 20:41:49 +0000
-From:   Shaoying Xu <shaoyi@amazon.com>
-To:     <stable@vger.kernel.org>
-CC:     <netdev@vger.kernel.org>, Shaoying Xu <shaoyi@amazon.com>,
-        Lion <nnamrec@gmail.com>, Eric Dumazet <edumazet@google.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 4.14,5.4] net/sched: sch_qfq: account for stab overhead in
- qfq_enqueue
-Message-ID: <20230727204149.GA30816@dev-dsk-shaoyi-2b-b6ac9e9c.us-west-2.amazon.com>
+        with ESMTP id S231548AbjG0V3p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 17:29:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE59810F9
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 14:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690493338;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3V6q8K76IOW6dvze9Iao5sragyvrE9hiergd1FJ9CnQ=;
+        b=QfVpS+sZ0KzzSBMiSLaHnlmxftylQ5WGVGfCFcnoYLOi9rAijbCYFS0DbuS2l44Ui9IQug
+        kdPZdDclchrqcwYJ0KAqweF2ke16ByReBJMIRBdWKsdVJezluBECLGnlgXkut0kMtWWOI1
+        Lz9OMOrgMVBd4gO1FgP/YJs40HarXSg=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-16-1ckDkazHPumtGeeYi-ezOg-1; Thu, 27 Jul 2023 17:28:53 -0400
+X-MC-Unique: 1ckDkazHPumtGeeYi-ezOg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E0FA3810D42;
+        Thu, 27 Jul 2023 21:28:53 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.39.192.55])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 41E6C40C2063;
+        Thu, 27 Jul 2023 21:28:50 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        liubo <liubo254@huawei.com>, Peter Xu <peterx@redhat.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Hugh Dickins <hughd@google.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org
+Subject: [PATCH v1 1/4] smaps: Fix the abnormal memory statistics obtained through /proc/pid/smaps
+Date:   Thu, 27 Jul 2023 23:28:42 +0200
+Message-ID: <20230727212845.135673-2-david@redhat.com>
+In-Reply-To: <20230727212845.135673-1-david@redhat.com>
+References: <20230727212845.135673-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 3e337087c3b5805fe0b8a46ba622a962880b5d64 ]
+From: liubo <liubo254@huawei.com>
 
-Lion says:
--------
-In the QFQ scheduler a similar issue to CVE-2023-31436
-persists.
+In commit 474098edac26 ("mm/gup: replace FOLL_NUMA by
+gup_can_follow_protnone()"), FOLL_NUMA was removed and replaced by
+the gup_can_follow_protnone interface.
 
-Consider the following code in net/sched/sch_qfq.c:
+However, for the case where the user-mode process uses transparent
+huge pages, when analyzing the memory usage through
+/proc/pid/smaps_rollup, the obtained memory usage is not consistent
+with the RSS in /proc/pid/status.
 
-static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
-                struct sk_buff **to_free)
-{
-     unsigned int len = qdisc_pkt_len(skb), gso_segs;
+Related examples are as follows:
+cat /proc/15427/status
+VmRSS:  20973024 kB
+RssAnon:        20971616 kB
+RssFile:            1408 kB
+RssShmem:              0 kB
 
-    // ...
+cat /proc/15427/smaps_rollup
+00400000-7ffcc372d000 ---p 00000000 00:00 0 [rollup]
+Rss:            14419432 kB
+Pss:            14418079 kB
+Pss_Dirty:      14418016 kB
+Pss_Anon:       14418016 kB
+Pss_File:             63 kB
+Pss_Shmem:             0 kB
+Anonymous:      14418016 kB
+LazyFree:              0 kB
+AnonHugePages:  14417920 kB
 
-     if (unlikely(cl->agg->lmax < len)) {
-         pr_debug("qfq: increasing maxpkt from %u to %u for class %u",
-              cl->agg->lmax, len, cl->common.classid);
-         err = qfq_change_agg(sch, cl, cl->agg->class_weight, len);
-         if (err) {
-             cl->qstats.drops++;
-             return qdisc_drop(skb, sch, to_free);
-         }
+The root cause is that the traversal In the page table, the number of
+pages obtained by smaps_pmd_entry does not include the pages
+corresponding to PROTNONE,resulting in a different situation.
 
-    // ...
+Therefore, when obtaining pages through the follow_trans_huge_pmd
+interface, add the FOLL_FORCE flag to count the pages corresponding to
+PROTNONE to solve the above problem.
 
-     }
-
-Similarly to CVE-2023-31436, "lmax" is increased without any bounds
-checks according to the packet length "len". Usually this would not
-impose a problem because packet sizes are naturally limited.
-
-This is however not the actual packet length, rather the
-"qdisc_pkt_len(skb)" which might apply size transformations according to
-"struct qdisc_size_table" as created by "qdisc_get_stab()" in
-net/sched/sch_api.c if the TCA_STAB option was set when modifying the qdisc.
-
-A user may choose virtually any size using such a table.
-
-As a result the same issue as in CVE-2023-31436 can occur, allowing heap
-out-of-bounds read / writes in the kmalloc-8192 cache.
--------
-
-We can create the issue with the following commands:
-
-tc qdisc add dev $DEV root handle 1: stab mtu 2048 tsize 512 mpu 0 \
-overhead 999999999 linklayer ethernet qfq
-tc class add dev $DEV parent 1: classid 1:1 htb rate 6mbit burst 15k
-tc filter add dev $DEV parent 1: matchall classid 1:1
-ping -I $DEV 1.1.1.2
-
-This is caused by incorrectly assuming that qdisc_pkt_len() returns a
-length within the QFQ_MIN_LMAX < len < QFQ_MAX_LMAX.
-
-Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
-Reported-by: Lion <nnamrec@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[Backport patch for stable kernels 4.14 and 5.4. Since QFQ_MAX_LMAX is not 
-defined, replace it with 1UL << QFQ_MTU_SHIFT.]
-Cc: <stable@vger.kernel.org> # 4.14, 5.4
-Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
-
+Signed-off-by: liubo <liubo254@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 474098edac26 ("mm/gup: replace FOLL_NUMA by gup_can_follow_protnone()")
+Signed-off-by: David Hildenbrand <david@redhat.com> # AKPM fixups, cc stable
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- net/sched/sch_qfq.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/proc/task_mmu.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 603bd3097bd8..34a54dcd95f2 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -375,8 +375,13 @@ static int qfq_change_agg(struct Qdisc *sch, struct qfq_class *cl, u32 weight,
- 			   u32 lmax)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
--	struct qfq_aggregate *new_agg = qfq_find_agg(q, lmax, weight);
-+	struct qfq_aggregate *new_agg;
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index c1e6531cb02a..7075ce11dc7d 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -571,8 +571,12 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	bool migration = false;
  
-+	/* 'lmax' can range from [QFQ_MIN_LMAX, pktlen + stab overhead] */
-+	if (lmax > (1UL << QFQ_MTU_SHIFT))
-+		return -EINVAL;
-+
-+	new_agg = qfq_find_agg(q, lmax, weight);
- 	if (new_agg == NULL) { /* create new aggregate */
- 		new_agg = kzalloc(sizeof(*new_agg), GFP_ATOMIC);
- 		if (new_agg == NULL)
+ 	if (pmd_present(*pmd)) {
+-		/* FOLL_DUMP will return -EFAULT on huge zero page */
+-		page = follow_trans_huge_pmd(vma, addr, pmd, FOLL_DUMP);
++		/*
++		 * FOLL_DUMP will return -EFAULT on huge zero page
++		 * FOLL_FORCE follow a PROT_NONE mapped page
++		 */
++		page = follow_trans_huge_pmd(vma, addr, pmd,
++					     FOLL_DUMP | FOLL_FORCE);
+ 	} else if (unlikely(thp_migration_supported() && is_swap_pmd(*pmd))) {
+ 		swp_entry_t entry = pmd_to_swp_entry(*pmd);
+ 
 -- 
-2.40.1
+2.41.0
 
