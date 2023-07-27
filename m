@@ -2,193 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2734764571
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 07:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 307F376467A
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 08:10:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbjG0Fat (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 01:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
+        id S232318AbjG0GKQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 02:10:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjG0Fas (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 01:30:48 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FFC2721;
-        Wed, 26 Jul 2023 22:30:45 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 32D7021B82;
-        Thu, 27 Jul 2023 05:30:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1690435844; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        with ESMTP id S232609AbjG0GKP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 02:10:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B122E42
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 23:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690438166;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=S85VZ1Bg5eFUHBIs1TmYsF9LGbx0r23IuB4QCTVlNMY=;
-        b=jaIEt0aMR2Rp2VPqgJKXQC0xEILQNQocmtuJOqjqp2fDyp36rnHfZBMevcBUyU/cH2cyvd
-        wvmRIYCEksZbsmaihBb/qkV4mwRxi2t9a7BYZJf9OcaXzVE/WSyx4/ODMCVNQDUsWYc0g7
-        BxjIqlOtmvEs5xTnRSXTA+tAFLtMN8k=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 03D6F138E5;
-        Thu, 27 Jul 2023 05:30:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id EqrzOgMBwmRbfwAAMHmgww
-        (envelope-from <jgross@suse.com>); Thu, 27 Jul 2023 05:30:43 +0000
-Message-ID: <6842949f-a955-b73b-7a9e-8e93657b2f40@suse.com>
-Date:   Thu, 27 Jul 2023 07:30:42 +0200
+        bh=IHlsz0LypAsJKen8iGzFwcAD9nS/sYfmhPmKhEwdVpQ=;
+        b=bxpwRu+wbS5neMWGov0G1T8hfx4JGKteJVn3HXJIKIpL3WidGRSFIwhk6pzeZbYULKr0VM
+        5x7raYsy9XDzLL7Zv0yvZ38acSNxilFwSpaJCymzKITac9YBT2nKecAm0ZRquCyJk62iE0
+        MooM9YhR67+ZdB69RFhi8L267roHjfM=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-29-cGsMVfhDO4SttgbGjhEXiA-1; Thu, 27 Jul 2023 02:09:21 -0400
+X-MC-Unique: cGsMVfhDO4SttgbGjhEXiA-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2b710c5677eso4960581fa.0
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 23:09:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690438160; x=1691042960;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IHlsz0LypAsJKen8iGzFwcAD9nS/sYfmhPmKhEwdVpQ=;
+        b=Te/Kk4y16HPTzSyhzBhU6DXgDcgcIx0C+RhPB4WOLJhk0MvCYtmBDjXcPMLlQtnEJz
+         PilgnuU/HHlFDZeSTgLiTlpJoSH3fwmVUHpiOgYth7tQT7CMpF9BBf9fMKCkt04Ex+Ol
+         g5MuTvIHphjBR5MpDY/sUZCTbS2SwXwBwKa9zCJvkkclHHD8ZmGdyxb/CEkezoBqg8Zh
+         2k85R3+TZ7wnpqd1pZvz21u7OoZlK3ncPE7YiNlVLI2xMRnDvmjGRae2d80gHXz9jZb0
+         cmgbJiHkz7wd6c9/EPTZZfND7FrePhnFOgaApCLYhPST+fEkEDvl9ti5DLtug2+wmOCl
+         CCOw==
+X-Gm-Message-State: ABy/qLb5VWVOOGdjUdnpMPcmZpvidkQC8n0361zYh5TI2RAQAeRRFXLD
+        +gwv9Ifsmhw7WqGOoJo7oi+dLlbvCd17YrXPF5ndIFuDh2AMudi8Z9ml5FSdNjL5i8i1s8WBP1o
+        1a6cd8dTYZUYakUhU6hJBcR0c0A2CF6xS
+X-Received: by 2002:a2e:a0c7:0:b0:2b6:dc55:c3c7 with SMTP id f7-20020a2ea0c7000000b002b6dc55c3c7mr914284ljm.20.1690438160627;
+        Wed, 26 Jul 2023 23:09:20 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG9gSQ6pqMIto55DqQ/PMDpcLyo2v1QAuKSuzXquZGm1GzyjEzrvi1fgxAP/gY2dc9tZHcbKbyVth3agxWpbD4=
+X-Received: by 2002:a2e:a0c7:0:b0:2b6:dc55:c3c7 with SMTP id
+ f7-20020a2ea0c7000000b002b6dc55c3c7mr914260ljm.20.1690438160346; Wed, 26 Jul
+ 2023 23:09:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v4] xen: speed up grant-table reclaim
-Content-Language: en-US
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc:     Xen developer discussion <xen-devel@lists.xenproject.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable@vger.kernel.org
-References: <20230627172216.1359-1-demi@invisiblethingslab.com>
- <20230726165354.1252-1-demi@invisiblethingslab.com>
-From:   Juergen Gross <jgross@suse.com>
-In-Reply-To: <20230726165354.1252-1-demi@invisiblethingslab.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------ZGkv1JTl5MGJG34IhnAZglmk"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230726191036.14324-1-dtatulea@nvidia.com>
+In-Reply-To: <20230726191036.14324-1-dtatulea@nvidia.com>
+From:   Jason Wang <jasowang@redhat.com>
+Date:   Thu, 27 Jul 2023 14:09:09 +0800
+Message-ID: <CACGkMEspMnAQq+mX_eNH9u32m+=7WN69aHi01J_DxSVL6qOiyQ@mail.gmail.com>
+Subject: Re: [PATCH] virtio-vdpa: Fix cpumask memory leak in virtio_vdpa_find_vqs()
+To:     Dragos Tatulea <dtatulea@nvidia.com>
+Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Xie Yongji <xieyongji@bytedance.com>, stable@vger.kernel.org,
+        Gal Pressman <gal@nvidia.com>,
+        virtualization@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------ZGkv1JTl5MGJG34IhnAZglmk
-Content-Type: multipart/mixed; boundary="------------f8E1sN4Er4CzU5ittAAqYdAW";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Demi Marie Obenour <demi@invisiblethingslab.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: Xen developer discussion <xen-devel@lists.xenproject.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable@vger.kernel.org
-Message-ID: <6842949f-a955-b73b-7a9e-8e93657b2f40@suse.com>
-Subject: Re: [PATCH v4] xen: speed up grant-table reclaim
-References: <20230627172216.1359-1-demi@invisiblethingslab.com>
- <20230726165354.1252-1-demi@invisiblethingslab.com>
-In-Reply-To: <20230726165354.1252-1-demi@invisiblethingslab.com>
+On Thu, Jul 27, 2023 at 3:11=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com=
+> wrote:
+>
+> From: Gal Pressman <gal@nvidia.com>
+>
+> Free the cpumask allocated by create_affinity_masks() before returning
+> from the function.
+>
+> Fixes: 3dad56823b53 ("virtio-vdpa: Support interrupt affinity spreading m=
+echanism")
+> Signed-off-by: Gal Pressman <gal@nvidia.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
 
---------------f8E1sN4Er4CzU5ittAAqYdAW
-Content-Type: multipart/mixed; boundary="------------fmbcQldT8wBclasItfmALE0m"
+Acked-by: Jason Wang <jasowang@redhat.com>
 
---------------fmbcQldT8wBclasItfmALE0m
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Thanks
 
-T24gMjYuMDcuMjMgMTg6NTIsIERlbWkgTWFyaWUgT2Jlbm91ciB3cm90ZToNCj4gV2hlbiBh
-IGdyYW50IGVudHJ5IGlzIHN0aWxsIGluIHVzZSBieSB0aGUgcmVtb3RlIGRvbWFpbiwgTGlu
-dXggbXVzdCBwdXQNCj4gaXQgb24gYSBkZWZlcnJlZCBsaXN0LiAgTm9ybWFsbHksIHRoaXMg
-bGlzdCBpcyB2ZXJ5IHNob3J0LCBiZWNhdXNlDQo+IHRoZSBQViBuZXR3b3JrIGFuZCBibG9j
-ayBwcm90b2NvbHMgZXhwZWN0IHRoZSBiYWNrZW5kIHRvIHVubWFwIHRoZSBncmFudA0KPiBm
-aXJzdC4gIEhvd2V2ZXIsIFF1YmVzIE9TJ3MgR1VJIHByb3RvY29sIGlzIHN1YmplY3QgdG8g
-dGhlIGNvbnN0cmFpbnRzDQo+IG9mIHRoZSBYIFdpbmRvdyBTeXN0ZW0sIGFuZCBhcyBzdWNo
-IHdpbmRzIHVwIHdpdGggdGhlIGZyb250ZW5kIHVubWFwcGluZw0KPiB0aGUgd2luZG93IGZp
-cnN0LiAgQXMgYSByZXN1bHQsIHRoZSBsaXN0IGNhbiBncm93IHZlcnkgbGFyZ2UsIHJlc3Vs
-dGluZw0KPiBpbiBhIG1hc3NpdmUgbWVtb3J5IGxlYWsgYW5kIGV2ZW50dWFsIFZNIGZyZWV6
-ZS4NCj4gDQo+IFRvIHBhcnRpYWxseSBzb2x2ZSB0aGlzIHByb2JsZW0sIG1ha2UgdGhlIG51
-bWJlciBvZiBlbnRyaWVzIHRoYXQgdGhlIFZNDQo+IHdpbGwgYXR0ZW1wdCB0byBmcmVlIGF0
-IGVhY2ggaXRlcmF0aW9uIHR1bmFibGUuICBUaGUgZGVmYXVsdCBpcyBzdGlsbA0KPiAxMCwg
-YnV0IGl0IGNhbiBiZSBvdmVycmlkZGVuIHZpYSBhIG1vZHVsZSBwYXJhbWV0ZXIuDQo+IA0K
-PiBUaGlzIGlzIENjOiBzdGFibGUgYmVjYXVzZSAod2hlbiBjb21iaW5lZCB3aXRoIGFwcHJv
-cHJpYXRlIHVzZXJzcGFjZQ0KPiBjaGFuZ2VzKSBpdCBmaXhlcyBhIHNldmVyZSBwZXJmb3Jt
-YW5jZSBhbmQgc3RhYmlsaXR5IHByb2JsZW0gZm9yIFF1YmVzDQo+IE9TIHVzZXJzLg0KPiAN
-Cj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU2lnbmVkLW9mZi1ieTogRGVtaSBN
-YXJpZSBPYmVub3VyIDxkZW1pQGludmlzaWJsZXRoaW5nc2xhYi5jb20+DQoNClJldmlld2Vk
-LWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQoNCg0KSnVlcmdlbg0KDQo=
+> ---
+>  drivers/virtio/virtio_vdpa.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
+> index 989e2d7184ce..961161da5900 100644
+> --- a/drivers/virtio/virtio_vdpa.c
+> +++ b/drivers/virtio/virtio_vdpa.c
+> @@ -393,11 +393,13 @@ static int virtio_vdpa_find_vqs(struct virtio_devic=
+e *vdev, unsigned int nvqs,
+>         cb.callback =3D virtio_vdpa_config_cb;
+>         cb.private =3D vd_dev;
+>         ops->set_config_cb(vdpa, &cb);
+> +       kfree(masks);
+>
+>         return 0;
+>
+>  err_setup_vq:
+>         virtio_vdpa_del_vqs(vdev);
+> +       kfree(masks);
+>         return err;
+>  }
+>
+> --
+> 2.41.0
+>
 
---------------fmbcQldT8wBclasItfmALE0m
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-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
-jR/i1DG86lem3iBDXzXsZDn8R38=3D
-=3D2wuH
------END PGP PUBLIC KEY BLOCK-----
-
---------------fmbcQldT8wBclasItfmALE0m--
-
---------------f8E1sN4Er4CzU5ittAAqYdAW--
-
---------------ZGkv1JTl5MGJG34IhnAZglmk
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmTCAQMFAwAAAAAACgkQsN6d1ii/Ey9v
-7Af/UcL9ZwVgufL4OUPDqEaWGp9Lpg9u3jqURxOBY104E9Cpm2kjwilzEPNs8+6l+kKA/8ucD4Fj
-LV7IQ/N+HNTasVNnK9Ew20m/t1Q++KBqJ4/MLoKabEjsGDSZOMadsZWIk0CXh+tJoGIU793qEH22
-fvP1qkKK83ErkeSbVsU0kBPFzHmzqe4LVBgcP1Stou992Go8M3GXM6ZnHUQ7de6zrwylMzw8CyHA
-ayAGfP6uxbAXH4dO0KhMM7oE1+w1RfWHPZII6a/FVJ7wGWSx0V4xiWa0ZSJdejIg+P4hA+hhFhoM
-s9XCOuh3L8ZIRT9jTX/YPEPiVoabo/5/n2fd24+YNg==
-=cvz8
------END PGP SIGNATURE-----
-
---------------ZGkv1JTl5MGJG34IhnAZglmk--
