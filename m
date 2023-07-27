@@ -2,130 +2,237 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2947644F1
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 06:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94EC376450D
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 06:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231467AbjG0Efx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 00:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60096 "EHLO
+        id S231370AbjG0Es0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 00:48:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231367AbjG0Efo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 00:35:44 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921662D4E;
-        Wed, 26 Jul 2023 21:35:31 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36R3iaVD014865;
-        Thu, 27 Jul 2023 04:35:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=svPmzVI+7eFon/1ocEodK5MNmMYxEhx6SeLGE+hwf/s=;
- b=nA6M0sljBsdXz0X4ZJSUTF7pPeDdcQzJtFrqxnPnNpAb6x1OTVNBz+DoJ7uS3bPgtMSv
- T55MaxKqL4M1CipQhwB7XhwQ808JCqwxy5tANtKcciu+/bfVeKCuKADDqaChYP71878v
- BftnKN3cl8h2GWb2S8SM+RUnHAs1qRa4LH0M+eipG1Ghxq8SgDRUEM8iGoKrEeCzH7G8
- N0jKOlRusAxwUDX9MjBOu0BmN4P5njuSQoRdGGfYpl237ZSF7bCbZv2tDdgid7AjqlCp
- VTiwh5bZFPwYW7hX/h4//JzgX4v5wkvOBEAbQ2T4km1U+Lv2BOoNg0zFriW9HwrV665y sQ== 
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s336t1ps4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 27 Jul 2023 04:35:25 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36R4ZOCs008336
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 27 Jul 2023 04:35:24 GMT
-Received: from hu-vgarodia-hyd.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 26 Jul 2023 21:35:20 -0700
-From:   Vikash Garodia <quic_vgarodia@quicinc.com>
-To:     <stanimir.k.varbanov@gmail.com>, <bryan.odonoghue@linaro.org>,
-        <agross@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <mchehab@kernel.org>,
-        <hans.verkuil@cisco.com>, <tfiga@chromium.org>
-CC:     <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>
-Subject: [PATCH 4/4] venus: hfi_parser: Add check to keep the number of codecs within range
-Date:   Thu, 27 Jul 2023 10:04:29 +0530
-Message-ID: <1690432469-14803-5-git-send-email-quic_vgarodia@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1690432469-14803-1-git-send-email-quic_vgarodia@quicinc.com>
-References: <1690432469-14803-1-git-send-email-quic_vgarodia@quicinc.com>
+        with ESMTP id S231361AbjG0EsX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 00:48:23 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E17F271F
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 21:48:22 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-4036bd4fff1so179671cf.0
+        for <stable@vger.kernel.org>; Wed, 26 Jul 2023 21:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690433301; x=1691038101;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O9HSIrtFkclUh08WUnO+B+BwRK/qFesZ9SqYpqIojYc=;
+        b=lYZHABINhBqe1G2mHVSCBYrzOcWQYVQfYcYaDJNHjGJdTu9KeiY3yRKyAWhtUaN2ht
+         Sab6Gf2VrE1ndiMbct5kct6iC1F1m87Z3yc9X3G6vaddsXvEo4LqVmm+ZmwpG8Ep91M1
+         6exzt/amwArbgZJzW2lI4QLQEoIdUOM+25iiWAGXKv6bv491IrKi/KkQQG93y4Y6G/In
+         kE/TfE2WaCxyMlu2SuAjndZTL+6/byI15lVfJ/ui3uLEUtNWDcqGHKNlv3QrOI9orn8P
+         krI8ZQw8UCWfhfEewkfFcwKjznHIKiwzYSOuwwgODxBFQeW60kKQab2HR0q/uf4tZoOt
+         BWlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690433301; x=1691038101;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O9HSIrtFkclUh08WUnO+B+BwRK/qFesZ9SqYpqIojYc=;
+        b=e5rk4O4gu8i6clUlAuImHicV9FXDNpSUHEBxlMUTcQh3J/wtmRBGhykkihNizvcpla
+         tQGx9P6b3xARMCX2sUAClylvbQKrhZzA259YTBM0/6VNJwMNzXVNqUel4AMaRcu3ET7e
+         P07stVlPzYXJIYz+yRMjTmf+k3uzVNtarwFk72KFYRwH9MEnDA7IvCRQvTorEcytGhZn
+         /ISy824/zR8Ez1HXAh3MQG9z2r03t3NWBqkO2nwKDOpdu1SVP/9JsslvFmqHad+YitDU
+         CQnKXODey/Ok+CXhGFSbAsbTg7o64qJvnO6fq11N3px9gbt2rmuhQCdZabznpRQ4vWiW
+         6Vag==
+X-Gm-Message-State: ABy/qLbmQCKBtIGIb+qkUJ6iZo6MNUqUUxONSM56IB51iqAgA9ZsF7PX
+        /bnHWm97aetUbL+67pBrnMxyBjeGPxJzfr4hnKBMNw==
+X-Google-Smtp-Source: APBJJlFZSj/4XZDQSkXKf9GLMLlJ1OhH7auW0F8ddBeujJvWq3cHpEA81n7a9v2R6peR2nyx3IoSQxBsrOHoKGEbQZc=
+X-Received: by 2002:a05:622a:349:b0:3f6:97b4:1a4d with SMTP id
+ r9-20020a05622a034900b003f697b41a4dmr86468qtw.23.1690433301294; Wed, 26 Jul
+ 2023 21:48:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: DxI9Z8gqI8_QxqUSDGZsv-WpMyzurp5r
-X-Proofpoint-GUID: DxI9Z8gqI8_QxqUSDGZsv-WpMyzurp5r
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-26_08,2023-07-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- clxscore=1015 mlxlogscore=999 adultscore=0 lowpriorityscore=0
- suspectscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307270041
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230726133642.750342-1-namhyung@kernel.org> <CAP-5=fWM9Fhq5WvsBf2n=hGwwwRDt3-mUQ=_qzu8qYGtD1OeWQ@mail.gmail.com>
+ <CAM9d7citVc4ad65MLBWxvE-_AbwxO1DQWHf5w+ofSgWnWSx=Fw@mail.gmail.com>
+ <CAP-5=fVbwf9=ZFszgFpb_6Qb003WpZC3_vtO7fB1pL_vH-OhQw@mail.gmail.com> <CAM9d7chcrd8mN55yb+oCBi3=AF4-a=oCr66+cv7eaquzx0Kvpw@mail.gmail.com>
+In-Reply-To: <CAM9d7chcrd8mN55yb+oCBi3=AF4-a=oCr66+cv7eaquzx0Kvpw@mail.gmail.com>
+From:   Ian Rogers <irogers@google.com>
+Date:   Wed, 26 Jul 2023 21:48:09 -0700
+Message-ID: <CAP-5=fUPPRVSx9x4riCkkwEAza1N_r5qCxwqmdj0d7CEaKmCdw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] perf build: Update build rule for generated files
+To:     Namhyung Kim <namhyung@kernel.org>
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org,
+        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Supported codec bitmask is populated from the payload from venus firmware.
-There is a possible case when all the bits in the codec bitmask is set. In
-such case, core cap for decoder is filled  and MAX_CODEC_NUM is utilized.
-Now while filling the caps for encoder, it can lead to access the caps
-array beyong 32 index. Hence leading to OOB write.
-The fix counts the supported encoder and decoder. If the count is more than
-max, then it skips accessing the caps.
+On Wed, Jul 26, 2023 at 6:01=E2=80=AFPM Namhyung Kim <namhyung@kernel.org> =
+wrote:
+>
+> On Wed, Jul 26, 2023 at 5:36=E2=80=AFPM Ian Rogers <irogers@google.com> w=
+rote:
+> >
+> > On Wed, Jul 26, 2023 at 3:57=E2=80=AFPM Namhyung Kim <namhyung@kernel.o=
+rg> wrote:
+> > >
+> > > Hi Ian,
+> > >
+> > > On Wed, Jul 26, 2023 at 8:48=E2=80=AFAM Ian Rogers <irogers@google.co=
+m> wrote:
+> > > >
+> > > > On Wed, Jul 26, 2023 at 6:36=E2=80=AFAM Namhyung Kim <namhyung@kern=
+el.org> wrote:
+> > > > >
+> > > > > The bison and flex generate C files from the source (.y and .l)
+> > > > > files.  When O=3D option is used, they are saved in a separate di=
+rectory
+> > > > > but the default build rule assumes the .C files are in the source
+> > > > > directory.  So it might read invalid file if there are generated =
+files
+> > > > > from an old version.  The same is true for the pmu-events files.
+> > > > >
+> > > > > For example, the following command would cause a build failure:
+> > > > >
+> > > > >   $ git checkout v6.3
+> > > > >   $ make -C tools/perf  # build in the same directory
+> > > > >
+> > > > >   $ git checkout v6.5-rc2
+> > > > >   $ mkdir build  # create a build directory
+> > > > >   $ make -C tools/perf O=3Dbuild  # build in a different director=
+y but it
+> > > > >                                 # refers files in the source dire=
+ctory
+> > > > >
+> > > > > Let's update the build rule to specify those cases explicitly to =
+depend
+> > > > > on the files in the output directory.
+> > > > >
+> > > > > Note that it's not a complete fix and it needs the next patch for=
+ the
+> > > > > include path too.
+> > > > >
+> > > > > Fixes: 80eeb67fe577 ("perf jevents: Program to convert JSON file"=
+)
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> > > > > ---
+> > > > >  tools/build/Makefile.build  | 8 ++++++++
+> > > > >  tools/perf/pmu-events/Build | 4 ++++
+> > > > >  2 files changed, 12 insertions(+)
+> > > > >
+> > > > > diff --git a/tools/build/Makefile.build b/tools/build/Makefile.bu=
+ild
+> > > > > index 89430338a3d9..f9396696fcbf 100644
+> > > > > --- a/tools/build/Makefile.build
+> > > > > +++ b/tools/build/Makefile.build
+> > > > > @@ -117,6 +117,14 @@ $(OUTPUT)%.s: %.c FORCE
+> > > > >         $(call rule_mkdir)
+> > > > >         $(call if_changed_dep,cc_s_c)
+> > > > >
+> > > > > +$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
+> > > > > +       $(call rule_mkdir)
+> > > > > +       $(call if_changed_dep,$(host)cc_o_c)
+> > > > > +
+> > > > > +$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
+> > > > > +       $(call rule_mkdir)
+> > > > > +       $(call if_changed_dep,$(host)cc_o_c)
+> > > > > +
+> > > >
+> > > > Hi Namhyung,
+> > > >
+> > > > as we have:
+> > > > ```
+> > > > $(OUTPUT)%.o: %.c FORCE
+> > > >        $(call rule_mkdir)
+> > > >        $(call if_changed_dep,$(host)cc_o_c)
+> > > > ```
+> > > > I'm not sure what the 2 additional rules achieve.
+> > >
+> > > The above rule assumes the .c files are in the source directory
+> > > (without $(OUTPUT) prefix).  It caused a trouble when the
+> > > flex and bison files are generated in the output directory and
+> > > you have an old version of them in the source directory.
+> > >
+> > >
+> > > >
+> > > > >  # Gather build data:
+> > > > >  #   obj-y        - list of build objects
+> > > > >  #   subdir-y     - list of directories to nest
+> > > > > diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/=
+Build
+> > > > > index 150765f2baee..f38a27765604 100644
+> > > > > --- a/tools/perf/pmu-events/Build
+> > > > > +++ b/tools/perf/pmu-events/Build
+> > > > > @@ -35,3 +35,7 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(JEVENTS=
+_PY) $(METRIC_PY) $(METRIC_TEST_L
+> > > > >         $(call rule_mkdir)
+> > > > >         $(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS=
+_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
+> > > > >  endif
+> > > > > +
+> > > > > +$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
+> > > > > +       $(call rule_mkdir)
+> > > > > +       $(call if_changed_dep,$(host)cc_o_c)
+> > > >
+> > > > If we add this, do the Makefile.build changes still need to happen?
+> > >
+> > > The Makefile.build changes are specific to flex and bison files.
+> > > So yes, we need this for pmu-events.c to work properly with O=3D
+> > > option.
+> >
+> > Got it, you are right I was confusing the flex/bison with the jevents
+> > case. Can we get away with a single rule then:
+> > ```
+> >  $(OUTPUT)%.o:  $(OUTPUT)%.c FORCE
+> >         $(call rule_mkdir)
+> >         $(call if_changed_dep,$(host)cc_o_c)
+> > ```
+>
+> Probably, but I wonder if it affects the normal .c files expecting
+> them in the OUTPUT directory.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
----
- drivers/media/platform/qcom/venus/hfi_parser.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Hmm.. I think the longer matches may be necessary to trigger the "more
+specific" ordering:
+https://www.gnu.org/software/make/manual/html_node/Pattern-Match.html
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index ec73cac..651e215 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -14,11 +14,26 @@
- typedef void (*func)(struct hfi_plat_caps *cap, const void *data,
- 		     unsigned int size);
- 
-+static int count_setbits(u32 input)
-+{
-+	u32 count = 0;
-+
-+	while (input > 0) {
-+		if ((input & 1) == 1)
-+			count++;
-+		input >>= 1;
-+	}
-+	return count;
-+}
-+
- static void init_codecs(struct venus_core *core)
- {
- 	struct hfi_plat_caps *caps = core->caps, *cap;
- 	unsigned long bit;
- 
-+	if ((count_setbits(core->dec_codecs) + count_setbits(core->enc_codecs)) > MAX_CODEC_NUM)
-+		return;
-+
- 	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
- 		cap = &caps[core->codecs_count++];
- 		cap->codec = BIT(bit);
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+I'm not keen on these extra rules that mirror existing rules, it is a
+bit cryptic what is going on. I wonder if it would be cleaner just to
+fail the build if the bogus pmu-events.c exists. For example:
+```
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -12,6 +12,14 @@ EMPTY_PMU_EVENTS_C =3D pmu-events/empty-pmu-events.c
+PMU_EVENTS_C   =3D  $(OUTPUT)pmu-events/pmu-events.c
+METRIC_TEST_LOG        =3D  $(OUTPUT)pmu-events/metric_test.log
 
++ifneq ($(OUTPUT),)
++ifneq ($(wildcard pmu-events/pmu-events.c),)
++dummy :=3D $(error OUTPUT set but tools/perf/pmu-events/pmu-events.c exist=
+s. \
++           This can mean the generated version of pmu-events.c is not
+compiled. \
++           Try 'cd tools/perf; make clean; cd -' and then rebuilding.)
++endif
++endif
++
+ifeq ($(JEVENTS_ARCH),)
+JEVENTS_ARCH=3D$(SRCARCH)
+endif
+```
+
+Thanks,
+Ian
+
+> Thanks,
+> Namhyung
