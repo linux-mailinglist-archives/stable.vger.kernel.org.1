@@ -2,230 +2,200 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6B93765073
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 11:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0854765088
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 12:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbjG0J7M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 05:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41606 "EHLO
+        id S232380AbjG0KGi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 06:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbjG0J7L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 05:59:11 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26D59C
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 02:59:10 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-55ba895d457so410106a12.0
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 02:59:10 -0700 (PDT)
+        with ESMTP id S229919AbjG0KGh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 06:06:37 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCBB5128;
+        Thu, 27 Jul 2023 03:06:35 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b8ad907ba4so4779345ad.0;
+        Thu, 27 Jul 2023 03:06:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690451950; x=1691056750;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=YtE5zu4U1GzEj23OufNlegmWT8jK0Mdh0btzZV425No=;
-        b=kCOdK+G45v6iXStQV7fDjZaERLdxZsN7mAnfka9hB5PBXtkinok9ZjXzd53X6soU+g
-         FBZwhXJucUaFNQbLdfPTsIfsJ9knkDnC8uj4rYm5LVwfXP6M6BuPqlLDScfNaTJTSck3
-         GSjN244luHgpoE+XHHVGpt4vkP8bTav24Xeti+bdhh+Z3sL4yC22zNvxchNjdHfQRcTe
-         JSTVw/0mxpX15ujIkln0L4IKUwB5CgQtCEuP/0KlMQt30ft2PQw75hqLo4lx1fPyQsGe
-         5pFZ6oXxWRADV/s3QjSgtD8jzdPbdXnyGD9LCd/dsCe6+Rgn8ino3HH9vWJGTmpckijV
-         i94w==
+        d=gmail.com; s=20221208; t=1690452395; x=1691057195;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0FZGCECC5UQyB2oH7t7oPCmzkPOTLbo6iKgyeWpbv7c=;
+        b=sR0fpuXlCwcqDAm+RnK7VTaord/oL9OZcsbmgToilTPOq70tGFihy2R+rP6mvmX+XR
+         +E2JxyI3NB1Rvm9MFdaUC4cEgC+HAh3cjp/lsdxhia3AoYfag+RQ5IJOV5y5+my261ZY
+         cBW2bJCyxixxaBbzCo46GiPShOfWEdPFut+xTM/XMki2MH2txGGKUk2kb0ygmTuZvijJ
+         qUHs5yYhvWtl0rmpUiWnFhQ2jRLJyW6g/eGFY9Sk64uLICLO5KVqEDKImnpvFXjuc+bp
+         MAfc22wA8SyG0tKWmhCeuIsNZNM/n6GOdBnX5my0+hccEj66VoTfsdzy639wNSewEG8p
+         mTrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690451950; x=1691056750;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YtE5zu4U1GzEj23OufNlegmWT8jK0Mdh0btzZV425No=;
-        b=TnYT5Kdwpx6xwuMo2FLkNT3EwprIBoIfsI31W4RmBi9P/smOZlTX2dnomd1D8whZZz
-         afmqTlY3Au+jwlCiD7D9FttM6pFelMC+clQPPyJLD1v3zg0gySBhRlvdoXbwikET4oOn
-         qdJoUDjogcKRI79nBt/lVQ/RftrtQHhI4bF36QI/JvVYLDGfoJFr3GECP03GKCd3+s+2
-         Fayguqfxuu7X0o/7h99evy7NvRPtoaThIPJGSujrbFODeGY0DvuEp3N2OLEvK+hI3qCa
-         ZZjc5J2uw6Af3p8lTl3S7ihTokyiDSMdVt+sutTWw0oaoHnOcOifMfxEinPCu8wAuUKr
-         9rlw==
-X-Gm-Message-State: ABy/qLbYfMvQ2rMpv6hE5az74iX/CZL5RrdUh8eb6Iu8QqeiH2/PoLSn
-        Zs9HDBU3cIOdoELFDApnZnhr+XadvlzmEaSxedA+lQ==
-X-Google-Smtp-Source: APBJJlFL37JzN1UdZdKWEFC0Klr0g48AnLPeYC4o3sA8F7XY5Q5pFQjmd+VOVxgcZtb19QAlJ571Ag==
-X-Received: by 2002:a05:6a20:9147:b0:134:1d88:1d88 with SMTP id x7-20020a056a20914700b001341d881d88mr4379542pzc.58.1690451949627;
-        Thu, 27 Jul 2023 02:59:09 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id v24-20020aa78518000000b00679b7d2bd57sm1086443pfn.192.2023.07.27.02.59.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 02:59:08 -0700 (PDT)
-Message-ID: <64c23fec.a70a0220.cdcfa.1b4f@mx.google.com>
-Date:   Thu, 27 Jul 2023 02:59:08 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1690452395; x=1691057195;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0FZGCECC5UQyB2oH7t7oPCmzkPOTLbo6iKgyeWpbv7c=;
+        b=Uu+rOzgccmENZntRwZ36e09aalgMfO3XYgMHr78jt7FDyn8cBkG4eTjlf0/dZMGc/K
+         lAufOlh9Tplikn32jxJtg9xI/5AI6lLGF9nIdYYZxRXng8piyjWfun3ohbIbsCXbW4NU
+         qrB3TTO+3udguCkLSw3UOrELccUu7PzjgwXB6+0M2xfZ99W/eruT1BT7ErYW+mo5gRoY
+         tUQOmul8Jv04vgo6yFbNiNxDfpjkCdlMbWSOhRyguNcLF2w6GM6yLByxnX2LEnu3WzTg
+         omcECyWa9zjohiAGtlaRpI9H02AwjNLmbjvj7rHK5QABD6HTJ32mqyasvJ0dPX4S1iFz
+         /AKQ==
+X-Gm-Message-State: ABy/qLZeiCW1ldNV/leYVvPh+27sU1+QzBpjq3BY2Rz6Qpyz1tBcDhEs
+        xgjwFfGPYEaWup6+2WhiXvQOE/yzDCGhYg==
+X-Google-Smtp-Source: APBJJlGcNpa5SEIxTsbL6e1MnleOLiKInLJf+D24pkQZimLlFKc0j4iZnOu/4CNCbxCHmVrBtFrvKg==
+X-Received: by 2002:a17:902:7207:b0:1b6:ba60:77f0 with SMTP id ba7-20020a170902720700b001b6ba6077f0mr3867479plb.10.1690452395080;
+        Thu, 27 Jul 2023 03:06:35 -0700 (PDT)
+Received: from [192.168.1.121] ([65.129.146.152])
+        by smtp.gmail.com with ESMTPSA id 6-20020a170902ee4600b001bba3a4888bsm1212060plo.102.2023.07.27.03.06.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jul 2023 03:06:34 -0700 (PDT)
+Message-ID: <b0ed86e0-3e4a-d4d1-7b9d-c57f20538a80@gmail.com>
+Date:   Thu, 27 Jul 2023 04:06:33 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Kernel: v5.10.188
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.188)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: Scsi_bus_resume+0x0/0x90 returns -5 when resuming from s3 sleep
+Content-Language: en-US
+To:     Damien Le Moal <dlemoal@kernel.org>,
+        Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     regressions@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+References: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
+ <6b66dd9a-8bd5-2882-9168-8e6e0848c454@leemhuis.info>
+ <c70caa9e-164c-fee5-8f85-67f6d02373ab@kernel.org>
+From:   TW <dalzot@gmail.com>
+In-Reply-To: <c70caa9e-164c-fee5-8f85-67f6d02373ab@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v=
-5.10.188)
+I retried on 6.5 rc3 without the Nvidia drivers and still received the 
+same error and going to try for the patch next but got a malformed patch 
+error on line 6 for the first patch for libata-scsi.c. The other two 
+seem to go through just fine however.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.188/
+Also the bugzilla link is similar to what I have but the disk doesn't 
+disappear, comes back but just takes awhile to come back out of sleep mode.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.188
-Git Commit: 3602dbc57b556eff2456715301d35a1ef8964bba
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+On 7/26/23 17:39, Damien Le Moal wrote:
+> On 7/26/23 22:47, Thorsten Leemhuis wrote:
+>> Hi, Thorsten here, the Linux kernel's regression tracker.
+>>
+>> On 26.07.23 13:54, TW wrote:
+>>> I have been having issues with the 6.x series of kernels resuming from
+>>> suspend with one of my drives. Far as I can tell it has trouble with the
+>>> cache on the drive when coming out of s3 sleep. Tried a few different
+>>> distros (Manjaro, OpenMandriva Rome, EndeavourOS) all that give the same
+>>> error message. It appears to work fine on the 5.15 kernel just fine
+>>> however.
+>>>
+>>> This is the error or errors that I have been getting and assume has been
+>>> holding up the system from resuming from suspend.
+>>>
+>>> Jul 20 04:13:41 rageworks kernel: ata10.00: device reported invalid CHS sector 0
+>>> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: [sdc] Start/Stop Unit failed: Result: hostbyte=DID_OK driverbyte=DRIVER_OK
+>>> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: [sdc] Sense Key : Illegal Request [current]
+>>> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: [sdc] Add. Sense: Unaligned write command
+> This sense is garbage. This issue was reported already, but it is hard
+> to deal with as it seems to be due to drives/adapters not correctly
+> reporting status bits. So for now, let's ignore this sense codes.
+>
+> The start/stop unit failure is weird. On another case, I am suspecting
+> that this command is causing a delay on resume, but not an error like this.
+>
+>>> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x90 returns -5
+>>> Jul 20 04:13:41 rageworks kernel: sd 9:0:0:0: PM: failed to resume async: error -5
+>> Thx for your report. I CCed a few people, with a bit of luck they have
+>> an idea. But I doubt it. If no one replies you likely will need a
+>> bisection to find the root of the problem. But before going down that
+>> route you want to check if latest mainline kernel (vanilla!) works better.
+>>
+>> FWIW, this is not my area of expertise, so the following might be a
+>> misleading comment, but the problem looks somewhat similar to this one
+>> that iirc was never solved:
+>> https://bugzilla.kernel.org/show_bug.cgi?id=216087
+>>
+>>> Jul 20 04:12:51 rageworks systemd[1]: nvidia-suspend.service: Deactivated successfully.
+>>> Jul 20 04:12:51 rageworks systemd[1]: Finished NVIDIA system suspend actions.
+>>> Jul 20 04:12:51 rageworks systemd[1]: Starting System Suspend...
+>> That sounds like you are using out-of tree drivers which can cause all
+>> sorts of issues. Please recheck if the problem happens without those as
+>> well and do not use them in all further tests to debug the issue.
+> Yes. Please retest with the latest 6.5-rc3.
+>
+> And can you try this patch to see if it solves your issue ?
+>
+> commit 29e81d11812ee924d19425343ec69acd34af9d35
+> Author: Damien Le Moal <dlemoal@kernel.org>
+> Date:   Mon Jul 24 13:23:14 2023 +0900
+>
+>      ata,scsi: do not issue START STOP UNIT on resume
+>
+>      Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+>
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index 370d18aca71e..6184c7bcc16c 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+> @@ -1100,7 +1100,13 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct
+> ata_device *dev)
+>   		}
+>   	} else {
+>   		sdev->sector_size = ata_id_logical_sector_size(dev->id);
+> +		/*
+> +		 * Stop the drive on suspend but do not issue START STOP UNIT
+> +		 * on resume as this is not necessary: the port is reset on
+> +		 * resume, which wakes up the drive.
+> +		 */
+>   		sdev->manage_start_stop = 1;
+> +		sdev->no_start_on_resume = 1;
+>   	}
+>
+>   	/*
+> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+> index 68b12afa0721..b8584fe3123e 100644
+> --- a/drivers/scsi/sd.c
+> +++ b/drivers/scsi/sd.c
+> @@ -3876,7 +3876,7 @@ static int sd_suspend_runtime(struct device *dev)
+>   static int sd_resume(struct device *dev)
+>   {
+>   	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+> -	int ret;
+> +	int ret = 0;
+>
+>   	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
+>   		return 0;
+> @@ -3885,7 +3885,8 @@ static int sd_resume(struct device *dev)
+>   		return 0;
+>
+>   	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+> -	ret = sd_start_stop_device(sdkp, 1);
+> +	if (!sdkp->device->no_start_on_resume)
+> +		ret = sd_start_stop_device(sdkp, 1);
+>   	if (!ret)
+>   		opal_unlock_from_suspend(sdkp->opal_dev);
+>   	return ret;
+> diff --git a/include/scsi/scsi_device.h b/include/scsi/scsi_device.h
+> index 75b2235b99e2..b9230b6add04 100644
+> --- a/include/scsi/scsi_device.h
+> +++ b/include/scsi/scsi_device.h
+> @@ -194,6 +194,7 @@ struct scsi_device {
+>   	unsigned no_start_on_add:1;	/* do not issue start on add */
+>   	unsigned allow_restart:1; /* issue START_UNIT in error handler */
+>   	unsigned manage_start_stop:1;	/* Let HLD (sd) manage start/stop */
+> +	unsigned no_start_on_resume:1; /* Do not issue START_STOP_UNIT on resume */
+>   	unsigned start_stop_pwr_cond:1;	/* Set power cond. in START_STOP_UNIT */
+>   	unsigned no_uld_attach:1; /* disable connecting to upper level drivers */
+>   	unsigned select_no_atn:1;
+>
+>
