@@ -2,164 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE340765B13
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 19:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0020C765B41
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 20:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbjG0R7P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 13:59:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44540 "EHLO
+        id S230516AbjG0SQW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 14:16:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231657AbjG0R7N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 13:59:13 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2061.outbound.protection.outlook.com [40.107.223.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 312F935AB;
-        Thu, 27 Jul 2023 10:59:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OLBHt4hPKbCinSugMWxH95Cy41Mzg+gc041xHc2BPc6DpUiBgCN24p7atMrrfRDnDVBNqNJKMEqxcvPvGd0Id4qtQNipw8KFWUiC3NVnLAm6mLqzzK9cldID+ZNiOJ2Z/obWKdO3nxYUxL/qpGEuEE6ZUoYrhxWs/maXGqtfjPcIyTHCh2ARVjIynhoGaJ1eB7fh8bBr9eHm69kjE58Z4pEA5t2p0gfVaYvcOJzgq5TlK98hBKRy7CX0OqEnBFs7NH5kjsw/MG5vEWo5qo5DQnCf8oXvdgk5oFtNgTRGe1dbMK4fd2ITk4vilLpcA9s2LI8lHMMldq/A14qL0HpPAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lWZ4yQYXvfaU6H77EQjQMAfKQF5C9n/gZM5EhbTLcqc=;
- b=GmHjzlLJBqVV7LzeznmMyAwqI96bnafTX17cbbAQnxjbsY7XtZs0+mrVGTznrmi73htFekNIMfd+ykjYqflljRXkee/8eZCcbxlVQHWfk8aSKoZhWlEVbUHdQbr8mxonchMHFMz8iQg4HUyTUMlxUbbAetHYHTxDanU7XPwEGq4BrxbzwOzJVvlkIGaCO/7AROb/JqN8SwgLX9wwKvrrfe8yfrjsFy0u6lhAV9NUQSDxcwRHrtsHoOB+hA86dDz1E3xyyxLFo1jEa5WdA2vXcmCFhtnK4HrgXHZpjGdYg9qSFCsxk7iFX1AMLEuCZx/LSbMHEXV7Vh65R0aloZlkNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lWZ4yQYXvfaU6H77EQjQMAfKQF5C9n/gZM5EhbTLcqc=;
- b=D2mACUu93L9Qnx/6UXi8Pnmj/hO+ZSzaM0JkZJX4x0J+zCXISXFdVyJ6AaNuZ1bZB9jA/ttDS6UnDQUbuG+0ZfXGXEctlYIyjR22/VUW8Os9uzQBI8sfZa8JjxJ6pWRdkbdlH+dUIU0S9iAGi6fdwIEEakQHrWDcRV8xdWVgLh64i8E32XnJirhn1rJUMPcGsTfmmDLs3cVfz4Fbg1yH4OnMgskEbUb9+u4EE9JnpJUgTfJ/NSR4jB7sCMKhAbdtu/RHYq8k886rfZS9wi69xCr8rbYbFC8L7WDJHfhdFsExKtdT0y4Z+rJQ0jRdOTMjfS80JwksQ1dJ3rNDfFqfoQ==
-Received: from DS7PR06CA0034.namprd06.prod.outlook.com (2603:10b6:8:54::18) by
- DM6PR12MB4315.namprd12.prod.outlook.com (2603:10b6:5:223::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6631.29; Thu, 27 Jul 2023 17:58:58 +0000
-Received: from DM6NAM11FT069.eop-nam11.prod.protection.outlook.com
- (2603:10b6:8:54:cafe::c3) by DS7PR06CA0034.outlook.office365.com
- (2603:10b6:8:54::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29 via Frontend
- Transport; Thu, 27 Jul 2023 17:58:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DM6NAM11FT069.mail.protection.outlook.com (10.13.173.202) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6631.29 via Frontend Transport; Thu, 27 Jul 2023 17:58:57 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Thu, 27 Jul 2023
- 10:58:43 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.37; Thu, 27 Jul 2023 10:58:43 -0700
-Received: from c-237-113-220-225.mtl.labs.mlnx (10.127.8.12) by
- mail.nvidia.com (10.126.190.180) with Microsoft SMTP Server id 15.2.986.37
- via Frontend Transport; Thu, 27 Jul 2023 10:58:40 -0700
-From:   Dragos Tatulea <dtatulea@nvidia.com>
-To:     "Michael S . Tsirkin" <mst@redhat.com>, Lin Ma <linma@zju.edu.cn>,
-        "Jason Wang" <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        "Parav Pandit" <parav@nvidia.com>
-CC:     <virtualization@lists.linux-foundation.org>,
-        <linux-kernel@vger.kernel.org>,
-        Dragos Tatulea <dtatulea@nvidia.com>, <stable@vger.kernel.org>
-Subject: [PATCH 4/4] vdpa: Enable strict validation for netlinks ops
-Date:   Thu, 27 Jul 2023 20:57:54 +0300
-Message-ID: <20230727175757.73988-9-dtatulea@nvidia.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230727175757.73988-1-dtatulea@nvidia.com>
-References: <20230727175757.73988-1-dtatulea@nvidia.com>
+        with ESMTP id S229779AbjG0SQU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 14:16:20 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A765D30C0
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 11:16:18 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-516500163b2so1318a12.1
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 11:16:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690481777; x=1691086577;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DiDS0mChascCO6L3tr3Hz0xDTzt2hEO5MJ+iwsPLl7U=;
+        b=OqKw06mieFE2i7Texhe7OHQzvhb6ib37GdrPTOEVqzDpVnflcRQEdAUGLqXs5nDotf
+         9obVCG4LmcSQGVVzMtLTO02vaJnzEX3/MPZN3ISVLwmESgeAh43kLyodB72Fob+qTKpP
+         oNeWog1pOi9+GtH0Z9+Ce+a/yb/i/vjtN92mAcSdXKK6ytR7LUQuWBnjXENNuQlIVO+p
+         GiKyx0qsNKgN+APrsJvS0VzdSWngL0ZF838Jqp3Br+H/5tqyZQwfOHvrRp2hJGeG2JxN
+         LhQPUyuyGhqRToDM8Dqi7G3/NWs0LbavhI+ThoXGxk9nGs3LC2rAmS5s+FiHasYv79AH
+         uv4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690481777; x=1691086577;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DiDS0mChascCO6L3tr3Hz0xDTzt2hEO5MJ+iwsPLl7U=;
+        b=E7I3JBpkX138VHBY/X2HfJlnnOhztRT6FRfWL7mn9+rXy3fkCQc+jRM0sSDNQEWxN7
+         qothhEwon911Eu53c8Aw2MottEkelAFBKXoJKLSW0qoOD0TWwzczuzBVB+AJNUrJn1kJ
+         eQ/7wfjtZGBBP+y9XCZBRTVEEG/+jiCMNGMXcv4g0qs1uAsIDEYkzXiZRZm9zHuukJyn
+         HF1edMm+7lyY964skhYN9ZVHv5zesPrbAQNDrmIqQpSHJqxGHJYQHjCzcP/850YXWj7P
+         y0IoqqBwad3zAe0/A3Kg21aZVxm/svr5VFp5Cab5BMvYoO9Jl//tsTMf/1ERfLWTdKo0
+         NDqw==
+X-Gm-Message-State: ABy/qLar5R23PAmmDr0LZQJ67XpIFpJJxfTgCqv5D1L6nZA9k82Y8hYc
+        L//7WgwEIquV+sEsN+sLwCeViIlGAwnKQwbsUQ9rVg==
+X-Google-Smtp-Source: APBJJlFrSL1AM7CHEdphomj39vss8b33BHSYCNSZrbHdcSZoGX7g6eEnHPlUf54w3Y83E5cBi5H77BQGzK66cSEt/Vc=
+X-Received: by 2002:a50:d50d:0:b0:50b:c48c:8a25 with SMTP id
+ u13-20020a50d50d000000b0050bc48c8a25mr14715edi.6.1690481777012; Thu, 27 Jul
+ 2023 11:16:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT069:EE_|DM6PR12MB4315:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8538c0bd-97b6-4a3e-103e-08db8ecb269c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: LBrs3yQ3ouZULM0fesYh6lwNEi2hqv5uXSP1pbGSWJ2VIKGU+rNKSqBdDD9TZLc1D1HgOKzYTu22jTHObw8Ucqxkl9pfJTD++ofIRtKDjgRNGUwNzLO9OUzC20plowtqr+/D1+1wC0bFiDfdoKQtJMkb140ToEjlRf1CZxGJ4AAdZOaJ6HUv5KMXp8YpuUUBNlyyBMh6n/f9eKfYH9M+RmN9LCKUulCCKgoa9+WtRcP7DSqJVa2cp80CptRTc5itIHDyXqV3Zn/ulgrtZEkJFLoX2xPHmX5R8KDd3olLY043sEf/8N18ZZ9i99FH11/Xg3M+pAjHvMccwEDGMFcLlzchWK1C9WE73zv0OtqA6N+O6RDj9cim6ju0PZRZXVruKlGLbQKMJuw2rXSfghGT5EnQyAUyTbRg1r7sPaBs9nppbIQct8GOCOwgbvPeIP4WNnkiwb7qTjrQmp46F8YeJYDg1V9LQgDiGFbtcYzxb927dJptO5PWmeIRgDWoFwBTwtXTFzTfVSV0XEF/z/YvI/MeRbW7PsTN+Yqf8vTjcH8apb4eUQ9bXWFrsh2kSi9u0oeuJoriK0jEC9z6T8hkguNKJlE5DMXXC9KsN9XSnGwNIxcSEKul14qlKSVF8JnEYaKkuAzSfYUwz0SnfKEXxTexr2CjXKj5B/CO5bHA0GYPVCNR1F+0VqybzvkWjNJidw3+/tv7lKfxZdLGWwu2ypgjVzVrXRVib0DGcqpEsRM7avHnClsJfdQ/F5oxjVUn
-X-Forefront-Antispam-Report: CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(39860400002)(136003)(396003)(82310400008)(451199021)(36840700001)(46966006)(40470700004)(54906003)(110136005)(6666004)(2906002)(7636003)(40460700003)(478600001)(82740400003)(316002)(8936002)(5660300002)(8676002)(41300700001)(36756003)(356005)(40480700001)(4326008)(70206006)(6636002)(70586007)(336012)(1076003)(186003)(86362001)(26005)(36860700001)(2616005)(47076005)(426003)(83380400001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2023 17:58:57.8449
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8538c0bd-97b6-4a3e-103e-08db8ecb269c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT069.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4315
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20230726020946.1409565-1-rdbabiera@google.com> <13b9a16f-0f26-23a4-1e2e-5b1cf9cb4070@roeck-us.net>
+In-Reply-To: <13b9a16f-0f26-23a4-1e2e-5b1cf9cb4070@roeck-us.net>
+From:   RD Babiera <rdbabiera@google.com>
+Date:   Thu, 27 Jul 2023 11:16:05 -0700
+Message-ID: <CALzBnUGYZXgocCmycqgf6FyCA9qmVYYj9vuVkeXFoQy=E1GiwA@mail.gmail.com>
+Subject: Re: [PATCH v1] usb: typec: bus: verify partner exists in typec_altmode_attention
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+        badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The previous patches added the missing nla policies that were required for
-validation to work.
+On Tue, Jul 25, 2023 at 7:27=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+> Is this theory or actually observed ?
 
-Now strict validation on netlink ops can be enabled. This patch does it.
+This is actually observed.
 
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: stable@vger.kernel.org
----
- drivers/vdpa/vdpa.c | 6 ------
- 1 file changed, 6 deletions(-)
+> This dereferences partner
+>
+> > +
+> > +     if (!partner || !pdev)
+>
+> ... and then checks if partner is NULL.
+>
+> On top of that, pdev is not NULL even if partner is NULL because
+> adev is not the first element of struct altmode.
+>
+> In summary, this code and the check as implemented does not make
+> sense. Maybe partner can be NULL, but pdev will never be NULL.
 
-diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
-index f2f654fd84e5..a7612e0783b3 100644
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -1257,37 +1257,31 @@ static const struct nla_policy vdpa_nl_policy[VDPA_ATTR_MAX + 1] = {
- static const struct genl_ops vdpa_nl_ops[] = {
- 	{
- 		.cmd = VDPA_CMD_MGMTDEV_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_mgmtdev_get_doit,
- 		.dumpit = vdpa_nl_cmd_mgmtdev_get_dumpit,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_NEW,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_add_set_doit,
- 		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_DEL,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_del_set_doit,
- 		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_get_doit,
- 		.dumpit = vdpa_nl_cmd_dev_get_dumpit,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_CONFIG_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_config_get_doit,
- 		.dumpit = vdpa_nl_cmd_dev_config_get_dumpit,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_VSTATS_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_stats_get_doit,
- 		.flags = GENL_ADMIN_PERM,
- 	},
--- 
-2.41.0
+After looking at it more carefully, I agree on the pdev assignment and chec=
+k
+being odd. I'll follow how typec_altmode_vdm handles the NULL partner case
+and remove the NULL check on pdev.
 
+> > +             return -ENODEV;
+> >
+> >       if (pdev->ops && pdev->ops->attention)
+> >               pdev->ops->attention(pdev, vdo);
+> > +     else
+> > +             return -EOPNOTSUPP;
+> > +
+>
+> So far this was explicitly permitted. Now it will log an error each time =
+it is
+> observed. I do not see the point of this log message; obviously it was
+> not intended to be considered an error, and I do not understand why it sh=
+ould
+> suddenly be one that is worth clogging the log.
+
+My rationale for logging anything is that it will make it easier to
+identify port
+partners that send Attention messages regardless of whether or not the
+port registers the partner Alt Mode. You're right that this is not an error=
+, so
+I will treat this case as a successful return moving forward. Then the only
+log generated will be for a port partner that sends Attention messages to a
+port that hasn't registered an altmode for it.
+
+Thanks for the feedback,
+RD
