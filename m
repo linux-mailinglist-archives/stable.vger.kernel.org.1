@@ -2,142 +2,235 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CFE5765997
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 19:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C848E765A8C
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 19:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231184AbjG0RLa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 13:11:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43824 "EHLO
+        id S231469AbjG0RjY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 13:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229870AbjG0RL1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 13:11:27 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587CC30E3
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 10:11:24 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b95d5ee18dso18475271fa.1
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 10:11:24 -0700 (PDT)
+        with ESMTP id S231149AbjG0RjX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 13:39:23 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14BD219B5;
+        Thu, 27 Jul 2023 10:39:22 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-783549ef058so49627439f.2;
+        Thu, 27 Jul 2023 10:39:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690477882; x=1691082682;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1690479561; x=1691084361;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SBbf2syuRIw8JyAjPtp/cVqlfqIQVNdrVeEynwYMxXg=;
-        b=sTNcib6+VM1f/L7et/IKdD6pyGmOLtnuUo0j06e5m3EzssAyOguH5QGtgMezutJaM/
-         Mf2V4e3B8roPoGcQq1jvR4Vl38flaBMGgGnI5xHVILM1qUFXQaCbfwCkdRUX+PXdjZCi
-         eEXaE2fVUbuozsUB2/ARGAoklcx02gcturkTu2fbTK2eHNHP2+CEWNwYECzK3y6UcSL3
-         Ew6ByP0mplHDLnmELii/BTIMPEo6EWVmMWiRWzq9aW4Cx6HQPaf9KUt9Ek/nmWGspapS
-         ijbCJFz40EZecpN7oV6Qpz1Q5NaWG5O6Dkff0oUvMyZzXVS81DzSXolvbNOxwstaxOa9
-         GWMQ==
+        bh=mD7Ec40nx1InO1mj1sK16jFptJuYvMWAhJeXyIbeA3M=;
+        b=Hxk1ZfaalrnceoH6uTLtQ+6q7om/j585QiwZq3MvyxOfwZIvrCEHHVDBcroQ6tBBFl
+         wavfyRLx5vN9Jk4/GszclbYn0WebE5j31oNTtbja8jPqA5xjrzjd34vZkhGrC1YPup/4
+         tRsL0KlocvjXWspc0poDn4HBOTRHoG24EDO6fUCNvx5eZWlNzfutObia9ebcIP53EoRI
+         shP1hfvZnzWabk3tX6rFfgxNqpT1J1SGUrxINaMaPi7HV6m5XWiUNI66d/G9NF6xMotH
+         J17kwNnqb1BiYz1P9e1pYa4Po4NzYorm9e40qpLLQYBKFBHHhosYBsZ8aA5K2DDuXuQJ
+         tzOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690477882; x=1691082682;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1690479561; x=1691084361;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SBbf2syuRIw8JyAjPtp/cVqlfqIQVNdrVeEynwYMxXg=;
-        b=fPI1TBrHEGVwxpFLNnvJhu+8h5GPKv6/J+557lonlJ+kQqQ9uzjBrCL9TDUmX7t9IP
-         kUX0Pc9b3s+HtFqXOhUHZb9jtz4Pl9T6Wq8+8YmMVkZIhwLTaUC1Q2boTvBu//5SSZ1l
-         cDqzDN4HQtN/dtooJco8ZAFvBa7CcDLfyfWCjREyULeU4+h1p5bOw5NNiQeju/tm1IEi
-         VAl/BFw6szPNM/2/RJ1wUsGoBI5d4Y3SWPZ/kj5r01fmhp/drfjZsu2dUX3ZqOYLTcxm
-         2RUmULi0zMHd/Yib4y6tYvZZblJ2JN8dp69wt4iSSwnTMoS3chlIkczj3YUZ+B7ssP03
-         z8Yg==
-X-Gm-Message-State: ABy/qLap8qiEpwh9oZ5cdqUwe3JnnQ2vh8gCZYo+KGSLPky5Q3qRphz7
-        gOkgHmH85yYA+W77+3AzN3ZpZA==
-X-Google-Smtp-Source: APBJJlELmZwyCPa7KKXeBVZ6EMYGO8Qy32qfqqCmrQes2UzEM5wF5kVZtcUh7uBWVqrZLbJFB/PSLw==
-X-Received: by 2002:a05:651c:205:b0:2b7:a64:6c3c with SMTP id y5-20020a05651c020500b002b70a646c3cmr2210462ljn.37.1690477882687;
-        Thu, 27 Jul 2023 10:11:22 -0700 (PDT)
-Received: from [192.168.1.101] (abxi99.neoplus.adsl.tpnet.pl. [83.9.2.99])
-        by smtp.gmail.com with ESMTPSA id y4-20020a2eb004000000b002b944151da5sm441863ljk.81.2023.07.27.10.11.21
+        bh=mD7Ec40nx1InO1mj1sK16jFptJuYvMWAhJeXyIbeA3M=;
+        b=V7kcWzI2nCS4q0CH63/CoOOa6lTIElE3+KcmXu3qydzdu6O8TFjqyMzJGpvcX2/QaV
+         FESq9HYhRzLqjX7/I2pBw80//NY5XVjUDuC3gdKDBN4NL/WCeP100ZEtJwT/0u47nA3e
+         PhhedNNracsQCVa7tgdsQ5jBqflHChJiOJKcRtOacjIZxiwmIwjEQbu5C/Mkh1wblrwm
+         D3mjvcF2fM5RnpWSah8SwzwbIqVoyXC81Ku+wlbhJm1GRaHLhAxKeZhZgnQGUAU602IE
+         NChdI7qmNbXxHfFTmE+qUZe2LlW/Kt1pw4gcTRnO9tBvyhKwPU6ydtrx6W/eIJNBVowH
+         swaw==
+X-Gm-Message-State: ABy/qLZ56/kAoltUqtmd8HQejDO3Ls/UUAiQM5BdXLoDIJRCjzL560Lm
+        0pV891VRgHSdQVzknO2+cBI=
+X-Google-Smtp-Source: APBJJlH7IW0hhv0wW+O2QV239cTgAZ/nOWX/T4X6e0QWGiiGCIKSvFqw62CJpUymCRfCjX7+hC4FJA==
+X-Received: by 2002:a6b:7116:0:b0:787:1990:d2e2 with SMTP id q22-20020a6b7116000000b007871990d2e2mr221526iog.10.1690479560903;
+        Thu, 27 Jul 2023 10:39:20 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h3-20020a02c723000000b0041fb2506011sm542842jao.172.2023.07.27.10.39.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jul 2023 10:11:22 -0700 (PDT)
-Message-ID: <d146e175-bbc2-3f25-9b97-49c9c402357c@linaro.org>
-Date:   Thu, 27 Jul 2023 19:11:21 +0200
+        Thu, 27 Jul 2023 10:39:20 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <2f4b012e-1f95-30aa-3f43-c31e84cb2c42@roeck-us.net>
+Date:   Thu, 27 Jul 2023 10:39:17 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] venus: hfi_parser: Add check to keep the number of
- codecs within range
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Content-Language: en-US
-To:     Vikash Garodia <quic_vgarodia@quicinc.com>,
-        stanimir.k.varbanov@gmail.com, bryan.odonoghue@linaro.org,
-        agross@kernel.org, andersson@kernel.org, mchehab@kernel.org,
-        hans.verkuil@cisco.com, tfiga@chromium.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <1690432469-14803-1-git-send-email-quic_vgarodia@quicinc.com>
- <1690432469-14803-5-git-send-email-quic_vgarodia@quicinc.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <1690432469-14803-5-git-send-email-quic_vgarodia@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+To:     paulmck@kernel.org
+Cc:     Joel Fernandes <joel@joelfernandes.org>,
+        Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org
+References: <ZMJWet00+9yIl/9c@duo.ucw.cz>
+ <78722041-D1F7-45FA-BA1C-41B92209BA6C@joelfernandes.org>
+ <0751f5a8-2727-4a08-8bb8-50bbd4244c9c@paulmck-laptop>
+ <67eba84a-ae24-2983-a756-463f39f3ca71@roeck-us.net>
+ <ebe4a969-8a24-4bb8-8dbe-f77db89f65c9@paulmck-laptop>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
+In-Reply-To: <ebe4a969-8a24-4bb8-8dbe-f77db89f65c9@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 27.07.2023 06:34, Vikash Garodia wrote:
-> Supported codec bitmask is populated from the payload from venus firmware.
-> There is a possible case when all the bits in the codec bitmask is set. In
-> such case, core cap for decoder is filled  and MAX_CODEC_NUM is utilized.
-> Now while filling the caps for encoder, it can lead to access the caps
-> array beyong 32 index. Hence leading to OOB write.
-> The fix counts the supported encoder and decoder. If the count is more than
-> max, then it skips accessing the caps.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-> ---
->  drivers/media/platform/qcom/venus/hfi_parser.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-> index ec73cac..651e215 100644
-> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
-> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-> @@ -14,11 +14,26 @@
->  typedef void (*func)(struct hfi_plat_caps *cap, const void *data,
->  		     unsigned int size);
->  
-> +static int count_setbits(u32 input)
-hweight_long()?
+On 7/27/23 09:07, Paul E. McKenney wrote:
 
-Konrad
+...]
+
+>> No. However, (unrelated) in linux-next, rcu tests sometimes result in apparent hangs
+>> or long runtime.
+>>
+>> [    0.778841] Mount-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+>> [    0.779011] Mountpoint-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+>> [    0.797998] Running RCU synchronous self tests
+>> [    0.798209] Running RCU synchronous self tests
+>> [    0.912368] smpboot: CPU0: AMD Opteron 63xx class CPU (family: 0x15, model: 0x2, stepping: 0x0)
+>> [    0.923398] RCU Tasks: Setting shift to 2 and lim to 1 rcu_task_cb_adjust=1.
+>> [    0.925419] Running RCU-tasks wait API self tests
+>>
+>> (hangs until aborted). This is primarily with Opteron CPUs, but also with others such as Haswell,
+>> Icelake-Server, and pentium3. It is all but impossible to bisect because it doesn't happen
+>> all the time. All I was able to figure out was that it has to do with rcu changes in linux-next.
+>> I'd be much more concerned about that.
+> 
+> First I have heard of this, so thank you for letting me know.
+> 
+> About what fraction of the time does this happen?
+> 
+
+Here is a sample test log from yesterday's -next. This is with x86_64.
+Today's -next always crashes, so no data.
+
+Building x86_64:q35:Broadwell-noTSX:defconfig:smp:net,e1000:mem256:ata:hd ... running ....... passed
+Building x86_64:q35:Cascadelake-Server:defconfig:smp:net,e1000e:mem256:ata:cd ... running .................R....... passed
+Building x86_64:q35:IvyBridge:defconfig:smp2:net,i82801:efi:mem512:nvme:hd ... running ...... passed
+Building x86_64:q35:SandyBridge:defconfig:smp4:net,ne2k_pci:efi32:mem1G:usb:hd ... running ......... passed
+Building x86_64:q35:SandyBridge:defconfig:smp8:net,ne2k_pci:mem1G:usb-hub:hd ... running ....... passed
+Building x86_64:q35:Haswell:defconfig:smp:tpm-tis:net,pcnet:mem2G:usb-uas:hd ... running .................R.... passed
+Building x86_64:q35:Skylake-Client:defconfig:smp2:tpm-tis:net,rtl8139:efi:mem4G:sdhci:mmc:hd ... running ....... passed
+Building x86_64:q35:Conroe:defconfig:smp4:net,tulip:efi32:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:Denverton:defconfig:smp2:net,tulip:efi:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:EPYC-Milan:defconfig:smp:tpm-crb:net,tulip:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp:net,virtio-net:mem512:scsi[AM53C974]:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp:net,virtio-net-old:mem512:scsi[AM53C974]:hd ... running ....... passed
+Building x86_64:q35:Westmere-IBRS:defconfig:smp2:tpm-crb:net,usb-ohci:efi:mem1G:scsi[53C810]:cd ... running .................R........... passed
+Building x86_64:q35:Skylake-Server:defconfig:smp4:tpm-tis:net,e1000-82544gc:efi32:mem2G:scsi[53C895A]:hd ... running ............. passed
+Building x86_64:pc:EPYC:defconfig:smp:pci-bridge:net,usb-uhci:mem4G:scsi[FUSION]:hd ... running ..................R.......... passed
+Building x86_64:q35:EPYC-IBPB:defconfig:smp2:net,e1000-82545em:efi:mem8G:scsi[MEGASAS]:hd ... running ....... passed
+Building x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:efi32:mem256:scsi[MEGASAS2]:hd ... running ...... passed
+Building x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2]:hd ... running .................R.............. failed (silent)
+Building x86_64:pc:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2]:hd ... running .......... passed
+Building x86_64:pc:phenom:defconfig:smp:net,i82559er:mem512:initrd ... running ........ passed
+Building x86_64:q35:Opteron_G1:defconfig:smp2:net,i82562:efi:mem1G:initrd ... running ...... passed
+Building x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-pci]:hd ... running .................R................. passed
+Building x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-pci-old]:hd ... running ................... passed
+Building x86_64:q35:core2duo:defconfig:smp2:net,i82559a:mem4G:virtio-pci:hd ... running ......... passed
+Building x86_64:q35:Broadwell:defconfig:smp4:net,i82558b:efi:mem8G:virtio:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp2:net,i82558a:efi32:mem1G:virtio:hd ... running .................R... passed
+Building x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:mem2G:virtio:cd ... running ......... passed
+Building x86_64:q35:Icelake-Server:defconfig:preempt:smp8:net,i82557a:mem4G:nvme:hd ... running ...... passed
+Building x86_64:q35:Skylake-Client-IBRS:defconfig:preempt:smp2:net,i82558b:efi32:mem1G:sdhci:mmc:hd ... running ...... passed
+Building x86_64:q35:KnightsMill:defconfig:preempt:smp6:net,i82550:mem512:initrd ... running ...... passed
+Building x86_64:q35:Cooperlake:defconfig:smp2:net,usb-ohci:efi:mem1G:scsi[53C810]:hd ... running ....... passed
+Building x86_64:q35:EPYC-Rome:defconfig:smp4:net,igb:mem2G:scsi[53C895A]:hd ... running ......... passed
+Building x86_64:pc:Opteron_G3:defconfig:nosmp:net,e1000:mem1G:usb:hd ... running ....................R................. failed (silent)
+Building x86_64:q35:Opteron_G4:defconfig:nosmp:net,ne2k_pci:efi:mem512:ata:hd ... running .....................R....... passed
+Building x86_64:q35:Haswell-noTSX-IBRS:defconfig:nosmp:net,pcnet:efi32:mem2G:ata:hd ... running .................R.............. failed (silent)
+
+An earlier test run:
+
+Building x86_64:q35:Broadwell-noTSX:defconfig:smp:net,e1000:mem256:ata:hd ... running ....... passed
+Building x86_64:q35:Cascadelake-Server:defconfig:smp:net,e1000e:mem256:ata:cd ... running .................R....... passed
+Building x86_64:q35:IvyBridge:defconfig:smp2:net,i82801:efi:mem512:nvme:hd ... running ........ passed
+Building x86_64:q35:SandyBridge:defconfig:smp4:net,ne2k_pci:efi32:mem1G:usb:hd ... running .......... passed
+Building x86_64:q35:SandyBridge:defconfig:smp8:net,ne2k_pci:mem1G:usb-hub:hd ... running ....... passed
+Building x86_64:q35:Haswell:defconfig:smp:tpm-tis:net,pcnet:mem2G:usb-uas:hd ... running .................R.... passed
+Building x86_64:q35:Skylake-Client:defconfig:smp2:tpm-tis:net,rtl8139:efi:mem4G:sdhci:mmc:hd ... running ....... passed
+Building x86_64:q35:Conroe:defconfig:smp4:net,tulip:efi32:mem256:scsi[DC395]:hd ... running ......... passed
+Building x86_64:q35:Denverton:defconfig:smp2:net,tulip:efi:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:EPYC-Milan:defconfig:smp:tpm-crb:net,tulip:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp:net,virtio-net:mem512:scsi[AM53C974]:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp:net,virtio-net-old:mem512:scsi[AM53C974]:hd ... running ........ passed
+Building x86_64:q35:Westmere-IBRS:defconfig:smp2:tpm-crb:net,usb-ohci:efi:mem1G:scsi[53C810]:cd ... running .......... passed
+Building x86_64:q35:Skylake-Server:defconfig:smp4:tpm-tis:net,e1000-82544gc:efi32:mem2G:scsi[53C895A]:hd ... running .................R..... passed
+Building x86_64:pc:EPYC:defconfig:smp:pci-bridge:net,usb-uhci:mem4G:scsi[FUSION]:hd ... running .................R.............. failed (silent)
+Building x86_64:q35:EPYC-IBPB:defconfig:smp2:net,e1000-82545em:efi:mem8G:scsi[MEGASAS]:hd ... running ....... passed
+Building x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:efi32:mem256:scsi[MEGASAS2]:hd ... running ....... passed
+Building x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2]:hd ... running ....... passed
+Building x86_64:pc:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2]:hd ... running .......... passed
+Building x86_64:pc:phenom:defconfig:smp:net,i82559er:mem512:initrd ... running ........ passed
+Building x86_64:q35:Opteron_G1:defconfig:smp2:net,i82562:efi:mem1G:initrd ... running ...... passed
+Building x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-pci]:hd ... running .......... passed
+Building x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-pci-old]:hd ... running .......... passed
+Building x86_64:q35:core2duo:defconfig:smp2:net,i82559a:mem4G:virtio-pci:hd ... running ...... passed
+Building x86_64:q35:Broadwell:defconfig:smp4:net,i82558b:efi:mem8G:virtio:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp2:net,i82558a:efi32:mem1G:virtio:hd ... running ...... passed
+Building x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:mem2G:virtio:cd ... running ......... passed
+Building x86_64:q35:Icelake-Server:defconfig:preempt:smp8:net,i82557a:mem4G:nvme:hd ... running ....... passed
+Building x86_64:q35:Skylake-Client-IBRS:defconfig:preempt:smp2:net,i82558b:efi32:mem1G:sdhci:mmc:hd ... running ....... passed
+Building x86_64:q35:KnightsMill:defconfig:preempt:smp6:net,i82550:mem512:initrd ... running ....... passed
+Building x86_64:q35:Cooperlake:defconfig:smp2:net,usb-ohci:efi:mem1G:scsi[53C810]:hd ... running ........ passed
+Building x86_64:q35:EPYC-Rome:defconfig:smp4:net,igb:mem2G:scsi[53C895A]:hd ... running ......... passed
+Building x86_64:pc:Opteron_G3:defconfig:nosmp:net,e1000:mem1G:usb:hd ... running ....................R................. failed (silent)
+Building x86_64:q35:Opteron_G4:defconfig:nosmp:net,ne2k_pci:efi:mem512:ata:hd ... running ....... passed
+Building x86_64:q35:Haswell-noTSX-IBRS:defconfig:nosmp:net,pcnet:efi32:mem2G:ata:hd ... running ....... passed
+
+"R" means retry, and the dots reflect time expired. It looks like it happens most of the time,
+but not always, on affected CPUs. I don't have specific data for non-Intel CPUs. I don't think
+I see the problem there, but there is too much interference from other problems to be sure.
+
+For comparison, here is the result from the latest mainline:
+
+Building x86_64:q35:Broadwell-noTSX:defconfig:smp:net,e1000:mem256:ata:hd ... running ....... passed
+Building x86_64:q35:Cascadelake-Server:defconfig:smp:net,e1000e:mem256:ata:cd ... running .......... passed
+Building x86_64:q35:IvyBridge:defconfig:smp2:net,i82801:efi:mem512:nvme:hd ... running ...... passed
+Building x86_64:q35:SandyBridge:defconfig:smp4:net,ne2k_pci:efi32:mem1G:usb:hd ... running ......... passed
+Building x86_64:q35:SandyBridge:defconfig:smp8:net,ne2k_pci:mem1G:usb-hub:hd ... running ........... passed
+Building x86_64:q35:Haswell:defconfig:smp:tpm-tis:net,pcnet:mem2G:usb-uas:hd ... running ........ passed
+Building x86_64:q35:Skylake-Client:defconfig:smp2:tpm-tis:net,rtl8139:efi:mem4G:sdhci:mmc:hd ... running ....... passed
+Building x86_64:q35:Conroe:defconfig:smp4:net,tulip:efi32:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:Denverton:defconfig:smp2:net,tulip:efi:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:EPYC-Milan:defconfig:smp:tpm-crb:net,tulip:mem256:scsi[DC395]:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp:net,virtio-net:mem512:scsi[AM53C974]:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp:net,virtio-net-old:mem512:scsi[AM53C974]:hd ... running ....... passed
+Building x86_64:q35:Westmere-IBRS:defconfig:smp2:tpm-crb:net,usb-ohci:efi:mem1G:scsi[53C810]:cd ... running .......... passed
+Building x86_64:q35:Skylake-Server:defconfig:smp4:tpm-tis:net,e1000-82544gc:efi32:mem2G:scsi[53C895A]:hd ... running ....... passed
+Building x86_64:pc:EPYC:defconfig:smp:pci-bridge:net,usb-uhci:mem4G:scsi[FUSION]:hd ... running ............. passed
+Building x86_64:q35:EPYC-IBPB:defconfig:smp2:net,e1000-82545em:efi:mem8G:scsi[MEGASAS]:hd ... running ....... passed
+Building x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:efi32:mem256:scsi[MEGASAS2]:hd ... running ....... passed
+Building x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2]:hd ... running ...... passed
+Building x86_64:pc:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2]:hd ... running ......... passed
+Building x86_64:pc:phenom:defconfig:smp:net,i82559er:mem512:initrd ... running ......... passed
+Building x86_64:q35:Opteron_G1:defconfig:smp2:net,i82562:efi:mem1G:initrd ... running ......... passed
+Building x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-pci]:hd ... running ......... passed
+Building x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-pci-old]:hd ... running ......... passed
+Building x86_64:q35:core2duo:defconfig:smp2:net,i82559a:mem4G:virtio-pci:hd ... running ...... passed
+Building x86_64:q35:Broadwell:defconfig:smp4:net,i82558b:efi:mem8G:virtio:hd ... running ....... passed
+Building x86_64:q35:Nehalem:defconfig:smp2:net,i82558a:efi32:mem1G:virtio:hd ... running ...... passed
+Building x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:mem2G:virtio:cd ... running ............ passed
+Building x86_64:q35:Icelake-Server:defconfig:preempt:smp8:net,i82557a:mem4G:nvme:hd ... running ....... passed
+Building x86_64:q35:Skylake-Client-IBRS:defconfig:preempt:smp2:net,i82558b:efi32:mem1G:sdhci:mmc:hd ... running ...... passed
+Building x86_64:q35:KnightsMill:defconfig:preempt:smp6:net,i82550:mem512:initrd ... running ...... passed
+Building x86_64:q35:Cooperlake:defconfig:smp2:net,usb-ohci:efi:mem1G:scsi[53C810]:hd ... running ....... passed
+Building x86_64:q35:EPYC-Rome:defconfig:smp4:net,igb:mem2G:scsi[53C895A]:hd ... running .......... passed
+Building x86_64:pc:Opteron_G3:defconfig:nosmp:net,e1000:mem1G:usb:hd ... running .......... passed
+Building x86_64:q35:Opteron_G4:defconfig:nosmp:net,ne2k_pci:efi:mem512:ata:hd ... running ...... passed
+Building x86_64:q35:Haswell-noTSX-IBRS:defconfig:nosmp:net,pcnet:efi32:mem2G:ata:hd ... running ...... passed
+
+Guenter
+
