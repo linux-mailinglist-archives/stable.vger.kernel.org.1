@@ -2,121 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0020C765B41
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 20:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B664765BF2
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 21:16:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230516AbjG0SQW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 14:16:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
+        id S230407AbjG0TQO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 15:16:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbjG0SQU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 14:16:20 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A765D30C0
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 11:16:18 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-516500163b2so1318a12.1
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 11:16:18 -0700 (PDT)
+        with ESMTP id S229445AbjG0TQN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 15:16:13 -0400
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9142735;
+        Thu, 27 Jul 2023 12:16:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690481777; x=1691086577;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DiDS0mChascCO6L3tr3Hz0xDTzt2hEO5MJ+iwsPLl7U=;
-        b=OqKw06mieFE2i7Texhe7OHQzvhb6ib37GdrPTOEVqzDpVnflcRQEdAUGLqXs5nDotf
-         9obVCG4LmcSQGVVzMtLTO02vaJnzEX3/MPZN3ISVLwmESgeAh43kLyodB72Fob+qTKpP
-         oNeWog1pOi9+GtH0Z9+Ce+a/yb/i/vjtN92mAcSdXKK6ytR7LUQuWBnjXENNuQlIVO+p
-         GiKyx0qsNKgN+APrsJvS0VzdSWngL0ZF838Jqp3Br+H/5tqyZQwfOHvrRp2hJGeG2JxN
-         LhQPUyuyGhqRToDM8Dqi7G3/NWs0LbavhI+ThoXGxk9nGs3LC2rAmS5s+FiHasYv79AH
-         uv4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690481777; x=1691086577;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DiDS0mChascCO6L3tr3Hz0xDTzt2hEO5MJ+iwsPLl7U=;
-        b=E7I3JBpkX138VHBY/X2HfJlnnOhztRT6FRfWL7mn9+rXy3fkCQc+jRM0sSDNQEWxN7
-         qothhEwon911Eu53c8Aw2MottEkelAFBKXoJKLSW0qoOD0TWwzczuzBVB+AJNUrJn1kJ
-         eQ/7wfjtZGBBP+y9XCZBRTVEEG/+jiCMNGMXcv4g0qs1uAsIDEYkzXiZRZm9zHuukJyn
-         HF1edMm+7lyY964skhYN9ZVHv5zesPrbAQNDrmIqQpSHJqxGHJYQHjCzcP/850YXWj7P
-         y0IoqqBwad3zAe0/A3Kg21aZVxm/svr5VFp5Cab5BMvYoO9Jl//tsTMf/1ERfLWTdKo0
-         NDqw==
-X-Gm-Message-State: ABy/qLar5R23PAmmDr0LZQJ67XpIFpJJxfTgCqv5D1L6nZA9k82Y8hYc
-        L//7WgwEIquV+sEsN+sLwCeViIlGAwnKQwbsUQ9rVg==
-X-Google-Smtp-Source: APBJJlFrSL1AM7CHEdphomj39vss8b33BHSYCNSZrbHdcSZoGX7g6eEnHPlUf54w3Y83E5cBi5H77BQGzK66cSEt/Vc=
-X-Received: by 2002:a50:d50d:0:b0:50b:c48c:8a25 with SMTP id
- u13-20020a50d50d000000b0050bc48c8a25mr14715edi.6.1690481777012; Thu, 27 Jul
- 2023 11:16:17 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1690485373; x=1722021373;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T/pVh4qaWdruJ5g2WTsNDraJeIi+BJjyRLbyt9/I2iA=;
+  b=pY8P5mRnP1FtdAyPksDWuBpEqFmCTNRG0v7TnrRb9AUNxirD+Hj6nzP5
+   KD1jqDylm73L9lMnbTmMOn6PACNJqUqd8ltA+P/IuAGrMViXPF1K+FyAB
+   Ce1KCgZ8f2a1Y8UasLfWmw9vrmazlB/Cn6q/mIL12nnAbKWVG9agm41hr
+   s=;
+X-IronPort-AV: E=Sophos;i="6.01,235,1684800000"; 
+   d="scan'208";a="145203898"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 19:16:12 +0000
+Received: from EX19MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com (Postfix) with ESMTPS id 01BD880B55;
+        Thu, 27 Jul 2023 19:16:09 +0000 (UTC)
+Received: from EX19D002UWA004.ant.amazon.com (10.13.138.230) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Thu, 27 Jul 2023 19:16:09 +0000
+Received: from EX19MTAUWC001.ant.amazon.com (10.250.64.145) by
+ EX19D002UWA004.ant.amazon.com (10.13.138.230) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Thu, 27 Jul 2023 19:16:09 +0000
+Received: from dev-dsk-risbhat-2b-8bdc64cd.us-west-2.amazon.com
+ (10.189.73.169) by mail-relay.amazon.com (10.250.64.145) with Microsoft SMTP
+ Server id 15.2.1118.30 via Frontend Transport; Thu, 27 Jul 2023 19:16:09
+ +0000
+Received: by dev-dsk-risbhat-2b-8bdc64cd.us-west-2.amazon.com (Postfix, from userid 22673075)
+        id 726CD2711; Thu, 27 Jul 2023 19:16:09 +0000 (UTC)
+From:   Rishabh Bhatnagar <risbhat@amazon.com>
+To:     <gregkh@linuxfoundation.org>, <lee@kernel.org>,
+        <davem@davemloft.net>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, Eric Dumazet <edumazet@google.com>,
+        "Jamal Hadi Salim" <jhs@mojatatu.com>,
+        Rishabh Bhatnagar <risbhat@amazon.com>
+Subject: [PATCH 4.14] net/sched: cls_u32: Fix reference counter leak leading to overflow
+Date:   Thu, 27 Jul 2023 19:15:54 +0000
+Message-ID: <20230727191554.21333-1-risbhat@amazon.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230726020946.1409565-1-rdbabiera@google.com> <13b9a16f-0f26-23a4-1e2e-5b1cf9cb4070@roeck-us.net>
-In-Reply-To: <13b9a16f-0f26-23a4-1e2e-5b1cf9cb4070@roeck-us.net>
-From:   RD Babiera <rdbabiera@google.com>
-Date:   Thu, 27 Jul 2023 11:16:05 -0700
-Message-ID: <CALzBnUGYZXgocCmycqgf6FyCA9qmVYYj9vuVkeXFoQy=E1GiwA@mail.gmail.com>
-Subject: Re: [PATCH v1] usb: typec: bus: verify partner exists in typec_altmode_attention
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-        badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 25, 2023 at 7:27=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
-wrote:
-> Is this theory or actually observed ?
+From: Lee Jones <lee@kernel.org>
 
-This is actually observed.
+Upstream commit 04c55383fa5689357bcdd2c8036725a55ed632bc.
 
-> This dereferences partner
->
-> > +
-> > +     if (!partner || !pdev)
->
-> ... and then checks if partner is NULL.
->
-> On top of that, pdev is not NULL even if partner is NULL because
-> adev is not the first element of struct altmode.
->
-> In summary, this code and the check as implemented does not make
-> sense. Maybe partner can be NULL, but pdev will never be NULL.
+In the event of a failure in tcf_change_indev(), u32_set_parms() will
+immediately return without decrementing the recently incremented
+reference counter.  If this happens enough times, the counter will
+rollover and the reference freed, leading to a double free which can be
+used to do 'bad things'.
 
-After looking at it more carefully, I agree on the pdev assignment and chec=
-k
-being odd. I'll follow how typec_altmode_vdm handles the NULL partner case
-and remove the NULL check on pdev.
+In order to prevent this, move the point of possible failure above the
+point where the reference counter is incremented.  Also save any
+meaningful return values to be applied to the return data at the
+appropriate point in time.
 
-> > +             return -ENODEV;
-> >
-> >       if (pdev->ops && pdev->ops->attention)
-> >               pdev->ops->attention(pdev, vdo);
-> > +     else
-> > +             return -EOPNOTSUPP;
-> > +
->
-> So far this was explicitly permitted. Now it will log an error each time =
-it is
-> observed. I do not see the point of this log message; obviously it was
-> not intended to be considered an error, and I do not understand why it sh=
-ould
-> suddenly be one that is worth clogging the log.
+This issue was caught with KASAN.
 
-My rationale for logging anything is that it will make it easier to
-identify port
-partners that send Attention messages regardless of whether or not the
-port registers the partner Alt Mode. You're right that this is not an error=
-, so
-I will treat this case as a successful return moving forward. Then the only
-log generated will be for a port partner that sends Attention messages to a
-port that hasn't registered an altmode for it.
+Fixes: 705c7091262d ("net: sched: cls_u32: no need to call tcf_exts_change for newly allocated struct")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
+---
+ net/sched/cls_u32.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-Thanks for the feedback,
-RD
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index fdbdcba44917..a4e01220a53a 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -774,11 +774,22 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
+ 			 struct nlattr *est, bool ovr)
+ {
+ 	int err;
++#ifdef CONFIG_NET_CLS_IND
++	int ifindex = -1;
++#endif
+ 
+ 	err = tcf_exts_validate(net, tp, tb, est, &n->exts, ovr);
+ 	if (err < 0)
+ 		return err;
+ 
++#ifdef CONFIG_NET_CLS_IND
++	if (tb[TCA_U32_INDEV]) {
++		ifindex = tcf_change_indev(net, tb[TCA_U32_INDEV]);
++		if (ifindex < 0)
++			return -EINVAL;
++	}
++#endif
++
+ 	if (tb[TCA_U32_LINK]) {
+ 		u32 handle = nla_get_u32(tb[TCA_U32_LINK]);
+ 		struct tc_u_hnode *ht_down = NULL, *ht_old;
+@@ -806,14 +817,10 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
+ 	}
+ 
+ #ifdef CONFIG_NET_CLS_IND
+-	if (tb[TCA_U32_INDEV]) {
+-		int ret;
+-		ret = tcf_change_indev(net, tb[TCA_U32_INDEV]);
+-		if (ret < 0)
+-			return -EINVAL;
+-		n->ifindex = ret;
+-	}
++	if (ifindex >= 0)
++		n->ifindex = ifindex;
+ #endif
++
+ 	return 0;
+ }
+ 
+-- 
+2.40.1
+
