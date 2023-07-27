@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AD6C765289
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 13:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2EA7652B6
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 13:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232182AbjG0Lfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 07:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60910 "EHLO
+        id S233113AbjG0Lm2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 07:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbjG0Lfj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 07:35:39 -0400
+        with ESMTP id S233056AbjG0Lm1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 07:42:27 -0400
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265E1213F;
-        Thu, 27 Jul 2023 04:35:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D4C1FCF;
+        Thu, 27 Jul 2023 04:42:26 -0700 (PDT)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B05001C0A94; Thu, 27 Jul 2023 13:35:22 +0200 (CEST)
-Date:   Thu, 27 Jul 2023 13:35:22 +0200
+        id 556281C0A99; Thu, 27 Jul 2023 13:42:25 +0200 (CEST)
+Date:   Thu, 27 Jul 2023 13:42:24 +0200
 From:   Pavel Machek <pavel@denx.de>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, rcu@vger.kernel.org
-Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
-Message-ID: <ZMJWet00+9yIl/9c@duo.ucw.cz>
-References: <20230725104514.821564989@linuxfoundation.org>
- <20230727035846.GA3644016@google.com>
+        conor@kernel.org, arnd@arndb.de, masahiroy@kernel.org
+Subject: Re: [PATCH 6.1 000/183] 6.1.42-rc1 review
+Message-ID: <ZMJYIAXHGCh/8zLv@duo.ucw.cz>
+References: <20230725104507.756981058@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="v37RfGbpMGXlYcwp"
+        protocol="application/pgp-signature"; boundary="M1hNpiC3mFJoKO2Q"
 Content-Disposition: inline
-In-Reply-To: <20230727035846.GA3644016@google.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham autolearn_force=no
+In-Reply-To: <20230725104507.756981058@linuxfoundation.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,41 +44,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---v37RfGbpMGXlYcwp
+--M1hNpiC3mFJoKO2Q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> > This is the start of the stable review cycle for the 6.4.7 release.
-> > There are 227 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >=20
-> > Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
-> > Anything received after that time might be too late.
-> >=20
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.7=
--rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.g=
-it linux-6.4.y
-> > and the diffstat can be found below.
->=20
-> I saw this when running rcutorture, this one happened in the TREE04
-> configuration. This is likely due to the stuttering issues we are discuss=
-ing
-> in the other thread. Anyway I am just making a note here while I am
-> continuing to look into it.
+> This is the start of the stable review cycle for the 6.1.42 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-So is the stuttering new in 6.4.7?
+These should be dropped:
 
-> Other than that, all tests pass:
-> Tested-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> Arnd Bergmann <arnd@arndb.de>
+>     kallsyms: add kallsyms_seqs_of_names to list of special symbols
 
-=2E..or you still believe 6.4.7 is okay to release?
+6.1.X does not have that symbol, we should not have this patch.
+
+> Masahiro Yamada <masahiroy@kernel.org>
+>     scripts/kallsyms: update the usage in the comment block
+
+This one is wrong. We don't have that option in 6.1.
 
 Best regards,
 								Pavel
@@ -88,14 +74,14 @@ Best regards,
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---v37RfGbpMGXlYcwp
+--M1hNpiC3mFJoKO2Q
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZMJWegAKCRAw5/Bqldv6
-8u8RAJ0aWW+qCQPiDjOB9diBiJQL+qWo9ACaAgyIcHs0X3Tgy7OLCSwhGHymGF0=
-=WG+w
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZMJYIAAKCRAw5/Bqldv6
+8qHLAJ9xjKqg4nZtBW1hUAht46k5PhX1iACgrX0xYHaOBZFzPh8LtK20i8hQcx8=
+=eYJ/
 -----END PGP SIGNATURE-----
 
---v37RfGbpMGXlYcwp--
+--M1hNpiC3mFJoKO2Q--
