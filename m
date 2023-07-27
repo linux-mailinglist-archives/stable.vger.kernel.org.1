@@ -2,87 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9BC7765981
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 19:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D5EB765991
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 19:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbjG0RFn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 13:05:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39706 "EHLO
+        id S229600AbjG0RKs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 13:10:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232317AbjG0RFi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 13:05:38 -0400
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6C2730D4
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 10:05:32 -0700 (PDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-        by mout02.posteo.de (Postfix) with ESMTPS id 4B754240103
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 19:05:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-        t=1690477531; bh=qaQROcTztgDRo5sZ8BJWrWwgKHfZqQrdq/uRSJEyT7A=;
-        h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:
-         Content-Transfer-Encoding:From;
-        b=WF6HvPGK6XdEH+dialYIJhpR043AC7A6fLb7j0dqDAt3fkSRpysAkesJdG8naYiGY
-         lN6aYYH5M/0NmU1JuyLcshMARYWrgXeZAYVEIL2VXC2MTBDAd3q7m3UW9ZtxQI8LxC
-         /5OXac3aV56XWqHFVByYBmRVG9Wu+taczXqbNLSnoC9gCNNQtt9aCleVcl/wdXINIk
-         y8c84xpMq5qwmXYUEC188ghNNr0sywEH7hr3q3nNFlmykJPQER5mU1Vvgr4C3WVMcz
-         smABoVhB0hZScm6wLNSpJm9ue1fJzjuf76jGURYiM187FWb92owy6tJzezUFLXWbH3
-         VoyGAm2Uhsr2Q==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4RBcbG1C2nz6ty1;
-        Thu, 27 Jul 2023 19:05:30 +0200 (CEST)
-Date:   Thu, 27 Jul 2023 17:05:27 +0000
-From:   Daniil Stas <daniil.stas@posteo.net>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     James.Bottomley@hansenpartnership.com, Jason@zx2c4.com,
-        jarkko@kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@leemhuis.info,
-        stable@vger.kernel.org, torvalds@linux-foundation.org
-Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
-Message-ID: <20230727200527.4080c595@g14>
-In-Reply-To: <67eefe98-e6df-e152-3169-44329e22478d@amd.com>
-References: <20230727183805.69c36d6e@g14>
-        <b1dd27df-744b-3977-0a86-f5dde8e24288@amd.com>
-        <20230727193949.55c18805@g14>
-        <65a1c307-826d-4ca3-0336-07a185684e5d@amd.com>
-        <20230727195019.41abb48d@g14>
-        <67eefe98-e6df-e152-3169-44329e22478d@amd.com>
+        with ESMTP id S229746AbjG0RKr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 13:10:47 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF69B30D4
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 10:10:44 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b9b5ee9c5aso18411111fa.1
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 10:10:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690477843; x=1691082643;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YA4KY7APNBoaVIsE8pbZuVrmfLiy26uq1i7pnH5Zurc=;
+        b=kU9RvC9MMM1jkXnKHDH9Y7YHb/jOhWaYDV+48W6Vp1QVRVT5IN1Nbx2J3fu7lxkgxk
+         bXHpKj/a9cTgAWSocNtrGS2015UQWdKNmAnaaCM/GNB/VTIoO3JnopGz/neyutp/SNz0
+         HttdyOVb9DnvYuA5Eq8kwtAIOnojFWbJJ7tp54kx35OUeLlv11MmbhtD/ZxW+/bGoC74
+         L2We5/1bmS4V2nVaCDcX+5n/T2En8pyA5sIpVNhcrv0qSRr+NoAHPI4qSjvDhXR+32B4
+         739OCJFYQ7fq8XXBViQNHYEI5IJZQUl2TUW+jXEWQ8Dbs1U5EDXB1ZDFrtoTOiNZlpN3
+         qMcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690477843; x=1691082643;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YA4KY7APNBoaVIsE8pbZuVrmfLiy26uq1i7pnH5Zurc=;
+        b=M4qDCxX7KooTikz1F4FSloEfoypHPMStUV7lZD0rOvjau/tZJXVSLVPy4d+txN75iO
+         NTP6U5zhPn/Z8Du1H2ObEiv5DfO0lzQznQyJkQCHUc5b/2qKDTmnmAVEF+whx+Fwr32f
+         Zts3Q4hXsHO6ty0FBPImzci2VeH/7UGCnUc+pHIaYnQJ82mHL/IZ4gA57UH0n0gmJF8A
+         GYtiaJs3XOMmqc2CU8xaBJywjMXgTWI2nA+3AO19LH9eg8FHsukqJxI3aFz4XUKANYwX
+         LQ3fMscLj2LZbIF8BQSX9wNjnEsh9b3B9LeojWl0w6Y2R36prCTqjJW2RDJb7qU+y9fk
+         kxBg==
+X-Gm-Message-State: ABy/qLbt+FQZYxqQ7yk/4CDIFt0ihBoK/jT3c2c9L/sGkrnuENuwNFHn
+        pE0Wj7m0rAL41KhPOmEn5z2zN0dhYSXTNMpkwgatgw==
+X-Google-Smtp-Source: APBJJlFaJ8HKfLfLui9GCTpqO9VRb6s9gu3E4pmdbVXWA9rs8zr5ttu0hEFBNa46OOcBduEXOCgc4A==
+X-Received: by 2002:a2e:3613:0:b0:2b6:dec9:2812 with SMTP id d19-20020a2e3613000000b002b6dec92812mr2191782lja.33.1690477842958;
+        Thu, 27 Jul 2023 10:10:42 -0700 (PDT)
+Received: from [192.168.1.101] (abxi99.neoplus.adsl.tpnet.pl. [83.9.2.99])
+        by smtp.gmail.com with ESMTPSA id y4-20020a2eb004000000b002b944151da5sm441863ljk.81.2023.07.27.10.08.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jul 2023 10:09:12 -0700 (PDT)
+Message-ID: <df947545-23ef-2ee9-72cc-8e54bbe46be1@linaro.org>
+Date:   Thu, 27 Jul 2023 19:08:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] venus: hfi: add checks to perform sanity on queue
+ pointers
+Content-Language: en-US
+To:     Vikash Garodia <quic_vgarodia@quicinc.com>,
+        stanimir.k.varbanov@gmail.com, bryan.odonoghue@linaro.org,
+        agross@kernel.org, andersson@kernel.org, mchehab@kernel.org,
+        hans.verkuil@cisco.com, tfiga@chromium.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <1690432469-14803-1-git-send-email-quic_vgarodia@quicinc.com>
+ <1690432469-14803-2-git-send-email-quic_vgarodia@quicinc.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <1690432469-14803-2-git-send-email-quic_vgarodia@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 27 Jul 2023 11:51:21 -0500
-Mario Limonciello <mario.limonciello@amd.com> wrote:
-
-> On 7/27/2023 11:50, Daniil Stas wrote:
-> > On Thu, 27 Jul 2023 11:41:55 -0500
-> > Mario Limonciello <mario.limonciello@amd.com> wrote:
-> >   
-> >> On 7/27/2023 11:39, Daniil Stas wrote:  
->  [...]  
->  [...]  
-> >>   [...]  
->  [...]  
->  [...]  
-> >>
-> >> drivers/other is fine.  If there is a better category we can move
-> >> it later.  
-> > 
-> > I see there are already several bug reports similar to mine. This
-> > one for example: https://bugzilla.kernel.org/show_bug.cgi?id=217212
-> > Should I still make a new one?  
+On 27.07.2023 06:34, Vikash Garodia wrote:
+> Read and write pointers are used to track the packet index in the memory
+> shared between video driver and firmware. There is a possibility of OOB
+> access if the read or write pointer goes beyond the queue memory size.
+> Add checks for the read and write pointer to avoid OOB access.
 > 
-> Yes; please make a separate one.  If we decide it's the same we can 
-> always mark as a duplicate.
+> Cc: stable@vger.kernel.org
+> Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+> ---
+>  drivers/media/platform/qcom/venus/hfi_venus.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+> index f0b4638..dc228c4 100644
+> --- a/drivers/media/platform/qcom/venus/hfi_venus.c
+> +++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+> @@ -206,6 +206,10 @@ static int venus_write_queue(struct venus_hfi_device *hdev,
+>  
+>  	new_wr_idx = wr_idx + dwords;
+>  	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
+> +
+> +	if (wr_ptr < (u32 *)queue->qmem.kva || wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size))
+Shouldn't the cases on the right side of the OR operator include a
+"- 1"?
 
-Here is the bug report I created:
-https://bugzilla.kernel.org/show_bug.cgi?id=217719
+Konrad
