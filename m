@@ -2,122 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC2F765E38
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 23:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57DD0765E48
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 23:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232112AbjG0Vag (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 17:30:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52890 "EHLO
+        id S232146AbjG0Vcm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 17:32:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbjG0Vaa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 17:30:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A10119A7
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 14:29:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690493341;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NHdYsiNqqxFFYOyFZT8N/uUoLYdRyRl4LhGdK5bhGpM=;
-        b=SIDvq0mdpRvh2WA2RwH3qhCJkifW4WCUDTuMO3OnqHymxMs2yRd1N/MqCY3+tejorYoqMa
-        gpMKArX9gTyXLD8UsSbgjPO24R3EUZP+XhzzXDqiRFG51bc+7K1zTDTbahO+k1D3KVlZbU
-        47LzRkoajTJOQxbvmY5aV77iT4pmjo0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-554-F0H8AQw3M0yhKgh2HgjDcA-1; Thu, 27 Jul 2023 17:28:56 -0400
-X-MC-Unique: F0H8AQw3M0yhKgh2HgjDcA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S232166AbjG0Vcm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 17:32:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF7E19BF;
+        Thu, 27 Jul 2023 14:32:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50B76104458B;
-        Thu, 27 Jul 2023 21:28:55 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.39.192.55])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 67C2B40C2063;
-        Thu, 27 Jul 2023 21:28:53 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        liubo <liubo254@huawei.com>, Peter Xu <peterx@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org
-Subject: [PATCH v1 2/4] mm/gup: Make follow_page() succeed again on PROT_NONE PTEs/PMDs
-Date:   Thu, 27 Jul 2023 23:28:43 +0200
-Message-ID: <20230727212845.135673-3-david@redhat.com>
-In-Reply-To: <20230727212845.135673-1-david@redhat.com>
-References: <20230727212845.135673-1-david@redhat.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14D9961F59;
+        Thu, 27 Jul 2023 21:32:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22F6C433C7;
+        Thu, 27 Jul 2023 21:32:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690493558;
+        bh=LFiOuKaV4mYQNVWY6/YSUjVKfAWsifUjllsJxEWkg8U=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=C3h/UWMhwQ4HJv0OU0SmB484+Mafgk/jk4xS+WlpXnP+79zKugFJ0W00kXfqOMUb1
+         V12jq8z7gzm+9/LDbIrDUUgD0o68nv+G//zyM5RiNm8OldUYjrw0vf+K/WRP8Xc9JA
+         trmz3jisE21oeOqtLnSi2ABih/sVEOTC+P81D32c2u4+DX0q/9vJhnmC7ORaY/Inxn
+         911c5GEXmYs12kMkBXi1f3ViZN9/45PPH0P+yrvqH+IB4Dr2P6xMuqfp3/JRoZKYAr
+         lt9F+PKsw876bbfX5mygCil62jIQn8Vr9iX769LeyZVyChHBym8Bc58XQIi72H7UTS
+         jsNI8ZItJ5trQ==
+From:   SeongJae Park <sj@kernel.org>
+To:     Rishabh Bhatnagar <risbhat@amazon.com>
+Cc:     gregkh@linuxfoundation.org, lee@kernel.org, davem@davemloft.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        "Jamal Hadi Salim" <jhs@mojatatu.com>,
+        SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 4.14] net/sched: cls_u32: Fix reference counter leak leading to overflow
+Date:   Thu, 27 Jul 2023 21:32:36 +0000
+Message-Id: <20230727213236.49413-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230727191554.21333-1-risbhat@amazon.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-We accidentally enforced PROT_NONE PTE/PMD permission checks for
-follow_page() like we do for get_user_pages() and friends. That was
-undesired, because follow_page() is usually only used to lookup a currently
-mapped page, not to actually access it. Further, follow_page() does not
-actually trigger fault handling, but instead simply fails.
+On Thu, 27 Jul 2023 19:15:54 +0000 Rishabh Bhatnagar <risbhat@amazon.com> wrote:
 
-Let's restore that behavior by conditionally setting FOLL_FORCE if
-FOLL_WRITE is not set. This way, for example KSM and migration code will
-no longer fail on PROT_NONE mapped PTEs/PMDS.
+> From: Lee Jones <lee@kernel.org>
+> 
+> Upstream commit 04c55383fa5689357bcdd2c8036725a55ed632bc.
+> 
+> In the event of a failure in tcf_change_indev(), u32_set_parms() will
+> immediately return without decrementing the recently incremented
+> reference counter.  If this happens enough times, the counter will
+> rollover and the reference freed, leading to a double free which can be
+> used to do 'bad things'.
+> 
+> In order to prevent this, move the point of possible failure above the
+> point where the reference counter is incremented.  Also save any
+> meaningful return values to be applied to the return data at the
+> appropriate point in time.
+> 
+> This issue was caught with KASAN.
+> 
+> Fixes: 705c7091262d ("net: sched: cls_u32: no need to call tcf_exts_change for newly allocated struct")
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
 
-Handling this internally doesn't require us to add any new FOLL_FORCE
-usage outside of GUP code.
+Acked-by: SeongJae Park <sj@kernel.org>
 
-While at it, refuse to accept FOLL_FORCE: we don't even perform VMA
-permission checks like in check_vma_flags(), so especially
-FOLL_FORCE|FOLL_WRITE would be dodgy.
+> ---
+>  net/sched/cls_u32.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index fdbdcba44917..a4e01220a53a 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -774,11 +774,22 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
+>  			 struct nlattr *est, bool ovr)
+>  {
+>  	int err;
+> +#ifdef CONFIG_NET_CLS_IND
+> +	int ifindex = -1;
+> +#endif
+>  
+>  	err = tcf_exts_validate(net, tp, tb, est, &n->exts, ovr);
+>  	if (err < 0)
+>  		return err;
+>  
+> +#ifdef CONFIG_NET_CLS_IND
+> +	if (tb[TCA_U32_INDEV]) {
+> +		ifindex = tcf_change_indev(net, tb[TCA_U32_INDEV]);
+> +		if (ifindex < 0)
+> +			return -EINVAL;
+> +	}
+> +#endif
+> +
+>  	if (tb[TCA_U32_LINK]) {
+>  		u32 handle = nla_get_u32(tb[TCA_U32_LINK]);
+>  		struct tc_u_hnode *ht_down = NULL, *ht_old;
+> @@ -806,14 +817,10 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
+>  	}
+>  
+>  #ifdef CONFIG_NET_CLS_IND
+> -	if (tb[TCA_U32_INDEV]) {
+> -		int ret;
+> -		ret = tcf_change_indev(net, tb[TCA_U32_INDEV]);
+> -		if (ret < 0)
+> -			return -EINVAL;
+> -		n->ifindex = ret;
+> -	}
+> +	if (ifindex >= 0)
+> +		n->ifindex = ifindex;
+>  #endif
+> +
+>  	return 0;
 
-This issue was identified by code inspection. We'll add some
-documentation regarding FOLL_FORCE next.
+Very trivial nit: Someone might think the above new line is better not to be
+added?  I don't really care, though.
 
-Reported-by: Peter Xu <peterx@redhat.com>
-Fixes: 474098edac26 ("mm/gup: replace FOLL_NUMA by gup_can_follow_protnone()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/gup.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+>  }
+>  
+> -- 
+> 2.40.1
+> 
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 2493ffa10f4b..da9a5cc096ac 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -841,9 +841,17 @@ struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
- 	if (vma_is_secretmem(vma))
- 		return NULL;
- 
--	if (WARN_ON_ONCE(foll_flags & FOLL_PIN))
-+	if (WARN_ON_ONCE(foll_flags & (FOLL_PIN | FOLL_FORCE)))
- 		return NULL;
- 
-+	/*
-+	 * Traditionally, follow_page() succeeded on PROT_NONE-mapped pages
-+	 * but failed follow_page(FOLL_WRITE) on R/O-mapped pages. Let's
-+	 * keep these semantics by setting FOLL_FORCE if FOLL_WRITE is not set.
-+	 */
-+	if (!(foll_flags & FOLL_WRITE))
-+		foll_flags |= FOLL_FORCE;
-+
- 	page = follow_page_mask(vma, address, foll_flags, &ctx);
- 	if (ctx.pgmap)
- 		put_dev_pagemap(ctx.pgmap);
--- 
-2.41.0
-
+Thanks,
+SJ
