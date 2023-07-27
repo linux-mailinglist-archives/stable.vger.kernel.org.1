@@ -2,82 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD6F765C33
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 21:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 557F3765CEB
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 22:07:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbjG0TiG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 15:38:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56614 "EHLO
+        id S232628AbjG0UHo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 16:07:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231925AbjG0TiC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 15:38:02 -0400
+        with ESMTP id S232649AbjG0UHn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 16:07:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F50D273C;
-        Thu, 27 Jul 2023 12:38:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A431BC3;
+        Thu, 27 Jul 2023 13:07:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C9AB61F20;
-        Thu, 27 Jul 2023 19:37:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02196C433C7;
-        Thu, 27 Jul 2023 19:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690486678;
-        bh=rE/Kd3G9NMSVIw3ayakgITZdDQaqNiUsnvItueTbY+w=;
-        h=From:To:Cc:Subject:Date:From;
-        b=lA5tu1Z7RaFa+Ys40DjEvhe665WRDbIAM9b7Gx3bm4GJNDILpMmqUQr/By4OSQS7Z
-         vXNRun/zuYbeTr9GnTfJO0sAIc+MESL7JK8eLY83qxn+8GaUbNuiBoN8jxJIMkQWWz
-         DqVOxaa9KnOvnvB+l1Nbo6HRg5e0eFDeth3V9uar9RUoFP8uTLdsaGLIjn63NSkgiZ
-         xJQ6UkKTEaVLlyorUxWZZb535Di6/Vsf7drbFzOJCRt/61QpG0VFanIT3yjb7U5ZE2
-         vWMR3S5zc7OISTYYEsN6LN1mEpCsOc53ZoKUyFHwdNiS1nz7Ksq4twktFm/6wLGWVN
-         VVbXS0zzC8ecg==
-From:   Dinh Nguyen <dinguyen@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     dinguyen@kernel.org, linux-kernel@vger.kernel.org,
-        Wang Ming <machel@vivo.com>, stable@vger.kernel.org
-Subject: [PATCH] firmware: Fix an NULL vs IS_ERR() bug in probe
-Date:   Thu, 27 Jul 2023 14:37:50 -0500
-Message-Id: <20230727193750.983795-1-dinguyen@kernel.org>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA47D61EF0;
+        Thu, 27 Jul 2023 20:07:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBFBC433C8;
+        Thu, 27 Jul 2023 20:07:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1690488460;
+        bh=HPrpBONYZdCgcjM6Mk389I4+iKMfMzbdMyBjE+79eGI=;
+        h=Date:To:From:Subject:From;
+        b=hsBhVWRcBBNovy7fTGTZzu/cjkB98vDm9447qt7kzyb2qqaBlqbye+OYq7EXf9P9J
+         0taduXgMXdvyaAkE0lqsgIDMX4eTSuqnA/eOBxbvfYCzCZsyUWEjHYl46brrjk8W9x
+         zME8iEEOzrPtoJyvTn3FBLBzYAgebxHHCLyBlrMI=
+Date:   Thu, 27 Jul 2023 13:07:39 -0700
+To:     mm-commits@vger.kernel.org, yang.guang5@zte.com.cn,
+        stable@vger.kernel.org, richard@nod.at, lkp@intel.com,
+        linux@rasmusvillemoes.dk, johannes@sipsolutions.net,
+        Jason@zx2c4.com, herve.codina@bootlin.com,
+        anton.ivanov@cambridgegreys.com, andriy.shevchenko@linux.intel.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] revert-um-use-swap-to-make-code-cleaner.patch removed from -mm tree
+Message-Id: <20230727200740.2BBFBC433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang Ming <machel@vivo.com>
 
-The devm_memremap() function returns error pointers.
-It never returns NULL. Fix the check.
+The quilt patch titled
+     Subject: Revert "um: Use swap() to make code cleaner"
+has been removed from the -mm tree.  Its filename was
+     revert-um-use-swap-to-make-code-cleaner.patch
 
-Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wang Ming <machel@vivo.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Revert "um: Use swap() to make code cleaner"
+Date: Mon, 24 Jul 2023 17:31:31 +0300
+
+This reverts commit 9b0da3f22307af693be80f5d3a89dc4c7f360a85.
+
+The sigio.c is clearly user space code which is handled by
+arch/um/scripts/Makefile.rules (see USER_OBJS rule).
+
+The above mentioned commit simply broke this agreement,
+we may not use Linux kernel internal headers in them without
+thorough thinking.
+
+Hence, revert the wrong commit.
+
+Link: https://lkml.kernel.org/r/20230724143131.30090-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307212304.cH79zJp1-lkp@intel.com/
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Herve Codina <herve.codina@bootlin.com>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Yang Guang <yang.guang5@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/firmware/stratix10-svc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 260695a8a9e6..c693da60e9a9 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -774,7 +774,7 @@ svc_create_memory_pool(struct platform_device *pdev,
- 	paddr = begin;
- 	size = end - begin;
- 	va = devm_memremap(dev, paddr, size, MEMREMAP_WC);
--	if (!va) {
-+	if (IS_ERR(va)) {
- 		dev_err(dev, "fail to remap shared memory\n");
- 		return ERR_PTR(-EINVAL);
- 	}
--- 
-2.25.1
+ arch/um/os-Linux/sigio.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+--- a/arch/um/os-Linux/sigio.c~revert-um-use-swap-to-make-code-cleaner
++++ a/arch/um/os-Linux/sigio.c
+@@ -3,7 +3,6 @@
+  * Copyright (C) 2002 - 2008 Jeff Dike (jdike@{addtoit,linux.intel}.com)
+  */
+ 
+-#include <linux/minmax.h>
+ #include <unistd.h>
+ #include <errno.h>
+ #include <fcntl.h>
+@@ -51,7 +50,7 @@ static struct pollfds all_sigio_fds;
+ 
+ static int write_sigio_thread(void *unused)
+ {
+-	struct pollfds *fds;
++	struct pollfds *fds, tmp;
+ 	struct pollfd *p;
+ 	int i, n, respond_fd;
+ 	char c;
+@@ -78,7 +77,9 @@ static int write_sigio_thread(void *unus
+ 					       "write_sigio_thread : "
+ 					       "read on socket failed, "
+ 					       "err = %d\n", errno);
+-				swap(current_poll, next_poll);
++				tmp = current_poll;
++				current_poll = next_poll;
++				next_poll = tmp;
+ 				respond_fd = sigio_private[1];
+ 			}
+ 			else {
+_
+
+Patches currently in -mm which might be from andriy.shevchenko@linux.intel.com are
+
+kernelh-split-out-count_args-and-concatenate-to-argsh.patch
+x86-asm-replace-custom-count_args-concatenate-implementations.patch
+arm64-smccc-replace-custom-count_args-concatenate-implementations.patch
+genetlink-replace-custom-concatenate-implementation.patch
 
