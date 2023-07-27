@@ -2,136 +2,236 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3128765120
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 12:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C4E3765151
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 12:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234213AbjG0K25 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 06:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
+        id S233342AbjG0KfT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 06:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234622AbjG0K2O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 06:28:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5D619AD;
-        Thu, 27 Jul 2023 03:27:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0762D61E12;
-        Thu, 27 Jul 2023 10:27:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE9BC433C9;
-        Thu, 27 Jul 2023 10:27:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690453656;
-        bh=fKIZ5MqPAyaVGlFdBkHtlz/zRB0AxCGG7ERibqg6qOU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=pTRhOY60TYEmu08EC0C6HEEwvFrDMKQoUX7dFtCT4BptyM+juGe5SeCSVnHB/tUej
-         c8YtXot6Bhw3WGekPavtoomQLN6HHxL/76TkENGC6ljgQCQUGMHE8ddbo01w3oQOk9
-         8/zyGWJ3gGpjIkrX7JQmreIfc6jllmVL445PaWyJn7s2eARmtAVnnj+f6QFGkkSVOJ
-         8qKrEnEvgeVSUWuUxImb5fk9wJpITm2YfAlNp87WTYa6woH0zfusqsUd9Zn0tibVNq
-         KeLzeyaDGePDnY2rX8Srvz/rvPB9cyJjhLqSlHzdSYxDSlT8Co0EiTyu0PkCwzzqyg
-         PDuV+Gh5pbO4Q==
-Content-Type: multipart/mixed; boundary="------------oAWxdk5ed0hcZpvqb0D0WIQ2"
-Message-ID: <48bc1736-5e4e-3a9b-3715-60509c333bb1@kernel.org>
-Date:   Thu, 27 Jul 2023 19:27:34 +0900
+        with ESMTP id S233635AbjG0KfQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 06:35:16 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D990213A
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 03:35:14 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bba2318546so6330685ad.1
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 03:35:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690454113; x=1691058913;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=EolbVMRAquNnvGkhtn3fxllySAo99z3la2Z98Mp36Uw=;
+        b=3WySujQpUZrC/Gc8xU7UA9lk4uq9gP8YFKmMzJoDapYXuO0iPjooSYzHxX89r6vOnC
+         j86Cu1sxFzqVqHLFQoHnJyQ2GU7YVkzJ7t05oPMsHAjVSjbm++poLrZXN3Yc9Awha3on
+         DT0Yr5K9QRKiErbFFjnCWPxx3LXaE0PaieEmOSMyuY6tjvZO//xZufc4uT83dpttLId2
+         MdG2OgrKd0t6RkshkTWhTerKwhyA4ljSIGp76G+qACI5PCzs93IXaXLokQzM03yn+p3s
+         X93Tjbsmh1R4hHBME3JKu3749NAbTx6CpFaObEG3lW68uZmBjiO6s5uFaurhTZUHm1TC
+         auOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690454113; x=1691058913;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EolbVMRAquNnvGkhtn3fxllySAo99z3la2Z98Mp36Uw=;
+        b=ZxycLnicDBVhiCbKPDahWCQiorQBx5EPX/zGXtnqiycWaVexnVZr/2ZAj+/7VNFK+q
+         NLoxg02JPUqbWDcAYm6d1xjI6ubBJElpChmnWcfLsoFqU8we0qBBIiURxEwbXJXUn3jf
+         RWKzFjQD1YfmBsz0n6lnI50SmRHZrYhe+4IZpxI2s4sKgqfrdN+PmigSMPb8AxNAdt7b
+         USUK1O35utPUgc51gys3JM0JCqeluS6gheMiLrpqZM7ESLydzZR38mNPXh2rrMDyS7zu
+         3hxkeNpaZiAeRIxLA07zwxhiVaZCpumpCRlYTFkzSvGy3zq2GyGiQiYAJHsAFuWHoN1S
+         Lomw==
+X-Gm-Message-State: ABy/qLZKJQN1oKoKUfV+Nb12hf3/QE5CV3xpV1e13mTlvdlDJ8iQaS4l
+        oEaXXovOdgQU7afJXoU95amRmmSMNy/FY0V55jIrTQ==
+X-Google-Smtp-Source: APBJJlE58jTJbLEg959MiGcrQToVuSBJE4QSVtQ/218AzZ/kWDF/nM1Chkpncqo4P5fgfCfqPlxjww==
+X-Received: by 2002:a17:902:c3c1:b0:1bb:a231:847a with SMTP id j1-20020a170902c3c100b001bba231847amr4616412plj.44.1690454113026;
+        Thu, 27 Jul 2023 03:35:13 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id n15-20020a170902d2cf00b001bba3650448sm1255315plc.258.2023.07.27.03.35.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jul 2023 03:35:12 -0700 (PDT)
+Message-ID: <64c24860.170a0220.7eb2f.1f1a@mx.google.com>
+Date:   Thu, 27 Jul 2023 03:35:12 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Scsi_bus_resume+0x0/0x90 returns -5 when resuming from s3 sleep
-Content-Language: en-US
-To:     TW <dalzot@gmail.com>,
-        Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     regressions@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
- <6b66dd9a-8bd5-2882-9168-8e6e0848c454@leemhuis.info>
- <c70caa9e-164c-fee5-8f85-67f6d02373ab@kernel.org>
- <b0ed86e0-3e4a-d4d1-7b9d-c57f20538a80@gmail.com>
- <86435987-734e-c6c1-a857-1ba80da709fe@gmail.com>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <86435987-734e-c6c1-a857-1ba80da709fe@gmail.com>
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Kernel: v5.15.123
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.123)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------oAWxdk5ed0hcZpvqb0D0WIQ2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
+5.15.123)
 
-On 7/27/23 19:22, TW wrote:
-> I managed to fix the patch file, guess the formatting messed up a bit. So will
-> try with those patches installed.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.123/
 
-Just in case, patch fil attached to avoid formatting issues.
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.123
+Git Commit: 09996673e3139a6d86fc3d95c852b3a020e2fe5f
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
 
 
--- 
-Damien Le Moal
-Western Digital Research
+Warnings summary:
 
---------------oAWxdk5ed0hcZpvqb0D0WIQ2
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-ata-scsi-do-not-issue-START-STOP-UNIT-on-resume.patch"
-Content-Disposition: attachment;
- filename*0="0001-ata-scsi-do-not-issue-START-STOP-UNIT-on-resume.patch"
-Content-Transfer-Encoding: base64
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
-RnJvbSAyOWU4MWQxMTgxMmVlOTI0ZDE5NDI1MzQzZWM2OWFjZDM0YWY5ZDM1IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBEYW1pZW4gTGUgTW9hbCA8ZGxlbW9hbEBrZXJuZWwu
-b3JnPgpEYXRlOiBNb24sIDI0IEp1bCAyMDIzIDEzOjIzOjE0ICswOTAwClN1YmplY3Q6IFtQ
-QVRDSF0gYXRhLHNjc2k6IGRvIG5vdCBpc3N1ZSBTVEFSVCBTVE9QIFVOSVQgb24gcmVzdW1l
-CgpTaWduZWQtb2ZmLWJ5OiBEYW1pZW4gTGUgTW9hbCA8ZGxlbW9hbEBrZXJuZWwub3JnPgot
-LS0KIGRyaXZlcnMvYXRhL2xpYmF0YS1zY3NpLmMgIHwgNiArKysrKysKIGRyaXZlcnMvc2Nz
-aS9zZC5jICAgICAgICAgIHwgNSArKystLQogaW5jbHVkZS9zY3NpL3Njc2lfZGV2aWNlLmgg
-fCAxICsKIDMgZmlsZXMgY2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMo
-LSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2F0YS9saWJhdGEtc2NzaS5jIGIvZHJpdmVycy9h
-dGEvbGliYXRhLXNjc2kuYwppbmRleCAzNzBkMThhY2E3MWUuLjYxODRjN2JjYzE2YyAxMDA2
-NDQKLS0tIGEvZHJpdmVycy9hdGEvbGliYXRhLXNjc2kuYworKysgYi9kcml2ZXJzL2F0YS9s
-aWJhdGEtc2NzaS5jCkBAIC0xMTAwLDcgKzExMDAsMTMgQEAgaW50IGF0YV9zY3NpX2Rldl9j
-b25maWcoc3RydWN0IHNjc2lfZGV2aWNlICpzZGV2LCBzdHJ1Y3QgYXRhX2RldmljZSAqZGV2
-KQogCQl9CiAJfSBlbHNlIHsKIAkJc2Rldi0+c2VjdG9yX3NpemUgPSBhdGFfaWRfbG9naWNh
-bF9zZWN0b3Jfc2l6ZShkZXYtPmlkKTsKKwkJLyoKKwkJICogU3RvcCB0aGUgZHJpdmUgb24g
-c3VzcGVuZCBidXQgZG8gbm90IGlzc3VlIFNUQVJUIFNUT1AgVU5JVAorCQkgKiBvbiByZXN1
-bWUgYXMgdGhpcyBpcyBub3QgbmVjZXNzYXJ5OiB0aGUgcG9ydCBpcyByZXNldCBvbgorCQkg
-KiByZXN1bWUsIHdoaWNoIHdha2VzIHVwIHRoZSBkcml2ZS4KKwkJICovCiAJCXNkZXYtPm1h
-bmFnZV9zdGFydF9zdG9wID0gMTsKKwkJc2Rldi0+bm9fc3RhcnRfb25fcmVzdW1lID0gMTsK
-IAl9CiAKIAkvKgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zY3NpL3NkLmMgYi9kcml2ZXJzL3Nj
-c2kvc2QuYwppbmRleCA2OGIxMmFmYTA3MjEuLmI4NTg0ZmUzMTIzZSAxMDA2NDQKLS0tIGEv
-ZHJpdmVycy9zY3NpL3NkLmMKKysrIGIvZHJpdmVycy9zY3NpL3NkLmMKQEAgLTM4NzYsNyAr
-Mzg3Niw3IEBAIHN0YXRpYyBpbnQgc2Rfc3VzcGVuZF9ydW50aW1lKHN0cnVjdCBkZXZpY2Ug
-KmRldikKIHN0YXRpYyBpbnQgc2RfcmVzdW1lKHN0cnVjdCBkZXZpY2UgKmRldikKIHsKIAlz
-dHJ1Y3Qgc2NzaV9kaXNrICpzZGtwID0gZGV2X2dldF9kcnZkYXRhKGRldik7Ci0JaW50IHJl
-dDsKKwlpbnQgcmV0ID0gMDsKIAogCWlmICghc2RrcCkJLyogRS5nLjogcnVudGltZSByZXN1
-bWUgYXQgdGhlIHN0YXJ0IG9mIHNkX3Byb2JlKCkgKi8KIAkJcmV0dXJuIDA7CkBAIC0zODg1
-LDcgKzM4ODUsOCBAQCBzdGF0aWMgaW50IHNkX3Jlc3VtZShzdHJ1Y3QgZGV2aWNlICpkZXYp
-CiAJCXJldHVybiAwOwogCiAJc2RfcHJpbnRrKEtFUk5fTk9USUNFLCBzZGtwLCAiU3RhcnRp
-bmcgZGlza1xuIik7Ci0JcmV0ID0gc2Rfc3RhcnRfc3RvcF9kZXZpY2Uoc2RrcCwgMSk7CisJ
-aWYgKCFzZGtwLT5kZXZpY2UtPm5vX3N0YXJ0X29uX3Jlc3VtZSkKKwkJcmV0ID0gc2Rfc3Rh
-cnRfc3RvcF9kZXZpY2Uoc2RrcCwgMSk7CiAJaWYgKCFyZXQpCiAJCW9wYWxfdW5sb2NrX2Zy
-b21fc3VzcGVuZChzZGtwLT5vcGFsX2Rldik7CiAJcmV0dXJuIHJldDsKZGlmZiAtLWdpdCBh
-L2luY2x1ZGUvc2NzaS9zY3NpX2RldmljZS5oIGIvaW5jbHVkZS9zY3NpL3Njc2lfZGV2aWNl
-LmgKaW5kZXggNzViMjIzNWI5OWUyLi5iOTIzMGI2YWRkMDQgMTAwNjQ0Ci0tLSBhL2luY2x1
-ZGUvc2NzaS9zY3NpX2RldmljZS5oCisrKyBiL2luY2x1ZGUvc2NzaS9zY3NpX2RldmljZS5o
-CkBAIC0xOTQsNiArMTk0LDcgQEAgc3RydWN0IHNjc2lfZGV2aWNlIHsKIAl1bnNpZ25lZCBu
-b19zdGFydF9vbl9hZGQ6MTsJLyogZG8gbm90IGlzc3VlIHN0YXJ0IG9uIGFkZCAqLwogCXVu
-c2lnbmVkIGFsbG93X3Jlc3RhcnQ6MTsgLyogaXNzdWUgU1RBUlRfVU5JVCBpbiBlcnJvciBo
-YW5kbGVyICovCiAJdW5zaWduZWQgbWFuYWdlX3N0YXJ0X3N0b3A6MTsJLyogTGV0IEhMRCAo
-c2QpIG1hbmFnZSBzdGFydC9zdG9wICovCisJdW5zaWduZWQgbm9fc3RhcnRfb25fcmVzdW1l
-OjE7IC8qIERvIG5vdCBpc3N1ZSBTVEFSVF9TVE9QX1VOSVQgb24gcmVzdW1lICovCiAJdW5z
-aWduZWQgc3RhcnRfc3RvcF9wd3JfY29uZDoxOwkvKiBTZXQgcG93ZXIgY29uZC4gaW4gU1RB
-UlRfU1RPUF9VTklUICovCiAJdW5zaWduZWQgbm9fdWxkX2F0dGFjaDoxOyAvKiBkaXNhYmxl
-IGNvbm5lY3RpbmcgdG8gdXBwZXIgbGV2ZWwgZHJpdmVycyAqLwogCXVuc2lnbmVkIHNlbGVj
-dF9ub19hdG46MTsKLS0gCjIuNDEuMAoK
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
---------------oAWxdk5ed0hcZpvqb0D0WIQ2--
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
