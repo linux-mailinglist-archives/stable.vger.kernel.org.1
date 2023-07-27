@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C2B8765415
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 14:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25F48765417
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 14:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233740AbjG0Mel (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 08:34:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41044 "EHLO
+        id S233221AbjG0MfK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 08:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231157AbjG0Mek (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 08:34:40 -0400
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228AC1AA
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 05:34:37 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 11036240009;
-        Thu, 27 Jul 2023 12:34:35 +0000 (UTC)
+        with ESMTP id S231157AbjG0MfJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 08:35:09 -0400
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1DDA0
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 05:35:07 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 2E762C0002;
+        Thu, 27 Jul 2023 12:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1690461276;
+        t=1690461306;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OpsCaCYqt5gJs4h1gEavCYWkvzbBcnCiF1zmeN0QFCg=;
-        b=Uz4Arck4gshILQEV03swsKnvykgW2FTH4Qv9rjeC8tZtxER4UK5L+55UHb8eMuRbo9Fm3D
-        eyDD4mW0jXF0jYi+mHQce4eAfxot8GN7T457oZFL/euEeR1EdeSHESOf8PBrbbJt15RE6S
-        6DkjeH5+0JxBA+UKxAcQUXWp1pIev5kB/Bim+Kuw2CfNiah1WkiTfi5osJY4pxj/wfdIpt
-        7c/LSAZ4305EZVOY+POsR2oVxAdR7Bl7KI+bpcv1EfSf+/SEoSpG4jn51GiDysaO/OFRHx
-        yOObaXt0TYPeSkoR5IT2KdvPo3ImKnHzM4xndYk7Cylp1RBd4JgeKSyDG0ikUg==
+        bh=h93jn3U6DsNlo1Pc72mNW1zIJgTE/LJ+OzKnxhBh7Q8=;
+        b=KJw08vVzSpJsstC71ZKqj1E5dHMfsyGbGbkr1cIK3ig5PCILItztmuOAlmrz1nCwZ3Zq5D
+        7hhwsEyuw+A65N+BF29LwhWDx2aTxEN/DCNzZZ8WpnWJ/qsnJuVBu4DwMp8qDbON72i2jN
+        gE+4Ddgu07AuG4RP8i4dZdsdoKhRaE2oJtdxqbzJHcy7tIUYhSzfcjbNLkdg13jp4FANst
+        TSuKAzmR/zmVIuguWv7YCSqBpBtDsOmdARfDxGbPPI9XqzgKGniIsGT8mjfPbLEdhcWYL6
+        KByxrAFHBf+jNwkCHjqjm6RnA720mano2uDkc1zSsZJVTFdci3iElb2gvGPMDQ==
 From:   Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 To:     stable@vger.kernel.org
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH 5.10.y] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
-Date:   Thu, 27 Jul 2023 14:34:22 +0200
-Message-ID: <20230727123422.675965-1-thomas.petazzoni@bootlin.com>
+Subject: [PATCH 5.4.y] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
+Date:   Thu, 27 Jul 2023 14:34:55 +0200
+Message-ID: <20230727123455.676122-1-thomas.petazzoni@bootlin.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023072302-prancing-correct-152e@gregkh>
-References: <2023072302-prancing-correct-152e@gregkh>
+In-Reply-To: <2023072304-tripping-clean-8cd5@gregkh>
+References: <2023072304-tripping-clean-8cd5@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: thomas.petazzoni@bootlin.com
@@ -101,10 +101,10 @@ index 70260e0a8f09..3ff73367897d 100644
  			     const struct i2c_device_id *id)
  {
 diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
-index c61b17dc2af8..4b026e1c3fe3 100644
+index cdd7ae90c2b5..07371e32167c 100644
 --- a/sound/soc/codecs/cs42l51.c
 +++ b/sound/soc/codecs/cs42l51.c
-@@ -825,13 +825,6 @@ int __maybe_unused cs42l51_resume(struct device *dev)
+@@ -811,13 +811,6 @@ int __maybe_unused cs42l51_resume(struct device *dev)
  }
  EXPORT_SYMBOL_GPL(cs42l51_resume);
  
