@@ -2,135 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF64E7655B3
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 16:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98E357655B6
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 16:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232774AbjG0OPw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 10:15:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50530 "EHLO
+        id S231638AbjG0OQj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 10:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233360AbjG0OPv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 10:15:51 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06DD930CF
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 07:15:48 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-316feb137a7so1055679f8f.1
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 07:15:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1690467347; x=1691072147;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AUTyC4acFyvgFGwLwOB3Um17AnP3SMbPa7d0UPDlcYY=;
-        b=PWDHu+ZtqZH6Fam6cltbUrQF7q0zaaOWs1jJvGr5Odw6DJEFKNuFGbkBnOLaS2X6n/
-         /Wzmv9j47kgOC3srSvbyAw1v5rzYHdCw0iOEOZLbHF+w8AVFj3s6kheAN5w9urcG60bS
-         pwoXifRWAKR6AOrGz4yiEE4a/pM4Q/+OdvL62V5IlBT9+pkaDWz8QTFgGL0vkl73pYkG
-         BKAUNAO6hRCczpNQHYpC/V8hNwtd2Q1dNIpPwyY78Ew4AglYJjIjPtKn825oqRWeOIUG
-         CO4hAIriNxDrQMXCyWPjW0hoo9QZ+fpc8sFazCbws+V/N11n77bbjFJ2sxGEx6ak1KHk
-         QBgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690467347; x=1691072147;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AUTyC4acFyvgFGwLwOB3Um17AnP3SMbPa7d0UPDlcYY=;
-        b=M/RsWhm9BCtPkXQoNyPzJAUq9YIGoEsrBG7A0nt0PKZ/Nkjus4m7v29RWsEelQbXXl
-         qRipbgXC9kD7cd//YphI+8nWECNfCX/vc8MD7b5VvudTvi4Gvko2zNbOTU3KKCkWkFf+
-         a7F8S2U3U07JEXlGZRPS8ywJMKFGsg4q+ZGYiZCqyAHv+CXSjVCdtJ8SkKG6jNeKqzVy
-         FOyUpVHbGfvIliiqJtgUZ7YcSWUk0xv0nkXcamzI+746nyXVWPP8eUcZbU/kx9KP2AOL
-         VagUsSDq66O5npW99C7D9kKJuHXODrYXNySR3UDQrnecl62Rjk1EilNnpxsV4KDgA/V+
-         iaUA==
-X-Gm-Message-State: ABy/qLZVq7P/Z89WPnj3MYJMTSthr39bTfMqN7tWH71xjEyzd7rKeFyK
-        mTe8NC7hfvnAFf0b/PTmptEECrIsSd4s2TA1cgSDxA==
-X-Google-Smtp-Source: APBJJlH0/Xmo6P55SNMxQDufy7JV+SnpeOLwPYQewO3wu1mi3cf2482eqphtyLZ+haJwIV1XVQB2XA==
-X-Received: by 2002:adf:dd52:0:b0:315:964b:89b9 with SMTP id u18-20020adfdd52000000b00315964b89b9mr1742208wrm.52.1690467347111;
-        Thu, 27 Jul 2023 07:15:47 -0700 (PDT)
-Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id z7-20020a5d4407000000b0031766e99429sm2145405wrq.115.2023.07.27.07.15.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 07:15:46 -0700 (PDT)
-From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
-Cc:     MPTCP Upstream <mptcp@lists.linux.dev>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        "David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1.y] mptcp: ensure subflow is unhashed before cleaning the backlog
-Date:   Thu, 27 Jul 2023 16:14:57 +0200
-Message-Id: <20230727141457.2522904-1-matthieu.baerts@tessares.net>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <2023072102-finicky-everyday-cce4@gregkh>
-References: <2023072102-finicky-everyday-cce4@gregkh>
+        with ESMTP id S233300AbjG0OQi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 10:16:38 -0400
+Received: from mgamail.intel.com (unknown [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6E230C0;
+        Thu, 27 Jul 2023 07:16:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690467397; x=1722003397;
+  h=to:cc:subject:references:date:mime-version:
+   content-transfer-encoding:from:message-id:in-reply-to;
+  bh=e7XwQAboRx8pLj3NqJweHiC0cjRxIvvy1IBoJET32ao=;
+  b=di8mEmeBD8LIrdhhuD+T9w/zX//4O38J2yP7pPpGXdqy9KPPAnBRJpOq
+   ANrO1Q3sGqn4RH3a1wuaZFhDyFgzivzW2PC8g+FDUTTtqZlIQBbece7Gn
+   Z3zig57xh0CuMzJWR+XJ7rn4T4GsIRsnSzEogezAQzDA3VsdveJv3Xm+x
+   O4usIlFxsaJliDMhSTAm5PdRaGEi+JtHErgs4Qe8vIQan047ZVoiphhVY
+   IC4lrZ0JKeYzSGd9qjgC/X1rtINXlFfdxAsiutRhCycELM7X0gS5v/JZv
+   1FlP4Cbfjf/HFgvrQoC2/EAfAEpPMk6MdcqHcJUz9dbkqgeLZDtEldxQp
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="368337269"
+X-IronPort-AV: E=Sophos;i="6.01,235,1684825200"; 
+   d="scan'208";a="368337269"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 07:16:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="704177600"
+X-IronPort-AV: E=Sophos;i="6.01,235,1684825200"; 
+   d="scan'208";a="704177600"
+Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.48.113])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 27 Jul 2023 07:16:10 -0700
+Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
+To:     "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "Chatre, Reinette" <reinette.chatre@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "Huang, Kai" <kai.huang@intel.com>
+Cc:     "kristen@linux.intel.com" <kristen@linux.intel.com>,
+        "Mehta, Sohil" <sohil.mehta@intel.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Christopherson,, Sean" <seanjc@google.com>
+Subject: Re: [PATCH v5] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG
+ race
+References: <20230727010212.26406-1-haitao.huang@linux.intel.com>
+ <c57d8cc4e4bfbef028a1f226ec2c4691a7c100fe.camel@intel.com>
+Date:   Thu, 27 Jul 2023 09:16:06 -0500
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1565; i=matthieu.baerts@tessares.net;
- h=from:subject; bh=iINWTQLqXuf9BqfqCJJtElqlaK4/W/YWj+/Sbg1H6lY=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkwnvhJx1CYP72oqfBeDwO+vY9ia3y7nJhqt7cy
- XLaV39sO/OJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZMJ74QAKCRD2t4JPQmmg
- c5OkD/9maxrV3IGumIUvnnyPk4D2Yzq+IMbPtIDnmdSlWuR9b8T+T0BWfDwgrlt4q8SNUkoebGv
- ugzpskBC6+2Tio8SHZ6jlhw8DmjubT+D2SiP27wFi1strJiugbPCDD4jykHWsGFkNC0umcN0bjZ
- 27Ji8uFgcptRtHJEgnrvZVplEKYqx0rE707PAPoE0erJ45VscV2DfnEYLZ0OzgfFRBUF2Zbt59U
- g25lIpD4G1rM+EBpYCrYCkGG8FwKMbsLHzOQSHghHdoo8K4lviBq19kENFJ8i19NmjFBeWUHbmr
- A8EJLESpQFN7EbZf/jiLBwEm9on/qpUGQRYmcTeCX1xMT/NIVZSbEL8HDAwP+hK2H0KrBoYVNFF
- KdNU5Nfil/ONPHc9O2ibK+6nrMh2vB7qxwpDf5CM1YW4iQ92XDGwqD4YT5W6OX/ATJlGXvqimpv
- 6pw3CNI29Po7JKHqFmmSWOcVMrEn4zUoT9i4IAvvRq7tlsP9A1kblZ0Jbx6a3g1J1W7B0NEKJya
- AOugPNnNqrzyirVwGDnzrIfBq117ahrPFnir/0IvvFOHXUJtNiganQzd23GlSRLccZ/ojOasF4c
- UisF++S3JQpuJYbnNBGS/yvyGcKQ1Vo4UDhryVv9I30NeZUVWHKFQYb7hF4A4eCznjiAYetzeVi PmpPum9xEu0pOSw==
-X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+From:   "Haitao Huang" <haitao.huang@linux.intel.com>
+Organization: Intel
+Message-ID: <op.18qu84gewjvjmi@hhuan26-mobl.amr.corp.intel.com>
+In-Reply-To: <c57d8cc4e4bfbef028a1f226ec2c4691a7c100fe.camel@intel.com>
+User-Agent: Opera Mail/1.0 (Win32)
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Abeni <pabeni@redhat.com>
+On Wed, 26 Jul 2023 21:50:02 -0500, Huang, Kai <kai.huang@intel.com> wrote:
 
-commit 3fffa15bfef48b0ad6424779c03e68ae8ace5acb upstream.
+> On Wed, 2023-07-26 at 18:02 -0700, Haitao Huang wrote:
+>> Under heavy load, the SGX EPC reclaimer (ksgxd) may reclaim the SECS EPC
+>
+> If I read correctly, Dave suggested to not use "high" (heavy in this  
+> sentence)
+> or "low" pressure:
+>
+> https://lore.kernel.org/lkml/op.179a4xs0wjvjmi@hhuan26-mobl.amr.corp.intel.com/T/#m9120eac6a4a94daa7c9fcc47709f241cd181e5dc
+>
+> And I agree.  For instance, consider this happens to one extremely  
+> "small"
+> enclave, while there's a new "big" enclave starts to run.  I don't think  
+> we
+> should say this is "under heavy load".  Just stick to the fact that the
+> reclaimer may reclaim the SECS page.
+>
+Mybe I have some confusion here but I did not think Dave had issues with  
+'heavy load'. When this happens, the last page causing #PF (page A below)  
+should be the the "youngest" in PTE and it got paged out together with the  
+SECS before the #PF is even handled. Based on that the ksgxd moves 'young'  
+pages to the back of the queue for reclaiming, for that to happen, almost  
+all EPC pages must be paged out for all enclaves at that time, so it means  
+heavy load to me.  And that's also consistent with my tests.
 
-While tacking care of the mptcp-level listener I unintentionally
-moved the subflow level unhash after the subflow listener backlog
-cleanup.
+>> page for an enclave and set encl->secs.epc_page to NULL. But the SECS
+>> EPC page is used for EAUG in the SGX page fault handler without checking
+>> for NULL and reloading.
+>>
+>> Fix this by checking if SECS is loaded before EAUG and loading it if it
+>> was reclaimed.
+>>
+>> The SECS page holds global enclave metadata. It can only be reclaimed
+>> when there are no other enclave pages remaining. At that point,
+>> virtually nothing can be done with the enclave until the SECS page is
+>> paged back in.
+...
+>> But it is still possible for a #PF for a non-SECS page to race
+>> with paging out the SECS page: when the last resident non-SECS page A
+>> triggers a #PF in a non-resident page B, and then page A and the SECS
+>> both are paged out before the #PF on B is handled.
+>>
+>> Hitting this bug requires that race triggered with a #PF for EAUG.
+>
+> The above race can happen for the normal ELDU path too, thus I suppose  
+> it will
+> be better to mention why the normal ELDU path doesn't have this issue: it
+> already does what this fix does.
+>
+Should we focus on the bug and fix itself instead of explaining a non-bug  
+case?
+And the simple changes in this patch clearly show that too if people look  
+for that.
 
-That could cause some nasty race and makes the code harder to read.
-
-Address the issue restoring the proper order of operations.
-
-Fixes: 57fc0f1ceaa4 ("mptcp: ensure listener is unhashed before updating the sk status")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
----
-Backport notes:
-  - it was conflicting with a new feature not present in v6.1, see
-    commit f8c9dfbd875b ("mptcp: add pm listener events"): the call to
-    mptcp_event_pm_listener() has not been taken, only tcp_set_state()
-    has been moved here.
----
- net/mptcp/protocol.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 4ca61e80f4bb..a6a5c16f2a49 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2945,9 +2945,9 @@ static void mptcp_check_listen_stop(struct sock *sk)
- 		return;
- 
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
-+	tcp_set_state(ssk, TCP_CLOSE);
- 	mptcp_subflow_queue_clean(sk, ssk);
- 	inet_csk_listen_stop(ssk);
--	tcp_set_state(ssk, TCP_CLOSE);
- 	release_sock(ssk);
- }
- 
--- 
-2.40.1
-
+Thanks
+Haitao
