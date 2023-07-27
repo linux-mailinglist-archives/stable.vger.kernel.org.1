@@ -2,176 +2,301 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0624764986
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 09:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5949376498D
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 09:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233567AbjG0H45 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 03:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
+        id S232881AbjG0H5D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 03:57:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232433AbjG0H4Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 03:56:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836AF9B;
-        Thu, 27 Jul 2023 00:54:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1335A61D95;
-        Thu, 27 Jul 2023 07:54:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1434EC433C7;
-        Thu, 27 Jul 2023 07:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690444440;
-        bh=N4vD5j/AWTskadRXxiH3iN9/rRLw1xJvEc+0YLJvx8U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=m+ao2uFgcShr6jnD/bBgFiLj0mFMLOdwcj2dj1/w+jGR4Bu9NGX2MwMrGZ/zJ/3mq
-         O86ypdhEOvfgOUl+2VGAt44TviqCUlHpLwDv5uMe8bVhdORFDDzB26HFN356gYnYxx
-         5rRIofqncHudt0bO6kSxlz8jsV+L9DtR4Bp/EMmaHNpk0jq9uYrACx+Sz9ilqqFr4k
-         BasN2UO+iMZBhocwQq7HqwF4TB20ciGb7RjKqLcScb5Cswg3A5todAM20llwGaSaYJ
-         0g0Snm/d6lFMu5ukoubQtfRALvL/pLSLIrQXXyG9FByaZBmq5FpGEz6cqi5u4qlOve
-         YBVMx4AvmE+kA==
-Date:   Thu, 27 Jul 2023 08:53:55 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Bin Meng <bmeng@tinylab.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-Message-ID: <20230727-briskness-sappy-e2d9e4c1ef36@spud>
-References: <20230726174524.340952-1-xingmingzheng@iscas.ac.cn>
- <20230726-outclass-parade-2ccea9f6688a@spud>
- <10231b81-ea42-26d0-4c11-92851229e658@iscas.ac.cn>
- <20230726-armchair-evasive-427dd245a9fe@spud>
+        with ESMTP id S233546AbjG0H43 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 03:56:29 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C38196
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 00:54:15 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1b9c368f4b5so12385735ad.0
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 00:54:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690444454; x=1691049254;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ao6SokdWI6wo9w3Cmp6KReeDtfyDBjQZ6kpGcApYVvo=;
+        b=FFIrSzxdIbUhbdm9ySgPBqy3qGjP1dJu0Zzp0tZEX1wZxl/gD5D3Npde2Sxe95vH1a
+         QNkgPAe2q54TH4dx3YvOSAkW3D+SuovvOyIC11nYilXNcvueai4UZyEn+briM7V8xcqN
+         7gw/vCVbJRFZR0eSELHDJUmyO3MndhmEMcblFlehma3YEhwVt8gHVCWkQ98nskksTEYD
+         ZhVXxrxoPzPraL2qqyDFniLB+k0n3pd8EofueUBG8KCd0+mTOhgf2PAAEwkIAc4tzaYG
+         VBCXx/E0TV6xbBwBXT/GG9iHMN0u0kUUkpXf7bdoOZIjCr8GonxB5omndH7b5ijlB5jL
+         y3hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690444454; x=1691049254;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ao6SokdWI6wo9w3Cmp6KReeDtfyDBjQZ6kpGcApYVvo=;
+        b=UujWMjbVZkIfSLRkkpuNDwELi+pGNQpOVOjy4/P0iy16jrHPStKL31KCkVbGjbT5uY
+         dp/xhDJ5HjxyfEVJ7JIABtM+gqte2NLlVZfd8c65eEr/a+MrHZOryRiwRzGd7yn9P9AG
+         LCHLNGbEm2WmeDrUs6gQD037ZEmnoA0h84Qb4gMzURgevnoQvESqBAbSaGWyDB+KDtji
+         yChiSiqgd1lt/cRIXFsaPX2z2NzKZYszpIV8ssNnM2Og65nJwelMHxdKnae9HbNCiJj8
+         vIPS/mcBEacb8rATNeN73bA/9q95ghts+Ed9XrN6uoA/SfLCIpWryewxSGaI1Uuh8816
+         8PFg==
+X-Gm-Message-State: ABy/qLbo3v8Hpva1+pPe7+dAN97XDN2SL112KKE7XTyIapALoWtd6gdl
+        95Lt22/XU1hRb+alCIyhSMBxP7tGOPp0K2mdTAO8/A==
+X-Google-Smtp-Source: APBJJlFZ5jCOEwZmQytyaqXiwCgsCF4ITRMNIv997ljZ1OSMfmOgV4K4DDwsC3mCwhZ2wC6AvAEucQ==
+X-Received: by 2002:a17:902:e885:b0:1af:e302:123 with SMTP id w5-20020a170902e88500b001afe3020123mr2818692plg.3.1690444454429;
+        Thu, 27 Jul 2023 00:54:14 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id jn15-20020a170903050f00b001aadd0d7364sm909217plb.83.2023.07.27.00.54.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jul 2023 00:54:13 -0700 (PDT)
+Message-ID: <64c222a5.170a0220.ae1a8.18c0@mx.google.com>
+Date:   Thu, 27 Jul 2023 00:54:13 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="dEwon71W2kG8wE2d"
-Content-Disposition: inline
-In-Reply-To: <20230726-armchair-evasive-427dd245a9fe@spud>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Kernel: v5.4.251
+X-Kernelci-Report-Type: build
+Subject: stable/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.251)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.4=
+.251)
 
---dEwon71W2kG8wE2d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.4.y/ke=
+rnel/v5.4.251/
 
-On Wed, Jul 26, 2023 at 08:41:55PM +0100, Conor Dooley wrote:
-> On Thu, Jul 27, 2023 at 03:34:16AM +0800, Mingzheng Xing wrote:
-> > On 7/27/23 02:02, Conor Dooley wrote:
->=20
-> > > This is still broken for:
-> > > CONFIG_CLANG_VERSION=3D0
-> > > CONFIG_AS_IS_GNU=3Dy
-> > > CONFIG_AS_VERSION=3D23500
-> > > CONFIG_LD_IS_BFD=3Dy
-> > > CONFIG_LD_VERSION=3D23500
-> >=20
-> > Do you mean that these CONFIG_* will cause kernel
-> > compilation errors when paired with certain versions of GCC?
-> > Or perhaps I misunderstood your meaning.
->=20
-> No, this section is generated by kconfig, although I messed up my
-> trimming of the list & accidentally removed the gcc version, rather
-> than the clang version. Here's the full thing:
->=20
-> CONFIG_CC_VERSION_TEXT=3D"riscv64-unknown-linux-gnu-gcc (g2ee5e430018) 12=
-=2E2.0"
-> CONFIG_CC_IS_GCC=3Dy
-> CONFIG_GCC_VERSION=3D120200
-> CONFIG_CLANG_VERSION=3D0
-> CONFIG_AS_IS_GNU=3Dy
-> CONFIG_AS_VERSION=3D23500
-> CONFIG_LD_IS_BFD=3Dy
-> CONFIG_LD_VERSION=3D23500
-> CONFIG_LLD_VERSION=3D0
-> CONFIG_CC_CAN_LINK=3Dy
-> CONFIG_CC_CAN_LINK_STATIC=3Dy
-> CONFIG_CC_HAS_ASM_GOTO_OUTPUT=3Dy
-> CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT=3Dy
-> CONFIG_CC_HAS_ASM_INLINE=3Dy
-> CONFIG_CC_HAS_NO_PROFILE_FN_ATTR=3Dy
-> CONFIG_PAHOLE_VERSION=3D0
-> CONFIG_CONSTRUCTORS=3Dy
-> CONFIG_IRQ_WORK=3Dy
-> CONFIG_BUILDTIME_TABLE_SORT=3Dy
+Tree: stable
+Branch: linux-5.4.y
+Git Describe: v5.4.251
+Git Commit: 887433e4bc9394676d22c038dba33a27405f94e8
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
 
-I think this should sort things out for the even-older binutils case. I
-took the opportunity to fix some grammatical issues that seem to have
-snuck into the help text in your patch & to drop the \, since the
-depends on fits in one line.
+Warnings Detected:
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index e1b66ee88323..2d0d89213c97 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -571,25 +571,27 @@ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	def_bool y
- 	# https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Daed4428=
-6efa8ae8717a77d94b51ac3614e2ca6dc
- 	# https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3D98416dbb0a62579d4a7=
-a4a76bab51b5b52fec2cd
--	depends on GCC_VERSION >=3D 120100 || (AS_IS_GNU && AS_VERSION >=3D 23800)
-+	depends on AS_IS_GNU
-+	depends on (GCC_VERSION >=3D 120100 && AS_VERSION >=3D 23600) || AS_VERSI=
-ON >=3D 23800
- 	help
--	  Binutils-2.38 and GCC-12.1.0 bump default ISA spec to newer version
-+	  Binutils-2.38 and GCC-12.1.0 bump the default ISA spec to version
- 	  20191213 which moves some instructions from the I extension to the
--	  Zicsr and Zifencei extensions.
-+	  Zicsr and Zifencei extensions. On the other hand, Binutils prior to
-+	  2.35 does not understand these arguments and will error if they are
-+	  passed.
-=20
- config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
- 	def_bool y
- 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d449=
-8694e15bf8a16
- 	# https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3Db03be74bad08c382da4=
-7e048007a78fa3fb4ef49
--	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || \
--		   (CC_IS_GCC && GCC_VERSION < 110100)
-+	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_V=
-ERSION < 110100)
- 	help
--	  Certain versions of clang (or GCC) do not support zicsr and zifencei via
-+	  Certain versions of clang and GCC do not support zicsr and zifencei via
- 	  -march but newer versions of binutils require it for the reasons noted
- 	  in the help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
- 	  option causes an older ISA spec compatible with these older versions
--	  of clang (or GCC) to be passed to GAS, which has the same result as
-+	  of clang and GCC to be passed to GAS, which has the same result as
- 	  passing zicsr and zifencei to -march.
-=20
- config FPU
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
 
 
---dEwon71W2kG8wE2d
-Content-Type: application/pgp-signature; name="signature.asc"
+Warnings summary:
 
------BEGIN PGP SIGNATURE-----
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMIikwAKCRB4tDGHoIJi
-0mJTAQCcVmPmrdY2nAX7oDB6KjPT6SR3RrzjqiuOt7KYjgKgwgEAm67Q03vVDHxp
-3ehmCH7U3lO1Yol4wFTLp9UNPt9cWw8=
-=byRz
------END PGP SIGNATURE-----
+Section mismatches summary:
 
---dEwon71W2kG8wE2d--
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+4 warnings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
