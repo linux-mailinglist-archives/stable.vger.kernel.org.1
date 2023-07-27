@@ -2,190 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BD97655BD
-	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 16:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4435765615
+	for <lists+stable@lfdr.de>; Thu, 27 Jul 2023 16:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233488AbjG0ORq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 10:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52096 "EHLO
+        id S233825AbjG0Oj7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 10:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233419AbjG0ORm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 10:17:42 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8F42682
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 07:17:40 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-317715ec496so1084343f8f.3
-        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 07:17:40 -0700 (PDT)
+        with ESMTP id S233820AbjG0Oj6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 10:39:58 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187422D56;
+        Thu, 27 Jul 2023 07:39:57 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-686bea20652so1060685b3a.1;
+        Thu, 27 Jul 2023 07:39:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1690467459; x=1691072259;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JpiYyl9rsB1AwGQpZxE+ZLJX2842YC/a3DdWQCMD3qk=;
-        b=dVykZxn/K0SK0bZombziphoaQKHmehHR1sLnzpfeAlXZu2sOMztQSrp7lffTDXGW6h
-         iGEU5jYPs815AL3PS4C4RSohhBJ6wfrpLIhJ4Qq1MhOTGtgBXiMsHKx4gExIhs4M5wwC
-         VKR7XOrHZ8nphm4+iMG3c3UeR8KfICAuVh1njI8kw9mhR+fq1FA2tLxhfgFZQ/Ix5zOv
-         u8yOFH2JbYcBMDVs+rMJax9iGb6RmvSvPgYmAko9DpbgMyHh9s5pzuBSd0uxm59hCcrR
-         xUDG73kc1zpdIwzLmvZhLPF5edcBlivvPzLfHJn9B9yJXWbKEOvCkQPouKHpvzdrRs+q
-         J/Vw==
+        d=gmail.com; s=20221208; t=1690468796; x=1691073596;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O+2/2vDz7rd9ZVuEcJrsjVGEHOfSkIQGZOOCHutGRqs=;
+        b=YoEDf9bWZ0ShujP1H2jQXCkh+jxZcSQK0dCfkjInuAPmO2CYWINn23NMXWnyUXLXqA
+         GfRRj7pxpcNhdsa3TGCwGPc1yN4Hk+Bk7mcjgt3VZWcrahSoK+BdUPDUnpLbbMEMm4Sw
+         Tul6FI0dMBhttLKYjMGfWCKH8YGacBcOUx8H18piNwolyNOk0jMKio6CLuKxTsYY4hEQ
+         Q1FvW0O/7udVuKuFdSAcYv2prytlcwSCNKAGu6VQaN2EdRJdIzPwADl3+cfqByK5Cf3A
+         gcDhoMydPICQhJSEL5UqCO0oOlShJop18pheZ7yT1AMvf9pD69gyAVF5+5RvxuUzmu1D
+         cgEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690467459; x=1691072259;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JpiYyl9rsB1AwGQpZxE+ZLJX2842YC/a3DdWQCMD3qk=;
-        b=JZZo308cptpLkfHr+8v0TqW8xIrn5DbPan17ex16SOT+YIMaOGhJyqkbs14rO3RQk1
-         NulpVCss5g9PhuEZ4coY7MBYanB0YrfpijHH380u1hwYhTpKW5oz6z6YtRlgtnw+bjqm
-         JG03CDY+bumDQr/26OfMgZr0H5U4Zc7D6trt4xCVioTY5Q1FUnFxBI7CaQEjIW/g+WsD
-         4Ab5IV+rWTbV5kJ/dMm4bLH0o1Nd+O6ELoLnOrm4GqBV6UqPxC8e8QciK4jse2lBjrK9
-         Iwmc1UiZdpFTNXaulW6LVYcyApJMWRA2kxdbppYOddxNBJcpje3eLGq9RUWxPSo9/X/F
-         kUgA==
-X-Gm-Message-State: ABy/qLaOWPibrEMJprOTa/ZhiD0A6XfrvbszKAg6sJUHfFi80gpNUD3J
-        IX7DGBSmiUfF0IcXBzTPVdNjd5WfGOUUJI8mKpsB7w==
-X-Google-Smtp-Source: APBJJlE15GyGDtJ/VgIsOQV2s61E/lNYO614OqYzAwZcy+uSJ52GHZaE+7ROWq5tHtp919uTRPj2uA==
-X-Received: by 2002:adf:f0c1:0:b0:314:1b4d:bb27 with SMTP id x1-20020adff0c1000000b003141b4dbb27mr1755176wro.64.1690467458987;
-        Thu, 27 Jul 2023 07:17:38 -0700 (PDT)
-Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id k17-20020adfe8d1000000b003143867d2ebsm2192516wrn.63.2023.07.27.07.17.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 07:17:38 -0700 (PDT)
-From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
-Cc:     MPTCP Upstream <mptcp@lists.linux.dev>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1.y] selftests: mptcp: sockopt: use 'iptables-legacy' if available
-Date:   Thu, 27 Jul 2023 16:17:21 +0200
-Message-Id: <20230727141721.2525575-1-matthieu.baerts@tessares.net>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <2023072146-grit-winking-6e88@gregkh>
-References: <2023072146-grit-winking-6e88@gregkh>
+        d=1e100.net; s=20221208; t=1690468796; x=1691073596;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O+2/2vDz7rd9ZVuEcJrsjVGEHOfSkIQGZOOCHutGRqs=;
+        b=ISw/G5TZ5AnqXOhorYCcWjvjGm4ZOTG0bu/z+Vq9khnFsBmloGbDIpgYRjax3ccgkk
+         FS8/S1443iaocBW8c5qnQOslzfRI6Vt/Z7ePtZeK/erJUCDkJgIY371Z0fckviYbb3Qr
+         fAZRuOllI5RAaoBcimd7p3Yp6pnSCtP9sI4FU9PwW2QoH1N5YZSoGB++DOLoX5742Tko
+         kfeLBpTH8La7zcTGFvaYEgoytsg2piyHP6fLgq2860Grol5ndqB1MPhyraFDMNQKTK+n
+         oue+0cQsa9LFBfZTaI4/j6BFIgDNjeP9ImhpQyLkPZyUhCKwrq0FQvbycmZrEpQRMvjS
+         hdRw==
+X-Gm-Message-State: ABy/qLa6kjs2c1BbPGo0W9WFo4iuQ698ZtqLDlDuuuDP2Np+2K1wggbL
+        WbysGMALH5GSAbbmRA8PJjc=
+X-Google-Smtp-Source: APBJJlH9PDT+q0JgnKqxG0mAYhn5yeHuIY+jZzSDLhGNnX4V1J5t0tHwrBjixjlJSy/Lm9lQSErlrA==
+X-Received: by 2002:a05:6a00:230c:b0:686:2526:ee70 with SMTP id h12-20020a056a00230c00b006862526ee70mr6668625pfh.14.1690468796397;
+        Thu, 27 Jul 2023 07:39:56 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id l198-20020a633ecf000000b005633778becasm1601252pga.41.2023.07.27.07.39.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jul 2023 07:39:55 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <67eba84a-ae24-2983-a756-463f39f3ca71@roeck-us.net>
+Date:   Thu, 27 Jul 2023 07:39:54 -0700
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3385; i=matthieu.baerts@tessares.net;
- h=from:subject; bh=XwtIBzbx2+Od23pf8ImN7yZG8k8CV6ujJEG8Jk4cG/s=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkwnxxRGfPJkTBalI9iL+gDxUlmDCDSYcAF8QZ9
- 5oZD2U4LhCJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZMJ8cQAKCRD2t4JPQmmg
- c/suEADWUiooxawmy+dZEC4bDsSEcSD7sFazQZwxLGKQNiY/VQx8qJlNGBFlko2lnn8wLL1gBZU
- mCuRHW2yJzbSpA/kvr8XIYk7U6imuvWuJqfNWYzFeFzYEpDhvHV0q8zf3NvSYqkBQLPADazYwol
- KD8A7rpfdFxSBoumZyPB8KOhzk8HWwD5skBJwhpRin2MF6ptBpa25Hug1CFkOpWM8b+nIQ1vpZq
- bAnFGgbmXfa95Lj5snz9+nHYhgKuzZ/Dzhaz1xTcUe8gmrLgDks0t289FDiPJcZeHnMqWxH2KvC
- 52/gBnJRLVQEt+eXQFBshtznxl4xaIJeZ4QgyMXcfhINAgCg+4KJvKrdRAkuERTX92U1o60OK3p
- HV9/YpKamHv13SRcDNWyuiGQZNSB2czn6s/bHyLKehMemOXLkdPvggqe1ua6cx4AgMqdsuoJMqb
- x5yCv4Sja71F4Sqmq9y7jyGJimaDO1zSTxPV4nkOs2upwRpO7AwzocMTo3KzHtH70vMKYFdxthH
- aVlR9QGwx0cuVGDVvw3FKOZZvl8eUxykfhTVE1oOqkLs97Rv3q2JJkWl235FIPakDEhWb255FNk
- N1D8sOV4QH0rvn7pKz9zDpaGFlchHEq+3EmCh5VyVX2UJE59a3o1unjIyuL5i0UiCK5OGGI6Nap 4qftRT/tl6XnGBg==
-X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To:     paulmck@kernel.org, Joel Fernandes <joel@joelfernandes.org>
+Cc:     Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org
+References: <ZMJWet00+9yIl/9c@duo.ucw.cz>
+ <78722041-D1F7-45FA-BA1C-41B92209BA6C@joelfernandes.org>
+ <0751f5a8-2727-4a08-8bb8-50bbd4244c9c@paulmck-laptop>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
+In-Reply-To: <0751f5a8-2727-4a08-8bb8-50bbd4244c9c@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit a5a5990c099dd354e05e89ee77cd2dbf6655d4a1 upstream.
+On 7/27/23 07:06, Paul E. McKenney wrote:
+> On Thu, Jul 27, 2023 at 09:26:52AM -0400, Joel Fernandes wrote:
+>>
+>>
+>>> On Jul 27, 2023, at 7:35 AM, Pavel Machek <pavel@denx.de> wrote:
+>>>
+>>> ﻿Hi!
+>>>
+>>>>> This is the start of the stable review cycle for the 6.4.7 release.
+>>>>> There are 227 patches in this series, all will be posted as a response
+>>>>> to this one.  If anyone has any issues with these being applied, please
+>>>>> let me know.
+>>>>>
+>>>>> Responses should be made by Thu, 27 Jul 2023 10:44:26 +0000.
+>>>>> Anything received after that time might be too late.
+>>>>>
+>>>>> The whole patch series can be found in one patch at:
+>>>>>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.7-rc1.gz
+>>>>> or in the git tree and branch at:
+>>>>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+>>>>> and the diffstat can be found below.
+>>>>
+>>>> I saw this when running rcutorture, this one happened in the TREE04
+>>>> configuration. This is likely due to the stuttering issues we are discussing
+>>>> in the other thread. Anyway I am just making a note here while I am
+>>>> continuing to look into it.
+>>>
+>>> So is the stuttering new in 6.4.7?
+>>
+>> No it is an old feature in RCU torture tests. But is dependent on timing. Something
+>> changed in recent kernels that is making the issues with it more likely. Its hard to bisect as failure sometimes takes hours.
+>>
+>>>
+>>>> Other than that, all tests pass:
+>>>> Tested-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+>>>
+>>> ...or you still believe 6.4.7 is okay to release?
+>>
+>> As such, it should be Ok. However naturally I am not happy that the RCU testing
+>> is intermittently failing. These issues have been seen in last several 6.4 stable releases
+>> so since those were released, maybe this one can be too?
+>> The fix for stuttering is currently being reviewed.
+> 
+> Or, to look at it another way, the stuttering fix is specific to torture
+> testing.  Would we really want to hold up a -stable release only because
+> rcutorture occasionally gives a false-positive failure on certain types
+> of systems?
+> 
 
-IPTables commands using 'iptables-nft' fail on old kernels, at least
-on v5.15 because it doesn't see the default IPTables chains:
+No. However, (unrelated) in linux-next, rcu tests sometimes result in apparent hangs
+or long runtime.
 
-  $ iptables -L
-  iptables/1.8.2 Failed to initialize nft: Protocol not supported
+[    0.778841] Mount-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.779011] Mountpoint-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.797998] Running RCU synchronous self tests
+[    0.798209] Running RCU synchronous self tests
+[    0.912368] smpboot: CPU0: AMD Opteron 63xx class CPU (family: 0x15, model: 0x2, stepping: 0x0)
+[    0.923398] RCU Tasks: Setting shift to 2 and lim to 1 rcu_task_cb_adjust=1.
+[    0.925419] Running RCU-tasks wait API self tests
 
-As a first step before switching to NFTables, we can use iptables-legacy
-if available.
+(hangs until aborted). This is primarily with Opteron CPUs, but also with others such as Haswell,
+Icelake-Server, and pentium3. It is all but impossible to bisect because it doesn't happen
+all the time. All I was able to figure out was that it has to do with rcu changes in linux-next.
+I'd be much more concerned about that.
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: dc65fe82fb07 ("selftests: mptcp: add packet mark test case")
-Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
----
-Backport notes:
-  - it was conflicting with some cleanup patches: b71dd705179c
-    ("selftests: mptcp: removed defined but unused vars"), de2392028a19
-    ("selftests: mptcp: clearly declare global ns vars") and
-    5f17f8e315ad ("selftests: mptcp: declare var as local").
-  - conflicts were in the same context but not with the code that needed
-    to be adapted.
-  - an extra adaptation was needed because 'ip(6)tables' is used
-    directly in TCP INQ tests, a code remove later in commit
-    b4e0df4cafe1 ("selftests: mptcp: run mptcp_inq from a clean netns")
----
- .../selftests/net/mptcp/mptcp_sockopt.sh      | 24 ++++++++++---------
- 1 file changed, 13 insertions(+), 11 deletions(-)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
-index af4fccd4f5cc..114c4ce719c7 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
-@@ -13,13 +13,15 @@ timeout_poll=30
- timeout_test=$((timeout_poll * 2 + 1))
- mptcp_connect=""
- do_all_tests=1
-+iptables="iptables"
-+ip6tables="ip6tables"
- 
- add_mark_rules()
- {
- 	local ns=$1
- 	local m=$2
- 
--	for t in iptables ip6tables; do
-+	for t in ${iptables} ${ip6tables}; do
- 		# just to debug: check we have multiple subflows connection requests
- 		ip netns exec $ns $t -A OUTPUT -p tcp --syn -m mark --mark $m -j ACCEPT
- 
-@@ -92,14 +94,14 @@ if [ $? -ne 0 ];then
- 	exit $ksft_skip
- fi
- 
--iptables -V > /dev/null 2>&1
--if [ $? -ne 0 ];then
-+# Use the legacy version if available to support old kernel versions
-+if iptables-legacy -V &> /dev/null; then
-+	iptables="iptables-legacy"
-+	ip6tables="ip6tables-legacy"
-+elif ! iptables -V &> /dev/null; then
- 	echo "SKIP: Could not run all tests without iptables tool"
- 	exit $ksft_skip
--fi
--
--ip6tables -V > /dev/null 2>&1
--if [ $? -ne 0 ];then
-+elif ! ip6tables -V &> /dev/null; then
- 	echo "SKIP: Could not run all tests without ip6tables tool"
- 	exit $ksft_skip
- fi
-@@ -109,10 +111,10 @@ check_mark()
- 	local ns=$1
- 	local af=$2
- 
--	tables=iptables
-+	tables=${iptables}
- 
- 	if [ $af -eq 6 ];then
--		tables=ip6tables
-+		tables=${ip6tables}
- 	fi
- 
- 	counters=$(ip netns exec $ns $tables -v -L OUTPUT | grep DROP)
-@@ -314,8 +316,8 @@ do_tcpinq_tests()
- {
- 	local lret=0
- 
--	ip netns exec "$ns1" iptables -F
--	ip netns exec "$ns1" ip6tables -F
-+	ip netns exec "$ns1" ${iptables} -F
-+	ip netns exec "$ns1" ${ip6tables} -F
- 
- 	if ! mptcp_lib_kallsyms_has "mptcp_ioctl$"; then
- 		echo "INFO: TCP_INQ not supported: SKIP"
--- 
-2.40.1
+Guenter
 
