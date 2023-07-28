@@ -2,178 +2,709 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A137E7677E8
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 23:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC1B7678C1
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 00:59:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235120AbjG1VsD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 17:48:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36506 "EHLO
+        id S233061AbjG1W7E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 18:59:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234876AbjG1Vr7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 17:47:59 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2061.outbound.protection.outlook.com [40.107.220.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E2E9BF;
-        Fri, 28 Jul 2023 14:47:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fs2dNrKsv85RdYmWoI3ENtjO9KGLmBDxYVxDTL2cOvmO3yEzGRd85b8Q85UPbHIQ9916J1UDsS6omRRpJbuqSrfPqbv+Rv/xHKPJpc876VqZeIONPhCUoWSd2L/npLV/lIP3P98g2Qfd7T0CVv+eiRKEhkUS9RHqc3gE3VocaijU+CoRA7IQjBw5opArPRptgZKovvNA2qbtRKt/9lIaPo4hozZ5of9VzLHCpsjF7UlyunN0Q4eAAk1jRlai1d+Wr6CXQrVWYurzJpsR8Jfuy03f49f0A9Rc7wCKtcSF0RJf6r/Cu9Vg/e2ALDJz1y+RELOKVk6ZtZvBrGuZfvuh7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nnvGdKBp8/2zymQpfEA38rWxCe+790sjAUtQdbFvIe0=;
- b=JyF0t6NaG3YSyMyHBHRKdKAJZFwTBHHLEKbtJZmhDfP/tFWO8wd4uD6ZqbNHTyp0W+fohWwgs5t1WhPx7ipN4HJa03tMXL2zTTu06nFvNh67dSHlnPHc/WaSXEaDiapn1A5JcBglqaTRT08NQdlwSltSx6Jd76s0EH/IAxno1w8emZGtQbHDdjpXZzwmmYHnvlH7DIqR0WiUeqxnnPHSGuK0gszqopUQcEgsB0eRCgC8g7TTr7RhChFiJBgqKuMgpUPG4jthxXJEVbKYPKvD4AQdCkfPVzXUHBnXUUMFtp0uCVMVqzgV4JUhRIf6ZOdhOsiwu2QhUgTZSLd/SM8+zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nnvGdKBp8/2zymQpfEA38rWxCe+790sjAUtQdbFvIe0=;
- b=FncMEfa7Bf6E/DqX6nrgHaRGDtd7m0aV6jatTSZTgmXbbDOvTQzHWstkUJBy4nURLgOgFDeCTURiZHOlKMjnYEt+b+fm99D3b+5cPcK29BLt6/kocKEShr1/bGJvQPm3T54KQaZD+Aw//UBGWOE/PF5y+dDn6uo3QDHZfyNYVzo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by MN0PR12MB5954.namprd12.prod.outlook.com (2603:10b6:208:37d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29; Fri, 28 Jul
- 2023 21:47:55 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6631.026; Fri, 28 Jul 2023
- 21:47:55 +0000
-Message-ID: <b157706f-b9e3-7c97-fd7c-594928d9a457@amd.com>
-Date:   Fri, 28 Jul 2023 16:47:52 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
-Content-Language: en-US
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Daniil Stas <daniil.stas@posteo.net>,
-        James.Bottomley@hansenpartnership.com, Jason@zx2c4.com,
-        jarkko@kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@leemhuis.info,
-        stable@vger.kernel.org
-References: <20230727183805.69c36d6e@g14>
- <b1dd27df-744b-3977-0a86-f5dde8e24288@amd.com> <20230727193949.55c18805@g14>
- <65a1c307-826d-4ca3-0336-07a185684e5d@amd.com> <20230727195019.41abb48d@g14>
- <67eefe98-e6df-e152-3169-44329e22478d@amd.com> <20230727200527.4080c595@g14>
- <CAHk-=whqT0PxBazwfjWwoHQQFzZt50tV6Jfgq3iYceKMJtyuUg@mail.gmail.com>
- <5235ab4c-a49b-0679-1bef-c3f02346168c@amd.com>
- <CAHk-=why=_Y60iHnsh8-SZjs8Ndm41cjAHw7KX3FOD-85=CKEQ@mail.gmail.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <CAHk-=why=_Y60iHnsh8-SZjs8Ndm41cjAHw7KX3FOD-85=CKEQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR03CA0016.namprd03.prod.outlook.com
- (2603:10b6:806:20::21) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S232480AbjG1W7A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 18:59:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C170BF;
+        Fri, 28 Jul 2023 15:58:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A65CD621FF;
+        Fri, 28 Jul 2023 22:58:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24D7C433C7;
+        Fri, 28 Jul 2023 22:58:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690585137;
+        bh=RKOFHEukRXed9nKfvhFMXNLlxZWTGs+xAWMhRdXyYhQ=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=Xn+rtLDZpbr4tjW7tkJx/dG919958uc93w84cX2kQP5bWEV7NFt6KO3nBuN9iITi+
+         35RqLujqbbnecrbjHq1RXlKZjRb7LjTWDO2nJVqNgOgbh0wFu3GEDWjYvXKAiMSkVG
+         24h7DNFpsMY3SHZdcgZMG5YSwfAYji5QTFHEQzcDcLwN0CjZU3Ex3oAa5t0xBJcrdP
+         DT7IGoCReQtYntfx344+0S9gfcK/0mjOYa7vZS3BDPIFi8jcJ2/5CkWl27LZg1sKmu
+         yEwV4Nnj3Fh+P0xDpXNwroWzQXA+P6WarS2HsqUchV0sS9AiwEYbJCw/MC2JBxz8pA
+         +ji13fRA+iqpQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id 800C0CE093C; Fri, 28 Jul 2023 15:58:56 -0700 (PDT)
+Date:   Fri, 28 Jul 2023 15:58:56 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>, Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org
+Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
+Message-ID: <a174c501-48df-404e-ae61-10ddaeb8e557@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
+ <99B56FC7-9474-4968-B1DD-5862572FD0BA@joelfernandes.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MN0PR12MB5954:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca5d3011-04f9-4d35-7fcd-08db8fb44ce8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 018LtsZzu3LNdISBOqYxEgkube547cs1WBq4iCs8ki6k5Nw4Q1td/9Rp6cueO+r7ye9fUZwd7HsjWqCnvrg4XnwM1CZUc7AgKo0fwZl+dD+HoFpmi5Z0FB89hJAQE+2A5kH1e6N1LFCF6tSAB54RNEhW9LJB+W43jlxtI9jeIpagMbbhb5PPj1daWSApnSLg6iqOw+8k2cP4IHclhSIQgSCojI8VZrW9bG0zc11wR88hznzymETm1EDiM69o3Ek4eemldZXiNeQSGEQpQO0BG9bLkyQUYsEu7Mf0Z9WDg5kmwzZ8Rt2tg6PNxWgXL+b54xFGWXL69avTtHmMEOuuZ5QnP+Q5MigQEVDk3qHQjjvxo4FKOQhM4iKCzWsqvbkZCx7MAuo2qlojvBvwcmVsep/x2ldjrQkUVFqtqiyHQyBGqLMuB1v9dH1HfIomXHFX6rlyeVV0fLQ6jzMTjoyRfRCfekPg5ZoydU7tBi44xS0106YaibuLa6WPyx2LflpmbNT4FzFY9v2oX0qT9epeU6ex3XU7jZdUNqNTJuPplAk2zmG0TSZZ8sMkzU/WprRZPtNdZX28pYTVXvxiBtc4SzkVEELezjOMjhHRr2vDoK9r/TiPB4/ShSGMLowi1t2QJlFkpBP/NP7HWEDuhrkARA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(346002)(366004)(376002)(39860400002)(396003)(451199021)(26005)(6506007)(478600001)(53546011)(186003)(6512007)(6486002)(6666004)(66556008)(4326008)(66476007)(6916009)(2616005)(83380400001)(31686004)(38100700002)(66946007)(5660300002)(41300700001)(316002)(2906002)(8936002)(8676002)(86362001)(31696002)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YmwwQldMTTBsN0NDeSsyaWFCQXNQREFzakVWd0RnRWt6Tm11UlpPNWdpRW8w?=
- =?utf-8?B?ZlFRN1FWRithNEtDTGZGUWhBRFBPT3VPKzZ2aGh3elQvZUVqRTFuMk1BK2Zy?=
- =?utf-8?B?Nkt0OGQxMzN2WEtPUU1SZ1h0dWhiTlRZc3FnYzZMRzI1QlNyMkNTaitURDNw?=
- =?utf-8?B?MmFhZlhOYndxc2RIdUJiK3dMbUdkRXE3YkpvSWhwZThQQ0FJN1I5YVVmQmFy?=
- =?utf-8?B?ckpBTm8xeERsTStNVzRVUVlzKy9KN2xZUjRrSEYyWG0wWkwyek5NTmZ0czhJ?=
- =?utf-8?B?c3NteUlrYzBwSzJOaVNvTzZpRit4azdXWGZ4UE1vendPVm9GQ1ZaNUhqU1Ny?=
- =?utf-8?B?YXg1QmFJVUVpSGl0Q2trbUZCaGZjQnZDaVQ3dDFPdnErdityQmFQRW5pYXN4?=
- =?utf-8?B?WE04VEJSMXMvbmxVMk5qeXhwYW5jaVhDUWs1UENLOTBLdzVyMmcvWUlLblVI?=
- =?utf-8?B?VW1CNU1LN3RqaTdZZm1OemNJUkhSdXUxczllV1pYRnNRamt3UCtBVjBMK1lM?=
- =?utf-8?B?b2tYSWJuV2QzeStRVDB2THM5SFpzTzN6bnFpOFJvSFJvNWsyNWwyRHFDcnBn?=
- =?utf-8?B?bFc1ZXhVUko2WTNvdEdRV010djk0K1VLV2RWbzQxU2ZPbW9hTkFxWlBMMGJW?=
- =?utf-8?B?cEFkaEtrd3l4ejBRNitCNkg4bUsrajdNSktwUmMxdlhpZG50RlZVdFBTUDI1?=
- =?utf-8?B?U2svYkZjQlZjZ20xT2lrTHFMelBUNTFIUG16YU84MWMvZ1ZwdnFROXhpc1A0?=
- =?utf-8?B?WjdPZ1ZONjFmcVVRVkcxbzkySHFHL0xyVkVyeGN0Sk05YmxyaGpnbHZldElx?=
- =?utf-8?B?bGxhVXhqUVQvTXdpcDdPMjVsZnUzN0RDQjdYVHozeXRaeWFQTnlhWWN3YjBi?=
- =?utf-8?B?eWd6aEhGMnpHRmY4MG55OFlmblF3cmRkdlczeExVT3ZySVFGT2l2QTVCZWdH?=
- =?utf-8?B?OHVPUXdlZ2JEMjEwck5GYUhGcVdTbW1zWjNtUVNzbUdmUE5LUlBMMEIvdDVp?=
- =?utf-8?B?QitRcUk0MjFrRmRISGg4Vmo1MlR5K2NqOTFDOHZKa2xCVDVzbkdLV2RwWU8x?=
- =?utf-8?B?d2Q1Y2pOTVBSSnN2S3RubFN2SHdGczJkK0RqVGp4bVlrMkZhU3ZaYjBOeEdM?=
- =?utf-8?B?VzcxNHlxVlYySnJISG1IRlFiVmhYaVV4Wjk5QzJDOFJQZVg2cjJSbitoYlpQ?=
- =?utf-8?B?YVRTV2RGczFTanJHektLOW5jblBNdkg1K2VFSWVMRUgyZzdKQVdGRVIzUG1K?=
- =?utf-8?B?UWtMd0ZFcWJ0MlR4TlZpTUl4U082MWpNQks5TXhtQnVGODlsNUprTGJYdnZu?=
- =?utf-8?B?T1dnRVhLcCtkYjhIMUpPY3JhbHpzNGNFUUUwd2VQQ1ZTZWgranFMSFBvTURR?=
- =?utf-8?B?RFd0NFRZR2FMQnF2MURRREpqZVhCMndENDMyNnF2RGFsVTRKWUpNVUtBUE9O?=
- =?utf-8?B?eWdWWUMxamtSNFhMa25yZVdrc0NFOGZHRm1JY0pma2kvUFYrZVUvQkpKK0l3?=
- =?utf-8?B?OUFqWTczWGNDaVdRRHVOWjBkbjZGT3paYmhLd2F1MzFIRkE5S2xCbVY3dmVl?=
- =?utf-8?B?aHREVFZlckVWVlFaSzhSVXlGWmlsL0ZwZVR3ekVMZGdzdUlacTZqL2UwbTJ0?=
- =?utf-8?B?cTJ2aXA4WUdvclBRa0hPN1dCUi9QT1ZDNnBoWmN2Mk9GWGxqaUhvK2IwbW1n?=
- =?utf-8?B?Z1kyUFFmcE5lVnY1U2Mwc1FmOERRaEdxMzh4YUZRQTVJb2dqb2JmcGN3Q0M0?=
- =?utf-8?B?YXByMU5TQjU5aCtETHZZa2hBNUkzcUdzSVlWMGtiVjJOYXo3ellIOU1zUkdE?=
- =?utf-8?B?RWF5RHk3ZTFBaGtncEFZbGZyTExnWDVZWDJpOHMwSjgwVXBkSWxLYzNoaG53?=
- =?utf-8?B?WVNFU2phSXFWN25rU0xhUTZiMFllNWt5OW05eFpNbUt5TGY2S1ZhcjR3MWJk?=
- =?utf-8?B?TzFkNzg2T1Rid0tHeU1LRDYrakh5Sko4N2plMDE1NUlDTWhEcHY5UDhSMjVs?=
- =?utf-8?B?SDAwYXFPVDZCUTRSV3c3L2p2d3NFVDFuai9CaWZ0d0dWdkVrSG9VWWhkTWQz?=
- =?utf-8?B?by82RzdDN1FUN29ZbDd3ZU9GeFBJUXVKSXVVNENnM0RtWTAvbVdnbGlERHVV?=
- =?utf-8?Q?nd21x2dOKltKPiKHL+1F9jyfb?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca5d3011-04f9-4d35-7fcd-08db8fb44ce8
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2023 21:47:55.1393
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kK4r/SxbaTOpqsfRFq7qO6OhErmkbDXEIfuE1njP5ljj/Sl0NBW8lQjVgRAdkNIlEVc7dgYXiacgZocaDDk0IA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5954
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <99B56FC7-9474-4968-B1DD-5862572FD0BA@joelfernandes.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,WEIRD_PORT
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+> On Fri, Jul 28, 2023 at 05:17:59PM -0400, Joel Fernandes wrote:
+>
+>   On Jul 27, 2023, at 7:18 PM, Joel Fernandes <joel@joelfernandes.org>
+>   wrote:
+>
+> ﻿
+>
+>   On Jul 27, 2023, at 4:33 PM, Paul E. McKenney <paulmck@kernel.org>
+>   wrote:
+>
+>   ﻿On Thu, Jul 27, 2023 at 10:39:17AM -0700, Guenter Roeck wrote:
+>
+>   On 7/27/23 09:07, Paul E. McKenney wrote:
+>
+>   ...]
+>
+>   No. However, (unrelated) in linux-next, rcu tests sometimes result
+>   in apparent hangs
+>
+>   or long runtime.
+>
+>   [    0.778841] Mount-cache hash table entries: 512 (order: 0, 4096
+>   bytes, linear)
+>
+>   [    0.779011] Mountpoint-cache hash table entries: 512 (order: 0,
+>   4096 bytes, linear)
+>
+>   [    0.797998] Running RCU synchronous self tests
+>
+>   [    0.798209] Running RCU synchronous self tests
+>
+>   [    0.912368] smpboot: CPU0: AMD Opteron 63xx class CPU (family:
+>   0x15, model: 0x2, stepping: 0x0)
+>
+>   [    0.923398] RCU Tasks: Setting shift to 2 and lim to 1
+>   rcu_task_cb_adjust=1.
+>
+>   [    0.925419] Running RCU-tasks wait API self tests
+>
+>   (hangs until aborted). This is primarily with Opteron CPUs, but also
+>   with others such as Haswell,
+>
+>   Icelake-Server, and pentium3. It is all but impossible to bisect
+>   because it doesn't happen
+>
+>   all the time. All I was able to figure out was that it has to do
+>   with rcu changes in linux-next.
+>
+>   I'd be much more concerned about that.
+>
+>   First I have heard of this, so thank you for letting me know.
+>
+>   About what fraction of the time does this happen?
+>
+>   Here is a sample test log from yesterday's -next. This is with
+>   x86_64.
+>
+>   Today's -next always crashes, so no data.
+>
+>   Building
+>   x86_64:q35:Broadwell-noTSX:defconfig:smp:net,e1000:mem256:ata:hd ...
+>   running ....... passed
+>
+>   Building
+>   x86_64:q35:Cascadelake-Server:defconfig:smp:net,e1000e:mem256:ata:cd
+>   ... running .................R....... passed
+>
+>   Building
+>   x86_64:q35:IvyBridge:defconfig:smp2:net,i82801:efi:mem512:nvme:hd
+>   ... running ...... passed
+>
+>   Building
+>   x86_64:q35:SandyBridge:defconfig:smp4:net,ne2k_pci:efi32:mem1G:usb:h
+>   d ... running ......... passed
+>
+>   Building
+>   x86_64:q35:SandyBridge:defconfig:smp8:net,ne2k_pci:mem1G:usb-hub:hd
+>   ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Haswell:defconfig:smp:tpm-tis:net,pcnet:mem2G:usb-uas:hd
+>   ... running .................R.... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Client:defconfig:smp2:tpm-tis:net,rtl8139:efi:mem
+>   4G:sdhci:mmc:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Conroe:defconfig:smp4:net,tulip:efi32:mem256:scsi[DC395]:
+>   hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Denverton:defconfig:smp2:net,tulip:efi:mem256:scsi[DC395]
+>   :hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:EPYC-Milan:defconfig:smp:tpm-crb:net,tulip:mem256:scsi[DC
+>   395]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp:net,virtio-net:mem512:scsi[AM53C974
+>   ]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp:net,virtio-net-old:mem512:scsi[AM53
+>   C974]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Westmere-IBRS:defconfig:smp2:tpm-crb:net,usb-ohci:efi:mem
+>   1G:scsi[53C810]:cd ... running .................R........... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Server:defconfig:smp4:tpm-tis:net,e1000-82544gc:e
+>   fi32:mem2G:scsi[53C895A]:hd ... running ............. passed
+>
+>   Building
+>   x86_64:pc:EPYC:defconfig:smp:pci-bridge:net,usb-uhci:mem4G:scsi[FUSI
+>   ON]:hd ... running ..................R.......... passed
+>
+>   Building
+>   x86_64:q35:EPYC-IBPB:defconfig:smp2:net,e1000-82545em:efi:mem8G:scsi
+>   [MEGASAS]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:efi32:mem256:scsi[M
+>   EGASAS2]:hd ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS
+>   2]:hd ... running .................R.............. failed (silent)
+>
+>   Building
+>   x86_64:pc:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2
+>   ]:hd ... running .......... passed
+>
+>   Building x86_64:pc:phenom:defconfig:smp:net,i82559er:mem512:initrd
+>   ... running ........ passed
+>
+>   Building
+>   x86_64:q35:Opteron_G1:defconfig:smp2:net,i82562:efi:mem1G:initrd ...
+>   running ...... passed
+>
+>   Building
+>   x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-p
+>   ci]:hd ... running .................R................. passed
+>
+>   Building
+>   x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-p
+>   ci-old]:hd ... running ................... passed
+>
+>   Building
+>   x86_64:q35:core2duo:defconfig:smp2:net,i82559a:mem4G:virtio-pci:hd
+>   ... running ......... passed
+>
+>   Building
+>   x86_64:q35:Broadwell:defconfig:smp4:net,i82558b:efi:mem8G:virtio:hd
+>   ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp2:net,i82558a:efi32:mem1G:virtio:hd
+>   ... running .................R... passed
+>
+>   Building
+>   x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:me
+>   m2G:virtio:cd ... running ......... passed
+>
+>   Building
+>   x86_64:q35:Icelake-Server:defconfig:preempt:smp8:net,i82557a:mem4G:n
+>   vme:hd ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Client-IBRS:defconfig:preempt:smp2:net,i82558b:ef
+>   i32:mem1G:sdhci:mmc:hd ... running ...... passed
+>
+>   Building
+>   x86_64:q35:KnightsMill:defconfig:preempt:smp6:net,i82550:mem512:init
+>   rd ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Cooperlake:defconfig:smp2:net,usb-ohci:efi:mem1G:scsi[53C
+>   810]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:EPYC-Rome:defconfig:smp4:net,igb:mem2G:scsi[53C895A]:hd
+>   ... running ......... passed
+>
+>   Building x86_64:pc:Opteron_G3:defconfig:nosmp:net,e1000:mem1G:usb:hd
+>   ... running ....................R................. failed (silent)
+>
+>   Building
+>   x86_64:q35:Opteron_G4:defconfig:nosmp:net,ne2k_pci:efi:mem512:ata:hd
+>   ... running .....................R....... passed
+>
+>   Building
+>   x86_64:q35:Haswell-noTSX-IBRS:defconfig:nosmp:net,pcnet:efi32:mem2G:
+>   ata:hd ... running .................R.............. failed (silent)
+>
+>   An earlier test run:
+>
+>   Building
+>   x86_64:q35:Broadwell-noTSX:defconfig:smp:net,e1000:mem256:ata:hd ...
+>   running ....... passed
+>
+>   Building
+>   x86_64:q35:Cascadelake-Server:defconfig:smp:net,e1000e:mem256:ata:cd
+>   ... running .................R....... passed
+>
+>   Building
+>   x86_64:q35:IvyBridge:defconfig:smp2:net,i82801:efi:mem512:nvme:hd
+>   ... running ........ passed
+>
+>   Building
+>   x86_64:q35:SandyBridge:defconfig:smp4:net,ne2k_pci:efi32:mem1G:usb:h
+>   d ... running .......... passed
+>
+>   Building
+>   x86_64:q35:SandyBridge:defconfig:smp8:net,ne2k_pci:mem1G:usb-hub:hd
+>   ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Haswell:defconfig:smp:tpm-tis:net,pcnet:mem2G:usb-uas:hd
+>   ... running .................R.... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Client:defconfig:smp2:tpm-tis:net,rtl8139:efi:mem
+>   4G:sdhci:mmc:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Conroe:defconfig:smp4:net,tulip:efi32:mem256:scsi[DC395]:
+>   hd ... running ......... passed
+>
+>   Building
+>   x86_64:q35:Denverton:defconfig:smp2:net,tulip:efi:mem256:scsi[DC395]
+>   :hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:EPYC-Milan:defconfig:smp:tpm-crb:net,tulip:mem256:scsi[DC
+>   395]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp:net,virtio-net:mem512:scsi[AM53C974
+>   ]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp:net,virtio-net-old:mem512:scsi[AM53
+>   C974]:hd ... running ........ passed
+>
+>   Building
+>   x86_64:q35:Westmere-IBRS:defconfig:smp2:tpm-crb:net,usb-ohci:efi:mem
+>   1G:scsi[53C810]:cd ... running .......... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Server:defconfig:smp4:tpm-tis:net,e1000-82544gc:e
+>   fi32:mem2G:scsi[53C895A]:hd ... running .................R.....
+>   passed
+>
+>   Building
+>   x86_64:pc:EPYC:defconfig:smp:pci-bridge:net,usb-uhci:mem4G:scsi[FUSI
+>   ON]:hd ... running .................R.............. failed (silent)
+>
+>   Building
+>   x86_64:q35:EPYC-IBPB:defconfig:smp2:net,e1000-82545em:efi:mem8G:scsi
+>   [MEGASAS]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:efi32:mem256:scsi[M
+>   EGASAS2]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS
+>   2]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:pc:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2
+>   ]:hd ... running .......... passed
+>
+>   Building x86_64:pc:phenom:defconfig:smp:net,i82559er:mem512:initrd
+>   ... running ........ passed
+>
+>   Building
+>   x86_64:q35:Opteron_G1:defconfig:smp2:net,i82562:efi:mem1G:initrd ...
+>   running ...... passed
+>
+>   Building
+>   x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-p
+>   ci]:hd ... running .......... passed
+>
+>   Building
+>   x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-p
+>   ci-old]:hd ... running .......... passed
+>
+>   Building
+>   x86_64:q35:core2duo:defconfig:smp2:net,i82559a:mem4G:virtio-pci:hd
+>   ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Broadwell:defconfig:smp4:net,i82558b:efi:mem8G:virtio:hd
+>   ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp2:net,i82558a:efi32:mem1G:virtio:hd
+>   ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:me
+>   m2G:virtio:cd ... running ......... passed
+>
+>   Building
+>   x86_64:q35:Icelake-Server:defconfig:preempt:smp8:net,i82557a:mem4G:n
+>   vme:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Client-IBRS:defconfig:preempt:smp2:net,i82558b:ef
+>   i32:mem1G:sdhci:mmc:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:KnightsMill:defconfig:preempt:smp6:net,i82550:mem512:init
+>   rd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Cooperlake:defconfig:smp2:net,usb-ohci:efi:mem1G:scsi[53C
+>   810]:hd ... running ........ passed
+>
+>   Building
+>   x86_64:q35:EPYC-Rome:defconfig:smp4:net,igb:mem2G:scsi[53C895A]:hd
+>   ... running ......... passed
+>
+>   Building x86_64:pc:Opteron_G3:defconfig:nosmp:net,e1000:mem1G:usb:hd
+>   ... running ....................R................. failed (silent)
+>
+>   Building
+>   x86_64:q35:Opteron_G4:defconfig:nosmp:net,ne2k_pci:efi:mem512:ata:hd
+>   ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Haswell-noTSX-IBRS:defconfig:nosmp:net,pcnet:efi32:mem2G:
+>   ata:hd ... running ....... passed
+>
+>   "R" means retry, and the dots reflect time expired. It looks like it
+>   happens most of the time,
+>
+>   but not always, on affected CPUs. I don't have specific data for
+>   non-Intel CPUs. I don't think
+>
+>   I see the problem there, but there is too much interference from
+>   other problems to be sure.
+>
+>   For comparison, here is the result from the latest mainline:
+>
+>   Building
+>   x86_64:q35:Broadwell-noTSX:defconfig:smp:net,e1000:mem256:ata:hd ...
+>   running ....... passed
+>
+>   Building
+>   x86_64:q35:Cascadelake-Server:defconfig:smp:net,e1000e:mem256:ata:cd
+>   ... running .......... passed
+>
+>   Building
+>   x86_64:q35:IvyBridge:defconfig:smp2:net,i82801:efi:mem512:nvme:hd
+>   ... running ...... passed
+>
+>   Building
+>   x86_64:q35:SandyBridge:defconfig:smp4:net,ne2k_pci:efi32:mem1G:usb:h
+>   d ... running ......... passed
+>
+>   Building
+>   x86_64:q35:SandyBridge:defconfig:smp8:net,ne2k_pci:mem1G:usb-hub:hd
+>   ... running ........... passed
+>
+>   Building
+>   x86_64:q35:Haswell:defconfig:smp:tpm-tis:net,pcnet:mem2G:usb-uas:hd
+>   ... running ........ passed
+>
+>   Building
+>   x86_64:q35:Skylake-Client:defconfig:smp2:tpm-tis:net,rtl8139:efi:mem
+>   4G:sdhci:mmc:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Conroe:defconfig:smp4:net,tulip:efi32:mem256:scsi[DC395]:
+>   hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Denverton:defconfig:smp2:net,tulip:efi:mem256:scsi[DC395]
+>   :hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:EPYC-Milan:defconfig:smp:tpm-crb:net,tulip:mem256:scsi[DC
+>   395]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp:net,virtio-net:mem512:scsi[AM53C974
+>   ]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp:net,virtio-net-old:mem512:scsi[AM53
+>   C974]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Westmere-IBRS:defconfig:smp2:tpm-crb:net,usb-ohci:efi:mem
+>   1G:scsi[53C810]:cd ... running .......... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Server:defconfig:smp4:tpm-tis:net,e1000-82544gc:e
+>   fi32:mem2G:scsi[53C895A]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:pc:EPYC:defconfig:smp:pci-bridge:net,usb-uhci:mem4G:scsi[FUSI
+>   ON]:hd ... running ............. passed
+>
+>   Building
+>   x86_64:q35:EPYC-IBPB:defconfig:smp2:net,e1000-82545em:efi:mem8G:scsi
+>   [MEGASAS]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:efi32:mem256:scsi[M
+>   EGASAS2]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS
+>   2]:hd ... running ...... passed
+>
+>   Building
+>   x86_64:pc:Opteron_G5:defconfig:smp4:net,i82559c:mem256:scsi[MEGASAS2
+>   ]:hd ... running ......... passed
+>
+>   Building x86_64:pc:phenom:defconfig:smp:net,i82559er:mem512:initrd
+>   ... running ......... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G1:defconfig:smp2:net,i82562:efi:mem1G:initrd ...
+>   running ......... passed
+>
+>   Building
+>   x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-p
+>   ci]:hd ... running ......... passed
+>
+>   Building
+>   x86_64:pc:Opteron_G2:defconfig:smp:net,usb:efi32:mem2G:scsi[virtio-p
+>   ci-old]:hd ... running ......... passed
+>
+>   Building
+>   x86_64:q35:core2duo:defconfig:smp2:net,i82559a:mem4G:virtio-pci:hd
+>   ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Broadwell:defconfig:smp4:net,i82558b:efi:mem8G:virtio:hd
+>   ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Nehalem:defconfig:smp2:net,i82558a:efi32:mem1G:virtio:hd
+>   ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:me
+>   m2G:virtio:cd ... running ............ passed
+>
+>   Building
+>   x86_64:q35:Icelake-Server:defconfig:preempt:smp8:net,i82557a:mem4G:n
+>   vme:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:Skylake-Client-IBRS:defconfig:preempt:smp2:net,i82558b:ef
+>   i32:mem1G:sdhci:mmc:hd ... running ...... passed
+>
+>   Building
+>   x86_64:q35:KnightsMill:defconfig:preempt:smp6:net,i82550:mem512:init
+>   rd ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Cooperlake:defconfig:smp2:net,usb-ohci:efi:mem1G:scsi[53C
+>   810]:hd ... running ....... passed
+>
+>   Building
+>   x86_64:q35:EPYC-Rome:defconfig:smp4:net,igb:mem2G:scsi[53C895A]:hd
+>   ... running .......... passed
+>
+>   Building x86_64:pc:Opteron_G3:defconfig:nosmp:net,e1000:mem1G:usb:hd
+>   ... running .......... passed
+>
+>   Building
+>   x86_64:q35:Opteron_G4:defconfig:nosmp:net,ne2k_pci:efi:mem512:ata:hd
+>   ... running ...... passed
+>
+>   Building
+>   x86_64:q35:Haswell-noTSX-IBRS:defconfig:nosmp:net,pcnet:efi32:mem2G:
+>   ata:hd ... running ...... passed
+>
+>   I freely confess that I am having a hard time imagining what would
+>
+>   be CPU dependent in that code.  Timing, maybe?  Whatever the reason,
+>
+>   I am not seeing these failures in my testing.
+>
+>   So which of the following Kconfig options is defined in your
+>   .config?
+>
+>   CONFIG_TASKS_RCU, CONFIG_TASKS_RUDE_RCU, and CONFIG_TASKS_TRACE_RCU.
+>
+>   If you have more than one of them, could you please apply this patch
+>
+>   and show me the corresponding console output from the resulting
+>   hang?
+>
+> FWIW, I am not able to repro this issue either. If a .config can be
+> shared of the problem system, I can try it out to see if it can be
+> reproduced on my side.
+>
+> I do see this now on 5.15 stable:
+>
+>TASKS03 ------- 3089 GPs (0.858056/s)
+>QEMU killed
+>TASKS03 no success message, 64 successful version messages
+>!!! PID 3309783 hung at 3781 vs. 3600 seconds
+>
+> I have not looked too closely yet. The full test artifacts are here:
+>
+> [1]Artifacts of linux-5.15.y 5.15.123 :
+> /tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44 [Jenkins]
+> [2]box.joelfernandes.org
+> [3]apple-touch-icon.png
+>
+> Thanks,
+>
+> - Joel
+>
+> (Apologies if the email is html, I am sending from phone).
 
+Heh.  I have a script that runs lynx.  Which isn't perfect, but usually
+makes things at least somewhat legible.
 
-On 7/28/2023 4:38 PM, Linus Torvalds wrote:
-> On Fri, 28 Jul 2023 at 14:01, Limonciello, Mario
-> <mario.limonciello@amd.com> wrote:
->>
->> That's exactly why I was asking in the kernel bugzilla if something
->> similar gets tripped up by RDRAND.
-> 
-> So that would sound very unlikely, but who knows... Microcode can
-> obviously do pretty much anything at all, but at least the original
-> fTPM issues _seemed_ to be about BIOS doing truly crazy things like
-> SPI flash accesses.
-> 
-> I can easily imagine a BIOS fTPM code using some absolutely horrid
-> global "EFI synchronization" lock or whatever, which could then cause
-> random problems just based on some entirely unrelated activity.
-> 
-> I would not be surprised, for example, if wasn't the fTPM hwrnd code
-> itself that decided to read some random number from SPI, but that it
-> simply got serialized with something else that the BIOS was involved
-> with. It's not like BIOS people are famous for their scalable code
-> that is entirely parallel...
-> 
-> And I'd be _very_ surprised if CPU microcode does anything even
-> remotely like that. Not impossible - HP famously screwed with the time
-> stamp counter with SMIs, and I could imagine them - or others - doing
-> the same with rdrand.
-> 
-> But it does sound pretty damn unlikely, compared to "EFI BIOS uses a
-> one big lock approach".
-> 
-> So rdrand (and rdseed in particular) can be rather slow, but I think
-> we're talking hundreds of CPU cycles (maybe low thousands). Nothing
-> like the stuttering reports we've seen from fTPM.
-> 
->                              Linus
+This looks like the prototypical hard hang with interrupts disabled,
+which could be anywhere in the kernel, including RCU.  I am not seeing
+this.  but the usual cause when I have seen it in the past was deadlock
+of irq-disabled locks.  In one spectacular case, it was a timekeeping
+failure that messed up a CPU-hotplug operation.
 
-Your theory sounds totally plausible and it would explain why even 
-though this system has the fixes from the original issue it's tripping a 
-similar behavior.
+If this is reproducible, one trick would be to have a script look at
+the console.log file, and have it do something (NMI? sysrq?  something
+else?) to qemu if output ceased for too long.
 
-Based on the argument of RDRAND being on the same SOC I think it's a 
-pretty good argument to drop contributing to the hwrng entropy 
-*anything* that's not a dTPM.
+One way to do this without messing with the rcutorture scripting is to
+grab the qemu-cmd file from this run, and then invoke that file from your
+own script, possibly with suitable modifications to qemu's parameters.
+
+Thoughts?
+
+							Thanx, Paul
+
+> Cheers,
+> - Joel
+>
+>                             Thanx, Paul
+>
+>   --------------------------------------------------------------------
+>   ----
+>
+>   commit 709a917710dc01798e01750ea628ece4bfc42b7b
+>
+>   Author: Paul E. McKenney <paulmck@kernel.org>
+>
+>   Date:   Thu Jul 27 13:13:46 2023 -0700
+>
+>     rcu-tasks: Add printk()s to localize boot-time self-test hang
+>
+>     Currently, rcu_tasks_initiate_self_tests() prints a message and
+>   then
+>
+>     initiates self tests on up to three different RCU Tasks flavors.
+>   If one
+>
+>     of the flavors has a grace-period hang, it is not easy to work out
+>   which
+>
+>     of the three hung.  This commit therefore prints a message prior
+>   to each
+>
+>     individual test.
+>
+>     Reported-by: Guenter Roeck <linux@roeck-us.net>
+>
+>     Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+>
+>   diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+>
+>   index 56c470a489c8..427433c90935 100644
+>
+>   --- a/kernel/rcu/tasks.h
+>
+>   +++ b/kernel/rcu/tasks.h
+>
+>   @@ -1981,20 +1981,22 @@ static void test_rcu_tasks_callback(struct
+>   rcu_head *rhp)
+>
+>   static void rcu_tasks_initiate_self_tests(void)
+>
+>   {
+>
+>   -    pr_info("Running RCU-tasks wait API self tests\n");
+>
+>   #ifdef CONFIG_TASKS_RCU
+>
+>   +    pr_info("Running RCU Tasks wait API self tests\n");
+>
+>     tests[0].runstart = jiffies;
+>
+>     synchronize_rcu_tasks();
+>
+>     call_rcu_tasks(&tests[0].rh, test_rcu_tasks_callback);
+>
+>   #endif
+>
+>   #ifdef CONFIG_TASKS_RUDE_RCU
+>
+>   +    pr_info("Running RCU Tasks Rude wait API self tests\n");
+>
+>     tests[1].runstart = jiffies;
+>
+>     synchronize_rcu_tasks_rude();
+>
+>     call_rcu_tasks_rude(&tests[1].rh, test_rcu_tasks_callback);
+>
+>   #endif
+>
+>   #ifdef CONFIG_TASKS_TRACE_RCU
+>
+>   +    pr_info("Running RCU Tasks Trace wait API self tests\n");
+>
+>     tests[2].runstart = jiffies;
+>
+>     synchronize_rcu_tasks_trace();
+>
+>     call_rcu_tasks_trace(&tests[2].rh, test_rcu_tasks_callback);
+>
+>References
+>
+> Visible links:
+> 1. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
+> 2. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
+> 3. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
+>
+> Hidden links:
+> 5. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
