@@ -2,271 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8028A766578
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 09:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171267665DE
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 09:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232699AbjG1Hja (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 03:39:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33770 "EHLO
+        id S234522AbjG1H50 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 03:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233523AbjG1Hj1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 03:39:27 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A6FB6
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 00:39:26 -0700 (PDT)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36S1gOTd004114;
-        Fri, 28 Jul 2023 07:39:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=bTpJSU/Oub1FKiOOMbom4p5zEKDrwss8vYQhghcnJ3Q=;
- b=cd3Y7c3/iBcyrlEa8WgZLDfcOmoiunm0eyCBpcy6e0Er1bXoD9ULbsT8Lt74K/8LfFcN
- 4fGIXRRt0Zur2qgy4IJF9fKPvN6M2zYcr6Es/H9ju45aN+GOLh4rqURuBS5MvyLEBuBW
- ue+IA375jev4OvPjgzG+P6V0Th7+Fj3geOWHbLT32DMliwo4zMwjv4NZDS4P2V8wrBIO
- XwGI5JcB2itiwK764EUmwwgl2qzlfNv401QKe25FuH3g2sBmdi+mfpy4XxYuKb7uKhxu
- gmBuuDzFKY+yZldb0U+MpIDjdZGkPsKg+EhRkfHXAVGP2eBD4ZpUr+eysFaZw0hRWc8U wQ== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s075dbfxt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 28 Jul 2023 07:39:20 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 36S7VxGK030404;
-        Fri, 28 Jul 2023 07:39:19 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3s05jf0a73-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 28 Jul 2023 07:39:19 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36S7dG0u007017;
-        Fri, 28 Jul 2023 07:39:19 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3s05jf0a4q-4;
-        Fri, 28 Jul 2023 07:39:19 +0000
-From:   Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-To:     stable@vger.kernel.org
-Cc:     harshvardhan.j.jha@oracle.com, josef@toxicpanda.com,
-        dsterba@suse.com, clm@fb.com
-Subject: [PATCH 5.4 3/3] btrfs: fix race between quota disable and quota assign ioctls
-Date:   Fri, 28 Jul 2023 00:39:14 -0700
-Message-ID: <20230728073914.226947-4-harshvardhan.j.jha@oracle.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230728073914.226947-1-harshvardhan.j.jha@oracle.com>
-References: <20230728073914.226947-1-harshvardhan.j.jha@oracle.com>
+        with ESMTP id S234526AbjG1H5W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 03:57:22 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB823582;
+        Fri, 28 Jul 2023 00:57:20 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36S7c2g0020753;
+        Fri, 28 Jul 2023 07:57:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=h8agajaLfWeXSOxgQ4Tqn5wqoCAvvaRjiSyfa4aGhpU=;
+ b=pVIwXsDa7ajs3/hOdLSqOsyyBXKCem93pdxTki0S6PNOOGpGZBJYp0598QuF5AB1sxNx
+ rUTA+7WPIWEDE9uKdTRSqzn8tDNWFDjDfWM1SV87KCLKWw6jtD0RGJBBsxOcDLFWOJk6
+ L07BDh75ELZwe+2ECA4gCbdSlZVOBQBm57hElFsS05zFxNczutvfUBSzxAcUX3Op1+v2
+ ca1/mQed0EgL/Jree3HuZFbemCYBck5uoJhtlRpIaf1mHH4bASG1hmteeVJICDWhkLRl
+ LopOdqq7/QAqJr4/KBZAkpGr8kJWM07KX/XlRfcAYglbPLT+Ttg2KPT3U+oqLs3O8H7q bQ== 
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s3n2kapsp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 28 Jul 2023 07:57:13 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36S7vCqY029525
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 28 Jul 2023 07:57:12 GMT
+Received: from [10.50.27.108] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Fri, 28 Jul
+ 2023 00:57:02 -0700
+Message-ID: <6692f826-c2ca-3f8e-c6e5-d02a99150095@quicinc.com>
+Date:   Fri, 28 Jul 2023 13:26:58 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/4] venus: hfi: add checks to perform sanity on queue
+ pointers
+Content-Language: en-US
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        <stanimir.k.varbanov@gmail.com>, <bryan.odonoghue@linaro.org>,
+        <agross@kernel.org>, <andersson@kernel.org>, <mchehab@kernel.org>,
+        <hans.verkuil@cisco.com>, <tfiga@chromium.org>
+CC:     <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <1690432469-14803-1-git-send-email-quic_vgarodia@quicinc.com>
+ <1690432469-14803-2-git-send-email-quic_vgarodia@quicinc.com>
+ <df947545-23ef-2ee9-72cc-8e54bbe46be1@linaro.org>
+From:   Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <df947545-23ef-2ee9-72cc-8e54bbe46be1@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -6dzAtQqeXQpsT02Ey88kGVZfMtQ9ke-
+X-Proofpoint-ORIG-GUID: -6dzAtQqeXQpsT02Ey88kGVZfMtQ9ke-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-27_10,2023-07-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
- adultscore=0 suspectscore=0 phishscore=0 malwarescore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307280069
-X-Proofpoint-ORIG-GUID: q1NhY7v1Tr_OT2RjCj8Ntiz78UYoqCtp
-X-Proofpoint-GUID: q1NhY7v1Tr_OT2RjCj8Ntiz78UYoqCtp
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 phishscore=0 impostorscore=0 mlxscore=0 suspectscore=0
+ spamscore=0 clxscore=1015 bulkscore=0 mlxlogscore=825 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307280071
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
 
-[Upstream commit 2f1a6be12ab6c8470d5776e68644726c94257c54]
+On 7/27/2023 10:38 PM, Konrad Dybcio wrote:
+> On 27.07.2023 06:34, Vikash Garodia wrote:
+>> Read and write pointers are used to track the packet index in the memory
+>> shared between video driver and firmware. There is a possibility of OOB
+>> access if the read or write pointer goes beyond the queue memory size.
+>> Add checks for the read and write pointer to avoid OOB access.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+>> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+>> ---
+>>  drivers/media/platform/qcom/venus/hfi_venus.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+>> index f0b4638..dc228c4 100644
+>> --- a/drivers/media/platform/qcom/venus/hfi_venus.c
+>> +++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+>> @@ -206,6 +206,10 @@ static int venus_write_queue(struct venus_hfi_device *hdev,
+>>  
+>>  	new_wr_idx = wr_idx + dwords;
+>>  	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
+>> +
+>> +	if (wr_ptr < (u32 *)queue->qmem.kva || wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size))
+> Shouldn't the cases on the right side of the OR operator include a
+> "- 1"?
 
-The quota assign ioctl can currently run in parallel with a quota disable
-ioctl call. The assign ioctl uses the quota root, while the disable ioctl
-frees that root, and therefore we can have a use-after-free triggered in
-the assign ioctl, leading to a trace like the following when KASAN is
-enabled:
+I see your point here. Possibly subtracting with sizeof(*wr_ptr) instead of "1"
+would be appropriate. Similarly for read queue handling.
 
-  [672.723][T736] BUG: KASAN: slab-use-after-free in btrfs_search_slot+0x2962/0x2db0
-  [672.723][T736] Read of size 8 at addr ffff888022ec0208 by task btrfs_search_sl/27736
-  [672.724][T736]
-  [672.725][T736] CPU: 1 PID: 27736 Comm: btrfs_search_sl Not tainted 6.3.0-rc3 #37
-  [672.723][T736] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  [672.727][T736] Call Trace:
-  [672.728][T736]  <TASK>
-  [672.728][T736]  dump_stack_lvl+0xd9/0x150
-  [672.725][T736]  print_report+0xc1/0x5e0
-  [672.720][T736]  ? __virt_addr_valid+0x61/0x2e0
-  [672.727][T736]  ? __phys_addr+0xc9/0x150
-  [672.725][T736]  ? btrfs_search_slot+0x2962/0x2db0
-  [672.722][T736]  kasan_report+0xc0/0xf0
-  [672.729][T736]  ? btrfs_search_slot+0x2962/0x2db0
-  [672.724][T736]  btrfs_search_slot+0x2962/0x2db0
-  [672.723][T736]  ? fs_reclaim_acquire+0xba/0x160
-  [672.722][T736]  ? split_leaf+0x13d0/0x13d0
-  [672.726][T736]  ? rcu_is_watching+0x12/0xb0
-  [672.723][T736]  ? kmem_cache_alloc+0x338/0x3c0
-  [672.722][T736]  update_qgroup_status_item+0xf7/0x320
-  [672.724][T736]  ? add_qgroup_rb+0x3d0/0x3d0
-  [672.739][T736]  ? do_raw_spin_lock+0x12d/0x2b0
-  [672.730][T736]  ? spin_bug+0x1d0/0x1d0
-  [672.737][T736]  btrfs_run_qgroups+0x5de/0x840
-  [672.730][T736]  ? btrfs_qgroup_rescan_worker+0xa70/0xa70
-  [672.738][T736]  ? __del_qgroup_relation+0x4ba/0xe00
-  [672.738][T736]  btrfs_ioctl+0x3d58/0x5d80
-  [672.735][T736]  ? tomoyo_path_number_perm+0x16a/0x550
-  [672.737][T736]  ? tomoyo_execute_permission+0x4a0/0x4a0
-  [672.731][T736]  ? btrfs_ioctl_get_supported_features+0x50/0x50
-  [672.737][T736]  ? __sanitizer_cov_trace_switch+0x54/0x90
-  [672.734][T736]  ? do_vfs_ioctl+0x132/0x1660
-  [672.730][T736]  ? vfs_fileattr_set+0xc40/0xc40
-  [672.730][T736]  ? _raw_spin_unlock_irq+0x2e/0x50
-  [672.732][T736]  ? sigprocmask+0xf2/0x340
-  [672.737][T736]  ? __fget_files+0x26a/0x480
-  [672.732][T736]  ? bpf_lsm_file_ioctl+0x9/0x10
-  [672.738][T736]  ? btrfs_ioctl_get_supported_features+0x50/0x50
-  [672.736][T736]  __x64_sys_ioctl+0x198/0x210
-  [672.736][T736]  do_syscall_64+0x39/0xb0
-  [672.731][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  [672.739][T736] RIP: 0033:0x4556ad
-  [672.742][T736]  </TASK>
-  [672.743][T736]
-  [672.748][T736] Allocated by task 27677:
-  [672.743][T736]  kasan_save_stack+0x22/0x40
-  [672.741][T736]  kasan_set_track+0x25/0x30
-  [672.741][T736]  __kasan_kmalloc+0xa4/0xb0
-  [672.749][T736]  btrfs_alloc_root+0x48/0x90
-  [672.746][T736]  btrfs_create_tree+0x146/0xa20
-  [672.744][T736]  btrfs_quota_enable+0x461/0x1d20
-  [672.743][T736]  btrfs_ioctl+0x4a1c/0x5d80
-  [672.747][T736]  __x64_sys_ioctl+0x198/0x210
-  [672.749][T736]  do_syscall_64+0x39/0xb0
-  [672.744][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  [672.756][T736]
-  [672.757][T736] Freed by task 27677:
-  [672.759][T736]  kasan_save_stack+0x22/0x40
-  [672.759][T736]  kasan_set_track+0x25/0x30
-  [672.756][T736]  kasan_save_free_info+0x2e/0x50
-  [672.751][T736]  ____kasan_slab_free+0x162/0x1c0
-  [672.758][T736]  slab_free_freelist_hook+0x89/0x1c0
-  [672.752][T736]  __kmem_cache_free+0xaf/0x2e0
-  [672.752][T736]  btrfs_put_root+0x1ff/0x2b0
-  [672.759][T736]  btrfs_quota_disable+0x80a/0xbc0
-  [672.752][T736]  btrfs_ioctl+0x3e5f/0x5d80
-  [672.756][T736]  __x64_sys_ioctl+0x198/0x210
-  [672.753][T736]  do_syscall_64+0x39/0xb0
-  [672.765][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  [672.769][T736]
-  [672.768][T736] The buggy address belongs to the object at ffff888022ec0000
-  [672.768][T736]  which belongs to the cache kmalloc-4k of size 4096
-  [672.769][T736] The buggy address is located 520 bytes inside of
-  [672.769][T736]  freed 4096-byte region [ffff888022ec0000, ffff888022ec1000)
-  [672.760][T736]
-  [672.764][T736] The buggy address belongs to the physical page:
-  [672.761][T736] page:ffffea00008bb000 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x22ec0
-  [672.766][T736] head:ffffea00008bb000 order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-  [672.779][T736] flags: 0xfff00000010200(slab|head|node=0|zone=1|lastcpupid=0x7ff)
-  [672.770][T736] raw: 00fff00000010200 ffff888012842140 ffffea000054ba00 dead000000000002
-  [672.770][T736] raw: 0000000000000000 0000000000040004 00000001ffffffff 0000000000000000
-  [672.771][T736] page dumped because: kasan: bad access detected
-  [672.778][T736] page_owner tracks the page as allocated
-  [672.777][T736] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 88
-  [672.779][T736]  get_page_from_freelist+0x119c/0x2d50
-  [672.779][T736]  __alloc_pages+0x1cb/0x4a0
-  [672.776][T736]  alloc_pages+0x1aa/0x270
-  [672.773][T736]  allocate_slab+0x260/0x390
-  [672.771][T736]  ___slab_alloc+0xa9a/0x13e0
-  [672.778][T736]  __slab_alloc.constprop.0+0x56/0xb0
-  [672.771][T736]  __kmem_cache_alloc_node+0x136/0x320
-  [672.789][T736]  __kmalloc+0x4e/0x1a0
-  [672.783][T736]  tomoyo_realpath_from_path+0xc3/0x600
-  [672.781][T736]  tomoyo_path_perm+0x22f/0x420
-  [672.782][T736]  tomoyo_path_unlink+0x92/0xd0
-  [672.780][T736]  security_path_unlink+0xdb/0x150
-  [672.788][T736]  do_unlinkat+0x377/0x680
-  [672.788][T736]  __x64_sys_unlink+0xca/0x110
-  [672.789][T736]  do_syscall_64+0x39/0xb0
-  [672.783][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  [672.784][T736] page last free stack trace:
-  [672.787][T736]  free_pcp_prepare+0x4e5/0x920
-  [672.787][T736]  free_unref_page+0x1d/0x4e0
-  [672.784][T736]  __unfreeze_partials+0x17c/0x1a0
-  [672.797][T736]  qlist_free_all+0x6a/0x180
-  [672.796][T736]  kasan_quarantine_reduce+0x189/0x1d0
-  [672.797][T736]  __kasan_slab_alloc+0x64/0x90
-  [672.793][T736]  kmem_cache_alloc+0x17c/0x3c0
-  [672.799][T736]  getname_flags.part.0+0x50/0x4e0
-  [672.799][T736]  getname_flags+0x9e/0xe0
-  [672.792][T736]  vfs_fstatat+0x77/0xb0
-  [672.791][T736]  __do_sys_newlstat+0x84/0x100
-  [672.798][T736]  do_syscall_64+0x39/0xb0
-  [672.796][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  [672.790][T736]
-  [672.791][T736] Memory state around the buggy address:
-  [672.799][T736]  ffff888022ec0100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  [672.805][T736]  ffff888022ec0180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  [672.802][T736] >ffff888022ec0200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  [672.809][T736]                       ^
-  [672.809][T736]  ffff888022ec0280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  [672.809][T736]  ffff888022ec0300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+- Vikash
 
-Fix this by having the qgroup assign ioctl take the qgroup ioctl mutex
-before calling btrfs_run_qgroups(), which is what all qgroup ioctls should
-call.
-
-Reported-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAFcO6XN3VD8ogmHwqRk4kbiwtpUSNySu2VAxN8waEPciCHJvMA@mail.gmail.com/
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
----
- fs/btrfs/ioctl.c  |  2 ++
- fs/btrfs/qgroup.c | 11 ++++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 64b443aa61ca..7a07e29c8ae7 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -4912,7 +4912,9 @@ static long btrfs_ioctl_qgroup_assign(struct file *file, void __user *arg)
- 	}
- 
- 	/* update qgroup status and info */
-+	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	err = btrfs_run_qgroups(trans);
-+	mutex_unlock(&fs_info->qgroup_ioctl_lock);
- 	if (err < 0)
- 		btrfs_handle_fs_error(fs_info, err,
- 				      "failed to update qgroup status and info");
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 7327636c9f26..8a229a65866b 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -2664,13 +2664,22 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
- }
- 
- /*
-- * called from commit_transaction. Writes all changed qgroups to disk.
-+ * Writes all changed qgroups to disk.
-+ * Called by the transaction commit path and the qgroup assign ioctl.
-  */
- int btrfs_run_qgroups(struct btrfs_trans_handle *trans)
- {
- 	struct btrfs_fs_info *fs_info = trans->fs_info;
- 	int ret = 0;
- 
-+	/*
-+	 * In case we are called from the qgroup assign ioctl, assert that we
-+	 * are holding the qgroup_ioctl_lock, otherwise we can race with a quota
-+	 * disable operation (ioctl) and access a freed quota root.
-+	 */
-+	if (trans->transaction->state != TRANS_STATE_COMMIT_DOING)
-+		lockdep_assert_held(&fs_info->qgroup_ioctl_lock);
-+
- 	if (!fs_info->quota_root)
- 		return ret;
- 
--- 
-2.40.0
-
+> Konrad
