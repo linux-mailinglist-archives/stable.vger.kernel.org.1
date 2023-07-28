@@ -2,127 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4E93766724
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 10:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 599437667F5
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 10:58:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234789AbjG1Ib0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Fri, 28 Jul 2023 04:31:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34806 "EHLO
+        id S233994AbjG1I6V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 04:58:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234974AbjG1Iay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 04:30:54 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6641C3AA0
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 01:29:53 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-59-spQ2bcCCN6uK73WIrMkiVA-1; Fri, 28 Jul 2023 09:29:50 +0100
-X-MC-Unique: spQ2bcCCN6uK73WIrMkiVA-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 28 Jul
- 2023 09:29:48 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Fri, 28 Jul 2023 09:29:48 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Jijie Shao' <shaojijie@huawei.com>,
-        "yisen.zhuang@huawei.com" <yisen.zhuang@huawei.com>,
-        "salil.mehta@huawei.com" <salil.mehta@huawei.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>
-CC:     "shenjian15@huawei.com" <shenjian15@huawei.com>,
-        "wangjie125@huawei.com" <wangjie125@huawei.com>,
-        "liuyonglong@huawei.com" <liuyonglong@huawei.com>,
-        "wangpeiyang1@huawei.com" <wangpeiyang1@huawei.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net 1/6] net: hns3: fix side effects passed to min_t()
-Thread-Topic: [PATCH net 1/6] net: hns3: fix side effects passed to min_t()
-Thread-Index: AQHZwSodHT1OfdHQgUOtv3IG+DBXRa/O1ztQ
-Date:   Fri, 28 Jul 2023 08:29:48 +0000
-Message-ID: <85e3c423aa5a400981ae5c53a29ee280@AcuMS.aculab.com>
+        with ESMTP id S235198AbjG1I6F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 04:58:05 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9ABA1731;
+        Fri, 28 Jul 2023 01:58:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=XO04uRIxA4guTxkcu7RQ08+aVzvwwBtSGQVQXA0Q9qY=; b=YW8CDX+BSc+DoSsnuaaZktrZz2
+        kCfgSWqWG0mc07IWwSkwV/nAj+QpdmxsgqTPkwBQpN9FJJeOKZOXtYLxMm34DK5b+RHS6hbFKjZl5
+        b6AhT3lsOPdaQE5iBux5Jvos5RJvBE/gmISN4uj4lfahQnSkPejXnEpXUpgSPUiMtuTw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qPJII-002WG8-IX; Fri, 28 Jul 2023 10:57:54 +0200
+Date:   Fri, 28 Jul 2023 10:57:54 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Jijie Shao <shaojijie@huawei.com>
+Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, shenjian15@huawei.com, wangjie125@huawei.com,
+        liuyonglong@huawei.com, wangpeiyang1@huawei.com,
+        netdev@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
+Message-ID: <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
 References: <20230728075840.4022760-1-shaojijie@huawei.com>
- <20230728075840.4022760-2-shaojijie@huawei.com>
-In-Reply-To: <20230728075840.4022760-2-shaojijie@huawei.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ <20230728075840.4022760-6-shaojijie@huawei.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230728075840.4022760-6-shaojijie@huawei.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao
-> Sent: 28 July 2023 08:59
+On Fri, Jul 28, 2023 at 03:58:39PM +0800, Jijie Shao wrote:
+> From: Peiyang Wang <wangpeiyang1@huawei.com>
 > 
-> num_online_cpus() may call more than once when passing to min_t(),
-> between calls, it may return different values, so move num_online_cpus()
-> out of min_t().
+> This patch will fix a wrong print "device link down/up". Consider a case
+> that set autoneg to off with same speed and duplex configuration. The link
+> is always up while the phy state is set to PHY_UP and set back to
+> PHY_RUNNING later. It will print link down when the phy state is not
+> PHY_RUNNING. To avoid that, the condition should include PHY_UP.
 
-Nope, wrong bug:
-min() (and friends) are careful to only evaluate their arguments once.
-The bug is using min_t() - especially with a small type.
+Does this really happen? If autoneg is on, and there is link, it means
+the link peer is auto using auto-neg. If you turn auto-neg off, the
+link peer is not going to know what speed to use, and so the link will
+go down. The link will only come up again when you reconfigure the
+link peer to also not use auto-neg.
 
-If/when the number of cpu hits 65536 the (u16) cast will convert
-it to zero.
+I don't see how you can turn auto-neg off and not loose the link.
 
-Looking at the code a lot of the local variables should be
-'unsigned int' not 'u16.
-Just because the domain of a value is small doesn't mean
-you should use a small type (unless you are saving space in
-a structure).
-
-	David
-
-> 
-> Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-> ---
->  drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> index 9f6890059666..823e6d2e85f5 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> @@ -4757,6 +4757,7 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
->  {
->  	struct hnae3_handle *h = priv->ae_handle;
->  	struct hns3_enet_tqp_vector *tqp_vector;
-> +	u32 online_cpus = num_online_cpus();
->  	struct hnae3_vector_info *vector;
->  	struct pci_dev *pdev = h->pdev;
->  	u16 tqp_num = h->kinfo.num_tqps;
-> @@ -4766,7 +4767,7 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
-> 
->  	/* RSS size, cpu online and vector_num should be the same */
->  	/* Should consider 2p/4p later */
-> -	vector_num = min_t(u16, num_online_cpus(), tqp_num);
-> +	vector_num = min_t(u16, online_cpus, tqp_num);
-> 
->  	vector = devm_kcalloc(&pdev->dev, vector_num, sizeof(*vector),
->  			      GFP_KERNEL);
-> --
-> 2.30.0
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+  Andrew
