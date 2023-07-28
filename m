@@ -2,79 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF71B7667C6
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 10:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E93766724
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 10:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234549AbjG1Ix0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 04:53:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47758 "EHLO
+        id S234789AbjG1Ib0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Fri, 28 Jul 2023 04:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235227AbjG1Iwv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 04:52:51 -0400
-X-Greylist: delayed 1204 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 28 Jul 2023 01:51:12 PDT
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A10B26A0
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 01:51:12 -0700 (PDT)
-Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
-        (envelope-from <mchehab@linuxtv.org>)
-        id 1qPIsM-006AbI-Hk; Fri, 28 Jul 2023 08:31:06 +0000
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-Date:   Fri, 28 Jul 2023 08:20:10 +0000
-Subject: [git:media_stage/fixes] media: uvcvideo: Fix menu count handling for userspace XU mappings
-To:     linuxtv-commits@linuxtv.org
-Cc:     Ricardo Ribalda <ribalda@chromium.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        stable@vger.kernel.org
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qPIsM-006AbI-Hk@www.linuxtv.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234974AbjG1Iay (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 04:30:54 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6641C3AA0
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 01:29:53 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-59-spQ2bcCCN6uK73WIrMkiVA-1; Fri, 28 Jul 2023 09:29:50 +0100
+X-MC-Unique: spQ2bcCCN6uK73WIrMkiVA-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 28 Jul
+ 2023 09:29:48 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Fri, 28 Jul 2023 09:29:48 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Jijie Shao' <shaojijie@huawei.com>,
+        "yisen.zhuang@huawei.com" <yisen.zhuang@huawei.com>,
+        "salil.mehta@huawei.com" <salil.mehta@huawei.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>
+CC:     "shenjian15@huawei.com" <shenjian15@huawei.com>,
+        "wangjie125@huawei.com" <wangjie125@huawei.com>,
+        "liuyonglong@huawei.com" <liuyonglong@huawei.com>,
+        "wangpeiyang1@huawei.com" <wangpeiyang1@huawei.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net 1/6] net: hns3: fix side effects passed to min_t()
+Thread-Topic: [PATCH net 1/6] net: hns3: fix side effects passed to min_t()
+Thread-Index: AQHZwSodHT1OfdHQgUOtv3IG+DBXRa/O1ztQ
+Date:   Fri, 28 Jul 2023 08:29:48 +0000
+Message-ID: <85e3c423aa5a400981ae5c53a29ee280@AcuMS.aculab.com>
+References: <20230728075840.4022760-1-shaojijie@huawei.com>
+ <20230728075840.4022760-2-shaojijie@huawei.com>
+In-Reply-To: <20230728075840.4022760-2-shaojijie@huawei.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an automatic generated email to let you know that the following patch were queued:
+From: Jijie Shao
+> Sent: 28 July 2023 08:59
+> 
+> num_online_cpus() may call more than once when passing to min_t(),
+> between calls, it may return different values, so move num_online_cpus()
+> out of min_t().
 
-Subject: media: uvcvideo: Fix menu count handling for userspace XU mappings
-Author:  Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Date:    Tue Jun 6 18:55:30 2023 +0200
+Nope, wrong bug:
+min() (and friends) are careful to only evaluate their arguments once.
+The bug is using min_t() - especially with a small type.
 
-When commit 716c330433e3 ("media: uvcvideo: Use standard names for
-menus") reworked the handling of menu controls, it inadvertently
-replaced a GENMASK(n - 1, 0) with a BIT_MASK(n). The latter isn't
-equivalent to the former, which broke adding XU mappings from userspace.
-Fix it.
+If/when the number of cpu hits 65536 the (u16) cast will convert
+it to zero.
 
-Link: https://lore.kernel.org/linux-media/468a36ec-c3ac-cb47-e12f-5906239ae3cd@spahan.ch/
+Looking at the code a lot of the local variables should be
+'unsigned int' not 'u16.
+Just because the domain of a value is small doesn't mean
+you should use a small type (unless you are saving space in
+a structure).
 
-Cc: stable@vger.kernel.org
-Reported-by: Poncho <poncho@spahan.ch>
-Fixes: 716c330433e3 ("media: uvcvideo: Use standard names for menus")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+	David
 
- drivers/media/usb/uvc/uvc_v4l2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+> ---
+>  drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+> b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+> index 9f6890059666..823e6d2e85f5 100644
+> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+> @@ -4757,6 +4757,7 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
+>  {
+>  	struct hnae3_handle *h = priv->ae_handle;
+>  	struct hns3_enet_tqp_vector *tqp_vector;
+> +	u32 online_cpus = num_online_cpus();
+>  	struct hnae3_vector_info *vector;
+>  	struct pci_dev *pdev = h->pdev;
+>  	u16 tqp_num = h->kinfo.num_tqps;
+> @@ -4766,7 +4767,7 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
+> 
+>  	/* RSS size, cpu online and vector_num should be the same */
+>  	/* Should consider 2p/4p later */
+> -	vector_num = min_t(u16, num_online_cpus(), tqp_num);
+> +	vector_num = min_t(u16, online_cpus, tqp_num);
+> 
+>  	vector = devm_kcalloc(&pdev->dev, vector_num, sizeof(*vector),
+>  			      GFP_KERNEL);
+> --
+> 2.30.0
 
----
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index 5ac2a424b13d..f4988f03640a 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -45,7 +45,7 @@ static int uvc_control_add_xu_mapping(struct uvc_video_chain *chain,
- 	map->menu_names = NULL;
- 	map->menu_mapping = NULL;
- 
--	map->menu_mask = BIT_MASK(xmap->menu_count);
-+	map->menu_mask = GENMASK(xmap->menu_count - 1, 0);
- 
- 	size = xmap->menu_count * sizeof(*map->menu_mapping);
- 	map->menu_mapping = kzalloc(size, GFP_KERNEL);
