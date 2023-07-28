@@ -2,110 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F70766C34
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 13:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7215766E86
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 15:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235583AbjG1L4U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 07:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49814 "EHLO
+        id S235302AbjG1NiS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 09:38:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234907AbjG1L4R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 07:56:17 -0400
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4734680
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 04:55:50 -0700 (PDT)
-X-QQ-mid: bizesmtp66t1690545181t5r2sl40
-Received: from localhost.localdomain.localdoma ( [117.133.52.232])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Fri, 28 Jul 2023 19:52:59 +0800 (CST)
-X-QQ-SSF: 0140000000000010D000000A0000000
-X-QQ-FEAT: zT6n3Y95oi0vRnR+X/G1x2+1b5rkx09dtVb/Jm3A8trCSt0sUK825sKAWj4In
-        asv5A0Ttnybfa58z4PuT6PMjNLqnvNAc+faZcvsyJvVE2DyR1209B61j8a7nKAwoHt8q7AV
-        q2mTzCkO5n35V+DLmy8W1+eux3IXer4mI8A5uZX0iUaNj+7fAiz/KbkkDuPRvcjuwkmaU4H
-        0rP3szVdwh5809F/RvhaQIfOqKlb2T+DZnezmd5I7w2IJ76u+4g/6eP+II6wYSN8BnfMgAE
-        IY4Iq5RZdTPsvR1cTIO/h4TBPQ4gC035jdWymYOEzm/UegnLOZRReSQr85Tisn6kaqEwT3T
-        wrj+VVGQX5XUjJ3FfVFJs1KyZbW6Tq/6X7QcIeXxCa1wrkeilSWP0Wor6Do2swnIvZ2RaDF
-        Uwbv28X/zHM=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 13736869315236303362
-From:   jiangziqi@haohandata.com.cn
-To:     jiangziqi@haohandata.com.cn
-Cc:     Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH 001/321] fuse: add feature flag for expire-only
-Date:   Fri, 28 Jul 2023 19:47:31 +0800
-Message-ID: <4BF6BE0A84D2583B+20230728115254.3253-1-jiangziqi@haohandata.com.cn>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S236982AbjG1NiO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 09:38:14 -0400
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0DE30C2;
+        Fri, 28 Jul 2023 06:37:43 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 701451C0007;
+        Fri, 28 Jul 2023 13:37:40 +0000 (UTC)
+From:   Remi Pommarel <repk@triplefau.lt>
+To:     Marek Lindner <mareklindner@neomailbox.ch>,
+        Simon Wunderlich <sw@simonwunderlich.de>,
+        Antonio Quartulli <a@unstable.cc>,
+        Sven Eckelmann <sven@narfation.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH net] batman-adv: Do not get eth header before batadv_check_management_packet
+Date:   Fri, 28 Jul 2023 15:38:50 +0200
+Message-Id: <20230728133850.5974-1-repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:haohandata.com.cn:qybglogicsvrgz:qybglogicsvrgz5a-0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-GND-Sasl: repk@triplefau.lt
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+If received skb in batadv_v_elp_packet_recv or batadv_v_ogm_packet_recv
+is either cloned or non linearized then its data buffer will be
+reallocated by batadv_check_management_packet when skb_cow or
+skb_linearize get called. Thus geting ethernet header address inside
+skb data buffer before batadv_check_management_packet had any chance to
+reallocate it could lead to the following kernel panic:
 
-Add an init flag idicating whether the FUSE_EXPIRE_ONLY flag of
-FUSE_NOTIFY_INVAL_ENTRY is effective.
+  Unable to handle kernel paging request at virtual address ffffff8020ab069a
+  Mem abort info:
+    ESR = 0x96000007
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x07: level 3 translation fault
+  Data abort info:
+    ISV = 0, ISS = 0x00000007
+    CM = 0, WnR = 0
+  swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000040f45000
+  [ffffff8020ab069a] pgd=180000007fffa003, p4d=180000007fffa003, pud=180000007fffa003, pmd=180000007fefe003, pte=0068000020ab0706
+  Internal error: Oops: 96000007 [#1] SMP
+  Modules linked in: ahci_mvebu libahci_platform libahci dvb_usb_af9035 dvb_usb_dib0700 dib0070 dib7000m dibx000_common ath11k_pci ath10k_pci ath10k_core mwl8k_new nf_nat_sip nf_conntrack_sip xhci_plat_hcd xhci_hcd nf_nat_pptp nf_conntrack_pptp at24 sbsa_gwdt
+  CPU: 1 PID: 16 Comm: ksoftirqd/1 Not tainted 5.15.42-00066-g3242268d425c-dirty #550
+  Hardware name: A8k (DT)
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : batadv_is_my_mac+0x60/0xc0
+  lr : batadv_v_ogm_packet_recv+0x98/0x5d0
+  sp : ffffff8000183820
+  x29: ffffff8000183820 x28: 0000000000000001 x27: ffffff8014f9af00
+  x26: 0000000000000000 x25: 0000000000000543 x24: 0000000000000003
+  x23: ffffff8020ab0580 x22: 0000000000000110 x21: ffffff80168ae880
+  x20: 0000000000000000 x19: ffffff800b561000 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 00dc098924ae0032
+  x14: 0f0405433e0054b0 x13: ffffffff00000080 x12: 0000004000000001
+  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+  x8 : 0000000000000000 x7 : ffffffc076dae000 x6 : ffffff8000183700
+  x5 : ffffffc00955e698 x4 : ffffff80168ae000 x3 : ffffff80059cf000
+  x2 : ffffff800b561000 x1 : ffffff8020ab0696 x0 : ffffff80168ae880
+  Call trace:
+   batadv_is_my_mac+0x60/0xc0
+   batadv_v_ogm_packet_recv+0x98/0x5d0
+   batadv_batman_skb_recv+0x1b8/0x244
+   __netif_receive_skb_core.isra.0+0x440/0xc74
+   __netif_receive_skb_one_core+0x14/0x20
+   netif_receive_skb+0x68/0x140
+   br_pass_frame_up+0x70/0x80
+   br_handle_frame_finish+0x108/0x284
+   br_handle_frame+0x190/0x250
+   __netif_receive_skb_core.isra.0+0x240/0xc74
+   __netif_receive_skb_list_core+0x6c/0x90
+   netif_receive_skb_list_internal+0x1f4/0x310
+   napi_complete_done+0x64/0x1d0
+   gro_cell_poll+0x7c/0xa0
+   __napi_poll+0x34/0x174
+   net_rx_action+0xf8/0x2a0
+   _stext+0x12c/0x2ac
+   run_ksoftirqd+0x4c/0x7c
+   smpboot_thread_fn+0x120/0x210
+   kthread+0x140/0x150
+   ret_from_fork+0x10/0x20
+  Code: f9403844 eb03009f 54fffee1 f94
 
-This is needed for backports of this feature, otherwise the server could
-just check the protocol version.
+Thus ethernet header address should only be fetched after
+batadv_check_management_packet has been called.
 
-Fixes: 4f8d37020e1f ("fuse: add "expire only" mode to FUSE_NOTIFY_INVAL_ENTRY")
-Cc: <stable@vger.kernel.org> # v6.2
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 ---
- fs/fuse/inode.c           | 3 ++-
- include/uapi/linux/fuse.h | 3 +++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_v_elp.c | 3 ++-
+ net/batman-adv/bat_v_ogm.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index d66070af145d..660be31aaabc 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -1254,7 +1254,8 @@ void fuse_send_init(struct fuse_mount *fm)
- 		FUSE_ABORT_ERROR | FUSE_MAX_PAGES | FUSE_CACHE_SYMLINKS |
- 		FUSE_NO_OPENDIR_SUPPORT | FUSE_EXPLICIT_INVAL_DATA |
- 		FUSE_HANDLE_KILLPRIV_V2 | FUSE_SETXATTR_EXT | FUSE_INIT_EXT |
--		FUSE_SECURITY_CTX | FUSE_CREATE_SUPP_GROUP;
-+		FUSE_SECURITY_CTX | FUSE_CREATE_SUPP_GROUP |
-+		FUSE_HAS_EXPIRE_ONLY;
- #ifdef CONFIG_FUSE_DAX
- 	if (fm->fc->dax)
- 		flags |= FUSE_MAP_ALIGNMENT;
-diff --git a/include/uapi/linux/fuse.h b/include/uapi/linux/fuse.h
-index 1b9d0dfae72d..b3fcab13fcd3 100644
---- a/include/uapi/linux/fuse.h
-+++ b/include/uapi/linux/fuse.h
-@@ -206,6 +206,7 @@
-  *  - add extension header
-  *  - add FUSE_EXT_GROUPS
-  *  - add FUSE_CREATE_SUPP_GROUP
-+ *  - add FUSE_HAS_EXPIRE_ONLY
-  */
+diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
+index acff565849ae..1d704574e6bf 100644
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -505,7 +505,7 @@ int batadv_v_elp_packet_recv(struct sk_buff *skb,
+ 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
+ 	struct batadv_elp_packet *elp_packet;
+ 	struct batadv_hard_iface *primary_if;
+-	struct ethhdr *ethhdr = (struct ethhdr *)skb_mac_header(skb);
++	struct ethhdr *ethhdr;
+ 	bool res;
+ 	int ret = NET_RX_DROP;
  
- #ifndef _LINUX_FUSE_H
-@@ -369,6 +370,7 @@ struct fuse_file_lock {
-  * FUSE_HAS_INODE_DAX:  use per inode DAX
-  * FUSE_CREATE_SUPP_GROUP: add supplementary group info to create, mkdir,
-  *			symlink and mknod (single group that matches parent)
-+ * FUSE_HAS_EXPIRE_ONLY: kernel supports expiry-only entry invalidation
-  */
- #define FUSE_ASYNC_READ		(1 << 0)
- #define FUSE_POSIX_LOCKS	(1 << 1)
-@@ -406,6 +408,7 @@ struct fuse_file_lock {
- #define FUSE_SECURITY_CTX	(1ULL << 32)
- #define FUSE_HAS_INODE_DAX	(1ULL << 33)
- #define FUSE_CREATE_SUPP_GROUP	(1ULL << 34)
-+#define FUSE_HAS_EXPIRE_ONLY	(1ULL << 35)
+@@ -513,6 +513,7 @@ int batadv_v_elp_packet_recv(struct sk_buff *skb,
+ 	if (!res)
+ 		goto free_skb;
  
- /**
-  * CUSE INIT request/reply flags
++	ethhdr = eth_hdr(skb);
+ 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
+ 		goto free_skb;
+ 
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index e710e9afe78f..84eac41d4658 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -985,7 +985,7 @@ int batadv_v_ogm_packet_recv(struct sk_buff *skb,
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
+ 	struct batadv_ogm2_packet *ogm_packet;
+-	struct ethhdr *ethhdr = eth_hdr(skb);
++	struct ethhdr *ethhdr;
+ 	int ogm_offset;
+ 	u8 *packet_pos;
+ 	int ret = NET_RX_DROP;
+@@ -999,6 +999,7 @@ int batadv_v_ogm_packet_recv(struct sk_buff *skb,
+ 	if (!batadv_check_management_packet(skb, if_incoming, BATADV_OGM2_HLEN))
+ 		goto free_skb;
+ 
++	ethhdr = eth_hdr(skb);
+ 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
+ 		goto free_skb;
+ 
 -- 
-2.41.0
+2.40.0
 
