@@ -2,31 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4991B79E8B4
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7D279E8B1
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:08:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240727AbjIMNJN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 09:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35470 "EHLO
+        id S240728AbjIMNII (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 09:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234679AbjIMNJL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:09:11 -0400
+        with ESMTP id S240761AbjIMNIH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:08:07 -0400
 Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9981619B1
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:09:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B0E19B6
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:08:03 -0700 (PDT)
 Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
         (envelope-from <mchehab@linuxtv.org>)
-        id 1qgPcA-003nGf-3H; Wed, 13 Sep 2023 13:09:06 +0000
+        id 1qgPb7-003itD-FC; Wed, 13 Sep 2023 13:08:01 +0000
 From:   Mauro Carvalho Chehab <mchehab@kernel.org>
 Date:   Fri, 28 Jul 2023 08:20:10 +0000
-Subject: [git:media_tree/master] media: uvcvideo: Fix menu count handling for userspace XU mappings
+Subject: [git:media_stage/master] media: uvcvideo: Fix menu count handling for userspace XU mappings
 To:     linuxtv-commits@linuxtv.org
-Cc:     stable@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Ricardo Ribalda <ribalda@chromium.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        stable@vger.kernel.org
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qgPcA-003nGf-3H@www.linuxtv.org>
+Message-Id: <E1qgPb7-003itD-FC@www.linuxtv.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
