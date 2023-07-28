@@ -2,110 +2,192 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45502767615
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 21:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9655E767646
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 21:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231376AbjG1TNE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 15:13:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39990 "EHLO
+        id S231785AbjG1TZI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 15:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230409AbjG1TND (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 15:13:03 -0400
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 276BB3585
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 12:13:02 -0700 (PDT)
-Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-346392da0d6so9851485ab.3
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 12:13:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690571581; x=1691176381;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T0cSKCDsFec9jKF2AJ3nQ86wH77574GnfwY7SlwGKHo=;
-        b=MPg+sN7VWGdi6B95aY+IzD+qUtm9q2ELjcef4VPjTXa8Rk4gaJWNAnoZPhubyvFaKY
-         u9EqqfvVuM0c8Lu2oVcbmaJp19N8892/bv5GOGu9emHbiAfGxipCuk1KxZlsexrcoArG
-         pNI80wRAxIATsKIkVtQJgqKJN+t0OwOWuB47Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690571581; x=1691176381;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T0cSKCDsFec9jKF2AJ3nQ86wH77574GnfwY7SlwGKHo=;
-        b=cE53yAKtVv8wk5rZcqAVgU5XT/6zpg5MaGsYZfUDhICuMsuA2+cBD4K5KEs/cQzSe8
-         HMVvaj9eLWndGG/zjBHdqNJ5Wz0Eehe+edWxHFu4UMdR2oAYtAfvY3zyb9DupCNmBN03
-         UlVh39MHu9+033inpBv3JqPCnU3Vf2loiaxYfOgPZ+E+d6nJuaq3C9qNvYOoSwcwztXp
-         CMRfsKFZjpGFFScJET03jwE/T6nxU3MyLrt1Yrg45B6thJ2APeY3+UwUVgOb4JQcX28v
-         joXwwduy4UibnRzWkea+VtgtZsKNshN2vOjEYRpFEtRPveVh3xgB++oKXAoesOT2YV4G
-         mVeQ==
-X-Gm-Message-State: ABy/qLYVQFttlCfD8YeCuS4g7nmIUJntr+lYvY3FNpWuS0DECtt1mUnK
-        slUZB5Iy6l9xLou54gshfI7wECE9wspl5BuPpQb4qA==
-X-Google-Smtp-Source: APBJJlFlsvP5vNrHkLf6/gTIb7z8HrEClm/PeQ2X7vaKRhyl882D6829LPVg7T7J3o6TRA6KMMJk9IenW7jecPztm5A=
-X-Received: by 2002:a05:6e02:20ee:b0:349:191:af05 with SMTP id
- q14-20020a056e0220ee00b003490191af05mr516334ilv.16.1690571581582; Fri, 28 Jul
- 2023 12:13:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <1690432469-14803-1-git-send-email-quic_vgarodia@quicinc.com> <1690432469-14803-3-git-send-email-quic_vgarodia@quicinc.com>
-In-Reply-To: <1690432469-14803-3-git-send-email-quic_vgarodia@quicinc.com>
-From:   Nathan Hebert <nhebert@chromium.org>
-Date:   Fri, 28 Jul 2023 12:12:50 -0700
-Message-ID: <CANHAJhFhT1EAL1hE7FdZU9sgxaaGoSjPar4ruEEhfz8Qa1YRwg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] venus: hfi: fix the check to handle session buffer requirement
-To:     Vikash Garodia <quic_vgarodia@quicinc.com>
-Cc:     stanimir.k.varbanov@gmail.com, bryan.odonoghue@linaro.org,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        mchehab@kernel.org, hans.verkuil@cisco.com, tfiga@chromium.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229509AbjG1TZG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 15:25:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6B6A123;
+        Fri, 28 Jul 2023 12:25:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B70B621D3;
+        Fri, 28 Jul 2023 19:25:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1690C433C8;
+        Fri, 28 Jul 2023 19:25:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1690572303;
+        bh=y8Tjh/8Iu5U5DtB3HoTZfH9lJV02DELlAWOY9YLNSig=;
+        h=Date:To:From:Subject:From;
+        b=G1H/FljaC2oKSoOTANZopeCZ83fuFDiuCcT0KLMyhkSaJfELNemD4keDxRGo1TU7C
+         KrZpJA6FFki7KW3dttG6umtrMXTiJkC8WZVoBaXVvfilAbLlHQAo9f4TPTiiUE03ov
+         Bhm8Khwb613ShbeglRMP9Z3BTcPpKlnsc37gY4SQ=
+Date:   Fri, 28 Jul 2023 12:25:03 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + nilfs2-fix-use-after-free-of-nilfs_root-in-dirtying-inodes-via-iput.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230728192503.A1690C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 9:35=E2=80=AFPM Vikash Garodia
-<quic_vgarodia@quicinc.com> wrote:
->
-> Buffer requirement, for different buffer type, comes from video firmware.
-> While copying these requirements, there is an OOB possibility when the
-> payload from firmware is more than expected size. Fix the check to avoid
-> the OOB possibility.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 09c2845e8fe4 ("[media] media: venus: hfi: add Host Firmware Interf=
-ace (HFI)")
-> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-> ---
->  drivers/media/platform/qcom/venus/hfi_msgs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/media/platform/qcom/venus/hfi_msgs.c b/drivers/media=
-/platform/qcom/venus/hfi_msgs.c
-> index 3d5dadf..3e85bd8 100644
-> --- a/drivers/media/platform/qcom/venus/hfi_msgs.c
-> +++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
-> @@ -398,7 +398,7 @@ session_get_prop_buf_req(struct hfi_msg_session_prope=
-rty_info_pkt *pkt,
->                 memcpy(&bufreq[idx], buf_req, sizeof(*bufreq));
->                 idx++;
->
-> -               if (idx > HFI_BUFFER_TYPE_MAX)
-> +               if (idx >=3D HFI_BUFFER_TYPE_MAX)
->                         return HFI_ERR_SESSION_INVALID_PARAMETER;
->
->                 req_bytes -=3D sizeof(struct hfi_buffer_requirements);
-> --
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum=
-,
-> a Linux Foundation Collaborative Project
->
-The fix makes sense to me.
-Reviewed-by: Nathan Hebert <nhebert@chromium.org>
 
-Best regards,
-Nathan Hebert
+The patch titled
+     Subject: nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     nilfs2-fix-use-after-free-of-nilfs_root-in-dirtying-inodes-via-iput.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-use-after-free-of-nilfs_root-in-dirtying-inodes-via-iput.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
+Date: Sat, 29 Jul 2023 04:13:18 +0900
+
+During unmount process of nilfs2, nothing holds nilfs_root structure after
+nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
+nilfs_evict_inode() could cause use-after-free read for nilfs_root if
+inodes are left in "garbage_list" and released by nilfs_dispose_list at
+the end of nilfs_detach_log_writer(), and this bug was fixed by commit
+9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
+nilfs_evict_inode()").
+
+However, it turned out that there is another possibility of UAF in the
+call path where mark_inode_dirty_sync() is called from iput():
+
+nilfs_detach_log_writer()
+  nilfs_dispose_list()
+    iput()
+      mark_inode_dirty_sync()
+        __mark_inode_dirty()
+          nilfs_dirty_inode()
+            __nilfs_mark_inode_dirty()
+              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
+
+This can happen after commit 0ae45f63d4ef ("vfs: add support for a
+lazytime mount option"), which changed iput() to call
+mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
+flag and i_nlink is non-zero.
+
+This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
+data after degenerating to read-only") when using the syzbot reproducer,
+but the issue has potentially existed before.
+
+Fix this issue by adding a "purging flag" to the nilfs structure, setting
+that flag while disposing the "garbage_list" and checking it in
+__nilfs_mark_inode_dirty().
+
+Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
+in nilfs_evict_inode()"), this patch does not rely on ns_writer to
+determine whether to skip operations, so as not to break recovery on
+mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
+salvaged data before attaching the log writer, so changing
+__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
+will cause recovery write to fail.  The purpose of using the cleanup-only
+flag is to allow for narrowing of such conditions.
+
+Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
+Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org> # 4.0+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/nilfs2/inode.c     |    8 ++++++++
+ fs/nilfs2/segment.c   |    2 ++
+ fs/nilfs2/the_nilfs.h |    2 ++
+ 3 files changed, 12 insertions(+)
+
+--- a/fs/nilfs2/inode.c~nilfs2-fix-use-after-free-of-nilfs_root-in-dirtying-inodes-via-iput
++++ a/fs/nilfs2/inode.c
+@@ -1101,9 +1101,17 @@ int nilfs_set_file_dirty(struct inode *i
+ 
+ int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
+ {
++	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+ 	struct buffer_head *ibh;
+ 	int err;
+ 
++	/*
++	 * Do not dirty inodes after the log writer has been detached
++	 * and its nilfs_root struct has been freed.
++	 */
++	if (unlikely(nilfs_purging(nilfs)))
++		return 0;
++
+ 	err = nilfs_load_inode_block(inode, &ibh);
+ 	if (unlikely(err)) {
+ 		nilfs_warn(inode->i_sb,
+--- a/fs/nilfs2/segment.c~nilfs2-fix-use-after-free-of-nilfs_root-in-dirtying-inodes-via-iput
++++ a/fs/nilfs2/segment.c
+@@ -2845,6 +2845,7 @@ void nilfs_detach_log_writer(struct supe
+ 		nilfs_segctor_destroy(nilfs->ns_writer);
+ 		nilfs->ns_writer = NULL;
+ 	}
++	set_nilfs_purging(nilfs);
+ 
+ 	/* Force to free the list of dirty files */
+ 	spin_lock(&nilfs->ns_inode_lock);
+@@ -2857,4 +2858,5 @@ void nilfs_detach_log_writer(struct supe
+ 	up_write(&nilfs->ns_segctor_sem);
+ 
+ 	nilfs_dispose_list(nilfs, &garbage_list, 1);
++	clear_nilfs_purging(nilfs);
+ }
+--- a/fs/nilfs2/the_nilfs.h~nilfs2-fix-use-after-free-of-nilfs_root-in-dirtying-inodes-via-iput
++++ a/fs/nilfs2/the_nilfs.h
+@@ -29,6 +29,7 @@ enum {
+ 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
+ 	THE_NILFS_GC_RUNNING,	/* gc process is running */
+ 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
++	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
+ };
+ 
+ /**
+@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
+ THE_NILFS_FNS(DISCONTINUED, discontinued)
+ THE_NILFS_FNS(GC_RUNNING, gc_running)
+ THE_NILFS_FNS(SB_DIRTY, sb_dirty)
++THE_NILFS_FNS(PURGING, purging)
+ 
+ /*
+  * Mount option operations
+_
+
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+
+nilfs2-fix-use-after-free-of-nilfs_root-in-dirtying-inodes-via-iput.patch
+
