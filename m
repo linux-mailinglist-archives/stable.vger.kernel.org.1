@@ -2,44 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC8EB7661CD
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 04:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1500476620D
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 04:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbjG1CdY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 22:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34686 "EHLO
+        id S229864AbjG1Cth (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 22:49:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232575AbjG1CdX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 22:33:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32FB30DA;
-        Thu, 27 Jul 2023 19:33:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B82361F97;
-        Fri, 28 Jul 2023 02:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D2DC433C8;
-        Fri, 28 Jul 2023 02:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690511601;
-        bh=H5DZiC+YGeGkUW+jjo5LoBNHhvMZFNEnZwIT7bvrBX4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=PRlj79ZaeaAKHeUVKI/L6crpFIc8/WF3LSUJJpTKmFHAppfcCwiUNidwqXpLthN64
-         Nz+AHCbzjyF8JoBmdvX9MC1XueQ+GP1j7qKzto+tRqKQorxKxfbuCZ5l04bH1HXZCp
-         jpwQ3vgc8nCdWH29HYh55CsXYqfxnR+HY7vA6h+ABRoQFkXi6gmeCwhoUF7zsXCqjO
-         5dAMINBKICbmOsWCqpIAV2mZL5/LcXOmGwCo82GEjuNc2ntjPKeoDovaXhxA3JlchZ
-         SptGNaqek6fmbCAu1lScUPo5EoESrHsetYDo3CofFLV2KKw9s81PHFvK+AIwTIxZjg
-         MUoS0pE4me1SA==
-Message-ID: <40365501-283a-408b-3514-48c29db36861@kernel.org>
-Date:   Fri, 28 Jul 2023 11:33:19 +0900
+        with ESMTP id S229786AbjG1Ctg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 22:49:36 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60AD32126;
+        Thu, 27 Jul 2023 19:49:35 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1bbb4bddd5bso1306015fac.2;
+        Thu, 27 Jul 2023 19:49:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690512574; x=1691117374;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a7ldvBB2rbS3bYpCeMk71DDYYFjKwRoTgn+P6aVeXY8=;
+        b=Pp24ZpJ2RxVFGw7CKZD0faZuq3f3UGoYXjgpgNEI+9I2zbl8POTFoc26bWPtyNanwb
+         jY6ud7VqOanqu7KAG6BKVONJm0B4wd5qqWrTxInpvVbGwuBuYpMBPxRJFr6eSEdHsYqs
+         ZpzkpND221WNnzjG1DJSC5EcgIPdH0IOkJjTSzfhrhXSCCgT2gTe1wEvNuauTnAi5GjK
+         LSt2uZvpgSQfNcXl0S2l4UrZGuUCFSOWPa5LQxCvZQohiw0LPyxXRlsTajuIhXgUej2F
+         XgfxuKA38WEW6l33DineQZgCj4nJFP4fmmmn0Jng+oIzPXGdhQRhHcKbSLHTkm0oVQuX
+         r9QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690512574; x=1691117374;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a7ldvBB2rbS3bYpCeMk71DDYYFjKwRoTgn+P6aVeXY8=;
+        b=cm3ClawDesjnDRX2Dz/wpVRKGk5pYlROqxoibZ4nENfWbqoD8krU7Fg2cfERl3uERX
+         emhgIcYmVO/a3tjmFIClC0KFtXQLUVTHE7bL2rHiVuXRAfaQBS7300q+FF/7swbjvBAh
+         bzfu3kMhqbAY6E4tdqc4x9lliwezA2L8t0aQyfSs13BnevcIRuWfuXlmLqO12ZAY5fCx
+         PFb4FwQhnhn86foS3qqPV2/k7FbTBCUsbVSDLChcL718BRObwiUCv+BSWwfupB2XRcL9
+         y/E16HhiFU4rhdzbnlDVDkT5ZWSy5MDRbMjlrc3LWyqiHEVXtkyvwXhzvfQzeb+XK5/7
+         30uA==
+X-Gm-Message-State: ABy/qLYtkrrLYM736i1h7iCmMTfzpJ0xT7ObGZvrK5/toJIJx1br4Y3J
+        4fSMglADl7ksW9oikGrbf5Q=
+X-Google-Smtp-Source: APBJJlGtCgVp7ZuZ7VNDUXvMMZkTwW96lkumq0zI3xVahOPyULSN9yW+RyhmE3N48WJfKWzkn28A7Q==
+X-Received: by 2002:a05:6870:5b9d:b0:1bb:a264:a7ba with SMTP id em29-20020a0568705b9d00b001bba264a7bamr1599749oab.56.1690512574356;
+        Thu, 27 Jul 2023 19:49:34 -0700 (PDT)
+Received: from [192.168.1.121] ([65.129.146.152])
+        by smtp.gmail.com with ESMTPSA id m3-20020aa78a03000000b00686e8b00a50sm429979pfa.104.2023.07.27.19.49.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jul 2023 19:49:34 -0700 (PDT)
+Message-ID: <d44e4057-0758-4cb8-ca29-02b5bb340b8b@gmail.com>
+Date:   Thu, 27 Jul 2023 20:49:32 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: Scsi_bus_resume+0x0/0x90 returns -5 when resuming from s3 sleep
-Content-Language: en-US
-To:     TW <dalzot@gmail.com>,
+To:     Damien Le Moal <dlemoal@kernel.org>,
         Thorsten Leemhuis <regressions@leemhuis.info>
 Cc:     regressions@lists.linux.dev,
         Mario Limonciello <mario.limonciello@amd.com>,
@@ -52,14 +67,15 @@ References: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
  <86435987-734e-c6c1-a857-1ba80da709fe@gmail.com>
  <48bc1736-5e4e-3a9b-3715-60509c333bb1@kernel.org>
  <f7e7b601-571f-bd2e-6410-a8a27e510c2f@gmail.com>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <f7e7b601-571f-bd2e-6410-a8a27e510c2f@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <40365501-283a-408b-3514-48c29db36861@kernel.org>
+Content-Language: en-US
+From:   TW <dalzot@gmail.com>
+In-Reply-To: <40365501-283a-408b-3514-48c29db36861@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,96 +83,12 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/27/23 21:25, TW wrote:
-> It was all 1 patch but the first change had a formatting issue from the 
-> email format I guess. So I fixed that and the patch went through and 
-> looks like the drive error message has stopped. Still a little slow 
-> coming back but that error is gone at least.
+Comparing to the 5.15 kernel which had almost no delay. They are HDDs 
+though, it was working flawlessly earlier but didn't want to top post 
+again. Tried a systemd suspend instead of from the Xfce4 logout menu and 
+everything works as intended. So I'd say that it's fixed now.
 
-"Slow coming back" -> Compared to which version of the kernel ? Do you have
-numbers ?
-
-If the devices are HDDs, resume will wait for these to spin up. That takes a
-while (about 10s normally).
-
-> 
-> Jul 27 05:05:05 rageworks systemd[1]: Starting System Suspend...
-> Jul 27 05:05:05 rageworks systemd-sleep[1624]: Entering sleep state 
-> 'suspend'...
-> Jul 27 05:05:05 rageworks kernel: PM: suspend entry (deep)
-> Jul 27 05:05:05 rageworks kernel: Filesystems sync: 0.246 seconds
-> Jul 27 05:05:26 rageworks kernel: Freezing user space processes
-> Jul 27 05:05:26 rageworks kernel: Freezing user space processes 
-> completed (elapsed 0.001 seconds)
-> Jul 27 05:05:26 rageworks kernel: OOM killer disabled.
-> Jul 27 05:05:26 rageworks kernel: Freezing remaining freezable tasks
-> Jul 27 05:05:26 rageworks kernel: Freezing remaining freezable tasks 
-> completed (elapsed 0.000 seconds)
-> Jul 27 05:05:26 rageworks kernel: printk: Suspending console(s) (use 
-> no_console_suspend to debug)
-> Jul 27 05:05:26 rageworks kernel: serial 00:05: disabled
-> Jul 27 05:05:26 rageworks kernel: sd 9:0:0:0: [sdc] Synchronizing SCSI cache
-> Jul 27 05:05:26 rageworks kernel: sd 1:0:0:0: [sdb] Synchronizing SCSI cache
-> Jul 27 05:05:26 rageworks kernel: sd 0:0:0:0: [sda] Synchronizing SCSI cache
-> Jul 27 05:05:26 rageworks kernel: sd 9:0:0:0: [sdc] Stopping disk
-> Jul 27 05:05:26 rageworks kernel: sd 1:0:0:0: [sdb] Stopping disk
-> Jul 27 05:05:26 rageworks kernel: sd 0:0:0:0: [sda] Stopping disk
-> Jul 27 05:05:26 rageworks kernel: ACPI: PM: Preparing to enter system 
-> sleep state S3
-> Jul 27 05:05:26 rageworks kernel: ACPI: PM: Saving platform NVS memory
-> Jul 27 05:05:26 rageworks kernel: Disabling non-boot CPUs ...
-> Jul 27 05:05:26 rageworks kernel: smpboot: CPU 1 is now offline
-> Jul 27 05:05:26 rageworks kernel: smpboot: CPU 2 is now offline
-> Jul 27 05:05:26 rageworks kernel: smpboot: CPU 3 is now offline
-> Jul 27 05:05:26 rageworks kernel: ACPI: PM: Low-level resume complete
-> Jul 27 05:05:26 rageworks kernel: ACPI: PM: Restoring platform NVS memory
-> Jul 27 05:05:26 rageworks kernel: Enabling non-boot CPUs ...
-> Jul 27 05:05:26 rageworks kernel: smpboot: Booting Node 0 Processor 1 
-> APIC 0x1
-> Jul 27 05:05:26 rageworks kernel: CPU1 is up
-> Jul 27 05:05:26 rageworks kernel: smpboot: Booting Node 0 Processor 2 
-> APIC 0x2
-> Jul 27 05:05:26 rageworks kernel: CPU2 is up
-> Jul 27 05:05:26 rageworks kernel: smpboot: Booting Node 0 Processor 3 
-> APIC 0x3
-> Jul 27 05:05:26 rageworks kernel: CPU3 is up
-> Jul 27 05:05:26 rageworks kernel: ACPI: PM: Waking up from system sleep 
-> state S3
-> Jul 27 05:05:26 rageworks kernel: xhci_hcd 0000:02:00.0: xHC error in 
-> resume, USBSTS 0x401, Reinit
-> Jul 27 05:05:26 rageworks kernel: usb usb1: root hub lost power or was reset
-> Jul 27 05:05:26 rageworks kernel: usb usb2: root hub lost power or was reset
-> Jul 27 05:05:26 rageworks kernel: sd 0:0:0:0: [sda] Starting disk
-> Jul 27 05:05:26 rageworks kernel: sd 1:0:0:0: [sdb] Starting disk
-> Jul 27 05:05:26 rageworks kernel: sd 9:0:0:0: [sdc] Starting disk
-> Jul 27 05:05:26 rageworks kernel: serial 00:05: activated
-> Jul 27 05:05:26 rageworks kernel: ata6: SATA link down (SStatus 0 
-> SControl 330)
-> Jul 27 05:05:26 rageworks kernel: ata5: SATA link down (SStatus 0 
-> SControl 330)
-> Jul 27 05:05:26 rageworks kernel: ata9: SATA link down (SStatus 0 
-> SControl 300)
-> Jul 27 05:05:26 rageworks kernel: usb 1-10: reset full-speed USB device 
-> number 4 using xhci_hcd
-> Jul 27 05:05:26 rageworks kernel: usb 1-8: reset full-speed USB device 
-> number 3 using xhci_hcd
-> Jul 27 05:05:26 rageworks kernel: usb 1-7: reset full-speed USB device 
-> number 2 using xhci_hcd
-> Jul 27 05:05:26 rageworks kernel: OOM killer enabled.
-> Jul 27 05:05:26 rageworks kernel: Restarting tasks ... done.
-> Jul 27 05:05:26 rageworks kernel: random: crng reseeded on system resumption
-> Jul 27 05:05:26 rageworks kernel: PM: suspend exit
-> 
-> 
-> On 7/27/23 04:27, Damien Le Moal wrote:
->> On 7/27/23 19:22, TW wrote:
->>> I managed to fix the patch file, guess the formatting messed up a bit. So will
->>> try with those patches installed.
->> Just in case, patch fil attached to avoid formatting issues.
->>
->>
-
--- 
-Damien Le Moal
-Western Digital Research
-
+On 7/27/23 20:33, Damien Le Moal wrote:
+> "Slow coming back" -> Compared to which version of the kernel ? Do you 
+> have numbers ? If the devices are HDDs, resume will wait for these to 
+> spin up. That takes a while (about 10s normally).
