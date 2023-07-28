@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E138576657A
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 09:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8028A766578
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 09:39:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234341AbjG1Hjr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 03:39:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33810 "EHLO
+        id S232699AbjG1Hja (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 03:39:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233523AbjG1Hjq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 03:39:46 -0400
+        with ESMTP id S233523AbjG1Hj1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 03:39:27 -0400
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5BBA2D64
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 00:39:44 -0700 (PDT)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36S2YxMg020250;
-        Fri, 28 Jul 2023 07:39:19 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A6FB6
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 00:39:26 -0700 (PDT)
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36S1gOTd004114;
+        Fri, 28 Jul 2023 07:39:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=MCawt/0owLybzIzpz2sNVs3FdGU9xYbqfDKIHvBQa6w=;
- b=FCNr2ddN7trOndNbf4IbjQRpu68mUWp+fh1DDqFcE98DGnmRFD11iP+EdSexkCAQ1v25
- vrt4kyFr/c2+kfQUdOaQNmkuaewtGdpzTgrPv+npmjRfRwHyRDvC7LT9rQJY+KS6wMBp
- 4nmQPRM/65aWq7r0htgUYSVtMvJ2nmXRZbdiPcntAtqAuQwUxLA26dx2gObHwZcq6aAg
- iwtFY/U4GYYxofLUr8Fq2jA05X7VY1nziAXM1hUkaWkMRO88RMMN4xq+1a+k3SsSb0yR
- IWMjIC3rIy2efeWEjPdw9Tm9rjp3/808p46cZT/k35QYmKd/oB8eaNAF6P6PSdMGJM+j Kw== 
+ bh=bTpJSU/Oub1FKiOOMbom4p5zEKDrwss8vYQhghcnJ3Q=;
+ b=cd3Y7c3/iBcyrlEa8WgZLDfcOmoiunm0eyCBpcy6e0Er1bXoD9ULbsT8Lt74K/8LfFcN
+ 4fGIXRRt0Zur2qgy4IJF9fKPvN6M2zYcr6Es/H9ju45aN+GOLh4rqURuBS5MvyLEBuBW
+ ue+IA375jev4OvPjgzG+P6V0Th7+Fj3geOWHbLT32DMliwo4zMwjv4NZDS4P2V8wrBIO
+ XwGI5JcB2itiwK764EUmwwgl2qzlfNv401QKe25FuH3g2sBmdi+mfpy4XxYuKb7uKhxu
+ gmBuuDzFKY+yZldb0U+MpIDjdZGkPsKg+EhRkfHXAVGP2eBD4ZpUr+eysFaZw0hRWc8U wQ== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s05w3uc17-1
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s075dbfxt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 28 Jul 2023 07:39:20 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 36S7VxGK030404;
+        Fri, 28 Jul 2023 07:39:19 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3s05jf0a73-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
         Fri, 28 Jul 2023 07:39:19 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 36S6gNdr030480;
-        Fri, 28 Jul 2023 07:39:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3s05jf0a6j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 28 Jul 2023 07:39:18 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36S7dG0s007017;
-        Fri, 28 Jul 2023 07:39:18 GMT
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36S7dG0u007017;
+        Fri, 28 Jul 2023 07:39:19 GMT
 Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3s05jf0a4q-3;
-        Fri, 28 Jul 2023 07:39:18 +0000
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3s05jf0a4q-4;
+        Fri, 28 Jul 2023 07:39:19 +0000
 From:   Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 To:     stable@vger.kernel.org
 Cc:     harshvardhan.j.jha@oracle.com, josef@toxicpanda.com,
         dsterba@suse.com, clm@fb.com
-Subject: [PATCH 5.4 2/3] btrfs: qgroup: return ENOTCONN instead of EINVAL when quotas are not enabled
-Date:   Fri, 28 Jul 2023 00:39:13 -0700
-Message-ID: <20230728073914.226947-3-harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.4 3/3] btrfs: fix race between quota disable and quota assign ioctls
+Date:   Fri, 28 Jul 2023 00:39:14 -0700
+Message-ID: <20230728073914.226947-4-harshvardhan.j.jha@oracle.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230728073914.226947-1-harshvardhan.j.jha@oracle.com>
 References: <20230728073914.226947-1-harshvardhan.j.jha@oracle.com>
@@ -62,8 +62,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 s
  adultscore=0 suspectscore=0 phishscore=0 malwarescore=0 mlxscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2307280069
-X-Proofpoint-GUID: _LtNo74qbv3m621wMfYjq6I7Yb9KnWo5
-X-Proofpoint-ORIG-GUID: _LtNo74qbv3m621wMfYjq6I7Yb9KnWo5
+X-Proofpoint-ORIG-GUID: q1NhY7v1Tr_OT2RjCj8Ntiz78UYoqCtp
+X-Proofpoint-GUID: q1NhY7v1Tr_OT2RjCj8Ntiz78UYoqCtp
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
@@ -74,80 +74,198 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marcos Paulo de Souza <mpdesouza@suse.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[Upstream commit 8a36e408d40606e21cd4e2dd9601004a67b14868]
+[Upstream commit 2f1a6be12ab6c8470d5776e68644726c94257c54]
 
-[PROBLEM]
-qgroup create/remove code is currently returning EINVAL when the user
-tries to create a qgroup on a subvolume without quota enabled. EINVAL is
-already being used for too many error scenarios so that is hard to
-depict what is the problem.
+The quota assign ioctl can currently run in parallel with a quota disable
+ioctl call. The assign ioctl uses the quota root, while the disable ioctl
+frees that root, and therefore we can have a use-after-free triggered in
+the assign ioctl, leading to a trace like the following when KASAN is
+enabled:
 
-[FIX]
-Currently scrub and balance code return -ENOTCONN when the user tries to
-cancel/pause and no scrub or balance is currently running for the
-desired subvolume. Do the same here by returning -ENOTCONN  when a user
-tries to create/delete/assing/list a qgroup on a subvolume without quota
-enabled.
+  [672.723][T736] BUG: KASAN: slab-use-after-free in btrfs_search_slot+0x2962/0x2db0
+  [672.723][T736] Read of size 8 at addr ffff888022ec0208 by task btrfs_search_sl/27736
+  [672.724][T736]
+  [672.725][T736] CPU: 1 PID: 27736 Comm: btrfs_search_sl Not tainted 6.3.0-rc3 #37
+  [672.723][T736] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  [672.727][T736] Call Trace:
+  [672.728][T736]  <TASK>
+  [672.728][T736]  dump_stack_lvl+0xd9/0x150
+  [672.725][T736]  print_report+0xc1/0x5e0
+  [672.720][T736]  ? __virt_addr_valid+0x61/0x2e0
+  [672.727][T736]  ? __phys_addr+0xc9/0x150
+  [672.725][T736]  ? btrfs_search_slot+0x2962/0x2db0
+  [672.722][T736]  kasan_report+0xc0/0xf0
+  [672.729][T736]  ? btrfs_search_slot+0x2962/0x2db0
+  [672.724][T736]  btrfs_search_slot+0x2962/0x2db0
+  [672.723][T736]  ? fs_reclaim_acquire+0xba/0x160
+  [672.722][T736]  ? split_leaf+0x13d0/0x13d0
+  [672.726][T736]  ? rcu_is_watching+0x12/0xb0
+  [672.723][T736]  ? kmem_cache_alloc+0x338/0x3c0
+  [672.722][T736]  update_qgroup_status_item+0xf7/0x320
+  [672.724][T736]  ? add_qgroup_rb+0x3d0/0x3d0
+  [672.739][T736]  ? do_raw_spin_lock+0x12d/0x2b0
+  [672.730][T736]  ? spin_bug+0x1d0/0x1d0
+  [672.737][T736]  btrfs_run_qgroups+0x5de/0x840
+  [672.730][T736]  ? btrfs_qgroup_rescan_worker+0xa70/0xa70
+  [672.738][T736]  ? __del_qgroup_relation+0x4ba/0xe00
+  [672.738][T736]  btrfs_ioctl+0x3d58/0x5d80
+  [672.735][T736]  ? tomoyo_path_number_perm+0x16a/0x550
+  [672.737][T736]  ? tomoyo_execute_permission+0x4a0/0x4a0
+  [672.731][T736]  ? btrfs_ioctl_get_supported_features+0x50/0x50
+  [672.737][T736]  ? __sanitizer_cov_trace_switch+0x54/0x90
+  [672.734][T736]  ? do_vfs_ioctl+0x132/0x1660
+  [672.730][T736]  ? vfs_fileattr_set+0xc40/0xc40
+  [672.730][T736]  ? _raw_spin_unlock_irq+0x2e/0x50
+  [672.732][T736]  ? sigprocmask+0xf2/0x340
+  [672.737][T736]  ? __fget_files+0x26a/0x480
+  [672.732][T736]  ? bpf_lsm_file_ioctl+0x9/0x10
+  [672.738][T736]  ? btrfs_ioctl_get_supported_features+0x50/0x50
+  [672.736][T736]  __x64_sys_ioctl+0x198/0x210
+  [672.736][T736]  do_syscall_64+0x39/0xb0
+  [672.731][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [672.739][T736] RIP: 0033:0x4556ad
+  [672.742][T736]  </TASK>
+  [672.743][T736]
+  [672.748][T736] Allocated by task 27677:
+  [672.743][T736]  kasan_save_stack+0x22/0x40
+  [672.741][T736]  kasan_set_track+0x25/0x30
+  [672.741][T736]  __kasan_kmalloc+0xa4/0xb0
+  [672.749][T736]  btrfs_alloc_root+0x48/0x90
+  [672.746][T736]  btrfs_create_tree+0x146/0xa20
+  [672.744][T736]  btrfs_quota_enable+0x461/0x1d20
+  [672.743][T736]  btrfs_ioctl+0x4a1c/0x5d80
+  [672.747][T736]  __x64_sys_ioctl+0x198/0x210
+  [672.749][T736]  do_syscall_64+0x39/0xb0
+  [672.744][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [672.756][T736]
+  [672.757][T736] Freed by task 27677:
+  [672.759][T736]  kasan_save_stack+0x22/0x40
+  [672.759][T736]  kasan_set_track+0x25/0x30
+  [672.756][T736]  kasan_save_free_info+0x2e/0x50
+  [672.751][T736]  ____kasan_slab_free+0x162/0x1c0
+  [672.758][T736]  slab_free_freelist_hook+0x89/0x1c0
+  [672.752][T736]  __kmem_cache_free+0xaf/0x2e0
+  [672.752][T736]  btrfs_put_root+0x1ff/0x2b0
+  [672.759][T736]  btrfs_quota_disable+0x80a/0xbc0
+  [672.752][T736]  btrfs_ioctl+0x3e5f/0x5d80
+  [672.756][T736]  __x64_sys_ioctl+0x198/0x210
+  [672.753][T736]  do_syscall_64+0x39/0xb0
+  [672.765][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [672.769][T736]
+  [672.768][T736] The buggy address belongs to the object at ffff888022ec0000
+  [672.768][T736]  which belongs to the cache kmalloc-4k of size 4096
+  [672.769][T736] The buggy address is located 520 bytes inside of
+  [672.769][T736]  freed 4096-byte region [ffff888022ec0000, ffff888022ec1000)
+  [672.760][T736]
+  [672.764][T736] The buggy address belongs to the physical page:
+  [672.761][T736] page:ffffea00008bb000 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x22ec0
+  [672.766][T736] head:ffffea00008bb000 order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+  [672.779][T736] flags: 0xfff00000010200(slab|head|node=0|zone=1|lastcpupid=0x7ff)
+  [672.770][T736] raw: 00fff00000010200 ffff888012842140 ffffea000054ba00 dead000000000002
+  [672.770][T736] raw: 0000000000000000 0000000000040004 00000001ffffffff 0000000000000000
+  [672.771][T736] page dumped because: kasan: bad access detected
+  [672.778][T736] page_owner tracks the page as allocated
+  [672.777][T736] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 88
+  [672.779][T736]  get_page_from_freelist+0x119c/0x2d50
+  [672.779][T736]  __alloc_pages+0x1cb/0x4a0
+  [672.776][T736]  alloc_pages+0x1aa/0x270
+  [672.773][T736]  allocate_slab+0x260/0x390
+  [672.771][T736]  ___slab_alloc+0xa9a/0x13e0
+  [672.778][T736]  __slab_alloc.constprop.0+0x56/0xb0
+  [672.771][T736]  __kmem_cache_alloc_node+0x136/0x320
+  [672.789][T736]  __kmalloc+0x4e/0x1a0
+  [672.783][T736]  tomoyo_realpath_from_path+0xc3/0x600
+  [672.781][T736]  tomoyo_path_perm+0x22f/0x420
+  [672.782][T736]  tomoyo_path_unlink+0x92/0xd0
+  [672.780][T736]  security_path_unlink+0xdb/0x150
+  [672.788][T736]  do_unlinkat+0x377/0x680
+  [672.788][T736]  __x64_sys_unlink+0xca/0x110
+  [672.789][T736]  do_syscall_64+0x39/0xb0
+  [672.783][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [672.784][T736] page last free stack trace:
+  [672.787][T736]  free_pcp_prepare+0x4e5/0x920
+  [672.787][T736]  free_unref_page+0x1d/0x4e0
+  [672.784][T736]  __unfreeze_partials+0x17c/0x1a0
+  [672.797][T736]  qlist_free_all+0x6a/0x180
+  [672.796][T736]  kasan_quarantine_reduce+0x189/0x1d0
+  [672.797][T736]  __kasan_slab_alloc+0x64/0x90
+  [672.793][T736]  kmem_cache_alloc+0x17c/0x3c0
+  [672.799][T736]  getname_flags.part.0+0x50/0x4e0
+  [672.799][T736]  getname_flags+0x9e/0xe0
+  [672.792][T736]  vfs_fstatat+0x77/0xb0
+  [672.791][T736]  __do_sys_newlstat+0x84/0x100
+  [672.798][T736]  do_syscall_64+0x39/0xb0
+  [672.796][T736]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [672.790][T736]
+  [672.791][T736] Memory state around the buggy address:
+  [672.799][T736]  ffff888022ec0100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  [672.805][T736]  ffff888022ec0180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  [672.802][T736] >ffff888022ec0200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  [672.809][T736]                       ^
+  [672.809][T736]  ffff888022ec0280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  [672.809][T736]  ffff888022ec0300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
 
+Fix this by having the qgroup assign ioctl take the qgroup ioctl mutex
+before calling btrfs_run_qgroups(), which is what all qgroup ioctls should
+call.
+
+Reported-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAFcO6XN3VD8ogmHwqRk4kbiwtpUSNySu2VAxN8waEPciCHJvMA@mail.gmail.com/
+CC: stable@vger.kernel.org # 5.10+
 Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 ---
- fs/btrfs/qgroup.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/btrfs/ioctl.c  |  2 ++
+ fs/btrfs/qgroup.c | 11 ++++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 64b443aa61ca..7a07e29c8ae7 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4912,7 +4912,9 @@ static long btrfs_ioctl_qgroup_assign(struct file *file, void __user *arg)
+ 	}
+ 
+ 	/* update qgroup status and info */
++	mutex_lock(&fs_info->qgroup_ioctl_lock);
+ 	err = btrfs_run_qgroups(trans);
++	mutex_unlock(&fs_info->qgroup_ioctl_lock);
+ 	if (err < 0)
+ 		btrfs_handle_fs_error(fs_info, err,
+ 				      "failed to update qgroup status and info");
 diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 588abadcd784..7327636c9f26 100644
+index 7327636c9f26..8a229a65866b 100644
 --- a/fs/btrfs/qgroup.c
 +++ b/fs/btrfs/qgroup.c
-@@ -1354,7 +1354,7 @@ int btrfs_add_qgroup_relation(struct btrfs_trans_handle *trans, u64 src,
+@@ -2664,13 +2664,22 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
+ }
  
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 	member = find_qgroup_rb(fs_info, src);
-@@ -1413,7 +1413,7 @@ static int __del_qgroup_relation(struct btrfs_trans_handle *trans, u64 src,
- 		return -ENOMEM;
+ /*
+- * called from commit_transaction. Writes all changed qgroups to disk.
++ * Writes all changed qgroups to disk.
++ * Called by the transaction commit path and the qgroup assign ioctl.
+  */
+ int btrfs_run_qgroups(struct btrfs_trans_handle *trans)
+ {
+ 	struct btrfs_fs_info *fs_info = trans->fs_info;
+ 	int ret = 0;
  
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 
-@@ -1479,7 +1479,7 @@ int btrfs_create_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
- 
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 	quota_root = fs_info->quota_root;
-@@ -1513,7 +1513,7 @@ int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
- 
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 
-@@ -1564,7 +1564,7 @@ int btrfs_limit_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid,
- 
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
++	/*
++	 * In case we are called from the qgroup assign ioctl, assert that we
++	 * are holding the qgroup_ioctl_lock, otherwise we can race with a quota
++	 * disable operation (ioctl) and access a freed quota root.
++	 */
++	if (trans->transaction->state != TRANS_STATE_COMMIT_DOING)
++		lockdep_assert_held(&fs_info->qgroup_ioctl_lock);
++
+ 	if (!fs_info->quota_root)
+ 		return ret;
  
 -- 
 2.40.0
