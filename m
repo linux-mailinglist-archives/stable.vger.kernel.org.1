@@ -2,81 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 539457676A9
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 21:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9E057676E0
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 22:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229495AbjG1T6b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 15:58:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59290 "EHLO
+        id S233770AbjG1USe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 16:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbjG1T6a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 15:58:30 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08293C1D
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 12:58:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=VVgIaXnvKGSF0VzaO7Y2nL6FGVSo/B0CVzzPEY0GXbg=; b=Jp7SThqWs7WkKBgbqnR9TI86EB
-        H5J6euC2NWyTU7zRvZFpNbne/yOgPv/vleC2wLCt6DphO47DwCibiY/r/E1SY8i/XB5cLUeydd2hL
-        3Cw6wInvMB9OHYghD+ZlDsWpN67+lg4AKm3mzF4RyCM8cIKejmmaOv4DV0nsG1na7ysIMqpn7DM93
-        3VCvxpTIDGbuFUJL0Ozr+mCTueBE1tU2xglBV0mFwod20E/C178sXaNuW5ZSMRkyLZalapvSgGw/o
-        TD+HcP1E3mLwcmw8Pu0K/5k/ASITVEhdW5lq3l1uzDIr9YzXS580S1biRoDJIuyTsPR9t4/QXq9UK
-        rzz2xilg==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1qPTbX-004ryg-1b;
-        Fri, 28 Jul 2023 19:58:27 +0000
-Date:   Fri, 28 Jul 2023 12:58:27 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH RESEND v4 1/1] test_firmware: fix some memory leaks and
- racing conditions
-Message-ID: <ZMQd49Qp8EzapxEE@bombadil.infradead.org>
-References: <84fde847-e756-3727-c357-104775ef1c4f@alu.unizg.hr>
+        with ESMTP id S233883AbjG1USd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 16:18:33 -0400
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C2364483
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 13:18:31 -0700 (PDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+        by mout01.posteo.de (Postfix) with ESMTPS id 795BB240028
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 22:18:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+        t=1690575509; bh=6HJgTambXSITA+0qKZ/a7dX11wgfCP5FR4Ajeth5TqA=;
+        h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:
+         Content-Transfer-Encoding:From;
+        b=HYpb5OZsWqejBHx8Mouc25bQRdrnzIKl5D+05DBTfevHatnKH+aY5yPhIvb8urEmu
+         Lkj5mb4SRI/8e1Z3tKFLaaQt+Kxx6mWXTjI/3p/IldwtkAs5q6ADcFyrUzyeECqbFc
+         SN0zfbEBpEcg19bVwP5m4Yg82nDCPO0cx0yiYzklTxAcsj6SkqDAU9FnuNo33isgMu
+         SvPAhSSu+u6Tyk12IUWW7U0l+GrpamO3ZieRu74ep49aqmxrdnE91sJ8YsHcL0YdB/
+         DMqvZJ0NnCE+x9ImGKlPz0lJdq2BXxVOE4W81eRfZ7QmOrTFp2Tj5HXK5fwfgG0GHP
+         lW1uR51ZUDa/w==
+Received: from customer (localhost [127.0.0.1])
+        by submission (posteo.de) with ESMTPSA id 4RCJqR3d5Yz9ryY;
+        Fri, 28 Jul 2023 22:18:27 +0200 (CEST)
+Date:   Fri, 28 Jul 2023 20:18:10 +0000
+From:   Daniil Stas <daniil.stas@posteo.net>
+To:     "Jarkko Sakkinen" <jarkko@kernel.org>
+Cc:     <mario.limonciello@amd.com>,
+        <James.Bottomley@hansenpartnership.com>, <Jason@zx2c4.com>,
+        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <regressions@leemhuis.info>, <stable@vger.kernel.org>,
+        <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
+Message-ID: <20230728231810.48370d44@g14>
+In-Reply-To: <CUE1Z76QDX0Z.2K0OU6TPMS50X@seitikki>
+References: <20230214201955.7461-2-mario.limonciello@amd.com>
+        <20230727183805.69c36d6e@g14>
+        <CUE1Z76QDX0Z.2K0OU6TPMS50X@seitikki>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <84fde847-e756-3727-c357-104775ef1c4f@alu.unizg.hr>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 28, 2023 at 09:48:08PM +0200, Mirsad Todorovac wrote:
-> v3 -> v4
->  - fix additional memory leaks of the allocated firmware buffers
->  - fix noticed racing conditions in conformance with the existing code
->  - make it a single patch
+On Fri, 28 Jul 2023 19:30:18 +0000
+"Jarkko Sakkinen" <jarkko@kernel.org> wrote:
 
-This is not quite right.
+> On Thu Jul 27, 2023 at 3:38 PM UTC, Daniil Stas wrote:
+> > Hi,
+> > I am still getting fTPM stutters with 6.4.3 kernel on Asus GA402RJ
+> > laptop.
+> > Compiling kernel without TPM support makes the stutters go away.
+> > The fTPM firmware version is 0x3005700020005 on my machine.  
+> 
+> This is needs a bit more elaboration in order to be comprehended.
+> 
+> Do you mean by "stutter" unexpected delays and when do they happen?
+> 
+> BR, Jarkko
 
-Your patch commit 48e156023059 ("test_firmware: fix the memory leak of
-the allocated firmware buffer" is already upstream and now you're taking
-that same patch and modifying it?
-
-If you have something else you want to fix you can use the latest
-lib/firmware.c refelected on linux-next and send a patch against that
-to augment with more fixes.
-
-If your goal however, is to make sure these patches end up in v5.4
-(as I think you are trying based on your last email) you first send
-a patch matching exactly what is in the upstream commit for inclusion
-in v5.4. Do not modify the commit unless you are making changes need
-to be made due to backporting, and if you do you specify that at the
-bottommon of the commit after singed offs of before in brackets
-[like this].
-
-Furthermore, I see you have other fixes other than this one merged
-already on upstream so if you need those for v5.4 you need to send those
-too.
-
-  Luis
+Yes, unexpected delays. They just happen randomly.
+You can google "AMD fTPM stuttering", there are a lot of examples.
+Here is one: https://www.youtube.com/watch?v=TYnRL-x6DVI
