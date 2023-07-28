@@ -2,196 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD0F766392
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 07:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C337664FF
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 09:15:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232398AbjG1FLF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 01:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57450 "EHLO
+        id S233294AbjG1HPG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 03:15:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbjG1FLE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 01:11:04 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF343AB3;
-        Thu, 27 Jul 2023 22:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690521032; x=1722057032;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Tp8Y+kaJ7OLufB2ByMRaPwwLhVVjxBYCOuhdA7q99n0=;
-  b=BA1HQECYc7T//eArPjJs0DD4lP/QLc0p1j/DhiFypQtNx7ux/E5V1aPQ
-   J4YE5HRdbGfTS2yo2cpUL+vD78MejUD/nXZEYMbWqojhOTPh6+2pWX725
-   AlejEajns3Bv3OkKzL4U9ZqxAYgtqImj6QS/Tb6ta9T8e96e3BWCJiSso
-   0/4Rp008tsuhD6rmnl0xL5zaMZb6xOpKM+sJ+NqGR66EofkBBTtF+u5lK
-   4Y+dTDMsMrhalHT2/9SEKG4E/Gss6hTb51WiJL1kPYrsd2gbcYNd/MwJ6
-   eoYXq4f9ZcZQaJZER4uiwO5DhOHVW05lKG9ms4Zh9ejZp987qEe9dIhI7
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="365967758"
-X-IronPort-AV: E=Sophos;i="6.01,236,1684825200"; 
-   d="scan'208";a="365967758"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 22:10:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="757008475"
-X-IronPort-AV: E=Sophos;i="6.01,236,1684825200"; 
-   d="scan'208";a="757008475"
-Received: from b4969161e530.jf.intel.com ([10.165.56.46])
-  by orsmga008.jf.intel.com with ESMTP; 27 Jul 2023 22:10:24 -0700
-From:   Haitao Huang <haitao.huang@linux.intel.com>
-To:     dave.hansen@linux.intel.com, kai.huang@intel.com,
-        reinette.chatre@intel.com, jarkko@kernel.org,
-        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Cc:     dave.hansen@intel.com, kristen@linux.intel.com, seanjc@google.com,
-        stable@vger.kernel.org, sohil.mehta@intel.com
-Subject: [PATCH v6] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
-Date:   Thu, 27 Jul 2023 22:10:24 -0700
-Message-Id: <20230728051024.33063-1-haitao.huang@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: 6ccb705bc4345420e6c730245f871ba1d9413203.camel@intel.com
-References: 
+        with ESMTP id S233681AbjG1HPF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 03:15:05 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5537A2129
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 00:15:03 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36S60D9V031371
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 07:15:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=svPmzVI+7eFon/1ocEodK5MNmMYxEhx6SeLGE+hwf/s=;
+ b=itsWniO+Q2RmG0vNr8pq47ZfvvBet0YscngnOAKrEcKSJtg7SecGk+aIYK7T4j4YjyMV
+ C0buK74y6Mk6Dy3veVHlGwSRne84S/uUTym9U+T5TB0rDDzDn1y14YOj8BBZJ/2mZH2E
+ mUKdL7U8L/SZiuPM21M7zmmoT19/obcu9B+UzpZxmNATrPXw7GatbBmANKR6s10Yg3QA
+ 1qW8caS1Dtwf1ipY6dvkV6DnwZ9GththkjBFnuhXXAYpr4Cq5yPoS0DzUCQ449dFm65U
+ ag/gXT28MYjcCYhJNUVOEUAwrUID45knjrdHEEScIRJbPQknk0Z0RifyJP7wPl8/9edA Zw== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s469hg95h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 07:15:02 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36S7F2YH013024
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 07:15:02 GMT
+Received: from hu-vgarodia-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Fri, 28 Jul 2023 00:15:00 -0700
+From:   Vikash Garodia <quic_vgarodia@quicinc.com>
+To:     <quic_vgarodia@quicinc.com>
+CC:     <stable@vger.kernel.org>
+Subject: [PATCH] venus: hfi_parser: Add check to keep the number of codecs within range
+Date:   Fri, 28 Jul 2023 12:44:51 +0530
+Message-ID: <1690528491-21059-1-git-send-email-quic_vgarodia@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Xahpe4uUFMXnjFBVzMrIJK6ugfq6ihw0
+X-Proofpoint-GUID: Xahpe4uUFMXnjFBVzMrIJK6ugfq6ihw0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-27_10,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 phishscore=0
+ adultscore=0 clxscore=1015 mlxlogscore=836 mlxscore=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2307280065
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The SGX EPC reclaimer (ksgxd) may reclaim the SECS EPC page for an
-enclave and set secs.epc_page to NULL. The SECS page is used for EAUG
-and ELDU in the SGX page fault handler. However, the NULL check for
-secs.epc_page is only done for ELDU, not EAUG before being used.
+Supported codec bitmask is populated from the payload from venus firmware.
+There is a possible case when all the bits in the codec bitmask is set. In
+such case, core cap for decoder is filled  and MAX_CODEC_NUM is utilized.
+Now while filling the caps for encoder, it can lead to access the caps
+array beyong 32 index. Hence leading to OOB write.
+The fix counts the supported encoder and decoder. If the count is more than
+max, then it skips accessing the caps.
 
-Fix this by doing the same NULL check and reloading of the SECS page as
-needed for both EAUG and ELDU.
-
-The SECS page holds global enclave metadata. It can only be reclaimed
-when there are no other enclave pages remaining. At that point,
-virtually nothing can be done with the enclave until the SECS page is
-paged back in.
-
-An enclave can not run nor generate page faults without a resident SECS
-page. But it is still possible for a #PF for a non-SECS page to race
-with paging out the SECS page: when the last resident non-SECS page A
-triggers a #PF in a non-resident page B, and then page A and the SECS
-both are paged out before the #PF on B is handled.
-
-Hitting this bug requires that race triggered with a #PF for EAUG.
-Following is a trace when it happens.
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-RIP: 0010:sgx_encl_eaug_page+0xc7/0x210
-Call Trace:
- ? __kmem_cache_alloc_node+0x16a/0x440
- ? xa_load+0x6e/0xa0
- sgx_vma_fault+0x119/0x230
- __do_fault+0x36/0x140
- do_fault+0x12f/0x400
- __handle_mm_fault+0x728/0x1110
- handle_mm_fault+0x105/0x310
- do_user_addr_fault+0x1ee/0x750
- ? __this_cpu_preempt_check+0x13/0x20
- exc_page_fault+0x76/0x180
- asm_exc_page_fault+0x27/0x30
-
-Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
-Cc: stable@vger.kernel.org # v6.0+
-Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
 ---
-v6:
-- Removed 'Under heavy load' as it is not the required condition though
-it makes the bug more likely happen. (Kai)
-- Added mentioning of the NULL check and reloading already done for ELDU (Kai)
-- Added Reviewed-by (Kai)
+ drivers/media/platform/qcom/venus/hfi_parser.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-v5:
-- Trimmed trace and added Acked-by (Reinette)
-
-v4:
-- Refined the title (Kai, Dave)
-- Added a trace to commit meesage (Kai)
-- Added a few details for the race.
-
-v3:
-- Added comments on sgx_encl_load_secs(). (Dave)
-- Added theory of the race condition to hit the bug. (Dave)
-- Added Reviewed-by, and applicable stable release. (Jarkko)
-
-v2:
-- Fixes for style, commit message (Jarkko, Kai)
-- Removed unneeded WARN_ON (Kai)
----
- arch/x86/kernel/cpu/sgx/encl.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 91fa70e51004..279148e72459 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -235,6 +235,21 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
- 	return epc_page;
- }
+diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
+index ec73cac..651e215 100644
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -14,11 +14,26 @@
+ typedef void (*func)(struct hfi_plat_caps *cap, const void *data,
+ 		     unsigned int size);
  
-+/*
-+ * Ensure the SECS page is not swapped out.  Must be called with encl->lock
-+ * to protect the enclave states including SECS and ensure the SECS page is
-+ * not swapped out again while being used.
-+ */
-+static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
++static int count_setbits(u32 input)
 +{
-+	struct sgx_epc_page *epc_page = encl->secs.epc_page;
++	u32 count = 0;
 +
-+	if (!epc_page)
-+		epc_page = sgx_encl_eldu(&encl->secs, NULL);
-+
-+	return epc_page;
++	while (input > 0) {
++		if ((input & 1) == 1)
++			count++;
++		input >>= 1;
++	}
++	return count;
 +}
 +
- static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 						  struct sgx_encl_page *entry)
+ static void init_codecs(struct venus_core *core)
  {
-@@ -248,11 +263,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 		return entry;
- 	}
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
  
--	if (!(encl->secs.epc_page)) {
--		epc_page = sgx_encl_eldu(&encl->secs, NULL);
--		if (IS_ERR(epc_page))
--			return ERR_CAST(epc_page);
--	}
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page))
-+		return ERR_CAST(epc_page);
- 
- 	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
- 	if (IS_ERR(epc_page))
-@@ -339,6 +352,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
- 
- 	mutex_lock(&encl->lock);
- 
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page)) {
-+		if (PTR_ERR(epc_page) == -EBUSY)
-+			vmret = VM_FAULT_NOPAGE;
-+		goto err_out_unlock;
-+	}
++	if ((count_setbits(core->dec_codecs) + count_setbits(core->enc_codecs)) > MAX_CODEC_NUM)
++		return;
 +
- 	epc_page = sgx_alloc_epc_page(encl_page, false);
- 	if (IS_ERR(epc_page)) {
- 		if (PTR_ERR(epc_page) == -EBUSY)
-
-base-commit: 6eaae198076080886b9e7d57f4ae06fa782f90ef
+ 	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+ 		cap = &caps[core->codecs_count++];
+ 		cap->codec = BIT(bit);
 -- 
-2.25.1
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
 
