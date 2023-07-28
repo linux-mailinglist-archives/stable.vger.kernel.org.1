@@ -2,127 +2,196 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57335766313
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 06:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD0F766392
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 07:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230057AbjG1EW5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 00:22:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41522 "EHLO
+        id S232398AbjG1FLF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 01:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbjG1EW4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 00:22:56 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B1F919B;
-        Thu, 27 Jul 2023 21:22:55 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6b9d68a7abaso1432007a34.3;
-        Thu, 27 Jul 2023 21:22:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690518175; x=1691122975;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VV0P9pUy9vYqeeF+U2QGC4EBJiwKPd9OR6nuiKq0Vrk=;
-        b=bI34xHbV8wsJQ7rk1eHO42aSS7+10Qzi771SDCDenpeB4/aut5cyPDX5s8oNu+VbbO
-         yGaF/yan7iTQ+C5Fdd4I7mz9DfTNfsRYXPD/bthFMW0B7/CHmWtVxeTDYktoGq/3Cog+
-         bwEsOfBUFiXbBTADVSNHJc0f1HstfcApi+bpxWrRL5gHc7HxHsr6ttFEzFiBgbq15O6I
-         Oxpjg3sU/RdZL3fVQpsvBjQiAHrN+2FZ/fmD364KYWvnNeHDsDyRolejOwNT//LNV1zg
-         SjxD1dPK2K3tGazBe9dUyv2ywgf8Fdcp1/HPemi9YTALgLQ3wKaGY4euBPvX6xAQzsRW
-         k5rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690518175; x=1691122975;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VV0P9pUy9vYqeeF+U2QGC4EBJiwKPd9OR6nuiKq0Vrk=;
-        b=H5Pvt7ny+aI3PWjabFduCzzhnuHqA4VXoESCE9AowNJD6ou/oSGHzooaDrvZ7qWHgq
-         ag+087oJDiELIX9+i+rAqQACUV+aaZnSDpADpvCwALHw+SkuT2PMg5hJVP+OQ+V69add
-         9kOS5lTIYKZ1h1VtjIS8DSXd8Z55N3inUvjtpThUT4yMcWvWUV1lHmvfSmZNTb/X/ONT
-         +HQnicaZyYI9fk5SxO6zNi6UOV5Ct/Fjrb7UQS7JkfOBridQgxfMb56xNF+0PHqTEqYE
-         bmae4+xhIfFSk6VDeG3mYFDleY8EDKiMX/be17lAmz+Dx5NPUKUDGH05tdkYtSGz8gZf
-         +gaQ==
-X-Gm-Message-State: ABy/qLZ6NQkKY8I3WpFs+nb9bfp7ZHglXaWCBZBnaH/qWU98FR6iBdUe
-        ZYmcxTMAmyeeMQARAMWe8Y4=
-X-Google-Smtp-Source: APBJJlEtTA3SL1VfbQWXbttnJZZZvzurq0mKggh2iAIIW7LSOdqSbTrwvYptvfod0y4fGuBgU/WsOg==
-X-Received: by 2002:a9d:6285:0:b0:6b9:182b:cccc with SMTP id x5-20020a9d6285000000b006b9182bccccmr1375585otk.33.1690518174744;
-        Thu, 27 Jul 2023 21:22:54 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id o29-20020a63731d000000b0054fe6bae952sm2403714pgc.4.2023.07.27.21.22.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jul 2023 21:22:54 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <6d45f1d0-25e5-8603-0fbb-73374be00503@roeck-us.net>
-Date:   Thu, 27 Jul 2023 21:22:52 -0700
+        with ESMTP id S232716AbjG1FLE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 01:11:04 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF343AB3;
+        Thu, 27 Jul 2023 22:10:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690521032; x=1722057032;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Tp8Y+kaJ7OLufB2ByMRaPwwLhVVjxBYCOuhdA7q99n0=;
+  b=BA1HQECYc7T//eArPjJs0DD4lP/QLc0p1j/DhiFypQtNx7ux/E5V1aPQ
+   J4YE5HRdbGfTS2yo2cpUL+vD78MejUD/nXZEYMbWqojhOTPh6+2pWX725
+   AlejEajns3Bv3OkKzL4U9ZqxAYgtqImj6QS/Tb6ta9T8e96e3BWCJiSso
+   0/4Rp008tsuhD6rmnl0xL5zaMZb6xOpKM+sJ+NqGR66EofkBBTtF+u5lK
+   4Y+dTDMsMrhalHT2/9SEKG4E/Gss6hTb51WiJL1kPYrsd2gbcYNd/MwJ6
+   eoYXq4f9ZcZQaJZER4uiwO5DhOHVW05lKG9ms4Zh9ejZp987qEe9dIhI7
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="365967758"
+X-IronPort-AV: E=Sophos;i="6.01,236,1684825200"; 
+   d="scan'208";a="365967758"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 22:10:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="757008475"
+X-IronPort-AV: E=Sophos;i="6.01,236,1684825200"; 
+   d="scan'208";a="757008475"
+Received: from b4969161e530.jf.intel.com ([10.165.56.46])
+  by orsmga008.jf.intel.com with ESMTP; 27 Jul 2023 22:10:24 -0700
+From:   Haitao Huang <haitao.huang@linux.intel.com>
+To:     dave.hansen@linux.intel.com, kai.huang@intel.com,
+        reinette.chatre@intel.com, jarkko@kernel.org,
+        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Cc:     dave.hansen@intel.com, kristen@linux.intel.com, seanjc@google.com,
+        stable@vger.kernel.org, sohil.mehta@intel.com
+Subject: [PATCH v6] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
+Date:   Thu, 27 Jul 2023 22:10:24 -0700
+Message-Id: <20230728051024.33063-1-haitao.huang@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: 6ccb705bc4345420e6c730245f871ba1d9413203.camel@intel.com
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To:     paulmck@kernel.org
-Cc:     Joel Fernandes <joel@joelfernandes.org>,
-        Pavel Machek <pavel@denx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        rcu@vger.kernel.org
-References: <ZMJWet00+9yIl/9c@duo.ucw.cz>
- <78722041-D1F7-45FA-BA1C-41B92209BA6C@joelfernandes.org>
- <0751f5a8-2727-4a08-8bb8-50bbd4244c9c@paulmck-laptop>
- <67eba84a-ae24-2983-a756-463f39f3ca71@roeck-us.net>
- <ebe4a969-8a24-4bb8-8dbe-f77db89f65c9@paulmck-laptop>
- <2f4b012e-1f95-30aa-3f43-c31e84cb2c42@roeck-us.net>
- <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
-In-Reply-To: <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/27/23 13:33, Paul E. McKenney wrote:
-[ ... ]
+The SGX EPC reclaimer (ksgxd) may reclaim the SECS EPC page for an
+enclave and set secs.epc_page to NULL. The SECS page is used for EAUG
+and ELDU in the SGX page fault handler. However, the NULL check for
+secs.epc_page is only done for ELDU, not EAUG before being used.
 
-> So which of the following Kconfig options is defined in your .config?
-> CONFIG_TASKS_RCU, CONFIG_TASKS_RUDE_RCU, and CONFIG_TASKS_TRACE_RCU.
-> 
+Fix this by doing the same NULL check and reloading of the SECS page as
+needed for both EAUG and ELDU.
 
-Only CONFIG_TASKS_RCU. I added another log message after call_rcu_tasks().
-It never returns from that function.
+The SECS page holds global enclave metadata. It can only be reclaimed
+when there are no other enclave pages remaining. At that point,
+virtually nothing can be done with the enclave until the SECS page is
+paged back in.
 
-[    1.168993] Running RCU synchronous self tests
-[    1.169219] Running RCU synchronous self tests
-[    1.285795] smpboot: CPU0: Intel Xeon Processor (Cascadelake) (family: 0x6, model: 0x55, stepping: 0x6)
-[    1.302827] RCU Tasks: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1.
-[    1.304526] Running RCU Tasks wait API self tests
+An enclave can not run nor generate page faults without a resident SECS
+page. But it is still possible for a #PF for a non-SECS page to race
+with paging out the SECS page: when the last resident non-SECS page A
+triggers a #PF in a non-resident page B, and then page A and the SECS
+both are paged out before the #PF on B is handled.
 
-... and then nothing for at least 10 minutes (then I gave up and stopped the test).
+Hitting this bug requires that race triggered with a #PF for EAUG.
+Following is a trace when it happens.
 
-Qemu command line:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+RIP: 0010:sgx_encl_eaug_page+0xc7/0x210
+Call Trace:
+ ? __kmem_cache_alloc_node+0x16a/0x440
+ ? xa_load+0x6e/0xa0
+ sgx_vma_fault+0x119/0x230
+ __do_fault+0x36/0x140
+ do_fault+0x12f/0x400
+ __handle_mm_fault+0x728/0x1110
+ handle_mm_fault+0x105/0x310
+ do_user_addr_fault+0x1ee/0x750
+ ? __this_cpu_preempt_check+0x13/0x20
+ exc_page_fault+0x76/0x180
+ asm_exc_page_fault+0x27/0x30
 
-qemu-system-x86_64 -kernel \
-      arch/x86/boot/bzImage -M q35 -cpu Cascadelake-Server -no-reboot \
-      -snapshot -device e1000e,netdev=net0 -netdev user,id=net0 -m 256 \
-      -drive file=rootfs.iso,format=raw,if=ide,media=cdrom \
-      --append "earlycon=uart8250,io,0x3f8,9600n8 panic=-1 slub_debug=FZPUA root=/dev/sr0 rootwait console=ttyS0 noreboot" \
-      -d unimp,guest_errors -nographic -monitor none
+Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
+Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+---
+v6:
+- Removed 'Under heavy load' as it is not the required condition though
+it makes the bug more likely happen. (Kai)
+- Added mentioning of the NULL check and reloading already done for ELDU (Kai)
+- Added Reviewed-by (Kai)
 
-Again, this doesn't happen all the time. With Cascadelake-Server
-I see it maybe once every 5 boot attempts. I tried with qemu v8.0
-and v8.1. Note that it does seem to happen with various CPU types,
-only for some it seems to me more likely to happen (so maybe the
-CPU type was a red herring). It does seem to depend on the system
-load, and happen more often if the system is under heavy load.
+v5:
+- Trimmed trace and added Acked-by (Reinette)
 
-Guenter
+v4:
+- Refined the title (Kai, Dave)
+- Added a trace to commit meesage (Kai)
+- Added a few details for the race.
+
+v3:
+- Added comments on sgx_encl_load_secs(). (Dave)
+- Added theory of the race condition to hit the bug. (Dave)
+- Added Reviewed-by, and applicable stable release. (Jarkko)
+
+v2:
+- Fixes for style, commit message (Jarkko, Kai)
+- Removed unneeded WARN_ON (Kai)
+---
+ arch/x86/kernel/cpu/sgx/encl.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 91fa70e51004..279148e72459 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -235,6 +235,21 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 	return epc_page;
+ }
+ 
++/*
++ * Ensure the SECS page is not swapped out.  Must be called with encl->lock
++ * to protect the enclave states including SECS and ensure the SECS page is
++ * not swapped out again while being used.
++ */
++static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
++{
++	struct sgx_epc_page *epc_page = encl->secs.epc_page;
++
++	if (!epc_page)
++		epc_page = sgx_encl_eldu(&encl->secs, NULL);
++
++	return epc_page;
++}
++
+ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+ 						  struct sgx_encl_page *entry)
+ {
+@@ -248,11 +263,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+ 		return entry;
+ 	}
+ 
+-	if (!(encl->secs.epc_page)) {
+-		epc_page = sgx_encl_eldu(&encl->secs, NULL);
+-		if (IS_ERR(epc_page))
+-			return ERR_CAST(epc_page);
+-	}
++	epc_page = sgx_encl_load_secs(encl);
++	if (IS_ERR(epc_page))
++		return ERR_CAST(epc_page);
+ 
+ 	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
+ 	if (IS_ERR(epc_page))
+@@ -339,6 +352,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+ 
+ 	mutex_lock(&encl->lock);
+ 
++	epc_page = sgx_encl_load_secs(encl);
++	if (IS_ERR(epc_page)) {
++		if (PTR_ERR(epc_page) == -EBUSY)
++			vmret = VM_FAULT_NOPAGE;
++		goto err_out_unlock;
++	}
++
+ 	epc_page = sgx_alloc_epc_page(encl_page, false);
+ 	if (IS_ERR(epc_page)) {
+ 		if (PTR_ERR(epc_page) == -EBUSY)
+
+base-commit: 6eaae198076080886b9e7d57f4ae06fa782f90ef
+-- 
+2.25.1
 
