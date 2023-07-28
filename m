@@ -2,93 +2,202 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1500476620D
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 04:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0EC57662AF
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 05:59:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbjG1Cth (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 22:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43374 "EHLO
+        id S232155AbjG1D7T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Jul 2023 23:59:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbjG1Ctg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 22:49:36 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60AD32126;
-        Thu, 27 Jul 2023 19:49:35 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1bbb4bddd5bso1306015fac.2;
-        Thu, 27 Jul 2023 19:49:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690512574; x=1691117374;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a7ldvBB2rbS3bYpCeMk71DDYYFjKwRoTgn+P6aVeXY8=;
-        b=Pp24ZpJ2RxVFGw7CKZD0faZuq3f3UGoYXjgpgNEI+9I2zbl8POTFoc26bWPtyNanwb
-         jY6ud7VqOanqu7KAG6BKVONJm0B4wd5qqWrTxInpvVbGwuBuYpMBPxRJFr6eSEdHsYqs
-         ZpzkpND221WNnzjG1DJSC5EcgIPdH0IOkJjTSzfhrhXSCCgT2gTe1wEvNuauTnAi5GjK
-         LSt2uZvpgSQfNcXl0S2l4UrZGuUCFSOWPa5LQxCvZQohiw0LPyxXRlsTajuIhXgUej2F
-         XgfxuKA38WEW6l33DineQZgCj4nJFP4fmmmn0Jng+oIzPXGdhQRhHcKbSLHTkm0oVQuX
-         r9QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690512574; x=1691117374;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a7ldvBB2rbS3bYpCeMk71DDYYFjKwRoTgn+P6aVeXY8=;
-        b=cm3ClawDesjnDRX2Dz/wpVRKGk5pYlROqxoibZ4nENfWbqoD8krU7Fg2cfERl3uERX
-         emhgIcYmVO/a3tjmFIClC0KFtXQLUVTHE7bL2rHiVuXRAfaQBS7300q+FF/7swbjvBAh
-         bzfu3kMhqbAY6E4tdqc4x9lliwezA2L8t0aQyfSs13BnevcIRuWfuXlmLqO12ZAY5fCx
-         PFb4FwQhnhn86foS3qqPV2/k7FbTBCUsbVSDLChcL718BRObwiUCv+BSWwfupB2XRcL9
-         y/E16HhiFU4rhdzbnlDVDkT5ZWSy5MDRbMjlrc3LWyqiHEVXtkyvwXhzvfQzeb+XK5/7
-         30uA==
-X-Gm-Message-State: ABy/qLYtkrrLYM736i1h7iCmMTfzpJ0xT7ObGZvrK5/toJIJx1br4Y3J
-        4fSMglADl7ksW9oikGrbf5Q=
-X-Google-Smtp-Source: APBJJlGtCgVp7ZuZ7VNDUXvMMZkTwW96lkumq0zI3xVahOPyULSN9yW+RyhmE3N48WJfKWzkn28A7Q==
-X-Received: by 2002:a05:6870:5b9d:b0:1bb:a264:a7ba with SMTP id em29-20020a0568705b9d00b001bba264a7bamr1599749oab.56.1690512574356;
-        Thu, 27 Jul 2023 19:49:34 -0700 (PDT)
-Received: from [192.168.1.121] ([65.129.146.152])
-        by smtp.gmail.com with ESMTPSA id m3-20020aa78a03000000b00686e8b00a50sm429979pfa.104.2023.07.27.19.49.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jul 2023 19:49:34 -0700 (PDT)
-Message-ID: <d44e4057-0758-4cb8-ca29-02b5bb340b8b@gmail.com>
-Date:   Thu, 27 Jul 2023 20:49:32 -0600
+        with ESMTP id S230009AbjG1D7S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 23:59:18 -0400
+X-Greylist: delayed 402 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 27 Jul 2023 20:59:17 PDT
+Received: from out-106.mta0.migadu.com (out-106.mta0.migadu.com [IPv6:2001:41d0:1004:224b::6a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AD911B
+        for <stable@vger.kernel.org>; Thu, 27 Jul 2023 20:59:17 -0700 (PDT)
+Message-ID: <8a7a1960-1678-6949-b4e0-b3621d31ea9c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1690516352; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xca0fbgynp4YpJaFG42+C3Unmv24xUnm5jqMs1cBm6w=;
+        b=LYdWv563hDZrLdby8OHTM5QHEQmjOD/RWvRdZDmjqcpaD6ZOLSF+tRrqoMQluZ8orDYG+q
+        5wyXyc6GlUAV6nEvUZ8/m+nmW4HQYgWCWxXhaqKWE8wI2YTxyMeR3Pfkgag6xVkXPe2zVa
+        +Ly0IEXTX4DSRu88z6M7P4Y0OHH4G5Y=
+Date:   Thu, 27 Jul 2023 20:52:25 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Scsi_bus_resume+0x0/0x90 returns -5 when resuming from s3 sleep
-To:     Damien Le Moal <dlemoal@kernel.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     regressions@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
- <6b66dd9a-8bd5-2882-9168-8e6e0848c454@leemhuis.info>
- <c70caa9e-164c-fee5-8f85-67f6d02373ab@kernel.org>
- <b0ed86e0-3e4a-d4d1-7b9d-c57f20538a80@gmail.com>
- <86435987-734e-c6c1-a857-1ba80da709fe@gmail.com>
- <48bc1736-5e4e-3a9b-3715-60509c333bb1@kernel.org>
- <f7e7b601-571f-bd2e-6410-a8a27e510c2f@gmail.com>
- <40365501-283a-408b-3514-48c29db36861@kernel.org>
+Reply-To: yonghong.song@linux.dev
+Subject: Re: [PATCH] [v4] bpf: fix bpf_probe_read_kernel prototype mismatch
 Content-Language: en-US
-From:   TW <dalzot@gmail.com>
-In-Reply-To: <40365501-283a-408b-3514-48c29db36861@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
+        John Fastabend <john.fastabend@gmail.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Yonghong Song <yhs@fb.com>, KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Dave Marchevsky <davemarchevsky@fb.com>,
+        David Vernet <void@manifault.com>,
+        Kees Cook <keescook@chromium.org>, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+References: <20230725204149.3411961-1-arnd@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Yonghong Song <yonghong.song@linux.dev>
+In-Reply-To: <20230725204149.3411961-1-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Comparing to the 5.15 kernel which had almost no delay. They are HDDs 
-though, it was working flawlessly earlier but didn't want to top post 
-again. Tried a systemd suspend instead of from the Xfce4 logout menu and 
-everything works as intended. So I'd say that it's fixed now.
 
-On 7/27/23 20:33, Damien Le Moal wrote:
-> "Slow coming back" -> Compared to which version of the kernel ? Do you 
-> have numbers ? If the devices are HDDs, resume will wait for these to 
-> spin up. That takes a while (about 10s normally).
+
+On 7/25/23 1:41 PM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> bpf_probe_read_kernel() has a __weak definition in core.c and another
+> definition with an incompatible prototype in kernel/trace/bpf_trace.c,
+> when CONFIG_BPF_EVENTS is enabled.
+> 
+> Since the two are incompatible, there cannot be a shared declaration in
+> a header file, but the lack of a prototype causes a W=1 warning:
+> 
+> kernel/bpf/core.c:1638:12: error: no previous prototype for 'bpf_probe_read_kernel' [-Werror=missing-prototypes]
+> 
+> On 32-bit architectures, the local prototype
+> 
+> u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
+> 
+> passes arguments in other registers as the one in bpf_trace.c
+> 
+> BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
+>              const void *, unsafe_ptr)
+> 
+> which uses 64-bit arguments in pairs of registers.
+> 
+> As both versions of the function are fairly simple and only really
+> differ in one line, just move them into a header file as an inline
+> function that does not add any overhead for the bpf_trace.c callers
+> and actually avoids a function call for the other one.
+> 
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/all/ac25cb0f-b804-1649-3afb-1dc6138c2716@iogearbox.net/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+LGTM but there are some additional changes in kernel so you need to
+rebase on top of master branch with the following additional change:
+
+@@ -2082,7 +2076,7 @@ static u64 ___bpf_prog_run(u64 *regs, const struct 
+bpf_insn *insn)
+                 DST = *(SIZE *)(unsigned long) (SRC + insn->off);       \
+                 CONT;                                                   \
+         LDX_PROBE_MEMSX_##SIZEOP:                                       \
+-               bpf_probe_read_kernel(&DST, sizeof(SIZE),               \
++               bpf_probe_read_kernel_common(&DST, sizeof(SIZE), 
+        \
+                                       (const void *)(long) (SRC + 
+insn->off));  \
+                 DST = *((SIZE *)&DST);                                  \
+                 CONT;
+
+Thanks!
+
+> --
+> v4: rewrite again to use a shared inline helper
+> v3: clarify changelog text further.
+> v2: rewrite completely to fix the mismatch.
+> ---
+>   include/linux/bpf.h      | 12 ++++++++++++
+>   kernel/bpf/core.c        | 10 ++--------
+>   kernel/trace/bpf_trace.c | 11 -----------
+>   3 files changed, 14 insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> index ceaa8c23287fc..abe75063630b8 100644
+> --- a/include/linux/bpf.h
+> +++ b/include/linux/bpf.h
+> @@ -2661,6 +2661,18 @@ static inline void bpf_dynptr_set_rdonly(struct bpf_dynptr_kern *ptr)
+>   }
+>   #endif /* CONFIG_BPF_SYSCALL */
+>   
+> +static __always_inline int
+> +bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
+> +{
+> +	int ret = -EFAULT;
+> +
+> +	if (IS_ENABLED(CONFIG_BPF_EVENTS))
+> +		ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
+> +	if (unlikely(ret < 0))
+> +		memset(dst, 0, size);
+> +	return ret;
+> +}
+> +
+>   void __bpf_free_used_btfs(struct bpf_prog_aux *aux,
+>   			  struct btf_mod_pair *used_btfs, u32 len);
+>   
+> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+> index dd70c58c9d3a3..9cdf53bfb8bd3 100644
+> --- a/kernel/bpf/core.c
+> +++ b/kernel/bpf/core.c
+> @@ -1634,12 +1634,6 @@ bool bpf_opcode_in_insntable(u8 code)
+>   }
+>   
+>   #ifndef CONFIG_BPF_JIT_ALWAYS_ON
+> -u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
+> -{
+> -	memset(dst, 0, size);
+> -	return -EFAULT;
+> -}
+> -
+>   /**
+>    *	___bpf_prog_run - run eBPF program on a given context
+>    *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
+> @@ -1930,8 +1924,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+>   		DST = *(SIZE *)(unsigned long) (SRC + insn->off);	\
+>   		CONT;							\
+>   	LDX_PROBE_MEM_##SIZEOP:						\
+> -		bpf_probe_read_kernel(&DST, sizeof(SIZE),		\
+> -				      (const void *)(long) (SRC + insn->off));	\
+> +		bpf_probe_read_kernel_common(&DST, sizeof(SIZE),	\
+> +			      (const void *)(long) (SRC + insn->off));	\
+>   		DST = *((SIZE *)&DST);					\
+>   		CONT;
+>   
+> diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+> index c92eb8c6ff08d..83bde2475ae54 100644
+> --- a/kernel/trace/bpf_trace.c
+> +++ b/kernel/trace/bpf_trace.c
+> @@ -223,17 +223,6 @@ const struct bpf_func_proto bpf_probe_read_user_str_proto = {
+>   	.arg3_type	= ARG_ANYTHING,
+>   };
+>   
+> -static __always_inline int
+> -bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
+> -{
+> -	int ret;
+> -
+> -	ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
+> -	if (unlikely(ret < 0))
+> -		memset(dst, 0, size);
+> -	return ret;
+> -}
+> -
+>   BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
+>   	   const void *, unsafe_ptr)
+>   {
