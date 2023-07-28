@@ -2,235 +2,205 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4820766033
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 01:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 158CC76617D
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 03:50:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbjG0XVo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Jul 2023 19:21:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38082 "EHLO
+        id S231230AbjG1Bux convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 27 Jul 2023 21:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjG0XVn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 19:21:43 -0400
-Received: from mgamail.intel.com (unknown [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78862E73;
-        Thu, 27 Jul 2023 16:21:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690500102; x=1722036102;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=SmUFKNKWck7BoI0Yj6GvMC07PTTLvYNSMueNaExfEV4=;
-  b=gUDefZbfiviBvLZqLsmwqUYKiIRgIDR61lxSbN4MSgvcwr537DwrCMtd
-   vXzUCY+wL6oHhPcTfIOD+yoWuzOI2KakB7GeyrnKzjHs5WBy17N2SmthM
-   pPz+S4U7HCM7Tcd2gYkOv49gZyTYZXMSJb1yxNF96F701GTx9XYwg7FFR
-   igEN11yjZcGllvPj5vKhp2yhQYqh0Dl/EJ+zzD1az85LZ19l2wkqp/fd2
-   Qj2+sWvpBSQb3illpB6C+4BhYFwQ4YKpSNAd3UU4ve9Fkb3cW6KOpGhKZ
-   JL2G77DPy1ODtGMSgkaAl5LlSchmKGlPPNPpfTLbjrYFiAvjHPRyjH78u
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="365913500"
-X-IronPort-AV: E=Sophos;i="6.01,236,1684825200"; 
-   d="scan'208";a="365913500"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 16:21:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="762373657"
-X-IronPort-AV: E=Sophos;i="6.01,236,1684825200"; 
-   d="scan'208";a="762373657"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orsmga001.jf.intel.com with ESMTP; 27 Jul 2023 16:21:30 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 27 Jul 2023 16:21:30 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 27 Jul 2023 16:21:30 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.171)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 27 Jul 2023 16:21:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jjOrP9QXhSGZp/qr2MY+KNeEqUmc3G/12DoIrdAgWdr3kymaOCjlc3ApnTGM38MFHoJw5r5zH0ceZMGNM85Bha6GZYus6dq4j9Y+7p3rqL9ggERRNkQYDmDyi/uWZrzg98h8VabhwYfG7BEvf/jCzwFGJNCs6OV+g8Bx8wjn4xh4tqmBcpaDPoR33/AaGtO8lGbdWL6CJgul7DDyNYBltS7zlurIxNcbjohFI+iYX6yvatTOyWpf0PlavDbOeApqI9zCCyvod7kGY51YO18T16ydfNKTmbZtSTLfLKJryXu9eOaXi0tg/Mv456JlDF90T5imZqsMh0BmNJ4gIMTmwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SmUFKNKWck7BoI0Yj6GvMC07PTTLvYNSMueNaExfEV4=;
- b=Vkl7WakzWr4rZGclPzYVmnk2VQqnHsIrocQM9NIz6rHGqIpcRz+p7iIgL+6xP4gW/NhXjTJ5E95SM1no1XmIysyfaE0S0j/PWi7wmGORpUhZutRf7z2o4xAXO0iMXmAn3+ne/rd+JNrN2bqE+xCDHrOnRvsXuZrctxboOoq4zQxQGM73ph+dUG1MawKRfm7K5FrmIGUmHB6l7ZG2zGW58twgYB+hr5swT7T430h5goGqrKLFFZva1V0wq494oYlej82c04jXHGYKYy0kXR37lNMvJXPXZqEwCX/MzfuyC8m4G5nRRaSNviGAkQWgrA6vTyblFL7yybnsHHbgoLZWaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by MN0PR11MB6230.namprd11.prod.outlook.com (2603:10b6:208:3c5::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29; Thu, 27 Jul
- 2023 23:21:26 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::3729:308d:4f:81c8]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::3729:308d:4f:81c8%3]) with mapi id 15.20.6631.026; Thu, 27 Jul 2023
- 23:21:26 +0000
-From:   "Huang, Kai" <kai.huang@intel.com>
-To:     "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "Chatre, Reinette" <reinette.chatre@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "haitao.huang@linux.intel.com" <haitao.huang@linux.intel.com>,
-        "hpa@zytor.com" <hpa@zytor.com>,
-        "mingo@redhat.com" <mingo@redhat.com>
-CC:     "kristen@linux.intel.com" <kristen@linux.intel.com>,
-        "Mehta, Sohil" <sohil.mehta@intel.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Christopherson,, Sean" <seanjc@google.com>
-Subject: Re: [PATCH v5] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG
- race
-Thread-Topic: [PATCH v5] x86/sgx: Resolves SECS reclaim vs. page fault for
- EAUG race
-Thread-Index: AQHZwCYBmjwKzMBZUUGqRDKoJ6bjba/M6cUAgAC/sgCAAJhagA==
-Date:   Thu, 27 Jul 2023 23:21:26 +0000
-Message-ID: <6ccb705bc4345420e6c730245f871ba1d9413203.camel@intel.com>
-References: <20230727010212.26406-1-haitao.huang@linux.intel.com>
-         <c57d8cc4e4bfbef028a1f226ec2c4691a7c100fe.camel@intel.com>
-         <op.18qu84gewjvjmi@hhuan26-mobl.amr.corp.intel.com>
-In-Reply-To: <op.18qu84gewjvjmi@hhuan26-mobl.amr.corp.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|MN0PR11MB6230:EE_
-x-ms-office365-filtering-correlation-id: 8de3265f-8d37-4bb7-d6de-08db8ef83312
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 2G8UGGuB6exBPr0fYzoUaIkllIP2cj0IokZgwudFlBVc6tdmoTLo6LXwhnUJQYw9OfThPMVriQJNcLOxUHndltqxIjDCiIqCwW8e+JIZWWpfQTn93I/hf43QA9KoccRKG5mVLxr8XwKKv3JrMTt5/HYoct4beilSVAv5PbtHlIp9ejEi2bHZnm/MAUT4EMdxTM8cmQuG4pIr9nUcOmg3LxQJwZykdErGZfRu32GTUXGslNB7qIDfJ61QxBxSdO3gnIdmLEKVKZubbjwJNHkOwd9pIG9Ns9cJ1+70SKZiJmmzPJmi/33CSIx+alWEfp7GDN1VPzxj1vx7pMVsfBmgx3cij5jeRTBGk+DChuW6yWy2QZ1JhTKVjUXVV3n2jW0YAtsM/GB5o/8STtmGl6MA6rSOnguGS20INcFbrleGFUMe26PZHYzC2SltM56+jCH/OacXFcM9pY+ywITH99JfBPZi0rd3mDHfz8XJLplmIQgqSXSWaOwN2GNDFnvRyYXpFpgwMsh/QO5y6f9BBgqU/SMtXSskbU3U+mdxfR798+M3tAntQzJtSoNREt6gCb5JBclwL8cpZEgInYs1ZUHiAMiMrd4EL6QvoXFY1XSfFYAf2QgCZ4T87hzvYLyqNM/w
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(39860400002)(346002)(396003)(136003)(451199021)(316002)(26005)(41300700001)(8936002)(4326008)(8676002)(6506007)(66899021)(54906003)(110136005)(122000001)(82960400001)(921005)(66476007)(66946007)(966005)(66446008)(478600001)(6512007)(76116006)(91956017)(64756008)(66556008)(6486002)(71200400001)(36756003)(38100700002)(2616005)(38070700005)(2906002)(83380400001)(86362001)(186003)(7416002)(5660300002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VUd4ejRRb0ZmN1ZUZVRMRGFlR3pJc0VQdU5jQnlDQ29WUDY1Q2ptZ0loU1Jx?=
- =?utf-8?B?ZUlvMStxVFFCbk56NlVvVS9WTGNMd241cThMOTV1WGoyYVI0UUtHSjJrTjhz?=
- =?utf-8?B?M3A1aFBtczkxMGx0ZXpkOUZSQkFjUkpJalZDdDNkMFhoLyszSnVvckUzR0RD?=
- =?utf-8?B?TUNYbGVHSmhDemRQMFhBckVTeUl2SlRlbjAvam1TK3FqcE4xTDJQbzZkNGYw?=
- =?utf-8?B?S2lhK1lDMnpUa1V3aGFFZTdUZ0VtVnYzMGR1OU02L0VkU0todHJUNFVmNG50?=
- =?utf-8?B?T1VMYXF0Z0JsaTJkRVVWZXcvRTl0ajBJQ09Yc1RQOGllZE1Wb3k5WHdjQnhS?=
- =?utf-8?B?OUpjRmNmMGN6YTluUjQzNFg3RjgydSsvdHA0Qk03WmwzSk9Rb3Z1Z0wyMUVp?=
- =?utf-8?B?amZleXl4RzExcXowOHY1UzlnaEVTWnJ2bXNSTE03blNrRXJTRXhmckg0bWE3?=
- =?utf-8?B?Y3pXQTBmSks1UU90TVUxbjY5VUxOeHZKVW5QWE00eHNjRWFQOHpNK210K3pr?=
- =?utf-8?B?SklDM3dVUWV5MGcxM0hNeWNrV0toLzk4QjlnaFRQUWtVOXlIYzZ0WUlhU0hV?=
- =?utf-8?B?YUMrUHh3dW5ldVN3WDk2KzExdjVzemhBdTVLUGJCemlmQnFTdm1KcWdDRmpZ?=
- =?utf-8?B?V1laUkM0K0ZCL204NVBtWXUwM1IxdVZsOTlJQXQ0M3RnNTFleElHRnc0dDZ4?=
- =?utf-8?B?Z3JjQzZuSjJ1OWtYNWpxZmlsdG05SCtoei9uSXRHeFc5VEF6VlFlV1FPVnBx?=
- =?utf-8?B?ZmtYWFB4Vm1uTDYyNFA2ZnlxZUVSZ3R1eFBOVGhuSkxDWkVSMU5rVUErZ1Vj?=
- =?utf-8?B?b3YzdG1mNytJMDlBNWh3emFpOCtHeW1WUlBiQmY4MDBRckpHOC9SUW4ycWps?=
- =?utf-8?B?eEoxejRyNUNINzAzeUdpUmdnb25YUFRZWUZyZDN3cUwydTNxNVh4TE1PVXF5?=
- =?utf-8?B?SXdQbVVhOTRkVFdTbmJGbDlKTkJNcmgrWlozR0ZobnlXbHZ5LzlhcWs5U1pO?=
- =?utf-8?B?YjMzbzRNeEJQTGUrVXUxZmU3VEw0czNkOHdRb1pSNlF2WVdoeVBPempBMExR?=
- =?utf-8?B?ZDk1ejhXOVgyL2NMVXdjNFlkbktUSXVBVGRVVFNMTitDc3kzenAxUWJCWHIr?=
- =?utf-8?B?anRmSEFBN2wvTDNyaGNVRDBjZ2xEemZxSjIwRUt3a1MvU21QbFJlem1oNnNC?=
- =?utf-8?B?c0NGeWN3bTdjM0xjb2VhQUlCeUxpdHlEajV0V2FhTXZvYTdOMVhteXpZaFhm?=
- =?utf-8?B?WkFCNkdjeU5Md280NWtvQVM4RlNtcWhESlFoaWNSNnNyQWlRaWthVXVwZzNw?=
- =?utf-8?B?YjFETndkcGlxK1FsZE5oQ1E0YU1NWVU3SFBYMEpYODlmQnQ5eXhoZm4zUVkr?=
- =?utf-8?B?Q0VZVlpsTWVwWmZSRTcyYklxanMzMlRhRzd2cVV1Nm5jVi95d2xOclZ2THdN?=
- =?utf-8?B?ZVFWRmIxMlg4N0V3bEhDc1dzczY3UmxlWERyMDdpWGtEdTY2ZW1oNkp6Qk41?=
- =?utf-8?B?bDJqWktVaFlLTXIzOXBSQUp1eThXZWxTYWF4ZEg3K2pTYjJ2cXlVeGxFZVJT?=
- =?utf-8?B?VlQxOEtmZzhpWS94czZaczBsTTY4a1AzZytCaTB3U2tIT29xeFAxT3UzR3lq?=
- =?utf-8?B?Q2VSZkdOUyszMjhYWVJ6NzBJTjZOait0ZTM0STBuV3pYbzR4WGVZSS80cnIw?=
- =?utf-8?B?YkQ1RW54Y05wYklTZ2NrdWlhdzIySmN5VGFPQkpMTm96WUp2bTVxdy94SUNn?=
- =?utf-8?B?S1dDbFB3WEREblo4OGhrNG50UTJCQmVxMXMxWnhQRXlQUkYvNWRRUzNlTWtH?=
- =?utf-8?B?NWJacGNHc2Jab2NCMEVIZ1h2MmJlcUN3Tld4eE9DTHUxc3ZHSzdlOG9hVFNr?=
- =?utf-8?B?QlA4TTRidlRyRi9uLzBEa3haaXhTYlN5TlkwOXRvKys3TFF4VXcyZHBmalV6?=
- =?utf-8?B?T1VlYWlSeWJaVy9XSFdzRGdDVlh6TGl4NDg4bDJHMTFYN0lKY28ySmgvb2h6?=
- =?utf-8?B?dUg0RUk2bDhMNkJwRTRwWUxTUXQrLzVNdW9Za3hmcEc0S1d0dEthNmlKemJm?=
- =?utf-8?B?cHlWandJWWp1WUtvbkZXUlhjYlhYRTRBV3U2NHBIVXdpKzFha3JIVUFoZDBy?=
- =?utf-8?Q?CK9/i9KkQJ6GUd5VhnxcAl6tE?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B2FF5B0BB847FC4DA8847D51C3653374@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        with ESMTP id S230150AbjG1Buw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Jul 2023 21:50:52 -0400
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9194271C;
+        Thu, 27 Jul 2023 18:50:49 -0700 (PDT)
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-78362f57500so66675039f.3;
+        Thu, 27 Jul 2023 18:50:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690509049; x=1691113849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RZ42CZmwkz7V9zb1700WU83svJstoQ0Nko3o/ahwyUU=;
+        b=D7aKJa8ulgX7FW9BLbOSrpWp9JEz4hRbGLucd5qW0ZVxPmMgoilJX1Z+N1blVxIymZ
+         TAlFl7n0ee4It46ku3LbENsTh/imZgyYUAm8WqEhjAiMcKGiHAls27TOT2ZQ2b65Qpys
+         otmS5q6/sXf2jUI+Y3Xm2Aq9MsG5ZjZpMcJNWNN0qCGY8aGuKJGFkF+ejts9YYo5JEdi
+         d3sYTPlu73LxJxWTaU01XG3y7LffHwH5nbD1L4OvxBCo0JNuBiKYN2n//7R9C/NAS1Uh
+         z6xHDkXVrEnDDTPrGUUmbWoAPt/2x48ALTPHxXd8kFHTS7vuPKlS+yaexhKltkhqXyIC
+         RdnQ==
+X-Gm-Message-State: ABy/qLanrcZGvXUi4TErD1NynQaBD6uEUPRYTexCWhSXHXYTzYS3NPLY
+        NDdYkWrkprT5X0nzYs1pOPy8U/aek8MXAViNR9o=
+X-Google-Smtp-Source: APBJJlGWMjVCyz4re2uj35Hg2YAK6MtWQODly3WijMsDHAO11WZacBXLOAuxoy6++SrZm+wKo+G+iUmVapMqh4Xvt3s=
+X-Received: by 2002:a5d:8595:0:b0:786:463b:2ceb with SMTP id
+ f21-20020a5d8595000000b00786463b2cebmr1399822ioj.11.1690509049049; Thu, 27
+ Jul 2023 18:50:49 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8de3265f-8d37-4bb7-d6de-08db8ef83312
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2023 23:21:26.2488
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: caQvC2ZrZRZW3zFc8mdRdGyxQcf3bolt/+lJx0vJm6q+/3TVNhUdOA/g+ZB7SNMJ+lPZHreI7eqS0ZDni/MhMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6230
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230726133642.750342-1-namhyung@kernel.org> <CAP-5=fWM9Fhq5WvsBf2n=hGwwwRDt3-mUQ=_qzu8qYGtD1OeWQ@mail.gmail.com>
+ <CAM9d7citVc4ad65MLBWxvE-_AbwxO1DQWHf5w+ofSgWnWSx=Fw@mail.gmail.com>
+ <CAP-5=fVbwf9=ZFszgFpb_6Qb003WpZC3_vtO7fB1pL_vH-OhQw@mail.gmail.com>
+ <CAM9d7chcrd8mN55yb+oCBi3=AF4-a=oCr66+cv7eaquzx0Kvpw@mail.gmail.com>
+ <CAP-5=fUPPRVSx9x4riCkkwEAza1N_r5qCxwqmdj0d7CEaKmCdw@mail.gmail.com>
+ <CAM9d7cj6hpBbysg5grFWj89J3xTC8pio4juppBKH0ngvXq_n_Q@mail.gmail.com> <ZMJVqPsj6tKWvvPx@kernel.org>
+In-Reply-To: <ZMJVqPsj6tKWvvPx@kernel.org>
+From:   Namhyung Kim <namhyung@kernel.org>
+Date:   Thu, 27 Jul 2023 18:50:37 -0700
+Message-ID: <CAM9d7cjxxFh7pQ3T=MzWu2=7cKc7dmQHp47jOwnj9u+dOo7tsw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] perf build: Update build rule for generated files
+To:     Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org,
+        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gVGh1LCAyMDIzLTA3LTI3IGF0IDA5OjE2IC0wNTAwLCBIYWl0YW8gSHVhbmcgd3JvdGU6DQo+
-IE9uIFdlZCwgMjYgSnVsIDIwMjMgMjE6NTA6MDIgLTA1MDAsIEh1YW5nLCBLYWkgPGthaS5odWFu
-Z0BpbnRlbC5jb20+IHdyb3RlOg0KPiANCj4gPiBPbiBXZWQsIDIwMjMtMDctMjYgYXQgMTg6MDIg
-LTA3MDAsIEhhaXRhbyBIdWFuZyB3cm90ZToNCj4gPiA+IFVuZGVyIGhlYXZ5IGxvYWQsIHRoZSBT
-R1ggRVBDIHJlY2xhaW1lciAoa3NneGQpIG1heSByZWNsYWltIHRoZSBTRUNTIEVQQw0KPiA+IA0K
-PiA+IElmIEkgcmVhZCBjb3JyZWN0bHksIERhdmUgc3VnZ2VzdGVkIHRvIG5vdCB1c2UgImhpZ2gi
-IChoZWF2eSBpbiB0aGlzICANCj4gPiBzZW50ZW5jZSkNCj4gPiBvciAibG93IiBwcmVzc3VyZToN
-Cj4gPiANCj4gPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sL29wLjE3OWE0eHMwd2p2am1p
-QGhodWFuMjYtbW9ibC5hbXIuY29ycC5pbnRlbC5jb20vVC8jbTkxMjBlYWM2YTRhOTRkYWE3Yzlm
-Y2M0NzcwOWYyNDFjZDE4MWU1ZGMNCj4gPiANCj4gPiBBbmQgSSBhZ3JlZS4gIEZvciBpbnN0YW5j
-ZSwgY29uc2lkZXIgdGhpcyBoYXBwZW5zIHRvIG9uZSBleHRyZW1lbHkgIA0KPiA+ICJzbWFsbCIN
-Cj4gPiBlbmNsYXZlLCB3aGlsZSB0aGVyZSdzIGEgbmV3ICJiaWciIGVuY2xhdmUgc3RhcnRzIHRv
-IHJ1bi4gIEkgZG9uJ3QgdGhpbmsgIA0KPiA+IHdlDQo+ID4gc2hvdWxkIHNheSB0aGlzIGlzICJ1
-bmRlciBoZWF2eSBsb2FkIi4gIEp1c3Qgc3RpY2sgdG8gdGhlIGZhY3QgdGhhdCB0aGUNCj4gPiBy
-ZWNsYWltZXIgbWF5IHJlY2xhaW0gdGhlIFNFQ1MgcGFnZS4NCj4gPiANCj4gTXliZSBJIGhhdmUg
-c29tZSBjb25mdXNpb24gaGVyZSBidXQgSSBkaWQgbm90IHRoaW5rIERhdmUgaGFkIGlzc3VlcyB3
-aXRoICANCj4gJ2hlYXZ5IGxvYWQnLiBXaGVuIHRoaXMgaGFwcGVucywgdGhlIGxhc3QgcGFnZSBj
-YXVzaW5nICNQRiAocGFnZSBBIGJlbG93KSAgDQo+IHNob3VsZCBiZSB0aGUgdGhlICJ5b3VuZ2Vz
-dCIgaW4gUFRFIGFuZCBpdCBnb3QgcGFnZWQgb3V0IHRvZ2V0aGVyIHdpdGggdGhlICANCj4gU0VD
-UyBiZWZvcmUgdGhlICNQRiBpcyBldmVuIGhhbmRsZWQuIEJhc2VkIG9uIHRoYXQgdGhlIGtzZ3hk
-IG1vdmVzICd5b3VuZycgIA0KPiBwYWdlcyB0byB0aGUgYmFjayBvZiB0aGUgcXVldWUgZm9yIHJl
-Y2xhaW1pbmcsIGZvciB0aGF0IHRvIGhhcHBlbiwgYWxtb3N0ICANCj4gYWxsIEVQQyBwYWdlcyBt
-dXN0IGJlIHBhZ2VkIG91dCBmb3IgYWxsIGVuY2xhdmVzIGF0IHRoYXQgdGltZSwgc28gaXQgbWVh
-bnMgIA0KPiBoZWF2eSBsb2FkIHRvIG1lLiAgQW5kIHRoYXQncyBhbHNvIGNvbnNpc3RlbnQgd2l0
-aCBteSB0ZXN0cy4NCg0KSSBhbHJlYWR5IHByb3ZpZGVkIGFuIGV4YW1wbGU6IHN3YXBwaW5nIG91
-dCBhbiAiZXh0cmVtZSBzbWFsbCIgZW5jbGF2ZS4NCg0KQW55d2F5LCBubyBiaWcgZGVhbCB0byBt
-ZS4NCg0KPiANCj4gPiA+IHBhZ2UgZm9yIGFuIGVuY2xhdmUgYW5kIHNldCBlbmNsLT5zZWNzLmVw
-Y19wYWdlIHRvIE5VTEwuIEJ1dCB0aGUgU0VDUw0KPiA+ID4gRVBDIHBhZ2UgaXMgdXNlZCBmb3Ig
-RUFVRyBpbiB0aGUgU0dYIHBhZ2UgZmF1bHQgaGFuZGxlciB3aXRob3V0IGNoZWNraW5nDQo+ID4g
-PiBmb3IgTlVMTCBhbmQgcmVsb2FkaW5nLg0KPiA+ID4gDQo+ID4gPiBGaXggdGhpcyBieSBjaGVj
-a2luZyBpZiBTRUNTIGlzIGxvYWRlZCBiZWZvcmUgRUFVRyBhbmQgbG9hZGluZyBpdCBpZiBpdA0K
-PiA+ID4gd2FzIHJlY2xhaW1lZC4NCj4gPiA+IA0KPiA+ID4gVGhlIFNFQ1MgcGFnZSBob2xkcyBn
-bG9iYWwgZW5jbGF2ZSBtZXRhZGF0YS4gSXQgY2FuIG9ubHkgYmUgcmVjbGFpbWVkDQo+ID4gPiB3
-aGVuIHRoZXJlIGFyZSBubyBvdGhlciBlbmNsYXZlIHBhZ2VzIHJlbWFpbmluZy4gQXQgdGhhdCBw
-b2ludCwNCj4gPiA+IHZpcnR1YWxseSBub3RoaW5nIGNhbiBiZSBkb25lIHdpdGggdGhlIGVuY2xh
-dmUgdW50aWwgdGhlIFNFQ1MgcGFnZSBpcw0KPiA+ID4gcGFnZWQgYmFjayBpbi4NCj4gLi4uDQo+
-ID4gPiBCdXQgaXQgaXMgc3RpbGwgcG9zc2libGUgZm9yIGEgI1BGIGZvciBhIG5vbi1TRUNTIHBh
-Z2UgdG8gcmFjZQ0KPiA+ID4gd2l0aCBwYWdpbmcgb3V0IHRoZSBTRUNTIHBhZ2U6IHdoZW4gdGhl
-IGxhc3QgcmVzaWRlbnQgbm9uLVNFQ1MgcGFnZSBBDQo+ID4gPiB0cmlnZ2VycyBhICNQRiBpbiBh
-IG5vbi1yZXNpZGVudCBwYWdlIEIsIGFuZCB0aGVuIHBhZ2UgQSBhbmQgdGhlIFNFQ1MNCj4gPiA+
-IGJvdGggYXJlIHBhZ2VkIG91dCBiZWZvcmUgdGhlICNQRiBvbiBCIGlzIGhhbmRsZWQuDQo+ID4g
-PiANCj4gPiA+IEhpdHRpbmcgdGhpcyBidWcgcmVxdWlyZXMgdGhhdCByYWNlIHRyaWdnZXJlZCB3
-aXRoIGEgI1BGIGZvciBFQVVHLg0KPiA+IA0KPiA+IFRoZSBhYm92ZSByYWNlIGNhbiBoYXBwZW4g
-Zm9yIHRoZSBub3JtYWwgRUxEVSBwYXRoIHRvbywgdGh1cyBJIHN1cHBvc2UgIA0KPiA+IGl0IHdp
-bGwNCj4gPiBiZSBiZXR0ZXIgdG8gbWVudGlvbiB3aHkgdGhlIG5vcm1hbCBFTERVIHBhdGggZG9l
-c24ndCBoYXZlIHRoaXMgaXNzdWU6IGl0DQo+ID4gYWxyZWFkeSBkb2VzIHdoYXQgdGhpcyBmaXgg
-ZG9lcy4NCj4gPiANCj4gU2hvdWxkIHdlIGZvY3VzIG9uIHRoZSBidWcgYW5kIGZpeCBpdHNlbGYg
-aW5zdGVhZCBvZiBleHBsYWluaW5nIGEgbm9uLWJ1ZyAgDQo+IGNhc2U/DQo+IEFuZCB0aGUgc2lt
-cGxlIGNoYW5nZXMgaW4gdGhpcyBwYXRjaCBjbGVhcmx5IHNob3cgdGhhdCB0b28gaWYgcGVvcGxl
-IGxvb2sgIA0KPiBmb3IgdGhhdC4NCg0KU28geW91IHNwZW50IGEgbG90IG9mIHRleHQgZXhwbGFp
-bmluZyB0aGUgcmFjZSBjb25kaXRpb24sIGJ1dCBzdWNoIHJhY2UNCmNvbmRpdGlvbiBhcHBsaWVz
-IHRvIGJvdGggRUxEVSBhbmQgRUFVRy4gIEkgcGVyc29uYWxseSB3ZW50IHRvIHNlZSB0aGUgY29k
-ZQ0Kd2hldGhlciBFTERVIGhhcyBzdWNoIGlzc3VlIHRvbywgYW5kIGl0IHR1cm5lZCBvdXQgb25s
-eSBFQVVHIGhhcyBpc3N1ZS4gIElmIHlvdQ0KbWVudGlvbiB0aGlzIGluIHRoZSBjaGFuZ2Vsb2cg
-cGVyaGFwcyBJIHdvdWxkbid0IG5lZWQgdG8gZ28gdG8gcmVhZCB0aGUgY29kZS4NCg0KQW55d2F5
-LCBqdXN0IG15IDJjZW50cy4NCg0KQW5kIEkgZG9uJ3Qgd2FudCB0byBsZXQgdGhvc2UgYmxvY2sg
-dGhpcyBwYXRjaCwgc28gZmVlbCBmcmVlIHRvIGFkZCBteSB0YWc6DQoNClJldmlld2VkLWJ5OiBL
-YWkgSHVhbmcgPGthaS5odWFuZ0BpbnRlbC5jb20+DQo=
+Hi Arnaldo,
+
+On Thu, Jul 27, 2023 at 4:31 AM Arnaldo Carvalho de Melo
+<acme@kernel.org> wrote:
+>
+> Em Wed, Jul 26, 2023 at 11:45:44PM -0700, Namhyung Kim escreveu:
+> > On Wed, Jul 26, 2023 at 9:48 PM Ian Rogers <irogers@google.com> wrote:
+> > > On Wed, Jul 26, 2023 at 6:01 PM Namhyung Kim <namhyung@kernel.org> wrote:
+> > > > On Wed, Jul 26, 2023 at 5:36 PM Ian Rogers <irogers@google.com> wrote:
+> > > > > On Wed, Jul 26, 2023 at 3:57 PM Namhyung Kim <namhyung@kernel.org> wrote:
+> > > > > > On Wed, Jul 26, 2023 at 8:48 AM Ian Rogers <irogers@google.com> wrote:
+> > > > > > > On Wed, Jul 26, 2023 at 6:36 AM Namhyung Kim <namhyung@kernel.org> wrote:
+> > > > > > > > The bison and flex generate C files from the source (.y and .l)
+> > > > > > > > files.  When O= option is used, they are saved in a separate directory
+> > > > > > > > but the default build rule assumes the .C files are in the source
+> > > > > > > > directory.  So it might read invalid file if there are generated files
+> > > > > > > > from an old version.  The same is true for the pmu-events files.
+> > > > > > > >
+> > > > > > > > For example, the following command would cause a build failure:
+> > > > > > > >
+> > > > > > > >   $ git checkout v6.3
+> > > > > > > >   $ make -C tools/perf  # build in the same directory
+> > > > > > > >
+> > > > > > > >   $ git checkout v6.5-rc2
+> > > > > > > >   $ mkdir build  # create a build directory
+> > > > > > > >   $ make -C tools/perf O=build  # build in a different directory but it
+> > > > > > > >                                 # refers files in the source directory
+> > > > > > > >
+> > > > > > > > Let's update the build rule to specify those cases explicitly to depend
+> > > > > > > > on the files in the output directory.
+> > > > > > > >
+> > > > > > > > Note that it's not a complete fix and it needs the next patch for the
+> > > > > > > > include path too.
+> > > > > > > >
+> > > > > > > > Fixes: 80eeb67fe577 ("perf jevents: Program to convert JSON file")
+> > > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > > Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> > > > > > > > ---
+> > > > > > > >  tools/build/Makefile.build  | 8 ++++++++
+> > > > > > > >  tools/perf/pmu-events/Build | 4 ++++
+> > > > > > > >  2 files changed, 12 insertions(+)
+> > > > > > > >
+> > > > > > > > diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+> > > > > > > > index 89430338a3d9..f9396696fcbf 100644
+> > > > > > > > --- a/tools/build/Makefile.build
+> > > > > > > > +++ b/tools/build/Makefile.build
+> > > > > > > > @@ -117,6 +117,14 @@ $(OUTPUT)%.s: %.c FORCE
+> > > > > > > >         $(call rule_mkdir)
+> > > > > > > >         $(call if_changed_dep,cc_s_c)
+> > > > > > > >
+> > > > > > > > +$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
+> > > > > > > > +       $(call rule_mkdir)
+> > > > > > > > +       $(call if_changed_dep,$(host)cc_o_c)
+> > > > > > > > +
+> > > > > > > > +$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
+> > > > > > > > +       $(call rule_mkdir)
+> > > > > > > > +       $(call if_changed_dep,$(host)cc_o_c)
+> > > > > > > > +
+> > > > > > >
+> > > > > > > Hi Namhyung,
+> > > > > > >
+> > > > > > > as we have:
+> > > > > > > ```
+> > > > > > > $(OUTPUT)%.o: %.c FORCE
+> > > > > > >        $(call rule_mkdir)
+> > > > > > >        $(call if_changed_dep,$(host)cc_o_c)
+> > > > > > > ```
+> > > > > > > I'm not sure what the 2 additional rules achieve.
+> > > > > >
+> > > > > > The above rule assumes the .c files are in the source directory
+> > > > > > (without $(OUTPUT) prefix).  It caused a trouble when the
+> > > > > > flex and bison files are generated in the output directory and
+> > > > > > you have an old version of them in the source directory.
+> > > > > >
+> > > > > > > >  # Gather build data:
+> > > > > > > >  #   obj-y        - list of build objects
+> > > > > > > >  #   subdir-y     - list of directories to nest
+> > > > > > > > diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+> > > > > > > > index 150765f2baee..f38a27765604 100644
+> > > > > > > > --- a/tools/perf/pmu-events/Build
+> > > > > > > > +++ b/tools/perf/pmu-events/Build
+> > > > > > > > @@ -35,3 +35,7 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(JEVENTS_PY) $(METRIC_PY) $(METRIC_TEST_L
+> > > > > > > >         $(call rule_mkdir)
+> > > > > > > >         $(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
+> > > > > > > >  endif
+> > > > > > > > +
+> > > > > > > > +$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
+> > > > > > > > +       $(call rule_mkdir)
+> > > > > > > > +       $(call if_changed_dep,$(host)cc_o_c)
+> > > > > > >
+> > > > > > > If we add this, do the Makefile.build changes still need to happen?
+> > > > > >
+> > > > > > The Makefile.build changes are specific to flex and bison files.
+> > > > > > So yes, we need this for pmu-events.c to work properly with O=
+> > > > > > option.
+> > > > >
+> > > > > Got it, you are right I was confusing the flex/bison with the jevents
+> > > > > case. Can we get away with a single rule then:
+> > > > > ```
+> > > > >  $(OUTPUT)%.o:  $(OUTPUT)%.c FORCE
+> > > > >         $(call rule_mkdir)
+> > > > >         $(call if_changed_dep,$(host)cc_o_c)
+> > > > > ```
+> > > >
+> > > > Probably, but I wonder if it affects the normal .c files expecting
+> > > > them in the OUTPUT directory.
+> > >
+> > > Hmm.. I think the longer matches may be necessary to trigger the "more
+> > > specific" ordering:
+> > > https://www.gnu.org/software/make/manual/html_node/Pattern-Match.html
+> > >
+> > > I'm not keen on these extra rules that mirror existing rules, it is a
+> > > bit cryptic what is going on. I wonder if it would be cleaner just to
+> > > fail the build if the bogus pmu-events.c exists. For example:
+> >
+> > I prefer just making it build instead of failing.  But not strongly
+> > against your idea.  It'd be nice to hear what others think.. Arnaldo?
+>
+> I think that we should just ignore any build files in the source tree
+> when using 'O=', i.e.:
+>
+> make -C tools/perf
+>
+> genereated files (in the source tree) should not be used when, right
+> after running it, we run:
+>
+> make -C tools/perf O=/some/build/dir
+>
+> If we run 'make -C tools/perf' and there is a pmu-events.c, use it if
+> its timestamp is more recent than the files from which it was generated,
+> as usual for a make managed build.
+
+Right, this is what my patch does by adding specific rules for
+generated files.  I'll add a comment to describe why it's needed.
+
+Thanks,
+Namhyung
