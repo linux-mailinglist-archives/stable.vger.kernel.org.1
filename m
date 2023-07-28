@@ -2,120 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C67067671AD
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 18:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 759387671B9
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 18:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbjG1QQF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 12:16:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58632 "EHLO
+        id S229714AbjG1QTB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 12:19:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbjG1QQE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 12:16:04 -0400
-Received: from mgamail.intel.com (unknown [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85274495;
-        Fri, 28 Jul 2023 09:15:54 -0700 (PDT)
+        with ESMTP id S229592AbjG1QTB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 12:19:01 -0400
+Received: from mgamail.intel.com (unknown [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E12F1BF2
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 09:19:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690560954; x=1722096954;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BrOxNMR67qVjTh31EvN6swY79AWjbm/yuEvrka6JwLk=;
-  b=Bx93Gn62Ao7K22b9ZrdhENFQp506SfkfJ1L4L+lpju0JXDcgR/5/M8ts
-   R2705USmIZuvZiFKTfBk4foJCy3auz+Hpsp9kWwYPhisU1IRLzkq2mukB
-   /BARqLL5DnuRTJ9GO7OQoHXAeBdHNyEYYgFn2INksHxEWlFRUKDHVA2/P
-   WiDbgQs9ZrE17x6cUM/sUgPj5+e+HbPMu6iRqJQQ0efR2XvBQONdE6DH6
-   GgZRwbKZpPnI5BWJLC6eEY3R1c1p+XFAB/FZjtWd7teyPdTrw4lWXFBFT
-   9G2AD7My68B4w+hWoGTFDdioXPoPynN9Mhjiv7NkSIlEgW1mc+88OV7vT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="399566016"
+  t=1690561140; x=1722097140;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=8GasTYLXUj9zHrXEmK6pezB61udamlYFYxz443NLwFs=;
+  b=F+ULVjJsdrUCnrMc8KiQP5dK7nMkFsa4C3+BLD3oXwYEbXqid/qpVWV+
+   2NlMEPHzasT/9vadOVO6dAD4OpFGKPQ1cpd0bXDxvoyQRzXRIERBOYMvR
+   WK1IIraP2spMHR/4KW9Nbwt45TSUdb5qTqm4q0Y4w5ieR26/+NkXZGvbQ
+   +nGBDao5IwHRgFqLv06uD4CuBVMkSbgGxKr6XsUzuFAwz30v286JdAZYV
+   hKNf3hKrijx1XY5IxOlldALybheDvYOChBR46QdMvQHmPS1/+aMaZpUN5
+   OIoPSyDijU8/AogAyAivJCXBnDDIcEwgx07k1e4oefy9TpINqumE5bMmL
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="348918306"
 X-IronPort-AV: E=Sophos;i="6.01,238,1684825200"; 
-   d="scan'208";a="399566016"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2023 09:15:54 -0700
+   d="scan'208";a="348918306"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2023 09:19:00 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="974142248"
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="817564068"
 X-IronPort-AV: E=Sophos;i="6.01,238,1684825200"; 
-   d="scan'208";a="974142248"
-Received: from fyin-dev.sh.intel.com ([10.239.159.32])
-  by fmsmga006.fm.intel.com with ESMTP; 28 Jul 2023 09:15:51 -0700
-From:   Yin Fengwei <fengwei.yin@intel.com>
-To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, akpm@linux-foundation.org,
-        willy@infradead.org, vishal.moola@gmail.com,
-        wangkefeng.wang@huawei.com, minchan@kernel.org, yuzhao@google.com,
-        david@redhat.com, ryan.roberts@arm.com, shy828301@gmail.com
-Cc:     fengwei.yin@intel.com
-Subject: [PATCH 2/2] madvise: don't use mapcount() against large folio for sharing check
-Date:   Sat, 29 Jul 2023 00:13:56 +0800
-Message-Id: <20230728161356.1784568-3-fengwei.yin@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230728161356.1784568-1-fengwei.yin@intel.com>
-References: <20230728161356.1784568-1-fengwei.yin@intel.com>
+   d="scan'208";a="817564068"
+Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 28 Jul 2023 09:18:59 -0700
+Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qPQAn-0003Mh-2U;
+        Fri, 28 Jul 2023 16:18:44 +0000
+Date:   Sat, 29 Jul 2023 00:18:05 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Yin Fengwei <fengwei.yin@intel.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] madvise: don't use mapcount() against large folio
+ for sharing check
+Message-ID: <ZMPqPUc4ZyypNWeg@c507f7d2ae6a>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230728161356.1784568-3-fengwei.yin@intel.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The commits
-98b211d6415f ("madvise: convert madvise_free_pte_range() to use
-a folio")
-fc986a38b670 ("mm: huge_memory: convert madvise_free_huge_pmd to
-use a folio")
+Hi,
 
-replaced the page_mapcount() with folio_mapcount() to check whether
-the folio is shared by other mapping.
+Thanks for your patch.
 
-But it's not correct for large folio. folio_mapcount() returns the
-total mapcount of large folio which is not suitable to detect whether
-the folio is shared.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Use folio_estimated_sharers() which returns a estimated number of
-shares. That means it's not 100% correct. But it should be OK for
-madvise case here.
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH 2/2] madvise: don't use mapcount() against large folio for sharing check
+Link: https://lore.kernel.org/stable/20230728161356.1784568-3-fengwei.yin%40intel.com
 
-Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
-Fixes: fc986a38b670 ("mm: huge_memory: convert madvise_free_huge_pmd to use a folio")
-Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-Reviewed-by: Yu Zhao <yuzhao@google.com>
----
- mm/huge_memory.c | 2 +-
- mm/madvise.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index eb3678360b97..68c890875257 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1613,7 +1613,7 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	 * If other processes are mapping this folio, we couldn't discard
- 	 * the folio unless they all do MADV_FREE so let's skip the folio.
- 	 */
--	if (folio_mapcount(folio) != 1)
-+	if (folio_estimated_sharers(folio) != 1)
- 		goto out;
- 
- 	if (!folio_trylock(folio))
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 148b46beb039..55bdf641abfa 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -678,7 +678,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 		if (folio_test_large(folio)) {
- 			int err;
- 
--			if (folio_mapcount(folio) != 1)
-+			if (folio_estimated_sharers(folio) != 1)
- 				break;
- 			if (!folio_trylock(folio))
- 				break;
 -- 
-2.39.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
