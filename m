@@ -2,140 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20858766F07
-	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 16:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 886CD766FF9
+	for <lists+stable@lfdr.de>; Fri, 28 Jul 2023 16:59:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235777AbjG1OJh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 10:09:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39922 "EHLO
+        id S235559AbjG1O7o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 10:59:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232825AbjG1OJg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 10:09:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0BB35A8;
-        Fri, 28 Jul 2023 07:09:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 477326214B;
-        Fri, 28 Jul 2023 14:09:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCC2C433C8;
-        Fri, 28 Jul 2023 14:09:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690553374;
-        bh=KLjExLhXnoctgt1F9lPT4E5ymQFk/shVtkceDCu/DEw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=t1etBMMWEBHJC08coP28YOQwC8VVdJesVcfvy18HnTq4G3U1ROuBFX3sNmyhnlKTl
-         wzoA/DYjJ9eVCXjIoEXKzN04peXut9x/9jSSA7B5xCwZsMzPTHo90weaB40QoBvyld
-         uQk112OiQI6MIxJprD1k1RhOn5ktNfrkPrD8vBnsS3PjIaVFvXg9U+vWyl4e81df8f
-         flm6vvxxn/AdxotNwvTgG3a4NQ9YzWxOBMIojxnRRBZOG+Vez+N0ASvKC0jf5k5S3U
-         u28l5ip/GchiYuL7gT1qqst1buMHlNuF6xlr1ijT4wdC3CrUJvKzQob07kx4kyawIR
-         MHlq42gPSy/bA==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-        id 37CD740096; Fri, 28 Jul 2023 11:09:32 -0300 (-03)
-Date:   Fri, 28 Jul 2023 11:09:32 -0300
-From:   Arnaldo Carvalho de Melo <acme@kernel.org>
-To:     Namhyung Kim <namhyung@kernel.org>
-Cc:     Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-perf-users@vger.kernel.org,
-        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] perf build: Update build rule for generated files
-Message-ID: <ZMPMHNjX2IxsLbAe@kernel.org>
-References: <20230728022447.1323563-1-namhyung@kernel.org>
+        with ESMTP id S234076AbjG1O7n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 10:59:43 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD252719
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 07:59:41 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-992ca792065so308733366b.2
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 07:59:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1690556380; x=1691161180;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VNN6i6we2q38vKWePDW8ZPNvwf1rLAfJf4eOPcGhvyM=;
+        b=zkP/Fm7ZgR/0dZqq+LpZeNznpeGBMStjKMjnwzfMBhlMcc1Yj93qPvfiOay8/T1fqu
+         Lf1PTv7eQ6p7dnIW97Erl1SHlC/1URaHe58B4Xx6JzV8duO+suJHIfmzXuKt9vACkq/S
+         VgovLXArP3b6JC2agnabESUXdYLXiJpjolbqi1hN9tFq/IUeBAC2gwmR/5gS+nb3k6Xd
+         /CqidB6SMn2H6XwZUWhDEEFAb9+i8DwMDsM0pFgDhUxMDaig6GqhdlP094S/4+JktA6V
+         G88H3iyOdVWeRE2vfijf/YU23c10MBG6n6/4pqSXMJp6+ww7akgpuMvyWFpHksUjgXzr
+         rPrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690556380; x=1691161180;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VNN6i6we2q38vKWePDW8ZPNvwf1rLAfJf4eOPcGhvyM=;
+        b=gysY5Jx0kIVsvKR+EK/x7SGd+I2d6uUqx9hWoPcCDNV52DX4/HfkbitItD9wcaaAO8
+         4Sm4bLq9DCdwa9bMSPOMxGKHDrDwEjdz4jVL5jN3lDPOTxjt7SvJWHFLRrpzM6kJ+OQ8
+         Bni2S/1VCy7xwpd0b5VCueSwRHtLHBS8RgRM3KjHtqKoFbW3l49CMq9r2L3CfVRFmzx+
+         4V77CH9qLRhi54CnI0N//vglvCTjEm0Nf4BnB3VpySz3Hq6yFQiMu/AaCXi0sHenYf7N
+         UJwTCB548UuDXhoJMbUIJTmZdbiw+4Gf0nEXxzFcJWBycgls8No8jWS70bZLVuFQvUt9
+         tSBA==
+X-Gm-Message-State: ABy/qLaChGaIwze7w/q9BnOqspXZOLUAIC9h7LhKsLmdKihYM+JYrwnj
+        mfdmG+1nHFXOmRVRdfFAu5j4Nu41Ud/fS0qGygLlYw==
+X-Google-Smtp-Source: APBJJlHRy1Wkicp+QKzkOTzDezpVz6yE9GEJUlwN8xYDiZgc29ixmWnTRctj5daOL07FMoJwnOK4Og==
+X-Received: by 2002:a17:906:8a7c:b0:994:5340:22f4 with SMTP id hy28-20020a1709068a7c00b00994534022f4mr2172206ejc.6.1690556379728;
+        Fri, 28 Jul 2023 07:59:39 -0700 (PDT)
+Received: from [10.44.2.5] ([81.246.10.41])
+        by smtp.gmail.com with ESMTPSA id gr16-20020a170906e2d000b00977cad140a8sm2126035ejb.218.2023.07.28.07.59.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Jul 2023 07:59:39 -0700 (PDT)
+Message-ID: <d9fb660d-c45f-e8e4-4995-9dba6de2d1f9@tessares.net>
+Date:   Fri, 28 Jul 2023 16:59:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230728022447.1323563-1-namhyung@kernel.org>
-X-Url:  http://acmel.wordpress.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.1.y] mptcp: do not rely on implicit state check in
+ mptcp_listen()
+Content-Language: en-GB
+To:     stable@vger.kernel.org, gregkh@linuxfoundation.org,
+        Sasha Levin <sashal@kernel.org>
+Cc:     MPTCP Upstream <mptcp@lists.linux.dev>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Christoph Paasch <cpaasch@apple.com>,
+        "David S . Miller" <davem@davemloft.net>
+References: <2023072119-skipping-penalize-15f0@gregkh>
+ <20230727141625.2524544-1-matthieu.baerts@tessares.net>
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+In-Reply-To: <20230727141625.2524544-1-matthieu.baerts@tessares.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Em Thu, Jul 27, 2023 at 07:24:46PM -0700, Namhyung Kim escreveu:
-> The bison and flex generate C files from the source (.y and .l)
-> files.  When O= option is used, they are saved in a separate directory
-> but the default build rule assumes the .C files are in the source
-> directory.  So it might read invalid file if there are generated files
-> from an old version.  The same is true for the pmu-events files.
-> 
-> For example, the following command would cause a build failure:
-> 
->   $ git checkout v6.3
->   $ make -C tools/perf  # build in the same directory
-> 
->   $ git checkout v6.5-rc2
->   $ mkdir build  # create a build directory
->   $ make -C tools/perf O=build  # build in a different directory but it
->                                 # refers files in the source directory
-> 
-> Let's update the build rule to specify those cases explicitly to depend
-> on the files in the output directory.
-> 
-> Note that it's not a complete fix and it needs the next patch for the
-> include path too.
+Hi Greg, Sasha,
 
-Applied, testing it on the container builds.
-
-- Arnaldo
- 
-> Fixes: 80eeb67fe577 ("perf jevents: Program to convert JSON file")
+On 27/07/2023 16:16, Matthieu Baerts wrote:
+> From: Paolo Abeni <pabeni@redhat.com>
+> 
+> commit 0226436acf2495cde4b93e7400e5a87305c26054 upstream.
+> 
+> Since the blamed commit, closing the first subflow resets the first
+> subflow socket state to SS_UNCONNECTED.
+> 
+> The current mptcp listen implementation relies only on such
+> state to prevent touching not-fully-disconnected sockets.
+> 
+> Incoming mptcp fastclose (or paired endpoint removal) unconditionally
+> closes the first subflow.
+> 
+> All the above allows an incoming fastclose followed by a listen() call
+> to successfully race with a blocking recvmsg(), potentially causing the
+> latter to hit a divide by zero bug in cleanup_rbuf/__tcp_select_window().
+> 
+> Address the issue explicitly checking the msk socket state in
+> mptcp_listen(). An alternative solution would be moving the first
+> subflow socket state update into mptcp_disconnect(), but in the long
+> term the first subflow socket should be removed: better avoid relaying
+> on it for internal consistency check.
+> 
+> Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> Reported-by: Christoph Paasch <cpaasch@apple.com>
+> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/414
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 > ---
->  tools/build/Makefile.build  | 10 ++++++++++
->  tools/perf/pmu-events/Build |  6 ++++++
->  2 files changed, 16 insertions(+)
-> 
-> diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
-> index 89430338a3d9..fac42486a8cf 100644
-> --- a/tools/build/Makefile.build
-> +++ b/tools/build/Makefile.build
-> @@ -117,6 +117,16 @@ $(OUTPUT)%.s: %.c FORCE
->  	$(call rule_mkdir)
->  	$(call if_changed_dep,cc_s_c)
->  
-> +# bison and flex files are generated in the OUTPUT directory
-> +# so it needs a separate rule to depend on them properly
-> +$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
-> +	$(call rule_mkdir)
-> +	$(call if_changed_dep,$(host)cc_o_c)
-> +
-> +$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
-> +	$(call rule_mkdir)
-> +	$(call if_changed_dep,$(host)cc_o_c)
-> +
->  # Gather build data:
->  #   obj-y        - list of build objects
->  #   subdir-y     - list of directories to nest
-> diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
-> index 150765f2baee..1d18bb89402e 100644
-> --- a/tools/perf/pmu-events/Build
-> +++ b/tools/perf/pmu-events/Build
-> @@ -35,3 +35,9 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(JEVENTS_PY) $(METRIC_PY) $(METRIC_TEST_L
->  	$(call rule_mkdir)
->  	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
->  endif
-> +
-> +# pmu-events.c file is generated in the OUTPUT directory so it needs a
-> +# separate rule to depend on it properly
-> +$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
-> +	$(call rule_mkdir)
-> +	$(call if_changed_dep,cc_o_c)
-> -- 
-> 2.41.0.487.g6d72f3e995-goog
-> 
+> Backport notes:
+>   - Conflicting with a cleanup that has been done after v6.1, see commit
+>     cfdcfeed6449 ("mptcp: introduce 'sk' to replace 'sock->sk' in
+>     mptcp_listen()").
 
+Sasha just backported this commit cfdcfeed6449 ("mptcp: introduce 'sk'
+to replace 'sock->sk' in mptcp_listen()") so 0226436acf24 ("mptcp: do
+not rely on implicit state check in mptcp_listen()") can be applied
+without conflict. Thank you for that, good idea, it works for me!
+
+Please drop this patch here then.
+
+Cheers,
+Matt
 -- 
-
-- Arnaldo
+Tessares | Belgium | Hybrid Access Solutions
+www.tessares.net
