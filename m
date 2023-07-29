@@ -2,141 +2,313 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 804A3767998
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 02:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5583C767AC6
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 03:25:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230270AbjG2Ad1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 20:33:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56512 "EHLO
+        id S233166AbjG2BZw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 21:25:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbjG2Ad0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 20:33:26 -0400
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D1730E4
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 17:33:24 -0700 (PDT)
-Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-51b4ef5378bso1890419a12.1
-        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 17:33:24 -0700 (PDT)
+        with ESMTP id S231842AbjG2BZv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 21:25:51 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE761739
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 18:25:49 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fe0e201f87so3348662e87.0
+        for <stable@vger.kernel.org>; Fri, 28 Jul 2023 18:25:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1690590804; x=1691195604;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ahyJuXZ5mL1EHkAmnBhtpjxq5pGjH0m9c44cFqu9RR8=;
-        b=xpUdgokS5I3D2dS83HRiHhZiG56m5FAIJgE/jlbqlE+gYcIRkpxvSi/pZSlUi7sy2z
-         bnqqAIfSeRVJ95s1lcZAuogwJigMtlZdlSs+YHeoYBnYTHfZR6Zk4ahWvPG1AaLULQhY
-         gO+eJNi8wd3w5WbQ9DO9D/sOeD3bA9T5kHZwOM7wmJcQvePox0iYtRM8wYAC7n/dDaqK
-         X7P0sDk/dcUAgQAqq7D+U55LcixXdO1mjn96aqshgDPBbaKb46v56++fUbVWhXcdTM5a
-         esvqsFXNPN843wzsRhz3BzbNQN9oUX4Gbmjl8FepRs+P4u+4Q+dnrBblDHu1hpf9MbwM
-         y3zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690590804; x=1691195604;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=joelfernandes.org; s=google; t=1690593948; x=1691198748;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ahyJuXZ5mL1EHkAmnBhtpjxq5pGjH0m9c44cFqu9RR8=;
-        b=BfsuCaVRSzerQEp+wI5h1eCj0L9WuFayMFJ83CXtOSvFzKucJ2y50S8op7idVW2Y3m
-         gXOFOD3zI8xOsd1+LWmkJ15P4zpWaU85Q2LtxtAkeOECFK+oTeAdTlYrZiluLfrvODcu
-         g0kgPTUe850WHuw4hlVei0R7uj/cWmkloT9aS3xN38QruEw/W14kaF/V0mV4Dea1I/c/
-         FxnTkA/iPCOxtTH076tjNdB1R7UOa84pRdMPukJQyibGE5nOl0Zjgz9jxxw7t6kVfS5w
-         RQc/VjxBRUf7D8HU7IwHSatz+UIK0Rxw5AbMPPjpFPiYo8K9DAB85ImYxNfWWyxlYX+y
-         W27w==
-X-Gm-Message-State: ABy/qLbfX4EfTSwVXCnm9j1dNqKjcfc4cXdskq/SiQZWKWe4YE1LhQd3
-        QB1ISQZRNFT87+jOVXgyj5FLIdKHtG9QFLOcyrRdpA==
-X-Google-Smtp-Source: APBJJlFS9zLP1c6phrba+UHvupDG9E3d4F06JGpS2iM7oXYYOuggQ3ope9iTdf44U6BdBCqfanr6PA==
-X-Received: by 2002:a17:902:9a06:b0:1bb:edd5:4644 with SMTP id v6-20020a1709029a0600b001bbedd54644mr2869632plp.68.1690590804391;
-        Fri, 28 Jul 2023 17:33:24 -0700 (PDT)
-Received: from x1 ([2601:1c2:1800:f680:ab2e:71c2:3a28:319c])
-        by smtp.gmail.com with ESMTPSA id s13-20020a170902ea0d00b001b9be3b94e5sm4140174plg.303.2023.07.28.17.33.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jul 2023 17:33:24 -0700 (PDT)
-Date:   Fri, 28 Jul 2023 17:33:22 -0700
-From:   Drew Fustini <dfustini@baylibre.com>
-To:     guoren@kernel.org
-Cc:     palmer@rivosinc.com, paul.walmsley@sifive.com, falcon@tinylab.org,
-        bjorn@kernel.org, conor.dooley@microchip.com,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
-        Guo Ren <guoren@linux.alibaba.com>
-Subject: Re: [PATCH V2 0/2] riscv: stack: Fixup independent softirq/irq stack
- for CONFIG_FRAME_POINTER=n
-Message-ID: <ZMReUsAVmwcDwEhe@x1>
-References: <20230716001506.3506041-1-guoren@kernel.org>
+        bh=xTTYf0zH8+8az2BIYrB+cQedxz4R5dEs1EX+ZP0IuQc=;
+        b=lkDc/FL8v9S4aBnCpuoMg+IVrEE9MT1MjaC/ehwLD1lw0DTZlmYdQ1vqW7SgleoHjq
+         uPVs2VM64kDFyeOIlSnG5vT+Gvcq/Mu2ZOY1qpSs164KFE2KGbg4M4hQ2ILiTSHM5IUp
+         3gIlB6oYd3hZsEU+c+4SllZduG1/dOqXsCXfc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690593948; x=1691198748;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xTTYf0zH8+8az2BIYrB+cQedxz4R5dEs1EX+ZP0IuQc=;
+        b=ecGjj3V0VJ62vcGR1l454s7bgXfb6efe6weHl/xRu0PODuq092w51CEBoUqzBVAjNW
+         7ku95M9Lsl9O8UMlQ2OFtSaxcnFG/tXUVuLwcTVgzP2DMN5RsfZXrcF+qI48XrorvQB+
+         30yNCygmX50oTS8MnXmfNaYBom5dTuSADcw0181OyD5A4SkhABDtyuAJJRt9UZJybKZj
+         faR8HD5uzmXWsJyyWCNyp/JIVn5XN97SfWW1miJdfestPH2UWswG7kVDD0rWsv7GzNIh
+         5PVxB2Z7Gi8wNVWWJdx6ztczZN6I4TN+q5V/mG749VOXTuX7FgeESyn7pUo6LDRou5pq
+         8Q3w==
+X-Gm-Message-State: ABy/qLbfVY4LM5DsCg36ssigl/rRLcr2aTcXL65fJqefgOE5GGAk3Mzw
+        40N4SzWmK1DRVNbVJ22n7iKboDEPOAxDw6YyIJaQ5Q==
+X-Google-Smtp-Source: APBJJlGetBE3tjvmodmJHl1fiuy7SMeZpXSZmjyzctDl2QvbXPvsgsOEMJMQg+C7AU9SreMe4/KEiLkadgmCttrzPHo=
+X-Received: by 2002:a05:6512:3b82:b0:4f9:6adf:3981 with SMTP id
+ g2-20020a0565123b8200b004f96adf3981mr2880284lfv.33.1690593947935; Fri, 28 Jul
+ 2023 18:25:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230716001506.3506041-1-guoren@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
+ <99B56FC7-9474-4968-B1DD-5862572FD0BA@joelfernandes.org> <a174c501-48df-404e-ae61-10ddaeb8e557@paulmck-laptop>
+In-Reply-To: <a174c501-48df-404e-ae61-10ddaeb8e557@paulmck-laptop>
+From:   Joel Fernandes <joel@joelfernandes.org>
+Date:   Fri, 28 Jul 2023 21:25:35 -0400
+Message-ID: <CAEXW_YS3hK8Y5TKCPvnNC9fsbmmMvcjx2f-G4uCXX=F2WNz-HQ@mail.gmail.com>
+Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
+To:     paulmck@kernel.org
+Cc:     Guenter Roeck <linux@roeck-us.net>, Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,WEIRD_PORT
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jul 15, 2023 at 08:15:04PM -0400, guoren@kernel.org wrote:
-> From: Guo Ren <guoren@linux.alibaba.com>
-> 
-> The independent softirq/irq stack uses s0 to save & restore sp, but s0
-> would be corrupted when CONFIG_FRAME_POINTER=n. So add s0 in the clobber
-> list to fix the problem.
-> 
-> <+0>:     addi    sp,sp,-32
-> <+2>:     sd      s0,16(sp)
-> <+4>:     sd      s1,8(sp)
-> <+6>:     sd      ra,24(sp)
-> <+8>:     sd      s2,0(sp)
-> <+10>:    mv      s0,a0		--> compiler allocate s0 for a0 when CONFIG_FRAME_POINTER=n
-> <+12>:    jal     ra,0xffffffff800bc0ce <irqentry_enter>
-> <+16>:    ld      a5,56(tp) # 0x38
-> <+20>:    lui     a4,0x4
-> <+22>:    mv      s1,a0
-> <+24>:    xor     a5,a5,sp
-> <+28>:    bgeu    a5,a4,0xffffffff800bc092 <do_irq+88>
-> <+32>:    auipc   s2,0x5d
-> <+36>:    ld      s2,1118(s2) # 0xffffffff801194b8 <irq_stack_ptr>
-> <+40>:    add     s2,s2,a4
-> <+42>:    addi    sp,sp,-8
-> <+44>:    sd      ra,0(sp)
-> <+46>:    addi    sp,sp,-8
-> <+48>:    sd      s0,0(sp)
-> <+50>:    addi    s0,sp,16	--> our code clobber the s0
-> <+52>:    mv      sp,s2
-> <+54>:    mv      a0,s0		--> a0 got wrong value for handle_riscv_irq 
-> <+56>:    jal     ra,0xffffffff800bbb3a <handle_riscv_irq>
-> 
-> Changelog:
-> V2
->  - Fixup compile error with CONFIG_FRAME_POINTER=y
->  - FIxup stable@vger.kernel.org tag
-> 
-> Guo Ren (2):
->   riscv: stack: Fixup independent irq stack for CONFIG_FRAME_POINTER=n
->   riscv: stack: Fixup independent softirq stack for
->     CONFIG_FRAME_POINTER=n
-> 
->  arch/riscv/kernel/irq.c   | 3 +++
->  arch/riscv/kernel/traps.c | 3 +++
->  2 files changed, 6 insertions(+)
-> 
-> -- 
-> 2.36.1
-> 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+On Fri, Jul 28, 2023 at 6:58=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
+g> wrote:
+>
+> > On Fri, Jul 28, 2023 at 05:17:59PM -0400, Joel Fernandes wrote:
+> >
+> >   On Jul 27, 2023, at 7:18 PM, Joel Fernandes <joel@joelfernandes.org>
+> >   wrote:
+> >
+> > =EF=BB=BF
+> >
+> >   On Jul 27, 2023, at 4:33 PM, Paul E. McKenney <paulmck@kernel.org>
+> >   wrote:
+> >
+> >   =EF=BB=BFOn Thu, Jul 27, 2023 at 10:39:17AM -0700, Guenter Roeck wrot=
+e:
+> >
+> >   On 7/27/23 09:07, Paul E. McKenney wrote:
+> >
+> >   ...]
+> >
+> >   No. However, (unrelated) in linux-next, rcu tests sometimes result
+> >   in apparent hangs
+> >
+> >   or long runtime.
+> >
+> >   [    0.778841] Mount-cache hash table entries: 512 (order: 0, 4096
+> >   bytes, linear)
+> >
+> >   [    0.779011] Mountpoint-cache hash table entries: 512 (order: 0,
+> >   4096 bytes, linear)
+> >
+> >   [    0.797998] Running RCU synchronous self tests
+> >
+> >   [    0.798209] Running RCU synchronous self tests
+> >
+> >   [    0.912368] smpboot: CPU0: AMD Opteron 63xx class CPU (family:
+> >   0x15, model: 0x2, stepping: 0x0)
+> >
+> >   [    0.923398] RCU Tasks: Setting shift to 2 and lim to 1
+> >   rcu_task_cb_adjust=3D1.
+> >
+> >   [    0.925419] Running RCU-tasks wait API self tests
+> >
+> >   (hangs until aborted). This is primarily with Opteron CPUs, but also
+> >   with others such as Haswell,
+[...]
+> >   Building
+> >   x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:me
+> >   m2G:virtio:cd ... running ......... passed
+[...]
+> >   I freely confess that I am having a hard time imagining what would
+> >
+> >   be CPU dependent in that code.  Timing, maybe?  Whatever the reason,
+> >
+> >   I am not seeing these failures in my testing.
+> >
+> >   So which of the following Kconfig options is defined in your
+> >   .config?
+> >
+> >   CONFIG_TASKS_RCU, CONFIG_TASKS_RUDE_RCU, and CONFIG_TASKS_TRACE_RCU.
+> >
+> >   If you have more than one of them, could you please apply this patch
+> >
+> >   and show me the corresponding console output from the resulting
+> >   hang?
+> >
+> > FWIW, I am not able to repro this issue either. If a .config can be
+> > shared of the problem system, I can try it out to see if it can be
+> > reproduced on my side.
+> >
+> > I do see this now on 5.15 stable:
+> >
+> >TASKS03 ------- 3089 GPs (0.858056/s)
+> >QEMU killed
+> >TASKS03 no success message, 64 successful version messages
+> >!!! PID 3309783 hung at 3781 vs. 3600 seconds
+> >
+> > I have not looked too closely yet. The full test artifacts are here:
+> >
+> > [1]Artifacts of linux-5.15.y 5.15.123 :
+> > /tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44 [Jenkins]
+> > [2]box.joelfernandes.org
+> > [3]apple-touch-icon.png
+> >
+> > Thanks,
+> >
+> > - Joel
+> >
+> > (Apologies if the email is html, I am sending from phone).
+>
+> Heh.  I have a script that runs lynx.  Which isn't perfect, but usually
+> makes things at least somewhat legible.
 
-Tested-by: Drew Fustini <dfustini@baylibre.com>
+Sorry I was too optimistic about the iPhone's capabilities when it
+came to mailing list emails.
+Here's what I said:
+--------------
+I do see this now on 5.15 stable:
 
-Xi Ruoyao noticed that the mainline kernel crashed when using a kernel
-config with CONFIG_FRAME_POINTER=n. I was able to reproduce this [1].
-Emil suggested I trying this patche series. I can confirm that this
-resolves the kernel crash on the Sipeed Lichee Pi4a [2].
+TASKS03 ------- 3089 GPs (0.858056/s)
+QEMU killed
+TASKS03 no success message, 64 successful version messages
+!!! PID 3309783 hung at 3781 vs. 3600 seconds
 
-Thanks,
-Drew
+Link to full logs/artifacts:
+http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/la=
+stFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04=
+.00.44/
+----------------
 
-[1] https://lore.kernel.org/linux-riscv/ZMNojqwLxcG8FcHN@x1/
-[2] https://lore.kernel.org/linux-riscv/ZMQAqUfb0y%2FigQs2@x1/
+> This looks like the prototypical hard hang with interrupts disabled,
+> which could be anywhere in the kernel, including RCU.  I am not seeing
+> this.  but the usual cause when I have seen it in the past was deadlock
+> of irq-disabled locks.  In one spectacular case, it was a timekeeping
+> failure that messed up a CPU-hotplug operation.
+>
+> If this is reproducible, one trick would be to have a script look at
+> the console.log file, and have it do something (NMI? sysrq?  something
+> else?) to qemu if output ceased for too long.
+>
+> One way to do this without messing with the rcutorture scripting is to
+> grab the qemu-cmd file from this run, and then invoke that file from your
+> own script, possibly with suitable modifications to qemu's parameters.
+
+Would it be better to have such monitoring as part of rcutorture
+testing itself? Alternatively there is the NMI hardlockup detector
+which I believe should also detect such cases and dump stacks.
+
+thanks,
+
+ - Joel
+
+>
+> Thoughts?
+>
+>                                                         Thanx, Paul
+>
+> > Cheers,
+> > - Joel
+> >
+> >                             Thanx, Paul
+> >
+> >   --------------------------------------------------------------------
+> >   ----
+> >
+> >   commit 709a917710dc01798e01750ea628ece4bfc42b7b
+> >
+> >   Author: Paul E. McKenney <paulmck@kernel.org>
+> >
+> >   Date:   Thu Jul 27 13:13:46 2023 -0700
+> >
+> >     rcu-tasks: Add printk()s to localize boot-time self-test hang
+> >
+> >     Currently, rcu_tasks_initiate_self_tests() prints a message and
+> >   then
+> >
+> >     initiates self tests on up to three different RCU Tasks flavors.
+> >   If one
+> >
+> >     of the flavors has a grace-period hang, it is not easy to work out
+> >   which
+> >
+> >     of the three hung.  This commit therefore prints a message prior
+> >   to each
+> >
+> >     individual test.
+> >
+> >     Reported-by: Guenter Roeck <linux@roeck-us.net>
+> >
+> >     Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+> >
+> >   diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+> >
+> >   index 56c470a489c8..427433c90935 100644
+> >
+> >   --- a/kernel/rcu/tasks.h
+> >
+> >   +++ b/kernel/rcu/tasks.h
+> >
+> >   @@ -1981,20 +1981,22 @@ static void test_rcu_tasks_callback(struct
+> >   rcu_head *rhp)
+> >
+> >   static void rcu_tasks_initiate_self_tests(void)
+> >
+> >   {
+> >
+> >   -    pr_info("Running RCU-tasks wait API self tests\n");
+> >
+> >   #ifdef CONFIG_TASKS_RCU
+> >
+> >   +    pr_info("Running RCU Tasks wait API self tests\n");
+> >
+> >     tests[0].runstart =3D jiffies;
+> >
+> >     synchronize_rcu_tasks();
+> >
+> >     call_rcu_tasks(&tests[0].rh, test_rcu_tasks_callback);
+> >
+> >   #endif
+> >
+> >   #ifdef CONFIG_TASKS_RUDE_RCU
+> >
+> >   +    pr_info("Running RCU Tasks Rude wait API self tests\n");
+> >
+> >     tests[1].runstart =3D jiffies;
+> >
+> >     synchronize_rcu_tasks_rude();
+> >
+> >     call_rcu_tasks_rude(&tests[1].rh, test_rcu_tasks_callback);
+> >
+> >   #endif
+> >
+> >   #ifdef CONFIG_TASKS_TRACE_RCU
+> >
+> >   +    pr_info("Running RCU Tasks Trace wait API self tests\n");
+> >
+> >     tests[2].runstart =3D jiffies;
+> >
+> >     synchronize_rcu_tasks_trace();
+> >
+> >     call_rcu_tasks_trace(&tests[2].rh, test_rcu_tasks_callback);
+> >
+> >References
+> >
+> > Visible links:
+> > 1. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.=
+15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.0=
+7.28-04.00.44/
+> > 2. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.=
+15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.0=
+7.28-04.00.44/
+> > 3. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.=
+15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.0=
+7.28-04.00.44/
+> >
+> > Hidden links:
+> > 5. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.=
+15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.0=
+7.28-04.00.44/
