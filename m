@@ -2,316 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED2DB767D96
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 11:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 342FE767EAD
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 13:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbjG2JRw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 05:17:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46686 "EHLO
+        id S230504AbjG2L3T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 07:29:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjG2JRv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 05:17:51 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1CF2D4D
-        for <stable@vger.kernel.org>; Sat, 29 Jul 2023 02:17:50 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id C92E860177;
-        Sat, 29 Jul 2023 11:17:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690622268; bh=kpD8KSfH6g3ST2uqStkM077PQkg1i0nge/5l7O/bkqo=;
-        h=Date:To:Cc:From:Subject:From;
-        b=BgxT4So1B/sezLZ1ngPhKMOBlvVJEkbLwzLuQCJUf7Eej25SwGyLvF59ZYlD2jJma
-         K/msXpBJuGJ2/s04sUGhKe0dBNuEGPeeF4tTCUzohzanc91DycKTwX1wviMQdOlN2k
-         IJzNeVSqDcA/P3ZcVY8VUfdLn2GBHAlTj/fAqA+YT6m7y9joUN+8RJguzH//OAsP6i
-         bIEkU520QPZHrmxiZhjSSFNnQn1csLTkkU/QUalrBhbj2Gayy8P3AVNBJYzQ/Pn0E5
-         LpFv1BsstbxphjxeHDLVxa+7F9MIRYgEbuld3fTrorq4SR4GcD44dnGFKVkWfym3hp
-         69tWgeN3W3xJw==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id pLmy2L4IPnSy; Sat, 29 Jul 2023 11:17:46 +0200 (CEST)
-Received: from [192.168.1.6] (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id E7B936015E;
-        Sat, 29 Jul 2023 11:17:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690622266; bh=kpD8KSfH6g3ST2uqStkM077PQkg1i0nge/5l7O/bkqo=;
-        h=Date:To:Cc:From:Subject:From;
-        b=Fo32ekggg2+Wir6EVEFcKiyvYO1g0/ULxw+gM7W9nVFQLc3niAtf5j3wOrvxdadOY
-         /rrg6R2kUMoMBXsdKDmol0KFfk+t+h/5ay6i3pF3uaZpny7CdmnMfksVb4t5tnDGbi
-         ijA0dWxfiFU3medUS2f7lMP5HEjMurUpMWyPyJev1BU23OAYWM62uPIFVHv9uWEiaQ
-         YElHogXvcxt9B1Igg0gi1eolwCnUFbCReW4WQWRW1S2TuiFNgsIkqZLUI2H7YqgDre
-         g12/CPnzLR2Phkxv6Pgfz9XTcpaOutwPINATJBbrvVYhPVVdkrG0kbebcLde0ZO1nq
-         6JOYkp5dQFAjw==
-Message-ID: <1a2a428f-71ab-1154-bd50-05c82eb05817@alu.unizg.hr>
-Date:   Sat, 29 Jul 2023 11:17:45 +0200
+        with ESMTP id S229481AbjG2L3S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 07:29:18 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2205A180;
+        Sat, 29 Jul 2023 04:29:17 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-99bf3f59905so190487666b.3;
+        Sat, 29 Jul 2023 04:29:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690630155; x=1691234955;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UsODLhPmgXVzJMgYwd6g25n/YmJLuT+zLYrhO4QA/Dk=;
+        b=ctVlHDDZIRb0LmQKF+fmi2vn0h3fiDXr3nVc38arl4b6xcfsKdDaER0AX1kG/kjZ9k
+         /QuGPJgQaLzwI7KrSAZyQ2jQY2zOxSqjKfWn+y1/S6YNsJoMzwyWnxpBAsxjVtLQ9xnf
+         qQuNqY8XldkkIeEnFAeJBmnIlfJV0zyB8TcNkawsTOmdixmgvCbXsOLqB/5KfqNMrFo5
+         0cajCJ2KYXyZfMLRofImzRtHqtjQQLYY69rUb+k6KAdoWBEOclH0QejZMAPytBTXky3C
+         icIuksx75bThiFLLW6ymc/MsV+IX2NgGaWwkbOZ9FpOGF9KXWmftqn3ZeHIRaURRK5Uj
+         rYGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690630155; x=1691234955;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UsODLhPmgXVzJMgYwd6g25n/YmJLuT+zLYrhO4QA/Dk=;
+        b=L90chpigk5OzYuh91Lm16hsUmaq7hfiF0bEwWDflFxZ5U4ojtPCZ3AgRs5Yveug4kU
+         lPCen23/VeyXnUtaPegwDU8xjb4AKC+TLmlK4+iEW/6RZyO2yiIC1vmdRdheezJznM4m
+         QZR9xX4eZl2MOv52Bh8S7kiOMgdl6KKu3UCtjfycE0KfvmoCtWKpUXar5Ec/hNrOrQAF
+         yj/Lq0EjAhcwVZl/yhpLKhGABqDDK0fKdE6Anj8LzaoCkMXJbudqvb4kGQZEuiH2Z4uZ
+         QzX9069Z3Fq8DKaWLzkSzw6x4bdX4qhKUche+FHUOLjYhZVmE/I32b4wHDVSMKVI83Xc
+         aNSQ==
+X-Gm-Message-State: ABy/qLauEFzOX3scJz3wblNson6iSaflzhmcN22PtJILwvwXeVMgKsYh
+        e04H7CRnOwOrXar/AEGaLNo3DTrnCsFrjA==
+X-Google-Smtp-Source: APBJJlGuFJn7fSxluY6R6mKpOrXYJNunCtN3citXHy5Jjt2oMiutRS2qEbMAzNePmEAC9WbV8yCHIQ==
+X-Received: by 2002:a17:906:cc58:b0:993:f2c2:7512 with SMTP id mm24-20020a170906cc5800b00993f2c27512mr2334003ejb.33.1690630154992;
+        Sat, 29 Jul 2023 04:29:14 -0700 (PDT)
+Received: from fedora.. (cable-178-148-234-71.dynamic.sbb.rs. [178.148.234.71])
+        by smtp.gmail.com with ESMTPSA id y26-20020a170906071a00b009737b8d47b6sm3149645ejb.203.2023.07.29.04.29.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Jul 2023 04:29:14 -0700 (PDT)
+From:   Aleksa Savic <savicaleksa83@gmail.com>
+To:     linux-hwmon@vger.kernel.org
+Cc:     Aleksa Savic <savicaleksa83@gmail.com>, stable@vger.kernel.org,
+        Jack Doan <me@jackdoan.com>, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] hwmon: (aquacomputer_d5next) Add selective 200ms delay after sending ctrl report
+Date:   Sat, 29 Jul 2023 13:27:32 +0200
+Message-ID: <20230729112732.5516-1-savicaleksa83@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Content-Language: en-US
-To:     stable@vger.kernel.org
-Cc:     Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Carpenter <error27@gmail.com>
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Subject: [RESEND PATCH v5 1/3] test_firmware: prevent race conditions by a
- correct implementation of locking
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dan Carpenter spotted a race condition in a couple of situations like
-these in the test_firmware driver:
+Add a 200ms delay after sending a ctrl report to Quadro,
+Octo, D5 Next and Aquaero to give them enough time to
+process the request and save the data to memory. Otherwise,
+under heavier userspace loads where multiple sysfs entries
+are usually set in quick succession, a new ctrl report could
+be requested from the device while it's still processing the
+previous one and fail with -EPIPE.
 
-static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-{
-         u8 val;
-         int ret;
+Reported by a user on Github [1] and tested by both of us.
 
-         ret = kstrtou8(buf, 10, &val);
-         if (ret)
-                 return ret;
+[1] https://github.com/aleksamagicka/aquacomputer_d5next-hwmon/issues/82
 
-         mutex_lock(&test_fw_mutex);
-         *(u8 *)cfg = val;
-         mutex_unlock(&test_fw_mutex);
-
-         /* Always return full write size even if we didn't consume all */
-         return size;
-}
-
-static ssize_t config_num_requests_store(struct device *dev,
-                                          struct device_attribute *attr,
-                                          const char *buf, size_t count)
-{
-         int rc;
-
-         mutex_lock(&test_fw_mutex);
-         if (test_fw_config->reqs) {
-                 pr_err("Must call release_all_firmware prior to changing config\n");
-                 rc = -EINVAL;
-                 mutex_unlock(&test_fw_mutex);
-                 goto out;
-         }
-         mutex_unlock(&test_fw_mutex);
-
-         rc = test_dev_config_update_u8(buf, count,
-                                        &test_fw_config->num_requests);
-
-out:
-         return rc;
-}
-
-static ssize_t config_read_fw_idx_store(struct device *dev,
-                                         struct device_attribute *attr,
-                                         const char *buf, size_t count)
-{
-         return test_dev_config_update_u8(buf, count,
-                                          &test_fw_config->read_fw_idx);
-}
-
-The function test_dev_config_update_u8() is called from both the locked
-and the unlocked context, function config_num_requests_store() and
-config_read_fw_idx_store() which can both be called asynchronously as
-they are driver's methods, while test_dev_config_update_u8() and siblings
-change their argument pointed to by u8 *cfg or similar pointer.
-
-To avoid deadlock on test_fw_mutex, the lock is dropped before calling
-test_dev_config_update_u8() and re-acquired within test_dev_config_update_u8()
-itself, but alas this creates a race condition.
-
-Having two locks wouldn't assure a race-proof mutual exclusion.
-
-This situation is best avoided by the introduction of a new, unlocked
-function __test_dev_config_update_u8() which can be called from the locked
-context and reducing test_dev_config_update_u8() to:
-
-static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-{
-         int ret;
-
-         mutex_lock(&test_fw_mutex);
-         ret = __test_dev_config_update_u8(buf, size, cfg);
-         mutex_unlock(&test_fw_mutex);
-
-         return ret;
-}
-
-doing the locking and calling the unlocked primitive, which enables both
-locked and unlocked versions without duplication of code.
-
-The similar approach was applied to all functions called from the locked
-and the unlocked context, which safely mitigates both deadlocks and race
-conditions in the driver.
-
-__test_dev_config_update_bool(), __test_dev_config_update_u8() and
-__test_dev_config_update_size_t() unlocked versions of the functions
-were introduced to be called from the locked contexts as a workaround
-without releasing the main driver's lock and thereof causing a race
-condition.
-
-The test_dev_config_update_bool(), test_dev_config_update_u8() and
-test_dev_config_update_size_t() locked versions of the functions
-are being called from driver methods without the unnecessary multiplying
-of the locking and unlocking code for each method, and complicating
-the code with saving of the return value across lock.
-
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc: stable@vger.kernel.org
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
 ---
-v5.1
-  resending to v5.4 stable branch verbatim according to Luis Chamberlain instruction
+ drivers/hwmon/aquacomputer_d5next.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-  lib/test_firmware.c | 52 ++++++++++++++++++++++++++++++---------------
-  1 file changed, 35 insertions(+), 17 deletions(-)
-
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 05ed84c2fc4c..35417e0af3f4 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -353,16 +353,26 @@ static ssize_t config_test_show_str(char *dst,
-  	return len;
-  }
-  
--static int test_dev_config_update_bool(const char *buf, size_t size,
-+static inline int __test_dev_config_update_bool(const char *buf, size_t size,
-  				       bool *cfg)
-  {
-  	int ret;
-  
--	mutex_lock(&test_fw_mutex);
-  	if (kstrtobool(buf, cfg) < 0)
-  		ret = -EINVAL;
-  	else
-  		ret = size;
+diff --git a/drivers/hwmon/aquacomputer_d5next.c b/drivers/hwmon/aquacomputer_d5next.c
+index a997dbcb563f..9cb55d51185a 100644
+--- a/drivers/hwmon/aquacomputer_d5next.c
++++ b/drivers/hwmon/aquacomputer_d5next.c
+@@ -652,6 +652,31 @@ static int aqc_send_ctrl_data(struct aqc_data *priv)
+ 	ret = hid_hw_raw_request(priv->hdev, priv->secondary_ctrl_report_id,
+ 				 priv->secondary_ctrl_report, priv->secondary_ctrl_report_size,
+ 				 HID_FEATURE_REPORT, HID_REQ_SET_REPORT);
++	if (ret < 0)
++		return ret;
 +
-+	return ret;
-+}
++	/*
++	 * Wait 200ms before returning to make sure that the device actually processed both reports
++	 * and saved ctrl data to memory. Otherwise, an aqc_get_ctrl_data() call made shortly after
++	 * may fail with -EPIPE because the device is still busy and can't provide data. This can
++	 * happen when userspace tools, such as fancontrol or liquidctl, write to sysfs entries in
++	 * quick succession.
++	 *
++	 * 200ms was found to be the sweet spot between fixing the issue and not significantly
++	 * prolonging the call. Quadro, Octo, D5 Next and Aquaero are currently known to be
++	 * affected.
++	 */
++	switch (priv->kind) {
++	case quadro:
++	case octo:
++	case d5next:
++	case aquaero:
++		msleep(200);
++		break;
++	default:
++		break;
++	}
 +
-+static int test_dev_config_update_bool(const char *buf, size_t size,
-+				       bool *cfg)
-+{
-+	int ret;
-+
-+	mutex_lock(&test_fw_mutex);
-+	ret = __test_dev_config_update_bool(buf, size, cfg);
-  	mutex_unlock(&test_fw_mutex);
-  
-  	return ret;
-@@ -373,7 +383,8 @@ static ssize_t test_dev_config_show_bool(char *buf, bool val)
-  	return snprintf(buf, PAGE_SIZE, "%d\n", val);
-  }
-  
--static int test_dev_config_update_size_t(const char *buf,
-+static int __test_dev_config_update_size_t(
-+					 const char *buf,
-  					 size_t size,
-  					 size_t *cfg)
-  {
-@@ -384,9 +395,7 @@ static int test_dev_config_update_size_t(const char *buf,
-  	if (ret)
-  		return ret;
-  
--	mutex_lock(&test_fw_mutex);
-  	*(size_t *)cfg = new;
--	mutex_unlock(&test_fw_mutex);
-  
-  	/* Always return full write size even if we didn't consume all */
-  	return size;
-@@ -402,7 +411,7 @@ static ssize_t test_dev_config_show_int(char *buf, int val)
-  	return snprintf(buf, PAGE_SIZE, "%d\n", val);
-  }
-  
--static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-+static int __test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-  {
-  	u8 val;
-  	int ret;
-@@ -411,14 +420,23 @@ static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-  	if (ret)
-  		return ret;
-  
--	mutex_lock(&test_fw_mutex);
-  	*(u8 *)cfg = val;
--	mutex_unlock(&test_fw_mutex);
-  
-  	/* Always return full write size even if we didn't consume all */
-  	return size;
-  }
-  
-+static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-+{
-+	int ret;
-+
-+	mutex_lock(&test_fw_mutex);
-+	ret = __test_dev_config_update_u8(buf, size, cfg);
-+	mutex_unlock(&test_fw_mutex);
-+
-+	return ret;
-+}
-+
-  static ssize_t test_dev_config_show_u8(char *buf, u8 val)
-  {
-  	return snprintf(buf, PAGE_SIZE, "%u\n", val);
-@@ -471,10 +489,10 @@ static ssize_t config_num_requests_store(struct device *dev,
-  		mutex_unlock(&test_fw_mutex);
-  		goto out;
-  	}
--	mutex_unlock(&test_fw_mutex);
-  
--	rc = test_dev_config_update_u8(buf, count,
--				       &test_fw_config->num_requests);
-+	rc = __test_dev_config_update_u8(buf, count,
-+					 &test_fw_config->num_requests);
-+	mutex_unlock(&test_fw_mutex);
-  
-  out:
-  	return rc;
-@@ -518,10 +536,10 @@ static ssize_t config_buf_size_store(struct device *dev,
-  		mutex_unlock(&test_fw_mutex);
-  		goto out;
-  	}
--	mutex_unlock(&test_fw_mutex);
-  
--	rc = test_dev_config_update_size_t(buf, count,
--					   &test_fw_config->buf_size);
-+	rc = __test_dev_config_update_size_t(buf, count,
-+					     &test_fw_config->buf_size);
-+	mutex_unlock(&test_fw_mutex);
-  
-  out:
-  	return rc;
-@@ -548,10 +566,10 @@ static ssize_t config_file_offset_store(struct device *dev,
-  		mutex_unlock(&test_fw_mutex);
-  		goto out;
-  	}
--	mutex_unlock(&test_fw_mutex);
-  
--	rc = test_dev_config_update_size_t(buf, count,
--					   &test_fw_config->file_offset);
-+	rc = __test_dev_config_update_size_t(buf, count,
-+					     &test_fw_config->file_offset);
-+	mutex_unlock(&test_fw_mutex);
-  
-  out:
-  	return rc;
+ 	return ret;
+ }
+ 
 -- 
-2.30.2
+2.41.0
 
