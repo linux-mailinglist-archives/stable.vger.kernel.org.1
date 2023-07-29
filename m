@@ -2,127 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D676B7680D5
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 19:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0077680F2
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 20:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjG2RsK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 13:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
+        id S229690AbjG2SYR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 14:24:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjG2RsK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 13:48:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DAFB2D64;
-        Sat, 29 Jul 2023 10:48:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A804360288;
-        Sat, 29 Jul 2023 17:48:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79462C433C9;
-        Sat, 29 Jul 2023 17:48:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690652888;
-        bh=426Plr62YIRVVd7idefnHiN/75xOXxFwgyitLpzWikI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ml2RZxAenphY2R+EU5yWpJOcmOG/MVc8GX8AsiALO21yS2ff9XnOMpyryixIJWHVS
-         MFE3y5fS98ByWyiqZlo5rdb3HDVXKG7ed3QtCn3reyw7PXw8+dXgkt62Nud0yjEuzN
-         m6khptTa5+EAxubkvi3qxNJvSeD+isKPNA4UPtMXS2ixLCQdKmlE0ayHB8arnSJR6u
-         cjGQoEih8NH3fp2vmddZnN/PsRS+hPsOXXhhLAgK53ZsdBdVDteB76HVaW8enar4bY
-         Gjv06JgSGVnYJC1Np1a0BHANcKfcvzk7pqPruEzHPy/rLP3iKDJuRqQptUyXOzNn6u
-         EIz9DX3ZGnXHg==
-Date:   Sat, 29 Jul 2023 18:48:03 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Bin Meng <bmeng@tinylab.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, stable@vger.kernel.org,
-        Guo Ren <guoren@kernel.org>
-Subject: Re: [PATCH v2] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-Message-ID: <20230729-chaps-coauthor-95557d86b189@spud>
-References: <20230726174524.340952-1-xingmingzheng@iscas.ac.cn>
- <20230726-outclass-parade-2ccea9f6688a@spud>
- <10231b81-ea42-26d0-4c11-92851229e658@iscas.ac.cn>
- <20230726-armchair-evasive-427dd245a9fe@spud>
- <20230727-briskness-sappy-e2d9e4c1ef36@spud>
- <d75ef570-c0ad-cea4-687a-d02b560aa676@iscas.ac.cn>
+        with ESMTP id S229610AbjG2SYR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 14:24:17 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB4430DC;
+        Sat, 29 Jul 2023 11:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=SLDeV9Gd0ll0x0Hf3YTkvfpLnzT91YtzBOUBJcb/X+8=; b=3TU1y5Y8c+Axhgz66VEX8P6UcT
+        riakLfdBFGt+BWlumDp30tDKIHGECoxfpHXvr4wvx4TpC+5f25wCf8O+nmtSGPg41Aahg9AQ6PwCL
+        0iXh5nrYW/0SUYH3dA07Gro2G25TvnToaw9IStPi2glcXzQT2LIN9F4coyPmUIfStcO4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qPobf-002bUX-Ex; Sat, 29 Jul 2023 20:23:59 +0200
+Date:   Sat, 29 Jul 2023 20:23:59 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Jijie Shao <shaojijie@huawei.com>
+Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, shenjian15@huawei.com, wangjie125@huawei.com,
+        liuyonglong@huawei.com, wangpeiyang1@huawei.com,
+        netdev@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
+Message-ID: <e7219114-774f-49d0-8985-8875fd351b60@lunn.ch>
+References: <20230728075840.4022760-1-shaojijie@huawei.com>
+ <20230728075840.4022760-6-shaojijie@huawei.com>
+ <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
+ <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
+ <73b41fe2-12dd-4fc0-a44d-f6f94e6541fc@lunn.ch>
+ <ef5489f9-43b4-ee59-699b-3f54a30c00aa@huawei.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/xQjWBbnHuYsLKM8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d75ef570-c0ad-cea4-687a-d02b560aa676@iscas.ac.cn>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ef5489f9-43b4-ee59-699b-3f54a30c00aa@huawei.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+>     Now i wounder if you are fixing the wrong thing. Maybe you should be
+>     fixing the PHY so it does not report up and then down? You say 'very
+>     snall intervals', which should in fact be 1 second. So is the PHY
+>     reporting link for a number of poll intervals? 1min to 10 minutes?
+> 
+>               Andrew
+> 
+> Yes, according to the log records, the phy polls every second,
+> but the link status changes take time.
+> Generally, it takes 10 seconds for the phy to detect link down,
+> but occasionally it takes several minutes to detect link down,
 
---/xQjWBbnHuYsLKM8
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+What PHY driver is this?
 
-On Sun, Jul 30, 2023 at 01:36:49AM +0800, Mingzheng Xing wrote:
+It is not so clear what should actually happen with auto-neg turned
+off. With it on, and the link going down, the PHY should react after
+about 1 second. It is not supposed to react faster than that, although
+some PHYs allow fast link down notification to be configured.
 
-> I reproduced the error with gcc-12.2.0 and binutils-2.35. I tried a
-> different solution, which I think makes the logic easier. Showing
-> the new patch code:
+Have you checked 802.3 to see what it says about auto-neg off and link
+down detection?
 
-It is indeed simpler, neat.
+I personally would not suppress this behaviour in the MAC
+driver. Otherwise you are going to have funny combinations of special
+cases of a feature which very few people actually use, making your
+maintenance costs higher.
 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 4c07b9189c86..a6fa1eed895c 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -569,25 +569,24 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
->=20
-> =A0config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
-> =A0=A0=A0=A0=A0=A0=A0 def_bool y
-> -=A0=A0=A0=A0=A0=A0 # https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=
-=3Dcommit;h=3Daed44286efa8ae8717a77d94b51ac3614e2ca6dc
-> -=A0=A0=A0=A0=A0=A0 depends on AS_IS_GNU && AS_VERSION >=3D 23800
-> +=A0=A0=A0=A0=A0=A0 depends on AS_IS_GNU && AS_VERSION >=3D 23600
-> =A0=A0=A0=A0=A0=A0=A0 help
-> -=A0=A0=A0=A0=A0=A0=A0=A0 Newer binutils versions default to ISA spec ver=
-sion 20191213 which
-> -=A0=A0=A0=A0=A0=A0=A0=A0 moves some instructions from the I extension to=
- the Zicsr and Zifencei
-> -=A0=A0=A0=A0=A0=A0=A0=A0 extensions.
-> +=A0=A0=A0=A0=A0=A0=A0=A0 Binutils has supported zicsr and zifencei exten=
-sions since version 2.36,
-> +=A0=A0=A0=A0=A0=A0=A0=A0 try to adapt to the changes by using explicit z=
-icsr and zifencei via
-> +=A0=A0=A0=A0=A0=A0=A0=A0 -march.
-
-This sentence no longer makes sense to me, the motivation for why we are
-doing this is lost. Please preserve the link & explanation about the
-20191213 version of the spec, adding to it the commentary about how we
-can relax the check to 2.36, since that makes our lives easier.
-
-The rest of this looks fine to me, if you resubmit I'll look at it
-further on Monday.
-
---/xQjWBbnHuYsLKM8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMVQ0wAKCRB4tDGHoIJi
-0hSNAQC4nTdM3esMZyV0dCcSxV4Vouv1QrjdKIehT8d0Ekj1FgEAzV4i7k7xFRWu
-eCpwfwzJaU7gFR6zdpfx0+KDSo2Cugc=
-=UWMZ
------END PGP SIGNATURE-----
-
---/xQjWBbnHuYsLKM8--
+	    Andrew
