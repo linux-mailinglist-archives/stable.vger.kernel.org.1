@@ -2,56 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B5BA767BC8
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 04:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20718767BD2
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 05:12:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjG2C70 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Jul 2023 22:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44492 "EHLO
+        id S231397AbjG2DL4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Jul 2023 23:11:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232760AbjG2C7Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 22:59:25 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9CA75253;
-        Fri, 28 Jul 2023 19:58:49 -0700 (PDT)
-Received: from kwepemm600007.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RCTfR5y4Xz1GDFb;
-        Sat, 29 Jul 2023 10:56:15 +0800 (CST)
+        with ESMTP id S229498AbjG2DLz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Jul 2023 23:11:55 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2ECE4214;
+        Fri, 28 Jul 2023 20:11:52 -0700 (PDT)
+Received: from kwepemm600007.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RCTzJ4y4JzrRgj;
+        Sat, 29 Jul 2023 11:10:52 +0800 (CST)
 Received: from [10.69.136.139] (10.69.136.139) by
  kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Sat, 29 Jul 2023 10:57:11 +0800
-Message-ID: <ee5706c6-c841-24c0-8f65-60dbbc3cbdf8@huawei.com>
-Date:   Sat, 29 Jul 2023 10:57:10 +0800
+ 15.1.2507.27; Sat, 29 Jul 2023 11:11:49 +0800
+Message-ID: <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
+Date:   Sat, 29 Jul 2023 11:11:48 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/6] net: hns3: fix side effects passed to min_t()
-To:     David Laight <David.Laight@ACULAB.COM>,
-        "yisen.zhuang@huawei.com" <yisen.zhuang@huawei.com>,
-        "salil.mehta@huawei.com" <salil.mehta@huawei.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>
-CC:     "shenjian15@huawei.com" <shenjian15@huawei.com>,
-        "wangjie125@huawei.com" <wangjie125@huawei.com>,
-        "liuyonglong@huawei.com" <liuyonglong@huawei.com>,
-        "wangpeiyang1@huawei.com" <wangpeiyang1@huawei.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
+To:     Andrew Lunn <andrew@lunn.ch>
+CC:     <yisen.zhuang@huawei.com>, <salil.mehta@huawei.com>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <shenjian15@huawei.com>,
+        <wangjie125@huawei.com>, <liuyonglong@huawei.com>,
+        <wangpeiyang1@huawei.com>, <netdev@vger.kernel.org>,
+        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 References: <20230728075840.4022760-1-shaojijie@huawei.com>
- <20230728075840.4022760-2-shaojijie@huawei.com>
- <85e3c423aa5a400981ae5c53a29ee280@AcuMS.aculab.com>
+ <20230728075840.4022760-6-shaojijie@huawei.com>
+ <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
 From:   Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <85e3c423aa5a400981ae5c53a29ee280@AcuMS.aculab.com>
+In-Reply-To: <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.69.136.139]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemm600007.china.huawei.com (7.193.23.208)
 X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,71 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi David：
+Hi Andrew,
+I understand what you mean, and sorry for my wrong description. The link
+is not always up. If I turn auto-neg off, the link will go down finally.
+However, there is an intervel between my operation and the link down. In
+my experiment, it may be 1 min or evn 10 mins. The phy state is set to
+PHY_UP immediately when I set auto-neg off. And the phy machine check the
+state during a very small intervals. Thus, during my experiment, the phy
+state has a followed varietion:
+PHY_RUNNING -> PHY_UP -> PHY_RUNNING -> PHY_NOLINK.
 
-Yes, you're right, min_t() evaluates the arguments only once.
+We print link up/down based on phy state and link state. In aboved case,
+It print looks like:
+eth0 link down -- because phy state is set to PHY_UP
+eth0 link up -- because phy state is set to PHY_RUNNING
+eth0 link down -- because link down
 
-In the actual scenario, the number of cpu is far less than 65535. 
-Therefore, the minimum value will not convert to zero.
+This patch wants to fix the first two wrong print.
+We will modify this patch description
 
-Thanks for your advice, this patch will be withdrawn.
+Thanks!
 
    Jijie Shao
 
-on 2023/7/28 16:29, David Laight wrote:
-> From: Jijie Shao
->> Sent: 28 July 2023 08:59
+
+on 2023/7/28 16:57, Andrew Lunn wrote:
+> On Fri, Jul 28, 2023 at 03:58:39PM +0800, Jijie Shao wrote:
+>> From: Peiyang Wang <wangpeiyang1@huawei.com>
 >>
->> num_online_cpus() may call more than once when passing to min_t(),
->> between calls, it may return different values, so move num_online_cpus()
->> out of min_t().
-> Nope, wrong bug:
-> min() (and friends) are careful to only evaluate their arguments once.
-> The bug is using min_t() - especially with a small type.
+>> This patch will fix a wrong print "device link down/up". Consider a case
+>> that set autoneg to off with same speed and duplex configuration. The link
+>> is always up while the phy state is set to PHY_UP and set back to
+>> PHY_RUNNING later. It will print link down when the phy state is not
+>> PHY_RUNNING. To avoid that, the condition should include PHY_UP.
+> Does this really happen? If autoneg is on, and there is link, it means
+> the link peer is auto using auto-neg. If you turn auto-neg off, the
+> link peer is not going to know what speed to use, and so the link will
+> go down. The link will only come up again when you reconfigure the
+> link peer to also not use auto-neg.
 >
-> If/when the number of cpu hits 65536 the (u16) cast will convert
-> it to zero.
+> I don't see how you can turn auto-neg off and not loose the link.
 >
-> Looking at the code a lot of the local variables should be
-> 'unsigned int' not 'u16.
-> Just because the domain of a value is small doesn't mean
-> you should use a small type (unless you are saving space in
-> a structure).
->
-> 	David
->
->> Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
->> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
->> ---
->>   drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
->> b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
->> index 9f6890059666..823e6d2e85f5 100644
->> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
->> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
->> @@ -4757,6 +4757,7 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
->>   {
->>   	struct hnae3_handle *h = priv->ae_handle;
->>   	struct hns3_enet_tqp_vector *tqp_vector;
->> +	u32 online_cpus = num_online_cpus();
->>   	struct hnae3_vector_info *vector;
->>   	struct pci_dev *pdev = h->pdev;
->>   	u16 tqp_num = h->kinfo.num_tqps;
->> @@ -4766,7 +4767,7 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
->>
->>   	/* RSS size, cpu online and vector_num should be the same */
->>   	/* Should consider 2p/4p later */
->> -	vector_num = min_t(u16, num_online_cpus(), tqp_num);
->> +	vector_num = min_t(u16, online_cpus, tqp_num);
->>
->>   	vector = devm_kcalloc(&pdev->dev, vector_num, sizeof(*vector),
->>   			      GFP_KERNEL);
->> --
->> 2.30.0
-> -
-> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-> Registration No: 1397386 (Wales)
->
->
+>    Andrew
