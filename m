@@ -2,128 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 342FE767EAD
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 13:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEB4F767EB9
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 13:31:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbjG2L3T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 07:29:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42312 "EHLO
+        id S229889AbjG2Lb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 07:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjG2L3S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 07:29:18 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2205A180;
-        Sat, 29 Jul 2023 04:29:17 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-99bf3f59905so190487666b.3;
-        Sat, 29 Jul 2023 04:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690630155; x=1691234955;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UsODLhPmgXVzJMgYwd6g25n/YmJLuT+zLYrhO4QA/Dk=;
-        b=ctVlHDDZIRb0LmQKF+fmi2vn0h3fiDXr3nVc38arl4b6xcfsKdDaER0AX1kG/kjZ9k
-         /QuGPJgQaLzwI7KrSAZyQ2jQY2zOxSqjKfWn+y1/S6YNsJoMzwyWnxpBAsxjVtLQ9xnf
-         qQuNqY8XldkkIeEnFAeJBmnIlfJV0zyB8TcNkawsTOmdixmgvCbXsOLqB/5KfqNMrFo5
-         0cajCJ2KYXyZfMLRofImzRtHqtjQQLYY69rUb+k6KAdoWBEOclH0QejZMAPytBTXky3C
-         icIuksx75bThiFLLW6ymc/MsV+IX2NgGaWwkbOZ9FpOGF9KXWmftqn3ZeHIRaURRK5Uj
-         rYGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690630155; x=1691234955;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UsODLhPmgXVzJMgYwd6g25n/YmJLuT+zLYrhO4QA/Dk=;
-        b=L90chpigk5OzYuh91Lm16hsUmaq7hfiF0bEwWDflFxZ5U4ojtPCZ3AgRs5Yveug4kU
-         lPCen23/VeyXnUtaPegwDU8xjb4AKC+TLmlK4+iEW/6RZyO2yiIC1vmdRdheezJznM4m
-         QZR9xX4eZl2MOv52Bh8S7kiOMgdl6KKu3UCtjfycE0KfvmoCtWKpUXar5Ec/hNrOrQAF
-         yj/Lq0EjAhcwVZl/yhpLKhGABqDDK0fKdE6Anj8LzaoCkMXJbudqvb4kGQZEuiH2Z4uZ
-         QzX9069Z3Fq8DKaWLzkSzw6x4bdX4qhKUche+FHUOLjYhZVmE/I32b4wHDVSMKVI83Xc
-         aNSQ==
-X-Gm-Message-State: ABy/qLauEFzOX3scJz3wblNson6iSaflzhmcN22PtJILwvwXeVMgKsYh
-        e04H7CRnOwOrXar/AEGaLNo3DTrnCsFrjA==
-X-Google-Smtp-Source: APBJJlGuFJn7fSxluY6R6mKpOrXYJNunCtN3citXHy5Jjt2oMiutRS2qEbMAzNePmEAC9WbV8yCHIQ==
-X-Received: by 2002:a17:906:cc58:b0:993:f2c2:7512 with SMTP id mm24-20020a170906cc5800b00993f2c27512mr2334003ejb.33.1690630154992;
-        Sat, 29 Jul 2023 04:29:14 -0700 (PDT)
-Received: from fedora.. (cable-178-148-234-71.dynamic.sbb.rs. [178.148.234.71])
-        by smtp.gmail.com with ESMTPSA id y26-20020a170906071a00b009737b8d47b6sm3149645ejb.203.2023.07.29.04.29.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Jul 2023 04:29:14 -0700 (PDT)
-From:   Aleksa Savic <savicaleksa83@gmail.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Aleksa Savic <savicaleksa83@gmail.com>, stable@vger.kernel.org,
-        Jack Doan <me@jackdoan.com>, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: (aquacomputer_d5next) Add selective 200ms delay after sending ctrl report
-Date:   Sat, 29 Jul 2023 13:27:32 +0200
-Message-ID: <20230729112732.5516-1-savicaleksa83@gmail.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S230372AbjG2Lb1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 07:31:27 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DFB180
+        for <stable@vger.kernel.org>; Sat, 29 Jul 2023 04:31:25 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id A2CDE60177;
+        Sat, 29 Jul 2023 13:31:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690630283; bh=CbT/t2+5t9E5u4xmnlAQy29k4RIz+zzbDTG+w6/9/48=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=k7tmA+mEbDnMJmviLKL/o48qm7qEiiFmyxUzQKmWn8TGyXpnsAKSBysMRnlGlBsxp
+         y+I0ZPZgNHtGzLzHj1dkg4HRgokaClJCJ4tRwaNJu0Gph8QVpHUAxfe/rzUxQVLbwd
+         Jbz0nW6xEttGW8CUEfbli8LlFjI+bKu4WKL8H6WCJdqqP8UUwjy2Gjn2gUoEWvbIUI
+         eV3dbh33qorlu6lmBhmZDRzkJIrgnoPrCuXCxUVVj7koO+WqpGgzj1zh6Omtg+RgE4
+         c+Clj6coBhbvQrBRQ0rz86BqroVTFKskjgZVrtV03PrurzlphPPV++0YlN5f8/QvMl
+         jf7NHaYiXHzgQ==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id zAXzJyNNXAuo; Sat, 29 Jul 2023 13:31:21 +0200 (CEST)
+Received: from [192.168.1.4] (unknown [94.250.191.183])
+        by domac.alu.hr (Postfix) with ESMTPSA id 0FC9C6015E;
+        Sat, 29 Jul 2023 13:31:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690630281; bh=CbT/t2+5t9E5u4xmnlAQy29k4RIz+zzbDTG+w6/9/48=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=FycrNL1TiN1unp/MlEaziROzo11RfCO1hzBbccnhdxLbeI8TN1ruSSWhVSIGiHVvV
+         abX59AWcUeKREwK+LHi6S7/0wEgcLVc/0tkC8w6NW0bpNCf721dRWUf+0HC6QqL8Oa
+         7iAZHUFL4RVBo8IICUKfaAU9OBKI4B678lvmtbWH9ivis0eR4D1TpHcjQsaxQlM9B1
+         QyWZIxWFH+P7vopbRiBPm8DPUs2uHSigv39BptC1d6yo4JDZiHnvTaKvvdbXSEYwnA
+         qOyS1Cr3PJw2Jeqxz0q1PvuW1ktI+08dSpfkSTABgQ7BEpUgIMdgBGB2DGtFAzHAv0
+         swDZsHbPt7S2Q==
+Message-ID: <bf2c8919-a735-f051-f0d5-506540564565@alu.unizg.hr>
+Date:   Sat, 29 Jul 2023 13:31:20 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH RESEND v4 1/1] test_firmware: fix some memory leaks and
+ racing conditions
+Content-Language: en-US, hr
+To:     Luis Chamberlain <mcgrof@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org
+References: <84fde847-e756-3727-c357-104775ef1c4f@alu.unizg.hr>
+ <ZMQd49Qp8EzapxEE@bombadil.infradead.org>
+From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+In-Reply-To: <ZMQd49Qp8EzapxEE@bombadil.infradead.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Add a 200ms delay after sending a ctrl report to Quadro,
-Octo, D5 Next and Aquaero to give them enough time to
-process the request and save the data to memory. Otherwise,
-under heavier userspace loads where multiple sysfs entries
-are usually set in quick succession, a new ctrl report could
-be requested from the device while it's still processing the
-previous one and fail with -EPIPE.
+On 28. 07. 2023. 21:58, Luis Chamberlain wrote:
+> On Fri, Jul 28, 2023 at 09:48:08PM +0200, Mirsad Todorovac wrote:
+>> v3 -> v4
+>>  - fix additional memory leaks of the allocated firmware buffers
+>>  - fix noticed racing conditions in conformance with the existing code
+>>  - make it a single patch
+> 
+> This is not quite right.
+> 
+> Your patch commit 48e156023059 ("test_firmware: fix the memory leak of
+> the allocated firmware buffer" is already upstream and now you're taking
+> that same patch and modifying it?
+> 
+> If you have something else you want to fix you can use the latest
+> lib/firmware.c refelected on linux-next and send a patch against that
+> to augment with more fixes.
+> 
+> If your goal however, is to make sure these patches end up in v5.4
+> (as I think you are trying based on your last email) you first send
+> a patch matching exactly what is in the upstream commit for inclusion
+> in v5.4. Do not modify the commit unless you are making changes need
+> to be made due to backporting, and if you do you specify that at the
+> bottommon of the commit after singed offs of before in brackets
+> [like this].
+> 
+> Furthermore, I see you have other fixes other than this one merged
+> already on upstream so if you need those for v5.4 you need to send those
+> too.
+> 
+>   Luis
 
-Reported by a user on Github [1] and tested by both of us.
+I've realised what happened: this was the latest version from the old batch,
+before I was advised to split the patch into three independent fixes, each one
+dealing with one problem. 8-)
 
-[1] https://github.com/aleksamagicka/aquacomputer_d5next-hwmon/issues/82
+Still it is obscure to me how I picked this old thread?
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
----
- drivers/hwmon/aquacomputer_d5next.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+Sorry for your lost time, and I will try hard to learn from my mistake.
 
-diff --git a/drivers/hwmon/aquacomputer_d5next.c b/drivers/hwmon/aquacomputer_d5next.c
-index a997dbcb563f..9cb55d51185a 100644
---- a/drivers/hwmon/aquacomputer_d5next.c
-+++ b/drivers/hwmon/aquacomputer_d5next.c
-@@ -652,6 +652,31 @@ static int aqc_send_ctrl_data(struct aqc_data *priv)
- 	ret = hid_hw_raw_request(priv->hdev, priv->secondary_ctrl_report_id,
- 				 priv->secondary_ctrl_report, priv->secondary_ctrl_report_size,
- 				 HID_FEATURE_REPORT, HID_REQ_SET_REPORT);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * Wait 200ms before returning to make sure that the device actually processed both reports
-+	 * and saved ctrl data to memory. Otherwise, an aqc_get_ctrl_data() call made shortly after
-+	 * may fail with -EPIPE because the device is still busy and can't provide data. This can
-+	 * happen when userspace tools, such as fancontrol or liquidctl, write to sysfs entries in
-+	 * quick succession.
-+	 *
-+	 * 200ms was found to be the sweet spot between fixing the issue and not significantly
-+	 * prolonging the call. Quadro, Octo, D5 Next and Aquaero are currently known to be
-+	 * affected.
-+	 */
-+	switch (priv->kind) {
-+	case quadro:
-+	case octo:
-+	case d5next:
-+	case aquaero:
-+		msleep(200);
-+		break;
-+	default:
-+		break;
-+	}
-+
- 	return ret;
- }
- 
+Mirsad
+
+
 -- 
-2.41.0
+Mirsad Goran Todorovac
+Sistem inženjer
+Grafički fakultet | Akademija likovnih umjetnosti
+Sveučilište u Zagrebu
+ 
+System engineer
+Faculty of Graphic Arts | Academy of Fine Arts
+University of Zagreb, Republic of Croatia
+The European Union
+
+"I see something approaching fast ... Will it be friends with me?"
 
