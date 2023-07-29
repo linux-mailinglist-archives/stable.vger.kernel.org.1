@@ -2,85 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F0077680F2
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 20:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8EF7681CD
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 22:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229690AbjG2SYR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 14:24:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41816 "EHLO
+        id S229488AbjG2Uhm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 16:37:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjG2SYR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 14:24:17 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB4430DC;
-        Sat, 29 Jul 2023 11:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=SLDeV9Gd0ll0x0Hf3YTkvfpLnzT91YtzBOUBJcb/X+8=; b=3TU1y5Y8c+Axhgz66VEX8P6UcT
-        riakLfdBFGt+BWlumDp30tDKIHGECoxfpHXvr4wvx4TpC+5f25wCf8O+nmtSGPg41Aahg9AQ6PwCL
-        0iXh5nrYW/0SUYH3dA07Gro2G25TvnToaw9IStPi2glcXzQT2LIN9F4coyPmUIfStcO4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qPobf-002bUX-Ex; Sat, 29 Jul 2023 20:23:59 +0200
-Date:   Sat, 29 Jul 2023 20:23:59 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Jijie Shao <shaojijie@huawei.com>
-Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, shenjian15@huawei.com, wangjie125@huawei.com,
-        liuyonglong@huawei.com, wangpeiyang1@huawei.com,
-        netdev@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
-Message-ID: <e7219114-774f-49d0-8985-8875fd351b60@lunn.ch>
-References: <20230728075840.4022760-1-shaojijie@huawei.com>
- <20230728075840.4022760-6-shaojijie@huawei.com>
- <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
- <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
- <73b41fe2-12dd-4fc0-a44d-f6f94e6541fc@lunn.ch>
- <ef5489f9-43b4-ee59-699b-3f54a30c00aa@huawei.com>
+        with ESMTP id S229379AbjG2Uhk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 16:37:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC5AC7;
+        Sat, 29 Jul 2023 13:37:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A4476027E;
+        Sat, 29 Jul 2023 20:37:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B73C433C7;
+        Sat, 29 Jul 2023 20:37:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690663057;
+        bh=iMknI2mssvMpvNEEtPFsjpKnh0+OEHxOEdyJZpeCgHY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=vFJySY2rk1//Bkt9H41fBKeJvOhjKt9m7pNLfcYd/YbXNoDwBUj2HavpAFun6VP8b
+         fpqIbkQKa9JyY+9FArMVz3l5JUe+ji6L2OwZA4tOjXV8DBcT53kkP+kdJN+7rnGOgJ
+         OHMq25YIkjtAIVhX71U9KccUySxnQwKh+gOANdDqlB+MqQ2dzQ9CwGpfpDGTdumfsq
+         yVynLsLCQiJ3nHfOvA3dswClNDRjCrA4gGnrJ1mf5h5HnSXLHqmKThXGFP4U9BVWgG
+         XP18+zQi8wTYIR2MG3bVK9SM43+WIrj2jk9NogyN69sz8qGzCSgQOHGmuOiqiWslzu
+         Nq/Xps6fD3aVQ==
+From:   SeongJae Park <sj@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     SeongJae Park <sj@kernel.org>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        damon@lists.linux.dev, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mm/damon/core: fix unitialized memory error from
+Date:   Sat, 29 Jul 2023 20:37:31 +0000
+Message-Id: <20230729203733.38949-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef5489f9-43b4-ee59-699b-3f54a30c00aa@huawei.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->     Now i wounder if you are fixing the wrong thing. Maybe you should be
->     fixing the PHY so it does not report up and then down? You say 'very
->     snall intervals', which should in fact be 1 second. So is the PHY
->     reporting link for a number of poll intervals? 1min to 10 minutes?
-> 
->               Andrew
-> 
-> Yes, according to the log records, the phy polls every second,
-> but the link status changes take time.
-> Generally, it takes 10 seconds for the phy to detect link down,
-> but occasionally it takes several minutes to detect link down,
+damos_new_filter() is returning a damos_filter struct without
+initializing its ->list field.  And the users of the function uses the
+struct without initializing the field.  As a result, uninitialized
+memory access error is possible.  Actually, a kernel NULL pointer
+dereference BUG can be triggered using DAMON user-space tool, like
+below.
 
-What PHY driver is this?
+    # damo start --damos_action stat --damos_filter anon matching
+    # damo tune --damos_action stat --damos_filter anon matching --damos_filter anon nomatching
+    # dmesg
+    [...]
+    [   36.908136] BUG: kernel NULL pointer dereference, address: 0000000000000008
+    [   36.910483] #PF: supervisor write access in kernel mode
+    [   36.912238] #PF: error_code(0x0002) - not-present page
+    [   36.913415] PGD 0 P4D 0
+    [   36.913978] Oops: 0002 [#1] PREEMPT SMP PTI
+    [   36.914878] CPU: 32 PID: 1335 Comm: kdamond.0 Not tainted 6.5.0-rc3-mm-unstable-damon+ #1
+    [   36.916621] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+    [   36.919051] RIP: 0010:damos_destroy_filter (include/linux/list.h:114 include/linux/list.h:137 include/linux/list.h:148 mm/damon/core.c:345 mm/damon/core.c:355)
+    [...]
+    [   36.938247] Call Trace:
+    [   36.938721]  <TASK>
+    [...]
+    [   36.950064] ? damos_destroy_filter (include/linux/list.h:114 include/linux/list.h:137 include/linux/list.h:148 mm/damon/core.c:345 mm/damon/core.c:355)
+    [   36.950883] ? damon_sysfs_set_scheme_filters.isra.0 (mm/damon/sysfs-schemes.c:1573)
+    [   36.952019] damon_sysfs_set_schemes (mm/damon/sysfs-schemes.c:1674 mm/damon/sysfs-schemes.c:1686)
+    [   36.952875] damon_sysfs_apply_inputs (mm/damon/sysfs.c:1312 mm/damon/sysfs.c:1298)
+    [   36.953757] ? damon_pa_check_accesses (mm/damon/paddr.c:168 mm/damon/paddr.c:179)
+    [   36.954648] damon_sysfs_cmd_request_callback (mm/damon/sysfs.c:1329 mm/damon/sysfs.c:1359)
+    [...]
 
-It is not so clear what should actually happen with auto-neg turned
-off. With it on, and the link going down, the PHY should react after
-about 1 second. It is not supposed to react faster than that, although
-some PHYs allow fast link down notification to be configured.
+The first patch of this patchset fixes the bug by initializing the field in
+damos_new_filter().  The second patch adds a unit test for the problem.
+Note that the second patch Cc stable@ without Fixes: tag, since it would
+be better to be ingested together for avoiding any future regression.
 
-Have you checked 802.3 to see what it says about auto-neg off and link
-down detection?
+SeongJae Park (2):
+  mm/damon/core: initialize damo_filter->list from damos_new_filter()
+  mm/damon/core-test: add a test for damos_new_filter()
 
-I personally would not suppress this behaviour in the MAC
-driver. Otherwise you are going to have funny combinations of special
-cases of a feature which very few people actually use, making your
-maintenance costs higher.
+ mm/damon/core-test.h | 13 +++++++++++++
+ mm/damon/core.c      |  1 +
+ 2 files changed, 14 insertions(+)
 
-	    Andrew
+-- 
+2.25.1
+
