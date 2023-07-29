@@ -2,82 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC66C767D01
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 09:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6740767D61
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 10:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbjG2H6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 03:58:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54980 "EHLO
+        id S229541AbjG2I5L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 04:57:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjG2H6Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 03:58:24 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E15CF3;
-        Sat, 29 Jul 2023 00:58:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=jeX6gnaLyhsoAgNas3HST4lthFFpKYPYStpcK6Njo6g=; b=D1qdioZucg2bpafH4c1Mq9fc56
-        W5GlUEtNAw+xQd2R6YXXqCGYRCTKIhIA9R7o9ZHQaCcUiZuZnZpLN75y9m/S0FxMJPkVyR8nAxl7I
-        Uyf1LvfFCRDHCaLHAUpgUJIf5thNQUJvLMLbJOcKdVIwlQgB937aWKzNWQIJClTFEQn8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qPepr-002a1W-U6; Sat, 29 Jul 2023 09:57:59 +0200
-Date:   Sat, 29 Jul 2023 09:57:59 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Jijie Shao <shaojijie@huawei.com>
-Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, shenjian15@huawei.com, wangjie125@huawei.com,
-        liuyonglong@huawei.com, wangpeiyang1@huawei.com,
-        netdev@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
-Message-ID: <73b41fe2-12dd-4fc0-a44d-f6f94e6541fc@lunn.ch>
-References: <20230728075840.4022760-1-shaojijie@huawei.com>
- <20230728075840.4022760-6-shaojijie@huawei.com>
- <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
- <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
+        with ESMTP id S229379AbjG2I5K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 04:57:10 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986553AAC
+        for <stable@vger.kernel.org>; Sat, 29 Jul 2023 01:57:06 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id E61B060177;
+        Sat, 29 Jul 2023 10:56:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690621017; bh=85KRMoSia1kFL9CgpUazecqe3Fp84KqHuyHmK5fAQkQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=mU9IUScpLqM+BNAZUWlMI/UowklMKu9236awXHhRivb6HVZfvuq09amhto3Bi4sD7
+         T46r7s4b9x8Zl6zqciztrNk3aAqJiz1D0efEaXJNF8kO6FRO8jRhztjCKOZAATvJNV
+         pEjjowLEjJGzkIzUiRF2UbSPLSniZR/Ntl9C4gOAYgpVhAMpiS/uT9zJ+jWIZRxtva
+         AgUoVT8OhPcwde4e8f0NhFvh1hiYo2b1lihfZVGJkyQFXfK+vIBYFS6ycZpDZWeda6
+         h5nZP878XkcRJe+1uerhdLEcDrPE7aKdavTHgkTYxkQVCC44TVD2T+z8MF8kLbbbuu
+         xpQicvQMnK1zg==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 583_54CXyh-2; Sat, 29 Jul 2023 10:56:55 +0200 (CEST)
+Received: from [192.168.1.4] (unknown [94.250.191.183])
+        by domac.alu.hr (Postfix) with ESMTPSA id 959436015E;
+        Sat, 29 Jul 2023 10:56:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690621015; bh=85KRMoSia1kFL9CgpUazecqe3Fp84KqHuyHmK5fAQkQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=hTu4gORzxBdntVSIYb1NEJhtZsek1QTvN7SICDGlrtJ+U0fHRWYDgPOGKUAG6y/D0
+         pHGBcq+o+RMoYz5xxMNU+UA1DrQSbYDee17qdYoC24OVRYObSlJ3ZbpIplOhNygKNH
+         u4PqxglHTmFFzH24xILisVY+JtsD1bt2Z2iq9V1paqroPDB6oVcT7NErUCVoieWH/Z
+         6RVD7yTRIpb/O4/DJKoH7cYeN4KFbaY3uRSZUMoG5+1pJ0rjVNJrG2osJyl+q2GqZA
+         aYBH75d6tMJH95fX0bgygY6GBTG1QadB1Tku4b9EWGV233O9u5ZdzJl0vH8u6c8p40
+         wlRhlVqsiP1dw==
+Message-ID: <eae7de61-76bd-738b-883e-200d35875b36@alu.unizg.hr>
+Date:   Sat, 29 Jul 2023 10:56:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH RESEND v4 1/1] test_firmware: fix some memory leaks and
+ racing conditions
+To:     Luis Chamberlain <mcgrof@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org
+References: <84fde847-e756-3727-c357-104775ef1c4f@alu.unizg.hr>
+ <ZMQd49Qp8EzapxEE@bombadil.infradead.org>
+Content-Language: en-US, hr
+From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+In-Reply-To: <ZMQd49Qp8EzapxEE@bombadil.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jul 29, 2023 at 11:11:48AM +0800, Jijie Shao wrote:
-> Hi Andrew,
-> I understand what you mean, and sorry for my wrong description. The link
-> is not always up. If I turn auto-neg off, the link will go down finally.
-> However, there is an intervel between my operation and the link down. In
-> my experiment, it may be 1 min or evn 10 mins. The phy state is set to
-> PHY_UP immediately when I set auto-neg off. And the phy machine check the
-> state during a very small intervals. Thus, during my experiment, the phy
-> state has a followed varietion:
-> PHY_RUNNING -> PHY_UP -> PHY_RUNNING -> PHY_NOLINK.
+On 28. 07. 2023. 21:58, Luis Chamberlain wrote:
+> On Fri, Jul 28, 2023 at 09:48:08PM +0200, Mirsad Todorovac wrote:
+>> v3 -> v4
+>>  - fix additional memory leaks of the allocated firmware buffers
+>>  - fix noticed racing conditions in conformance with the existing code
+>>  - make it a single patch
 > 
-> We print link up/down based on phy state and link state. In aboved case,
-> It print looks like:
-> eth0 link down -- because phy state is set to PHY_UP
-> eth0 link up -- because phy state is set to PHY_RUNNING
-> eth0 link down -- because link down
+> This is not quite right.
 > 
-> This patch wants to fix the first two wrong print.
-> We will modify this patch description
+> Your patch commit 48e156023059 ("test_firmware: fix the memory leak of
+> the allocated firmware buffer" is already upstream and now you're taking
+> that same patch and modifying it?
 
-Now i wounder if you are fixing the wrong thing. Maybe you should be
-fixing the PHY so it does not report up and then down? You say 'very
-snall intervals', which should in fact be 1 second. So is the PHY
-reporting link for a number of poll intervals? 1min to 10 minutes?
+Hello, Luis,
 
-	  Andrew
+Yes, you are right, this was the wrong patch. I don't know how I did this
+because I wasn't intoxicated nor high. :-/
+
+Now I saw that I started the entire discussion in the wrong thread, and then
+assumed that this was the right patch, so it is entirely my fault.
+
+They say that assumption is the mother of all blunders.
+
+> If you have something else you want to fix you can use the latest
+> lib/firmware.c refelected on linux-next and send a patch against that
+> to augment with more fixes.
+> 
+> If your goal however, is to make sure these patches end up in v5.4
+> (as I think you are trying based on your last email) you first send
+> a patch matching exactly what is in the upstream commit for inclusion
+> in v5.4. Do not modify the commit unless you are making changes need
+> to be made due to backporting, and if you do you specify that at the
+> bottommon of the commit after singed offs of before in brackets
+> [like this].
+
+I think I intended just that, for the racing condition fix to be applied to the
+v5.4 stable tree, too.
+
+> Furthermore, I see you have other fixes other than this one merged
+> already on upstream so if you need those for v5.4 you need to send those
+> too.
+
+Thanks,
+
+Mirsad
+
+-- 
+Mirsad Goran Todorovac
+Sistem inženjer
+Grafički fakultet | Akademija likovnih umjetnosti
+Sveučilište u Zagrebu
+ 
+System engineer
+Faculty of Graphic Arts | Academy of Fine Arts
+University of Zagreb, Republic of Croatia
+The European Union
+
+"I see something approaching fast ... Will it be friends with me?"
 
