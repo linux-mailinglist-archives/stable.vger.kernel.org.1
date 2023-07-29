@@ -2,311 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81B71767C6C
-	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 07:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC66C767D01
+	for <lists+stable@lfdr.de>; Sat, 29 Jul 2023 09:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbjG2FuF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 01:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33152 "EHLO
+        id S229980AbjG2H6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 03:58:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjG2FuE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 01:50:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B7EC44B7;
-        Fri, 28 Jul 2023 22:50:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E78E5601D7;
-        Sat, 29 Jul 2023 05:50:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D22FC433C8;
-        Sat, 29 Jul 2023 05:50:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690609802;
-        bh=v5hGWBiTSJxlL4QxQcZ8c+IeC6bh8js9tr3aOFwSrnk=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=CvMw+NEc9eDF8Uj98uBteDltkmPgxWI8iAVSBxwnPxKomZg+a5/joAtcnHkQ516ke
-         QZSKWTa++L0zF4l1ldf0O3hcFCngaVpw51l0NVTxJiGsEpXaIoJTnlFYjY1Y3zLUpw
-         b20WcdLoMg8fS0zf3o30Y947+TQ1UhrfDw4RG5V0eJ6/pylDeW848AirCR5HqLbNwi
-         i5wXbl/s6OsF3iZyu/A+Eq6kayYf3RKPFurBL17WN9bNtWrye7jflcKMTD6/2P1KI3
-         tiEONlnLSGhoX/vK3wVvjvgRR7+RmZRtnGVZzxJM8ihELRcB2ml4jZHGOsr65VFyCB
-         SLqU/Ao/3LJbA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id C710ECE0ADE; Fri, 28 Jul 2023 22:50:01 -0700 (PDT)
-Date:   Fri, 28 Jul 2023 22:50:01 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>, Pavel Machek <pavel@denx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
-Message-ID: <aa4ea5e3-ca5f-4a52-b6d1-375233af4f3c@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
- <99B56FC7-9474-4968-B1DD-5862572FD0BA@joelfernandes.org>
- <a174c501-48df-404e-ae61-10ddaeb8e557@paulmck-laptop>
- <CAEXW_YS3hK8Y5TKCPvnNC9fsbmmMvcjx2f-G4uCXX=F2WNz-HQ@mail.gmail.com>
+        with ESMTP id S229939AbjG2H6Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 03:58:24 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E15CF3;
+        Sat, 29 Jul 2023 00:58:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=jeX6gnaLyhsoAgNas3HST4lthFFpKYPYStpcK6Njo6g=; b=D1qdioZucg2bpafH4c1Mq9fc56
+        W5GlUEtNAw+xQd2R6YXXqCGYRCTKIhIA9R7o9ZHQaCcUiZuZnZpLN75y9m/S0FxMJPkVyR8nAxl7I
+        Uyf1LvfFCRDHCaLHAUpgUJIf5thNQUJvLMLbJOcKdVIwlQgB937aWKzNWQIJClTFEQn8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qPepr-002a1W-U6; Sat, 29 Jul 2023 09:57:59 +0200
+Date:   Sat, 29 Jul 2023 09:57:59 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Jijie Shao <shaojijie@huawei.com>
+Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, shenjian15@huawei.com, wangjie125@huawei.com,
+        liuyonglong@huawei.com, wangpeiyang1@huawei.com,
+        netdev@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
+Message-ID: <73b41fe2-12dd-4fc0-a44d-f6f94e6541fc@lunn.ch>
+References: <20230728075840.4022760-1-shaojijie@huawei.com>
+ <20230728075840.4022760-6-shaojijie@huawei.com>
+ <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
+ <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEXW_YS3hK8Y5TKCPvnNC9fsbmmMvcjx2f-G4uCXX=F2WNz-HQ@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,WEIRD_PORT
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 28, 2023 at 09:25:35PM -0400, Joel Fernandes wrote:
-> On Fri, Jul 28, 2023 at 6:58 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > > On Fri, Jul 28, 2023 at 05:17:59PM -0400, Joel Fernandes wrote:
-> > >
-> > >   On Jul 27, 2023, at 7:18 PM, Joel Fernandes <joel@joelfernandes.org>
-> > >   wrote:
-> > >
-> > > ﻿
-> > >
-> > >   On Jul 27, 2023, at 4:33 PM, Paul E. McKenney <paulmck@kernel.org>
-> > >   wrote:
-> > >
-> > >   ﻿On Thu, Jul 27, 2023 at 10:39:17AM -0700, Guenter Roeck wrote:
-> > >
-> > >   On 7/27/23 09:07, Paul E. McKenney wrote:
-> > >
-> > >   ...]
-> > >
-> > >   No. However, (unrelated) in linux-next, rcu tests sometimes result
-> > >   in apparent hangs
-> > >
-> > >   or long runtime.
-> > >
-> > >   [    0.778841] Mount-cache hash table entries: 512 (order: 0, 4096
-> > >   bytes, linear)
-> > >
-> > >   [    0.779011] Mountpoint-cache hash table entries: 512 (order: 0,
-> > >   4096 bytes, linear)
-> > >
-> > >   [    0.797998] Running RCU synchronous self tests
-> > >
-> > >   [    0.798209] Running RCU synchronous self tests
-> > >
-> > >   [    0.912368] smpboot: CPU0: AMD Opteron 63xx class CPU (family:
-> > >   0x15, model: 0x2, stepping: 0x0)
-> > >
-> > >   [    0.923398] RCU Tasks: Setting shift to 2 and lim to 1
-> > >   rcu_task_cb_adjust=1.
-> > >
-> > >   [    0.925419] Running RCU-tasks wait API self tests
-> > >
-> > >   (hangs until aborted). This is primarily with Opteron CPUs, but also
-> > >   with others such as Haswell,
-> [...]
-> > >   Building
-> > >   x86_64:q35:Icelake-Server:defconfig:preempt:smp4:net,ne2k_pci:efi:me
-> > >   m2G:virtio:cd ... running ......... passed
-> [...]
-> > >   I freely confess that I am having a hard time imagining what would
-> > >
-> > >   be CPU dependent in that code.  Timing, maybe?  Whatever the reason,
-> > >
-> > >   I am not seeing these failures in my testing.
-> > >
-> > >   So which of the following Kconfig options is defined in your
-> > >   .config?
-> > >
-> > >   CONFIG_TASKS_RCU, CONFIG_TASKS_RUDE_RCU, and CONFIG_TASKS_TRACE_RCU.
-> > >
-> > >   If you have more than one of them, could you please apply this patch
-> > >
-> > >   and show me the corresponding console output from the resulting
-> > >   hang?
-> > >
-> > > FWIW, I am not able to repro this issue either. If a .config can be
-> > > shared of the problem system, I can try it out to see if it can be
-> > > reproduced on my side.
-> > >
-> > > I do see this now on 5.15 stable:
-> > >
-> > >TASKS03 ------- 3089 GPs (0.858056/s)
-> > >QEMU killed
-> > >TASKS03 no success message, 64 successful version messages
-> > >!!! PID 3309783 hung at 3781 vs. 3600 seconds
-> > >
-> > > I have not looked too closely yet. The full test artifacts are here:
-> > >
-> > > [1]Artifacts of linux-5.15.y 5.15.123 :
-> > > /tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44 [Jenkins]
-> > > [2]box.joelfernandes.org
-> > > [3]apple-touch-icon.png
-> > >
-> > > Thanks,
-> > >
-> > > - Joel
-> > >
-> > > (Apologies if the email is html, I am sending from phone).
-> >
-> > Heh.  I have a script that runs lynx.  Which isn't perfect, but usually
-> > makes things at least somewhat legible.
+On Sat, Jul 29, 2023 at 11:11:48AM +0800, Jijie Shao wrote:
+> Hi Andrew,
+> I understand what you mean, and sorry for my wrong description. The link
+> is not always up. If I turn auto-neg off, the link will go down finally.
+> However, there is an intervel between my operation and the link down. In
+> my experiment, it may be 1 min or evn 10 mins. The phy state is set to
+> PHY_UP immediately when I set auto-neg off. And the phy machine check the
+> state during a very small intervals. Thus, during my experiment, the phy
+> state has a followed varietion:
+> PHY_RUNNING -> PHY_UP -> PHY_RUNNING -> PHY_NOLINK.
 > 
-> Sorry I was too optimistic about the iPhone's capabilities when it
-> came to mailing list emails.
-> Here's what I said:
-> --------------
-> I do see this now on 5.15 stable:
+> We print link up/down based on phy state and link state. In aboved case,
+> It print looks like:
+> eth0 link down -- because phy state is set to PHY_UP
+> eth0 link up -- because phy state is set to PHY_RUNNING
+> eth0 link down -- because link down
 > 
-> TASKS03 ------- 3089 GPs (0.858056/s)
-> QEMU killed
-> TASKS03 no success message, 64 successful version messages
-> !!! PID 3309783 hung at 3781 vs. 3600 seconds
-> 
-> Link to full logs/artifacts:
-> http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
-> ----------------
-> 
-> > This looks like the prototypical hard hang with interrupts disabled,
-> > which could be anywhere in the kernel, including RCU.  I am not seeing
-> > this.  but the usual cause when I have seen it in the past was deadlock
-> > of irq-disabled locks.  In one spectacular case, it was a timekeeping
-> > failure that messed up a CPU-hotplug operation.
-> >
-> > If this is reproducible, one trick would be to have a script look at
-> > the console.log file, and have it do something (NMI? sysrq?  something
-> > else?) to qemu if output ceased for too long.
-> >
-> > One way to do this without messing with the rcutorture scripting is to
-> > grab the qemu-cmd file from this run, and then invoke that file from your
-> > own script, possibly with suitable modifications to qemu's parameters.
-> 
-> Would it be better to have such monitoring as part of rcutorture
-> testing itself? Alternatively there is the NMI hardlockup detector
-> which I believe should also detect such cases and dump stacks.
+> This patch wants to fix the first two wrong print.
+> We will modify this patch description
 
-Quite possibly.  But special-casing the prototype is probably going to be
-a lot faster and easier.  If it works, then it might make a lot of sense
-to upgrade the scripting.  If it doesn't work, then quite a bit less time
-is wasted than would be by messing with the scripting from the get-go.
+Now i wounder if you are fixing the wrong thing. Maybe you should be
+fixing the PHY so it does not report up and then down? You say 'very
+snall intervals', which should in fact be 1 second. So is the PHY
+reporting link for a number of poll intervals? 1min to 10 minutes?
 
-Also, you have the option of making qemu be interactive and manually
-triggering things, for example by checking up on the run near the end.
-Or having something handing commands to qemu.
+	  Andrew
 
-Either way allows much more interaction with qemu, and better
-experiementation, than could be done reasonably with the scripts.
-
-						Thanx, Paul
-
-> thanks,
-> 
->  - Joel
-> 
-> >
-> > Thoughts?
-> >
-> >                                                         Thanx, Paul
-> >
-> > > Cheers,
-> > > - Joel
-> > >
-> > >                             Thanx, Paul
-> > >
-> > >   --------------------------------------------------------------------
-> > >   ----
-> > >
-> > >   commit 709a917710dc01798e01750ea628ece4bfc42b7b
-> > >
-> > >   Author: Paul E. McKenney <paulmck@kernel.org>
-> > >
-> > >   Date:   Thu Jul 27 13:13:46 2023 -0700
-> > >
-> > >     rcu-tasks: Add printk()s to localize boot-time self-test hang
-> > >
-> > >     Currently, rcu_tasks_initiate_self_tests() prints a message and
-> > >   then
-> > >
-> > >     initiates self tests on up to three different RCU Tasks flavors.
-> > >   If one
-> > >
-> > >     of the flavors has a grace-period hang, it is not easy to work out
-> > >   which
-> > >
-> > >     of the three hung.  This commit therefore prints a message prior
-> > >   to each
-> > >
-> > >     individual test.
-> > >
-> > >     Reported-by: Guenter Roeck <linux@roeck-us.net>
-> > >
-> > >     Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-> > >
-> > >   diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-> > >
-> > >   index 56c470a489c8..427433c90935 100644
-> > >
-> > >   --- a/kernel/rcu/tasks.h
-> > >
-> > >   +++ b/kernel/rcu/tasks.h
-> > >
-> > >   @@ -1981,20 +1981,22 @@ static void test_rcu_tasks_callback(struct
-> > >   rcu_head *rhp)
-> > >
-> > >   static void rcu_tasks_initiate_self_tests(void)
-> > >
-> > >   {
-> > >
-> > >   -    pr_info("Running RCU-tasks wait API self tests\n");
-> > >
-> > >   #ifdef CONFIG_TASKS_RCU
-> > >
-> > >   +    pr_info("Running RCU Tasks wait API self tests\n");
-> > >
-> > >     tests[0].runstart = jiffies;
-> > >
-> > >     synchronize_rcu_tasks();
-> > >
-> > >     call_rcu_tasks(&tests[0].rh, test_rcu_tasks_callback);
-> > >
-> > >   #endif
-> > >
-> > >   #ifdef CONFIG_TASKS_RUDE_RCU
-> > >
-> > >   +    pr_info("Running RCU Tasks Rude wait API self tests\n");
-> > >
-> > >     tests[1].runstart = jiffies;
-> > >
-> > >     synchronize_rcu_tasks_rude();
-> > >
-> > >     call_rcu_tasks_rude(&tests[1].rh, test_rcu_tasks_callback);
-> > >
-> > >   #endif
-> > >
-> > >   #ifdef CONFIG_TASKS_TRACE_RCU
-> > >
-> > >   +    pr_info("Running RCU Tasks Trace wait API self tests\n");
-> > >
-> > >     tests[2].runstart = jiffies;
-> > >
-> > >     synchronize_rcu_tasks_trace();
-> > >
-> > >     call_rcu_tasks_trace(&tests[2].rh, test_rcu_tasks_callback);
-> > >
-> > >References
-> > >
-> > > Visible links:
-> > > 1. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
-> > > 2. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
-> > > 3. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
-> > >
-> > > Hidden links:
-> > > 5. http://box.joelfernandes.org:9080/job/rcutorture_stable/job/linux-5.15.y/lastFailedBuild/artifact/tools/testing/selftests/rcutorture/res/2023.07.28-04.00.44/
