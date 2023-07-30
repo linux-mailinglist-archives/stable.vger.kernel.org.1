@@ -2,177 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C957176835B
-	for <lists+stable@lfdr.de>; Sun, 30 Jul 2023 03:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD2E768360
+	for <lists+stable@lfdr.de>; Sun, 30 Jul 2023 03:33:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbjG3B37 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 21:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54558 "EHLO
+        id S229483AbjG3BdS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 21:33:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjG3B36 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 21:29:58 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F0B2D47;
-        Sat, 29 Jul 2023 18:29:56 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-5222a38c0a0so4805427a12.1;
-        Sat, 29 Jul 2023 18:29:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690680595; x=1691285395;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=h47PWxUJY4ooXK5fyJ1q9IFAXzuyJeCww5vmtT3W8Jw=;
-        b=WtHtHnhpzrNfanl1IxPrvzjwqQr8inR0FCK6nee5iV+tBAaPDx9mH1DYToQj/mjDPc
-         RNnnhTe6v4sz+AAtY3yrtHjx6jTqME73g7Bed64St1cPzYD8xN0zYMFHOsOMVytLesCI
-         j49pisHPJ1ZHW2PmKpV+jDrJflrLWEqUEdGVeTMJTAMsBSgNPXQiI3HWeiW5hrXZRw3j
-         69CBZnLGiSJg5JtTlniRzHI0iT5wFrwXWuM1zWmTOM8Yzi8EbdazTRQToaQ/A9v1Czo/
-         vqouKQ+zDmd5+l/mT4RA9Ku31POAqG1Ixi67yKnKvuJ53fnFHK3dW+sSuQWAlhuM5U92
-         6VoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690680595; x=1691285395;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=h47PWxUJY4ooXK5fyJ1q9IFAXzuyJeCww5vmtT3W8Jw=;
-        b=BUPbiS78iLJoW5udasBjD8HloPu/Xo71wDbWH5540FKzWs9e+cu0KMfYIF4MqIsqwY
-         z9N2l60ud3+TdJjiAQqk0HlAtCoG1m81QCYy27VKuvIzVHUvij/l8QKt5XUOhmKMDoxL
-         8XQTxfHmXwqW/WHK1CpbtU7iC6JnaVVzflT0w6qyDtkiyFWArJqc73nUZNfg1hasYmOF
-         EXqV/fbv8rh2AMys/MhvBt0JtXgGCr7ZziresBPHj+qDBtXYl5+aVKnCTcz5UCW9a8nZ
-         ldz/eNrtz7VBwdZWqYwEVuUfQzXGz+4V5OpVY1mBgZk3A7261DpaILb1yG081GFY41nF
-         dnnA==
-X-Gm-Message-State: ABy/qLZdV6nJsKWjmnH/Pboxs/rczW5tseg95gTfZkREf3gLYFCf+vdS
-        aYv8kRhvvBytiOFvKxZu9NU=
-X-Google-Smtp-Source: APBJJlEkJu6s8QxmoLE96Yye3e2+9QK5Uyie7INpCXldI4pQMVQZsqd2MLR7uzaqdFoij/rMiCJy4Q==
-X-Received: by 2002:a17:907:2c75:b0:997:d627:263a with SMTP id ib21-20020a1709072c7500b00997d627263amr3201488ejc.67.1690680595028;
-        Sat, 29 Jul 2023 18:29:55 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id e1-20020a1709062c0100b0099bd5b72d93sm3931957ejh.43.2023.07.29.18.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Jul 2023 18:29:54 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id CD2D127C005A;
-        Sat, 29 Jul 2023 21:29:51 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Sat, 29 Jul 2023 21:29:51 -0400
-X-ME-Sender: <xms:D73FZE9nU7AmMxu16XtN5KzCEil9rkxqQ_E54Brpl1yAJZ86mDU9mw>
-    <xme:D73FZMsSHglK3cdwGsiB4RD4wmuZtOqzhE9AaB_mvcHCfzSB7jv8j9F9DPS7Z04Vp
-    obwdDM6tMGhxoFXSQ>
-X-ME-Received: <xmr:D73FZKC6NDtU35FazVZGwwB-uccL3lYLMOHe8blrHGGxpIZKT183AegcmTeKrw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrieelgdegiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeetueehteefjedufeefleeifeehgfduffejfeeiteekheejjeefieeuffeu
-    ffegjeenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
-    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
-    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:D73FZEeigqXMs4pMGNfXUu--u02QHHWxwuSC09bGPBl6SP4iHx8RHw>
-    <xmx:D73FZJOmIj50NppVLh2sKjxROe5nixtRMmw48R9v8-4aok7WNA4ipA>
-    <xmx:D73FZOma0yDArd1g8lJBieHhMkz18R1GuJMTzEB094-UHM18w0XEmw>
-    <xmx:D73FZMdsLUKMTKxDsS7oIIlz6h6ZULvsAnODaHmVopZeTj4QVJbRVQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 29 Jul 2023 21:29:51 -0400 (EDT)
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        John Baublitz <john.m.baublitz@gmail.com>,
-        Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org
-Subject: [PATCH 3/3] rust: alloc: Add realloc and alloc_zeroed to the GlobalAlloc impl
-Date:   Sat, 29 Jul 2023 18:29:04 -0700
-Message-ID: <20230730012905.643822-4-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230730012905.643822-1-boqun.feng@gmail.com>
-References: <20230730012905.643822-1-boqun.feng@gmail.com>
+        with ESMTP id S229448AbjG3BdR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 21:33:17 -0400
+Received: from mgamail.intel.com (unknown [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7008DF
+        for <stable@vger.kernel.org>; Sat, 29 Jul 2023 18:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690680796; x=1722216796;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=gy8t2VvZzhoSFIgkjth9Vc54fK/BhJChXX8gCqxm1WQ=;
+  b=hmgOS1lKugXun3JKN6z+bIP/GCGTfDruKWvS09V/lX/A/fk0yy+nQmWr
+   n19iJe3uFtJtbY8uVQ/kN/WZe4AyrUiSXRz1yfsUEYHPZ8Vm0ejGQDN3z
+   OJ/rVECjmLS/HFIGUUmk1sywEKIUJ2PFC6Q0M2Gwrtneorc9/+zgdMHgs
+   lQF3w+U9aW2YnueUrs10wHElOkNu7uhaYyZGCNDfvK4VwxxCUaK7exGOf
+   rrDzXCnLG55dpuPgdrxtzuvvY4jKQZnLglzZksrDb0fJct4UPL8cuRVFw
+   hGur7Dc7TuaLpNaGq6dxSDqSCs3Ien9JcRGoDdtV4ZrhbBzjnHWRm6aC1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10786"; a="455164582"
+X-IronPort-AV: E=Sophos;i="6.01,240,1684825200"; 
+   d="scan'208";a="455164582"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2023 18:33:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10786"; a="727859919"
+X-IronPort-AV: E=Sophos;i="6.01,240,1684825200"; 
+   d="scan'208";a="727859919"
+Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 29 Jul 2023 18:33:14 -0700
+Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qPvIr-0004N7-2V;
+        Sun, 30 Jul 2023 01:33:03 +0000
+Date:   Sun, 30 Jul 2023 09:32:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/3] rust: allocator: Use krealloc_aligned() in
+ KernelAllocator::alloc
+Message-ID: <ZMW9qB3Bw6KFCUdM@c507f7d2ae6a>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230730012905.643822-3-boqun.feng@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Hi,
 
-While there are default impls for these methods, using the respective C
-api's is faster. Currently neither the existing nor these new
-GlobalAlloc method implementations are actually called. Instead the
-__rust_* function defined below the GlobalAlloc impl are used. With
-rustc 1.71 these functions will be gone and all allocation calls will go
-through the GlobalAlloc implementation.
+Thanks for your patch.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/68
-Signed-off-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-[boqun: add size adjustment for alignment requirement]
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/kernel/allocator.rs | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
-index 1aec688cf0e0..6f1f50465ab3 100644
---- a/rust/kernel/allocator.rs
-+++ b/rust/kernel/allocator.rs
-@@ -51,6 +51,33 @@ unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
-             bindings::kfree(ptr as *const core::ffi::c_void);
-         }
-     }
-+
-+    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
-+        // SAFETY:
-+        // - `new_size`, when rounded up to the nearest multiple of `layout.align()`, will not
-+        //   overflow `isize` by the function safety requirement.
-+        // - `layout.align()` is a proper alignment (i.e. not zero and must be a power of two).
-+        let layout = unsafe { Layout::from_size_align_unchecked(new_size, layout.align()) };
-+
-+        // SAFETY:
-+        // - `ptr` is either null or a pointer allocated by this allocator by the function safety
-+        //   requirement.
-+        // - the size of `layout` is not zero because `new_size` is not zero by the function safety
-+        //   requirement.
-+        unsafe { krealloc_aligned(ptr, layout, bindings::GFP_KERNEL) }
-+    }
-+
-+    unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-+        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
-+        // requirement.
-+        unsafe {
-+            krealloc_aligned(
-+                ptr::null_mut(),
-+                layout,
-+                bindings::GFP_KERNEL | bindings::__GFP_ZERO,
-+            )
-+        }
-+    }
- }
- 
- #[global_allocator]
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH 2/3] rust: allocator: Use krealloc_aligned() in KernelAllocator::alloc
+Link: https://lore.kernel.org/stable/20230730012905.643822-3-boqun.feng%40gmail.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.41.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
