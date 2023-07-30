@@ -2,60 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD2E768360
-	for <lists+stable@lfdr.de>; Sun, 30 Jul 2023 03:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AD74768394
+	for <lists+stable@lfdr.de>; Sun, 30 Jul 2023 05:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbjG3BdS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Jul 2023 21:33:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56210 "EHLO
+        id S229462AbjG3DNK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Jul 2023 23:13:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjG3BdR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 21:33:17 -0400
-Received: from mgamail.intel.com (unknown [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7008DF
-        for <stable@vger.kernel.org>; Sat, 29 Jul 2023 18:33:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690680796; x=1722216796;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=gy8t2VvZzhoSFIgkjth9Vc54fK/BhJChXX8gCqxm1WQ=;
-  b=hmgOS1lKugXun3JKN6z+bIP/GCGTfDruKWvS09V/lX/A/fk0yy+nQmWr
-   n19iJe3uFtJtbY8uVQ/kN/WZe4AyrUiSXRz1yfsUEYHPZ8Vm0ejGQDN3z
-   OJ/rVECjmLS/HFIGUUmk1sywEKIUJ2PFC6Q0M2Gwrtneorc9/+zgdMHgs
-   lQF3w+U9aW2YnueUrs10wHElOkNu7uhaYyZGCNDfvK4VwxxCUaK7exGOf
-   rrDzXCnLG55dpuPgdrxtzuvvY4jKQZnLglzZksrDb0fJct4UPL8cuRVFw
-   hGur7Dc7TuaLpNaGq6dxSDqSCs3Ien9JcRGoDdtV4ZrhbBzjnHWRm6aC1
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10786"; a="455164582"
-X-IronPort-AV: E=Sophos;i="6.01,240,1684825200"; 
-   d="scan'208";a="455164582"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2023 18:33:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10786"; a="727859919"
-X-IronPort-AV: E=Sophos;i="6.01,240,1684825200"; 
-   d="scan'208";a="727859919"
-Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 29 Jul 2023 18:33:14 -0700
-Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qPvIr-0004N7-2V;
-        Sun, 30 Jul 2023 01:33:03 +0000
-Date:   Sun, 30 Jul 2023 09:32:24 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/3] rust: allocator: Use krealloc_aligned() in
- KernelAllocator::alloc
-Message-ID: <ZMW9qB3Bw6KFCUdM@c507f7d2ae6a>
+        with ESMTP id S229437AbjG3DNI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Jul 2023 23:13:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6676FE0;
+        Sat, 29 Jul 2023 20:13:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4A6460766;
+        Sun, 30 Jul 2023 03:13:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E9FC433C8;
+        Sun, 30 Jul 2023 03:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690686786;
+        bh=PbT4TVcWbZX47F+OnfA/lc80SFPdh68174zz4cnom9Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HkXaFyEu7x1Lm3AURbJ5G1Sq1tNlDDKCKR0daBDN8eYDoeX617iEbG5WJs1nhcy7H
+         /kuHgVyp9MN7OgVixxTn9oiw8oBnz9bpj26OtRYc8fPOBuxOXR+0ysLHrTLgxwN7Fn
+         cAfnrWumy2pTFAnQgxD0IWQkAX24tAX8Opd6mKsZtMKI6payG4DRFFEfdahTR61hMF
+         8WrJMp/ENQynOPjHfn9NP1t1bUOO+UyHIHxCZEmdN0aF/kc++7k2XEU7pFbkqdbjKe
+         smlpNLa27FYhPXOafMb+Q9JIlRchZ9UR6c2GCOSWcclDnIAy4HpUmRmXkKiH59K/27
+         +3no7HU4y5C9g==
+Date:   Sun, 30 Jul 2023 11:12:55 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Fabio Estevam <festevam@gmail.com>
+Cc:     hs@denx.de, linux-arm-kernel@lists.infradead.org, sboyd@kernel.org,
+        abelvesa@kernel.org, linux-clk@vger.kernel.org,
+        Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] ARM: dts: imx6sx: Remove LDB endpoint
+Message-ID: <20230730031255.GU151430@dragon>
+References: <20230712115301.690714-1-festevam@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230730012905.643822-3-boqun.feng@gmail.com>
+In-Reply-To: <20230712115301.690714-1-festevam@gmail.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,21 +55,18 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Wed, Jul 12, 2023 at 08:52:59AM -0300, Fabio Estevam wrote:
+> From: Fabio Estevam <festevam@denx.de>
+> 
+> Remove the LDB endpoint description from the common imx6sx.dtsi
+> as it causes regression for boards that has the LCDIF connected
+> directly to a parallel display.
+> 
+> Let the LDB endpoint be described in the board devicetree file
+> instead.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: b74edf626c4f ("ARM: dts: imx6sx: Add LDB support")
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH 2/3] rust: allocator: Use krealloc_aligned() in KernelAllocator::alloc
-Link: https://lore.kernel.org/stable/20230730012905.643822-3-boqun.feng%40gmail.com
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Applied, thanks!
