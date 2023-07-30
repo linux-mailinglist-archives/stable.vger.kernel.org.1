@@ -2,170 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56ADA7683A2
-	for <lists+stable@lfdr.de>; Sun, 30 Jul 2023 06:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16AA8768626
+	for <lists+stable@lfdr.de>; Sun, 30 Jul 2023 17:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbjG3EAJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 30 Jul 2023 00:00:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37352 "EHLO
+        id S229520AbjG3PMD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 30 Jul 2023 11:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjG3EAI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 30 Jul 2023 00:00:08 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70EC7113;
-        Sat, 29 Jul 2023 21:00:06 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1bb893e6365so21336785ad.2;
-        Sat, 29 Jul 2023 21:00:06 -0700 (PDT)
+        with ESMTP id S229550AbjG3PMC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 30 Jul 2023 11:12:02 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A2421713
+        for <stable@vger.kernel.org>; Sun, 30 Jul 2023 08:11:59 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b9b6c57c94so9710971fa.0
+        for <stable@vger.kernel.org>; Sun, 30 Jul 2023 08:11:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690689605; x=1691294405;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AAH7kcctHGY9q7+ANxa5bVlorYyFiJpGeFYFxj8E/sQ=;
-        b=kUub4sDP5yS8kuvvBs7FUJotIVw6CXrxbwTd5U4zze+9PW3Fqcjh3DULx4HIgM8zEZ
-         IJ5oj2wF/YGTPJ2vHwzw0RVKKtd7Y/RUB5oUkP7O1egAv/m3pMD7I6IJLU4o1+cZgllL
-         4J2+q1lkfydk5+87hao6HxOdKN/m5FRC5Xw1CXqQlvozy0zDYlUW7dt4udwPP/4ifzT+
-         oAilLlsDx+VMDgq2vnl9qtuQwTG9WHQ7in14AoabRPP6fJXhfilDjg2p/xlKTr9n0Jxt
-         5OjLa1rSE0zvONJjNsMRS2VqNYyeHdIffVWXBf8VRITLZ+rVrrf5apszMIXj2WlqH7s6
-         cDIA==
+        d=gmail.com; s=20221208; t=1690729917; x=1691334717;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pUpbHkVyKL4HsUhsvSG/1TM5KhJXa2rh1uwR0oUZw80=;
+        b=phgTmwGqsTYC1GmPY3u5qHO84SEGM61W8PIpLs6NKnPEu3V1n6A8WcfwptMjT5sRCB
+         LyYHBMnNoLlukd/wUtrG0mXQzsBTA4Fm/PLh0zn7O2OjWU0ZFKEjOjqNBYn7Nr0VGUiE
+         Tns1+uxolfwbkSwGQNz979wwmH8bCEDHgLVZRhDWKyuJGNRhlxy9wPKPXfnkf+KKOCP7
+         OCyESrMSwqPF1qXkN2WxUx+lIX57pVXmQYCp0B+O7v1rfQIuIydkGSzgG5Aps9QRZDwT
+         0ICTiLyPLxDqbUeN4/DwPxli0opfZvu+zAwOVWxRXsgfSfalwekUWlFLzsKnEBkRZh8q
+         MbMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690689605; x=1691294405;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AAH7kcctHGY9q7+ANxa5bVlorYyFiJpGeFYFxj8E/sQ=;
-        b=A91+lrR61C7+yfK8wmcoL4S43hjWa8u80qvl5AbD4jQmiALgOkh/Lls6XSupWQEprm
-         N9KfXiGQp6SKCKzdQnXt6X0iqtQlkg7UODGEwWpAwXHdW4IhqCL5ew4DV0FUZM49ZMua
-         I9xpA0wDhRLpaYXGB0WaBGhwoZCVUlfCkYgLea7HSrvQtnrBtLssXVw4yViDMdPWId5W
-         4J1RlwkouyEnrKQ+BcE/ivBeNJ7JgbcV1nCiyDfKpmpKu00Uh/o1o6t9tnWZ9q6qqxk3
-         E9U1rGHHY3W+pXpFpDp9V6JWhyUFkyX/8Vjxh/hIq5tpJM7b6Zrs7Nuqs4SAgDElu2A1
-         BI9Q==
-X-Gm-Message-State: ABy/qLb80lr5ojl2PYTx/Kzd+q8qEh3rPgrE8RiRK5w0MKjyeV7ahb10
-        CRIbpIdz/hN8qWAeBHtzcbU=
-X-Google-Smtp-Source: APBJJlE4XatKc4s8CMeQH+rvGk5qoJTBZ6cP3YOOttJNhx/ntAHN+p6q2otxn6gaq1UGPyJ+zwjYYw==
-X-Received: by 2002:a17:903:1246:b0:1b7:e86f:7631 with SMTP id u6-20020a170903124600b001b7e86f7631mr7879946plh.19.1690689605362;
-        Sat, 29 Jul 2023 21:00:05 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l19-20020a170902d35300b001bb9f104330sm5940212plk.240.2023.07.29.21.00.03
+        d=1e100.net; s=20221208; t=1690729917; x=1691334717;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pUpbHkVyKL4HsUhsvSG/1TM5KhJXa2rh1uwR0oUZw80=;
+        b=Bxe2BdMPXNYM+ERvpUHXlAyhzPWDXbsXqCLUks/ZLjkyevbxrV5TVKJxk9yUbZfokT
+         8nTCwgyoM4KQz/1Ct3p0E60Qf7SA4jrVMN74eNsR9wN6/l9Gp4CnI3vpE9abqvbOSCH0
+         mqvJHWEUx3/mM5zrNhtVO6crTfsPH9o63K4gClI5V7OspRkH2z/1flHVyco6s+5Rel0k
+         Qg86MoLNDiqjUXAj3VW5kNZKnuVdwtbrjqC7+QI7lKYX+4I5rnmRBYodkAbUpol52hUn
+         O0cnBUcoMV5Y28VKgqWuHeqMkMEbjPhyNQxA/7iV18RHFhjXxMHBkhSU5f7UgpLIZ4dg
+         8qzA==
+X-Gm-Message-State: ABy/qLbwLA35R2+nHK0YkPv7yyjPjAg5bOQFEpoLwg+N2RlhjvpWH26+
+        gFNQObojxw2E8iVpquEgijvRT0zPDwy8Zw==
+X-Google-Smtp-Source: APBJJlGXP1IKHBT+3+CMs2OXt1jwXiLskpch5uLhfAMYlHl6ITwVRPq95W+vANNTA+22wcwNQ+5Viw==
+X-Received: by 2002:a2e:bc13:0:b0:2b6:af68:6803 with SMTP id b19-20020a2ebc13000000b002b6af686803mr2629669ljf.4.1690729916951;
+        Sun, 30 Jul 2023 08:11:56 -0700 (PDT)
+Received: from ?IPV6:2001:470:28:187::46f? ([2001:470:28:187::46f])
+        by smtp.gmail.com with ESMTPSA id u7-20020a2ea167000000b002b93cb80acbsm2109421ljl.91.2023.07.30.08.11.56
+        for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Jul 2023 21:00:04 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
-Date:   Sat, 29 Jul 2023 21:00:02 -0700
+        Sun, 30 Jul 2023 08:11:56 -0700 (PDT)
+Message-ID: <21bae5f7-b765-9b74-c788-2cda42879181@gmail.com>
+Date:   Sun, 30 Jul 2023 18:11:55 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
+From:   Alexey Kuznetsov <kuznetsov.alexey@gmail.com>
+Subject: Asus Laptop wont resume by timer (timerfd_settime)
+To:     stable@vger.kernel.org
 Content-Language: en-US
-To:     Joel Fernandes <joel@joelfernandes.org>, paulmck@kernel.org
-Cc:     Pavel Machek <pavel@denx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        rcu@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>
-References: <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
- <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: scheduler problems in -next (was: Re: [PATCH 6.4 000/227] 6.4.7-rc1
- review)
-In-Reply-To: <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/27/23 16:18, Joel Fernandes wrote:
+Hello!
 
-[ ... ]
+I'm using Asus Vivobook Laptop. Which fails to resume by timer set by timerfd_settime function call. It simply ignores the timer and keeps sleeping until I press any key. When key pressed notebook wakes up and treating key resume event as timer event.
 
->> I freely confess that I am having a hard time imagining what would
->> be CPU dependent in that code.  Timing, maybe?  Whatever the reason,
->> I am not seeing these failures in my testing.
->>
->> So which of the following Kconfig options is defined in your .config?
->> CONFIG_TASKS_RCU, CONFIG_TASKS_RUDE_RCU, and CONFIG_TASKS_TRACE_RCU.
->>
->> If you have more than one of them, could you please apply this patch
->> and show me the corresponding console output from the resulting hang?
-> 
-> FWIW, I am not able to repro this issue either. If a .config can be shared of the problem system, I can try it out to see if it can be reproduced on my side.
-> 
+I tested this using systemd and its HibernateDelaySec option, which allows to wake system during the sleep by timer to switch to hibernate state replacing suspend mode. During suspend notebook simply do nothing when timer hits, and when I press any key it wakes, and went to hibernate (treating key pressing wake event as timer event). Systemd has checks which should prevent hibernating if system wakes by key press, but those checks does not fails. I tested the same suspend / hibernate software on desktop - everything working fine.
 
-I managed to bisect the problem. See bisect log below. Bisect repeated twice.
-so it should be reliable. I don't really understand it, but the following
-reverts fix the problem. This is on top of next-20230721 because next-20230728
-crashes immediately in my tests.
+This systemd code responsible for suspend / timer / hibernate logic:
 
-0caafe9b94ab (HEAD) Revert "sched/fair: Remove sched_feat(START_DEBIT)"
-518bdbd39fdb Revert "sched/fair: Add lag based placement"
-a011162c3e32 Revert "sched/fair: Implement an EEVDF-like scheduling policy"
-df579720bf98 Revert "sched/fair: Commit to lag based placement"
-aac459a7e738 Revert "sched/smp: Use lag to simplify cross-runqueue placement"
-8d686eb173e1 Revert "sched/fair: Commit to EEVDF"
-486474c50f95 Revert "sched/debug: Rename sysctl_sched_min_granularity to sysctl_sched_base_slice"
-79e94d67d08a Revert "sched/fair: Propagate enqueue flags into place_entity()"
-ae867bc97b71 (tag: next-20230721) Add linux-next specific files for 20230721
+tfd = timerfd_create(CLOCK_BOOTTIME_ALARM, TFD_NONBLOCK|TFD_CLOEXEC);
+timerfd_settime(tfd, 0, &ts, NULL)
+execute(sleep_config, SLEEP_HYBRID_SLEEP, NULL)
+fd_wait_for_event(tfd, POLLIN, 0)
+woken_by_timer = FLAGS_SET(r, POLLIN)
+check_wakeup_type()
 
-For context: x86 images (32 and 64 bit) in -next tend to hang at
+Basically it is POSIX calls responsible for setting timer alarms set and reading timer status.
 
-[    2.309323] RCU Tasks: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1.
-[    2.311634] Running RCU-tasks wait API self tests
+I've tested on recent debian kernel Linux 6.1.0-10-amd64 and stable release from kernel.org  Linux 6.4.7 - same behavior.
 
-The hang is not seen with every boot; it happens roughly about once every
-10 boot attempts. It is not CPU dependent as I initially thought.
+It most likely hardware/EFI or kernel issue.
 
-Configuration file is at http://server.roeck-us.net/qemu/x86-next/config.
-Example qemu command line:
+Full logs:
 
-qemu-system-x86_64 -kernel arch/x86/boot/bzImage -M q35 -cpu Broadwell-noTSX -no-reboot \
-      -snapshot -device e1000,netdev=net0 -netdev user,id=net0 -m 256 \
-      -drive file=rootfs.ext2,format=raw,if=ide \
-      --append "earlycon=uart8250,io,0x3f8,9600n8 root=/dev/sda console=ttyS0" \
-      -nographic -monitor none
+https://linux-hardware.org/?probe=d1a4b2769a
 
-Guenter
 
----
-# bad: [ae867bc97b713121b2a7f5fcac68378a0774739b] Add linux-next specific files for 20230721
-# good: [fdf0eaf11452d72945af31804e2a1048ee1b574c] Linux 6.5-rc2
-git bisect start 'HEAD' 'v6.5-rc2'
-# good: [f09bf8f6c8cbbff6f52523abcda88c86db72e31c] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git
-git bisect good f09bf8f6c8cbbff6f52523abcda88c86db72e31c
-# good: [86374a6210aeebceb927204d80f9e65739134bc3] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
-git bisect good 86374a6210aeebceb927204d80f9e65739134bc3
-# bad: [d588c93cae9e3dff15d125e755edcba5d842f41a] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git
-git bisect bad d588c93cae9e3dff15d125e755edcba5d842f41a
-# good: [acadcaf8c67062ad4c1a0ad0e05bf429b04740c5] Merge branch 'for-next' of git://git.kernel.dk/linux-block.git
-git bisect good acadcaf8c67062ad4c1a0ad0e05bf429b04740c5
-# good: [2c73542f4cdc59fd23514f9e963d0b3419bd5e16] Merge branch 'next' of git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
-git bisect good 2c73542f4cdc59fd23514f9e963d0b3419bd5e16
-# good: [be15b91155cd5a6c4ac8f46740ae62e610981b79] Merge remote-tracking branch 'spi/for-6.6' into spi-next
-git bisect good be15b91155cd5a6c4ac8f46740ae62e610981b79
-# bad: [8f4995b370a57e7ad92c0f66664d171b23234337] Merge branch into tip/master: 'sched/eevdf'
-git bisect bad 8f4995b370a57e7ad92c0f66664d171b23234337
-# bad: [99d4d26551b56f4e523dd04e4970b94aa796a64e] rbtree: Add rb_add_augmented_cached() helper
-git bisect bad 99d4d26551b56f4e523dd04e4970b94aa796a64e
-# good: [7ff1693236f5d97a939dbeb660c07671a2d57071] sched/fair: Implement prefer sibling imbalance calculation between asymmetric groups
-git bisect good 7ff1693236f5d97a939dbeb660c07671a2d57071
-# good: [48b5583719cdfbdee238f9549a6a1a47af2b0469] sched/headers: Rename task_struct::state to task_struct::__state in the comments too
-git bisect good 48b5583719cdfbdee238f9549a6a1a47af2b0469
-# good: [af4cf40470c22efa3987200fd19478199e08e103] sched/fair: Add cfs_rq::avg_vruntime
-git bisect good af4cf40470c22efa3987200fd19478199e08e103
-# bad: [86bfbb7ce4f67a88df2639198169b685668e7349] sched/fair: Add lag based placement
-git bisect bad 86bfbb7ce4f67a88df2639198169b685668e7349
-# bad: [e0c2ff903c320d3fd3c2c604dc401b3b7c0a1d13] sched/fair: Remove sched_feat(START_DEBIT)
-git bisect bad e0c2ff903c320d3fd3c2c604dc401b3b7c0a1d13
-# first bad commit: [e0c2ff903c320d3fd3c2c604dc401b3b7c0a1d13] sched/fair: Remove sched_feat(START_DEBIT)
+https://bugzilla.kernel.org/show_bug.cgi?id=217728
+
+
+-- AK
 
