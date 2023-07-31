@@ -2,96 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEDA2769439
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 13:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C39076943D
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 13:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231921AbjGaLHp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 07:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54856 "EHLO
+        id S231447AbjGaLIb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 07:08:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230212AbjGaLHo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 07:07:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8C71BF;
-        Mon, 31 Jul 2023 04:07:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D10FC6104B;
-        Mon, 31 Jul 2023 11:07:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6745EC433C7;
-        Mon, 31 Jul 2023 11:07:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690801663;
-        bh=RV8Rk8epBSDHGl4CjLo2RB50HeXG/xuM7WBwj6ffrfg=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=hnQj3Y89tF3k+OzGkCF13kZ7RTEH+3Ve6nekpXyfQ8I12hXlUTh7joL2PooaC3Eq7
-         jmEK0Jman9bikOnW6zmcvrjYPz9Dx48cDMAu9Rv+0HhTpZtpGkdKA1fB0NI+IiQr13
-         59RKH/Y6JJvx5HG3rWzGE3KBJkaiMRdYLTew3L2ZbjYjNFcMaZ8pVW6tuPKdSU8QW4
-         HXOXccFy1tW1ILsqNQeXvlwY1Svb+E4wVrNQhSgwy3xUN11bziFqS/CcmrfSEGvB3l
-         25qfp5D9GNAIjFoQYEPUw5CzqMOzPwhMbVWdRam/9fCDetqzjws856YVm0PPDLtYKp
-         +ZAcDBAGrru7g==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 31 Jul 2023 11:07:39 +0000
-Message-Id: <CUGB5ZDAQVCH.1MBPZYSTIKAVO@seitikki>
-Cc:     <mario.limonciello@amd.com>,
-        <James.Bottomley@hansenpartnership.com>, <Jason@zx2c4.com>,
-        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <regressions@leemhuis.info>, <stable@vger.kernel.org>,
-        <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Daniil Stas" <daniil.stas@posteo.net>
-X-Mailer: aerc 0.14.0
-References: <20230214201955.7461-2-mario.limonciello@amd.com>
- <20230727183805.69c36d6e@g14> <CUE1Z76QDX0Z.2K0OU6TPMS50X@seitikki>
- <20230728231810.48370d44@g14> <CUGA0YM7BIJN.3RDWZ1WZSWG28@seitikki>
- <20230731132837.64690d7b@g14>
-In-Reply-To: <20230731132837.64690d7b@g14>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231516AbjGaLIa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 07:08:30 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2E3E78;
+        Mon, 31 Jul 2023 04:08:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690801708; x=1722337708;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qgnwtWhbjFgSb/5GdbOTZT6iLncUhLzvzU+UhREi7mA=;
+  b=YXspNeg6G8Lgipgnzri93Mb+AhSSYT02Ldfc8iXpHeOwag/foH3vH+Fm
+   5XKjyka8kCd/xCDGaI6g03N5Di/AvPSInsaybGL1JxfUGP5UXcjW2xgRC
+   J0ZSggVO2g1YkdT6bBOHDZmq4Akb3MTWqNCxGzXPx2oUPvTUmOaOwWkq0
+   HsyJ9WaD4PUx7cZu7QSXG65dqZhF9YXZ9YM9VygLUQQOXIWAZ1B/qA43F
+   gKPZsUzrke57sdlGRC8/NSOBH0+ML5RpcDBgZHlusR6dg1rmoPC/sz1Lw
+   G2dnxoU3GAEgCpLX9ruTg5DEZtzyJD3r0EEqr3ZbeEflwdQN6v0+Cx5DN
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10787"; a="399936113"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
+   d="scan'208";a="399936113"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 04:08:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="871644682"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 31 Jul 2023 04:08:27 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 31 Jul 2023 14:08:24 +0300
+Date:   Mon, 31 Jul 2023 14:08:24 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Badhri Jagan Sridharan <badhri@google.com>
+Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net, kyletso@google.com,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: tcpm: Fix response to vsafe0V event
+Message-ID: <ZMeWKDi99T6tBRg8@kuha.fi.intel.com>
+References: <20230712085722.1414743-1-badhri@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230712085722.1414743-1-badhri@google.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon Jul 31, 2023 at 10:28 AM UTC, Daniil Stas wrote:
-> On Mon, 31 Jul 2023 10:14:05 +0000
-> "Jarkko Sakkinen" <jarkko@kernel.org> wrote:
->
-> > On Fri Jul 28, 2023 at 8:18 PM UTC, Daniil Stas wrote:
-> > > On Fri, 28 Jul 2023 19:30:18 +0000
-> > > "Jarkko Sakkinen" <jarkko@kernel.org> wrote:
-> > > =20
-> > > > On Thu Jul 27, 2023 at 3:38 PM UTC, Daniil Stas wrote: =20
-> >  [...] =20
-> > > >=20
-> > > > This is needs a bit more elaboration in order to be comprehended.
-> > > >=20
-> > > > Do you mean by "stutter" unexpected delays and when do they
-> > > > happen?
-> > > >=20
-> > > > BR, Jarkko =20
-> > >
-> > > Yes, unexpected delays. They just happen randomly.
-> > > You can google "AMD fTPM stuttering", there are a lot of examples.
-> > > Here is one: https://www.youtube.com/watch?v=3DTYnRL-x6DVI =20
-> >=20
-> > What if you make tpm_amd_is_rng_defective() to unconditonally return
-> > true? Does this make the problem dissappear, or not?
-> >=20
-> > BR, Jarkko
->
-> I already tried compiling kernel without CONFIG_HW_RANDOM_TPM enabled,
-> which does the same.
-> Yes, it removes the issue.
+Hi,
 
-Thank you, just wanted sanity check that I exactly know what is going on.
+I'm sorry to keep you waiting.
 
-BR, Jarkko
+On Wed, Jul 12, 2023 at 08:57:22AM +0000, Badhri Jagan Sridharan wrote:
+> Do not transition to SNK_UNATTACHED state when receiving vsafe0v event
+> while in SNK_HARD_RESET_WAIT_VBUS. Ignore VBUS off events as well as
+> in some platforms VBUS off can be signalled more than once.
+> 
+> [143515.364753] Requesting mux state 1, usb-role 2, orientation 2
+> [143515.365520] pending state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_SINK_ON @ 650 ms [rev3 HARD_RESET]
+> [143515.632281] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_HARD_RESET_SINK_OFF, polarity 1, disconnected]
+> [143515.637214] VBUS on
+> [143515.664985] VBUS off
+> [143515.664992] state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_WAIT_VBUS [rev3 HARD_RESET]
+> [143515.665564] VBUS VSAFE0V
+> [143515.665566] state change SNK_HARD_RESET_WAIT_VBUS -> SNK_UNATTACHED [rev3 HARD_RESET]
+> 
+> Fixes: 28b43d3d746b ("usb: typec: tcpm: Introduce vsafe0v for vbus")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 829d75ebab42..cc1d83926497 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -5349,6 +5349,10 @@ static void _tcpm_pd_vbus_off(struct tcpm_port *port)
+>  		/* Do nothing, vbus drop expected */
+>  		break;
+>  
+> +	case SNK_HARD_RESET_WAIT_VBUS:
+> +		/* Do nothing, its OK to receive vbus off events */
+> +		break;
+> +
+>  	default:
+>  		if (port->pwr_role == TYPEC_SINK && port->attached)
+>  			tcpm_set_state(port, SNK_UNATTACHED, tcpm_wait_for_discharge(port));
+> @@ -5395,6 +5399,9 @@ static void _tcpm_pd_vbus_vsafe0v(struct tcpm_port *port)
+>  	case SNK_DEBOUNCED:
+>  		/*Do nothing, still waiting for VSAFE5V for connect */
+>  		break;
+> +	case SNK_HARD_RESET_WAIT_VBUS:
+> +		/* Do nothing, its OK to receive vbus off events */
+> +		break;
+>  	default:
+>  		if (port->pwr_role == TYPEC_SINK && port->auto_vbus_discharge_enabled)
+>  			tcpm_set_state(port, SNK_UNATTACHED, 0);
+> 
+> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+> -- 
+> 2.41.0.255.g8b1d071c50-goog
+
+-- 
+heikki
