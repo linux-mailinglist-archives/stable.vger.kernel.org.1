@@ -2,216 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C552C769246
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 11:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E1AB7692A0
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 12:01:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjGaJvD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 05:51:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36746 "EHLO
+        id S231261AbjGaKBp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 06:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230094AbjGaJui (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 05:50:38 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56C91BD2;
-        Mon, 31 Jul 2023 02:49:43 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-686f38692b3so4077682b3a.2;
-        Mon, 31 Jul 2023 02:49:43 -0700 (PDT)
+        with ESMTP id S231297AbjGaKBT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 06:01:19 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F091D3598;
+        Mon, 31 Jul 2023 02:59:32 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-99bccc9ec02so684228666b.2;
+        Mon, 31 Jul 2023 02:59:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690796983; x=1691401783;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=srChBgqkK2HgGpCSRgI2R97JsxAcdTHmiRn2ciHkn/Y=;
-        b=p1r5iHFCJoYcfwDUrmDWxBxPw6HqRaQG3xB8yYmbvEY+VYS7gw4oolqV+Z/nnfYg5M
-         oEV7LlRg5v/1Bt84bYMiW8YjIA7p3L0RxTyU3rreH8LVurcwMhXijRz7jAPR/vWwY0IY
-         tQs/4WJ0qFxqb9By1De8gqvGMlQCa2pWz6hN2dwl0pxx0L3G3lXcu0v0etR8rbwONHuH
-         AL9BK9mquSqih5nFnop3SNa5QXcKOfUR3DvZ9mPo//l8b1dGvOQYfSQXIt7Ur7ayzqJz
-         i4VcNeSLb65rPUUtBulKhqNvjkIOVqdhkm/MVWWsV3uglHHHGO3gS56UHxK852Zyat8B
-         UsPw==
+        d=gmail.com; s=20221208; t=1690797569; x=1691402369;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=y6btwtxFM0exA7hajr4yQPObG72hgpwZQHb0o/diXn8=;
+        b=KYGP/raz1IL6SXz9GdbWlegE4tKzmySleQiJiEGnai6C+nJmxDJp+0DqPvH1sJAWDa
+         o8c9+MdioOU3zMbVBRWb0jVLuw4ZhMcAuF0+5Be3d+QPyk/ODbFKcYwhVgHz1Yw0gUmu
+         OKYhrI/OANqx2fS9VE6yhVCNakZw1OYVFWNmbYtk2Q7hycUQIZFQzwCaqol4IMiIAoNc
+         ZY5JlKXzpoBKFq/EAou7z/1GDYtKlOE7XQtFH7V5S1O+fdWPZ2QAhQgEn8tXTaDBaZS9
+         lYxkKXxBkpOcOwl4XZ2nQNQe5ItCo98rDX+k0wJ+1Bt0fwsEE8evnf299mTaKvZqHGwf
+         1mKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690796983; x=1691401783;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=srChBgqkK2HgGpCSRgI2R97JsxAcdTHmiRn2ciHkn/Y=;
-        b=Axi44AwssO3ODLFVW02E+wewwsKLP5T8AXfG6BJwLWJiAxO/al0NLmbTV5kWHQlZ98
-         5pOuXyQlGNJE1bAriRipCawWCOBtZaXw3GS/IwHS1tBkewiYlAxqApEY+fIeJjcOCQ7l
-         PKC3Q1lxKD9GZiVOB8N7k9aURS7OgjqU817M5onoFxt0xJE6Wws4NM0JxHbWPCFAegFl
-         mBoDSC61yHDOAo5SO4/v7XRowLfWH7Tbm9Hny9Jy4ZNk5JlAXquD34Rg6kOH8/s4TqFn
-         a2faCf2U6pwOtEc/SyjZYCZfrOE7X9pWXAY6A4WsGiXDpJvd5+9y6x1tQ/Bzwuka7ktO
-         PLDA==
-X-Gm-Message-State: ABy/qLZAaud8tpAT3dnxsPS4UYK7ZsYPKo63wweXBi1ZuwRriuxg9b51
-        y506/P8fe8dI69OU6jyq4oE=
-X-Google-Smtp-Source: APBJJlHZAthHl4OKjoHHK6ESw06lVprmQUtSl7arS/NlwVct68uoaFo12mTuuHfBABubGVEyJ3stBw==
-X-Received: by 2002:a05:6a21:a105:b0:133:ebf2:96da with SMTP id aq5-20020a056a21a10500b00133ebf296damr8970908pzc.41.1690796983236;
-        Mon, 31 Jul 2023 02:49:43 -0700 (PDT)
-Received: from bangji.roam.corp.google.com ([117.111.1.150])
-        by smtp.gmail.com with ESMTPSA id w5-20020a170902d3c500b001bbd1562e75sm8117852plb.55.2023.07.31.02.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 02:49:42 -0700 (PDT)
-Sender: Namhyung Kim <namhyung@gmail.com>
-From:   Namhyung Kim <namhyung@kernel.org>
-To:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>
-Cc:     Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-perf-users@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH 2/2] perf hists browser: Fix the number of entries for 'e' key
-Date:   Mon, 31 Jul 2023 02:49:33 -0700
-Message-ID: <20230731094934.1616495-2-namhyung@kernel.org>
-X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
-In-Reply-To: <20230731094934.1616495-1-namhyung@kernel.org>
-References: <20230731094934.1616495-1-namhyung@kernel.org>
+        d=1e100.net; s=20221208; t=1690797569; x=1691402369;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y6btwtxFM0exA7hajr4yQPObG72hgpwZQHb0o/diXn8=;
+        b=PdI4j4P9I2VsoGkrqBAr7Po85JT8PuHIx3WagNg8Jn9r0Pcb+D3D/hmr+omSHTqo+C
+         S3gY0LifZSaBpirEa64iFQcYZd8DIGhpddd0fhKQr5/+qtyUfkXaT6ohHY4m8ZoHuMgM
+         GWZvGL+KoWWwHHeV2S8NuUR67iOtAwwv4c7XbTlp575v5HT12/FnsD237dK5jgx9eCmi
+         El+qCbEQ9xIHlH+oRxLFkfkyV/uBkhmtEHKPTYN63efW9gxJgYj8noCXy5AuzwTBzCUv
+         PHouve+bmqI0OXfgQGZ7M9/BfQ8Q5N61NrlmlWFcL4D29+ipfgbfq14/orqRC3dL458d
+         22vQ==
+X-Gm-Message-State: ABy/qLZdr46hLLdkFOvf3I9VKLgMMCy2DkprlMtdjBfd4D8pFEdbSi3q
+        4sH+vCPwnUQgIo8Z3lkGAHM=
+X-Google-Smtp-Source: APBJJlHXWtuHxida9k1IkQW8Pq1jD1+TJQF0qW3h0tswoDv7cYKWZ9nDxIcCkHwunl05C+kCHUlXcQ==
+X-Received: by 2002:a17:906:2219:b0:99b:e5c3:2e45 with SMTP id s25-20020a170906221900b0099be5c32e45mr6118052ejs.28.1690797568995;
+        Mon, 31 Jul 2023 02:59:28 -0700 (PDT)
+Received: from [192.168.3.32] ([213.149.38.169])
+        by smtp.gmail.com with ESMTPSA id x23-20020a1709065ad700b009893b06e9e3sm5991877ejs.225.2023.07.31.02.59.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Jul 2023 02:59:28 -0700 (PDT)
+Message-ID: <ee25836b-f49f-acf2-086f-3c39f1e088b8@gmail.com>
+Date:   Mon, 31 Jul 2023 11:59:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH V5] PCI: qcom: Fixing broken pcie enumeration for 2_3_3
+ configs ops
+To:     Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh@kernel.org, mani@kernel.org, lpieralisi@kernel.org,
+        bhelgaas@google.com, kw@linux.com, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        gregkh@linuxfoundation.org, dmitry.baryshkov@linaro.org
+Cc:     stable@vger.kernel.org
+References: <20230724063429.3980462-1-quic_srichara@quicinc.com>
+Content-Language: en-US
+From:   Robert Marko <robimarko@gmail.com>
+In-Reply-To: <20230724063429.3980462-1-quic_srichara@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The 'e' key is to toglle expand/collapse the selected entry only.  But
-the current code has a bug that it only increases the number of entries
-by 1 in the hierarchy mode so users cannot move under the current entry
-after the key stroke.  This is due to a wrong assumption in the
-hist_entry__set_folding().
 
-The commit b33f922651011 ("perf hists browser: Put hist_entry folding
-logic into single function") factored out the code, but actually it
-should be handled separately.  The hist_browser__set_folding() is to
-update fold state for each entry so it needs to traverse all (child)
-entries regardless of the current fold state.  So it increases the
-number of entries by 1.
+On 24. 07. 2023. 08:34, Sricharan Ramabadhran wrote:
+> PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for IPQ8074 2_3_3 post_init.
+> PCIe slave addr register offset is 0x358, but was wrongly changed to
+> 0x168 as a part of commit 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix
+> from register definitions"). Fixing it, by using the right macro and remove
+> the unused PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
+>
+> Without this access to the registers of slave addr space like iATU etc
+> are broken leading to pcie enumeration failure.
+>
+> Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
+> Cc: <Stable@vger.kernel.org>
+> Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
 
-But the hist_entry__set_folding() only cares the currently selected
-entry and its all children.  So it should count all unfolded child
-entries.  This code is implemented in hist_browser__toggle_fold()
-already so we can just call it.
+I can confirm this fixes Gen2 PCIe on Xiaomi AX9000 (IPQ8072A) so:
+Tested-by: Robert Marko <robimarko@gmail.com>
 
-Fixes: b33f922651011 ("perf hists browser: Put hist_entry folding logic into single function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- tools/perf/ui/browsers/hists.c | 58 ++++++++++++++--------------------
- 1 file changed, 24 insertions(+), 34 deletions(-)
-
-diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
-index d8b88f10a48d..70db5a717905 100644
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -407,11 +407,6 @@ static bool hist_browser__selection_has_children(struct hist_browser *browser)
- 	return container_of(ms, struct callchain_list, ms)->has_children;
- }
- 
--static bool hist_browser__he_selection_unfolded(struct hist_browser *browser)
--{
--	return browser->he_selection ? browser->he_selection->unfolded : false;
--}
--
- static bool hist_browser__selection_unfolded(struct hist_browser *browser)
- {
- 	struct hist_entry *he = browser->he_selection;
-@@ -584,8 +579,8 @@ static int hierarchy_set_folding(struct hist_browser *hb, struct hist_entry *he,
- 	return n;
- }
- 
--static void __hist_entry__set_folding(struct hist_entry *he,
--				      struct hist_browser *hb, bool unfold)
-+static void hist_entry__set_folding(struct hist_entry *he,
-+				    struct hist_browser *hb, bool unfold)
- {
- 	hist_entry__init_have_children(he);
- 	he->unfolded = unfold ? he->has_children : false;
-@@ -603,34 +598,12 @@ static void __hist_entry__set_folding(struct hist_entry *he,
- 		he->nr_rows = 0;
- }
- 
--static void hist_entry__set_folding(struct hist_entry *he,
--				    struct hist_browser *browser, bool unfold)
--{
--	double percent;
--
--	percent = hist_entry__get_percent_limit(he);
--	if (he->filtered || percent < browser->min_pcnt)
--		return;
--
--	__hist_entry__set_folding(he, browser, unfold);
--
--	if (!he->depth || unfold)
--		browser->nr_hierarchy_entries++;
--	if (he->leaf)
--		browser->nr_callchain_rows += he->nr_rows;
--	else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
--		browser->nr_hierarchy_entries++;
--		he->has_no_entry = true;
--		he->nr_rows = 1;
--	} else
--		he->has_no_entry = false;
--}
--
- static void
- __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
- {
- 	struct rb_node *nd;
- 	struct hist_entry *he;
-+	double percent;
- 
- 	nd = rb_first_cached(&browser->hists->entries);
- 	while (nd) {
-@@ -640,6 +613,21 @@ __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
- 		nd = __rb_hierarchy_next(nd, HMD_FORCE_CHILD);
- 
- 		hist_entry__set_folding(he, browser, unfold);
-+
-+		percent = hist_entry__get_percent_limit(he);
-+		if (he->filtered || percent < browser->min_pcnt)
-+			continue;
-+
-+		if (!he->depth || unfold)
-+			browser->nr_hierarchy_entries++;
-+		if (he->leaf)
-+			browser->nr_callchain_rows += he->nr_rows;
-+		else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
-+			browser->nr_hierarchy_entries++;
-+			he->has_no_entry = true;
-+			he->nr_rows = 1;
-+		} else
-+			he->has_no_entry = false;
- 	}
- }
- 
-@@ -659,8 +647,10 @@ static void hist_browser__set_folding_selected(struct hist_browser *browser, boo
- 	if (!browser->he_selection)
- 		return;
- 
--	hist_entry__set_folding(browser->he_selection, browser, unfold);
--	browser->b.nr_entries = hist_browser__nr_entries(browser);
-+	if (unfold == browser->he_selection->unfolded)
-+		return;
-+
-+	hist_browser__toggle_fold(browser);
- }
- 
- static void ui_browser__warn_lost_events(struct ui_browser *browser)
-@@ -732,8 +722,8 @@ static int hist_browser__handle_hotkey(struct hist_browser *browser, bool warn_l
- 		hist_browser__set_folding(browser, true);
- 		break;
- 	case 'e':
--		/* Expand the selected entry. */
--		hist_browser__set_folding_selected(browser, !hist_browser__he_selection_unfolded(browser));
-+		/* Toggle expand/collapse the selected entry. */
-+		hist_browser__toggle_fold(browser);
- 		break;
- 	case 'H':
- 		browser->show_headers = !browser->show_headers;
--- 
-2.41.0.487.g6d72f3e995-goog
-
+> ---
+>   [v5] Fixed subject, commit log
+>   [v4] Fix commit sub and added '<mani@kernel.org>' reviewed-by tag
+>   [v3] Added reviewed-by tag, fixed subject, commit text
+>   [v2] Fixed the 'fixes tag' correctly, subject, right macro usage
+>
+>   drivers/pci/controller/dwc/pcie-qcom.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> index 4ab30892f6ef..8418894b3de7 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> @@ -43,7 +43,6 @@
+>   #define PARF_PHY_REFCLK				0x4c
+>   #define PARF_CONFIG_BITS			0x50
+>   #define PARF_DBI_BASE_ADDR			0x168
+> -#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
+>   #define PARF_MHI_CLOCK_RESET_CTRL		0x174
+>   #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
+>   #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
+> @@ -810,8 +809,7 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
+>   	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>   	u32 val;
+>   
+> -	writel(SLV_ADDR_SPACE_SZ,
+> -		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE_2_3_3);
+> +	writel(SLV_ADDR_SPACE_SZ, pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
+>   
+>   	val = readl(pcie->parf + PARF_PHY_CTRL);
+>   	val &= ~PHY_TEST_PWR_DOWN;
+>
