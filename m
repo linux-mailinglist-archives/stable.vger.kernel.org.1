@@ -2,82 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A08C4769F3E
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 19:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8CB8769F78
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 19:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232114AbjGaRTI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 13:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44506 "EHLO
+        id S231724AbjGaR1d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 13:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232198AbjGaRSx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 13:18:53 -0400
-Received: from mgamail.intel.com (unknown [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69994268D
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 10:17:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690823833; x=1722359833;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=t/kOQoyzK3nu1Futg8B7/Dv6FaL89RylOYNnhboqiCg=;
-  b=MOytdrWSxsTarpQ1vEVTUVBc7i3flvXZzwywtn5B6c4M2QmzOYK1xIvx
-   IfzcAZsRvWHhfjbHoIhhXtevXHKDVBhxHqwHxoGqXdYruOQM4o7jjVitR
-   1fHlDwdcpeyAZH+t3jFGPr9FogtjRn17dlmsVzTonRt32Y9LCHkOzN6cb
-   rr5zqnGKF6fmJX9A6dBBTkshuYIZZdlAMW2GSzXdbD6r/EPFeccKMGanu
-   mMeJIKnAMG1XmTCdjO8XYuNOWEBrPt3jONylS4e38PjlyFNKe+YpyKkvh
-   +iO9bCX7VXN3se93sEDV5xnHXOMF053EjMyBi6EG16kKk/DpGSz0fZoxW
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="432902160"
-X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
-   d="scan'208";a="432902160"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 10:16:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="902217006"
-X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
-   d="scan'208";a="902217006"
-Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 31 Jul 2023 10:16:10 -0700
-Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qQWV8-0005Fh-0I;
-        Mon, 31 Jul 2023 17:16:10 +0000
-Date:   Tue, 1 Aug 2023 01:14:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Suren Baghdasaryan <surenb@google.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/6] mm: for !CONFIG_PER_VMA_LOCK equate write lock
- assertion for vma and mmap
-Message-ID: <ZMfsESOmBdOl6v8L@c507f7d2ae6a>
+        with ESMTP id S229646AbjGaR1c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 13:27:32 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3601A0;
+        Mon, 31 Jul 2023 10:27:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=/04mzdZdAWjnY4Fmn8mRCyHmZjqyRZ419aYIDV85A3k=; b=QGEiMjVGOpgEzUV34YC5Q0c24E
+        MvNOcHiZ9eRK/1Co/pS7wJN/8MACxBXhfI10l7oyiMOLrhCS6yydrAsf1LkrOoaHLILjVInFEBoAn
+        1T0855574d183TNmQ6U8Y4cGqjoq6QNqV4/gZg8TrkUMasypKcNzK0XrRgZ9TMTcqWlyhUgzEi/Oc
+        mkOdlip1gLGVmvdUL88/36ZTpC7BVNS4zRtdwhhM2NwVstnPl8SJI5UpUl9bjrjmHflBBpErYeRp1
+        y1BoXM16Prn5/mv9VQeF12Vx6NFjRWmF+RG+EqsB5QEsFJzVyy9CbEmKaXrCXbSnwoHmcPnjgVzFc
+        3IDHQraw==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qQWg6-00GrFl-1u;
+        Mon, 31 Jul 2023 17:27:30 +0000
+Date:   Mon, 31 Jul 2023 10:27:30 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        Russ Weight <russell.h.weight@intel.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        Dan Carpenter <error27@gmail.com>
+Subject: Re: [PATCH v1 1/1] test_firmware: prevent race conditions by a
+ correct implementation of locking
+Message-ID: <ZMfvAhOfSP5UXN6l@bombadil.infradead.org>
+References: <20230731165018.8233-1-mirsad.todorovac@alu.unizg.hr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230731171233.1098105-3-surenb@google.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230731165018.8233-1-mirsad.todorovac@alu.unizg.hr>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Mon, Jul 31, 2023 at 06:50:19PM +0200, Mirsad Todorovac wrote:
+> NOTE: This patch is tested against 5.4 stable
+> 
+> NOTE: This is a patch for the 5.4 stable branch, not for the torvalds tree.
+> 
+>       The torvalds tree, and stable tree 5.10, 5.15, 6.1 and 6.4 branches
+>       were fixed in the separate
+>       commit ID 4acfe3dfde68 ("test_firmware: prevent race conditions by a correct implementation of locking")
+>       which was incompatible with 5.4
+> 
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH 2/6] mm: for !CONFIG_PER_VMA_LOCK equate write lock assertion for vma and mmap
-Link: https://lore.kernel.org/stable/20230731171233.1098105-3-surenb%40google.com
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The above part is not part of the original commit, you also forgot to
+mention the upstream commit:
 
 
+[ Upstream commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 ]
 
+> Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
+> Cc: Luis R. Rodriguez <mcgrof@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Russ Weight <russell.h.weight@intel.com>
+> Cc: Takashi Iwai <tiwai@suse.de>
+> Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Colin Ian King <colin.i.king@gmail.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: stable@vger.kernel.org # v5.4
+> Suggested-by: Dan Carpenter <error27@gmail.com>
+
+Here you can add the above note in brackets:
+
+[ explain your changes here from the original commit ]
+
+Then, I see two commits upstream on Linus tree which are also fixes
+but not merged on v5.4, did you want those applied too?
+
+  Luis
