@@ -2,184 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F60D76A3E8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 00:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E8AD76A4D4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 01:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230313AbjGaWLS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 18:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40938 "EHLO
+        id S229762AbjGaX2g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 19:28:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbjGaWLR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 18:11:17 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39AB1B2;
-        Mon, 31 Jul 2023 15:11:16 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fbd33a57b6so56062085e9.2;
-        Mon, 31 Jul 2023 15:11:16 -0700 (PDT)
+        with ESMTP id S230125AbjGaX2f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 19:28:35 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B921911B
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 16:28:33 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99bfcf4c814so434512266b.0
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 16:28:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690841475; x=1691446275;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pG9mGaJw0oLWkMWSPqLey0DSlekkz+WPcfbnO7e1pGQ=;
-        b=AdJx8ydCFIxARVitkfM9CNQfZXbUI80HNWKPO1Yi0sm8djbBCc5tCgR5RLwKIN7ebu
-         D7Vv6AVdl4xoLugu6FzgI97k6sHx6VjhwUBetaw/pVvmMep64HTHs9MCBCWv9BaqDvLg
-         geVDaeZkscfBDRXVeU68N9fskl4Cge+UPXjb6UcUJDqvbrQaQyt8kbH3nS3QDvRqR7xP
-         V0SONxpWj77cGcJ5BYw27QuZXgdLYNQ9YOn/70OuwP8Q9R0klNLO2QAjRDdDKdFR+Gfz
-         HLqhFvyal2Q1BCynQzfZv3RVTNTkae2uDJTB2sK4O8QJTbSEbbuSWu7BTf9UPN6CGAtq
-         28Fw==
+        d=linux-foundation.org; s=google; t=1690846112; x=1691450912;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2GbKQbR8WQDKm/09hjFJLqAkFDHcK7ngIt0eeXc/7M4=;
+        b=ZekSgBZkAavLHGGah0w31PCLHlAqS/S9ypHQf2oGzr6j+sNI2t9uQ/p9xkhUBiSnXM
+         WgV/J3qKPl0g/CG0GqD/ITJtAYWXtykxHf6PJhd6gKD4vdcSQC0yFuOrPFUoIv2P1NXP
+         wU7sML2VwwbarztWTEem8URdK5+0BOJKp7y0A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690841475; x=1691446275;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pG9mGaJw0oLWkMWSPqLey0DSlekkz+WPcfbnO7e1pGQ=;
-        b=Ssn/KsfveQVPQuAyGkuaUQkVvh+/t0ZPdeKip6iOtsgcgO9e4yJ7TzQjL4xiSpGgZt
-         fywA4cm24/CNLpJqi6Gjx570F+1UiZ2P+19U2lh/CJDrtBPejUpVMTrf8iDOG6ruYMuC
-         m9L6z7d0TSxECXR6VRw2GTOGmHt93KeYxHXCCbwsnNusleUUfGZibjN/22WBfKeH88ba
-         I9qmaGeA0cPWgRujf5D61WJNNyHFRIdmlFfYYgiCeOhm81u8npN5zCwdXlbXB1GLMEi/
-         TB7iG++m4H2GdCpalmgmxV8gbJYiaHoMQZP6/3+Onlthgdz7hWB2+RzUS9s/G8f56ZdV
-         36BA==
-X-Gm-Message-State: ABy/qLZgJT3Amcy9jiNmvbxbZnVrTwS0ReWHnjgdiADVIMlrP694BQ8d
-        WjC7jw2Y/Ry2d1v3JLTZH5Q=
-X-Google-Smtp-Source: APBJJlFou8tDW9Flgwyhx9pQWEeY3FQxFVM+Nrg0yh4xg7Rg2mTQKyrDZDHLxPb2fsVAVFdEHjzSBA==
-X-Received: by 2002:a5d:670b:0:b0:317:6263:1ae2 with SMTP id o11-20020a5d670b000000b0031762631ae2mr806329wru.63.1690841474399;
-        Mon, 31 Jul 2023 15:11:14 -0700 (PDT)
-Received: from krava ([83.240.60.220])
-        by smtp.gmail.com with ESMTPSA id l10-20020a5d410a000000b00317495f88fasm14127444wrp.112.2023.07.31.15.11.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 15:11:13 -0700 (PDT)
-From:   Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date:   Tue, 1 Aug 2023 00:11:11 +0200
-To:     Lorenzo Stoakes <lstoakes@gmail.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <bhe@redhat.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        linux-fsdevel@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
-        Will Deacon <will@kernel.org>, Mike Galbraith <efault@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        wangkefeng.wang@huawei.com, catalin.marinas@arm.com,
-        ardb@kernel.org, David Hildenbrand <david@redhat.com>,
-        Linux regression tracking <regressions@leemhuis.info>,
-        regressions@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT
- regions
-Message-ID: <ZMgxf++oeQ2VU94J@krava>
-References: <20230731215021.70911-1-lstoakes@gmail.com>
+        d=1e100.net; s=20221208; t=1690846112; x=1691450912;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2GbKQbR8WQDKm/09hjFJLqAkFDHcK7ngIt0eeXc/7M4=;
+        b=Iy1seVDk8V6MIm+C6wYBHaYFcO5GdxMUq8sIXmz7bqgzqWeOGhPIZJ3acQeaFx0/89
+         ScGgQPukKyVUDDRoCjT87vW+c/nC+S+9nzGbHw69iRk2Mox8neE7TILMwSETII4Rwmuq
+         v31+k1ZZ9fh4Rvs+OlU1LYKODqVwmGElAyAdQoGjeXzcmrXNIQKnD9AXy8CxqYfHlI/T
+         T8e0Qs29/VLGXMwRnSbl0Mgx7oGUZ/baCf+VzWsj1BRkfrFlZxx3XYlgG+Cb4epHlFg6
+         4uhxMSmnHrskNZJfCqmiA7l8HZALOU8jhib+YMcUXImEHSYXktTHu1T2IoA1V2mAvPKY
+         QwwA==
+X-Gm-Message-State: ABy/qLa/rOb9yWzzTDF7ND3wXZoZ258aOKAFnDkwRfE/beYwO9G2qe6x
+        4AIXnL+WmYWDE66fqsV4oTMJXvjfG16Ue/3aBuo7vXBz
+X-Google-Smtp-Source: APBJJlHXv+UInaaZG7GOegHp5UDhNGPb8EryqVsJuWQmidFG9x00xDLMfB8Svo2qY0K5PIWpONPi1g==
+X-Received: by 2002:a17:906:3046:b0:99b:4668:865f with SMTP id d6-20020a170906304600b0099b4668865fmr942259ejd.10.1690846112182;
+        Mon, 31 Jul 2023 16:28:32 -0700 (PDT)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com. [209.85.128.54])
+        by smtp.gmail.com with ESMTPSA id a26-20020a17090640da00b009829dc0f2a0sm6811670ejk.111.2023.07.31.16.28.30
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Jul 2023 16:28:30 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-3fe2048c910so14471285e9.1
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 16:28:30 -0700 (PDT)
+X-Received: by 2002:adf:f9cf:0:b0:316:ff0e:81b6 with SMTP id
+ w15-20020adff9cf000000b00316ff0e81b6mr941858wrr.32.1690846110462; Mon, 31 Jul
+ 2023 16:28:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230731215021.70911-1-lstoakes@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230727183805.69c36d6e@g14> <b1dd27df-744b-3977-0a86-f5dde8e24288@amd.com>
+ <20230727193949.55c18805@g14> <65a1c307-826d-4ca3-0336-07a185684e5d@amd.com>
+ <20230727195019.41abb48d@g14> <67eefe98-e6df-e152-3169-44329e22478d@amd.com>
+ <20230727200527.4080c595@g14> <CAHk-=whqT0PxBazwfjWwoHQQFzZt50tV6Jfgq3iYceKMJtyuUg@mail.gmail.com>
+ <CUGAV1Y993FB.1O2Q691015Z2C@seitikki> <CAHk-=whphk8Jp=NYmnm7Qv+vZ6ScYCz+rV8a2G1nD-AQY3z+mQ@mail.gmail.com>
+ <105b9d13-cedd-7d3c-1f29-2c65199f1de7@amd.com> <CAHk-=why64j-K4e1VxKwx7o6FiGjcXEnu1Pz+1QnNTBCv9AGyA@mail.gmail.com>
+ <fd3cc87a-97ec-00ea-e480-f6597664c13a@amd.com>
+In-Reply-To: <fd3cc87a-97ec-00ea-e480-f6597664c13a@amd.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 31 Jul 2023 16:28:13 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whPvSJH=H9eHZbJQ+sxC-AVDvrgJ+M14fD3K5A+5s=zVA@mail.gmail.com>
+Message-ID: <CAHk-=whPvSJH=H9eHZbJQ+sxC-AVDvrgJ+M14fD3K5A+5s=zVA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     linux@dominikbrodowski.net, Jarkko Sakkinen <jarkko@kernel.org>,
+        Daniil Stas <daniil.stas@posteo.net>,
+        James.Bottomley@hansenpartnership.com, Jason@zx2c4.com,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@leemhuis.info, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 31, 2023 at 10:50:21PM +0100, Lorenzo Stoakes wrote:
-> Some architectures do not populate the entire range categorised by
-> KCORE_TEXT, so we must ensure that the kernel address we read from is
-> valid.
-> 
-> Unfortunately there is no solution currently available to do so with a
-> purely iterator solution so reinstate the bounce buffer in this instance so
-> we can use copy_from_kernel_nofault() in order to avoid page faults when
-> regions are unmapped.
-> 
-> This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
-> bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
-> the code to continue to use an iterator.
-> 
-> Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
-> Reported-by: Jiri Olsa <olsajiri@gmail.com>
+On Mon, 31 Jul 2023 at 14:57, Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
+>
+> Are you thinking then to unregister the tpm hwrng "sometime" after boot?
 
-it fixed my issue, thanks
+No, I was more thinking that instead of registering it as a randomness
+source, you'd just do a one-time
 
-Tested-by: Jiri Olsa <jolsa@kernel.org>
+    tpm_get_random(..);
+    add_hwgenerator_randomness(..);
 
-jirka
+and leave it at that.
 
-> Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-> ---
->  fs/proc/kcore.c | 26 +++++++++++++++++++++++++-
->  1 file changed, 25 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-> index 9cb32e1a78a0..3bc689038232 100644
-> --- a/fs/proc/kcore.c
-> +++ b/fs/proc/kcore.c
-> @@ -309,6 +309,8 @@ static void append_kcore_note(char *notes, size_t *i, const char *name,
->  
->  static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
->  {
-> +	struct file *file = iocb->ki_filp;
-> +	char *buf = file->private_data;
->  	loff_t *fpos = &iocb->ki_pos;
->  	size_t phdrs_offset, notes_offset, data_offset;
->  	size_t page_offline_frozen = 1;
-> @@ -554,11 +556,22 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
->  			fallthrough;
->  		case KCORE_VMEMMAP:
->  		case KCORE_TEXT:
-> +			/*
-> +			 * Sadly we must use a bounce buffer here to be able to
-> +			 * make use of copy_from_kernel_nofault(), as these
-> +			 * memory regions might not always be mapped on all
-> +			 * architectures.
-> +			 */
-> +			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
-> +				if (iov_iter_zero(tsz, iter) != tsz) {
-> +					ret = -EFAULT;
-> +					goto out;
-> +				}
->  			/*
->  			 * We use _copy_to_iter() to bypass usermode hardening
->  			 * which would otherwise prevent this operation.
->  			 */
-> -			if (_copy_to_iter((char *)start, tsz, iter) != tsz) {
-> +			} else if (_copy_to_iter(buf, tsz, iter) != tsz) {
->  				ret = -EFAULT;
->  				goto out;
->  			}
-> @@ -595,6 +608,10 @@ static int open_kcore(struct inode *inode, struct file *filp)
->  	if (ret)
->  		return ret;
->  
-> +	filp->private_data = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> +	if (!filp->private_data)
-> +		return -ENOMEM;
-> +
->  	if (kcore_need_update)
->  		kcore_update_ram();
->  	if (i_size_read(inode) != proc_root_kcore->size) {
-> @@ -605,9 +622,16 @@ static int open_kcore(struct inode *inode, struct file *filp)
->  	return 0;
->  }
->  
-> +static int release_kcore(struct inode *inode, struct file *file)
-> +{
-> +	kfree(file->private_data);
-> +	return 0;
-> +}
-> +
->  static const struct proc_ops kcore_proc_ops = {
->  	.proc_read_iter	= read_kcore_iter,
->  	.proc_open	= open_kcore,
-> +	.proc_release	= release_kcore,
->  	.proc_lseek	= default_llseek,
->  };
->  
-> -- 
-> 2.41.0
-> 
+Even if there is some stutter due to some crazy firmware
+implementation for reading the random data, at boot time nobody will
+notice it.
+
+           Linus
