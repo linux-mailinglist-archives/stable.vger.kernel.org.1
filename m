@@ -2,122 +2,165 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C39076943D
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 13:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 877C9769464
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 13:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231447AbjGaLIb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 07:08:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
+        id S229649AbjGaLOP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 07:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231516AbjGaLIa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 07:08:30 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2E3E78;
-        Mon, 31 Jul 2023 04:08:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690801708; x=1722337708;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qgnwtWhbjFgSb/5GdbOTZT6iLncUhLzvzU+UhREi7mA=;
-  b=YXspNeg6G8Lgipgnzri93Mb+AhSSYT02Ldfc8iXpHeOwag/foH3vH+Fm
-   5XKjyka8kCd/xCDGaI6g03N5Di/AvPSInsaybGL1JxfUGP5UXcjW2xgRC
-   J0ZSggVO2g1YkdT6bBOHDZmq4Akb3MTWqNCxGzXPx2oUPvTUmOaOwWkq0
-   HsyJ9WaD4PUx7cZu7QSXG65dqZhF9YXZ9YM9VygLUQQOXIWAZ1B/qA43F
-   gKPZsUzrke57sdlGRC8/NSOBH0+ML5RpcDBgZHlusR6dg1rmoPC/sz1Lw
-   G2dnxoU3GAEgCpLX9ruTg5DEZtzyJD3r0EEqr3ZbeEflwdQN6v0+Cx5DN
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10787"; a="399936113"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
-   d="scan'208";a="399936113"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 04:08:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="871644682"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 31 Jul 2023 04:08:27 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 31 Jul 2023 14:08:24 +0300
-Date:   Mon, 31 Jul 2023 14:08:24 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net, kyletso@google.com,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: tcpm: Fix response to vsafe0V event
-Message-ID: <ZMeWKDi99T6tBRg8@kuha.fi.intel.com>
-References: <20230712085722.1414743-1-badhri@google.com>
+        with ESMTP id S231451AbjGaLOO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 07:14:14 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D69E79
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 04:14:11 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-307d58b3efbso3892585f8f.0
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 04:14:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690802050; x=1691406850;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a+yXtCYwJ1vp4lh1G4+6nAEpCQWF+yOkcXs9SOROqGU=;
+        b=eTpl40ucewCsFMrQBu0kMJ/J9h7WUG8ZwDVthoX9ympKu1DDdzDGoSO4pfrbo1q4lT
+         VMS2+6v5e4TcA1hj9UFwPgxEyUDPkKJEwzZkpfIo8iP9o7XCUCImbYbPBqW+q7CnRKst
+         Lj1gL/d0bPyzvYAqpNII4QDo1S+u14uH2I56NxuYK2EgrlVefWuAwtT8+se6XUkAHXYJ
+         tlimaNnYJp3U8U6ab+VBF2UNMFetpuFVB2TrTC8EDnljcFGNBjnMKHzgPOo/Mf1BCnDm
+         +tC8P4rab6qd/cVIyFbr+CMqsXXpHpuHX2mC8ZCH/+uygP6vpGdG4zxh4axf/DGg1Sz0
+         LYJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690802050; x=1691406850;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=a+yXtCYwJ1vp4lh1G4+6nAEpCQWF+yOkcXs9SOROqGU=;
+        b=PWadlTOTpS71gUC4sawuIHBOEZNWMHVn1+Q1gU7OnolsbccPnYkFMBtt3EM9Z/JoEv
+         geecl+bFEaQIGjr9uenmWrL6aQQ1k4O1IpuGxsHhN9E3Ak/c+pGaf1mJA4GoS47aWi1l
+         kvqqwrBSQ5Hp5yP9hL+658lRSqGTDJ7jFHVehw3iSqYRQi8a9y8aC4+6U/ehyKQUYtbc
+         dnXt2Y4jR4YJeNgEMQ29ikzL9XjFQC5LaXS2bAVxorJLEbDHmxD8poFT1bqB0baX/kOt
+         pXr1BNwkzDJIwmUlHCiLP2jc5zCEm3vacAyx+sQ2v8juy75+Ot/CTwhu+p6fEZz7wMjx
+         XAGw==
+X-Gm-Message-State: ABy/qLZ40aTMIU3af0j8rCkZ/eU5RVEZli06S5jq7O62mMoWIy8gY1U2
+        Nwsiskb/TXWdzTHETsKmm+POxA==
+X-Google-Smtp-Source: APBJJlF6tBQNOBgzMGTKGd+XwA4tKDou2MjpSwYuH4U0eRW22f6ni/4ZHQfT3TJzV5b6WDQPTzegYA==
+X-Received: by 2002:a5d:452f:0:b0:317:6262:87af with SMTP id j15-20020a5d452f000000b00317626287afmr5251217wra.16.1690802049408;
+        Mon, 31 Jul 2023 04:14:09 -0700 (PDT)
+Received: from localhost ([165.225.194.195])
+        by smtp.gmail.com with ESMTPSA id z7-20020a5d4407000000b0031766e99429sm12713940wrq.115.2023.07.31.04.14.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Jul 2023 04:14:09 -0700 (PDT)
+References: <20230730012905.643822-1-boqun.feng@gmail.com>
+ <20230730012905.643822-4-boqun.feng@gmail.com>
+User-agent: mu4e 1.10.5; emacs 28.2.50
+From:   "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        John Baublitz <john.m.baublitz@gmail.com>,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 3/3] rust: alloc: Add realloc and alloc_zeroed to the
+ GlobalAlloc impl
+Date:   Mon, 31 Jul 2023 13:12:17 +0200
+In-reply-to: <20230730012905.643822-4-boqun.feng@gmail.com>
+Message-ID: <87y1iwpc3j.fsf@metaspace.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230712085722.1414743-1-badhri@google.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-I'm sorry to keep you waiting.
+Boqun Feng <boqun.feng@gmail.com> writes:
 
-On Wed, Jul 12, 2023 at 08:57:22AM +0000, Badhri Jagan Sridharan wrote:
-> Do not transition to SNK_UNATTACHED state when receiving vsafe0v event
-> while in SNK_HARD_RESET_WAIT_VBUS. Ignore VBUS off events as well as
-> in some platforms VBUS off can be signalled more than once.
-> 
-> [143515.364753] Requesting mux state 1, usb-role 2, orientation 2
-> [143515.365520] pending state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_SINK_ON @ 650 ms [rev3 HARD_RESET]
-> [143515.632281] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_HARD_RESET_SINK_OFF, polarity 1, disconnected]
-> [143515.637214] VBUS on
-> [143515.664985] VBUS off
-> [143515.664992] state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_WAIT_VBUS [rev3 HARD_RESET]
-> [143515.665564] VBUS VSAFE0V
-> [143515.665566] state change SNK_HARD_RESET_WAIT_VBUS -> SNK_UNATTACHED [rev3 HARD_RESET]
-> 
-> Fixes: 28b43d3d746b ("usb: typec: tcpm: Introduce vsafe0v for vbus")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
+> From: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+>
+> While there are default impls for these methods, using the respective C
+> api's is faster. Currently neither the existing nor these new
+> GlobalAlloc method implementations are actually called. Instead the
+> __rust_* function defined below the GlobalAlloc impl are used. With
+> rustc 1.71 these functions will be gone and all allocation calls will go
+> through the GlobalAlloc implementation.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/68
+> Signed-off-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> [boqun: add size adjustment for alignment requirement]
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
->  drivers/usb/typec/tcpm/tcpm.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 829d75ebab42..cc1d83926497 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -5349,6 +5349,10 @@ static void _tcpm_pd_vbus_off(struct tcpm_port *port)
->  		/* Do nothing, vbus drop expected */
->  		break;
->  
-> +	case SNK_HARD_RESET_WAIT_VBUS:
-> +		/* Do nothing, its OK to receive vbus off events */
-> +		break;
-> +
->  	default:
->  		if (port->pwr_role == TYPEC_SINK && port->attached)
->  			tcpm_set_state(port, SNK_UNATTACHED, tcpm_wait_for_discharge(port));
-> @@ -5395,6 +5399,9 @@ static void _tcpm_pd_vbus_vsafe0v(struct tcpm_port *port)
->  	case SNK_DEBOUNCED:
->  		/*Do nothing, still waiting for VSAFE5V for connect */
->  		break;
-> +	case SNK_HARD_RESET_WAIT_VBUS:
-> +		/* Do nothing, its OK to receive vbus off events */
-> +		break;
->  	default:
->  		if (port->pwr_role == TYPEC_SINK && port->auto_vbus_discharge_enabled)
->  			tcpm_set_state(port, SNK_UNATTACHED, 0);
-> 
-> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-> -- 
-> 2.41.0.255.g8b1d071c50-goog
 
--- 
-heikki
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+
+>  rust/kernel/allocator.rs | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index 1aec688cf0e0..6f1f50465ab3 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -51,6 +51,33 @@ unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout=
+) {
+>              bindings::kfree(ptr as *const core::ffi::c_void);
+>          }
+>      }
+> +
+> +    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usi=
+ze) -> *mut u8 {
+> +        // SAFETY:
+> +        // - `new_size`, when rounded up to the nearest multiple of `lay=
+out.align()`, will not
+> +        //   overflow `isize` by the function safety requirement.
+> +        // - `layout.align()` is a proper alignment (i.e. not zero and m=
+ust be a power of two).
+> +        let layout =3D unsafe { Layout::from_size_align_unchecked(new_si=
+ze, layout.align()) };
+> +
+> +        // SAFETY:
+> +        // - `ptr` is either null or a pointer allocated by this allocat=
+or by the function safety
+> +        //   requirement.
+> +        // - the size of `layout` is not zero because `new_size` is not =
+zero by the function safety
+> +        //   requirement.
+> +        unsafe { krealloc_aligned(ptr, layout, bindings::GFP_KERNEL) }
+> +    }
+> +
+> +    unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
+> +        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero=
+ size by the function safety
+> +        // requirement.
+> +        unsafe {
+> +            krealloc_aligned(
+> +                ptr::null_mut(),
+> +                layout,
+> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO,
+> +            )
+> +        }
+> +    }
+>  }
+>=20=20
+>  #[global_allocator]
+
