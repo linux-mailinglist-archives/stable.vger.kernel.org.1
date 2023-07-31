@@ -2,86 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 164467692D3
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 12:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63E017692D7
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 12:14:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230516AbjGaKOL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 06:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52074 "EHLO
+        id S230453AbjGaKOu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 06:14:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230453AbjGaKOK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 06:14:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D40E8E3;
-        Mon, 31 Jul 2023 03:14:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71DFE60D32;
-        Mon, 31 Jul 2023 10:14:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207D8C433C7;
-        Mon, 31 Jul 2023 10:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690798448;
-        bh=EW7YMvUyfLmk+cbCYjst8bsZXEEoiOeVIsX41Tk6EZI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oCQC2lDGGtGvVyzJaztdEoQcZ6k5LWE5DlQ8gA5w1QX63d0ynKAyAA65yimgEeYJV
-         V0hkNzMKfo0sV2WiMWcaxDT9oeccHSN+nn86R6T18NDnEUxKiUJ0g6HGnvh5WD8LU4
-         pnrO4cGiAcAxsI4+jROSksXAcvIOsznXfBQTPyrWI6VE0Uj56DAJoJlbmTd2zqdQ7/
-         C4Z31/IciOZh2HnSjQ8v/s/TeBYETX0R4wL90/CAxq4/N4Kf4i5ybLGI+NA78x4HDr
-         DqKdGoe8lcFRhWECUSZKpIGGKnr3WwNmWtj5n97S26g6E+6B6Z8M1UAOv7WNhTiGye
-         CkXw9nJZ2dK1g==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 31 Jul 2023 10:14:05 +0000
-Message-Id: <CUGA0YM7BIJN.3RDWZ1WZSWG28@seitikki>
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Daniil Stas" <daniil.stas@posteo.net>
-Cc:     <mario.limonciello@amd.com>,
-        <James.Bottomley@hansenpartnership.com>, <Jason@zx2c4.com>,
-        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <regressions@leemhuis.info>, <stable@vger.kernel.org>,
-        <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
-X-Mailer: aerc 0.14.0
-References: <20230214201955.7461-2-mario.limonciello@amd.com>
- <20230727183805.69c36d6e@g14> <CUE1Z76QDX0Z.2K0OU6TPMS50X@seitikki>
- <20230728231810.48370d44@g14>
-In-Reply-To: <20230728231810.48370d44@g14>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229854AbjGaKOt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 06:14:49 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B27BEE5A;
+        Mon, 31 Jul 2023 03:14:48 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 06CCB1BF20C;
+        Mon, 31 Jul 2023 10:14:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1690798487;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pk8udpJ2M7pKGiqvni22vLIqee3xOn8qP+AR1XeBzeg=;
+        b=nhgtgOEAp2Ka9sIunlLyncFOSrqdEp9ZMLYSt7wd6EiMI84MRkrp5DfZOvkns1YGCxUwZp
+        WRlaag9tAhod7M/EJRl24LvM3nD5GLq1tWOPcVtUu7j1Hl4BirzBA5QfP+bPXtvCXQA7Jr
+        Cp0T/MLh5Qg+JSkndDoyooebc0/bm/noEpZEguG6H+j8KuHGB1h3ELxxDtjUqm7PaOZcOQ
+        MjUqO3Ic6J2c8mBIJBnojGdMX4TBmuq9nHh5SGk2M44obnaPUwpu/ZFVJIYfYsJ2xvkLBe
+        NEjp3OCB8UewtZ8cZzqXuorOhZaL4hZeMC7Rc3F/AhtB3ra979ZwhUyW8IDhlg==
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Lizhi Hou <lizhi.hou@amd.com>, Brian Xu <brian.xu@amd.com>,
+        Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     Michal Simek <michal.simek@amd.com>, Max Zhen <max.zhen@amd.com>,
+        Sonal Santan <sonal.santan@amd.com>, dmaengine@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        stable@vger.kernel.org
+Subject: [PATCH 1/4] dmaengine: xilinx: xdma: Fix interrupt vector setting
+Date:   Mon, 31 Jul 2023 12:14:39 +0200
+Message-Id: <20230731101442.792514-2-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230731101442.792514-1-miquel.raynal@bootlin.com>
+References: <20230731101442.792514-1-miquel.raynal@bootlin.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri Jul 28, 2023 at 8:18 PM UTC, Daniil Stas wrote:
-> On Fri, 28 Jul 2023 19:30:18 +0000
-> "Jarkko Sakkinen" <jarkko@kernel.org> wrote:
->
-> > On Thu Jul 27, 2023 at 3:38 PM UTC, Daniil Stas wrote:
-> > > Hi,
-> > > I am still getting fTPM stutters with 6.4.3 kernel on Asus GA402RJ
-> > > laptop.
-> > > Compiling kernel without TPM support makes the stutters go away.
-> > > The fTPM firmware version is 0x3005700020005 on my machine. =20
-> >=20
-> > This is needs a bit more elaboration in order to be comprehended.
-> >=20
-> > Do you mean by "stutter" unexpected delays and when do they happen?
-> >=20
-> > BR, Jarkko
->
-> Yes, unexpected delays. They just happen randomly.
-> You can google "AMD fTPM stuttering", there are a lot of examples.
-> Here is one: https://www.youtube.com/watch?v=3DTYnRL-x6DVI
+A couple of hardware registers need to be set to reflect which
+interrupts have been allocated to the device. Each register is 32-bit
+wide and can receive four 8-bit values. If we provide any other interrupt
+number than four, the irq_num variable will never be 0 within the while
+check and the while block will loop forever.
 
-What if you make tpm_amd_is_rng_defective() to unconditonally return
-true? Does this make the problem dissappear, or not?
+There is an easy way to prevent this: just break the for loop
+when we reach "irq_num == 0", which anyway means all interrupts have
+been processed.
 
-BR, Jarkko
+Cc: stable@vger.kernel.org
+Fixes: 17ce252266c7 ("dmaengine: xilinx: xdma: Add xilinx xdma driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+ drivers/dma/xilinx/xdma.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/dma/xilinx/xdma.c b/drivers/dma/xilinx/xdma.c
+index 93ee298d52b8..359123526dd0 100644
+--- a/drivers/dma/xilinx/xdma.c
++++ b/drivers/dma/xilinx/xdma.c
+@@ -668,6 +668,8 @@ static int xdma_set_vector_reg(struct xdma_device *xdev, u32 vec_tbl_start,
+ 			val |= irq_start << shift;
+ 			irq_start++;
+ 			irq_num--;
++			if (!irq_num)
++				break;
+ 		}
+ 
+ 		/* write IRQ register */
+-- 
+2.34.1
+
