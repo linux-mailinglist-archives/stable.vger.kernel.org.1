@@ -2,99 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF6B6769D05
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 18:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98242769D15
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 18:46:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232419AbjGaQnj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 12:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45980 "EHLO
+        id S232637AbjGaQqM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 12:46:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232227AbjGaQni (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 12:43:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126E61722
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 09:42:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690821771;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hIrzg23zm5bnaFzI5icqMbN8fi6qCvhn7sNqGYL6Vo0=;
-        b=VCSaIEAu0vtP6AfgExRVWoD8NAAQqr2ZAnjkkFAEoq8jgtNmC0mykyw4VcHB4hlG2i1yBc
-        WxxXAdbas7uWV6bNgyKAcWoFqAjyS8X7UVpHFUJUrZ2EfZ+uCXDlphNjMx6C394daUJKIu
-        reX3FF8ZAvaXMuVkjgkLCx9KRXzMvGE=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-281-qnMNdh9GOoaMfomT5lE-dQ-1; Mon, 31 Jul 2023 12:42:48 -0400
-X-MC-Unique: qnMNdh9GOoaMfomT5lE-dQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1450638210A0;
-        Mon, 31 Jul 2023 16:42:47 +0000 (UTC)
-Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.192.146])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id ABAD9401DA9;
-        Mon, 31 Jul 2023 16:42:45 +0000 (UTC)
-From:   Laszlo Ersek <lersek@redhat.com>
-To:     linux-kernel@vger.kernel.org, lersek@redhat.com
-Cc:     Eric Dumazet <edumazet@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pietro Borrello <borrello@diag.uniroma1.it>,
-        netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH 2/2] net: tap_open(): set sk_uid from current_fsuid()
-Date:   Mon, 31 Jul 2023 18:42:37 +0200
-Message-Id: <20230731164237.48365-3-lersek@redhat.com>
-In-Reply-To: <20230731164237.48365-1-lersek@redhat.com>
-References: <20230731164237.48365-1-lersek@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_BASE64_TEXT,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229727AbjGaQqK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 12:46:10 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAA7F1989;
+        Mon, 31 Jul 2023 09:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=V7LYZHk85S0LI4siidMWcKMqDbXK1bLv/yuz6F1RLm8=; b=Fy0Hz75EHjZzZBRkW56/NraHk5
+        jYw5uhQqXHa0kn5P/EaDN/SYTYybe6vXj2uTSKzQGQUmzpQ04Bs0fWckI/8autDGyBDVmINv7G9m+
+        VWmXLpm32civzImJrr1kQxPurp7pCVODEe73k0eGHGHofLlzNT3k1c0KLPGCsM4cRuwM=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:34026 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qQW1w-0006gy-VD; Mon, 31 Jul 2023 12:46:01 -0400
+Date:   Mon, 31 Jul 2023 12:46:00 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Message-Id: <20230731124600.39eb8d5c132f9338c2897543@hugovil.com>
+In-Reply-To: <CAL_JsqL8rjwONd6UAitKik0U44BKSD6m8zbachgfq0R9oHBW8w@mail.gmail.com>
+References: <20230721161840.1393996-1-hugo@hugovil.com>
+        <20230721161840.1393996-7-hugo@hugovil.com>
+        <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
+        <20230722104724.ef0c5896c239e721794b9fe9@hugovil.com>
+        <2023072240-supremacy-shallot-a77f@gregkh>
+        <20230724115428.d191186852c0bd0ee0d78398@hugovil.com>
+        <CAL_JsqL8rjwONd6UAitKik0U44BKSD6m8zbachgfq0R9oHBW8w@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [RESEND PATCH v8 06/10] serial: sc16is7xx: fix regression with
+ GPIO configuration
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Q29tbWl0IDY2YjJjMzM4YWRjZSBpbml0aWFsaXplcyB0aGUgInNrX3VpZCIgZmllbGQgaW4gdGhl
-IHByb3RvY29sIHNvY2tldAooc3RydWN0IHNvY2spIGZyb20gdGhlICIvZGV2L3RhcFgiIGRldmlj
-ZSBub2RlJ3Mgb3duZXIgVUlELiBQZXIgb3JpZ2luYWwKY29tbWl0IDg2NzQxZWMyNTQ2MiAoIm5l
-dDogY29yZTogQWRkIGEgVUlEIGZpZWxkIHRvIHN0cnVjdCBzb2NrLiIsCjIwMTYtMTEtMDQpLCB0
-aGF0J3Mgd3Jvbmc6IHRoZSBpZGVhIGlzIHRvIGNhY2hlIHRoZSBVSUQgb2YgdGhlIHVzZXJzcGFj
-ZQpwcm9jZXNzIHRoYXQgY3JlYXRlcyB0aGUgc29ja2V0LiBDb21taXQgODY3NDFlYzI1NDYyIG1l
-bnRpb25zIHNvY2tldCgpIGFuZAphY2NlcHQoKTsgd2l0aCAidGFwIiwgdGhlIGFjdGlvbiB0aGF0
-IGNyZWF0ZXMgdGhlIHNvY2tldCBpcwpvcGVuKCIvZGV2L3RhcFgiKS4KClRoZXJlZm9yZSB0aGUg
-ZGV2aWNlIG5vZGUncyBvd25lciBVSUQgaXMgaXJyZWxldmFudC4gSW4gbW9zdCBjYXNlcywKIi9k
-ZXYvdGFwWCIgd2lsbCBiZSBvd25lZCBieSByb290LCBzbyBpbiBwcmFjdGljZSwgY29tbWl0IDY2
-YjJjMzM4YWRjZSBoYXMKbm8gb2JzZXJ2YWJsZSBlZmZlY3Q6CgotIGJlZm9yZSwgInNrX3VpZCIg
-d291bGQgYmUgemVybywgZHVlIHRvIHVuZGVmaW5lZCBiZWhhdmlvcgogIChDVkUtMjAyMy0xMDc2
-KSwKCi0gYWZ0ZXIsICJza191aWQiIHdvdWxkIGJlIHplcm8sIGR1ZSB0byAiL2Rldi90YXBYIiBi
-ZWluZyBvd25lZCBieSByb290LgoKV2hhdCBtYXR0ZXJzIGlzIHRoZSAoZnMpVUlEIG9mIHRoZSBw
-cm9jZXNzIHBlcmZvcm1pbmcgdGhlIG9wZW4oKSwgc28gY2FjaGUKdGhhdCBpbiAic2tfdWlkIi4K
-CkNjOiBFcmljIER1bWF6ZXQgPGVkdW1hemV0QGdvb2dsZS5jb20+CkNjOiBMb3JlbnpvIENvbGl0
-dGkgPGxvcmVuem9AZ29vZ2xlLmNvbT4KQ2M6IFBhb2xvIEFiZW5pIDxwYWJlbmlAcmVkaGF0LmNv
-bT4KQ2M6IFBpZXRybyBCb3JyZWxsbyA8Ym9ycmVsbG9AZGlhZy51bmlyb21hMS5pdD4KQ2M6IG5l
-dGRldkB2Z2VyLmtlcm5lbC5vcmcKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKRml4ZXM6IDY2
-YjJjMzM4YWRjZSAoInRhcDogdGFwX29wZW4oKTogY29ycmVjdGx5IGluaXRpYWxpemUgc29ja2V0
-IHVpZCIpCkJ1Z3ppbGxhOiBodHRwczovL2J1Z3ppbGxhLnJlZGhhdC5jb20vc2hvd19idWcuY2dp
-P2lkPTIxNzM0MzUKU2lnbmVkLW9mZi1ieTogTGFzemxvIEVyc2VrIDxsZXJzZWtAcmVkaGF0LmNv
-bT4KLS0tCiBkcml2ZXJzL25ldC90YXAuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2Vy
-dGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3RhcC5jIGIv
-ZHJpdmVycy9uZXQvdGFwLmMKaW5kZXggOTEzN2ZiOGMxYzQyLi40OWQxZDZhY2Y5NWUgMTAwNjQ0
-Ci0tLSBhL2RyaXZlcnMvbmV0L3RhcC5jCisrKyBiL2RyaXZlcnMvbmV0L3RhcC5jCkBAIC01MzQs
-NyArNTM0LDcgQEAgc3RhdGljIGludCB0YXBfb3BlbihzdHJ1Y3QgaW5vZGUgKmlub2RlLCBzdHJ1
-Y3QgZmlsZSAqZmlsZSkKIAlxLT5zb2NrLnN0YXRlID0gU1NfQ09OTkVDVEVEOwogCXEtPnNvY2su
-ZmlsZSA9IGZpbGU7CiAJcS0+c29jay5vcHMgPSAmdGFwX3NvY2tldF9vcHM7Ci0Jc29ja19pbml0
-X2RhdGFfdWlkKCZxLT5zb2NrLCAmcS0+c2ssIGlub2RlLT5pX3VpZCk7CisJc29ja19pbml0X2Rh
-dGFfdWlkKCZxLT5zb2NrLCAmcS0+c2ssIGN1cnJlbnRfZnN1aWQoKSk7CiAJcS0+c2suc2tfd3Jp
-dGVfc3BhY2UgPSB0YXBfc29ja193cml0ZV9zcGFjZTsKIAlxLT5zay5za19kZXN0cnVjdCA9IHRh
-cF9zb2NrX2Rlc3RydWN0OwogCXEtPmZsYWdzID0gSUZGX1ZORVRfSERSIHwgSUZGX05PX1BJIHwg
-SUZGX1RBUDsK
+On Mon, 31 Jul 2023 09:31:53 -0600
+Rob Herring <robh+dt@kernel.org> wrote:
 
+> On Mon, Jul 24, 2023 at 9:54 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> >
+> > On Sat, 22 Jul 2023 17:15:26 +0200
+> > Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > > On Sat, Jul 22, 2023 at 10:47:24AM -0400, Hugo Villeneuve wrote:
+> > > > On Fri, 21 Jul 2023 13:24:19 -0600
+> > > > Rob Herring <robh+dt@kernel.org> wrote:
+> > > >
+> > > > > On Fri, Jul 21, 2023 at 10:19 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > >
+> > > > > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > > > > >
+> > > > > > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
+> > > > > > and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
+> > > > > > changed the function of the GPIOs pins to act as modem control
+> > > > > > lines without any possibility of selecting GPIO function.
+> > > > >
+> > > > > Requiring a new DT property is not fixing a kernel regression. You
+> > > > > should be returning the kernel to original behavior and then have a
+> > > > > new DT property for new behavior.
+> > > >
+> > > > Hi Rob,
+> > > > please read the entire patch history starting from V1
+> > > >  and you will understand why this course of action was
+> > > >  not selected.
+> > >
+> > > That's not going to happen, sorry, you need to explain it here, in this
+> > > patch series, why a specific action is being taken over another one, as
+> > > no one has time to go dig through past history, sorry.
+> >
+> > Hi Rob,
+> > I initially submitted a patch to revert the kernel to original
+> > behavior, but it created more problems because the patch was
+> > unfortunately split in two separate patches, and mixed with other non
+> > closely-related changes. It was also noted to me that reverting to the
+> > old behavior would break things for some users.
+> >
+> > It was suggested to me by a more experienced kernel developer to
+> > "suggest a fix, instead of hurrying a revert":
+> >
+> >     https://lkml.org/lkml/2023/5/17/758
+> 
+> Do I have to go read this to decipher the justification and reasoning?
+> When Greg says "in this patch series", he means in the commit messages
+> of the patches. You send v9 already and it doesn't have that. The
+> patchset needs to stand on its own summarizing any relevant prior
+> discussions.
+> 
+> I never suggested doing a revert.
+
+Hi Rob,
+I am sorry, but this is exactly what I "deciphered" from your
+original email.
+
+I am trying very hard to understand exactly what you mean, but it is
+not that obvious for me. If something is not clear in my commit message,
+I will try to improve it. But before, let's try to focus on making sure
+I understand more clearly what you want exactly.
+
+> Obviously, someone still wants the
+> new feature.
+
+I assume that you refer to the "new feature" as what was added in
+the commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control
+lines")?
+
+Because I did not add a "new feature" myself, I simply restored (or
+want to restore) what was working before commit 679875d1d880
+(restore GPIO pins as GPIO functions).
+
+I will wait for your clarification on this, and answer your other
+comments after.
+
+Hugo.
+
+
+> The issue is a new feature was added to the kernel, but
+> you are requiring a DT change to platforms NOT using the feature.
+> Make
+> the platforms wanting the new feature to need a DT change. That's
+> still not great, but it's much better to affect new platforms rather
+> than old, stable platforms. The period of time that regresses is much
+> smaller (a few kernel releases vs. years potentially). Of course, if
+> it's just those 3 platforms and their maintainers are fine with
+> needing this DT change, then that works too. But there's no evidence
+> here that they are okay with it. You didn't even do the update of the
+> dts files and just left them broken.
