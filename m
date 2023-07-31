@@ -2,88 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB6B0769122
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 11:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C8B769244
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 11:51:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbjGaJKx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 05:10:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
+        id S229785AbjGaJvC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 05:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjGaJKw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 05:10:52 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0596AF3;
-        Mon, 31 Jul 2023 02:10:49 -0700 (PDT)
-Received: from kwepemm600007.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RDsrW01f2zrS4J;
-        Mon, 31 Jul 2023 17:09:46 +0800 (CST)
-Received: from [10.69.136.139] (10.69.136.139) by
- kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 31 Jul 2023 17:10:46 +0800
-Message-ID: <a21beff2-9f38-d354-6049-aed20c18c8d4@huawei.com>
-Date:   Mon, 31 Jul 2023 17:10:45 +0800
+        with ESMTP id S230445AbjGaJug (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 05:50:36 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F8F19B0;
+        Mon, 31 Jul 2023 02:49:40 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-686efa1804eso2988056b3a.3;
+        Mon, 31 Jul 2023 02:49:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690796980; x=1691401780;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=NVTfBN5N9lCiJFglea9HccCPavQm9AmSWqbL+0BDsu8=;
+        b=SZ5yC6WE9LxSRAcxOxJT8x45C7+LJ4saf6KPzt8jTuIx9bxWK2FyxtaboxNway8jfB
+         cnJDOSprxQOy/1+88C0yQS5At9EpKGKmxIaBKRb/YvhISFRnjk9gkgtFAWRzb1tNGPns
+         8HmpI/2YrMIJDtNnf6Kw7PcboQK+1uayVqTCkYl1Yd2qNGDhGqzvwTttziUV2jGPCZjx
+         IQx8NCFs5yqMUdH6s/OkDcTdcitf3raYPR2FN3M8XjrvYbZV0k6yA5IwzJOSTh9krSVC
+         ZM3QRPVmyOPagpHs7k88p1KtvRO27S/oJWh8TZtXah/RjoiTgUzNTpiDK0kCZ7/YP9p2
+         EOLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690796980; x=1691401780;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NVTfBN5N9lCiJFglea9HccCPavQm9AmSWqbL+0BDsu8=;
+        b=lzFGxXvs/iOXKpJzRMbojoMbBTrosCb2bpfx1Nmep+JXp1xTNPiyiAkqu0IAkLWuX5
+         CrE7xK04wDsEYQBI7Bj1ih8cH5DH1RZw3L7QE/6yAFgWj8Cd0m4PzCbeLTJIigDRfiTZ
+         OSQ2jFpNjvyfLP4PAPIrPpKKhST2deLOwiWUJhZz3UmwUmm8LgR+k9KauoxLKxqg5XRS
+         QaDhMcof8LmXvssiM9jI3zRDWDyWtLhLdh8/CIDOZaq7OgIxzsAZHkPzLIT+n36G0Anc
+         oSp4ozdzEVGaOYQXmAAzaI831QiTrYAqK6XwdxC3lI/ApdQZac85zglfU8fMkgITqOyy
+         19uA==
+X-Gm-Message-State: ABy/qLbH4w6Nm/420ZTDOixqz1RIW6/HwA2bKonKsFvrzS+9ftjNUtcg
+        fPydZZa+hWg1S5++oQTEzjc=
+X-Google-Smtp-Source: APBJJlEBfoCU0leQatKwiPNbEyjBgQarWXa+XcwWMccpedf6MAf+Rs4L5qPoFF5mRt0qpOhF92CmBw==
+X-Received: by 2002:a05:6a21:329e:b0:13d:df16:cf29 with SMTP id yt30-20020a056a21329e00b0013ddf16cf29mr2138744pzb.15.1690796980158;
+        Mon, 31 Jul 2023 02:49:40 -0700 (PDT)
+Received: from bangji.roam.corp.google.com ([117.111.1.150])
+        by smtp.gmail.com with ESMTPSA id w5-20020a170902d3c500b001bbd1562e75sm8117852plb.55.2023.07.31.02.49.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Jul 2023 02:49:39 -0700 (PDT)
+Sender: Namhyung Kim <namhyung@gmail.com>
+From:   Namhyung Kim <namhyung@kernel.org>
+To:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>
+Cc:     Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH 1/2] perf hists browser: Fix hierarchy mode header
+Date:   Mon, 31 Jul 2023 02:49:32 -0700
+Message-ID: <20230731094934.1616495-1-namhyung@kernel.org>
+X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
-To:     Andrew Lunn <andrew@lunn.ch>
-CC:     <yisen.zhuang@huawei.com>, <salil.mehta@huawei.com>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <shenjian15@huawei.com>,
-        <wangjie125@huawei.com>, <liuyonglong@huawei.com>,
-        <wangpeiyang1@huawei.com>, <netdev@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20230728075840.4022760-1-shaojijie@huawei.com>
- <20230728075840.4022760-6-shaojijie@huawei.com>
- <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
- <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
- <73b41fe2-12dd-4fc0-a44d-f6f94e6541fc@lunn.ch>
- <ef5489f9-43b4-ee59-699b-3f54a30c00aa@huawei.com>
- <e7219114-774f-49d0-8985-8875fd351b60@lunn.ch>
-From:   Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <e7219114-774f-49d0-8985-8875fd351b60@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.69.136.139]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600007.china.huawei.com (7.193.23.208)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+The commit ef9ff6017e3c4 ("perf ui browser: Move the extra title lines
+from the hists browser") introduced ui_browser__gotorc_title() to help
+moving non-title lines easily.  But it missed to update the title for
+the hierarchy mode so it won't print the header line on TUI at all.
 
-on 2023/7/30 2:23, Andrew Lunn wrote:
->>      Now i wounder if you are fixing the wrong thing. Maybe you should be
->>      fixing the PHY so it does not report up and then down? You say 'very
->>      snall intervals', which should in fact be 1 second. So is the PHY
->>      reporting link for a number of poll intervals? 1min to 10 minutes?
->>
->>                Andrew
->>
->> Yes, according to the log records, the phy polls every second,
->> but the link status changes take time.
->> Generally, it takes 10 seconds for the phy to detect link down,
->> but occasionally it takes several minutes to detect link down,
-> What PHY driver is this?
->
-> It is not so clear what should actually happen with auto-neg turned
-> off. With it on, and the link going down, the PHY should react after
-> about 1 second. It is not supposed to react faster than that, although
-> some PHYs allow fast link down notification to be configured.
->
-> Have you checked 802.3 to see what it says about auto-neg off and link
-> down detection?
->
-> I personally would not suppress this behaviour in the MAC
-> driver. Otherwise you are going to have funny combinations of special
-> cases of a feature which very few people actually use, making your
-> maintenance costs higher.
->
-> 	    Andrew
-Thanks for your suggestion, We are analyzing this issue in depth.
+  $ perf report --hierarchy
+
+Fixes: ef9ff6017e3c4 ("perf ui browser: Move the extra title lines from the hists browser")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+ tools/perf/ui/browsers/hists.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index c7ad9e003080..d8b88f10a48d 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -1779,7 +1779,7 @@ static void hists_browser__hierarchy_headers(struct hist_browser *browser)
+ 	hists_browser__scnprintf_hierarchy_headers(browser, headers,
+ 						   sizeof(headers));
+ 
+-	ui_browser__gotorc(&browser->b, 0, 0);
++	ui_browser__gotorc_title(&browser->b, 0, 0);
+ 	ui_browser__set_color(&browser->b, HE_COLORSET_ROOT);
+ 	ui_browser__write_nstring(&browser->b, headers, browser->b.width + 1);
+ }
+-- 
+2.41.0.487.g6d72f3e995-goog
+
