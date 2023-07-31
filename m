@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 537A77695D4
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4095A7695E7
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:16:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232207AbjGaMPq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 08:15:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39746 "EHLO
+        id S229699AbjGaMQn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 08:16:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231504AbjGaMPn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:15:43 -0400
+        with ESMTP id S231470AbjGaMQm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:16:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5A9F197
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 05:15:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46DA010E2
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 05:16:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 539796108C
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 12:15:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D7EC433C8;
-        Mon, 31 Jul 2023 12:15:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B20966108D
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 12:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA2BC433C9;
+        Mon, 31 Jul 2023 12:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690805740;
-        bh=pz6WXZM0fcblV+mnVxnM5mWxy+n9xcLvwgRNUYXz6w0=;
+        s=korg; t=1690805796;
+        bh=ThQaSmWVHgIuJkmjrY6yk2MpwZbPuUmifAtH0TxDerE=;
         h=Subject:To:Cc:From:Date:From;
-        b=If0mG46xU8h14G4FWn0dxVIG/Y7hzeQeEPcyIUB4JrcHlCKh3kGTMh3Lgl+/oM1+I
-         IOJX37LySSuFS2MdUOeB7AlJ0zBZl7Fq93s+WbwZ3LMPvz0Dd9ZxUJUO53sj5eP/MB
-         xDSB5eiAYCMwBCIlRhl/FaZON/Q3WRlc4Mskb9j8=
-Subject: FAILED: patch "[PATCH] Revert "xhci: add quirk for host controllers that don't" failed to apply to 5.10-stable tree
-To:     oneukum@suse.com, gregkh@linuxfoundation.org, stable@kernel.org
+        b=YcIqsUuOpUxYKbvjKqanNVUAi3wFCq7Km/679sXugKueXf979NhTJ9tJ6aXDych2u
+         /FKvwhWrjlNUNsrpNHdx08nauq47Qv2BOcY5BybtPVIvdLEToNphB5zxKsimKx4bBe
+         Rp0hmO9u1u4J8C3Bywf/k3s+zx+Zgg3LU2LxW364=
+Subject: FAILED: patch "[PATCH] hwmon: (k10temp) Enable AMD3255 Proc to show negative" failed to apply to 5.10-stable tree
+To:     Baski.Kannan@amd.com, linux@roeck-us.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 31 Jul 2023 14:15:36 +0200
-Message-ID: <2023073136-reward-diner-6aeb@gregkh>
+Date:   Mon, 31 Jul 2023 14:16:31 +0200
+Message-ID: <2023073131-divinely-cheek-8e43@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -58,32 +58,19 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5bef4b3cb95a5b883dfec8b3ffc0d671323d55bb
+git cherry-pick -x e146503ac68418859fb063a3a0cd9ec93bc52238
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023073136-reward-diner-6aeb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023073131-divinely-cheek-8e43@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-5bef4b3cb95a ("Revert "xhci: add quirk for host controllers that don't update endpoint DCS"")
-5255660b208a ("xhci: add quirk for host controllers that don't update endpoint DCS")
-d1658268e439 ("usb: pci-quirks: disable D3cold on xhci suspend for s2idle on AMD Renoir")
-a4a251f8c235 ("usb: xhci: do not perform Soft Retry for some xHCI hosts")
-d1dbfb942c33 ("xhci: introduce a new move_dequeue_past_td() function to replace old code.")
-9ebf30007858 ("xhci: Fix halted endpoint at stop endpoint command completion")
-674f8438c121 ("xhci: split handling halted endpoints into two steps")
-7c6c334e6fc8 ("xhci: move and rename xhci_cleanup_halted_endpoint()")
-4db356924a50 ("xhci: turn cancelled td cleanup to its own function")
-a6ccd1fd4bd4 ("xhci: store TD status in the td struct instead of passing it along")
-e1a298390e98 ("xhci: use xhci_td_cleanup() helper when giving back cancelled URBs")
-69eaf9e79fa7 ("xhci: move xhci_td_cleanup so it can be called by more functions")
-d8ac95001bea ("xhci: Add xhci_reset_halted_ep() helper function")
-b1adc42d440d ("xhci: add xhci_get_virt_ep() helper")
-a181030703df ("xhci: remove unused event parameter from completion handlers")
-d70f4231b81e ("xhci: adjust parameters passed to cleanup_halted_endpoint()")
-d4dff8043ea5 ("xhci: get isochronous ring directly from endpoint structure")
-ab58f3bb6aaa ("xhci: Avoid parsing transfer events several times")
-bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+e146503ac684 ("hwmon: (k10temp) Enable AMD3255 Proc to show negative temperature")
+0e3f52bbd9eb ("hwmon: (k10temp) Rework the temperature offset calculation")
+128066c88770 ("hwmon: (k10temp) Add additional missing Zen2 and Zen3 APUs")
+02c9dce4df8d ("hwmon: (k10temp) support Zen3 APUs")
+c8d0d3fa9469 ("hwmon: (k10temp) Zen3 Ryzen Desktop CPUs support")
+0a4e668b5d52 ("hwmon: (k10temp) Remove support for displaying voltage and current on Zen CPUs")
 
 thanks,
 
@@ -91,147 +78,81 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5bef4b3cb95a5b883dfec8b3ffc0d671323d55bb Mon Sep 17 00:00:00 2001
-From: Oliver Neukum <oneukum@suse.com>
-Date: Thu, 13 Jul 2023 13:28:10 +0200
-Subject: [PATCH] Revert "xhci: add quirk for host controllers that don't
- update endpoint DCS"
+From e146503ac68418859fb063a3a0cd9ec93bc52238 Mon Sep 17 00:00:00 2001
+From: Baskaran Kannan <Baski.Kannan@amd.com>
+Date: Thu, 27 Jul 2023 11:21:59 -0500
+Subject: [PATCH] hwmon: (k10temp) Enable AMD3255 Proc to show negative
+ temperature
 
-This reverts commit 5255660b208aebfdb71d574f3952cf48392f4306.
+Industrial processor i3255 supports temperatures -40 deg celcius
+to 105 deg Celcius. The current implementation of k10temp_read_temp
+rounds off any negative temperatures to '0'. To fix this,
+the following changes have been made.
 
-This quirk breaks at least the following hardware:
+A flag 'disp_negative' is added to struct k10temp_data to support
+AMD i3255 processors. Flag 'disp_negative' is set if 3255 processor
+is found during k10temp_probe.  Flag 'disp_negative' is used to
+determine whether to round off negative temperatures to '0' in
+k10temp_read_temp.
 
-0b:00.0 0c03: 1106:3483 (rev 01) (prog-if 30 [XHCI])
-        Subsystem: 1106:3483
-        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin A routed to IRQ 66
-        Region 0: Memory at fb400000 (64-bit, non-prefetchable) [size=4K]
-        Capabilities: [80] Power Management version 3
-                Flags: PMEClk- DSI- D1- D2- AuxCurrent=375mA PME(D0+,D1+,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
-        Capabilities: [90] MSI: Enable+ Count=1/4 Maskable- 64bit+
-                Address: 00000000fee007b8  Data: 0000
-        Capabilities: [c4] Express (v2) Endpoint, MSI 00
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s <64ns, L1 <1us
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- SlotPowerLimit 89W
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
-                LnkCap: Port #0, Speed 5GT/s, Width x1, ASPM L0s L1, Exit Latency L0s <2us, L1 <16us
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, Disabled- CommClk+
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 5GT/s, Width x1
-                        TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
-                DevCap2: Completion Timeout: Range B, TimeoutDis+ NROPrPrP- LTR-
-                         10BitTagComp- 10BitTagReq- OBFF Not Supported, ExtFmt- EETLPPrefix-
-                         EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
-                         FRS- TPHComp- ExtTPHComp-
-                         AtomicOpsCap: 32bit- 64bit- 128bitCAS-
-                DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis- LTR- 10BitTagReq- OBFF Disabled,
-                         AtomicOpsCtl: ReqEn-
-                LnkCtl2: Target Link Speed: 5GT/s, EnterCompliance- SpeedDis-
-                         Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
-                         Compliance Preset/De-emphasis: -6dB de-emphasis, 0dB preshoot
-                LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- EqualizationPhase1-
-                         EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
-                         Retimer- 2Retimers- CrosslinkRes: unsupported
-       Capabilities: [100 v1] Advanced Error Reporting
-                UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-                UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-                UESvrt: DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
-                CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr-
-                CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr+
-                AERCap: First Error Pointer: 00, ECRCGenCap- ECRCGenEn- ECRCChkCap- ECRCChkEn-
-                        MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
-                HeaderLog: 00000000 00000000 00000000 00000000
-        Kernel driver in use: xhci_hcd
-        Kernel modules: xhci_pci
+Signed-off-by: Baskaran Kannan <Baski.Kannan@amd.com>
+Link: https://lore.kernel.org/r/20230727162159.1056136-1-Baski.Kannan@amd.com
+Fixes: aef17ca12719 ("hwmon: (k10temp) Only apply temperature offset if result is positive")
+Cc: stable@vger.kernel.org
+[groeck: Fixed multi-line comment]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-with the quirk enabled it fails early with
-
-[    0.754373] pci 0000:0b:00.0: xHCI HW did not halt within 32000 usec status = 0x1000
-[    0.754419] pci 0000:0b:00.0: quirk_usb_early_handoff+0x0/0x7a0 took 31459 usecs
-[    2.228048] xhci_hcd 0000:0b:00.0: xHCI Host Controller
-[    2.228053] xhci_hcd 0000:0b:00.0: new USB bus registered, assigned bus number 7
-[    2.260073] xhci_hcd 0000:0b:00.0: Host halt failed, -110
-[    2.260079] xhci_hcd 0000:0b:00.0: can't setup: -110
-[    2.260551] xhci_hcd 0000:0b:00.0: USB bus 7 deregistered
-[    2.260624] xhci_hcd 0000:0b:00.0: init 0000:0b:00.0 fail, -110
-[    2.260639] xhci_hcd: probe of 0000:0b:00.0 failed with error -110
-
-The hardware in question is an external PCIe card. It looks to me like the quirk
-needs to be narrowed down. But this needs information about the hardware showing
-the issue this quirk is to fix. So for now a clean revert.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 5255660b208a ("xhci: add quirk for host controllers that don't update endpoint DCS")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230713112830.21773-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index c6742bae41c0..b9ae5c2a2527 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -479,10 +479,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 			pdev->device == 0x3432)
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+index 7b177b9fbb09..a267b11731a8 100644
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -77,6 +77,13 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
+ #define ZEN_CUR_TEMP_RANGE_SEL_MASK		BIT(19)
+ #define ZEN_CUR_TEMP_TJ_SEL_MASK		GENMASK(17, 16)
  
--	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483) {
-+	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
- 		xhci->quirks |= XHCI_LPM_SUPPORT;
--		xhci->quirks |= XHCI_EP_CTX_BROKEN_DCS;
--	}
++/*
++ * AMD's Industrial processor 3255 supports temperature from -40 deg to 105 deg Celsius.
++ * Use the model name to identify 3255 CPUs and set a flag to display negative temperature.
++ * Do not round off to zero for negative Tctl or Tdie values if the flag is set
++ */
++#define AMD_I3255_STR				"3255"
++
+ struct k10temp_data {
+ 	struct pci_dev *pdev;
+ 	void (*read_htcreg)(struct pci_dev *pdev, u32 *regval);
+@@ -86,6 +93,7 @@ struct k10temp_data {
+ 	u32 show_temp;
+ 	bool is_zen;
+ 	u32 ccd_offset;
++	bool disp_negative;
+ };
  
- 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 646ff125def5..1dde53f6eb31 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -626,11 +626,8 @@ static int xhci_move_dequeue_past_td(struct xhci_hcd *xhci,
- 	struct xhci_ring *ep_ring;
- 	struct xhci_command *cmd;
- 	struct xhci_segment *new_seg;
--	struct xhci_segment *halted_seg = NULL;
- 	union xhci_trb *new_deq;
- 	int new_cycle;
--	union xhci_trb *halted_trb;
--	int index = 0;
- 	dma_addr_t addr;
- 	u64 hw_dequeue;
- 	bool cycle_found = false;
-@@ -668,27 +665,7 @@ static int xhci_move_dequeue_past_td(struct xhci_hcd *xhci,
- 	hw_dequeue = xhci_get_hw_deq(xhci, dev, ep_index, stream_id);
- 	new_seg = ep_ring->deq_seg;
- 	new_deq = ep_ring->dequeue;
--
--	/*
--	 * Quirk: xHC write-back of the DCS field in the hardware dequeue
--	 * pointer is wrong - use the cycle state of the TRB pointed to by
--	 * the dequeue pointer.
--	 */
--	if (xhci->quirks & XHCI_EP_CTX_BROKEN_DCS &&
--	    !(ep->ep_state & EP_HAS_STREAMS))
--		halted_seg = trb_in_td(xhci, td->start_seg,
--				       td->first_trb, td->last_trb,
--				       hw_dequeue & ~0xf, false);
--	if (halted_seg) {
--		index = ((dma_addr_t)(hw_dequeue & ~0xf) - halted_seg->dma) /
--			 sizeof(*halted_trb);
--		halted_trb = &halted_seg->trbs[index];
--		new_cycle = halted_trb->generic.field[3] & 0x1;
--		xhci_dbg(xhci, "Endpoint DCS = %d TRB index = %d cycle = %d\n",
--			 (u8)(hw_dequeue & 0x1), index, new_cycle);
--	} else {
--		new_cycle = hw_dequeue & 0x1;
--	}
-+	new_cycle = hw_dequeue & 0x1;
+ #define TCTL_BIT	0
+@@ -204,12 +212,12 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
+ 		switch (channel) {
+ 		case 0:		/* Tctl */
+ 			*val = get_raw_temp(data);
+-			if (*val < 0)
++			if (*val < 0 && !data->disp_negative)
+ 				*val = 0;
+ 			break;
+ 		case 1:		/* Tdie */
+ 			*val = get_raw_temp(data) - data->temp_offset;
+-			if (*val < 0)
++			if (*val < 0 && !data->disp_negative)
+ 				*val = 0;
+ 			break;
+ 		case 2 ... 13:		/* Tccd{1-12} */
+@@ -405,6 +413,11 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	data->pdev = pdev;
+ 	data->show_temp |= BIT(TCTL_BIT);	/* Always show Tctl */
  
- 	/*
- 	 * We want to find the pointer, segment and cycle state of the new trb
++	if (boot_cpu_data.x86 == 0x17 &&
++	    strstr(boot_cpu_data.x86_model_id, AMD_I3255_STR)) {
++		data->disp_negative = true;
++	}
++
+ 	if (boot_cpu_data.x86 == 0x15 &&
+ 	    ((boot_cpu_data.x86_model & 0xf0) == 0x60 ||
+ 	     (boot_cpu_data.x86_model & 0xf0) == 0x70)) {
 
