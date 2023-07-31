@@ -2,145 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFB6B769C0F
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 18:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53BC3769C3B
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 18:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231247AbjGaQPZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 12:15:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49822 "EHLO
+        id S232625AbjGaQWd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 12:22:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230373AbjGaQPY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 12:15:24 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED21A7;
-        Mon, 31 Jul 2023 09:15:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=WO2NwJzYkKlp18843ortxVXWaoHck3bm6C+aHCT7Luk=; b=ATw9jOpGyGIz2BDGrr+lIKcKAT
-        +ezdgWwZByzg4gchU3+1uJKhRhCDNY8xPW7KKdDaFmMURRUzyJtFcuiRwWYcS8w0ZfV/cTdNlBhey
-        pOaqfQ86j2h9Z8mNAffl850PjIZxZjWjIcEu097JoXqT1LfM8ONTzWmjEDpNp0FcW6h3mjzA2lFOw
-        CABwwPYlj6u7wOVcU+CcnauUco/FIHeyvI7i4vLXTM4jQ4OA5odjbrkZjovF4FQey75q+C8gXhiNz
-        WQMoCIAbjpVRRWCVJRwPVSPgFfkwc6jcrfz3k89OJiqIn2a4m3F0YxoeKA1iVskF5hQTnH7f55Npm
-        ltbnC9Ug==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qQVXp-00Csud-0g;
-        Mon, 31 Jul 2023 16:14:53 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3AA25300134;
-        Mon, 31 Jul 2023 18:14:52 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 21E5F203C0B01; Mon, 31 Jul 2023 18:14:52 +0200 (CEST)
-Date:   Mon, 31 Jul 2023 18:14:52 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Roy Hopkins <rhopkins@suse.de>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Joel Fernandes <joel@joelfernandes.org>, paulmck@kernel.org,
-        Pavel Machek <pavel@denx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
-Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
- 6.4.7-rc1 review)
-Message-ID: <20230731161452.GA40850@hirez.programming.kicks-ass.net>
-References: <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
- <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
- <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
- <20230731141934.GK29590@hirez.programming.kicks-ass.net>
- <20230731143954.GB37820@hirez.programming.kicks-ass.net>
- <f5a18aa3-9db7-6ad2-33d5-3335a18e4e2f@roeck-us.net>
- <20230731145232.GM29590@hirez.programming.kicks-ass.net>
- <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231444AbjGaQWb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 12:22:31 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2659A7;
+        Mon, 31 Jul 2023 09:22:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=RBXOtrD3ZlEhqpLX1FdhLeJavuxWtGfwI1ATytFWQb8=; b=UiIuoVqEYu3NR1hGJVRxRVn3bQ
+        FcamShq7Ai1mI/W3PvHdyZJwpyAvpQc4W5Qac0gyeYVGB9lwiHktKxPNWmdbJ/A+yeeEZ91PkKcbs
+        ZP2Raqh4BqUHratH+wjTBGKT/RyOTxnCNC4FMMF+Sigzz4mtAwbL/mr49f5DDl+nTnNM=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:53968 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qQVev-0006ZN-7g; Mon, 31 Jul 2023 12:22:13 -0400
+Date:   Mon, 31 Jul 2023 12:22:12 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
+Message-Id: <20230731122212.3f64d0dc5adf8d23eee1de62@hugovil.com>
+In-Reply-To: <2023073108-footboard-chooser-d20e@gregkh>
+References: <20230725142343.1724130-1-hugo@hugovil.com>
+        <20230725142343.1724130-3-hugo@hugovil.com>
+        <2023073108-footboard-chooser-d20e@gregkh>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v9 02/10] serial: sc16is7xx: mark IOCONTROL register as
+ volatile
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 31, 2023 at 05:08:29PM +0100, Roy Hopkins wrote:
-> On Mon, 2023-07-31 at 16:52 +0200, Peter Zijlstra wrote:
-> > On Mon, Jul 31, 2023 at 07:48:19AM -0700, Guenter Roeck wrote:
+On Mon, 31 Jul 2023 17:50:40 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
+
+> On Tue, Jul 25, 2023 at 10:23:34AM -0400, Hugo Villeneuve wrote:
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 > > 
-> > > > I've taken your config above, and the rootfs.ext2 and run-sh from x86/.
-> > > > I've then modified run-sh to use:
-> > > > 
-> > > >    qemu-system-x86_64 -enable-kvm -cpu host
-> > > > 
-> > > > What I'm seeing is that some boots get stuck at:
-> > > > 
-> > > > [    0.608230] Running RCU-tasks wait API self tests
-> > > > 
-> > > > Is this the right 'problem' ?
-> > > > 
-> > > 
-> > > 
-> > > Yes, exactly.
+> > Bit SRESET (3) is cleared when a reset operation is completed. Having
+> > the IOCONTROL register as non-volatile will always read SRESET as 1,
+> > which is incorrect.
 > > 
-> > Excellent! Let me prod that with something sharp, see what comes
-> > creeping out.
+> > Also, if IOCONTROL register is not a volatile register, the upcoming
+> > patch "serial: sc16is7xx: fix regression with GPIO configuration"
+> > doesn't work when setting some shared GPIO lines as modem control
+> > lines.
+> > 
+> > Therefore mark IOCONTROL register as a volatile register.
+> > 
+> > Cc: <stable@vger.kernel.org> # 6.1.x
 > 
-> In an effort to get up to speed with this area of the kernel, I've been playing
-> around with this too today and managed to reproduce the problem using the same
-> configuration. I'm completely new to this code but I think I may have found the
-> root of the problem.
+> Why 6.1.y?  What commit does this fix?
 > 
-> What I've found is that there is a race condition between starting the RCU tasks
-> grace-period thread in rcu_spawn_tasks_kthread_generic() and a subsequent call
-> to synchronize_rcu_tasks_generic(). This results in rtp->tasks_gp_mutex being
-> locked in the initial thread which subsequently blocks the newly started grace-
-> period thread.
+> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > ---
+> >  drivers/tty/serial/sc16is7xx.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> > index 8ae2afc76a9b..306ae512b38a 100644
+> > --- a/drivers/tty/serial/sc16is7xx.c
+> > +++ b/drivers/tty/serial/sc16is7xx.c
+> > @@ -488,6 +488,7 @@ static bool sc16is7xx_regmap_volatile(struct device *dev, unsigned int reg)
+> >  	case SC16IS7XX_TXLVL_REG:
+> >  	case SC16IS7XX_RXLVL_REG:
+> >  	case SC16IS7XX_IOSTATE_REG:
+> > +	case SC16IS7XX_IOCONTROL_REG:
+> >  		return true;
+> >  	default:
+> >  		break;
 > 
-> The problem is that although synchronize_rcu_tasks_generic() checks to see if
-> the grace-period kthread is running, it uses rtp->kthread_ptr to achieve this.
-> This is only set in the thread entry point and not when the thread is created,
-> meaning that it is set only after the creating thread yields or is preempted. If
-> this has not happened before the next call to synchronize_rcu_tasks_generic()
-> then a deadlock occurs.
+> Is this the same as this change:
+> 	https://lore.kernel.org/all/20230724034727.17335-1-hui.wang@canonical.com/
 > 
-> I've created a debug patch that introduces a new flag in rcu_tasks that is set
-> when the kthread is created and used this in synchronize_rcu_tasks_generic() in
-> place of READ_ONCE(rtp->kthread_ptr). This fixes the issue in my test
-> environment.
-> 
-> I'm happy to have a go at submitting a patch for this if it helps.
+> confused,
 
-Ha!, I was poking around the same thing. My hack below seems to (so far,
-<20 boots) help things.
+Hi Greg,
+yes this is the same.
 
+You simply accepted an exact equivalent of my patch by someone else in
+your tree, no confusion there.
 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 56c470a489c8..b083b5a30025 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -652,7 +658,11 @@ static void __init rcu_spawn_tasks_kthread_generic(struct rcu_tasks *rtp)
- 	t = kthread_run(rcu_tasks_kthread, rtp, "%s_kthread", rtp->kname);
- 	if (WARN_ONCE(IS_ERR(t), "%s: Could not start %s grace-period kthread, OOM is now expected behavior\n", __func__, rtp->name))
- 		return;
--	smp_mb(); /* Ensure others see full kthread. */
-+	for (;;) {
-+		cond_resched();
-+		if (smp_load_acquire(&rtp->kthread_ptr))
-+			break;
-+	}
- }
- 
- #ifndef CONFIG_TINY_RCU
+I will remove this patch from my series and rebase it on your tree
+gregkh_tty/tty-next.
+
+Hugo.
