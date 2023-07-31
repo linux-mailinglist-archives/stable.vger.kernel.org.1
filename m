@@ -2,82 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 478CB7692B2
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 12:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164467692D3
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 12:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbjGaKGg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 06:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
+        id S230516AbjGaKOL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 06:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229861AbjGaKGf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 06:06:35 -0400
-Received: from mgamail.intel.com (unknown [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A52A4
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 03:06:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690797994; x=1722333994;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=IaxYmHm4EZaKSgC5suwMmVZEvDpb9ol6gvHs5vhMcaM=;
-  b=jkkdsJxWmYkwD1qmow4SCXrFnqQGGBHaQRLibq1M62UIfo/vkAyGup88
-   LTom/FfWiGsqUDJUTDcmW54k/B3xvjPwdg5BhB7L0NbVqIFAAquF8DZHj
-   u+EhR0HSxH5IwgI6tYnAAwA2B3eQopS6WNjnIOpepB4xvlZuwkBfLERwm
-   WuaIXGPQZzep8jmQl13lAX7QD9bB+80o4L2iZTD6CypeOj4Z/jCUzzn9L
-   Mv7xtMbBvtpmZW5PN64AkjBgSZJgiqL3ZIk0crqwbcykHMEgKoojaIXnE
-   26IoPU6T7s9/opj89x9K4fM+Kv4E8CF2RTrg+T3l9o0NIqakJ7mSJ3Kuy
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10787"; a="435281146"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
-   d="scan'208";a="435281146"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 03:06:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10787"; a="793667637"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
-   d="scan'208";a="793667637"
-Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 31 Jul 2023 03:06:32 -0700
-Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qQPnL-00053b-2j;
-        Mon, 31 Jul 2023 10:06:31 +0000
-Date:   Mon, 31 Jul 2023 18:06:01 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-Message-ID: <ZMeHiXvIBHAn3Ugo@c507f7d2ae6a>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230731095936.23397-1-xingmingzheng@iscas.ac.cn>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230453AbjGaKOK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 06:14:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D40E8E3;
+        Mon, 31 Jul 2023 03:14:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71DFE60D32;
+        Mon, 31 Jul 2023 10:14:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207D8C433C7;
+        Mon, 31 Jul 2023 10:14:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690798448;
+        bh=EW7YMvUyfLmk+cbCYjst8bsZXEEoiOeVIsX41Tk6EZI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oCQC2lDGGtGvVyzJaztdEoQcZ6k5LWE5DlQ8gA5w1QX63d0ynKAyAA65yimgEeYJV
+         V0hkNzMKfo0sV2WiMWcaxDT9oeccHSN+nn86R6T18NDnEUxKiUJ0g6HGnvh5WD8LU4
+         pnrO4cGiAcAxsI4+jROSksXAcvIOsznXfBQTPyrWI6VE0Uj56DAJoJlbmTd2zqdQ7/
+         C4Z31/IciOZh2HnSjQ8v/s/TeBYETX0R4wL90/CAxq4/N4Kf4i5ybLGI+NA78x4HDr
+         DqKdGoe8lcFRhWECUSZKpIGGKnr3WwNmWtj5n97S26g6E+6B6Z8M1UAOv7WNhTiGye
+         CkXw9nJZ2dK1g==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 31 Jul 2023 10:14:05 +0000
+Message-Id: <CUGA0YM7BIJN.3RDWZ1WZSWG28@seitikki>
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Daniil Stas" <daniil.stas@posteo.net>
+Cc:     <mario.limonciello@amd.com>,
+        <James.Bottomley@hansenpartnership.com>, <Jason@zx2c4.com>,
+        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <regressions@leemhuis.info>, <stable@vger.kernel.org>,
+        <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
+X-Mailer: aerc 0.14.0
+References: <20230214201955.7461-2-mario.limonciello@amd.com>
+ <20230727183805.69c36d6e@g14> <CUE1Z76QDX0Z.2K0OU6TPMS50X@seitikki>
+ <20230728231810.48370d44@g14>
+In-Reply-To: <20230728231810.48370d44@g14>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Fri Jul 28, 2023 at 8:18 PM UTC, Daniil Stas wrote:
+> On Fri, 28 Jul 2023 19:30:18 +0000
+> "Jarkko Sakkinen" <jarkko@kernel.org> wrote:
+>
+> > On Thu Jul 27, 2023 at 3:38 PM UTC, Daniil Stas wrote:
+> > > Hi,
+> > > I am still getting fTPM stutters with 6.4.3 kernel on Asus GA402RJ
+> > > laptop.
+> > > Compiling kernel without TPM support makes the stutters go away.
+> > > The fTPM firmware version is 0x3005700020005 on my machine. =20
+> >=20
+> > This is needs a bit more elaboration in order to be comprehended.
+> >=20
+> > Do you mean by "stutter" unexpected delays and when do they happen?
+> >=20
+> > BR, Jarkko
+>
+> Yes, unexpected delays. They just happen randomly.
+> You can google "AMD fTPM stuttering", there are a lot of examples.
+> Here is one: https://www.youtube.com/watch?v=3DTYnRL-x6DVI
 
-Thanks for your patch.
+What if you make tpm_amd_is_rng_defective() to unconditonally return
+true? Does this make the problem dissappear, or not?
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH v3] riscv: Handle zicsr/zifencei issue between gcc and binutils
-Link: https://lore.kernel.org/stable/20230731095936.23397-1-xingmingzheng%40iscas.ac.cn
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+BR, Jarkko
