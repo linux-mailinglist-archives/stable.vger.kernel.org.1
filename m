@@ -2,81 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 068AF768A67
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 05:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78E2768A79
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 05:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbjGaDrP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 30 Jul 2023 23:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55790 "EHLO
+        id S229551AbjGaDyt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 30 Jul 2023 23:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjGaDrO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 30 Jul 2023 23:47:14 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8911E53;
-        Sun, 30 Jul 2023 20:47:12 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bc02bd4eafso10246055ad.1;
-        Sun, 30 Jul 2023 20:47:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690775232; x=1691380032;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0+Iq8rjthuWxB9vm3ZVIy+baoDKsYpVrmoMrfb4dLKY=;
-        b=YStm9bVWepmcQguvBLejF2BBxgRQqDiSzZ3kCJaYEePpdHArTHnp/xb1yJZo6Oekwy
-         KPpLCt1fGbbA5gZfZNdZO9ozUCa+//Z4YC5wNkrR0VVZTPVmJvLk9O0Ml9drDsB+rYMA
-         R0SO51OiSS0wxj3AL6PBGxheppHXcW6ZaL/x5HS3jfIqXv+STFIE/RuwWBVBBynzQ+aQ
-         BqG6M1h6U9HwQk6wZ8KiPZ4akXnSgixTE0ZTiDKHvt7GFMSMpXUFheIMLbhw5PVwNLmd
-         uafLu7StnqFFyzk2ayMT/tJ1RsYePwCaT74eqh9Hx06vJ+M6r2iXEX65/aH01XyDsF7O
-         LsmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690775232; x=1691380032;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0+Iq8rjthuWxB9vm3ZVIy+baoDKsYpVrmoMrfb4dLKY=;
-        b=QwGUNJdV9PRnMOTFj0Gj5GozbErQ5VJ6u4D+onRuFxiSQCoWJsJAIYt7leV8H2sxFv
-         sfxZxT+cUQ1F5o6yZEOKrCkHb2u6CAN5pyXv0aR8lHd8uyyuUzTMUjZXCjbwXR1QfJ4T
-         fBZrg5+0Qus1MIMQrh2F8c4zNaH8djlUHrqA5rWjqy9skpbGBAJM4VXMDPoQZEojuSTD
-         3H6TboC/rsb/AVIOwZ2lLisVptRn9Z2fqete8dN+7okVAvCXgUJt03hPvw8/dG6lrq8n
-         HFUd6AeMFLRda5dPns/0NIP8ibEsgW6SkwqWDl+xvPJ0nsInT1WASNOkEVI3bdDTX4eB
-         vdhw==
-X-Gm-Message-State: ABy/qLZhFao1DgcZ5iG9+fRhLzZDs6viFHmdU7I+IHcSCyMxJ+DWlMJE
-        tbGzjBZwf8za8BNUr1zciyE=
-X-Google-Smtp-Source: APBJJlFTyP6ZfRWoW3McU9rAP40CAOmt4Cfdu3V0g/Fm6FNad28/o1TXHMe2Q5WqQPKReghuDGX0cg==
-X-Received: by 2002:a17:902:eccf:b0:1b5:694:b1a9 with SMTP id a15-20020a170902eccf00b001b50694b1a9mr10899480plh.32.1690775232164;
-        Sun, 30 Jul 2023 20:47:12 -0700 (PDT)
-Received: from [192.168.1.121] ([65.129.146.152])
-        by smtp.gmail.com with ESMTPSA id ix13-20020a170902f80d00b001b9d7c8f44dsm7325338plb.182.2023.07.30.20.47.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Jul 2023 20:47:11 -0700 (PDT)
-Message-ID: <ec2a2031-366d-c6c1-ff11-accd1cccae8f@gmail.com>
-Date:   Sun, 30 Jul 2023 21:47:11 -0600
+        with ESMTP id S229479AbjGaDyt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 30 Jul 2023 23:54:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10184A1;
+        Sun, 30 Jul 2023 20:54:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D1CA60E83;
+        Mon, 31 Jul 2023 03:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3BCC433C8;
+        Mon, 31 Jul 2023 03:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690775687;
+        bh=E4ohKTWtdIMZQzjQBicmrpz83AnFnnvK8A7iqUWlIJE=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=JYEwrawbpmc6qWyZLM9/r5PJRb/88uZ4yEOJz8RK7kQ4aIA1jkVasCiXKWafil721
+         d/MaYnS1O9VvGEwf01QMp0hLSwRTyETbORoLfsQHi9xF8LwRaZXLgQDWgbrtUY74cy
+         meKBiHmKuefbEb0xoWZUtNGGYkzhhJTgBBHl9f4wRujmlAW6hIzaC7kxZkIstZ3WJA
+         fcamJPQJ8EN/+SMeU5ZFbMSLK/BN0CmsXytUubJ+fJwetHFeyFJDX9csup877QV9YX
+         zpwPu2c7cmlkEFA5cCskmHE2JvhyTSvKBsF4imx70ZKlwY2xReO/cpMTidOe3KhkVN
+         3dkSO8bfTAzdA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id 7145CCE1067; Sun, 30 Jul 2023 20:54:46 -0700 (PDT)
+Date:   Sun, 30 Jul 2023 20:54:46 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Joel Fernandes <joel@joelfernandes.org>,
+        Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org
+Subject: Re: [PATCH 6.4 000/227] 6.4.7-rc1 review
+Message-ID: <bfa768e7-fc4f-4511-ad3a-67772f41d50c@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <ZMJWet00+9yIl/9c@duo.ucw.cz>
+ <78722041-D1F7-45FA-BA1C-41B92209BA6C@joelfernandes.org>
+ <0751f5a8-2727-4a08-8bb8-50bbd4244c9c@paulmck-laptop>
+ <67eba84a-ae24-2983-a756-463f39f3ca71@roeck-us.net>
+ <ebe4a969-8a24-4bb8-8dbe-f77db89f65c9@paulmck-laptop>
+ <2f4b012e-1f95-30aa-3f43-c31e84cb2c42@roeck-us.net>
+ <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
+ <6d45f1d0-25e5-8603-0fbb-73374be00503@roeck-us.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Scsi_bus_resume+0x0/0x90 returns -5 when resuming from s3 sleep
-To:     Damien Le Moal <dlemoal@kernel.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     regressions@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
- <6b66dd9a-8bd5-2882-9168-8e6e0848c454@leemhuis.info>
- <c70caa9e-164c-fee5-8f85-67f6d02373ab@kernel.org>
- <b0ed86e0-3e4a-d4d1-7b9d-c57f20538a80@gmail.com>
- <86435987-734e-c6c1-a857-1ba80da709fe@gmail.com>
- <48bc1736-5e4e-3a9b-3715-60509c333bb1@kernel.org>
- <f7e7b601-571f-bd2e-6410-a8a27e510c2f@gmail.com>
- <40365501-283a-408b-3514-48c29db36861@kernel.org>
- <d44e4057-0758-4cb8-ca29-02b5bb340b8b@gmail.com>
- <2b7e9239-fd48-0f74-f69b-e0039809c857@kernel.org>
-Content-Language: en-US
-From:   TW <dalzot@gmail.com>
-In-Reply-To: <2b7e9239-fd48-0f74-f69b-e0039809c857@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d45f1d0-25e5-8603-0fbb-73374be00503@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -85,9 +72,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Oh excellent I'll go do that now.
+On Thu, Jul 27, 2023 at 09:22:52PM -0700, Guenter Roeck wrote:
+> On 7/27/23 13:33, Paul E. McKenney wrote:
+> [ ... ]
+> 
+> > So which of the following Kconfig options is defined in your .config?
+> > CONFIG_TASKS_RCU, CONFIG_TASKS_RUDE_RCU, and CONFIG_TASKS_TRACE_RCU.
+> > 
+> 
+> Only CONFIG_TASKS_RCU. I added another log message after call_rcu_tasks().
+> It never returns from that function.
+> 
+> [    1.168993] Running RCU synchronous self tests
+> [    1.169219] Running RCU synchronous self tests
+> [    1.285795] smpboot: CPU0: Intel Xeon Processor (Cascadelake) (family: 0x6, model: 0x55, stepping: 0x6)
+> [    1.302827] RCU Tasks: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1.
+> [    1.304526] Running RCU Tasks wait API self tests
+> 
+> ... and then nothing for at least 10 minutes (then I gave up and stopped the test).
+> 
+> Qemu command line:
+> 
+> qemu-system-x86_64 -kernel \
+>      arch/x86/boot/bzImage -M q35 -cpu Cascadelake-Server -no-reboot \
+>      -snapshot -device e1000e,netdev=net0 -netdev user,id=net0 -m 256 \
+>      -drive file=rootfs.iso,format=raw,if=ide,media=cdrom \
+>      --append "earlycon=uart8250,io,0x3f8,9600n8 panic=-1 slub_debug=FZPUA root=/dev/sr0 rootwait console=ttyS0 noreboot" \
+>      -d unimp,guest_errors -nographic -monitor none
+> 
+> Again, this doesn't happen all the time. With Cascadelake-Server
+> I see it maybe once every 5 boot attempts. I tried with qemu v8.0
+> and v8.1. Note that it does seem to happen with various CPU types,
+> only for some it seems to me more likely to happen (so maybe the
+> CPU type was a red herring). It does seem to depend on the system
+> load, and happen more often if the system is under heavy load.
 
-On 7/30/23 18:41, Damien Le Moal wrote:
-> I posted a proper patch and CC-ed you. A "Tested-by:" tag from you 
-> would be much appreciated (please use your full name in that case, 
-> instead of only "TW"). Thanks.
+Hmmm...  What kernel are you using as your qemu/KVM hypervisor?
+
+And I echo Joel's requests for your .config file.
+
+							Thanx, Paul
