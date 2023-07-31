@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56C8A7695D3
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 537A77695D4
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:15:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbjGaMOn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 08:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39378 "EHLO
+        id S232207AbjGaMPq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 08:15:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232204AbjGaMOl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:14:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220EE10FE
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 05:14:28 -0700 (PDT)
+        with ESMTP id S231504AbjGaMPn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:15:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5A9F197
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 05:15:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABE466108D
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 12:14:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBDBC433C7;
-        Mon, 31 Jul 2023 12:14:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 539796108C
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 12:15:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D7EC433C8;
+        Mon, 31 Jul 2023 12:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690805667;
-        bh=ZI+xV7KhyL08ygjyJBpfYJ79F7Vw6WRQiVHw95S7ftw=;
+        s=korg; t=1690805740;
+        bh=pz6WXZM0fcblV+mnVxnM5mWxy+n9xcLvwgRNUYXz6w0=;
         h=Subject:To:Cc:From:Date:From;
-        b=HYa4pVOjaALrCh4M+UzL4s/epmoML407iENXFe/JNgGoaQL/Zjn5Ejm8pZeh1ZdqT
-         VwderV7jOxuk2xHYuItrgjxNtMankJKpg8EqfcWGEK4NLDgZ40G7jRmjSZsoW9CmOv
-         snjy3Qy0mxHYZFVboVsF6txG1879aOhAZfOyCej0=
-Subject: FAILED: patch "[PATCH] staging: r8712: Fix memory leak in _r8712_init_xmit_priv()" failed to apply to 4.14-stable tree
-To:     Larry.Finger@lwfinger.net, gregkh@linuxfoundation.org,
-        namcaov@gmail.com
+        b=If0mG46xU8h14G4FWn0dxVIG/Y7hzeQeEPcyIUB4JrcHlCKh3kGTMh3Lgl+/oM1+I
+         IOJX37LySSuFS2MdUOeB7AlJ0zBZl7Fq93s+WbwZ3LMPvz0Dd9ZxUJUO53sj5eP/MB
+         xDSB5eiAYCMwBCIlRhl/FaZON/Q3WRlc4Mskb9j8=
+Subject: FAILED: patch "[PATCH] Revert "xhci: add quirk for host controllers that don't" failed to apply to 5.10-stable tree
+To:     oneukum@suse.com, gregkh@linuxfoundation.org, stable@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 31 Jul 2023 14:14:17 +0200
-Message-ID: <2023073116-amigo-cabbie-e3af@gregkh>
+Date:   Mon, 31 Jul 2023 14:15:36 +0200
+Message-ID: <2023073136-reward-diner-6aeb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,42 +49,41 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x ac83631230f77dda94154ed0ebfd368fc81c70a3
+git cherry-pick -x 5bef4b3cb95a5b883dfec8b3ffc0d671323d55bb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023073116-amigo-cabbie-e3af@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023073136-reward-diner-6aeb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-ac83631230f7 ("staging: r8712: Fix memory leak in _r8712_init_xmit_priv()")
-f179515da978 ("staging: rtl8712: Use constants from <linux/ieee80211.h>")
-0e934ce2904e ("staging: rtl8712: clean up comparsions to NULL")
-bd7a168a024d ("staging: rtl8712: use common ieee80211 constants")
-3ee97e220648 ("staging: rtl8712: switch to common ieee80211 headers")
-15ea976a1f12 ("staging: rtl8712: Fix IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK")
-2aaeaaff1ae2 ("staging: rtl8712: code improvements to make_wlanhdr")
-45afa5637b85 ("staging: rtl8712: fix long-line checkpatch warning")
-5979afa2c4d1 ("staging: Replace zero-length array with flexible-array member")
-96b06c0a16f7 ("Revert "staging: octeon-usb: delete the octeon usb host controller driver"")
-4fb8b5aa2a11 ("staging: wilc1000: refactor p2p action frames handling API's")
-a474df5c1484 ("staging: wilc1000: remove use of vendor specific IE for p2p handling")
-034280e33ea0 ("staging: wilc1000: refactor SPI read/write commands handling API's")
-7a80aa23d0f0 ("staging: wilc1000: return zero on success and non-zero on function failure")
-01fbbd42d1f4 ("staging: wilc1000: remove redundant assignment to variable result")
-95ace52e4036 ("staging: octeon-usb: delete the octeon usb host controller driver")
-710d7fbe21ee ("staging: octeon: delete driver")
-7d42b7961b91 ("staging/octeon: Mark Ethernet driver as BROKEN")
-282eaa624f06 ("staging: octeon: indent with tabs instead of spaces")
-6cfed5984804 ("staging: rtl*: Remove tasklet callback casts")
+5bef4b3cb95a ("Revert "xhci: add quirk for host controllers that don't update endpoint DCS"")
+5255660b208a ("xhci: add quirk for host controllers that don't update endpoint DCS")
+d1658268e439 ("usb: pci-quirks: disable D3cold on xhci suspend for s2idle on AMD Renoir")
+a4a251f8c235 ("usb: xhci: do not perform Soft Retry for some xHCI hosts")
+d1dbfb942c33 ("xhci: introduce a new move_dequeue_past_td() function to replace old code.")
+9ebf30007858 ("xhci: Fix halted endpoint at stop endpoint command completion")
+674f8438c121 ("xhci: split handling halted endpoints into two steps")
+7c6c334e6fc8 ("xhci: move and rename xhci_cleanup_halted_endpoint()")
+4db356924a50 ("xhci: turn cancelled td cleanup to its own function")
+a6ccd1fd4bd4 ("xhci: store TD status in the td struct instead of passing it along")
+e1a298390e98 ("xhci: use xhci_td_cleanup() helper when giving back cancelled URBs")
+69eaf9e79fa7 ("xhci: move xhci_td_cleanup so it can be called by more functions")
+d8ac95001bea ("xhci: Add xhci_reset_halted_ep() helper function")
+b1adc42d440d ("xhci: add xhci_get_virt_ep() helper")
+a181030703df ("xhci: remove unused event parameter from completion handlers")
+d70f4231b81e ("xhci: adjust parameters passed to cleanup_halted_endpoint()")
+d4dff8043ea5 ("xhci: get isochronous ring directly from endpoint structure")
+ab58f3bb6aaa ("xhci: Avoid parsing transfer events several times")
+bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
 
 thanks,
 
@@ -93,127 +91,147 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ac83631230f77dda94154ed0ebfd368fc81c70a3 Mon Sep 17 00:00:00 2001
-From: Larry Finger <Larry.Finger@lwfinger.net>
-Date: Fri, 14 Jul 2023 12:54:17 -0500
-Subject: [PATCH] staging: r8712: Fix memory leak in _r8712_init_xmit_priv()
+From 5bef4b3cb95a5b883dfec8b3ffc0d671323d55bb Mon Sep 17 00:00:00 2001
+From: Oliver Neukum <oneukum@suse.com>
+Date: Thu, 13 Jul 2023 13:28:10 +0200
+Subject: [PATCH] Revert "xhci: add quirk for host controllers that don't
+ update endpoint DCS"
 
-In the above mentioned routine, memory is allocated in several places.
-If the first succeeds and a later one fails, the routine will leak memory.
-This patch fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver
-to the mainline kernel"). A potential memory leak in
-r8712_xmit_resource_alloc() is also addressed.
+This reverts commit 5255660b208aebfdb71d574f3952cf48392f4306.
 
-Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
-Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/x/log.txt?x=11ac3fa0a80000
-Cc: stable@vger.kernel.org
-Cc: Nam Cao <namcaov@gmail.com>
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Reviewed-by: Nam Cao <namcaov@gmail.com>
-Link: https://lore.kernel.org/r/20230714175417.18578-1-Larry.Finger@lwfinger.net
+This quirk breaks at least the following hardware:
+
+0b:00.0 0c03: 1106:3483 (rev 01) (prog-if 30 [XHCI])
+        Subsystem: 1106:3483
+        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+        Latency: 0, Cache Line Size: 64 bytes
+        Interrupt: pin A routed to IRQ 66
+        Region 0: Memory at fb400000 (64-bit, non-prefetchable) [size=4K]
+        Capabilities: [80] Power Management version 3
+                Flags: PMEClk- DSI- D1- D2- AuxCurrent=375mA PME(D0+,D1+,D2+,D3hot+,D3cold+)
+                Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
+        Capabilities: [90] MSI: Enable+ Count=1/4 Maskable- 64bit+
+                Address: 00000000fee007b8  Data: 0000
+        Capabilities: [c4] Express (v2) Endpoint, MSI 00
+                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s <64ns, L1 <1us
+                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- SlotPowerLimit 89W
+                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
+                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
+                        MaxPayload 128 bytes, MaxReadReq 512 bytes
+                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
+                LnkCap: Port #0, Speed 5GT/s, Width x1, ASPM L0s L1, Exit Latency L0s <2us, L1 <16us
+                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
+                LnkCtl: ASPM Disabled; RCB 64 bytes, Disabled- CommClk+
+                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+                LnkSta: Speed 5GT/s, Width x1
+                        TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+                DevCap2: Completion Timeout: Range B, TimeoutDis+ NROPrPrP- LTR-
+                         10BitTagComp- 10BitTagReq- OBFF Not Supported, ExtFmt- EETLPPrefix-
+                         EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
+                         FRS- TPHComp- ExtTPHComp-
+                         AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+                DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis- LTR- 10BitTagReq- OBFF Disabled,
+                         AtomicOpsCtl: ReqEn-
+                LnkCtl2: Target Link Speed: 5GT/s, EnterCompliance- SpeedDis-
+                         Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
+                         Compliance Preset/De-emphasis: -6dB de-emphasis, 0dB preshoot
+                LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- EqualizationPhase1-
+                         EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
+                         Retimer- 2Retimers- CrosslinkRes: unsupported
+       Capabilities: [100 v1] Advanced Error Reporting
+                UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UESvrt: DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
+                CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr-
+                CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr+
+                AERCap: First Error Pointer: 00, ECRCGenCap- ECRCGenEn- ECRCChkCap- ECRCChkEn-
+                        MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
+                HeaderLog: 00000000 00000000 00000000 00000000
+        Kernel driver in use: xhci_hcd
+        Kernel modules: xhci_pci
+
+with the quirk enabled it fails early with
+
+[    0.754373] pci 0000:0b:00.0: xHCI HW did not halt within 32000 usec status = 0x1000
+[    0.754419] pci 0000:0b:00.0: quirk_usb_early_handoff+0x0/0x7a0 took 31459 usecs
+[    2.228048] xhci_hcd 0000:0b:00.0: xHCI Host Controller
+[    2.228053] xhci_hcd 0000:0b:00.0: new USB bus registered, assigned bus number 7
+[    2.260073] xhci_hcd 0000:0b:00.0: Host halt failed, -110
+[    2.260079] xhci_hcd 0000:0b:00.0: can't setup: -110
+[    2.260551] xhci_hcd 0000:0b:00.0: USB bus 7 deregistered
+[    2.260624] xhci_hcd 0000:0b:00.0: init 0000:0b:00.0 fail, -110
+[    2.260639] xhci_hcd: probe of 0000:0b:00.0 failed with error -110
+
+The hardware in question is an external PCIe card. It looks to me like the quirk
+needs to be narrowed down. But this needs information about the hardware showing
+the issue this quirk is to fix. So for now a clean revert.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 5255660b208a ("xhci: add quirk for host controllers that don't update endpoint DCS")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230713112830.21773-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/staging/rtl8712/rtl871x_xmit.c b/drivers/staging/rtl8712/rtl871x_xmit.c
-index 090345bad223..6353dbe554d3 100644
---- a/drivers/staging/rtl8712/rtl871x_xmit.c
-+++ b/drivers/staging/rtl8712/rtl871x_xmit.c
-@@ -21,6 +21,7 @@
- #include "osdep_intf.h"
- #include "usb_ops.h"
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index c6742bae41c0..b9ae5c2a2527 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -479,10 +479,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 			pdev->device == 0x3432)
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
  
-+#include <linux/usb.h>
- #include <linux/ieee80211.h>
- 
- static const u8 P802_1H_OUI[P80211_OUI_LEN] = {0x00, 0x00, 0xf8};
-@@ -55,6 +56,7 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 	sint i;
- 	struct xmit_buf *pxmitbuf;
- 	struct xmit_frame *pxframe;
-+	int j;
- 
- 	memset((unsigned char *)pxmitpriv, 0, sizeof(struct xmit_priv));
- 	spin_lock_init(&pxmitpriv->lock);
-@@ -117,11 +119,8 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 	_init_queue(&pxmitpriv->pending_xmitbuf_queue);
- 	pxmitpriv->pallocated_xmitbuf =
- 		kmalloc(NR_XMITBUFF * sizeof(struct xmit_buf) + 4, GFP_ATOMIC);
--	if (!pxmitpriv->pallocated_xmitbuf) {
--		kfree(pxmitpriv->pallocated_frame_buf);
--		pxmitpriv->pallocated_frame_buf = NULL;
--		return -ENOMEM;
+-	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483) {
++	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
+ 		xhci->quirks |= XHCI_LPM_SUPPORT;
+-		xhci->quirks |= XHCI_EP_CTX_BROKEN_DCS;
 -	}
-+	if (!pxmitpriv->pallocated_xmitbuf)
-+		goto clean_up_frame_buf;
- 	pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 -
- 			      ((addr_t)(pxmitpriv->pallocated_xmitbuf) & 3);
- 	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
-@@ -129,13 +128,17 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 		INIT_LIST_HEAD(&pxmitbuf->list);
- 		pxmitbuf->pallocated_buf =
- 			kmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ, GFP_ATOMIC);
--		if (!pxmitbuf->pallocated_buf)
--			return -ENOMEM;
-+		if (!pxmitbuf->pallocated_buf) {
-+			j = 0;
-+			goto clean_up_alloc_buf;
-+		}
- 		pxmitbuf->pbuf = pxmitbuf->pallocated_buf + XMITBUF_ALIGN_SZ -
- 				 ((addr_t) (pxmitbuf->pallocated_buf) &
- 				 (XMITBUF_ALIGN_SZ - 1));
--		if (r8712_xmit_resource_alloc(padapter, pxmitbuf))
--			return -ENOMEM;
-+		if (r8712_xmit_resource_alloc(padapter, pxmitbuf)) {
-+			j = 1;
-+			goto clean_up_alloc_buf;
-+		}
- 		list_add_tail(&pxmitbuf->list,
- 				 &(pxmitpriv->free_xmitbuf_queue.queue));
- 		pxmitbuf++;
-@@ -146,6 +149,28 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 	init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
- 	tasklet_setup(&pxmitpriv->xmit_tasklet, r8712_xmit_bh);
- 	return 0;
-+
-+clean_up_alloc_buf:
-+	if (j) {
-+		/* failure happened in r8712_xmit_resource_alloc()
-+		 * delete extra pxmitbuf->pallocated_buf
-+		 */
-+		kfree(pxmitbuf->pallocated_buf);
-+	}
-+	for (j = 0; j < i; j++) {
-+		int k;
-+
-+		pxmitbuf--;			/* reset pointer */
-+		kfree(pxmitbuf->pallocated_buf);
-+		for (k = 0; k < 8; k++)		/* delete xmit urb's */
-+			usb_free_urb(pxmitbuf->pxmit_urb[k]);
-+	}
-+	kfree(pxmitpriv->pallocated_xmitbuf);
-+	pxmitpriv->pallocated_xmitbuf = NULL;
-+clean_up_frame_buf:
-+	kfree(pxmitpriv->pallocated_frame_buf);
-+	pxmitpriv->pallocated_frame_buf = NULL;
-+	return -ENOMEM;
- }
  
- void _free_xmit_priv(struct xmit_priv *pxmitpriv)
-diff --git a/drivers/staging/rtl8712/xmit_linux.c b/drivers/staging/rtl8712/xmit_linux.c
-index 132afbf49dde..ceb6b590b310 100644
---- a/drivers/staging/rtl8712/xmit_linux.c
-+++ b/drivers/staging/rtl8712/xmit_linux.c
-@@ -112,6 +112,12 @@ int r8712_xmit_resource_alloc(struct _adapter *padapter,
- 	for (i = 0; i < 8; i++) {
- 		pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
- 		if (!pxmitbuf->pxmit_urb[i]) {
-+			int k;
-+
-+			for (k = i - 1; k >= 0; k--) {
-+				/* handle allocation errors part way through loop */
-+				usb_free_urb(pxmitbuf->pxmit_urb[k]);
-+			}
- 			netdev_err(padapter->pnetdev, "pxmitbuf->pxmit_urb[i] == NULL\n");
- 			return -ENOMEM;
- 		}
+ 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
+ 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 646ff125def5..1dde53f6eb31 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -626,11 +626,8 @@ static int xhci_move_dequeue_past_td(struct xhci_hcd *xhci,
+ 	struct xhci_ring *ep_ring;
+ 	struct xhci_command *cmd;
+ 	struct xhci_segment *new_seg;
+-	struct xhci_segment *halted_seg = NULL;
+ 	union xhci_trb *new_deq;
+ 	int new_cycle;
+-	union xhci_trb *halted_trb;
+-	int index = 0;
+ 	dma_addr_t addr;
+ 	u64 hw_dequeue;
+ 	bool cycle_found = false;
+@@ -668,27 +665,7 @@ static int xhci_move_dequeue_past_td(struct xhci_hcd *xhci,
+ 	hw_dequeue = xhci_get_hw_deq(xhci, dev, ep_index, stream_id);
+ 	new_seg = ep_ring->deq_seg;
+ 	new_deq = ep_ring->dequeue;
+-
+-	/*
+-	 * Quirk: xHC write-back of the DCS field in the hardware dequeue
+-	 * pointer is wrong - use the cycle state of the TRB pointed to by
+-	 * the dequeue pointer.
+-	 */
+-	if (xhci->quirks & XHCI_EP_CTX_BROKEN_DCS &&
+-	    !(ep->ep_state & EP_HAS_STREAMS))
+-		halted_seg = trb_in_td(xhci, td->start_seg,
+-				       td->first_trb, td->last_trb,
+-				       hw_dequeue & ~0xf, false);
+-	if (halted_seg) {
+-		index = ((dma_addr_t)(hw_dequeue & ~0xf) - halted_seg->dma) /
+-			 sizeof(*halted_trb);
+-		halted_trb = &halted_seg->trbs[index];
+-		new_cycle = halted_trb->generic.field[3] & 0x1;
+-		xhci_dbg(xhci, "Endpoint DCS = %d TRB index = %d cycle = %d\n",
+-			 (u8)(hw_dequeue & 0x1), index, new_cycle);
+-	} else {
+-		new_cycle = hw_dequeue & 0x1;
+-	}
++	new_cycle = hw_dequeue & 0x1;
+ 
+ 	/*
+ 	 * We want to find the pointer, segment and cycle state of the new trb
 
