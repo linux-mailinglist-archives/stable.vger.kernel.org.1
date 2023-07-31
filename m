@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4095A7695E7
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F2417695E8
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229699AbjGaMQn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 08:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
+        id S231530AbjGaMQr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 08:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjGaMQm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:16:42 -0400
+        with ESMTP id S229911AbjGaMQq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:16:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46DA010E2
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 05:16:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4804210E3
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 05:16:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B20966108D
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 12:16:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA2BC433C9;
-        Mon, 31 Jul 2023 12:16:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9E35610A6
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 12:16:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AD3C433C7;
+        Mon, 31 Jul 2023 12:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690805796;
-        bh=ThQaSmWVHgIuJkmjrY6yk2MpwZbPuUmifAtH0TxDerE=;
+        s=korg; t=1690805804;
+        bh=47DGpWAy4d+MuMIwlBnvXxHbXR8WFiVStjkMRTdHzN8=;
         h=Subject:To:Cc:From:Date:From;
-        b=YcIqsUuOpUxYKbvjKqanNVUAi3wFCq7Km/679sXugKueXf979NhTJ9tJ6aXDych2u
-         /FKvwhWrjlNUNsrpNHdx08nauq47Qv2BOcY5BybtPVIvdLEToNphB5zxKsimKx4bBe
-         Rp0hmO9u1u4J8C3Bywf/k3s+zx+Zgg3LU2LxW364=
-Subject: FAILED: patch "[PATCH] hwmon: (k10temp) Enable AMD3255 Proc to show negative" failed to apply to 5.10-stable tree
+        b=UEQ8470u3cad/uwuED6bMOilZo3YnB5ajb6Ka3SnoDOelTAGCvFf66nKzaDWQGXep
+         8KQJQM+Xoccom1jiddcAIsHzn6Zbdfy1AUjwCpbQHC2WKr7q3w5HyE7kZZMRsmkgbS
+         nXaAQN+ZMfzC+TQcZu+O7RntKTxn3PcGZHsW0AV4=
+Subject: FAILED: patch "[PATCH] hwmon: (k10temp) Enable AMD3255 Proc to show negative" failed to apply to 5.4-stable tree
 To:     Baski.Kannan@amd.com, linux@roeck-us.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 31 Jul 2023 14:16:31 +0200
-Message-ID: <2023073131-divinely-cheek-8e43@gregkh>
+Date:   Mon, 31 Jul 2023 14:16:32 +0200
+Message-ID: <2023073132-squid-chowder-7b18@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x e146503ac68418859fb063a3a0cd9ec93bc52238
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023073131-divinely-cheek-8e43@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023073132-squid-chowder-7b18@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,19 @@ e146503ac684 ("hwmon: (k10temp) Enable AMD3255 Proc to show negative temperature
 02c9dce4df8d ("hwmon: (k10temp) support Zen3 APUs")
 c8d0d3fa9469 ("hwmon: (k10temp) Zen3 Ryzen Desktop CPUs support")
 0a4e668b5d52 ("hwmon: (k10temp) Remove support for displaying voltage and current on Zen CPUs")
+55163a1c00fc ("hwmon: (k10temp) Add support for Zen3 CPUs")
+d6144a40041a ("hwmon: (k10temp) Define SVI telemetry and current factors for Zen2 CPUs")
+178224170423 ("hwmon: (k10temp) Create common functions and macros for Zen CPU families")
+0e786f328b38 ("hwmon: (k10temp) make some symbols static")
+60465245e6ce ("hwmon: (k10temp) Reorganize and simplify temperature support detection")
+b02c6857389d ("hwmon: (k10temp) Swap Tdie and Tctl on Family 17h CPUs")
+fd8bdb23b918 ("hwmon: (k10temp) Display up to eight sets of CCD temperatures")
+9c4a38f19ed2 ("hwmon: (k10temp) Add debugfs support")
+70831c8a9184 ("hwmon: (k10temp) Don't show temperature limits on Ryzen (Zen) CPUs")
+b00647c46c9d ("hwmon: (k10temp) Show core and SoC current and voltages on Ryzen CPUs")
+c757938929c9 ("hwmon: (k10temp) Report temperatures per CPU die")
+d547552a1bf1 ("hmon: (k10temp) Convert to use devm_hwmon_device_register_with_info")
+a6d210da1a01 ("hwmon: (k10temp) Use bitops")
 
 thanks,
 
