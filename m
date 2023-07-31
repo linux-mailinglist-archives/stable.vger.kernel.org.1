@@ -2,200 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 085C2769F22
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 19:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A08C4769F3E
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 19:19:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233903AbjGaRP4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 13:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41346 "EHLO
+        id S232114AbjGaRTI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 13:19:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232855AbjGaRPR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 13:15:17 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB127BD
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 10:12:51 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-c5fc972760eso5244527276.1
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 10:12:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690823571; x=1691428371;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nlUlu5Mhd5cq+/dnIWytp1wDOwye9pYqWME5wT1VG2E=;
-        b=sHGO4YkHIV7FKB9rSFdsUdceu+sd5n7SB4rQ2unW3pD+BVqkwNJbz+SITG2pysaMgl
-         gKtSzBeA+OBMePojGafJ+11doCnzqSxZKPCriFEkRtJWp27lsz7elqgKl6T8eOE/f8yK
-         w7zw6fW868PqBeRY5qLJOdGEIjLR+7606TSSgtlwLhhrV02LXp2unR5jYo2ZCHxqOD6/
-         aTLQZWV2NWG8NNR6Zbwdm5er8wOMF1YxeMP3rfPV2nuC2GAZIApB/MNhrk0KohkTdxbo
-         aZdUz3A18SoWVWors7K7+klRf0vOn2JYaGIHOGPalUyPxopNDj0TFe/WRuIA3D+NB8/C
-         cl3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690823571; x=1691428371;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nlUlu5Mhd5cq+/dnIWytp1wDOwye9pYqWME5wT1VG2E=;
-        b=Usjq+mLQ18JK9kAVMn3M4OCCBJyn46dxIA2XwO3wSTrxSU6V86j7ATBFF8kQSGhiHk
-         ZmAQCZ3TGH5lXpphjU0Bcbl2+M36DIXLsvvSyQE2NaxPiNb6WuC7yPEtnX5e7vv2VzQe
-         ztYt0va8PlzOeD/d2Go9s6qGBMW4TZSviixsRv5u9qTgdwI2sydVqSKwGJLOvI8ZKi3h
-         dqtf+NARpQFCCrYK8/ErqADVBcprbSfZiLsBqV6v59rRArNN+8i1hYIspq2cWMkbil8i
-         6iTPaiSf/fMBjWNK/L9QSXavC8WqCCut728D5dKhPVzSlzFl9PO71Td3PBGvk3YCqJ8/
-         +BFA==
-X-Gm-Message-State: ABy/qLbhAfDieGX+iJiJYuWs95wJVfcIgCMF01YQvJeuuucCulfLDPDo
-        FEpNdcZar2oSwKeMUHpVGlAWUUZD/2Y=
-X-Google-Smtp-Source: APBJJlE2nxuBMZTc6tsHHVP/zDZfM1zO/qPtnEy+bfYdI+vtC/H0IUdghcKWYcF/n32JcSPB9GeJlvFqcvY=
-X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:d4d3:7e41:cb80:21ea])
- (user=surenb job=sendgmr) by 2002:a05:6902:1616:b0:d12:d6e4:a08e with SMTP id
- bw22-20020a056902161600b00d12d6e4a08emr70507ybb.5.1690823571188; Mon, 31 Jul
- 2023 10:12:51 -0700 (PDT)
-Date:   Mon, 31 Jul 2023 10:12:32 -0700
-In-Reply-To: <20230731171233.1098105-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20230731171233.1098105-1-surenb@google.com>
-X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
-Message-ID: <20230731171233.1098105-7-surenb@google.com>
-Subject: [PATCH 6/6] mm: move vma locking out of vma_prepare
-From:   Suren Baghdasaryan <surenb@google.com>
-To:     akpm@linux-foundation.org
-Cc:     torvalds@linux-foundation.org, jannh@google.com,
-        willy@infradead.org, liam.howlett@oracle.com, david@redhat.com,
-        peterx@redhat.com, ldufour@linux.ibm.com, vbabka@suse.cz,
-        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
-        hannes@cmpxchg.org, dave@stgolabs.net, hughd@google.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
-        Linus Torvalds <torvalds@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232198AbjGaRSx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 13:18:53 -0400
+Received: from mgamail.intel.com (unknown [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69994268D
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 10:17:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690823833; x=1722359833;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=t/kOQoyzK3nu1Futg8B7/Dv6FaL89RylOYNnhboqiCg=;
+  b=MOytdrWSxsTarpQ1vEVTUVBc7i3flvXZzwywtn5B6c4M2QmzOYK1xIvx
+   IfzcAZsRvWHhfjbHoIhhXtevXHKDVBhxHqwHxoGqXdYruOQM4o7jjVitR
+   1fHlDwdcpeyAZH+t3jFGPr9FogtjRn17dlmsVzTonRt32Y9LCHkOzN6cb
+   rr5zqnGKF6fmJX9A6dBBTkshuYIZZdlAMW2GSzXdbD6r/EPFeccKMGanu
+   mMeJIKnAMG1XmTCdjO8XYuNOWEBrPt3jONylS4e38PjlyFNKe+YpyKkvh
+   +iO9bCX7VXN3se93sEDV5xnHXOMF053EjMyBi6EG16kKk/DpGSz0fZoxW
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="432902160"
+X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
+   d="scan'208";a="432902160"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 10:16:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="902217006"
+X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
+   d="scan'208";a="902217006"
+Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 31 Jul 2023 10:16:10 -0700
+Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qQWV8-0005Fh-0I;
+        Mon, 31 Jul 2023 17:16:10 +0000
+Date:   Tue, 1 Aug 2023 01:14:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Suren Baghdasaryan <surenb@google.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/6] mm: for !CONFIG_PER_VMA_LOCK equate write lock
+ assertion for vma and mmap
+Message-ID: <ZMfsESOmBdOl6v8L@c507f7d2ae6a>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230731171233.1098105-3-surenb@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-vma_prepare() is currently the central place where vmas are being locked
-before vma_complete() applies changes to them. While this is convenient,
-it also obscures vma locking and makes it hard to follow the locking rules.
-Move vma locking out of vma_prepare() and take vma locks explicitly at the
-locations where vmas are being modified.
+Hi,
 
-Suggested-by: Linus Torvalds <torvalds@linuxfoundation.org>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- mm/mmap.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+Thanks for your patch.
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 850a39dee075..e59d83cb1d7a 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -476,16 +476,6 @@ static inline void init_vma_prep(struct vma_prepare *vp,
-  */
- static inline void vma_prepare(struct vma_prepare *vp)
- {
--	vma_start_write(vp->vma);
--	if (vp->adj_next)
--		vma_start_write(vp->adj_next);
--	if (vp->insert)
--		vma_start_write(vp->insert);
--	if (vp->remove)
--		vma_start_write(vp->remove);
--	if (vp->remove2)
--		vma_start_write(vp->remove2);
--
- 	if (vp->file) {
- 		uprobe_munmap(vp->vma, vp->vma->vm_start, vp->vma->vm_end);
- 
-@@ -650,6 +640,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	bool remove_next = false;
- 	struct vma_prepare vp;
- 
-+	vma_start_write(vma);
- 	if (next && (vma != next) && (end == next->vm_end)) {
- 		int ret;
- 
-@@ -657,6 +648,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		ret = dup_anon_vma(vma, next);
- 		if (ret)
- 			return ret;
-+		vma_start_write(next);
- 	}
- 
- 	init_multi_vma_prep(&vp, vma, NULL, remove_next ? next : NULL, NULL);
-@@ -708,6 +700,8 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (vma_iter_prealloc(vmi))
- 		return -ENOMEM;
- 
-+	vma_start_write(vma);
-+
- 	init_vma_prep(&vp, vma);
- 	vma_prepare(&vp);
- 	vma_adjust_trans_huge(vma, start, end, 0);
-@@ -946,10 +940,12 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 	/* Can we merge both the predecessor and the successor? */
- 	if (merge_prev && merge_next &&
- 	    is_mergeable_anon_vma(prev->anon_vma, next->anon_vma, NULL)) {
-+		vma_start_write(next);
- 		remove = next;				/* case 1 */
- 		vma_end = next->vm_end;
- 		err = dup_anon_vma(prev, next);
- 		if (curr) {				/* case 6 */
-+			vma_start_write(curr);
- 			remove = curr;
- 			remove2 = next;
- 			if (!next->anon_vma)
-@@ -958,6 +954,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 	} else if (merge_prev) {			/* case 2 */
- 		if (curr) {
- 			err = dup_anon_vma(prev, curr);
-+			vma_start_write(curr);
- 			if (end == curr->vm_end) {	/* case 7 */
- 				remove = curr;
- 			} else {			/* case 5 */
-@@ -969,6 +966,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 		res = next;
- 		if (prev && addr < prev->vm_end) {	/* case 4 */
- 			vma_end = addr;
-+			vma_start_write(next);
- 			adjust = next;
- 			adj_start = -(prev->vm_end - addr);
- 			err = dup_anon_vma(next, prev);
-@@ -983,6 +981,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 			vma_pgoff = next->vm_pgoff - pglen;
- 			if (curr) {			/* case 8 */
- 				vma_pgoff = curr->vm_pgoff;
-+				vma_start_write(curr);
- 				remove = curr;
- 				err = dup_anon_vma(next, curr);
- 			}
-@@ -996,6 +995,8 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 	if (vma_iter_prealloc(vmi))
- 		return NULL;
- 
-+	vma_start_write(vma);
-+
- 	init_multi_vma_prep(&vp, vma, adjust, remove, remove2);
- 	VM_WARN_ON(vp.anon_vma && adjust && adjust->anon_vma &&
- 		   vp.anon_vma != adjust->anon_vma);
-@@ -2373,6 +2374,9 @@ int __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (new->vm_ops && new->vm_ops->open)
- 		new->vm_ops->open(new);
- 
-+	vma_start_write(vma);
-+	vma_start_write(new);
-+
- 	init_vma_prep(&vp, vma);
- 	vp.insert = new;
- 	vma_prepare(&vp);
-@@ -3078,6 +3082,8 @@ static int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		if (vma_iter_prealloc(vmi))
- 			goto unacct_fail;
- 
-+		vma_start_write(vma);
-+
- 		init_vma_prep(&vp, vma);
- 		vma_prepare(&vp);
- 		vma_adjust_trans_huge(vma, vma->vm_start, addr + len, 0);
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH 2/6] mm: for !CONFIG_PER_VMA_LOCK equate write lock assertion for vma and mmap
+Link: https://lore.kernel.org/stable/20230731171233.1098105-3-surenb%40google.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.41.0.487.g6d72f3e995-goog
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
