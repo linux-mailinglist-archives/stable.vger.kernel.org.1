@@ -2,68 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34A54769661
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED8DB769689
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 14:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232702AbjGaMdF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 08:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
+        id S231135AbjGaMmj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 08:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232773AbjGaMc6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:32:58 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2435E137
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 05:32:57 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id A35886017F;
-        Mon, 31 Jul 2023 14:32:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690806774; bh=oNzU1/WcSQC10wzqukdJqz4sVOzntAuFLdVZG3Qyc7k=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=T0LZ+MsAOnT/jY+pmH3s6BYYEVEmS7pUD1dxjfen9rZlSgeYRxinBBL0TTrWThbWL
-         LUtRKgkJJZROVsuVBSUurTQuCPIV6ubim6A5DIuMDxzYbWqhV1GMlREHB+S6cAN5uu
-         eoB27Mj24HswVGMcbb3wq2QW9zHeE5wJMOK+bPdECHqQw8M35izM5XrU2ftcF35NCG
-         R3GxK7bGNtgEhZvt7FO5+uJJTaaRM9DSs+3tTWvr+Nj/RS6q154hPOBDnJPA6QHrO0
-         QiC/bckvkt8pgXtAXIHZa4LnSL5hlebiksSas+6QaTAuMze0Ty1UFoAbmZvomWd/Qs
-         ISfDa0E4uE17A==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 3bRMmCwHNsUf; Mon, 31 Jul 2023 14:32:52 +0200 (CEST)
-Received: from [10.0.2.76] (grf-nat.grf.hr [161.53.83.23])
-        by domac.alu.hr (Postfix) with ESMTPSA id 2C5B160173;
-        Mon, 31 Jul 2023 14:32:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690806772; bh=oNzU1/WcSQC10wzqukdJqz4sVOzntAuFLdVZG3Qyc7k=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=KPe0F4CxN6fYy3hAr+pKxM/YvXhBV3hceSA+f7fprA/QLImDZyloTT/Ti2lmDW7aO
-         /Vmyjhdae1qcQslBIR5NkUSwUOCKEw53kLLseCRfMs63tKcSIEZ1l5cKBgys8I/wmI
-         L6zaWxnFywtki5SFc5BgukOF740Fn30YYvkI7uObGWWyRqQlagwX2hW4FlsJ5R0hs0
-         Mo71x1tzFq3ikg+hrj+DNLefPvVtCWatZteR9fWTmYWZQFlaEXarsXpryFOfBTyhs7
-         F2NYNaiYDO2tgE1YaSKHgCgnk+wLqYCa4f0SqHyukeGfGOBAM0HAcSMK49uEn6f7SA
-         OqY6EEaw3VvgA==
-Message-ID: <44ab3617-dbd5-ff8d-0323-28ef9cc322c2@alu.unizg.hr>
-Date:   Mon, 31 Jul 2023 14:32:51 +0200
+        with ESMTP id S231577AbjGaMmi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 08:42:38 -0400
+Received: from mgamail.intel.com (unknown [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011B710DF;
+        Mon, 31 Jul 2023 05:42:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690807358; x=1722343358;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0MB2M7pKhqWAVfxRDoJt9ipjAOPvnCoU+CUBnmXYZ8o=;
+  b=PlBeKTTpCsgQwYYjSoWGC2dFQ0hzanX4/eowTCwqluSpnbCPrXH6LlWO
+   ESWJMFjDqW/dEimKCy9AwcILrwb5oeBzYc7uKh4wD+wGOiItQirpugUKZ
+   Dn9yRnmkkPmxAPclntLWxAa9NdvUZYr/ynLT4epvUlfEQTD2sNFNod08U
+   J3irWz0pdrKKqQg+CgfWmLTEQaJjfzLD0vfrRxQFjtxxaPT6mF4ZBh1dW
+   Dk5fKw/kYzbO3aDlFLZdonmxJPN9tAGCGGiV+Cd0dDz7FbxRg5pTJUoGB
+   Gz5Ntw4o/zz58kabEeqnsDh/Hk9ovmpkFAgYPxODWKrte9ePq9oBLYPKJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="348604838"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
+   d="scan'208";a="348604838"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 05:42:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="871667298"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 31 Jul 2023 05:42:36 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 31 Jul 2023 15:42:34 +0300
+Date:   Mon, 31 Jul 2023 15:42:33 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     RD Babiera <rdbabiera@google.com>
+Cc:     gregkh@linuxfoundation.org, badhri@google.com,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: altmodes/displayport: Signal hpd when
+ configuring pin assignment
+Message-ID: <ZMesOaooOBvl7X1j@kuha.fi.intel.com>
+References: <20230726020903.1409072-1-rdbabiera@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RESEND PATCH v5 1/3] test_firmware: prevent race conditions by a
- correct implementation of locking
-Content-Language: en-US, hr
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>
-References: <1a2a428f-71ab-1154-bd50-05c82eb05817@alu.unizg.hr>
- <ZMb3Yf4km8NTeMZj@bombadil.infradead.org>
- <a09b4fa3-d6dc-b7a9-f815-d6f43211910b@alu.unizg.hr>
- <2023073147-sleeve-regular-46cd@gregkh>
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-In-Reply-To: <2023073147-sleeve-regular-46cd@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230726020903.1409072-1-rdbabiera@google.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,116 +62,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 31.7.2023. 13:33, Greg Kroah-Hartman wrote:
-> On Mon, Jul 31, 2023 at 01:29:19PM +0200, Mirsad Todorovac wrote:
->> On 31.7.2023. 1:50, Luis Chamberlain wrote:
->>> On Sat, Jul 29, 2023 at 11:17:45AM +0200, Mirsad Todorovac wrote:
->>>> ---
->>>> v5.1
->>>>    resending to v5.4 stable branch verbatim according to Luis Chamberlain instruction
->>>
->>> If this is a backport of an upstream patch you must mention the commit
->>> ID at the top. After
->>>
->>> For instance, here is a random commit from v5.15.y branch for stable:
->>>
->>> bpf: Add selftests to cover packet access corner cases
->>> commit b560b21f71eb4ef9dfc7c8ec1d0e4d7f9aa54b51 upstream.
->>>
->>> <the upstream commit log>
->>
->> Hello,
->>
->> I have reviewed the module again and I found no new weaknesses, so it is only
->> a backport from the same commit in torvalds, master, 6.4, 6.1, 5.15 and
->> 5.10 trees/branches.
->>
->> This is a bit confusing and I am doing this for the first time. In fact, there
->> was probably a glitch in the patchwork because the comment to the
->> Cc: stable@vger.kernel.org said "# 5.4" ...
->>
->> However, I do not know which commit ID to refer to:
->>
->> torvalds 4acfe3dfde685a5a9eaec5555351918e2d7266a1
->> master   4acfe3dfde685a5a9eaec5555351918e2d7266a1
->> 6.4      4acfe3dfde685a5a9eaec5555351918e2d7266a1
->> 6.1      6111f0add6ffc93612d4abe9fec002319102b1c0
->> 5.15     bfb0b366e8ec23d9a9851898d81c829166b8c17b
->> 5.10     af36f35074b10dda0516cfc63d209accd4ef4d17
->>
->> Each of the branches 6.4, 6.1, 5.15 and 5.10 appear to have a different commit
->> ID.
->>
->> Probably the right commit ID should be:
->>
->> test_firmware: prevent race conditions by a correct implementation of locking
->>
->> commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 master
->>
->> Will the patchwork figure this out or should I RESEND with a clean slate?
->>
->> But first I would appreciate a confirmation that I did it right this time ...
+On Wed, Jul 26, 2023 at 02:09:02AM +0000, RD Babiera wrote:
+> When connecting to some DisplayPort partners, the initial status update
+> after entering DisplayPort Alt Mode notifies that the DFP_D/UFP_D is not in
+> the connected state. This leads to sending a configure message that keeps
+> the device in USB mode. The port partner then sets DFP_D/UFP_D to the
+> connected state and HPD to high in the same Attention message. Currently,
+> the HPD signal is dropped in order to handle configuration.
 > 
-> I don't understand at all what you are trying to do here.
+> This patch saves changes to the HPD signal when the device chooses to
+> configure during dp_altmode_status_update, and invokes sysfs_notify if
+> necessary for HPD after configuring.
 > 
-> Is this a patch for Linus's tree?  If so, great, let's apply it there.
+> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
+
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  drivers/usb/typec/altmodes/displayport.c | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
 > 
-> Is this a patch for the stable kernel(s)?  If so, great, what is the git
-> id in Linus's tree and what stable kernel(s) should it be applied to?
+> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+> index 66de880b28d0..cdf8261e22db 100644
+> --- a/drivers/usb/typec/altmodes/displayport.c
+> +++ b/drivers/usb/typec/altmodes/displayport.c
+> @@ -60,6 +60,7 @@ struct dp_altmode {
+>  
+>  	enum dp_state state;
+>  	bool hpd;
+> +	bool pending_hpd;
+>  
+>  	struct mutex lock; /* device lock */
+>  	struct work_struct work;
+> @@ -144,8 +145,13 @@ static int dp_altmode_status_update(struct dp_altmode *dp)
+>  		dp->state = DP_STATE_EXIT;
+>  	} else if (!(con & DP_CONF_CURRENTLY(dp->data.conf))) {
+>  		ret = dp_altmode_configure(dp, con);
+> -		if (!ret)
+> +		if (!ret) {
+>  			dp->state = DP_STATE_CONFIGURE;
+> +			if (dp->hpd != hpd) {
+> +				dp->hpd = hpd;
+> +				dp->pending_hpd = true;
+> +			}
+> +		}
+>  	} else {
+>  		if (dp->hpd != hpd) {
+>  			drm_connector_oob_hotplug_event(dp->connector_fwnode);
+> @@ -161,6 +167,16 @@ static int dp_altmode_configured(struct dp_altmode *dp)
+>  {
+>  	sysfs_notify(&dp->alt->dev.kobj, "displayport", "configuration");
+>  	sysfs_notify(&dp->alt->dev.kobj, "displayport", "pin_assignment");
+> +	/*
+> +	 * If the DFP_D/UFP_D sends a change in HPD when first notifying the
+> +	 * DisplayPort driver that it is connected, then we wait until
+> +	 * configuration is complete to signal HPD.
+> +	 */
+> +	if (dp->pending_hpd) {
+> +		drm_connector_oob_hotplug_event(dp->connector_fwnode);
+> +		sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
+> +		dp->pending_hpd = false;
+> +	}
+>  
+>  	return dp_altmode_notify(dp);
+>  }
 > 
-> That's all we need to know and right now, I have no idea...
-> 
-> confused,
-> 
-> greg k-h
-
-Hi, Mr. Greg,
-
-PLEASE NOTE!
-
-I've just checked the diff against the 5.4 stable branch, and simply applying it won't
-suffice, because it fails, so I need to manually backport the 5.10 commit to the 5.4 branch.
-
-This is the job for the patch developer, and I would have done it earlier if I was aware
-that the patch didn't apply to the 5.4 branch out-of-the-box. Rather naively I assumed
-that the patch will apply automagically to 5.4 as it does to 5.10+. As they say, assumption
-is the mother of all screwups.
-
-Apologies for the confusion and your lost time.
-
-* * *
-
-The problem is that the patch was meant to be applied to 5.10 onwards, but 5.4 branch omitted it.
-
-The patch is already in the torvalds tree and stable master, 6.4, 6.1, 5.15 and 5.10.
-
-I wanted to see why the 5.4 included only two out of series of three patches for test_firmware:
-
-2023-05-31 48e156023059e57a8fc68b498439832f7600ffff test_firmware: fix the memory leak of the allocated firmware buffer
-2023-05-31 be37bed754ed90b2655382f93f9724b3c1aae847 test_firmware: fix a memory leak with reqs buffer
-2023-05-31 4acfe3dfde685a5a9eaec5555351918e2d7266a1 test_firmware: prevent race conditions by a correct implementation of locking
-
-So, the last patch didn't propagate to 5.4 stable branch.
-
-Now we know why exactly.
-
- From the pragmatic point of view, it would suffice to apply the commit
-
-"4acfe3dfde685a5a9eaec5555351918e2d7266a1 test_firmware: prevent race conditions by a correct implementation of locking"
-
-to the 5.4 stable branch.
-
-Kind regards,
-Mirsad Todorovac
+> base-commit: fdf0eaf11452d72945af31804e2a1048ee1b574c
+> -- 
+> 2.41.0.487.g6d72f3e995-goog
 
 -- 
-Mirsad Todorovac
-System engineer
-Faculty of Graphic Arts | Academy of Fine Arts
-University of Zagreb
-Republic of Croatia, the European Union
-
-Sistem inženjer
-Grafički fakultet | Akademija likovnih umjetnosti
-Sveučilište u Zagrebu
-
+heikki
