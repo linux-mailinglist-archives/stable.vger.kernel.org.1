@@ -2,65 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE459768F40
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 09:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 010737690D1
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 10:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbjGaH4Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 03:56:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54160 "EHLO
+        id S229615AbjGaIx3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 04:53:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbjGaH4X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 03:56:23 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3F44199;
-        Mon, 31 Jul 2023 00:56:22 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 4E4071F74C;
-        Mon, 31 Jul 2023 07:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1690790181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pIov8vVMxRXk3LyFbp2uD7LCYfJdh0gTq4UHYD1FInU=;
-        b=IHnIUQZ9tVD/LASVC7rY1vGfrWL9+ec7o+rPfms6OJLNDzTNPC7aHi2M1nuiRuDQBze+ae
-        O6dfZ19xVe75ZjC34nC+0+XdIcwq2HDvK2VBrnkVsPk9667dBBwoStRKrxzy5OgV8bSNNv
-        3q/hDsaIvRA3ATqfO4tWSmdMITxBmUE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1690790181;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pIov8vVMxRXk3LyFbp2uD7LCYfJdh0gTq4UHYD1FInU=;
-        b=eztUAdxg5V1WceeZeOx6eIIrl61kMJVZKqLNYceVCOHCR0LVSeE9S4r4QUicyJF3kjz1K5
-        P0bcigSCk9jJCFAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E45F1133F7;
-        Mon, 31 Jul 2023 07:56:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id MQfqNiRpx2RNEAAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 31 Jul 2023 07:56:20 +0000
-Message-ID: <e4f7ae0c-5397-4b20-80e8-6c0baece3e8c@suse.cz>
-Date:   Mon, 31 Jul 2023 09:56:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] rust: allocator: Prevent mis-aligned allocation
-To:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        with ESMTP id S230317AbjGaIwa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 04:52:30 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCEE1FC4
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 01:49:32 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b962535808so64017991fa.0
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 01:49:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690793371; x=1691398171;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=AEpQPsL8CKvgd9jCnKauvgppTMsvJVGBjZ9X1QDN9oE=;
+        b=4CsLTWSrXtKZeou89ehTdDcI35pXhzam4Gf+T2BNZK/F9IAwoXnSZdoCJhiuzuWEob
+         v+FHWghCDcj3bHalbjjF+ZQpieuLc22Up7FE1aLSBkKUodTfIVMGIuVzXjati/lwr9gN
+         XAU30D5Zh4A4gcTRNx85Pq1gBYV9VweZylbeWjn8M8U2ijFQBPYl1taHlJn3CxMF0CVh
+         GA8hHanjU1vc9LC8TTV0LsX0+xlRcpJ6WxpwyzrK8ioLE8hEH0VzN2K8ePI9xuHXUvtL
+         e1Inx4wkGuVdOmVskj2bNxagSFMJU2veOk4Xv/8H35PxkMBvvSD7cWsft78kMFPaGKOK
+         WNIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690793371; x=1691398171;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AEpQPsL8CKvgd9jCnKauvgppTMsvJVGBjZ9X1QDN9oE=;
+        b=cDc+uK4mwp1V5On3nI7/PfguhBOYVhu4m+CT+FbBqG+2N59TKnojHSZwuvHEZ2xo7t
+         6DxyVuGdIg7gVVcNMIklt83czKrs/uDFZg6EMvWb1obsP59KptdJsqICq7d2wejvnPSj
+         vZXcXNCwcKS/vMv4duz4ASQhlC4Zxe76YypjoszqLfUNLgkp/npXKLbkzE0CvBFYPjMw
+         GRP9+gJvFSvuwi0OHg6tw6asuMfuRbss3Y4/2IckxIHKmE9aV15tjjhCLc9ULXWfyPlr
+         CQpQvKVFB1rve8AlBQyB4bGbUIF2v90jM9686LqgkoziHNvwLRZ3j8DGa3G3RXFoY3CC
+         HOZg==
+X-Gm-Message-State: ABy/qLboFH8zUyUBSVwBSgFXvHB4/nWjcFhIVI/DFfrNaZ6zfpENXyK3
+        VAiYo6nlbmGBXwvh5DVEWdIlxQ==
+X-Google-Smtp-Source: APBJJlGFJ70YghXLG/YDeubPbpWWwMiyEaj0546fMRnCHGzwMbMfwcMsEuKBc1tsdJm+7ssl+pZkYQ==
+X-Received: by 2002:a2e:2c19:0:b0:2b7:3b73:2589 with SMTP id s25-20020a2e2c19000000b002b73b732589mr5498532ljs.32.1690793370676;
+        Mon, 31 Jul 2023 01:49:30 -0700 (PDT)
+Received: from localhost ([165.225.194.221])
+        by smtp.gmail.com with ESMTPSA id w3-20020a1cf603000000b003fa973e6612sm13350468wmc.44.2023.07.31.01.49.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Jul 2023 01:49:29 -0700 (PDT)
+References: <20230730012905.643822-1-boqun.feng@gmail.com>
+ <20230730012905.643822-3-boqun.feng@gmail.com>
+User-agent: mu4e 1.10.5; emacs 28.2.50
+From:   "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
         Alice Ryhl <aliceryhl@google.com>,
@@ -73,44 +71,54 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         David Rientjes <rientjes@google.com>,
         Joonsoo Kim <iamjoonsoo.kim@lge.com>,
         Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
         Roman Gushchin <roman.gushchin@linux.dev>,
         Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
-        Andreas Hindborg <nmi@metaspace.dk>
-References: <20230730012905.643822-1-boqun.feng@gmail.com>
- <20230730012905.643822-2-boqun.feng@gmail.com>
-Content-Language: en-US
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230730012905.643822-2-boqun.feng@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: allocator: Use krealloc_aligned() in
+ KernelAllocator::alloc
+Date:   Mon, 31 Jul 2023 10:48:57 +0200
+In-reply-to: <20230730012905.643822-3-boqun.feng@gmail.com>
+Message-ID: <873514qxd2.fsf@metaspace.dk>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/30/23 03:29, Boqun Feng wrote:
-> Currently the rust allocator simply passes the size of the type Layout
-> to krealloc(), and in theory the alignment requirement from the type
-> Layout may be larger than the guarantee provided by SLAB, which means
-> the allocated object is mis-aligned.
-> 
-> Fix this by adjusting the allocation size to the nearest power of two,
-> which SLAB always guarantees a size-aligned allocation. And because Rust
-> guarantees that the original size must be a multiple of alignment and
-> the alignment must be a power of two, then the alignment requirement is
-> satisfied.
-> 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: stable@vger.kernel.org # v6.1+
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Boqun Feng <boqun.feng@gmail.com> writes:
+
+> This fixes the potential issue that when KernelAllocator is used, the
+> allocation may be mis-aligned due to SLAB's alignment guarantee.
+>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+>  rust/kernel/allocator.rs | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index fae11d1fdba7..1aec688cf0e0 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -41,9 +41,9 @@ unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: bindings::gf
+>  
+>  unsafe impl GlobalAlloc for KernelAllocator {
+>      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+> -        // `krealloc()` is used instead of `kmalloc()` because the latter is
+> -        // an inline function and cannot be bound to as a result.
+> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings::GFP_KERNEL) as *mut u8 }
+> +        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
+> +        // requirement.
+> +        unsafe { krealloc_aligned(ptr::null_mut(), layout, bindings::GFP_KERNEL) }
+>      }
+>  
+>      unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
+
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
