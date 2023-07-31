@@ -2,254 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C41F76A211
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 22:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 695D576A280
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 23:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbjGaUjM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 16:39:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56536 "EHLO
+        id S229654AbjGaVPz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 17:15:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230317AbjGaUjL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 16:39:11 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68253172B
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 13:39:10 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d07c535377fso5123460276.1
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 13:39:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690835949; x=1691440749;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LlRYd4YMaajQ0xXPSbk9pEmLduWsiZdsNXzqgUFeIsA=;
-        b=5MbruZmoSbLb/zevKa240hssKFM2XzUyqhw7ssvcHHJn4mIGQrY5W6LzNX3jVU5Yek
-         6G7+IOxVUZJW3+htvGee1hd+VBFSESt2reHypW5zUrGo7OFYCblkvY9QojFjK5SHEx8Y
-         WA7f4kY2MyQwkXeeqQPzVGwzDk5puAdNQm+9zuvD0IUsGvOKBXEiBObLg3S59mQPwd1k
-         9/+BXGy+1X4GJqMGmP7sEPJiEnEbgg0Lwf4N4PqgpCev5KPsGeLie9kacRGpmuzN/IbE
-         0k/CzLV0QLp+vN7jSB/6RAP8c6/UgU8jNUr629eyRG0iiQqCwZPPF/gcslcx2gjMhI7C
-         H8hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690835949; x=1691440749;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LlRYd4YMaajQ0xXPSbk9pEmLduWsiZdsNXzqgUFeIsA=;
-        b=LdlK80Rn48mXBnrZrzMYJaQvCKFdGW8cYT7GZuwlPZkqHbjU5t7K0bJu5v0cDcfUcw
-         renUNUgoGYmGn/m++hPegMJRph7PbGl34AFHBA5g0u3OrM3WHxdfjL9cmRxyX/hM3d31
-         WNC7W5ERE1FAGfq5d98roTWV5RdoaT9MYUJHiAUZUKSerPfmYDHKHvrJN+/WNnZi8y0R
-         T5KDaQdifmhutAf5tZm9FiW4RyWQJRdXYjt3VnDdPZ8+cOhsDHVBmKCNTmCkWYPV7Sa6
-         K/N3hbFfhRWxlvY++D/ICm9+afHMEuW8sQDH1S8M4tUsHPj2FZGFAwuOabZszNXlj8fE
-         4QLA==
-X-Gm-Message-State: ABy/qLYlzg4fKh2VuhjwYguHYOTdrx+WdyriTU52O5Op/t3feUgiH4vw
-        xWvpRaJY5gs1AlUvqZB12H259Y532BNGYb9xZqI7eA==
-X-Google-Smtp-Source: APBJJlFu2UEwyyq7d3CDSqXwCOLCd4McJ8AzkctZiKIZQEhb6BKbLMy0406YWzEI58g3jYog+ildUQfmSA0lq2oxJm0=
-X-Received: by 2002:a5b:750:0:b0:d0c:fd53:aaae with SMTP id
- s16-20020a5b0750000000b00d0cfd53aaaemr10065125ybq.2.1690835949388; Mon, 31
- Jul 2023 13:39:09 -0700 (PDT)
+        with ESMTP id S229526AbjGaVPy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 17:15:54 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9496B10E3;
+        Mon, 31 Jul 2023 14:15:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=8Z0bnX+zfeyn+xeBGa8nfbsyJ1d05F9zNyCvh1HSV9w=; b=n40PUItnguJa/y82nltY7Rc44c
+        +JlbSn6ruHARFqpzY2jyIWVoWeQAf+RLrBocwqvKvSmdycbPKFNJoD/cT8kWhIwk4tzm3aw1MkNq0
+        Yq8Do9CYvKeDskBbOWCUbd8bnENCsN0g5AxUDspkPTzjqvANZ1ukB0YSgF4CjWY5a3YeT+/Jl3yWa
+        dGwnZFPC9SuESSDeUV/WnaH05c711yYFDAZQEAt5jYD7I+k3M7wvXkp5fP4zIRtRaYYEQGMHksZhr
+        jvyuCsqxhnNBiVKMxqoW9Ssk76Ky1w59zFSb+jZJkT+dojcWl5BBd/byXawMq8xZEeVHm+j3aQq4e
+        bPuQIEtg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qQaEY-003rwv-Bn; Mon, 31 Jul 2023 21:15:18 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 919023002CE;
+        Mon, 31 Jul 2023 23:15:17 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 7B21620D70602; Mon, 31 Jul 2023 23:15:17 +0200 (CEST)
+Date:   Mon, 31 Jul 2023 23:15:17 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Roy Hopkins <rhopkins@suse.de>,
+        Joel Fernandes <joel@joelfernandes.org>, paulmck@kernel.org,
+        Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
+Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
+ 6.4.7-rc1 review)
+Message-ID: <20230731211517.GA51835@hirez.programming.kicks-ass.net>
+References: <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
+ <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
+ <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
+ <20230731141934.GK29590@hirez.programming.kicks-ass.net>
+ <20230731143954.GB37820@hirez.programming.kicks-ass.net>
+ <f5a18aa3-9db7-6ad2-33d5-3335a18e4e2f@roeck-us.net>
+ <20230731145232.GM29590@hirez.programming.kicks-ass.net>
+ <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
+ <20230731161452.GA40850@hirez.programming.kicks-ass.net>
+ <baa58a8e-54f0-2309-b34e-d62999a452a1@roeck-us.net>
 MIME-Version: 1.0
-References: <20230731171233.1098105-7-surenb@google.com> <20230731203032.z66gjqv5p4y662zo@revolver>
-In-Reply-To: <20230731203032.z66gjqv5p4y662zo@revolver>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Mon, 31 Jul 2023 13:38:58 -0700
-Message-ID: <CAJuCfpHjzVeFYnZU-TRwnec3R4KZp+4c=hMk323d57TpDB32Hw@mail.gmail.com>
-Subject: Re: [PATCH 6/6] mm: move vma locking out of vma_prepare
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        akpm@linux-foundation.org, torvalds@linux-foundation.org,
-        jannh@google.com, willy@infradead.org, david@redhat.com,
-        peterx@redhat.com, ldufour@linux.ibm.com, vbabka@suse.cz,
-        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
-        hannes@cmpxchg.org, dave@stgolabs.net, hughd@google.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org, Lorenzo Stoakes <lstoakes@gmail.com>,
-        Linus Torvalds <torvalds@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <baa58a8e-54f0-2309-b34e-d62999a452a1@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 31, 2023 at 1:30=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
-e.com> wrote:
->
-> Adding Lorenzo since this also touches vma_merge() again..
->
-> * Suren Baghdasaryan <surenb@google.com> [230731 13:12]:
-> > vma_prepare() is currently the central place where vmas are being locke=
-d
-> > before vma_complete() applies changes to them. While this is convenient=
-,
-> > it also obscures vma locking and makes it hard to follow the locking ru=
-les.
-> > Move vma locking out of vma_prepare() and take vma locks explicitly at =
-the
-> > locations where vmas are being modified.
->
-> I get the idea of locking closer to the edits, but vma_merge() is very
-> hard to follow.  It was worse when it was two functions and much larger,
-> but adding this into vma_merge() is difficult to validate.
->
-> We still set vma =3D <another vma> in places, so that adds to the
-> difficulty of ensuring the end result is all VMAs that will be
-> modified/removed have been locked...and the 'locking rules' are also
-> obscured.
->
-> It's also annoying that this doesn't fully allow you to follow the
-> locking anyways.  dup_anon_vma() still locks internally, with good
-> reason, but it's still not clear that the VMA is locked when looking at
-> this.
->
-> That being said, I did go through each case and it looks like it locks
-> the correct VMA(s) to me.
+On Mon, Jul 31, 2023 at 09:34:29AM -0700, Guenter Roeck wrote:
+> > Ha!, I was poking around the same thing. My hack below seems to (so far,
+> > <20 boots) help things.
+> > 
+> 
+> So, dumb question:
+> How comes this bisects to "sched/fair: Remove sched_feat(START_DEBIT)" ?
 
-Thanks!
-Yeah, it took me some time to ensure the locking there is correct. If
-you see a better alternative to make the locking more obvious I'm open
-to suggestions. I accept that locking in vma_merge() is not easy to
-follow.
-
->
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
->
-> >
-> > Suggested-by: Linus Torvalds <torvalds@linuxfoundation.org>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  mm/mmap.c | 26 ++++++++++++++++----------
-> >  1 file changed, 16 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 850a39dee075..e59d83cb1d7a 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -476,16 +476,6 @@ static inline void init_vma_prep(struct vma_prepar=
-e *vp,
-> >   */
-> >  static inline void vma_prepare(struct vma_prepare *vp)
-> >  {
-> > -     vma_start_write(vp->vma);
-> > -     if (vp->adj_next)
-> > -             vma_start_write(vp->adj_next);
-> > -     if (vp->insert)
-> > -             vma_start_write(vp->insert);
-> > -     if (vp->remove)
-> > -             vma_start_write(vp->remove);
-> > -     if (vp->remove2)
-> > -             vma_start_write(vp->remove2);
-> > -
-> >       if (vp->file) {
-> >               uprobe_munmap(vp->vma, vp->vma->vm_start, vp->vma->vm_end=
-);
-> >
-> > @@ -650,6 +640,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_=
-area_struct *vma,
-> >       bool remove_next =3D false;
-> >       struct vma_prepare vp;
-> >
-> > +     vma_start_write(vma);
-> >       if (next && (vma !=3D next) && (end =3D=3D next->vm_end)) {
-> >               int ret;
-> >
-> > @@ -657,6 +648,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_=
-area_struct *vma,
-> >               ret =3D dup_anon_vma(vma, next);
-> >               if (ret)
-> >                       return ret;
-> > +             vma_start_write(next);
-> >       }
-> >
-> >       init_multi_vma_prep(&vp, vma, NULL, remove_next ? next : NULL, NU=
-LL);
-> > @@ -708,6 +700,8 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_=
-area_struct *vma,
-> >       if (vma_iter_prealloc(vmi))
-> >               return -ENOMEM;
-> >
-> > +     vma_start_write(vma);
-> > +
-> >       init_vma_prep(&vp, vma);
-> >       vma_prepare(&vp);
-> >       vma_adjust_trans_huge(vma, start, end, 0);
-> > @@ -946,10 +940,12 @@ struct vm_area_struct *vma_merge(struct vma_itera=
-tor *vmi, struct mm_struct *mm,
-> >       /* Can we merge both the predecessor and the successor? */
-> >       if (merge_prev && merge_next &&
-> >           is_mergeable_anon_vma(prev->anon_vma, next->anon_vma, NULL)) =
-{
-> > +             vma_start_write(next);
-> >               remove =3D next;                          /* case 1 */
-> >               vma_end =3D next->vm_end;
-> >               err =3D dup_anon_vma(prev, next);
-> >               if (curr) {                             /* case 6 */
-> > +                     vma_start_write(curr);
-> >                       remove =3D curr;
-> >                       remove2 =3D next;
-> >                       if (!next->anon_vma)
-> > @@ -958,6 +954,7 @@ struct vm_area_struct *vma_merge(struct vma_iterato=
-r *vmi, struct mm_struct *mm,
-> >       } else if (merge_prev) {                        /* case 2 */
-> >               if (curr) {
-> >                       err =3D dup_anon_vma(prev, curr);
-> > +                     vma_start_write(curr);
-> >                       if (end =3D=3D curr->vm_end) {      /* case 7 */
-> >                               remove =3D curr;
-> >                       } else {                        /* case 5 */
-> > @@ -969,6 +966,7 @@ struct vm_area_struct *vma_merge(struct vma_iterato=
-r *vmi, struct mm_struct *mm,
-> >               res =3D next;
-> >               if (prev && addr < prev->vm_end) {      /* case 4 */
-> >                       vma_end =3D addr;
-> > +                     vma_start_write(next);
-> >                       adjust =3D next;
-> >                       adj_start =3D -(prev->vm_end - addr);
-> >                       err =3D dup_anon_vma(next, prev);
-> > @@ -983,6 +981,7 @@ struct vm_area_struct *vma_merge(struct vma_iterato=
-r *vmi, struct mm_struct *mm,
-> >                       vma_pgoff =3D next->vm_pgoff - pglen;
-> >                       if (curr) {                     /* case 8 */
-> >                               vma_pgoff =3D curr->vm_pgoff;
-> > +                             vma_start_write(curr);
-> >                               remove =3D curr;
-> >                               err =3D dup_anon_vma(next, curr);
-> >                       }
-> > @@ -996,6 +995,8 @@ struct vm_area_struct *vma_merge(struct vma_iterato=
-r *vmi, struct mm_struct *mm,
-> >       if (vma_iter_prealloc(vmi))
-> >               return NULL;
-> >
-> > +     vma_start_write(vma);
-> > +
-> >       init_multi_vma_prep(&vp, vma, adjust, remove, remove2);
-> >       VM_WARN_ON(vp.anon_vma && adjust && adjust->anon_vma &&
-> >                  vp.anon_vma !=3D adjust->anon_vma);
-> > @@ -2373,6 +2374,9 @@ int __split_vma(struct vma_iterator *vmi, struct =
-vm_area_struct *vma,
-> >       if (new->vm_ops && new->vm_ops->open)
-> >               new->vm_ops->open(new);
-> >
-> > +     vma_start_write(vma);
-> > +     vma_start_write(new);
-> > +
-> >       init_vma_prep(&vp, vma);
-> >       vp.insert =3D new;
-> >       vma_prepare(&vp);
-> > @@ -3078,6 +3082,8 @@ static int do_brk_flags(struct vma_iterator *vmi,=
- struct vm_area_struct *vma,
-> >               if (vma_iter_prealloc(vmi))
-> >                       goto unacct_fail;
-> >
-> > +             vma_start_write(vma);
-> > +
-> >               init_vma_prep(&vp, vma);
-> >               vma_prepare(&vp);
-> >               vma_adjust_trans_huge(vma, vma->vm_start, addr + len, 0);
-> > --
-> > 2.41.0.487.g6d72f3e995-goog
-> >
+That commit changes the timings of things; dumb luck otherwise.
