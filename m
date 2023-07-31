@@ -2,244 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 707E27698F3
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 16:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5AD76994A
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 16:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232833AbjGaOGt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 10:06:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54438 "EHLO
+        id S231523AbjGaOUG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 10:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232877AbjGaOG3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 10:06:29 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A0B1BDF;
-        Mon, 31 Jul 2023 07:02:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1690812159; x=1722348159;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZjKOqjp3rusEQTrMwBC9OMZcGMJrR0bk27etxmfvtG8=;
-  b=kxsQVXX/HzG8FRtIUM6S7W2v8Bn/WPd1wWEGa2e55ALfXpYkmVcewfEn
-   gcx5mUVbj+OpkE1rD1RPWGsIbEwoVjl/AdR1WCCjKe+KgENVOTPBBsmOw
-   mIQGtrQArfyD5FH6AwLC7oWmyeyTAHAZZoCVD26oO16n57IQG1RQtdTPb
-   gwlmkR3N+aKnacs4uI9tzu4uTrPge6E3qYOGNVWQNKlaOSjFE5Env+bRE
-   pSqImeeqEshiHql4nX6xsPvJVh+Hn+V67uqzot+ad4DcpOszGNDmwUffU
-   Qq+2qfdWHe0kAKQq14ug6UIXoQO4XjQhUwcnYPMWma78SCdqzWUM49h4K
-   A==;
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
-   d="asc'?scan'208";a="227468323"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 31 Jul 2023 07:02:37 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 31 Jul 2023 07:02:36 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 31 Jul 2023 07:02:34 -0700
-Date:   Mon, 31 Jul 2023 15:01:58 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-CC:     Conor Dooley <conor@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Bin Meng <bmeng@tinylab.org>,
-        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <llvm@lists.linux.dev>, <stable@vger.kernel.org>,
-        Guo Ren <guoren@kernel.org>
-Subject: Re: [PATCH v3] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-Message-ID: <20230731-calzone-gratified-dbc51639beec@wendy>
-References: <20230731095936.23397-1-xingmingzheng@iscas.ac.cn>
+        with ESMTP id S230171AbjGaOUE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 10:20:04 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C07BB6;
+        Mon, 31 Jul 2023 07:20:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=HHSsgCNjhHdFIGMQf5i+HECrKrb/KpWdhY3pLbYw1XQ=; b=shzvgZ5MR8NVHhRx3eD7xO1ViD
+        K9qpI4RQJ/e43YTDHsUFoQYLazXH6Ge36IwmKu+3pR9fDqMliYZ2Q2cm4ci0auq3oU+ii6qr6PY2Q
+        1zzsnQ5ZOMuT0bX1PCilQUVKc+nm8zPy6tyr1VACKxtqHdsRZ1Psr/1uTmfTE5Zb/51y3j0I45/HK
+        ErHKpItC8xcFt7QeAWgygfvAdsG4Q02bTNxnrt2Q0rEEz7HVwtdRW3ErwNatV7wqFaKDTLtpfuKIo
+        pooLJSZKqsZXxTPLhChgkmKJGr0G+dfFu62+bLC4in5g7zUj09jkJGmPWsDI+T2jzzzYlpwoNcKGx
+        W89FVHkA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qQTkF-0024Yq-8F; Mon, 31 Jul 2023 14:19:35 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9DCF6300134;
+        Mon, 31 Jul 2023 16:19:34 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 7BEB4203EA053; Mon, 31 Jul 2023 16:19:34 +0200 (CEST)
+Date:   Mon, 31 Jul 2023 16:19:34 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Joel Fernandes <joel@joelfernandes.org>, paulmck@kernel.org,
+        Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
+Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
+ 6.4.7-rc1 review)
+Message-ID: <20230731141934.GK29590@hirez.programming.kicks-ass.net>
+References: <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
+ <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
+ <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="sR3rHcOfeYhw3z0E"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230731095936.23397-1-xingmingzheng@iscas.ac.cn>
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---sR3rHcOfeYhw3z0E
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sat, Jul 29, 2023 at 09:00:02PM -0700, Guenter Roeck wrote:
+> On 7/27/23 16:18, Joel Fernandes wrote:
+> 
+> [ ... ]
+> 
+> > > I freely confess that I am having a hard time imagining what would
+> > > be CPU dependent in that code.  Timing, maybe?  Whatever the reason,
+> > > I am not seeing these failures in my testing.
+> > > 
+> > > So which of the following Kconfig options is defined in your .config?
+> > > CONFIG_TASKS_RCU, CONFIG_TASKS_RUDE_RCU, and CONFIG_TASKS_TRACE_RCU.
+> > > 
+> > > If you have more than one of them, could you please apply this patch
+> > > and show me the corresponding console output from the resulting hang?
+> > 
+> > FWIW, I am not able to repro this issue either. If a .config can be shared of the problem system, I can try it out to see if it can be reproduced on my side.
+> > 
+> 
+> I managed to bisect the problem. See bisect log below. Bisect repeated twice.
+> so it should be reliable. I don't really understand it, but the following
+> reverts fix the problem. This is on top of next-20230721 because next-20230728
+> crashes immediately in my tests.
+> 
+> 0caafe9b94ab (HEAD) Revert "sched/fair: Remove sched_feat(START_DEBIT)"
+> 518bdbd39fdb Revert "sched/fair: Add lag based placement"
+> a011162c3e32 Revert "sched/fair: Implement an EEVDF-like scheduling policy"
+> df579720bf98 Revert "sched/fair: Commit to lag based placement"
+> aac459a7e738 Revert "sched/smp: Use lag to simplify cross-runqueue placement"
+> 8d686eb173e1 Revert "sched/fair: Commit to EEVDF"
+> 486474c50f95 Revert "sched/debug: Rename sysctl_sched_min_granularity to sysctl_sched_base_slice"
+> 79e94d67d08a Revert "sched/fair: Propagate enqueue flags into place_entity()"
+> ae867bc97b71 (tag: next-20230721) Add linux-next specific files for 20230721
+> 
+> For context: x86 images (32 and 64 bit) in -next tend to hang at
+> 
+> [    2.309323] RCU Tasks: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1.
+> [    2.311634] Running RCU-tasks wait API self tests
+> 
+> The hang is not seen with every boot; it happens roughly about once every
+> 10 boot attempts. It is not CPU dependent as I initially thought.
+> 
+> Configuration file is at http://server.roeck-us.net/qemu/x86-next/config.
+> Example qemu command line:
 
-Hey,
-
-On Mon, Jul 31, 2023 at 05:59:36PM +0800, Mingzheng Xing wrote:
-> Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the new=
-er
-> 20191213 version which moves some instructions from the I extension to the
-> Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
-> that version, we should explicitly specifying Zicsr and Zifencei via -mar=
-ch
-> to cope with the new changes. but this only occurs when binutils >=3D 2.36
-> and GCC >=3D 11.1.0. It's a different story when binutils < 2.36.
->=20
-> binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
-> Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
-> and Zifencei extension for -march. binutils-2.35 does not support the
-> Zifencei extension, and does not need to specify Zicsr and Zifencei when
-> working with GCC >=3D 12.1.0.
->=20
-> To make our lives easier, let's relax the check to binutils >=3D 2.36 in
-> CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
-> where clang < 17 or GCC < 11.1.0, we will deal with them in
-> CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
->=20
-> For more information, please refer to:
-> commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
-> commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang a=
-nd binutils")
-> Link: https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Daed=
-44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
-> Link: https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3D98416dbb0a62579=
-d4a7a4a76bab51b5b52fec2cd [1]
-> Link: https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3D5a1=
-b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
-> Link: https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3D729=
-a53530e86972d1143553a415db34e6e01d5d2 [3]
-> Link: https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3Db03be74bad08c38=
-2da47e048007a78fa3fb4ef49 [4]
-> Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.o=
-rg
-> Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
-> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-
-You need to actually put the CC: stable@vger.kernel.org into the commit
-message for the stable folks to pick things up.
-
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 4c07b9189c86..2704bd91dfb5 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -570,24 +570,31 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
->  config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->  	def_bool y
->  	# https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Daed44=
-286efa8ae8717a77d94b51ac3614e2ca6dc
-> -	depends on AS_IS_GNU && AS_VERSION >=3D 23800
-> -	help
-> -	  Newer binutils versions default to ISA spec version 20191213 which
-> -	  moves some instructions from the I extension to the Zicsr and Zifencei
-> -	  extensions.
-> +	# https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3D98416dbb0a62579d4=
-a7a4a76bab51b5b52fec2cd
-> +	depends on AS_IS_GNU && AS_VERSION >=3D 23600
-> +	help
-> +	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
-> +	  20191213 version, which moves some instructions from the I extension =
-to
-> +	  the Zicsr and Zifencei extensions. This requires explicitly specifying
-> +	  zicsr and zifencei when binutils >=3D 2.38 or GCC >=3D 12.1.0,
-
-> but this only
-> +	  occurs when binutils >=3D 2.36 and GCC >=3D 11.1.0.
-> +	 It's a different story when binutils < 2.36.
-
-I would replace this with something like:
-	Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
-	20191213 version, which moves some instructions from the I extension to
-	the Zicsr and Zifencei extensions. This requires explicitly specifying
-	zicsr and zifencei when binutils >=3D 2.38 or GCC >=3D 12.1.0. Zicsr
-	and Zifencei are supported in binutils from version 2.36 onwards.
-	To make life easier, and avoid forcing toolchains that default to a
-	newer ISA spec to version 2.2, relax the check to binutils >=3D 2.36.
-	For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
-	dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
-
-I tried to take the personification out of it & hopefully made it a
-little clearer what dropping the check to 2.36 does for us.
-
-> Also, we have to consider the case of clang paired with binutils.
-
-I think this sentence can go, its covered in the other config text.
-
-I'm sorry for being a bit of a pedant about this, but this has been such
-a can of worms that I would like things to remain explained well enough
-that the text is sufficient next time a revisit is required.
-
-Thanks,
-Conor.
-
-> +	  To make our lives easier, we relax the check to binutils >=3D 2.36. >=
- =20
->  config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
->  	def_bool y
->  	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->  	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4=
-498694e15bf8a16
-> -	depends on CC_IS_CLANG && CLANG_VERSION < 170000
-> -	help
-> -	  Certain versions of clang do not support zicsr and zifencei via -march
-> -	  but newer versions of binutils require it for the reasons noted in the
-> -	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
-> -	  option causes an older ISA spec compatible with these older versions
-> -	  of clang to be passed to GAS, which has the same result as passing zi=
-csr
-> -	  and zifencei to -march.
-> +	# https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3Db03be74bad08c382d=
-a47e048007a78fa3fb4ef49
-> +	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC=
-_VERSION < 110100)
-> +	help
-> +	  Certain versions of clang and GCC do not support zicsr and zifencei v=
-ia
-> +	  -march. This option causes an older ISA spec compatible with these ol=
-der
-> +	  versions of clang and GCC to be passed to GAS, which has the same res=
-ult
-> +	  as passing zicsr and zifencei to -march.
-> =20
->  config FPU
->  	bool "FPU support"
-> diff --git a/arch/riscv/kernel/compat_vdso/Makefile b/arch/riscv/kernel/c=
-ompat_vdso/Makefile
-> index 189345773e7e..b86e5e2c3aea 100644
-> --- a/arch/riscv/kernel/compat_vdso/Makefile
-> +++ b/arch/riscv/kernel/compat_vdso/Makefile
-> @@ -11,7 +11,13 @@ compat_vdso-syms +=3D flush_icache
->  COMPAT_CC :=3D $(CC)
->  COMPAT_LD :=3D $(LD)
-> =20
-> -COMPAT_CC_FLAGS :=3D -march=3Drv32g -mabi=3Dilp32
-> +# binutils 2.35 does not support the zifencei extension, but in the ISA
-> +# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
-> +ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
-> +	COMPAT_CC_FLAGS :=3D -march=3Drv32g -mabi=3Dilp32
-> +else
-> +	COMPAT_CC_FLAGS :=3D -march=3Drv32imafd -mabi=3Dilp32
-> +endif
->  COMPAT_LD_FLAGS :=3D -melf32lriscv
-> =20
->  # Disable attributes, as they're useless and break the build.
-> --=20
-> 2.34.1
->=20
-
---sR3rHcOfeYhw3z0E
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMe+1gAKCRB4tDGHoIJi
-0gBrAPsHa6EvXr3G1je0dOAZODpBCMpYhT5F0/c3PVvv6IaExgD/Yv0Zt62UDpAM
-JnC/CIXdfLT13VMVGzN5EthtdrNgSAI=
-=6YQe
------END PGP SIGNATURE-----
-
---sR3rHcOfeYhw3z0E--
+Hurmph, let me see if I can reproduce on next-20230731 (not having the
+older next thingies around).
