@@ -2,101 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 803E176A17E
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 21:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF9576A1D2
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 22:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230479AbjGaTqt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 15:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36506 "EHLO
+        id S229934AbjGaUYf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 16:24:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjGaTqq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 15:46:46 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2981BEB;
-        Mon, 31 Jul 2023 12:46:27 -0700 (PDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36VDTGus014514;
-        Mon, 31 Jul 2023 19:46:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-03-30;
- bh=Mt2Tm0cL3p7FzoCtKe83LKwXpnN2Keuu76IOn6caZGc=;
- b=fLCRQRhS9i4H3FHuJRFzKNrgHxyEDjUR9JMuEzXq/4xRPbqOdiTyM/NE+5XBySguwdQL
- khBLEJUK59TWv2372uwUj/6aJ1+qi63lCkIrLIRZ8i0JNED4eBzXVhjS4KzUsa76pPdo
- 81GaaKGIgO2DKwVXeeVHNvG06sRxho4CmhpoyaOX8wBVwEv9LtVgCrz3TSa7k1Ueu8Eo
- vJfSnxLXKlKSxFL3cLHhILDZdxfatizaZ7EfwC8GbT4t9LaOnZS70Ux2vlC9AiLETO+v
- 1JuCmyPObRsBBEiJo7sDlCF7P931FVcFCWrp+f97EPaZCWCFHZuKFTK6kmxohcRD7tYS Uw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s4s6e3etk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 31 Jul 2023 19:46:22 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 36VIDI9M008921;
-        Mon, 31 Jul 2023 19:46:21 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3s4s7bmuh0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 31 Jul 2023 19:46:21 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36VJkKqC011875;
-        Mon, 31 Jul 2023 19:46:20 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3s4s7bmug6-2;
-        Mon, 31 Jul 2023 19:46:20 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     kys@microsoft.com, longli@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, jejb@linux.ibm.com,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
-Date:   Mon, 31 Jul 2023 15:46:17 -0400
-Message-Id: <169083273233.2873926.15195678771794220955.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <1690606764-79669-1-git-send-email-mikelley@microsoft.com>
-References: <1690606764-79669-1-git-send-email-mikelley@microsoft.com>
+        with ESMTP id S229920AbjGaUYf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 16:24:35 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075371723
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 13:24:34 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d3563cb41e9so732752276.0
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 13:24:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690835073; x=1691439873;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v1ItbffeIwZatJkOZRxPmlzNWTmdUBzSgiuAZZzzuKQ=;
+        b=BxOFecJBQJRZe+ru1tsCnhNh41LoO0SH1sfYo82MsHDKiV5uzmMH2HV+rTpo0iS9Je
+         XV6gP/58PgpC3Qr9n/EHWn6ilLCXZ0j9zjGEuHGAWO/Dz6IBJh1Kqt1StNOfp8+RpXOI
+         GgEwLhTUHO5jAGIIo5EWWUn+PqTCnm7yVoYaltoik4VvIWD+HzhCG5VdajSSGM04voKL
+         /cPaXj9R9e+qsqDunrlt6YB9rpDt1SdwAazZ1v0AZKoFj84PdW4QKh/8/zzdEgBccfUS
+         VHVuaJOHKMS2G0RqmsfSypuvki1rMJ0MQkde+syLEvRa/yQqbkmnT1tZLFvyyRjOS6YP
+         vv+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690835073; x=1691439873;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v1ItbffeIwZatJkOZRxPmlzNWTmdUBzSgiuAZZzzuKQ=;
+        b=AwIr8wEhpx3zP1jBhebb1ujnRKJ1Oprk/ZxQmH3M+JGrB8q39gJUKk+vDgLofCBpxT
+         ZPl2kqY3UmJPekaz83G40kpklIPYG+KXgtQezQG6JdSJ0VF2dkYGDP8enfaEap1CgECA
+         RMge0fslPyazCiN0fE/mrTNK0v91DxwuJdKwXuGxyt/H8W+3YCz/dQQrpEQDWgVSdowR
+         jx0rkDvRGDxQfsSyV8ONXPmtBcCTncXvKxVQ4YKoUtB60/OUaJzvhFP4idYlXZt2iasc
+         j4oP8c6Af8OJ37aYEUOSFUdcAyQfxvipDNzQHY+Zxxv2MTdIeBGFdoOgmixv+c+2XmV8
+         UcAQ==
+X-Gm-Message-State: ABy/qLbZEtPkwJZWPyic7o0hrs/D4kTruuV7jmNyIpyUsuT7aOiHBFm8
+        6Uq8OXmyI5DlnoSAJ/ydUrMAu7bfeImkQmctFXWa1g==
+X-Google-Smtp-Source: APBJJlGuj8kX+bBpv83ZDzm2NJ6dmZvExyNUG7wdBXD6gLrKUP8Lg+v96RvFbCwdUYG16WEMseHl5z4ySmZTFe1KZeo=
+X-Received: by 2002:a25:54b:0:b0:d09:2cba:bcac with SMTP id
+ 72-20020a25054b000000b00d092cbabcacmr8248520ybf.65.1690835072954; Mon, 31 Jul
+ 2023 13:24:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-31_13,2023-07-31_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- phishscore=0 mlxscore=0 adultscore=0 malwarescore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307310179
-X-Proofpoint-GUID: Qyi_B2rv0CDff3uljQQ2FVJz8mHQtLmg
-X-Proofpoint-ORIG-GUID: Qyi_B2rv0CDff3uljQQ2FVJz8mHQtLmg
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+References: <20230731171233.1098105-1-surenb@google.com> <20230731171233.1098105-2-surenb@google.com>
+ <CAHk-=wjEbJS3OhUu+2sV8Kft8GnGcsNFOhYhXYQuk5nvvqR-NQ@mail.gmail.com>
+ <CAJuCfpFWOknMsBmk1RwsX9_0-eZBoF+cy=P-E7xAmOWyeo4rvA@mail.gmail.com> <CAHk-=wiFXOJ_6mnuP5h3ZKNM1+SBNZFZz9p8hyS8NaYUGLioEg@mail.gmail.com>
+In-Reply-To: <CAHk-=wiFXOJ_6mnuP5h3ZKNM1+SBNZFZz9p8hyS8NaYUGLioEg@mail.gmail.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Mon, 31 Jul 2023 13:24:21 -0700
+Message-ID: <CAJuCfpG4Yk65b=0TLfGRqrO7VpY3ZaYKqbBjEP+45ViC9zySVQ@mail.gmail.com>
+Subject: Re: [PATCH 1/6] mm: enable page walking API to lock vmas during the walk
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     akpm@linux-foundation.org, jannh@google.com, willy@infradead.org,
+        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
+        ldufour@linux.ibm.com, vbabka@suse.cz, michel@lespinasse.org,
+        jglisse@google.com, mhocko@suse.com, hannes@cmpxchg.org,
+        dave@stgolabs.net, hughd@google.com, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 28 Jul 2023 21:59:24 -0700, Michael Kelley wrote:
+On Mon, Jul 31, 2023 at 12:33=E2=80=AFPM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Mon, 31 Jul 2023 at 12:31, Suren Baghdasaryan <surenb@google.com> wrot=
+e:
+> >
+> > I got the idea but a couple of modifications, if I may.
+>
+> Ack, sounds sane to me.
 
-> Hyper-V provides the ability to connect Fibre Channel LUNs to the host
-> system and present them in a guest VM as a SCSI device. I/O to the vFC
-> device is handled by the storvsc driver. The storvsc driver includes
-> a partial integration with the FC transport implemented in the generic
-> portion of the Linux SCSI subsystem so that FC attributes can be
-> displayed in /sys.  However, the partial integration means that some
-> aspects of vFC don't work properly. Unfortunately, a full and correct
-> integration isn't practical because of limitations in what Hyper-V
-> provides to the guest.
-> 
-> [...]
+Ok, I'll wait for more feedback today and will post an update tomorrow. Tha=
+nks!
 
-Applied to 6.5/scsi-fixes, thanks!
-
-[1/1] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
-      https://git.kernel.org/mkp/scsi/c/175544ad48cb
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+>
+>              Linus
