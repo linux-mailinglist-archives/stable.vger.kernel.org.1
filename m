@@ -2,159 +2,186 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99E08769FF5
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 20:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E30769FFA
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 20:05:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232142AbjGaSDO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 31 Jul 2023 14:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40864 "EHLO
+        id S231605AbjGaSFD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 31 Jul 2023 14:05:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231474AbjGaSC5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 14:02:57 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5415CE52
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 11:02:56 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fe2503e3easo4572978e87.2
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 11:02:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1690826574; x=1691431374;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=sbvUvGljtEHmYL7qi+HXkrNPoFOxFR5BvYu2TjHTwr0=;
-        b=D9E3ZcdecHW/AeFtZ+rCyYRCgHd0EAWCQWVnJetVe9U1Clq/ZnJaJrwTDKMMR3Fmf5
-         UXD34A6gN2F/PSEALsGXpwpUVIwSnPxQeOKMAHBIh62cfyrlXiQ1rLHGKVKtEeobsXeZ
-         YDya2STnECp5Gel9dceP0mS/Kmtlorb/H51OU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690826574; x=1691431374;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sbvUvGljtEHmYL7qi+HXkrNPoFOxFR5BvYu2TjHTwr0=;
-        b=Q/Gkm5fcdoAT8hM0UiLrlcl0OoJ8KpQtsX4fJYyYxWFOyyz9VVQXN29a6zw+FqD9Ti
-         ZDuMQsvr6BEWMXeuL0w+oAz+IrrKiKLdulBtN26H8yiQ9vWU/wUQYwj8gfwzQSqB1I1V
-         9Apk8K5FxZOxD0vaAd8LEun/MzBHMdlqzku4V+gctT109pG7S09O8s/Fe/SVuoCbJPe1
-         kOCChzSNd84EHpepNRlYiad39xLHitpHG8DwRfzt07Ojyb5kQT7XdzKswP2LIApn5jRj
-         cDX96Gs2ba6IQHOUiqE0BbXUItzusQKgrO9sx6zAPwrxFoUj8nOV9XGoyHzw5Ei5mz3T
-         ugng==
-X-Gm-Message-State: ABy/qLZHo/K5fQr5lJRAYd81n1w9Z9+5CjxUDd4kqRIjAnRLuMzlK5dk
-        bj8SAW0eMhFXxYA7X7NCFMqGqMtSQOPp3wqcd1AuPA==
-X-Google-Smtp-Source: APBJJlGKK9c5BbW6llyH+IGvbHX1yhr3ISWkWvvIkXdCVKU4TKdbK61obEzP2m8sCnzZ3g9ZFWyCmQ==
-X-Received: by 2002:a19:384d:0:b0:4f7:6685:2c5f with SMTP id d13-20020a19384d000000b004f766852c5fmr366242lfj.61.1690826574271;
-        Mon, 31 Jul 2023 11:02:54 -0700 (PDT)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
-        by smtp.gmail.com with ESMTPSA id a12-20020a056512020c00b004fbbef8d4dbsm2187652lfo.121.2023.07.31.11.02.53
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Jul 2023 11:02:53 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-4fe41f7c7ffso197408e87.1
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 11:02:53 -0700 (PDT)
-X-Received: by 2002:ac2:4e07:0:b0:4fe:ec5:2698 with SMTP id
- e7-20020ac24e07000000b004fe0ec52698mr498383lfr.50.1690826573309; Mon, 31 Jul
- 2023 11:02:53 -0700 (PDT)
+        with ESMTP id S229871AbjGaSFC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 31 Jul 2023 14:05:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5F2E52;
+        Mon, 31 Jul 2023 11:05:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 42C386125E;
+        Mon, 31 Jul 2023 18:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E7CC433CB;
+        Mon, 31 Jul 2023 18:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690826700;
+        bh=NlIuvQdLsbZRs9xKKZPU9QNmPufa9SXsdYZpx7GsOCY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YxN4v45sggOP8u25Ga6OHNMRp/yaTP+cCGVRCQ+m5LbGA7uXBoDQYJF35LL78/TDd
+         QnXPEGL3qXBiv5hoIAsM0YQCRCHdY9CLj/Y19FUnLCmHD61AgY4XCc6BET91FsO0Lv
+         bWwGCab4hgJgYb/OYgNUoCQkJYfymAwVIv8y2qBg4zYmAFz738GL2cM9a8Wq7pd6hf
+         kbhkqq1lLm1O7i3jWGbeJFg+PGTUvVe/1IANrBOs6Q6BF49aTyBxECju9lHzU2cLPM
+         FeBnb5Zi0dItNzZRsvQNcOY0catZvJF7Q7HWHzfq17viEutKrsqfMqQpXydYTX9Xk/
+         I+NrfAa1fI5zw==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2b9d3dacb33so44931071fa.1;
+        Mon, 31 Jul 2023 11:05:00 -0700 (PDT)
+X-Gm-Message-State: ABy/qLYjpn8Nj+qfIrR+QXhhZ82NuAhCeUNUMTgPOSds+pkkwi1T9VVz
+        KfVDFzVACYikZIg++Zs69Vg2B2vxF0jApHsqyA==
+X-Google-Smtp-Source: APBJJlHmYoa7wNWCoPioGv/c7TslSfI7mb6yLjssF2FXna8gHSJ2JLwRBMq2SeYMDBgzkoTpB9YDIiByhdszSZOiHD4=
+X-Received: by 2002:a2e:9c94:0:b0:2b9:dd3b:cf43 with SMTP id
+ x20-20020a2e9c94000000b002b9dd3bcf43mr520218lji.13.1690826698551; Mon, 31 Jul
+ 2023 11:04:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230731171233.1098105-1-surenb@google.com> <20230731171233.1098105-2-surenb@google.com>
-In-Reply-To: <20230731171233.1098105-2-surenb@google.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 31 Jul 2023 11:02:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjEbJS3OhUu+2sV8Kft8GnGcsNFOhYhXYQuk5nvvqR-NQ@mail.gmail.com>
-Message-ID: <CAHk-=wjEbJS3OhUu+2sV8Kft8GnGcsNFOhYhXYQuk5nvvqR-NQ@mail.gmail.com>
-Subject: Re: [PATCH 1/6] mm: enable page walking API to lock vmas during the walk
-To:     Suren Baghdasaryan <surenb@google.com>
-Cc:     akpm@linux-foundation.org, jannh@google.com, willy@infradead.org,
-        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
-        ldufour@linux.ibm.com, vbabka@suse.cz, michel@lespinasse.org,
-        jglisse@google.com, mhocko@suse.com, hannes@cmpxchg.org,
-        dave@stgolabs.net, hughd@google.com, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, stable@vger.kernel.org
+References: <20230721161840.1393996-1-hugo@hugovil.com> <20230721161840.1393996-7-hugo@hugovil.com>
+ <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
+ <20230722104724.ef0c5896c239e721794b9fe9@hugovil.com> <2023072240-supremacy-shallot-a77f@gregkh>
+ <20230724115428.d191186852c0bd0ee0d78398@hugovil.com> <CAL_JsqL8rjwONd6UAitKik0U44BKSD6m8zbachgfq0R9oHBW8w@mail.gmail.com>
+ <20230731124600.39eb8d5c132f9338c2897543@hugovil.com>
+In-Reply-To: <20230731124600.39eb8d5c132f9338c2897543@hugovil.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 31 Jul 2023 12:04:45 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLaF70hNQndXpJfmH1TMGNbA7myQG0GK9fjyKOs63z-3w@mail.gmail.com>
+Message-ID: <CAL_JsqLaF70hNQndXpJfmH1TMGNbA7myQG0GK9fjyKOs63z-3w@mail.gmail.com>
+Subject: Re: [RESEND PATCH v8 06/10] serial: sc16is7xx: fix regression with
+ GPIO configuration
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 31 Jul 2023 at 10:12, Suren Baghdasaryan <surenb@google.com> wrote:
+On Mon, Jul 31, 2023 at 10:46=E2=80=AFAM Hugo Villeneuve <hugo@hugovil.com>=
+ wrote:
 >
-> -               walk_page_vma(vma, &subpage_walk_ops, NULL);
-> +               walk_page_vma(vma, &subpage_walk_ops, true, NULL);
+> On Mon, 31 Jul 2023 09:31:53 -0600
+> Rob Herring <robh+dt@kernel.org> wrote:
+>
+> > On Mon, Jul 24, 2023 at 9:54=E2=80=AFAM Hugo Villeneuve <hugo@hugovil.c=
+om> wrote:
+> > >
+> > > On Sat, 22 Jul 2023 17:15:26 +0200
+> > > Greg KH <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > > On Sat, Jul 22, 2023 at 10:47:24AM -0400, Hugo Villeneuve wrote:
+> > > > > On Fri, 21 Jul 2023 13:24:19 -0600
+> > > > > Rob Herring <robh+dt@kernel.org> wrote:
+> > > > >
+> > > > > > On Fri, Jul 21, 2023 at 10:19=E2=80=AFAM Hugo Villeneuve <hugo@=
+hugovil.com> wrote:
+> > > > > > >
+> > > > > > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > > > > > >
+> > > > > > > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem co=
+ntrol lines")
+> > > > > > > and commit 21144bab4f11 ("sc16is7xx: Handle modem status line=
+s")
+> > > > > > > changed the function of the GPIOs pins to act as modem contro=
+l
+> > > > > > > lines without any possibility of selecting GPIO function.
+> > > > > >
+> > > > > > Requiring a new DT property is not fixing a kernel regression. =
+You
+> > > > > > should be returning the kernel to original behavior and then ha=
+ve a
+> > > > > > new DT property for new behavior.
+> > > > >
+> > > > > Hi Rob,
+> > > > > please read the entire patch history starting from V1
+> > > > >  and you will understand why this course of action was
+> > > > >  not selected.
+> > > >
+> > > > That's not going to happen, sorry, you need to explain it here, in =
+this
+> > > > patch series, why a specific action is being taken over another one=
+, as
+> > > > no one has time to go dig through past history, sorry.
+> > >
+> > > Hi Rob,
+> > > I initially submitted a patch to revert the kernel to original
+> > > behavior, but it created more problems because the patch was
+> > > unfortunately split in two separate patches, and mixed with other non
+> > > closely-related changes. It was also noted to me that reverting to th=
+e
+> > > old behavior would break things for some users.
+> > >
+> > > It was suggested to me by a more experienced kernel developer to
+> > > "suggest a fix, instead of hurrying a revert":
+> > >
+> > >     https://lkml.org/lkml/2023/5/17/758
+> >
+> > Do I have to go read this to decipher the justification and reasoning?
+> > When Greg says "in this patch series", he means in the commit messages
+> > of the patches. You send v9 already and it doesn't have that. The
+> > patchset needs to stand on its own summarizing any relevant prior
+> > discussions.
+> >
+> > I never suggested doing a revert.
+>
+> Hi Rob,
+> I am sorry, but this is exactly what I "deciphered" from your
+> original email.
+>
+> I am trying very hard to understand exactly what you mean, but it is
+> not that obvious for me. If something is not clear in my commit message,
+> I will try to improve it. But before, let's try to focus on making sure
+> I understand more clearly what you want exactly.
+>
+> > Obviously, someone still wants the
+> > new feature.
+>
+> I assume that you refer to the "new feature" as what was added in
+> the commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control
+> lines")?
 
-Rather than add a new argument to the walk_page_*() functions, I
-really think you should just add the locking rule to the 'const struct
-mm_walk_ops' structure.
+Shrug. It's one of the 2 commits mentioned, I don't know which one
+exactly. Whichever one changed default behavior from use GPIOs to use
+modem ctrl lines.
 
-The locking rule goes along with the rules for what you are actually
-doing, after all. Plus it would actually make it all much more legible
-when it's not just some random "true/false" argument, but a an actual
+Reading it again, I *think* this patch is correct. Default behavior is
+restored to use GPIOs. The DT property is needed to enable modem ctrl
+lines.
 
-        .write_lock = 1
+What's not okay is just saying, these platforms may or may not need an upda=
+te:
 
-in the ops definition.
+    arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+    mips/boot/dts/ingenic/cu1830-neo.dts
+    mips/boot/dts/ingenic/cu1000-neo.dts
 
-Yes, yes, that might mean that some ops might need duplicating in case
-you really have a walk that sometimes takes the lock, and sometimes
-doesn't, but that is odd to begin with.
+You need to figure that out. Have you checked with maintainers of
+these boards? When were they added and by who? At the same time or by
+the same person would be a good indication the platform uses modem
+ctrl lines. Or were these platforms in use before adding modem ctrl
+support? Then they probably use GPIOs or nothing.
 
-The only such case I found from a quick look was the very strange
-queue_pages_range() case. Is it really true that do_mbind() needs the
-write-lock, but do_migrate_pages() does not?
+If there are platforms which would regress if the modem ctrl feature
+was just reverted, which ones are those?
 
-And if they really are that different maybe they should have different walk_ops?
-
-Maybe there were other cases that I didn't notice.
-
->                 error = walk_page_range(current->mm, start, end,
-> -                               &prot_none_walk_ops, &new_pgprot);
-> +                               &prot_none_walk_ops, true, &new_pgprot);
-
-This looks odd. You're adding vma locking to a place that didn't do it before.
-
-Yes, the mmap semaphore is held for writing, but this particular walk
-doesn't need it as far as I can tell.
-
-In fact, this feels like that walker should maybe *verify* that it's
-held for writing, but not try to write it again?
-
-Maybe the "lock_vma" flag should be a tri-state:
-
- - lock for reading (no-op per vma), verify that the mmap sem is held
-for reading
-
- - lock for reading (no-op per vma), but with mmap sem held for
-writing (this kind of "check before doing changes" walker)
-
- - lock for writing (with mmap sem obviously needs to be held for writing)
-
->         mmap_assert_locked(walk.mm);
-> +       if (lock_vma)
-> +               vma_start_write(vma);
-
-So I think this should also be tightened up, and something like
-
-        switch (ops->locking) {
-        case WRLOCK:
-                vma_start_write(vma);
-                fallthrough;
-        case WRLOCK_VERIFY:
-                mmap_assert_write_locked(mm);
-                break;
-        case RDLOCK:
-                mmap_assert_locked(walk.mm);
-        }
-
-because we shouldn't have a 'vma_start_write()' without holding the
-mmap sem for *writing*, and the above would also allow that
-mprotect_fixup() "walk to see if we can merge, verify that it was
-already locked" thing.
-
-Hmm?
-
-NOTE! The above names are just completely made up. I dcon't think it
-should actually be some "WRLOCK" enum. There are probably much better
-names. Take the above as a "maybe something kind of in this direction"
-rather than "do it exactly like this".
-
-            Linus
+Rob
