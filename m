@@ -2,90 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6BE5768964
-	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 02:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 353767689F2
+	for <lists+stable@lfdr.de>; Mon, 31 Jul 2023 04:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbjGaAlc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 30 Jul 2023 20:41:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40164 "EHLO
+        id S229720AbjGaCYC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 30 Jul 2023 22:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGaAlb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 30 Jul 2023 20:41:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F359E5A;
-        Sun, 30 Jul 2023 17:41:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1293360DE7;
-        Mon, 31 Jul 2023 00:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CDFC433C7;
-        Mon, 31 Jul 2023 00:41:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690764089;
-        bh=Id9w+26JcA3ovoOCmq873Dz/XimrlDDtDX+h2mPVv1Q=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=HVT1BwhXGDRxS21WFjAzyUa2Pv5ZOXtUdxpYAnQ7UFGX/YJcdaeoj4Wt+JbndEsxG
-         A4IM3UQW49xYTIatHVmWxi4zNuw50oJ0QGzrheIli5FOd6qDnnRl4f82ZwVU1HfNQU
-         rYLRqtroWcmk/pK3voKAwgvuZJcqug3cp+xPJGKB3mWym286roA69AKDRrnxWWR0b6
-         /ZN9oq46aB8mdxhcacOxIAIQyHrbjugOIz+qkQoDoUkrL1dRDshmN1tnlYSTHkOQGw
-         ocp/TczfNjQ6Vy30K7nWZAJ2bp4PQlL66mOsla5XoeaWU7JX1mEvMaMvbvBc5kTJLz
-         fsfGFOBgcEqug==
-Message-ID: <2b7e9239-fd48-0f74-f69b-e0039809c857@kernel.org>
-Date:   Mon, 31 Jul 2023 09:41:27 +0900
+        with ESMTP id S229643AbjGaCYB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 30 Jul 2023 22:24:01 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706B419C
+        for <stable@vger.kernel.org>; Sun, 30 Jul 2023 19:24:00 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-583b3aa4f41so43083727b3.2
+        for <stable@vger.kernel.org>; Sun, 30 Jul 2023 19:24:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1690770239; x=1691375039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rk52475ZbL9s7/hfzBOCB7Jm9cqV9XCvqs/zZ6NPZQI=;
+        b=A3y2ViIQXJShjd6wDFcAEALxDEVLj6N3sTEKT8sUWmBs34mm+rMeempLoiJIHa2zG1
+         tq3ygHbhY5MtzqqQCTATOvrkevDCft1psD9WA8pO1bif5w+Mb7BdG7R1BXaUypurKP6N
+         g03kK0r+XdXPzLPGHeG06LmfIVx2cLQkeC2AjGzFoU4YcNA8Nxqq8aw4eqAsgs65KMCM
+         E8+EUgd3D4lVZdIytzC2PTGefQ+Vkr4duSJ1jgxH4sh0qgaB3oykGeOKjIP6oF6TAThh
+         6Bhc+gO/TsWAcQ6u+Tz7+gk2BaiCiB/FFi/8iu7mAA0vi9YAMcRL8UqAFtbCCLshinPx
+         fwow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690770239; x=1691375039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rk52475ZbL9s7/hfzBOCB7Jm9cqV9XCvqs/zZ6NPZQI=;
+        b=ZdjZw3cP1RWzAAFHgcIHMDx634CXqwYHaX4ReVXNu9270YrKeLYcbxKYz1uJefVCNy
+         jcbUryq+lVEFPipmWywaz/Fj7pHDt4U3MF3O22NtfQ/ZFQf7aM+mYQfwKjqlrF0RbV/1
+         wDEGKDQs9DwRxpfIbu4IStSEkH17aatE3HLAwZJjtq2YNJKWbK57vV5GOb2SXADt/FXU
+         gBQ9NQUToWeKBgPoC93DErwQqYL/8DfZW6ZBc3nr53qNqYqL5XMVkn7IHcoMZN6IwfuV
+         +EvYTMKLBHUG0ToU7aWQkeMkQevKVQLODHYdfC4bJjEjOOZFcLWgWeVD2LAosoT9B8qs
+         16TA==
+X-Gm-Message-State: ABy/qLZIYqbPV6lxROZbdbvbnI0xcA36K9TwxHAyEF6QuwuA8qr52mfb
+        VtlhPtor/53cQoTZ8cWdf81NhuIIb83dhGBGFJPz
+X-Google-Smtp-Source: APBJJlF/Wa6E65w9i694QuPBH13WOZNSoYTN04HjKpK8cAA2FZgHoTfFjHgOfV3D0dQqbSGb2eRDPI/L7r/b+0q3F3Q=
+X-Received: by 2002:a81:74d4:0:b0:577:1909:ee15 with SMTP id
+ p203-20020a8174d4000000b005771909ee15mr8587315ywc.6.1690770239668; Sun, 30
+ Jul 2023 19:23:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Scsi_bus_resume+0x0/0x90 returns -5 when resuming from s3 sleep
-To:     TW <dalzot@gmail.com>,
-        Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     regressions@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <0e272abe-292d-d58f-cf80-55868e793abc@gmail.com>
- <6b66dd9a-8bd5-2882-9168-8e6e0848c454@leemhuis.info>
- <c70caa9e-164c-fee5-8f85-67f6d02373ab@kernel.org>
- <b0ed86e0-3e4a-d4d1-7b9d-c57f20538a80@gmail.com>
- <86435987-734e-c6c1-a857-1ba80da709fe@gmail.com>
- <48bc1736-5e4e-3a9b-3715-60509c333bb1@kernel.org>
- <f7e7b601-571f-bd2e-6410-a8a27e510c2f@gmail.com>
- <40365501-283a-408b-3514-48c29db36861@kernel.org>
- <d44e4057-0758-4cb8-ca29-02b5bb340b8b@gmail.com>
-Content-Language: en-US
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <d44e4057-0758-4cb8-ca29-02b5bb340b8b@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230726191036.14324-1-dtatulea@nvidia.com>
+In-Reply-To: <20230726191036.14324-1-dtatulea@nvidia.com>
+From:   Yongji Xie <xieyongji@bytedance.com>
+Date:   Mon, 31 Jul 2023 10:23:48 +0800
+Message-ID: <CACycT3vzcEXfB4OBgP4GF=F+j21gs8WDyepkZQWYwnYFTURbpQ@mail.gmail.com>
+Subject: Re: [PATCH] virtio-vdpa: Fix cpumask memory leak in virtio_vdpa_find_vqs()
+To:     Dragos Tatulea <dtatulea@nvidia.com>
+Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>, stable@vger.kernel.org,
+        Gal Pressman <gal@nvidia.com>,
+        virtualization <virtualization@lists.linux-foundation.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/28/23 11:49, TW wrote:
-> Comparing to the 5.15 kernel which had almost no delay. They are HDDs 
-> though, it was working flawlessly earlier but didn't want to top post 
-> again. Tried a systemd suspend instead of from the Xfce4 logout menu and 
-> everything works as intended. So I'd say that it's fixed now.
+On Thu, Jul 27, 2023 at 3:11=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com=
+> wrote:
+>
+> From: Gal Pressman <gal@nvidia.com>
+>
+> Free the cpumask allocated by create_affinity_masks() before returning
+> from the function.
+>
+> Fixes: 3dad56823b53 ("virtio-vdpa: Support interrupt affinity spreading m=
+echanism")
+> Signed-off-by: Gal Pressman <gal@nvidia.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
 
-I posted a proper patch and CC-ed you. A "Tested-by:" tag from you would be much
-appreciated (please use your full name in that case, instead of only "TW").
-Thanks.
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
 
-> 
-> On 7/27/23 20:33, Damien Le Moal wrote:
->> "Slow coming back" -> Compared to which version of the kernel ? Do you 
->> have numbers ? If the devices are HDDs, resume will wait for these to 
->> spin up. That takes a while (about 10s normally).
-
--- 
-Damien Le Moal
-Western Digital Research
-
+Thanks,
+Yongji
