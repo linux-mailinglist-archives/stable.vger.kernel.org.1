@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1BCD76AEF0
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 124A976ADDC
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233318AbjHAJnX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:43:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39722 "EHLO
+        id S233105AbjHAJeF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233316AbjHAJnJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:09 -0400
+        with ESMTP id S232490AbjHAJds (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089752707
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9632708
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37F6461521
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4983EC433C8;
-        Tue,  1 Aug 2023 09:40:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A237614FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1466BC433C9;
+        Tue,  1 Aug 2023 09:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882840;
-        bh=MaCnA114Q4wiDh/jo5pOSFNm9RPVukngW9L2/J0wIhY=;
+        s=korg; t=1690882296;
+        bh=MMpgwVfwRIr3R/7D1k6okb5eVbRSG1k7+QbWCCu0RO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yd1TAD0LcJ2vG1qidPXq+HLhHa9Ei7LhB27ItWQGfe8z4jBlb/UUonFgTaNxk5S29
-         yPZ+ip59OalM9k04CD7DBE3Mn4PhS8q08Px93GckSu9DcdqCPidIUL7drwHz1ZD0yS
-         cXIA2nzJ+Q/XBVForqE/xXQH9T451U4LWVboClC0=
+        b=qP97lNXIDQVOs4kgFmpzHeWLGIu0u6yihnuUmrnpHZQ4lNCf4PLscGSDTfgCH9L/2
+         exRi3QcRogkLfceUjAWOllIWkMTajIc5GgBuONQtunpVfZvdHPqJacOSt7BBSAgZJt
+         s2O0xzQtejBYUeBOeBhjB3J9c061M8QnXg35LeVs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Markus Elfring <elfring@users.sourceforge.net>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 021/239] i2c: Delete error messages for failed memory allocations
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/228] PCI/ASPM: Return 0 or -ETIMEDOUT from pcie_retrain_link()
 Date:   Tue,  1 Aug 2023 11:18:05 +0200
-Message-ID: <20230801091926.406599793@linuxfoundation.org>
+Message-ID: <20230801091923.858472548@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,79 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 6b3b21a8542fd2fb6ffc61bc13b9419f0c58ebad ]
+[ Upstream commit f5297a01ee805d7fa569d288ed65fc0f9ac9b03d ]
 
-These issues were detected by using the Coccinelle software.
+"pcie_retrain_link" is not a question with a true/false answer, so "bool"
+isn't quite the right return type.  Return 0 for success or -ETIMEDOUT if
+the retrain failed.  No functional change intended.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
+[bhelgaas: based on Ilpo's patch below]
+Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: e7e39756363a ("PCI/ASPM: Avoid link retraining race")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ibm_iic.c  | 4 +---
- drivers/i2c/busses/i2c-nomadik.c  | 1 -
- drivers/i2c/busses/i2c-sh7760.c   | 1 -
- drivers/i2c/busses/i2c-tiny-usb.c | 4 +---
- 4 files changed, 2 insertions(+), 8 deletions(-)
+ drivers/pci/pcie/aspm.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-ibm_iic.c b/drivers/i2c/busses/i2c-ibm_iic.c
-index eeb80e34f9ad7..de3b609515e08 100644
---- a/drivers/i2c/busses/i2c-ibm_iic.c
-+++ b/drivers/i2c/busses/i2c-ibm_iic.c
-@@ -694,10 +694,8 @@ static int iic_probe(struct platform_device *ofdev)
- 	int ret;
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 74b8183c305df..96e7031a3b56f 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -193,7 +193,7 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
+ 	link->clkpm_disable = blacklist ? 1 : 0;
+ }
  
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (!dev) {
--		dev_err(&ofdev->dev, "failed to allocate device data\n");
-+	if (!dev)
- 		return -ENOMEM;
--	}
+-static bool pcie_retrain_link(struct pcie_link_state *link)
++static int pcie_retrain_link(struct pcie_link_state *link)
+ {
+ 	struct pci_dev *parent = link->pdev;
+ 	unsigned long end_jiffies;
+@@ -220,7 +220,9 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
+ 			break;
+ 		msleep(1);
+ 	} while (time_before(jiffies, end_jiffies));
+-	return !(reg16 & PCI_EXP_LNKSTA_LT);
++	if (reg16 & PCI_EXP_LNKSTA_LT)
++		return -ETIMEDOUT;
++	return 0;
+ }
  
- 	platform_set_drvdata(ofdev, dev);
+ /*
+@@ -289,15 +291,15 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
+ 		reg16 &= ~PCI_EXP_LNKCTL_CCC;
+ 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
  
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index a2d12a5b1c34c..05eaae5aeb180 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -972,7 +972,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+-	if (pcie_retrain_link(link))
+-		return;
++	if (pcie_retrain_link(link)) {
  
- 	dev = devm_kzalloc(&adev->dev, sizeof(struct nmk_i2c_dev), GFP_KERNEL);
- 	if (!dev) {
--		dev_err(&adev->dev, "cannot allocate memory\n");
- 		ret = -ENOMEM;
- 		goto err_no_mem;
- 	}
-diff --git a/drivers/i2c/busses/i2c-sh7760.c b/drivers/i2c/busses/i2c-sh7760.c
-index 319d1fa617c88..a0ccc5d009874 100644
---- a/drivers/i2c/busses/i2c-sh7760.c
-+++ b/drivers/i2c/busses/i2c-sh7760.c
-@@ -445,7 +445,6 @@ static int sh7760_i2c_probe(struct platform_device *pdev)
+-	/* Training failed. Restore common clock configurations */
+-	pci_err(parent, "ASPM: Could not configure common clock\n");
+-	list_for_each_entry(child, &linkbus->devices, bus_list)
+-		pcie_capability_write_word(child, PCI_EXP_LNKCTL,
++		/* Training failed. Restore common clock configurations */
++		pci_err(parent, "ASPM: Could not configure common clock\n");
++		list_for_each_entry(child, &linkbus->devices, bus_list)
++			pcie_capability_write_word(child, PCI_EXP_LNKCTL,
+ 					   child_reg[PCI_FUNC(child->devfn)]);
+-	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
++		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
++	}
+ }
  
- 	id = kzalloc(sizeof(struct cami2c), GFP_KERNEL);
- 	if (!id) {
--		dev_err(&pdev->dev, "no mem for private data\n");
- 		ret = -ENOMEM;
- 		goto out0;
- 	}
-diff --git a/drivers/i2c/busses/i2c-tiny-usb.c b/drivers/i2c/busses/i2c-tiny-usb.c
-index 7279ca0eaa2d0..d1fa9ff5aeab4 100644
---- a/drivers/i2c/busses/i2c-tiny-usb.c
-+++ b/drivers/i2c/busses/i2c-tiny-usb.c
-@@ -226,10 +226,8 @@ static int i2c_tiny_usb_probe(struct usb_interface *interface,
- 
- 	/* allocate memory for our device state and initialize it */
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (dev == NULL) {
--		dev_err(&interface->dev, "Out of memory\n");
-+	if (!dev)
- 		goto error;
--	}
- 
- 	dev->usb_dev = usb_get_dev(interface_to_usbdev(interface));
- 	dev->interface = interface;
+ /* Convert L0s latency encoding to ns */
 -- 
 2.39.2
 
