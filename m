@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B74F876AD86
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3265376AEA9
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232761AbjHAJ37 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58106 "EHLO
+        id S233374AbjHAJkh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230049AbjHAJ3p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B726846B7
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:28 -0700 (PDT)
+        with ESMTP id S233090AbjHAJkJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F701BC3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38A4261504
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46312C433C7;
-        Tue,  1 Aug 2023 09:28:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9251614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B806BC433C8;
+        Tue,  1 Aug 2023 09:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882107;
-        bh=mK4jzzk1Cxm6X7pkLQWYMyWY1HS0bGMVS3TqrXeCoN4=;
+        s=korg; t=1690882691;
+        bh=U4NRU5pL2qmWf8Na+8tcAgA0qSek0x/0bbaBd8aMXoo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X5DiNYGMqmLdK+Ua9ric5qGjblLa2ohOY+uTmyoJIW32upn34foN5zfNr3E00gX6M
-         qu/x4HJUeql86P7nlEsHOv9MukmOZoIAAtun1w+Fabf7hUQdWIoYMy2yV0hfwM4/Nv
-         dBSeZOMOJvriSGgp6EZhidEoDrUi5Y5JTM8ys85c=
+        b=Yw1Qbk7upqx//hLr1xUNmhlnFzlJ4er8wU645rT0A8CpxUSJmAdLiRjl8Q2plyCt4
+         WH5eu83x9rkdLZKa8+vQRDSYJk+mRZKgsJej4rzh5oWQYwi60RNn6HN5FrOIGcaRWA
+         8ACz1EswyvvqX6oV0uZmMYmsnOi0NANZjiPvEjxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 142/155] ASoC: wm8904: Fill the cache for WM8904_ADC_TEST_0 register
+        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 196/228] virtio-net: fix race between set queues and probe
 Date:   Tue,  1 Aug 2023 11:20:54 +0200
-Message-ID: <20230801091915.210668882@linuxfoundation.org>
+Message-ID: <20230801091929.942000113@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Jason Wang <jasowang@redhat.com>
 
-commit f061e2be8689057cb4ec0dbffa9f03e1a23cdcb2 upstream.
+commit 25266128fe16d5632d43ada34c847d7b8daba539 upstream.
 
-The WM8904_ADC_TEST_0 register is modified as part of updating the OSR
-controls but does not have a cache default, leading to errors when we try
-to modify these controls in cache only mode with no prior read:
+A race were found where set_channels could be called after registering
+but before virtnet_set_queues() in virtnet_probe(). Fixing this by
+moving the virtnet_set_queues() before netdevice registering. While at
+it, use _virtnet_set_queues() to avoid holding rtnl as the device is
+not even registered at that time.
 
-wm8904 3-001a: ASoC: error at snd_soc_component_update_bits on wm8904.3-001a for register: [0x000000c6] -16
-
-Add a read of the register to probe() to fill the cache and avoid both the
-error messages and the misconfiguration of the chip which will result.
-
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230723-asoc-fix-wm8904-adc-test-read-v1-1-2cdf2edd83fd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a220871be66f ("virtio-net: correctly enable multiqueue")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230725072049.617289-1-jasowang@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8904.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/virtio_net.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/wm8904.c
-+++ b/sound/soc/codecs/wm8904.c
-@@ -2306,6 +2306,9 @@ static int wm8904_i2c_probe(struct i2c_c
- 	regmap_update_bits(wm8904->regmap, WM8904_BIAS_CONTROL_0,
- 			    WM8904_POBCTRL, 0);
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3940,6 +3940,8 @@ static int virtnet_probe(struct virtio_d
+ 	if (vi->has_rss || vi->has_rss_hash_report)
+ 		virtnet_init_default_rss(vi);
  
-+	/* Fill the cache for the ADC test register */
-+	regmap_read(wm8904->regmap, WM8904_ADC_TEST_0, &val);
++	_virtnet_set_queues(vi, vi->curr_queue_pairs);
 +
- 	/* Can leave the device powered off until we need it */
- 	regcache_cache_only(wm8904->regmap, true);
- 	regulator_bulk_disable(ARRAY_SIZE(wm8904->supplies), wm8904->supplies);
+ 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
+ 	rtnl_lock();
+ 
+@@ -3960,8 +3962,6 @@ static int virtnet_probe(struct virtio_d
+ 		goto free_unregister_netdev;
+ 	}
+ 
+-	virtnet_set_queues(vi, vi->curr_queue_pairs);
+-
+ 	/* Assume link up if device can't report link status,
+ 	   otherwise get link status from config. */
+ 	netif_carrier_off(dev);
 
 
