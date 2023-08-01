@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1BF976AF73
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA8EA76AE4A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233576AbjHAJrg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45884 "EHLO
+        id S233087AbjHAJhi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbjHAJrS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:18 -0400
+        with ESMTP id S233103AbjHAJhT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072832706
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028DE1996
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9C49614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8BBC433C8;
-        Tue,  1 Aug 2023 09:45:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4406614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0A8C433C7;
+        Tue,  1 Aug 2023 09:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883149;
-        bh=jwfB92qjYPQYhwAGu4V09nVlFbDk+S5HKLIPKs935BU=;
+        s=korg; t=1690882533;
+        bh=DTZ+jtHu4mkVkPZ+cVIMVh8PNe3TLQQjUkrCTd5wMgc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ag/zlnI484Tm6QIQuVNlp+V1U73VI0tDaIzRanPaEmfS8ZaqQql8p1lUGBxUkNXlD
-         CGzty9zFViXjvsaz9gFbAf+ByIguO8r6SpbOi1Rh4Fk7h99BAEpUVfAZ6W5NZgqEiB
-         7bKy0do7n55d/yuljWfJBmkt//Bs6kt2klTqbsQY=
+        b=OTPp+ottBS2kXdlCQc452Xzz4Eg3XvHRaOdo3ayXtbML1o+iHQtHPcE34KmwzSe1J
+         Tkj2geuDvJ6+TZiZRYNQJIyfCypWzDPGgv5Q2jgrYctS8GUkq1HaLjoFsuf+iBbwri
+         X3ZSr18xXq9wN4m/LYkpQj53whawI1FhmjoaHLYk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 133/239] drm/msm: Disallow submit with fence id 0
+Subject: [PATCH 6.1 139/228] drm/msm: Disallow submit with fence id 0
 Date:   Tue,  1 Aug 2023 11:19:57 +0200
-Message-ID: <20230801091930.501352244@linuxfoundation.org>
+Message-ID: <20230801091927.874454972@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -71,18 +71,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
-index 10cad7b99bac8..1bd78041b4d0d 100644
+index 5668860f01827..c12a6ac2d3840 100644
 --- a/drivers/gpu/drm/msm/msm_gem_submit.c
 +++ b/drivers/gpu/drm/msm/msm_gem_submit.c
-@@ -902,7 +902,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+@@ -875,7 +875,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
  	 * after the job is armed
  	 */
  	if ((args->flags & MSM_SUBMIT_FENCE_SN_IN) &&
 -			idr_find(&queue->fence_idr, args->fence)) {
 +			(!args->fence || idr_find(&queue->fence_idr, args->fence))) {
  		spin_unlock(&queue->idr_lock);
- 		idr_preload_end();
  		ret = -EINVAL;
+ 		goto out;
 -- 
 2.40.1
 
