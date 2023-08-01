@@ -2,202 +2,302 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D0876AB27
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB5C76AB2E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232304AbjHAIeh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 04:34:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44540 "EHLO
+        id S229455AbjHAIgM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 04:36:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232302AbjHAIed (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:34:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D722199F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:33:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690878829;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=U10B98Pu0R9R3HFUTiKyBXM5NGzVEuqPCXUhwAIdJEU=;
-        b=F1JjrPDsv2tBAV74avFOx5wKovmAq46td0yzZ38EqnAMto8m6F7ZRuoC14j31+IsyHZ/J8
-        taDzGE63KYYdAMTQHf0uVRTvvX5S1V639oJoY5Nzc/Qo0cZUneq4yyfnrYUJp2EVEWp9Tp
-        gFsbAAoqiAK43v9OLNzBjy6JQrGYICQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-PH5hnstrOU2DidyCbzL14Q-1; Tue, 01 Aug 2023 04:33:42 -0400
-X-MC-Unique: PH5hnstrOU2DidyCbzL14Q-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-99c01c680beso173177966b.2
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 01:33:42 -0700 (PDT)
+        with ESMTP id S231142AbjHAIgL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:36:11 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04CE1B6
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:36:09 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-686fa3fc860so3419739b3a.1
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 01:36:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690878969; x=1691483769;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=3l2BjNl0HSHVEP+Kpizek6rjVFliYLdB27wvp9MU/B0=;
+        b=k9EZ8orykZWNpkEK7jtSmpYeruRaCmhdaCwnETHdUD0pQnquE9m21Il4axGQ6c1k9K
+         sDSLwfA6bC1ejxYe0pAV4tN5bGQD0j/ImrUojKMH0BDeluWnJzVfMXMEFtWmfFenS6v8
+         yThKmiOPvHrUIVDmrMZMjh6XwOndDZut92P+W+uBjGeJOOWZNxVh449BmiUZQfLydpKZ
+         YVvL82xShJRCe+26qm/HPl0dgZ7vmqvik0MnZgdy3HX6bwxh3B1H04U+L7yQQZmNluyF
+         Cob1KqBSyIdc3dplFm8hzrozDfv5PaaEhQGpt4yNavbGvnhUM86mP5rN5/+2eeMDryO6
+         crwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690878821; x=1691483621;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U10B98Pu0R9R3HFUTiKyBXM5NGzVEuqPCXUhwAIdJEU=;
-        b=fqRGNzecuHoImAlEUH7iS9bVYeCy4Yq5KAVZHYNWIzbnIZ7NaLg9/ybyzVw5YnNIno
-         cbGSnxTdo11zFxTH4WYiRpNKuiGAZLc1Jg3UuuAyrjP9Sr4b+z5l6k4eUt++2jiHNFU/
-         oZAKQvh/UmShFUnymFbYhHpU0ygbY9wggtyZ1VHoXAHvzM1e6xnh20V+4tkr7w8syX/d
-         vTR89DiuPHHwD05MUwWXPW0o5LLH+Ehe6USZ7Xy7KON2UeCru45RtuG0UT+91DGZEeuG
-         C0XojOBoMcgSuebxcdk7nAI/Uq+XwbMBBAM+odfDViiRKK5wdLj4aP/n2pEGy+hVjd+3
-         3Aww==
-X-Gm-Message-State: ABy/qLYlI6jDpoB1CX3G+R0GnEgqfcYuoBD3N3wnEBl0LrlTEdnV3OTr
-        CriEmzchodGOwZ0X/CDIQYsGsL4OSejw0AWjAsSxsgHs7XKVjB5R8uz/XiwazNYr1Xn0E2HOBec
-        9WtbyaKFe/46GiErWVytds10WhoGPZP2G
-X-Received: by 2002:a17:907:77cd:b0:98d:4000:1bf9 with SMTP id kz13-20020a17090777cd00b0098d40001bf9mr1969990ejc.65.1690878821773;
-        Tue, 01 Aug 2023 01:33:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFNMNRn1iF2TmzoOed+zM+IVfM+BzLPy7r5L/98BVYcEiwbUAOLvgT0xb7ZuUsPU5TczZEAeV1Gwsx8RJCh/wQ=
-X-Received: by 2002:a17:907:77cd:b0:98d:4000:1bf9 with SMTP id
- kz13-20020a17090777cd00b0098d40001bf9mr1969966ejc.65.1690878821385; Tue, 01
- Aug 2023 01:33:41 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690878969; x=1691483769;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3l2BjNl0HSHVEP+Kpizek6rjVFliYLdB27wvp9MU/B0=;
+        b=UhrxrKQT7LMmwxI+iD75I7er+7HfEa3Tn7bTGtelV4koA8Kq+BfIM0J52x5OwkYi6r
+         EOEpVemXvx2f5rHwfaSz85/rR7+DVd3A68tsiHqfeCGpRoIJcCOsmbLuB8BI6k86pxZ2
+         kPEpoyzSTRxDDvyRI3I7c9hGsc+7BeA+HivX1uJXQ9eUEj9PMQspaYozR5vYQcOFlQLL
+         2Vi65cz/moWk0vzkb7VvIn7FheqeNFwWhpgLYaG2HwfePf9qyTcKpfc6s/dvvdrp3yWG
+         jsOQ5z4nh2Jw3FvW4zHrdvYxa6q+B79h1dGeFZggtEP9gaie2H/6OF7r6kacHU1z2tGX
+         Dm6Q==
+X-Gm-Message-State: ABy/qLYNHUb6KcNyXZ1oh57KDtkU2jojIeLYncvgFM6hJL4BZEbzDfHQ
+        0cqowzTy0+/EQV8G+qbvqtDqx3E1RyVzp7Uawtx5nQ==
+X-Google-Smtp-Source: APBJJlGMw86bTYSys0sDJj6DUk7p0p/vwF6UpW5C4U33ZMOt1nQXJVnnShpCC/cesZff9OwkfEYBcA==
+X-Received: by 2002:a05:6a20:191:b0:136:eec5:c65b with SMTP id 17-20020a056a20019100b00136eec5c65bmr10228547pzy.31.1690878968887;
+        Tue, 01 Aug 2023 01:36:08 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id c17-20020aa78811000000b0066ccb8e8024sm8804339pfo.30.2023.08.01.01.36.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 01:36:08 -0700 (PDT)
+Message-ID: <64c8c3f8.a70a0220.3daf0.0f22@mx.google.com>
+Date:   Tue, 01 Aug 2023 01:36:08 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230725040359.363444-1-xiubli@redhat.com> <CAED=hWDNP2AsnqHWxyHxuQij1KWVoT+oEETD7r3GqtBP=k7yBA@mail.gmail.com>
- <b4766f81-faf6-2df5-8fea-51b0c5a772ab@redhat.com>
-In-Reply-To: <b4766f81-faf6-2df5-8fea-51b0c5a772ab@redhat.com>
-From:   Milind Changire <mchangir@redhat.com>
-Date:   Tue, 1 Aug 2023 14:03:05 +0530
-Message-ID: <CAED=hWCT6aSQLkk9Go5WhXxWTZxUW3mVnibh70G=2QFb=2LkjQ@mail.gmail.com>
-Subject: Re: [PATCH v3] ceph: defer stopping the mdsc delayed_work
-To:     Xiubo Li <xiubli@redhat.com>
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Kernel: v5.4.251-81-g59122d38d25b
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.251-81-g59122d38d25b)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Looks good to me.
+stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
+5.4.251-81-g59122d38d25b)
 
-Reviewed-by: Milind Changire <mchangir@redhat.com>
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.251-81-g59122d38d25b/
 
-On Mon, Jul 31, 2023 at 5:29=E2=80=AFPM Xiubo Li <xiubli@redhat.com> wrote:
->
->
-> On 7/31/23 19:47, Milind Changire wrote:
-> > On Tue, Jul 25, 2023 at 9:36=E2=80=AFAM <xiubli@redhat.com> wrote:
-> >> From: Xiubo Li <xiubli@redhat.com>
-> >>
-> >> Flushing the dirty buffer may take a long time if the Rados is
-> >> overloaded or if there is network issue. So we should ping the
-> >> MDSs periodically to keep alive, else the MDS will blocklist
-> >> the kclient.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Cc: Venky Shankar <vshankar@redhat.com>
-> >> URL: https://tracker.ceph.com/issues/61843
-> >> Reviewed-by: Milind Changire <mchangir@redhat.com>
-> >> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> >> ---
-> >>
-> >> V3:
-> >> - Rebased to the master branch
-> >>
-> >>
-> >>   fs/ceph/mds_client.c |  4 ++--
-> >>   fs/ceph/mds_client.h |  5 +++++
-> >>   fs/ceph/super.c      | 10 ++++++++++
-> >>   3 files changed, 17 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-> >> index 66048a86c480..5fb367b1d4b0 100644
-> >> --- a/fs/ceph/mds_client.c
-> >> +++ b/fs/ceph/mds_client.c
-> >> @@ -4764,7 +4764,7 @@ static void delayed_work(struct work_struct *wor=
-k)
-> >>
-> >>          dout("mdsc delayed_work\n");
-> >>
-> >> -       if (mdsc->stopping)
-> >> +       if (mdsc->stopping >=3D CEPH_MDSC_STOPPING_FLUSHED)
-> >>                  return;
-> > Do we want to continue to accept/perform delayed work when
-> > mdsc->stopping is set to CEPH_MDSC_STOPPING_BEGIN ?
-> >
-> > I thought setting the STOPPING_BEGIN flag would immediately bar any
-> > further new activity and STOPPING_FLUSHED would mark safe deletion of
-> > the superblock.
->
-> Yes,  we need.
->
-> Locally I can reproduce this very easy with fsstress.sh script, please
-> see https://tracker.ceph.com/issues/61843#note-1.
->
-> That's because when umounting and flushing the dirty buffer it could be
-> blocked by the Rados dues to the lower disk space or MM reasons. And
-> during this we need to ping MDS to keep alive to make sure the MDS won't
-> evict us before we close the sessions later.
->
-> Thanks
->
-> - Xiubo
->
-> >
-> >
-> >>          mutex_lock(&mdsc->mutex);
-> >> @@ -4943,7 +4943,7 @@ void send_flush_mdlog(struct ceph_mds_session *s=
-)
-> >>   void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc)
-> >>   {
-> >>          dout("pre_umount\n");
-> >> -       mdsc->stopping =3D 1;
-> >> +       mdsc->stopping =3D CEPH_MDSC_STOPPING_BEGIN;
-> >>
-> >>          ceph_mdsc_iterate_sessions(mdsc, send_flush_mdlog, true);
-> >>          ceph_mdsc_iterate_sessions(mdsc, lock_unlock_session, false);
-> >> diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
-> >> index 724307ff89cd..86d2965e68a1 100644
-> >> --- a/fs/ceph/mds_client.h
-> >> +++ b/fs/ceph/mds_client.h
-> >> @@ -380,6 +380,11 @@ struct cap_wait {
-> >>          int                     want;
-> >>   };
-> >>
-> >> +enum {
-> >> +       CEPH_MDSC_STOPPING_BEGIN =3D 1,
-> >> +       CEPH_MDSC_STOPPING_FLUSHED =3D 2,
-> >> +};
-> >> +
-> >>   /*
-> >>    * mds client state
-> >>    */
-> >> diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-> >> index 3fc48b43cab0..a5f52013314d 100644
-> >> --- a/fs/ceph/super.c
-> >> +++ b/fs/ceph/super.c
-> >> @@ -1374,6 +1374,16 @@ static void ceph_kill_sb(struct super_block *s)
-> >>          ceph_mdsc_pre_umount(fsc->mdsc);
-> >>          flush_fs_workqueues(fsc);
-> >>
-> >> +       /*
-> >> +        * Though the kill_anon_super() will finally trigger the
-> >> +        * sync_filesystem() anyway, we still need to do it here
-> >> +        * and then bump the stage of shutdown to stop the work
-> >> +        * queue as earlier as possible.
-> >> +        */
-> >> +       sync_filesystem(s);
-> >> +
-> >> +       fsc->mdsc->stopping =3D CEPH_MDSC_STOPPING_FLUSHED;
-> >> +
-> >>          kill_anon_super(s);
-> >>
-> >>          fsc->client->extra_mon_dispatch =3D NULL;
-> >> --
-> >> 2.39.1
-> >>
-> >
->
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.251-81-g59122d38d25b
+Git Commit: 59122d38d25b0ce0eeda91ecf9bc946f8610b37d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
 
 
---=20
-Milind
+Warnings summary:
 
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+4 warnings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
