@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5868976AE56
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDA4376AF45
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233016AbjHAJiM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:38:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
+        id S233629AbjHAJq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233180AbjHAJh3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:29 -0400
+        with ESMTP id S233358AbjHAJqL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C57E2139
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E8A430D1
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04AD6614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13092C433C7;
-        Tue,  1 Aug 2023 09:35:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C7FE614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D579C433C8;
+        Tue,  1 Aug 2023 09:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882544;
-        bh=VNghHi08ay2I90ltuMo9NhGFydrdgAtYDXfdwayzGU4=;
+        s=korg; t=1690883082;
+        bh=B28jOyjaNmF2IVqKPmCZXi/DGMf3VnPp980hBsyqFxM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DLAFdf6DceneUdD3WNeeu8jtS2f3jmmMl4kJ8jGT8m4X39R2BwEfW6seA+6ImjCvs
-         bh7buYlxovn4THB/u8ONvQxgFjzaNaHSO8Qn1PaUDCpJnGBt1JA8JSAHZqosGxsrV3
-         HTqfMM1q35hGk+JpwGIDWN8FI6YFhNy48Ba0+yUE=
+        b=hk6WHqmdQKVKtQnKsimaPhJpeAGHYPyLq/I281h0KzP8d8wGcnzFXlnE13m7MzGQB
+         g34GhePOJa9tOK88HkueA1ioRgowMnoRYZ64G0RuT0wRhLRzD3MOcPExSJn8iGKAVn
+         C5puShN3N3GfjSz6gIcK+4bTSecpdJ1ap527QJFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        patches@lists.linux.dev,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
         Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/228] RDMA/mlx4: Make check for invalid flags stricter
+Subject: [PATCH 6.4 109/239] RDMA/mthca: Fix crash when polling CQ for shared QPs
 Date:   Tue,  1 Aug 2023 11:19:33 +0200
-Message-ID: <20230801091926.928816496@linuxfoundation.org>
+Message-ID: <20230801091929.663487038@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit d64b1ee12a168030fbb3e0aebf7bce49e9a07589 ]
+[ Upstream commit dc52aadbc1849cbe3fcf6bc54d35f6baa396e0a1 ]
 
-This code is trying to ensure that only the flags specified in the list
-are allowed.  The problem is that ucmd->rx_hash_fields_mask is a u64 and
-the flags are an enum which is treated as a u32 in this context.  That
-means the test doesn't check whether the highest 32 bits are zero.
+Commit 21c2fe94abb2 ("RDMA/mthca: Combine special QP struct with mthca QP")
+introduced a new struct mthca_sqp which doesn't contain struct mthca_qp
+any longer. Placing a pointer of this new struct into qptable leads
+to crashes, because mthca_poll_one() expects a qp pointer. Fix this
+by putting the correct pointer into qptable.
 
-Fixes: 4d02ebd9bbbd ("IB/mlx4: Fix RSS hash fields restrictions")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/233ed975-982d-422a-b498-410f71d8a101@moroto.mountain
+Fixes: 21c2fe94abb2 ("RDMA/mthca: Combine special QP struct with mthca QP")
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Link: https://lore.kernel.org/r/20230713141658.9426-1-tbogendoerfer@suse.de
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/qp.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/infiniband/hw/mthca/mthca_qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-index 488c906c0432c..ac479e81ddee8 100644
---- a/drivers/infiniband/hw/mlx4/qp.c
-+++ b/drivers/infiniband/hw/mlx4/qp.c
-@@ -530,15 +530,15 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
- 		return (-EOPNOTSUPP);
- 	}
+diff --git a/drivers/infiniband/hw/mthca/mthca_qp.c b/drivers/infiniband/hw/mthca/mthca_qp.c
+index 69bba0ef4a5df..53f43649f7d08 100644
+--- a/drivers/infiniband/hw/mthca/mthca_qp.c
++++ b/drivers/infiniband/hw/mthca/mthca_qp.c
+@@ -1393,7 +1393,7 @@ int mthca_alloc_sqp(struct mthca_dev *dev,
+ 	if (mthca_array_get(&dev->qp_table.qp, mqpn))
+ 		err = -EBUSY;
+ 	else
+-		mthca_array_set(&dev->qp_table.qp, mqpn, qp->sqp);
++		mthca_array_set(&dev->qp_table.qp, mqpn, qp);
+ 	spin_unlock_irq(&dev->qp_table.lock);
  
--	if (ucmd->rx_hash_fields_mask & ~(MLX4_IB_RX_HASH_SRC_IPV4	|
--					  MLX4_IB_RX_HASH_DST_IPV4	|
--					  MLX4_IB_RX_HASH_SRC_IPV6	|
--					  MLX4_IB_RX_HASH_DST_IPV6	|
--					  MLX4_IB_RX_HASH_SRC_PORT_TCP	|
--					  MLX4_IB_RX_HASH_DST_PORT_TCP	|
--					  MLX4_IB_RX_HASH_SRC_PORT_UDP	|
--					  MLX4_IB_RX_HASH_DST_PORT_UDP  |
--					  MLX4_IB_RX_HASH_INNER)) {
-+	if (ucmd->rx_hash_fields_mask & ~(u64)(MLX4_IB_RX_HASH_SRC_IPV4	|
-+					       MLX4_IB_RX_HASH_DST_IPV4	|
-+					       MLX4_IB_RX_HASH_SRC_IPV6	|
-+					       MLX4_IB_RX_HASH_DST_IPV6	|
-+					       MLX4_IB_RX_HASH_SRC_PORT_TCP |
-+					       MLX4_IB_RX_HASH_DST_PORT_TCP |
-+					       MLX4_IB_RX_HASH_SRC_PORT_UDP |
-+					       MLX4_IB_RX_HASH_DST_PORT_UDP |
-+					       MLX4_IB_RX_HASH_INNER)) {
- 		pr_debug("RX Hash fields_mask has unsupported mask (0x%llx)\n",
- 			 ucmd->rx_hash_fields_mask);
- 		return (-EOPNOTSUPP);
+ 	if (err)
 -- 
 2.40.1
 
