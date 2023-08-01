@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CEC76AF47
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CADFC76AF63
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233142AbjHAJqd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44876 "EHLO
+        id S233073AbjHAJrB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:47:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233482AbjHAJqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B50359F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:49 -0700 (PDT)
+        with ESMTP id S233538AbjHAJqj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C2A139
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8219761523
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E97C433C7;
-        Tue,  1 Aug 2023 09:44:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3104361502
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417A9C433C8;
+        Tue,  1 Aug 2023 09:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883087;
-        bh=ZAQJNBRmR9hUfwPoOvGTWhSg3c6HH8N+XCyaDxhkRjU=;
+        s=korg; t=1690883118;
+        bh=Kghv55kihN/uXVOFLfX12mVjiXFUB0Nq0hq/76ygEog=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FcNgLAdij1tuHO0Bhkdx4Be44bLB0kx7qbiAIKhhaH0ERpKSTWfLte9ecn2vRB5O1
-         9yH9RSamFOQABIlyAvg7unU3M0b7ceDkty61x12y8HmP8dPJ55VBJ0POMkfVRGrsbb
-         pa6vIPSBvC+vGGOhUEJIS5LlMWWwugMCmC/NkOVA=
+        b=TFOOWuu09MmJNPaxDtmgKoxDhoRv6K6Ry1A31JTZq8dAsYuyc+g2TYK0H616IBn/N
+         Sf+tVkvaA9HVV7J6UAnlwdFGz554c1Y6o1xVadV+4aeQMRWRPhItCpZkcvv1adbfit
+         0wOuGwzKzr2kbfXYh73waEMDWXGrSOEDPnjM5y6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Fang <wei.fang@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Victor Nogueira <victor@mojatatu.com>,
+        Lin Ma <linma@zju.edu.cn>, Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 093/239] net: fec: tx processing does not call XDP APIs if budget is 0
-Date:   Tue,  1 Aug 2023 11:19:17 +0200
-Message-ID: <20230801091929.094603277@linuxfoundation.org>
+Subject: [PATCH 6.4 094/239] net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64
+Date:   Tue,  1 Aug 2023 11:19:18 +0200
+Message-ID: <20230801091929.124031120@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
 References: <20230801091925.659598007@linuxfoundation.org>
@@ -55,82 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 15cec633fc7bfe4cd69aa012c3b35b31acfc86f2 ]
+[ Upstream commit 6c58c8816abb7b93b21fa3b1d0c1726402e5e568 ]
 
-According to the clarification [1] in the latest napi.rst, the tx
-processing cannot call any XDP (or page pool) APIs if the "budget"
-is 0. Because NAPI is called with the budget of 0 (such as netpoll)
-indicates we may be in an IRQ context, however, we cannot use the
-page pool from IRQ context.
+The nla_for_each_nested parsing in function mqprio_parse_nlattr() does
+not check the length of the nested attribute. This can lead to an
+out-of-attribute read and allow a malformed nlattr (e.g., length 0) to
+be viewed as 8 byte integer and passed to priv->max_rate/min_rate.
 
-[1] https://lore.kernel.org/all/20230720161323.2025379-1-kuba@kernel.org/
+This patch adds the check based on nla_len() when check the nla_type(),
+which ensures that the length of these two attribute must equals
+sizeof(u64).
 
-Fixes: 20f797399035 ("net: fec: recycle pages for transmitted XDP frames")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20230725074148.2936402-1-wei.fang@nxp.com
+Fixes: 4e8b86c06269 ("mqprio: Introduce new hardware offload mode and shaper in mqprio")
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230725024227.426561-1-linma@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/sched/sch_mqprio.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index a1b0abe54a0e5..92410f30ad241 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1372,7 +1372,7 @@ fec_enet_hwtstamp(struct fec_enet_private *fep, unsigned ts,
- }
- 
- static void
--fec_enet_tx_queue(struct net_device *ndev, u16 queue_id)
-+fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
- {
- 	struct	fec_enet_private *fep;
- 	struct xdp_frame *xdpf;
-@@ -1416,6 +1416,14 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id)
- 			if (!skb)
- 				goto tx_buf_done;
- 		} else {
-+			/* Tx processing cannot call any XDP (or page pool) APIs if
-+			 * the "budget" is 0. Because NAPI is called with budget of
-+			 * 0 (such as netpoll) indicates we may be in an IRQ context,
-+			 * however, we can't use the page pool from IRQ context.
-+			 */
-+			if (unlikely(!budget))
-+				break;
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index ab69ff7577fc7..793009f445c03 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -290,6 +290,13 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
+ 				return -EINVAL;
+ 			}
 +
- 			xdpf = txq->tx_buf[index].xdp;
- 			if (bdp->cbd_bufaddr)
- 				dma_unmap_single(&fep->pdev->dev,
-@@ -1508,14 +1516,14 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id)
- 		writel(0, txq->bd.reg_desc_active);
- }
- 
--static void fec_enet_tx(struct net_device *ndev)
-+static void fec_enet_tx(struct net_device *ndev, int budget)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	int i;
- 
- 	/* Make sure that AVB queues are processed first. */
- 	for (i = fep->num_tx_queues - 1; i >= 0; i--)
--		fec_enet_tx_queue(ndev, i);
-+		fec_enet_tx_queue(ndev, i, budget);
- }
- 
- static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
-@@ -1858,7 +1866,7 @@ static int fec_enet_rx_napi(struct napi_struct *napi, int budget)
- 
- 	do {
- 		done += fec_enet_rx(ndev, budget - done);
--		fec_enet_tx(ndev);
-+		fec_enet_tx(ndev, budget);
- 	} while ((done < budget) && fec_enet_collect_events(fep));
- 
- 	if (done < budget) {
++			if (nla_len(attr) != sizeof(u64)) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute TCA_MQPRIO_MIN_RATE64 expected to have 8 bytes length");
++				return -EINVAL;
++			}
++
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->min_rate[i] = nla_get_u64(attr);
+@@ -312,6 +319,13 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
+ 				return -EINVAL;
+ 			}
++
++			if (nla_len(attr) != sizeof(u64)) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute TCA_MQPRIO_MAX_RATE64 expected to have 8 bytes length");
++				return -EINVAL;
++			}
++
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->max_rate[i] = nla_get_u64(attr);
 -- 
 2.39.2
 
