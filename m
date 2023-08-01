@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30AAF76AFC4
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2DBA76AD7D
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233681AbjHAJuF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
+        id S230519AbjHAJ3u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232155AbjHAJtw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:52 -0400
+        with ESMTP id S230340AbjHAJ3h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83190198C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035A630C2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B4AE614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AA4C433C8;
-        Tue,  1 Aug 2023 09:49:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D05C0614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB373C433C8;
+        Tue,  1 Aug 2023 09:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883352;
-        bh=qDjDRUtcOY/MS2lsWc+t32KZydNOPBTBVVaPUjiRfb8=;
+        s=korg; t=1690882099;
+        bh=VB1l31Zp5b2x9syZ6CT7bXKWUzgEqpS6HwcpukrYBtY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=11ULswjSd+582inrUw/50P9vF4QNMgHTqgQwN8cIi+ZBKhiN7OHVUJF14UpeMrMt3
-         usBNpqEmD3tJTnrJTi2VuFEUpvIEAR2M9ihsPuahHre7xMMewOKVUqOfsx8IOVKLIZ
-         +Bkx0lm312H/qLw7SdznzPtTywuua6UUcQp+CK18=
+        b=mHY10LMNqAqNO8ki64AQZ1s5u+lvX3EMPj0P35LEaq91zYQUBK7U8fNS+Du/o9W3p
+         7oy7ulfs+FuEhhHmI8e4oWkomI7+PwMgN3t5ZtgkjsCgNVB16Uznuk4xm3ONXW7MTf
+         NCE+W00lxEEwltzhHYGp2LlJsIoUJ7mAXZrc8vf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 188/239] btrfs: check for commit error at btrfs_attach_transaction_barrier()
+        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 140/155] virtio-net: fix race between set queues and probe
 Date:   Tue,  1 Aug 2023 11:20:52 +0200
-Message-ID: <20230801091932.473798568@linuxfoundation.org>
+Message-ID: <20230801091915.139370484@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jason Wang <jasowang@redhat.com>
 
-commit b28ff3a7d7e97456fd86b68d24caa32e1cfa7064 upstream.
+commit 25266128fe16d5632d43ada34c847d7b8daba539 upstream.
 
-btrfs_attach_transaction_barrier() is used to get a handle pointing to the
-current running transaction if the transaction has not started its commit
-yet (its state is < TRANS_STATE_COMMIT_START). If the transaction commit
-has started, then we wait for the transaction to commit and finish before
-returning - however we completely ignore if the transaction was aborted
-due to some error during its commit, we simply return ERR_PT(-ENOENT),
-which makes the caller assume everything is fine and no errors happened.
+A race were found where set_channels could be called after registering
+but before virtnet_set_queues() in virtnet_probe(). Fixing this by
+moving the virtnet_set_queues() before netdevice registering. While at
+it, use _virtnet_set_queues() to avoid holding rtnl as the device is
+not even registered at that time.
 
-This could make an fsync return success (0) to user space when in fact we
-had a transaction abort and the target inode changes were therefore not
-persisted.
-
-Fix this by checking for the return value from btrfs_wait_for_commit(),
-and if it returned an error, return it back to the caller.
-
-Fixes: d4edf39bd5db ("Btrfs: fix uncompleted transaction")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: a220871be66f ("virtio-net: correctly enable multiqueue")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230725072049.617289-1-jasowang@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/transaction.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -828,8 +828,13 @@ btrfs_attach_transaction_barrier(struct
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3319,6 +3319,8 @@ static int virtnet_probe(struct virtio_d
+ 		}
+ 	}
  
- 	trans = start_transaction(root, 0, TRANS_ATTACH,
- 				  BTRFS_RESERVE_NO_FLUSH, true);
--	if (trans == ERR_PTR(-ENOENT))
--		btrfs_wait_for_commit(root->fs_info, 0);
-+	if (trans == ERR_PTR(-ENOENT)) {
-+		int ret;
++	_virtnet_set_queues(vi, vi->curr_queue_pairs);
 +
-+		ret = btrfs_wait_for_commit(root->fs_info, 0);
-+		if (ret)
-+			return ERR_PTR(ret);
-+	}
+ 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
+ 	rtnl_lock();
  
- 	return trans;
- }
+@@ -3339,8 +3341,6 @@ static int virtnet_probe(struct virtio_d
+ 		goto free_unregister_netdev;
+ 	}
+ 
+-	virtnet_set_queues(vi, vi->curr_queue_pairs);
+-
+ 	/* Assume link up if device can't report link status,
+ 	   otherwise get link status from config. */
+ 	netif_carrier_off(dev);
 
 
