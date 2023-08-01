@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7BE376AA77
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7784A76AA7D
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjHAICv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 04:02:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58134 "EHLO
+        id S229920AbjHAIDe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 04:03:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjHAICv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:02:51 -0400
+        with ESMTP id S230449AbjHAIDd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:03:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B9DC6
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:02:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464E51729
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:03:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1740614A8
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 08:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC75EC433C7;
-        Tue,  1 Aug 2023 08:02:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C25AE614A8
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 08:03:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2461C433C9;
+        Tue,  1 Aug 2023 08:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690876969;
-        bh=PIBhiL9gVkjHcag2wpnES053TCbGhb7/Ld0bgtDfph0=;
+        s=korg; t=1690877009;
+        bh=Ph+zgrD6UHkQdjxsMaKLiyT4SgFYEc/fXPUP07/FJ+0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=G+9k544Z9xJqcpAw0QsQYFoBQgWkIATCrknUfuKNEP2SIf+6BhgXy6DtrYJcOhLzh
-         SAXAOV+6IBz3joagsIQ2OCgNGLYEz0UqTmZ5Q3d9CpMPIbFxrnga+gXhZJ9s6faKiq
-         A6FPzo2LqI2sL9Sq33MFPx5YSumyoN1PEJV8rPD8=
-Date:   Tue, 1 Aug 2023 10:02:46 +0200
+        b=aqea87M5WqSK+j2wDnX/TzoCwb0to5SNmIAOeOGZ8jLcvYWZnZ4agwAmXj5R1FDsi
+         O8fYzr0uz6Y4mxCGFZq1FMji0lOAe9PX1+IDIwlmrHY/Tau1xRB9qgOwP2N7BXKSY9
+         Th0MzXwzFtNSD9u022+840mNUJm1ZWRmqhPV9UwU=
+Date:   Tue, 1 Aug 2023 10:03:26 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jocelyn Falempe <jfalempe@redhat.com>
-Cc:     stable@vger.kernel.org, Zhang Yi <yizhan@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 4.19.y] drm/client: Fix memory leak in
- drm_client_target_cloned
-Message-ID: <2023080133-oxford-mundane-c98c@gregkh>
-References: <2023072326-snuff-obnoxious-af01@gregkh>
- <20230725120302.89913-1-jfalempe@redhat.com>
+To:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH 5.15.y] ASoC: cs42l51: fix driver to properly autoload
+ with automatic module loading
+Message-ID: <2023080157-twitch-embargo-953b@gregkh>
+References: <2023072301-online-accent-4365@gregkh>
+ <20230727123339.675734-1-thomas.petazzoni@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230725120302.89913-1-jfalempe@redhat.com>
+In-Reply-To: <20230727123339.675734-1-thomas.petazzoni@bootlin.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -54,42 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 25, 2023 at 02:02:54PM +0200, Jocelyn Falempe wrote:
-> dmt_mode is allocated and never freed in this function.
-> It was found with the ast driver, but most drivers using generic fbdev
-> setup are probably affected.
+On Thu, Jul 27, 2023 at 02:33:39PM +0200, Thomas Petazzoni wrote:
+> In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
+> pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
+> split into a core part and an I2C part to properly match based on a
+> Device Tree compatible string.
 > 
-> This fixes the following kmemleak report:
->   backtrace:
->     [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
->     [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
->     [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
->     [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
->     [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
->     [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
->     [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
->     [<00000000987f19bb>] local_pci_probe+0xdc/0x180
->     [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
->     [<0000000000b85301>] process_one_work+0x8b7/0x1540
->     [<000000003375b17c>] worker_thread+0x70a/0xed0
->     [<00000000b0d43cd9>] kthread+0x29f/0x340
->     [<000000008d770833>] ret_from_fork+0x1f/0x30
-> unreferenced object 0xff11000333089a00 (size 128):
+> However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
+> ....) is in the core part of the driver, not the I2C part. Therefore,
+> automatic module loading based on module.alias, based on matching with
+> the DT compatible string, loads the core part of the driver, but not
+> the I2C part. And threfore, the i2c_driver is not registered, and the
+> codec is not known to the system, nor matched with a DT node with the
+> corresponding compatible string.
 > 
-> cc: <stable@vger.kernel.org>
-> Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
-> Reported-by: Zhang Yi <yizhan@redhat.com>
-> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
-> (cherry picked from commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03)
-> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
+> the I2C part of the driver. The cs42l51_of_match[] array is also moved
+> as well, as it is not possible to have this definition in one file,
+> and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
+> to how MODULE_DEVICE_TABLE works.
+> 
+> Thanks to this commit, the I2C part of the driver now properly
+> autoloads, and thanks to its dependency on the core part, the core
+> part gets autoloaded as well, resulting in a functional sound card
+> without having to manually load kernel modules.
+> 
+> Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 > ---
->  drivers/gpu/drm/drm_fb_helper.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+>  sound/soc/codecs/cs42l51-i2c.c | 6 ++++++
+>  sound/soc/codecs/cs42l51.c     | 7 -------
+>  sound/soc/codecs/cs42l51.h     | 1 -
+>  3 files changed, 6 insertions(+), 8 deletions(-)
 
-Both now queued up, thanks.
+What is the git commit id of this change in Linus's tree?
+
+thanks,
 
 greg k-h
