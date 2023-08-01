@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1418D76AF7E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDDD476AD3F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232715AbjHAJs2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45448 "EHLO
+        id S232963AbjHAJ1f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233551AbjHAJrh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5353C28
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:10 -0700 (PDT)
+        with ESMTP id S231244AbjHAJ1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87C81BC3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35322614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F1EC433C9;
-        Tue,  1 Aug 2023 09:46:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8B41614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B397EC433C8;
+        Tue,  1 Aug 2023 09:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883168;
-        bh=WO1Ea0lmiujfQ58JrqXWJXAmP7b787cSVAEB5TtFOIo=;
+        s=korg; t=1690881962;
+        bh=+d5mMCIhTSOvYtvKOVHme5m9mXl228xHRH6jts+oFPk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hnJDw7FuuQeZlAAS16VQcNT9cV1uczwlxfSZnZZSM2iitwpk2vi13zGrbiswWH3Du
-         7HPTzEweI1TYwjfAEYvj+wp8+jjy0Y0Z3yYCfBkjNto+o/qlpJabew9uyDTYPA42KE
-         Dcm2fc5uUg2DP1EdzW3hxwzpL7J2ds0qwK6wgeTo=
+        b=ramCu4MunS8+S2nszP/68iSIa7+HRyrtD09ybUJG7kcMpM4icGibgVtWct5XeKJty
+         7m3KpnT4vl4sQkK35bMR3sCh/+REG+Pf/vgBrDRfg+h2Gasw+GvZbXvpOsq6xa376M
+         mi6fkV6p0bciQV7a6Mn9dfrgLvlESjUSjy/JlG6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        vnagarnaik@google.com, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 140/239] ring-buffer: Fix wrong stat of cpu_buffer->read
+        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 092/155] block: Fix a source code comment in include/uapi/linux/blkzoned.h
 Date:   Tue,  1 Aug 2023 11:20:04 +0200
-Message-ID: <20230801091930.730499324@linuxfoundation.org>
+Message-ID: <20230801091913.462137417@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,128 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 2d093282b0d4357373497f65db6a05eb0c28b7c8 ]
+[ Upstream commit e0933b526fbfd937c4a8f4e35fcdd49f0e22d411 ]
 
-When pages are removed in rb_remove_pages(), 'cpu_buffer->read' is set
-to 0 in order to make sure any read iterators reset themselves. However,
-this will mess 'entries' stating, see following steps:
+Fix the symbolic names for zone conditions in the blkzoned.h header
+file.
 
-  # cd /sys/kernel/tracing/
-  # 1. Enlarge ring buffer prepare for later reducing:
-  # echo 20 > per_cpu/cpu0/buffer_size_kb
-  # 2. Write a log into ring buffer of cpu0:
-  # taskset -c 0 echo "hello1" > trace_marker
-  # 3. Read the log:
-  # cat per_cpu/cpu0/trace_pipe
-       <...>-332     [000] .....    62.406844: tracing_mark_write: hello1
-  # 4. Stop reading and see the stats, now 0 entries, and 1 event readed:
-  # cat per_cpu/cpu0/stats
-   entries: 0
-   [...]
-   read events: 1
-  # 5. Reduce the ring buffer
-  # echo 7 > per_cpu/cpu0/buffer_size_kb
-  # 6. Now entries became unexpected 1 because actually no entries!!!
-  # cat per_cpu/cpu0/stats
-   entries: 1
-   [...]
-   read events: 0
-
-To fix it, introduce 'page_removed' field to count total removed pages
-since last reset, then use it to let read iterators reset themselves
-instead of changing the 'read' pointer.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230724054040.3489499-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Cc: <vnagarnaik@google.com>
-Fixes: 83f40318dab0 ("ring-buffer: Make removal of ring buffer pages atomic")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Fixes: 6a0cb1bc106f ("block: Implement support for zoned block devices")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20230706201422.3987341-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ include/uapi/linux/blkzoned.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 14d8001140c82..99634b29a8b82 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -523,6 +523,8 @@ struct ring_buffer_per_cpu {
- 	rb_time_t			before_stamp;
- 	u64				event_stamp[MAX_NEST];
- 	u64				read_stamp;
-+	/* pages removed since last reset */
-+	unsigned long			pages_removed;
- 	/* ring buffer pages to update, > 0 to add, < 0 to remove */
- 	long				nr_pages_to_update;
- 	struct list_head		new_pages; /* new pages to add */
-@@ -558,6 +560,7 @@ struct ring_buffer_iter {
- 	struct buffer_page		*head_page;
- 	struct buffer_page		*cache_reader_page;
- 	unsigned long			cache_read;
-+	unsigned long			cache_pages_removed;
- 	u64				read_stamp;
- 	u64				page_stamp;
- 	struct ring_buffer_event	*event;
-@@ -1956,6 +1959,8 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		to_remove = rb_list_head(to_remove)->next;
- 		head_bit |= (unsigned long)to_remove & RB_PAGE_HEAD;
- 	}
-+	/* Read iterators need to reset themselves when some pages removed */
-+	cpu_buffer->pages_removed += nr_removed;
- 
- 	next_page = rb_list_head(to_remove)->next;
- 
-@@ -1977,12 +1982,6 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		cpu_buffer->head_page = list_entry(next_page,
- 						struct buffer_page, list);
- 
--	/*
--	 * change read pointer to make sure any read iterators reset
--	 * themselves
--	 */
--	cpu_buffer->read = 0;
--
- 	/* pages are removed, resume tracing and then free the pages */
- 	atomic_dec(&cpu_buffer->record_disabled);
- 	raw_spin_unlock_irq(&cpu_buffer->reader_lock);
-@@ -4392,6 +4391,7 @@ static void rb_iter_reset(struct ring_buffer_iter *iter)
- 
- 	iter->cache_reader_page = iter->head_page;
- 	iter->cache_read = cpu_buffer->read;
-+	iter->cache_pages_removed = cpu_buffer->pages_removed;
- 
- 	if (iter->head) {
- 		iter->read_stamp = cpu_buffer->read_stamp;
-@@ -4846,12 +4846,13 @@ rb_iter_peek(struct ring_buffer_iter *iter, u64 *ts)
- 	buffer = cpu_buffer->buffer;
- 
- 	/*
--	 * Check if someone performed a consuming read to
--	 * the buffer. A consuming read invalidates the iterator
--	 * and we need to reset the iterator in this case.
-+	 * Check if someone performed a consuming read to the buffer
-+	 * or removed some pages from the buffer. In these cases,
-+	 * iterator was invalidated and we need to reset it.
- 	 */
- 	if (unlikely(iter->cache_read != cpu_buffer->read ||
--		     iter->cache_reader_page != cpu_buffer->reader_page))
-+		     iter->cache_reader_page != cpu_buffer->reader_page ||
-+		     iter->cache_pages_removed != cpu_buffer->pages_removed))
- 		rb_iter_reset(iter);
- 
-  again:
-@@ -5295,6 +5296,7 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
- 	cpu_buffer->last_overrun = 0;
- 
- 	rb_head_page_activate(cpu_buffer);
-+	cpu_buffer->pages_removed = 0;
- }
- 
- /* Must have disabled the cpu buffer then done a synchronize_rcu */
+diff --git a/include/uapi/linux/blkzoned.h b/include/uapi/linux/blkzoned.h
+index 656a326821a2b..321965feee354 100644
+--- a/include/uapi/linux/blkzoned.h
++++ b/include/uapi/linux/blkzoned.h
+@@ -51,13 +51,13 @@ enum blk_zone_type {
+  *
+  * The Zone Condition state machine in the ZBC/ZAC standards maps the above
+  * deinitions as:
+- *   - ZC1: Empty         | BLK_ZONE_EMPTY
++ *   - ZC1: Empty         | BLK_ZONE_COND_EMPTY
+  *   - ZC2: Implicit Open | BLK_ZONE_COND_IMP_OPEN
+  *   - ZC3: Explicit Open | BLK_ZONE_COND_EXP_OPEN
+- *   - ZC4: Closed        | BLK_ZONE_CLOSED
+- *   - ZC5: Full          | BLK_ZONE_FULL
+- *   - ZC6: Read Only     | BLK_ZONE_READONLY
+- *   - ZC7: Offline       | BLK_ZONE_OFFLINE
++ *   - ZC4: Closed        | BLK_ZONE_COND_CLOSED
++ *   - ZC5: Full          | BLK_ZONE_COND_FULL
++ *   - ZC6: Read Only     | BLK_ZONE_COND_READONLY
++ *   - ZC7: Offline       | BLK_ZONE_COND_OFFLINE
+  *
+  * Conditions 0x5 to 0xC are reserved by the current ZBC/ZAC spec and should
+  * be considered invalid.
 -- 
 2.40.1
 
