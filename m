@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC07C76AEA2
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA2A76AFAE
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233233AbjHAJkb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39736 "EHLO
+        id S233674AbjHAJtv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:49:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233239AbjHAJkD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:03 -0400
+        with ESMTP id S233465AbjHAJta (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2C6CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD044498
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7097461511
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B57C433CC;
-        Tue,  1 Aug 2023 09:37:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5C00614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D660BC433C9;
+        Tue,  1 Aug 2023 09:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882671;
-        bh=M2ADGH8y1eFZsJZHKWgKMvnjauSSTTseTqainU8f23E=;
+        s=korg; t=1690883296;
+        bh=6sQomdi6eHwR4kmmWt3b2KK9Mk7q06ATA9b9I1ITEKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0o5gw4FqDm/U9Tug/kSRp4BWiYdqxd1Rm7Q82aYA/GkXEpImF5Page2b4du80puR/
-         PMKfPID6Fe0c+D9XCBZDBmnnq1XBUwEdPX9Z4qsLGTuoG/ccZW7feKeRb/C2QyCXLB
-         HtY4q9+ZBpMcLiC1sFHbFU9BBsldQ3GQXqMkdm4g=
+        b=NrF+5McvPp7Uq2rACXo06KZ14XQuK6vBKEdLZ2DOhqyHsWfJpALEBSn3lbVtePJV5
+         Y6Vp/aQxQDtSYjdX8doNZokxwxS6IjLo4FN6Ae97uzicULyiJGbPrSTVqSvOQIJABQ
+         05I9cq4mYEw/OJP7E6HK34fAWMHm7D59kSvcfJ2U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alexander Steffen <Alexander.Steffen@infineon.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.1 190/228] tpm_tis: Explicitly check for error code
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Naresh Solanki <Naresh.Solanki@9elements.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.4 184/239] hwmon: (pmbus_core) Fix Deadlock in pmbus_regulator_get_status
 Date:   Tue,  1 Aug 2023 11:20:48 +0200
-Message-ID: <20230801091929.721991261@linuxfoundation.org>
+Message-ID: <20230801091932.309430238@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Steffen <Alexander.Steffen@infineon.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 513253f8c293c0c8bd46d09d337fc892bf8f9f48 upstream.
+commit b84000f2274520f73ac9dc59fd9403260b61c4e7 upstream.
 
-recv_data either returns the number of received bytes, or a negative value
-representing an error code. Adding the return value directly to the total
-number of received bytes therefore looks a little weird, since it might add
-a negative error code to a sum of bytes.
+pmbus_regulator_get_status() acquires update_lock.
+pmbus_regulator_get_error_flags() acquires it again, resulting in an
+immediate deadlock.
 
-The following check for size < expected usually makes the function return
-ETIME in that case, so it does not cause too many problems in practice. But
-to make the code look cleaner and because the caller might still be
-interested in the original error code, explicitly check for the presence of
-an error code and pass that through.
+Call _pmbus_get_flags() from pmbus_regulator_get_status() directly
+to avoid the problem.
 
-Cc: stable@vger.kernel.org
-Fixes: cb5354253af2 ("[PATCH] tpm: spacing cleanups 2")
-Signed-off-by: Alexander Steffen <Alexander.Steffen@infineon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reported-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+Closes: https://lore.kernel.org/linux-hwmon/b7a3ad85-aab4-4718-a001-1d8b1c0eef36@roeck-us.net/T/#u
+Cc: Naresh Solanki <Naresh.Solanki@9elements.com>
+Cc: stable@vger.kernel.org # v6.2+
+Fixes: c05f477c4ba3 ("hwmon: (pmbus/core) Implement regulator get_status")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/pmbus_core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -356,8 +356,13 @@ static int tpm_tis_recv(struct tpm_chip
- 		goto out;
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -2946,6 +2946,7 @@ static int pmbus_regulator_get_status(st
+ 	struct pmbus_data *data = i2c_get_clientdata(client);
+ 	u8 page = rdev_get_id(rdev);
+ 	int status, ret;
++	int event;
+ 
+ 	mutex_lock(&data->update_lock);
+ 	status = pmbus_get_status(client, page, PMBUS_STATUS_WORD);
+@@ -2965,7 +2966,7 @@ static int pmbus_regulator_get_status(st
+ 		goto unlock;
  	}
  
--	size += recv_data(chip, &buf[TPM_HEADER_SIZE],
--			  expected - TPM_HEADER_SIZE);
-+	rc = recv_data(chip, &buf[TPM_HEADER_SIZE],
-+		       expected - TPM_HEADER_SIZE);
-+	if (rc < 0) {
-+		size = rc;
-+		goto out;
-+	}
-+	size += rc;
- 	if (size < expected) {
- 		dev_err(&chip->dev, "Unable to read remainder of result\n");
- 		size = -ETIME;
+-	ret = pmbus_regulator_get_error_flags(rdev, &status);
++	ret = _pmbus_get_flags(data, rdev_get_id(rdev), &status, &event, false);
+ 	if (ret)
+ 		goto unlock;
+ 
 
 
