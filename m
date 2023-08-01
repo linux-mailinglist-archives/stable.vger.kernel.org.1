@@ -2,90 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54B6A76AAD8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E321176AAEF
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232149AbjHAIYi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 04:24:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40112 "EHLO
+        id S231345AbjHAI1l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 04:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230509AbjHAIYg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:24:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2FDE18D;
-        Tue,  1 Aug 2023 01:24:35 -0700 (PDT)
+        with ESMTP id S230086AbjHAI1k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:27:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAB7F18D;
+        Tue,  1 Aug 2023 01:27:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FF33614B7;
-        Tue,  1 Aug 2023 08:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342C0C433C8;
-        Tue,  1 Aug 2023 08:24:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690878274;
-        bh=gkk74t9As49XSJeT+8LUv0zRRxmwMv0p+C8NfbmPl7Y=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70D67614B7;
+        Tue,  1 Aug 2023 08:27:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D49C433C8;
+        Tue,  1 Aug 2023 08:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690878458;
+        bh=KzvQJSYl9zliORTATgBPPvvWaET21XrF4cyjVIv9/XI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AZBz4x7Y8V6Yp4RfkN8c+sBfGIsAeDXHsN2N7xNltclI6Y37r0oskt+G6j7xErJbj
-         5NEXOYonN050QVNcZj8D3Wb2b9m6fl1Hr2Kvtpx+MQVpeadYQuV95XVSBBKKM30D1w
-         eg/sBJMZ61btbOLDO2LZz4Uo9f7mcybxSlrd1MlM=
-Date:   Tue, 1 Aug 2023 10:24:32 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Rishabh Bhatnagar <risbhat@amazon.com>
-Cc:     lee@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Eric Dumazet <edumazet@google.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: Re: [PATCH 4.14] net/sched: cls_u32: Fix reference counter leak
- leading to overflow
-Message-ID: <2023080102-certified-unrivaled-a048@gregkh>
-References: <20230727191554.21333-1-risbhat@amazon.com>
+        b=FZv0LIEbh+eOtxTtda3mi1G/HakIbe4Ec/6Cnmn9LUdCI9FrOiksmCTzlNNxzlBT4
+         MIXgNCSE3fyG7gBR5M5LOaV2UqtKnz2wytJDF/fHQqQV/hNxSLBaWToD6oTaw1NMRd
+         +SIbBEMPRFEKmu2jycm5AbpsPeS4ZHVtztmmGOXbgoPPsZ80Dgj7wWuwDRLsUK0Z4l
+         lFcVJoEbOn89u6D2oojaW5lWSBCHM+w3WZkqKSPCPB7Dl4f5cJ6OqhZ+35nM4vJ78G
+         vP5U4ShZUHWBxh+G6+anK9+8wSAY23SydlfQLmHlgbScPb2Uawy59U4JhVgpda0KI/
+         7+X51JArLXGog==
+Date:   Tue, 1 Aug 2023 09:27:31 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Lorenzo Stoakes <lstoakes@gmail.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Baoquan He <bhe@redhat.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        linux-fsdevel@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
+        Mike Galbraith <efault@gmx.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        wangkefeng.wang@huawei.com, catalin.marinas@arm.com,
+        ardb@kernel.org, David Hildenbrand <david@redhat.com>,
+        Linux regression tracking <regressions@leemhuis.info>,
+        regressions@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
+        Liu Shixin <liushixin2@huawei.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT
+ regions
+Message-ID: <20230801082729.GA26036@willie-the-truck>
+References: <20230731215021.70911-1-lstoakes@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230727191554.21333-1-risbhat@amazon.com>
+In-Reply-To: <20230731215021.70911-1-lstoakes@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 07:15:54PM +0000, Rishabh Bhatnagar wrote:
-> From: Lee Jones <lee@kernel.org>
+On Mon, Jul 31, 2023 at 10:50:21PM +0100, Lorenzo Stoakes wrote:
+> Some architectures do not populate the entire range categorised by
+> KCORE_TEXT, so we must ensure that the kernel address we read from is
+> valid.
 > 
-> Upstream commit 04c55383fa5689357bcdd2c8036725a55ed632bc.
+> Unfortunately there is no solution currently available to do so with a
+> purely iterator solution so reinstate the bounce buffer in this instance so
+> we can use copy_from_kernel_nofault() in order to avoid page faults when
+> regions are unmapped.
 > 
-> In the event of a failure in tcf_change_indev(), u32_set_parms() will
-> immediately return without decrementing the recently incremented
-> reference counter.  If this happens enough times, the counter will
-> rollover and the reference freed, leading to a double free which can be
-> used to do 'bad things'.
+> This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
+> bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
+> the code to continue to use an iterator.
 > 
-> In order to prevent this, move the point of possible failure above the
-> point where the reference counter is incremented.  Also save any
-> meaningful return values to be applied to the return data at the
-> appropriate point in time.
-> 
-> This issue was caught with KASAN.
-> 
-> Fixes: 705c7091262d ("net: sched: cls_u32: no need to call tcf_exts_change for newly allocated struct")
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Signed-off-by: David S. Miller <davem@davemloft.net>
-> Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
+> Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
+> Reported-by: Jiri Olsa <olsajiri@gmail.com>
+> Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
 > ---
->  net/sched/cls_u32.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
+>  fs/proc/kcore.c | 26 +++++++++++++++++++++++++-
+>  1 file changed, 25 insertions(+), 1 deletion(-)
 
-We need a 4.19.y backport before we can apply a 4.14.y version, as you
-do not want to upgrade and have a regression.
+Tested-by: Will Deacon <will@kernel.org>
 
-thanks,
+I can confirm this fixes the arm64 issue reported by Mike over at [1].
 
-greg k-h
+Cheers,
+
+Will
+
+[1] https://lore.kernel.org/r/b39c62d29a431b023e98959578ba87e96af0e030.camel@gmx.de
