@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB3B776AE13
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAC1476ACEF
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233058AbjHAJfz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
+        id S232739AbjHAJYb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:24:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233037AbjHAJfd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:33 -0400
+        with ESMTP id S232030AbjHAJYM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:24:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA1771FCA
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA755E1
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:23:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 606F8613E2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AEAC433C8;
-        Tue,  1 Aug 2023 09:33:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6046B614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:23:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C254C433C7;
+        Tue,  1 Aug 2023 09:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882421;
-        bh=vR6ufOijG2JxlSxcat6JRpY5chrv+rJ6+Hh1Mss6XCQ=;
+        s=korg; t=1690881784;
+        bh=pH4EVCxvd3OC0hLt+JLb4MQ+LSyBF+55+XTrnBRf0Nw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2tReDuFdJ4rQatP0TcF09qw9a5LITgm6xpcjEAVkIAcicQKgNIe1zNOtUkrORQxAO
-         TcRqgpJHKjTxuhSc44YI95vO/wtULjhdTaPL7de68Vp/YKUCPPKp3b2T7v24CK5kf/
-         LvIkTvBTGNcIjDw4VJNOZDu0++wkBKD4Zi9oHiQQ=
+        b=NDuiwO7xbZp2/uuuGaJRMDKiX8y+3mLp1KpAplwYINJDqsCT2l7V3jK0ZTPBn0VBb
+         8uY7AScv4goa0C/VxK7+bCZ6oUbHlptSKcI8cpb/thyPIDiynsajHLtgbYIP6lGrCH
+         CCfJFo20H7UIqfDgdbAifLadQIiVRPRTKo/QkYS0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Al Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Namjae Jeon <linkinjeon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/228] iavf: fix potential deadlock on allocation failure
-Date:   Tue,  1 Aug 2023 11:19:00 +0200
-Message-ID: <20230801091925.808674110@linuxfoundation.org>
+Subject: [PATCH 5.15 029/155] ksmbd: remove internal.h include
+Date:   Tue,  1 Aug 2023 11:19:01 +0200
+Message-ID: <20230801091911.239918828@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,58 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit a2f054c10bef0b54600ec9cb776508443e941343 ]
+[ Upstream commit 211db0ac9e3dc6c46f2dd53395b34d76af929faf ]
 
-In iavf_adminq_task(), if kzalloc() fails to allocate the event.msg_buf,
-the function will exit without releasing the adapter->crit_lock.
+Since vfs_path_lookup is exported, It should not be internal.
+Move vfs_path_lookup prototype in internal.h to linux/namei.h.
 
-This is unlikely, but if it happens, the next access to that mutex will
-deadlock.
-
-Fix this by moving the unlock to the end of the function, and adding a new
-label to allow jumping to the unlock portion of the function exit flow.
-
-Fixes: fc2e6b3b132a ("iavf: Rework mutexes for better synchronisation")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Stable-dep-of: df9d70c18616 ("cifs: if deferred close is disabled then close files immediately")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/internal.h         | 2 --
+ fs/ksmbd/vfs.c        | 2 --
+ include/linux/namei.h | 2 ++
+ 3 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index c1f91c55e1ca7..650a969a69a14 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -3300,7 +3300,7 @@ static void iavf_adminq_task(struct work_struct *work)
- 	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
- 	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
- 	if (!event.msg_buf)
--		goto out;
-+		goto unlock;
+diff --git a/fs/internal.h b/fs/internal.h
+index ceb154583a3c4..1ff8cfc94467b 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -58,8 +58,6 @@ extern int finish_clean_context(struct fs_context *fc);
+  */
+ extern int filename_lookup(int dfd, struct filename *name, unsigned flags,
+ 			   struct path *path, struct path *root);
+-extern int vfs_path_lookup(struct dentry *, struct vfsmount *,
+-			   const char *, unsigned int, struct path *);
+ int do_rmdir(int dfd, struct filename *name);
+ int do_unlinkat(int dfd, struct filename *name);
+ int may_linkat(struct user_namespace *mnt_userns, struct path *link);
+diff --git a/fs/ksmbd/vfs.c b/fs/ksmbd/vfs.c
+index 52cc6a9627ed7..f76acd83c2944 100644
+--- a/fs/ksmbd/vfs.c
++++ b/fs/ksmbd/vfs.c
+@@ -19,8 +19,6 @@
+ #include <linux/sched/xacct.h>
+ #include <linux/crc32c.h>
  
- 	do {
- 		ret = iavf_clean_arq_element(hw, &event, &pending);
-@@ -3315,7 +3315,6 @@ static void iavf_adminq_task(struct work_struct *work)
- 		if (pending != 0)
- 			memset(event.msg_buf, 0, IAVF_MAX_AQ_BUF_SIZE);
- 	} while (pending);
--	mutex_unlock(&adapter->crit_lock);
+-#include "../internal.h"	/* for vfs_path_lookup */
+-
+ #include "glob.h"
+ #include "oplock.h"
+ #include "connection.h"
+diff --git a/include/linux/namei.h b/include/linux/namei.h
+index caeb08a98536c..40c693525f796 100644
+--- a/include/linux/namei.h
++++ b/include/linux/namei.h
+@@ -63,6 +63,8 @@ extern struct dentry *kern_path_create(int, const char *, struct path *, unsigne
+ extern struct dentry *user_path_create(int, const char __user *, struct path *, unsigned int);
+ extern void done_path_create(struct path *, struct dentry *);
+ extern struct dentry *kern_path_locked(const char *, struct path *);
++int vfs_path_lookup(struct dentry *, struct vfsmount *, const char *,
++		    unsigned int, struct path *);
  
- 	if (iavf_is_reset_in_progress(adapter))
- 		goto freedom;
-@@ -3359,6 +3358,8 @@ static void iavf_adminq_task(struct work_struct *work)
- 
- freedom:
- 	kfree(event.msg_buf);
-+unlock:
-+	mutex_unlock(&adapter->crit_lock);
- out:
- 	/* re-enable Admin queue interrupt cause */
- 	iavf_misc_irq_enable(adapter);
+ extern struct dentry *try_lookup_one_len(const char *, struct dentry *, int);
+ extern struct dentry *lookup_one_len(const char *, struct dentry *, int);
 -- 
 2.39.2
 
