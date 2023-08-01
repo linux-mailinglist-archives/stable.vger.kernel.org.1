@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9A876AEE5
+	by mail.lfdr.de (Postfix) with ESMTP id 94D4776AEE6
 	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233077AbjHAJnG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S231757AbjHAJnG (ORCPT <rfc822;lists+stable@lfdr.de>);
         Tue, 1 Aug 2023 05:43:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233358AbjHAJmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:38 -0400
+        with ESMTP id S232526AbjHAJmj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4515BA2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C00E52
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AF5561522
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2722AC433C9;
-        Tue,  1 Aug 2023 09:40:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DBBC361516
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6B7C433C8;
+        Tue,  1 Aug 2023 09:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882815;
-        bh=RO30v2BdLJK9kzPl1OdDpXXFjWK3AqjLCsBItoHK82s=;
+        s=korg; t=1690882818;
+        bh=QKE4PktxhSYJtnW25xWk49kQDrWOzXMbluRqPtj2OME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mkYvMFguSgn6lv1xx+9B9fMd97l2Tyl2cSo/uNrjRzcYhHOnZbnSSHBM9By+4HYI5
-         ReuNcl24eVTZzrPrGC6MsZ+aWWpDAIKF8UA5t7HD9KpFsqCI4Wq4cTORZulLDOqrvs
-         I3aTXfwRChTAraDyZYPQce+XC2P9CSxRkfTlClMs=
+        b=LPMYY3hJW6Dt66D8ftARpmOEEs3eREdOEMu3ENPwXSzMyYq/sOjrf9K3rdmhVyyNo
+         MGFnChzPQBR1wBnUr/ROdSK1g10B7XEb9L4p6riGlMKdH2bREgc7Zf06V3xutplnHl
+         GlhsCcXPxCoV/KttZ+f7YkztqG9eP7TdKLNzwPaA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Mosnacek <omosnace@redhat.com>,
-        Jeff Moyer <jmoyer@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 013/239] io_uring: dont audit the capability check in io_uring_create()
-Date:   Tue,  1 Aug 2023 11:17:57 +0200
-Message-ID: <20230801091926.124709984@linuxfoundation.org>
+Subject: [PATCH 6.4 014/239] gpio: tps68470: Make tps68470_gpio_output() always set the initial value
+Date:   Tue,  1 Aug 2023 11:17:58 +0200
+Message-ID: <20230801091926.155828218@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
 References: <20230801091925.659598007@linuxfoundation.org>
@@ -55,45 +59,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6adc2272aaaf84f34b652cf77f770c6fcc4b8336 ]
+[ Upstream commit 5a7adc6c1069ce31ef4f606ae9c05592c80a6ab5 ]
 
-The check being unconditional may lead to unwanted denials reported by
-LSMs when a process has the capability granted by DAC, but denied by an
-LSM. In the case of SELinux such denials are a problem, since they can't
-be effectively filtered out via the policy and when not silenced, they
-produce noise that may hide a true problem or an attack.
+Make tps68470_gpio_output() call tps68470_gpio_set() for output-only pins
+too, so that the initial value passed to gpiod_direction_output() is
+honored for these pins too.
 
-Since not having the capability merely means that the created io_uring
-context will be accounted against the current user's RLIMIT_MEMLOCK
-limit, we can disable auditing of denials for this check by using
-ns_capable_noaudit() instead of capable().
-
-Fixes: 2b188cc1bb85 ("Add io_uring IO interface")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2193317
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
-Link: https://lore.kernel.org/r/20230718115607.65652-1-omosnace@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 275b13a65547 ("gpio: Add support for TPS68470 GPIOs")
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Tested-by: Daniel Scally <dan.scally@ideasonboard.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-tps68470.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index d6667b435dd39..685cf14a7189e 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3859,7 +3859,7 @@ static __cold int io_uring_create(unsigned entries, struct io_uring_params *p,
- 		ctx->syscall_iopoll = 1;
+diff --git a/drivers/gpio/gpio-tps68470.c b/drivers/gpio/gpio-tps68470.c
+index aaddcabe9b359..532deaddfd4e2 100644
+--- a/drivers/gpio/gpio-tps68470.c
++++ b/drivers/gpio/gpio-tps68470.c
+@@ -91,13 +91,13 @@ static int tps68470_gpio_output(struct gpio_chip *gc, unsigned int offset,
+ 	struct tps68470_gpio_data *tps68470_gpio = gpiochip_get_data(gc);
+ 	struct regmap *regmap = tps68470_gpio->tps68470_regmap;
  
- 	ctx->compat = in_compat_syscall();
--	if (!capable(CAP_IPC_LOCK))
-+	if (!ns_capable_noaudit(&init_user_ns, CAP_IPC_LOCK))
- 		ctx->user = get_uid(current_user());
++	/* Set the initial value */
++	tps68470_gpio_set(gc, offset, value);
++
+ 	/* rest are always outputs */
+ 	if (offset >= TPS68470_N_REGULAR_GPIO)
+ 		return 0;
  
- 	/*
+-	/* Set the initial value */
+-	tps68470_gpio_set(gc, offset, value);
+-
+ 	return regmap_update_bits(regmap, TPS68470_GPIO_CTL_REG_A(offset),
+ 				 TPS68470_GPIO_MODE_MASK,
+ 				 TPS68470_GPIO_MODE_OUT_CMOS);
 -- 
 2.39.2
 
