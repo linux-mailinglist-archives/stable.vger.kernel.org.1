@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F5876AEE1
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94BB576ADAC
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbjHAJmt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:42:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40314 "EHLO
+        id S230152AbjHAJb3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:31:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233412AbjHAJme (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7082D19BD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:13 -0700 (PDT)
+        with ESMTP id S231186AbjHAJa7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BB8EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F35961515
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D32FC433C8;
-        Tue,  1 Aug 2023 09:40:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFFCB614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A68FC433C7;
+        Tue,  1 Aug 2023 09:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882812;
-        bh=Qpi9eaFEdR3YnrjHpaQ/MiiUXs1K1/UsPbiMmLPstxI=;
+        s=korg; t=1690882191;
+        bh=jEEmxnJNWm5CvLpP/5hZyVCCIQ2NhAayBqcW/BFOLA0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1b1I3wjyCpJXtYbUcilhMpzl2CeSshghxpA5x2l4SKocLAOQhOhZRiR2gTEHBh80V
-         NNVdkaOGkO3jeURP7ANxkie2sEQ8jKPtpPOu1rUKuwaG7/RQbdH5RkQaDec2d1BQ04
-         08FFhwXtjz3upePZyoZoeqoYwfZ/U+jptyUnnsKE=
+        b=2dxi28ZR8h2rAIzvP1sMa06fA4tq0o/DCvi3ps0yrdJpYs0ddF4Tb52oa0PVTz9tq
+         jTkaap498ARVxM5NgiSw1gpOrzU+uCfmJo+f+BRsdP3wnTP24yQFd1H+Zxe+gIqBZj
+         01UVoakf85kUzacnk8RBs2JmXnqTM/E1XdWvoTHk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Schnelle <svens@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Yangtao Li <frank.li@vivo.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 012/239] s390/mm: fix per vma lock fault handling
+Subject: [PATCH 6.1 018/228] f2fs: fix to set flush_merge opt and show noflush_merge
 Date:   Tue,  1 Aug 2023 11:17:56 +0200
-Message-ID: <20230801091926.095017700@linuxfoundation.org>
+Message-ID: <20230801091923.504120162@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit 7686762d1ed092db4d120e29b565712c969dc075 ]
+[ Upstream commit 967eaad1fed5f6335ea97a47d45214744dc57925 ]
 
-With per-vma locks, handle_mm_fault() may return non-fatal error
-flags. In this case the code should reset the fault flags before
-returning.
+Some minor modifications to flush_merge and related parameters:
 
-Fixes: e06f47a16573 ("s390/mm: try VMA lock-based page fault handling first")
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+  1.The FLUSH_MERGE opt is set by default only in non-ro mode.
+  2.When ro and merge are set at the same time, an error is reported.
+  3.Display noflush_merge mount opt.
+
+Suggested-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 458c15dfbce6 ("f2fs: don't reset unchangable mount option in f2fs_remount()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/fault.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/super.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index dbe8394234e2b..2f123429a291b 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -421,6 +421,8 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
- 	vma_end_read(vma);
- 	if (!(fault & VM_FAULT_RETRY)) {
- 		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-+		if (likely(!(fault & VM_FAULT_ERROR)))
-+			fault = 0;
- 		goto out;
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index b6dad389fa144..36bb1c969e8bb 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1347,6 +1347,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 		return -EINVAL;
  	}
- 	count_vm_vma_lock_event(VMA_LOCK_RETRY);
+ 
++	if ((f2fs_sb_has_readonly(sbi) || f2fs_readonly(sbi->sb)) &&
++		test_opt(sbi, FLUSH_MERGE)) {
++		f2fs_err(sbi, "FLUSH_MERGE not compatible with readonly mode");
++		return -EINVAL;
++	}
++
+ 	if (f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb)) {
+ 		f2fs_err(sbi, "Allow to mount readonly mode only");
+ 		return -EROFS;
+@@ -1933,8 +1939,10 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
+ 		seq_puts(seq, ",inline_dentry");
+ 	else
+ 		seq_puts(seq, ",noinline_dentry");
+-	if (!f2fs_readonly(sbi->sb) && test_opt(sbi, FLUSH_MERGE))
++	if (test_opt(sbi, FLUSH_MERGE))
+ 		seq_puts(seq, ",flush_merge");
++	else
++		seq_puts(seq, ",noflush_merge");
+ 	if (test_opt(sbi, NOBARRIER))
+ 		seq_puts(seq, ",nobarrier");
+ 	if (test_opt(sbi, FASTBOOT))
+@@ -2063,7 +2071,8 @@ static void default_options(struct f2fs_sb_info *sbi)
+ 	set_opt(sbi, MERGE_CHECKPOINT);
+ 	F2FS_OPTION(sbi).unusable_cap = 0;
+ 	sbi->sb->s_flags |= SB_LAZYTIME;
+-	set_opt(sbi, FLUSH_MERGE);
++	if (!f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb))
++		set_opt(sbi, FLUSH_MERGE);
+ 	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
+ 		set_opt(sbi, DISCARD);
+ 	if (f2fs_sb_has_blkzoned(sbi)) {
 -- 
 2.39.2
 
