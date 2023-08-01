@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E939776AD94
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1963476AED5
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231394AbjHAJae (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
+        id S233364AbjHAJm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:42:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbjHAJaN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:13 -0400
+        with ESMTP id S233271AbjHAJmI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 431D844A4
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266D859FB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23AD7614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBF2C433C7;
-        Tue,  1 Aug 2023 09:28:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4D756150B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3182C433C7;
+        Tue,  1 Aug 2023 09:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882135;
-        bh=1rW1SLtWYeCfO26de2Wl5M45zQ10bYqD50J1yyTPJbQ=;
+        s=korg; t=1690882785;
+        bh=4f7fv3dQg7qgakDR+xelOA9Wtmz6SSAgDxL6Ft5RvFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gFyT2Q1Pe3p3naP4kOYkDAl22R/spNyIG9uQyXo5WQIA2ePLkuV1GMD+Z9zmXxJmv
-         1DQQPSjyGsbxNbajJ0cdfZn9w7CzrtJZ396AbDSUjmTNvfdPJVcoHBCJeGoj6Mc5mR
-         2wY+Ejhy0tE2VxJczuKL5lOO+WZy3Dn4lX+0n+kE=
+        b=iesvzug2GONN9hAYIZZ9A9ysfZl0QrezYJ+oWOr13fHoJkRUBzUQHAOHlJ5HUncQR
+         ry2jJXNXX4JDu+CMj+5HmnrbLxwLJQOwShmHL7ePgvHdWf1LYZWEvrO9pGiWA/GVkT
+         23eeI5zmosuVkJb2ceLE7Vwx59XPP57qxT9cP0ME=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
         Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 154/155] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
+Subject: [PATCH 6.1 208/228] ASoC: wm8904: Fill the cache for WM8904_ADC_TEST_0 register
 Date:   Tue,  1 Aug 2023 11:21:06 +0200
-Message-ID: <20230801091915.626910880@linuxfoundation.org>
+Message-ID: <20230801091930.381468029@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,86 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit e51df4f81b02bcdd828a04de7c1eb6a92988b61e upstream.
+commit f061e2be8689057cb4ec0dbffa9f03e1a23cdcb2 upstream.
 
-In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
-pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
-split into a core part and an I2C part to properly match based on a
-Device Tree compatible string.
+The WM8904_ADC_TEST_0 register is modified as part of updating the OSR
+controls but does not have a cache default, leading to errors when we try
+to modify these controls in cache only mode with no prior read:
 
-However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
-....) is in the core part of the driver, not the I2C part. Therefore,
-automatic module loading based on module.alias, based on matching with
-the DT compatible string, loads the core part of the driver, but not
-the I2C part. And threfore, the i2c_driver is not registered, and the
-codec is not known to the system, nor matched with a DT node with the
-corresponding compatible string.
+wm8904 3-001a: ASoC: error at snd_soc_component_update_bits on wm8904.3-001a for register: [0x000000c6] -16
 
-In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
-the I2C part of the driver. The cs42l51_of_match[] array is also moved
-as well, as it is not possible to have this definition in one file,
-and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
-to how MODULE_DEVICE_TABLE works.
+Add a read of the register to probe() to fill the cache and avoid both the
+error messages and the misconfiguration of the chip which will result.
 
-Thanks to this commit, the I2C part of the driver now properly
-autoloads, and thanks to its dependency on the core part, the core
-part gets autoloaded as well, resulting in a functional sound card
-without having to manually load kernel modules.
-
-Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Link: https://lore.kernel.org/r/20230713112112.778576-1-thomas.petazzoni@bootlin.com
+Link: https://lore.kernel.org/r/20230723-asoc-fix-wm8904-adc-test-read-v1-1-2cdf2edd83fd@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs42l51-i2c.c |    6 ++++++
- sound/soc/codecs/cs42l51.c     |    7 -------
- sound/soc/codecs/cs42l51.h     |    1 -
- 3 files changed, 6 insertions(+), 8 deletions(-)
+ sound/soc/codecs/wm8904.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/soc/codecs/cs42l51-i2c.c
-+++ b/sound/soc/codecs/cs42l51-i2c.c
-@@ -19,6 +19,12 @@ static struct i2c_device_id cs42l51_i2c_
- };
- MODULE_DEVICE_TABLE(i2c, cs42l51_i2c_id);
+--- a/sound/soc/codecs/wm8904.c
++++ b/sound/soc/codecs/wm8904.c
+@@ -2308,6 +2308,9 @@ static int wm8904_i2c_probe(struct i2c_c
+ 	regmap_update_bits(wm8904->regmap, WM8904_BIAS_CONTROL_0,
+ 			    WM8904_POBCTRL, 0);
  
-+const struct of_device_id cs42l51_of_match[] = {
-+	{ .compatible = "cirrus,cs42l51", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, cs42l51_of_match);
++	/* Fill the cache for the ADC test register */
++	regmap_read(wm8904->regmap, WM8904_ADC_TEST_0, &val);
 +
- static int cs42l51_i2c_probe(struct i2c_client *i2c,
- 			     const struct i2c_device_id *id)
- {
---- a/sound/soc/codecs/cs42l51.c
-+++ b/sound/soc/codecs/cs42l51.c
-@@ -825,13 +825,6 @@ int __maybe_unused cs42l51_resume(struct
- }
- EXPORT_SYMBOL_GPL(cs42l51_resume);
- 
--const struct of_device_id cs42l51_of_match[] = {
--	{ .compatible = "cirrus,cs42l51", },
--	{ }
--};
--MODULE_DEVICE_TABLE(of, cs42l51_of_match);
--EXPORT_SYMBOL_GPL(cs42l51_of_match);
--
- MODULE_AUTHOR("Arnaud Patard <arnaud.patard@rtp-net.org>");
- MODULE_DESCRIPTION("Cirrus Logic CS42L51 ALSA SoC Codec Driver");
- MODULE_LICENSE("GPL");
---- a/sound/soc/codecs/cs42l51.h
-+++ b/sound/soc/codecs/cs42l51.h
-@@ -16,7 +16,6 @@ int cs42l51_probe(struct device *dev, st
- int cs42l51_remove(struct device *dev);
- int __maybe_unused cs42l51_suspend(struct device *dev);
- int __maybe_unused cs42l51_resume(struct device *dev);
--extern const struct of_device_id cs42l51_of_match[];
- 
- #define CS42L51_CHIP_ID			0x1B
- #define CS42L51_CHIP_REV_A		0x00
+ 	/* Can leave the device powered off until we need it */
+ 	regcache_cache_only(wm8904->regmap, true);
+ 	regulator_bulk_disable(ARRAY_SIZE(wm8904->supplies), wm8904->supplies);
 
 
