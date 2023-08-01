@@ -2,74 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC4B076BD77
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 21:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A88A976BDB2
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 21:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231181AbjHATOd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 15:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47786 "EHLO
+        id S231955AbjHAT1X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 15:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231143AbjHATOd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 15:14:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E48CE57;
-        Tue,  1 Aug 2023 12:14:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF38E616AB;
-        Tue,  1 Aug 2023 19:14:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4E6C433C7;
-        Tue,  1 Aug 2023 19:14:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690917271;
-        bh=JIJPdUANHrD6Yb6wBmrW7GHkKKSJRvPopi+aSXxrjwU=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=K3zM9rcgo3wdtzWy15KNTAuv1/KkedB/OkEMO8niKImrZX2KnF8/+q1k9MF4shlrF
-         /8JAwuV0xhzD8drIZSDYedqbz3E4QhMeOGA1jjT+RP4e+RzuEXoEvsQEh3W97CCtKZ
-         2PhC0Wy4cepJaTvG2cSfrtHbYTJveoeMatC7wWG8vQ8S3tmUo2y8U5MQidSwBB0Nxu
-         kaSseiqQ88kh1EjduVUFyB17HARd8hBk1+d5tgW/QWQGTvrSaVcjfqP+c/nOzgFjpO
-         YC63toNsjnwQ10vRnSH7Kyo35ryDaUelBVz1RtbfOfFcbhlJ0wqxHMgsCYZ0OIM+fl
-         jgXq/t7kXF8wg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id D1E36CE0908; Tue,  1 Aug 2023 12:14:30 -0700 (PDT)
-Date:   Tue, 1 Aug 2023 12:14:30 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Roy Hopkins <rhopkins@suse.de>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Pavel Machek <pavel@denx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
-Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
- 6.4.7-rc1 review)
-Message-ID: <aec97d62-a07d-45f3-9cf8-5a7ad0e98e47@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20230731141934.GK29590@hirez.programming.kicks-ass.net>
- <20230731143954.GB37820@hirez.programming.kicks-ass.net>
- <f5a18aa3-9db7-6ad2-33d5-3335a18e4e2f@roeck-us.net>
- <20230731145232.GM29590@hirez.programming.kicks-ass.net>
- <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
- <20230731161452.GA40850@hirez.programming.kicks-ass.net>
- <baa58a8e-54f0-2309-b34e-d62999a452a1@roeck-us.net>
- <20230731211517.GA51835@hirez.programming.kicks-ass.net>
- <a05743a3-4dec-6af7-302f-d1d2a0db7d3e@roeck-us.net>
- <8215f037-63e9-4e92-8403-c5431ada9cc9@paulmck-laptop>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8215f037-63e9-4e92-8403-c5431ada9cc9@paulmck-laptop>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        with ESMTP id S230190AbjHAT1W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 15:27:22 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA1F9C;
+        Tue,  1 Aug 2023 12:27:21 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 371HvWQb019512;
+        Tue, 1 Aug 2023 19:27:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id; s=qcppdkim1;
+ bh=qC6t3oUXIHBy+uYFBXDAZt69xeIT0wgwqsu2FTL8kDg=;
+ b=FzYrNBQ6MUZ7WjnX4xeIMfjS64NzTnQ6y6SwDge7IvwquPAboHpu23tWYIxTgBolMMx3
+ FZukU+7JTyLwdScdkYgH9GDhb38Vl+NUg/j82FMaTqtAuGz+tca+izCgPExQDTACitZe
+ E6pVhikwkPB9jicp8BjfkUmgSRHEEPJPAEh9uL2j9TkFWOhLb2+oYEdIvnhuueoEBDOD
+ o1x+2n5OY4SjXRuL48m7y6LP7ns5TEg0qFFGnLqGlylO3C2qdWvZFrgstC5DzHOdLbii
+ PrRsVih7RjSolYOcamd40ZrS6RJT3qWLqIImUhlepnNeM+8KI1Je8szUJkUTq7V7wJLR GQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s76jv07pd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Aug 2023 19:27:01 +0000
+Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 371JMVmI015689;
+        Tue, 1 Aug 2023 19:27:00 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 3s4uum4x09-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 01 Aug 2023 19:27:00 +0000
+Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 371JQxvE019622;
+        Tue, 1 Aug 2023 19:27:00 GMT
+Received: from hu-devc-lv-u18-c.qualcomm.com (hu-eserrao-lv.qualcomm.com [10.47.235.27])
+        by NALASPPMTA04.qualcomm.com (PPS) with ESMTP id 371JQxX9019621;
+        Tue, 01 Aug 2023 19:26:59 +0000
+Received: by hu-devc-lv-u18-c.qualcomm.com (Postfix, from userid 464172)
+        id AAF6E500171; Tue,  1 Aug 2023 12:26:59 -0700 (PDT)
+From:   Elson Roy Serrao <quic_eserrao@quicinc.com>
+To:     Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+        felipe.balbi@linux.intel.com, rogerq@kernel.org,
+        surong.pang@unisoc.com
+Cc:     linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        quic_wcheng@quicinc.com, quic_jackp@quicinc.com,
+        Elson Roy Serrao <quic_eserrao@quicinc.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] usb: dwc3: Properly handle processing of pending events
+Date:   Tue,  1 Aug 2023 12:26:58 -0700
+Message-Id: <20230801192658.19275-1-quic_eserrao@quicinc.com>
+X-Mailer: git-send-email 2.17.1
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Md49xazC3fLzIVoM_YxYIPwPfcMvieD-
+X-Proofpoint-GUID: Md49xazC3fLzIVoM_YxYIPwPfcMvieD-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-01_17,2023-08-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ clxscore=1011 mlxscore=0 suspectscore=0 mlxlogscore=386 phishscore=0
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308010173
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,70 +80,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 12:11:04PM -0700, Paul E. McKenney wrote:
-> On Tue, Aug 01, 2023 at 10:32:45AM -0700, Guenter Roeck wrote:
-> > On 7/31/23 14:15, Peter Zijlstra wrote:
-> > > On Mon, Jul 31, 2023 at 09:34:29AM -0700, Guenter Roeck wrote:
-> > > > > Ha!, I was poking around the same thing. My hack below seems to (so far,
-> > > > > <20 boots) help things.
-> > > > > 
-> > > > 
-> > > > So, dumb question:
-> > > > How comes this bisects to "sched/fair: Remove sched_feat(START_DEBIT)" ?
-> > > 
-> > > That commit changes the timings of things; dumb luck otherwise.
-> > 
-> > Kind of scary. So I only experienced the problem because the START_DEBIT patch
-> > happened to be queued roughly at the same time, and it might otherwise have
-> > found its way unnoticed into the upstream kernel.
+If dwc3 is runtime suspended we defer processing the event buffer
+until resume, by setting the pending_events flag. Set this flag before
+triggering resume to avoid race with the runtime resume callback.
 
-And just to set the record straight, this bug has been in mainline for
-about a year, since v5.19.
+While handling the pending events, in addition to checking the event
+buffer we also need to process it. Handle this by explicitly calling
+dwc3_thread_interrupt(). Also balance the runtime pm get() operation
+that triggered this processing.
 
-							Thanx, Paul
+Cc: stable@vger.kernel.org
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+---
+Change separated from below series as an independent fix based on the
+earlier discussion
+https://lore.kernel.org/all/be57511d-2005-a1f5-d5a5-809e71029aec@quicinc.com/
 
-> >                                                   That makes me wonder if this
-> > or other similar patches may uncover similar problems elsewhere in the kernel
-> > (i.e., either hide new or existing race conditions or expose existing ones).
-> > 
-> > This in turn makes me wonder if it would be possible to define a test which
-> > would uncover such problems without the START_DEBIT patch. Any idea ?
-> 
-> Thank you all for tracking this down!
-> 
-> One way is to put a schedule_timeout_idle(100) right before the call to
-> rcu_tasks_one_gp() from synchronize_rcu_tasks_generic().  That is quite
-> specific to this particular issue, but it does have the virtue of making
-> it actually happen in my testing.
-> 
-> There have been a few academic projects that inject delays at points
-> chosen by various heuristics plus some randomness.  But this would be
-> a bit of a challenge to those because each kernel only passes through
-> this window once at boot time.
-> 
-> Please see below for my preferred fix.  Does this work for you guys?
-> 
-> Back to figuring out why recent kernels occasionally to blow up all
-> rcutorture guest OSes...
-> 
-> 							Thanx, Paul
-> 
-> ------------------------------------------------------------------------
-> 
-> diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-> index 7294be62727b..2d5b8385c357 100644
-> --- a/kernel/rcu/tasks.h
-> +++ b/kernel/rcu/tasks.h
-> @@ -570,10 +570,12 @@ static void rcu_tasks_one_gp(struct rcu_tasks *rtp, bool midboot)
->  	if (unlikely(midboot)) {
->  		needgpcb = 0x2;
->  	} else {
-> +		mutex_unlock(&rtp->tasks_gp_mutex);
->  		set_tasks_gp_state(rtp, RTGS_WAIT_CBS);
->  		rcuwait_wait_event(&rtp->cbs_wait,
->  				   (needgpcb = rcu_tasks_need_gpcb(rtp)),
->  				   TASK_IDLE);
-> +		mutex_lock(&rtp->tasks_gp_mutex);
->  	}
->  
->  	if (needgpcb & 0x2) {
+ drivers/usb/dwc3/gadget.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 5fd067151fbf..858fe4c299b7 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4455,9 +4455,14 @@ static irqreturn_t dwc3_check_event_buf(struct dwc3_event_buffer *evt)
+ 	u32 count;
+ 
+ 	if (pm_runtime_suspended(dwc->dev)) {
++		dwc->pending_events = true;
++		/*
++		 * Trigger runtime resume. The get() function will be balanced
++		 * after processing the pending events in dwc3_process_pending
++		 * events().
++		 */
+ 		pm_runtime_get(dwc->dev);
+ 		disable_irq_nosync(dwc->irq_gadget);
+-		dwc->pending_events = true;
+ 		return IRQ_HANDLED;
+ 	}
+ 
+@@ -4718,6 +4723,8 @@ void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+ {
+ 	if (dwc->pending_events) {
+ 		dwc3_interrupt(dwc->irq_gadget, dwc->ev_buf);
++		dwc3_thread_interrupt(dwc->irq_gadget, dwc->ev_buf);
++		pm_runtime_put(dwc->dev);
+ 		dwc->pending_events = false;
+ 		enable_irq(dwc->irq_gadget);
+ 	}
+-- 
+2.17.1
+
