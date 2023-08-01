@@ -2,83 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1526F76C030
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 00:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B5D76C042
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 00:14:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232788AbjHAWK6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 18:10:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37156 "EHLO
+        id S231366AbjHAWOL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 18:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232294AbjHAWKs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 18:10:48 -0400
-Received: from mgamail.intel.com (unknown [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816AD212C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 15:10:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690927845; x=1722463845;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=2d4lG0fus+HJi8cGREN2Uz4QkdRHZi0TfIDeGkQenwA=;
-  b=UK7fwO+ep8Mmqpr9G2+lJJDFVBpY1FiXRD9p5fTpaBNfZIS8fFW6/B3P
-   pJYr2/9evnQ6SvyjnbuReUANc9nqFU/JPvZV8E1KfL5fcjr/bUviYSuS6
-   FUz+csTXMRs3nNGkYwfvpBWT5TVFujnOmqzPDBV6TEHnPR6qF8kgrDCqW
-   VytmpBFzRAvMp9Q/k9slng8PEIzxeNACuJ74nyFL0FLykCaS+tV8FwJz/
-   M73SBRUtvYUbm87CTr5Z4x1YrY6uBD9uUa8fawrRShlajP7Md0WSeIF6B
-   jw3cNjYYXJH25mys+n7ts8OKqqJHeQB9bSq4VTSxNZRTxWu+xyz5i+RzW
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="400370010"
-X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
-   d="scan'208";a="400370010"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2023 15:10:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="975449063"
-X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
-   d="scan'208";a="975449063"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 01 Aug 2023 15:10:44 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qQxZj-0000cl-1c;
-        Tue, 01 Aug 2023 22:10:43 +0000
-Date:   Wed, 2 Aug 2023 06:09:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Suren Baghdasaryan <surenb@google.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 2/6] mm: for !CONFIG_PER_VMA_LOCK equate write lock
- assertion for vma and mmap
-Message-ID: <ZMmCq3W7ayKzmZcD@11d7ca01dc46>
+        with ESMTP id S230514AbjHAWOK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 18:14:10 -0400
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF65419BE
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 15:14:09 -0700 (PDT)
+Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6bc8d1878a0so3531226a34.1
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 15:14:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690928049; x=1691532849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WpNjvdyqURVpJ2zUI1mEAiHbIdULXSwVnHK8BVQhnhU=;
+        b=4SMyoopMgqoEw0/F6B5MkJennZdxMY2EtGO2rfkv6UnELFUnWA5Vg6jl+P/m7tKwvd
+         2+FP33M7rwHe3mrVYq3RXK/tuUJ4kBPz76+GmvDDDo+Oe+d/qnTHjlMF1MxSKIEwRGMo
+         F00Hf+vxcbas/ajrgyfqBaPIlHeytFhZ5INR+Ax31S8hxpYRYFceOs32LgzCRI54TUEW
+         opSH1X7BJMeMX6cEQdUH9OqNvAJJ056NV2bdOpbnWGB0UWKih10N/g6Ozg9c0L7+T/8d
+         b4VvZRxjwLWgChBZ8uXy4ndGXEgOZOLFqe9ZNKlqHSZkYh3JtvscUZpj4pUPHWLMIVBT
+         tUDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690928049; x=1691532849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WpNjvdyqURVpJ2zUI1mEAiHbIdULXSwVnHK8BVQhnhU=;
+        b=AAnjF0GzIOht7dXExHDyrlasNxkhSw8QLqKIM7XVuD7WHJmDHmavbtN8boW8d0luSU
+         gtv6XnRqRcRdx33OqJ4ky61NKm55GFiS5l3j31/MIGnMAYOfF/OHO2CqdJ0sI8dL8OFY
+         8GBkL38nwIMtheaO+e3VpyJzR3BHLNqHfLXa0zv58+ZZ3+FCw6YXDOGV2MX8BLzmR+Uf
+         yGOxohrvXz8HvkpyFPWMkX/g16KYO7GFT6A6qazKqQ+zzFxA6c5x6vbWr7jV7R4V3Q8o
+         BW+gfEMXxHcvQHaAtYE/DSD+9K6ieavBNaYkG3e6mIh/fe5SQjxe/gO7/qndS/8zoj+0
+         FYlA==
+X-Gm-Message-State: ABy/qLYsYrL1Lbg32WLYh+bidn1WbqHES2cB1ihWjyoSHLu60MDhFzAL
+        9r/EAyeaAcDAnUO91MU618uT7CtiAlVTjxO+KMtCIg==
+X-Google-Smtp-Source: APBJJlE8GREzg52Zu/8+K0wDx3mHcyDe2LUEP4ybOfNAM7BlHzGg7YgywGt4VVG7BPJEVRJPtQHvkINFBy+onuKKviw=
+X-Received: by 2002:a05:6830:44a:b0:6b9:1917:b4af with SMTP id
+ d10-20020a056830044a00b006b91917b4afmr14757444otc.33.1690928048966; Tue, 01
+ Aug 2023 15:14:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230801220733.1987762-3-surenb@google.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230731171233.1098105-1-surenb@google.com> <20230731171233.1098105-2-surenb@google.com>
+ <CAHk-=wjEbJS3OhUu+2sV8Kft8GnGcsNFOhYhXYQuk5nvvqR-NQ@mail.gmail.com>
+ <CAJuCfpFWOknMsBmk1RwsX9_0-eZBoF+cy=P-E7xAmOWyeo4rvA@mail.gmail.com>
+ <CAHk-=wiFXOJ_6mnuP5h3ZKNM1+SBNZFZz9p8hyS8NaYUGLioEg@mail.gmail.com>
+ <CAJuCfpG4Yk65b=0TLfGRqrO7VpY3ZaYKqbBjEP+45ViC9zySVQ@mail.gmail.com>
+ <CAJuCfpF6WcJBSix0PD0cOD_MaeLpfGz1ddS6Ug_M+g0QTfkdzw@mail.gmail.com>
+ <ZMl6c+bVxdWW0YnN@x1n> <CAJuCfpG0zACcu3JrU4zWLT4rgOmTThm3N0FaHTsFthCxsBApkQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpG0zACcu3JrU4zWLT4rgOmTThm3N0FaHTsFthCxsBApkQ@mail.gmail.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Tue, 1 Aug 2023 15:13:56 -0700
+Message-ID: <CAJuCfpGN+YE+w08cmMw9py_QrPBWNMVG=JGt=3sAWPZKhmnDTg@mail.gmail.com>
+Subject: Re: [PATCH 1/6] mm: enable page walking API to lock vmas during the walk
+To:     Peter Xu <peterx@redhat.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        akpm@linux-foundation.org, jannh@google.com, willy@infradead.org,
+        liam.howlett@oracle.com, david@redhat.com, ldufour@linux.ibm.com,
+        vbabka@suse.cz, michel@lespinasse.org, jglisse@google.com,
+        mhocko@suse.com, hannes@cmpxchg.org, dave@stgolabs.net,
+        hughd@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Tue, Aug 1, 2023 at 2:46=E2=80=AFPM Suren Baghdasaryan <surenb@google.co=
+m> wrote:
+>
+> On Tue, Aug 1, 2023 at 2:34=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote=
+:
+> >
+> > On Tue, Aug 01, 2023 at 01:28:56PM -0700, Suren Baghdasaryan wrote:
+> > > I have the new patchset ready but I see 3 places where we walk the
+> > > pages after mmap_write_lock() while *I think* we can tolerate
+> > > concurrent page faults (don't need to lock the vmas):
+> > >
+> > > s390_enable_sie()
+> > > break_ksm()
+> > > clear_refs_write()
+> >
+> > This one doesn't look right to be listed - tlb flushing is postponed af=
+ter
+> > pgtable lock released, so I assume the same issue can happen like fork(=
+):
+> > where we can have race coditions to corrupt data if, e.g., thread A
+> > writting with a writable (unflushed) tlb, alongside with thread B CoWin=
+g.
+>
+> Ah, good point.
+>
+> >
+> > It'll indeed be nice to know whether break_ksm() can avoid that lock_vm=
+a
+> > parameter across quite a few function jumps. I don't yet see an immedia=
+te
+> > issue with this one..  No idea on s390_enable_sie(), but to make it sim=
+ple
+> > and safe I'd simply leave it with the write vma lock to match the mmap
+> > write lock.
+>
+> Thanks for taking a look, Peter!
+>
+> Ok, let me keep all three of them with vma locking in place to be safe
+> and will post v2 for further discussion.
 
-Thanks for your patch.
+v2 posted at https://lore.kernel.org/all/20230801220733.1987762-1-surenb@go=
+ogle.com/
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH v2 2/6] mm: for !CONFIG_PER_VMA_LOCK equate write lock assertion for vma and mmap
-Link: https://lore.kernel.org/stable/20230801220733.1987762-3-surenb%40google.com
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+> Thanks,
+> Suren.
+>
+> >
+> > Thanks,
+> >
+> > --
+> > Peter Xu
+> >
