@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 373B476AF64
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65A5776AD23
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233494AbjHAJrC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44896 "EHLO
+        id S231919AbjHAJ0q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233550AbjHAJqk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:40 -0400
+        with ESMTP id S232580AbjHAJ00 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8677AE63
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E172D53
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 099386150D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17068C433C8;
-        Tue,  1 Aug 2023 09:45:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D43D2614EF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF460C433C7;
+        Tue,  1 Aug 2023 09:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883121;
-        bh=jvYokCJ5F34jY8LlAShv27Ja7+q8Vny0G4oJvcQLrFk=;
+        s=korg; t=1690881911;
+        bh=SCnDX6zxS/BovP1ObVCNx8DgiNnWQyFjmD7rbAi92K4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MCpPCt0A9cB1pG4771s6M1RAUkXOTrwa4ila+nqOYtqN+2fMaey2eZyDux2EAJeJL
-         /cFF/Pny/dVWCJglIGFrwxSJkUlA6xGfMpyNicJmvv0BUNfjFlp8clJ3q6EsVLyUXf
-         x6/TqZ4DNAwyQM79xWBEIIonB0Pmz+ZrMU8WKfI4=
+        b=ZO5TClQF8nYmxObvVodnttKRUrY6sTWXNsFR8dYmMsfp2o/hWAwGLo3FDVhRj3TVY
+         dRhHDDfZLSnYoHatJybxaL88d4nd8SHXGFTrouSRCTc+ZYHDkcqfwMElvZZjspqSzx
+         ACNqbr3+yoysY8TZ4Cn+1qMQcTlP6khcjsr5NiLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 121/239] ASoC: fsl_spdif: Silence output on stop
+Subject: [PATCH 5.15 073/155] netfilter: nft_set_rbtree: fix overlap expiration walk
 Date:   Tue,  1 Aug 2023 11:19:45 +0200
-Message-ID: <20230801091930.081661428@linuxfoundation.org>
+Message-ID: <20230801091912.763128683@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matus Gajdos <matuszpd@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 0e4c2b6b0c4a4b4014d9424c27e5e79d185229c5 ]
+[ Upstream commit f718863aca469a109895cb855e6b81fff4827d71 ]
 
-Clear TX registers on stop to prevent the SPDIF interface from sending
-last written word over and over again.
+The lazy gc on insert that should remove timed-out entries fails to release
+the other half of the interval, if any.
 
-Fixes: a2388a498ad2 ("ASoC: fsl: Add S/PDIF CPU DAI driver")
-Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/r/20230719164729.19969-1-matuszpd@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Can be reproduced with tests/shell/testcases/sets/0044interval_overlap_0
+in nftables.git and kmemleak enabled kernel.
+
+Second bug is the use of rbe_prev vs. prev pointer.
+If rbe_prev() returns NULL after at least one iteration, rbe_prev points
+to element that is not an end interval, hence it should not be removed.
+
+Lastly, check the genmask of the end interval if this is active in the
+current generation.
+
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_spdif.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nft_set_rbtree.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 015c3708aa04e..3fd26f2cdd60f 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -751,6 +751,8 @@ static int fsl_spdif_trigger(struct snd_pcm_substream *substream,
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
- 		regmap_update_bits(regmap, REG_SPDIF_SCR, dmaen, 0);
- 		regmap_update_bits(regmap, REG_SPDIF_SIE, intr, 0);
-+		regmap_write(regmap, REG_SPDIF_STL, 0x0);
-+		regmap_write(regmap, REG_SPDIF_STR, 0x0);
- 		break;
- 	default:
- 		return -EINVAL;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 5c05c9b990fba..8d73fffd2d09d 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -217,29 +217,37 @@ static void *nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 
+ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 			      struct nft_rbtree *priv,
+-			      struct nft_rbtree_elem *rbe)
++			      struct nft_rbtree_elem *rbe,
++			      u8 genmask)
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+-	struct nft_rbtree_elem *rbe_prev = NULL;
++	struct nft_rbtree_elem *rbe_prev;
+ 	struct nft_set_gc_batch *gcb;
+ 
+ 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+ 	if (!gcb)
+ 		return -ENOMEM;
+ 
+-	/* search for expired end interval coming before this element. */
++	/* search for end interval coming before this element.
++	 * end intervals don't carry a timeout extension, they
++	 * are coupled with the interval start element.
++	 */
+ 	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+-		if (nft_rbtree_interval_end(rbe_prev))
++		if (nft_rbtree_interval_end(rbe_prev) &&
++		    nft_set_elem_active(&rbe_prev->ext, genmask))
+ 			break;
+ 
+ 		prev = rb_prev(prev);
+ 	}
+ 
+-	if (rbe_prev) {
++	if (prev) {
++		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
++
+ 		rb_erase(&rbe_prev->node, &priv->root);
+ 		atomic_dec(&set->nelems);
++		nft_set_gc_batch_add(gcb, rbe_prev);
+ 	}
+ 
+ 	rb_erase(&rbe->node, &priv->root);
+@@ -321,7 +329,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 
+ 		/* perform garbage collection to avoid bogus overlap reports. */
+ 		if (nft_set_elem_expired(&rbe->ext)) {
+-			err = nft_rbtree_gc_elem(set, priv, rbe);
++			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
+ 			if (err < 0)
+ 				return err;
+ 
 -- 
-2.40.1
+2.39.2
 
 
 
