@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C05076ADA5
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE1B76AEF9
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232573AbjHAJbH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58242 "EHLO
+        id S233410AbjHAJnp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:43:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232490AbjHAJaq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE24F2112
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:32 -0700 (PDT)
+        with ESMTP id S233411AbjHAJn1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 224205FFE
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74DDA614BB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AFCC433C8;
-        Tue,  1 Aug 2023 09:29:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1289E6150B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21647C433C9;
+        Tue,  1 Aug 2023 09:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882171;
-        bh=VWfNMe8kmAKFD6sqF8IDUl7cmA/NafciYJoUzMKftk0=;
+        s=korg; t=1690882871;
+        bh=WzHTNSA87HLxOruL4ex5cs3VyHc/Wppr3H1ANaX10Xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YufGKSb5Upo9KeX6a656uA0C+MRRNjHdPSum3KeuHSvAHqeOjb4pDem/AKIlZ/FTH
-         eOBmxuphNCdFBW/310Dj044NrMZ7TPoCCIfqtUg3p25tYrgg+j6OIEyRdu+b5eQSfh
-         mzEXtP+vdG082sKftC+In6hfQ096afK/wlDlZGu4=
+        b=V7YMaegcOKnoBZzd9/+LF5P9QFS53KnWFIhjj72Y4zoVCzgbvey3DjUnJ3em8ZrR0
+         3tfOsnb28yhPVcWUJA88outUQO7PFcSpyU659aCBx0pQbT8xLqT1AsmcmBY9xlxPge
+         7g7BT+X1gg8ozAzMVS0PImfbJ0ox5Af3/tdeGxMY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haren Myneni <haren@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/228] powerpc/pseries/vas: Hold mmap_mutex after mmap lock during window close
-Date:   Tue,  1 Aug 2023 11:17:49 +0200
-Message-ID: <20230801091923.243105710@linuxfoundation.org>
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 006/239] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
+Date:   Tue,  1 Aug 2023 11:17:50 +0200
+Message-ID: <20230801091925.877746747@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,85 +55,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit b59c9dc4d9d47b3c4572d826603fde507055b656 ]
+[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
 
-Commit 8ef7b9e1765a ("powerpc/pseries/vas: Close windows with DLPAR
-core removal") unmaps the window paste address and issues HCALL to
-close window in the hypervisor for migration or DLPAR core removal
-events. So holds mmap_mutex and then mmap lock before unmap the
-paste address. But if the user space issue mmap paste address at
-the same time with the migration event, coproc_mmap() is called
-after holding the mmap lock which can trigger deadlock when trying
-to acquire mmap_mutex in coproc_mmap().
+Following process,
 
-t1: mmap() call to mmap              t2: Migration event
-    window paste address
+jbd2_journal_commit_transaction
+// there are several dirty buffer heads in transaction->t_checkpoint_list
+          P1                   wb_workfn
+jbd2_log_do_checkpoint
+ if (buffer_locked(bh)) // false
+                            __block_write_full_page
+                             trylock_buffer(bh)
+                             test_clear_buffer_dirty(bh)
+ if (!buffer_dirty(bh))
+  __jbd2_journal_remove_checkpoint(jh)
+   if (buffer_write_io_error(bh)) // false
+                             >> bh IO error occurs <<
+ jbd2_cleanup_journal_tail
+  __jbd2_update_log_tail
+   jbd2_write_superblock
+   // The bh won't be replayed in next mount.
+, which could corrupt the ext4 image, fetch a reproducer in [Link].
 
-do_mmap2()                           migration_store()
- ksys_mmap_pgoff()                    pseries_migrate_partition()
-  vm_mmap_pgoff()                      vas_migration_handler()
-    Acquire mmap lock                   reconfig_close_windows()
-    do_mmap()                             lock mmap_mutex
-     mmap_region()                        Acquire mmap lock
-      call_mmap()                         //Wait for mmap lock
-       coproc_mmap()                        unmap vma
-         lock mmap_mutex                    update window status
-         //wait for mmap_mutex            Release mmap lock
-          mmap vma                        unlock mmap_mutex
-          update window status
-         unlock mmap_mutex
-    ...
-    Release mmap lock
+Since writeback process clears buffer dirty after locking buffer head,
+we can fix it by try locking buffer and check dirtiness while buffer is
+locked, the buffer head can be removed if it is neither dirty nor locked.
 
-Fix this deadlock issue by holding mmap lock first before mmap_mutex
-in reconfig_close_windows().
-
-Fixes: 8ef7b9e1765a ("powerpc/pseries/vas: Close windows with DLPAR core removal")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230716100506.7833-1-haren@linux.ibm.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/vas.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 880b962afc057..041a25c08066b 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -744,6 +744,12 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 25e3c20eb19f6..c4e0da6db7195 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -221,20 +221,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		jh = transaction->t_checkpoint_list;
+ 		bh = jh2bh(jh);
+ 
+-		/*
+-		 * The buffer may be writing back, or flushing out in the
+-		 * last couple of cycles, or re-adding into a new transaction,
+-		 * need to check it again until it's unlocked.
+-		 */
+-		if (buffer_locked(bh)) {
+-			get_bh(bh);
+-			spin_unlock(&journal->j_list_lock);
+-			wait_on_buffer(bh);
+-			/* the journal_head may have gone by now */
+-			BUFFER_TRACE(bh, "brelse");
+-			__brelse(bh);
+-			goto retry;
+-		}
+ 		if (jh->b_transaction != NULL) {
+ 			transaction_t *t = jh->b_transaction;
+ 			tid_t tid = t->t_tid;
+@@ -269,7 +255,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart;
  		}
- 
- 		task_ref = &win->vas_win.task_ref;
-+		/*
-+		 * VAS mmap (coproc_mmap()) and its fault handler
-+		 * (vas_mmap_fault()) are called after holding mmap lock.
-+		 * So hold mmap mutex after mmap_lock to avoid deadlock.
-+		 */
-+		mmap_write_lock(task_ref->mm);
- 		mutex_lock(&task_ref->mmap_mutex);
- 		vma = task_ref->vma;
- 		/*
-@@ -752,7 +758,6 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
- 		 */
- 		win->vas_win.status |= flag;
- 
--		mmap_write_lock(task_ref->mm);
- 		/*
- 		 * vma is set in the original mapping. But this mapping
- 		 * is done with mmap() after the window is opened with ioctl.
-@@ -763,8 +768,8 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
- 			zap_page_range(vma, vma->vm_start,
- 					vma->vm_end - vma->vm_start);
- 
--		mmap_write_unlock(task_ref->mm);
- 		mutex_unlock(&task_ref->mmap_mutex);
-+		mmap_write_unlock(task_ref->mm);
- 		/*
- 		 * Close VAS window in the hypervisor, but do not
- 		 * free vas_window struct since it may be reused
+-		if (!buffer_dirty(bh)) {
++		if (!trylock_buffer(bh)) {
++			/*
++			 * The buffer is locked, it may be writing back, or
++			 * flushing out in the last couple of cycles, or
++			 * re-adding into a new transaction, need to check
++			 * it again until it's unlocked.
++			 */
++			get_bh(bh);
++			spin_unlock(&journal->j_list_lock);
++			wait_on_buffer(bh);
++			/* the journal_head may have gone by now */
++			BUFFER_TRACE(bh, "brelse");
++			__brelse(bh);
++			goto retry;
++		} else if (!buffer_dirty(bh)) {
++			unlock_buffer(bh);
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+ 			/*
+ 			 * If the transaction was released or the checkpoint
+@@ -279,6 +280,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			    !transaction->t_checkpoint_list)
+ 				goto out;
+ 		} else {
++			unlock_buffer(bh);
+ 			/*
+ 			 * We are about to write the buffer, it could be
+ 			 * raced by some other transaction shrink or buffer
 -- 
 2.39.2
 
