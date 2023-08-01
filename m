@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C222676AFDB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04A9776AD9A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233761AbjHAJur (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50684 "EHLO
+        id S233017AbjHAJau (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:30:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232301AbjHAJub (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:50:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFD9BE63
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:50:03 -0700 (PDT)
+        with ESMTP id S232947AbjHAJab (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 953E312F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 308BD61511
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:50:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415F2C433C8;
-        Tue,  1 Aug 2023 09:50:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 233BE614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E924C433C8;
+        Tue,  1 Aug 2023 09:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883402;
-        bh=cyynMTo5YBF5jfRF6X7FmDbjoNjB5/8v+6KDqFskLwo=;
+        s=korg; t=1690882149;
+        bh=oXyexiuyzl/imbCi3gJuLASDfwpadoa8v4N9BIPj3/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Jx2fz1361xo0yL90zRC2y5W7E/O3VX4KM8jjtiZycCLpan8eHwSlfhlEnoLTBHmB
-         /UZfjP7a9JKmAwomTTRV7NXKSTYKFZTmDUpL6aBjRi4AXWqrz4SLYMcN7pGjwSDeqX
-         GG8UFPbq9J8ISEGbAe4FM0TxpUtD3fS9LXx9YpZA=
+        b=ngd/IUExMmsnMvaHlocaNAEyiBizJaPqpq+6WxihsoDCRVj3kj+v2On5oSyYaqIWq
+         e7k9puNIRWg2a13lbKOd6sz90y2/dgdnXMuDSZ58hLovGlPvl3LIAO5l3gHYe6z5/N
+         Gmu6jS2qImWRvm5UB1vqpcHPrwabOTKMfWhtHLi0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Steffen <Alexander.Steffen@infineon.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.4 195/239] tpm_tis: Explicitly check for error code
-Date:   Tue,  1 Aug 2023 11:20:59 +0200
-Message-ID: <20230801091932.756354216@linuxfoundation.org>
+        patches@lists.linux.dev, Tom Zanussi <zanussi@kernel.org>,
+        kernel test robot <lkp@intel.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 5.15 148/155] tracing: Fix trace_event_raw_event_synth() if else statement
+Date:   Tue,  1 Aug 2023 11:21:00 +0200
+Message-ID: <20230801091915.414167488@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Steffen <Alexander.Steffen@infineon.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 513253f8c293c0c8bd46d09d337fc892bf8f9f48 upstream.
+commit 9971c3f944489ff7aacb9d25e0cde841a5f6018a upstream.
 
-recv_data either returns the number of received bytes, or a negative value
-representing an error code. Adding the return value directly to the total
-number of received bytes therefore looks a little weird, since it might add
-a negative error code to a sum of bytes.
+The test to check if the field is a stack is to be done if it is not a
+string. But the code had:
 
-The following check for size < expected usually makes the function return
-ETIME in that case, so it does not cause too many problems in practice. But
-to make the code look cleaner and because the caller might still be
-interested in the original error code, explicitly check for the presence of
-an error code and pass that through.
+    } if (event->fields[i]->is_stack) {
 
-Cc: stable@vger.kernel.org
-Fixes: cb5354253af2 ("[PATCH] tpm: spacing cleanups 2")
-Signed-off-by: Alexander Steffen <Alexander.Steffen@infineon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+and not
+
+   } else if (event->fields[i]->is_stack) {
+
+which would cause it to always be tested. Worse yet, this also included an
+"else" statement that was only to be called if the field was not a string
+and a stack, but this code allows it to be called if it was a string (and
+not a stack).
+
+Also fixed some whitespace issues.
+
+Link: https://lore.kernel.org/all/202301302110.mEtNwkBD-lkp@intel.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20230131095237.63e3ca8d@gandalf.local.home
+
+Cc: Tom Zanussi <zanussi@kernel.org>
+Fixes: 00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_synth.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -366,8 +366,13 @@ static int tpm_tis_recv(struct tpm_chip
- 		goto out;
- 	}
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -557,8 +557,8 @@ static notrace void trace_event_raw_even
+ 					   event->fields[i]->is_dynamic,
+ 					   data_size, &n_u64);
+ 			data_size += len; /* only dynamic string increments */
+-		} if (event->fields[i]->is_stack) {
+-		        long *stack = (long *)(long)var_ref_vals[val_idx];
++		} else if (event->fields[i]->is_stack) {
++			long *stack = (long *)(long)var_ref_vals[val_idx];
  
--	size += recv_data(chip, &buf[TPM_HEADER_SIZE],
--			  expected - TPM_HEADER_SIZE);
-+	rc = recv_data(chip, &buf[TPM_HEADER_SIZE],
-+		       expected - TPM_HEADER_SIZE);
-+	if (rc < 0) {
-+		size = rc;
-+		goto out;
-+	}
-+	size += rc;
- 	if (size < expected) {
- 		dev_err(&chip->dev, "Unable to read remainder of result\n");
- 		size = -ETIME;
+ 			len = trace_stack(entry, event, stack,
+ 					   data_size, &n_u64);
 
 
