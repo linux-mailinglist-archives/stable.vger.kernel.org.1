@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8161176AF0E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C366F76ACD6
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:23:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233370AbjHAJoz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45450 "EHLO
+        id S231855AbjHAJXr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:23:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233454AbjHAJo2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84EF63582
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:54 -0700 (PDT)
+        with ESMTP id S231981AbjHAJXV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:23:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3524D30C2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65F2F6126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749ABC433C8;
-        Tue,  1 Aug 2023 09:41:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C338614FB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3343CC433C8;
+        Tue,  1 Aug 2023 09:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882913;
-        bh=SPxlo0SBPLH/rxOxd/VlpL3S+xzqvaZyiMPKbJvZYb4=;
+        s=korg; t=1690881727;
+        bh=etEUEnIIUuSVB7G64SER9qlxsSkk2hD9EdpDIej0PIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cULyHUD5YwHtHZ3n3h9v1xmY4VxmHvWLQBnyMJ+8hFEtiuVP4k1NC8d1BFeIG8WK/
-         3VNbTPb4k07sgsld4zSkZjn4YayLQTSBCPxLiC5bbQff2/9BCX8ImJC77UDgTa4l3c
-         teAdte5IBaR8DXfYX8zovt/gVPD7oTRIbmEDcOIk=
+        b=jvtU6sUgOAa8G0DgONaBG8xNxNE9ed7JBNkkEFNrYVE6hHL+TXswhUxnuZIesP2Wg
+         e+8vmd8yULC0gDhs2xQTZwtrCuOiQKY+3zkaRV9C57TsqvyRpfrNU1SZc0oXqCzh8/
+         fLsbCJVgwWKXMxwwz/FoPgVHrgMDIFmqqNZ431Q4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Zhang Yi <yi.zhang@huawei.com>, Theodore Tso <tytso@mit.edu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 048/239] jbd2: fix a race when checking checkpoint buffer busy
-Date:   Tue,  1 Aug 2023 11:18:32 +0200
-Message-ID: <20230801091927.295294043@linuxfoundation.org>
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 001/155] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
+Date:   Tue,  1 Aug 2023 11:18:33 +0200
+Message-ID: <20230801091910.214783607@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -55,148 +57,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 46f881b5b1758dc4a35fba4a643c10717d0cf427 ]
+[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
 
-Before removing checkpoint buffer from the t_checkpoint_list, we have to
-check both BH_Dirty and BH_Lock bits together to distinguish buffers
-have not been or were being written back. But __cp_buffer_busy() checks
-them separately, it first check lock state and then check dirty, the
-window between these two checks could be raced by writing back
-procedure, which locks buffer and clears buffer dirty before I/O
-completes. So it cannot guarantee checkpointing buffers been written
-back to disk if some error happens later. Finally, it may clean
-checkpoint transactions and lead to inconsistent filesystem.
+Following process,
 
-jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
-same problem (journal_unmap_buffer() escape from this issue since it's
-running under the buffer lock), so fix them through introducing a new
-helper to try holding the buffer lock and remove really clean buffer.
+jbd2_journal_commit_transaction
+// there are several dirty buffer heads in transaction->t_checkpoint_list
+          P1                   wb_workfn
+jbd2_log_do_checkpoint
+ if (buffer_locked(bh)) // false
+                            __block_write_full_page
+                             trylock_buffer(bh)
+                             test_clear_buffer_dirty(bh)
+ if (!buffer_dirty(bh))
+  __jbd2_journal_remove_checkpoint(jh)
+   if (buffer_write_io_error(bh)) // false
+                             >> bh IO error occurs <<
+ jbd2_cleanup_journal_tail
+  __jbd2_update_log_tail
+   jbd2_write_superblock
+   // The bh won't be replayed in next mount.
+, which could corrupt the ext4 image, fetch a reproducer in [Link].
+
+Since writeback process clears buffer dirty after locking buffer head,
+we can fix it by try locking buffer and check dirtiness while buffer is
+locked, the buffer head can be removed if it is neither dirty nor locked.
 
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
+Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
+Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c  | 38 +++++++++++++++++++++++++++++++++++---
- fs/jbd2/transaction.c | 17 +++++------------
- include/linux/jbd2.h  |  1 +
- 3 files changed, 41 insertions(+), 15 deletions(-)
+ fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
 diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 42b34cab64fbd..9ec91017a7f3c 100644
+index fe8bb031b7d7f..d2aba55833f92 100644
 --- a/fs/jbd2/checkpoint.c
 +++ b/fs/jbd2/checkpoint.c
-@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 		jh = next_jh;
- 		next_jh = jh->b_cpnext;
+@@ -221,20 +221,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		jh = transaction->t_checkpoint_list;
+ 		bh = jh2bh(jh);
  
--		if (!destroy && __cp_buffer_busy(jh))
--			continue;
-+		if (destroy) {
-+			ret = __jbd2_journal_remove_checkpoint(jh);
-+		} else {
-+			ret = jbd2_journal_try_remove_checkpoint(jh);
-+			if (ret < 0)
-+				continue;
-+		}
- 
- 		nr_freed++;
--		ret = __jbd2_journal_remove_checkpoint(jh);
- 		if (ret) {
- 			*released = true;
- 			break;
-@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 	return 1;
- }
- 
-+/*
-+ * Check the checkpoint buffer and try to remove it from the checkpoint
-+ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
-+ * it frees the transaction, 0 otherwise.
-+ *
-+ * This function is called with j_list_lock held.
-+ */
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
-+{
-+	struct buffer_head *bh = jh2bh(jh);
-+
-+	if (!trylock_buffer(bh))
-+		return -EBUSY;
-+	if (buffer_dirty(bh)) {
-+		unlock_buffer(bh);
-+		return -EBUSY;
-+	}
-+	unlock_buffer(bh);
-+
-+	/*
-+	 * Buffer is clean and the IO has finished (we held the buffer
-+	 * lock) so the checkpoint is done. We can safely remove the
-+	 * buffer from this transaction.
-+	 */
-+	JBUFFER_TRACE(jh, "remove from checkpoint list");
-+	return __jbd2_journal_remove_checkpoint(jh);
-+}
-+
- /*
-  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
-  * list so that we know when it is safe to clean the transaction out of
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index 18611241f4513..6ef5022949c46 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1784,8 +1784,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
- 		 * Otherwise, if the buffer has been written to disk,
- 		 * it is safe to remove the checkpoint and drop it.
- 		 */
--		if (!buffer_dirty(bh)) {
--			__jbd2_journal_remove_checkpoint(jh);
-+		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
- 			spin_unlock(&journal->j_list_lock);
- 			goto drop;
+-		/*
+-		 * The buffer may be writing back, or flushing out in the
+-		 * last couple of cycles, or re-adding into a new transaction,
+-		 * need to check it again until it's unlocked.
+-		 */
+-		if (buffer_locked(bh)) {
+-			get_bh(bh);
+-			spin_unlock(&journal->j_list_lock);
+-			wait_on_buffer(bh);
+-			/* the journal_head may have gone by now */
+-			BUFFER_TRACE(bh, "brelse");
+-			__brelse(bh);
+-			goto retry;
+-		}
+ 		if (jh->b_transaction != NULL) {
+ 			transaction_t *t = jh->b_transaction;
+ 			tid_t tid = t->t_tid;
+@@ -269,7 +255,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart;
  		}
-@@ -2112,20 +2111,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
- 
- 	jh = bh2jh(bh);
- 
--	if (buffer_locked(bh) || buffer_dirty(bh))
--		goto out;
--
- 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
--		goto out;
-+		return;
- 
- 	spin_lock(&journal->j_list_lock);
--	if (jh->b_cp_transaction != NULL) {
--		/* written-back checkpointed metadata buffer */
--		JBUFFER_TRACE(jh, "remove from checkpoint list");
--		__jbd2_journal_remove_checkpoint(jh);
--	}
-+	/* Remove written-back checkpointed metadata buffer */
-+	if (jh->b_cp_transaction != NULL)
-+		jbd2_journal_try_remove_checkpoint(jh);
- 	spin_unlock(&journal->j_list_lock);
--out:
- 	return;
- }
- 
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index 91a2cf4bc5756..c212da35a052c 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1443,6 +1443,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
- void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
- unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
- int __jbd2_journal_remove_checkpoint(struct journal_head *);
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
- void jbd2_journal_destroy_checkpoint(journal_t *journal);
- void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
- 
+-		if (!buffer_dirty(bh)) {
++		if (!trylock_buffer(bh)) {
++			/*
++			 * The buffer is locked, it may be writing back, or
++			 * flushing out in the last couple of cycles, or
++			 * re-adding into a new transaction, need to check
++			 * it again until it's unlocked.
++			 */
++			get_bh(bh);
++			spin_unlock(&journal->j_list_lock);
++			wait_on_buffer(bh);
++			/* the journal_head may have gone by now */
++			BUFFER_TRACE(bh, "brelse");
++			__brelse(bh);
++			goto retry;
++		} else if (!buffer_dirty(bh)) {
++			unlock_buffer(bh);
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+ 			/*
+ 			 * If the transaction was released or the checkpoint
+@@ -279,6 +280,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			    !transaction->t_checkpoint_list)
+ 				goto out;
+ 		} else {
++			unlock_buffer(bh);
+ 			/*
+ 			 * We are about to write the buffer, it could be
+ 			 * raced by some other transaction shrink or buffer
 -- 
 2.39.2
 
