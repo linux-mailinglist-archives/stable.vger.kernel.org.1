@@ -2,44 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E4DC76AEB2
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D25D276AEB4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233290AbjHAJkx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39580 "EHLO
+        id S233353AbjHAJlB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:41:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233269AbjHAJkh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:37 -0400
+        with ESMTP id S233228AbjHAJkm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF70035B1
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A1249E5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D23B614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B96C433C8;
-        Tue,  1 Aug 2023 09:38:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6BCD61507
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C59C433C8;
+        Tue,  1 Aug 2023 09:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882707;
-        bh=zUJcbluYz7jkBnCTbhh7PZPnRrSGm44td9h0ivLaLhM=;
+        s=korg; t=1690882713;
+        bh=TVORKfXwLGfddHDv9j3C7863sVnGBVkq2BWq3blA7e8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U/ADt/NCWc1g5HgWKaAO6J7CfpLfz+mlECpdDsZiwD7vUx8qRCF3qjfUq2/tNaHMn
-         Fj1KrgMEkobX7ygW6pniY4Fka7aRCua564BEtib3dMfLl/oUFIRCUoWWsBxrIEOdVQ
-         p7h8Y7aLo1muw7S0i6p3lAxG+OQnwtctoQUqz2wk=
+        b=QqX1gb7NdukT59yqHAcnaHAe2CjBVonXLD1kYSgVYrAZt6KLEsMKpbU8G/YCfE0pe
+         AcEQWQrkPmPi2yMsScnPLVAul8ESk62XhNZqqrqr6E23JMNanxsRjyVYSaETgnamiq
+         dbrHi01gzioUka0SslqG6Vug/TJjxR6pCAhqMK3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Rander Wang <rander.wang@linux.intel.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 202/228] soundwire: fix enumeration completion
-Date:   Tue,  1 Aug 2023 11:21:00 +0200
-Message-ID: <20230801091930.165657580@linuxfoundation.org>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        kernel test robot <lkp@intel.com>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Herve Codina <herve.codina@bootlin.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Richard Weinberger <richard@nod.at>,
+        Yang Guang <yang.guang5@zte.com.cn>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 203/228] Revert "um: Use swap() to make code cleaner"
+Date:   Tue,  1 Aug 2023 11:21:01 +0200
+Message-ID: <20230801091930.206809090@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
 References: <20230801091922.799813980@linuxfoundation.org>
@@ -57,70 +63,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit c40d6b3249b11d60e09d81530588f56233d9aa44 upstream.
+commit dddfa05eb58076ad60f9a66e7155a5b3502b2dd5 upstream.
 
-The soundwire subsystem uses two completion structures that allow
-drivers to wait for soundwire device to become enumerated on the bus and
-initialised by their drivers, respectively.
+This reverts commit 9b0da3f22307af693be80f5d3a89dc4c7f360a85.
 
-The code implementing the signalling is currently broken as it does not
-signal all current and future waiters and also uses the wrong
-reinitialisation function, which can potentially lead to memory
-corruption if there are still waiters on the queue.
+The sigio.c is clearly user space code which is handled by
+arch/um/scripts/Makefile.rules (see USER_OBJS rule).
 
-Not signalling future waiters specifically breaks sound card probe
-deferrals as codec drivers can not tell that the soundwire device is
-already attached when being reprobed. Some codec runtime PM
-implementations suffer from similar problems as waiting for enumeration
-during resume can also timeout despite the device already having been
-enumerated.
+The above mentioned commit simply broke this agreement,
+we may not use Linux kernel internal headers in them without
+thorough thinking.
 
-Fixes: fb9469e54fa7 ("soundwire: bus: fix race condition with enumeration_complete signaling")
-Fixes: a90def068127 ("soundwire: bus: fix race condition with initialization_complete signaling")
-Cc: stable@vger.kernel.org      # 5.7
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: Rander Wang <rander.wang@linux.intel.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230705123018.30903-2-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Hence, revert the wrong commit.
+
+Link: https://lkml.kernel.org/r/20230724143131.30090-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307212304.cH79zJp1-lkp@intel.com/
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Herve Codina <herve.codina@bootlin.com>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Yang Guang <yang.guang5@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/bus.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/um/os-Linux/sigio.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -884,8 +884,8 @@ static void sdw_modify_slave_status(stru
- 			"initializing enumeration and init completion for Slave %d\n",
- 			slave->dev_num);
+--- a/arch/um/os-Linux/sigio.c
++++ b/arch/um/os-Linux/sigio.c
+@@ -3,7 +3,6 @@
+  * Copyright (C) 2002 - 2008 Jeff Dike (jdike@{addtoit,linux.intel}.com)
+  */
  
--		init_completion(&slave->enumeration_complete);
--		init_completion(&slave->initialization_complete);
-+		reinit_completion(&slave->enumeration_complete);
-+		reinit_completion(&slave->initialization_complete);
+-#include <linux/minmax.h>
+ #include <unistd.h>
+ #include <errno.h>
+ #include <fcntl.h>
+@@ -51,7 +50,7 @@ static struct pollfds all_sigio_fds;
  
- 	} else if ((status == SDW_SLAVE_ATTACHED) &&
- 		   (slave->status == SDW_SLAVE_UNATTACHED)) {
-@@ -893,7 +893,7 @@ static void sdw_modify_slave_status(stru
- 			"signaling enumeration completion for Slave %d\n",
- 			slave->dev_num);
- 
--		complete(&slave->enumeration_complete);
-+		complete_all(&slave->enumeration_complete);
- 	}
- 	slave->status = status;
- 	mutex_unlock(&bus->bus_lock);
-@@ -1916,7 +1916,7 @@ int sdw_handle_slave_status(struct sdw_b
- 				"signaling initialization completion for Slave %d\n",
- 				slave->dev_num);
- 
--			complete(&slave->initialization_complete);
-+			complete_all(&slave->initialization_complete);
- 
- 			/*
- 			 * If the manager became pm_runtime active, the peripherals will be
+ static int write_sigio_thread(void *unused)
+ {
+-	struct pollfds *fds;
++	struct pollfds *fds, tmp;
+ 	struct pollfd *p;
+ 	int i, n, respond_fd;
+ 	char c;
+@@ -78,7 +77,9 @@ static int write_sigio_thread(void *unus
+ 					       "write_sigio_thread : "
+ 					       "read on socket failed, "
+ 					       "err = %d\n", errno);
+-				swap(current_poll, next_poll);
++				tmp = current_poll;
++				current_poll = next_poll;
++				next_poll = tmp;
+ 				respond_fd = sigio_private[1];
+ 			}
+ 			else {
 
 
