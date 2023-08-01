@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4AD76AE08
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFF9476AF21
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231627AbjHAJft (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
+        id S233520AbjHAJpS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233032AbjHAJfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6700A116
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:12 -0700 (PDT)
+        with ESMTP id S233532AbjHAJpC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3789116
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2E20613E2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58A9C433C7;
-        Tue,  1 Aug 2023 09:33:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 41EAF614FD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F990C433C8;
+        Tue,  1 Aug 2023 09:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882391;
-        bh=LQxBeP3jiXLti73sf7JueMSehpo0kMd32jrw08jXhxA=;
+        s=korg; t=1690882988;
+        bh=zlsbGVw4/akM9I92cWfwDGj2+5b37FkNefnSw4Cm/u8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H816bgaqKX9vzbLe7MZQjAsKO3gRF9PrsZDlhai4lv9X4uZbzt7soyYkzzO6jaSLx
-         p5JpFHlOUW8Xy5cDxxSDxconS/t9eXHw0dPFAewfrrptfQ7hEYoti57X6IO83g/asQ
-         rv31zC+GfdijecXN4BsCdaufW7czivl8pw1c5VL8=
+        b=PYo5aeTvc7PrQSPqRspTcO0HNbmUKq7eGjh8jcdgJzrBxiZw8XHuFu66dxLtqUxB7
+         rEuA5ivnlbFPS2TTxt0DXSgHWFDD1STnkz1x1ktTMgwun4sxwSN50B5hK4VZCiktrj
+         JZo9gUM7EFN5m5p73X4XslY+Vo2AKS7rr6OgB1Gg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 081/228] i40e: Fix an NULL vs IS_ERR() bug for debugfs_create_dir()
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 075/239] ethernet: atheros: fix return value check in atl1e_tso_csum()
 Date:   Tue,  1 Aug 2023 11:18:59 +0200
-Message-ID: <20230801091925.767330872@linuxfoundation.org>
+Message-ID: <20230801091928.400545404@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang Ming <machel@vivo.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 043b1f185fb0f3939b7427f634787706f45411c4 ]
+[ Upstream commit 69a184f7a372aac588babfb0bd681aaed9779f5b ]
 
-The debugfs_create_dir() function returns error pointers.
-It never returns NULL. Most incorrect error checks were fixed,
-but the one in i40e_dbg_init() was forgotten.
+in atl1e_tso_csum, it should check the return value of pskb_trim(),
+and return an error code if an unexpected value is returned
+by pskb_trim().
 
-Fix the remaining error check.
-
-Fixes: 02e9c290814c ("i40e: debugfs interface")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230720144219.39285-1-ruc_gongyuanjun@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-index 9954493cd4489..62497f5565c59 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-@@ -1839,7 +1839,7 @@ void i40e_dbg_pf_exit(struct i40e_pf *pf)
- void i40e_dbg_init(void)
- {
- 	i40e_dbg_root = debugfs_create_dir(i40e_driver_name, NULL);
--	if (!i40e_dbg_root)
-+	if (IS_ERR(i40e_dbg_root))
- 		pr_info("init of debugfs failed\n");
- }
+diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+index 5db0f3495a32e..5935be190b9e2 100644
+--- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
++++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+@@ -1641,8 +1641,11 @@ static int atl1e_tso_csum(struct atl1e_adapter *adapter,
+ 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
+ 					+ ntohs(ip_hdr(skb)->tot_len));
  
+-			if (real_len < skb->len)
+-				pskb_trim(skb, real_len);
++			if (real_len < skb->len) {
++				err = pskb_trim(skb, real_len);
++				if (err)
++					return err;
++			}
+ 
+ 			hdr_len = skb_tcp_all_headers(skb);
+ 			if (unlikely(skb->len == hdr_len)) {
 -- 
 2.39.2
 
