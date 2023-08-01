@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3ACB76AE22
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92AC976AF3E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233064AbjHAJgP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35220 "EHLO
+        id S233615AbjHAJqL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232883AbjHAJf5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B33852728
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:10 -0700 (PDT)
+        with ESMTP id S233614AbjHAJp4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0E22D7B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36581614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E02C433C9;
-        Tue,  1 Aug 2023 09:34:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CF3F614FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7FFC433C7;
+        Tue,  1 Aug 2023 09:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882449;
-        bh=8l0xQ4SbPGo3979oqp0KS2xm9KZ2g41JpJcmL6rI3M8=;
+        s=korg; t=1690883065;
+        bh=H2poTrPZzfwau/81M7CFMAeFmbKZ+ib77jUqK2qh7EQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wuqTh4dlMljD8tO77NTD7DSC2NfbKKd8b5xllIZmw1+VxU7itJ3cUlKT76ktlT8yj
-         T8qZgmN+pTkzKhdD8SJnEcinGMiB9HX11vXwLmxRnEGqQ7Iaacmsvth+KN64WFbtJ4
-         Vqic8G5DUsQPNFRsnoxhwZ4MF3sYgYUmEGagh6bs=
+        b=1RzGihk4/H+Vhj4ITt+78l/MysifHEDEBOy4/MqTe462TqZbajqG5ijKJP8xjxI7q
+         EpG6PVNQVtA9TAot2Tgv28PSLTLjojU79ujUOwBf7v9OqiOOB7gyN6e+7YVJQYsrdZ
+         Vop3fyfEF4IEHvxmFjZKEzjJd4c/FO6Itl51IwBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/228] net/sched: mqprio: refactor nlattr parsing to a separate function
+Subject: [PATCH 6.4 103/239] drm/msm/dsi: Drop unused regulators from QCM2290 14nm DSI PHY config
 Date:   Tue,  1 Aug 2023 11:19:27 +0200
-Message-ID: <20230801091926.729169957@linuxfoundation.org>
+Message-ID: <20230801091929.425356250@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,165 +58,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit feb2cf3dcfb930aec2ca65c66d1365543d5ba943 ]
+[ Upstream commit 97368254a08e2ca4766e7f84a45840230fe77fa3 ]
 
-mqprio_init() is quite large and unwieldy to add more code to.
-Split the netlink attribute parsing to a dedicated function.
+The regulator setup was likely copied from other SoCs by mistake.  Just
+like SM6125 the DSI PHY on this platform is not getting power from a
+regulator but from the MX power domain.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
+Fixes: 572e9fd6d14a ("drm/msm/dsi: Add phy configuration for QCM2290")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/544536/
+Link: https://lore.kernel.org/r/20230627-sm6125-dpu-v2-1-03e430a2078c@somainline.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_mqprio.c | 114 +++++++++++++++++++++++------------------
- 1 file changed, 63 insertions(+), 51 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
-index 9f26fb7d5823c..166b22601e60f 100644
---- a/net/sched/sch_mqprio.c
-+++ b/net/sched/sch_mqprio.c
-@@ -130,6 +130,67 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
+index 3ce45b023e637..31deda1c664ad 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
+@@ -1087,8 +1087,6 @@ const struct msm_dsi_phy_cfg dsi_phy_14nm_8953_cfgs = {
  
-+static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
-+			       struct nlattr *opt)
-+{
-+	struct mqprio_sched *priv = qdisc_priv(sch);
-+	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
-+	struct nlattr *attr;
-+	int i, rem, err;
-+
-+	err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
-+			 sizeof(*qopt));
-+	if (err < 0)
-+		return err;
-+
-+	if (!qopt->hw)
-+		return -EINVAL;
-+
-+	if (tb[TCA_MQPRIO_MODE]) {
-+		priv->flags |= TC_MQPRIO_F_MODE;
-+		priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
-+	}
-+
-+	if (tb[TCA_MQPRIO_SHAPER]) {
-+		priv->flags |= TC_MQPRIO_F_SHAPER;
-+		priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
-+	}
-+
-+	if (tb[TCA_MQPRIO_MIN_RATE64]) {
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+			return -EINVAL;
-+		i = 0;
-+		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
-+				    rem) {
-+			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
-+				return -EINVAL;
-+			if (i >= qopt->num_tc)
-+				break;
-+			priv->min_rate[i] = *(u64 *)nla_data(attr);
-+			i++;
-+		}
-+		priv->flags |= TC_MQPRIO_F_MIN_RATE;
-+	}
-+
-+	if (tb[TCA_MQPRIO_MAX_RATE64]) {
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+			return -EINVAL;
-+		i = 0;
-+		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
-+				    rem) {
-+			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
-+				return -EINVAL;
-+			if (i >= qopt->num_tc)
-+				break;
-+			priv->max_rate[i] = *(u64 *)nla_data(attr);
-+			i++;
-+		}
-+		priv->flags |= TC_MQPRIO_F_MAX_RATE;
-+	}
-+
-+	return 0;
-+}
-+
- static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 		       struct netlink_ext_ack *extack)
- {
-@@ -139,9 +200,6 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 	struct Qdisc *qdisc;
- 	int i, err = -EOPNOTSUPP;
- 	struct tc_mqprio_qopt *qopt = NULL;
--	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
--	struct nlattr *attr;
--	int rem;
- 	int len;
- 
- 	BUILD_BUG_ON(TC_MAX_QUEUE != TC_QOPT_MAX_QUEUE);
-@@ -166,55 +224,9 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
- 	if (len > 0) {
--		err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
--				 sizeof(*qopt));
--		if (err < 0)
-+		err = mqprio_parse_nlattr(sch, qopt, opt);
-+		if (err)
- 			return err;
--
--		if (!qopt->hw)
--			return -EINVAL;
--
--		if (tb[TCA_MQPRIO_MODE]) {
--			priv->flags |= TC_MQPRIO_F_MODE;
--			priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
--		}
--
--		if (tb[TCA_MQPRIO_SHAPER]) {
--			priv->flags |= TC_MQPRIO_F_SHAPER;
--			priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
--		}
--
--		if (tb[TCA_MQPRIO_MIN_RATE64]) {
--			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
--				return -EINVAL;
--			i = 0;
--			nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
--					    rem) {
--				if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
--					return -EINVAL;
--				if (i >= qopt->num_tc)
--					break;
--				priv->min_rate[i] = *(u64 *)nla_data(attr);
--				i++;
--			}
--			priv->flags |= TC_MQPRIO_F_MIN_RATE;
--		}
--
--		if (tb[TCA_MQPRIO_MAX_RATE64]) {
--			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
--				return -EINVAL;
--			i = 0;
--			nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
--					    rem) {
--				if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
--					return -EINVAL;
--				if (i >= qopt->num_tc)
--					break;
--				priv->max_rate[i] = *(u64 *)nla_data(attr);
--				i++;
--			}
--			priv->flags |= TC_MQPRIO_F_MAX_RATE;
--		}
- 	}
- 
- 	/* pre-allocate qdisc, attachment can't fail */
+ const struct msm_dsi_phy_cfg dsi_phy_14nm_2290_cfgs = {
+ 	.has_phy_lane = true,
+-	.regulator_data = dsi_phy_14nm_17mA_regulators,
+-	.num_regulators = ARRAY_SIZE(dsi_phy_14nm_17mA_regulators),
+ 	.ops = {
+ 		.enable = dsi_14nm_phy_enable,
+ 		.disable = dsi_14nm_phy_disable,
 -- 
-2.39.2
+2.40.1
 
 
 
