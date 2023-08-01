@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A35D376AF1F
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9074D76AE00
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233529AbjHAJpR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45270 "EHLO
+        id S232912AbjHAJf2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233085AbjHAJpB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47E8D10FB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:04 -0700 (PDT)
+        with ESMTP id S233104AbjHAJfF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E0249E6
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C55826150E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D022DC433C9;
-        Tue,  1 Aug 2023 09:43:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FCF6614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A551C433C8;
+        Tue,  1 Aug 2023 09:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882983;
-        bh=FKETtIGiRZMkTO/5Th+CynsEyIVqlGHnWV2RWNTMr4k=;
+        s=korg; t=1690882369;
+        bh=dci2bKciuwYVLegmOvoWCH11Vq/mmHGrhbIDkxbTAHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1iT7Cw41PbTLaCazW779iYb16q4AmQxmnAu1fKdw7YHL4/czbumKG5Nhv2FBpNtuS
-         n/ZT7UZzNPRW/vdXqtwUa/vU55+/Gi9NMHiJ/cjRd1anq4y4JNAV4cZSPYfYc1Vi4g
-         j1RcoII1XxwaylgaOmijvXh1HyaKg/SNSj4+mHPU=
+        b=s8y/goZ3wvgujitYROLRwSfchdoYaFNA1v5xt+A07JQpYAJxpRoG5J42Oc5VmDFF9
+         uj+AJq2tPmlSN4QlTH37u+iul7I4lRt5ioZfWsOz30PEjPOKFModo05g7hFgoA8JTY
+         TH6RRn2Sgzth4e5WXyzPd8ajkt+fEHebfAVQ35/c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 073/239] phy: hisilicon: Fix an out of bounds check in hisi_inno_phy_probe()
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 079/228] media: staging: atomisp: select V4L2_FWNODE
 Date:   Tue,  1 Aug 2023 11:18:57 +0200
-Message-ID: <20230801091928.324734139@linuxfoundation.org>
+Message-ID: <20230801091925.688088297@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,42 +58,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 13c088cf3657d70893d75cf116be937f1509cc0f ]
+[ Upstream commit bf4c985707d3168ebb7d87d15830de66949d979c ]
 
-The size of array 'priv->ports[]' is INNO_PHY_PORT_NUM.
+Select V4L2_FWNODE as the driver depends on it.
 
-In the for loop, 'i' is used as the index for array 'priv->ports[]'
-with a check (i > INNO_PHY_PORT_NUM) which indicates that
-INNO_PHY_PORT_NUM is allowed value for 'i' in the same loop.
-
-This > comparison needs to be changed to >=, otherwise it potentially leads
-to an out of bounds write on the next iteration through the loop
-
-Fixes: ba8b0ee81fbb ("phy: add inno-usb2-phy driver for hi3798cv200 SoC")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Link: https://lore.kernel.org/r/20230721090558.3588613-1-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: aa31f6514047 ("media: atomisp: allow building the driver again")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/hisilicon/phy-hisi-inno-usb2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/atomisp/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/hisilicon/phy-hisi-inno-usb2.c b/drivers/phy/hisilicon/phy-hisi-inno-usb2.c
-index b133ae06757ab..a922fb11a1092 100644
---- a/drivers/phy/hisilicon/phy-hisi-inno-usb2.c
-+++ b/drivers/phy/hisilicon/phy-hisi-inno-usb2.c
-@@ -158,7 +158,7 @@ static int hisi_inno_phy_probe(struct platform_device *pdev)
- 		phy_set_drvdata(phy, &priv->ports[i]);
- 		i++;
- 
--		if (i > INNO_PHY_PORT_NUM) {
-+		if (i >= INNO_PHY_PORT_NUM) {
- 			dev_warn(dev, "Support %d ports in maximum\n", i);
- 			of_node_put(child);
- 			break;
+diff --git a/drivers/staging/media/atomisp/Kconfig b/drivers/staging/media/atomisp/Kconfig
+index 2c8d7fdcc5f7a..4881b6ea5237e 100644
+--- a/drivers/staging/media/atomisp/Kconfig
++++ b/drivers/staging/media/atomisp/Kconfig
+@@ -13,6 +13,7 @@ config VIDEO_ATOMISP
+ 	tristate "Intel Atom Image Signal Processor Driver"
+ 	depends on VIDEO_DEV && INTEL_ATOMISP
+ 	depends on PMIC_OPREGION
++	select V4L2_FWNODE
+ 	select IOSF_MBI
+ 	select VIDEOBUF_VMALLOC
+ 	select VIDEO_V4L2_SUBDEV_API
 -- 
 2.39.2
 
