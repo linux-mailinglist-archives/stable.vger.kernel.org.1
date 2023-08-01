@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F8A76ADE4
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D17476AF17
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233116AbjHAJeT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35002 "EHLO
+        id S233488AbjHAJpD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233062AbjHAJd6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:58 -0400
+        with ESMTP id S232818AbjHAJot (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AE4330C2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2EF94693
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B8523614F5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9CCC433C7;
-        Tue,  1 Aug 2023 09:31:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86C9E6126D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98841C433C8;
+        Tue,  1 Aug 2023 09:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882313;
-        bh=2CG576ViaiLpcBDLXsoSiNTrNQLMAZ1567NyUuZM4HU=;
+        s=korg; t=1690882936;
+        bh=CRWiTi9rthkFyDOcPNkIBtgksJKhMHKs1lqq/6hGH/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wc4EZcXbuOU7Ldy7q0HMN/i3EZn5PrOCFLy7cvGxsFg2DFwAcf+YaevW3F9V6I3f2
-         trc1qDr10rZDBO3uMYp6A00dMUn7tPTdY/TC2H5syV6jcWuGITs09fPtRrBF2ebuEt
-         Uec5TGhNU4WuSXYAFchRlQ3fYK8kX84HfA4u7ang=
+        b=eAZ9i+PIG5iRnGqemw0cw2xHBUiIvQ7i+FMaJTIkW1oieRK4wzbp3cFUYdWLOzfq0
+         NpUnktH0PpAhQgAV9QvYmNMiqi/jMDPtZsVTnwdeb3TiMKXwVotL8pXYegMjvdVVPn
+         Y8bzsBTEhyMyK3w4MgKX5Y00EQXQhhQ5Errlxd7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/228] tracing/probes: Fix to record 0-length data_loc in fetch_store_string*() if fails
+        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 055/239] phy: qcom-snps-femto-v2: properly enable ref clock
 Date:   Tue,  1 Aug 2023 11:18:39 +0200
-Message-ID: <20230801091925.061926571@linuxfoundation.org>
+Message-ID: <20230801091927.515653187@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,106 +54,171 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Adrien Thierry <athierry@redhat.com>
 
-[ Upstream commit 797311bce5c2ac90b8d65e357603cfd410d36ebb ]
+[ Upstream commit 8a0eb8f9b9a002291a3934acfd913660b905249e ]
 
-Fix to record 0-length data to data_loc in fetch_store_string*() if it fails
-to get the string data.
-Currently those expect that the data_loc is updated by store_trace_args() if
-it returns the error code. However, that does not work correctly if the
-argument is an array of strings. In that case, store_trace_args() only clears
-the first entry of the array (which may have no error) and leaves other
-entries. So it should be cleared by fetch_store_string*() itself.
-Also, 'dyndata' and 'maxlen' in store_trace_args() should be updated
-only if it is used (ret > 0 and argument is a dynamic data.)
+The driver is not enabling the ref clock, which thus gets disabled by
+the clk_disable_unused() initcall. This leads to the dwc3 controller
+failing to initialize if probed after clk_disable_unused() is called,
+for instance when the driver is built as a module.
 
-Link: https://lore.kernel.org/all/168908496683.123124.4761206188794205601.stgit@devnote2/
+To fix this, switch to the clk_bulk API to handle both cfg_ahb and ref
+clocks at the proper places.
 
-Fixes: 40b53b771806 ("tracing: probeevent: Add array type support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Note that the cfg_ahb clock is currently not used by any device tree
+instantiation of the PHY. Work needs to be done separately to fix this.
+
+Link: https://lore.kernel.org/linux-arm-msm/ZEqvy+khHeTkC2hf@fedora/
+Fixes: 51e8114f80d0 ("phy: qcom-snps: Add SNPS USB PHY driver for QCOM based SOCs")
+Signed-off-by: Adrien Thierry <athierry@redhat.com>
+Link: https://lore.kernel.org/r/20230629144542.14906-3-athierry@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe_kernel.h | 13 +++++++++----
- kernel/trace/trace_probe_tmpl.h   | 10 +++-------
- kernel/trace/trace_uprobe.c       |  3 ++-
- 3 files changed, 14 insertions(+), 12 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 63 ++++++++++++++-----
+ 1 file changed, 48 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/trace/trace_probe_kernel.h b/kernel/trace/trace_probe_kernel.h
-index 1d43df29a1f8e..2da70be83831c 100644
---- a/kernel/trace/trace_probe_kernel.h
-+++ b/kernel/trace/trace_probe_kernel.h
-@@ -37,6 +37,13 @@ kern_fetch_store_strlen(unsigned long addr)
- 	return (ret < 0) ? ret : len;
- }
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index 3335480fc395a..6170f8fd118e2 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -110,11 +110,13 @@ struct phy_override_seq {
+ /**
+  * struct qcom_snps_hsphy - snps hs phy attributes
+  *
++ * @dev: device structure
++ *
+  * @phy: generic phy
+  * @base: iomapped memory space for snps hs phy
+  *
+- * @cfg_ahb_clk: AHB2PHY interface clock
+- * @ref_clk: phy reference clock
++ * @num_clks: number of clocks
++ * @clks: array of clocks
+  * @phy_reset: phy reset control
+  * @vregs: regulator supplies bulk data
+  * @phy_initialized: if PHY has been initialized correctly
+@@ -122,11 +124,13 @@ struct phy_override_seq {
+  * @update_seq_cfg: tuning parameters for phy init
+  */
+ struct qcom_snps_hsphy {
++	struct device *dev;
++
+ 	struct phy *phy;
+ 	void __iomem *base;
  
-+static nokprobe_inline void set_data_loc(int ret, void *dest, void *__dest, void *base)
+-	struct clk *cfg_ahb_clk;
+-	struct clk *ref_clk;
++	int num_clks;
++	struct clk_bulk_data *clks;
+ 	struct reset_control *phy_reset;
+ 	struct regulator_bulk_data vregs[SNPS_HS_NUM_VREGS];
+ 
+@@ -135,6 +139,34 @@ struct qcom_snps_hsphy {
+ 	struct phy_override_seq update_seq_cfg[NUM_HSPHY_TUNING_PARAMS];
+ };
+ 
++static int qcom_snps_hsphy_clk_init(struct qcom_snps_hsphy *hsphy)
 +{
-+	if (ret < 0)
-+		ret = 0;
-+	*(u32 *)dest = make_data_loc(ret, __dest - base);
++	struct device *dev = hsphy->dev;
++
++	hsphy->num_clks = 2;
++	hsphy->clks = devm_kcalloc(dev, hsphy->num_clks, sizeof(*hsphy->clks), GFP_KERNEL);
++	if (!hsphy->clks)
++		return -ENOMEM;
++
++	/*
++	 * TODO: Currently no device tree instantiation of the PHY is using the clock.
++	 * This needs to be fixed in order for this code to be able to use devm_clk_bulk_get().
++	 */
++	hsphy->clks[0].id = "cfg_ahb";
++	hsphy->clks[0].clk = devm_clk_get_optional(dev, "cfg_ahb");
++	if (IS_ERR(hsphy->clks[0].clk))
++		return dev_err_probe(dev, PTR_ERR(hsphy->clks[0].clk),
++				     "failed to get cfg_ahb clk\n");
++
++	hsphy->clks[1].id = "ref";
++	hsphy->clks[1].clk = devm_clk_get(dev, "ref");
++	if (IS_ERR(hsphy->clks[1].clk))
++		return dev_err_probe(dev, PTR_ERR(hsphy->clks[1].clk),
++				     "failed to get ref clk\n");
++
++	return 0;
 +}
 +
- /*
-  * Fetch a null-terminated string from user. Caller MUST set *(u32 *)buf
-  * with max length and relative data location.
-@@ -55,8 +62,7 @@ kern_fetch_store_string_user(unsigned long addr, void *dest, void *base)
- 	__dest = get_loc_data(dest, base);
+ static inline void qcom_snps_hsphy_write_mask(void __iomem *base, u32 offset,
+ 						u32 mask, u32 val)
+ {
+@@ -365,16 +397,16 @@ static int qcom_snps_hsphy_init(struct phy *phy)
+ 	if (ret)
+ 		return ret;
  
- 	ret = strncpy_from_user_nofault(__dest, uaddr, maxlen);
--	if (ret >= 0)
--		*(u32 *)dest = make_data_loc(ret, __dest - base);
-+	set_data_loc(ret, dest, __dest, base);
- 
- 	return ret;
- }
-@@ -87,8 +93,7 @@ kern_fetch_store_string(unsigned long addr, void *dest, void *base)
- 	 * probing.
- 	 */
- 	ret = strncpy_from_kernel_nofault(__dest, (void *)addr, maxlen);
--	if (ret >= 0)
--		*(u32 *)dest = make_data_loc(ret, __dest - base);
-+	set_data_loc(ret, dest, __dest, base);
- 
- 	return ret;
- }
-diff --git a/kernel/trace/trace_probe_tmpl.h b/kernel/trace/trace_probe_tmpl.h
-index 98ac09052fea4..3e2f5a43b974c 100644
---- a/kernel/trace/trace_probe_tmpl.h
-+++ b/kernel/trace/trace_probe_tmpl.h
-@@ -247,13 +247,9 @@ store_trace_args(void *data, struct trace_probe *tp, void *rec,
- 		if (unlikely(arg->dynamic))
- 			*dl = make_data_loc(maxlen, dyndata - base);
- 		ret = process_fetch_insn(arg->code, rec, dl, base);
--		if (arg->dynamic) {
--			if (unlikely(ret < 0)) {
--				*dl = make_data_loc(0, dyndata - base);
--			} else {
--				dyndata += ret;
--				maxlen -= ret;
--			}
-+		if (arg->dynamic && likely(ret > 0)) {
-+			dyndata += ret;
-+			maxlen -= ret;
- 		}
+-	ret = clk_prepare_enable(hsphy->cfg_ahb_clk);
++	ret = clk_bulk_prepare_enable(hsphy->num_clks, hsphy->clks);
+ 	if (ret) {
+-		dev_err(&phy->dev, "failed to enable cfg ahb clock, %d\n", ret);
++		dev_err(&phy->dev, "failed to enable clocks, %d\n", ret);
+ 		goto poweroff_phy;
  	}
- }
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index fb58e86dd1178..2ac06a642863a 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -170,7 +170,8 @@ fetch_store_string(unsigned long addr, void *dest, void *base)
- 			 */
- 			ret++;
- 		*(u32 *)dest = make_data_loc(ret, (void *)dst - base);
--	}
-+	} else
-+		*(u32 *)dest = make_data_loc(0, (void *)dst - base);
  
- 	return ret;
- }
+ 	ret = reset_control_assert(hsphy->phy_reset);
+ 	if (ret) {
+ 		dev_err(&phy->dev, "failed to assert phy_reset, %d\n", ret);
+-		goto disable_ahb_clk;
++		goto disable_clks;
+ 	}
+ 
+ 	usleep_range(100, 150);
+@@ -382,7 +414,7 @@ static int qcom_snps_hsphy_init(struct phy *phy)
+ 	ret = reset_control_deassert(hsphy->phy_reset);
+ 	if (ret) {
+ 		dev_err(&phy->dev, "failed to de-assert phy_reset, %d\n", ret);
+-		goto disable_ahb_clk;
++		goto disable_clks;
+ 	}
+ 
+ 	qcom_snps_hsphy_write_mask(hsphy->base, USB2_PHY_USB_PHY_CFG0,
+@@ -439,8 +471,8 @@ static int qcom_snps_hsphy_init(struct phy *phy)
+ 
+ 	return 0;
+ 
+-disable_ahb_clk:
+-	clk_disable_unprepare(hsphy->cfg_ahb_clk);
++disable_clks:
++	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
+ poweroff_phy:
+ 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
+ 
+@@ -452,7 +484,7 @@ static int qcom_snps_hsphy_exit(struct phy *phy)
+ 	struct qcom_snps_hsphy *hsphy = phy_get_drvdata(phy);
+ 
+ 	reset_control_assert(hsphy->phy_reset);
+-	clk_disable_unprepare(hsphy->cfg_ahb_clk);
++	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
+ 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
+ 	hsphy->phy_initialized = false;
+ 
+@@ -545,14 +577,15 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
+ 	if (!hsphy)
+ 		return -ENOMEM;
+ 
++	hsphy->dev = dev;
++
+ 	hsphy->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(hsphy->base))
+ 		return PTR_ERR(hsphy->base);
+ 
+-	hsphy->ref_clk = devm_clk_get(dev, "ref");
+-	if (IS_ERR(hsphy->ref_clk))
+-		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
+-				     "failed to get ref clk\n");
++	ret = qcom_snps_hsphy_clk_init(hsphy);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to initialize clocks\n");
+ 
+ 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (IS_ERR(hsphy->phy_reset)) {
 -- 
 2.39.2
 
