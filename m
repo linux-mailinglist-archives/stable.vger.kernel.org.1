@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E49C876AE23
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D8076AF24
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233163AbjHAJgS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35240 "EHLO
+        id S233552AbjHAJpT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233161AbjHAJgA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:00 -0400
+        with ESMTP id S229567AbjHAJpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5AE52D44
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D9BE67
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A7AD613E2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4461DC433C7;
-        Tue,  1 Aug 2023 09:34:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C2967614FD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9EDC433C7;
+        Tue,  1 Aug 2023 09:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882452;
-        bh=qzmJOWR/rSdkwTgbT8onOxhUNTVa0tv09CNeEJ2Gkko=;
+        s=korg; t=1690882994;
+        bh=HF6LJzTsgj8wqrivNMyfSoNxfQIBKK01D4RgUqrW7cE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tfGOQzUEAggHw4+k5RWGPVffF1fvrC+++20lXmaSZTftoCay1MlzWRncc9csBt3lD
-         4/mlTHagpmemmu1QaRZo0lJcEFax/InJh1ZooXKUBWccPGVWOi5lYjxtMOFhPe6lcD
-         lkbt0kxa+1TqxtDLed0jNnNGgUXTxutBJwNht0ZQ=
+        b=l5QoXiL26b+ZkGHoUh0TZx1jBK4hOKpeSqFaxRI47PCWpt/wQuCcI89bMcp9ZM6jg
+         FAD1bUcczkKzSuEhBL/1a1Rb4zlS9Kheco8LpqOnL+VuDDQZpHEgn2d5jV0eStxq5m
+         mM1SYX6VaGn5VJDyhDNZBOXp1i0DvhLJBQDF2ioA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Wei Fang <wei.fang@nxp.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/228] iavf: check for removal state before IAVF_FLAG_PF_COMMS_FAILED
+Subject: [PATCH 6.4 077/239] net: fec: avoid tx queue timeout when XDP is enabled
 Date:   Tue,  1 Aug 2023 11:19:01 +0200
-Message-ID: <20230801091925.844908211@linuxfoundation.org>
+Message-ID: <20230801091928.481935768@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,57 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 91896c8acce23d33ed078cffd46a9534b1f82be5 ]
+[ Upstream commit bb7a0156365dffe2fcd63e2051145fbe4f8908b4 ]
 
-In iavf_adminq_task(), if the function can't acquire the
-adapter->crit_lock, it checks if the driver is removing. If so, it simply
-exits without re-enabling the interrupt. This is done to ensure that the
-task stops processing as soon as possible once the driver is being removed.
+According to the implementation of XDP of FEC driver, the XDP path
+shares the transmit queues with the kernel network stack, so it is
+possible to lead to a tx timeout event when XDP uses the tx queue
+pretty much exclusively. And this event will cause the reset of the
+FEC hardware.
+To avoid timeout in this case, we use the txq_trans_cond_update()
+interface to update txq->trans_start to jiffies so that watchdog
+won't generate a transmit timeout warning.
 
-However, if the IAVF_FLAG_PF_COMMS_FAILED is set, the function checks this
-before attempting to acquire the lock. In this case, the function exits
-early and re-enables the interrupt. This will happen even if the driver is
-already removing.
-
-Avoid this, by moving the check to after the adapter->crit_lock is
-acquired. This way, if the driver is removing, we will not re-enable the
-interrupt.
-
-Fixes: fc2e6b3b132a ("iavf: Rework mutexes for better synchronisation")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 6d6b39f180b8 ("net: fec: add initial XDP support")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://lore.kernel.org/r/20230721083559.2857312-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 650a969a69a14..22bc57ee24228 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -3286,9 +3286,6 @@ static void iavf_adminq_task(struct work_struct *work)
- 	u32 val, oldval;
- 	u16 pending;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 7659888a96917..a1b0abe54a0e5 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3908,6 +3908,8 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
  
--	if (adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)
--		goto out;
--
- 	if (!mutex_trylock(&adapter->crit_lock)) {
- 		if (adapter->state == __IAVF_REMOVE)
- 			return;
-@@ -3297,6 +3294,9 @@ static void iavf_adminq_task(struct work_struct *work)
- 		goto out;
- 	}
+ 	__netif_tx_lock(nq, cpu);
  
-+	if (adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)
-+		goto unlock;
-+
- 	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
- 	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
- 	if (!event.msg_buf)
++	/* Avoid tx timeout as XDP shares the queue with kernel stack */
++	txq_trans_cond_update(nq);
+ 	for (i = 0; i < num_frames; i++) {
+ 		if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) != 0)
+ 			break;
 -- 
 2.39.2
 
