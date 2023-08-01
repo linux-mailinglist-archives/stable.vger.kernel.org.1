@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C20076AF31
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A572F76AE0E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233227AbjHAJpc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45370 "EHLO
+        id S232854AbjHAJfw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233492AbjHAJpO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:14 -0400
+        with ESMTP id S233125AbjHAJfa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062A72139
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3AB01BC7
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C54F6150E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88380C433B8;
-        Tue,  1 Aug 2023 09:43:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 508D7614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C470C433C9;
+        Tue,  1 Aug 2023 09:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883029;
-        bh=4RkXQ/cpYQTA4qoN1lOpq68AzvAQRfWxxa0hjcGRXto=;
+        s=korg; t=1690882407;
+        bh=E8DF4MfJvtia93EL9Lpqx9Uk8kGY85mfVdH9H2GUNrU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PNUhKazgZB/Rp9wyrDy3N7vhvLMrImXMxcjxW6Sv8ZjFQ+F5/KspPUYSOx4aPw8X0
-         aHuKfWziR7nEOJakZDEVAlZm4cUIYZkFP+OuAO6Xnb4B0YDBldFDPDGumy7uDcleDM
-         NyIkyEr42j8FZgqOlH1dufiylo0RVVEjzaF3PQkQ=
+        b=aq9EuX5mQju7IuOB6jxyyht8nyKFj6+mt+0oyT7srbmLBxh2k2FmaC+2bf89ZUy4P
+         w6pmMce7EPG30HtQE7vkH7IlRbNsMHdeLneBVbwBjotGnhi8jRQXum3QH5oCiV45SR
+         znacJli4bzBAV0n/ukTUK0qgvS1CbnQibDkLEGuE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Stewart Smith <trawets@amazon.com>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 089/239] netfilter: nf_tables: skip immediate deactivate in _PREPARE_ERROR
+Subject: [PATCH 6.1 095/228] tcp: Reduce chance of collisions in inet6_hashfn().
 Date:   Tue,  1 Aug 2023 11:19:13 +0200
-Message-ID: <20230801091928.938959332@linuxfoundation.org>
+Message-ID: <20230801091926.272109638@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,87 +58,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Stewart Smith <trawets@amazon.com>
 
-[ Upstream commit 0a771f7b266b02d262900c75f1e175c7fe76fec2 ]
+[ Upstream commit d11b0df7ddf1831f3e170972f43186dad520bfcc ]
 
-On error when building the rule, the immediate expression unbinds the
-chain, hence objects can be deactivated by the transaction records.
+For both IPv4 and IPv6 incoming TCP connections are tracked in a hash
+table with a hash over the source & destination addresses and ports.
+However, the IPv6 hash is insufficient and can lead to a high rate of
+collisions.
 
-Otherwise, it is possible to trigger the following warning:
+The IPv6 hash used an XOR to fit everything into the 96 bits for the
+fast jenkins hash, meaning it is possible for an external entity to
+ensure the hash collides, thus falling back to a linear search in the
+bucket, which is slow.
 
- WARNING: CPU: 3 PID: 915 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
- CPU: 3 PID: 915 Comm: chain-bind-err- Not tainted 6.1.39 #1
- RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+We take the approach of hash the full length of IPv6 address in
+__ipv6_addr_jhash() so that all users can benefit from a more secure
+version.
 
-Fixes: 4bedf9eee016 ("netfilter: nf_tables: fix chain binding transaction logic")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+While this may look like it adds overhead, the reality of modern CPUs
+means that this is unmeasurable in real world scenarios.
+
+In simulating with llvm-mca, the increase in cycles for the hashing
+code was ~16 cycles on Skylake (from a base of ~155), and an extra ~9
+on Nehalem (base of ~173).
+
+In commit dd6d2910c5e0 ("netfilter: conntrack: switch to siphash")
+netfilter switched from a jenkins hash to a siphash, but even the faster
+hsiphash is a more significant overhead (~20-30%) in some preliminary
+testing.  So, in this patch, we keep to the more conservative approach to
+ensure we don't add much overhead per SYN.
+
+In testing, this results in a consistently even spread across the
+connection buckets.  In both testing and real-world scenarios, we have
+not found any measurable performance impact.
+
+Fixes: 08dcdbf6a7b9 ("ipv6: use a stronger hash for tcp")
+Signed-off-by: Stewart Smith <trawets@amazon.com>
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230721222410.17914-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_immediate.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ include/net/ipv6.h | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
-index 407d7197f75bb..fccb3cf7749c1 100644
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -125,15 +125,27 @@ static void nft_immediate_activate(const struct nft_ctx *ctx,
- 	return nft_data_hold(&priv->data, nft_dreg_to_type(priv->dreg));
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index d383c895592a9..e4ceef687c1c2 100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -718,12 +718,8 @@ static inline u32 ipv6_addr_hash(const struct in6_addr *a)
+ /* more secured version of ipv6_addr_hash() */
+ static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const u32 initval)
+ {
+-	u32 v = (__force u32)a->s6_addr32[0] ^ (__force u32)a->s6_addr32[1];
+-
+-	return jhash_3words(v,
+-			    (__force u32)a->s6_addr32[2],
+-			    (__force u32)a->s6_addr32[3],
+-			    initval);
++	return jhash2((__force const u32 *)a->s6_addr32,
++		      ARRAY_SIZE(a->s6_addr32), initval);
  }
  
-+static void nft_immediate_chain_deactivate(const struct nft_ctx *ctx,
-+					   struct nft_chain *chain,
-+					   enum nft_trans_phase phase)
-+{
-+	struct nft_ctx chain_ctx;
-+	struct nft_rule *rule;
-+
-+	chain_ctx = *ctx;
-+	chain_ctx.chain = chain;
-+
-+	list_for_each_entry(rule, &chain->rules, list)
-+		nft_rule_expr_deactivate(&chain_ctx, rule, phase);
-+}
-+
- static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 				     const struct nft_expr *expr,
- 				     enum nft_trans_phase phase)
- {
- 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
- 	const struct nft_data *data = &priv->data;
--	struct nft_ctx chain_ctx;
- 	struct nft_chain *chain;
--	struct nft_rule *rule;
- 
- 	if (priv->dreg == NFT_REG_VERDICT) {
- 		switch (data->verdict.code) {
-@@ -143,20 +155,17 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 			if (!nft_chain_binding(chain))
- 				break;
- 
--			chain_ctx = *ctx;
--			chain_ctx.chain = chain;
--
--			list_for_each_entry(rule, &chain->rules, list)
--				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
--
- 			switch (phase) {
- 			case NFT_TRANS_PREPARE_ERROR:
- 				nf_tables_unbind_chain(ctx, chain);
--				fallthrough;
-+				nft_deactivate_next(ctx->net, chain);
-+				break;
- 			case NFT_TRANS_PREPARE:
-+				nft_immediate_chain_deactivate(ctx, chain, phase);
- 				nft_deactivate_next(ctx->net, chain);
- 				break;
- 			default:
-+				nft_immediate_chain_deactivate(ctx, chain, phase);
- 				nft_chain_del(chain);
- 				chain->bound = false;
- 				nft_use_dec(&chain->table->use);
+ static inline bool ipv6_addr_loopback(const struct in6_addr *a)
 -- 
 2.39.2
 
