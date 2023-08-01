@@ -2,50 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 023D076AF0B
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB0476ADFF
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233435AbjHAJoq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
+        id S233121AbjHAJfX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233223AbjHAJoW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABEF3593
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:47 -0700 (PDT)
+        with ESMTP id S233085AbjHAJep (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A924233
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B94F614FD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290D1C433C8;
-        Tue,  1 Aug 2023 09:41:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C79BA614F5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DF2C433C7;
+        Tue,  1 Aug 2023 09:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882905;
-        bh=nNuiOaKqtBeLM+JfogWZTQsSR86XZdFAN1n7h6vgWIk=;
+        s=korg; t=1690882366;
+        bh=ikO7GB8FLZXT4H2WBGojcJwoQ58k/aJxg+ra0J05E7c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DwLg60uZR1vVocd8Chet/3rlEDv87yc4MjhjAdx4fXXwKkyi7QYbkmuirPQ48MDjH
-         tqdzjtJcR54GLGR5yaexctcS26UNJ2eo9E42jkyUCwP6QI7hsKTptgqFFCAprh3zDF
-         zrNbZLl2IWL0qda7VbkWJfXC3tgsry6ioJn70WG4=
+        b=BWrsAJhykczTmTRHZBwz/DMV3y6u98V+t5Hfv2rGxrYRhc3a5Dc0aHr94E+Zsp/38
+         CnCSQYTMCvOJgX9pEpMjfIVcwZzjisvTEE7C1aJmDK7y8bDV7nRXruOR1CgOAzs0kS
+         3etd/4gQvPTpigmU0LWH5lZ+no9g4f782viRmOZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Alan Liu <haoping.liu@amd.com>,
-        Daniel Miess <daniel.miess@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 045/239] drm/amd/display: Prevent vtotal from being set to 0
-Date:   Tue,  1 Aug 2023 11:18:29 +0200
-Message-ID: <20230801091927.201063460@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>, Pelloux-Prayer@vger.kernel.org
+Subject: [PATCH 6.1 052/228] drm/ttm: never consider pinned BOs for eviction&swap
+Date:   Tue,  1 Aug 2023 11:18:30 +0200
+Message-ID: <20230801091924.780239870@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,49 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Miess <daniel.miess@amd.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 2a9482e55968ed7368afaa9c2133404069117320 ]
+[ Upstream commit a2848d08742c8e8494675892c02c0d22acbe3cf8 ]
 
-[Why]
-In dcn314 DML the destination pipe vtotal was being set
-to the crtc adjustment vtotal_min value even in cases
-where that value is 0.
+There is a small window where we have already incremented the pin count
+but not yet moved the bo from the lru to the pinned list.
 
-[How]
-Only set vtotal to the crtc adjustment vtotal_min value
-in cases where the value is non-zero.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reported-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
+Tested-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Alan Liu <haoping.liu@amd.com>
-Signed-off-by: Daniel Miess <daniel.miess@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230707120826.3701-1-christian.koenig@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/ttm/ttm_bo.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 554152371eb53..b878effa2129b 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -300,7 +300,11 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
- 		pipe = &res_ctx->pipe_ctx[i];
- 		timing = &pipe->stream->timing;
+diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+index 1c891b5839316..f7aeeee6f5266 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -550,6 +550,12 @@ static bool ttm_bo_evict_swapout_allowable(struct ttm_buffer_object *bo,
+ {
+ 	bool ret = false;
  
--		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
-+		if (pipe->stream->adjust.v_total_min != 0)
-+			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
-+		else
-+			pipes[pipe_cnt].pipe.dest.vtotal = timing->v_total;
++	if (bo->pin_count) {
++		*locked = false;
++		*busy = false;
++		return false;
++	}
 +
- 		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
- 		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
- 		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
+ 	if (bo->base.resv == ctx->resv) {
+ 		dma_resv_assert_held(bo->base.resv);
+ 		if (ctx->allow_res_evict)
 -- 
 2.39.2
 
