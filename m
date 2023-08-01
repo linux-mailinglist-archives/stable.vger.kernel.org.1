@@ -2,160 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF75276BADA
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB7C76BAF1
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:17:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232437AbjHARLV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 13:11:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
+        id S232498AbjHARRO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 13:17:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234357AbjHARLT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:11:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06DEA2736
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 10:10:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690909800;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1l/TRXWCo6q5BSenRhC8N4s4Tp9EqB26+z+WAcvOc7U=;
-        b=EHC0cy1NGM8LvfN+M805RlRYXXZdK0COGgZvs/Tzpw9PQf2GPfFj6SacQxOTdElZxc1om7
-        1HLQOJaAOrxN9nkF12P/WPKBFAgfgpiyC95nwm/o1Ur+HgitlRnj/5jt7f133Qm9Bo01GP
-        UeKsqq4yGpYuyVCKMg5sAudA25pjzWg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-C5QR33pSMCaK6yQwSbGQ-w-1; Tue, 01 Aug 2023 13:09:58 -0400
-X-MC-Unique: C5QR33pSMCaK6yQwSbGQ-w-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fe19cf2796so20691755e9.0
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 10:09:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690909797; x=1691514597;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1l/TRXWCo6q5BSenRhC8N4s4Tp9EqB26+z+WAcvOc7U=;
-        b=i3OJ5CbOZqjysokmCy7pfQKGUq7xeAfIx5IBlHwpY0AAZ1SpF1RKN9jdxdr2u0RSmk
-         Khr5aGakAjZDXei1MpRfJ9gvhbmSco1Ed1n3W8giMugylGGOgbiAhPF7k9Ux3/lpEMIL
-         miuSa/BfZpzOYsTTMUkQWxcQdl7FcP8p21D5Xv4zW/BY9ml2xVSM2FQnCOHx7ooCR9nt
-         3BFks+GE9cGv+TOaJmLpzErKqx9CZbB9P0k8U3Lt66QXe79J+iN8O5BjsfM7WdWBg/Ba
-         hAISn9SA7o72IrBtINlBIWh356SkmS0hh0/2a6yAHlcu5FsaHAcGV9lqWqpfzaoGhCeJ
-         FcLQ==
-X-Gm-Message-State: ABy/qLa0cQCGqhJVfWSKVEX4H4qMGnQIhJb4JmvkbnQGjV0snFJmmdix
-        /gb4fpXnwkF9dZpB+jcnbIVRxXFqACu3RxhxdyPRVNBy7yJrwFgaV5sNbTVsJsA8jYOUtyW9cEF
-        0CgRgTz7L2qFTV9OBION4byp2
-X-Received: by 2002:a7b:cc9a:0:b0:3fc:e1:24b5 with SMTP id p26-20020a7bcc9a000000b003fc00e124b5mr2894756wma.23.1690909797590;
-        Tue, 01 Aug 2023 10:09:57 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEy+R1U+qIKux7XS+l+xQITmSgyj55taDV+mQEkAlldXw1fmNp7lyrJvX5NkSWlbviyLnW9yw==
-X-Received: by 2002:a7b:cc9a:0:b0:3fc:e1:24b5 with SMTP id p26-20020a7bcc9a000000b003fc00e124b5mr2894727wma.23.1690909797209;
-        Tue, 01 Aug 2023 10:09:57 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c705:d100:871b:ec55:67d:5247? (p200300cbc705d100871bec55067d5247.dip0.t-ipconnect.de. [2003:cb:c705:d100:871b:ec55:67d:5247])
-        by smtp.gmail.com with ESMTPSA id z17-20020a05600c221100b003fe24441e23sm4361391wml.24.2023.08.01.10.09.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Aug 2023 10:09:56 -0700 (PDT)
-Message-ID: <d0edd1f3-4bad-f55a-e4f5-e202bc9d09f5@redhat.com>
-Date:   Tue, 1 Aug 2023 19:09:55 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/8] mm/gup: reintroduce FOLL_NUMA as
- FOLL_HONOR_NUMA_FAULT
-Content-Language: en-US
-To:     Peter Xu <peterx@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        liubo <liubo254@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Mel Gorman <mgorman@suse.de>, Shuah Khan <shuah@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org
-References: <20230801124844.278698-1-david@redhat.com>
- <20230801124844.278698-2-david@redhat.com> <ZMkpM95vdc9wgs9T@x1n>
- <30d86a2d-4af2-d840-91be-2e68c73a07bd@redhat.com> <ZMk7MqApTDZXzwKX@x1n>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <ZMk7MqApTDZXzwKX@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232155AbjHARRN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:17:13 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98FB2100;
+        Tue,  1 Aug 2023 10:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=n2VmzUQFn6cFV/kGZ1sLa3YSYX+PxGH4bL1ntE15zIw=; b=GahSqfs+RS7g361NfzoHIiEII1
+        hjeOwpOjVBcqZoVkfjmYCAEVWMU0CYy2PYO7V6rlgWFSlbp4jrGUgBm2cdRurYU4/atjXY7gLoD38
+        ykiEsnQEcSwvkk9oY67DTuuOZkMRJU1hNik4B1ExjKcOve6pp+V0MdE3Bn7GijKoyekE=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:39594 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qQszR-0000xr-4b; Tue, 01 Aug 2023 13:16:58 -0400
+Date:   Tue, 1 Aug 2023 13:16:55 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org,
+        Ilpo =?ISO-8859-1?Q?J?= =?ISO-8859-1?Q?=E4rvinen?= 
+        <ilpo.jarvinen@linux.intel.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Message-Id: <20230801131655.80bd8f97f018dda6155d65f6@hugovil.com>
+In-Reply-To: <2023073148-marshy-extenuate-2d45@gregkh>
+References: <20230725142343.1724130-1-hugo@hugovil.com>
+        <20230725142343.1724130-2-hugo@hugovil.com>
+        <2023073148-marshy-extenuate-2d45@gregkh>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v9 01/10] serial: sc16is7xx: fix broken port 0 uart init
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 01.08.23 19:04, Peter Xu wrote:
-> On Tue, Aug 01, 2023 at 06:15:48PM +0200, David Hildenbrand wrote:
->> On 01.08.23 17:48, Peter Xu wrote:
->>> On Tue, Aug 01, 2023 at 02:48:37PM +0200, David Hildenbrand wrote:
->>>> @@ -2240,6 +2244,12 @@ static bool is_valid_gup_args(struct page **pages, int *locked,
->>>>    		gup_flags |= FOLL_UNLOCKABLE;
->>>>    	}
->>>> +	/*
->>>> +	 * For now, always trigger NUMA hinting faults. Some GUP users like
->>>> +	 * KVM really require it to benefit from autonuma.
->>>> +	 */
->>>> +	gup_flags |= FOLL_HONOR_NUMA_FAULT;
->>>
->>> Since at it, do we want to not set it for FOLL_REMOTE, which still sounds
->>> like a good thing to have?
->>
->> I thought about that, but decided against making that patch here more
->> complicated to eventually rip it again all out in #4.
-> 
-> I thought that was the whole point of having patch 4 separate, because we
-> should assume patch 4 may not exist in (at least) some trees, so I ignored
-> patch 4 when commenting here, and we should not assume it's destined to be
-> removed here.
+On Mon, 31 Jul 2023 17:52:26 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-For me, the goal of this patch is to bring it *as close as possible* to 
-the previous state as before, so we can backport it to stable without 
-too many surprises (effectively, only a handful of FOLL_FORCE/ptrace 
-user will get a different behavior).
+> On Tue, Jul 25, 2023 at 10:23:33AM -0400, Hugo Villeneuve wrote:
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> >=20
+> > The sc16is7xx_config_rs485() function is called only for the second
+> > port (index 1, channel B), causing initialization problems for the
+> > first port.
+> >=20
+> > For the sc16is7xx driver, port->membase and port->mapbase are not set,
+> > and their default values are 0. And we set port->iobase to the device
+> > index. This means that when the first device is registered using the
+> > uart_add_one_port() function, the following values will be in the port
+> > structure:
+> >     port->membase =3D 0
+> >     port->mapbase =3D 0
+> >     port->iobase  =3D 0
+> >=20
+> > Therefore, the function uart_configure_port() in serial_core.c will
+> > exit early because of the following check:
+> > 	/*
+> > 	 * If there isn't a port here, don't do anything further.
+> > 	 */
+> > 	if (!port->iobase && !port->mapbase && !port->membase)
+> > 		return;
+> >=20
+> > Typically, I2C and SPI drivers do not set port->membase and
+> > port->mapbase.
+> >=20
+> > The max310x driver sets port->membase to ~0 (all ones). By
+> > implementing the same change in this driver, uart_configure_port() is
+> > now correctly executed for all ports.
+> >=20
+> > Fixes: dfeae619d781 ("serial: sc16is7xx")
+>=20
+> That commit is in a very old 3.x release.
+>=20
+> > Cc: <stable@vger.kernel.org> # 6.1.x
+>=20
+> But you say this should only go to 6.1.y?  Why?  What is wrong with the
+> older kernels?
 
-I could add a separate patch that does the FOLL_REMOTE thing, but then, 
-maybe we should do that if patch #4 runs into real trouble :)
+Hi Greg,
+I have read (and reread a couple of times)
+Documentation/process/stable-kernel-rules.rst to try to understand how
+to format the tags, but unfortunately it doesn't contain "Everything
+you ever wanted to know about Linux -stable releases" as the title
+claims :)
 
-But no strong opinion if this is what everybody wants in this patch.
+In particular, it doesn't explain or advise which older version we
+should target, that is why since I was not sure I specified 6.1.y
+because I could test it properly, but not v3.x.
 
-> 
->>
->> I fully agree that FOLL_REMOTE does not make too much sense, but let's
->> rather keep it simple for this patch.
-> 
-> It's fine - I suppose this patch fixes whatever we're aware of that's
-> broken with FOLL_NUMA's removal, so it can even be anything on top when
-> needed.  I assume I'm happy to ack this with/without that change, then:
-> 
-> Acked-by: Peter Xu <peterx@redhat.com>
+Maybe it would be best to simply drop for now all the "Cc:
+<stable@vger.kernel.org>" tags for this series, and following Option 2,
+I send an email to stable@vger.kernel.org once the patches have been
+merged to Linus' tree?
 
-Thanks!
 
-> 
-> PS: I still hope that the other oneliner can be squashed here directly; it
-> literally changes exact the same line above so reading this patch alone can
-> be affected.  You said there you didn't want the commit message to be too
-> long here, but this is definitely not long at all!  I bet you have similar
-> understanding to me on defining "long commit message". :) I'd never worry
-> that.  Your call.
+> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+> > Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > ---
+> >  drivers/tty/serial/sc16is7xx.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >=20
+> > diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is=
+7xx.c
+> > index 2e7e7c409cf2..8ae2afc76a9b 100644
+> > --- a/drivers/tty/serial/sc16is7xx.c
+> > +++ b/drivers/tty/serial/sc16is7xx.c
+> > @@ -1436,6 +1436,7 @@ static int sc16is7xx_probe(struct device *dev,
+> >  		s->p[i].port.fifosize	=3D SC16IS7XX_FIFO_SIZE;
+> >  		s->p[i].port.flags	=3D UPF_FIXED_TYPE | UPF_LOW_LATENCY;
+> >  		s->p[i].port.iobase	=3D i;
+> > +		s->p[i].port.membase	=3D (void __iomem *)~0;
+>=20
+> That's a magic value, some comment should be added here to explain why
+> setting all bits is ok.  Why does this work exactly?  You only say that
+> the max310x driver does this, but not why it does this at all.
 
-No strong opinion, it just felt cleaner to not start adding what I have 
-in that separate patch commit message in here.
+I do not understand, because my commit log message is quite long
+and, it seems to me, well documenting why this works the way it
+does when calling uart_configure_port() in serial_core.c?
 
--- 
-Cheers,
+I say that the max310x driver also does this, because there is also no
+comment in the max310x driver for using the (void __iomem *)~0;
+construct. I also located the original commit message for the max310x
+driver but no comments were usefull there also.
 
-David / dhildenb
+So, what about adding this comment:
 
+/*
+ * Use all ones as membase to make sure uart_configure_port() in
+ * serial_core.c does not abort for SPI/I2C devices where the
+ * membase address is not applicable.
+ */
+ s->p[i].port.membase	=3D (void __iomem *)~0;
+
+
+Also, keep in mind that in the original discussion about that patch,
+there was the following comment from Ilpo J=E4rvinen:
+
+------
+This changelog was really well describing the problem! :-)
+Yeah, some other solution should be devised. Maybe we should add
+another .iotype for thse kind of devices. But I'm fine with this for
+this fix. After editing the changelog, feel free to add:
+Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+------
+
+If wou want, I could also add the same comment to the max310 driver?
+
+Hugo.
