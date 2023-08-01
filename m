@@ -2,141 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E61076AAD4
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54B6A76AAD8
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229721AbjHAIYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 04:24:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39814 "EHLO
+        id S232149AbjHAIYi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 04:24:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjHAIYP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:24:15 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A14DE0;
-        Tue,  1 Aug 2023 01:24:14 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 825E56017C;
-        Tue,  1 Aug 2023 10:24:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690878251; bh=4TQh0BeNhMTySjhS+vXT+kiphvu7OUm8Va1VzI9Vi0c=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Cxiha4L6MTPGyCWn9lgVLdGtEfGKKW/SJNeREhP3LvVyCXdh5M06DXg8wnNpXhyTX
-         xGZqzDg70SHRtn7yuF7AbN9xmjhIC4QhbG+GrFngvHUjeulB3ZiGdApeuX7QfP5HBM
-         LjsUKBZw05L2XUj++oK1l3U23s0y/1Y4ZkkBUu7Ty+yYKLZgmCeoO6316bAEraw5e4
-         c8mNhZjUnQFoVkKidAXn86Wbpc/k26PwZycVtmzjoa+7L8TDyq/d252BMvRZhN4948
-         um+BQTG7FIPNKHsxQC4L1V0Q36TWqyawKvXmbI8U8ClvOhb9uw+BOa+flyNGWVnBH/
-         rmijcKlk9IEmQ==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id DyhEUB5vQsbH; Tue,  1 Aug 2023 10:24:09 +0200 (CEST)
-Received: from [192.168.1.6] (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id DD1996015F;
-        Tue,  1 Aug 2023 10:24:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690878249; bh=4TQh0BeNhMTySjhS+vXT+kiphvu7OUm8Va1VzI9Vi0c=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=N9Ej0N1unLq6eAPqz2QO+pTANMbVaGVH9yQAl2MYlCBAiQPiVnmhofE57m0N2nCic
-         zOs/y9MqWZ2weBUfe0OlZFQWL40+8eT1lsbFyVoSyjHqAByKOD6Gjpt1mq1nbuK/im
-         WBlJIkaH0QHmMfUnT7DRTBfLD6MGu/11tDVt1/ECF2sn2Aj9ku66ycTDHaFhL/pNTF
-         CmzW3hhS6EhxYOAXRYeQlNe2AkZJ4GSRbSLsGceVYC1CbYlpa4Wu/rx9uUTndmNzpl
-         kR0uU/UIJR/MKqLl/KObMG4xqWxuuR7Ds9+xNVY8e4KwnmKT9t6da2MJ4ETofLuhVR
-         MPQeHPSeRAjxQ==
-Message-ID: <0e3a740f-60dd-e657-8a5c-79b155fa62b3@alu.unizg.hr>
-Date:   Tue, 1 Aug 2023 10:24:08 +0200
+        with ESMTP id S230509AbjHAIYg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:24:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2FDE18D;
+        Tue,  1 Aug 2023 01:24:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FF33614B7;
+        Tue,  1 Aug 2023 08:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342C0C433C8;
+        Tue,  1 Aug 2023 08:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1690878274;
+        bh=gkk74t9As49XSJeT+8LUv0zRRxmwMv0p+C8NfbmPl7Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AZBz4x7Y8V6Yp4RfkN8c+sBfGIsAeDXHsN2N7xNltclI6Y37r0oskt+G6j7xErJbj
+         5NEXOYonN050QVNcZj8D3Wb2b9m6fl1Hr2Kvtpx+MQVpeadYQuV95XVSBBKKM30D1w
+         eg/sBJMZ61btbOLDO2LZz4Uo9f7mcybxSlrd1MlM=
+Date:   Tue, 1 Aug 2023 10:24:32 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Rishabh Bhatnagar <risbhat@amazon.com>
+Cc:     lee@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Eric Dumazet <edumazet@google.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: Re: [PATCH 4.14] net/sched: cls_u32: Fix reference counter leak
+ leading to overflow
+Message-ID: <2023080102-certified-unrivaled-a048@gregkh>
+References: <20230727191554.21333-1-risbhat@amazon.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PATCH v1 1/1] test_firmware: prevent race conditions by a
- correct implementation of locking
-Content-Language: en-US
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        Russ Weight <russell.h.weight@intel.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>
-References: <20230731165018.8233-1-mirsad.todorovac@alu.unizg.hr>
- <ZMfvAhOfSP5UXN6l@bombadil.infradead.org>
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-In-Reply-To: <ZMfvAhOfSP5UXN6l@bombadil.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230727191554.21333-1-risbhat@amazon.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/31/23 19:27, Luis Chamberlain wrote:
-> On Mon, Jul 31, 2023 at 06:50:19PM +0200, Mirsad Todorovac wrote:
->> NOTE: This patch is tested against 5.4 stable
->>
->> NOTE: This is a patch for the 5.4 stable branch, not for the torvalds tree.
->>
->>        The torvalds tree, and stable tree 5.10, 5.15, 6.1 and 6.4 branches
->>        were fixed in the separate
->>        commit ID 4acfe3dfde68 ("test_firmware: prevent race conditions by a correct implementation of locking")
->>        which was incompatible with 5.4
->>
+On Thu, Jul 27, 2023 at 07:15:54PM +0000, Rishabh Bhatnagar wrote:
+> From: Lee Jones <lee@kernel.org>
 > 
-> The above part is not part of the original commit, you also forgot to
-> mention the upstream commit:
+> Upstream commit 04c55383fa5689357bcdd2c8036725a55ed632bc.
 > 
-> [ Upstream commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 ]
-
-Will fix. Actually, I wasn't sure if it was required, because this backported patch
-isn't verbatim equal to commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 .
-
-Though they are cousins, addressing the same issue.
-
-There is a race to be fixed, despite not all racy functions present in the original commit c92316bf8e948.
-
->> Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
->> Cc: Luis R. Rodriguez <mcgrof@kernel.org>
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Cc: Russ Weight <russell.h.weight@intel.com>
->> Cc: Takashi Iwai <tiwai@suse.de>
->> Cc: Tianfei Zhang <tianfei.zhang@intel.com>
->> Cc: Shuah Khan <shuah@kernel.org>
->> Cc: Colin Ian King <colin.i.king@gmail.com>
->> Cc: Randy Dunlap <rdunlap@infradead.org>
->> Cc: linux-kselftest@vger.kernel.org
->> Cc: stable@vger.kernel.org # v5.4
->> Suggested-by: Dan Carpenter <error27@gmail.com>
+> In the event of a failure in tcf_change_indev(), u32_set_parms() will
+> immediately return without decrementing the recently incremented
+> reference counter.  If this happens enough times, the counter will
+> rollover and the reference freed, leading to a double free which can be
+> used to do 'bad things'.
 > 
-> Here you can add the above note in brackets:
+> In order to prevent this, move the point of possible failure above the
+> point where the reference counter is incremented.  Also save any
+> meaningful return values to be applied to the return data at the
+> appropriate point in time.
 > 
-> [ explain your changes here from the original commit ]
+> This issue was caught with KASAN.
 > 
-> Then, I see two commits upstream on Linus tree which are also fixes
-> but not merged on v5.4, did you want those applied too?
+> Fixes: 705c7091262d ("net: sched: cls_u32: no need to call tcf_exts_change for newly allocated struct")
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
+> ---
+>  net/sched/cls_u32.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
 
-These seem merged in the stable 5.4?
+We need a 4.19.y backport before we can apply a 4.14.y version, as you
+do not want to upgrade and have a regression.
 
-commit 75d9e00f65cd2e0f2ce9ceeb395f821976773489 test_firmware: fix a memory leak with reqs buffer
-commit 94f3bc7e84af2f17dbfbc7afe93991c2a6f2f25e test_firmware: fix the memory leak of the allocated firmware buffer
+thanks,
 
-Maybe this commit should be backported instead:
-
-test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
-[ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
-
-It was also merged into 6.4, 6.1, 5.15 and 5.10 stable, but not on 5.4
-
-I might also check whether the 4.19 and 4.14 are vulnerable to these memory leaks and this race
-(Yes, they are, so it might be prudent that we backport this fix.)
-
-Mirsad
-
-> 
->    Luis
+greg k-h
