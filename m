@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C0E176ADD9
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A87876AEEA
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233086AbjHAJeA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35152 "EHLO
+        id S233271AbjHAJnI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:43:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233386AbjHAJdi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:38 -0400
+        with ESMTP id S233431AbjHAJmx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F214626AD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3233C125
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A1B7614F5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B05C433C7;
-        Tue,  1 Aug 2023 09:31:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0378961510
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE1CC433C8;
+        Tue,  1 Aug 2023 09:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882287;
-        bh=GYRMifDyhnXB1Cz/4bFT/SPKGdSY5r0YuvITARtiFZM=;
+        s=korg; t=1690882832;
+        bh=8aDQGPdI60fhVkFH25qrsMT41gnch0JeShILs06iHms=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PI2/VsRNv41b+DB5xz34lQvv47NGjY2jq2y2wcnb4JeVe7TgGemwFyY/9h+44kTvB
-         ZyLfXj3XlH6ofvt2XwZHhEVy9RMBM2+BY0iyFdl0al/CAnHz5ulQUrQ1VkrfA5MP3U
-         rBBgVxFodoaRwOGZ1lsJjl2Q+yRdHkASDdh9rUl4=
+        b=QI/OF/8vrFLgkauCcHL9Wxld6OjPX8POZh5Fno0pQ/pseTiRY92CzYqotrtnbY2Lh
+         nrmPWqjX9sEDifKJepTxLLddTKGOqoIMikCAQvLgnAP5aocFiWACeZKdLcJ3ir+hhr
+         EGmn0aJVXWlEFtz6oFJ0OspXpCrv9zQd4fbhP5eA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/228] i2c: nomadik: Remove a useless call in the remove function
-Date:   Tue,  1 Aug 2023 11:18:02 +0200
-Message-ID: <20230801091923.744156364@linuxfoundation.org>
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Christoph Hellwig <hch@lst.de>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 019/239] btrfs: fix fsverify read error handling in end_page_read
+Date:   Tue,  1 Aug 2023 11:18:03 +0200
+Message-ID: <20230801091926.331382169@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 05f933d5f7318b03ff2028c1704dc867ac16f2c7 ]
+[ Upstream commit 2c14f0ffdd30bd3d321ad5fe76fcf701746e1df6 ]
 
-Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
-driver"), there is no more request_mem_region() call in this driver.
+Also clear the uptodate bit to make sure the page isn't seen as uptodate
+in the page cache if fsverity verification fails.
 
-So remove the release_mem_region() call from the remove function which is
-likely a left over.
-
-Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
-Cc: <stable@vger.kernel.org> # v3.6+
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: 146054090b08 ("btrfs: initial fsverity support")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-nomadik.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/btrfs/extent_io.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index 2141ba05dfece..9c5d66bd6dc1c 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -1040,7 +1040,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 496c2c9920fc6..82b9779deaa88 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -494,12 +494,8 @@ static void end_page_read(struct page *page, bool uptodate, u64 start, u32 len)
+ 	ASSERT(page_offset(page) <= start &&
+ 	       start + len <= page_offset(page) + PAGE_SIZE);
  
- static void nmk_i2c_remove(struct amba_device *adev)
- {
--	struct resource *res = &adev->res;
- 	struct nmk_i2c_dev *dev = amba_get_drvdata(adev);
- 
- 	i2c_del_adapter(&dev->adap);
-@@ -1049,7 +1048,6 @@ static void nmk_i2c_remove(struct amba_device *adev)
- 	clear_all_interrupts(dev);
- 	/* disable the controller */
- 	i2c_clr_bit(dev->virtbase + I2C_CR, I2C_CR_PE);
--	release_mem_region(res->start, resource_size(res));
- }
- 
- static struct i2c_vendor_data vendor_stn8815 = {
+-	if (uptodate) {
+-		if (!btrfs_verify_page(page, start)) {
+-			btrfs_page_set_error(fs_info, page, start, len);
+-		} else {
+-			btrfs_page_set_uptodate(fs_info, page, start, len);
+-		}
++	if (uptodate && btrfs_verify_page(page, start)) {
++		btrfs_page_set_uptodate(fs_info, page, start, len);
+ 	} else {
+ 		btrfs_page_clear_uptodate(fs_info, page, start, len);
+ 		btrfs_page_set_error(fs_info, page, start, len);
 -- 
 2.39.2
 
