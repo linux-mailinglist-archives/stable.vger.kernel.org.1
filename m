@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1633276AF39
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5179476ADFB
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233346AbjHAJp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45402 "EHLO
+        id S233038AbjHAJfP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbjHAJpp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D934C03
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:13 -0700 (PDT)
+        with ESMTP id S233129AbjHAJed (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BFBB3C28
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF5056151B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB53BC433CA;
-        Tue,  1 Aug 2023 09:44:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDEFD614FD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D47C433C8;
+        Tue,  1 Aug 2023 09:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883052;
-        bh=C6S3t9K1J8+mYPfxizhKkb9eFRUqcE+P5hs9d9gOoF8=;
+        s=korg; t=1690882355;
+        bh=8vDXqJOI1PYvJxnNRC1x7qPRZjs2Qn0DYJvUxhYkEQQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NRN+BUh8rwD43u+yZZEFobwLtxBFl3EdYj2snWEU4WzQULlAu0BDSd+RD61ao/xCY
-         pfpQAIfJNIJDYgvFy8vwEvbhU4fDl8FKEdX9+eOXF6JqG6N/Jvdp+rEg9zcKdUF4QJ
-         61X3B/3PyUEkLYUoU9Fc79zRRJKFTvokErcIUQEM=
+        b=ueLRRxDB8s/FzJ1Qc1GdxoMgZR8+k583aNy8xbi6WjcVyqPYJVWiToXc4djYK48xO
+         8OuQHzZBAM1f1giRPZ3q3kvEorl5FRlYlddgoSPQYr5s+VyVXuytHo0LRNqHuyMjgE
+         haKHEs4sH7fcoMqIq0nYOVU+TF6PZk53LtTaQam0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 069/239] net: hns3: fix wrong bw weight of disabled tc issue
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 075/228] phy: qcom-snps: correct struct qcom_snps_hsphy kerneldoc
 Date:   Tue,  1 Aug 2023 11:18:53 +0200
-Message-ID: <20230801091928.173194107@linuxfoundation.org>
+Message-ID: <20230801091925.548422568@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,96 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 882481b1c55fc44861d7e2d54b4e0936b1b39f2c ]
+[ Upstream commit 2a881183dc5ab2474ef602e48fe7af34db460d95 ]
 
-In dwrr mode, the default bandwidth weight of disabled tc is set to 0.
-If the bandwidth weight is 0, the mode will change to sp.
-Therefore, disabled tc default bandwidth weight need changed to 1,
-and 0 is returned when query the bandwidth weight of disabled tc.
-In addition, driver need stop configure bandwidth weight if tc is disabled.
+Update kerneldoc of struct qcom_snps_hsphy to fix:
 
-Fixes: 848440544b41 ("net: hns3: Add support of TX Scheduler & Shaper to HNS3 driver")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c:135: warning: Function parameter or member 'update_seq_cfg' not described in 'qcom_snps_hsphy'
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230507144818.193039-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c  | 17 ++++++++++++++---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   |  3 ++-
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-index c4aded65e848b..09362823140d5 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-@@ -52,7 +52,10 @@ static void hclge_tm_info_to_ieee_ets(struct hclge_dev *hdev,
- 
- 	for (i = 0; i < HNAE3_MAX_TC; i++) {
- 		ets->prio_tc[i] = hdev->tm_info.prio_tc[i];
--		ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
-+		if (i < hdev->tm_info.num_tc)
-+			ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
-+		else
-+			ets->tc_tx_bw[i] = 0;
- 
- 		if (hdev->tm_info.tc_info[i].tc_sch_mode ==
- 		    HCLGE_SCH_MODE_SP)
-@@ -123,7 +126,8 @@ static u8 hclge_ets_tc_changed(struct hclge_dev *hdev, struct ieee_ets *ets,
- }
- 
- static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
--				       struct ieee_ets *ets, bool *changed)
-+				       struct ieee_ets *ets, bool *changed,
-+				       u8 tc_num)
- {
- 	bool has_ets_tc = false;
- 	u32 total_ets_bw = 0;
-@@ -137,6 +141,13 @@ static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
- 				*changed = true;
- 			break;
- 		case IEEE_8021QAZ_TSA_ETS:
-+			if (i >= tc_num) {
-+				dev_err(&hdev->pdev->dev,
-+					"tc%u is disabled, cannot set ets bw\n",
-+					i);
-+				return -EINVAL;
-+			}
-+
- 			/* The hardware will switch to sp mode if bandwidth is
- 			 * 0, so limit ets bandwidth must be greater than 0.
- 			 */
-@@ -176,7 +187,7 @@ static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
- 	if (ret)
- 		return ret;
- 
--	ret = hclge_ets_sch_mode_validate(hdev, ets, changed);
-+	ret = hclge_ets_sch_mode_validate(hdev, ets, changed, tc_num);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index 922c0da3660c7..150f146fa24fb 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -785,6 +785,7 @@ static void hclge_tm_tc_info_init(struct hclge_dev *hdev)
- static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
- {
- #define BW_PERCENT	100
-+#define DEFAULT_BW_WEIGHT	1
- 
- 	u8 i;
- 
-@@ -806,7 +807,7 @@ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
- 		for (k = 0; k < hdev->tm_info.num_tc; k++)
- 			hdev->tm_info.pg_info[i].tc_dwrr[k] = BW_PERCENT;
- 		for (; k < HNAE3_MAX_TC; k++)
--			hdev->tm_info.pg_info[i].tc_dwrr[k] = 0;
-+			hdev->tm_info.pg_info[i].tc_dwrr[k] = DEFAULT_BW_WEIGHT;
- 	}
- }
- 
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index a590635962140..6c237f3cc66db 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -115,11 +115,11 @@ struct phy_override_seq {
+  *
+  * @cfg_ahb_clk: AHB2PHY interface clock
+  * @ref_clk: phy reference clock
+- * @iface_clk: phy interface clock
+  * @phy_reset: phy reset control
+  * @vregs: regulator supplies bulk data
+  * @phy_initialized: if PHY has been initialized correctly
+  * @mode: contains the current mode the PHY is in
++ * @update_seq_cfg: tuning parameters for phy init
+  */
+ struct qcom_snps_hsphy {
+ 	struct phy *phy;
 -- 
 2.39.2
 
