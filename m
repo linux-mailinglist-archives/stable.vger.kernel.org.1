@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CFF476AFB7
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF6F76AD84
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233583AbjHAJtz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50824 "EHLO
+        id S231793AbjHAJ3z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:29:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233534AbjHAJte (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E40B630EF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:36 -0700 (PDT)
+        with ESMTP id S231862AbjHAJ3m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86F8930FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 82A0D614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B9DC433C7;
-        Tue,  1 Aug 2023 09:48:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55A24614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67053C433C8;
+        Tue,  1 Aug 2023 09:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883315;
-        bh=3Nh3D8CBtAxB6c53PlWkSigr9b5Zo7q561335aYFoNQ=;
+        s=korg; t=1690882104;
+        bh=rNCzcZmK60mJYzUTbnDpFOToZwXaxdUomogcZh5PnbI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tvn/hQd91a9ti59QTjVCR1JE97NcO8+g7KpJkfNNgsaSHPyApmrZ0YrVUDEh0K7z0
-         yw744K9z61QmGVlqvK8K74oaP6kDwkdWLbpGTbwwM2b72eKnEcaYtJK6Ka1l+mArFX
-         PI8owY3IYTKKApVJHOQ358WfPzmOeiT5kHdSoYFg=
+        b=EqZUgMxHIhZytT30XSnaLxFwrEx1RcyU22fQoHM2/IC634xQbJXxvxTPHH3HbfSWV
+         AMCgEMxxNJv8p6sBE56E7ecVLHKobmg9dtuOQ+rD56I0iNEE96tPaLaD08zVzYq5nF
+         pm3wF5VGRIl43fIWCdRWFxiHoaUdRNmgaXFL34WE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable <stable@kernel.org>,
         Gratian Crisan <gratian.crisan@ni.com>,
         Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.4 163/239] usb: dwc3: pci: skip BYT GPIO lookup table for hardwired phy
+Subject: [PATCH 5.15 115/155] usb: dwc3: pci: skip BYT GPIO lookup table for hardwired phy
 Date:   Tue,  1 Aug 2023 11:20:27 +0200
-Message-ID: <20230801091931.501844390@linuxfoundation.org>
+Message-ID: <20230801091914.326815986@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -48,7 +48,7 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -104,7 +104,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/dwc3/dwc3-pci.c
 +++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -233,10 +233,12 @@ static int dwc3_pci_quirks(struct dwc3_p
+@@ -219,10 +219,12 @@ static int dwc3_pci_quirks(struct dwc3_p
  
  			/*
  			 * A lot of BYT devices lack ACPI resource entries for
