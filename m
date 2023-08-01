@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C55A76AE6E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB5C76AF8B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233217AbjHAJiv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:38:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40256 "EHLO
+        id S233643AbjHAJsi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233218AbjHAJih (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:37 -0400
+        with ESMTP id S233875AbjHAJsX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA5F527F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D856E48
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CFC8061510
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0734C433C7;
-        Tue,  1 Aug 2023 09:36:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8787F614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F1AC433B8;
+        Tue,  1 Aug 2023 09:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882583;
-        bh=9ONyQ4ihBn7mfC8UgUwyjEKAdvj/wr1Iu5ByNyvxK8Y=;
+        s=korg; t=1690883210;
+        bh=RL9RBXmGnk83Lglxc1dK+n6oKfAAOT68XQuTr52dmGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bmXlvjvLhPi+iqs2cCyaobF6zPV9N4DI7W/9k4eXk2GYZs3IqRtDStHQCK7WQHMcE
-         lb00880fdaq3t6S4EBqxELxpCQy6jGmlV4ipn7NkITmjVJAQK2NCtBRKh7D5VjlXfr
-         ZvTweZg1NnN1SDYVuoA3IzT5WlVBTxiL0PEprZII=
+        b=pK7X/ptj0Beue5Zik7CXgQZuyIvUjptkbIcU1pBNoBp1uTjT5s289t8LwsCa96lyq
+         6M8fabp+V1Hp4+WzJa462k3DANGloQmh+UurQ1qz0J+0xxylyxKrHchOueC5X5oPe7
+         k5ctELsVcYJfyiYv8tTiU1VNZa610Yze3Wc13k+c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>,
-        Oliver Neukum <oneukum@suse.com>,
+        patches@lists.linux.dev, Jerry Meng <jerry-meng@foxmail.com>,
         Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 158/228] USB: serial: simple: add Kaufmann RKS+CAN VCP
-Date:   Tue,  1 Aug 2023 11:20:16 +0200
-Message-ID: <20230801091928.598424971@linuxfoundation.org>
+Subject: [PATCH 6.4 153/239] USB: serial: option: support Quectel EM060K_128
+Date:   Tue,  1 Aug 2023 11:20:17 +0200
+Message-ID: <20230801091931.169334509@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,54 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Jerry Meng <jerry-meng@foxmail.com>
 
-commit dd92c8a1f99bcd166204ffc219ea5a23dd65d64f upstream.
+commit 4f7cab49cecee16120d27c1734cfdf3d6c0e5329 upstream.
 
-Add the device and product ID for this CAN bus interface / license
-dongle. The device is usable either directly from user space or can be
-attached to a kernel CAN interface with slcan_attach.
+EM060K_128 is EM060K's sub-model, having the same name "Quectel EM060K-GL"
 
-Reported-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
-Tested-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-[ johan: amend commit message and move entries in sort order ]
+MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0128 Rev= 5.04
+S:  Manufacturer=Quectel
+S:  Product=Quectel EM060K-GL
+S:  SerialNumber=f6fa08b6
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Jerry Meng <jerry-meng@foxmail.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/usb-serial-simple.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/serial/usb-serial-simple.c
-+++ b/drivers/usb/serial/usb-serial-simple.c
-@@ -63,6 +63,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
- 					0x01) }
- DEVICE(google, GOOGLE_IDS);
- 
-+/* KAUFMANN RKS+CAN VCP */
-+#define KAUFMANN_IDS()			\
-+	{ USB_DEVICE(0x16d0, 0x0870) }
-+DEVICE(kaufmann, KAUFMANN_IDS);
-+
- /* Libtransistor USB console */
- #define LIBTRANSISTOR_IDS()			\
- 	{ USB_DEVICE(0x1209, 0x8b00) }
-@@ -124,6 +129,7 @@ static struct usb_serial_driver * const
- 	&funsoft_device,
- 	&flashloader_device,
- 	&google_device,
-+	&kaufmann_device,
- 	&libtransistor_device,
- 	&vivopay_device,
- 	&moto_modem_device,
-@@ -142,6 +148,7 @@ static const struct usb_device_id id_tab
- 	FUNSOFT_IDS(),
- 	FLASHLOADER_IDS(),
- 	GOOGLE_IDS(),
-+	KAUFMANN_IDS(),
- 	LIBTRANSISTOR_IDS(),
- 	VIVOPAY_IDS(),
- 	MOTO_IDS(),
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -251,6 +251,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
+ #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
+ #define QUECTEL_PRODUCT_EC25			0x0125
++#define QUECTEL_PRODUCT_EM060K_128		0x0128
+ #define QUECTEL_PRODUCT_EG91			0x0191
+ #define QUECTEL_PRODUCT_EG95			0x0195
+ #define QUECTEL_PRODUCT_BG96			0x0296
+@@ -1197,6 +1198,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x40) },
 
 
