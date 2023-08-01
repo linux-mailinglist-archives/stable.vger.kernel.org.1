@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BFD776AF22
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A41A176ACEE
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233548AbjHAJpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45400 "EHLO
+        id S232157AbjHAJYa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:24:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233534AbjHAJpD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:03 -0400
+        with ESMTP id S232883AbjHAJYM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:24:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ACAA12B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CB0C19B7
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:23:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02F6A6126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1156EC433C8;
-        Tue,  1 Aug 2023 09:43:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96319614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F489C433C8;
+        Tue,  1 Aug 2023 09:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882991;
-        bh=o1PRE42Ahz1rL5dieZByd6CyxKFuNJaSt4Ln9i0XHb4=;
+        s=korg; t=1690881782;
+        bh=blNJlT2cc4WgFVq2jJ5hYbrNH1gHuksOUvpm4utPe84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UYTQG3p70fPBIGcR+QU8+TmhVpZwp+cniKm3RYjllgprSXr9ffAd4Z6HjvNP+Ypy4
-         mANCaH6fTbwnZcjNY1n6UuQnkaM71ykcvfdi1bfUi60wx/qC0wVELlspDjQmnP/YNj
-         eaCWHq7Njv9CPPoUuBD8OhttpBb3uIG5cu6WHMfs=
+        b=jTcGf/6CamJoWc2TpiKdTaHGt+2HYrlrElJJQL0vpPbdNrpLR/QnZS2suy5pthp7y
+         Ykq8lTO5RHZVbNlL7bcLRzPQWVDRSMmwXTsugWAGE1P5XXhj6x8i8nv3KB1xNlKRba
+         dG4yloTJv4SorrMixgPHIwMvgtKMHWVVtBpqGzfk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@resnulli.us>,
-        Xiao Ma <xiaom@google.com>,
-        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, "Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 076/239] ipv6 addrconf: fix bug where deleting a mngtmpaddr can create a new temporary address
+Subject: [PATCH 5.15 028/155] cifs: use fs_context for automounts
 Date:   Tue,  1 Aug 2023 11:19:00 +0200
-Message-ID: <20230801091928.443132200@linuxfoundation.org>
+Message-ID: <20230801091911.208174701@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,90 +55,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maciej Żenczykowski <maze@google.com>
+From: Paulo Alcantara <pc@cjr.nz>
 
-[ Upstream commit 69172f0bcb6a09110c5d2a6d792627f5095a9018 ]
+[ Upstream commit 9fd29a5bae6e8f94b410374099a6fddb253d2d5f ]
 
-currently on 6.4 net/main:
+Use filesystem context support to handle dfs links.
 
-  # ip link add dummy1 type dummy
-  # echo 1 > /proc/sys/net/ipv6/conf/dummy1/use_tempaddr
-  # ip link set dummy1 up
-  # ip -6 addr add 2000::1/64 mngtmpaddr dev dummy1
-  # ip -6 addr show dev dummy1
-
-  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-      inet6 2000::44f3:581c:8ca:3983/64 scope global temporary dynamic
-         valid_lft 604800sec preferred_lft 86172sec
-      inet6 2000::1/64 scope global mngtmpaddr
-         valid_lft forever preferred_lft forever
-      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
-         valid_lft forever preferred_lft forever
-
-  # ip -6 addr del 2000::44f3:581c:8ca:3983/64 dev dummy1
-
-  (can wait a few seconds if you want to, the above delete isn't [directly] the problem)
-
-  # ip -6 addr show dev dummy1
-
-  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-      inet6 2000::1/64 scope global mngtmpaddr
-         valid_lft forever preferred_lft forever
-      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
-         valid_lft forever preferred_lft forever
-
-  # ip -6 addr del 2000::1/64 mngtmpaddr dev dummy1
-  # ip -6 addr show dev dummy1
-
-  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-      inet6 2000::81c9:56b7:f51a:b98f/64 scope global temporary dynamic
-         valid_lft 604797sec preferred_lft 86169sec
-      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
-         valid_lft forever preferred_lft forever
-
-This patch prevents this new 'global temporary dynamic' address from being
-created by the deletion of the related (same subnet prefix) 'mngtmpaddr'
-(which is triggered by there already being no temporary addresses).
-
-Cc: Jiri Pirko <jiri@resnulli.us>
-Fixes: 53bd67491537 ("ipv6 addrconf: introduce IFA_F_MANAGETEMPADDR to tell kernel to manage temporary addresses")
-Reported-by: Xiao Ma <xiaom@google.com>
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230720160022.1887942-1-maze@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: df9d70c18616 ("cifs: if deferred close is disabled then close files immediately")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/cifs/cifs_dfs_ref.c | 100 +++++++++++++++++------------------------
+ 1 file changed, 40 insertions(+), 60 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 5affca8e2f53a..c63f1d62d60a5 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -2561,12 +2561,18 @@ static void manage_tempaddrs(struct inet6_dev *idev,
- 			ipv6_ifa_notify(0, ift);
+diff --git a/fs/cifs/cifs_dfs_ref.c b/fs/cifs/cifs_dfs_ref.c
+index b0864da9ef434..020e71fe1454e 100644
+--- a/fs/cifs/cifs_dfs_ref.c
++++ b/fs/cifs/cifs_dfs_ref.c
+@@ -258,61 +258,23 @@ char *cifs_compose_mount_options(const char *sb_mountdata,
+ 	goto compose_mount_options_out;
+ }
+ 
+-/**
+- * cifs_dfs_do_mount - mounts specified path using DFS full path
+- *
+- * Always pass down @fullpath to smb3_do_mount() so we can use the root server
+- * to perform failover in case we failed to connect to the first target in the
+- * referral.
+- *
+- * @mntpt:		directory entry for the path we are trying to automount
+- * @cifs_sb:		parent/root superblock
+- * @fullpath:		full path in UNC format
+- */
+-static struct vfsmount *cifs_dfs_do_mount(struct dentry *mntpt,
+-					  struct cifs_sb_info *cifs_sb,
+-					  const char *fullpath)
+-{
+-	struct vfsmount *mnt;
+-	char *mountdata;
+-	char *devname;
+-
+-	devname = kstrdup(fullpath, GFP_KERNEL);
+-	if (!devname)
+-		return ERR_PTR(-ENOMEM);
+-
+-	convert_delimiter(devname, '/');
+-
+-	/* TODO: change to call fs_context_for_mount(), fill in context directly, call fc_mount */
+-
+-	/* See afs_mntpt_do_automount in fs/afs/mntpt.c for an example */
+-
+-	/* strip first '\' from fullpath */
+-	mountdata = cifs_compose_mount_options(cifs_sb->ctx->mount_options,
+-					       fullpath + 1, NULL, NULL);
+-	if (IS_ERR(mountdata)) {
+-		kfree(devname);
+-		return (struct vfsmount *)mountdata;
+-	}
+-
+-	mnt = vfs_submount(mntpt, &cifs_fs_type, devname, mountdata);
+-	kfree(mountdata);
+-	kfree(devname);
+-	return mnt;
+-}
+-
+ /*
+  * Create a vfsmount that we can automount
+  */
+-static struct vfsmount *cifs_dfs_do_automount(struct dentry *mntpt)
++static struct vfsmount *cifs_dfs_do_automount(struct path *path)
+ {
++	int rc;
++	struct dentry *mntpt = path->dentry;
++	struct fs_context *fc;
+ 	struct cifs_sb_info *cifs_sb;
+-	void *page;
++	void *page = NULL;
++	struct smb3_fs_context *ctx, *cur_ctx;
++	struct smb3_fs_context tmp;
+ 	char *full_path;
+ 	struct vfsmount *mnt;
+ 
+-	cifs_dbg(FYI, "in %s\n", __func__);
+-	BUG_ON(IS_ROOT(mntpt));
++	if (IS_ROOT(mntpt))
++		return ERR_PTR(-ESTALE);
+ 
+ 	/*
+ 	 * The MSDFS spec states that paths in DFS referral requests and
+@@ -321,29 +283,47 @@ static struct vfsmount *cifs_dfs_do_automount(struct dentry *mntpt)
+ 	 * gives us the latter, so we must adjust the result.
+ 	 */
+ 	cifs_sb = CIFS_SB(mntpt->d_sb);
+-	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_DFS) {
+-		mnt = ERR_PTR(-EREMOTE);
+-		goto cdda_exit;
+-	}
++	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_DFS)
++		return ERR_PTR(-EREMOTE);
++
++	cur_ctx = cifs_sb->ctx;
++
++	fc = fs_context_for_submount(path->mnt->mnt_sb->s_type, mntpt);
++	if (IS_ERR(fc))
++		return ERR_CAST(fc);
++
++	ctx = smb3_fc2context(fc);
+ 
+ 	page = alloc_dentry_path();
+ 	/* always use tree name prefix */
+ 	full_path = build_path_from_dentry_optional_prefix(mntpt, page, true);
+ 	if (IS_ERR(full_path)) {
+ 		mnt = ERR_CAST(full_path);
+-		goto free_full_path;
++		goto out;
  	}
  
--	if ((create || list_empty(&idev->tempaddr_list)) &&
--	    idev->cnf.use_tempaddr > 0) {
-+	/* Also create a temporary address if it's enabled but no temporary
-+	 * address currently exists.
-+	 * However, we get called with valid_lft == 0, prefered_lft == 0, create == false
-+	 * as part of cleanup (ie. deleting the mngtmpaddr).
-+	 * We don't want that to result in creating a new temporary ip address.
-+	 */
-+	if (list_empty(&idev->tempaddr_list) && (valid_lft || prefered_lft))
-+		create = true;
+-	convert_delimiter(full_path, '\\');
++	convert_delimiter(full_path, '/');
+ 	cifs_dbg(FYI, "%s: full_path: %s\n", __func__, full_path);
+ 
+-	mnt = cifs_dfs_do_mount(mntpt, cifs_sb, full_path);
+-	cifs_dbg(FYI, "%s: cifs_dfs_do_mount:%s , mnt:%p\n", __func__, full_path + 1, mnt);
++	tmp = *cur_ctx;
++	tmp.source = full_path;
++	tmp.UNC = tmp.prepath = NULL;
 +
-+	if (create && idev->cnf.use_tempaddr > 0) {
- 		/* When a new public address is created as described
- 		 * in [ADDRCONF], also create a new temporary address.
--		 * Also create a temporary address if it's enabled but
--		 * no temporary address currently exists.
- 		 */
- 		read_unlock_bh(&idev->lock);
- 		ipv6_create_tempaddr(ifp, false);
++	rc = smb3_fs_context_dup(ctx, &tmp);
++	if (rc) {
++		mnt = ERR_PTR(rc);
++		goto out;
++	}
++
++	rc = smb3_parse_devname(full_path, ctx);
++	if (!rc)
++		mnt = fc_mount(fc);
++	else
++		mnt = ERR_PTR(rc);
+ 
+-free_full_path:
++out:
++	put_fs_context(fc);
+ 	free_dentry_path(page);
+-cdda_exit:
+-	cifs_dbg(FYI, "leaving %s\n" , __func__);
+ 	return mnt;
+ }
+ 
+@@ -354,9 +334,9 @@ struct vfsmount *cifs_dfs_d_automount(struct path *path)
+ {
+ 	struct vfsmount *newmnt;
+ 
+-	cifs_dbg(FYI, "in %s\n", __func__);
++	cifs_dbg(FYI, "%s: %pd\n", __func__, path->dentry);
+ 
+-	newmnt = cifs_dfs_do_automount(path->dentry);
++	newmnt = cifs_dfs_do_automount(path);
+ 	if (IS_ERR(newmnt)) {
+ 		cifs_dbg(FYI, "leaving %s [automount failed]\n" , __func__);
+ 		return newmnt;
 -- 
 2.39.2
 
