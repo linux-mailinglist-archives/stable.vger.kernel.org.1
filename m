@@ -2,59 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E5676AA73
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7BE376AA77
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231872AbjHAIB0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 04:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57342 "EHLO
+        id S229917AbjHAICv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 04:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229917AbjHAIBY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:01:24 -0400
+        with ESMTP id S229585AbjHAICv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:02:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DD2D1729;
-        Tue,  1 Aug 2023 01:01:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B9DC6
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:02:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2502D614A3;
-        Tue,  1 Aug 2023 08:01:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0807CC433C8;
-        Tue,  1 Aug 2023 08:01:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1740614A8
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 08:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC75EC433C7;
+        Tue,  1 Aug 2023 08:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690876882;
-        bh=6kqSeh2s0QB7HJFRWEDE8TrFNli7QfT0Sf6nWD+OGBY=;
+        s=korg; t=1690876969;
+        bh=PIBhiL9gVkjHcag2wpnES053TCbGhb7/Ld0bgtDfph0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ocSGhdOxgh299LUX3x6cTP6JfL027dGb7y/LAteyR33a/QMjbrP+HYy20vwe0tZI5
-         P7hfNVKofhN2UApJ5qftcGpXWbOroCmq0R7PkneiBi536ESAgwiTA6qUN8KihmSpaW
-         809GOzwyhc9Rjo8VHZM3OFIQ35yrghhdMR0fa8rE=
-Date:   Tue, 1 Aug 2023 10:01:20 +0200
+        b=G+9k544Z9xJqcpAw0QsQYFoBQgWkIATCrknUfuKNEP2SIf+6BhgXy6DtrYJcOhLzh
+         SAXAOV+6IBz3joagsIQ2OCgNGLYEz0UqTmZ5Q3d9CpMPIbFxrnga+gXhZJ9s6faKiq
+         A6FPzo2LqI2sL9Sq33MFPx5YSumyoN1PEJV8rPD8=
+Date:   Tue, 1 Aug 2023 10:02:46 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc:     stable@vger.kernel.org, easwar.hariharan@microsoft.com,
-        Robin Murphy <robin.murphy@arm.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Joerg Roedel <joro@8bytes.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Tomas Krcka <krckatom@amazon.de>,
-        "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH 6.4] iommu/arm-smmu-v3: Document MMU-700 erratum 2812531
-Message-ID: <2023080102-rake-twisty-746d@gregkh>
-References: <20230724185130.1676140-1-eahariha@linux.microsoft.com>
+To:     Jocelyn Falempe <jfalempe@redhat.com>
+Cc:     stable@vger.kernel.org, Zhang Yi <yizhan@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH 4.19.y] drm/client: Fix memory leak in
+ drm_client_target_cloned
+Message-ID: <2023080133-oxford-mundane-c98c@gregkh>
+References: <2023072326-snuff-obnoxious-af01@gregkh>
+ <20230725120302.89913-1-jfalempe@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230724185130.1676140-1-eahariha@linux.microsoft.com>
+In-Reply-To: <20230725120302.89913-1-jfalempe@redhat.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -65,70 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 06:51:28PM +0000, Easwar Hariharan wrote:
-> From: Robin Murphy <robin.murphy@arm.com>
+On Tue, Jul 25, 2023 at 02:02:54PM +0200, Jocelyn Falempe wrote:
+> dmt_mode is allocated and never freed in this function.
+> It was found with the ast driver, but most drivers using generic fbdev
+> setup are probably affected.
 > 
-> commit 309a15cb16bb075da1c99d46fb457db6a1a2669e upstream
+> This fixes the following kmemleak report:
+>   backtrace:
+>     [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
+>     [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
+>     [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
+>     [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
+>     [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
+>     [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
+>     [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
+>     [<00000000987f19bb>] local_pci_probe+0xdc/0x180
+>     [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
+>     [<0000000000b85301>] process_one_work+0x8b7/0x1540
+>     [<000000003375b17c>] worker_thread+0x70a/0xed0
+>     [<00000000b0d43cd9>] kthread+0x29f/0x340
+>     [<000000008d770833>] ret_from_fork+0x1f/0x30
+> unreferenced object 0xff11000333089a00 (size 128):
 > 
-> To work around MMU-700 erratum 2812531 we need to ensure that certain
-> sequences of commands cannot be issued without an intervening sync. In
-> practice this falls out of our current command-batching machinery
-> anyway - each batch only contains a single type of invalidation command,
-> and ends with a sync. The only exception is when a batch is sufficiently
-> large to need issuing across multiple command queue slots, wherein the
-> earlier slots will not contain a sync and thus may in theory interleave
-> with another batch being issued in parallel to create an affected
-> sequence across the slot boundary.
-> 
-> Since MMU-700 supports range invalidate commands and thus we will prefer
-> to use them (which also happens to avoid conditions for other errata),
-> I'm not entirely sure it's even possible for a single high-level
-> invalidate call to generate a batch of more than 63 commands, but for
-> the sake of robustness and documentation, wire up an option to enforce
-> that a sync is always inserted for every slot issued.
-> 
-> The other aspect is that the relative order of DVM commands cannot be
-> controlled, so DVM cannot be used. Again that is already the status quo,
-> but since we have at least defined ARM_SMMU_FEAT_BTM, we can explicitly
-> disable it for documentation purposes even if it's not wired up anywhere
-> yet.
-> 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-> Link: https://lore.kernel.org/r/330221cdfd0003cd51b6c04e7ff3566741ad8374.1683731256.git.robin.murphy@arm.com
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> cc: <stable@vger.kernel.org>
+> Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
+> Reported-by: Zhang Yi <yizhan@redhat.com>
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
+> (cherry picked from commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03)
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 > ---
->  Documentation/arm64/silicon-errata.rst      |  4 +++
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 39 +++++++++++++++++++++
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  1 +
->  3 files changed, 44 insertions(+)
+>  drivers/gpu/drm/drm_fb_helper.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-> index cd46e2b20a81..b0346968765d 100644
-> --- a/Documentation/arm64/silicon-errata.rst
-> +++ b/Documentation/arm64/silicon-errata.rst
-> @@ -143,6 +143,10 @@ stable kernels.
->  +----------------+-----------------+-----------------+-----------------------------+
->  | ARM            | MMU-500         | #841119,826419  | N/A                         |
->  +----------------+-----------------+-----------------+-----------------------------+
-> +| ARM            | MMU-600         | #1076982        | N/A                         |
-> ++----------------+-----------------+-----------------+-----------------------------+
-> +| ARM            | MMU-700         | #2812531        | N/A                         |
-> ++----------------+-----------------+-----------------+-----------------------------+
 
-But you didn't backport the MMU-600 change here, so why does the diff
-here show you did?
-
-And what about commit 0bfbfc526c70 ("iommu/arm-smmu-v3: Document
-nesting-related errata") after this?
-
-Can you send a properly backported series for this and the needed fixes
-after this, for all relevant kernels you wish to have the errata applied
-to?  This single backport isn't enough, sorry.
-
-I've dropped all the patches you submitted for stable backports now.
-
-thanks,
+Both now queued up, thanks.
 
 greg k-h
