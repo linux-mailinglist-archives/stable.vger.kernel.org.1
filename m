@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FC6B76AF88
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A4E76AE6D
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233562AbjHAJsf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45220 "EHLO
+        id S233184AbjHAJit (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:38:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233833AbjHAJsS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:18 -0400
+        with ESMTP id S233195AbjHAJi1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9EAF3582
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47AA5278
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50D69614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630FFC433C7;
-        Tue,  1 Aug 2023 09:46:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 12D686150B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2FCC433C9;
+        Tue,  1 Aug 2023 09:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883201;
-        bh=l6Pcvzb0AvMm9DsHofV8Ursvkib+BQffG9sT3tfszYQ=;
+        s=korg; t=1690882580;
+        bh=y2X+6Ws0RSAnwqIEIVnYHSMjoQ/u0fwlQxWXNh1VjCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V3WTRPsAP6+KL7IQg7znDSWmxbSmrIgQt7ZDSJAkf1W4ZDB034sYcmzwn7u78fyt8
-         h62H83aaQSlwSnm6EjsEuUcE+8QpS8GynQHAISfnqrdB3nItkvix+zcgdfkt+o+qAx
-         kV/JlSEnCaGhrucQExNd6Gn4Rn7Zaf+wNbWJ2jnA=
+        b=k/6aV5I2FWmKDF8sXTJh3G+G9lqoDxAIHAQEGRbpdHxHXhGtYhAbCtQp+/TxNy4yl
+         4SP6ys7kW0sqVJyT1x1DZCFFgeOIi3QBgcTpUjk+eTkHwkbLx2cSvlEVIjeR4ZJ69d
+         4+wS91VaX9VpDGJUTshsuWVVV2/pQUTgVB9Mzmoo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ruihong Luo <colorsu1922@gmail.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.4 151/239] serial: 8250_dw: Preserve original value of DLF register
+        patches@lists.linux.dev, Mohsen Tahmasebi <moh53n@moh53n.ir>,
+        Mostafa Ghofrani <mostafaghrr@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 157/228] USB: serial: option: add Quectel EC200A module support
 Date:   Tue,  1 Aug 2023 11:20:15 +0200
-Message-ID: <20230801091931.102302108@linuxfoundation.org>
+Message-ID: <20230801091928.568764884@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihong Luo <colorsu1922@gmail.com>
+From: Mohsen Tahmasebi <moh53n@moh53n.ir>
 
-commit 748c5ea8b8796ae8ee80b8d3a3d940570b588d59 upstream.
+commit 857ea9005806e2a458016880278f98715873e977 upstream.
 
-Preserve the original value of the Divisor Latch Fraction (DLF) register.
-When the DLF register is modified without preservation, it can disrupt
-the baudrate settings established by firmware or bootloader, leading to
-data corruption and the generation of unreadable or distorted characters.
+Add Quectel EC200A "DIAG, AT, MODEM":
 
-Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ruihong Luo <colorsu1922@gmail.com>
-Link: https://lore.kernel.org/stable/20230713004235.35904-1-colorsu1922%40gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230713004235.35904-1-colorsu1922@gmail.com
+0x6005: ECM / RNDIS + DIAG + AT + MODEM
+
+T:  Bus=01 Lev=01 Prnt=02 Port=05 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=6005 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+S:  SerialNumber=0000
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+
+Signed-off-by: Mohsen Tahmasebi <moh53n@moh53n.ir>
+Tested-by: Mostafa Ghofrani <mostafaghrr@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dwlib.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_dwlib.c
-+++ b/drivers/tty/serial/8250/8250_dwlib.c
-@@ -244,7 +244,7 @@ void dw8250_setup_port(struct uart_port
- 	struct dw8250_port_data *pd = p->private_data;
- 	struct dw8250_data *data = to_dw8250_data(pd);
- 	struct uart_8250_port *up = up_to_u8250p(p);
--	u32 reg;
-+	u32 reg, old_dlf;
- 
- 	pd->hw_rs485_support = dw8250_detect_rs485_hw(p);
- 	if (pd->hw_rs485_support) {
-@@ -270,9 +270,11 @@ void dw8250_setup_port(struct uart_port
- 	dev_dbg(p->dev, "Designware UART version %c.%c%c\n",
- 		(reg >> 24) & 0xff, (reg >> 16) & 0xff, (reg >> 8) & 0xff);
- 
-+	/* Preserve value written by firmware or bootloader  */
-+	old_dlf = dw8250_readl_ext(p, DW_UART_DLF);
- 	dw8250_writel_ext(p, DW_UART_DLF, ~0U);
- 	reg = dw8250_readl_ext(p, DW_UART_DLF);
--	dw8250_writel_ext(p, DW_UART_DLF, 0);
-+	dw8250_writel_ext(p, DW_UART_DLF, old_dlf);
- 
- 	if (reg) {
- 		pd->dlf_size = fls(reg);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -269,6 +269,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+ #define QUECTEL_PRODUCT_EC200U			0x0901
+ #define QUECTEL_PRODUCT_EC200S_CN		0x6002
++#define QUECTEL_PRODUCT_EC200A			0x6005
+ #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
+ #define QUECTEL_PRODUCT_EM061K_LCN		0x6009
+ #define QUECTEL_PRODUCT_EC200T			0x6026
+@@ -1229,6 +1230,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM520N, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, 0x0900, 0xff, 0, 0), /* RM500U-CN */
+ 	  .driver_info = ZLP },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200A, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
 
 
