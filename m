@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDDD476AD3F
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D90276AE92
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232963AbjHAJ1f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52782 "EHLO
+        id S232570AbjHAJkC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:40:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231244AbjHAJ1C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:02 -0400
+        with ESMTP id S233279AbjHAJjj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87C81BC3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F31F35B8
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8B41614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B397EC433C8;
-        Tue,  1 Aug 2023 09:26:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF8C261507
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FF5C433C7;
+        Tue,  1 Aug 2023 09:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881962;
-        bh=+d5mMCIhTSOvYtvKOVHme5m9mXl228xHRH6jts+oFPk=;
+        s=korg; t=1690882630;
+        bh=/MRTaWhEZFeKmFXq9RoCd5IgLsD1oPButfjvBYLrfBI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ramCu4MunS8+S2nszP/68iSIa7+HRyrtD09ybUJG7kcMpM4icGibgVtWct5XeKJty
-         7m3KpnT4vl4sQkK35bMR3sCh/+REG+Pf/vgBrDRfg+h2Gasw+GvZbXvpOsq6xa376M
-         mi6fkV6p0bciQV7a6Mn9dfrgLvlESjUSjy/JlG6k=
+        b=BfXD8M4Svuk+zM+05ZFrngKilQat/cIh2qp84Ostyis1PDQoXoFBa1N+zDPPiabpf
+         toi0inPcKU1iofX3wXDubqQbHG3y+wJ/J4C5q9rIlZMBWylzdNy2TmAxQDVL7X9+KZ
+         Mtw0y3L9cTakB0BCwevcFnERuBrDN+IKbGDRNcKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/155] block: Fix a source code comment in include/uapi/linux/blkzoned.h
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.1 146/228] Revert "usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()"
 Date:   Tue,  1 Aug 2023 11:20:04 +0200
-Message-ID: <20230801091913.462137417@linuxfoundation.org>
+Message-ID: <20230801091928.174848851@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e0933b526fbfd937c4a8f4e35fcdd49f0e22d411 ]
+commit a8291be6b5dd465c22af229483dbac543a91e24e upstream.
 
-Fix the symbolic names for zone conditions in the blkzoned.h header
-file.
+This reverts commit f08aa7c80dac27ee00fa6827f447597d2fba5465.
 
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Fixes: 6a0cb1bc106f ("block: Implement support for zoned block devices")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230706201422.3987341-1-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reverted commit was based on static analysis and a misunderstanding
+of how PTR_ERR() and NULLs are supposed to work.  When a function
+returns both pointer errors and NULL then normally the NULL means
+"continue operating without a feature because it was deliberately
+turned off".  The NULL should not be treated as a failure.  If a driver
+cannot work when that feature is disabled then the KConfig should
+enforce that the function cannot return NULL.  We should not need to
+test for it.
+
+In this driver, the bug means that probe cannot succeed when CONFIG_PM
+is disabled.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: f08aa7c80dac ("usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/ZKQoBa84U/ykEh3C@moroto
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/blkzoned.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/udc/tegra-xudc.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/blkzoned.h b/include/uapi/linux/blkzoned.h
-index 656a326821a2b..321965feee354 100644
---- a/include/uapi/linux/blkzoned.h
-+++ b/include/uapi/linux/blkzoned.h
-@@ -51,13 +51,13 @@ enum blk_zone_type {
-  *
-  * The Zone Condition state machine in the ZBC/ZAC standards maps the above
-  * deinitions as:
-- *   - ZC1: Empty         | BLK_ZONE_EMPTY
-+ *   - ZC1: Empty         | BLK_ZONE_COND_EMPTY
-  *   - ZC2: Implicit Open | BLK_ZONE_COND_IMP_OPEN
-  *   - ZC3: Explicit Open | BLK_ZONE_COND_EXP_OPEN
-- *   - ZC4: Closed        | BLK_ZONE_CLOSED
-- *   - ZC5: Full          | BLK_ZONE_FULL
-- *   - ZC6: Read Only     | BLK_ZONE_READONLY
-- *   - ZC7: Offline       | BLK_ZONE_OFFLINE
-+ *   - ZC4: Closed        | BLK_ZONE_COND_CLOSED
-+ *   - ZC5: Full          | BLK_ZONE_COND_FULL
-+ *   - ZC6: Read Only     | BLK_ZONE_COND_READONLY
-+ *   - ZC7: Offline       | BLK_ZONE_COND_OFFLINE
-  *
-  * Conditions 0x5 to 0xC are reserved by the current ZBC/ZAC spec and should
-  * be considered invalid.
--- 
-2.40.1
-
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3695,15 +3695,15 @@ static int tegra_xudc_powerdomain_init(s
+ 	int err;
+ 
+ 	xudc->genpd_dev_device = dev_pm_domain_attach_by_name(dev, "dev");
+-	if (IS_ERR_OR_NULL(xudc->genpd_dev_device)) {
+-		err = PTR_ERR(xudc->genpd_dev_device) ? : -ENODATA;
++	if (IS_ERR(xudc->genpd_dev_device)) {
++		err = PTR_ERR(xudc->genpd_dev_device);
+ 		dev_err(dev, "failed to get device power domain: %d\n", err);
+ 		return err;
+ 	}
+ 
+ 	xudc->genpd_dev_ss = dev_pm_domain_attach_by_name(dev, "ss");
+-	if (IS_ERR_OR_NULL(xudc->genpd_dev_ss)) {
+-		err = PTR_ERR(xudc->genpd_dev_ss) ? : -ENODATA;
++	if (IS_ERR(xudc->genpd_dev_ss)) {
++		err = PTR_ERR(xudc->genpd_dev_ss);
+ 		dev_err(dev, "failed to get SuperSpeed power domain: %d\n", err);
+ 		return err;
+ 	}
 
 
