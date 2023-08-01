@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ECE276AF0C
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1948076AE01
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233509AbjHAJow (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45414 "EHLO
+        id S233020AbjHAJfb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233369AbjHAJo1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:27 -0400
+        with ESMTP id S233140AbjHAJfJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9E035A7
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BBF49FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D8CCE61514
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6484C433C7;
-        Tue,  1 Aug 2023 09:41:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D476614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A16BC433C8;
+        Tue,  1 Aug 2023 09:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882908;
-        bh=y31RUH6m1hoTULCEVwvDLd/dGbvo+5TNHYZShc1V794=;
+        s=korg; t=1690882371;
+        bh=QH7KR7iqcVQTsLW/mJ5r5NQCFKcwNcxz0U+qY+XkdFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AC4K522LQxxs+l0xdTkiHBCbQZsy2lJO2rxuDaL6Z3XObDNuoQw1THwLdld/CbGIh
-         uv6JhFGCk/k3RgjHWae6lTWQmSrhnOqoS0WsrcjxQ+F4ea51v3+0JhZNVQlaSIAsxb
-         phBhBNYsX/KTsip7TTwR9vqknjeO0Cc6TotE4DkQ=
+        b=rjt5ZpxElFg1WAWgcZxA0r1cdVeL5lIK1Ta6rcoewxOYUd2iLS36Shq+2KGyWj4T9
+         fboQyO26RgKi0e+DcWvVyz8R/8ipZ+V6yM0eUJ10VPA9acVsaJiWHi1qssFVQTtVNr
+         C49d8OEjyj+LMyXZeomkLiOlrSUWIp1tu6+Xwc/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, Oliver Upton <oliver.upton@linux.dev>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 046/239] jbd2: remove t_checkpoint_io_list
-Date:   Tue,  1 Aug 2023 11:18:30 +0200
-Message-ID: <20230801091927.232170784@linuxfoundation.org>
+Subject: [PATCH 6.1 053/228] KVM: arm64: Condition HW AF updates on config option
+Date:   Tue,  1 Aug 2023 11:18:31 +0200
+Message-ID: <20230801091924.810481541@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,144 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit be22255360f80d3af789daad00025171a65424a5 ]
+[ Upstream commit 1dfc3e905089a0bcada268fb5691a605655e0319 ]
 
-Since t_checkpoint_io_list was stop using in jbd2_log_do_checkpoint()
-now, it's time to remove the whole t_checkpoint_io_list logic.
+As it currently stands, KVM makes use of FEAT_HAFDBS unconditionally.
+Use of the feature in the rest of the kernel is guarded by an associated
+Kconfig option.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+Align KVM with the rest of the kernel and only enable VTCR_HA when
+ARM64_HW_AFDBM is enabled. This can be helpful for testing changes to
+the stage-2 access fault path on Armv8.1+ implementations.
+
+Link: https://lore.kernel.org/r/20221202185156.696189-7-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Stable-dep-of: 6df696cd9bc1 ("arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at stage-2")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c | 42 ++----------------------------------------
- fs/jbd2/commit.c     |  3 +--
- include/linux/jbd2.h |  6 ------
- 3 files changed, 3 insertions(+), 48 deletions(-)
+ arch/arm64/kvm/hyp/pgtable.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index c4e0da6db7195..723b4eb112828 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -27,7 +27,7 @@
-  *
-  * Called with j_list_lock held.
-  */
--static inline void __buffer_unlink_first(struct journal_head *jh)
-+static inline void __buffer_unlink(struct journal_head *jh)
- {
- 	transaction_t *transaction = jh->b_cp_transaction;
+diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+index cdf8e76b0be14..8f37e65c23eea 100644
+--- a/arch/arm64/kvm/hyp/pgtable.c
++++ b/arch/arm64/kvm/hyp/pgtable.c
+@@ -595,12 +595,14 @@ u64 kvm_get_vtcr(u64 mmfr0, u64 mmfr1, u32 phys_shift)
+ 		lvls = 2;
+ 	vtcr |= VTCR_EL2_LVLS_TO_SL0(lvls);
  
-@@ -40,23 +40,6 @@ static inline void __buffer_unlink_first(struct journal_head *jh)
- 	}
- }
- 
--/*
-- * Unlink a buffer from a transaction checkpoint(io) list.
-- *
-- * Called with j_list_lock held.
-- */
--static inline void __buffer_unlink(struct journal_head *jh)
--{
--	transaction_t *transaction = jh->b_cp_transaction;
--
--	__buffer_unlink_first(jh);
--	if (transaction->t_checkpoint_io_list == jh) {
--		transaction->t_checkpoint_io_list = jh->b_cpnext;
--		if (transaction->t_checkpoint_io_list == jh)
--			transaction->t_checkpoint_io_list = NULL;
--	}
--}
--
- /*
-  * Check a checkpoint buffer could be release or not.
-  *
-@@ -505,15 +488,6 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 			break;
- 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
- 			break;
--		if (released)
--			continue;
--
--		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_io_list,
--						       nr_to_scan, &released);
--		if (*nr_to_scan == 0)
--			break;
--		if (need_resched() || spin_needbreak(&journal->j_list_lock))
--			break;
- 	} while (transaction != last_transaction);
- 
- 	if (transaction != last_transaction) {
-@@ -568,17 +542,6 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 		 */
- 		if (need_resched())
- 			return;
--		if (ret)
--			continue;
--		/*
--		 * It is essential that we are as careful as in the case of
--		 * t_checkpoint_list with removing the buffer from the list as
--		 * we can possibly see not yet submitted buffers on io_list
--		 */
--		ret = journal_clean_one_cp_list(transaction->
--				t_checkpoint_io_list, destroy);
--		if (need_resched())
--			return;
- 		/*
- 		 * Stop scanning if we couldn't free the transaction. This
- 		 * avoids pointless scanning of transactions which still
-@@ -663,7 +626,7 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 	jbd2_journal_put_journal_head(jh);
- 
- 	/* Is this transaction empty? */
--	if (transaction->t_checkpoint_list || transaction->t_checkpoint_io_list)
-+	if (transaction->t_checkpoint_list)
- 		return 0;
- 
++#ifdef CONFIG_ARM64_HW_AFDBM
  	/*
-@@ -755,7 +718,6 @@ void __jbd2_journal_drop_transaction(journal_t *journal, transaction_t *transact
- 	J_ASSERT(transaction->t_forget == NULL);
- 	J_ASSERT(transaction->t_shadow_list == NULL);
- 	J_ASSERT(transaction->t_checkpoint_list == NULL);
--	J_ASSERT(transaction->t_checkpoint_io_list == NULL);
- 	J_ASSERT(atomic_read(&transaction->t_updates) == 0);
- 	J_ASSERT(journal->j_committing_transaction != transaction);
- 	J_ASSERT(journal->j_running_transaction != transaction);
-diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-index b33155dd70017..1073259902a60 100644
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -1141,8 +1141,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 	spin_lock(&journal->j_list_lock);
- 	commit_transaction->t_state = T_FINISHED;
- 	/* Check if the transaction can be dropped now that we are finished */
--	if (commit_transaction->t_checkpoint_list == NULL &&
--	    commit_transaction->t_checkpoint_io_list == NULL) {
-+	if (commit_transaction->t_checkpoint_list == NULL) {
- 		__jbd2_journal_drop_transaction(journal, commit_transaction);
- 		jbd2_journal_free_transaction(commit_transaction);
- 	}
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index f619bae1dcc5d..91a2cf4bc5756 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -622,12 +622,6 @@ struct transaction_s
+ 	 * Enable the Hardware Access Flag management, unconditionally
+ 	 * on all CPUs. The features is RES0 on CPUs without the support
+ 	 * and must be ignored by the CPUs.
  	 */
- 	struct journal_head	*t_checkpoint_list;
+ 	vtcr |= VTCR_EL2_HA;
++#endif /* CONFIG_ARM64_HW_AFDBM */
  
--	/*
--	 * Doubly-linked circular list of all buffers submitted for IO while
--	 * checkpointing. [j_list_lock]
--	 */
--	struct journal_head	*t_checkpoint_io_list;
--
- 	/*
- 	 * Doubly-linked circular list of metadata buffers being
- 	 * shadowed by log IO.  The IO buffers on the iobuf list and
+ 	/* Set the vmid bits */
+ 	vtcr |= (get_vmid_bits(mmfr1) == 16) ?
 -- 
 2.39.2
 
