@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56BBF76ADCA
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 644FC76AF5E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232290AbjHAJdp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58076 "EHLO
+        id S229567AbjHAJq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233152AbjHAJdI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D94A2112
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:05 -0700 (PDT)
+        with ESMTP id S233408AbjHAJo4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8719A0
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39782614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45005C433C8;
-        Tue,  1 Aug 2023 09:31:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 422B56150B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE3BC433CD;
+        Tue,  1 Aug 2023 09:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882264;
-        bh=O/kdh+J8wa2BWS78lSHS0JIwkcmeL/8vt6hPLAWxIqM=;
+        s=korg; t=1690882963;
+        bh=nUPcIfnTLKlK1PZtRVfvGT9RpsAx4dw12pji0H6gnt0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EjerXPgoJOai2qvabHoXCM4CATXtKog9o9IHeYd+Z8HS4LWD+NTPtA25hqUYgZ0/o
-         weCw9iTREFsZgyWbqBwDv/FthbXh0umonSlXPNyCJkzvP6wzU8ZeBGkUcNE+5qEKNo
-         jTNtS4dgNveTJX+NCE2gGfXjWCeM5JNEU41jXF88=
+        b=kn+tG0rexbtntCQDeRjGT5Yu2HgKiOxlywLITFcpKd/M/51L0uicbPDCLw7yoYP+c
+         lAET+psz6OwbsvSleg/8ZrDjcxVmOJsJPjKgjHKOlPHPgYRqPlDqPS9aUYWtdNG/Qv
+         dUhRP7WCsU8BF4VWj/ZP5o/xtVxBfZv2xgwB28eM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Wheeler <daniel.wheeler@amd.com>,
-        Charlene Liu <Charlene.Liu@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>,
+        patches@lists.linux.dev, Sean Wang <sean.ns.wang@amd.com>,
+        Marc Rossi <Marc.Rossi@amd.com>,
+        Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
+        "Tsung-hua (Ryan) Lin" <Tsung-hua.Lin@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/228] drm/amd/display: add pixel rate based CRB allocation support
+Subject: [PATCH 6.4 037/239] drm/amd/display: Set minimum requirement for using PSR-SU on Rembrandt
 Date:   Tue,  1 Aug 2023 11:18:21 +0200
-Message-ID: <20230801091924.434577225@linuxfoundation.org>
+Message-ID: <20230801091926.930866891@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,389 +60,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9ba90d760e9354c124fa9bbea08017d96699a82c ]
+[ Upstream commit c35b6ea8f2ecfa9d775530b70d4e727869099a9c ]
 
-This feature is meant to unblock PSTATE for certain high end display
-configs on dcn315. This is achieved by allocating CRB to detile buffer
-based on display requirements to meet pstate latency hiding needs.
+A number of parade TCONs are causing system hangs when utilized with
+older DMUB firmware and PSR-SU. Some changes have been introduced into
+DMUB firmware to add resilience against these failures.
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
-Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>
+Don't allow running PSR-SU unless on the newer firmware.
+
+Cc: stable@vger.kernel.org
+Cc: Sean Wang <sean.ns.wang@amd.com>
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Cc: Tsung-hua (Ryan) Lin <Tsung-hua.Lin@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2443
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 49f26218c344 ("drm/amd/display: fix dcn315 single stream crb allocation")
+Stable-dep-of: cd2e31a9ab93 ("drm/amd/display: Set minimum requirement for using PSR-SU on Phoenix")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dcn31/dcn31_hubbub.c   |  1 +
- .../amd/display/dc/dcn315/dcn315_resource.c   | 97 ++++++++++++++++++-
- .../drm/amd/display/dc/dml/dcn31/dcn31_fpu.c  | 25 ++++-
- .../drm/amd/display/dc/dml/dcn31/dcn31_fpu.h  |  3 +
- .../dc/dml/dcn31/display_mode_vba_31.c        | 39 +++++---
- .../drm/amd/display/dc/dml/display_mode_vba.c |  6 ++
- 6 files changed, 154 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c |  3 ++-
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c          |  7 +++++++
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h          |  1 +
+ drivers/gpu/drm/amd/display/dmub/dmub_srv.h           |  2 ++
+ drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c     |  5 +++++
+ drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h     |  2 ++
+ drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c       | 10 ++++++----
+ 7 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubbub.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubbub.c
-index 6360dc9502e70..0f231e42e4206 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubbub.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubbub.c
-@@ -103,6 +103,7 @@ static void dcn31_program_det_size(struct hubbub *hubbub, int hubp_inst, unsigne
- 	default:
- 		break;
- 	}
-+	DC_LOG_DEBUG("Set DET%d to %d segments\n", hubp_inst, det_size_segments);
- 	/* Should never be hit, if it is we have an erroneous hw config*/
- 	ASSERT(hubbub2->det0_size + hubbub2->det1_size + hubbub2->det2_size
- 			+ hubbub2->det3_size + hubbub2->compbuf_size_segments <= hubbub2->crb_size_segs);
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-index 19f2025cb7907..88c4a378daa12 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-@@ -136,6 +136,9 @@
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
+index d647f68fd5630..4f61d4f257cd7 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
+@@ -24,6 +24,7 @@
+  */
  
- #define DCN3_15_MAX_DET_SIZE 384
- #define DCN3_15_CRB_SEGMENT_SIZE_KB 64
-+#define DCN3_15_MAX_DET_SEGS (DCN3_15_MAX_DET_SIZE / DCN3_15_CRB_SEGMENT_SIZE_KB)
-+/* Minimum 2 extra segments need to be in compbuf and claimable to guarantee seamless mpo transitions */
-+#define MIN_RESERVED_DET_SEGS 2
+ #include "amdgpu_dm_psr.h"
++#include "dc_dmub_srv.h"
+ #include "dc.h"
+ #include "dm_helpers.h"
+ #include "amdgpu_dm.h"
+@@ -50,7 +51,7 @@ static bool link_supports_psrsu(struct dc_link *link)
+ 	    !link->dpcd_caps.psr_info.psr2_su_y_granularity_cap)
+ 		return false;
  
- enum dcn31_clk_src_array_id {
- 	DCN31_CLK_SRC_PLL0,
-@@ -1636,21 +1639,57 @@ static bool is_dual_plane(enum surface_pixel_format format)
- 	return format >= SURFACE_PIXEL_FORMAT_VIDEO_BEGIN || format == SURFACE_PIXEL_FORMAT_GRPH_RGBE_ALPHA;
+-	return true;
++	return dc_dmub_check_min_version(dc->ctx->dmub_srv->dmub);
  }
  
-+static int source_format_to_bpp (enum source_format_class SourcePixelFormat)
+ /*
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+index a9b9490a532c2..ab4542b57b9a3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+@@ -1079,3 +1079,10 @@ void dc_send_update_cursor_info_to_dmu(
+ 		dc_send_cmd_to_dmu(pCtx->stream->ctx->dmub_srv, &cmd);
+ 	}
+ }
++
++bool dc_dmub_check_min_version(struct dmub_srv *srv)
 +{
-+	if (SourcePixelFormat == dm_444_64)
-+		return 8;
-+	else if (SourcePixelFormat == dm_444_16 || SourcePixelFormat == dm_444_16)
-+		return 2;
-+	else if (SourcePixelFormat == dm_444_8)
-+		return 1;
-+	else if (SourcePixelFormat == dm_rgbe_alpha)
-+		return 5;
-+	else if (SourcePixelFormat == dm_420_8)
-+		return 3;
-+	else if (SourcePixelFormat == dm_420_12)
-+		return 6;
-+	else
-+		return 4;
++	if (!srv->hw_funcs.is_psrsu_supported)
++		return true;
++	return srv->hw_funcs.is_psrsu_supported(srv);
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
+index d34f5563df2ec..9a248ced03b9c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
+@@ -89,4 +89,5 @@ void dc_dmub_setup_subvp_dmub_command(struct dc *dc, struct dc_state *context, b
+ void dc_dmub_srv_log_diagnostic_data(struct dc_dmub_srv *dc_dmub_srv);
+ 
+ void dc_send_update_cursor_info_to_dmu(struct pipe_ctx *pCtx, uint8_t pipe_idx);
++bool dc_dmub_check_min_version(struct dmub_srv *srv);
+ #endif /* _DMUB_DC_SRV_H_ */
+diff --git a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
+index 554ab48d4e647..9cad599b27094 100644
+--- a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
++++ b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
+@@ -364,6 +364,8 @@ struct dmub_srv_hw_funcs {
+ 
+ 	bool (*is_supported)(struct dmub_srv *dmub);
+ 
++	bool (*is_psrsu_supported)(struct dmub_srv *dmub);
++
+ 	bool (*is_hw_init)(struct dmub_srv *dmub);
+ 
+ 	bool (*is_phy_init)(struct dmub_srv *dmub);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
+index c90b9ee42e126..89d24fb7024e2 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
+@@ -297,6 +297,11 @@ bool dmub_dcn31_is_supported(struct dmub_srv *dmub)
+ 	return supported;
+ }
+ 
++bool dmub_dcn31_is_psrsu_supported(struct dmub_srv *dmub)
++{
++	return dmub->fw_version >= DMUB_FW_VERSION(4, 0, 59);
 +}
 +
-+static bool allow_pixel_rate_crb(struct dc *dc, struct dc_state *context)
-+{
-+	int i;
-+	struct resource_context *res_ctx = &context->res_ctx;
-+
-+	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-+		if (!res_ctx->pipe_ctx[i].stream)
-+			continue;
-+
-+		/*Don't apply if MPO to avoid transition issues*/
-+		if (res_ctx->pipe_ctx[i].top_pipe && res_ctx->pipe_ctx[i].top_pipe->plane_state != res_ctx->pipe_ctx[i].plane_state)
-+			return false;
-+	}
-+	return true;
-+}
-+
- static int dcn315_populate_dml_pipes_from_context(
- 	struct dc *dc, struct dc_state *context,
- 	display_e2e_pipe_params_st *pipes,
- 	bool fast_validate)
+ void dmub_dcn31_set_gpint(struct dmub_srv *dmub,
+ 			  union dmub_gpint_data_register reg)
  {
--	int i, pipe_cnt;
-+	int i, pipe_cnt, crb_idx, crb_pipes;
- 	struct resource_context *res_ctx = &context->res_ctx;
- 	struct pipe_ctx *pipe;
- 	const int max_usable_det = context->bw_ctx.dml.ip.config_return_buffer_size_in_kbytes - DCN3_15_MIN_COMPBUF_SIZE_KB;
-+	int remaining_det_segs = max_usable_det / DCN3_15_CRB_SEGMENT_SIZE_KB;
-+	bool pixel_rate_crb = allow_pixel_rate_crb(dc, context);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
+index f6db6f89d45dc..eb62410941473 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
+@@ -219,6 +219,8 @@ bool dmub_dcn31_is_hw_init(struct dmub_srv *dmub);
  
- 	DC_FP_START();
- 	dcn20_populate_dml_pipes_from_context(dc, context, pipes, fast_validate);
- 	DC_FP_END();
+ bool dmub_dcn31_is_supported(struct dmub_srv *dmub);
  
--	for (i = 0, pipe_cnt = 0; i < dc->res_pool->pipe_count; i++) {
-+	for (i = 0, pipe_cnt = 0, crb_pipes = 0; i < dc->res_pool->pipe_count; i++) {
- 		struct dc_crtc_timing *timing;
++bool dmub_dcn31_is_psrsu_supported(struct dmub_srv *dmub);
++
+ void dmub_dcn31_set_gpint(struct dmub_srv *dmub,
+ 			  union dmub_gpint_data_register reg);
  
- 		if (!res_ctx->pipe_ctx[i].stream)
-@@ -1672,6 +1711,23 @@ static int dcn315_populate_dml_pipes_from_context(
- 		pipes[pipe_cnt].dout.dsc_input_bpc = 0;
- 		DC_FP_START();
- 		dcn31_zero_pipe_dcc_fraction(pipes, pipe_cnt);
-+		if (pixel_rate_crb && !pipe->top_pipe && !pipe->prev_odm_pipe) {
-+			int bpp = source_format_to_bpp(pipes[pipe_cnt].pipe.src.source_format);
-+			/* Ceil to crb segment size */
-+			int approx_det_segs_required_for_pstate = dcn_get_approx_det_segs_required_for_pstate(
-+					&context->bw_ctx.dml.soc, timing->pix_clk_100hz, bpp, DCN3_15_CRB_SEGMENT_SIZE_KB);
-+			if (approx_det_segs_required_for_pstate <= 2 * DCN3_15_MAX_DET_SEGS) {
-+				bool split_required = approx_det_segs_required_for_pstate > DCN3_15_MAX_DET_SEGS;
-+				split_required = split_required || timing->pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc);
-+				split_required = split_required || (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
-+				if (split_required)
-+					approx_det_segs_required_for_pstate += approx_det_segs_required_for_pstate % 2;
-+				pipes[pipe_cnt].pipe.src.det_size_override = approx_det_segs_required_for_pstate;
-+				remaining_det_segs -= approx_det_segs_required_for_pstate;
-+			} else
-+				remaining_det_segs = -1;
-+			crb_pipes++;
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+index 6d76ce327d69f..0f43a05a41874 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+@@ -227,14 +227,16 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
+ 	case DMUB_ASIC_DCN314:
+ 	case DMUB_ASIC_DCN315:
+ 	case DMUB_ASIC_DCN316:
+-		if (asic == DMUB_ASIC_DCN314)
++		if (asic == DMUB_ASIC_DCN314) {
+ 			dmub->regs_dcn31 = &dmub_srv_dcn314_regs;
+-		else if (asic == DMUB_ASIC_DCN315)
++		} else if (asic == DMUB_ASIC_DCN315) {
+ 			dmub->regs_dcn31 = &dmub_srv_dcn315_regs;
+-		else if (asic == DMUB_ASIC_DCN316)
++		} else if (asic == DMUB_ASIC_DCN316) {
+ 			dmub->regs_dcn31 = &dmub_srv_dcn316_regs;
+-		else
++		} else {
+ 			dmub->regs_dcn31 = &dmub_srv_dcn31_regs;
++			funcs->is_psrsu_supported = dmub_dcn31_is_psrsu_supported;
 +		}
- 		DC_FP_END();
- 
- 		if (pipes[pipe_cnt].dout.dsc_enable) {
-@@ -1690,16 +1746,49 @@ static int dcn315_populate_dml_pipes_from_context(
- 				break;
- 			}
- 		}
--
- 		pipe_cnt++;
- 	}
- 
-+	/* Spread remaining unreserved crb evenly among all pipes, use default policy if not enough det or single pipe */
-+	if (pixel_rate_crb) {
-+		for (i = 0, pipe_cnt = 0, crb_idx = 0; i < dc->res_pool->pipe_count; i++) {
-+			pipe = &res_ctx->pipe_ctx[i];
-+			if (!pipe->stream)
-+				continue;
-+
-+			if (!pipe->top_pipe && !pipe->prev_odm_pipe) {
-+				bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
-+						|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
-+
-+				if (remaining_det_segs < 0 || crb_pipes == 1)
-+					pipes[pipe_cnt].pipe.src.det_size_override = 0;
-+				if (remaining_det_segs > MIN_RESERVED_DET_SEGS)
-+					pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
-+							(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
-+				if (pipes[pipe_cnt].pipe.src.det_size_override > 2 * DCN3_15_MAX_DET_SEGS) {
-+					/* Clamp to 2 pipe split max det segments */
-+					remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override - 2 * (DCN3_15_MAX_DET_SEGS);
-+					pipes[pipe_cnt].pipe.src.det_size_override = 2 * DCN3_15_MAX_DET_SEGS;
-+				}
-+				if (pipes[pipe_cnt].pipe.src.det_size_override > DCN3_15_MAX_DET_SEGS || split_required) {
-+					/* If we are splitting we must have an even number of segments */
-+					remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override % 2;
-+					pipes[pipe_cnt].pipe.src.det_size_override -= pipes[pipe_cnt].pipe.src.det_size_override % 2;
-+				}
-+				/* Convert segments into size for DML use */
-+				pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
-+				crb_idx++;
-+			}
-+			pipe_cnt++;
-+		}
-+	}
-+
- 	if (pipe_cnt)
- 		context->bw_ctx.dml.ip.det_buffer_size_kbytes =
- 				(max_usable_det / DCN3_15_CRB_SEGMENT_SIZE_KB / pipe_cnt) * DCN3_15_CRB_SEGMENT_SIZE_KB;
- 	if (context->bw_ctx.dml.ip.det_buffer_size_kbytes > DCN3_15_MAX_DET_SIZE)
- 		context->bw_ctx.dml.ip.det_buffer_size_kbytes = DCN3_15_MAX_DET_SIZE;
--	ASSERT(context->bw_ctx.dml.ip.det_buffer_size_kbytes >= DCN3_15_DEFAULT_DET_SIZE);
-+
- 	dc->config.enable_4to1MPC = false;
- 	if (pipe_cnt == 1 && pipe->plane_state && !dc->debug.disable_z9_mpc) {
- 		if (is_dual_plane(pipe->plane_state->format)
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-index e48923f314b36..0c0feec88e4f1 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-@@ -483,7 +483,7 @@ void dcn31_calculate_wm_and_dlg_fp(
- 		int pipe_cnt,
- 		int vlevel)
- {
--	int i, pipe_idx, active_hubp_count = 0;
-+	int i, pipe_idx, total_det = 0, active_hubp_count = 0;
- 	double dcfclk = context->bw_ctx.dml.vba.DCFCLKState[vlevel][context->bw_ctx.dml.vba.maxMpcComb];
- 
- 	dc_assert_fp_enabled();
-@@ -560,6 +560,18 @@ void dcn31_calculate_wm_and_dlg_fp(
- 		context->bw_ctx.bw.dcn.clk.fclk_khz = 0;
- 		context->bw_ctx.bw.dcn.clk.p_state_change_support = true;
- 	}
-+	for (i = 0, pipe_idx = 0; i < dc->res_pool->pipe_count; i++) {
-+		if (!context->res_ctx.pipe_ctx[i].stream)
-+			continue;
-+
-+		context->res_ctx.pipe_ctx[i].det_buffer_size_kb =
-+				get_det_buffer_size_kbytes(&context->bw_ctx.dml, pipes, pipe_cnt, pipe_idx);
-+		if (context->res_ctx.pipe_ctx[i].det_buffer_size_kb > 384)
-+			context->res_ctx.pipe_ctx[i].det_buffer_size_kb /= 2;
-+		total_det += context->res_ctx.pipe_ctx[i].det_buffer_size_kb;
-+		pipe_idx++;
-+	}
-+	context->bw_ctx.bw.dcn.compbuf_size_kb = context->bw_ctx.dml.ip.config_return_buffer_size_in_kbytes - total_det;
- }
- 
- void dcn31_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
-@@ -812,3 +824,14 @@ int dcn_get_max_non_odm_pix_rate_100hz(struct _vcs_dpi_soc_bounding_box_st *soc)
- {
- 	return soc->clock_limits[0].dispclk_mhz * 10000.0 / (1.0 + soc->dcn_downspread_percent / 100.0);
- }
-+
-+int dcn_get_approx_det_segs_required_for_pstate(
-+		struct _vcs_dpi_soc_bounding_box_st *soc,
-+		int pix_clk_100hz, int bpp, int seg_size_kb)
-+{
-+	/* Roughly calculate required crb to hide latency. In practice there is slightly
-+	 * more buffer available for latency hiding
-+	 */
-+	return (int)(soc->dram_clock_change_latency_us * pix_clk_100hz * bpp
-+					/ 10240000 + seg_size_kb - 1) /	seg_size_kb;
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.h b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.h
-index ab8c48b8b7e05..99518f64d83dd 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.h
-@@ -47,5 +47,8 @@ void dcn31_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params
- void dcn315_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params);
- void dcn316_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params);
- int dcn_get_max_non_odm_pix_rate_100hz(struct _vcs_dpi_soc_bounding_box_st *soc);
-+int dcn_get_approx_det_segs_required_for_pstate(
-+		struct _vcs_dpi_soc_bounding_box_st *soc,
-+		int pix_clk_100hz, int bpp, int seg_size_kb);
- 
- #endif /* __DCN31_FPU_H__*/
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-index cf8f3d690fa66..ebc04b72b284b 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-@@ -533,7 +533,8 @@ static void CalculateStutterEfficiency(
- static void CalculateSwathAndDETConfiguration(
- 		bool ForceSingleDPP,
- 		int NumberOfActivePlanes,
--		unsigned int DETBufferSizeInKByte,
-+		bool DETSharedByAllDPP,
-+		unsigned int DETBufferSizeInKByte[],
- 		double MaximumSwathWidthLuma[],
- 		double MaximumSwathWidthChroma[],
- 		enum scan_direction_class SourceScan[],
-@@ -3116,7 +3117,7 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
- 				v->SurfaceWidthC[k],
- 				v->SurfaceHeightY[k],
- 				v->SurfaceHeightC[k],
--				v->DETBufferSizeInKByte[0] * 1024,
-+				v->DETBufferSizeInKByte[k] * 1024,
- 				v->BlockHeight256BytesY[k],
- 				v->BlockHeight256BytesC[k],
- 				v->SurfaceTiling[k],
-@@ -3311,7 +3312,8 @@ static void DisplayPipeConfiguration(struct display_mode_lib *mode_lib)
- 	CalculateSwathAndDETConfiguration(
- 			false,
- 			v->NumberOfActivePlanes,
--			v->DETBufferSizeInKByte[0],
-+			mode_lib->project == DML_PROJECT_DCN315 && v->DETSizeOverride[0],
-+			v->DETBufferSizeInKByte,
- 			dummy1,
- 			dummy2,
- 			v->SourceScan,
-@@ -3777,14 +3779,16 @@ static noinline void CalculatePrefetchSchedulePerPlane(
- 		&v->VReadyOffsetPix[k]);
- }
- 
--static void PatchDETBufferSizeInKByte(unsigned int NumberOfActivePlanes, int NoOfDPPThisState[], unsigned int config_return_buffer_size_in_kbytes, unsigned int *DETBufferSizeInKByte)
-+static void PatchDETBufferSizeInKByte(unsigned int NumberOfActivePlanes, int NoOfDPPThisState[], unsigned int config_return_buffer_size_in_kbytes, unsigned int DETBufferSizeInKByte[])
- {
- 	int i, total_pipes = 0;
- 	for (i = 0; i < NumberOfActivePlanes; i++)
- 		total_pipes += NoOfDPPThisState[i];
--	*DETBufferSizeInKByte = ((config_return_buffer_size_in_kbytes - DCN3_15_MIN_COMPBUF_SIZE_KB) / 64 / total_pipes) * 64;
--	if (*DETBufferSizeInKByte > DCN3_15_MAX_DET_SIZE)
--		*DETBufferSizeInKByte = DCN3_15_MAX_DET_SIZE;
-+	DETBufferSizeInKByte[0] = ((config_return_buffer_size_in_kbytes - DCN3_15_MIN_COMPBUF_SIZE_KB) / 64 / total_pipes) * 64;
-+	if (DETBufferSizeInKByte[0] > DCN3_15_MAX_DET_SIZE)
-+		DETBufferSizeInKByte[0] = DCN3_15_MAX_DET_SIZE;
-+	for (i = 1; i < NumberOfActivePlanes; i++)
-+		DETBufferSizeInKByte[i] = DETBufferSizeInKByte[0];
- }
- 
- 
-@@ -4024,7 +4028,8 @@ void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 	CalculateSwathAndDETConfiguration(
- 			true,
- 			v->NumberOfActivePlanes,
--			v->DETBufferSizeInKByte[0],
-+			mode_lib->project == DML_PROJECT_DCN315 && v->DETSizeOverride[0],
-+			v->DETBufferSizeInKByte,
- 			v->MaximumSwathWidthLuma,
- 			v->MaximumSwathWidthChroma,
- 			v->SourceScan,
-@@ -4164,6 +4169,10 @@ void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 						|| (v->PlaneRequiredDISPCLK > v->MaxDispclkRoundedDownToDFSGranularity)) {
- 					v->DISPCLK_DPPCLK_Support[i][j] = false;
- 				}
-+				if (mode_lib->project == DML_PROJECT_DCN315 && v->DETSizeOverride[k] > DCN3_15_MAX_DET_SIZE && v->NoOfDPP[i][j][k] < 2) {
-+					v->MPCCombine[i][j][k] = true;
-+					v->NoOfDPP[i][j][k] = 2;
-+				}
- 			}
- 			v->TotalNumberOfActiveDPP[i][j] = 0;
- 			v->TotalNumberOfSingleDPPPlanes[i][j] = 0;
-@@ -4640,12 +4649,13 @@ void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 				v->ODMCombineEnableThisState[k] = v->ODMCombineEnablePerState[i][k];
- 			}
- 
--			if (v->NumberOfActivePlanes > 1 && mode_lib->project == DML_PROJECT_DCN315)
--				PatchDETBufferSizeInKByte(v->NumberOfActivePlanes, v->NoOfDPPThisState, v->ip.config_return_buffer_size_in_kbytes, &v->DETBufferSizeInKByte[0]);
-+			if (v->NumberOfActivePlanes > 1 && mode_lib->project == DML_PROJECT_DCN315 && !v->DETSizeOverride[0])
-+				PatchDETBufferSizeInKByte(v->NumberOfActivePlanes, v->NoOfDPPThisState, v->ip.config_return_buffer_size_in_kbytes, v->DETBufferSizeInKByte);
- 			CalculateSwathAndDETConfiguration(
- 					false,
- 					v->NumberOfActivePlanes,
--					v->DETBufferSizeInKByte[0],
-+					mode_lib->project == DML_PROJECT_DCN315 && v->DETSizeOverride[0],
-+					v->DETBufferSizeInKByte,
- 					v->MaximumSwathWidthLuma,
- 					v->MaximumSwathWidthChroma,
- 					v->SourceScan,
-@@ -6557,7 +6567,8 @@ static void CalculateStutterEfficiency(
- static void CalculateSwathAndDETConfiguration(
- 		bool ForceSingleDPP,
- 		int NumberOfActivePlanes,
--		unsigned int DETBufferSizeInKByte,
-+		bool DETSharedByAllDPP,
-+		unsigned int DETBufferSizeInKByteA[],
- 		double MaximumSwathWidthLuma[],
- 		double MaximumSwathWidthChroma[],
- 		enum scan_direction_class SourceScan[],
-@@ -6641,6 +6652,10 @@ static void CalculateSwathAndDETConfiguration(
- 
- 	*ViewportSizeSupport = true;
- 	for (k = 0; k < NumberOfActivePlanes; ++k) {
-+		unsigned int DETBufferSizeInKByte = DETBufferSizeInKByteA[k];
-+
-+		if (DETSharedByAllDPP && DPPPerPlane[k])
-+			DETBufferSizeInKByte /= DPPPerPlane[k];
- 		if ((SourcePixelFormat[k] == dm_444_64 || SourcePixelFormat[k] == dm_444_32 || SourcePixelFormat[k] == dm_444_16 || SourcePixelFormat[k] == dm_mono_16
- 				|| SourcePixelFormat[k] == dm_mono_8 || SourcePixelFormat[k] == dm_rgbe)) {
- 			if (SurfaceTiling[k] == dm_sw_linear
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
-index 8e6585dab20ef..1070cf8701960 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
-@@ -569,6 +569,10 @@ static void fetch_pipe_params(struct display_mode_lib *mode_lib)
- 		mode_lib->vba.OutputLinkDPRate[mode_lib->vba.NumberOfActivePlanes] = dout->dp_rate;
- 		mode_lib->vba.ODMUse[mode_lib->vba.NumberOfActivePlanes] = dst->odm_combine_policy;
- 		mode_lib->vba.DETSizeOverride[mode_lib->vba.NumberOfActivePlanes] = src->det_size_override;
-+		if (src->det_size_override)
-+			mode_lib->vba.DETBufferSizeInKByte[mode_lib->vba.NumberOfActivePlanes] = src->det_size_override;
-+		else
-+			mode_lib->vba.DETBufferSizeInKByte[mode_lib->vba.NumberOfActivePlanes] = ip->det_buffer_size_kbytes;
- 		//TODO: Need to assign correct values to dp_multistream vars
- 		mode_lib->vba.OutputMultistreamEn[mode_lib->vba.NumberOfActiveSurfaces] = dout->dp_multistream_en;
- 		mode_lib->vba.OutputMultistreamId[mode_lib->vba.NumberOfActiveSurfaces] = dout->dp_multistream_id;
-@@ -783,6 +787,8 @@ static void fetch_pipe_params(struct display_mode_lib *mode_lib)
- 					mode_lib->vba.pipe_plane[k] =
- 							mode_lib->vba.NumberOfActivePlanes;
- 					mode_lib->vba.DPPPerPlane[mode_lib->vba.NumberOfActivePlanes]++;
-+					if (src_k->det_size_override)
-+						mode_lib->vba.DETBufferSizeInKByte[mode_lib->vba.NumberOfActivePlanes] = src_k->det_size_override;
- 					if (mode_lib->vba.SourceScan[mode_lib->vba.NumberOfActivePlanes]
- 							== dm_horz) {
- 						mode_lib->vba.ViewportWidth[mode_lib->vba.NumberOfActivePlanes] +=
+ 		funcs->reset = dmub_dcn31_reset;
+ 		funcs->reset_release = dmub_dcn31_reset_release;
+ 		funcs->backdoor_load = dmub_dcn31_backdoor_load;
 -- 
 2.39.2
 
