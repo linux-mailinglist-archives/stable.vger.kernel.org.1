@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0445376AF82
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6AFA76AE96
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233422AbjHAJsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45434 "EHLO
+        id S231440AbjHAJkJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:40:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233665AbjHAJr7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBD24699
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:18 -0700 (PDT)
+        with ESMTP id S233290AbjHAJjt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D30FF4EFD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B401614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AF0C433C8;
-        Tue,  1 Aug 2023 09:46:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DB67614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAC3C433C8;
+        Tue,  1 Aug 2023 09:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883177;
-        bh=7nOIQW1Bo9u7RGf7rS2RJgxnJppbhXjZcscHSDTpTVA=;
+        s=korg; t=1690882638;
+        bh=sIYRJS1mNNj24vGts/+bpU0Q01P3Yxexgz54GoAV+Qw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ivlyYTtMQN4oneVFeCKUgzt3KNyWhTK0wyC15cIrkaxEXf/6kAKF/yyUlXgmzbZZQ
-         YZPRwx1Oq/mdCxI+CQcIY8ZQ6B6JUkpI0KrGRMSrdnyrTH1wzy6zt4LLYlpxd+BLKG
-         UyAa68XUfQ+XC4vWfGbrMFsFPUNeqh6KA68xAaI0=
+        b=ouYYcOv87QEqA9BLrE3OJMBYJ3izv5407xD/HBTrZdtq11eXQiT6sxrDFXjSD7gWz
+         DfQIBJ4XamzTjT/b2/jRjY6AtIOsHfgHiNwOyVe8PHWyL/bWLHDtDivJSmCSqckwuO
+         5Uv5oWhiSL5Igz3S6QgGI0LasVeDn+KQ4ZNKWnJs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        stable <stable@kernel.org>
-Subject: [PATCH 6.4 142/239] Revert "usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()"
-Date:   Tue,  1 Aug 2023 11:20:06 +0200
-Message-ID: <20230801091930.801099305@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Michael Grzeschik <m.grzeschik@pengutronix.de>,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.1 149/228] usb: gadget: core: remove unbalanced mutex_unlock in usb_gadget_activate
+Date:   Tue,  1 Aug 2023 11:20:07 +0200
+Message-ID: <20230801091928.281758481@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +55,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-commit a8291be6b5dd465c22af229483dbac543a91e24e upstream.
+commit 6237390644fb92b81f5262877fe545d0d2c7b5d7 upstream.
 
-This reverts commit f08aa7c80dac27ee00fa6827f447597d2fba5465.
+Commit 286d9975a838 ("usb: gadget: udc: core: Prevent soft_connect_store() race")
+introduced one extra mutex_unlock of connect_lock in the usb_gadget_active function.
 
-The reverted commit was based on static analysis and a misunderstanding
-of how PTR_ERR() and NULLs are supposed to work.  When a function
-returns both pointer errors and NULL then normally the NULL means
-"continue operating without a feature because it was deliberately
-turned off".  The NULL should not be treated as a failure.  If a driver
-cannot work when that feature is disabled then the KConfig should
-enforce that the function cannot return NULL.  We should not need to
-test for it.
-
-In this driver, the bug means that probe cannot succeed when CONFIG_PM
-is disabled.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f08aa7c80dac ("usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()")
+Fixes: 286d9975a838 ("usb: gadget: udc: core: Prevent soft_connect_store() race")
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/ZKQoBa84U/ykEh3C@moroto
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230721222256.1743645-1-m.grzeschik@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/udc/core.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3718,15 +3718,15 @@ static int tegra_xudc_powerdomain_init(s
- 	int err;
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -851,7 +851,6 @@ int usb_gadget_activate(struct usb_gadge
+ 	 */
+ 	if (gadget->connected)
+ 		ret = usb_gadget_connect_locked(gadget);
+-	mutex_unlock(&gadget->udc->connect_lock);
  
- 	xudc->genpd_dev_device = dev_pm_domain_attach_by_name(dev, "dev");
--	if (IS_ERR_OR_NULL(xudc->genpd_dev_device)) {
--		err = PTR_ERR(xudc->genpd_dev_device) ? : -ENODATA;
-+	if (IS_ERR(xudc->genpd_dev_device)) {
-+		err = PTR_ERR(xudc->genpd_dev_device);
- 		dev_err(dev, "failed to get device power domain: %d\n", err);
- 		return err;
- 	}
- 
- 	xudc->genpd_dev_ss = dev_pm_domain_attach_by_name(dev, "ss");
--	if (IS_ERR_OR_NULL(xudc->genpd_dev_ss)) {
--		err = PTR_ERR(xudc->genpd_dev_ss) ? : -ENODATA;
-+	if (IS_ERR(xudc->genpd_dev_ss)) {
-+		err = PTR_ERR(xudc->genpd_dev_ss);
- 		dev_err(dev, "failed to get SuperSpeed power domain: %d\n", err);
- 		return err;
- 	}
+ unlock:
+ 	mutex_unlock(&gadget->udc->connect_lock);
 
 
