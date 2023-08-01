@@ -2,144 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57B5076B96A
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9AFA76B975
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233724AbjHAQIG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 12:08:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45806 "EHLO
+        id S231250AbjHAQNa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 12:13:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234243AbjHAQH6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:07:58 -0400
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0086AA
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:07:56 -0700 (PDT)
-Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-63cf69f3c22so39959326d6.3
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 09:07:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690906076; x=1691510876;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/k92ZHvqcMDEEn2PMICpqw+YFYats7fBIresqkxLI9s=;
-        b=sS66kgoJddsynyo1UV0ieyYMcA9voQhStth5bDRPXBk1MVejV3/iWWy1kxQL4qY3Y0
-         Az2pHu5ZUsfqKYrZeia5MvMsEuQ9WhHRyqHg216RJG/m+4OTPZs9v6vrj9RQcw8tI7V3
-         FJQMp97WGOpc46OvCU+2JLcfbBcEkRO7KA3VKNdLvWeD7jSfWcD+NHkCq+kQ6GCRsq48
-         /hIDK4hr9MAxULLomYvIdTGsbRCtaIBo5Ycm7SNRR+s8WdKVrKD4nqJxpRxeXSNnOv6P
-         35zJ4H4mJd+HUTBdmKNqSoQi1KBUEwYp69UZoCuCJSHWjHRBKok4L+lCxXfTWkQxlSRQ
-         V4tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690906076; x=1691510876;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/k92ZHvqcMDEEn2PMICpqw+YFYats7fBIresqkxLI9s=;
-        b=lkV+xwC8wFLaowmmFzaKtytDXlYos1uaqFtwKLjItAdRHnPwWbOu36RUGeXwqmOHEv
-         NtBMqIsCf7oA5LFTP90saDcpHqm0DfmWP26Fj4oWmihRkqlhnjR4UbLVQPPelIw6MGzU
-         Hwtz3sQ8OKH9z0w4r/A2g0xkkItObdoTB2uuv8NColewxo6BlbnwLC1oFTq+5mlGWZc9
-         Ch96jFTjyj7OODgPJfl/PtsnGHQFvP0M0ZPzMGUsMPB5hJoQH/Nr6ELnT+HstNeLGfda
-         IE54J97Gp4pLUF77z6LbhBsITABEVuaAJUWqyqiuo/lhs7PGC6zNV17GVFd6Wl03rGIT
-         DySA==
-X-Gm-Message-State: ABy/qLbKg9HtKhu2EecsGjlvdpQAQUNk9SR0kKkPaRYbCehNJPUfDUlc
-        LVkEiX2CQTb5gqypTxu2JMlngCwi1em3/FzL9z3uiQ==
-X-Google-Smtp-Source: APBJJlFCv8rnnQQkeN4DoY3CihEHr2mytwUwbh3PC3qFHxKRFc2KTxnhyrho6l5eJYWtCxApzjcmyUd/sNqmjVPj354=
-X-Received: by 2002:a05:6214:311:b0:63c:f979:b810 with SMTP id
- i17-20020a056214031100b0063cf979b810mr14002062qvu.46.1690906075647; Tue, 01
- Aug 2023 09:07:55 -0700 (PDT)
+        with ESMTP id S232341AbjHAQN3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:13:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BBDF1AC;
+        Tue,  1 Aug 2023 09:13:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85A7561631;
+        Tue,  1 Aug 2023 16:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D280C433C8;
+        Tue,  1 Aug 2023 16:13:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690906405;
+        bh=rYlsxfquHLDz9mpLNEkgcA8z8hv5WW0/QvXUMjlm52s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=IDDZVhbzBbs4UQdYeZSYlRsOtaZ0/ZHGxlo6MWrbldAV8evHtb9SzRTik+p8Vv7kQ
+         khe/kcvHMlI/VY+kleU1Bv5Cq+0b6tWJNPe7QaMQpVFLmU55aV/BgQKOwt/B3JCd8c
+         qhlYmxyGJ8M1YnBEGeFn5pddNaxUXWvdeXGx+958vaa2oe+Cc2c8yfyCZ3R8ESO+hT
+         SG6d7bfA3/2HGVaUB9bNJ+2ctji0mlJASygTnp2i28mX66qttaHv/lPoC32/fT9pgi
+         +Y66Oj/jsV6t+hXKVG83FhH+554N+kblMBXDI8pJOJZ3P/5NdH00UaJVxdvTDlGjCy
+         2lH3OB8MHwI4g==
+From:   SeongJae Park <sj@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 6.4 000/239] 6.4.8-rc1 review
+Date:   Tue,  1 Aug 2023 16:13:22 +0000
+Message-Id: <20230801161322.7716-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: 
 MIME-Version: 1.0
-References: <20230801050714.28974-1-ebiggers@kernel.org>
-In-Reply-To: <20230801050714.28974-1-ebiggers@kernel.org>
-From:   Victor Hsieh <victorhsieh@google.com>
-Date:   Tue, 1 Aug 2023 09:07:44 -0700
-Message-ID: <CAFCauYMrQf4TJJ+8atPrsihDa9+nKb5zn-rCKqB3081d8ZvZoA@mail.gmail.com>
-Subject: Re: [PATCH] fsverity: skip PKCS#7 parser when keyring is empty
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     fsverity@lists.linux.dev, keyrings@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Should the whole use of "d" be moved into the else block?
+Hello,
+
+On Tue, 1 Aug 2023 11:17:44 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.4.8 release.
+> There are 239 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
+
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] 2c273bf138a4 ("Linux 6.4.8-rc1")
 
 
-On Mon, Jul 31, 2023 at 10:09=E2=80=AFPM Eric Biggers <ebiggers@kernel.org>=
- wrote:
->
-> From: Eric Biggers <ebiggers@google.com>
->
-> If an fsverity builtin signature is given for a file but the
-> ".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
-> parser.  Skip this to avoid the PKCS#7 attack surface when builtin
-> signature support is configured into the kernel but is not being used.
->
-> This is a hardening improvement, not a fix per se, but I've added
-> Fixes and Cc stable to get it out to more users.
->
-> Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->  fs/verity/signature.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/verity/signature.c b/fs/verity/signature.c
-> index b95acae64eac6..f6668d92d8151 100644
-> --- a/fs/verity/signature.c
-> +++ b/fs/verity/signature.c
-> @@ -70,10 +70,26 @@ int fsverity_verify_signature(const struct fsverity_i=
-nfo *vi,
->         d->digest_size =3D cpu_to_le16(hash_alg->digest_size);
->         memcpy(d->digest, vi->file_digest, hash_alg->digest_size);
->
-> -       err =3D verify_pkcs7_signature(d, sizeof(*d) + hash_alg->digest_s=
-ize,
-> -                                    signature, sig_size, fsverity_keyrin=
-g,
-> -                                    VERIFYING_UNSPECIFIED_SIGNATURE,
-> -                                    NULL, NULL);
-> +       if (fsverity_keyring->keys.nr_leaves_on_tree =3D=3D 0) {
-> +               /*
-> +                * The ".fs-verity" keyring is empty, due to builtin sign=
-atures
-> +                * being supported by the kernel but not actually being u=
-sed.
-> +                * In this case, verify_pkcs7_signature() would always re=
-turn an
-> +                * error, usually ENOKEY.  It could also be EBADMSG if th=
-e
-> +                * PKCS#7 is malformed, but that isn't very important to
-> +                * distinguish.  So, just skip to ENOKEY to avoid the att=
-ack
-> +                * surface of the PKCS#7 parser, which would otherwise be
-> +                * reachable by any task able to execute FS_IOC_ENABLE_VE=
-RITY.
-> +                */
-> +               err =3D -ENOKEY;
-> +       } else {
-> +               err =3D verify_pkcs7_signature(d,
-> +                                            sizeof(*d) + hash_alg->diges=
-t_size,
-> +                                            signature, sig_size,
-> +                                            fsverity_keyring,
-> +                                            VERIFYING_UNSPECIFIED_SIGNAT=
-URE,
-> +                                            NULL, NULL);
-> +       }
->         kfree(d);
->
->         if (err) {
->
-> base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
-> --
-> 2.41.0
->
+Thanks,
+SJ
+
+[...]
+
+---
+
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: debugfs_rm_non_contexts.sh
+ok 8 selftests: damon: sysfs.sh
+ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
+ok 10 selftests: damon: reclaim.sh
+ok 11 selftests: damon: lru_sort.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_m68k.sh
+ok 12 selftests: damon-tests: build_arm64.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+
+PASS
