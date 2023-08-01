@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8331D76AD13
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9A176AF44
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230510AbjHAJ0B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52298 "EHLO
+        id S233598AbjHAJqY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231589AbjHAJZq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8C010B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:32 -0700 (PDT)
+        with ESMTP id S233628AbjHAJqJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 272065590
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5063A614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D742C433C8;
-        Tue,  1 Aug 2023 09:24:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F7CA6151B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F88CC433C8;
+        Tue,  1 Aug 2023 09:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881871;
-        bh=ExCmuD6P+dGo2kSkhEvA+6LDp6MUtVZeW8aaU0UGKPw=;
+        s=korg; t=1690883079;
+        bh=DVRq9JzMiTX+edFuq5y5a1+M41FagFy1S0ymQxAGsSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oOAvLyuLdN9U3fuoOsg8kk3XN37Nc+gRLBRM6JJT6NrqLKMXfETcO7fAx8YVv/eng
-         4HhsM/ltwq5DeWg+r78lIAc9UN75HmC9Iv2pk66eeA85/BNnBDdd3U3+4WUUlxEDuR
-         BbpT8zfX0mpD2Vce3Gab+NyuNYOeOoj7LKu4iNBU=
+        b=KssIfUCqVH9bxcR4CsVvB3DxtxDcXgT7iyszL7UZW9+MK5WMLdjp4yZ4f8XVAGPYl
+         Kt3naugK6w3XDYPcsnGnAXsCnlGzRJADRFiD4K8dCzb9GXg7At3rhsh6AjKd45IXfJ
+         K/1+NI4yrUttIXjdpTdx6F+keKHkWg+EwKdkajn0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Shiraz Saleem <shiraz.saleem@intel.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/155] net: hns3: fix wrong bw weight of disabled tc issue
+Subject: [PATCH 6.4 108/239] RDMA/core: Update CMA destination address on rdma_resolve_addr
 Date:   Tue,  1 Aug 2023 11:19:32 +0200
-Message-ID: <20230801091912.353088810@linuxfoundation.org>
+Message-ID: <20230801091929.625664579@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,98 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Shiraz Saleem <shiraz.saleem@intel.com>
 
-[ Upstream commit 882481b1c55fc44861d7e2d54b4e0936b1b39f2c ]
+[ Upstream commit 0e15863015d97c1ee2cc29d599abcc7fa2dc3e95 ]
 
-In dwrr mode, the default bandwidth weight of disabled tc is set to 0.
-If the bandwidth weight is 0, the mode will change to sp.
-Therefore, disabled tc default bandwidth weight need changed to 1,
-and 0 is returned when query the bandwidth weight of disabled tc.
-In addition, driver need stop configure bandwidth weight if tc is disabled.
+8d037973d48c ("RDMA/core: Refactor rdma_bind_addr") intoduces as regression
+on irdma devices on certain tests which uses rdma CM, such as cmtime.
 
-Fixes: 848440544b41 ("net: hns3: Add support of TX Scheduler & Shaper to HNS3 driver")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+No connections can be established with the MAD QP experiences a fatal
+error on the active side.
+
+The cma destination address is not updated with the dst_addr when ULP
+on active side calls rdma_bind_addr followed by rdma_resolve_addr.
+The id_priv state is 'bound' in resolve_prepare_src and update is skipped.
+
+This leaves the dgid passed into irdma driver to create an Address Handle
+(AH) for the MAD QP at 0. The create AH descriptor as well as the ARP cache
+entry is invalid and HW throws an asynchronous events as result.
+
+[ 1207.656888] resolve_prepare_src caller: ucma_resolve_addr+0xff/0x170 [rdma_ucm] daddr=200.0.4.28 id_priv->state=7
+[....]
+[ 1207.680362] ice 0000:07:00.1 rocep7s0f1: caller: irdma_create_ah+0x3e/0x70 [irdma] ah_id=0 arp_idx=0 dest_ip=0.0.0.0
+destMAC=00:00:64:ca:b7:52 ipvalid=1 raw=0000:0000:0000:0000:0000:ffff:0000:0000
+[ 1207.682077] ice 0000:07:00.1 rocep7s0f1: abnormal ae_id = 0x401 bool qp=1 qp_id = 1, ae_src=5
+[ 1207.691657] infiniband rocep7s0f1: Fatal error (1) on MAD QP (1)
+
+Fix this by updating the CMA destination address when the ULP calls
+a resolve address with the CM state already bound.
+
+Fixes: 8d037973d48c ("RDMA/core: Refactor rdma_bind_addr")
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Link: https://lore.kernel.org/r/20230712234133.1343-1-shiraz.saleem@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c  | 17 ++++++++++++++---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   |  3 ++-
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/infiniband/core/cma.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-index 375ebf105a9aa..87640a2e1794b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-@@ -52,7 +52,10 @@ static void hclge_tm_info_to_ieee_ets(struct hclge_dev *hdev,
+diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
+index 6b3f4384e46ac..a60e587aea817 100644
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -4062,6 +4062,8 @@ static int resolve_prepare_src(struct rdma_id_private *id_priv,
+ 					   RDMA_CM_ADDR_QUERY)))
+ 			return -EINVAL;
  
- 	for (i = 0; i < HNAE3_MAX_TC; i++) {
- 		ets->prio_tc[i] = hdev->tm_info.prio_tc[i];
--		ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
-+		if (i < hdev->tm_info.num_tc)
-+			ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
-+		else
-+			ets->tc_tx_bw[i] = 0;
- 
- 		if (hdev->tm_info.tc_info[i].tc_sch_mode ==
- 		    HCLGE_SCH_MODE_SP)
-@@ -123,7 +126,8 @@ static u8 hclge_ets_tc_changed(struct hclge_dev *hdev, struct ieee_ets *ets,
- }
- 
- static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
--				       struct ieee_ets *ets, bool *changed)
-+				       struct ieee_ets *ets, bool *changed,
-+				       u8 tc_num)
- {
- 	bool has_ets_tc = false;
- 	u32 total_ets_bw = 0;
-@@ -137,6 +141,13 @@ static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
- 				*changed = true;
- 			break;
- 		case IEEE_8021QAZ_TSA_ETS:
-+			if (i >= tc_num) {
-+				dev_err(&hdev->pdev->dev,
-+					"tc%u is disabled, cannot set ets bw\n",
-+					i);
-+				return -EINVAL;
-+			}
-+
- 			/* The hardware will switch to sp mode if bandwidth is
- 			 * 0, so limit ets bandwidth must be greater than 0.
- 			 */
-@@ -176,7 +187,7 @@ static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
- 	if (ret)
- 		return ret;
- 
--	ret = hclge_ets_sch_mode_validate(hdev, ets, changed);
-+	ret = hclge_ets_sch_mode_validate(hdev, ets, changed, tc_num);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index 97a6864f60ef4..e7cb6a81e5b67 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -732,6 +732,7 @@ static void hclge_tm_tc_info_init(struct hclge_dev *hdev)
- static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
- {
- #define BW_PERCENT	100
-+#define DEFAULT_BW_WEIGHT	1
- 
- 	u8 i;
- 
-@@ -753,7 +754,7 @@ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
- 		for (k = 0; k < hdev->tm_info.num_tc; k++)
- 			hdev->tm_info.pg_info[i].tc_dwrr[k] = BW_PERCENT;
- 		for (; k < HNAE3_MAX_TC; k++)
--			hdev->tm_info.pg_info[i].tc_dwrr[k] = 0;
-+			hdev->tm_info.pg_info[i].tc_dwrr[k] = DEFAULT_BW_WEIGHT;
++	} else {
++		memcpy(cma_dst_addr(id_priv), dst_addr, rdma_addr_size(dst_addr));
  	}
- }
  
+ 	if (cma_family(id_priv) != dst_addr->sa_family) {
 -- 
-2.39.2
+2.40.1
 
 
 
