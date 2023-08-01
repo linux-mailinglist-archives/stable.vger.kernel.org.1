@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A13A76A915
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E33376A940
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:36:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbjHAG3Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 02:29:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42706 "EHLO
+        id S230034AbjHAGgY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 02:36:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbjHAG3Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 02:29:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4C92130
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:28:55 -0700 (PDT)
+        with ESMTP id S231913AbjHAGgL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 02:36:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFBF1BF0
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:35:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 466666147D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:28:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5531FC433C7;
-        Tue,  1 Aug 2023 06:28:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 141B66139D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:35:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B88C433C8;
+        Tue,  1 Aug 2023 06:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690871334;
-        bh=FuQ8TYzIhHaxdPu04yqCmQ1rVzsb6N9cHHBsV75m/Ug=;
+        s=korg; t=1690871724;
+        bh=Rr1VpwtSlrpZDtv50U71rxqL2CBmluS0DKOn41uIzjY=;
         h=Subject:To:Cc:From:Date:From;
-        b=zzJmWd13S18YJzO5nhxlSOBgFq3p2DeEZLedyrtQYAK8eSbuJs4EiZoAc1q8Sj7Ww
-         O+Ej0zCH3CXbQIKk7hYBwkhaBFOsw1yZkpjLWnoumFtzdgvcfy/QHu28MUCHK0j++0
-         IL5lEdYpKNUmNvdowufq/PWy4h08vhwGLXdnKjcU=
-Subject: FAILED: patch "[PATCH] mm: lock_vma_under_rcu() must check vma->anon_vma under vma" failed to apply to 6.4-stable tree
-To:     jannh@google.com, torvalds@linux-foundation.org
+        b=i3x/tnIUGdTR+DJfFLXa0hgKAD/EcDELjrBP+gULp9BpimLg6LD9x4FsBQBZBlLXr
+         xGl3tFT9bzKYZKrlY8Pnf84gU2rebLXkYKE/MXiPNtOB9YcecLFHPe2If1HiswlqI3
+         pS5u2obEE1MtiDm/XE+wnF39bSTP/8SqY7HtmjdE=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Revert vblank change that causes null" failed to apply to 6.4-stable tree
+To:     daniel.miess@amd.com, alexander.deucher@amd.com,
+        chiahsuan.chung@amd.com, daniel.wheeler@amd.com,
+        nicholas.kazlauskas@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 01 Aug 2023 08:28:29 +0200
-Message-ID: <2023080129-surface-stench-5e24@gregkh>
+Date:   Tue, 01 Aug 2023 08:35:21 +0200
+Message-ID: <2023080120-jalapeno-cubicle-d3d2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -58,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 657b5146955eba331e01b9a6ae89ce2e716ba306
+git cherry-pick -x c02b04633c4f4654331c53966cb937df1c73a9bb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080129-surface-stench-5e24@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080120-jalapeno-cubicle-d3d2@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,115 +75,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 657b5146955eba331e01b9a6ae89ce2e716ba306 Mon Sep 17 00:00:00 2001
-From: Jann Horn <jannh@google.com>
-Date: Wed, 26 Jul 2023 23:41:03 +0200
-Subject: [PATCH] mm: lock_vma_under_rcu() must check vma->anon_vma under vma
- lock
+From c02b04633c4f4654331c53966cb937df1c73a9bb Mon Sep 17 00:00:00 2001
+From: Daniel Miess <daniel.miess@amd.com>
+Date: Thu, 11 May 2023 09:12:09 -0400
+Subject: [PATCH] drm/amd/display: Revert vblank change that causes null
+ pointer crash
 
-lock_vma_under_rcu() tries to guarantee that __anon_vma_prepare() can't
-be called in the VMA-locked page fault path by ensuring that
-vma->anon_vma is set.
+Revert commit 1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
+Because it cause some regression
 
-However, this check happens before the VMA is locked, which means a
-concurrent move_vma() can concurrently call unlink_anon_vmas(), which
-disassociates the VMA's anon_vma.
+Fixes: 1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-This means we can get UAF in the following scenario:
-
-  THREAD 1                   THREAD 2
-  ========                   ========
-  <page fault>
-    lock_vma_under_rcu()
-      rcu_read_lock()
-      mas_walk()
-      check vma->anon_vma
-
-                             mremap() syscall
-                               move_vma()
-                                vma_start_write()
-                                 unlink_anon_vmas()
-                             <syscall end>
-
-    handle_mm_fault()
-      __handle_mm_fault()
-        handle_pte_fault()
-          do_pte_missing()
-            do_anonymous_page()
-              anon_vma_prepare()
-                __anon_vma_prepare()
-                  find_mergeable_anon_vma()
-                    mas_walk() [looks up VMA X]
-
-                             munmap() syscall (deletes VMA X)
-
-                    reusable_anon_vma() [called on freed VMA X]
-
-This is a security bug if you can hit it, although an attacker would
-have to win two races at once where the first race window is only a few
-instructions wide.
-
-This patch is based on some previous discussion with Linus Torvalds on
-the security list.
-
-Cc: stable@vger.kernel.org
-Fixes: 5e31275cc997 ("mm: add per-VMA lock and helper functions to control it")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 01f39e8144ef..603b2f419948 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5393,27 +5393,28 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
- 	if (!vma_is_anonymous(vma) && !vma_is_tcp(vma))
- 		goto inval;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+index 554152371eb5..1d00eb9e73c6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -33,7 +33,7 @@
+ #include "dml/display_mode_vba.h"
  
--	/* find_mergeable_anon_vma uses adjacent vmas which are not locked */
--	if (!vma->anon_vma && !vma_is_tcp(vma))
--		goto inval;
--
- 	if (!vma_start_read(vma))
- 		goto inval;
+ struct _vcs_dpi_ip_params_st dcn3_14_ip = {
+-	.VBlankNomDefaultUS = 800,
++	.VBlankNomDefaultUS = 668,
+ 	.gpuvm_enable = 1,
+ 	.gpuvm_max_page_table_levels = 1,
+ 	.hostvm_enable = 1,
+@@ -286,7 +286,7 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
+ 	struct resource_context *res_ctx = &context->res_ctx;
+ 	struct pipe_ctx *pipe;
+ 	bool upscaled = false;
+-	const unsigned int max_allowed_vblank_nom = 1023;
++	bool isFreesyncVideo = false;
  
-+	/*
-+	 * find_mergeable_anon_vma uses adjacent vmas which are not locked.
-+	 * This check must happen after vma_start_read(); otherwise, a
-+	 * concurrent mremap() with MREMAP_DONTUNMAP could dissociate the VMA
-+	 * from its anon_vma.
-+	 */
-+	if (unlikely(!vma->anon_vma && !vma_is_tcp(vma)))
-+		goto inval_end_read;
+ 	dc_assert_fp_enabled();
+ 
+@@ -300,11 +300,16 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
+ 		pipe = &res_ctx->pipe_ctx[i];
+ 		timing = &pipe->stream->timing;
+ 
+-		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, max_allowed_vblank_nom);
++		isFreesyncVideo = pipe->stream->adjust.v_total_max == pipe->stream->adjust.v_total_min;
++		isFreesyncVideo = isFreesyncVideo && pipe->stream->adjust.v_total_min > timing->v_total;
 +
- 	/*
- 	 * Due to the possibility of userfault handler dropping mmap_lock, avoid
- 	 * it for now and fall back to page fault handling under mmap_lock.
- 	 */
--	if (userfaultfd_armed(vma)) {
--		vma_end_read(vma);
--		goto inval;
--	}
-+	if (userfaultfd_armed(vma))
-+		goto inval_end_read;
++		if (!isFreesyncVideo) {
++			pipes[pipe_cnt].pipe.dest.vblank_nom =
++				dcn3_14_ip.VBlankNomDefaultUS / (timing->h_total / (timing->pix_clk_100hz / 10000.0));
++		} else {
++			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
++			pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
++		}
  
- 	/* Check since vm_start/vm_end might change before we lock the VMA */
--	if (unlikely(address < vma->vm_start || address >= vma->vm_end)) {
--		vma_end_read(vma);
--		goto inval;
--	}
-+	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
-+		goto inval_end_read;
- 
- 	/* Check if the VMA got isolated after we found it */
- 	if (vma->detached) {
-@@ -5425,6 +5426,9 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
- 
- 	rcu_read_unlock();
- 	return vma;
-+
-+inval_end_read:
-+	vma_end_read(vma);
- inval:
- 	rcu_read_unlock();
- 	count_vm_vma_lock_event(VMA_LOCK_ABORT);
+ 		if (pipe->plane_state &&
+ 				(pipe->plane_state->src_rect.height < pipe->plane_state->dst_rect.height ||
 
