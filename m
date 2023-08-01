@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F67476AFCB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B48B276AEC2
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233586AbjHAJuJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:50:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50646 "EHLO
+        id S233368AbjHAJlk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:41:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233569AbjHAJty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:54 -0400
+        with ESMTP id S233289AbjHAJlQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:41:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F2D127;
-        Tue,  1 Aug 2023 02:49:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186492135
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D4C8614FC;
-        Tue,  1 Aug 2023 09:49:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A251C433C8;
-        Tue,  1 Aug 2023 09:49:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 889C06126D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9834EC433C8;
+        Tue,  1 Aug 2023 09:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883363;
-        bh=H3ZC1kUIui+w/WasGPqsvFTpiAI3fLlRwG41WoG6CCM=;
+        s=korg; t=1690882741;
+        bh=ChY9JAkgqybK9cQlnUbYEfoq5MZSFtJFx2q5DO+1RoE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dxZ7IsDveHIwIrXjWNf1kI2+qG6LIK0+gQniB4FgcXNadUsJDI3JxdKbxjnHWCl36
-         Pv7Uk18hfXsOGX8h+2Mji1UmVBKJSlE/ByLiUJtDZ+osXlniuEHP+YMcvtp08jD49l
-         IsbjIH2sfOd3bH+x2jjtIM8x0G7jppFTNSWQFquw=
+        b=of8msWoouSq3dchS9x99GOpAaJm2B6JefY8iBlk9aaGC7YWNAI/O8j/VBpWyA3LYI
+         DxbdoVSGVa1lST83PYeMQl5boJbT+ueN7egHikQIvIhdF3drpb6+o2mgG7EZZpE3SJ
+         J17Uyj/allwXBCXtTeDCCod7J7uPptg30ckZ+P5o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aaron Lewis <aaronlewis@google.com>,
-        kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.4 209/239] selftests/rseq: Play nice with binaries statically linked against glibc 2.35+
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.1 215/228] rbd: harden get_lock_owner_info() a bit
 Date:   Tue,  1 Aug 2023 11:21:13 +0200
-Message-ID: <20230801091933.368989826@linuxfoundation.org>
+Message-ID: <20230801091930.627316218@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,78 +54,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 3bcbc20942db5d738221cca31a928efc09827069 upstream.
+commit 8ff2c64c9765446c3cef804fb99da04916603e27 upstream.
 
-To allow running rseq and KVM's rseq selftests as statically linked
-binaries, initialize the various "trampoline" pointers to point directly
-at the expect glibc symbols, and skip the dlysm() lookups if the rseq
-size is non-zero, i.e. the binary is statically linked *and* the libc
-registered its own rseq.
+- we want the exclusive lock type, so test for it directly
+- use sscanf() to actually parse the lock cookie and avoid admitting
+  invalid handles
+- bail if locker has a blank address
 
-Define weak versions of the symbols so as not to break linking against
-libc versions that don't support rseq in any capacity.
-
-The KVM selftests in particular are often statically linked so that they
-can be run on targets with very limited runtime environments, i.e. test
-machines.
-
-Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
-Cc: Aaron Lewis <aaronlewis@google.com>
-Cc: kvm@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230721223352.2333911-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/rseq.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ drivers/block/rbd.c  |   21 +++++++++++++++------
+ net/ceph/messenger.c |    1 +
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -34,9 +34,17 @@
- #include "../kselftest.h"
- #include "rseq.h"
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3863,10 +3863,9 @@ static struct ceph_locker *get_lock_owne
+ 	u32 num_lockers;
+ 	u8 lock_type;
+ 	char *lock_tag;
++	u64 handle;
+ 	int ret;
  
--static const ptrdiff_t *libc_rseq_offset_p;
--static const unsigned int *libc_rseq_size_p;
--static const unsigned int *libc_rseq_flags_p;
-+/*
-+ * Define weak versions to play nice with binaries that are statically linked
-+ * against a libc that doesn't support registering its own rseq.
-+ */
-+__weak ptrdiff_t __rseq_offset;
-+__weak unsigned int __rseq_size;
-+__weak unsigned int __rseq_flags;
-+
-+static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
-+static const unsigned int *libc_rseq_size_p = &__rseq_size;
-+static const unsigned int *libc_rseq_flags_p = &__rseq_flags;
+-	dout("%s rbd_dev %p\n", __func__, rbd_dev);
+-
+ 	ret = ceph_cls_lock_info(osdc, &rbd_dev->header_oid,
+ 				 &rbd_dev->header_oloc, RBD_LOCK_NAME,
+ 				 &lock_type, &lock_tag, &lockers, &num_lockers);
+@@ -3887,18 +3886,28 @@ static struct ceph_locker *get_lock_owne
+ 		goto err_busy;
+ 	}
  
- /* Offset from the thread pointer to the rseq area. */
- ptrdiff_t rseq_offset;
-@@ -155,9 +163,17 @@ unsigned int get_rseq_feature_size(void)
- static __attribute__((constructor))
- void rseq_init(void)
- {
--	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
--	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
--	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
-+	/*
-+	 * If the libc's registered rseq size isn't already valid, it may be
-+	 * because the binary is dynamically linked and not necessarily due to
-+	 * libc not having registered a restartable sequence.  Try to find the
-+	 * symbols if that's the case.
-+	 */
-+	if (!*libc_rseq_size_p) {
-+		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
-+		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
-+		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
+-	if (lock_type == CEPH_CLS_LOCK_SHARED) {
+-		rbd_warn(rbd_dev, "shared lock type detected");
++	if (lock_type != CEPH_CLS_LOCK_EXCLUSIVE) {
++		rbd_warn(rbd_dev, "incompatible lock type detected");
+ 		goto err_busy;
+ 	}
+ 
+ 	WARN_ON(num_lockers != 1);
+-	if (strncmp(lockers[0].id.cookie, RBD_LOCK_COOKIE_PREFIX,
+-		    strlen(RBD_LOCK_COOKIE_PREFIX))) {
++	ret = sscanf(lockers[0].id.cookie, RBD_LOCK_COOKIE_PREFIX " %llu",
++		     &handle);
++	if (ret != 1) {
+ 		rbd_warn(rbd_dev, "locked by external mechanism, cookie %s",
+ 			 lockers[0].id.cookie);
+ 		goto err_busy;
+ 	}
++	if (ceph_addr_is_blank(&lockers[0].info.addr)) {
++		rbd_warn(rbd_dev, "locker has a blank address");
++		goto err_busy;
 +	}
- 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
- 			*libc_rseq_size_p != 0) {
- 		/* rseq registration owned by glibc */
++
++	dout("%s rbd_dev %p got locker %s%llu@%pISpc/%u handle %llu\n",
++	     __func__, rbd_dev, ENTITY_NAME(lockers[0].id.name),
++	     &lockers[0].info.addr.in_addr,
++	     le32_to_cpu(lockers[0].info.addr.nonce), handle);
+ 
+ out:
+ 	kfree(lock_tag);
+--- a/net/ceph/messenger.c
++++ b/net/ceph/messenger.c
+@@ -1118,6 +1118,7 @@ bool ceph_addr_is_blank(const struct cep
+ 		return true;
+ 	}
+ }
++EXPORT_SYMBOL(ceph_addr_is_blank);
+ 
+ int ceph_addr_port(const struct ceph_entity_addr *addr)
+ {
 
 
