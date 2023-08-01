@@ -2,271 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1CE76AB2A
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4310E76AAAC
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230394AbjHAIeu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 04:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44686 "EHLO
+        id S232176AbjHAIQI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 04:16:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232250AbjHAIeL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:34:11 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA100E6D;
-        Tue,  1 Aug 2023 01:34:09 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 10FF76017C;
-        Tue,  1 Aug 2023 10:34:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690878847; bh=UXWDskgxlw95RIZ0DjzbONRlRD516JvVYJ02jsHHwGA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=XZHlBMd3fRfOOWQeF8DnRoWO3HqV95GxvtIsus0eRxwd2nmCaVJAOlRpHdy0LJprC
-         ulYlxqzwZ4C9oWRSlRe81I8OjKj3qwYq5oYHsnWPeiDFjck24O0bsmtWCGFiDskAXe
-         0vutPT2z/IROmwSjPAPbWMmpg8gzxqOdxabbsEzbPP5yMvgtNjpYF5k/uNcN4Z7Ulc
-         2SHqiFOPHLvvZrAWC3laamXDpG9s5nIDcpqU0r6J0yHSw0vttXVS66XhAIwgX38C0w
-         KvM4svApt2c+mxyjBEDr9B6DWK0OlL09uf8J0byWQ3BonsqJZXCxSHmlgVOvloK5SR
-         6dBkKyQCPwB/A==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id lKnUzbz4rVVF; Tue,  1 Aug 2023 10:34:04 +0200 (CEST)
-Received: from defiant.. (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id 8EBCC6015F;
-        Tue,  1 Aug 2023 10:33:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690878844; bh=UXWDskgxlw95RIZ0DjzbONRlRD516JvVYJ02jsHHwGA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=DcHjGL7oHDx5sJ02WTfo3qDCrUgfgTVacOu6C+kmz9KpRmhRGw87p0pi+t3l1beNL
-         CmESoOfj4+rY5gZDd+B+hiXYg8ZEcfsDe8ujC8nTQLQsVKIb54eWxdgpssuc8JpM57
-         OGytUFOStnCO7UHowApfPdSwM3xA+N4f3ZRbnz47/9UVcTLXTPk+86+nED/bY2mSYv
-         A/MJqE+FlWIS87jailkZD/cfc/CIwAvdvJZjAMcWsZptaMQnh/9ZeoM02ex5b55OHz
-         c3I97bVeAVUBjqxlNJCL1L9/KdEdakseB0xpfzzbHOGEe3d/fF/MLTcYRl2IR/j8uh
-         /LGgekUICWR9A==
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        linux-kernel@vger.kernel.org
-Cc:     "Luis R . Rodriguez" <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>
-Subject: [PATCH v2 1/1] test_firmware: prevent race conditions by a correct implementation of locking
-Date:   Tue,  1 Aug 2023 10:14:05 +0200
-Message-Id: <20230801081404.56387-1-mirsad.todorovac@alu.unizg.hr>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232183AbjHAIQD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:16:03 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62614A0
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:15:59 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5F57924000B;
+        Tue,  1 Aug 2023 08:15:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1690877757;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=K7/azCga1PLRKDPtjeIdqDTJmyCn1Sacaoj52+y2ms0=;
+        b=d4gZo3df/8Hri7VbWCJ1UwH64pMZthK9EM2t13g381aGW7al3tN1m7VJjUV1IgJZb2kB3I
+        3uXyxUhJuXuTVYmsoXGVUMeZ+cvxoGuctjPjj5s1koFztKExbjpfQphrPnaTWk5GrtlGbX
+        fuPPRB9U/65DvrxI3lDgZWFPkIEzCv01Fo/Wt/X27F0ZdXMFhxsgnp8k++B3X+VDqhG3wz
+        6jhj7lTdDwhhu7uFVM1fu7LTuBdz7S+KV5i+kH36+jrHtDFcBeBcR8+JwRTOL7bFqCFlI/
+        Sil28i8tFefwehE4rfs/Z1GF9tvZHeeeu65riWV0w6U9oL1PpuokCrTWSgiHDw==
+Date:   Tue, 1 Aug 2023 10:15:56 +0200
+From:   Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH 5.15.y] ASoC: cs42l51: fix driver to properly autoload
+ with automatic module loading
+Message-ID: <20230801101556.21eed088@windsurf>
+In-Reply-To: <2023080157-twitch-embargo-953b@gregkh>
+References: <2023072301-online-accent-4365@gregkh>
+        <20230727123339.675734-1-thomas.petazzoni@bootlin.com>
+        <2023080157-twitch-embargo-953b@gregkh>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: thomas.petazzoni@bootlin.com
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 ]
+Hello Greg,
 
-Dan Carpenter spotted a race condition in a couple of situations like
-these in the test_firmware driver:
+On Tue, 1 Aug 2023 10:03:26 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-{
-        u8 val;
-        int ret;
+> On Thu, Jul 27, 2023 at 02:33:39PM +0200, Thomas Petazzoni wrote:
+> > In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
+> > pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
+> > split into a core part and an I2C part to properly match based on a
+> > Device Tree compatible string.
+> > 
+> > However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
+> > ....) is in the core part of the driver, not the I2C part. Therefore,
+> > automatic module loading based on module.alias, based on matching with
+> > the DT compatible string, loads the core part of the driver, but not
+> > the I2C part. And threfore, the i2c_driver is not registered, and the
+> > codec is not known to the system, nor matched with a DT node with the
+> > corresponding compatible string.
+> > 
+> > In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
+> > the I2C part of the driver. The cs42l51_of_match[] array is also moved
+> > as well, as it is not possible to have this definition in one file,
+> > and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
+> > to how MODULE_DEVICE_TABLE works.
+> > 
+> > Thanks to this commit, the I2C part of the driver now properly
+> > autoloads, and thanks to its dependency on the core part, the core
+> > part gets autoloaded as well, resulting in a functional sound card
+> > without having to manually load kernel modules.
+> > 
+> > Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+> > ---
+> >  sound/soc/codecs/cs42l51-i2c.c | 6 ++++++
+> >  sound/soc/codecs/cs42l51.c     | 7 -------
+> >  sound/soc/codecs/cs42l51.h     | 1 -
+> >  3 files changed, 6 insertions(+), 8 deletions(-)  
+> 
+> What is the git commit id of this change in Linus's tree?
 
-        ret = kstrtou8(buf, 10, &val);
-        if (ret)
-                return ret;
+Ah, I see I didn't do "git cherry-pick -x
+e51df4f81b02bcdd828a04de7c1eb6a92988b61e", so the commit log doesn't
+have the reference to the original commit, sorry about this.
 
-        mutex_lock(&test_fw_mutex);
-        *(u8 *)cfg = val;
-        mutex_unlock(&test_fw_mutex);
+The original commit in Linus tree is:
 
-        /* Always return full write size even if we didn't consume all */
-        return size;
-}
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e51df4f81b02bcdd828a04de7c1eb6a92988b61e
 
-static ssize_t config_num_requests_store(struct device *dev,
-                                         struct device_attribute *attr,
-                                         const char *buf, size_t count)
-{
-        int rc;
+Thanks!
 
-        mutex_lock(&test_fw_mutex);
-        if (test_fw_config->reqs) {
-                pr_err("Must call release_all_firmware prior to changing config\n");
-                rc = -EINVAL;
-                mutex_unlock(&test_fw_mutex);
-                goto out;
-        }
-        mutex_unlock(&test_fw_mutex);
-
-	// NOTE: HERE is the race!!! Function can be preempted!
-
-	// test_fw_config->reqs can change between the release of
-	// the lock about and acquire of the lock in the
-	// test_dev_config_update_u8()
-
-        rc = test_dev_config_update_u8(buf, count,
-                                       &test_fw_config->num_requests);
-
-out:
-        return rc;
-}
-
-static ssize_t config_read_fw_idx_store(struct device *dev,
-                                        struct device_attribute *attr,
-                                        const char *buf, size_t count)
-{
-        return test_dev_config_update_u8(buf, count,
-                                         &test_fw_config->read_fw_idx);
-}
-
-The function test_dev_config_update_u8() is called from both the locked
-and the unlocked context, function config_num_requests_store() and
-config_read_fw_idx_store() which can both be called asynchronously as
-they are driver's methods, while test_dev_config_update_u8() and siblings
-change their argument pointed to by u8 *cfg or similar pointer.
-
-To avoid deadlock on test_fw_mutex, the lock is dropped before calling
-test_dev_config_update_u8() and re-acquired within test_dev_config_update_u8()
-itself, but alas this creates a race condition.
-
-Having two locks wouldn't assure a race-proof mutual exclusion.
-
-This situation is best avoided by the introduction of a new, unlocked
-function __test_dev_config_update_u8() which can be called from the locked
-context and reducing test_dev_config_update_u8() to:
-
-static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-{
-        int ret;
-
-        mutex_lock(&test_fw_mutex);
-        ret = __test_dev_config_update_u8(buf, size, cfg);
-        mutex_unlock(&test_fw_mutex);
-
-        return ret;
-}
-
-doing the locking and calling the unlocked primitive, which enables both
-locked and unlocked versions without duplication of code.
-
-Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
-Cc: Luis R. Rodriguez <mcgrof@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-
-[ NOTE: This patch is tested against 5.4 stable. Some of the fixes from the upstream ]
-[       patch to stable 5.10+ do not apply.					     ]
-
----
-v2:
- minor clarification and consistency improvements. no change to code.
-
- lib/test_firmware.c | 37 ++++++++++++++++++++++++++++---------
- 1 file changed, 28 insertions(+), 9 deletions(-)
-
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 38553944e967..92d7195d5b5b 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -301,16 +301,26 @@ static ssize_t config_test_show_str(char *dst,
- 	return len;
- }
- 
--static int test_dev_config_update_bool(const char *buf, size_t size,
--				       bool *cfg)
-+static inline int __test_dev_config_update_bool(const char *buf, size_t size,
-+						bool *cfg)
- {
- 	int ret;
- 
--	mutex_lock(&test_fw_mutex);
- 	if (strtobool(buf, cfg) < 0)
- 		ret = -EINVAL;
- 	else
- 		ret = size;
-+
-+	return ret;
-+}
-+
-+static int test_dev_config_update_bool(const char *buf, size_t size,
-+				       bool *cfg)
-+{
-+	int ret;
-+
-+	mutex_lock(&test_fw_mutex);
-+	ret = __test_dev_config_update_bool(buf, size, cfg);
- 	mutex_unlock(&test_fw_mutex);
- 
- 	return ret;
-@@ -340,7 +350,7 @@ static ssize_t test_dev_config_show_int(char *buf, int cfg)
- 	return snprintf(buf, PAGE_SIZE, "%d\n", val);
- }
- 
--static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-+static inline int __test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
- {
- 	int ret;
- 	long new;
-@@ -352,14 +362,23 @@ static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
- 	if (new > U8_MAX)
- 		return -EINVAL;
- 
--	mutex_lock(&test_fw_mutex);
- 	*(u8 *)cfg = new;
--	mutex_unlock(&test_fw_mutex);
- 
- 	/* Always return full write size even if we didn't consume all */
- 	return size;
- }
- 
-+static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-+{
-+	int ret;
-+
-+	mutex_lock(&test_fw_mutex);
-+	ret = __test_dev_config_update_u8(buf, size, cfg);
-+	mutex_unlock(&test_fw_mutex);
-+
-+	return ret;
-+}
-+
- static ssize_t test_dev_config_show_u8(char *buf, u8 cfg)
- {
- 	u8 val;
-@@ -392,10 +411,10 @@ static ssize_t config_num_requests_store(struct device *dev,
- 		mutex_unlock(&test_fw_mutex);
- 		goto out;
- 	}
--	mutex_unlock(&test_fw_mutex);
- 
--	rc = test_dev_config_update_u8(buf, count,
--				       &test_fw_config->num_requests);
-+	rc = __test_dev_config_update_u8(buf, count,
-+					 &test_fw_config->num_requests);
-+	mutex_unlock(&test_fw_mutex);
- 
- out:
- 	return rc;
+Thomas
 -- 
-2.34.1
-
+Thomas Petazzoni, co-owner and CEO, Bootlin
+Embedded Linux and Kernel engineering and training
+https://bootlin.com
