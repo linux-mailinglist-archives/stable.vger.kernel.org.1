@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8336776AD4E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B8376AE6A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231268AbjHAJ2U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
+        id S233209AbjHAJid (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:38:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjHAJ1n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06AF2213B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:30 -0700 (PDT)
+        with ESMTP id S233322AbjHAJiB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E062736
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 763DA614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834D8C433C8;
-        Tue,  1 Aug 2023 09:26:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91D0B61507
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE2FC433C9;
+        Tue,  1 Aug 2023 09:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881989;
-        bh=cL36K4y4OXkEPJFAVIIAlf+r8PfIytVsB7zp/nZPlO8=;
+        s=korg; t=1690882575;
+        bh=fOkkrAkZBlriAJNrBQVZNSWli/C37UZRFIbFxhLbJMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LoOJy/ynZrEbucmdSCNG/eRRFCRUTXKBCUk258Ejo0y6L3GAkzRCoaHBE8eWi0/ba
-         6Ft0fhogvPm3FqGOAm2Q9mULJKaf1fp6mtO3bFUpjZzHK/U6i0UUrsGVYGyXPSw7mx
-         1Go2vao/NvYl/PKNOKStAhg6ytFNULawKpCE2kYY=
+        b=Kfv+9azXfZNMmcYvwg6H1bBcjezBa1gW9FXPniv4/VZIOCNKdY93Ji7lPOmd/eFCn
+         Ko8oC/QcSeK8xzWdxw4Q/HQyHLX3QbDfCq1kMEmapTmt6o1m53bSbvPU+qbCI95FEe
+         J1sYrG1icoEFBX6DszllpukJ9lpQoOftnD4cet68=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        stable <stable@kernel.org>
-Subject: [PATCH 5.15 101/155] Revert "usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()"
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Samuel Holland <samuel.holland@sifive.com>
+Subject: [PATCH 6.1 155/228] serial: sifive: Fix sifive_serial_console_setup() section
 Date:   Tue,  1 Aug 2023 11:20:13 +0200
-Message-ID: <20230801091913.834003253@linuxfoundation.org>
+Message-ID: <20230801091928.500436277@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit a8291be6b5dd465c22af229483dbac543a91e24e upstream.
+commit 9b8fef6345d5487137d4193bb0a0eae2203c284e upstream.
 
-This reverts commit f08aa7c80dac27ee00fa6827f447597d2fba5465.
+This function is called indirectly from the platform driver probe
+function. Even if the driver is built in, it may be probed after
+free_initmem() due to deferral or unbinding/binding via sysfs.
+Thus the function cannot be marked as __init.
 
-The reverted commit was based on static analysis and a misunderstanding
-of how PTR_ERR() and NULLs are supposed to work.  When a function
-returns both pointer errors and NULL then normally the NULL means
-"continue operating without a feature because it was deliberately
-turned off".  The NULL should not be treated as a failure.  If a driver
-cannot work when that feature is disabled then the KConfig should
-enforce that the function cannot return NULL.  We should not need to
-test for it.
-
-In this driver, the bug means that probe cannot succeed when CONFIG_PM
-is disabled.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f08aa7c80dac ("usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()")
+Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/ZKQoBa84U/ykEh3C@moroto
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20230624060159.3401369-1-samuel.holland@sifive.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sifive.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3689,15 +3689,15 @@ static int tegra_xudc_powerdomain_init(s
- 	int err;
+--- a/drivers/tty/serial/sifive.c
++++ b/drivers/tty/serial/sifive.c
+@@ -832,7 +832,7 @@ static void sifive_serial_console_write(
+ 	local_irq_restore(flags);
+ }
  
- 	xudc->genpd_dev_device = dev_pm_domain_attach_by_name(dev, "dev");
--	if (IS_ERR_OR_NULL(xudc->genpd_dev_device)) {
--		err = PTR_ERR(xudc->genpd_dev_device) ? : -ENODATA;
-+	if (IS_ERR(xudc->genpd_dev_device)) {
-+		err = PTR_ERR(xudc->genpd_dev_device);
- 		dev_err(dev, "failed to get device power domain: %d\n", err);
- 		return err;
- 	}
- 
- 	xudc->genpd_dev_ss = dev_pm_domain_attach_by_name(dev, "ss");
--	if (IS_ERR_OR_NULL(xudc->genpd_dev_ss)) {
--		err = PTR_ERR(xudc->genpd_dev_ss) ? : -ENODATA;
-+	if (IS_ERR(xudc->genpd_dev_ss)) {
-+		err = PTR_ERR(xudc->genpd_dev_ss);
- 		dev_err(dev, "failed to get SuperSpeed power domain: %d\n", err);
- 		return err;
- 	}
+-static int __init sifive_serial_console_setup(struct console *co, char *options)
++static int sifive_serial_console_setup(struct console *co, char *options)
+ {
+ 	struct sifive_serial_port *ssp;
+ 	int baud = SIFIVE_DEFAULT_BAUD_RATE;
 
 
