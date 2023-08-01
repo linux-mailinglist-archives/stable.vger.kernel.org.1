@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C166376ADDE
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D9A876AEE5
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232588AbjHAJeH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35222 "EHLO
+        id S233077AbjHAJnG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:43:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232790AbjHAJds (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:48 -0400
+        with ESMTP id S233358AbjHAJmi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB6AD2728
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4515BA2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D15561507
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCC5C433C8;
-        Tue,  1 Aug 2023 09:31:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AF5561522
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2722AC433C9;
+        Tue,  1 Aug 2023 09:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882302;
-        bh=wHS+4BZv7n/o9uroFpKBY1RlbbEzVJtP/YnC6ihhAPQ=;
+        s=korg; t=1690882815;
+        bh=RO30v2BdLJK9kzPl1OdDpXXFjWK3AqjLCsBItoHK82s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fbLKxxsVJ8WKPRbeKQRNHcZ2MAUCAMcAv4WaYVhs/3U3vXfA3tmdc4au/YUMK78ww
-         SlZiTcPac/zi50kl6mW5hVwF10VUJDYs7cr/2kjjHysL6ZnXhADozmoTszugO6YniJ
-         LA74FZ0bCTcNZzOAqz7+GKiVjjNnhsPgZvxb/pnI=
+        b=mkYvMFguSgn6lv1xx+9B9fMd97l2Tyl2cSo/uNrjRzcYhHOnZbnSSHBM9By+4HYI5
+         ReuNcl24eVTZzrPrGC6MsZ+aWWpDAIKF8UA5t7HD9KpFsqCI4Wq4cTORZulLDOqrvs
+         I3aTXfwRChTAraDyZYPQce+XC2P9CSxRkfTlClMs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Ondrej Mosnacek <omosnace@redhat.com>,
+        Jeff Moyer <jmoyer@redhat.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/228] f2fs: dont reset unchangable mount option in f2fs_remount()
+Subject: [PATCH 6.4 013/239] io_uring: dont audit the capability check in io_uring_create()
 Date:   Tue,  1 Aug 2023 11:17:57 +0200
-Message-ID: <20230801091923.548824747@linuxfoundation.org>
+Message-ID: <20230801091926.124709984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,139 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 458c15dfbce62c35fefd9ca637b20a051309c9f1 ]
+[ Upstream commit 6adc2272aaaf84f34b652cf77f770c6fcc4b8336 ]
 
-syzbot reports a bug as below:
+The check being unconditional may lead to unwanted denials reported by
+LSMs when a process has the capability granted by DAC, but denied by an
+LSM. In the case of SELinux such denials are a problem, since they can't
+be effectively filtered out via the policy and when not silenced, they
+produce noise that may hide a true problem or an attack.
 
-general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] PREEMPT SMP KASAN
-RIP: 0010:__lock_acquire+0x69/0x2000 kernel/locking/lockdep.c:4942
-Call Trace:
- lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5691
- __raw_write_lock include/linux/rwlock_api_smp.h:209 [inline]
- _raw_write_lock+0x2e/0x40 kernel/locking/spinlock.c:300
- __drop_extent_tree+0x3ac/0x660 fs/f2fs/extent_cache.c:1100
- f2fs_drop_extent_tree+0x17/0x30 fs/f2fs/extent_cache.c:1116
- f2fs_insert_range+0x2d5/0x3c0 fs/f2fs/file.c:1664
- f2fs_fallocate+0x4e4/0x6d0 fs/f2fs/file.c:1838
- vfs_fallocate+0x54b/0x6b0 fs/open.c:324
- ksys_fallocate fs/open.c:347 [inline]
- __do_sys_fallocate fs/open.c:355 [inline]
- __se_sys_fallocate fs/open.c:353 [inline]
- __x64_sys_fallocate+0xbd/0x100 fs/open.c:353
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Since not having the capability merely means that the created io_uring
+context will be accounted against the current user's RLIMIT_MEMLOCK
+limit, we can disable auditing of denials for this check by using
+ns_capable_noaudit() instead of capable().
 
-The root cause is race condition as below:
-- since it tries to remount rw filesystem, so that do_remount won't
-call sb_prepare_remount_readonly to block fallocate, there may be race
-condition in between remount and fallocate.
-- in f2fs_remount(), default_options() will reset mount option to default
-one, and then update it based on result of parse_options(), so there is
-a hole which race condition can happen.
-
-Thread A			Thread B
-- f2fs_fill_super
- - parse_options
-  - clear_opt(READ_EXTENT_CACHE)
-
-- f2fs_remount
- - default_options
-  - set_opt(READ_EXTENT_CACHE)
-				- f2fs_fallocate
-				 - f2fs_insert_range
-				  - f2fs_drop_extent_tree
-				   - __drop_extent_tree
-				    - __may_extent_tree
-				     - test_opt(READ_EXTENT_CACHE) return true
-				    - write_lock(&et->lock) access NULL pointer
- - parse_options
-  - clear_opt(READ_EXTENT_CACHE)
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/20230522124203.3838360-1-chao@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 2b188cc1bb85 ("Add io_uring IO interface")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2193317
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+Link: https://lore.kernel.org/r/20230718115607.65652-1-omosnace@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ io_uring/io_uring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 36bb1c969e8bb..ff47aad636e5b 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2040,9 +2040,22 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
- 	return 0;
- }
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index d6667b435dd39..685cf14a7189e 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3859,7 +3859,7 @@ static __cold int io_uring_create(unsigned entries, struct io_uring_params *p,
+ 		ctx->syscall_iopoll = 1;
  
--static void default_options(struct f2fs_sb_info *sbi)
-+static void default_options(struct f2fs_sb_info *sbi, bool remount)
- {
- 	/* init some FS parameters */
-+	if (!remount) {
-+		set_opt(sbi, READ_EXTENT_CACHE);
-+		clear_opt(sbi, DISABLE_CHECKPOINT);
-+
-+		if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
-+			set_opt(sbi, DISCARD);
-+
-+		if (f2fs_sb_has_blkzoned(sbi))
-+			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
-+		else
-+			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
-+	}
-+
- 	if (f2fs_sb_has_readonly(sbi))
- 		F2FS_OPTION(sbi).active_logs = NR_CURSEG_RO_TYPE;
- 	else
-@@ -2065,23 +2078,16 @@ static void default_options(struct f2fs_sb_info *sbi)
- 	set_opt(sbi, INLINE_XATTR);
- 	set_opt(sbi, INLINE_DATA);
- 	set_opt(sbi, INLINE_DENTRY);
--	set_opt(sbi, READ_EXTENT_CACHE);
- 	set_opt(sbi, NOHEAP);
--	clear_opt(sbi, DISABLE_CHECKPOINT);
- 	set_opt(sbi, MERGE_CHECKPOINT);
- 	F2FS_OPTION(sbi).unusable_cap = 0;
- 	sbi->sb->s_flags |= SB_LAZYTIME;
- 	if (!f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb))
- 		set_opt(sbi, FLUSH_MERGE);
--	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
--		set_opt(sbi, DISCARD);
--	if (f2fs_sb_has_blkzoned(sbi)) {
-+	if (f2fs_sb_has_blkzoned(sbi))
- 		F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
--		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
--	} else {
-+	else
- 		F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
--		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
--	}
+ 	ctx->compat = in_compat_syscall();
+-	if (!capable(CAP_IPC_LOCK))
++	if (!ns_capable_noaudit(&init_user_ns, CAP_IPC_LOCK))
+ 		ctx->user = get_uid(current_user());
  
- #ifdef CONFIG_F2FS_FS_XATTR
- 	set_opt(sbi, XATTR_USER);
-@@ -2253,7 +2259,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
- 			clear_sbi_flag(sbi, SBI_NEED_SB_WRITE);
- 	}
- 
--	default_options(sbi);
-+	default_options(sbi, true);
- 
- 	/* parse mount options */
- 	err = parse_options(sb, data, true);
-@@ -4150,7 +4156,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 		sbi->s_chksum_seed = f2fs_chksum(sbi, ~0, raw_super->uuid,
- 						sizeof(raw_super->uuid));
- 
--	default_options(sbi);
-+	default_options(sbi, false);
- 	/* parse mount options */
- 	options = kstrdup((const char *)data, GFP_KERNEL);
- 	if (data && !options) {
+ 	/*
 -- 
 2.39.2
 
