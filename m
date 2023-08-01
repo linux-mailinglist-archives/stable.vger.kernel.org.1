@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9107476ADE6
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BAB76AF50
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233060AbjHAJeW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
+        id S233544AbjHAJpE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233095AbjHAJeB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:01 -0400
+        with ESMTP id S233483AbjHAJou (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F753585
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C28404694
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A080E614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A759AC433C8;
-        Tue,  1 Aug 2023 09:31:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A00C6150B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56ED0C433C8;
+        Tue,  1 Aug 2023 09:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882316;
-        bh=YIJ8iip5sT6GDUmpZCrhZn5u/26BQbRjuvDfgp3nKiY=;
+        s=korg; t=1690882938;
+        bh=1CR21AlWjxmzx71U2Khe9P8MRrhwW44JW1deQZFeSaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BiGfABlO7RxmA2D7M67+aSCi13+nA/clpg9dkkULZ+tpLUqjQHHm+x9GnR/FRQLjK
-         nLSJM53y6lIIl5OVwAN2zz//hPEd601BVEMIK6oE4OR+XTCJCy+607IRxQJHLqhtkL
-         p3jfCs2kI5qi7dLqkGJ5w96ZDjj62q/X6ehbYvX0=
+        b=Es7AuvivQ4VYqOYpRe2gRnamBTmp6vkrEmD+45nopmFDv+rpLrKlMyHjYqFOKW8Ux
+         edoTSfTB/wK6xEeLrAIfkqoD1lY6QpjevI5smGQbFCOfIiyWO6ilF2rrEUPWUxWi14
+         FZvh5Gn0SKR/Zk49Ip6OhQI8R3d20yM48Y30omfs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/228] test_maple_tree: test modifications while iterating
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 056/239] soundwire: qcom: update status correctly with mask
 Date:   Tue,  1 Aug 2023 11:18:40 +0200
-Message-ID: <20230801091925.095763683@linuxfoundation.org>
+Message-ID: <20230801091927.553679050@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,112 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liam R. Howlett <Liam.Howlett@Oracle.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 5159d64b335401fa83f18c27e2267f1eafc41bd3 ]
+[ Upstream commit f84d41b2a083b990cbdf70f3b24b6b108b9678ad ]
 
-Add a testcase to ensure the iterator detects bad states on modifications
-and does what the user expects
+SoundWire device status can be incorrectly updated without
+proper mask, fix this by adding a mask before updating the status.
 
-Link: https://lkml.kernel.org/r/20230120162650.984577-5-Liam.Howlett@oracle.com
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7a93c71a6714 ("maple_tree: fix 32 bit mas_next testing")
+Fixes: c7d49c76d1d5 ("soundwire: qcom: add support to new interrupts")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230525133812.30841-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_maple_tree.c | 72 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
+ drivers/soundwire/qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
-index f7364b9fee939..f1db333270e9f 100644
---- a/lib/test_maple_tree.c
-+++ b/lib/test_maple_tree.c
-@@ -1709,6 +1709,74 @@ static noinline void check_forking(struct maple_tree *mt)
- 	mtree_destroy(&newmt);
- }
+diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
+index e3ef5ebae6b7c..027979c66486c 100644
+--- a/drivers/soundwire/qcom.c
++++ b/drivers/soundwire/qcom.c
+@@ -437,7 +437,7 @@ static int qcom_swrm_get_alert_slave_dev_num(struct qcom_swrm_ctrl *ctrl)
+ 		status = (val >> (dev_num * SWRM_MCP_SLV_STATUS_SZ));
  
-+static noinline void check_iteration(struct maple_tree *mt)
-+{
-+	int i, nr_entries = 125;
-+	void *val;
-+	MA_STATE(mas, mt, 0, 0);
-+
-+	for (i = 0; i <= nr_entries; i++)
-+		mtree_store_range(mt, i * 10, i * 10 + 9,
-+				  xa_mk_value(i), GFP_KERNEL);
-+
-+	mt_set_non_kernel(99999);
-+
-+	i = 0;
-+	mas_lock(&mas);
-+	mas_for_each(&mas, val, 925) {
-+		MT_BUG_ON(mt, mas.index != i * 10);
-+		MT_BUG_ON(mt, mas.last != i * 10 + 9);
-+		/* Overwrite end of entry 92 */
-+		if (i == 92) {
-+			mas.index = 925;
-+			mas.last = 929;
-+			mas_store(&mas, val);
-+		}
-+		i++;
-+	}
-+	/* Ensure mas_find() gets the next value */
-+	val = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, val != xa_mk_value(i));
-+
-+	mas_set(&mas, 0);
-+	i = 0;
-+	mas_for_each(&mas, val, 785) {
-+		MT_BUG_ON(mt, mas.index != i * 10);
-+		MT_BUG_ON(mt, mas.last != i * 10 + 9);
-+		/* Overwrite start of entry 78 */
-+		if (i == 78) {
-+			mas.index = 780;
-+			mas.last = 785;
-+			mas_store(&mas, val);
-+		} else {
-+			i++;
-+		}
-+	}
-+	val = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, val != xa_mk_value(i));
-+
-+	mas_set(&mas, 0);
-+	i = 0;
-+	mas_for_each(&mas, val, 765) {
-+		MT_BUG_ON(mt, mas.index != i * 10);
-+		MT_BUG_ON(mt, mas.last != i * 10 + 9);
-+		/* Overwrite end of entry 76 and advance to the end */
-+		if (i == 76) {
-+			mas.index = 760;
-+			mas.last = 765;
-+			mas_store(&mas, val);
-+			mas_next(&mas, ULONG_MAX);
-+		}
-+		i++;
-+	}
-+	/* Make sure the next find returns the one after 765, 766-769 */
-+	val = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, val != xa_mk_value(76));
-+	mas_unlock(&mas);
-+	mas_destroy(&mas);
-+	mt_set_non_kernel(0);
-+}
-+
- static noinline void check_mas_store_gfp(struct maple_tree *mt)
- {
- 
-@@ -2702,6 +2770,10 @@ static int maple_tree_seed(void)
- 	goto skip;
- #endif
- 
-+	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE);
-+	check_iteration(&tree);
-+	mtree_destroy(&tree);
-+
- 	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE);
- 	check_forking(&tree);
- 	mtree_destroy(&tree);
+ 		if ((status & SWRM_MCP_SLV_STATUS_MASK) == SDW_SLAVE_ALERT) {
+-			ctrl->status[dev_num] = status;
++			ctrl->status[dev_num] = status & SWRM_MCP_SLV_STATUS_MASK;
+ 			return dev_num;
+ 		}
+ 	}
 -- 
 2.39.2
 
