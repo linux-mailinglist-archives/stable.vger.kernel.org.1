@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0603A76AF53
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 448F976AE38
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233433AbjHAJqx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
+        id S233082AbjHAJhB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232045AbjHAJqa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F52DDF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:11 -0700 (PDT)
+        with ESMTP id S233156AbjHAJgp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EEE749C7
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AAEEA614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4E3C433C8;
-        Tue,  1 Aug 2023 09:45:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68BBD614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7945FC433C9;
+        Tue,  1 Aug 2023 09:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883110;
-        bh=KLrhwMPnhrz98PT6DSU5P0cEV1CnSIpKhRS+Uo0k6vo=;
+        s=korg; t=1690882488;
+        bh=DTkJxz3/2TgfE2GBjpQgR1MsLiLUEEVAou0uXS9Uk/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WzfnRDOo17ggETFqoLvbY4zQOOueea449YJ1hxkwqkh6/y/Abztnl5GKzZDMQTXRb
-         wVLJw1weACJlApaceUvMe+xMn5snsx47av7erpM4egB6xbkmc79hfRCuEHEovTlZb6
-         BmWmBYTVOAmxkHLOsKb6+ilVtTliTUCPpeH3H5NA=
+        b=1cnh4M/KnEBIodr+qjiM2bMNyNaeQLXxCaUGbnL33efeWb4m8B67ycLZKYoxbTJtG
+         qvMEiFrxGAYSJZPDCwftOeEiub8qUG9qyhb/4BV5j976VoGTHTK/AN6OII0CGcoavL
+         Wn3q/Qm3DsiKuuHsTJQsF/ZUgmoZiSD2YgHxl0cU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Breno Leitao <leitao@debian.org>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 118/239] drm/msm: Fix hw_fence error path cleanup
+Subject: [PATCH 6.1 124/228] cxl/acpi: Fix a use-after-free in cxl_parse_cfmws()
 Date:   Tue,  1 Aug 2023 11:19:42 +0200
-Message-ID: <20230801091929.982987496@linuxfoundation.org>
+Message-ID: <20230801091927.227821219@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +58,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 1cd0787f082e1a179f2b6e749d08daff1a9f6b1b ]
+[ Upstream commit 4cf67d3cc9994a59cf77bb9c0ccf9007fe916afe ]
 
-In an error path where the submit is free'd without the job being run,
-the hw_fence pointer is simply a kzalloc'd block of memory.  In this
-case we should just kfree() it, rather than trying to decrement it's
-reference count.  Fortunately we can tell that this is the case by
-checking for a zero refcount, since if the job was run, the submit would
-be holding a reference to the hw_fence.
+KASAN and KFENCE detected an user-after-free in the CXL driver. This
+happens in the cxl_decoder_add() fail path. KASAN prints the following
+error:
 
-Fixes: f94e6a51e17c ("drm/msm: Pre-allocate hw_fence")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/547088/
+   BUG: KASAN: slab-use-after-free in cxl_parse_cfmws (drivers/cxl/acpi.c:299)
+
+This happens in cxl_parse_cfmws(), where put_device() is called,
+releasing cxld, which is accessed later.
+
+Use the local variables in the dev_err() instead of pointing to the
+released memory. Since the dev_err() is printing a resource, change the open
+coded print format to use the %pr format specifier.
+
+Fixes: e50fe01e1f2a ("cxl/core: Drop ->platform_res attribute for root decoders")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20230714093146.2253438-1-leitao@debian.org
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_fence.c      |  6 ++++++
- drivers/gpu/drm/msm/msm_gem_submit.c | 14 +++++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/cxl/acpi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_fence.c b/drivers/gpu/drm/msm/msm_fence.c
-index 96599ec3eb783..1a5d4f1c8b422 100644
---- a/drivers/gpu/drm/msm/msm_fence.c
-+++ b/drivers/gpu/drm/msm/msm_fence.c
-@@ -191,6 +191,12 @@ msm_fence_init(struct dma_fence *fence, struct msm_fence_context *fctx)
- 
- 	f->fctx = fctx;
- 
-+	/*
-+	 * Until this point, the fence was just some pre-allocated memory,
-+	 * no-one should have taken a reference to it yet.
-+	 */
-+	WARN_ON(kref_read(&fence->refcount));
-+
- 	dma_fence_init(&f->base, &msm_fence_ops, &fctx->spinlock,
- 		       fctx->context, ++fctx->last_fence);
- }
-diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
-index 9f5933c75e3df..10cad7b99bac8 100644
---- a/drivers/gpu/drm/msm/msm_gem_submit.c
-+++ b/drivers/gpu/drm/msm/msm_gem_submit.c
-@@ -86,7 +86,19 @@ void __msm_gem_submit_destroy(struct kref *kref)
+diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+index fb649683dd3ac..55907a94cb388 100644
+--- a/drivers/cxl/acpi.c
++++ b/drivers/cxl/acpi.c
+@@ -154,8 +154,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
+ 	else
+ 		rc = cxl_decoder_autoremove(dev, cxld);
+ 	if (rc) {
+-		dev_err(dev, "Failed to add decode range [%#llx - %#llx]\n",
+-			cxld->hpa_range.start, cxld->hpa_range.end);
++		dev_err(dev, "Failed to add decode range: %pr", res);
+ 		return 0;
  	}
- 
- 	dma_fence_put(submit->user_fence);
--	dma_fence_put(submit->hw_fence);
-+
-+	/*
-+	 * If the submit is freed before msm_job_run(), then hw_fence is
-+	 * just some pre-allocated memory, not a reference counted fence.
-+	 * Once the job runs and the hw_fence is initialized, it will
-+	 * have a refcount of at least one, since the submit holds a ref
-+	 * to the hw_fence.
-+	 */
-+	if (kref_read(&submit->hw_fence->refcount) == 0) {
-+		kfree(submit->hw_fence);
-+	} else {
-+		dma_fence_put(submit->hw_fence);
-+	}
- 
- 	put_pid(submit->pid);
- 	msm_submitqueue_put(submit->queue);
+ 	dev_dbg(dev, "add: %s node: %d range [%#llx - %#llx]\n",
 -- 
 2.40.1
 
