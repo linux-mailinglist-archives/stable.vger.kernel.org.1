@@ -2,57 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 288F676C015
+	by mail.lfdr.de (Postfix) with ESMTP id AAB8A76C016
 	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 00:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231139AbjHAWHq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 18:07:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
+        id S231749AbjHAWHr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 18:07:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbjHAWHm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 18:07:42 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB4F91BE3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 15:07:41 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-583f048985bso78314257b3.2
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 15:07:41 -0700 (PDT)
+        with ESMTP id S231477AbjHAWHq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 18:07:46 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A1F212A
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 15:07:44 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d3563cb3748so1926380276.0
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 15:07:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690927661; x=1691532461;
+        d=google.com; s=20221208; t=1690927663; x=1691532463;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i6HEpkZDiMCJl1HNBxUq/pPnwhYuhlhYWrvFQybpJWY=;
-        b=V9cpwSELJrkQrszXU5HyumPij806LjFOgAKqGQckrRIsTl9WyJGm7y2tP2Z2qpZNBZ
-         8OnG+G2+pRoWY7Gyh/uRKHckpG/wW2klLNffgsUon5TtBq05uulzu7VlS14UeHcVePc5
-         6rcXGltEDaVNS9+SeI1i+AP3HDVebAv3PFT1lfSUDf6ep/jTCQ/IUFd9ttrSEA9t9DPO
-         iGN48DWEsdFNb4WBgDh2gwPyzp4LH+hHwffYSWHoJfq3HFOTa5CTWqxb2Bx96ZnBccWK
-         7hzPD483pGlx4dh0dSN4wMfxSLMa6kthAGUj3r6PC/2LNnNJKhb7gl7lRbdc8DmYXSji
-         2fsQ==
+        bh=4DFBzP3PjGN+0KSVb5wBxy1Zq6atXukCZSiVwP2lCA4=;
+        b=yfrnQPSjeIcEe1QiQGFJbsVHjwcAuLH5y1rpwsS9p+vhZ0UwR6PwXsX+lyRO8LZqne
+         i0Gs4sb/UQu9JzPwvqM6DFSny+pA/wf1YWY/9cDzKMMSVuqNYknBZN4RDzqEJ+3tgA1o
+         9xqYOQ9YfNuN7rSMd/QL10WuKbuUb09YlooNQnxevr0KyYMiTseErJlZMTiswhp4rbGs
+         2EwfGVOHZ8kOe74pKMJDxDRfvODcH40dPPxzmE/4CBhsbsPSTt0MJcXPagBusQWf3TL+
+         2RYrhvVai3uiHNprCu8Jx7kGArbzCMBXdmuc0K6o1xx5D3e1kBTjmNATzd4hCjxzlGtv
+         8JyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690927661; x=1691532461;
+        d=1e100.net; s=20221208; t=1690927663; x=1691532463;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i6HEpkZDiMCJl1HNBxUq/pPnwhYuhlhYWrvFQybpJWY=;
-        b=Y85A2PWwVeF8w2iuere5kSdQHqJV6gxLn93K8TNewdA6x42e6HayrBQW/DQuUTcS8+
-         WmO1Rv0elBGEXvUWiDLZPu1EkD2thU/ntgsJMwvdo/GS8EZMbLNf0KNXY1oBk7LgzTRO
-         mr+dCxQkpYSko9A6f96Dop9TLVmAe8X+CzqZumD73aXWd11JLDxXLuK5kq0gTM2Bhu5m
-         8JQBAzYQyL6hN5jrwNx4rkeUJyoWMid8NAaq8adyW/2IOYwlYqtIkml+DQsQKiJEaloP
-         lVmlcf2IiPCtvXsnnTSGMPLA1cXYTN130G28D+ce/5RgeWrhv5BMkfUv8chLBOWL6xf9
-         uANg==
-X-Gm-Message-State: ABy/qLaAa/DzRfmPqbojulgpnJGgWDqfarfJ9Pv856YUoXiZoMuX2SA8
-        3VGxmtYdArbdGUsCkYHocpWF7GKNWKM=
-X-Google-Smtp-Source: APBJJlFo/x04tiw33tHz2z8eqoNqUG46TlCYKQtLqzp9NxrzX4ldQZG6AFgAiSwulUiFVWDLbQZPP6VjmRI=
+        bh=4DFBzP3PjGN+0KSVb5wBxy1Zq6atXukCZSiVwP2lCA4=;
+        b=beVlaaWuO28wsI48+1c0zRg7w0btx5c8nWVVM9JV/A7KJKG4EE7GWogQXU1oF7NarB
+         OLQXrt1BGYxd4dR4m6kIv7tNqpZ0H1WkvRMbtIT/KrAEKffnLU/HhACIs/0sGJPqaWw8
+         BiG/gq3uHdiM2k9n8XOJYAmtUC7Jhmde/2SRVKM8EVb+xujn4MFMFTfODysYlkoa8aHN
+         HIj2HYuxp34aukUaYHjHkmGm6SJg7E/+AMYkT8jlP52EaTo0dQiPL7K/Sg9fK4XWUxvy
+         FbBafcL5rABuHJmYBk4ond3URZgcDe3w7B2pukLh1BLH2acUQRuiY9bV4s1ETvyQsr1m
+         wskw==
+X-Gm-Message-State: ABy/qLaCZ/zelhgjOK87PvfHWR/mbTt2r0K6Q0cynT/Be6ohTXmdqp5f
+        Swgi9+sIraS9U85Sw6SjGICxBn7xGRc=
+X-Google-Smtp-Source: APBJJlFt7bPUCzTOSC2YtD5VNpVA2kL+fFs0SLmjXp2yCsxE/K0tlsB3vCbnSPBXi96wBKaf36lZ9Vrga8w=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:211c:a2ff:f17b:c5e9])
- (user=surenb job=sendgmr) by 2002:a81:b703:0:b0:584:41a6:6cd8 with SMTP id
- v3-20020a81b703000000b0058441a66cd8mr114995ywh.8.1690927661105; Tue, 01 Aug
- 2023 15:07:41 -0700 (PDT)
-Date:   Tue,  1 Aug 2023 15:07:28 -0700
+ (user=surenb job=sendgmr) by 2002:a25:d246:0:b0:c61:7151:6727 with SMTP id
+ j67-20020a25d246000000b00c6171516727mr103919ybg.10.1690927663525; Tue, 01 Aug
+ 2023 15:07:43 -0700 (PDT)
+Date:   Tue,  1 Aug 2023 15:07:29 -0700
 In-Reply-To: <20230801220733.1987762-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230801220733.1987762-1-surenb@google.com>
 X-Mailer: git-send-email 2.41.0.585.gd2178a4bd4-goog
-Message-ID: <20230801220733.1987762-3-surenb@google.com>
-Subject: [PATCH v2 2/6] mm: for !CONFIG_PER_VMA_LOCK equate write lock
- assertion for vma and mmap
+Message-ID: <20230801220733.1987762-4-surenb@google.com>
+Subject: [PATCH v2 3/6] mm: replace mmap with vma write lock assertions when
+ operating on a vma
 From:   Suren Baghdasaryan <surenb@google.com>
 To:     akpm@linux-foundation.org
 Cc:     torvalds@linux-foundation.org, jannh@google.com,
@@ -74,28 +74,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When CONFIG_PER_VMA_LOCK=n, vma_assert_write_locked() should be equivalent
-to mmap_assert_write_locked().
+Vma write lock assertion always includes mmap write lock assertion and
+additional vma lock checks when per-VMA locks are enabled. Replace
+weaker mmap_assert_write_locked() assertions with stronger
+vma_assert_write_locked() ones when we are operating on a vma which
+is expected to be locked.
 
 Suggested-by: Jann Horn <jannh@google.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/mm.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/hugetlb.c    | 2 +-
+ mm/khugepaged.c | 5 +++--
+ mm/memory.c     | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 406ab9ea818f..262b5f44101d 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -750,7 +750,8 @@ static inline void vma_end_read(struct vm_area_struct *vma) {}
- static inline void vma_start_write(struct vm_area_struct *vma) {}
- static inline bool vma_try_start_write(struct vm_area_struct *vma)
- 		{ return true; }
--static inline void vma_assert_write_locked(struct vm_area_struct *vma) {}
-+static inline void vma_assert_write_locked(struct vm_area_struct *vma)
-+		{ mmap_assert_write_locked(vma->vm_mm); }
- static inline void vma_mark_detached(struct vm_area_struct *vma,
- 				     bool detached) {}
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 64a3239b6407..1d871a1167d8 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5028,7 +5028,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 					src_vma->vm_start,
+ 					src_vma->vm_end);
+ 		mmu_notifier_invalidate_range_start(&range);
+-		mmap_assert_write_locked(src);
++		vma_assert_write_locked(src_vma);
+ 		raw_write_seqcount_begin(&src->write_protect_seq);
+ 	} else {
+ 		/*
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 78c8d5d8b628..1e43a56fba31 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1495,7 +1495,7 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 	};
+ 
+ 	VM_BUG_ON(!PageTransHuge(hpage));
+-	mmap_assert_write_locked(vma->vm_mm);
++	vma_assert_write_locked(vma);
+ 
+ 	if (do_set_pmd(&vmf, hpage))
+ 		return SCAN_FAIL;
+@@ -1525,7 +1525,7 @@ static void collapse_and_free_pmd(struct mm_struct *mm, struct vm_area_struct *v
+ 	pmd_t pmd;
+ 	struct mmu_notifier_range range;
+ 
+-	mmap_assert_write_locked(mm);
++	vma_assert_write_locked(vma);
+ 	if (vma->vm_file)
+ 		lockdep_assert_held_write(&vma->vm_file->f_mapping->i_mmap_rwsem);
+ 	/*
+@@ -1570,6 +1570,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+ 	int count = 0, result = SCAN_FAIL;
+ 	int i;
+ 
++	/* Ensure vma can't change, it will be locked below after checks */
+ 	mmap_assert_write_locked(mm);
+ 
+ 	/* Fast check before locking page if already PMD-mapped */
+diff --git a/mm/memory.c b/mm/memory.c
+index 603b2f419948..652d99b9858a 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1312,7 +1312,7 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
+ 		 * Use the raw variant of the seqcount_t write API to avoid
+ 		 * lockdep complaining about preemptibility.
+ 		 */
+-		mmap_assert_write_locked(src_mm);
++		vma_assert_write_locked(src_vma);
+ 		raw_write_seqcount_begin(&src_mm->write_protect_seq);
+ 	}
  
 -- 
 2.41.0.585.gd2178a4bd4-goog
