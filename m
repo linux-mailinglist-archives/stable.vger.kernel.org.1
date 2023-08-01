@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB2D76AF8A
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1828D76AD4F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233616AbjHAJsh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45266 "EHLO
+        id S231422AbjHAJ2U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233856AbjHAJsV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6236E3C13
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:48 -0700 (PDT)
+        with ESMTP id S230281AbjHAJ1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E39D2269F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB1B16126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5E8C433C7;
-        Tue,  1 Aug 2023 09:46:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5422614F5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB77C433C7;
+        Tue,  1 Aug 2023 09:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883207;
-        bh=RopRS8/BqNw5xX41lDD+Dul0b7haYQ2OrScBPyLz8+w=;
+        s=korg; t=1690881998;
+        bh=5OuVzdwn1BQzTT9FwN4c1HtEgiOsoCPh1mGjqBIGJMo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kevAczyTxG7Qurs2SjNMzNv2ZKnYJHN9HPSuYpXMMKoVCNGUQDrENAMYDpbG7P1FG
-         sMu7DX8oWD+nld+wFBeVmtvyiuOIVbSCKJb5Dcqi8ElwRfWEzoqWAK139BENRyTIph
-         ReMgvTZzWpwHtmC1SAUxdiYuLxv1nXlR6nlTMoYY=
+        b=b5abTMP4i9UbgmtUK69Q3VLmvTMX52QkfVKThRFtV2xjb39LSPQUmAsWRFl1vZSG8
+         xwUENE/GbbKMfbR4ZfNfG2vd9mFm31DyFDnv05Avj2ZH0y6AV/V5ISpKkT7DgFMaAn
+         sMthePuEv/RF9JE8ELepI1CwGPkc/Ma6w6Dx4FqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Samuel Holland <samuel.holland@sifive.com>
-Subject: [PATCH 6.4 152/239] serial: sifive: Fix sifive_serial_console_setup() section
+        patches@lists.linux.dev, Zheng Zhang <zheng.zhang@email.ucr.edu>,
+        Kees Cook <keescook@chromium.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.15 104/155] KVM: Grab a reference to KVM for VM and vCPU stats file descriptors
 Date:   Tue,  1 Aug 2023 11:20:16 +0200
-Message-ID: <20230801091931.136039518@linuxfoundation.org>
+Message-ID: <20230801091913.951630144@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +56,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 9b8fef6345d5487137d4193bb0a0eae2203c284e upstream.
+commit eed3013faa401aae662398709410a59bb0646e32 upstream.
 
-This function is called indirectly from the platform driver probe
-function. Even if the driver is built in, it may be probed after
-free_initmem() due to deferral or unbinding/binding via sysfs.
-Thus the function cannot be marked as __init.
+Grab a reference to KVM prior to installing VM and vCPU stats file
+descriptors to ensure the underlying VM and vCPU objects are not freed
+until the last reference to any and all stats fds are dropped.
 
-Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20230624060159.3401369-1-samuel.holland@sifive.com
+Note, the stats paths manually invoke fd_install() and so don't need to
+grab a reference before creating the file.
+
+Fixes: ce55c049459c ("KVM: stats: Support binary stats retrieval for a VCPU")
+Fixes: fcfe1baeddbf ("KVM: stats: Support binary stats retrieval for a VM")
+Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
+Closes: https://lore.kernel.org/all/CAC_GQSr3xzZaeZt85k_RCBd5kfiOve8qXo7a81Cq53LuVQ5r=Q@mail.gmail.com
+Cc: stable@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Message-Id: <20230711230131.648752-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sifive.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ virt/kvm/kvm_main.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/drivers/tty/serial/sifive.c
-+++ b/drivers/tty/serial/sifive.c
-@@ -811,7 +811,7 @@ static void sifive_serial_console_write(
- 	local_irq_restore(flags);
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3804,8 +3804,17 @@ static ssize_t kvm_vcpu_stats_read(struc
+ 			sizeof(vcpu->stat), user_buffer, size, offset);
  }
  
--static int __init sifive_serial_console_setup(struct console *co, char *options)
-+static int sifive_serial_console_setup(struct console *co, char *options)
- {
- 	struct sifive_serial_port *ssp;
- 	int baud = SIFIVE_DEFAULT_BAUD_RATE;
++static int kvm_vcpu_stats_release(struct inode *inode, struct file *file)
++{
++	struct kvm_vcpu *vcpu = file->private_data;
++
++	kvm_put_kvm(vcpu->kvm);
++	return 0;
++}
++
+ static const struct file_operations kvm_vcpu_stats_fops = {
+ 	.read = kvm_vcpu_stats_read,
++	.release = kvm_vcpu_stats_release,
+ 	.llseek = noop_llseek,
+ };
+ 
+@@ -3826,6 +3835,9 @@ static int kvm_vcpu_ioctl_get_stats_fd(s
+ 		put_unused_fd(fd);
+ 		return PTR_ERR(file);
+ 	}
++
++	kvm_get_kvm(vcpu->kvm);
++
+ 	file->f_mode |= FMODE_PREAD;
+ 	fd_install(fd, file);
+ 
+@@ -4409,8 +4421,17 @@ static ssize_t kvm_vm_stats_read(struct
+ 				sizeof(kvm->stat), user_buffer, size, offset);
+ }
+ 
++static int kvm_vm_stats_release(struct inode *inode, struct file *file)
++{
++	struct kvm *kvm = file->private_data;
++
++	kvm_put_kvm(kvm);
++	return 0;
++}
++
+ static const struct file_operations kvm_vm_stats_fops = {
+ 	.read = kvm_vm_stats_read,
++	.release = kvm_vm_stats_release,
+ 	.llseek = noop_llseek,
+ };
+ 
+@@ -4429,6 +4450,9 @@ static int kvm_vm_ioctl_get_stats_fd(str
+ 		put_unused_fd(fd);
+ 		return PTR_ERR(file);
+ 	}
++
++	kvm_get_kvm(kvm);
++
+ 	file->f_mode |= FMODE_PREAD;
+ 	fd_install(fd, file);
+ 
 
 
