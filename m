@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F9A076AD7B
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5968A76AEA7
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232840AbjHAJ3s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57088 "EHLO
+        id S233108AbjHAJkf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232967AbjHAJ3e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:34 -0400
+        with ESMTP id S233266AbjHAJkI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3952D67
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28ECE7B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DA1F61503
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44579C433C7;
-        Tue,  1 Aug 2023 09:28:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BDB46150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698FFC433C9;
+        Tue,  1 Aug 2023 09:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882093;
-        bh=gCv2t44fJATmrwVVVZ9MQ6AhAeYm1Jgdsa3cmYofqBo=;
+        s=korg; t=1690882682;
+        bh=XjsQtsltmaOSzHsUV14bBo5ZejmPJ4WhVsfA+yCZQqc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RVxldoA5rEgIpTnsfKaMGu1LD5mq1WHh7n2cxJcSaNt9zvzHvG5dT2ESHAZcvUes5
-         R4oVMT5eHqyb5pLXbtS/SbRl7SDvaQOZzvpT66HTLMqCcqLPtR9SroVDaqnCcPSwxz
-         jFZDEYO6VAH/iTkY6rYaxzB1xAi8Sdq1KUM0ICcI=
+        b=tWhAeu7KTpWVQyrhsR/A9VhcV1Z4m2d12bn7MHQ/bV/FZhVFAkgLHWJ6IrK1lW/2u
+         MRcwZ52qy1PQW1CYwyH9lvFAG1nRHVK6ivo42B/I/D7As0wTzYyZge4Jcsd6yi46ei
+         M4DvHwTdx1deW25qXx2vS6ebw77pS2On4SzNnKx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/155] locking/rtmutex: Fix task->pi_waiters integrity
-Date:   Tue,  1 Aug 2023 11:20:50 +0200
-Message-ID: <20230801091915.077461867@linuxfoundation.org>
+Subject: [PATCH 6.1 193/228] locking/rtmutex: Fix task->pi_waiters integrity
+Date:   Tue,  1 Aug 2023 11:20:51 +0200
+Message-ID: <20230801091929.833613153@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -126,10 +126,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  4 files changed, 155 insertions(+), 76 deletions(-)
 
 diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index b7fa3ee3aa1de..ee5be1dda0c40 100644
+index 728f434de2bbf..21db0df0eb000 100644
 --- a/kernel/locking/rtmutex.c
 +++ b/kernel/locking/rtmutex.c
-@@ -331,21 +331,43 @@ static __always_inline int __waiter_prio(struct task_struct *task)
+@@ -333,21 +333,43 @@ static __always_inline int __waiter_prio(struct task_struct *task)
  	return prio;
  }
  
@@ -179,7 +179,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  {
  	if (left->prio < right->prio)
  		return 1;
-@@ -362,8 +384,8 @@ static __always_inline int rt_mutex_waiter_less(struct rt_mutex_waiter *left,
+@@ -364,8 +386,8 @@ static __always_inline int rt_mutex_waiter_less(struct rt_mutex_waiter *left,
  	return 0;
  }
  
@@ -190,7 +190,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  {
  	if (left->prio != right->prio)
  		return 0;
-@@ -383,7 +405,7 @@ static __always_inline int rt_mutex_waiter_equal(struct rt_mutex_waiter *left,
+@@ -385,7 +407,7 @@ static __always_inline int rt_mutex_waiter_equal(struct rt_mutex_waiter *left,
  static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
  				  struct rt_mutex_waiter *top_waiter)
  {
@@ -199,7 +199,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  		return true;
  
  #ifdef RT_MUTEX_BUILD_SPINLOCKS
-@@ -391,30 +413,30 @@ static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
+@@ -393,30 +415,30 @@ static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
  	 * Note that RT tasks are excluded from same priority (lateral)
  	 * steals to prevent the introduction of an unbounded latency.
  	 */
@@ -235,7 +235,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  		return 0;
  
  	/* NOTE: relies on waiter->ww_ctx being set before insertion */
-@@ -432,48 +454,58 @@ static __always_inline bool __waiter_less(struct rb_node *a, const struct rb_nod
+@@ -434,48 +456,58 @@ static __always_inline bool __waiter_less(struct rb_node *a, const struct rb_nod
  static __always_inline void
  rt_mutex_enqueue(struct rt_mutex_base *lock, struct rt_mutex_waiter *waiter)
  {
@@ -308,7 +308,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  	lockdep_assert_held(&p->pi_lock);
  
  	if (task_has_pi_waiters(p))
-@@ -562,9 +594,14 @@ static __always_inline struct rt_mutex_base *task_blocked_on_lock(struct task_st
+@@ -571,9 +603,14 @@ static __always_inline struct rt_mutex_base *task_blocked_on_lock(struct task_st
   * Chain walk basics and protection scope
   *
   * [R] refcount on task
@@ -324,7 +324,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
   * Step	Description				Protected by
   *	function arguments:
   *	@task					[R]
-@@ -579,27 +616,32 @@ static __always_inline struct rt_mutex_base *task_blocked_on_lock(struct task_st
+@@ -588,27 +625,32 @@ static __always_inline struct rt_mutex_base *task_blocked_on_lock(struct task_st
   *	again:
   *	  loop_sanity_check();
   *	retry:
@@ -370,7 +370,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
   */
  static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
  					      enum rtmutex_chainwalk chwalk,
-@@ -747,7 +789,7 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+@@ -756,7 +798,7 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
  	 * enabled we continue, but stop the requeueing in the chain
  	 * walk.
  	 */
@@ -379,7 +379,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  		if (!detect_deadlock)
  			goto out_unlock_pi;
  		else
-@@ -755,13 +797,18 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+@@ -764,13 +806,18 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
  	}
  
  	/*
@@ -399,7 +399,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  	 */
  	if (!raw_spin_trylock(&lock->wait_lock)) {
  		raw_spin_unlock_irq(&task->pi_lock);
-@@ -865,17 +912,18 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+@@ -874,17 +921,18 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
  	 * or
  	 *
  	 *   DL CBS enforcement advancing the effective deadline.
@@ -424,7 +424,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  	raw_spin_unlock(&task->pi_lock);
  	put_task_struct(task);
  
-@@ -899,7 +947,12 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+@@ -908,7 +956,12 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
  		return 0;
  	}
  
@@ -438,7 +438,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  	task = get_task_struct(rt_mutex_owner(lock));
  	raw_spin_lock(&task->pi_lock);
  
-@@ -912,8 +965,9 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+@@ -921,8 +974,9 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
  		 * and adjust the priority of the owner.
  		 */
  		rt_mutex_dequeue_pi(task, prerequeue_top_waiter);
@@ -449,7 +449,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  
  	} else if (prerequeue_top_waiter == waiter) {
  		/*
-@@ -928,8 +982,9 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+@@ -937,8 +991,9 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
  		 */
  		rt_mutex_dequeue_pi(task, waiter);
  		waiter = rt_mutex_top_waiter(lock);
@@ -460,7 +460,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  	} else {
  		/*
  		 * Nothing changed. No need to do any priority
-@@ -1142,6 +1197,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+@@ -1154,6 +1209,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
  	waiter->task = task;
  	waiter->lock = lock;
  	waiter_update_prio(waiter, task);
@@ -468,7 +468,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  
  	/* Get the top priority waiter on the lock */
  	if (rt_mutex_has_waiters(lock))
-@@ -1175,7 +1231,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+@@ -1187,7 +1243,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
  		rt_mutex_dequeue_pi(owner, top_waiter);
  		rt_mutex_enqueue_pi(owner, waiter);
  
@@ -477,7 +477,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  		if (owner->pi_blocked_on)
  			chain_walk = 1;
  	} else if (rt_mutex_cond_detect_deadlock(waiter, chwalk)) {
-@@ -1222,6 +1278,8 @@ static void __sched mark_wakeup_next_waiter(struct rt_wake_q_head *wqh,
+@@ -1234,6 +1290,8 @@ static void __sched mark_wakeup_next_waiter(struct rt_wake_q_head *wqh,
  {
  	struct rt_mutex_waiter *waiter;
  
@@ -486,7 +486,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  	raw_spin_lock(&current->pi_lock);
  
  	waiter = rt_mutex_top_waiter(lock);
-@@ -1234,7 +1292,7 @@ static void __sched mark_wakeup_next_waiter(struct rt_wake_q_head *wqh,
+@@ -1246,7 +1304,7 @@ static void __sched mark_wakeup_next_waiter(struct rt_wake_q_head *wqh,
  	 * task unblocks.
  	 */
  	rt_mutex_dequeue_pi(current, waiter);
@@ -495,7 +495,7 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  
  	/*
  	 * As we are waking up the top waiter, and the waiter stays
-@@ -1471,7 +1529,7 @@ static void __sched remove_waiter(struct rt_mutex_base *lock,
+@@ -1482,7 +1540,7 @@ static void __sched remove_waiter(struct rt_mutex_base *lock,
  	if (rt_mutex_has_waiters(lock))
  		rt_mutex_enqueue_pi(owner, rt_mutex_top_waiter(lock));
  
@@ -505,10 +505,10 @@ index b7fa3ee3aa1de..ee5be1dda0c40 100644
  	/* Store the lock on which owner is blocked or NULL */
  	next_lock = task_blocked_on_lock(owner);
 diff --git a/kernel/locking/rtmutex_api.c b/kernel/locking/rtmutex_api.c
-index a461be2f873db..56d1938cb52a1 100644
+index cb9fdff76a8a3..a6974d0445930 100644
 --- a/kernel/locking/rtmutex_api.c
 +++ b/kernel/locking/rtmutex_api.c
-@@ -437,7 +437,7 @@ void __sched rt_mutex_adjust_pi(struct task_struct *task)
+@@ -459,7 +459,7 @@ void __sched rt_mutex_adjust_pi(struct task_struct *task)
  	raw_spin_lock_irqsave(&task->pi_lock, flags);
  
  	waiter = task->pi_blocked_on;
