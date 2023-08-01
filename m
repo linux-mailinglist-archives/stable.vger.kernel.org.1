@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD92576AD11
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76DA276AE32
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232420AbjHAJZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
+        id S233178AbjHAJgq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232830AbjHAJZn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:43 -0400
+        with ESMTP id S232097AbjHAJgV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F271FD2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D360E3C10
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4C87614F5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CA8C433C7;
-        Tue,  1 Aug 2023 09:24:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A393614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6901BC433C7;
+        Tue,  1 Aug 2023 09:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881866;
-        bh=qHBpNdPQpqCi2dkrQ6DUQ2uNNX+cm7smrXbhRd5/UaY=;
+        s=korg; t=1690882477;
+        bh=yYsJ7lLKumtt4kH5ImeCFbWtRUsl90ILKBFjvNYupc8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DxCaJvyx4QYWwMoo8/dYo5XMJvzASIV+8PbqiNCdUZRjVy+VmxiIp5UYFiOzxCNWT
-         ohOpv3A5nYdzPnL057qSWhh+JaWhTuMiEnS7fv+aDB7PD2RJRFqicm+2XrgAXBiU0A
-         2ZgXA7hl3OY4pa/3at3EBg3/EEh775b8fC9R3DuM=
+        b=tqxyhhvcV5RY4hHs+8X/mv2nPl+LBVeoIHychDaqp23JGb1vH/ClzHpsAYSpy1Hdw
+         NYmHgK6FzCMqatoufi9FoCUHZUUex1SyCtxksjTf2eZDvZaznQ2pCoO7XOk3OFNj3c
+         lQXJ1kT685d7Tr9a9Uo2KveZdY5BZAZyyNtCjLrw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiawen Wu <jiawenwu@trustnetic.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/155] net: phy: marvell10g: fix 88x3310 power up
+Subject: [PATCH 6.1 112/228] benet: fix return value check in be_lancer_xmit_workarounds()
 Date:   Tue,  1 Aug 2023 11:19:30 +0200
-Message-ID: <20230801091912.272899704@linuxfoundation.org>
+Message-ID: <20230801091926.829618084@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit c7b75bea853daeb64fc831dbf39a6bbabcc402ac ]
+[ Upstream commit 5c85f7065718a949902b238a6abd8fc907c5d3e0 ]
 
-Clear MV_V2_PORT_CTRL_PWRDOWN bit to set power up for 88x3310 PHY,
-it sometimes does not take effect immediately. And a read of this
-register causes the bit not to clear. This will cause mv3310_reset()
-to time out, which will fail the config initialization. So add a delay
-before the next access.
+in be_lancer_xmit_workarounds(), it should go to label 'tx_drop'
+if an unexpected value is returned by pskb_trim().
 
-Fixes: c9cc1c815d36 ("net: phy: marvell10g: place in powersave mode at probe")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 93040ae5cc8d ("be2net: Fix to trim skb for padded vlan packets to workaround an ASIC Bug")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Link: https://lore.kernel.org/r/20230725032726.15002-1-ruc_gongyuanjun@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/marvell10g.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/emulex/benet/be_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/marvell10g.c b/drivers/net/phy/marvell10g.c
-index df33637c5269a..1caa6d943a7b7 100644
---- a/drivers/net/phy/marvell10g.c
-+++ b/drivers/net/phy/marvell10g.c
-@@ -307,6 +307,13 @@ static int mv3310_power_up(struct phy_device *phydev)
- 	ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, MV_V2_PORT_CTRL,
- 				 MV_V2_PORT_CTRL_PWRDOWN);
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index 5d39df8452653..b12152e2fca0a 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1139,7 +1139,8 @@ static struct sk_buff *be_lancer_xmit_workarounds(struct be_adapter *adapter,
+ 	    (lancer_chip(adapter) || BE3_chip(adapter) ||
+ 	     skb_vlan_tag_present(skb)) && is_ipv4_pkt(skb)) {
+ 		ip = (struct iphdr *)ip_hdr(skb);
+-		pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len));
++		if (unlikely(pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len))))
++			goto tx_drop;
+ 	}
  
-+	/* Sometimes, the power down bit doesn't clear immediately, and
-+	 * a read of this register causes the bit not to clear. Delay
-+	 * 100us to allow the PHY to come out of power down mode before
-+	 * the next access.
-+	 */
-+	udelay(100);
-+
- 	if (phydev->drv->phy_id != MARVELL_PHY_ID_88X3310 ||
- 	    priv->firmware_ver < 0x00030000)
- 		return ret;
+ 	/* If vlan tag is already inlined in the packet, skip HW VLAN
 -- 
 2.39.2
 
