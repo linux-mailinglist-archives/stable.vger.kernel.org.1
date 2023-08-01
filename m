@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 188D176AD09
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1633276AF39
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232577AbjHAJZh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
+        id S233346AbjHAJp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232632AbjHAJZV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:21 -0400
+        with ESMTP id S230123AbjHAJpp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E134229
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D934C03
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B292614FD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979E8C433C7;
-        Tue,  1 Aug 2023 09:24:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF5056151B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB53BC433CA;
+        Tue,  1 Aug 2023 09:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881844;
-        bh=dWcf/R750Buawz2Py6+NQACT1zETv7K1TX4Qd6rwSso=;
+        s=korg; t=1690883052;
+        bh=C6S3t9K1J8+mYPfxizhKkb9eFRUqcE+P5hs9d9gOoF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A78xYhGsu6hGS8y/TbY21MsB6ZRg0qjXWjOAYpRaazpPoA+UPOhzwDMd6CZbmIjWa
-         aDMz5jkSe6+hcO3xNZ+27YTIatZqXspyxNWZbHLozZ3VR/ieImHChNiniKXYbTCOml
-         dsGMRQsh7E9n/i457op/waUMMFnwmxFC+3XR6odM=
+        b=NRN+BUh8rwD43u+yZZEFobwLtxBFl3EdYj2snWEU4WzQULlAu0BDSd+RD61ao/xCY
+         pfpQAIfJNIJDYgvFy8vwEvbhU4fDl8FKEdX9+eOXF6JqG6N/Jvdp+rEg9zcKdUF4QJ
+         61X3B/3PyUEkLYUoU9Fc79zRRJKFTvokErcIUQEM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/155] dlm: rearrange async condition return
-Date:   Tue,  1 Aug 2023 11:18:52 +0200
-Message-ID: <20230801091910.926469520@linuxfoundation.org>
+Subject: [PATCH 6.4 069/239] net: hns3: fix wrong bw weight of disabled tc issue
+Date:   Tue,  1 Aug 2023 11:18:53 +0200
+Message-ID: <20230801091928.173194107@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +56,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit a800ba77fd285c6391a82819867ac64e9ab3af46 ]
+[ Upstream commit 882481b1c55fc44861d7e2d54b4e0936b1b39f2c ]
 
-This patch moves the return of FILE_LOCK_DEFERRED a little bit earlier
-than checking afterwards again if the request was an asynchronous request.
+In dwrr mode, the default bandwidth weight of disabled tc is set to 0.
+If the bandwidth weight is 0, the mode will change to sp.
+Therefore, disabled tc default bandwidth weight need changed to 1,
+and 0 is returned when query the bandwidth weight of disabled tc.
+In addition, driver need stop configure bandwidth weight if tc is disabled.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Stable-dep-of: 59e45c758ca1 ("fs: dlm: interrupt posix locks only when process is killed")
+Fixes: 848440544b41 ("net: hns3: Add support of TX Scheduler & Shaper to HNS3 driver")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/plock.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c  | 17 ++++++++++++++---
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   |  3 ++-
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index e70e23eca03ec..01fb7d8c0bca5 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -149,26 +149,25 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 		op_data->file	= file;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
+index c4aded65e848b..09362823140d5 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
+@@ -52,7 +52,10 @@ static void hclge_tm_info_to_ieee_ets(struct hclge_dev *hdev,
  
- 		op->data = op_data;
+ 	for (i = 0; i < HNAE3_MAX_TC; i++) {
+ 		ets->prio_tc[i] = hdev->tm_info.prio_tc[i];
+-		ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
++		if (i < hdev->tm_info.num_tc)
++			ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
++		else
++			ets->tc_tx_bw[i] = 0;
+ 
+ 		if (hdev->tm_info.tc_info[i].tc_sch_mode ==
+ 		    HCLGE_SCH_MODE_SP)
+@@ -123,7 +126,8 @@ static u8 hclge_ets_tc_changed(struct hclge_dev *hdev, struct ieee_ets *ets,
+ }
+ 
+ static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
+-				       struct ieee_ets *ets, bool *changed)
++				       struct ieee_ets *ets, bool *changed,
++				       u8 tc_num)
+ {
+ 	bool has_ets_tc = false;
+ 	u32 total_ets_bw = 0;
+@@ -137,6 +141,13 @@ static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
+ 				*changed = true;
+ 			break;
+ 		case IEEE_8021QAZ_TSA_ETS:
++			if (i >= tc_num) {
++				dev_err(&hdev->pdev->dev,
++					"tc%u is disabled, cannot set ets bw\n",
++					i);
++				return -EINVAL;
++			}
 +
-+		send_op(op);
-+		rv = FILE_LOCK_DEFERRED;
-+		goto out;
- 	} else {
- 		op->info.owner	= (__u64)(long) fl->fl_owner;
- 	}
+ 			/* The hardware will switch to sp mode if bandwidth is
+ 			 * 0, so limit ets bandwidth must be greater than 0.
+ 			 */
+@@ -176,7 +187,7 @@ static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
+ 	if (ret)
+ 		return ret;
  
- 	send_op(op);
+-	ret = hclge_ets_sch_mode_validate(hdev, ets, changed);
++	ret = hclge_ets_sch_mode_validate(hdev, ets, changed, tc_num);
+ 	if (ret)
+ 		return ret;
  
--	if (!op->data) {
--		rv = wait_event_interruptible(recv_wq, (op->done != 0));
--		if (rv == -ERESTARTSYS) {
--			log_debug(ls, "dlm_posix_lock: wait killed %llx",
--				  (unsigned long long)number);
--			spin_lock(&ops_lock);
--			list_del(&op->list);
--			spin_unlock(&ops_lock);
--			dlm_release_plock_op(op);
--			do_unlock_close(ls, number, file, fl);
--			goto out;
--		}
--	} else {
--		rv = FILE_LOCK_DEFERRED;
-+	rv = wait_event_interruptible(recv_wq, (op->done != 0));
-+	if (rv == -ERESTARTSYS) {
-+		log_debug(ls, "%s: wait killed %llx", __func__,
-+			  (unsigned long long)number);
-+		spin_lock(&ops_lock);
-+		list_del(&op->list);
-+		spin_unlock(&ops_lock);
-+		dlm_release_plock_op(op);
-+		do_unlock_close(ls, number, file, fl);
- 		goto out;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+index 922c0da3660c7..150f146fa24fb 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+@@ -785,6 +785,7 @@ static void hclge_tm_tc_info_init(struct hclge_dev *hdev)
+ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
+ {
+ #define BW_PERCENT	100
++#define DEFAULT_BW_WEIGHT	1
+ 
+ 	u8 i;
+ 
+@@ -806,7 +807,7 @@ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
+ 		for (k = 0; k < hdev->tm_info.num_tc; k++)
+ 			hdev->tm_info.pg_info[i].tc_dwrr[k] = BW_PERCENT;
+ 		for (; k < HNAE3_MAX_TC; k++)
+-			hdev->tm_info.pg_info[i].tc_dwrr[k] = 0;
++			hdev->tm_info.pg_info[i].tc_dwrr[k] = DEFAULT_BW_WEIGHT;
  	}
+ }
  
 -- 
 2.39.2
