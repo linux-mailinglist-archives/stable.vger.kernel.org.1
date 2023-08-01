@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB87A76AF55
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3492F76ADEA
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233380AbjHAJqy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45416 "EHLO
+        id S233027AbjHAJea (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233494AbjHAJow (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F2D4228
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:30 -0700 (PDT)
+        with ESMTP id S233028AbjHAJeL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FA03C05
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 619A5614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB2EC433C8;
-        Tue,  1 Aug 2023 09:42:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16072614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E51DC433C7;
+        Tue,  1 Aug 2023 09:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882949;
-        bh=F1WrGyYnUd+dIx7oT4jukzFMuyAnQaXgIUgqDL5Vfkw=;
+        s=korg; t=1690882324;
+        bh=zzSg0yLVuE0IUUovPJc/gLCSFYSNTRv9wJd6qcfv5II=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O1ORy2XQayL0k1VP5+hGQL3OCVqofuy6su7E4Irmt1fmNEA6bX5i9hItlZrBN8l0F
-         /DphqAsBYmWVMrHLakwf2IIjNgqN3S473714mUQdWsR88kQnPguzlWhcuh4Ipr48hZ
-         +eIAaoALDL1paW7F8QSofM8CAk1ImAdMf9ClYaEA=
+        b=B7mRLkh+GXnZ59t2m0Llufn3E189i0ibs2k2eBv9Acerncn+QzXqJ76i9foR3j5NQ
+         0ZFD2gms0pq6wVOLorhX0CwJeFI38S0m/slJLsWJXzpbCvMhiRrxRFVz5D+t5f7hKf
+         wv1QFHFZq8YLx8s5wh+hABqQymMnuBT6HDbhENZU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 059/239] media: staging: atomisp: select V4L2_FWNODE
+Subject: [PATCH 6.1 065/228] drm/amd/display: Rework comments on dc file
 Date:   Tue,  1 Aug 2023 11:18:43 +0200
-Message-ID: <20230801091927.775011593@linuxfoundation.org>
+Message-ID: <20230801091925.192359841@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,35 +57,375 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit bf4c985707d3168ebb7d87d15830de66949d979c ]
+[ Upstream commit e366f36958f60c431a7430c8c421c9db0ec6738d ]
 
-Select V4L2_FWNODE as the driver depends on it.
+The file dc.c has multiple comments that do not follow the kernel-doc or
+are made in a distracting way. This commit alleviates part of this issue
+by reorganizing some comments inside the dc file.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: aa31f6514047 ("media: atomisp: allow building the driver again")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Reviewed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 2a9482e55968 ("drm/amd/display: Prevent vtotal from being set to 0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/atomisp/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 161 +++++++++--------------
+ drivers/gpu/drm/amd/display/dc/dc.h      |  32 ++---
+ 2 files changed, 70 insertions(+), 123 deletions(-)
 
-diff --git a/drivers/staging/media/atomisp/Kconfig b/drivers/staging/media/atomisp/Kconfig
-index c9bff98e5309a..e9b168ba97bf1 100644
---- a/drivers/staging/media/atomisp/Kconfig
-+++ b/drivers/staging/media/atomisp/Kconfig
-@@ -13,6 +13,7 @@ config VIDEO_ATOMISP
- 	tristate "Intel Atom Image Signal Processor Driver"
- 	depends on VIDEO_DEV && INTEL_ATOMISP
- 	depends on PMIC_OPREGION
-+	select V4L2_FWNODE
- 	select IOSF_MBI
- 	select VIDEOBUF2_VMALLOC
- 	select VIDEO_V4L2_SUBDEV_API
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 629bc53f61877..85ed1c7cdeaa9 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -135,9 +135,7 @@ static const char DC_BUILD_ID[] = "production-build";
+  * one or two (in the pipe-split case).
+  */
+ 
+-/*******************************************************************************
+- * Private functions
+- ******************************************************************************/
++/* Private functions */
+ 
+ static inline void elevate_update_type(enum surface_update_type *original, enum surface_update_type new)
+ {
+@@ -429,18 +427,14 @@ bool dc_stream_adjust_vmin_vmax(struct dc *dc,
+ }
+ 
+ /**
+- *****************************************************************************
+- *  Function: dc_stream_get_last_vrr_vtotal
++ * dc_stream_get_last_used_drr_vtotal - dc_stream_get_last_vrr_vtotal
+  *
+- *  @brief
+- *     Looks up the pipe context of dc_stream_state and gets the
+- *     last VTOTAL used by DRR (Dynamic Refresh Rate)
++ * @dc: [in] dc reference
++ * @stream: [in] Initial dc stream state
++ * @adjust: [in] Updated parameters for vertical_total_min and
+  *
+- *  @param [in] dc: dc reference
+- *  @param [in] stream: Initial dc stream state
+- *  @param [in] adjust: Updated parameters for vertical_total_min and
+- *  vertical_total_max
+- *****************************************************************************
++ * Looks up the pipe context of dc_stream_state and gets the last VTOTAL used
++ * by DRR (Dynamic Refresh Rate)
+  */
+ bool dc_stream_get_last_used_drr_vtotal(struct dc *dc,
+ 		struct dc_stream_state *stream,
+@@ -1236,9 +1230,7 @@ static void wait_for_no_pipes_pending(struct dc *dc, struct dc_state *context)
+ 	PERF_TRACE();
+ }
+ 
+-/*******************************************************************************
+- * Public functions
+- ******************************************************************************/
++/* Public functions */
+ 
+ struct dc *dc_create(const struct dc_init_data *init_params)
+ {
+@@ -4560,21 +4552,17 @@ void dc_mclk_switch_using_fw_based_vblank_stretch_shut_down(struct dc *dc)
+ 		dc->current_state->bw_ctx.bw.dcn.clk.fw_based_mclk_switching_shut_down = true;
+ }
+ 
+-/*
+- *****************************************************************************
+- * Function: dc_is_dmub_outbox_supported -
++/**
++ * dc_is_dmub_outbox_supported - Check if DMUB firmware support outbox notification
+  *
+- * @brief
+- *      Checks whether DMUB FW supports outbox notifications, if supported
+- *		DM should register outbox interrupt prior to actually enabling interrupts
+- *		via dc_enable_dmub_outbox
++ * @dc: [in] dc structure
+  *
+- *  @param
+- *		[in] dc: dc structure
++ * Checks whether DMUB FW supports outbox notifications, if supported DM
++ * should register outbox interrupt prior to actually enabling interrupts
++ * via dc_enable_dmub_outbox
+  *
+- *  @return
+- *		True if DMUB FW supports outbox notifications, False otherwise
+- *****************************************************************************
++ * Return:
++ * True if DMUB FW supports outbox notifications, False otherwise
+  */
+ bool dc_is_dmub_outbox_supported(struct dc *dc)
+ {
+@@ -4592,21 +4580,17 @@ bool dc_is_dmub_outbox_supported(struct dc *dc)
+ 	return dc->debug.enable_dmub_aux_for_legacy_ddc;
+ }
+ 
+-/*
+- *****************************************************************************
+- *  Function: dc_enable_dmub_notifications
++/**
++ * dc_enable_dmub_notifications - Check if dmub fw supports outbox
+  *
+- *  @brief
+- *		Calls dc_is_dmub_outbox_supported to check if dmub fw supports outbox
+- *		notifications. All DMs shall switch to dc_is_dmub_outbox_supported.
+- *		This API shall be removed after switching.
++ * @dc: [in] dc structure
+  *
+- *  @param
+- *		[in] dc: dc structure
++ * Calls dc_is_dmub_outbox_supported to check if dmub fw supports outbox
++ * notifications. All DMs shall switch to dc_is_dmub_outbox_supported.  This
++ * API shall be removed after switching.
+  *
+- *  @return
+- *		True if DMUB FW supports outbox notifications, False otherwise
+- *****************************************************************************
++ * Return:
++ * True if DMUB FW supports outbox notifications, False otherwise
+  */
+ bool dc_enable_dmub_notifications(struct dc *dc)
+ {
+@@ -4614,18 +4598,11 @@ bool dc_enable_dmub_notifications(struct dc *dc)
+ }
+ 
+ /**
+- *****************************************************************************
+- *  Function: dc_enable_dmub_outbox
++ * dc_enable_dmub_outbox - Enables DMUB unsolicited notification
+  *
+- *  @brief
+- *		Enables DMUB unsolicited notifications to x86 via outbox
++ * dc: [in] dc structure
+  *
+- *  @param
+- *		[in] dc: dc structure
+- *
+- *  @return
+- *		None
+- *****************************************************************************
++ * Enables DMUB unsolicited notifications to x86 via outbox.
+  */
+ void dc_enable_dmub_outbox(struct dc *dc)
+ {
+@@ -4726,21 +4703,17 @@ uint8_t get_link_index_from_dpia_port_index(const struct dc *dc,
+ }
+ 
+ /**
+- *****************************************************************************
+- *  Function: dc_process_dmub_set_config_async
++ * dc_process_dmub_set_config_async - Submits set_config command
+  *
+- *  @brief
+- *		Submits set_config command to dmub via inbox message
++ * @dc: [in] dc structure
++ * @link_index: [in] link_index: link index
++ * @payload: [in] aux payload
++ * @notify: [out] set_config immediate reply
+  *
+- *  @param
+- *		[in] dc: dc structure
+- *		[in] link_index: link index
+- *		[in] payload: aux payload
+- *		[out] notify: set_config immediate reply
++ * Submits set_config command to dmub via inbox message.
+  *
+- *  @return
+- *		True if successful, False if failure
+- *****************************************************************************
++ * Return:
++ * True if successful, False if failure
+  */
+ bool dc_process_dmub_set_config_async(struct dc *dc,
+ 				uint32_t link_index,
+@@ -4776,21 +4749,17 @@ bool dc_process_dmub_set_config_async(struct dc *dc,
+ }
+ 
+ /**
+- *****************************************************************************
+- *  Function: dc_process_dmub_set_mst_slots
++ * dc_process_dmub_set_mst_slots - Submits MST solt allocation
+  *
+- *  @brief
+- *		Submits mst slot allocation command to dmub via inbox message
++ * @dc: [in] dc structure
++ * @link_index: [in] link index
++ * @mst_alloc_slots: [in] mst slots to be allotted
++ * @mst_slots_in_use: [out] mst slots in use returned in failure case
+  *
+- *  @param
+- *		[in] dc: dc structure
+- *		[in] link_index: link index
+- *		[in] mst_alloc_slots: mst slots to be allotted
+- *		[out] mst_slots_in_use: mst slots in use returned in failure case
++ * Submits mst slot allocation command to dmub via inbox message
+  *
+- *	@return
+- *		DC_OK if successful, DC_ERROR if failure
+- *****************************************************************************
++ * Return:
++ * DC_OK if successful, DC_ERROR if failure
+  */
+ enum dc_status dc_process_dmub_set_mst_slots(const struct dc *dc,
+ 				uint32_t link_index,
+@@ -4830,19 +4799,12 @@ enum dc_status dc_process_dmub_set_mst_slots(const struct dc *dc,
+ }
+ 
+ /**
+- *****************************************************************************
+- *  Function: dc_process_dmub_dpia_hpd_int_enable
+- *
+- *  @brief
+- *		Submits dpia hpd int enable command to dmub via inbox message
++ * dc_process_dmub_dpia_hpd_int_enable - Submits DPIA DPD interruption
+  *
+- *  @param
+- *		[in] dc: dc structure
+- *		[in] hpd_int_enable: 1 for hpd int enable, 0 to disable
++ * @dc [in]: dc structure
++ * @hpd_int_enable [in]: 1 for hpd int enable, 0 to disable
+  *
+- *	@return
+- *		None
+- *****************************************************************************
++ * Submits dpia hpd int enable command to dmub via inbox message
+  */
+ void dc_process_dmub_dpia_hpd_int_enable(const struct dc *dc,
+ 				uint32_t hpd_int_enable)
+@@ -4871,16 +4833,13 @@ void dc_disable_accelerated_mode(struct dc *dc)
+ 
+ 
+ /**
+- *****************************************************************************
+- *  dc_notify_vsync_int_state() - notifies vsync enable/disable state
++ *  dc_notify_vsync_int_state - notifies vsync enable/disable state
+  *  @dc: dc structure
+- *	@stream: stream where vsync int state changed
+- *	@enable: whether vsync is enabled or disabled
++ *  @stream: stream where vsync int state changed
++ *  @enable: whether vsync is enabled or disabled
+  *
+- *  Called when vsync is enabled/disabled
+- *	Will notify DMUB to start/stop ABM interrupts after steady state is reached
+- *
+- *****************************************************************************
++ *  Called when vsync is enabled/disabled Will notify DMUB to start/stop ABM
++ *  interrupts after steady state is reached.
+  */
+ void dc_notify_vsync_int_state(struct dc *dc, struct dc_stream_state *stream, bool enable)
+ {
+@@ -4922,14 +4881,18 @@ void dc_notify_vsync_int_state(struct dc *dc, struct dc_stream_state *stream, bo
+ 	if (pipe->stream_res.abm && pipe->stream_res.abm->funcs->set_abm_pause)
+ 		pipe->stream_res.abm->funcs->set_abm_pause(pipe->stream_res.abm, !enable, i, pipe->stream_res.tg->inst);
+ }
+-/*
+- * dc_extended_blank_supported: Decide whether extended blank is supported
++
++/**
++ * dc_extended_blank_supported 0 Decide whether extended blank is supported
+  *
+- * Extended blank is a freesync optimization feature to be enabled in the future.
+- * During the extra vblank period gained from freesync, we have the ability to enter z9/z10.
++ * @dc: [in] Current DC state
+  *
+- * @param [in] dc: Current DC state
+- * @return: Indicate whether extended blank is supported (true or false)
++ * Extended blank is a freesync optimization feature to be enabled in the
++ * future.  During the extra vblank period gained from freesync, we have the
++ * ability to enter z9/z10.
++ *
++ * Return:
++ * Indicate whether extended blank is supported (true or false)
+  */
+ bool dc_extended_blank_supported(struct dc *dc)
+ {
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index e2c5a68bbc807..178d410183631 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -56,9 +56,7 @@ struct dmub_notification;
+ #define MIN_VIEWPORT_SIZE 12
+ #define MAX_NUM_EDP 2
+ 
+-/*******************************************************************************
+- * Display Core Interfaces
+- ******************************************************************************/
++/* Display Core Interfaces */
+ struct dc_versions {
+ 	const char *dc_ver;
+ 	struct dmcu_version dmcu_version;
+@@ -993,9 +991,7 @@ void dc_init_callbacks(struct dc *dc,
+ void dc_deinit_callbacks(struct dc *dc);
+ void dc_destroy(struct dc **dc);
+ 
+-/*******************************************************************************
+- * Surface Interfaces
+- ******************************************************************************/
++/* Surface Interfaces */
+ 
+ enum {
+ 	TRANSFER_FUNC_POINTS = 1025
+@@ -1350,9 +1346,7 @@ struct dc_state *dc_copy_state(struct dc_state *src_ctx);
+ void dc_retain_state(struct dc_state *context);
+ void dc_release_state(struct dc_state *context);
+ 
+-/*******************************************************************************
+- * Link Interfaces
+- ******************************************************************************/
++/* Link Interfaces */
+ 
+ struct dpcd_caps {
+ 	union dpcd_rev dpcd_rev;
+@@ -1454,9 +1448,7 @@ struct hdcp_caps {
+ 
+ uint32_t dc_get_opp_for_plane(struct dc *dc, struct dc_plane_state *plane);
+ 
+-/*******************************************************************************
+- * Sink Interfaces - A sink corresponds to a display output device
+- ******************************************************************************/
++/* Sink Interfaces - A sink corresponds to a display output device */
+ 
+ struct dc_container_id {
+ 	// 128bit GUID in binary form
+@@ -1539,9 +1531,7 @@ struct dc_cursor {
+ };
+ 
+ 
+-/*******************************************************************************
+- * Interrupt interfaces
+- ******************************************************************************/
++/* Interrupt interfaces */
+ enum dc_irq_source dc_interrupt_to_irq_source(
+ 		struct dc *dc,
+ 		uint32_t src_id,
+@@ -1553,9 +1543,7 @@ enum dc_irq_source dc_get_hpd_irq_source_at_index(
+ 
+ void dc_notify_vsync_int_state(struct dc *dc, struct dc_stream_state *stream, bool enable);
+ 
+-/*******************************************************************************
+- * Power Interfaces
+- ******************************************************************************/
++/* Power Interfaces */
+ 
+ void dc_set_power_state(
+ 		struct dc *dc,
+@@ -1628,14 +1616,10 @@ enum dc_status dc_process_dmub_set_mst_slots(const struct dc *dc,
+ void dc_process_dmub_dpia_hpd_int_enable(const struct dc *dc,
+ 				uint32_t hpd_int_enable);
+ 
+-/*******************************************************************************
+- * DSC Interfaces
+- ******************************************************************************/
++/* DSC Interfaces */
+ #include "dc_dsc.h"
+ 
+-/*******************************************************************************
+- * Disable acc mode Interfaces
+- ******************************************************************************/
++/* Disable acc mode Interfaces */
+ void dc_disable_accelerated_mode(struct dc *dc);
+ 
+ #endif /* DC_INTERFACE_H_ */
 -- 
 2.39.2
 
