@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6243676AF37
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 417FC76ADF9
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233556AbjHAJpu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
+        id S233028AbjHAJfK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233559AbjHAJpi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A0F46B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:08 -0700 (PDT)
+        with ESMTP id S233100AbjHAJeb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C96B61724
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4711861511
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55621C433C8;
-        Tue,  1 Aug 2023 09:44:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EF65614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDEFC433C8;
+        Tue,  1 Aug 2023 09:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883046;
-        bh=UPzLBn6TQLBwMucFSpzCHzcxs9qQEow7vzJocFG9Fp4=;
+        s=korg; t=1690882349;
+        bh=lHqwZkgQBeqkea/YPLepRyDeLiBqRga28vKI2aQx7uQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=we1+Rql37rAAmYPulH7sGjDY9s0XV9pYmB+NhNsGhtjTpFRRPIRVVoVdUsrMqRy4y
-         rxLifXcVj6fwv+L+wT1XaV5bvEqThRkcpQFyGAx6MkpvK8W63kcB3TRW+Rp7OdsDxZ
-         oJ+ACrv6tA/l7D5LSZB1AXIrJ+Q18IrJ34ex81IQ=
+        b=DJ7Jg+vY7js5uzl5/bcR/sGPq+5C9JUPw1AaauJ/ufbKLUTLveAj1kkZ9fryjcJJa
+         Bo42S9GN61YFWoPwz45HgcHU7Qg8I1sxabV3PQoVBcD8Gn7Ljm52yPOKH6jLmXDfAz
+         HQAxg3FVOfHmYpFU7uv/9JngRBdYtdAeqRtzpfsA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Lan <lanhao@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Zhang Yi <yi.zhang@huawei.com>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 067/239] net: hns3: fix the imp capability bit cannot exceed 32 bits issue
+Subject: [PATCH 6.1 073/228] jbd2: fix a race when checking checkpoint buffer busy
 Date:   Tue,  1 Aug 2023 11:18:51 +0200
-Message-ID: <20230801091928.092116866@linuxfoundation.org>
+Message-ID: <20230801091925.460010163@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,86 +55,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Lan <lanhao@huawei.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit b27d0232e8897f7c896dc8ad80c9907dd57fd3f3 ]
+[ Upstream commit 46f881b5b1758dc4a35fba4a643c10717d0cf427 ]
 
-Current only the first 32 bits of the capability flag bit are considered.
-When the matching capability flag bit is greater than 31 bits,
-it will get an error bit.This patch use bitmap to solve this issue.
-It can handle each capability bit whitout bit width limit.
+Before removing checkpoint buffer from the t_checkpoint_list, we have to
+check both BH_Dirty and BH_Lock bits together to distinguish buffers
+have not been or were being written back. But __cp_buffer_busy() checks
+them separately, it first check lock state and then check dirty, the
+window between these two checks could be raced by writing back
+procedure, which locks buffer and clears buffer dirty before I/O
+completes. So it cannot guarantee checkpointing buffers been written
+back to disk if some error happens later. Finally, it may clean
+checkpoint transactions and lead to inconsistent filesystem.
 
-Fixes: da77aef9cc58 ("net: hns3: create common cmdq resource allocate/free/query APIs")
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
+same problem (journal_unmap_buffer() escape from this issue since it's
+running under the buffer lock), so fix them through introducing a new
+helper to try holding the buffer lock and remove really clean buffer.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  3 ++-
- .../hns3/hns3_common/hclge_comm_cmd.c         | 21 ++++++++++++++++---
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ fs/jbd2/checkpoint.c  | 38 +++++++++++++++++++++++++++++++++++---
+ fs/jbd2/transaction.c | 17 +++++------------
+ include/linux/jbd2.h  |  1 +
+ 3 files changed, 41 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index 9c9c72dc57e00..06f29e80104c0 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -31,6 +31,7 @@
- #include <linux/pci.h>
- #include <linux/pkt_sched.h>
- #include <linux/types.h>
-+#include <linux/bitmap.h>
- #include <net/pkt_cls.h>
- #include <net/pkt_sched.h>
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 42b34cab64fbd..9ec91017a7f3c 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+ 		jh = next_jh;
+ 		next_jh = jh->b_cpnext;
  
-@@ -407,7 +408,7 @@ struct hnae3_ae_dev {
- 	unsigned long hw_err_reset_req;
- 	struct hnae3_dev_specs dev_specs;
- 	u32 dev_version;
--	unsigned long caps[BITS_TO_LONGS(HNAE3_DEV_CAPS_MAX_NUM)];
-+	DECLARE_BITMAP(caps, HNAE3_DEV_CAPS_MAX_NUM);
- 	void *priv;
- };
+-		if (!destroy && __cp_buffer_busy(jh))
+-			continue;
++		if (destroy) {
++			ret = __jbd2_journal_remove_checkpoint(jh);
++		} else {
++			ret = jbd2_journal_try_remove_checkpoint(jh);
++			if (ret < 0)
++				continue;
++		}
  
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-index b85c412683ddc..16ba98ff2c9b1 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-@@ -171,6 +171,20 @@ static const struct hclge_comm_caps_bit_map hclge_vf_cmd_caps[] = {
- 	{HCLGE_COMM_CAP_GRO_B, HNAE3_DEV_SUPPORT_GRO_B},
- };
+ 		nr_freed++;
+-		ret = __jbd2_journal_remove_checkpoint(jh);
+ 		if (ret) {
+ 			*released = true;
+ 			break;
+@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
+ 	return 1;
+ }
  
-+static void
-+hclge_comm_capability_to_bitmap(unsigned long *bitmap, __le32 *caps)
++/*
++ * Check the checkpoint buffer and try to remove it from the checkpoint
++ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
++ * it frees the transaction, 0 otherwise.
++ *
++ * This function is called with j_list_lock held.
++ */
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
 +{
-+	const unsigned int words = HCLGE_COMM_QUERY_CAP_LENGTH;
-+	u32 val[HCLGE_COMM_QUERY_CAP_LENGTH];
-+	unsigned int i;
++	struct buffer_head *bh = jh2bh(jh);
 +
-+	for (i = 0; i < words; i++)
-+		val[i] = __le32_to_cpu(caps[i]);
++	if (!trylock_buffer(bh))
++		return -EBUSY;
++	if (buffer_dirty(bh)) {
++		unlock_buffer(bh);
++		return -EBUSY;
++	}
++	unlock_buffer(bh);
 +
-+	bitmap_from_arr32(bitmap, val,
-+			  HCLGE_COMM_QUERY_CAP_LENGTH * BITS_PER_TYPE(u32));
++	/*
++	 * Buffer is clean and the IO has finished (we held the buffer
++	 * lock) so the checkpoint is done. We can safely remove the
++	 * buffer from this transaction.
++	 */
++	JBUFFER_TRACE(jh, "remove from checkpoint list");
++	return __jbd2_journal_remove_checkpoint(jh);
 +}
 +
- static void
- hclge_comm_parse_capability(struct hnae3_ae_dev *ae_dev, bool is_pf,
- 			    struct hclge_comm_query_version_cmd *cmd)
-@@ -179,11 +193,12 @@ hclge_comm_parse_capability(struct hnae3_ae_dev *ae_dev, bool is_pf,
- 				is_pf ? hclge_pf_cmd_caps : hclge_vf_cmd_caps;
- 	u32 size = is_pf ? ARRAY_SIZE(hclge_pf_cmd_caps) :
- 				ARRAY_SIZE(hclge_vf_cmd_caps);
--	u32 caps, i;
-+	DECLARE_BITMAP(caps, HCLGE_COMM_QUERY_CAP_LENGTH * BITS_PER_TYPE(u32));
-+	u32 i;
+ /*
+  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
+  * list so that we know when it is safe to clean the transaction out of
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 18611241f4513..6ef5022949c46 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1784,8 +1784,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
+ 		 * Otherwise, if the buffer has been written to disk,
+ 		 * it is safe to remove the checkpoint and drop it.
+ 		 */
+-		if (!buffer_dirty(bh)) {
+-			__jbd2_journal_remove_checkpoint(jh);
++		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
+ 			spin_unlock(&journal->j_list_lock);
+ 			goto drop;
+ 		}
+@@ -2112,20 +2111,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
  
--	caps = __le32_to_cpu(cmd->caps[0]);
-+	hclge_comm_capability_to_bitmap(caps, cmd->caps);
- 	for (i = 0; i < size; i++)
--		if (hnae3_get_bit(caps, caps_map[i].imp_bit))
-+		if (test_bit(caps_map[i].imp_bit, caps))
- 			set_bit(caps_map[i].local_bit, ae_dev->caps);
+ 	jh = bh2jh(bh);
+ 
+-	if (buffer_locked(bh) || buffer_dirty(bh))
+-		goto out;
+-
+ 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
+-		goto out;
++		return;
+ 
+ 	spin_lock(&journal->j_list_lock);
+-	if (jh->b_cp_transaction != NULL) {
+-		/* written-back checkpointed metadata buffer */
+-		JBUFFER_TRACE(jh, "remove from checkpoint list");
+-		__jbd2_journal_remove_checkpoint(jh);
+-	}
++	/* Remove written-back checkpointed metadata buffer */
++	if (jh->b_cp_transaction != NULL)
++		jbd2_journal_try_remove_checkpoint(jh);
+ 	spin_unlock(&journal->j_list_lock);
+-out:
+ 	return;
  }
+ 
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index 67912fe08fbbd..ebb1608d9dcd2 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1435,6 +1435,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
+ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
+ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
+ int __jbd2_journal_remove_checkpoint(struct journal_head *);
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
+ void jbd2_journal_destroy_checkpoint(journal_t *journal);
+ void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
  
 -- 
 2.39.2
