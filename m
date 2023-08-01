@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0302876AF97
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EAF776AE87
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233527AbjHAJtD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:49:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50444 "EHLO
+        id S233252AbjHAJjl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233534AbjHAJss (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250B01BDB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:21 -0700 (PDT)
+        with ESMTP id S233254AbjHAJjS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F12D4C12
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0661B614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124BCC433C7;
-        Tue,  1 Aug 2023 09:47:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 080E961509
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C12C433C8;
+        Tue,  1 Aug 2023 09:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883240;
-        bh=EdJlco+J4sUdxUMYVRQuIKYB38LSkBEY2e1cyt17zm0=;
+        s=korg; t=1690882627;
+        bh=SIB7ydeiWri4MKb1u8CeMa2Ib2hMQYlNUBiGLUiRWMw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HFaQjIgmZTXVEB/zQtN4sc3gOyxDouLYmrun0FwZqbrGECKufKlf7qKgd9ACBaboL
-         14KUVEvpq0O0XBBN6BPBbg0xQH8ZatRn1giAXyyHNa72wBFekjJ9Z5vXO7Q+8Ep0RE
-         vn6XUK7jr45kapm3rLLeZ/GAOp77mUs0Kj0yLe7M=
+        b=LXobzkOyVGNYrQhr/bK//jth11/qzKmaZ9LBIyyjxzzzrHXD598IZrW74Nb9I2CL0
+         JJNVWk2tthMAvL+AuIzFRBfzYRLk5FjTDW1nGGCwLQL9wMWw39yaPyJ6FteK1Z9ouV
+         sx2zW6QcmsUi+PDOuW7WWct80kd5K7cTTVlg773g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
-        stable <stable@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.4 166/239] usb: ohci-at91: Fix the unhandle interrupt when resume
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.1 172/228] Revert "usb: xhci: tegra: Fix error check"
 Date:   Tue,  1 Aug 2023 11:20:30 +0200
-Message-ID: <20230801091931.620713140@linuxfoundation.org>
+Message-ID: <20230801091929.091854567@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guiting Shen <aarongt.shen@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit c55afcbeaa7a6f4fffdbc999a9bf3f0b29a5186f upstream.
+commit 288b4fa1798e3637a9304c6e90a93d900e02369c upstream.
 
-The ohci_hcd_at91_drv_suspend() sets ohci->rh_state to OHCI_RH_HALTED when
-suspend which will let the ohci_irq() skip the interrupt after resume. And
-nobody to handle this interrupt.
+This reverts commit 18fc7c435be3f17ea26a21b2e2312fcb9088e01f.
 
-According to the comment in ohci_hcd_at91_drv_suspend(), it need to reset
-when resume from suspend(MEM) to fix by setting "hibernated" argument of
-ohci_resume().
+The reverted commit was based on static analysis and a misunderstanding
+of how PTR_ERR() and NULLs are supposed to work.  When a function
+returns both pointer errors and NULL then normally the NULL means
+"continue operating without a feature because it was deliberately
+turned off".  The NULL should not be treated as a failure.  If a driver
+cannot work when that feature is disabled then the KConfig should
+enforce that the function cannot return NULL.  We should not need to
+test for it.
 
-Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
+In this code, the patch means that certain tegra_xusb_probe() will
+fail if the firmware supports power-domains but CONFIG_PM is disabled.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 18fc7c435be3 ("usb: xhci: tegra: Fix error check")
 Cc: stable <stable@kernel.org>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230626152713.18950-1-aarongt.shen@gmail.com
+Link: https://lore.kernel.org/r/8baace8d-fb4b-41a4-ad5f-848ae643a23b@moroto.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ohci-at91.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-tegra.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -673,7 +673,13 @@ ohci_hcd_at91_drv_resume(struct device *
- 	else
- 		at91_start_clock(ohci_at91);
+--- a/drivers/usb/host/xhci-tegra.c
++++ b/drivers/usb/host/xhci-tegra.c
+@@ -1010,15 +1010,15 @@ static int tegra_xusb_powerdomain_init(s
+ 	int err;
  
--	ohci_resume(hcd, false);
-+	/*
-+	 * According to the comment in ohci_hcd_at91_drv_suspend()
-+	 * we need to do a reset if the 48Mhz clock was stopped,
-+	 * that is, if ohci_at91->wakeup is clear. Tell ohci_resume()
-+	 * to reset in this case by setting its "hibernated" flag.
-+	 */
-+	ohci_resume(hcd, !ohci_at91->wakeup);
+ 	tegra->genpd_dev_host = dev_pm_domain_attach_by_name(dev, "xusb_host");
+-	if (IS_ERR_OR_NULL(tegra->genpd_dev_host)) {
+-		err = PTR_ERR(tegra->genpd_dev_host) ? : -ENODATA;
++	if (IS_ERR(tegra->genpd_dev_host)) {
++		err = PTR_ERR(tegra->genpd_dev_host);
+ 		dev_err(dev, "failed to get host pm-domain: %d\n", err);
+ 		return err;
+ 	}
  
- 	return 0;
- }
+ 	tegra->genpd_dev_ss = dev_pm_domain_attach_by_name(dev, "xusb_ss");
+-	if (IS_ERR_OR_NULL(tegra->genpd_dev_ss)) {
+-		err = PTR_ERR(tegra->genpd_dev_ss) ? : -ENODATA;
++	if (IS_ERR(tegra->genpd_dev_ss)) {
++		err = PTR_ERR(tegra->genpd_dev_ss);
+ 		dev_err(dev, "failed to get superspeed pm-domain: %d\n", err);
+ 		return err;
+ 	}
 
 
