@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB8EF76AD33
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A354176AE44
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232841AbjHAJ1S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:27:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52680 "EHLO
+        id S233152AbjHAJh2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjHAJ0u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:50 -0400
+        with ESMTP id S233165AbjHAJhL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67B6635BD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 156104EFE
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45990614FE
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D1DC433C8;
-        Tue,  1 Aug 2023 09:25:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E605161500
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF45AC433C7;
+        Tue,  1 Aug 2023 09:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881950;
-        bh=6trlCTXDvEEdpebaUiJa+pdRHQ6IluKLrWb0CSgbe84=;
+        s=korg; t=1690882519;
+        bh=2rLxZOz8kmM5rWE/sdfl3HtjjLejZ3ndtj66kfRoYMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L5A95E/i+thOTIq7CFb82CtP25AKek+6x5DVw2EQwr2oFmPwlym1UcVpNgx+l7VDM
-         3tbMX3E1WyBQXZhICVikT4mVqRJec9HhH3Rs/9BPccWyOUXMPNTHe9RbBJmIXN14bL
-         gvpUmgV4tbqUNM7qsSdGxuytpx1bOUrkj1zUge/c=
+        b=MjnZQb+5/0kq7QeLYp6kzl0XGCqVOr8LdTZzvdIxdjomtF4+rOMjIBJ5Cq6+NhI6p
+         ynfZx26pXmkJ+IhJwD4XA/+77GfZjtosZaXETKc6KLsoZz9peSWdyp3sT+tj96MS81
+         kboBuUfUTQZXW887y3juEgqjl1AYQQhfCR922ivo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Tung Nguyen <tung.q.nguyen@dektech.com.au>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/155] tipc: check return value of pskb_trim()
+Subject: [PATCH 6.1 134/228] drm/amd: Fix an error handling mistake in psp_sw_init()
 Date:   Tue,  1 Aug 2023 11:19:52 +0200
-Message-ID: <20230801091913.004335608@linuxfoundation.org>
+Message-ID: <20230801091927.571490383@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,39 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit e46e06ffc6d667a89b979701288e2264f45e6a7b ]
+[ Upstream commit c01aebeef3ce45f696ffa0a1303cea9b34babb45 ]
 
-goto free_skb if an unexpected result is returned by pskb_tirm()
-in tipc_crypto_rcv_complete().
+If the second call to amdgpu_bo_create_kernel() fails, the memory
+allocated from the first call should be cleared.  If the third call
+fails, the memory from the second call should be cleared.
 
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
-Link: https://lore.kernel.org/r/20230725064810.5820-1-ruc_gongyuanjun@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b95b5391684b ("drm/amdgpu/psp: move PSP memory alloc from hw_init to sw_init")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/crypto.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 4243d2ab8adfb..32447e8d94ac9 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -1971,7 +1971,8 @@ static void tipc_crypto_rcv_complete(struct net *net, struct tipc_aead *aead,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 0af9fb4098e8a..eecbd8eeb1f5a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -472,11 +472,11 @@ static int psp_sw_init(void *handle)
+ 	return 0;
  
- 	skb_reset_network_header(*skb);
- 	skb_pull(*skb, tipc_ehdr_size(ehdr));
--	pskb_trim(*skb, (*skb)->len - aead->authsize);
-+	if (pskb_trim(*skb, (*skb)->len - aead->authsize))
-+		goto free_skb;
+ failed2:
+-	amdgpu_bo_free_kernel(&psp->fw_pri_bo,
+-			      &psp->fw_pri_mc_addr, &psp->fw_pri_buf);
+-failed1:
+ 	amdgpu_bo_free_kernel(&psp->fence_buf_bo,
+ 			      &psp->fence_buf_mc_addr, &psp->fence_buf);
++failed1:
++	amdgpu_bo_free_kernel(&psp->fw_pri_bo,
++			      &psp->fw_pri_mc_addr, &psp->fw_pri_buf);
+ 	return ret;
+ }
  
- 	/* Validate TIPCv2 message */
- 	if (unlikely(!tipc_msg_validate(skb))) {
 -- 
-2.39.2
+2.40.1
 
 
 
