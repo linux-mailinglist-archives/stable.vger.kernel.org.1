@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4896576AF90
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C35276AD54
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233538AbjHAJss (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50438 "EHLO
+        id S232397AbjHAJ2Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233542AbjHAJse (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:34 -0400
+        with ESMTP id S232972AbjHAJ14 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974544C0F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358D82D61
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 785C8614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88113C433C7;
-        Tue,  1 Aug 2023 09:47:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BDCD9614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95CFC433C7;
+        Tue,  1 Aug 2023 09:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883223;
-        bh=OeVLk6mlwRD/ZLauaMFLG2EYUsi3afLuezd1XrFJVvs=;
+        s=korg; t=1690882012;
+        bh=O4PmndeqTsi2EL8yJKVnA8HiSaciF889/IwDkEAPz8o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g3D3PRy8Pfq0KtqvL1P+k589MVIn1gsPNTCdWhXfB2zDt388MiRN20zFR7DvsT9My
-         9T4nGwgp/dF7brZ82JtdJGifXRuOUK3WyEA8+P7JEFZ4MIhRT4O29ihdZu7Klwr0cV
-         HwOqPc/qH0RBtq+Tew67f0ExgvAKbQjLS4NcAgdQ=
+        b=dj3QO1G8Bt2oZG0zHjkAezRliRLx3pTWRKR4ICmKulRsaBuAlaIRTFJ7xj4aK2fqU
+         Vm0lR6W4cKk6ZkKqDTTEORTfCd+8gmqU3p+hUUJwotX6D2cjHcfN3BjydJLFiQ1Pfm
+         //XSg4IS6knXMk+lSyvHlghTFTSAvkJ9RnSmsOLU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 130/239] drm/amd/display: Unlock on error path in dm_handle_mst_sideband_msg_ready_event()
+Subject: [PATCH 5.15 082/155] RDMA/mlx4: Make check for invalid flags stricter
 Date:   Tue,  1 Aug 2023 11:19:54 +0200
-Message-ID: <20230801091930.402791817@linuxfoundation.org>
+Message-ID: <20230801091913.092279516@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,32 +57,51 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 38ac4e8385ffb275b1837986ca6c16f26ea028c5 ]
+[ Upstream commit d64b1ee12a168030fbb3e0aebf7bce49e9a07589 ]
 
-This error path needs to unlock the "aconnector->handle_mst_msg_ready"
-mutex before returning.
+This code is trying to ensure that only the flags specified in the list
+are allowed.  The problem is that ucmd->rx_hash_fields_mask is a u64 and
+the flags are an enum which is treated as a u32 in this context.  That
+means the test doesn't check whether the highest 32 bits are zero.
 
-Fixes: 4f6d9e38c4d2 ("drm/amd/display: Add polling method to handle MST reply packet")
+Fixes: 4d02ebd9bbbd ("IB/mlx4: Fix RSS hash fields restrictions")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/233ed975-982d-422a-b498-410f71d8a101@moroto.mountain
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx4/qp.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 888e80f498e97..9bc86deac9e8e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -706,7 +706,7 @@ void dm_handle_mst_sideband_msg_ready_event(
+diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
+index ec545b8858cc0..43b2aad845917 100644
+--- a/drivers/infiniband/hw/mlx4/qp.c
++++ b/drivers/infiniband/hw/mlx4/qp.c
+@@ -530,15 +530,15 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
+ 		return (-EOPNOTSUPP);
+ 	}
  
- 			if (retry == 3) {
- 				DRM_ERROR("Failed to ack MST event.\n");
--				return;
-+				break;
- 			}
- 
- 			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
+-	if (ucmd->rx_hash_fields_mask & ~(MLX4_IB_RX_HASH_SRC_IPV4	|
+-					  MLX4_IB_RX_HASH_DST_IPV4	|
+-					  MLX4_IB_RX_HASH_SRC_IPV6	|
+-					  MLX4_IB_RX_HASH_DST_IPV6	|
+-					  MLX4_IB_RX_HASH_SRC_PORT_TCP	|
+-					  MLX4_IB_RX_HASH_DST_PORT_TCP	|
+-					  MLX4_IB_RX_HASH_SRC_PORT_UDP	|
+-					  MLX4_IB_RX_HASH_DST_PORT_UDP  |
+-					  MLX4_IB_RX_HASH_INNER)) {
++	if (ucmd->rx_hash_fields_mask & ~(u64)(MLX4_IB_RX_HASH_SRC_IPV4	|
++					       MLX4_IB_RX_HASH_DST_IPV4	|
++					       MLX4_IB_RX_HASH_SRC_IPV6	|
++					       MLX4_IB_RX_HASH_DST_IPV6	|
++					       MLX4_IB_RX_HASH_SRC_PORT_TCP |
++					       MLX4_IB_RX_HASH_DST_PORT_TCP |
++					       MLX4_IB_RX_HASH_SRC_PORT_UDP |
++					       MLX4_IB_RX_HASH_DST_PORT_UDP |
++					       MLX4_IB_RX_HASH_INNER)) {
+ 		pr_debug("RX Hash fields_mask has unsupported mask (0x%llx)\n",
+ 			 ucmd->rx_hash_fields_mask);
+ 		return (-EOPNOTSUPP);
 -- 
 2.40.1
 
