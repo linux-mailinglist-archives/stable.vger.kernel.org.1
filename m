@@ -2,164 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75EFA76AC99
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E42C676AD41
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232587AbjHAJQK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43042 "EHLO
+        id S231292AbjHAJ1g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232624AbjHAJP6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:15:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD5C2680
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:12:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690881120;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=n9kdFDWcMyK/1HOobM9v5phnyHdEWyzyFaqhLZWLocA=;
-        b=c1AriNQTPdZ7MhuIGWIqfWVXNWZeZZx3Vyv7MmYfhxMPbdT4vGoUESercb2KveWVwSBPuU
-        7k35N17dZTyQ7S2K3hZO1rHkgmN5OGBQMEtG+9+DGWRZZO+4M1tLGqeiEz/3Ij3uhys3n+
-        7UUmF9ZZe6AbpAgHWUCfLr7DQhx/7bw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-5bG7ZCgIMaGCfYJbsMjniA-1; Tue, 01 Aug 2023 05:05:43 -0400
-X-MC-Unique: 5bG7ZCgIMaGCfYJbsMjniA-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fd0fa4d08cso31987355e9.1
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 02:05:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690880742; x=1691485542;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        with ESMTP id S232327AbjHAJ1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:02 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E965110B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:00 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-99bcc0adab4so850487066b.2
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 02:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1690881959; x=1691486759;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n9kdFDWcMyK/1HOobM9v5phnyHdEWyzyFaqhLZWLocA=;
-        b=QbFruBi+fn4Paphx/XyyQueTw/z2FPNkV7zy+b+1ZvyvAieb+YUif0hSyomC/N+HMl
-         7l7hweIOq0a/LNkTwmyUPNybwDg9UZa1CSwsDEm6g0r/aQOoGHJtft6qOL1K0Gc7iYNp
-         eNjHqDOv/DcB4l8E74tElBIKXa8FiWPR+683hyGV6NoJkKwhmd2nLyK5yGht0ix6YeY8
-         tDH52uprYW2GS+VQuKo5k9umGagRreDpEKyfDVPs7/5SYkcE66cEMOSiEYW6Q9WsVdrh
-         G7LWgqCf2dx8tak/47zbTTL8Pa3dBtL9rOCMawr6A8grDA19OSkAb8D0tbT8dcBmCfC6
-         DRKA==
-X-Gm-Message-State: ABy/qLYESK1AWWt8j/RWYcsZnj1y/ZxNjm8vyEulIFCIju4tngkec2a5
-        y8ruBv/75PkdE+yQnLbtnZKbV3MLyNVsG0V/aWoAastqw8HzghbVL5KcLLIpMO1SlIn75ZX51KF
-        iBeoF6VVVH0/E/QCL
-X-Received: by 2002:a7b:ce16:0:b0:3fc:521:8492 with SMTP id m22-20020a7bce16000000b003fc05218492mr1796092wmc.5.1690880742245;
-        Tue, 01 Aug 2023 02:05:42 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEC68EW/3Q+u0VSARbq5VNE5NLUF7t+a5naaLWqjf05jsPmAZ5g85TjNh4l1QEK1armULjtOw==
-X-Received: by 2002:a7b:ce16:0:b0:3fc:521:8492 with SMTP id m22-20020a7bce16000000b003fc05218492mr1796077wmc.5.1690880741870;
-        Tue, 01 Aug 2023 02:05:41 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c705:d100:871b:ec55:67d:5247? (p200300cbc705d100871bec55067d5247.dip0.t-ipconnect.de. [2003:cb:c705:d100:871b:ec55:67d:5247])
-        by smtp.gmail.com with ESMTPSA id f17-20020adffcd1000000b00313f61889ecsm15587910wrs.66.2023.08.01.02.05.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Aug 2023 02:05:41 -0700 (PDT)
-Message-ID: <0af1bc20-8ba2-c6b6-64e6-c1f58d521504@redhat.com>
-Date:   Tue, 1 Aug 2023 11:05:40 +0200
+        bh=f6lX5JSmrO+d9PQMfUwrcKSo+nafwxjzZsg9aEr2HoE=;
+        b=yBRW/PFX3y3rE4eSbZi3IelSMcZVW42wpzDZ4Nr+X5bQ+W7f7EoFuN7AlTrAcn4qbd
+         I+2uV5z9Py5V3xCvp6mP+5SnKSFNDpYpGPo/Z+b3goXx8SvMWdxtk5Nzp7YG0FzJ3Vhi
+         X2HAhFcHK0vDYYGNT7IgcOBR/gDDAskeaEEbZufgsGAu9T5hYVVFyssyKDC5PNTx+Dpe
+         hcAyN6Cj4ZBDeq9a0NxTMT1xH15I01owGbRHliiwr65+XxikI8gpdYpNBqDyAdVfw0Xt
+         hE+kQlsYxyGyJhJkQTL3UGvCPXjwIDiNTHa/j62VSJRHplxxAi9dFgd3aQ45q9Hh0bFB
+         vyKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690881959; x=1691486759;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f6lX5JSmrO+d9PQMfUwrcKSo+nafwxjzZsg9aEr2HoE=;
+        b=dFzS9DiMZRo1U7jB2110hY6C672xnrrtEOhkRMu6pTydp96XPitx3OMu+DMAudCwGb
+         U1RmWaBb+60G9wJqX4xuItsZ4jRSlxGXKDK3ViHighzHMluk1NeSSQ+LdjMSHXKkR6DS
+         YlF8FH1tvYmGvNehPaPSeDzCadH7ST6RzTYA9VhPrZalqN1Ymp86bCwZtKReB7l6eVdt
+         J0dpVvsEg5hyJAihfhnq7awGa3R1V4rE6/p7jf7CoBv5k9PQXvH6I/D60QuOc3PPpZux
+         wRD83ygUYkWpbqi6XNWP4+iGXs61vJC0teGph8WM1h8IXavwMPvlIdHZyaYQIRTJQOYZ
+         snQw==
+X-Gm-Message-State: ABy/qLZa1/pKFG3phJzEQ/HXcN9m6xGz8LKYUi6qLUVJM8oeOnCBFz5I
+        v2BrRZ5VHdunbm4a2skuDVebFvGYZDkRZ9DCg8L7XYeV
+X-Google-Smtp-Source: APBJJlGowSw2WZ1lITT/LFLe0mm6d8vbpj63Fktl2fbGFGP17o0Z7OgYko+0SmYlt2jV5tZXkDo7Ow==
+X-Received: by 2002:a5d:54c2:0:b0:317:650e:9030 with SMTP id x2-20020a5d54c2000000b00317650e9030mr1725878wrv.57.1690880868106;
+        Tue, 01 Aug 2023 02:07:48 -0700 (PDT)
+Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
+        by smtp.gmail.com with ESMTPSA id z17-20020adfec91000000b003179d7ed4f3sm7307266wrn.12.2023.08.01.02.07.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 02:07:47 -0700 (PDT)
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
+Cc:     MPTCP Upstream <mptcp@lists.linux.dev>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15.y] selftests: mptcp: join: only check for ip6tables if needed
+Date:   Tue,  1 Aug 2023 11:07:16 +0200
+Message-Id: <20230801090716.2234574-1-matthieu.baerts@tessares.net>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <2023080104-stability-porcupine-fbad@gregkh>
+References: <2023080104-stability-porcupine-fbad@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT
- regions
-To:     Lorenzo Stoakes <lstoakes@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Baoquan He <bhe@redhat.com>, Uladzislau Rezki <urezki@gmail.com>,
-        linux-fsdevel@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
-        Will Deacon <will@kernel.org>, Mike Galbraith <efault@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        wangkefeng.wang@huawei.com, catalin.marinas@arm.com,
-        ardb@kernel.org,
-        Linux regression tracking <regressions@leemhuis.info>,
-        regressions@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        stable@vger.kernel.org
-References: <20230731215021.70911-1-lstoakes@gmail.com>
-Content-Language: en-US
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230731215021.70911-1-lstoakes@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1810; i=matthieu.baerts@tessares.net;
+ h=from:subject; bh=HbBvwlpZNub92qq+jNFTV6MP033UqCgIXPfIntTVvEE=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkyMtEk99F09SOHVHXq35SDl3f+WatS3YHDdqDb
+ d8aT0oRmciJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZMjLRAAKCRD2t4JPQmmg
+ c/ZHD/9HeY1exsbgVcyHbLvTxX2jagdmjPwbTflT27M72wkw7DdRGcbDI525qG2AvxqQa4dsNoZ
+ z7Hb751YKxto+AwEATAGpboF50m1JYgKh2bb7b7dLuGQoq4ocNiEn9abMi0gjYnHaBOKW5m+hoU
+ xWsClHUEv2TVHcpfrgSrwmpKNTO1LAHfW58hFRfpN8qUFzyiK7ZGMQeRqWjrxVT1/N4JP1zZid3
+ E4WLDlIL+VbB9ue5Kc9dNMnVB8gIvAyguxsTIzAPCPMe1s8rUbCGb/XqJfqVTl43RTGw/+FwlPQ
+ N2CmC1dMqK0o376PyAW6KcAM0+fhSF9X+GGlvzcdkDipRCdf6eginzSFQqKBITAfN5/WFpNJmkM
+ z/09d9ISir2v3YZeLgrTszne0Z/if9HRCFsw6ABKckCGESLNrFaeP5iKmGrjSs8/uDwhgINj49C
+ Xq5Hu6N4nOzCSVF1RbZlwGAKR5J4pzDEJla3D1/QPdJpQJtOgRmWvFOqLETR5mWKBdftocjswRF
+ OAvrMNr9Q3OUAYWSqPs3ErEyzQgXyWxUQcdH8RpJeJLlpXmCkKTi2ZbyJpUphyvQV3Zm7wyvqXt
+ W1BvMxq9H7s7qwQDQdcNDVUQwv+L2H2uBM/+H4NZPqFcKgssxlYgG3zfOU8ca7+rWWw4oM4VoL2 w8GM3PE9z8kubsQ==
+X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 31.07.23 23:50, Lorenzo Stoakes wrote:
-> Some architectures do not populate the entire range categorised by
-> KCORE_TEXT, so we must ensure that the kernel address we read from is
-> valid.
-> 
-> Unfortunately there is no solution currently available to do so with a
-> purely iterator solution so reinstate the bounce buffer in this instance so
-> we can use copy_from_kernel_nofault() in order to avoid page faults when
-> regions are unmapped.
-> 
-> This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
-> bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
-> the code to continue to use an iterator.
-> 
-> Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
-> Reported-by: Jiri Olsa <olsajiri@gmail.com>
-> Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-> ---
->   fs/proc/kcore.c | 26 +++++++++++++++++++++++++-
->   1 file changed, 25 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-> index 9cb32e1a78a0..3bc689038232 100644
-> --- a/fs/proc/kcore.c
-> +++ b/fs/proc/kcore.c
-> @@ -309,6 +309,8 @@ static void append_kcore_note(char *notes, size_t *i, const char *name,
->   
->   static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
->   {
-> +	struct file *file = iocb->ki_filp;
-> +	char *buf = file->private_data;
->   	loff_t *fpos = &iocb->ki_pos;
->   	size_t phdrs_offset, notes_offset, data_offset;
->   	size_t page_offline_frozen = 1;
-> @@ -554,11 +556,22 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
->   			fallthrough;
->   		case KCORE_VMEMMAP:
->   		case KCORE_TEXT:
-> +			/*
-> +			 * Sadly we must use a bounce buffer here to be able to
-> +			 * make use of copy_from_kernel_nofault(), as these
-> +			 * memory regions might not always be mapped on all
-> +			 * architectures.
-> +			 */
-> +			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
-> +				if (iov_iter_zero(tsz, iter) != tsz) {
-> +					ret = -EFAULT;
-> +					goto out;
-> +				}
->   			/*
->   			 * We use _copy_to_iter() to bypass usermode hardening
->   			 * which would otherwise prevent this operation.
->   			 */
+commit 016e7ba47f33064fbef8c4307a2485d2669dfd03 upstream.
 
-Having a comment at this indentation level looks for the else case looks 
-kind of weird.
+If 'iptables-legacy' is available, 'ip6tables-legacy' command will be
+used instead of 'ip6tables'. So no need to look if 'ip6tables' is
+available in this case.
 
-(does that comment still apply?)
+Cc: stable@vger.kernel.org
+Fixes: 0c4cd3f86a40 ("selftests: mptcp: join: use 'iptables-legacy' if available")
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20230725-send-net-20230725-v1-1-6f60fe7137a9@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+---
+Backport Notes:
+  - It was conflicting with 87154755d90e ("selftests: mptcp: join: check
+    for tools only if needed") moving the code to modify in a dedicated
+    function + checking the output directly.
+  - I then adapted the code where it was before, taking the same style
+    as what was done in the commit mentioned just above.
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 368fae525fea..a68048f1fc5a 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -179,10 +179,7 @@ if iptables-legacy -V &> /dev/null; then
+ elif ! iptables -V &> /dev/null; then
+ 	echo "SKIP: Could not run all tests without iptables tool"
+ 	exit $ksft_skip
+-fi
+-
+-ip6tables -V > /dev/null 2>&1
+-if [ $? -ne 0 ];then
++elif ! ip6tables -V &> /dev/null; then
+ 	echo "SKIP: Could not run all tests without ip6tables tool"
+ 	exit $ksft_skip
+ fi
 -- 
-Cheers,
-
-David / dhildenb
+2.40.1
 
