@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 618A276ACE2
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A82376AF14
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232902AbjHAJYR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:24:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52694 "EHLO
+        id S230303AbjHAJo7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:44:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232420AbjHAJX7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:23:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A430E35A5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:32 -0700 (PDT)
+        with ESMTP id S233518AbjHAJoo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A044544A5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C63B7614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39FCC433C8;
-        Tue,  1 Aug 2023 09:22:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64DC861514
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E57C433C7;
+        Tue,  1 Aug 2023 09:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881751;
-        bh=HYzIwS4Rxy8quQD0lUWTCRZjqIyBUOkSFg6ryRtVuaw=;
+        s=korg; t=1690882927;
+        bh=BlpZ905ny4sc/XE8c3TZg17Kqlv6zWBEltEw5Pve6yA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sP6KfhDFBvpPw8W4TVlbQ4vW5lkb+oXA74TApOIZF5Dbde7MKa7Of4V/NGm1EQSoW
-         0kDhofJ4Efn6r8YUTf3aJKM5rdX1JCR6pB48Yv04A5i7tYjgaCsBII80MUi6v4Jc6Q
-         Y1yc59xoFdDoln0ZY+kX8eHvj0SOpzxoTZTvqyHg=
+        b=fW3BJc3FCeOqlUMiKcbpFg/K9PZlMLQBxylN2X9V8CYB560yowpeIe2sIA7pp+DXE
+         loM230CvgA/ZrYNQuyuwgmTrqarA0z8LuYhga3LZJH55UJ6hPFxjEiFaBiaYeJm4/H
+         xa1B8ORM76Kln7QF1eEy7dh4RHWFORz5NyOlRTJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/155] gpio: tps68470: Make tps68470_gpio_output() always set the initial value
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 052/239] phy: phy-mtk-dp: Fix an error code in probe()
 Date:   Tue,  1 Aug 2023 11:18:36 +0200
-Message-ID: <20230801091910.329050573@linuxfoundation.org>
+Message-ID: <20230801091927.415913083@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,47 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 5a7adc6c1069ce31ef4f606ae9c05592c80a6ab5 ]
+[ Upstream commit 5782017cc4d0c8f3425d55b893675bb8a20c33e9 ]
 
-Make tps68470_gpio_output() call tps68470_gpio_set() for output-only pins
-too, so that the initial value passed to gpiod_direction_output() is
-honored for these pins too.
+Negative -EINVAL was intended instead of positive EINVAL.
 
-Fixes: 275b13a65547 ("gpio: Add support for TPS68470 GPIOs")
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Tested-by: Daniel Scally <dan.scally@ideasonboard.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 6a23afad443a ("phy: phy-mtk-dp: Add driver for DP phy")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/3c699e00-2883-40d9-92c3-0da1dc38fdd4@moroto.mountain
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tps68470.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/phy/mediatek/phy-mtk-dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tps68470.c b/drivers/gpio/gpio-tps68470.c
-index 423b7bc30ae88..03a523a6d6fa4 100644
---- a/drivers/gpio/gpio-tps68470.c
-+++ b/drivers/gpio/gpio-tps68470.c
-@@ -91,13 +91,13 @@ static int tps68470_gpio_output(struct gpio_chip *gc, unsigned int offset,
- 	struct tps68470_gpio_data *tps68470_gpio = gpiochip_get_data(gc);
- 	struct regmap *regmap = tps68470_gpio->tps68470_regmap;
+diff --git a/drivers/phy/mediatek/phy-mtk-dp.c b/drivers/phy/mediatek/phy-mtk-dp.c
+index 232fd3f1ff1b1..d7024a1443358 100644
+--- a/drivers/phy/mediatek/phy-mtk-dp.c
++++ b/drivers/phy/mediatek/phy-mtk-dp.c
+@@ -169,7 +169,7 @@ static int mtk_dp_phy_probe(struct platform_device *pdev)
  
-+	/* Set the initial value */
-+	tps68470_gpio_set(gc, offset, value);
-+
- 	/* rest are always outputs */
- 	if (offset >= TPS68470_N_REGULAR_GPIO)
- 		return 0;
+ 	regs = *(struct regmap **)dev->platform_data;
+ 	if (!regs)
+-		return dev_err_probe(dev, EINVAL,
++		return dev_err_probe(dev, -EINVAL,
+ 				     "No data passed, requires struct regmap**\n");
  
--	/* Set the initial value */
--	tps68470_gpio_set(gc, offset, value);
--
- 	return regmap_update_bits(regmap, TPS68470_GPIO_CTL_REG_A(offset),
- 				 TPS68470_GPIO_MODE_MASK,
- 				 TPS68470_GPIO_MODE_OUT_CMOS);
+ 	dp_phy = devm_kzalloc(dev, sizeof(*dp_phy), GFP_KERNEL);
 -- 
 2.39.2
 
