@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9182176AEBB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D927676AFA4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233382AbjHAJlQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:41:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40318 "EHLO
+        id S233671AbjHAJt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233271AbjHAJkw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:52 -0400
+        with ESMTP id S233485AbjHAJtN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166502D65
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13230172B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E7FBC61515
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01454C433C8;
-        Tue,  1 Aug 2023 09:38:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3296061509
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC9FC433C7;
+        Tue,  1 Aug 2023 09:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882724;
-        bh=VtPmnB2zZeaUNj23MV5ScirYOdH4LiyV+hffUVmUtuY=;
+        s=korg; t=1690883268;
+        bh=x3vGHmtbvEpqXxqUcDlniW/lOnjEs7Ou1qrRqheEwBo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qS5us0wv4iqetzTMtm0tLHzd6HLr/w04hBh+0LYTTr1Ujzn1yddy7hZsGRdXTWIoP
-         XBx6TRY18ka/LG/+R2q8Nb4zXAKZSKWM21OB161DmsG9yO2Pa01vQ92JtldrMLGhd8
-         obMHov69Xc4IEy5N1tQJq5AJ9CXlUoMWZlePsX8s=
+        b=NeVYBO2nur2fXnEIBVmZk/sV5j8/PWMekYxMjCVvgkwH35K7sq0D6zmICwrKCTWL2
+         iaTIRRRMpT0awLXDZBuDb74FD+jnD9QNn5QeGB/kOpLf+3niFUpOBjwZbdB1dq0LNg
+         4vX3aximnhzqDxg6fAcF9nZwYyo+D9ycs35prPSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luka Guzenko <l.guzenko@web.de>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 180/228] ALSA: hda/relatek: Enable Mute LED on HP 250 G8
-Date:   Tue,  1 Aug 2023 11:20:38 +0200
-Message-ID: <20230801091929.370955968@linuxfoundation.org>
+        patches@lists.linux.dev, Chaoyuan Peng <hedonistsmith@gmail.com>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.4 175/239] tty: n_gsm: fix UAF in gsm_cleanup_mux
+Date:   Tue,  1 Aug 2023 11:20:39 +0200
+Message-ID: <20230801091931.948277638@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,31 +54,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luka Guzenko <l.guzenko@web.de>
+From: Chaoyuan Peng <hedonistsmith@gmail.com>
 
-commit d510acb610e6aa07a04b688236868b2a5fd60deb upstream.
+commit 9b9c8195f3f0d74a826077fc1c01b9ee74907239 upstream.
 
-This HP Notebook used ALC236 codec with COEF 0x07 idx 1 controlling
-the mute LED. Enable already existing quirk for this device.
+In gsm_cleanup_mux() the 'gsm->dlci' pointer was not cleaned properly,
+leaving it a dangling pointer after gsm_dlci_release.
+This leads to use-after-free where 'gsm->dlci[0]' are freed and accessed
+by the subsequent gsm_cleanup_mux().
 
-Signed-off-by: Luka Guzenko <l.guzenko@web.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230725111509.623773-1-l.guzenko@web.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Such is the case in the following call trace:
+
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e3/0x2cb lib/dump_stack.c:106
+ print_address_description+0x63/0x3b0 mm/kasan/report.c:248
+ __kasan_report mm/kasan/report.c:434 [inline]
+ kasan_report+0x16b/0x1c0 mm/kasan/report.c:451
+ gsm_cleanup_mux+0x76a/0x850 drivers/tty/n_gsm.c:2397
+ gsm_config drivers/tty/n_gsm.c:2653 [inline]
+ gsmld_ioctl+0xaae/0x15b0 drivers/tty/n_gsm.c:2986
+ tty_ioctl+0x8ff/0xc50 drivers/tty/tty_io.c:2816
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:874 [inline]
+ __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:860
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x61/0xcb
+ </TASK>
+
+Allocated by task 3501:
+ kasan_save_stack mm/kasan/common.c:38 [inline]
+ kasan_set_track mm/kasan/common.c:46 [inline]
+ set_alloc_info mm/kasan/common.c:434 [inline]
+ ____kasan_kmalloc+0xba/0xf0 mm/kasan/common.c:513
+ kasan_kmalloc include/linux/kasan.h:264 [inline]
+ kmem_cache_alloc_trace+0x143/0x290 mm/slub.c:3247
+ kmalloc include/linux/slab.h:591 [inline]
+ kzalloc include/linux/slab.h:721 [inline]
+ gsm_dlci_alloc+0x53/0x3a0 drivers/tty/n_gsm.c:1932
+ gsm_activate_mux+0x1c/0x330 drivers/tty/n_gsm.c:2438
+ gsm_config drivers/tty/n_gsm.c:2677 [inline]
+ gsmld_ioctl+0xd46/0x15b0 drivers/tty/n_gsm.c:2986
+ tty_ioctl+0x8ff/0xc50 drivers/tty/tty_io.c:2816
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:874 [inline]
+ __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:860
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x61/0xcb
+
+Freed by task 3501:
+ kasan_save_stack mm/kasan/common.c:38 [inline]
+ kasan_set_track+0x4b/0x80 mm/kasan/common.c:46
+ kasan_set_free_info+0x1f/0x40 mm/kasan/generic.c:360
+ ____kasan_slab_free+0xd8/0x120 mm/kasan/common.c:366
+ kasan_slab_free include/linux/kasan.h:230 [inline]
+ slab_free_hook mm/slub.c:1705 [inline]
+ slab_free_freelist_hook+0xdd/0x160 mm/slub.c:1731
+ slab_free mm/slub.c:3499 [inline]
+ kfree+0xf1/0x270 mm/slub.c:4559
+ dlci_put drivers/tty/n_gsm.c:1988 [inline]
+ gsm_dlci_release drivers/tty/n_gsm.c:2021 [inline]
+ gsm_cleanup_mux+0x574/0x850 drivers/tty/n_gsm.c:2415
+ gsm_config drivers/tty/n_gsm.c:2653 [inline]
+ gsmld_ioctl+0xaae/0x15b0 drivers/tty/n_gsm.c:2986
+ tty_ioctl+0x8ff/0xc50 drivers/tty/tty_io.c:2816
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:874 [inline]
+ __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:860
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x61/0xcb
+
+Fixes: aa371e96f05d ("tty: n_gsm: fix restart handling via CLD command")
+Signed-off-by: Chaoyuan Peng <hedonistsmith@gmail.com>
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/n_gsm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9457,6 +9457,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x8812, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-+	SND_PCI_QUIRK(0x103c, 0x881d, "HP 250 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8846, "HP EliteBook 850 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8847, "HP EliteBook x360 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x884b, "HP EliteBook 840 Aero G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -3070,8 +3070,10 @@ static void gsm_cleanup_mux(struct gsm_m
+ 		gsm->has_devices = false;
+ 	}
+ 	for (i = NUM_DLCI - 1; i >= 0; i--)
+-		if (gsm->dlci[i])
++		if (gsm->dlci[i]) {
+ 			gsm_dlci_release(gsm->dlci[i]);
++			gsm->dlci[i] = NULL;
++		}
+ 	mutex_unlock(&gsm->mutex);
+ 	/* Now wipe the queues */
+ 	tty_ldisc_flush(gsm->tty);
 
 
