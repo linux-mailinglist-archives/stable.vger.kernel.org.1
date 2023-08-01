@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3502B76AEF3
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B153A76ADBF
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233264AbjHAJni (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:43:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40442 "EHLO
+        id S232967AbjHAJcw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:32:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233279AbjHAJnW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F87F4200
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:03 -0700 (PDT)
+        with ESMTP id S232303AbjHAJc3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:32:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E8624493
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:30:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52CF26126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653EFC433C8;
-        Tue,  1 Aug 2023 09:40:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95272614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:30:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8401C433C7;
+        Tue,  1 Aug 2023 09:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882854;
-        bh=65vNRZCExz/tEOS41AQXAk+lvvZ+5r64jErCSF4/yrE=;
+        s=korg; t=1690882231;
+        bh=qt36tPoTUJwAqv0gPlijQkN/nGCiTHoShrlnSPJMePM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0q4B7xA2wR/8CiHBWKwhori27kh1HEIEIC4WbMAQCrtFkDc+s5aoCqG6PC5hMdbRk
-         K8Qr5R3ynhShbQpNwtmNhChQRZOfPzhRA2HhzJ5QG6RfjhhbtUKII5TRjb+I172xSX
-         EVtSdYiHoHVm9S074DlUW0TdnnJo1SYPvCFWCsqU=
+        b=x+6CrdrtNnDJBVfOWFe2TrxhkkXdE0o5xdTtXkfxo8izm3NuJd+VCl64udx4kKhYi
+         W0k0p4+u+EmYvQvSKSRqk0mp9xjIUbF9bl8pVNPF51Jh72X5NgJolWnow8VOGkbbUS
+         Z0+XLJGz0grBZ/QA/p/Sdo1WE2nNiN5KK+I+ijOg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 026/239] PCI/ASPM: Return 0 or -ETIMEDOUT from pcie_retrain_link()
+Subject: [PATCH 6.1 032/228] PCI: rockchip: Dont advertise MSI-X in PCIe capabilities
 Date:   Tue,  1 Aug 2023 11:18:10 +0200
-Message-ID: <20230801091926.575541069@linuxfoundation.org>
+Message-ID: <20230801091924.040534706@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,70 +56,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit f5297a01ee805d7fa569d288ed65fc0f9ac9b03d ]
+[ Upstream commit a52587e0bee14cbeeadf48a24013828cb04b8df8 ]
 
-"pcie_retrain_link" is not a question with a true/false answer, so "bool"
-isn't quite the right return type.  Return 0 for success or -ETIMEDOUT if
-the retrain failed.  No functional change intended.
+The RK3399 PCIe endpoint controller cannot generate MSI-X IRQs.
+This is documented in the RK3399 technical reference manual (TRM)
+section 17.5.9 "Interrupt Support".
 
-[bhelgaas: based on Ilpo's patch below]
-Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e7e39756363a ("PCI/ASPM: Avoid link retraining race")
+MSI-X capability should therefore not be advertised. Remove the
+MSI-X capability by editing the capability linked-list. The
+previous entry is the MSI capability, therefore get the next
+entry from the MSI-X capability entry and set it as next entry
+for the MSI capability. This in effect removes MSI-X from the list.
+
+Linked list before : MSI cap -> MSI-X cap -> PCIe Device cap -> ...
+Linked list now : MSI cap -> PCIe Device cap -> ...
+
+Link: https://lore.kernel.org/r/20230418074700.1083505-11-rick.wertenbroek@gmail.com
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/pci/controller/pcie-rockchip-ep.c | 24 +++++++++++++++++++++++
+ drivers/pci/controller/pcie-rockchip.h    |  5 +++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index db32335039d61..88aca887e3120 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -193,7 +193,7 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
- 	link->clkpm_disable = blacklist ? 1 : 0;
- }
+diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+index 3d6f828d29fc2..0af0e965fb57e 100644
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -508,6 +508,7 @@ static int rockchip_pcie_ep_probe(struct platform_device *pdev)
+ 	size_t max_regions;
+ 	struct pci_epc_mem_window *windows = NULL;
+ 	int err, i;
++	u32 cfg_msi, cfg_msix_cp;
  
--static bool pcie_retrain_link(struct pcie_link_state *link)
-+static int pcie_retrain_link(struct pcie_link_state *link)
- {
- 	struct pci_dev *parent = link->pdev;
- 	unsigned long end_jiffies;
-@@ -220,7 +220,9 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
- 			break;
- 		msleep(1);
- 	} while (time_before(jiffies, end_jiffies));
--	return !(reg16 & PCI_EXP_LNKSTA_LT);
-+	if (reg16 & PCI_EXP_LNKSTA_LT)
-+		return -ETIMEDOUT;
-+	return 0;
- }
+ 	ep = devm_kzalloc(dev, sizeof(*ep), GFP_KERNEL);
+ 	if (!ep)
+@@ -583,6 +584,29 @@ static int rockchip_pcie_ep_probe(struct platform_device *pdev)
  
- /*
-@@ -289,15 +291,15 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
- 		reg16 &= ~PCI_EXP_LNKCTL_CCC;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+ 	ep->irq_pci_addr = ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR;
  
--	if (pcie_retrain_link(link))
--		return;
-+	if (pcie_retrain_link(link)) {
++	/*
++	 * MSI-X is not supported but the controller still advertises the MSI-X
++	 * capability by default, which can lead to the Root Complex side
++	 * allocating MSI-X vectors which cannot be used. Avoid this by skipping
++	 * the MSI-X capability entry in the PCIe capabilities linked-list: get
++	 * the next pointer from the MSI-X entry and set that in the MSI
++	 * capability entry (which is the previous entry). This way the MSI-X
++	 * entry is skipped (left out of the linked-list) and not advertised.
++	 */
++	cfg_msi = rockchip_pcie_read(rockchip, PCIE_EP_CONFIG_BASE +
++				     ROCKCHIP_PCIE_EP_MSI_CTRL_REG);
++
++	cfg_msi &= ~ROCKCHIP_PCIE_EP_MSI_CP1_MASK;
++
++	cfg_msix_cp = rockchip_pcie_read(rockchip, PCIE_EP_CONFIG_BASE +
++					 ROCKCHIP_PCIE_EP_MSIX_CAP_REG) &
++					 ROCKCHIP_PCIE_EP_MSIX_CAP_CP_MASK;
++
++	cfg_msi |= cfg_msix_cp;
++
++	rockchip_pcie_write(rockchip, cfg_msi,
++			    PCIE_EP_CONFIG_BASE + ROCKCHIP_PCIE_EP_MSI_CTRL_REG);
++
+ 	rockchip_pcie_write(rockchip, PCIE_CLIENT_CONF_ENABLE,
+ 			    PCIE_CLIENT_CONFIG);
  
--	/* Training failed. Restore common clock configurations */
--	pci_err(parent, "ASPM: Could not configure common clock\n");
--	list_for_each_entry(child, &linkbus->devices, bus_list)
--		pcie_capability_write_word(child, PCI_EXP_LNKCTL,
-+		/* Training failed. Restore common clock configurations */
-+		pci_err(parent, "ASPM: Could not configure common clock\n");
-+		list_for_each_entry(child, &linkbus->devices, bus_list)
-+			pcie_capability_write_word(child, PCI_EXP_LNKCTL,
- 					   child_reg[PCI_FUNC(child->devfn)]);
--	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
-+		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
-+	}
- }
- 
- /* Convert L0s latency encoding to ns */
+diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
+index 501d859420b4c..fe0333778fd93 100644
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -227,6 +227,8 @@
+ #define ROCKCHIP_PCIE_EP_CMD_STATUS			0x4
+ #define   ROCKCHIP_PCIE_EP_CMD_STATUS_IS		BIT(19)
+ #define ROCKCHIP_PCIE_EP_MSI_CTRL_REG			0x90
++#define   ROCKCHIP_PCIE_EP_MSI_CP1_OFFSET		8
++#define   ROCKCHIP_PCIE_EP_MSI_CP1_MASK			GENMASK(15, 8)
+ #define   ROCKCHIP_PCIE_EP_MSI_FLAGS_OFFSET		16
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_OFFSET		17
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_MASK		GENMASK(19, 17)
+@@ -234,6 +236,9 @@
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MME_MASK		GENMASK(22, 20)
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_ME				BIT(16)
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP	BIT(24)
++#define ROCKCHIP_PCIE_EP_MSIX_CAP_REG			0xb0
++#define   ROCKCHIP_PCIE_EP_MSIX_CAP_CP_OFFSET		8
++#define   ROCKCHIP_PCIE_EP_MSIX_CAP_CP_MASK		GENMASK(15, 8)
+ #define ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR				0x1
+ #define ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR		0x3
+ #define ROCKCHIP_PCIE_EP_FUNC_BASE(fn) \
 -- 
 2.39.2
 
