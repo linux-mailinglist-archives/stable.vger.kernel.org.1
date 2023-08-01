@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DCB176ACDC
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8430876ADEC
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232334AbjHAJYG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52276 "EHLO
+        id S233040AbjHAJed (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232356AbjHAJXt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:23:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F784449C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:21 -0700 (PDT)
+        with ESMTP id S233045AbjHAJeR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B76422A
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1121261504
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0B3C433C7;
-        Tue,  1 Aug 2023 09:22:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9629F614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49AAC433C8;
+        Tue,  1 Aug 2023 09:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881739;
-        bh=pXrFfvE4j8jgqFye62oc+PtZD4Db1pThhEyr24Lqee0=;
+        s=korg; t=1690882330;
+        bh=tMoUAGfdj66RAtX806LNdzBDqN9RZZW2WJx1QIK0ExM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oUccIFnb5DZ1z9mkWvJoUekCHrnCE7tjXlIZA8X22hrYWoxpCt10G+aia7iw118qN
-         mnZ99h2rS7exmzn+ryIoxJEb8zMJNHYh4zHourVa9ZArlrI5xBRYZt4aiVqUCo5LdT
-         CmQBGk/70rGzI2cKndFEP97j8BKjIHSIL/wEHEak=
+        b=MJDwgu4QiiicFcIysFR/LX1NGBLM6+mmS/FQRFR8FkCYTWBVqYgsc4nn59LmQTN1a
+         +pTyssZpJZFb2TamPxCSQ6jHIo7gOsg5hbZJjcfJkLDbh78EYF4gKnHsHwO6Ehc1h6
+         N9m0WJH33MpK2fH7lSaV+Alx2uCL4u7ou1XXvhd0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/155] PCI/ASPM: Return 0 or -ETIMEDOUT from pcie_retrain_link()
+Subject: [PATCH 6.1 067/228] drm/amd/display: Add FAMS validation before trying to use it
 Date:   Tue,  1 Aug 2023 11:18:45 +0200
-Message-ID: <20230801091910.673699614@linuxfoundation.org>
+Message-ID: <20230801091925.254191995@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,70 +58,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit f5297a01ee805d7fa569d288ed65fc0f9ac9b03d ]
+[ Upstream commit e3416e872f84086667df21daf166506fab97358d ]
 
-"pcie_retrain_link" is not a question with a true/false answer, so "bool"
-isn't quite the right return type.  Return 0 for success or -ETIMEDOUT if
-the retrain failed.  No functional change intended.
+To ensure that FAMS can be used, DC must check if there is VRR support.
+This commit adds the required configuration to ensure FAMS can be executed in the target system.
 
-[bhelgaas: based on Ilpo's patch below]
-Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e7e39756363a ("PCI/ASPM: Avoid link retraining race")
+Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 2a9482e55968 ("drm/amd/display: Prevent vtotal from being set to 0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c          | 6 ++++++
+ drivers/gpu/drm/amd/display/dc/dc_stream.h        | 1 +
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_optc.c | 7 ++++++-
+ drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h   | 2 +-
+ 4 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index c58294f53fcd1..e7f742ff31c3c 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -192,7 +192,7 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
- 	link->clkpm_disable = blacklist ? 1 : 0;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 6e2220e2e5ba3..27cec123cb06f 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -2588,6 +2588,12 @@ static enum surface_update_type check_update_surfaces_for_stream(
  
--static bool pcie_retrain_link(struct pcie_link_state *link)
-+static int pcie_retrain_link(struct pcie_link_state *link)
+ 		if (stream_update->mst_bw_update)
+ 			su_flags->bits.mst_bw = 1;
++
++		if (stream_update->stream && stream_update->stream->freesync_on_desktop &&
++			(stream_update->vrr_infopacket || stream_update->allow_freesync ||
++				stream_update->vrr_active_variable))
++			su_flags->bits.fams_changed = 1;
++
+ 		if (stream_update->crtc_timing_adjust && dc_extended_blank_supported(dc))
+ 			su_flags->bits.crtc_timing_adjust = 1;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_stream.h b/drivers/gpu/drm/amd/display/dc/dc_stream.h
+index 73dccd485895d..364ff913527d8 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_stream.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_stream.h
+@@ -131,6 +131,7 @@ union stream_update_flags {
+ 		uint32_t dsc_changed : 1;
+ 		uint32_t mst_bw : 1;
+ 		uint32_t crtc_timing_adjust : 1;
++		uint32_t fams_changed : 1;
+ 	} bits;
+ 
+ 	uint32_t raw;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_optc.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_optc.c
+index 25749f7d88366..94894fd6c9062 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_optc.c
+@@ -292,7 +292,12 @@ void optc3_wait_drr_doublebuffer_pending_clear(struct timing_generator *optc)
+ 
+ void optc3_set_vtotal_min_max(struct timing_generator *optc, int vtotal_min, int vtotal_max)
  {
- 	struct pci_dev *parent = link->pdev;
- 	unsigned long end_jiffies;
-@@ -219,7 +219,9 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
- 			break;
- 		msleep(1);
- 	} while (time_before(jiffies, end_jiffies));
--	return !(reg16 & PCI_EXP_LNKSTA_LT);
-+	if (reg16 & PCI_EXP_LNKSTA_LT)
-+		return -ETIMEDOUT;
-+	return 0;
+-	optc1_set_vtotal_min_max(optc, vtotal_min, vtotal_max);
++	struct dc *dc = optc->ctx->dc;
++
++	if (dc->caps.dmub_caps.mclk_sw && !dc->debug.disable_fams)
++		dc_dmub_srv_drr_update_cmd(dc, optc->inst, vtotal_min, vtotal_max);
++	else
++		optc1_set_vtotal_min_max(optc, vtotal_min, vtotal_max);
  }
  
- /*
-@@ -288,15 +290,15 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
- 		reg16 &= ~PCI_EXP_LNKCTL_CCC;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+ void optc3_tg_init(struct timing_generator *optc)
+diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+index 27a4ea7dc74ec..d8c05bc45957b 100644
+--- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
++++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+@@ -345,7 +345,7 @@ union dmub_fw_boot_status {
+ 		uint32_t optimized_init_done : 1; /**< 1 if optimized init done */
+ 		uint32_t restore_required : 1; /**< 1 if driver should call restore */
+ 		uint32_t defer_load : 1; /**< 1 if VBIOS data is deferred programmed */
+-		uint32_t reserved : 1;
++		uint32_t fams_enabled : 1; /**< 1 if VBIOS data is deferred programmed */
+ 		uint32_t detection_required: 1; /**<  if detection need to be triggered by driver */
  
--	if (pcie_retrain_link(link))
--		return;
-+	if (pcie_retrain_link(link)) {
- 
--	/* Training failed. Restore common clock configurations */
--	pci_err(parent, "ASPM: Could not configure common clock\n");
--	list_for_each_entry(child, &linkbus->devices, bus_list)
--		pcie_capability_write_word(child, PCI_EXP_LNKCTL,
-+		/* Training failed. Restore common clock configurations */
-+		pci_err(parent, "ASPM: Could not configure common clock\n");
-+		list_for_each_entry(child, &linkbus->devices, bus_list)
-+			pcie_capability_write_word(child, PCI_EXP_LNKCTL,
- 					   child_reg[PCI_FUNC(child->devfn)]);
--	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
-+		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
-+	}
- }
- 
- /* Convert L0s latency encoding to ns */
+ 	} bits; /**< status bits */
 -- 
 2.39.2
 
