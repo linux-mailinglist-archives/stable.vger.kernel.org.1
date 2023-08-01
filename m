@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0A9176AF00
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5880876ADA9
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233495AbjHAJoB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
+        id S233011AbjHAJbK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:31:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233358AbjHAJnl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:41 -0400
+        with ESMTP id S233023AbjHAJav (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE97B525B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A692686
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89BEF6150E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9896BC433C7;
-        Tue,  1 Aug 2023 09:41:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93B81614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC86C433C7;
+        Tue,  1 Aug 2023 09:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882880;
-        bh=+0SUBqNuFZ0gY4kODQ9MpJrpgKOhAh0fzVNICRZ7OFQ=;
+        s=korg; t=1690882183;
+        bh=6NYZGhOPEi8Zi/ws7gI5VAPuVJ4Cw664kBBDhMHPnQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bwA38rsYzggLStgr4TIJWaHYhCGu3KFLc8QgJ4PXuhbZYSiosAmlmMgQsUC9hyO5v
-         iFeH/dMlO5vtDTkkURPIxUXFynJRnrDh9oZZzFx0f+p+4AXvFJziacpxW7TJKMvZIf
-         E1lUvkGX3mhLjDTNQDwWlfZ5hIAXnDtsKpNqL4j4=
+        b=aCzK9iH4uFlBmLEJkTLds5zrWzVPxg9E+34JwEjfnU+OcbkAObhnSA6WIGDXsSeae
+         yt60JbwJeWTxSKAgjUUGnb4/dGg9gFyIReuD7jjvFPhsXgwkF1azo76VEOoZeNb4Bs
+         l7re9w08FwsKb/Oiv1ChNXrcZXiaqW0LtkVarQMw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haren Myneni <haren@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 009/239] powerpc/pseries/vas: Hold mmap_mutex after mmap lock during window close
+Subject: [PATCH 6.1 015/228] gpio: mvebu: Make use of devm_pwmchip_add
 Date:   Tue,  1 Aug 2023 11:17:53 +0200
-Message-ID: <20230801091925.991537760@linuxfoundation.org>
+Message-ID: <20230801091923.387338861@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,85 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit b59c9dc4d9d47b3c4572d826603fde507055b656 ]
+[ Upstream commit 1945063eb59e64d2919cb14d54d081476d9e53bb ]
 
-Commit 8ef7b9e1765a ("powerpc/pseries/vas: Close windows with DLPAR
-core removal") unmaps the window paste address and issues HCALL to
-close window in the hypervisor for migration or DLPAR core removal
-events. So holds mmap_mutex and then mmap lock before unmap the
-paste address. But if the user space issue mmap paste address at
-the same time with the migration event, coproc_mmap() is called
-after holding the mmap lock which can trigger deadlock when trying
-to acquire mmap_mutex in coproc_mmap().
+This allows to get rid of a call to pwmchip_remove() in the error path. There
+is no .remove function for this driver, so this change fixes a resource leak
+when a gpio-mvebu device is unbound.
 
-t1: mmap() call to mmap              t2: Migration event
-    window paste address
-
-do_mmap2()                           migration_store()
- ksys_mmap_pgoff()                    pseries_migrate_partition()
-  vm_mmap_pgoff()                      vas_migration_handler()
-    Acquire mmap lock                   reconfig_close_windows()
-    do_mmap()                             lock mmap_mutex
-     mmap_region()                        Acquire mmap lock
-      call_mmap()                         //Wait for mmap lock
-       coproc_mmap()                        unmap vma
-         lock mmap_mutex                    update window status
-         //wait for mmap_mutex            Release mmap lock
-          mmap vma                        unlock mmap_mutex
-          update window status
-         unlock mmap_mutex
-    ...
-    Release mmap lock
-
-Fix this deadlock issue by holding mmap lock first before mmap_mutex
-in reconfig_close_windows().
-
-Fixes: 8ef7b9e1765a ("powerpc/pseries/vas: Close windows with DLPAR core removal")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230716100506.7833-1-haren@linux.ibm.com
+Fixes: 757642f9a584 ("gpio: mvebu: Add limited PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/vas.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-mvebu.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 9a44a98ba3420..3fbc2a6aa319d 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -744,6 +744,12 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
- 		}
+diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
+index 91a4232ee58c2..f86b6c3bc1604 100644
+--- a/drivers/gpio/gpio-mvebu.c
++++ b/drivers/gpio/gpio-mvebu.c
+@@ -874,7 +874,7 @@ static int mvebu_pwm_probe(struct platform_device *pdev,
  
- 		task_ref = &win->vas_win.task_ref;
-+		/*
-+		 * VAS mmap (coproc_mmap()) and its fault handler
-+		 * (vas_mmap_fault()) are called after holding mmap lock.
-+		 * So hold mmap mutex after mmap_lock to avoid deadlock.
-+		 */
-+		mmap_write_lock(task_ref->mm);
- 		mutex_lock(&task_ref->mmap_mutex);
- 		vma = task_ref->vma;
- 		/*
-@@ -752,7 +758,6 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
- 		 */
- 		win->vas_win.status |= flag;
+ 	spin_lock_init(&mvpwm->lock);
  
--		mmap_write_lock(task_ref->mm);
- 		/*
- 		 * vma is set in the original mapping. But this mapping
- 		 * is done with mmap() after the window is opened with ioctl.
-@@ -762,8 +767,8 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
- 		if (vma)
- 			zap_vma_pages(vma);
+-	return pwmchip_add(&mvpwm->chip);
++	return devm_pwmchip_add(dev, &mvpwm->chip);
+ }
  
--		mmap_write_unlock(task_ref->mm);
- 		mutex_unlock(&task_ref->mmap_mutex);
-+		mmap_write_unlock(task_ref->mm);
- 		/*
- 		 * Close VAS window in the hypervisor, but do not
- 		 * free vas_window struct since it may be reused
+ #ifdef CONFIG_DEBUG_FS
+@@ -1243,8 +1243,7 @@ static int mvebu_gpio_probe(struct platform_device *pdev)
+ 	if (!mvchip->domain) {
+ 		dev_err(&pdev->dev, "couldn't allocate irq domain %s (DT).\n",
+ 			mvchip->chip.label);
+-		err = -ENODEV;
+-		goto err_pwm;
++		return -ENODEV;
+ 	}
+ 
+ 	err = irq_alloc_domain_generic_chips(
+@@ -1296,9 +1295,6 @@ static int mvebu_gpio_probe(struct platform_device *pdev)
+ 
+ err_domain:
+ 	irq_domain_remove(mvchip->domain);
+-err_pwm:
+-	pwmchip_remove(&mvchip->mvpwm->chip);
+-
+ 	return err;
+ }
+ 
 -- 
 2.39.2
 
