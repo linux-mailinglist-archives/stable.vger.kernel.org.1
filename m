@@ -2,47 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8967A76ADA7
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DB2B76AEFD
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233002AbjHAJbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57538 "EHLO
+        id S233437AbjHAJn4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:43:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232588AbjHAJar (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E0A2114
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:35 -0700 (PDT)
+        with ESMTP id S233446AbjHAJnh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0584249FA
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43372614BB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5210BC433C8;
-        Tue,  1 Aug 2023 09:29:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D63D614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DDAC433C8;
+        Tue,  1 Aug 2023 09:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882174;
-        bh=jTbswkzDPhIVOFs1/1bs6Q946Gf651tfGhjo+nxkGzo=;
+        s=korg; t=1690882874;
+        bh=Z9uNomDFjyB2mj3LXsDoWRMyH2ITl55T+HmSLcNkqz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TW0UugMDvJvhUono55CUv+8tL3Zz49IxlYq5+I3lJ7iB2wWGl2hRlGkJGY2MG3gfe
-         nT/cc4ParUIZnvYrQtvoG0VRcvnFhd8Mh1SJzygcwm5unODRlbxNUFcXTTjjE5D0DM
-         cZPpyoGb657ZBR0M3H/dVM/UjDdgf8zcEhAmk/ok=
+        b=SLh6weH1/U9fRbNOVzUWhUW8CB4Fb8QouAFFxyv+IbsGbxu2VFh83lCmtru5adXLb
+         0WtBLH8FqzntsBvH+Po72Yv1ywc3ZF8lzZebH9rWcu1weRPa5p+goktGwMnae9vKxQ
+         vwUmhfQBe2MaKBNJ2licr4nqd2tIfcWOvsjj3Y6s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        patches@lists.linux.dev, Will Deacon <will@kernel.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/228] KVM: s390: pv: fix index value of replaced ASCE
-Date:   Tue,  1 Aug 2023 11:17:50 +0200
-Message-ID: <20230801091923.278441678@linuxfoundation.org>
+Subject: [PATCH 6.4 007/239] KVM: arm64: Handle kvm_arm_init failure correctly in finalize_pkvm
+Date:   Tue,  1 Aug 2023 11:17:51 +0200
+Message-ID: <20230801091925.907386001@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,41 +60,171 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit c2fceb59bbda16468bda82b002383bff59de89ab ]
+[ Upstream commit fa729bc7c9c8c17a2481358c841ef8ca920485d3 ]
 
-The index field of the struct page corresponding to a guest ASCE should
-be 0. When replacing the ASCE in s390_replace_asce(), the index of the
-new ASCE should also be set to 0.
+Currently there is no synchronisation between finalize_pkvm() and
+kvm_arm_init() initcalls. The finalize_pkvm() proceeds happily even if
+kvm_arm_init() fails resulting in the following warning on all the CPUs
+and eventually a HYP panic:
 
-Having the wrong index might lead to the wrong addresses being passed
-around when notifying pte invalidations, and eventually to validity
-intercepts (VM crash) if the prefix gets unmapped and the notifier gets
-called with the wrong address.
+  | kvm [1]: IPA Size Limit: 48 bits
+  | kvm [1]: Failed to init hyp memory protection
+  | kvm [1]: error initializing Hyp mode: -22
+  |
+  | <snip>
+  |
+  | WARNING: CPU: 0 PID: 0 at arch/arm64/kvm/pkvm.c:226 _kvm_host_prot_finalize+0x30/0x50
+  | Modules linked in:
+  | CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0 #237
+  | Hardware name: FVP Base RevC (DT)
+  | pstate: 634020c5 (nZCv daIF +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+  | pc : _kvm_host_prot_finalize+0x30/0x50
+  | lr : __flush_smp_call_function_queue+0xd8/0x230
+  |
+  | Call trace:
+  |  _kvm_host_prot_finalize+0x3c/0x50
+  |  on_each_cpu_cond_mask+0x3c/0x6c
+  |  pkvm_drop_host_privileges+0x4c/0x78
+  |  finalize_pkvm+0x3c/0x5c
+  |  do_one_initcall+0xcc/0x240
+  |  do_initcall_level+0x8c/0xac
+  |  do_initcalls+0x54/0x94
+  |  do_basic_setup+0x1c/0x28
+  |  kernel_init_freeable+0x100/0x16c
+  |  kernel_init+0x20/0x1a0
+  |  ret_from_fork+0x10/0x20
+  | Failed to finalize Hyp protection: -22
+  |     dtb=fvp-base-revc.dtb
+  | kvm [95]: nVHE hyp BUG at: arch/arm64/kvm/hyp/nvhe/mem_protect.c:540!
+  | kvm [95]: nVHE call trace:
+  | kvm [95]:  [<ffff800081052984>] __kvm_nvhe_hyp_panic+0xac/0xf8
+  | kvm [95]:  [<ffff800081059644>] __kvm_nvhe_handle_host_mem_abort+0x1a0/0x2ac
+  | kvm [95]:  [<ffff80008105511c>] __kvm_nvhe_handle_trap+0x4c/0x160
+  | kvm [95]:  [<ffff8000810540fc>] __kvm_nvhe___skip_pauth_save+0x4/0x4
+  | kvm [95]: ---[ end nVHE call trace ]---
+  | kvm [95]: Hyp Offset: 0xfffe8db00ffa0000
+  | Kernel panic - not syncing: HYP panic:
+  | PS:a34023c9 PC:0000f250710b973c ESR:00000000f2000800
+  | FAR:ffff000800cb00d0 HPFAR:000000000880cb00 PAR:0000000000000000
+  | VCPU:0000000000000000
+  | CPU: 3 PID: 95 Comm: kworker/u16:2 Tainted: G        W          6.4.0 #237
+  | Hardware name: FVP Base RevC (DT)
+  | Workqueue: rpciod rpc_async_schedule
+  | Call trace:
+  |  dump_backtrace+0xec/0x108
+  |  show_stack+0x18/0x2c
+  |  dump_stack_lvl+0x50/0x68
+  |  dump_stack+0x18/0x24
+  |  panic+0x138/0x33c
+  |  nvhe_hyp_panic_handler+0x100/0x184
+  |  new_slab+0x23c/0x54c
+  |  ___slab_alloc+0x3e4/0x770
+  |  kmem_cache_alloc_node+0x1f0/0x278
+  |  __alloc_skb+0xdc/0x294
+  |  tcp_stream_alloc_skb+0x2c/0xf0
+  |  tcp_sendmsg_locked+0x3d0/0xda4
+  |  tcp_sendmsg+0x38/0x5c
+  |  inet_sendmsg+0x44/0x60
+  |  sock_sendmsg+0x1c/0x34
+  |  xprt_sock_sendmsg+0xdc/0x274
+  |  xs_tcp_send_request+0x1ac/0x28c
+  |  xprt_transmit+0xcc/0x300
+  |  call_transmit+0x78/0x90
+  |  __rpc_execute+0x114/0x3d8
+  |  rpc_async_schedule+0x28/0x48
+  |  process_one_work+0x1d8/0x314
+  |  worker_thread+0x248/0x474
+  |  kthread+0xfc/0x184
+  |  ret_from_fork+0x10/0x20
+  | SMP: stopping secondary CPUs
+  | Kernel Offset: 0x57c5cb460000 from 0xffff800080000000
+  | PHYS_OFFSET: 0x80000000
+  | CPU features: 0x00000000,1035b7a3,ccfe773f
+  | Memory Limit: none
+  | ---[ end Kernel panic - not syncing: HYP panic:
+  | PS:a34023c9 PC:0000f250710b973c ESR:00000000f2000800
+  | FAR:ffff000800cb00d0 HPFAR:000000000880cb00 PAR:0000000000000000
+  | VCPU:0000000000000000 ]---
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Fixes: faa2f72cb356 ("KVM: s390: pv: leak the topmost page table when destroy fails")
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-ID: <20230705111937.33472-3-imbrenda@linux.ibm.com>
+Fix it by checking for the successfull initialisation of kvm_arm_init()
+in finalize_pkvm() before proceeding any futher.
+
+Fixes: 87727ba2bb05 ("KVM: arm64: Ensure CPU PMU probes before pKVM host de-privilege")
+Cc: Will Deacon <will@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: James Morse <james.morse@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230704193243.3300506-1-sudeep.holla@arm.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/gmap.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/include/asm/virt.h | 1 +
+ arch/arm64/kvm/arm.c          | 9 ++++++++-
+ arch/arm64/kvm/pkvm.c         | 2 +-
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-index 02d15c8dc92e9..243f673fa6515 100644
---- a/arch/s390/mm/gmap.c
-+++ b/arch/s390/mm/gmap.c
-@@ -2843,6 +2843,7 @@ int s390_replace_asce(struct gmap *gmap)
- 	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
- 	if (!page)
- 		return -ENOMEM;
-+	page->index = 0;
- 	table = page_to_virt(page);
- 	memcpy(table, gmap->table, 1UL << (CRST_ALLOC_ORDER + PAGE_SHIFT));
+diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/virt.h
+index 4eb601e7de507..06382da630123 100644
+--- a/arch/arm64/include/asm/virt.h
++++ b/arch/arm64/include/asm/virt.h
+@@ -78,6 +78,7 @@ extern u32 __boot_cpu_mode[2];
  
+ void __hyp_set_vectors(phys_addr_t phys_vector_base);
+ void __hyp_reset_vectors(void);
++bool is_kvm_arm_initialised(void);
+ 
+ DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
+ 
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 7d8c3dd8b7ca9..3a2606ba3e583 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -51,11 +51,16 @@ DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
+ DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_page);
+ DECLARE_KVM_NVHE_PER_CPU(struct kvm_nvhe_init_params, kvm_init_params);
+ 
+-static bool vgic_present;
++static bool vgic_present, kvm_arm_initialised;
+ 
+ static DEFINE_PER_CPU(unsigned char, kvm_arm_hardware_enabled);
+ DEFINE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
+ 
++bool is_kvm_arm_initialised(void)
++{
++	return kvm_arm_initialised;
++}
++
+ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+ {
+ 	return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
+@@ -2396,6 +2401,8 @@ static __init int kvm_arm_init(void)
+ 	if (err)
+ 		goto out_subs;
+ 
++	kvm_arm_initialised = true;
++
+ 	return 0;
+ 
+ out_subs:
+diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
+index 6e9ece1ebbe72..3895416cb15ae 100644
+--- a/arch/arm64/kvm/pkvm.c
++++ b/arch/arm64/kvm/pkvm.c
+@@ -243,7 +243,7 @@ static int __init finalize_pkvm(void)
+ {
+ 	int ret;
+ 
+-	if (!is_protected_kvm_enabled())
++	if (!is_protected_kvm_enabled() || !is_kvm_arm_initialised())
+ 		return 0;
+ 
+ 	/*
 -- 
 2.39.2
 
