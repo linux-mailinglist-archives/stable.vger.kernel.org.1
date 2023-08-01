@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09BB076AE0D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BAA076AF30
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232931AbjHAJfw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34938 "EHLO
+        id S233360AbjHAJpb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232854AbjHAJfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3CC1BC3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:26 -0700 (PDT)
+        with ESMTP id S233346AbjHAJpO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 468BC2128
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B212614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FC6C433C7;
-        Tue,  1 Aug 2023 09:33:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C30A3614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2858C433C7;
+        Tue,  1 Aug 2023 09:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882405;
-        bh=lZ2p+7a+qj1f2E9IkI7Z+84izdDVn1Ey2zd9Vxb21nE=;
+        s=korg; t=1690883027;
+        bh=SCnDX6zxS/BovP1ObVCNx8DgiNnWQyFjmD7rbAi92K4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gAecuPHl/imYZQIkZSgZIQy6dU3c3vIEDmAIc8nCPX8JGtY/ukKfddw7YtinE96ik
-         iXJry6q1eHS9PzdWSyWhXANwR3MMCaT2J60jiYj19bcazn1APUYO50+nM5+XP6bvJc
-         yTL605iPP+jO3H523qyeqnF+BkPzYRo4yt0ASOLM=
+        b=Mj588TOb7aXXn33b+wJ6vI4G9F+ppXTlI28LDWbnTGPa7d9F7Zra1e6zWsus+WmzL
+         kqYU4Fs+D/VvZlzdWBhr2t4uSJ1t8NSDkLTisPG3uDMJTt/56n58esuO592eZNKB1R
+         RkhO33c82zHVVOxHJ7jLJZc66a9oAmsbUc4IYYvk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@resnulli.us>,
-        Xiao Ma <xiaom@google.com>,
-        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/228] ipv6 addrconf: fix bug where deleting a mngtmpaddr can create a new temporary address
+Subject: [PATCH 6.4 088/239] netfilter: nft_set_rbtree: fix overlap expiration walk
 Date:   Tue,  1 Aug 2023 11:19:12 +0200
-Message-ID: <20230801091926.235895846@linuxfoundation.org>
+Message-ID: <20230801091928.909524361@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,90 +54,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maciej Żenczykowski <maze@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 69172f0bcb6a09110c5d2a6d792627f5095a9018 ]
+[ Upstream commit f718863aca469a109895cb855e6b81fff4827d71 ]
 
-currently on 6.4 net/main:
+The lazy gc on insert that should remove timed-out entries fails to release
+the other half of the interval, if any.
 
-  # ip link add dummy1 type dummy
-  # echo 1 > /proc/sys/net/ipv6/conf/dummy1/use_tempaddr
-  # ip link set dummy1 up
-  # ip -6 addr add 2000::1/64 mngtmpaddr dev dummy1
-  # ip -6 addr show dev dummy1
+Can be reproduced with tests/shell/testcases/sets/0044interval_overlap_0
+in nftables.git and kmemleak enabled kernel.
 
-  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-      inet6 2000::44f3:581c:8ca:3983/64 scope global temporary dynamic
-         valid_lft 604800sec preferred_lft 86172sec
-      inet6 2000::1/64 scope global mngtmpaddr
-         valid_lft forever preferred_lft forever
-      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
-         valid_lft forever preferred_lft forever
+Second bug is the use of rbe_prev vs. prev pointer.
+If rbe_prev() returns NULL after at least one iteration, rbe_prev points
+to element that is not an end interval, hence it should not be removed.
 
-  # ip -6 addr del 2000::44f3:581c:8ca:3983/64 dev dummy1
+Lastly, check the genmask of the end interval if this is active in the
+current generation.
 
-  (can wait a few seconds if you want to, the above delete isn't [directly] the problem)
-
-  # ip -6 addr show dev dummy1
-
-  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-      inet6 2000::1/64 scope global mngtmpaddr
-         valid_lft forever preferred_lft forever
-      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
-         valid_lft forever preferred_lft forever
-
-  # ip -6 addr del 2000::1/64 mngtmpaddr dev dummy1
-  # ip -6 addr show dev dummy1
-
-  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-      inet6 2000::81c9:56b7:f51a:b98f/64 scope global temporary dynamic
-         valid_lft 604797sec preferred_lft 86169sec
-      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
-         valid_lft forever preferred_lft forever
-
-This patch prevents this new 'global temporary dynamic' address from being
-created by the deletion of the related (same subnet prefix) 'mngtmpaddr'
-(which is triggered by there already being no temporary addresses).
-
-Cc: Jiri Pirko <jiri@resnulli.us>
-Fixes: 53bd67491537 ("ipv6 addrconf: introduce IFA_F_MANAGETEMPADDR to tell kernel to manage temporary addresses")
-Reported-by: Xiao Ma <xiaom@google.com>
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230720160022.1887942-1-maze@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 51bfc74805ecf..48a6486951cd6 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -2561,12 +2561,18 @@ static void manage_tempaddrs(struct inet6_dev *idev,
- 			ipv6_ifa_notify(0, ift);
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 5c05c9b990fba..8d73fffd2d09d 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -217,29 +217,37 @@ static void *nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 
+ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 			      struct nft_rbtree *priv,
+-			      struct nft_rbtree_elem *rbe)
++			      struct nft_rbtree_elem *rbe,
++			      u8 genmask)
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+-	struct nft_rbtree_elem *rbe_prev = NULL;
++	struct nft_rbtree_elem *rbe_prev;
+ 	struct nft_set_gc_batch *gcb;
+ 
+ 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+ 	if (!gcb)
+ 		return -ENOMEM;
+ 
+-	/* search for expired end interval coming before this element. */
++	/* search for end interval coming before this element.
++	 * end intervals don't carry a timeout extension, they
++	 * are coupled with the interval start element.
++	 */
+ 	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+-		if (nft_rbtree_interval_end(rbe_prev))
++		if (nft_rbtree_interval_end(rbe_prev) &&
++		    nft_set_elem_active(&rbe_prev->ext, genmask))
+ 			break;
+ 
+ 		prev = rb_prev(prev);
  	}
  
--	if ((create || list_empty(&idev->tempaddr_list)) &&
--	    idev->cnf.use_tempaddr > 0) {
-+	/* Also create a temporary address if it's enabled but no temporary
-+	 * address currently exists.
-+	 * However, we get called with valid_lft == 0, prefered_lft == 0, create == false
-+	 * as part of cleanup (ie. deleting the mngtmpaddr).
-+	 * We don't want that to result in creating a new temporary ip address.
-+	 */
-+	if (list_empty(&idev->tempaddr_list) && (valid_lft || prefered_lft))
-+		create = true;
+-	if (rbe_prev) {
++	if (prev) {
++		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
 +
-+	if (create && idev->cnf.use_tempaddr > 0) {
- 		/* When a new public address is created as described
- 		 * in [ADDRCONF], also create a new temporary address.
--		 * Also create a temporary address if it's enabled but
--		 * no temporary address currently exists.
- 		 */
- 		read_unlock_bh(&idev->lock);
- 		ipv6_create_tempaddr(ifp, false);
+ 		rb_erase(&rbe_prev->node, &priv->root);
+ 		atomic_dec(&set->nelems);
++		nft_set_gc_batch_add(gcb, rbe_prev);
+ 	}
+ 
+ 	rb_erase(&rbe->node, &priv->root);
+@@ -321,7 +329,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 
+ 		/* perform garbage collection to avoid bogus overlap reports. */
+ 		if (nft_set_elem_expired(&rbe->ext)) {
+-			err = nft_rbtree_gc_elem(set, priv, rbe);
++			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
+ 			if (err < 0)
+ 				return err;
+ 
 -- 
 2.39.2
 
