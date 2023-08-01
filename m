@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C10B76AD5B
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B985576AE4B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232969AbjHAJ2d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58120 "EHLO
+        id S233103AbjHAJhk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233136AbjHAJ2L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:28:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9480D3C12
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:27:12 -0700 (PDT)
+        with ESMTP id S232893AbjHAJhW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311DA1BCF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EC8461503
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CD8C433C7;
-        Tue,  1 Aug 2023 09:27:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C4D8614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6885C433C7;
+        Tue,  1 Aug 2023 09:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882031;
-        bh=dsTF/RBOTkABPF4D60gJY+SHSDggP/GrUy2OT84PJog=;
+        s=korg; t=1690882536;
+        bh=fohDFOiY9V0RysZNTzK0dahzNi6lHMFuSBWQ07TGyJ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NizaYxUfwwTPnhwe0VEmh7zt4sTDiTb4oB3GAVbMz+NpqL8A6OyRh3qbN5Qr2fAMx
-         agtwElOlUdGBADocdPNoM+ia1NXTs6V0dLhVBX+3SKIg1ppfmYqK0bG9AEy0nD0PXG
-         62+mKiQ6P+ReMPxcK/Vthr93cJ30CTdTEps4IzI0=
+        b=ZltFiQkw7skEipojWdnonCkJjOu3rl6/0Qi69UlbyGNG416rC4sijz52d3VZSTfwH
+         rjyHcTRtFhNGB/1VxMjbKNP7ZbxfoBC2d82ZyKM61gHGrJcefoMvFoKQGIdBhohIRE
+         d+FP5HnMba2TAmDdo9cDz+bnQVKsD8btElzYlmkU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shiraz Saleem <shiraz.saleem@intel.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev,
+        ZiyangZhang <ZiyangZhang@linux.alibaba.com>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/155] RDMA/irdma: Fix data race on CQP completion stats
+Subject: [PATCH 6.1 140/228] ublk_drv: move ublk_get_device_from_id into ublk_ctrl_uring_cmd
 Date:   Tue,  1 Aug 2023 11:19:58 +0200
-Message-ID: <20230801091913.244837546@linuxfoundation.org>
+Message-ID: <20230801091927.923350409@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,215 +56,376 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shiraz Saleem <shiraz.saleem@intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit f2c3037811381f9149243828c7eb9a1631df9f9c ]
+[ Upstream commit bfbcef036396a73fbf4b3fee385cc670159df5ad ]
 
-CQP completion statistics is read lockesly in irdma_wait_event and
-irdma_check_cqp_progress while it can be updated in the completion
-thread irdma_sc_ccq_get_cqe_info on another CPU as KCSAN reports.
+It is annoying for each control command handler to get/put ublk
+device and deal with failure.
 
-Make completion statistics an atomic variable to reflect coherent updates
-to it. This will also avoid load/store tearing logic bug potentially
-possible by compiler optimizations.
+Control command handler is simplified a lot by moving
+ublk_get_device_from_id into ublk_ctrl_uring_cmd().
 
-[77346.170861] BUG: KCSAN: data-race in irdma_handle_cqp_op [irdma] / irdma_sc_ccq_get_cqe_info [irdma]
-
-[77346.171383] write to 0xffff8a3250b108e0 of 8 bytes by task 9544 on cpu 4:
-[77346.171483]  irdma_sc_ccq_get_cqe_info+0x27a/0x370 [irdma]
-[77346.171658]  irdma_cqp_ce_handler+0x164/0x270 [irdma]
-[77346.171835]  cqp_compl_worker+0x1b/0x20 [irdma]
-[77346.172009]  process_one_work+0x4d1/0xa40
-[77346.172024]  worker_thread+0x319/0x700
-[77346.172037]  kthread+0x180/0x1b0
-[77346.172054]  ret_from_fork+0x22/0x30
-
-[77346.172136] read to 0xffff8a3250b108e0 of 8 bytes by task 9838 on cpu 2:
-[77346.172234]  irdma_handle_cqp_op+0xf4/0x4b0 [irdma]
-[77346.172413]  irdma_cqp_aeq_cmd+0x75/0xa0 [irdma]
-[77346.172592]  irdma_create_aeq+0x390/0x45a [irdma]
-[77346.172769]  irdma_rt_init_hw.cold+0x212/0x85d [irdma]
-[77346.172944]  irdma_probe+0x54f/0x620 [irdma]
-[77346.173122]  auxiliary_bus_probe+0x66/0xa0
-[77346.173137]  really_probe+0x140/0x540
-[77346.173154]  __driver_probe_device+0xc7/0x220
-[77346.173173]  driver_probe_device+0x5f/0x140
-[77346.173190]  __driver_attach+0xf0/0x2c0
-[77346.173208]  bus_for_each_dev+0xa8/0xf0
-[77346.173225]  driver_attach+0x29/0x30
-[77346.173240]  bus_add_driver+0x29c/0x2f0
-[77346.173255]  driver_register+0x10f/0x1a0
-[77346.173272]  __auxiliary_driver_register+0xbc/0x140
-[77346.173287]  irdma_init_module+0x55/0x1000 [irdma]
-[77346.173460]  do_one_initcall+0x7d/0x410
-[77346.173475]  do_init_module+0x81/0x2c0
-[77346.173491]  load_module+0x1232/0x12c0
-[77346.173506]  __do_sys_finit_module+0x101/0x180
-[77346.173522]  __x64_sys_finit_module+0x3c/0x50
-[77346.173538]  do_syscall_64+0x39/0x90
-[77346.173553]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-[77346.173634] value changed: 0x0000000000000094 -> 0x0000000000000095
-
-Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Link: https://lore.kernel.org/r/20230711175253.1289-3-shiraz.saleem@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: ZiyangZhang <ZiyangZhang@linux.alibaba.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20230106041711.914434-4-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 53e7d08f6d6e ("ublk: fail to start device if queue setup is interrupted")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c  | 22 +++++++-------
- drivers/infiniband/hw/irdma/defs.h  | 46 ++++++++++++++---------------
- drivers/infiniband/hw/irdma/type.h  |  2 ++
- drivers/infiniband/hw/irdma/utils.c |  2 +-
- 4 files changed, 36 insertions(+), 36 deletions(-)
+ drivers/block/ublk_drv.c | 138 ++++++++++++++-------------------------
+ 1 file changed, 49 insertions(+), 89 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
-index ab195ae089cfd..ad14c2404e94c 100644
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -2741,13 +2741,13 @@ irdma_sc_cq_modify(struct irdma_sc_cq *cq, struct irdma_modify_cq_info *info,
-  */
- void irdma_check_cqp_progress(struct irdma_cqp_timeout *timeout, struct irdma_sc_dev *dev)
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index c56d1c6d8e58d..3ae22e7eb0b09 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1529,21 +1529,16 @@ static struct ublk_device *ublk_get_device_from_id(int idx)
+ 	return ub;
+ }
+ 
+-static int ublk_ctrl_start_dev(struct io_uring_cmd *cmd)
++static int ublk_ctrl_start_dev(struct ublk_device *ub, struct io_uring_cmd *cmd)
  {
--	if (timeout->compl_cqp_cmds != dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]) {
--		timeout->compl_cqp_cmds = dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS];
-+	u64 completed_ops = atomic64_read(&dev->cqp->completed_ops);
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+ 	int ublksrv_pid = (int)header->data[0];
+-	struct ublk_device *ub;
+ 	struct gendisk *disk;
+ 	int ret = -EINVAL;
+ 
+ 	if (ublksrv_pid <= 0)
+ 		return -EINVAL;
+ 
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return -EINVAL;
+-
+ 	wait_for_completion_interruptible(&ub->completion);
+ 
+ 	schedule_delayed_work(&ub->monitor_work, UBLK_DAEMON_MONITOR_PERIOD);
+@@ -1593,21 +1588,20 @@ static int ublk_ctrl_start_dev(struct io_uring_cmd *cmd)
+ 		put_disk(disk);
+ out_unlock:
+ 	mutex_unlock(&ub->mutex);
+-	ublk_put_device(ub);
+ 	return ret;
+ }
+ 
+-static int ublk_ctrl_get_queue_affinity(struct io_uring_cmd *cmd)
++static int ublk_ctrl_get_queue_affinity(struct ublk_device *ub,
++		struct io_uring_cmd *cmd)
+ {
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+ 	void __user *argp = (void __user *)(unsigned long)header->addr;
+-	struct ublk_device *ub;
+ 	cpumask_var_t cpumask;
+ 	unsigned long queue;
+ 	unsigned int retlen;
+ 	unsigned int i;
+-	int ret = -EINVAL;
+-	
++	int ret;
 +
-+	if (timeout->compl_cqp_cmds != completed_ops) {
-+		timeout->compl_cqp_cmds = completed_ops;
- 		timeout->count = 0;
+ 	if (header->len * BITS_PER_BYTE < nr_cpu_ids)
+ 		return -EINVAL;
+ 	if (header->len & (sizeof(unsigned long)-1))
+@@ -1615,17 +1609,12 @@ static int ublk_ctrl_get_queue_affinity(struct io_uring_cmd *cmd)
+ 	if (!header->addr)
+ 		return -EINVAL;
+ 
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return -EINVAL;
+-
+ 	queue = header->data[0];
+ 	if (queue >= ub->dev_info.nr_hw_queues)
+-		goto out_put_device;
++		return -EINVAL;
+ 
+-	ret = -ENOMEM;
+ 	if (!zalloc_cpumask_var(&cpumask, GFP_KERNEL))
+-		goto out_put_device;
++		return -ENOMEM;
+ 
+ 	for_each_possible_cpu(i) {
+ 		if (ub->tag_set.map[HCTX_TYPE_DEFAULT].mq_map[i] == queue)
+@@ -1643,8 +1632,6 @@ static int ublk_ctrl_get_queue_affinity(struct io_uring_cmd *cmd)
+ 	ret = 0;
+ out_free_cpumask:
+ 	free_cpumask_var(cpumask);
+-out_put_device:
+-	ublk_put_device(ub);
+ 	return ret;
+ }
+ 
+@@ -1765,30 +1752,27 @@ static inline bool ublk_idr_freed(int id)
+ 	return ptr == NULL;
+ }
+ 
+-static int ublk_ctrl_del_dev(int idx)
++static int ublk_ctrl_del_dev(struct ublk_device **p_ub)
+ {
+-	struct ublk_device *ub;
++	struct ublk_device *ub = *p_ub;
++	int idx = ub->ub_number;
+ 	int ret;
+ 
+ 	ret = mutex_lock_killable(&ublk_ctl_mutex);
+ 	if (ret)
+ 		return ret;
+ 
+-	ub = ublk_get_device_from_id(idx);
+-	if (ub) {
+-		ublk_remove(ub);
+-		ublk_put_device(ub);
+-		ret = 0;
 -	} else {
--		if (dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS] !=
--		    timeout->compl_cqp_cmds)
--			timeout->count++;
-+	} else if (timeout->compl_cqp_cmds != dev->cqp->requested_ops) {
-+		timeout->count++;
+-		ret = -ENODEV;
+-	}
++	ublk_remove(ub);
++
++	/* Mark the reference as consumed */
++	*p_ub = NULL;
++	ublk_put_device(ub);
+ 
+ 	/*
+ 	 * Wait until the idr is removed, then it can be reused after
+ 	 * DEL_DEV command is returned.
+ 	 */
+-	if (!ret)
+-		wait_event(ublk_idr_wq, ublk_idr_freed(idx));
++	wait_event(ublk_idr_wq, ublk_idr_freed(idx));
+ 	mutex_unlock(&ublk_ctl_mutex);
+ 
+ 	return ret;
+@@ -1803,50 +1787,36 @@ static inline void ublk_ctrl_cmd_dump(struct io_uring_cmd *cmd)
+ 			header->data[0], header->addr, header->len);
+ }
+ 
+-static int ublk_ctrl_stop_dev(struct io_uring_cmd *cmd)
++static int ublk_ctrl_stop_dev(struct ublk_device *ub)
+ {
+-	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+-	struct ublk_device *ub;
+-
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return -EINVAL;
+-
+ 	ublk_stop_dev(ub);
+ 	cancel_work_sync(&ub->stop_work);
+ 	cancel_work_sync(&ub->quiesce_work);
+ 
+-	ublk_put_device(ub);
+ 	return 0;
+ }
+ 
+-static int ublk_ctrl_get_dev_info(struct io_uring_cmd *cmd)
++static int ublk_ctrl_get_dev_info(struct ublk_device *ub,
++		struct io_uring_cmd *cmd)
+ {
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+ 	void __user *argp = (void __user *)(unsigned long)header->addr;
+-	struct ublk_device *ub;
+-	int ret = 0;
+ 
+ 	if (header->len < sizeof(struct ublksrv_ctrl_dev_info) || !header->addr)
+ 		return -EINVAL;
+ 
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return -EINVAL;
+-
+ 	if (copy_to_user(argp, &ub->dev_info, sizeof(ub->dev_info)))
+-		ret = -EFAULT;
+-	ublk_put_device(ub);
++		return -EFAULT;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+-static int ublk_ctrl_get_params(struct io_uring_cmd *cmd)
++static int ublk_ctrl_get_params(struct ublk_device *ub,
++		struct io_uring_cmd *cmd)
+ {
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+ 	void __user *argp = (void __user *)(unsigned long)header->addr;
+ 	struct ublk_params_header ph;
+-	struct ublk_device *ub;
+ 	int ret;
+ 
+ 	if (header->len <= sizeof(ph) || !header->addr)
+@@ -1861,10 +1831,6 @@ static int ublk_ctrl_get_params(struct io_uring_cmd *cmd)
+ 	if (ph.len > sizeof(struct ublk_params))
+ 		ph.len = sizeof(struct ublk_params);
+ 
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return -EINVAL;
+-
+ 	mutex_lock(&ub->mutex);
+ 	if (copy_to_user(argp, &ub->params, ph.len))
+ 		ret = -EFAULT;
+@@ -1872,16 +1838,15 @@ static int ublk_ctrl_get_params(struct io_uring_cmd *cmd)
+ 		ret = 0;
+ 	mutex_unlock(&ub->mutex);
+ 
+-	ublk_put_device(ub);
+ 	return ret;
+ }
+ 
+-static int ublk_ctrl_set_params(struct io_uring_cmd *cmd)
++static int ublk_ctrl_set_params(struct ublk_device *ub,
++		struct io_uring_cmd *cmd)
+ {
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+ 	void __user *argp = (void __user *)(unsigned long)header->addr;
+ 	struct ublk_params_header ph;
+-	struct ublk_device *ub;
+ 	int ret = -EFAULT;
+ 
+ 	if (header->len <= sizeof(ph) || !header->addr)
+@@ -1896,10 +1861,6 @@ static int ublk_ctrl_set_params(struct io_uring_cmd *cmd)
+ 	if (ph.len > sizeof(struct ublk_params))
+ 		ph.len = sizeof(struct ublk_params);
+ 
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return -EINVAL;
+-
+ 	/* parameters can only be changed when device isn't live */
+ 	mutex_lock(&ub->mutex);
+ 	if (ub->dev_info.state == UBLK_S_DEV_LIVE) {
+@@ -1914,7 +1875,6 @@ static int ublk_ctrl_set_params(struct io_uring_cmd *cmd)
+ 			ub->params.types = 0;
+ 	}
+ 	mutex_unlock(&ub->mutex);
+-	ublk_put_device(ub);
+ 
+ 	return ret;
+ }
+@@ -1941,17 +1901,13 @@ static void ublk_queue_reinit(struct ublk_device *ub, struct ublk_queue *ubq)
  	}
  }
  
-@@ -2790,7 +2790,7 @@ static enum irdma_status_code irdma_cqp_poll_registers(struct irdma_sc_cqp *cqp,
- 		if (newtail != tail) {
- 			/* SUCCESS */
- 			IRDMA_RING_MOVE_TAIL(cqp->sq_ring);
--			cqp->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]++;
-+			atomic64_inc(&cqp->completed_ops);
- 			return 0;
- 		}
- 		udelay(cqp->dev->hw_attrs.max_sleep_count);
-@@ -3152,8 +3152,8 @@ enum irdma_status_code irdma_sc_cqp_init(struct irdma_sc_cqp *cqp,
- 	info->dev->cqp = cqp;
+-static int ublk_ctrl_start_recovery(struct io_uring_cmd *cmd)
++static int ublk_ctrl_start_recovery(struct ublk_device *ub,
++		struct io_uring_cmd *cmd)
+ {
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+-	struct ublk_device *ub;
+ 	int ret = -EINVAL;
+ 	int i;
  
- 	IRDMA_RING_INIT(cqp->sq_ring, cqp->sq_size);
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS] = 0;
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS] = 0;
-+	cqp->requested_ops = 0;
-+	atomic64_set(&cqp->completed_ops, 0);
- 	/* for the cqp commands backlog. */
- 	INIT_LIST_HEAD(&cqp->dev->cqp_cmd_head);
- 
-@@ -3306,7 +3306,7 @@ __le64 *irdma_sc_cqp_get_next_send_wqe_idx(struct irdma_sc_cqp *cqp, u64 scratch
- 	if (ret_code)
- 		return NULL;
- 
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS]++;
-+	cqp->requested_ops++;
- 	if (!*wqe_idx)
- 		cqp->polarity = !cqp->polarity;
- 	wqe = cqp->sq_base[*wqe_idx].elem;
-@@ -3432,7 +3432,7 @@ enum irdma_status_code irdma_sc_ccq_get_cqe_info(struct irdma_sc_cq *ccq,
- 	dma_wmb(); /* make sure shadow area is updated before moving tail */
- 
- 	IRDMA_RING_MOVE_TAIL(cqp->sq_ring);
--	ccq->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]++;
-+	atomic64_inc(&cqp->completed_ops);
- 
- 	return ret_code;
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return ret;
+-
+ 	mutex_lock(&ub->mutex);
+ 	if (!ublk_can_use_recovery(ub))
+ 		goto out_unlock;
+@@ -1984,21 +1940,16 @@ static int ublk_ctrl_start_recovery(struct io_uring_cmd *cmd)
+ 	ret = 0;
+  out_unlock:
+ 	mutex_unlock(&ub->mutex);
+-	ublk_put_device(ub);
+ 	return ret;
  }
-diff --git a/drivers/infiniband/hw/irdma/defs.h b/drivers/infiniband/hw/irdma/defs.h
-index b8c10a6ccede5..afd16a93ac69c 100644
---- a/drivers/infiniband/hw/irdma/defs.h
-+++ b/drivers/infiniband/hw/irdma/defs.h
-@@ -190,32 +190,30 @@ enum irdma_cqp_op_type {
- 	IRDMA_OP_MANAGE_VF_PBLE_BP		= 25,
- 	IRDMA_OP_QUERY_FPM_VAL			= 26,
- 	IRDMA_OP_COMMIT_FPM_VAL			= 27,
--	IRDMA_OP_REQ_CMDS			= 28,
--	IRDMA_OP_CMPL_CMDS			= 29,
--	IRDMA_OP_AH_CREATE			= 30,
--	IRDMA_OP_AH_MODIFY			= 31,
--	IRDMA_OP_AH_DESTROY			= 32,
--	IRDMA_OP_MC_CREATE			= 33,
--	IRDMA_OP_MC_DESTROY			= 34,
--	IRDMA_OP_MC_MODIFY			= 35,
--	IRDMA_OP_STATS_ALLOCATE			= 36,
--	IRDMA_OP_STATS_FREE			= 37,
--	IRDMA_OP_STATS_GATHER			= 38,
--	IRDMA_OP_WS_ADD_NODE			= 39,
--	IRDMA_OP_WS_MODIFY_NODE			= 40,
--	IRDMA_OP_WS_DELETE_NODE			= 41,
--	IRDMA_OP_WS_FAILOVER_START		= 42,
--	IRDMA_OP_WS_FAILOVER_COMPLETE		= 43,
--	IRDMA_OP_SET_UP_MAP			= 44,
--	IRDMA_OP_GEN_AE				= 45,
--	IRDMA_OP_QUERY_RDMA_FEATURES		= 46,
--	IRDMA_OP_ALLOC_LOCAL_MAC_ENTRY		= 47,
--	IRDMA_OP_ADD_LOCAL_MAC_ENTRY		= 48,
--	IRDMA_OP_DELETE_LOCAL_MAC_ENTRY		= 49,
--	IRDMA_OP_CQ_MODIFY			= 50,
-+	IRDMA_OP_AH_CREATE			= 28,
-+	IRDMA_OP_AH_MODIFY			= 29,
-+	IRDMA_OP_AH_DESTROY			= 30,
-+	IRDMA_OP_MC_CREATE			= 31,
-+	IRDMA_OP_MC_DESTROY			= 32,
-+	IRDMA_OP_MC_MODIFY			= 33,
-+	IRDMA_OP_STATS_ALLOCATE			= 34,
-+	IRDMA_OP_STATS_FREE			= 35,
-+	IRDMA_OP_STATS_GATHER			= 36,
-+	IRDMA_OP_WS_ADD_NODE			= 37,
-+	IRDMA_OP_WS_MODIFY_NODE			= 38,
-+	IRDMA_OP_WS_DELETE_NODE			= 39,
-+	IRDMA_OP_WS_FAILOVER_START		= 40,
-+	IRDMA_OP_WS_FAILOVER_COMPLETE		= 41,
-+	IRDMA_OP_SET_UP_MAP			= 42,
-+	IRDMA_OP_GEN_AE				= 43,
-+	IRDMA_OP_QUERY_RDMA_FEATURES		= 44,
-+	IRDMA_OP_ALLOC_LOCAL_MAC_ENTRY		= 45,
-+	IRDMA_OP_ADD_LOCAL_MAC_ENTRY		= 46,
-+	IRDMA_OP_DELETE_LOCAL_MAC_ENTRY		= 47,
-+	IRDMA_OP_CQ_MODIFY			= 48,
  
- 	/* Must be last entry*/
--	IRDMA_MAX_CQP_OPS			= 51,
-+	IRDMA_MAX_CQP_OPS			= 49,
- };
+-static int ublk_ctrl_end_recovery(struct io_uring_cmd *cmd)
++static int ublk_ctrl_end_recovery(struct ublk_device *ub,
++		struct io_uring_cmd *cmd)
+ {
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
+ 	int ublksrv_pid = (int)header->data[0];
+-	struct ublk_device *ub;
+ 	int ret = -EINVAL;
  
- /* CQP SQ WQES */
-diff --git a/drivers/infiniband/hw/irdma/type.h b/drivers/infiniband/hw/irdma/type.h
-index 1241e5988c101..8b75e2610e5ba 100644
---- a/drivers/infiniband/hw/irdma/type.h
-+++ b/drivers/infiniband/hw/irdma/type.h
-@@ -411,6 +411,8 @@ struct irdma_sc_cqp {
- 	struct irdma_dcqcn_cc_params dcqcn_params;
- 	__le64 *host_ctx;
- 	u64 *scratch_array;
-+	u64 requested_ops;
-+	atomic64_t completed_ops;
- 	u32 cqp_id;
- 	u32 sq_size;
- 	u32 hw_sq_size;
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index 1d9280d46d087..d96779996e026 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -567,7 +567,7 @@ static enum irdma_status_code irdma_wait_event(struct irdma_pci_f *rf,
- 	bool cqp_error = false;
- 	enum irdma_status_code err_code = 0;
+-	ub = ublk_get_device_from_id(header->dev_id);
+-	if (!ub)
+-		return ret;
+-
+ 	pr_devel("%s: Waiting for new ubq_daemons(nr: %d) are ready, dev id %d...\n",
+ 			__func__, ub->dev_info.nr_hw_queues, header->dev_id);
+ 	/* wait until new ubq_daemon sending all FETCH_REQ */
+@@ -2026,7 +1977,6 @@ static int ublk_ctrl_end_recovery(struct io_uring_cmd *cmd)
+ 	ret = 0;
+  out_unlock:
+ 	mutex_unlock(&ub->mutex);
+-	ublk_put_device(ub);
+ 	return ret;
+ }
  
--	cqp_timeout.compl_cqp_cmds = rf->sc_dev.cqp_cmd_stats[IRDMA_OP_CMPL_CMDS];
-+	cqp_timeout.compl_cqp_cmds = atomic64_read(&rf->sc_dev.cqp->completed_ops);
- 	do {
- 		irdma_cqp_ce_handler(rf, &rf->ccq.sc_cq);
- 		if (wait_event_timeout(cqp_request->waitq,
+@@ -2034,6 +1984,7 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
+ 		unsigned int issue_flags)
+ {
+ 	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)cmd->cmd;
++	struct ublk_device *ub = NULL;
+ 	int ret = -EINVAL;
+ 
+ 	if (issue_flags & IO_URING_F_NONBLOCK)
+@@ -2048,41 +1999,50 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		goto out;
+ 
+-	ret = -ENODEV;
++	if (cmd->cmd_op != UBLK_CMD_ADD_DEV) {
++		ret = -ENODEV;
++		ub = ublk_get_device_from_id(header->dev_id);
++		if (!ub)
++			goto out;
++	}
++
+ 	switch (cmd->cmd_op) {
+ 	case UBLK_CMD_START_DEV:
+-		ret = ublk_ctrl_start_dev(cmd);
++		ret = ublk_ctrl_start_dev(ub, cmd);
+ 		break;
+ 	case UBLK_CMD_STOP_DEV:
+-		ret = ublk_ctrl_stop_dev(cmd);
++		ret = ublk_ctrl_stop_dev(ub);
+ 		break;
+ 	case UBLK_CMD_GET_DEV_INFO:
+-		ret = ublk_ctrl_get_dev_info(cmd);
++		ret = ublk_ctrl_get_dev_info(ub, cmd);
+ 		break;
+ 	case UBLK_CMD_ADD_DEV:
+ 		ret = ublk_ctrl_add_dev(cmd);
+ 		break;
+ 	case UBLK_CMD_DEL_DEV:
+-		ret = ublk_ctrl_del_dev(header->dev_id);
++		ret = ublk_ctrl_del_dev(&ub);
+ 		break;
+ 	case UBLK_CMD_GET_QUEUE_AFFINITY:
+-		ret = ublk_ctrl_get_queue_affinity(cmd);
++		ret = ublk_ctrl_get_queue_affinity(ub, cmd);
+ 		break;
+ 	case UBLK_CMD_GET_PARAMS:
+-		ret = ublk_ctrl_get_params(cmd);
++		ret = ublk_ctrl_get_params(ub, cmd);
+ 		break;
+ 	case UBLK_CMD_SET_PARAMS:
+-		ret = ublk_ctrl_set_params(cmd);
++		ret = ublk_ctrl_set_params(ub, cmd);
+ 		break;
+ 	case UBLK_CMD_START_USER_RECOVERY:
+-		ret = ublk_ctrl_start_recovery(cmd);
++		ret = ublk_ctrl_start_recovery(ub, cmd);
+ 		break;
+ 	case UBLK_CMD_END_USER_RECOVERY:
+-		ret = ublk_ctrl_end_recovery(cmd);
++		ret = ublk_ctrl_end_recovery(ub, cmd);
+ 		break;
+ 	default:
++		ret = -ENOTSUPP;
+ 		break;
+ 	}
++	if (ub)
++		ublk_put_device(ub);
+  out:
+ 	io_uring_cmd_done(cmd, ret, 0, issue_flags);
+ 	pr_devel("%s: cmd done ret %d cmd_op %x, dev id %d qid %d\n",
 -- 
 2.40.1
 
