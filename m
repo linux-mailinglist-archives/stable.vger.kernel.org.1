@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DAC176AEF1
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A219376ADBA
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233445AbjHAJnZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:43:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40026 "EHLO
+        id S231804AbjHAJcb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:32:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233380AbjHAJnL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6C52D52
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:52 -0700 (PDT)
+        with ESMTP id S232290AbjHAJb4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:31:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249BF49E0
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:30:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 404486150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C79C433C8;
-        Tue,  1 Aug 2023 09:40:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 261FE614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32395C433C8;
+        Tue,  1 Aug 2023 09:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882843;
-        bh=uIsY3qB5y7J/YErIoaxKxt45A82bLthalDtnSBT7pI0=;
+        s=korg; t=1690882222;
+        bh=HJAwzRLsjyOYCHE2bjv/pnqYY6tI9G9ysmS5TMVjSA4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DrUYRYAOGi4TFoBif7a/NcUdHExVQStCkPn1ik59V8SqlmJ8LsTfvry44QEl8cU+q
-         XASzSSDcEPjTDt+Br4qDEa+IVZr8YxFkXfrfG5i5KE1hXVDAw4Izu/7104lNIvcmkQ
-         7JgFwIJ6/4pQhkmL46VoYhmqXcb4kMVZcnWBCxMM=
+        b=KbBUBraXFaFIpqS/kmkGKnalYFVA0ByaOVeQK6kvGmL/bqSIbNU4jA0Flc3coVIiF
+         tIefHSDGxY5ma27LSyYv9kF3d2WpyJtrDNUPVL1LDuVdXx5B3v8Lb7cF/W0mWdbIzt
+         HKzGubpT3Bm412KOdAlCeIGlKv5UF6DyOsP+O2S0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Markus Elfring <elfring@users.sourceforge.net>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 022/239] i2c: Improve size determinations
-Date:   Tue,  1 Aug 2023 11:18:06 +0200
-Message-ID: <20230801091926.437652047@linuxfoundation.org>
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/228] PCI/ASPM: Avoid link retraining race
+Date:   Tue,  1 Aug 2023 11:18:07 +0200
+Message-ID: <20230801091923.929094528@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 06e989578232da33a7fe96b04191b862af8b2cec ]
+[ Upstream commit e7e39756363ad5bd83ddeae1063193d0f13870fd ]
 
-Replace the specification of a data structure by a pointer dereference
-as the parameter for the operator "sizeof" to make the corresponding
-size determination a bit safer according to the Linux coding style
-convention.
+PCIe r6.0.1, sec 7.5.3.7, recommends setting the link control parameters,
+then waiting for the Link Training bit to be clear before setting the
+Retrain Link bit.
 
-This issue was detected by using the Coccinelle software.
+This avoids a race where the LTSSM may not use the updated parameters if it
+is already in the midst of link training because of other normal link
+activity.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
+Wait for the Link Training bit to be clear before toggling the Retrain Link
+bit to ensure that the LTSSM uses the updated link control parameters.
+
+[bhelgaas: commit log, return 0 (success)/-ETIMEDOUT instead of bool for
+both pcie_wait_for_retrain() and the existing pcie_retrain_link()]
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-nomadik.c | 2 +-
- drivers/i2c/busses/i2c-sh7760.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pcie/aspm.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index 05eaae5aeb180..5004b9dd98563 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -970,7 +970,7 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
- 	struct i2c_vendor_data *vendor = id->data;
- 	u32 max_fifo_threshold = (vendor->fifodepth / 2) - 1;
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index f6b91252bebc2..07166a4ec27ad 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -213,8 +213,19 @@ static int pcie_wait_for_retrain(struct pci_dev *pdev)
+ static int pcie_retrain_link(struct pcie_link_state *link)
+ {
+ 	struct pci_dev *parent = link->pdev;
++	int rc;
+ 	u16 reg16;
  
--	dev = devm_kzalloc(&adev->dev, sizeof(struct nmk_i2c_dev), GFP_KERNEL);
-+	dev = devm_kzalloc(&adev->dev, sizeof(*dev), GFP_KERNEL);
- 	if (!dev) {
- 		ret = -ENOMEM;
- 		goto err_no_mem;
-diff --git a/drivers/i2c/busses/i2c-sh7760.c b/drivers/i2c/busses/i2c-sh7760.c
-index a0ccc5d009874..051b904cb35f6 100644
---- a/drivers/i2c/busses/i2c-sh7760.c
-+++ b/drivers/i2c/busses/i2c-sh7760.c
-@@ -443,7 +443,7 @@ static int sh7760_i2c_probe(struct platform_device *pdev)
- 		goto out0;
- 	}
- 
--	id = kzalloc(sizeof(struct cami2c), GFP_KERNEL);
-+	id = kzalloc(sizeof(*id), GFP_KERNEL);
- 	if (!id) {
- 		ret = -ENOMEM;
- 		goto out0;
++	/*
++	 * Ensure the updated LNKCTL parameters are used during link
++	 * training by checking that there is no ongoing link training to
++	 * avoid LTSSM race as recommended in Implementation Note at the
++	 * end of PCIe r6.0.1 sec 7.5.3.7.
++	 */
++	rc = pcie_wait_for_retrain(parent);
++	if (rc)
++		return rc;
++
+ 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
+ 	reg16 |= PCI_EXP_LNKCTL_RL;
+ 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
 -- 
 2.39.2
 
