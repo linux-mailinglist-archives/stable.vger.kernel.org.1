@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 782D676AEAE
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F01C76AFDE
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233326AbjHAJkl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40354 "EHLO
+        id S232401AbjHAJuw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232647AbjHAJkM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FAD212B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:20 -0700 (PDT)
+        with ESMTP id S233721AbjHAJu3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:50:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E324E52
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:50:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0283561516
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA5FC433C7;
-        Tue,  1 Aug 2023 09:38:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FA90614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:50:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80890C433C8;
+        Tue,  1 Aug 2023 09:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882699;
-        bh=ETTFX7bRzTx5UAO6fPCr8R6J5LIYV08RVC4qYy8AHE0=;
+        s=korg; t=1690883399;
+        bh=IH7OugVO0r2HthaA3TOInLT6jDo6Wajg//YTbHZRld4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lgGdvBhOFcdVjJ58u5vj4utuPeSQJI087mIzC6EYTubeaxNzlUfnt/peLtOAKq9kH
-         i0aCGY1GY7szx79KQCNvXTPz1XOboqbFY0rqIErxa3Jq9Jj8Nox08oqllc3CtL/4I+
-         3pT7qPBhLXjKABzW9athyYNtjJW0NAi0C4v8wZdc=
+        b=ZrBZeD+WECARSppVSkfaeBpHiOPHvwbCokmBZCHW9NvomV1uf72gzabN36frXN+JH
+         Cvf60JisQM/UwcUEAVcQo8SCvDYWYYs4ibo8K+y53QdfVm5Xpk72Qkkg5DzE/v5ymr
+         21wAg1WpkAy6Y8AHZJmIplx7kouyKse9YdXkYUEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 199/228] net: dsa: qca8k: fix mdb add/del case with 0 VID
-Date:   Tue,  1 Aug 2023 11:20:57 +0200
-Message-ID: <20230801091930.066453488@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.4 194/239] ACPI/IORT: Remove erroneous id_count check in iort_node_get_rmr_info()
+Date:   Tue,  1 Aug 2023 11:20:58 +0200
+Message-ID: <20230801091932.706025024@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,47 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-commit dfd739f182b00b02bd7470ed94d112684cc04fa2 upstream.
+commit 003e6b56d780095a9adc23efc9cb4b4b4717169b upstream.
 
-The qca8k switch doesn't support using 0 as VID and require a default
-VID to be always set. MDB add/del function doesn't currently handle
-this and are currently setting the default VID.
+According to the ARM IORT specifications DEN 0049 issue E,
+the "Number of IDs" field in the ID mapping format reports
+the number of IDs in the mapping range minus one.
 
-Fix this by correctly handling this corner case and internally use the
-default VID for VID 0 case.
+In iort_node_get_rmr_info(), we erroneously skip ID mappings
+whose "Number of IDs" equal to 0, resulting in valid mapping
+nodes with a single ID to map being skipped, which is wrong.
 
-Fixes: ba8f870dfa63 ("net: dsa: qca8k: add support for mdb_add/del")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix iort_node_get_rmr_info() by removing the bogus id_count
+check.
+
+Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Cc: <stable@vger.kernel.org> # 6.0.x
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Tested-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/1689593625-45213-1-git-send-email-guanghuifeng@linux.alibaba.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/qca/qca8k-common.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/arm64/iort.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/net/dsa/qca/qca8k-common.c
-+++ b/drivers/net/dsa/qca/qca8k-common.c
-@@ -853,6 +853,9 @@ int qca8k_port_mdb_add(struct dsa_switch
- 	const u8 *addr = mdb->addr;
- 	u16 vid = mdb->vid;
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1006,9 +1006,6 @@ static void iort_node_get_rmr_info(struc
+ 	for (i = 0; i < node->mapping_count; i++, map++) {
+ 		struct acpi_iort_node *parent;
  
-+	if (!vid)
-+		vid = QCA8K_PORT_VID_DEF;
-+
- 	return qca8k_fdb_search_and_insert(priv, BIT(port), addr, vid,
- 					   QCA8K_ATU_STATUS_STATIC);
- }
-@@ -865,6 +868,9 @@ int qca8k_port_mdb_del(struct dsa_switch
- 	const u8 *addr = mdb->addr;
- 	u16 vid = mdb->vid;
- 
-+	if (!vid)
-+		vid = QCA8K_PORT_VID_DEF;
-+
- 	return qca8k_fdb_search_and_del(priv, BIT(port), addr, vid);
- }
- 
+-		if (!map->id_count)
+-			continue;
+-
+ 		parent = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
+ 				      map->output_reference);
+ 		if (parent != iommu)
 
 
