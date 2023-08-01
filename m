@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F1276ADCF
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 219BA76AF0F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232891AbjHAJdt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34968 "EHLO
+        id S232915AbjHAJo4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233079AbjHAJdA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:00 -0400
+        with ESMTP id S233408AbjHAJol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2567E46BF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:30:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56E63C19
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88BB7614FD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:30:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D26C433C8;
-        Tue,  1 Aug 2023 09:30:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DFE8614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47959C433C8;
+        Tue,  1 Aug 2023 09:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882245;
-        bh=ZUEM5gtuK5KL/3xPXOgeoS+TMs+rf462y61AIhwHGoU=;
+        s=korg; t=1690882916;
+        bh=qt36tPoTUJwAqv0gPlijQkN/nGCiTHoShrlnSPJMePM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QXbYhpdnLelBLrWySoFij/LfkmPW1R4Q1MZbGxcSUffG5BcAq+xD7Si5wQwVEPMzg
-         ySmV82PMkrVeCdrJKF2GQBk72OiGNPYqmhXrpXVpNA5+XqtmXK4uSRyJZqGn+nrVJM
-         S0qpiqZYyJDL4nFdOfCsAYmzD6k0/necoH0liI2o=
+        b=BBAaX/ZVr/TEbzqgEhZ0er8hW4BLpOUyo5KbTlkdiUzJl2YmQFLHEibX6c3tPzW9p
+         zWkXpdUx1KRTRkaT/7G1Aw/rlIPBo1ESnEGLz4wOwy+EiA3dfiR6KzxUg54aQU7R8r
+         93YE+muuYZAFq5fzqgrUt8bGPWjYZjCwxJ04vnUc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/228] drm/amd/display: Copy DC context in the commit streams
+Subject: [PATCH 6.4 031/239] PCI: rockchip: Dont advertise MSI-X in PCIe capabilities
 Date:   Tue,  1 Aug 2023 11:18:15 +0200
-Message-ID: <20230801091924.235954396@linuxfoundation.org>
+Message-ID: <20230801091926.736194564@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,120 +56,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit 0e986cea0347902b2c72b09c8fe9c0f30d7decb4 ]
+[ Upstream commit a52587e0bee14cbeeadf48a24013828cb04b8df8 ]
 
-DC adds an instance of DML (which contains VBA) to each context, and
-multiple threads might write back to the global VBA resulting in data
-overwriting. To keep the consistency with other parts of the DC code,
-this commit changes dc_commit_streams to copy the current DC state, and
-as a result, it also changes the function signature to expect streams
-instead of a context.
+The RK3399 PCIe endpoint controller cannot generate MSI-X IRQs.
+This is documented in the RK3399 technical reference manual (TRM)
+section 17.5.9 "Interrupt Support".
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Co-developed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 59de751e3845 ("drm/amd/display: add ODM case when looking for first split pipe")
+MSI-X capability should therefore not be advertised. Remove the
+MSI-X capability by editing the capability linked-list. The
+previous entry is the MSI capability, therefore get the next
+entry from the MSI-X capability entry and set it as next entry
+for the MSI capability. This in effect removes MSI-X from the list.
+
+Linked list before : MSI cap -> MSI-X cap -> PCIe Device cap -> ...
+Linked list now : MSI cap -> PCIe Device cap -> ...
+
+Link: https://lore.kernel.org/r/20230418074700.1083505-11-rick.wertenbroek@gmail.com
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 41 +++++++++++++++++++-----
- drivers/gpu/drm/amd/display/dc/dc.h      |  4 ++-
- 2 files changed, 36 insertions(+), 9 deletions(-)
+ drivers/pci/controller/pcie-rockchip-ep.c | 24 +++++++++++++++++++++++
+ drivers/pci/controller/pcie-rockchip.h    |  5 +++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index a457b87d23c41..31791c557c8f8 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1913,23 +1913,44 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
- 	return result;
- }
+diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+index 3d6f828d29fc2..0af0e965fb57e 100644
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -508,6 +508,7 @@ static int rockchip_pcie_ep_probe(struct platform_device *pdev)
+ 	size_t max_regions;
+ 	struct pci_epc_mem_window *windows = NULL;
+ 	int err, i;
++	u32 cfg_msi, cfg_msix_cp;
  
--enum dc_status dc_commit_streams(struct dc *dc, struct dc_state *context)
-+/**
-+ * dc_commit_streams - Commit current stream state
-+ *
-+ * @dc: DC object with the commit state to be configured in the hardware
-+ * @streams: Array with a list of stream state
-+ * @stream_count: Total of streams
-+ *
-+ * Function responsible for commit streams change to the hardware.
-+ *
-+ * Return:
-+ * Return DC_OK if everything work as expected, otherwise, return a dc_status
-+ * code.
-+ */
-+enum dc_status dc_commit_streams(struct dc *dc,
-+				 struct dc_stream_state *streams[],
-+				 uint8_t stream_count)
- {
--	enum dc_status res = DC_OK;
- 	int i;
-+	struct dc_state *context;
-+	enum dc_status res = DC_OK;
+ 	ep = devm_kzalloc(dev, sizeof(*ep), GFP_KERNEL);
+ 	if (!ep)
+@@ -583,6 +584,29 @@ static int rockchip_pcie_ep_probe(struct platform_device *pdev)
  
--	if (!streams_changed(dc, context->streams, context->stream_count))
-+	if (!streams_changed(dc, streams, stream_count))
- 		return res;
+ 	ep->irq_pci_addr = ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR;
  
--	DC_LOG_DC("%s: %d streams\n",
--				__func__, context->stream_count);
-+	DC_LOG_DC("%s: %d streams\n", __func__, stream_count);
- 
--	for (i = 0; i < context->stream_count; i++) {
--		struct dc_stream_state *stream = context->streams[i];
-+	for (i = 0; i < stream_count; i++) {
-+		struct dc_stream_state *stream = streams[i];
- 
- 		dc_stream_log(dc, stream);
- 	}
- 
-+	context = dc_create_state(dc);
-+	if (!context)
-+		goto context_alloc_fail;
++	/*
++	 * MSI-X is not supported but the controller still advertises the MSI-X
++	 * capability by default, which can lead to the Root Complex side
++	 * allocating MSI-X vectors which cannot be used. Avoid this by skipping
++	 * the MSI-X capability entry in the PCIe capabilities linked-list: get
++	 * the next pointer from the MSI-X entry and set that in the MSI
++	 * capability entry (which is the previous entry). This way the MSI-X
++	 * entry is skipped (left out of the linked-list) and not advertised.
++	 */
++	cfg_msi = rockchip_pcie_read(rockchip, PCIE_EP_CONFIG_BASE +
++				     ROCKCHIP_PCIE_EP_MSI_CTRL_REG);
 +
-+	dc_resource_state_copy_construct_current(dc, context);
++	cfg_msi &= ~ROCKCHIP_PCIE_EP_MSI_CP1_MASK;
 +
- 	/*
- 	 * Previous validation was perfomred with fast_validation = true and
- 	 * the full DML state required for hardware programming was skipped.
-@@ -1945,6 +1966,10 @@ enum dc_status dc_commit_streams(struct dc *dc, struct dc_state *context)
- 
- 	res = dc_commit_state_no_check(dc, context);
- 
-+context_alloc_fail:
++	cfg_msix_cp = rockchip_pcie_read(rockchip, PCIE_EP_CONFIG_BASE +
++					 ROCKCHIP_PCIE_EP_MSIX_CAP_REG) &
++					 ROCKCHIP_PCIE_EP_MSIX_CAP_CP_MASK;
 +
-+	DC_LOG_DC("%s Finished.\n", __func__);
++	cfg_msi |= cfg_msix_cp;
 +
- 	return (res == DC_OK);
- }
++	rockchip_pcie_write(rockchip, cfg_msi,
++			    PCIE_EP_CONFIG_BASE + ROCKCHIP_PCIE_EP_MSI_CTRL_REG);
++
+ 	rockchip_pcie_write(rockchip, PCIE_CLIENT_CONF_ENABLE,
+ 			    PCIE_CLIENT_CONFIG);
  
-@@ -1960,7 +1985,7 @@ bool dc_commit_state(struct dc *dc, struct dc_state *context)
- 	 * we get more confident about this change we'll need to enable
- 	 * the new sequence for all ASICs. */
- 	if (dc->ctx->dce_version >= DCN_VERSION_3_2) {
--		result = dc_commit_streams(dc, context);
-+		result = dc_commit_streams(dc, context->streams, context->stream_count);
- 		return result == DC_OK;
- 	}
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index 3db3554c289b4..78b7dbd23a3b7 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -1326,7 +1326,9 @@ void dc_resource_state_destruct(struct dc_state *context);
- 
- bool dc_resource_is_dsc_encoding_supported(const struct dc *dc);
- 
--enum dc_status dc_commit_streams(struct dc *dc, struct dc_state *context);
-+enum dc_status dc_commit_streams(struct dc *dc,
-+				 struct dc_stream_state *streams[],
-+				 uint8_t stream_count);
- 
- /* TODO: When the transition to the new commit sequence is done, remove this
-  * function in favor of dc_commit_streams. */
+diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
+index 501d859420b4c..fe0333778fd93 100644
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -227,6 +227,8 @@
+ #define ROCKCHIP_PCIE_EP_CMD_STATUS			0x4
+ #define   ROCKCHIP_PCIE_EP_CMD_STATUS_IS		BIT(19)
+ #define ROCKCHIP_PCIE_EP_MSI_CTRL_REG			0x90
++#define   ROCKCHIP_PCIE_EP_MSI_CP1_OFFSET		8
++#define   ROCKCHIP_PCIE_EP_MSI_CP1_MASK			GENMASK(15, 8)
+ #define   ROCKCHIP_PCIE_EP_MSI_FLAGS_OFFSET		16
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_OFFSET		17
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MMC_MASK		GENMASK(19, 17)
+@@ -234,6 +236,9 @@
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MME_MASK		GENMASK(22, 20)
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_ME				BIT(16)
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP	BIT(24)
++#define ROCKCHIP_PCIE_EP_MSIX_CAP_REG			0xb0
++#define   ROCKCHIP_PCIE_EP_MSIX_CAP_CP_OFFSET		8
++#define   ROCKCHIP_PCIE_EP_MSIX_CAP_CP_MASK		GENMASK(15, 8)
+ #define ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR				0x1
+ #define ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR		0x3
+ #define ROCKCHIP_PCIE_EP_FUNC_BASE(fn) \
 -- 
 2.39.2
 
