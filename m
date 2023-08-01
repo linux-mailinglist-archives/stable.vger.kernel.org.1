@@ -2,147 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F2C76A941
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2971D76A9D5
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 09:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231448AbjHAGgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 02:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
+        id S229554AbjHAHRR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 03:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231743AbjHAGgL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 02:36:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4298BE5F
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:35:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86A8861474
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93524C433C7;
-        Tue,  1 Aug 2023 06:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690871732;
-        bh=4MPRe/6U2i9Veyte09RHa9QuCMBy2opwjdf/YXCXK3Q=;
-        h=Subject:To:Cc:From:Date:From;
-        b=1rx4ZbYe3aCsqB/kBQT8jZD1dfTVi4kA7M1pYriBDL/Fn/nHYvlmU3+74Ec5bk4GS
-         mUi0ng53s1ukO2XgDBgqyVplzlJvf+wRCK1jMT90Ya1cUuPQFLZrUZNJUKrhZzDAyR
-         7yJQn44QIFjVEnxE1r/5/e7tkPO+fmLQZPqH7lSI=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Revert vblank change that causes null" failed to apply to 6.1-stable tree
-To:     daniel.miess@amd.com, alexander.deucher@amd.com,
-        chiahsuan.chung@amd.com, daniel.wheeler@amd.com,
-        nicholas.kazlauskas@amd.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 01 Aug 2023 08:35:29 +0200
-Message-ID: <2023080128-reshuffle-aching-6a89@gregkh>
+        with ESMTP id S229971AbjHAHRQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 03:17:16 -0400
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67FF173D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 00:17:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1690874229; x=1722410229;
+  h=from:to:cc:subject:date:message-id:content-id:
+   mime-version:content-transfer-encoding;
+  bh=fFjalAFHaAQIemFzLyHophERG99+9W5vVPyLyaq25hs=;
+  b=RlA+zdRKqmXMcM/N+/4MVnxlJD2ULoC/p99EJn0IEgspiG5Cao7GcAsw
+   2zqTq1riBQyKoZn5RTrYSrl5Kj61+23YXa1Ujmt4G4lLfvPx6pzhz7D1l
+   oKfyl3MHUG2w8/88J+CoPxOJYJFj/3EQhfrsknaCc9JN8zZEE8kOqZym5
+   I=;
+X-IronPort-AV: E=Sophos;i="6.01,246,1684800000"; 
+   d="scan'208";a="599511843"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1box-1dm6-7f722725.us-east-1.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2023 07:17:07 +0000
+Received: from EX19D010EUA004.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1box-1dm6-7f722725.us-east-1.amazon.com (Postfix) with ESMTPS id 24465140E97
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 07:17:05 +0000 (UTC)
+Received: from EX19D028EUB002.ant.amazon.com (10.252.61.43) by
+ EX19D010EUA004.ant.amazon.com (10.252.50.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 1 Aug 2023 07:17:05 +0000
+Received: from EX19D043EUB003.ant.amazon.com (10.252.61.69) by
+ EX19D028EUB002.ant.amazon.com (10.252.61.43) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 1 Aug 2023 07:17:04 +0000
+Received: from EX19D043EUB003.ant.amazon.com ([fe80::ae8f:9ad3:ae84:18c5]) by
+ EX19D043EUB003.ant.amazon.com ([fe80::ae8f:9ad3:ae84:18c5%3]) with mapi id
+ 15.02.1118.030; Tue, 1 Aug 2023 07:17:04 +0000
+From:   "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
+To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     "Yadav, Pratyush" <ptyadav@amazon.de>
+Subject: Backport request
+Thread-Topic: Backport request
+Thread-Index: AQHZxEgsJ2+t6ECt5Um/IpoI2QAhsw==
+Date:   Tue, 1 Aug 2023 07:17:04 +0000
+Message-ID: <88AC5AF1-276D-42AD-AD41-37FE9A874616@amazon.de>
+Accept-Language: en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.1.212.30]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2537AF24E156B24F942F4AA6C5B130AD@amazon.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,
+        T_SPF_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x c02b04633c4f4654331c53966cb937df1c73a9bb
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080128-reshuffle-aching-6a89@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-c02b04633c4f ("drm/amd/display: Revert vblank change that causes null pointer crash")
-1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
-469a62938a45 ("drm/amd/display: update extended blank for dcn314 onwards")
-e3416e872f84 ("drm/amd/display: Add FAMS validation before trying to use it")
-0db13eae41fc ("drm/amd/display: Add minimum Z8 residency debug option")
-73dd4ca4b5a0 ("drm/amd/display: Fix Z8 support configurations")
-db4107e92a81 ("drm/amd/display: fix dc/core/dc.c kernel-doc")
-00812bfc7bcb ("drm/amd/display: Add debug option to skip PSR CRTC disable")
-80676936805e ("drm/amd/display: Add Z8 allow states to z-state support list")
-e366f36958f6 ("drm/amd/display: Rework comments on dc file")
-bd829d570773 ("drm/amd/display: Refactor eDP PSR codes")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c02b04633c4f4654331c53966cb937df1c73a9bb Mon Sep 17 00:00:00 2001
-From: Daniel Miess <daniel.miess@amd.com>
-Date: Thu, 11 May 2023 09:12:09 -0400
-Subject: [PATCH] drm/amd/display: Revert vblank change that causes null
- pointer crash
-
-Revert commit 1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
-Because it cause some regression
-
-Fixes: 1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Daniel Miess <daniel.miess@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 554152371eb5..1d00eb9e73c6 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -33,7 +33,7 @@
- #include "dml/display_mode_vba.h"
- 
- struct _vcs_dpi_ip_params_st dcn3_14_ip = {
--	.VBlankNomDefaultUS = 800,
-+	.VBlankNomDefaultUS = 668,
- 	.gpuvm_enable = 1,
- 	.gpuvm_max_page_table_levels = 1,
- 	.hostvm_enable = 1,
-@@ -286,7 +286,7 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
- 	struct resource_context *res_ctx = &context->res_ctx;
- 	struct pipe_ctx *pipe;
- 	bool upscaled = false;
--	const unsigned int max_allowed_vblank_nom = 1023;
-+	bool isFreesyncVideo = false;
- 
- 	dc_assert_fp_enabled();
- 
-@@ -300,11 +300,16 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
- 		pipe = &res_ctx->pipe_ctx[i];
- 		timing = &pipe->stream->timing;
- 
--		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
--		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
--		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
--		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
--		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, max_allowed_vblank_nom);
-+		isFreesyncVideo = pipe->stream->adjust.v_total_max == pipe->stream->adjust.v_total_min;
-+		isFreesyncVideo = isFreesyncVideo && pipe->stream->adjust.v_total_min > timing->v_total;
-+
-+		if (!isFreesyncVideo) {
-+			pipes[pipe_cnt].pipe.dest.vblank_nom =
-+				dcn3_14_ip.VBlankNomDefaultUS / (timing->h_total / (timing->pix_clk_100hz / 10000.0));
-+		} else {
-+			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
-+			pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
-+		}
- 
- 		if (pipe->plane_state &&
- 				(pipe->plane_state->src_rect.height < pipe->plane_state->dst_rect.height ||
+SGksDQoNClBsZWFzZSBiYWNrcG9ydCBjb21taXRzOg0KDQpjMDJkNWZlYjZlMmYgKCJBQ1BJOiBw
+cm9jZXNzb3I6IHBlcmZsaWI6IFVzZSB0aGUgIm5vIGxpbWl0IiBmcmVxdWVuY3kgUW9TIikNCjk5
+Mzg3YjAxNjAyMiAoIkFDUEk6IHByb2Nlc3NvcjogcGVyZmxpYjogQXZvaWQgdXBkYXRpbmcgZnJl
+cXVlbmN5IFFvUyB1bm5lY2Vzc2FyaWx5IikNCmU4YTBlMzBiNzQyZiAoImNwdWZyZXE6IGludGVs
+X3BzdGF0ZTogRHJvcCBBQ1BJIF9QU1Mgc3RhdGVzIHRhYmxlIHBhdGNoaW5nIikNCg0KVG8gc3Rh
+YmxlIHRyZWVzIDUuNC55LCA1LjEwLnksIDUuMTUueSwgNi4xLnkuIFRoZXNlIGNvbW1pdHMgZml4
+IEludGVsIFR1cmJvIGVuYWJsaW5nIHdoZW4NCmJyaW5naW5nIENQVXMgb2ZmbGluZSBhbmQgb25s
+aW5lIGFnYWluLiBJJ3ZlIHRlc3RlZCB0aGlzIG9uIHRoZSBtZW50aW9uZWQgc3RhYmxlIHRyZWVz
+Lg0KRmVlbCBmcmVlIHRvIGFkZA0KDQpUZXN0ZWQtYnk6IEhhZ2FyIEhlbWRhbiA8aGFnYXJoZW1A
+YW1hem9uLmRlPg0KDQpUaGFua3MsDQpIYWdhcg0KDQoKCgpBbWF6b24gRGV2ZWxvcG1lbnQgQ2Vu
+dGVyIEdlcm1hbnkgR21iSApLcmF1c2Vuc3RyLiAzOAoxMDExNyBCZXJsaW4KR2VzY2hhZWZ0c2Z1
+ZWhydW5nOiBDaHJpc3RpYW4gU2NobGFlZ2VyLCBKb25hdGhhbiBXZWlzcwpFaW5nZXRyYWdlbiBh
+bSBBbXRzZ2VyaWNodCBDaGFybG90dGVuYnVyZyB1bnRlciBIUkIgMTQ5MTczIEIKU2l0ejogQmVy
+bGluClVzdC1JRDogREUgMjg5IDIzNyA4NzkKCgo=
 
