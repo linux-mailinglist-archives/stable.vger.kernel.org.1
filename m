@@ -2,76 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7424676B389
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 13:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 887B776B3BC
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 13:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231271AbjHALmx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 07:42:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40010 "EHLO
+        id S231585AbjHALsQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 07:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232021AbjHALmw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 07:42:52 -0400
-X-Greylist: delayed 186 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Aug 2023 04:42:51 PDT
-Received: from smtpo94.poczta.onet.pl (smtpo94.poczta.onet.pl [213.180.149.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB7E92;
-        Tue,  1 Aug 2023 04:42:51 -0700 (PDT)
-Received: from [192.168.226.2] (1567051-1921.iaas.home-whs.pl [46.242.128.131])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: dragonn@op.pl)
-        by smtp.poczta.onet.pl (Onet) with ESMTPSA id 4RFY3W11lSz1yvF;
-        Tue,  1 Aug 2023 13:36:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=op.pl; s=2011;
-        t=1690889808; bh=OmZHHaG1yc2Gw63P200yn7wFAj1aCDNnGach0vZpB8w=;
-        h=Date:To:Cc:References:Subject:From:In-Reply-To:From;
-        b=JpRh7PkGNq7Zx2A8cxEi7Tdr3nHPa09QwNcnmqkKvgfp8AnRh5EbKrDf1oZ0qpQUc
-         /sfjXXMFdF2eQ6nG/imuSlkkgHB1kA+0azpBvVCG/Na5g7HL3FAN4eTKDDNs9Nh70K
-         sOVDFokBo/mGMpQKt51VxPkLtkBeeUmx5Ldlc5vg=
-Message-ID: <b79630a4-0473-89eb-44da-28d87b6539ef@op.pl>
-Date:   Tue, 1 Aug 2023 13:36:20 +0200
+        with ESMTP id S234419AbjHALsJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 07:48:09 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA9E1728;
+        Tue,  1 Aug 2023 04:48:00 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id ADA336017C;
+        Tue,  1 Aug 2023 13:47:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690890472; bh=BVMyjLdmNYq8frJWk79aHYi7fGzAuV+ZzSCG4CYTRDQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=HGJ7KVftL1Fn70I6nmBUJSiG6EmdVllBy9yw75Qsr2gHm+Tk9iYDpvjr+zEnxosLZ
+         GQwhhAaqXMev/uPfJuHkK5G/rO/DA58G/ADe33U0Vf4zaS8HyPw86CSqmafomt1JJJ
+         AczTpebaEmFivUQwzBubhpyR6AIo6g9H9npEpotBNCWwlmmL5ewZvFwHwKFZXHjpow
+         YmhkVx4sSesFpnFC23NnUQTpbQfeo9J9NgUvozqvfbUSFc5ll3BjRUSAbXNSMj/rjW
+         cPOdYxTxyADgqwr1mzrWVl/NB4oZFEX0mBqlY4xnUE+AUH20wefq/iUh8mdyGxSW58
+         dUlYv/gU+hbPw==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id dUBsuvfTHbXF; Tue,  1 Aug 2023 13:47:50 +0200 (CEST)
+Received: from pc-mtodorov.slava.alu.hr (pc-mtodorov.slava.alu.hr [193.198.186.200])
+        by domac.alu.hr (Postfix) with ESMTPSA id 9D0B66015F;
+        Tue,  1 Aug 2023 13:47:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690890470; bh=BVMyjLdmNYq8frJWk79aHYi7fGzAuV+ZzSCG4CYTRDQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Y7DXXWH5A2JGqfy7QCm1GHhdziQweGmxs6ksJaQiZjC5CeDhAGq/Rh6nW6CLmsbMc
+         LIujMs84535v41u7u1BGtN6KskeuMxLT5l/nB3NjMJ+/VmmgVJ5vzVxGYWWuVEBhUR
+         1RcIsB3kog10Vb6RUyZs/WdaHU7+rxG3BzWHVbUHkNrwd3aV5Alw6yzFFMM62rZm4a
+         572LSLC6LZIEuI3fzLffozQ2rdgLSJS32tR75DEcMUyQiCXz+EF6McS+ooa3wsWYcq
+         HX5TtBTP9ti+FR9CG8UVjBx+ktOjp63WnwIYlec28d6EKqHo4X6Hj0svHUTx9Z5CZW
+         0n75xC0H2xG3A==
+From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH v1 1/1] test_firmware: fix the memory leaks with the reqs buffer
+Date:   Tue,  1 Aug 2023 13:41:08 +0200
+Message-Id: <20230801114107.15545-1-mirsad.todorovac@alu.unizg.hr>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To:     mario.limonciello@amd.com
-Cc:     James.Bottomley@hansenpartnership.com, Jason@zx2c4.com,
-        daniil.stas@posteo.net, jarkko@kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux@dominikbrodowski.net, regressions@leemhuis.info,
-        stable@vger.kernel.org, torvalds@linux-foundation.org
-References: <61b363bc-286a-535c-27da-0f52673768ad@amd.com>
-Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
-Content-Language: en-US
-From:   Mateusz Schyboll <dragonn@op.pl>
-In-Reply-To: <61b363bc-286a-535c-27da-0f52673768ad@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I was following the issue under or discord channel ROG for Linux and 
-helping out some other users with it by shipping a kernel for Arch with 
-disabled CONFIG_HW_RANDOM_TPM as the default recommend kernel for Arch 
-for ROG laptops (as my device isn't affect by it because it is Ryzen 
-4800HS).
+[ commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream ]
 
-I know it was discussed here 
-https://bugzilla.kernel.org/show_bug.cgi?id=217212#c16 against allowing 
-the user to disable fTPM to be used as a random source via a boot time 
-parameter but I still I disagree with it.
+Dan Carpenter spotted that test_fw_config->reqs will be leaked if
+trigger_batched_requests_store() is called two or more times.
+The same appears with trigger_batched_requests_async_store().
 
-Linux does have a parameter `random.trust_cpu` to control the random 
-source from CPU, why they can not be a parameter like 
-`random.trust_ftpm` (or `random.trust_tpm`)?
+This bug wasn't triggered by the tests, but observed by Dan's visual
+inspection of the code.
 
-It might be my limited knowledge of this topic but to me it feels like 
-if they is a trust_cpu then Linux should have trust_ftpm too.
+The recommended workaround was to return -EBUSY if test_fw_config->reqs
+is already allocated.
 
-Mateusz
+Fixes: c92316bf8e94 ("test_firmware: add batched firmware tests")
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Russ Weight <russell.h.weight@intel.com>
+Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: stable@vger.kernel.org # v4.14
+Suggested-by: Dan Carpenter <error27@gmail.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+
+[ This fix is applied against the 4.14 stable branch. There are no changes to the ]
+[ fix in code when compared to the upstread, only the reformatting for backport.  ]
+---
+ lib/test_firmware.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+index 1c5e5246bf10..5318c5e18acf 100644
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -621,6 +621,11 @@ static ssize_t trigger_batched_requests_store(struct device *dev,
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++        if (test_fw_config->reqs) {
++                rc = -EBUSY;
++                goto out_bail;
++        }
++
+ 	test_fw_config->reqs = vzalloc(sizeof(struct test_batched_req) *
+ 				       test_fw_config->num_requests * 2);
+ 	if (!test_fw_config->reqs) {
+@@ -723,6 +728,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++        if (test_fw_config->reqs) {
++                rc = -EBUSY;
++                goto out_bail;
++        }
++
+ 	test_fw_config->reqs = vzalloc(sizeof(struct test_batched_req) *
+ 				       test_fw_config->num_requests * 2);
+ 	if (!test_fw_config->reqs) {
+-- 
+2.39.3
 
