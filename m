@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 687EB76AF6E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11CD776AE1E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233469AbjHAJr1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45062 "EHLO
+        id S233174AbjHAJgG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:36:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233477AbjHAJq4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:56 -0400
+        with ESMTP id S233092AbjHAJfx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3321FEF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A38091BD8
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F17B4614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085BEC433C8;
-        Tue,  1 Aug 2023 09:45:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 274C2613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250C4C433CC;
+        Tue,  1 Aug 2023 09:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883135;
-        bh=bGiYOeR4ENs+Wwb5oTB4lhBqNrRMs90QIB4bCSX46mc=;
+        s=korg; t=1690882438;
+        bh=SCnDX6zxS/BovP1ObVCNx8DgiNnWQyFjmD7rbAi92K4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cwYsRpwEF+iecWm2yycUssSQts1dByNWSXNqzI9cm94wI/OtJ71JS/IY6gYWTjQfF
-         EnPsGhmFPIDtbn68xEgDQcNOy7cH1yQu+suvCZiizOKMepbb2m5wTVtgl5KwhkwkNa
-         fPUkStZMsXC6X4O+WqlJicFf+/0g7DWn8gXC/Nxc=
+        b=lZOGnHnaW4LXHYiMRMFEF+OA8jJcDD5kvJKZGxRrnI08QrR/erLirVH9eOgEAQcqK
+         JA1CwZNw6BXjqL1HwjYDFHHkjde9vzbX5xihGl9nCCjKawDnmkiMxdK1zzzPLnfxJQ
+         Gya8Q66fhFEc77TFqOSU7LMY1DXjcNcSIZm2yP0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 099/239] RDMA/mlx4: Make check for invalid flags stricter
+Subject: [PATCH 6.1 105/228] netfilter: nft_set_rbtree: fix overlap expiration walk
 Date:   Tue,  1 Aug 2023 11:19:23 +0200
-Message-ID: <20230801091929.296890593@linuxfoundation.org>
+Message-ID: <20230801091926.597243327@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit d64b1ee12a168030fbb3e0aebf7bce49e9a07589 ]
+[ Upstream commit f718863aca469a109895cb855e6b81fff4827d71 ]
 
-This code is trying to ensure that only the flags specified in the list
-are allowed.  The problem is that ucmd->rx_hash_fields_mask is a u64 and
-the flags are an enum which is treated as a u32 in this context.  That
-means the test doesn't check whether the highest 32 bits are zero.
+The lazy gc on insert that should remove timed-out entries fails to release
+the other half of the interval, if any.
 
-Fixes: 4d02ebd9bbbd ("IB/mlx4: Fix RSS hash fields restrictions")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/233ed975-982d-422a-b498-410f71d8a101@moroto.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Can be reproduced with tests/shell/testcases/sets/0044interval_overlap_0
+in nftables.git and kmemleak enabled kernel.
+
+Second bug is the use of rbe_prev vs. prev pointer.
+If rbe_prev() returns NULL after at least one iteration, rbe_prev points
+to element that is not an end interval, hence it should not be removed.
+
+Lastly, check the genmask of the end interval if this is active in the
+current generation.
+
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/qp.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-index 456656617c33f..9d08aa99f3cb0 100644
---- a/drivers/infiniband/hw/mlx4/qp.c
-+++ b/drivers/infiniband/hw/mlx4/qp.c
-@@ -565,15 +565,15 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
- 		return (-EOPNOTSUPP);
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 5c05c9b990fba..8d73fffd2d09d 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -217,29 +217,37 @@ static void *nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 
+ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 			      struct nft_rbtree *priv,
+-			      struct nft_rbtree_elem *rbe)
++			      struct nft_rbtree_elem *rbe,
++			      u8 genmask)
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+-	struct nft_rbtree_elem *rbe_prev = NULL;
++	struct nft_rbtree_elem *rbe_prev;
+ 	struct nft_set_gc_batch *gcb;
+ 
+ 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+ 	if (!gcb)
+ 		return -ENOMEM;
+ 
+-	/* search for expired end interval coming before this element. */
++	/* search for end interval coming before this element.
++	 * end intervals don't carry a timeout extension, they
++	 * are coupled with the interval start element.
++	 */
+ 	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+-		if (nft_rbtree_interval_end(rbe_prev))
++		if (nft_rbtree_interval_end(rbe_prev) &&
++		    nft_set_elem_active(&rbe_prev->ext, genmask))
+ 			break;
+ 
+ 		prev = rb_prev(prev);
  	}
  
--	if (ucmd->rx_hash_fields_mask & ~(MLX4_IB_RX_HASH_SRC_IPV4	|
--					  MLX4_IB_RX_HASH_DST_IPV4	|
--					  MLX4_IB_RX_HASH_SRC_IPV6	|
--					  MLX4_IB_RX_HASH_DST_IPV6	|
--					  MLX4_IB_RX_HASH_SRC_PORT_TCP	|
--					  MLX4_IB_RX_HASH_DST_PORT_TCP	|
--					  MLX4_IB_RX_HASH_SRC_PORT_UDP	|
--					  MLX4_IB_RX_HASH_DST_PORT_UDP  |
--					  MLX4_IB_RX_HASH_INNER)) {
-+	if (ucmd->rx_hash_fields_mask & ~(u64)(MLX4_IB_RX_HASH_SRC_IPV4	|
-+					       MLX4_IB_RX_HASH_DST_IPV4	|
-+					       MLX4_IB_RX_HASH_SRC_IPV6	|
-+					       MLX4_IB_RX_HASH_DST_IPV6	|
-+					       MLX4_IB_RX_HASH_SRC_PORT_TCP |
-+					       MLX4_IB_RX_HASH_DST_PORT_TCP |
-+					       MLX4_IB_RX_HASH_SRC_PORT_UDP |
-+					       MLX4_IB_RX_HASH_DST_PORT_UDP |
-+					       MLX4_IB_RX_HASH_INNER)) {
- 		pr_debug("RX Hash fields_mask has unsupported mask (0x%llx)\n",
- 			 ucmd->rx_hash_fields_mask);
- 		return (-EOPNOTSUPP);
+-	if (rbe_prev) {
++	if (prev) {
++		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
++
+ 		rb_erase(&rbe_prev->node, &priv->root);
+ 		atomic_dec(&set->nelems);
++		nft_set_gc_batch_add(gcb, rbe_prev);
+ 	}
+ 
+ 	rb_erase(&rbe->node, &priv->root);
+@@ -321,7 +329,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 
+ 		/* perform garbage collection to avoid bogus overlap reports. */
+ 		if (nft_set_elem_expired(&rbe->ext)) {
+-			err = nft_rbtree_gc_elem(set, priv, rbe);
++			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
+ 			if (err < 0)
+ 				return err;
+ 
 -- 
-2.40.1
+2.39.2
 
 
 
