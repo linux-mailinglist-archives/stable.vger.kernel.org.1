@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F91576AD1D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0603A76AF53
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231423AbjHAJ0a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52312 "EHLO
+        id S233433AbjHAJqx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232893AbjHAJ0Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:16 -0400
+        with ESMTP id S232045AbjHAJqa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE7726BD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F52DDF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5275361504
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664F0C433C8;
-        Tue,  1 Aug 2023 09:25:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AAEEA614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4E3C433C8;
+        Tue,  1 Aug 2023 09:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881902;
-        bh=HYjfseIgSeINR8T61KEHTcbWwlSO+jxhNtFATCB3IPI=;
+        s=korg; t=1690883110;
+        bh=KLrhwMPnhrz98PT6DSU5P0cEV1CnSIpKhRS+Uo0k6vo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uKLX7wOmhsH3VUWNB/S3VgDfvsy+CQ9nlCYR8A8S3+zgS6xwyXAYZkiR4YtXqtauj
-         k/kq94pbp6rvlcWy14i/yX5utKWRO/ANAM23XRO1rP0h1Xu572OXpH85TUYma185AO
-         mSmfqpvqCxRmG1meKLEy/0Tx60NV8r2o0kCxyifo=
+        b=WzfnRDOo17ggETFqoLvbY4zQOOueea449YJ1hxkwqkh6/y/Abztnl5GKzZDMQTXRb
+         wVLJw1weACJlApaceUvMe+xMn5snsx47av7erpM4egB6xbkmc79hfRCuEHEovTlZb6
+         BmWmBYTVOAmxkHLOsKb6+ilVtTliTUCPpeH3H5NA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/155] net: stmmac: Apply redundant write work around on 4.xx too
+Subject: [PATCH 6.4 118/239] drm/msm: Fix hw_fence error path cleanup
 Date:   Tue,  1 Aug 2023 11:19:42 +0200
-Message-ID: <20230801091912.674610940@linuxfoundation.org>
+Message-ID: <20230801091929.982987496@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,54 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vincent Whitchurch <vincent.whitchurch@axis.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 284779dbf4e98753458708783af8c35630674a21 ]
+[ Upstream commit 1cd0787f082e1a179f2b6e749d08daff1a9f6b1b ]
 
-commit a3a57bf07de23fe1ff779e0fdf710aa581c3ff73 ("net: stmmac: work
-around sporadic tx issue on link-up") worked around a problem with TX
-sometimes not working after a link-up by avoiding a redundant write to
-MAC_CTRL_REG (aka GMAC_CONFIG), since the IP appeared to have problems
-with handling multiple writes to that register in some cases.
+In an error path where the submit is free'd without the job being run,
+the hw_fence pointer is simply a kzalloc'd block of memory.  In this
+case we should just kfree() it, rather than trying to decrement it's
+reference count.  Fortunately we can tell that this is the case by
+checking for a zero refcount, since if the job was run, the submit would
+be holding a reference to the hw_fence.
 
-That commit however only added the work around to dwmac_lib.c (apart
-from the common code in stmmac_main.c), but my systems with version
-4.21a of the IP exhibit the same problem, so add the work around to
-dwmac4_lib.c too.
-
-Fixes: a3a57bf07de2 ("net: stmmac: work around sporadic tx issue on link-up")
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230721-stmmac-tx-workaround-v1-1-9411cbd5ee07@axis.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: f94e6a51e17c ("drm/msm: Pre-allocate hw_fence")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/547088/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/msm_fence.c      |  6 ++++++
+ drivers/gpu/drm/msm/msm_gem_submit.c | 14 +++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-index 9292a1fab7d32..7011c08d2e012 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-@@ -207,13 +207,15 @@ void stmmac_dwmac4_set_mac_addr(void __iomem *ioaddr, u8 addr[6],
- void stmmac_dwmac4_set_mac(void __iomem *ioaddr, bool enable)
- {
- 	u32 value = readl(ioaddr + GMAC_CONFIG);
-+	u32 old_val = value;
+diff --git a/drivers/gpu/drm/msm/msm_fence.c b/drivers/gpu/drm/msm/msm_fence.c
+index 96599ec3eb783..1a5d4f1c8b422 100644
+--- a/drivers/gpu/drm/msm/msm_fence.c
++++ b/drivers/gpu/drm/msm/msm_fence.c
+@@ -191,6 +191,12 @@ msm_fence_init(struct dma_fence *fence, struct msm_fence_context *fctx)
  
- 	if (enable)
- 		value |= GMAC_CONFIG_RE | GMAC_CONFIG_TE;
- 	else
- 		value &= ~(GMAC_CONFIG_TE | GMAC_CONFIG_RE);
+ 	f->fctx = fctx;
  
--	writel(value, ioaddr + GMAC_CONFIG);
-+	if (value != old_val)
-+		writel(value, ioaddr + GMAC_CONFIG);
++	/*
++	 * Until this point, the fence was just some pre-allocated memory,
++	 * no-one should have taken a reference to it yet.
++	 */
++	WARN_ON(kref_read(&fence->refcount));
++
+ 	dma_fence_init(&f->base, &msm_fence_ops, &fctx->spinlock,
+ 		       fctx->context, ++fctx->last_fence);
  }
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index 9f5933c75e3df..10cad7b99bac8 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -86,7 +86,19 @@ void __msm_gem_submit_destroy(struct kref *kref)
+ 	}
  
- void stmmac_dwmac4_get_mac_addr(void __iomem *ioaddr, unsigned char *addr,
+ 	dma_fence_put(submit->user_fence);
+-	dma_fence_put(submit->hw_fence);
++
++	/*
++	 * If the submit is freed before msm_job_run(), then hw_fence is
++	 * just some pre-allocated memory, not a reference counted fence.
++	 * Once the job runs and the hw_fence is initialized, it will
++	 * have a refcount of at least one, since the submit holds a ref
++	 * to the hw_fence.
++	 */
++	if (kref_read(&submit->hw_fence->refcount) == 0) {
++		kfree(submit->hw_fence);
++	} else {
++		dma_fence_put(submit->hw_fence);
++	}
+ 
+ 	put_pid(submit->pid);
+ 	msm_submitqueue_put(submit->queue);
 -- 
-2.39.2
+2.40.1
 
 
 
