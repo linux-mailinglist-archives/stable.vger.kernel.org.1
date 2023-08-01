@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D584B76AF0D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6190D76AE02
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233303AbjHAJox (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45172 "EHLO
+        id S233137AbjHAJfc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233381AbjHAJo1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:27 -0400
+        with ESMTP id S233103AbjHAJfN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D258735BB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7E1448A
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C0496151D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD48C433C8;
-        Tue,  1 Aug 2023 09:41:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 213F8614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDB7C433C7;
+        Tue,  1 Aug 2023 09:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882911;
-        bh=gCc3wZgtQ9kTE1tSurjCAvY9hP66EAG8LgIocK7Nuds=;
+        s=korg; t=1690882374;
+        bh=tgKwbgpzRK/KwYyqzWd6IvLXjzSO9eCd/e2rFe+jTkM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z+d1rQXyH4xqnkWvEL4VKnAErDMJ4ByA9Lkui5csUh0H6MPA/THmwgEX1Bi4PPFRV
-         bvrOC1/jEVHyKPcIa+UipvR6SeSBIjwUmG22+w53d0MTky1JrozDVw9xDKW2ZG5PF+
-         h3dRFxefs9s+NpZ11+Cd2iAL32dOJu6Rijt75Wb0=
+        b=dQYWxTHyVYJwHi1xr49ABp77ZhLb571Bq2Z19RGlamnUq5Mrl6Ho/nY39Jxv2f3qH
+         VP3043yCodj505c6JfT7F491lihozithdJOYv3duI6K/BnLKsPmqQrjmQkaeYb3ASc
+         tfybLLPMRbHB/34mtBzsCL8NWVtGMJ6Mool21LK8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev,
+        D Scott Phillips <scott@os.amperecomputing.com>,
+        Darren Hart <darren@os.amperecomputing.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 047/239] jbd2: remove journal_clean_one_cp_list()
-Date:   Tue,  1 Aug 2023 11:18:31 +0200
-Message-ID: <20230801091927.262213772@linuxfoundation.org>
+Subject: [PATCH 6.1 054/228] arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at stage-2
+Date:   Tue,  1 Aug 2023 11:18:32 +0200
+Message-ID: <20230801091924.844204675@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,233 +58,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit b98dba273a0e47dbfade89c9af73c5b012a4eabb ]
+[ Upstream commit 6df696cd9bc1ceed0e92e36908f88bbd16d18255 ]
 
-journal_clean_one_cp_list() and journal_shrink_one_cp_list() are almost
-the same, so merge them into journal_shrink_one_cp_list(), remove the
-nr_to_scan parameter, always scan and try to free the whole checkpoint
-list.
+AmpereOne has an erratum in its implementation of FEAT_HAFDBS that
+required disabling the feature on the design. This was done by reporting
+the feature as not implemented in the ID register, although the
+corresponding control bits were not actually RES0. This does not align
+well with the requirements of the architecture, which mandates these
+bits be RES0 if HAFDBS isn't implemented.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+The kernel's use of stage-1 is unaffected, as the HA and HD bits are
+only set if HAFDBS is detected in the ID register. KVM, on the other
+hand, relies on the RES0 behavior at stage-2 to use the same value for
+VTCR_EL2 on any cpu in the system. Mitigate the non-RES0 behavior by
+leaving VTCR_EL2.HA clear on affected systems.
+
+Cc: stable@vger.kernel.org
+Cc: D Scott Phillips <scott@os.amperecomputing.com>
+Cc: Darren Hart <darren@os.amperecomputing.com>
+Acked-by: D Scott Phillips <scott@os.amperecomputing.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20230609220104.1836988-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c        | 75 +++++++++----------------------------
- include/trace/events/jbd2.h | 12 ++----
- 2 files changed, 21 insertions(+), 66 deletions(-)
+ Documentation/arm64/silicon-errata.rst |  3 +++
+ arch/arm64/Kconfig                     | 19 +++++++++++++++++++
+ arch/arm64/kernel/cpu_errata.c         |  7 +++++++
+ arch/arm64/kvm/hyp/pgtable.c           | 14 +++++++++++---
+ arch/arm64/tools/cpucaps               |  1 +
+ 5 files changed, 41 insertions(+), 3 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 723b4eb112828..42b34cab64fbd 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -349,50 +349,10 @@ int jbd2_cleanup_journal_tail(journal_t *journal)
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 55492fea44276..bbc80eff03f98 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -52,6 +52,9 @@ stable kernels.
+ | Allwinner      | A64/R18         | UNKNOWN1        | SUN50I_ERRATUM_UNKNOWN1     |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
++| Ampere         | AmpereOne       | AC03_CPU_38     | AMPERE_ERRATUM_AC03_CPU_38  |
+++----------------+-----------------+-----------------+-----------------------------+
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A510     | #2064142        | ARM64_ERRATUM_2064142       |
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 20ee745c118ae..d5eb2fbab473e 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -376,6 +376,25 @@ menu "Kernel Features"
  
- /* Checkpoint list management */
+ menu "ARM errata workarounds via the alternatives framework"
  
--/*
-- * journal_clean_one_cp_list
-- *
-- * Find all the written-back checkpoint buffers in the given list and
-- * release them. If 'destroy' is set, clean all buffers unconditionally.
-- *
-- * Called with j_list_lock held.
-- * Returns 1 if we freed the transaction, 0 otherwise.
-- */
--static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
--{
--	struct journal_head *last_jh;
--	struct journal_head *next_jh = jh;
--
--	if (!jh)
--		return 0;
--
--	last_jh = jh->b_cpprev;
--	do {
--		jh = next_jh;
--		next_jh = jh->b_cpnext;
--
--		if (!destroy && __cp_buffer_busy(jh))
--			return 0;
--
--		if (__jbd2_journal_remove_checkpoint(jh))
--			return 1;
--		/*
--		 * This function only frees up some memory
--		 * if possible so we dont have an obligation
--		 * to finish processing. Bail out if preemption
--		 * requested:
--		 */
--		if (need_resched())
--			return 0;
--	} while (jh != last_jh);
--
--	return 0;
--}
--
- /*
-  * journal_shrink_one_cp_list
-  *
-- * Find 'nr_to_scan' written-back checkpoint buffers in the given list
-+ * Find all the written-back checkpoint buffers in the given list
-  * and try to release them. If the whole transaction is released, set
-  * the 'released' parameter. Return the number of released checkpointed
-  * buffers.
-@@ -400,15 +360,15 @@ static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
-  * Called with j_list_lock held.
-  */
- static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
--						unsigned long *nr_to_scan,
--						bool *released)
-+						bool destroy, bool *released)
- {
- 	struct journal_head *last_jh;
- 	struct journal_head *next_jh = jh;
- 	unsigned long nr_freed = 0;
- 	int ret;
++config AMPERE_ERRATUM_AC03_CPU_38
++        bool "AmpereOne: AC03_CPU_38: Certain bits in the Virtualization Translation Control Register and Translation Control Registers do not follow RES0 semantics"
++	default y
++	help
++	  This option adds an alternative code sequence to work around Ampere
++	  erratum AC03_CPU_38 on AmpereOne.
++
++	  The affected design reports FEAT_HAFDBS as not implemented in
++	  ID_AA64MMFR1_EL1.HAFDBS, but (V)TCR_ELx.{HA,HD} are not RES0
++	  as required by the architecture. The unadvertised HAFDBS
++	  implementation suffers from an additional erratum where hardware
++	  A/D updates can occur after a PTE has been marked invalid.
++
++	  The workaround forces KVM to explicitly set VTCR_EL2.HA to 0,
++	  which avoids enabling unadvertised hardware Access Flag management
++	  at stage-2.
++
++	  If unsure, say Y.
++
+ config ARM64_WORKAROUND_CLEAN_CACHE
+ 	bool
  
--	if (!jh || *nr_to_scan == 0)
-+	*released = false;
-+	if (!jh)
- 		return 0;
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 89ac00084f38a..8dbf3c21ea22a 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -722,6 +722,13 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 		MIDR_FIXED(MIDR_CPU_VAR_REV(1,1), BIT(25)),
+ 		.cpu_enable = cpu_clear_bf16_from_user_emulation,
+ 	},
++#endif
++#ifdef CONFIG_AMPERE_ERRATUM_AC03_CPU_38
++	{
++		.desc = "AmpereOne erratum AC03_CPU_38",
++		.capability = ARM64_WORKAROUND_AMPERE_AC03_CPU_38,
++		ERRATA_MIDR_ALL_VERSIONS(MIDR_AMPERE1),
++	},
+ #endif
+ 	{
+ 	}
+diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+index 8f37e65c23eea..ae5f6b5ac80fd 100644
+--- a/arch/arm64/kvm/hyp/pgtable.c
++++ b/arch/arm64/kvm/hyp/pgtable.c
+@@ -598,10 +598,18 @@ u64 kvm_get_vtcr(u64 mmfr0, u64 mmfr1, u32 phys_shift)
+ #ifdef CONFIG_ARM64_HW_AFDBM
+ 	/*
+ 	 * Enable the Hardware Access Flag management, unconditionally
+-	 * on all CPUs. The features is RES0 on CPUs without the support
+-	 * and must be ignored by the CPUs.
++	 * on all CPUs. In systems that have asymmetric support for the feature
++	 * this allows KVM to leverage hardware support on the subset of cores
++	 * that implement the feature.
++	 *
++	 * The architecture requires VTCR_EL2.HA to be RES0 (thus ignored by
++	 * hardware) on implementations that do not advertise support for the
++	 * feature. As such, setting HA unconditionally is safe, unless you
++	 * happen to be running on a design that has unadvertised support for
++	 * HAFDBS. Here be dragons.
+ 	 */
+-	vtcr |= VTCR_EL2_HA;
++	if (!cpus_have_final_cap(ARM64_WORKAROUND_AMPERE_AC03_CPU_38))
++		vtcr |= VTCR_EL2_HA;
+ #endif /* CONFIG_ARM64_HW_AFDBM */
  
- 	last_jh = jh->b_cpprev;
-@@ -416,8 +376,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 		jh = next_jh;
- 		next_jh = jh->b_cpnext;
- 
--		(*nr_to_scan)--;
--		if (__cp_buffer_busy(jh))
-+		if (!destroy && __cp_buffer_busy(jh))
- 			continue;
- 
- 		nr_freed++;
-@@ -429,7 +388,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 
- 		if (need_resched())
- 			break;
--	} while (jh != last_jh && *nr_to_scan);
-+	} while (jh != last_jh);
- 
- 	return nr_freed;
- }
-@@ -447,11 +406,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 						  unsigned long *nr_to_scan)
- {
- 	transaction_t *transaction, *last_transaction, *next_transaction;
--	bool released;
-+	bool __maybe_unused released;
- 	tid_t first_tid = 0, last_tid = 0, next_tid = 0;
- 	tid_t tid = 0;
- 	unsigned long nr_freed = 0;
--	unsigned long nr_scanned = *nr_to_scan;
-+	unsigned long freed;
- 
- again:
- 	spin_lock(&journal->j_list_lock);
-@@ -480,10 +439,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 		transaction = next_transaction;
- 		next_transaction = transaction->t_cpnext;
- 		tid = transaction->t_tid;
--		released = false;
- 
--		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_list,
--						       nr_to_scan, &released);
-+		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-+						   false, &released);
-+		nr_freed += freed;
-+		(*nr_to_scan) -= min(*nr_to_scan, freed);
- 		if (*nr_to_scan == 0)
- 			break;
- 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
-@@ -504,9 +464,8 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 	if (*nr_to_scan && next_tid)
- 		goto again;
- out:
--	nr_scanned -= *nr_to_scan;
- 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
--					  nr_freed, nr_scanned, next_tid);
-+					  nr_freed, next_tid);
- 
- 	return nr_freed;
- }
-@@ -522,7 +481,7 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- {
- 	transaction_t *transaction, *last_transaction, *next_transaction;
--	int ret;
-+	bool released;
- 
- 	transaction = journal->j_checkpoint_transactions;
- 	if (!transaction)
-@@ -533,8 +492,8 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 	do {
- 		transaction = next_transaction;
- 		next_transaction = transaction->t_cpnext;
--		ret = journal_clean_one_cp_list(transaction->t_checkpoint_list,
--						destroy);
-+		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-+					   destroy, &released);
- 		/*
- 		 * This function only frees up some memory if possible so we
- 		 * dont have an obligation to finish processing. Bail out if
-@@ -547,7 +506,7 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 		 * avoids pointless scanning of transactions which still
- 		 * weren't checkpointed.
- 		 */
--		if (!ret)
-+		if (!released)
- 			return;
- 	} while (transaction != last_transaction);
- }
-diff --git a/include/trace/events/jbd2.h b/include/trace/events/jbd2.h
-index 8f5ee380d3093..5646ae15a957a 100644
---- a/include/trace/events/jbd2.h
-+++ b/include/trace/events/jbd2.h
-@@ -462,11 +462,9 @@ TRACE_EVENT(jbd2_shrink_scan_exit,
- TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 
- 	TP_PROTO(journal_t *journal, tid_t first_tid, tid_t tid, tid_t last_tid,
--		 unsigned long nr_freed, unsigned long nr_scanned,
--		 tid_t next_tid),
-+		 unsigned long nr_freed, tid_t next_tid),
- 
--	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed,
--		nr_scanned, next_tid),
-+	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed, next_tid),
- 
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
-@@ -474,7 +472,6 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 		__field(tid_t, tid)
- 		__field(tid_t, last_tid)
- 		__field(unsigned long, nr_freed)
--		__field(unsigned long, nr_scanned)
- 		__field(tid_t, next_tid)
- 	),
- 
-@@ -484,15 +481,14 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 		__entry->tid		= tid;
- 		__entry->last_tid	= last_tid;
- 		__entry->nr_freed	= nr_freed;
--		__entry->nr_scanned	= nr_scanned;
- 		__entry->next_tid	= next_tid;
- 	),
- 
- 	TP_printk("dev %d,%d shrink transaction %u-%u(%u) freed %lu "
--		  "scanned %lu next transaction %u",
-+		  "next transaction %u",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
- 		  __entry->first_tid, __entry->tid, __entry->last_tid,
--		  __entry->nr_freed, __entry->nr_scanned, __entry->next_tid)
-+		  __entry->nr_freed, __entry->next_tid)
- );
- 
- #endif /* _TRACE_JBD2_H */
+ 	/* Set the vmid bits */
+diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+index f1c0347ec31a8..14d31d1b2ff02 100644
+--- a/arch/arm64/tools/cpucaps
++++ b/arch/arm64/tools/cpucaps
+@@ -71,6 +71,7 @@ WORKAROUND_2064142
+ WORKAROUND_2077057
+ WORKAROUND_2457168
+ WORKAROUND_2658417
++WORKAROUND_AMPERE_AC03_CPU_38
+ WORKAROUND_TRBE_OVERWRITE_FILL_MODE
+ WORKAROUND_TSB_FLUSH_FAILURE
+ WORKAROUND_TRBE_WRITE_OUT_OF_RANGE
 -- 
 2.39.2
 
