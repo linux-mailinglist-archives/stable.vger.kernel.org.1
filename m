@@ -2,42 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F8976BD52
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 21:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E39676BD57
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 21:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229819AbjHATHj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 15:07:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43470 "EHLO
+        id S231697AbjHATJZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 15:09:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230157AbjHATHi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 15:07:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781E4115;
-        Tue,  1 Aug 2023 12:07:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S230157AbjHATJY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 15:09:24 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CC1F1BF1;
+        Tue,  1 Aug 2023 12:09:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=bVP85O9/QcNBPIvfcxax7LD7hWg5oCRrHtBzjxz8bi4=; b=WIo8351O6aN09tVsscNgMq+qor
+        xOZP9/a7mh273Btla3YmqEMCZnBtPeJjHw6u5T7VA6FxqJRFehzBcG6QBIC3FZ6goP173sts64DnD
+        gpcB6/u9ZpcBnGWmYMY0Uw1S47k5JWvL5vGNAMzoAL276v7iIVVxRAAQBm5c9g81MwqE5miESZk91
+        e2+LHOZmkHpK2qB9X+b46spycuXObuWAMu0v0zd1yNNTv1xiUG25Al+dPk4rwpPd5MeOuBZilsg3x
+        ysx+ZazrzVRb44wiSKmxLKaVf7k//WZwMTwYlWQGybC1VHtyV6ZI6J1AtwICDlav4vLoSRtGhyw3W
+        gyeoy/JQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qQujl-00AUuc-PR; Tue, 01 Aug 2023 19:08:53 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15EAC6169A;
-        Tue,  1 Aug 2023 19:07:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EB0C433C8;
-        Tue,  1 Aug 2023 19:07:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1690916856;
-        bh=57zf9Om8vODBq+bZ9BTVlxd4r7eOmAAn53S8KsVVpcg=;
-        h=Date:To:From:Subject:From;
-        b=0IlcmEZXf7YG7pePXraHjg3zwpuKeNsPvwWtmu/Nbdj3fw4TW0qgeJ2W8WD1XoBKO
-         wguBYNffBmMaRv6wQEvty/UWo6eBJtbNoSgwlfi8a5tXjmnRtK358rgkk9yuRDRHzy
-         FUQs2X7ZHx30HHA8jVhuPrEIbpQht4KZ5U1KxPKk=
-Date:   Tue, 01 Aug 2023 12:07:35 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-initialize-damo_filter-list-from-damos_new_filter.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230801190736.65EB0C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 92BF6300134;
+        Tue,  1 Aug 2023 21:08:52 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 81821201BD3C3; Tue,  1 Aug 2023 21:08:52 +0200 (CEST)
+Date:   Tue, 1 Aug 2023 21:08:52 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Roy Hopkins <rhopkins@suse.de>,
+        Joel Fernandes <joel@joelfernandes.org>, paulmck@kernel.org,
+        Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Marco Elver <elver@google.com>
+Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
+ 6.4.7-rc1 review)
+Message-ID: <20230801190852.GG11704@hirez.programming.kicks-ass.net>
+References: <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
+ <20230731141934.GK29590@hirez.programming.kicks-ass.net>
+ <20230731143954.GB37820@hirez.programming.kicks-ass.net>
+ <f5a18aa3-9db7-6ad2-33d5-3335a18e4e2f@roeck-us.net>
+ <20230731145232.GM29590@hirez.programming.kicks-ass.net>
+ <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
+ <20230731161452.GA40850@hirez.programming.kicks-ass.net>
+ <baa58a8e-54f0-2309-b34e-d62999a452a1@roeck-us.net>
+ <20230731211517.GA51835@hirez.programming.kicks-ass.net>
+ <a05743a3-4dec-6af7-302f-d1d2a0db7d3e@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a05743a3-4dec-6af7-302f-d1d2a0db7d3e@roeck-us.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,66 +78,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Aug 01, 2023 at 10:32:45AM -0700, Guenter Roeck wrote:
+> On 7/31/23 14:15, Peter Zijlstra wrote:
+> > On Mon, Jul 31, 2023 at 09:34:29AM -0700, Guenter Roeck wrote:
+> > > > Ha!, I was poking around the same thing. My hack below seems to (so far,
+> > > > <20 boots) help things.
+> > > > 
+> > > 
+> > > So, dumb question:
+> > > How comes this bisects to "sched/fair: Remove sched_feat(START_DEBIT)" ?
+> > 
+> > That commit changes the timings of things; dumb luck otherwise.
+> 
+> Kind of scary. So I only experienced the problem because the START_DEBIT patch
+> happened to be queued roughly at the same time, and it might otherwise have
+> found its way unnoticed into the upstream kernel. That makes me wonder if this
+> or other similar patches may uncover similar problems elsewhere in the kernel
+> (i.e., either hide new or existing race conditions or expose existing ones).
+> 
+> This in turn makes me wonder if it would be possible to define a test which
+> would uncover such problems without the START_DEBIT patch. Any idea ?
 
-The patch titled
-     Subject: mm/damon/core: initialize damo_filter->list from damos_new_filter()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-initialize-damo_filter-list-from-damos_new_filter.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-initialize-damo_filter-list-from-damos_new_filter.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: initialize damo_filter->list from damos_new_filter()
-Date: Sat, 29 Jul 2023 20:37:32 +0000
-
-damos_new_filter() is not initializing the list field of newly allocated
-filter object.  However, DAMON sysfs interface and DAMON_RECLAIM are not
-initializing it after calling damos_new_filter().  As a result, accessing
-uninitialized memory is possible.  Actually, adding multiple DAMOS filters
-via DAMON sysfs interface caused NULL pointer dereferencing.  Initialize
-the field just after the allocation from damos_new_filter().
-
-Link: https://lkml.kernel.org/r/20230729203733.38949-2-sj@kernel.org
-Fixes: 98def236f63c ("mm/damon/core: implement damos filter")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/core.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/mm/damon/core.c~mm-damon-core-initialize-damo_filter-list-from-damos_new_filter
-+++ a/mm/damon/core.c
-@@ -273,6 +273,7 @@ struct damos_filter *damos_new_filter(en
- 		return NULL;
- 	filter->type = type;
- 	filter->matching = matching;
-+	INIT_LIST_HEAD(&filter->list);
- 	return filter;
- }
- 
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-core-initialize-damo_filter-list-from-damos_new_filter.patch
-mm-damon-core-test-add-a-test-for-damos_new_filter.patch
-
+IIRC some of the thread sanitizers use breakpoints to inject random
+sleeps, specifically to tickle races.
