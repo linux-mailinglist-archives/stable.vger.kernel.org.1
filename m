@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB5C76AF8B
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3259C76AD51
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233643AbjHAJsi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45760 "EHLO
+        id S231635AbjHAJ2W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233875AbjHAJsX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D856E48
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:51 -0700 (PDT)
+        with ESMTP id S231793AbjHAJ1r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63D526AD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8787F614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F1AC433B8;
-        Tue,  1 Aug 2023 09:46:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A55A761508
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EECC433C8;
+        Tue,  1 Aug 2023 09:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883210;
-        bh=RL9RBXmGnk83Lglxc1dK+n6oKfAAOT68XQuTr52dmGk=;
+        s=korg; t=1690882001;
+        bh=YO5Xr6Xew+pHeFGfcchE1IpaRZJpl4xSWu0oyU8W8nQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pK7X/ptj0Beue5Zik7CXgQZuyIvUjptkbIcU1pBNoBp1uTjT5s289t8LwsCa96lyq
-         6M8fabp+V1Hp4+WzJa462k3DANGloQmh+UurQ1qz0J+0xxylyxKrHchOueC5X5oPe7
-         k5ctELsVcYJfyiYv8tTiU1VNZa610Yze3Wc13k+c=
+        b=clzosYDTofNT0ealy7DA7t/Mlka3HJy8h1mRdOhkE4bgaL3fUCC/RgnqzlJK2piJn
+         Zlabbov+VvDeaMiixsMXlVq1kQJoZ8jvmIOYY5cDuGSFyTuTHSjfdcs4WRl6UFkTNm
+         0fgLfZhriY4M0z2lkk2ndBBf5wodMIpVO9mNlRwE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerry Meng <jerry-meng@foxmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.4 153/239] USB: serial: option: support Quectel EM060K_128
+        patches@lists.linux.dev, Jim Mattson <jmattson@google.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.15 105/155] KVM: VMX: Dont fudge CR0 and CR4 for restricted L2 guest
 Date:   Tue,  1 Aug 2023 11:20:17 +0200
-Message-ID: <20230801091931.169334509@linuxfoundation.org>
+Message-ID: <20230801091913.985109985@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +55,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jerry Meng <jerry-meng@foxmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 4f7cab49cecee16120d27c1734cfdf3d6c0e5329 upstream.
+commit c4abd7352023aa96114915a0bb2b88016a425cda upstream.
 
-EM060K_128 is EM060K's sub-model, having the same name "Quectel EM060K-GL"
+Stuff CR0 and/or CR4 to be compliant with a restricted guest if and only
+if KVM itself is not configured to utilize unrestricted guests, i.e. don't
+stuff CR0/CR4 for a restricted L2 that is running as the guest of an
+unrestricted L1.  Any attempt to VM-Enter a restricted guest with invalid
+CR0/CR4 values should fail, i.e. in a nested scenario, KVM (as L0) should
+never observe a restricted L2 with incompatible CR0/CR4, since nested
+VM-Enter from L1 should have failed.
 
-MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+And if KVM does observe an active, restricted L2 with incompatible state,
+e.g. due to a KVM bug, fudging CR0/CR4 instead of letting VM-Enter fail
+does more harm than good, as KVM will often neglect to undo the side
+effects, e.g. won't clear rmode.vm86_active on nested VM-Exit, and thus
+the damage can easily spill over to L1.  On the other hand, letting
+VM-Enter fail due to bad guest state is more likely to contain the damage
+to L2 as KVM relies on hardware to perform most guest state consistency
+checks, i.e. KVM needs to be able to reflect a failed nested VM-Enter into
+L1 irrespective of (un)restricted guest behavior.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0128 Rev= 5.04
-S:  Manufacturer=Quectel
-S:  Product=Quectel EM060K-GL
-S:  SerialNumber=f6fa08b6
-C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Jerry Meng <jerry-meng@foxmail.com>
+Cc: Jim Mattson <jmattson@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: bddd82d19e2e ("KVM: nVMX: KVM needs to unset "unrestricted guest" VM-execution control in vmcs02 if vmcs12 doesn't set it")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230613203037.1968489-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kvm/vmx/vmx.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -251,6 +251,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
- #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
- #define QUECTEL_PRODUCT_EC25			0x0125
-+#define QUECTEL_PRODUCT_EM060K_128		0x0128
- #define QUECTEL_PRODUCT_EG91			0x0191
- #define QUECTEL_PRODUCT_EG95			0x0195
- #define QUECTEL_PRODUCT_BG96			0x0296
-@@ -1197,6 +1198,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x40) },
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1416,6 +1416,11 @@ void vmx_set_rflags(struct kvm_vcpu *vcp
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	unsigned long old_rflags;
+ 
++	/*
++	 * Unlike CR0 and CR4, RFLAGS handling requires checking if the vCPU
++	 * is an unrestricted guest in order to mark L2 as needing emulation
++	 * if L1 runs L2 as a restricted guest.
++	 */
+ 	if (is_unrestricted_guest(vcpu)) {
+ 		kvm_register_mark_available(vcpu, VCPU_EXREG_RFLAGS);
+ 		vmx->rflags = rflags;
+@@ -3088,7 +3093,7 @@ void vmx_set_cr0(struct kvm_vcpu *vcpu,
+ 	old_cr0_pg = kvm_read_cr0_bits(vcpu, X86_CR0_PG);
+ 
+ 	hw_cr0 = (cr0 & ~KVM_VM_CR0_ALWAYS_OFF);
+-	if (is_unrestricted_guest(vcpu))
++	if (enable_unrestricted_guest)
+ 		hw_cr0 |= KVM_VM_CR0_ALWAYS_ON_UNRESTRICTED_GUEST;
+ 	else {
+ 		hw_cr0 |= KVM_VM_CR0_ALWAYS_ON;
+@@ -3116,7 +3121,7 @@ void vmx_set_cr0(struct kvm_vcpu *vcpu,
+ 	}
+ #endif
+ 
+-	if (enable_ept && !is_unrestricted_guest(vcpu)) {
++	if (enable_ept && !enable_unrestricted_guest) {
+ 		/*
+ 		 * Ensure KVM has an up-to-date snapshot of the guest's CR3.  If
+ 		 * the below code _enables_ CR3 exiting, vmx_cache_reg() will
+@@ -3239,7 +3244,7 @@ void vmx_set_cr4(struct kvm_vcpu *vcpu,
+ 	unsigned long hw_cr4;
+ 
+ 	hw_cr4 = (cr4_read_shadow() & X86_CR4_MCE) | (cr4 & ~X86_CR4_MCE);
+-	if (is_unrestricted_guest(vcpu))
++	if (enable_unrestricted_guest)
+ 		hw_cr4 |= KVM_VM_CR4_ALWAYS_ON_UNRESTRICTED_GUEST;
+ 	else if (vmx->rmode.vm86_active)
+ 		hw_cr4 |= KVM_RMODE_VM_CR4_ALWAYS_ON;
+@@ -3259,7 +3264,7 @@ void vmx_set_cr4(struct kvm_vcpu *vcpu,
+ 	vcpu->arch.cr4 = cr4;
+ 	kvm_register_mark_available(vcpu, VCPU_EXREG_CR4);
+ 
+-	if (!is_unrestricted_guest(vcpu)) {
++	if (!enable_unrestricted_guest) {
+ 		if (enable_ept) {
+ 			if (!is_paging(vcpu)) {
+ 				hw_cr4 &= ~X86_CR4_PAE;
 
 
