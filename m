@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E132076ADD3
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6EC476AF5F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232982AbjHAJdv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
+        id S233502AbjHAJq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233303AbjHAJdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC31B4ED9
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:24 -0700 (PDT)
+        with ESMTP id S233525AbjHAJo6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780281BD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02FC361511
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117B4C433C8;
-        Tue,  1 Aug 2023 09:31:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F3AB9614FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102DEC433C8;
+        Tue,  1 Aug 2023 09:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882267;
-        bh=LKJVr04grVPhYAiQAmW9rlGWFRAAlQubJBvFgVHc3f8=;
+        s=korg; t=1690882966;
+        bh=MZnXpx9dRTQM+9OT+78YOBTpervD520XISPh+SST6mU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nq1IsfIHyfthVcpzlro2CWo/CHFIodNQwcpm3cutNPXAa5woVzzF/iwcrhcuh/KtD
-         4EqRHuzqciNgjy8gsU1VZzZpoA+bBBAyBqM+FJMpZFN5EYm/7RlkAa4BHViTpvdhfe
-         R/Y5vgD4yT9ZZRPE69YdEvo1TjX4OEqDXwZ8ixPA=
+        b=0gWlg991qva/TBQqfLAh3s11lC7zyad2sIrk7j7wgzmf2wG2U7OJUkh++NpanIbYk
+         ZWNSl/mv9SRwjUk9d1R4smONAZ4GZgGVWjfhdSsr183gh8Voli7nOLB6wbUHjt5rAw
+         DHOPOIIX+0nGi45U6HSiytZtd4V7CwzETjHjmHUE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
+        patches@lists.linux.dev, Sean Wang <sean.ns.wang@amd.com>,
+        Marc Rossi <Marc.Rossi@amd.com>,
+        Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
+        "Tsung-hua (Ryan) Lin" <Tsung-hua.Lin@amd.com>,
         Mario Limonciello <mario.limonciello@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Stylon Wang <stylon.wang@amd.com>,
-        Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
-        Charlene Liu <Charlene.Liu@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/228] drm/amd/display: fix dcn315 single stream crb allocation
+Subject: [PATCH 6.4 038/239] drm/amd/display: Set minimum requirement for using PSR-SU on Phoenix
 Date:   Tue,  1 Aug 2023 11:18:22 +0200
-Message-ID: <20230801091924.479706591@linuxfoundation.org>
+Message-ID: <20230801091926.959825361@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,76 +60,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 49f26218c344741cb3eaa740b1e44e960551a87f ]
+[ Upstream commit cd2e31a9ab93d13c412a36c6e26811e0f830985b ]
 
-Change to improve avoiding asymetric crb calculations for single stream
-scenarios.
+The same parade TCON issue can potentially happen on Phoenix, and the same
+PSR resilience changes have been ported into the DMUB firmware.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Don't allow running PSR-SU unless on the newer firmware.
+
 Cc: stable@vger.kernel.org
-Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
-Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Cc: Sean Wang <sean.ns.wang@amd.com>
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Cc: Tsung-hua (Ryan) Lin <Tsung-hua.Lin@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dcn315/dcn315_resource.c   | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c | 5 +++++
+ drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h | 2 ++
+ drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c    | 1 +
+ 3 files changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-index 88c4a378daa12..b9b1e5ac4f538 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-@@ -1662,6 +1662,10 @@ static bool allow_pixel_rate_crb(struct dc *dc, struct dc_state *context)
- 	int i;
- 	struct resource_context *res_ctx = &context->res_ctx;
- 
-+	/*Don't apply for single stream*/
-+	if (context->stream_count < 2)
-+		return false;
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
+index 48a06dbd9be78..f161aeb7e7c4a 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
+@@ -60,3 +60,8 @@ const struct dmub_srv_dcn31_regs dmub_srv_dcn314_regs = {
+ 	{ DMUB_DCN31_FIELDS() },
+ #undef DMUB_SF
+ };
 +
- 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
- 		if (!res_ctx->pipe_ctx[i].stream)
- 			continue;
-@@ -1749,19 +1753,23 @@ static int dcn315_populate_dml_pipes_from_context(
- 		pipe_cnt++;
- 	}
++bool dmub_dcn314_is_psrsu_supported(struct dmub_srv *dmub)
++{
++	return dmub->fw_version >= DMUB_FW_VERSION(8, 0, 16);
++}
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
+index 674267a2940e9..f213bd82c9110 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
+@@ -30,4 +30,6 @@
  
--	/* Spread remaining unreserved crb evenly among all pipes, use default policy if not enough det or single pipe */
-+	/* Spread remaining unreserved crb evenly among all pipes*/
- 	if (pixel_rate_crb) {
- 		for (i = 0, pipe_cnt = 0, crb_idx = 0; i < dc->res_pool->pipe_count; i++) {
- 			pipe = &res_ctx->pipe_ctx[i];
- 			if (!pipe->stream)
- 				continue;
+ extern const struct dmub_srv_dcn31_regs dmub_srv_dcn314_regs;
  
-+			/* Do not use asymetric crb if not enough for pstate support */
-+			if (remaining_det_segs < 0) {
-+				pipes[pipe_cnt].pipe.src.det_size_override = 0;
-+				continue;
-+			}
++bool dmub_dcn314_is_psrsu_supported(struct dmub_srv *dmub);
 +
- 			if (!pipe->top_pipe && !pipe->prev_odm_pipe) {
- 				bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
- 						|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
- 
--				if (remaining_det_segs < 0 || crb_pipes == 1)
--					pipes[pipe_cnt].pipe.src.det_size_override = 0;
- 				if (remaining_det_segs > MIN_RESERVED_DET_SEGS)
- 					pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
- 							(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
-@@ -1777,6 +1785,7 @@ static int dcn315_populate_dml_pipes_from_context(
- 				}
- 				/* Convert segments into size for DML use */
- 				pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
-+
- 				crb_idx++;
- 			}
- 			pipe_cnt++;
+ #endif /* _DMUB_DCN314_H_ */
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+index 0f43a05a41874..0dab22d794808 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+@@ -229,6 +229,7 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
+ 	case DMUB_ASIC_DCN316:
+ 		if (asic == DMUB_ASIC_DCN314) {
+ 			dmub->regs_dcn31 = &dmub_srv_dcn314_regs;
++			funcs->is_psrsu_supported = dmub_dcn314_is_psrsu_supported;
+ 		} else if (asic == DMUB_ASIC_DCN315) {
+ 			dmub->regs_dcn31 = &dmub_srv_dcn315_regs;
+ 		} else if (asic == DMUB_ASIC_DCN316) {
 -- 
 2.39.2
 
