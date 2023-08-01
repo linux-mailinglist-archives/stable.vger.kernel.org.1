@@ -2,65 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8FFE76BD5C
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 21:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41C7B76BD67
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 21:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjHATKG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 15:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44612 "EHLO
+        id S230442AbjHATLI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 15:11:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229873AbjHATKF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 15:10:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 262571BF0;
-        Tue,  1 Aug 2023 12:10:04 -0700 (PDT)
+        with ESMTP id S230138AbjHATLH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 15:11:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AB21FFD;
+        Tue,  1 Aug 2023 12:11:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFA156168C;
-        Tue,  1 Aug 2023 19:10:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0F8C433C7;
-        Tue,  1 Aug 2023 19:10:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E75E616AE;
+        Tue,  1 Aug 2023 19:11:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E61C433C7;
+        Tue,  1 Aug 2023 19:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690917003;
-        bh=WmZPoZ2ncAPbHyIi412gnUY6DHW9Ve1TXWYRZhaL/6k=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=soesqq4mcDw1KGEMbIxztwJDTTm65/Q75or6DwbtQBcu06HxRy39XXYaf1CdpKHn/
-         01+tKdoM5iE4eLEHrIpIyUuLW1wXwgLcjRKGrun79bpyN3JBke61kFc4HOrmRDXS17
-         UvG2K8ZAZrqoCPrmxfqaH4u53jy+mKVyfBKjKCnMj9pVz8SbIMrXiblkyjTIrxjFP6
-         Fz/jekuvN4DwND/sntPyXAEQWRg/d4DkMwc0rEnDZ7VLhSOb1W+PVXCIiJ6aURaltF
-         m3R689cXlQBoPgPLtcTcKsecLKe0Cfm1332ZDQIwiD4p4unVSieyqn8TX6B6aiaHRX
-         BuZDlcH31WsuA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 01 Aug 2023 22:09:58 +0300
-Message-Id: <CUHG1TB7IELF.PVXOXEXBGEPP@suppilovahvero>
-Cc:     "Daniil Stas" <daniil.stas@posteo.net>,
-        "Mario Limonciello" <mario.limonciello@amd.com>,
-        <James.Bottomley@hansenpartnership.com>, <Jason@zx2c4.com>,
-        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <regressions@leemhuis.info>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Linus Torvalds" <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.14.0
-References: <20230727183805.69c36d6e@g14>
- <b1dd27df-744b-3977-0a86-f5dde8e24288@amd.com>
- <20230727193949.55c18805@g14>
- <65a1c307-826d-4ca3-0336-07a185684e5d@amd.com>
- <20230727195019.41abb48d@g14>
- <67eefe98-e6df-e152-3169-44329e22478d@amd.com>
- <20230727200527.4080c595@g14>
- <CAHk-=whqT0PxBazwfjWwoHQQFzZt50tV6Jfgq3iYceKMJtyuUg@mail.gmail.com>
- <CUGAV1Y993FB.1O2Q691015Z2C@seitikki>
- <CAHk-=whphk8Jp=NYmnm7Qv+vZ6ScYCz+rV8a2G1nD-AQY3z+mQ@mail.gmail.com>
- <CUHF67ZOFOTN.1UFE7Q1IFRQMX@suppilovahvero>
- <CAHk-=wgK0Z-LrJGExwG=e=oxjD93LJhY3jMmi_2O2_Pkjf8Tsg@mail.gmail.com>
-In-Reply-To: <CAHk-=wgK0Z-LrJGExwG=e=oxjD93LJhY3jMmi_2O2_Pkjf8Tsg@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        s=k20201202; t=1690917064;
+        bh=I5IRbbk5GYsrJAddIdo+1EAx+W7o18ZR/bm/hKMCs0U=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=nUeYYOy2Gu9i2qPYiR+4CKM2bYReaet0i38eiL8kxwMksQ1i/bxlHN4OK1RZ8A6p8
+         5ED7U2ui0RUWLiURWSl2vCgwX10E4yqjMrnBMWQ0DcdXzDSqohk7H8AZ/WLcNVgJYx
+         +M3oTCc9tpoHIyJVc8aOyQLP58p3x8UzK6th8cOaF/2VZZYk0cxPQqKJfiHWZ8yQEa
+         mkKhi0koiAJDUx77Zey9rR6VIn1Zr2Wk6uRoMj0OS6dq9uXdEChiT7gdWyqYJsDLUs
+         uXoB4oRObaHkc6Wuwptx3UHgaOABBy2Vdj5xNODaG7DxCOwx7Z6qkASybTS9SxWflG
+         gaG/fmTC3meHQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id 42F01CE0908; Tue,  1 Aug 2023 12:11:04 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 12:11:04 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Roy Hopkins <rhopkins@suse.de>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Pavel Machek <pavel@denx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
+Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
+ 6.4.7-rc1 review)
+Message-ID: <8215f037-63e9-4e92-8403-c5431ada9cc9@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
+ <20230731141934.GK29590@hirez.programming.kicks-ass.net>
+ <20230731143954.GB37820@hirez.programming.kicks-ass.net>
+ <f5a18aa3-9db7-6ad2-33d5-3335a18e4e2f@roeck-us.net>
+ <20230731145232.GM29590@hirez.programming.kicks-ass.net>
+ <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
+ <20230731161452.GA40850@hirez.programming.kicks-ass.net>
+ <baa58a8e-54f0-2309-b34e-d62999a452a1@roeck-us.net>
+ <20230731211517.GA51835@hirez.programming.kicks-ass.net>
+ <a05743a3-4dec-6af7-302f-d1d2a0db7d3e@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a05743a3-4dec-6af7-302f-d1d2a0db7d3e@roeck-us.net>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,64 +77,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue Aug 1, 2023 at 9:42 PM EEST, Linus Torvalds wrote:
-> On Tue, 1 Aug 2023 at 11:28, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > I would disable it inside tpm_crb driver, which is the driver used
-> > for fTPM's: they are identified by MSFT0101 ACPI identifier.
-> >
-> > I think the right scope is still AMD because we don't have such
-> > regressions with Intel fTPM.
->
-> I'm ok with that.
->
-> > I.e. I would move the helper I created inside tpm_crb driver, and
-> > a new flag, let's say "TPM_CHIP_FLAG_HWRNG_DISABLED", which tpm_crb
-> > sets before calling tpm_chip_register().
-> >
-> > Finally, tpm_add_hwrng() needs the following invariant:
-> >
-> >         if (chip->flags & TPM_CHIP_FLAG_HWRNG_DISABLED)
-> >                 return 0;
-> >
-> > How does this sound? I can refine this quickly from my first trial.
->
-> Sounds fine.
+On Tue, Aug 01, 2023 at 10:32:45AM -0700, Guenter Roeck wrote:
+> On 7/31/23 14:15, Peter Zijlstra wrote:
+> > On Mon, Jul 31, 2023 at 09:34:29AM -0700, Guenter Roeck wrote:
+> > > > Ha!, I was poking around the same thing. My hack below seems to (so far,
+> > > > <20 boots) help things.
+> > > > 
+> > > 
+> > > So, dumb question:
+> > > How comes this bisects to "sched/fair: Remove sched_feat(START_DEBIT)" ?
+> > 
+> > That commit changes the timings of things; dumb luck otherwise.
+> 
+> Kind of scary. So I only experienced the problem because the START_DEBIT patch
+> happened to be queued roughly at the same time, and it might otherwise have
+> found its way unnoticed into the upstream kernel. That makes me wonder if this
+> or other similar patches may uncover similar problems elsewhere in the kernel
+> (i.e., either hide new or existing race conditions or expose existing ones).
+> 
+> This in turn makes me wonder if it would be possible to define a test which
+> would uncover such problems without the START_DEBIT patch. Any idea ?
 
-Mario, it would be good if you could send a fix candidate but take my
-suggestion for a new TPM chip flag into account, while doing it. Please
-send it as a separate patch, not attachment to this thread.
+Thank you all for tracking this down!
 
-I can test and ack it, if it looks reasonable.
+One way is to put a schedule_timeout_idle(100) right before the call to
+rcu_tasks_one_gp() from synchronize_rcu_tasks_generic().  That is quite
+specific to this particular issue, but it does have the virtue of making
+it actually happen in my testing.
 
-> My only worry comes from my ignorance: do these fTPM devices *always*
-> end up being enumerated through CRB, or do they potentially look
-> "normal enough" that you can actually end up using them even without
-> having that CRB driver loaded?
+There have been a few academic projects that inject delays at points
+chosen by various heuristics plus some randomness.  But this would be
+a bit of a challenge to those because each kernel only passes through
+this window once at boot time.
 
-I know that QEMU has TPM passthrough but I don't know how it behaves
-exactly.
+Please see below for my preferred fix.  Does this work for you guys?
 
-> Put another way: is the CRB driver the _only_ way they are visible, or
-> could some people hit on this through the TPM TIS interface if they
-> have CRB disabled?
+Back to figuring out why recent kernels occasionally to blow up all
+rcutorture guest OSes...
 
-I'm not aware of such implementations.
+							Thanx, Paul
 
-> I see, for example, that qemu ends up emulating the TIS layer, and it
-> might end up forwarding the TPM requests to something that is natively
-> CRB?
->
-> But again: I don't know enough about CRB vs TIS, so the above may be a
-> stupid question.
->
->            Linus
+------------------------------------------------------------------------
 
-I would focus exactly what is known not to work and disable exactly
-that.
-
-If someone still wants to enable TPM on such hardware, we can later
-on add a kernel command-line flag to enforce hwrng. This ofc based
-on user feedback, not something I would add right now.
-
-BR, Jarkko
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index 7294be62727b..2d5b8385c357 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -570,10 +570,12 @@ static void rcu_tasks_one_gp(struct rcu_tasks *rtp, bool midboot)
+ 	if (unlikely(midboot)) {
+ 		needgpcb = 0x2;
+ 	} else {
++		mutex_unlock(&rtp->tasks_gp_mutex);
+ 		set_tasks_gp_state(rtp, RTGS_WAIT_CBS);
+ 		rcuwait_wait_event(&rtp->cbs_wait,
+ 				   (needgpcb = rcu_tasks_need_gpcb(rtp)),
+ 				   TASK_IDLE);
++		mutex_lock(&rtp->tasks_gp_mutex);
+ 	}
+ 
+ 	if (needgpcb & 0x2) {
