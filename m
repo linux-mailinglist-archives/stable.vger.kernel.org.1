@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1163876AD9C
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A60ED76AEDD
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233026AbjHAJaw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:30:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57960 "EHLO
+        id S233289AbjHAJmj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233029AbjHAJae (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 727C41BD3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:13 -0700 (PDT)
+        with ESMTP id S233271AbjHAJm0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F58F3A9A
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4557614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A00C433C7;
-        Tue,  1 Aug 2023 09:29:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40C146150B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E6DC433C7;
+        Tue,  1 Aug 2023 09:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882152;
-        bh=eROYAVkyYnHhQxzxb0aHGeIlSI/+VDSY16vWeCSiGkg=;
+        s=korg; t=1690882801;
+        bh=Q0erdX7soxwV9m/bSTuY4rVq6sDvEeR439xNA0ReEBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xd5MANCkuQ105K4VVMFacrYkwCb6SLyCebxQA7k3NVUGid8mzJrTR3b/9to1zY/bT
-         MX0ul3edIRkqC8WtmWD7pYkiBuBgvlskRyGoLqbRTklYLAplClPTyiYj5HrUSqJpT/
-         i/DCaGM6auCjl2mNs8vWDxRrRCwBiuJSz9h+kzQA=
+        b=rUILnpKq0eovCQ5m0nUNdaKlMYM98nXe0ljg2EcplJ43+A+gsdQl3ppNorJ3AzuEE
+         bpM0lNKE/QpLu7XKnckOKWZTbZcXSP1eHFY//5IvW2Kx8Up/GoAt1+gj4+HgJLcC//
+         77JOQilGv0bc64h1BLG8WKKljj+A94Nc7Tgek3Xc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pratyush Yadav <ptyadav@amazon.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hagar Hemdan <hagarhem@amazon.de>
-Subject: [PATCH 5.15 149/155] ACPI: processor: perflib: Use the "no limit" frequency QoS
-Date:   Tue,  1 Aug 2023 11:21:01 +0200
-Message-ID: <20230801091915.449228675@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Colin King (gmail)" <colin.i.king@gmail.com>,
+        Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 204/228] LoongArch: BPF: Fix check condition to call lu32id in move_imm()
+Date:   Tue,  1 Aug 2023 11:21:02 +0200
+Message-ID: <20230801091930.245240168@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,70 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit c02d5feb6e2f60affc6ba8606d8d614c071e2ba6 upstream.
+commit 4eece7e6de94d833c8aeed2f438faf487cbf94ff upstream.
 
-When _PPC returns 0, it means that the CPU frequency is not limited by
-the platform firmware, so make acpi_processor_get_platform_limit()
-update the frequency QoS request used by it to "no limit" in that case.
+As the code comment says, the initial aim is to reduce one instruction
+in some corner cases, if bit[51:31] is all 0 or all 1, no need to call
+lu32id. That is to say, it should call lu32id only if bit[51:31] is not
+all 0 and not all 1. The current code always call lu32id, the result is
+right but the logic is unexpected and wrong, fix it.
 
-This addresses a problem with limiting CPU frequency artificially on
-some systems after CPU offline/online to the frequency that corresponds
-to the first entry in the _PSS return package.
-
-Reported-by: Pratyush Yadav <ptyadav@amazon.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Pratyush Yadav <ptyadav@amazon.de>
-Tested-by: Pratyush Yadav <ptyadav@amazon.de>
-Tested-by: Hagar Hemdan <hagarhem@amazon.de>
+Cc: stable@vger.kernel.org # 6.1
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Reported-by: Colin King (gmail) <colin.i.king@gmail.com>
+Closes: https://lore.kernel.org/all/bcf97046-e336-712a-ac68-7fd194f2953e@gmail.com/
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |   20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ arch/loongarch/net/bpf_jit.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -53,6 +53,8 @@ static int acpi_processor_get_platform_l
- {
- 	acpi_status status = 0;
- 	unsigned long long ppc = 0;
-+	s32 qos_value;
-+	int index;
- 	int ret;
- 
- 	if (!pr)
-@@ -72,17 +74,27 @@ static int acpi_processor_get_platform_l
- 		}
- 	}
- 
-+	index = ppc;
-+
- 	pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
--		       (int)ppc, ppc ? "" : "not");
-+		 index, index ? "is" : "is not");
- 
--	pr->performance_platform_limit = (int)ppc;
-+	pr->performance_platform_limit = index;
- 
- 	if (ppc >= pr->performance->state_count ||
- 	    unlikely(!freq_qos_request_active(&pr->perflib_req)))
- 		return 0;
- 
--	ret = freq_qos_update_request(&pr->perflib_req,
--			pr->performance->states[ppc].core_frequency * 1000);
-+	/*
-+	 * If _PPC returns 0, it means that all of the available states can be
-+	 * used ("no limit").
-+	 */
-+	if (index == 0)
-+		qos_value = FREQ_QOS_MAX_DEFAULT_VALUE;
-+	else
-+		qos_value = pr->performance->states[index].core_frequency * 1000;
-+
-+	ret = freq_qos_update_request(&pr->perflib_req, qos_value);
- 	if (ret < 0) {
- 		pr_warn("Failed to update perflib freq constraint: CPU%d (%d)\n",
- 			pr->id, ret);
+--- a/arch/loongarch/net/bpf_jit.h
++++ b/arch/loongarch/net/bpf_jit.h
+@@ -148,7 +148,7 @@ static inline void move_imm(struct jit_c
+ 			 * no need to call lu32id to do a new filled operation.
+ 			 */
+ 			imm_51_31 = (imm >> 31) & 0x1fffff;
+-			if (imm_51_31 != 0 || imm_51_31 != 0x1fffff) {
++			if (imm_51_31 != 0 && imm_51_31 != 0x1fffff) {
+ 				/* lu32id rd, imm_51_32 */
+ 				imm_51_32 = (imm >> 32) & 0xfffff;
+ 				emit_insn(ctx, lu32id, rd, imm_51_32);
 
 
