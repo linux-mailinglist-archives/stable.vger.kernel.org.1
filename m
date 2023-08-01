@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCBDC76AE82
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1110076AD89
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233208AbjHAJj2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39688 "EHLO
+        id S232842AbjHAJaL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232997AbjHAJjL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:11 -0400
+        with ESMTP id S231435AbjHAJ3r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F12469E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE6835BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7899561517
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CB3C433C7;
-        Tue,  1 Aug 2023 09:37:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC464614F5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0F3C433C8;
+        Tue,  1 Aug 2023 09:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882621;
-        bh=YwIsGVHUr2sJbtY7RJIj1Acb16lWFaaKz5yceoW/yf4=;
+        s=korg; t=1690882113;
+        bh=vXrpE1Y2rvp4wbMdN8K+ak9nOK6tMYqCt4O7Inl4U2w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1EkPfLHR4aexnC7qq26eCI61vCq1uETQ38KjA6UyQaQMuQrbv2Mj1sNUa0sIXe+Ol
-         5+cqsjLQ1fVm0N8BoKAjAYqch6ORWfuJP28HAApN21QNxajrmBX39ZR74rRqbQc31l
-         MabPf6sLhWTatKJq0HAkrbM23i1pg989PU711dtU=
+        b=Q9nt8mOSZ7rKtUzanzUIt8/cLFwqVKIxNV4Pu8y7Qfvdoc6b+DkhuP8ugO6pwD7+4
+         K56OSi9YcZorM6OSvElipHTE2YXZi9DiZ4DaaarWHU1Kkt1aiIsdhZHXNzfHcOem2q
+         Jr2wIxCP4P9JKQ01ieKcPGWm5L3er2GeMJu8MhWs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Zubin Mithra <zsm@chromium.org>,
-        Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH 6.1 171/228] usb: xhci-mtk: set the dma max_seg_size
+        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
+        stable <stable@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 117/155] usb: ohci-at91: Fix the unhandle interrupt when resume
 Date:   Tue,  1 Aug 2023 11:20:29 +0200
-Message-ID: <20230801091929.046331744@linuxfoundation.org>
+Message-ID: <20230801091914.396416421@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Guiting Shen <aarongt.shen@gmail.com>
 
-commit 9fd10829a9eb482e192a845675ecc5480e0bfa10 upstream.
+commit c55afcbeaa7a6f4fffdbc999a9bf3f0b29a5186f upstream.
 
-Allow devices to have dma operations beyond 64K, and avoid warnings such
-as:
+The ohci_hcd_at91_drv_suspend() sets ohci->rh_state to OHCI_RH_HALTED when
+suspend which will let the ohci_irq() skip the interrupt after resume. And
+nobody to handle this interrupt.
 
-DMA-API: xhci-mtk 11200000.usb: mapping sg segment longer than device claims to support [len=98304] [max=65536]
+According to the comment in ohci_hcd_at91_drv_suspend(), it need to reset
+when resume from suspend(MEM) to fix by setting "hibernated" argument of
+ohci_resume().
 
-Fixes: 0cbd4b34cda9 ("xhci: mediatek: support MTK xHCI host controller")
+Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
 Cc: stable <stable@kernel.org>
-Tested-by: Zubin Mithra <zsm@chromium.org>
-Reported-by: Zubin Mithra <zsm@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20230628-mtk-usb-v2-1-c8c34eb9f229@chromium.org
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230626152713.18950-1-aarongt.shen@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mtk.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/ohci-at91.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-mtk.c
-+++ b/drivers/usb/host/xhci-mtk.c
-@@ -590,6 +590,7 @@ static int xhci_mtk_probe(struct platfor
- 	}
+--- a/drivers/usb/host/ohci-at91.c
++++ b/drivers/usb/host/ohci-at91.c
+@@ -652,7 +652,13 @@ ohci_hcd_at91_drv_resume(struct device *
+ 	else
+ 		at91_start_clock(ohci_at91);
  
- 	device_init_wakeup(dev, true);
-+	dma_set_max_seg_size(dev, UINT_MAX);
+-	ohci_resume(hcd, false);
++	/*
++	 * According to the comment in ohci_hcd_at91_drv_suspend()
++	 * we need to do a reset if the 48Mhz clock was stopped,
++	 * that is, if ohci_at91->wakeup is clear. Tell ohci_resume()
++	 * to reset in this case by setting its "hibernated" flag.
++	 */
++	ohci_resume(hcd, !ohci_at91->wakeup);
  
- 	xhci = hcd_to_xhci(hcd);
- 	xhci->main_hcd = hcd;
+ 	return 0;
+ }
 
 
