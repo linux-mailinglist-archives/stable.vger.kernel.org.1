@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 554FF76AECC
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED00F76AD93
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233043AbjHAJmF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:42:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
+        id S232016AbjHAJa3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:30:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233343AbjHAJlv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:41:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC4684690
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:26 -0700 (PDT)
+        with ESMTP id S232781AbjHAJaL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B8E4483
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BDE46151B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA3DC433C8;
-        Tue,  1 Aug 2023 09:39:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56686613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628A4C433C8;
+        Tue,  1 Aug 2023 09:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882765;
-        bh=HsnQURv66rM9bSecLSeDJ24b70s03gW/1MsNquYAx5g=;
+        s=korg; t=1690882132;
+        bh=0fphWUmIAEgjndU0B0kMWIB2w+xga0t02yagN6vXelM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BbzppkQfh8Co/SRJX9g2RbWb7ruiPN6SNKUfP+l2ad7O00hQ/SgM2QzkeZcrQKfHN
-         mp6oKiXbOTx/Ga0EPRICu0CUdOhMfctuHuHBs/0YQUUkADU9AL2BEy0HybbS2KKDxU
-         9hjG1V+ZtFPOKjaGuWBkoQoswEbs4mfXlKGHetIo=
+        b=TkE/DaFNyR9xzup1YI0VYcO/dm63d392634c8N6iQG/GEB+L0eyycZ8MLhAKuaRUj
+         j+Z3IEaRVw0/RgO3oQizfQVOrevKqdUOhbqodxpBZRG5nygastrl/pMn2omYTCCBfq
+         pSWwHWz8cewXdGC+BfvnCkgSnGKcwOONlEgeHurc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 206/228] s390/dasd: fix hanging device after quiesce/resume
-Date:   Tue,  1 Aug 2023 11:21:04 +0200
-Message-ID: <20230801091930.315227133@linuxfoundation.org>
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 153/155] io_uring: treat -EAGAIN for REQ_F_NOWAIT as final for io-wq
+Date:   Tue,  1 Aug 2023 11:21:05 +0200
+Message-ID: <20230801091915.596569349@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,44 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 05f1d8ed03f547054efbc4d29bb7991c958ede95 upstream.
+commit a9be202269580ca611c6cebac90eaf1795497800 upstream.
 
-Quiesce and resume are functions that tell the DASD driver to stop/resume
-issuing I/Os to a specific DASD.
+io-wq assumes that an issue is blocking, but it may not be if the
+request type has asked for a non-blocking attempt. If we get
+-EAGAIN for that case, then we need to treat it as a final result
+and not retry or arm poll for it.
 
-On resume dasd_schedule_block_bh() is called to kick handling of IO
-requests again. This does unfortunately not cover internal requests which
-are used for path verification for example.
-
-This could lead to a hanging device when a path event or anything else
-that triggers internal requests occurs on a quiesced device.
-
-Fix by also calling dasd_schedule_device_bh() which triggers handling of
-internal requests on resume.
-
-Fixes: 8e09f21574ea ("[S390] dasd: add hyper PAV support to DASD device driver, part 1")
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230721193647.3889634-2-sth@linux.ibm.com
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://github.com/axboe/liburing/issues/897
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_ioctl.c |    1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io_uring.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/s390/block/dasd_ioctl.c
-+++ b/drivers/s390/block/dasd_ioctl.c
-@@ -131,6 +131,7 @@ static int dasd_ioctl_resume(struct dasd
- 	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
- 
- 	dasd_schedule_block_bh(block);
-+	dasd_schedule_device_bh(base);
- 	return 0;
- }
- 
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -7066,6 +7066,14 @@ static void io_wq_submit_work(struct io_
+ 			 */
+ 			if (ret != -EAGAIN || !(req->ctx->flags & IORING_SETUP_IOPOLL))
+ 				break;
++
++			/*
++			 * If REQ_F_NOWAIT is set, then don't wait or retry with
++			 * poll. -EAGAIN is final for that case.
++			 */
++			if (req->flags & REQ_F_NOWAIT)
++				break;
++
+ 			cond_resched();
+ 		} while (1);
+ 	}
 
 
