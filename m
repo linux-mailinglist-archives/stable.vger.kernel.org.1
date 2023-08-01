@@ -2,106 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F6A76B9A4
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D03D76B9AB
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbjHAQaa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 12:30:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55854 "EHLO
+        id S229905AbjHAQdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 12:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230219AbjHAQa3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:30:29 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 894FF1BEA;
-        Tue,  1 Aug 2023 09:30:26 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-686f0d66652so5553980b3a.2;
-        Tue, 01 Aug 2023 09:30:26 -0700 (PDT)
+        with ESMTP id S229643AbjHAQdY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:33:24 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111C31BF8;
+        Tue,  1 Aug 2023 09:33:22 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-3128fcd58f3so6019186f8f.1;
+        Tue, 01 Aug 2023 09:33:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690907426; x=1691512226;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=W6SHihvZpMURcyhm7Z81CBDjuSNiSBVG7mTtgS7+Wb8=;
-        b=gy5ZfNOUmH6cM3NLp0tiUJKLaahZnFZlaJqPZEeC1a+ancG30Y2LQxTksSk+v9QrGU
-         N5ilAtVSZlnBU0bpvin7raZQG8VPka9wl3+8QLf5GPuQXW2/bKIjoUfYu2Je2s5hn0qi
-         X+p3Dp+0v08XvxzSSbGZh/BxU7pxK65JgqyJ8knTC1IfLMIrzXO8ndOVIDCpubpezL1+
-         n6U5RWNrErAPhCYRanpscP7/9f+iMmfn1ntKMp1KDTYK/pvtqbvsIUh3z4/WOiffn5IW
-         aZpUvvipLNewQxta6EmnyRRzThftEh7LTZl7wjM0ELmtWZPGti81jpcDoxLqRuGQaX9P
-         PHmA==
+        d=gmail.com; s=20221208; t=1690907600; x=1691512400;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kHGU2gldR70GqySNOHxAwDHvYPybisAew0SwiRmKpZY=;
+        b=sUkr6tkOpfLpmNAXaSFuiW9LXXeEwoKnrmMBkcK4Hzd0GO2uCmDG+gS3aJeFobgXlD
+         ImcBSaz6f4I9GQ+RO4VH50l6qUxD+A8J0DSNTD75KJC1ayt6U4xdPnPubhdWeczlWQ6H
+         fMfduYyNkmjd2kWxa5QQJ123pP6nOzDRnh1UyGT5KnRAlO3R6gH86arPxDYsF/4Pn0ie
+         rKXwqC3Nj3MtsSP9/dw1OtLM6sSmfKy6MMU9v7Uf0lNMpxRtqiBJuwYDHe1w6uAg17kf
+         ZTu8tou6vHV8MSGse9+huBvZCwjrIlu7RI0oZQNdHGmjzTEizy9R6fAyj0yfLm36uJBV
+         32xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690907426; x=1691512226;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W6SHihvZpMURcyhm7Z81CBDjuSNiSBVG7mTtgS7+Wb8=;
-        b=MDEsGvWc5+dn0OX46Oy40rsarrtbKMJdv6BQN4NTBm3b4DHAY5AAkLvYA+Ehvq2oT1
-         xufVvRFhndPcKcf+jgPArep1gikyqqMxRiS6iChAO5+kw6c1UBQylQHzlc47JDxShtAT
-         MCeWWml5Q0dsaC+udOSkBqcOzooJqVjacsfxZ7jVAcckFbjNUJ8OYEkDgf1rpDGKmPWq
-         J4fE3CZIJHbFhdaEE8Hgsh+4CFSctiZgPMYEMNq/+hrlvbSERvhLbYgXpybpABeeQxzj
-         19cb3zXjKPk/uHBfPLSiyJkz6/Ham/TJtM9gagaTjpvZ1z8m+0/yW++/R5PgOeHhzjUA
-         CYjQ==
-X-Gm-Message-State: ABy/qLZI+8FbwdOZir8kVk57zTpw0KBskzgf07yhzFoes4GOEnbTSj8u
-        O1gBrRkHWifvkXSgpyGfsNT4pAwfwBx9vA==
-X-Google-Smtp-Source: APBJJlHyV+DNAhqLdZDvVlGGrpxeDH3ScXnLCA79TbQybXBy4r9sC8kEeISZVOW1Z8bNFQBx3wZKxg==
-X-Received: by 2002:a17:90a:b306:b0:268:2523:652c with SMTP id d6-20020a17090ab30600b002682523652cmr13179348pjr.31.1690907425773;
-        Tue, 01 Aug 2023 09:30:25 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id g12-20020a17090a300c00b0025ea87b97b9sm1456497pjb.0.2023.08.01.09.30.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Aug 2023 09:30:25 -0700 (PDT)
-Message-ID: <03b23f8c-91c3-4ae9-b86d-4aa6c8cb5d78@gmail.com>
-Date:   Tue, 1 Aug 2023 09:30:20 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 5.15 000/155] 5.15.124-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        d=1e100.net; s=20221208; t=1690907600; x=1691512400;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kHGU2gldR70GqySNOHxAwDHvYPybisAew0SwiRmKpZY=;
+        b=Q4Kwa16mPVrx0jNDTjeW7G6cN5lX8nDltLwYtANQFpkx8P8YzVXnYj/W33X8OMt8MB
+         p9wnu1gAWQoqQlN1nEEgDOuTecAp8vFiMHtXW4LJDwL4U7dvPLs6Azzi/hS++iShdrVS
+         kGG7DirCW+boYnJe6Y2Tv4hHM6tWqhJ7rJStzkIPOqZJZrq4wXrx7GfNtRjaazXwrc+5
+         nzRakY2RZzJi1PAd2XU0mjnew6f5mg2R6MnkQwYOoshGQ/RswPjEHV5QiOsIPAGlz6e0
+         8KF+1Th3ixV0N1rOTXBHe1BwaTnL7N1ANkBJmMQmgCKfUvQiTbo9HJO1DOUZgIaJ9l5M
+         2Nlw==
+X-Gm-Message-State: ABy/qLYjZjBMQdqnCc2yKXkkX6mb77eZHQOB7FVqopZjAKYA2jjgWCCo
+        4MCMBN9oqiDU7gtTwsRJfzc=
+X-Google-Smtp-Source: APBJJlGWssiVAATcXmhQas2IAW1DtAJFXZ/rOYG4wKV4z3qFLF/SvVTfMh8RRRDM4z57utXs4wl8gg==
+X-Received: by 2002:a5d:6783:0:b0:313:f02f:be7f with SMTP id v3-20020a5d6783000000b00313f02fbe7fmr2576237wru.55.1690907600207;
+        Tue, 01 Aug 2023 09:33:20 -0700 (PDT)
+Received: from localhost ([2a00:23c5:dc8c:8701:1663:9a35:5a7b:1d76])
+        by smtp.gmail.com with ESMTPSA id h16-20020adffa90000000b0031423a8f4f7sm16488864wrr.56.2023.08.01.09.33.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 09:33:19 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 17:33:18 +0100
+From:   Lorenzo Stoakes <lstoakes@gmail.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Baoquan He <bhe@redhat.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        linux-fsdevel@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
+        Will Deacon <will@kernel.org>, Mike Galbraith <efault@gmx.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        wangkefeng.wang@huawei.com, catalin.marinas@arm.com,
+        ardb@kernel.org,
+        Linux regression tracking <regressions@leemhuis.info>,
+        regressions@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
+        Liu Shixin <liushixin2@huawei.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230801091910.165050260@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT
+ regions
+Message-ID: <dc30a97b-853e-4d2a-b171-e68fb3ab026c@lucifer.local>
+References: <20230731215021.70911-1-lstoakes@gmail.com>
+ <0af1bc20-8ba2-c6b6-64e6-c1f58d521504@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0af1bc20-8ba2-c6b6-64e6-c1f58d521504@redhat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/1/23 02:18, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.124 release.
-> There are 155 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.124-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, Aug 01, 2023 at 11:05:40AM +0200, David Hildenbrand wrote:
+> On 31.07.23 23:50, Lorenzo Stoakes wrote:
+> > Some architectures do not populate the entire range categorised by
+> > KCORE_TEXT, so we must ensure that the kernel address we read from is
+> > valid.
+> >
+> > Unfortunately there is no solution currently available to do so with a
+> > purely iterator solution so reinstate the bounce buffer in this instance so
+> > we can use copy_from_kernel_nofault() in order to avoid page faults when
+> > regions are unmapped.
+> >
+> > This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
+> > bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
+> > the code to continue to use an iterator.
+> >
+> > Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
+> > Reported-by: Jiri Olsa <olsajiri@gmail.com>
+> > Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+> > ---
+> >   fs/proc/kcore.c | 26 +++++++++++++++++++++++++-
+> >   1 file changed, 25 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+> > index 9cb32e1a78a0..3bc689038232 100644
+> > --- a/fs/proc/kcore.c
+> > +++ b/fs/proc/kcore.c
+> > @@ -309,6 +309,8 @@ static void append_kcore_note(char *notes, size_t *i, const char *name,
+> >   static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+> >   {
+> > +	struct file *file = iocb->ki_filp;
+> > +	char *buf = file->private_data;
+> >   	loff_t *fpos = &iocb->ki_pos;
+> >   	size_t phdrs_offset, notes_offset, data_offset;
+> >   	size_t page_offline_frozen = 1;
+> > @@ -554,11 +556,22 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+> >   			fallthrough;
+> >   		case KCORE_VMEMMAP:
+> >   		case KCORE_TEXT:
+> > +			/*
+> > +			 * Sadly we must use a bounce buffer here to be able to
+> > +			 * make use of copy_from_kernel_nofault(), as these
+> > +			 * memory regions might not always be mapped on all
+> > +			 * architectures.
+> > +			 */
+> > +			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
+> > +				if (iov_iter_zero(tsz, iter) != tsz) {
+> > +					ret = -EFAULT;
+> > +					goto out;
+> > +				}
+> >   			/*
+> >   			 * We use _copy_to_iter() to bypass usermode hardening
+> >   			 * which would otherwise prevent this operation.
+> >   			 */
+>
+> Having a comment at this indentation level looks for the else case looks
+> kind of weird.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Yeah, but having it indented again would be weird and seem like it doesn't
+apply to the block below, there's really no good spot for it and
+checkpatch.pl doesn't mind so I think this is ok :)
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+>
+> (does that comment still apply?)
 
+Hm good point, actually, now we're using the bounce buffer we don't need to
+avoid usermode hardening any more.
+
+However since we've established a bounce buffer ourselves its still
+appropriate to use _copy_to_iter() as we know the source region is good to
+copy from.
+
+To make life easy I'll just respin with an updated comment :)
+
+>
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
