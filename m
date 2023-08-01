@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B2976ADB5
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E373F76AEF7
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbjHAJb5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:31:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
+        id S233366AbjHAJnl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:43:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231617AbjHAJbj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:31:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F71B3C14
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:30:15 -0700 (PDT)
+        with ESMTP id S233360AbjHAJnY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A25BF4EFC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B08AD614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:30:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A44EC433D9;
-        Tue,  1 Aug 2023 09:30:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83A3D6150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94140C433C8;
+        Tue,  1 Aug 2023 09:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882214;
-        bh=WzHTNSA87HLxOruL4ex5cs3VyHc/Wppr3H1ANaX10Xk=;
+        s=korg; t=1690882866;
+        bh=6yYoTQ/WN45aLACgt3kxuHv4ey876XlhEV+Z/YxN8z4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xkc2DyQ67xNTrHAna4r4eemfgOum5JZHU+i4YClYJjsc8k9TN+kQutYZJR2MwwbDa
-         Nw3XhDiDaLQ+4Op9dN1LvpD+ZxMj96aTuBXSmsPeXcvwQK67BMi1b505228Ny/jWp6
-         +ZH4bSuDPRzQKGq5nAsOyfXcp/etxWtCLroyv02U=
+        b=WG10bcpRXU283Bp3bMJR1LO/EwMch2RrZrPXR9x88aQkQtdV9mFK9HH3kc51ZKszY
+         FsZCWgvyUyvfaqST8bdNycAiUoNJDPzD5IEvKUwDYsEeuH+pf6VzD/k6CdfGZP0sw3
+         HPq26M/Gr8dqjmybNI6C0FePeOAP+Zz7bl/54XQ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/228] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
-Date:   Tue,  1 Aug 2023 11:17:47 +0200
-Message-ID: <20230801091923.153670761@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.4 004/239] drm/amd: Align SMU11 SMU_MSG_OverridePcieParameters implementation with SMU13
+Date:   Tue,  1 Aug 2023 11:17:48 +0200
+Message-ID: <20230801091925.806342331@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,105 +56,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
+commit e701156ccc6c7a5f104a968dda74cd6434178712 upstream.
 
-Following process,
+SMU13 overrides dynamic PCIe lane width and dynamic speed by when on
+certain hosts. commit 38e4ced80479 ("drm/amd/pm: conditionally disable
+pcie lane switching for some sienna_cichlid SKUs") worked around this
+issue by setting up certain SKUs to set up certain limits, but the same
+fundamental problem with those hosts affects all SMU11 implmentations
+as well, so align the SMU11 and SMU13 driver handling.
 
-jbd2_journal_commit_transaction
-// there are several dirty buffer heads in transaction->t_checkpoint_list
-          P1                   wb_workfn
-jbd2_log_do_checkpoint
- if (buffer_locked(bh)) // false
-                            __block_write_full_page
-                             trylock_buffer(bh)
-                             test_clear_buffer_dirty(bh)
- if (!buffer_dirty(bh))
-  __jbd2_journal_remove_checkpoint(jh)
-   if (buffer_write_io_error(bh)) // false
-                             >> bh IO error occurs <<
- jbd2_cleanup_journal_tail
-  __jbd2_update_log_tail
-   jbd2_write_superblock
-   // The bh won't be replayed in next mount.
-, which could corrupt the ext4 image, fetch a reproducer in [Link].
-
-Since writeback process clears buffer dirty after locking buffer head,
-we can fix it by try locking buffer and check dirtiness while buffer is
-locked, the buffer head can be removed if it is neither dirty nor locked.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
-Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Evan Quan <evan.quan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c |   93 +++-------------
+ 1 file changed, 20 insertions(+), 73 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 25e3c20eb19f6..c4e0da6db7195 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -221,20 +221,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 		jh = transaction->t_checkpoint_list;
- 		bh = jh2bh(jh);
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -2081,89 +2081,36 @@ static int sienna_cichlid_display_disabl
+ 	return ret;
+ }
  
--		/*
--		 * The buffer may be writing back, or flushing out in the
--		 * last couple of cycles, or re-adding into a new transaction,
--		 * need to check it again until it's unlocked.
--		 */
--		if (buffer_locked(bh)) {
--			get_bh(bh);
--			spin_unlock(&journal->j_list_lock);
--			wait_on_buffer(bh);
--			/* the journal_head may have gone by now */
--			BUFFER_TRACE(bh, "brelse");
--			__brelse(bh);
--			goto retry;
--		}
- 		if (jh->b_transaction != NULL) {
- 			transaction_t *t = jh->b_transaction;
- 			tid_t tid = t->t_tid;
-@@ -269,7 +255,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			spin_lock(&journal->j_list_lock);
- 			goto restart;
- 		}
--		if (!buffer_dirty(bh)) {
-+		if (!trylock_buffer(bh)) {
-+			/*
-+			 * The buffer is locked, it may be writing back, or
-+			 * flushing out in the last couple of cycles, or
-+			 * re-adding into a new transaction, need to check
-+			 * it again until it's unlocked.
-+			 */
-+			get_bh(bh);
-+			spin_unlock(&journal->j_list_lock);
-+			wait_on_buffer(bh);
-+			/* the journal_head may have gone by now */
-+			BUFFER_TRACE(bh, "brelse");
-+			__brelse(bh);
-+			goto retry;
-+		} else if (!buffer_dirty(bh)) {
-+			unlock_buffer(bh);
- 			BUFFER_TRACE(bh, "remove from checkpoint");
- 			/*
- 			 * If the transaction was released or the checkpoint
-@@ -279,6 +280,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			    !transaction->t_checkpoint_list)
- 				goto out;
- 		} else {
-+			unlock_buffer(bh);
- 			/*
- 			 * We are about to write the buffer, it could be
- 			 * raced by some other transaction shrink or buffer
--- 
-2.39.2
-
+-static void sienna_cichlid_get_override_pcie_settings(struct smu_context *smu,
+-						      uint32_t *gen_speed_override,
+-						      uint32_t *lane_width_override)
+-{
+-	struct amdgpu_device *adev = smu->adev;
+-
+-	*gen_speed_override = 0xff;
+-	*lane_width_override = 0xff;
+-
+-	switch (adev->pdev->device) {
+-	case 0x73A0:
+-	case 0x73A1:
+-	case 0x73A2:
+-	case 0x73A3:
+-	case 0x73AB:
+-	case 0x73AE:
+-		/* Bit 7:0: PCIE lane width, 1 to 7 corresponds is x1 to x32 */
+-		*lane_width_override = 6;
+-		break;
+-	case 0x73E0:
+-	case 0x73E1:
+-	case 0x73E3:
+-		*lane_width_override = 4;
+-		break;
+-	case 0x7420:
+-	case 0x7421:
+-	case 0x7422:
+-	case 0x7423:
+-	case 0x7424:
+-		*lane_width_override = 3;
+-		break;
+-	default:
+-		break;
+-	}
+-}
+-
+-#define MAX(a, b)	((a) > (b) ? (a) : (b))
+-
+ static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
+ 					 uint32_t pcie_gen_cap,
+ 					 uint32_t pcie_width_cap)
+ {
+ 	struct smu_11_0_dpm_context *dpm_context = smu->smu_dpm.dpm_context;
+ 	struct smu_11_0_pcie_table *pcie_table = &dpm_context->dpm_tables.pcie_table;
+-	uint32_t gen_speed_override, lane_width_override;
+-	uint8_t *table_member1, *table_member2;
+-	uint32_t min_gen_speed, max_gen_speed;
+-	uint32_t min_lane_width, max_lane_width;
+-	uint32_t smu_pcie_arg;
++	u32 smu_pcie_arg;
+ 	int ret, i;
+ 
+-	GET_PPTABLE_MEMBER(PcieGenSpeed, &table_member1);
+-	GET_PPTABLE_MEMBER(PcieLaneCount, &table_member2);
+-
+-	sienna_cichlid_get_override_pcie_settings(smu,
+-						  &gen_speed_override,
+-						  &lane_width_override);
+-
+-	/* PCIE gen speed override */
+-	if (gen_speed_override != 0xff) {
+-		min_gen_speed = MIN(pcie_gen_cap, gen_speed_override);
+-		max_gen_speed = MIN(pcie_gen_cap, gen_speed_override);
+-	} else {
+-		min_gen_speed = MAX(0, table_member1[0]);
+-		max_gen_speed = MIN(pcie_gen_cap, table_member1[1]);
+-		min_gen_speed = min_gen_speed > max_gen_speed ?
+-				max_gen_speed : min_gen_speed;
+-	}
+-	pcie_table->pcie_gen[0] = min_gen_speed;
+-	pcie_table->pcie_gen[1] = max_gen_speed;
+-
+-	/* PCIE lane width override */
+-	if (lane_width_override != 0xff) {
+-		min_lane_width = MIN(pcie_width_cap, lane_width_override);
+-		max_lane_width = MIN(pcie_width_cap, lane_width_override);
++	/* PCIE gen speed and lane width override */
++	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
++		if (pcie_table->pcie_gen[NUM_LINK_LEVELS - 1] < pcie_gen_cap)
++			pcie_gen_cap = pcie_table->pcie_gen[NUM_LINK_LEVELS - 1];
++
++		if (pcie_table->pcie_lane[NUM_LINK_LEVELS - 1] < pcie_width_cap)
++			pcie_width_cap = pcie_table->pcie_lane[NUM_LINK_LEVELS - 1];
++
++		/* Force all levels to use the same settings */
++		for (i = 0; i < NUM_LINK_LEVELS; i++) {
++			pcie_table->pcie_gen[i] = pcie_gen_cap;
++			pcie_table->pcie_lane[i] = pcie_width_cap;
++		}
+ 	} else {
+-		min_lane_width = MAX(1, table_member2[0]);
+-		max_lane_width = MIN(pcie_width_cap, table_member2[1]);
+-		min_lane_width = min_lane_width > max_lane_width ?
+-				 max_lane_width : min_lane_width;
++		for (i = 0; i < NUM_LINK_LEVELS; i++) {
++			if (pcie_table->pcie_gen[i] > pcie_gen_cap)
++				pcie_table->pcie_gen[i] = pcie_gen_cap;
++			if (pcie_table->pcie_lane[i] > pcie_width_cap)
++				pcie_table->pcie_lane[i] = pcie_width_cap;
++		}
+ 	}
+-	pcie_table->pcie_lane[0] = min_lane_width;
+-	pcie_table->pcie_lane[1] = max_lane_width;
+ 
+ 	for (i = 0; i < NUM_LINK_LEVELS; i++) {
+ 		smu_pcie_arg = (i << 16 |
 
 
