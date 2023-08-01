@@ -2,108 +2,237 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7AC576AB58
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65ED776AB70
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 10:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbjHAIx0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 04:53:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53028 "EHLO
+        id S232171AbjHAIzF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 04:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbjHAIxY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:53:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029BB1711
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:53:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9404E614B4
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 08:53:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCC7C433C9;
-        Tue,  1 Aug 2023 08:53:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690880003;
-        bh=PmNeqTkeaJRMmr9b9RKk+gOPbmeldm77SbXCPnzjV4g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yjq52rgupM2xc+YX0lunjjgHl0SjEqye6YQdNvrZ8986Vb1rn72BUOO0mF8JQJxKq
-         iTjV8YTnssL4yOVNxsvlxsfGL3RC2gAF9NkBIBA9nNg0K+dPTcJoEDPSLycq/tp5lD
-         H9cbB+7oSDdOiC2wmv1xjWFIGb4P1ZeHTXXFP5zA=
-Date:   Tue, 1 Aug 2023 10:53:20 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] ASoC: cs42l51: fix driver to properly autoload
- with automatic module loading
-Message-ID: <2023080103-thursday-laxative-add3@gregkh>
-References: <2023072301-online-accent-4365@gregkh>
- <20230727123339.675734-1-thomas.petazzoni@bootlin.com>
- <2023080157-twitch-embargo-953b@gregkh>
- <20230801101556.21eed088@windsurf>
+        with ESMTP id S232272AbjHAIyw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 04:54:52 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 957F61FC6
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 01:54:35 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6bca3311b4fso1464364a34.0
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 01:54:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690880074; x=1691484874;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=yuGmJhpmdLuu9nTjcRb12MoWsKGBg2Xnh0VFKZ5SayM=;
+        b=xRHl/nks1ke+jZa+ngZmHw3uBBvW2grKOfOmI/XnA594/9C7T7/NCP1VIaTeZiavy8
+         +NM3+hJExTFfCWnICLn8NAwDZBUde4p6viBycMv5cCCYrq1q6aqo/s31Mjcfxd9uq60w
+         ScPwSEfm8s7uQfmGtGosF0IVj1T0udcIqmw9yX/P6Yc21o6XZoKkfNZlL775IRXOkbHJ
+         df+IJ/QvlG6wOtsZdKXUgN/lORnOLG/678IRyxDQZaI5hygSSLmrxQhse2nrr8IOk+8R
+         xACWWz/Sd7tJHnQuGY2QQyaeOmAQAAw/nqADPgTpIJnaCcRLmZZN1VMUfiwkBzoPflq/
+         hdig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690880074; x=1691484874;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yuGmJhpmdLuu9nTjcRb12MoWsKGBg2Xnh0VFKZ5SayM=;
+        b=iOEIG3+Y9eo21LDFIb4WZlh16HT67gWYiSp7KyaG8IizlFuIbRLblWutFAgvDQLKFC
+         k5FLcWzz5JlbyPrwuA53YDjKlSsF2uqe3U6L2/47q2ODrwW5oCG7RjzLbskwyR9gjQtF
+         CbdDPFmAvYlEvzzPbmierM8EkgnbTEQKZqFXdIOZ0Vi6CSFUguB102Dy82X5RUUeAIxr
+         qAzYLChBPqKdHyPI8JDkIYAlLrMjMv6qZ3pWZ5lzp+tpzC7RuJ4Ziqnq0Fj4S7t9SbEF
+         Jwf3zp2t34DCjmd2jAFym2irY3YVWikF2z2hYTzeHGoomCSnXBUFhfdbDA2KZSGTuk0z
+         F6lg==
+X-Gm-Message-State: ABy/qLaEVBMOgCU279LEpciTxIxJkINZvM5uJ1TnfzDrcH+zN/RcIJBj
+        Oaz0uYbvAAgQ/ya3QILXNvjvF2NUj+NjWbUSt6u5jA==
+X-Google-Smtp-Source: APBJJlEFzc6GpU9o8MNuoA7wAidk3B5q7T2HAhuxTkXuP43iKpQeC2xQooQK5Amp8ZecbmKEs5M3lA==
+X-Received: by 2002:a05:6358:5e15:b0:134:d26d:e27b with SMTP id q21-20020a0563585e1500b00134d26de27bmr2483982rwn.25.1690880074344;
+        Tue, 01 Aug 2023 01:54:34 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j63-20020a638b42000000b005637030d00csm9485709pge.30.2023.08.01.01.54.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 01:54:33 -0700 (PDT)
+Message-ID: <64c8c849.630a0220.a5ff3.1763@mx.google.com>
+Date:   Tue, 01 Aug 2023 01:54:33 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230801101556.21eed088@windsurf>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Kernel: v5.15.123-149-gcff76fcf64697
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.123-149-gcff76fcf64697)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 10:15:56AM +0200, Thomas Petazzoni wrote:
-> Hello Greg,
-> 
-> On Tue, 1 Aug 2023 10:03:26 +0200
-> Greg KH <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Thu, Jul 27, 2023 at 02:33:39PM +0200, Thomas Petazzoni wrote:
-> > > In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
-> > > pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
-> > > split into a core part and an I2C part to properly match based on a
-> > > Device Tree compatible string.
-> > > 
-> > > However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
-> > > ....) is in the core part of the driver, not the I2C part. Therefore,
-> > > automatic module loading based on module.alias, based on matching with
-> > > the DT compatible string, loads the core part of the driver, but not
-> > > the I2C part. And threfore, the i2c_driver is not registered, and the
-> > > codec is not known to the system, nor matched with a DT node with the
-> > > corresponding compatible string.
-> > > 
-> > > In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
-> > > the I2C part of the driver. The cs42l51_of_match[] array is also moved
-> > > as well, as it is not possible to have this definition in one file,
-> > > and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
-> > > to how MODULE_DEVICE_TABLE works.
-> > > 
-> > > Thanks to this commit, the I2C part of the driver now properly
-> > > autoloads, and thanks to its dependency on the core part, the core
-> > > part gets autoloaded as well, resulting in a functional sound card
-> > > without having to manually load kernel modules.
-> > > 
-> > > Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-> > > ---
-> > >  sound/soc/codecs/cs42l51-i2c.c | 6 ++++++
-> > >  sound/soc/codecs/cs42l51.c     | 7 -------
-> > >  sound/soc/codecs/cs42l51.h     | 1 -
-> > >  3 files changed, 6 insertions(+), 8 deletions(-)  
-> > 
-> > What is the git commit id of this change in Linus's tree?
-> 
-> Ah, I see I didn't do "git cherry-pick -x
-> e51df4f81b02bcdd828a04de7c1eb6a92988b61e", so the commit log doesn't
-> have the reference to the original commit, sorry about this.
-> 
-> The original commit in Linus tree is:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e51df4f81b02bcdd828a04de7c1eb6a92988b61e
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
+5.15.123-149-gcff76fcf64697)
 
-Thanks, all now queued up.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.123-149-gcff76fcf64697/
 
-greg k-h
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.123-149-gcff76fcf64697
+Git Commit: cff76fcf64697fa08c2f74f401e6c3e32f90f0d9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
