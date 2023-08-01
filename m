@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D17476AF17
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E51976ACE6
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233488AbjHAJpD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
+        id S231642AbjHAJYV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232818AbjHAJot (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2EF94693
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:16 -0700 (PDT)
+        with ESMTP id S231731AbjHAJYD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:24:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D623AAB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86C9E6126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98841C433C8;
-        Tue,  1 Aug 2023 09:42:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 095B961500
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C07DC433C9;
+        Tue,  1 Aug 2023 09:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882936;
-        bh=CRWiTi9rthkFyDOcPNkIBtgksJKhMHKs1lqq/6hGH/M=;
+        s=korg; t=1690881762;
+        bh=Ui4NihlIv0+S1U4E7ZfEE2TQSCpeites75t3ZEOu6Yg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eAZ9i+PIG5iRnGqemw0cw2xHBUiIvQ7i+FMaJTIkW1oieRK4wzbp3cFUYdWLOzfq0
-         NpUnktH0PpAhQgAV9QvYmNMiqi/jMDPtZsVTnwdeb3TiMKXwVotL8pXYegMjvdVVPn
-         Y8bzsBTEhyMyK3w4MgKX5Y00EQXQhhQ5Errlxd7w=
+        b=Y12MdBVaJIfNEaXcM/K290y0IwpXS4peXOZ0xZuJMm+dfjdYDkV1rfLcUqQp0LUoA
+         MHujylywj5qGrVrbDj+FznRfoJwrbAoc7xdxQS8sQdlc8jbAsPjVIdlG42fTW5yiqv
+         GZMPssh9NT3E0ZAULHZpr3gAHMur6CNmUZ5idBRc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 055/239] phy: qcom-snps-femto-v2: properly enable ref clock
-Date:   Tue,  1 Aug 2023 11:18:39 +0200
-Message-ID: <20230801091927.515653187@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Markus Elfring <elfring@users.sourceforge.net>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 008/155] i2c: Delete error messages for failed memory allocations
+Date:   Tue,  1 Aug 2023 11:18:40 +0200
+Message-ID: <20230801091910.488340673@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,171 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adrien Thierry <athierry@redhat.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 8a0eb8f9b9a002291a3934acfd913660b905249e ]
+[ Upstream commit 6b3b21a8542fd2fb6ffc61bc13b9419f0c58ebad ]
 
-The driver is not enabling the ref clock, which thus gets disabled by
-the clk_disable_unused() initcall. This leads to the dwc3 controller
-failing to initialize if probed after clk_disable_unused() is called,
-for instance when the driver is built as a module.
+These issues were detected by using the Coccinelle software.
 
-To fix this, switch to the clk_bulk API to handle both cfg_ahb and ref
-clocks at the proper places.
-
-Note that the cfg_ahb clock is currently not used by any device tree
-instantiation of the PHY. Work needs to be done separately to fix this.
-
-Link: https://lore.kernel.org/linux-arm-msm/ZEqvy+khHeTkC2hf@fedora/
-Fixes: 51e8114f80d0 ("phy: qcom-snps: Add SNPS USB PHY driver for QCOM based SOCs")
-Signed-off-by: Adrien Thierry <athierry@redhat.com>
-Link: https://lore.kernel.org/r/20230629144542.14906-3-athierry@redhat.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 63 ++++++++++++++-----
- 1 file changed, 48 insertions(+), 15 deletions(-)
+ drivers/i2c/busses/i2c-ibm_iic.c  | 4 +---
+ drivers/i2c/busses/i2c-nomadik.c  | 1 -
+ drivers/i2c/busses/i2c-sh7760.c   | 1 -
+ drivers/i2c/busses/i2c-tiny-usb.c | 4 +---
+ 4 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index 3335480fc395a..6170f8fd118e2 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -110,11 +110,13 @@ struct phy_override_seq {
- /**
-  * struct qcom_snps_hsphy - snps hs phy attributes
-  *
-+ * @dev: device structure
-+ *
-  * @phy: generic phy
-  * @base: iomapped memory space for snps hs phy
-  *
-- * @cfg_ahb_clk: AHB2PHY interface clock
-- * @ref_clk: phy reference clock
-+ * @num_clks: number of clocks
-+ * @clks: array of clocks
-  * @phy_reset: phy reset control
-  * @vregs: regulator supplies bulk data
-  * @phy_initialized: if PHY has been initialized correctly
-@@ -122,11 +124,13 @@ struct phy_override_seq {
-  * @update_seq_cfg: tuning parameters for phy init
-  */
- struct qcom_snps_hsphy {
-+	struct device *dev;
-+
- 	struct phy *phy;
- 	void __iomem *base;
+diff --git a/drivers/i2c/busses/i2c-ibm_iic.c b/drivers/i2c/busses/i2c-ibm_iic.c
+index 9f71daf6db64b..c073f5b8833a2 100644
+--- a/drivers/i2c/busses/i2c-ibm_iic.c
++++ b/drivers/i2c/busses/i2c-ibm_iic.c
+@@ -694,10 +694,8 @@ static int iic_probe(struct platform_device *ofdev)
+ 	int ret;
  
--	struct clk *cfg_ahb_clk;
--	struct clk *ref_clk;
-+	int num_clks;
-+	struct clk_bulk_data *clks;
- 	struct reset_control *phy_reset;
- 	struct regulator_bulk_data vregs[SNPS_HS_NUM_VREGS];
- 
-@@ -135,6 +139,34 @@ struct qcom_snps_hsphy {
- 	struct phy_override_seq update_seq_cfg[NUM_HSPHY_TUNING_PARAMS];
- };
- 
-+static int qcom_snps_hsphy_clk_init(struct qcom_snps_hsphy *hsphy)
-+{
-+	struct device *dev = hsphy->dev;
-+
-+	hsphy->num_clks = 2;
-+	hsphy->clks = devm_kcalloc(dev, hsphy->num_clks, sizeof(*hsphy->clks), GFP_KERNEL);
-+	if (!hsphy->clks)
-+		return -ENOMEM;
-+
-+	/*
-+	 * TODO: Currently no device tree instantiation of the PHY is using the clock.
-+	 * This needs to be fixed in order for this code to be able to use devm_clk_bulk_get().
-+	 */
-+	hsphy->clks[0].id = "cfg_ahb";
-+	hsphy->clks[0].clk = devm_clk_get_optional(dev, "cfg_ahb");
-+	if (IS_ERR(hsphy->clks[0].clk))
-+		return dev_err_probe(dev, PTR_ERR(hsphy->clks[0].clk),
-+				     "failed to get cfg_ahb clk\n");
-+
-+	hsphy->clks[1].id = "ref";
-+	hsphy->clks[1].clk = devm_clk_get(dev, "ref");
-+	if (IS_ERR(hsphy->clks[1].clk))
-+		return dev_err_probe(dev, PTR_ERR(hsphy->clks[1].clk),
-+				     "failed to get ref clk\n");
-+
-+	return 0;
-+}
-+
- static inline void qcom_snps_hsphy_write_mask(void __iomem *base, u32 offset,
- 						u32 mask, u32 val)
- {
-@@ -365,16 +397,16 @@ static int qcom_snps_hsphy_init(struct phy *phy)
- 	if (ret)
- 		return ret;
- 
--	ret = clk_prepare_enable(hsphy->cfg_ahb_clk);
-+	ret = clk_bulk_prepare_enable(hsphy->num_clks, hsphy->clks);
- 	if (ret) {
--		dev_err(&phy->dev, "failed to enable cfg ahb clock, %d\n", ret);
-+		dev_err(&phy->dev, "failed to enable clocks, %d\n", ret);
- 		goto poweroff_phy;
- 	}
- 
- 	ret = reset_control_assert(hsphy->phy_reset);
- 	if (ret) {
- 		dev_err(&phy->dev, "failed to assert phy_reset, %d\n", ret);
--		goto disable_ahb_clk;
-+		goto disable_clks;
- 	}
- 
- 	usleep_range(100, 150);
-@@ -382,7 +414,7 @@ static int qcom_snps_hsphy_init(struct phy *phy)
- 	ret = reset_control_deassert(hsphy->phy_reset);
- 	if (ret) {
- 		dev_err(&phy->dev, "failed to de-assert phy_reset, %d\n", ret);
--		goto disable_ahb_clk;
-+		goto disable_clks;
- 	}
- 
- 	qcom_snps_hsphy_write_mask(hsphy->base, USB2_PHY_USB_PHY_CFG0,
-@@ -439,8 +471,8 @@ static int qcom_snps_hsphy_init(struct phy *phy)
- 
- 	return 0;
- 
--disable_ahb_clk:
--	clk_disable_unprepare(hsphy->cfg_ahb_clk);
-+disable_clks:
-+	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
- poweroff_phy:
- 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
- 
-@@ -452,7 +484,7 @@ static int qcom_snps_hsphy_exit(struct phy *phy)
- 	struct qcom_snps_hsphy *hsphy = phy_get_drvdata(phy);
- 
- 	reset_control_assert(hsphy->phy_reset);
--	clk_disable_unprepare(hsphy->cfg_ahb_clk);
-+	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
- 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
- 	hsphy->phy_initialized = false;
- 
-@@ -545,14 +577,15 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
- 	if (!hsphy)
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (!dev) {
+-		dev_err(&ofdev->dev, "failed to allocate device data\n");
++	if (!dev)
  		return -ENOMEM;
+-	}
  
-+	hsphy->dev = dev;
-+
- 	hsphy->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(hsphy->base))
- 		return PTR_ERR(hsphy->base);
+ 	platform_set_drvdata(ofdev, dev);
  
--	hsphy->ref_clk = devm_clk_get(dev, "ref");
--	if (IS_ERR(hsphy->ref_clk))
--		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
--				     "failed to get ref clk\n");
-+	ret = qcom_snps_hsphy_clk_init(hsphy);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to initialize clocks\n");
+diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
+index a2d12a5b1c34c..05eaae5aeb180 100644
+--- a/drivers/i2c/busses/i2c-nomadik.c
++++ b/drivers/i2c/busses/i2c-nomadik.c
+@@ -972,7 +972,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
  
- 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (IS_ERR(hsphy->phy_reset)) {
+ 	dev = devm_kzalloc(&adev->dev, sizeof(struct nmk_i2c_dev), GFP_KERNEL);
+ 	if (!dev) {
+-		dev_err(&adev->dev, "cannot allocate memory\n");
+ 		ret = -ENOMEM;
+ 		goto err_no_mem;
+ 	}
+diff --git a/drivers/i2c/busses/i2c-sh7760.c b/drivers/i2c/busses/i2c-sh7760.c
+index 319d1fa617c88..a0ccc5d009874 100644
+--- a/drivers/i2c/busses/i2c-sh7760.c
++++ b/drivers/i2c/busses/i2c-sh7760.c
+@@ -445,7 +445,6 @@ static int sh7760_i2c_probe(struct platform_device *pdev)
+ 
+ 	id = kzalloc(sizeof(struct cami2c), GFP_KERNEL);
+ 	if (!id) {
+-		dev_err(&pdev->dev, "no mem for private data\n");
+ 		ret = -ENOMEM;
+ 		goto out0;
+ 	}
+diff --git a/drivers/i2c/busses/i2c-tiny-usb.c b/drivers/i2c/busses/i2c-tiny-usb.c
+index 7279ca0eaa2d0..d1fa9ff5aeab4 100644
+--- a/drivers/i2c/busses/i2c-tiny-usb.c
++++ b/drivers/i2c/busses/i2c-tiny-usb.c
+@@ -226,10 +226,8 @@ static int i2c_tiny_usb_probe(struct usb_interface *interface,
+ 
+ 	/* allocate memory for our device state and initialize it */
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (dev == NULL) {
+-		dev_err(&interface->dev, "Out of memory\n");
++	if (!dev)
+ 		goto error;
+-	}
+ 
+ 	dev->usb_dev = usb_get_dev(interface_to_usbdev(interface));
+ 	dev->interface = interface;
 -- 
 2.39.2
 
