@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2666276ADA3
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5909676AEF8
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232147AbjHAJbF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:31:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57042 "EHLO
+        id S233383AbjHAJnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:43:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231678AbjHAJao (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:44 -0400
+        with ESMTP id S233397AbjHAJn0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 234CF421C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33FD05FF6
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9BB3614EF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B673DC433CA;
-        Tue,  1 Aug 2023 09:29:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B41F6151F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DD6C433C7;
+        Tue,  1 Aug 2023 09:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882169;
-        bh=F5hhHch9TM0KYxE61L1WFASF78qhA6eZDL+R+MI4PSg=;
+        s=korg; t=1690882868;
+        bh=Z2dVW5ltn2ElYLZWBhidtHujT4gfctGfMvwQrSfG71c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ihkb3Zsaz0ei0qqfdQSxIjQIrgh7fTp+OBHE8oCStG4Y9NuT44pBL/FCvHau7/znn
-         gro3SWBA5J0r0jsyZbFN3JlFmeeTQAFiEmBl4kx098/Rtn9uU4AP2ZGgpaCXQoUd4X
-         4Zd5QI5mLuCkzt9eDXvKWyvL7w4YGMEOy+fxOK9U=
+        b=IrEKj44aNy4XODLRPH9Cn4H7Xvkw+xNjogh62cSSr+E5NAfk4PjaoI/c1Kh3i8+Bt
+         GaGRQua+/mlZlOo94ONM5vyuLdy5moezgVzkJOwBQZhrA3vK6A8ZpofnNETFEXWWO6
+         MaZ478LuSOLL7A+fhlRJLuJWbyjd2OpySPpT8GXQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ross Lagerwall <ross.lagerwall@citrix.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/228] blk-mq: Fix stall due to recursive flush plug
-Date:   Tue,  1 Aug 2023 11:17:48 +0200
-Message-ID: <20230801091923.194540900@linuxfoundation.org>
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 005/239] r8169: revert 2ab19de62d67 ("r8169: remove ASPM restrictions now that ASPM is disabled during NAPI poll")
+Date:   Tue,  1 Aug 2023 11:17:49 +0200
+Message-ID: <20230801091925.837435794@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,80 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 70904263512a74a3b8941dd9e6e515ca6fc57821 ]
+commit cf2ffdea0839398cb0551762af7f5efb0a6e0fea upstream.
 
-We have seen rare IO stalls as follows:
+There have been reports that on a number of systems this change breaks
+network connectivity. Therefore effectively revert it. Mainly affected
+seem to be systems where BIOS denies ASPM access to OS.
+Due to later changes we can't do a direct revert.
 
-* blk_mq_plug_issue_direct() is entered with an mq_list containing two
-requests.
-* For the first request, it sets last == false and enters the driver's
-queue_rq callback.
-* The driver queue_rq callback indirectly calls schedule() which calls
-blk_flush_plug(). This may happen if the driver has the
-BLK_MQ_F_BLOCKING flag set and is allowed to sleep in ->queue_rq.
-* blk_flush_plug() handles the remaining request in the mq_list. mq_list
-is now empty.
-* The original call to queue_rq resumes (with last == false).
-* The loop in blk_mq_plug_issue_direct() terminates because there are no
-remaining requests in mq_list.
-
-The IO is now stalled because the last request submitted to the driver
-had last == false and there was no subsequent call to commit_rqs().
-
-Fix this by returning early in blk_mq_flush_plug_list() if rq_count is 0
-which it will be in the recursive case, rather than checking if the
-mq_list is empty. At the same time, adjust one of the callers to skip
-the mq_list empty check as it is not necessary.
-
-Fixes: dc5fc361d891 ("block: attempt direct issue of plug list")
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230714101106.3635611-1-ross.lagerwall@citrix.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2ab19de62d67 ("r8169: remove ASPM restrictions now that ASPM is disabled during NAPI poll")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/netdev/e47bac0d-e802-65e1-b311-6acb26d5cf10@freenet.de/T/
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217596
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/57f13ec0-b216-d5d8-363d-5b05528ec5fb@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-core.c | 3 +--
- block/blk-mq.c   | 9 ++++++++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |   27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 24ee7785a5ad5..ebb7a1689b261 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -1140,8 +1140,7 @@ void __blk_flush_plug(struct blk_plug *plug, bool from_schedule)
- {
- 	if (!list_empty(&plug->cb_list))
- 		flush_plug_callbacks(plug, from_schedule);
--	if (!rq_list_empty(plug->mq_list))
--		blk_mq_flush_plug_list(plug, from_schedule);
-+	blk_mq_flush_plug_list(plug, from_schedule);
- 	/*
- 	 * Unconditionally flush out cached requests, even if the unplug
- 	 * event came from schedule. Since we know hold references to the
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index add013d5bbdab..100fb0c3114f8 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2749,7 +2749,14 @@ void blk_mq_flush_plug_list(struct blk_plug *plug, bool from_schedule)
- {
- 	struct request *rq;
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -623,6 +623,7 @@ struct rtl8169_private {
+ 	int cfg9346_usage_count;
  
--	if (rq_list_empty(plug->mq_list))
-+	/*
-+	 * We may have been called recursively midway through handling
-+	 * plug->mq_list via a schedule() in the driver's queue_rq() callback.
-+	 * To avoid mq_list changing under our feet, clear rq_count early and
-+	 * bail out specifically if rq_count is 0 rather than checking
-+	 * whether the mq_list is empty.
-+	 */
-+	if (plug->rq_count == 0)
+ 	unsigned supports_gmii:1;
++	unsigned aspm_manageable:1;
+ 	dma_addr_t counters_phys_addr;
+ 	struct rtl8169_counters *counters;
+ 	struct rtl8169_tc_offsets tc_offset;
+@@ -2746,7 +2747,8 @@ static void rtl_hw_aspm_clkreq_enable(st
+ 	if (tp->mac_version < RTL_GIGA_MAC_VER_32)
  		return;
- 	plug->rq_count = 0;
  
--- 
-2.39.2
-
+-	if (enable) {
++	/* Don't enable ASPM in the chip if OS can't control ASPM */
++	if (enable && tp->aspm_manageable) {
+ 		/* On these chip versions ASPM can even harm
+ 		 * bus communication of other PCI devices.
+ 		 */
+@@ -5156,6 +5158,16 @@ done:
+ 	rtl_rar_set(tp, mac_addr);
+ }
+ 
++/* register is set if system vendor successfully tested ASPM 1.2 */
++static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
++{
++	if (tp->mac_version >= RTL_GIGA_MAC_VER_61 &&
++	    r8168_mac_ocp_read(tp, 0xc0b2) & 0xf)
++		return true;
++
++	return false;
++}
++
+ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	struct rtl8169_private *tp;
+@@ -5227,6 +5239,19 @@ static int rtl_init_one(struct pci_dev *
+ 
+ 	tp->mac_version = chipset;
+ 
++	/* Disable ASPM L1 as that cause random device stop working
++	 * problems as well as full system hangs for some PCIe devices users.
++	 * Chips from RTL8168h partially have issues with L1.2, but seem
++	 * to work fine with L1 and L1.1.
++	 */
++	if (rtl_aspm_is_safe(tp))
++		rc = 0;
++	else if (tp->mac_version >= RTL_GIGA_MAC_VER_46)
++		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
++	else
++		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1);
++	tp->aspm_manageable = !rc;
++
+ 	tp->dash_type = rtl_check_dash(tp);
+ 
+ 	tp->cp_cmd = RTL_R16(tp, CPlusCmd) & CPCMD_MASK;
 
 
