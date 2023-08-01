@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6130A76AF89
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D752476AE41
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233597AbjHAJsg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
+        id S233009AbjHAJhR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbjHAJsU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:20 -0400
+        with ESMTP id S231485AbjHAJhA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7093C04
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 387B33C05
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1121F6150D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23502C433C7;
-        Tue,  1 Aug 2023 09:46:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC979614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC01BC433C9;
+        Tue,  1 Aug 2023 09:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883204;
-        bh=A6+Al5i39VM4XIx65EAS8+h+NSAGGCHmal1OJ1Q5NLU=;
+        s=korg; t=1690882511;
+        bh=zwsiGjh/mfJKZo7GcuHEku71pnBeEVPLwTtVJAVCCNo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UmzRTe8+t6Q5oHhTUC//a5px9vPMzJeXQqEbDg351XzpG3i4RIc4tvl6B5A+ieM2i
-         XKzkZOaFn7ACg8IxLdyX7QbxEkEVoViTZl/Nsy3gVhB2SS3ItXR2R1kxDwuMwzF6CQ
-         zvoz7SGsLM46nPhuKHW2cvkRB2kJW/ITuPj1LHeU=
+        b=M+HO/jzLcx/4abTiY/wuo0bf/z5nYZ4WlIlwVf/YHLKFksKSy/R4MoWiUaUbUYHiW
+         isSjwl8vWIKmMGHeL10WugNF9OPYpxV7JDOz/GZWpCKqY8wzdHAJJQ88O451K24TcU
+         kvFzcfqKeEqPuiOBaHSAEh1OJCFDkaOUrerX5Ya0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Stefano Stabellini <stefano.stabellini@amd.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Juergen Gross <jgross@suse.com>,
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Mike Snitzer <snitzer@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 125/239] xenbus: check xen_domain in xenbus_probe_initcall
+Subject: [PATCH 6.1 131/228] dm raid: fix missing reconfig_mutex unlock in raid_ctr() error paths
 Date:   Tue,  1 Aug 2023 11:19:49 +0200
-Message-ID: <20230801091930.225363607@linuxfoundation.org>
+Message-ID: <20230801091927.471513934@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,56 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefano Stabellini <sstabellini@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 0d8f7cc8057890db08c54fe610d8a94af59da082 ]
+[ Upstream commit bae3028799dc4f1109acc4df37c8ff06f2d8f1a0 ]
 
-The same way we already do in xenbus_init.
-Fixes the following warning:
+In the error paths 'bad_stripe_cache' and 'bad_check_reshape',
+'reconfig_mutex' is still held after raid_ctr() returns.
 
-[  352.175563] Trying to free already-free IRQ 0
-[  352.177355] WARNING: CPU: 1 PID: 88 at kernel/irq/manage.c:1893 free_irq+0xbf/0x350
-[...]
-[  352.213951] Call Trace:
-[  352.214390]  <TASK>
-[  352.214717]  ? __warn+0x81/0x170
-[  352.215436]  ? free_irq+0xbf/0x350
-[  352.215906]  ? report_bug+0x10b/0x200
-[  352.216408]  ? prb_read_valid+0x17/0x20
-[  352.216926]  ? handle_bug+0x44/0x80
-[  352.217409]  ? exc_invalid_op+0x13/0x60
-[  352.217932]  ? asm_exc_invalid_op+0x16/0x20
-[  352.218497]  ? free_irq+0xbf/0x350
-[  352.218979]  ? __pfx_xenbus_probe_thread+0x10/0x10
-[  352.219600]  xenbus_probe+0x7a/0x80
-[  352.221030]  xenbus_probe_thread+0x76/0xc0
-
-Fixes: 5b3353949e89 ("xen: add support for initializing xenstore later as HVM domain")
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-
-Link: https://lore.kernel.org/r/alpine.DEB.2.22.394.2307211609140.3118466@ubuntu-linux-20-04-desktop
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 9dbd1aa3a81c ("dm raid: add reshaping support to the target")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/md/dm-raid.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
-index 58b732dcbfb83..639bf628389ba 100644
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -811,6 +811,9 @@ static int xenbus_probe_thread(void *unused)
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index b26c12856b1db..bd0da5bbd57b0 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -3274,15 +3274,19 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+ 	/* Try to adjust the raid4/5/6 stripe cache size to the stripe size */
+ 	if (rs_is_raid456(rs)) {
+ 		r = rs_set_raid456_stripe_cache(rs);
+-		if (r)
++		if (r) {
++			mddev_unlock(&rs->md);
+ 			goto bad_stripe_cache;
++		}
+ 	}
  
- static int __init xenbus_probe_initcall(void)
- {
-+	if (!xen_domain())
-+		return -ENODEV;
-+
- 	/*
- 	 * Probe XenBus here in the XS_PV case, and also XS_HVM unless we
- 	 * need to wait for the platform PCI device to come up or
+ 	/* Now do an early reshape check */
+ 	if (test_bit(RT_FLAG_RESHAPE_RS, &rs->runtime_flags)) {
+ 		r = rs_check_reshape(rs);
+-		if (r)
++		if (r) {
++			mddev_unlock(&rs->md);
+ 			goto bad_check_reshape;
++		}
+ 
+ 		/* Restore new, ctr requested layout to perform check */
+ 		rs_config_restore(rs, &rs_layout);
+@@ -3291,6 +3295,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+ 			r = rs->md.pers->check_reshape(&rs->md);
+ 			if (r) {
+ 				ti->error = "Reshape check failed";
++				mddev_unlock(&rs->md);
+ 				goto bad_check_reshape;
+ 			}
+ 		}
 -- 
 2.40.1
 
