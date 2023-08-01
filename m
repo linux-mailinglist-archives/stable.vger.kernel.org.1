@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60EEC76AD14
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5868976AE56
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232856AbjHAJ0C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52802 "EHLO
+        id S233016AbjHAJiM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230152AbjHAJZr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:47 -0400
+        with ESMTP id S233180AbjHAJh3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706B51BE2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C57E2139
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 267456150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32169C433C7;
-        Tue,  1 Aug 2023 09:24:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 04AD6614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13092C433C7;
+        Tue,  1 Aug 2023 09:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881874;
-        bh=nkOLSAeBlptg6dgJqYXpT0y1Nu1pmrd3G4DlqmUciv0=;
+        s=korg; t=1690882544;
+        bh=VNghHi08ay2I90ltuMo9NhGFydrdgAtYDXfdwayzGU4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jfT77iO1s1rHND7cdo0Xykb4tt9G82/uDDUeQeNanq+k2KYiWIpOvVA3zkD/YXcBs
-         TobkKqipFq8zuCULBQy1TAZ5QcAoKWtf4eKs5c4zVnaIsHPertsix1MqoX7p05/7q8
-         VY/DixO7Rf0V6o/xbQqT0TD+lpKtd1wrJwFGhFgk=
+        b=DLAFdf6DceneUdD3WNeeu8jtS2f3jmmMl4kJ8jGT8m4X39R2BwEfW6seA+6ImjCvs
+         bh7buYlxovn4THB/u8ONvQxgFjzaNaHSO8Qn1PaUDCpJnGBt1JA8JSAHZqosGxsrV3
+         HTqfMM1q35hGk+JpwGIDWN8FI6YFhNy48Ba0+yUE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roopa Prabhu <roopa@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/155] vxlan: move to its own directory
+Subject: [PATCH 6.1 115/228] RDMA/mlx4: Make check for invalid flags stricter
 Date:   Tue,  1 Aug 2023 11:19:33 +0200
-Message-ID: <20230801091912.382918421@linuxfoundation.org>
+Message-ID: <20230801091926.928816496@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,58 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roopa Prabhu <roopa@nvidia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6765393614ea8e2c0a7b953063513823f87c9115 ]
+[ Upstream commit d64b1ee12a168030fbb3e0aebf7bce49e9a07589 ]
 
-vxlan.c has grown too long. This patch moves
-it to its own directory. subsequent patches add new
-functionality in new files.
+This code is trying to ensure that only the flags specified in the list
+are allowed.  The problem is that ucmd->rx_hash_fields_mask is a u64 and
+the flags are an enum which is treated as a u32 in this context.  That
+means the test doesn't check whether the highest 32 bits are zero.
 
-Signed-off-by: Roopa Prabhu <roopa@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 94d166c5318c ("vxlan: calculate correct header length for GPE")
+Fixes: 4d02ebd9bbbd ("IB/mlx4: Fix RSS hash fields restrictions")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/233ed975-982d-422a-b498-410f71d8a101@moroto.mountain
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/Makefile                        | 2 +-
- drivers/net/vxlan/Makefile                  | 7 +++++++
- drivers/net/{vxlan.c => vxlan/vxlan_core.c} | 0
- 3 files changed, 8 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/vxlan/Makefile
- rename drivers/net/{vxlan.c => vxlan/vxlan_core.c} (100%)
+ drivers/infiniband/hw/mlx4/qp.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 739838623cf65..50e60852f1286 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -30,7 +30,7 @@ obj-$(CONFIG_TUN) += tun.o
- obj-$(CONFIG_TAP) += tap.o
- obj-$(CONFIG_VETH) += veth.o
- obj-$(CONFIG_VIRTIO_NET) += virtio_net.o
--obj-$(CONFIG_VXLAN) += vxlan.o
-+obj-$(CONFIG_VXLAN) += vxlan/
- obj-$(CONFIG_GENEVE) += geneve.o
- obj-$(CONFIG_BAREUDP) += bareudp.o
- obj-$(CONFIG_GTP) += gtp.o
-diff --git a/drivers/net/vxlan/Makefile b/drivers/net/vxlan/Makefile
-new file mode 100644
-index 0000000000000..5672661335933
---- /dev/null
-+++ b/drivers/net/vxlan/Makefile
-@@ -0,0 +1,7 @@
-+#
-+# Makefile for the vxlan driver
-+#
-+
-+obj-$(CONFIG_VXLAN) += vxlan.o
-+
-+vxlan-objs := vxlan_core.o
-diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan/vxlan_core.c
-similarity index 100%
-rename from drivers/net/vxlan.c
-rename to drivers/net/vxlan/vxlan_core.c
+diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
+index 488c906c0432c..ac479e81ddee8 100644
+--- a/drivers/infiniband/hw/mlx4/qp.c
++++ b/drivers/infiniband/hw/mlx4/qp.c
+@@ -530,15 +530,15 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
+ 		return (-EOPNOTSUPP);
+ 	}
+ 
+-	if (ucmd->rx_hash_fields_mask & ~(MLX4_IB_RX_HASH_SRC_IPV4	|
+-					  MLX4_IB_RX_HASH_DST_IPV4	|
+-					  MLX4_IB_RX_HASH_SRC_IPV6	|
+-					  MLX4_IB_RX_HASH_DST_IPV6	|
+-					  MLX4_IB_RX_HASH_SRC_PORT_TCP	|
+-					  MLX4_IB_RX_HASH_DST_PORT_TCP	|
+-					  MLX4_IB_RX_HASH_SRC_PORT_UDP	|
+-					  MLX4_IB_RX_HASH_DST_PORT_UDP  |
+-					  MLX4_IB_RX_HASH_INNER)) {
++	if (ucmd->rx_hash_fields_mask & ~(u64)(MLX4_IB_RX_HASH_SRC_IPV4	|
++					       MLX4_IB_RX_HASH_DST_IPV4	|
++					       MLX4_IB_RX_HASH_SRC_IPV6	|
++					       MLX4_IB_RX_HASH_DST_IPV6	|
++					       MLX4_IB_RX_HASH_SRC_PORT_TCP |
++					       MLX4_IB_RX_HASH_DST_PORT_TCP |
++					       MLX4_IB_RX_HASH_SRC_PORT_UDP |
++					       MLX4_IB_RX_HASH_DST_PORT_UDP |
++					       MLX4_IB_RX_HASH_INNER)) {
+ 		pr_debug("RX Hash fields_mask has unsupported mask (0x%llx)\n",
+ 			 ucmd->rx_hash_fields_mask);
+ 		return (-EOPNOTSUPP);
 -- 
-2.39.2
+2.40.1
 
 
 
