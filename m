@@ -2,50 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FA0876AE0F
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93E1076AF33
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233153AbjHAJfx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34968 "EHLO
+        id S233543AbjHAJph (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233127AbjHAJfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B1D01BCC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:31 -0700 (PDT)
+        with ESMTP id S233534AbjHAJpT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9702D2707
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 20B8F613E2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30083C433C8;
-        Tue,  1 Aug 2023 09:33:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1778E6150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E38C433C7;
+        Tue,  1 Aug 2023 09:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882410;
-        bh=RNSpY8Wlq6iZA3NwoukpyH+WE7F5hLROrc7d5GWkqIM=;
+        s=korg; t=1690883035;
+        bh=5J4/ymdwqq0GipLJlGHUen0Khbd5VP6s/slpFTfGrpQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BLgNTkmLVhJU6lZR7JdsbkmCFOhNQFvaMAGoQEdXB6BX427dWg/n2pECGnCFs8NTq
-         h3uB1DeAY7aTD17V9n1n9zQWUoVx4wD4/O/oM/FYLHyWH71XDu3d3TMpI0TKqrfEB2
-         OzLftmuHGxtI+YYkx5yRYzL5GpWDa4bnznOeK8O4=
+        b=zJeb6Tdl8kvr+VD5WtX3KIT6XGSFGtIMpPHryqGmoFrKSgZLhgMCvOgw+rvLgN8uA
+         NhqxJisLa7/za7cw2HrLZIqbuF6WzdcIsD+4sqh8HKg5LQi3VhLkPtlt/Xj5/CTU0G
+         E2AawK2f9zTNWwn3wjAbZpmr9qZhJX4MN5BQeNiM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 096/228] ice: Fix memory management in ice_ethtool_fdir.c
+        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 090/239] netfilter: nf_tables: disallow rule addition to bound chain via NFTA_RULE_CHAIN_ID
 Date:   Tue,  1 Aug 2023 11:19:14 +0200
-Message-ID: <20230801091926.302496188@linuxfoundation.org>
+Message-ID: <20230801091928.977784390@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,101 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit a3336056504d780590ac6d6ac94fbba829994594 ]
+[ Upstream commit 0ebc1064e4874d5987722a2ddbc18f94aa53b211 ]
 
-Fix ethtool FDIR logic to not use memory after its release.
-In the ice_ethtool_fdir.c file there are 2 spots where code can
-refer to pointers which may be missing.
+Bail out with EOPNOTSUPP when adding rule to bound chain via
+NFTA_RULE_CHAIN_ID. The following warning splat is shown when
+adding a rule to a deleted bound chain:
 
-In the ice_cfg_fdir_xtrct_seq() function seg may be freed but
-even then may be still used by memcpy(&tun_seg[1], seg, sizeof(*seg)).
+ WARNING: CPU: 2 PID: 13692 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+ CPU: 2 PID: 13692 Comm: chain-bound-rul Not tainted 6.1.39 #1
+ RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
 
-In the ice_add_fdir_ethtool() function struct ice_fdir_fltr *input
-may first fail to be added via ice_fdir_update_list_entry() but then
-may be deleted by ice_fdir_update_list_entry.
-
-Terminate in both cases when the returned value of the previous
-operation is other than 0, free memory and don't use it anymore.
-
-Reported-by: Michal Schmidt <mschmidt@redhat.com>
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2208423
-Fixes: cac2a27cd9ab ("ice: Support IPv4 Flow Director filters")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230721155854.1292805-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/ice/ice_ethtool_fdir.c | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-index ead6d50fc0adc..8c6e13f87b7d3 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-@@ -1281,16 +1281,21 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
- 				     ICE_FLOW_FLD_OFF_INVAL);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ccf0b3d80fd97..da00c411a9cd4 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3810,8 +3810,6 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN]);
+ 			return PTR_ERR(chain);
+ 		}
+-		if (nft_chain_is_bound(chain))
+-			return -EOPNOTSUPP;
+ 
+ 	} else if (nla[NFTA_RULE_CHAIN_ID]) {
+ 		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID],
+@@ -3824,6 +3822,9 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 		return -EINVAL;
  	}
  
--	/* add filter for outer headers */
- 	fltr_idx = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
++	if (nft_chain_is_bound(chain))
++		return -EOPNOTSUPP;
 +
-+	assign_bit(fltr_idx, hw->fdir_perfect_fltr, perfect_filter);
-+
-+	/* add filter for outer headers */
- 	ret = ice_fdir_set_hw_fltr_rule(pf, seg, fltr_idx,
- 					ICE_FD_HW_SEG_NON_TUN);
--	if (ret == -EEXIST)
--		/* Rule already exists, free memory and continue */
--		devm_kfree(dev, seg);
--	else if (ret)
-+	if (ret == -EEXIST) {
-+		/* Rule already exists, free memory and count as success */
-+		ret = 0;
-+		goto err_exit;
-+	} else if (ret) {
- 		/* could not write filter, free memory */
- 		goto err_exit;
-+	}
- 
- 	/* make tunneled filter HW entries if possible */
- 	memcpy(&tun_seg[1], seg, sizeof(*seg));
-@@ -1305,18 +1310,13 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
- 		devm_kfree(dev, tun_seg);
- 	}
- 
--	if (perfect_filter)
--		set_bit(fltr_idx, hw->fdir_perfect_fltr);
--	else
--		clear_bit(fltr_idx, hw->fdir_perfect_fltr);
--
- 	return ret;
- 
- err_exit:
- 	devm_kfree(dev, tun_seg);
- 	devm_kfree(dev, seg);
- 
--	return -EOPNOTSUPP;
-+	return ret;
- }
- 
- /**
-@@ -1914,7 +1914,9 @@ int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 	input->comp_report = ICE_FXD_FLTR_QW0_COMP_REPORT_SW_FAIL;
- 
- 	/* input struct is added to the HW filter list */
--	ice_fdir_update_list_entry(pf, input, fsp->location);
-+	ret = ice_fdir_update_list_entry(pf, input, fsp->location);
-+	if (ret)
-+		goto release_lock;
- 
- 	ret = ice_fdir_write_all_fltr(pf, input, true);
- 	if (ret)
+ 	if (nla[NFTA_RULE_HANDLE]) {
+ 		handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_HANDLE]));
+ 		rule = __nft_rule_lookup(chain, handle);
 -- 
 2.39.2
 
