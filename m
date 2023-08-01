@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 922D276AF0A
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1298E76ADDF
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233090AbjHAJoo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45638 "EHLO
+        id S232960AbjHAJeJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230303AbjHAJoU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:20 -0400
+        with ESMTP id S232987AbjHAJdw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B7FF30F2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14602D42
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5257E61515
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E50FC433C7;
-        Tue,  1 Aug 2023 09:41:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4910561510
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579CEC433C9;
+        Tue,  1 Aug 2023 09:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882902;
-        bh=6fjvUkJrBH9rmTv+vUIgZ0y0rt5DVGj5dB+mQfLmuIA=;
+        s=korg; t=1690882304;
+        bh=yVMOy/ypw0Ez29fMAX3heC25NvHC9GsvMmfQQZa54MU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g2t/VLocAEvA79y/Pkx8DCPJmDOjFAwhmUqWNPYfGIJgo7M+jdJELGZ7FV01rTA2a
-         nMdgq7Scff/YvWqa2mjswLkoQUZtTv8F+HgKh+9V1ySUJeg42SQWFkh/o4uwg3Cd2l
-         E5d11w2Yls0gnIVWAvsQoehoov9G/kD2JfKEQLzA=
+        b=DaTYLohMBfM+pxX1roD/PcQVd1jzXZg5ZL7ifQ5TgicaNZyKQqTeisdHDjDdmXxCu
+         bFaKFQNxMSdS27TLXV7Pymvw2AGx2GQav0Nwxrv+0mMonEuWjL6ciu9nhBQasmxq+q
+         Emth0F+hgtOt9d4ep6fhbxgPEHiceYeu+eKcaJ+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jun Lei <jun.lei@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Daniel Miess <daniel.miess@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 044/239] drm/amd/display: Fix possible underflow for displays with large vblank
+Subject: [PATCH 6.1 050/228] n_tty: Rename tail to old_tail in n_tty_read()
 Date:   Tue,  1 Aug 2023 11:18:28 +0200
-Message-ID: <20230801091927.162996487@linuxfoundation.org>
+Message-ID: <20230801091924.715845844@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,74 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Miess <daniel.miess@amd.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 1a4bcdbea4319efeb26cc4b05be859a7867e02dc ]
+[ Upstream commit 947d66b68f3c4e7cf8f3f3500807b9d2a0de28ce ]
 
-[Why]
-Underflow observed when using a display with a large vblank region
-and low refresh rate
+The local tail variable in n_tty_read() is used for one purpose, it
+keeps the old tail. Thus, rename it appropriately to improve code
+readability.
 
-[How]
-Simplify calculation of vblank_nom
-
-Increase value for VBlankNomDefaultUS to 800us
-
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Daniel Miess <daniel.miess@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 2a9482e55968 ("drm/amd/display: Prevent vtotal from being set to 0")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/22b37499-ff9a-7fc1-f6e0-58411328d122@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 4903fde8047a ("tty: fix hang on tty device with no_room set")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml/dcn314/dcn314_fpu.c    | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/tty/n_tty.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 1d00eb9e73c62..554152371eb53 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -33,7 +33,7 @@
- #include "dml/display_mode_vba.h"
+diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
+index 597019690ae62..c8f56c9b1a1c8 100644
+--- a/drivers/tty/n_tty.c
++++ b/drivers/tty/n_tty.c
+@@ -2130,7 +2130,7 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file,
+ 	ssize_t retval = 0;
+ 	long timeout;
+ 	bool packet;
+-	size_t tail;
++	size_t old_tail;
  
- struct _vcs_dpi_ip_params_st dcn3_14_ip = {
--	.VBlankNomDefaultUS = 668,
-+	.VBlankNomDefaultUS = 800,
- 	.gpuvm_enable = 1,
- 	.gpuvm_max_page_table_levels = 1,
- 	.hostvm_enable = 1,
-@@ -286,7 +286,7 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
- 	struct resource_context *res_ctx = &context->res_ctx;
- 	struct pipe_ctx *pipe;
- 	bool upscaled = false;
--	bool isFreesyncVideo = false;
-+	const unsigned int max_allowed_vblank_nom = 1023;
+ 	/*
+ 	 * Is this a continuation of a read started earler?
+@@ -2193,7 +2193,7 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file,
+ 	}
  
- 	dc_assert_fp_enabled();
+ 	packet = tty->ctrl.packet;
+-	tail = ldata->read_tail;
++	old_tail = ldata->read_tail;
  
-@@ -300,16 +300,11 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
- 		pipe = &res_ctx->pipe_ctx[i];
- 		timing = &pipe->stream->timing;
+ 	add_wait_queue(&tty->read_wait, &wait);
+ 	while (nr) {
+@@ -2282,7 +2282,7 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file,
+ 		if (time)
+ 			timeout = time;
+ 	}
+-	if (tail != ldata->read_tail)
++	if (old_tail != ldata->read_tail)
+ 		n_tty_kick_worker(tty);
+ 	up_read(&tty->termios_rwsem);
  
--		isFreesyncVideo = pipe->stream->adjust.v_total_max == pipe->stream->adjust.v_total_min;
--		isFreesyncVideo = isFreesyncVideo && pipe->stream->adjust.v_total_min > timing->v_total;
--
--		if (!isFreesyncVideo) {
--			pipes[pipe_cnt].pipe.dest.vblank_nom =
--				dcn3_14_ip.VBlankNomDefaultUS / (timing->h_total / (timing->pix_clk_100hz / 10000.0));
--		} else {
--			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
--			pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
--		}
-+		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
-+		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
-+		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
-+		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
-+		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, max_allowed_vblank_nom);
- 
- 		if (pipe->plane_state &&
- 				(pipe->plane_state->src_rect.height < pipe->plane_state->dst_rect.height ||
 -- 
 2.39.2
 
