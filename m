@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82F3A76AFC0
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E939776AD94
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233653AbjHAJuC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:50:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50746 "EHLO
+        id S231394AbjHAJae (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:30:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233389AbjHAJtt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6FF1713
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:02 -0700 (PDT)
+        with ESMTP id S229938AbjHAJaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 431D844A4
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5CA5614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DD1C433C7;
-        Tue,  1 Aug 2023 09:49:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23AD7614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBF2C433C7;
+        Tue,  1 Aug 2023 09:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883341;
-        bh=Q4BiTurSuxHTTKVYLid99KNugupWWkCPNRl+fcUm9xc=;
+        s=korg; t=1690882135;
+        bh=1rW1SLtWYeCfO26de2Wl5M45zQ10bYqD50J1yyTPJbQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uqmC/vN5zqYXmmZk2+/oz7PmuiXJKSv3wcXam58Qg5WWjqdXrWybC5XwUa8DS1niu
-         oCEm4t7KSPL17C7Pcek5WmOXp9gkanjNVvHoY29Ulfdwkh9XiUkEY64n0WweLOrqF9
-         DzKhsJn6o0+u5wshiGe0OV1fggILzvyWzOt9kPnQ=
+        b=gFyT2Q1Pe3p3naP4kOYkDAl22R/spNyIG9uQyXo5WQIA2ePLkuV1GMD+Z9zmXxJmv
+         1DQQPSjyGsbxNbajJ0cdfZn9w7CzrtJZ396AbDSUjmTNvfdPJVcoHBCJeGoj6Mc5mR
+         2wY+Ejhy0tE2VxJczuKL5lOO+WZy3Dn4lX+0n+kE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Alex Elder <elder@linaro.org>, Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 202/239] net: ipa: only reset hashed tables when supported
+        patches@lists.linux.dev,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 154/155] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
 Date:   Tue,  1 Aug 2023 11:21:06 +0200
-Message-ID: <20230801091933.085541350@linuxfoundation.org>
+Message-ID: <20230801091915.626910880@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,101 +55,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Elder <elder@linaro.org>
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 
-commit e11ec2b868af2b351c6c1e2e50eb711cc5423a10 upstream.
+commit e51df4f81b02bcdd828a04de7c1eb6a92988b61e upstream.
 
-Last year, the code that manages GSI channel transactions switched
-from using spinlock-protected linked lists to using indexes into the
-ring buffer used for a channel.  Recently, Google reported seeing
-transaction reference count underflows occasionally during shutdown.
+In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
+pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
+split into a core part and an I2C part to properly match based on a
+Device Tree compatible string.
 
-Doug Anderson found a way to reproduce the issue reliably, and
-bisected the issue to the commit that eliminated the linked lists
-and the lock.  The root cause was ultimately determined to be
-related to unused transactions being committed as part of the modem
-shutdown cleanup activity.  Unused transactions are not normally
-expected (except in error cases).
+However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
+....) is in the core part of the driver, not the I2C part. Therefore,
+automatic module loading based on module.alias, based on matching with
+the DT compatible string, loads the core part of the driver, but not
+the I2C part. And threfore, the i2c_driver is not registered, and the
+codec is not known to the system, nor matched with a DT node with the
+corresponding compatible string.
 
-The modem uses some ranges of IPA-resident memory, and whenever it
-shuts down we zero those ranges.  In ipa_filter_reset_table() a
-transaction is allocated to zero modem filter table entries.  If
-hashing is not supported, hashed table memory should not be zeroed.
-But currently nothing prevents that, and the result is an unused
-transaction.  Something similar occurs when we zero routing table
-entries for the modem.
+In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
+the I2C part of the driver. The cs42l51_of_match[] array is also moved
+as well, as it is not possible to have this definition in one file,
+and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
+to how MODULE_DEVICE_TABLE works.
 
-By preventing any attempt to clear hashed tables when hashing is not
-supported, the reference count underflow is avoided in this case.
+Thanks to this commit, the I2C part of the driver now properly
+autoloads, and thanks to its dependency on the core part, the core
+part gets autoloaded as well, resulting in a functional sound card
+without having to manually load kernel modules.
 
-Note that there likely remains an issue with properly freeing unused
-transactions (if they occur due to errors).  This patch addresses
-only the underflows that Google originally reported.
-
-Cc: <stable@vger.kernel.org> # 6.1.x
-Fixes: d338ae28d8a8 ("net: ipa: kill all other transaction lists")
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Alex Elder <elder@linaro.org>
-Link: https://lore.kernel.org/r/20230724224055.1688854-1-elder@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Link: https://lore.kernel.org/r/20230713112112.778576-1-thomas.petazzoni@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipa/ipa_table.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ sound/soc/codecs/cs42l51-i2c.c |    6 ++++++
+ sound/soc/codecs/cs42l51.c     |    7 -------
+ sound/soc/codecs/cs42l51.h     |    1 -
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ipa/ipa_table.c
-+++ b/drivers/net/ipa/ipa_table.c
-@@ -273,16 +273,15 @@ static int ipa_filter_reset(struct ipa *
- 	if (ret)
- 		return ret;
+--- a/sound/soc/codecs/cs42l51-i2c.c
++++ b/sound/soc/codecs/cs42l51-i2c.c
+@@ -19,6 +19,12 @@ static struct i2c_device_id cs42l51_i2c_
+ };
+ MODULE_DEVICE_TABLE(i2c, cs42l51_i2c_id);
  
--	ret = ipa_filter_reset_table(ipa, true, false, modem);
--	if (ret)
-+	ret = ipa_filter_reset_table(ipa, false, true, modem);
-+	if (ret || !ipa_table_hash_support(ipa))
- 		return ret;
- 
--	ret = ipa_filter_reset_table(ipa, false, true, modem);
-+	ret = ipa_filter_reset_table(ipa, true, false, modem);
- 	if (ret)
- 		return ret;
--	ret = ipa_filter_reset_table(ipa, true, true, modem);
- 
--	return ret;
-+	return ipa_filter_reset_table(ipa, true, true, modem);
- }
- 
- /* The AP routes and modem routes are each contiguous within the
-@@ -291,12 +290,13 @@ static int ipa_filter_reset(struct ipa *
-  * */
- static int ipa_route_reset(struct ipa *ipa, bool modem)
- {
-+	bool hash_support = ipa_table_hash_support(ipa);
- 	u32 modem_route_count = ipa->modem_route_count;
- 	struct gsi_trans *trans;
- 	u16 first;
- 	u16 count;
- 
--	trans = ipa_cmd_trans_alloc(ipa, 4);
-+	trans = ipa_cmd_trans_alloc(ipa, hash_support ? 4 : 2);
- 	if (!trans) {
- 		dev_err(&ipa->pdev->dev,
- 			"no transaction for %s route reset\n",
-@@ -313,10 +313,12 @@ static int ipa_route_reset(struct ipa *i
- 	}
- 
- 	ipa_table_reset_add(trans, false, false, false, first, count);
--	ipa_table_reset_add(trans, false, true, false, first, count);
--
- 	ipa_table_reset_add(trans, false, false, true, first, count);
--	ipa_table_reset_add(trans, false, true, true, first, count);
++const struct of_device_id cs42l51_of_match[] = {
++	{ .compatible = "cirrus,cs42l51", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, cs42l51_of_match);
 +
-+	if (hash_support) {
-+		ipa_table_reset_add(trans, false, true, false, first, count);
-+		ipa_table_reset_add(trans, false, true, true, first, count);
-+	}
+ static int cs42l51_i2c_probe(struct i2c_client *i2c,
+ 			     const struct i2c_device_id *id)
+ {
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -825,13 +825,6 @@ int __maybe_unused cs42l51_resume(struct
+ }
+ EXPORT_SYMBOL_GPL(cs42l51_resume);
  
- 	gsi_trans_commit_wait(trans);
+-const struct of_device_id cs42l51_of_match[] = {
+-	{ .compatible = "cirrus,cs42l51", },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, cs42l51_of_match);
+-EXPORT_SYMBOL_GPL(cs42l51_of_match);
+-
+ MODULE_AUTHOR("Arnaud Patard <arnaud.patard@rtp-net.org>");
+ MODULE_DESCRIPTION("Cirrus Logic CS42L51 ALSA SoC Codec Driver");
+ MODULE_LICENSE("GPL");
+--- a/sound/soc/codecs/cs42l51.h
++++ b/sound/soc/codecs/cs42l51.h
+@@ -16,7 +16,6 @@ int cs42l51_probe(struct device *dev, st
+ int cs42l51_remove(struct device *dev);
+ int __maybe_unused cs42l51_suspend(struct device *dev);
+ int __maybe_unused cs42l51_resume(struct device *dev);
+-extern const struct of_device_id cs42l51_of_match[];
  
+ #define CS42L51_CHIP_ID			0x1B
+ #define CS42L51_CHIP_REV_A		0x00
 
 
