@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1525C76AEA3
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C76B076AD7A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:29:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233014AbjHAJkd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40488 "EHLO
+        id S232985AbjHAJ3q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233235AbjHAJkG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:06 -0400
+        with ESMTP id S232947AbjHAJ3b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9468C139
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9498A2737
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3295F6150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECB2C433C8;
-        Tue,  1 Aug 2023 09:37:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A35161506
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749B0C433C8;
+        Tue,  1 Aug 2023 09:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882674;
-        bh=CNQBEPIs29o6Z98KW4KnoUY1nOXM1mknfQVVq2BL2RE=;
+        s=korg; t=1690882090;
+        bh=kNauwL/fGxvEhO3PcHmaTFjXh11iTO64QcIGGSJLbQM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2eaal31S2PxSgmzKACro9jqbmIAK+y1Urmc6tJYpKeoSVLSitjLh/vlxTH94quaVw
-         83U0FK3FYN7+ZuXy38244EkGu3to96P81imgRV44p8DFpoduy67fkF9zVXyHilxDj7
-         IFE0JacS0SXo/yrPSLnvJGTjZR1N+xlmu4N4mwtA=
+        b=g8FFBiQ/UttJQuQ47Iv1u8euRct74lGZ4CGwOKrn+kzeexEH4WTWP+TYaTFzW52Cd
+         1XCy+sfQ5vPo1HS1MaQ+LyDCqobExFkkRaXXfAd6zk2m0XnvNVf3jaPidoYGR8vc38
+         dDrcYR0SD1neNpP0u6DzpxrtVMYb5tE8nwKJO0q0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/228] irq-bcm6345-l1: Do not assume a fixed block to cpu mapping
+        patches@lists.linux.dev, Kunkun Jiang <jiangkunkun@huawei.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>, wanghaibin.wang@huawei.com,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 137/155] irqchip/gic-v4.1: Properly lock VPEs when doing a directLPI invalidation
 Date:   Tue,  1 Aug 2023 11:20:49 +0200
-Message-ID: <20230801091929.760134915@linuxfoundation.org>
+Message-ID: <20230801091915.047721513@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,86 +56,158 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 55ad24857341c36616ecc1d9580af5626c226cf1 ]
+[ Upstream commit 926846a703cbf5d0635cc06e67d34b228746554b ]
 
-The irq to block mapping is fixed, and interrupts from the first block
-will always be routed to the first parent IRQ. But the parent interrupts
-themselves can be routed to any available CPU.
+We normally rely on the irq_to_cpuid_[un]lock() primitives to make
+sure nothing will change col->idx while performing a LPI invalidation.
 
-This is used by the bootloader to map the first parent interrupt to the
-boot CPU, regardless wether the boot CPU is the first one or the second
-one.
+However, these primitives do not cover VPE doorbells, and we have
+some open-coded locking for that. Unfortunately, this locking is
+pretty bogus.
 
-When booting from the second CPU, the assumption that the first block's
-IRQ is mapped to the first CPU breaks, and the system hangs because
-interrupts do not get routed correctly.
+Instead, extend the above primitives to cover VPE doorbells and
+convert the whole thing to it.
 
-Fix this by passing the appropriate bcm6434_l1_cpu to the interrupt
-handler instead of the chip itself, so the handler always has the right
-block.
-
-Fixes: c7c42ec2baa1 ("irqchips/bmips: Add bcm6345-l1 interrupt controller")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: f3a059219bc7 ("irqchip/gic-v4.1: Ensure mutual exclusion between vPE affinity change and RD access")
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230629072620.62527-1-jonas.gorski@gmail.com
+Cc: Zenghui Yu <yuzenghui@huawei.com>
+Cc: wanghaibin.wang@huawei.com
+Tested-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20230617073242.3199746-1-maz@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-bcm6345-l1.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 75 ++++++++++++++++++++------------
+ 1 file changed, 46 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm6345-l1.c b/drivers/irqchip/irq-bcm6345-l1.c
-index 6899e37810a88..b14c74f7b9b98 100644
---- a/drivers/irqchip/irq-bcm6345-l1.c
-+++ b/drivers/irqchip/irq-bcm6345-l1.c
-@@ -82,6 +82,7 @@ struct bcm6345_l1_chip {
- };
- 
- struct bcm6345_l1_cpu {
-+	struct bcm6345_l1_chip	*intc;
- 	void __iomem		*map_base;
- 	unsigned int		parent_irq;
- 	u32			enable_cache[];
-@@ -115,17 +116,11 @@ static inline unsigned int cpu_for_irq(struct bcm6345_l1_chip *intc,
- 
- static void bcm6345_l1_irq_handle(struct irq_desc *desc)
- {
--	struct bcm6345_l1_chip *intc = irq_desc_get_handler_data(desc);
--	struct bcm6345_l1_cpu *cpu;
-+	struct bcm6345_l1_cpu *cpu = irq_desc_get_handler_data(desc);
-+	struct bcm6345_l1_chip *intc = cpu->intc;
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
- 	unsigned int idx;
- 
--#ifdef CONFIG_SMP
--	cpu = intc->cpus[cpu_logical_map(smp_processor_id())];
--#else
--	cpu = intc->cpus[0];
--#endif
--
- 	chained_irq_enter(chip, desc);
- 
- 	for (idx = 0; idx < intc->n_words; idx++) {
-@@ -253,6 +248,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
- 	if (!cpu)
- 		return -ENOMEM;
- 
-+	cpu->intc = intc;
- 	cpu->map_base = ioremap(res.start, sz);
- 	if (!cpu->map_base)
- 		return -ENOMEM;
-@@ -268,7 +264,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
- 		return -EINVAL;
- 	}
- 	irq_set_chained_handler_and_data(cpu->parent_irq,
--						bcm6345_l1_irq_handle, intc);
-+						bcm6345_l1_irq_handle, cpu);
- 
- 	return 0;
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 59a5d06b2d3e4..490e6cfe510e6 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -267,13 +267,23 @@ static void vpe_to_cpuid_unlock(struct its_vpe *vpe, unsigned long flags)
+ 	raw_spin_unlock_irqrestore(&vpe->vpe_lock, flags);
  }
+ 
++static struct irq_chip its_vpe_irq_chip;
++
+ static int irq_to_cpuid_lock(struct irq_data *d, unsigned long *flags)
+ {
+-	struct its_vlpi_map *map = get_vlpi_map(d);
++	struct its_vpe *vpe = NULL;
+ 	int cpu;
+ 
+-	if (map) {
+-		cpu = vpe_to_cpuid_lock(map->vpe, flags);
++	if (d->chip == &its_vpe_irq_chip) {
++		vpe = irq_data_get_irq_chip_data(d);
++	} else {
++		struct its_vlpi_map *map = get_vlpi_map(d);
++		if (map)
++			vpe = map->vpe;
++	}
++
++	if (vpe) {
++		cpu = vpe_to_cpuid_lock(vpe, flags);
+ 	} else {
+ 		/* Physical LPIs are already locked via the irq_desc lock */
+ 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+@@ -287,10 +297,18 @@ static int irq_to_cpuid_lock(struct irq_data *d, unsigned long *flags)
+ 
+ static void irq_to_cpuid_unlock(struct irq_data *d, unsigned long flags)
+ {
+-	struct its_vlpi_map *map = get_vlpi_map(d);
++	struct its_vpe *vpe = NULL;
++
++	if (d->chip == &its_vpe_irq_chip) {
++		vpe = irq_data_get_irq_chip_data(d);
++	} else {
++		struct its_vlpi_map *map = get_vlpi_map(d);
++		if (map)
++			vpe = map->vpe;
++	}
+ 
+-	if (map)
+-		vpe_to_cpuid_unlock(map->vpe, flags);
++	if (vpe)
++		vpe_to_cpuid_unlock(vpe, flags);
+ }
+ 
+ static struct its_collection *valid_col(struct its_collection *col)
+@@ -1427,14 +1445,29 @@ static void wait_for_syncr(void __iomem *rdbase)
+ 		cpu_relax();
+ }
+ 
+-static void direct_lpi_inv(struct irq_data *d)
++static void __direct_lpi_inv(struct irq_data *d, u64 val)
+ {
+-	struct its_vlpi_map *map = get_vlpi_map(d);
+ 	void __iomem *rdbase;
+ 	unsigned long flags;
+-	u64 val;
+ 	int cpu;
+ 
++	/* Target the redistributor this LPI is currently routed to */
++	cpu = irq_to_cpuid_lock(d, &flags);
++	raw_spin_lock(&gic_data_rdist_cpu(cpu)->rd_lock);
++
++	rdbase = per_cpu_ptr(gic_rdists->rdist, cpu)->rd_base;
++	gic_write_lpir(val, rdbase + GICR_INVLPIR);
++	wait_for_syncr(rdbase);
++
++	raw_spin_unlock(&gic_data_rdist_cpu(cpu)->rd_lock);
++	irq_to_cpuid_unlock(d, flags);
++}
++
++static void direct_lpi_inv(struct irq_data *d)
++{
++	struct its_vlpi_map *map = get_vlpi_map(d);
++	u64 val;
++
+ 	if (map) {
+ 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+ 
+@@ -1447,15 +1480,7 @@ static void direct_lpi_inv(struct irq_data *d)
+ 		val = d->hwirq;
+ 	}
+ 
+-	/* Target the redistributor this LPI is currently routed to */
+-	cpu = irq_to_cpuid_lock(d, &flags);
+-	raw_spin_lock(&gic_data_rdist_cpu(cpu)->rd_lock);
+-	rdbase = per_cpu_ptr(gic_rdists->rdist, cpu)->rd_base;
+-	gic_write_lpir(val, rdbase + GICR_INVLPIR);
+-
+-	wait_for_syncr(rdbase);
+-	raw_spin_unlock(&gic_data_rdist_cpu(cpu)->rd_lock);
+-	irq_to_cpuid_unlock(d, flags);
++	__direct_lpi_inv(d, val);
+ }
+ 
+ static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
+@@ -3936,18 +3961,10 @@ static void its_vpe_send_inv(struct irq_data *d)
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+ 
+-	if (gic_rdists->has_direct_lpi) {
+-		void __iomem *rdbase;
+-
+-		/* Target the redistributor this VPE is currently known on */
+-		raw_spin_lock(&gic_data_rdist_cpu(vpe->col_idx)->rd_lock);
+-		rdbase = per_cpu_ptr(gic_rdists->rdist, vpe->col_idx)->rd_base;
+-		gic_write_lpir(d->parent_data->hwirq, rdbase + GICR_INVLPIR);
+-		wait_for_syncr(rdbase);
+-		raw_spin_unlock(&gic_data_rdist_cpu(vpe->col_idx)->rd_lock);
+-	} else {
++	if (gic_rdists->has_direct_lpi)
++		__direct_lpi_inv(d, d->parent_data->hwirq);
++	else
+ 		its_vpe_send_cmd(vpe, its_send_inv);
+-	}
+ }
+ 
+ static void its_vpe_mask_irq(struct irq_data *d)
 -- 
 2.40.1
 
