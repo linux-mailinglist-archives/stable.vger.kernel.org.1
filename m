@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149FD76AEAD
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F3B76AFD9
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233302AbjHAJkk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40332 "EHLO
+        id S233732AbjHAJui (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233316AbjHAJkL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:11 -0400
+        with ESMTP id S233748AbjHAJuV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:50:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F3F1FF0
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B1EDF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 377FF613E2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ECDC433CA;
-        Tue,  1 Aug 2023 09:38:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE5C8614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D43C433C7;
+        Tue,  1 Aug 2023 09:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882696;
-        bh=H6G34yRPx85PIGNU96nhU6lq2nWRPr08G1nbseN+93g=;
+        s=korg; t=1690883394;
+        bh=kM8fx6N1GEmr6bOnHp/WvX0HPiGl+Vp6wtI2MKKmJ2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JI0fc8widtZV7aHws5vYL9XKrHIq7axUWoTFt8HNykz3Mu29Tidl3ANxv8WoUelK6
-         qujmcrOsygKskujnTGGHo9oKA1gtmXu0eSMw1gai33w8X+hdWt/JSXYjC2rQKDz3+G
-         VPjSBocJ9HiZodUXFPgHiVrXnQ/cHbGcTV8GYwfY=
+        b=Zqis9hylp3vcYM6DGTXb0aWV4Mfr8Qm5r1lZkSNEQ1ihk9KcSkbo7q5ockLhv/9aw
+         E0ajsOprpIVUB58G8XCfUwKf+fTyxxGH0HBxHfZ0iXsIzHkTkaaINA0Ofvu0sf/Xgw
+         OdlFICXGRUzAT1mxcrf+ZbJGDeWHVGsrKXSgH0Aw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 198/228] net: dsa: qca8k: fix broken search_and_del
+        patches@lists.linux.dev, "Frank Ch. Eigler" <fche@redhat.com>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.4 192/239] nfsd: Remove incorrect check in nfsd4_validate_stateid
 Date:   Tue,  1 Aug 2023 11:20:56 +0200
-Message-ID: <20230801091930.033045610@linuxfoundation.org>
+Message-ID: <20230801091932.629399809@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,44 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit ae70dcb9d9ecaf7d9836d3e1b5bef654d7ef5680 upstream.
+commit f75546f58a70da5cfdcec5a45ffc377885ccbee8 upstream.
 
-On deleting an MDB entry for a port, fdb_search_and_del is used.
-An FDB entry can't be modified so it needs to be deleted and readded
-again with the new portmap (and the port deleted as requested)
+If the client is calling TEST_STATEID, then it is because some event
+occurred that requires it to check all the stateids for validity and
+call FREE_STATEID on the ones that have been revoked. In this case,
+either the stateid exists in the list of stateids associated with that
+nfs4_client, in which case it should be tested, or it does not. There
+are no additional conditions to be considered.
 
-We use the SEARCH operator to search the entry to edit by vid and mac
-address and then we check the aging if we actually found an entry.
-
-Currently the code suffer from a bug where the searched fdb entry is
-never read again with the found values (if found) resulting in the code
-always returning -EINVAL as aging was always 0.
-
-Fix this by correctly read the fdb entry after it was searched.
-
-Fixes: ba8f870dfa63 ("net: dsa: qca8k: add support for mdb_add/del")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: "Frank Ch. Eigler" <fche@redhat.com>
+Fixes: 7df302f75ee2 ("NFSD: TEST_STATEID should not return NFS4ERR_STALE_STATEID")
+Cc: stable@vger.kernel.org # v5.7+
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/qca/qca8k-common.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfsd/nfs4state.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/net/dsa/qca/qca8k-common.c
-+++ b/drivers/net/dsa/qca/qca8k-common.c
-@@ -330,6 +330,10 @@ static int qca8k_fdb_search_and_del(stru
- 	if (ret < 0)
- 		goto exit;
- 
-+	ret = qca8k_fdb_read(priv, &fdb);
-+	if (ret < 0)
-+		goto exit;
-+
- 	/* Rule doesn't exist. Why delete? */
- 	if (!fdb.aging) {
- 		ret = -EINVAL;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6341,8 +6341,6 @@ static __be32 nfsd4_validate_stateid(str
+ 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
+ 		CLOSE_STATEID(stateid))
+ 		return status;
+-	if (!same_clid(&stateid->si_opaque.so_clid, &cl->cl_clientid))
+-		return status;
+ 	spin_lock(&cl->cl_lock);
+ 	s = find_stateid_locked(cl, stateid);
+ 	if (!s)
 
 
