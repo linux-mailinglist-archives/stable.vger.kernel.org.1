@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE2276AD1C
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F8B76AE36
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232596AbjHAJ01 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52238 "EHLO
+        id S233205AbjHAJg4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:36:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232841AbjHAJ0N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:13 -0400
+        with ESMTP id S233172AbjHAJge (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2447212B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC618449D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A451661500
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFD9C433C7;
-        Tue,  1 Aug 2023 09:24:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0055614FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DE0C433C7;
+        Tue,  1 Aug 2023 09:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881897;
-        bh=zwO/FnnKRJRhy6Px3B5mdWSyyxiwRWeMz8bxh63HRks=;
+        s=korg; t=1690882483;
+        bh=amDeLBHHe2OvuoWX9WzOoc/d7uv1U/GkCPaa45y67mQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1nY8apDwEIwYDYoCf5fFepE01RLce3HcuEAzpkREVIHCBIw/4PZy9VV1d4UotDKPr
-         cYRLNX/Ax1/vjDC5C3iM4dYfYtwK8JqeflM8RrPk25bi77dCXgCj1KGfYtU1Ib2T2O
-         PZNGt1X+B4FfJUBpwd7IfQNM4b+ETWb3S7PB1Idc=
+        b=Qa+9j0Y438/8sLNPSfkY8sZb7AXE8KFeoqRHSjmR18Su6RKn9eYzOB2jqD0FXpRar
+         hghkVRxaLeOR8YnDN80tIQtl701tZsZlFgUyIyZf95VJoLwo4ME1R8oAhxvvdQHIWX
+         O9IZrkOJS40asuo1rUMpUzm6/wepZDLPm/G2d2kg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/155] bonding: reset bonds flags when down link is P2P device
+Subject: [PATCH 6.1 122/228] RDMA/bnxt_re: Prevent handling any completions after qp destroy
 Date:   Tue,  1 Aug 2023 11:19:40 +0200
-Message-ID: <20230801091912.613721917@linuxfoundation.org>
+Message-ID: <20230801091927.150760732@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,61 +57,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit da19a2b967cf1e2c426f50d28550d1915214a81d ]
+[ Upstream commit b5bbc6551297447d3cca55cf907079e206e9cd82 ]
 
-When adding a point to point downlink to the bond, we neglected to reset
-the bond's flags, which were still using flags like BROADCAST and
-MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
-interfaces, such as when adding a GRE device to the bonding.
+HW may generate completions that indicates QP is destroyed.
+Driver should not be scheduling any more completion handlers
+for this QP, after the QP is destroyed. Since CQs are active
+during the QP destroy, driver may still schedule completion
+handlers. This can cause a race where the destroy_cq and poll_cq
+running simultaneously.
 
-To address this issue, let's reset the bond's flags for P2P interfaces.
+Snippet of kernel panic while doing bnxt_re driver load unload in loop.
+This indicates a poll after the CQ is freed. 
 
-Before fix:
-7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond0 state UNKNOWN group default qlen 1000
-    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr 167f:18:f188::
-8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/gre6 2006:70:10::1 brd 2006:70:10::2
-    inet6 fe80::200:ff:fe00:0/64 scope link
-       valid_lft forever preferred_lft forever
+[77786.481636] Call Trace:
+[77786.481640]  <TASK>
+[77786.481644]  bnxt_re_poll_cq+0x14a/0x620 [bnxt_re]
+[77786.481658]  ? kvm_clock_read+0x14/0x30
+[77786.481693]  __ib_process_cq+0x57/0x190 [ib_core]
+[77786.481728]  ib_cq_poll_work+0x26/0x80 [ib_core]
+[77786.481761]  process_one_work+0x1e5/0x3f0
+[77786.481768]  worker_thread+0x50/0x3a0
+[77786.481785]  ? __pfx_worker_thread+0x10/0x10
+[77786.481790]  kthread+0xe2/0x110
+[77786.481794]  ? __pfx_kthread+0x10/0x10
+[77786.481797]  ret_from_fork+0x2c/0x50
 
-After fix:
-7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond2 state UNKNOWN group default qlen 1000
-    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr c29e:557a:e9d9::
-8: bond0: <POINTOPOINT,NOARP,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/gre6 2006:70:10::1 peer 2006:70:10::2
-    inet6 fe80::1/64 scope link
-       valid_lft forever preferred_lft forever
+To avoid this, complete all completion handlers before returning the
+destroy QP. If free_cq is called soon after destroy_qp,  IB stack
+will cancel the CQ work before invoking the destroy_cq verb and
+this will prevent any race mentioned.
 
-Reported-by: Liang Li <liali@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1689322969-25402-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 12 ++++++++++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 18 ++++++++++++++++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h |  1 +
+ 3 files changed, 31 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 7b0b4049bd294..69cc36c0840f7 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1482,6 +1482,11 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 94222de1d3719..4ed8814efde6f 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -796,7 +796,10 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
+ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
+ {
+ 	struct bnxt_re_qp *qp = container_of(ib_qp, struct bnxt_re_qp, ib_qp);
++	struct bnxt_qplib_qp *qplib_qp = &qp->qplib_qp;
+ 	struct bnxt_re_dev *rdev = qp->rdev;
++	struct bnxt_qplib_nq *scq_nq = NULL;
++	struct bnxt_qplib_nq *rcq_nq = NULL;
+ 	unsigned int flags;
+ 	int rc;
  
- 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
- 		slave_dev->addr_len);
+@@ -830,6 +833,15 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
+ 	ib_umem_release(qp->rumem);
+ 	ib_umem_release(qp->sumem);
+ 
++	/* Flush all the entries of notification queue associated with
++	 * given qp.
++	 */
++	scq_nq = qplib_qp->scq->nq;
++	rcq_nq = qplib_qp->rcq->nq;
++	bnxt_re_synchronize_nq(scq_nq);
++	if (scq_nq != rcq_nq)
++		bnxt_re_synchronize_nq(rcq_nq);
 +
-+	if (slave_dev->flags & IFF_POINTOPOINT) {
-+		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
-+		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
-+	}
+ 	return 0;
  }
  
- /* On bonding slaves other than the currently active slave, suppress
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 74d56900387a1..1011293547ef7 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -387,6 +387,24 @@ static void bnxt_qplib_service_nq(struct tasklet_struct *t)
+ 	spin_unlock_bh(&hwq->lock);
+ }
+ 
++/* bnxt_re_synchronize_nq - self polling notification queue.
++ * @nq      -     notification queue pointer
++ *
++ * This function will start polling entries of a given notification queue
++ * for all pending  entries.
++ * This function is useful to synchronize notification entries while resources
++ * are going away.
++ */
++
++void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq)
++{
++	int budget = nq->budget;
++
++	nq->budget = nq->hwq.max_elements;
++	bnxt_qplib_service_nq(&nq->nq_tasklet);
++	nq->budget = budget;
++}
++
+ static irqreturn_t bnxt_qplib_nq_irq(int irq, void *dev_instance)
+ {
+ 	struct bnxt_qplib_nq *nq = dev_instance;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index f859710f9a7f4..49d89c0808275 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -548,6 +548,7 @@ int bnxt_qplib_process_flush_list(struct bnxt_qplib_cq *cq,
+ 				  struct bnxt_qplib_cqe *cqe,
+ 				  int num_cqes);
+ void bnxt_qplib_flush_cqn_wq(struct bnxt_qplib_qp *qp);
++void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq);
+ 
+ static inline void *bnxt_qplib_get_swqe(struct bnxt_qplib_q *que, u32 *swq_idx)
+ {
 -- 
-2.39.2
+2.40.1
 
 
 
