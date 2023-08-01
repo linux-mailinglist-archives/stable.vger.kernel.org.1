@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9789576AE11
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6079276AF3B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbjHAJfy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34992 "EHLO
+        id S233560AbjHAJqF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233100AbjHAJfb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4597A1BE6
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:37 -0700 (PDT)
+        with ESMTP id S233564AbjHAJpu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C85D4ED9
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7D9F614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77C1C433C7;
-        Tue,  1 Aug 2023 09:33:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 415A56151D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50701C433C7;
+        Tue,  1 Aug 2023 09:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882416;
-        bh=8D3e7Ra4T6kJ0JM6h38bYs3iaJUiBYBr0O2en0/7Hyw=;
+        s=korg; t=1690883057;
+        bh=B2mW4Gx0u6r+8zI8UrjHClmYvLOZ1MKRhs4OSPSp+OM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ncRzPS5jVjwbk+Jf2VHYin/9G6czignZsec0jZ2WzOi1hwFYfYAExmjzobk1xPKZM
-         2J9pdHXj0RhIpXvHhVIGIvHjJbV2Gl3UUSjiiCV/bvzztTFf+M5n7eE9iT04ujFcic
-         /O5EF7KEI/caGkKdjSmg0YsE1XLfl4EUefSf72dM=
+        b=ZJ7R48fIIi9oguHA3p2fk37A76mt8BEzwdB05fpJ7vZ31IBEZ+Ox7mnV4Gg8h2Pm3
+         Ou5tgq9+Fpn4SH0dl/gq1s9d0QBX82tb5QcOCf7lXhpSjmyA5XdUP7DLVXD3ACAgon
+         dGpkb8fls+7ntIqhz40yN7qG0NLNFgKJg4VvJKCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+        Donald Hunter <donald.hunter@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/228] team: reset teams flags when down link is P2P device
+Subject: [PATCH 6.4 092/239] tools: ynl-gen: fix enum index in _decode_enum(..)
 Date:   Tue,  1 Aug 2023 11:19:16 +0200
-Message-ID: <20230801091926.368040661@linuxfoundation.org>
+Message-ID: <20230801091929.060294721@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-[ Upstream commit fa532bee17d15acf8bba4bc8e2062b7a093ba801 ]
+[ Upstream commit d7ddf5f4269fcaf19aafe971e635d91897423a3a ]
 
-When adding a point to point downlink to team device, we neglected to reset
-the team's flags, which were still using flags like BROADCAST and
-MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
-interfaces, such as when adding a GRE device to team device. Fix this by
-remove multicast/broadcast flags and add p2p and noarp flags.
+Remove wrong index adjustment, which is leftover from adding
+support for sparse enums.
+enum.entries_by_val() function shall not subtract the start-value, as
+it is indexed with real enum value.
 
-After removing the none ethernet interface and adding an ethernet interface
-to team, we need to reset team interface flags. Unlike bonding interface,
-team do not need restore IFF_MASTER, IFF_SLAVE flags.
-
-Reported-by: Liang Li <liali@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
-Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c311aaa74ca1 ("tools: ynl: fix enum-as-flags in the generic CLI")
+Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Link: https://lore.kernel.org/r/20230725101642.267248-2-arkadiusz.kubalewski@intel.com
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/net/ynl/lib/ynl.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index b524bd374d685..509ba706781ed 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2135,6 +2135,15 @@ static void team_setup_by_port(struct net_device *dev,
- 	dev->mtu = port_dev->mtu;
- 	memcpy(dev->broadcast, port_dev->broadcast, port_dev->addr_len);
- 	eth_hw_addr_inherit(dev, port_dev);
-+
-+	if (port_dev->flags & IFF_POINTOPOINT) {
-+		dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
-+		dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
-+	} else if ((port_dev->flags & (IFF_BROADCAST | IFF_MULTICAST)) ==
-+		    (IFF_BROADCAST | IFF_MULTICAST)) {
-+		dev->flags |= (IFF_BROADCAST | IFF_MULTICAST);
-+		dev->flags &= ~(IFF_POINTOPOINT | IFF_NOARP);
-+	}
- }
+diff --git a/tools/net/ynl/lib/ynl.py b/tools/net/ynl/lib/ynl.py
+index 3144f33196be4..35462c7ce48b5 100644
+--- a/tools/net/ynl/lib/ynl.py
++++ b/tools/net/ynl/lib/ynl.py
+@@ -405,8 +405,8 @@ class YnlFamily(SpecFamily):
+     def _decode_enum(self, rsp, attr_spec):
+         raw = rsp[attr_spec['name']]
+         enum = self.consts[attr_spec['enum']]
+-        i = attr_spec.get('value-start', 0)
+         if 'enum-as-flags' in attr_spec and attr_spec['enum-as-flags']:
++            i = 0
+             value = set()
+             while raw:
+                 if raw & 1:
+@@ -414,7 +414,7 @@ class YnlFamily(SpecFamily):
+                 raw >>= 1
+                 i += 1
+         else:
+-            value = enum.entries_by_val[raw - i].name
++            value = enum.entries_by_val[raw].name
+         rsp[attr_spec['name']] = value
  
- static int team_dev_type_check_change(struct net_device *dev,
+     def _decode_binary(self, attr, attr_spec):
 -- 
 2.39.2
 
