@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDC0876AD1B
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B2B176AF6B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229847AbjHAJ0Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
+        id S233369AbjHAJrU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232597AbjHAJ0K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:10 -0400
+        with ESMTP id S233379AbjHAJqy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9562108
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C4C71BF1
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0513614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F36BC433C8;
-        Tue,  1 Aug 2023 09:24:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29FBF614FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36554C433C8;
+        Tue,  1 Aug 2023 09:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881891;
-        bh=4fJDMZTYfFaPEwz8wir+h/3ybU5pVKMyEQ4m+0vJAio=;
+        s=korg; t=1690883132;
+        bh=mtw/MHBNl9ETuwSFHKTtVsS0iNwUBSK6kVq4OwBqROw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zLZNKqwy7xCvpCH8wYXFE2s9vG1bkASyR7SU2w0B5JIfdW48mfmaQtcDQ2OrtWamD
-         2SplHVMtTElUVjVP+5qOsCoeHpSsyxvYDdiYSDUyFE+uObxSQ7vierzYmxgrl8vRtG
-         l1caZPlosRK/8Kqil31e5ZYY80h8ADhDsHm00iZU=
+        b=zGk+NrhZo3lZOj3Wcdgtxmf8en6C8jzE6cm3RLKRJn3iO/3SvJG+8dJh1OTY1OnE/
+         VOWuuMEobAJZ5xcRJwv9b9fjUzRhXoUV3FjUtkmyWErtfuaQiYBGLXG9cSuhW5I5M9
+         XmXfbzOfaCpgsCUev8FtrVxIQTJKLIUjqxDxg44o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andrew Halaney <ahalaney@redhat.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/155] phy: qcom-snps: Use dev_err_probe() to simplify code
-Date:   Tue,  1 Aug 2023 11:19:21 +0200
-Message-ID: <20230801091911.947322265@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Christian Schoenebeck <linux_oss@crudebyte.com>,
+        Eric Van Hensbergen <ericvh@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 098/239] fs/9p: Fix a datatype used with V9FS_DIRECT_IO
+Date:   Tue,  1 Aug 2023 11:19:22 +0200
+Message-ID: <20230801091929.261002571@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,64 +58,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 668dc8afce43d4bc01feb3e929d6d5ffcb14f899 ]
+[ Upstream commit 95f41d87810083d8b3dedcce46a4e356cf4a9673 ]
 
-In the probe path, dev_err() can be replaced with dev_err_probe()
-which will check if error code is -EPROBE_DEFER and prints the
-error name. It also sets the defer probe reason which can be
-checked later through debugfs.
+The commit in Fixes has introduced some "enum p9_session_flags" values
+larger than a char.
+Such values are stored in "v9fs_session_info->flags" which is a char only.
 
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20220922111228.36355-8-yuancan@huawei.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
+Turn it into an int so that the "enum p9_session_flags" values can fit in
+it.
+
+Fixes: 6deffc8924b5 ("fs/9p: Add new mount modes")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ fs/9p/v9fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index 7e61202aa234e..54846259405a9 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -304,12 +304,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
- 		return PTR_ERR(hsphy->base);
+diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
+index 06a2514f0d882..698c43dd5dc86 100644
+--- a/fs/9p/v9fs.h
++++ b/fs/9p/v9fs.h
+@@ -108,7 +108,7 @@ enum p9_cache_bits {
  
- 	hsphy->ref_clk = devm_clk_get(dev, "ref");
--	if (IS_ERR(hsphy->ref_clk)) {
--		ret = PTR_ERR(hsphy->ref_clk);
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to get ref clk, %d\n", ret);
--		return ret;
--	}
-+	if (IS_ERR(hsphy->ref_clk))
-+		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
-+				     "failed to get ref clk\n");
- 
- 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (IS_ERR(hsphy->phy_reset)) {
-@@ -322,12 +319,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
- 		hsphy->vregs[i].supply = qcom_snps_hsphy_vreg_names[i];
- 
- 	ret = devm_regulator_bulk_get(dev, num, hsphy->vregs);
--	if (ret) {
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to get regulator supplies: %d\n",
--				ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to get regulator supplies\n");
- 
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
+ struct v9fs_session_info {
+ 	/* options */
+-	unsigned char flags;
++	unsigned int flags;
+ 	unsigned char nodev;
+ 	unsigned short debug;
+ 	unsigned int afid;
 -- 
-2.39.2
+2.40.1
 
 
 
