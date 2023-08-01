@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8748676AF42
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD92576AD11
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233631AbjHAJqS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
+        id S232420AbjHAJZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:25:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233549AbjHAJqF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:05 -0400
+        with ESMTP id S232830AbjHAJZn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC77525F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F271FD2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC82561515
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D12C433C7;
-        Tue,  1 Aug 2023 09:44:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4C87614F5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CA8C433C7;
+        Tue,  1 Aug 2023 09:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883074;
-        bh=Xnkv0rb0LKedvPmaz7rECaem/cf2rLcVV8EexT1wras=;
+        s=korg; t=1690881866;
+        bh=qHBpNdPQpqCi2dkrQ6DUQ2uNNX+cm7smrXbhRd5/UaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yFQj8XqHHRqyOWbms685rTh1bQDIkn2ctOLkr6sdZGkNSzGzx/CZlWhB5704uTKBF
-         GVu4/gNYzv5PXTPB9bj6TbWPXV8I+8aZYeI3oH9l1sn2b7PZs6mxAtlmi7kvA85hWZ
-         s0HjMnynaiZNgD2f6v/eA6Ilv5R9E663s/dpmc0Y=
+        b=DxCaJvyx4QYWwMoo8/dYo5XMJvzASIV+8PbqiNCdUZRjVy+VmxiIp5UYFiOzxCNWT
+         ohOpv3A5nYdzPnL057qSWhh+JaWhTuMiEnS7fv+aDB7PD2RJRFqicm+2XrgAXBiU0A
+         2ZgXA7hl3OY4pa/3at3EBg3/EEh775b8fC9R3DuM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shiraz Saleem <shiraz.saleem@intel.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Jiawen Wu <jiawenwu@trustnetic.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 106/239] RDMA/irdma: Fix data race on CQP completion stats
+Subject: [PATCH 5.15 058/155] net: phy: marvell10g: fix 88x3310 power up
 Date:   Tue,  1 Aug 2023 11:19:30 +0200
-Message-ID: <20230801091929.549664196@linuxfoundation.org>
+Message-ID: <20230801091912.272899704@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,217 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shiraz Saleem <shiraz.saleem@intel.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit f2c3037811381f9149243828c7eb9a1631df9f9c ]
+[ Upstream commit c7b75bea853daeb64fc831dbf39a6bbabcc402ac ]
 
-CQP completion statistics is read lockesly in irdma_wait_event and
-irdma_check_cqp_progress while it can be updated in the completion
-thread irdma_sc_ccq_get_cqe_info on another CPU as KCSAN reports.
+Clear MV_V2_PORT_CTRL_PWRDOWN bit to set power up for 88x3310 PHY,
+it sometimes does not take effect immediately. And a read of this
+register causes the bit not to clear. This will cause mv3310_reset()
+to time out, which will fail the config initialization. So add a delay
+before the next access.
 
-Make completion statistics an atomic variable to reflect coherent updates
-to it. This will also avoid load/store tearing logic bug potentially
-possible by compiler optimizations.
-
-[77346.170861] BUG: KCSAN: data-race in irdma_handle_cqp_op [irdma] / irdma_sc_ccq_get_cqe_info [irdma]
-
-[77346.171383] write to 0xffff8a3250b108e0 of 8 bytes by task 9544 on cpu 4:
-[77346.171483]  irdma_sc_ccq_get_cqe_info+0x27a/0x370 [irdma]
-[77346.171658]  irdma_cqp_ce_handler+0x164/0x270 [irdma]
-[77346.171835]  cqp_compl_worker+0x1b/0x20 [irdma]
-[77346.172009]  process_one_work+0x4d1/0xa40
-[77346.172024]  worker_thread+0x319/0x700
-[77346.172037]  kthread+0x180/0x1b0
-[77346.172054]  ret_from_fork+0x22/0x30
-
-[77346.172136] read to 0xffff8a3250b108e0 of 8 bytes by task 9838 on cpu 2:
-[77346.172234]  irdma_handle_cqp_op+0xf4/0x4b0 [irdma]
-[77346.172413]  irdma_cqp_aeq_cmd+0x75/0xa0 [irdma]
-[77346.172592]  irdma_create_aeq+0x390/0x45a [irdma]
-[77346.172769]  irdma_rt_init_hw.cold+0x212/0x85d [irdma]
-[77346.172944]  irdma_probe+0x54f/0x620 [irdma]
-[77346.173122]  auxiliary_bus_probe+0x66/0xa0
-[77346.173137]  really_probe+0x140/0x540
-[77346.173154]  __driver_probe_device+0xc7/0x220
-[77346.173173]  driver_probe_device+0x5f/0x140
-[77346.173190]  __driver_attach+0xf0/0x2c0
-[77346.173208]  bus_for_each_dev+0xa8/0xf0
-[77346.173225]  driver_attach+0x29/0x30
-[77346.173240]  bus_add_driver+0x29c/0x2f0
-[77346.173255]  driver_register+0x10f/0x1a0
-[77346.173272]  __auxiliary_driver_register+0xbc/0x140
-[77346.173287]  irdma_init_module+0x55/0x1000 [irdma]
-[77346.173460]  do_one_initcall+0x7d/0x410
-[77346.173475]  do_init_module+0x81/0x2c0
-[77346.173491]  load_module+0x1232/0x12c0
-[77346.173506]  __do_sys_finit_module+0x101/0x180
-[77346.173522]  __x64_sys_finit_module+0x3c/0x50
-[77346.173538]  do_syscall_64+0x39/0x90
-[77346.173553]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-[77346.173634] value changed: 0x0000000000000094 -> 0x0000000000000095
-
-Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Link: https://lore.kernel.org/r/20230711175253.1289-3-shiraz.saleem@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: c9cc1c815d36 ("net: phy: marvell10g: place in powersave mode at probe")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c  | 22 +++++++-------
- drivers/infiniband/hw/irdma/defs.h  | 46 ++++++++++++++---------------
- drivers/infiniband/hw/irdma/type.h  |  2 ++
- drivers/infiniband/hw/irdma/utils.c |  2 +-
- 4 files changed, 36 insertions(+), 36 deletions(-)
+ drivers/net/phy/marvell10g.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
-index c91439f428c76..45e3344daa048 100644
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -2712,13 +2712,13 @@ static int irdma_sc_cq_modify(struct irdma_sc_cq *cq,
-  */
- void irdma_check_cqp_progress(struct irdma_cqp_timeout *timeout, struct irdma_sc_dev *dev)
- {
--	if (timeout->compl_cqp_cmds != dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]) {
--		timeout->compl_cqp_cmds = dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS];
-+	u64 completed_ops = atomic64_read(&dev->cqp->completed_ops);
+diff --git a/drivers/net/phy/marvell10g.c b/drivers/net/phy/marvell10g.c
+index df33637c5269a..1caa6d943a7b7 100644
+--- a/drivers/net/phy/marvell10g.c
++++ b/drivers/net/phy/marvell10g.c
+@@ -307,6 +307,13 @@ static int mv3310_power_up(struct phy_device *phydev)
+ 	ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, MV_V2_PORT_CTRL,
+ 				 MV_V2_PORT_CTRL_PWRDOWN);
+ 
++	/* Sometimes, the power down bit doesn't clear immediately, and
++	 * a read of this register causes the bit not to clear. Delay
++	 * 100us to allow the PHY to come out of power down mode before
++	 * the next access.
++	 */
++	udelay(100);
 +
-+	if (timeout->compl_cqp_cmds != completed_ops) {
-+		timeout->compl_cqp_cmds = completed_ops;
- 		timeout->count = 0;
--	} else {
--		if (dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS] !=
--		    timeout->compl_cqp_cmds)
--			timeout->count++;
-+	} else if (timeout->compl_cqp_cmds != dev->cqp->requested_ops) {
-+		timeout->count++;
- 	}
- }
- 
-@@ -2761,7 +2761,7 @@ static int irdma_cqp_poll_registers(struct irdma_sc_cqp *cqp, u32 tail,
- 		if (newtail != tail) {
- 			/* SUCCESS */
- 			IRDMA_RING_MOVE_TAIL(cqp->sq_ring);
--			cqp->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]++;
-+			atomic64_inc(&cqp->completed_ops);
- 			return 0;
- 		}
- 		udelay(cqp->dev->hw_attrs.max_sleep_count);
-@@ -3121,8 +3121,8 @@ int irdma_sc_cqp_init(struct irdma_sc_cqp *cqp,
- 	info->dev->cqp = cqp;
- 
- 	IRDMA_RING_INIT(cqp->sq_ring, cqp->sq_size);
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS] = 0;
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS] = 0;
-+	cqp->requested_ops = 0;
-+	atomic64_set(&cqp->completed_ops, 0);
- 	/* for the cqp commands backlog. */
- 	INIT_LIST_HEAD(&cqp->dev->cqp_cmd_head);
- 
-@@ -3274,7 +3274,7 @@ __le64 *irdma_sc_cqp_get_next_send_wqe_idx(struct irdma_sc_cqp *cqp, u64 scratch
- 	if (ret_code)
- 		return NULL;
- 
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS]++;
-+	cqp->requested_ops++;
- 	if (!*wqe_idx)
- 		cqp->polarity = !cqp->polarity;
- 	wqe = cqp->sq_base[*wqe_idx].elem;
-@@ -3400,7 +3400,7 @@ int irdma_sc_ccq_get_cqe_info(struct irdma_sc_cq *ccq,
- 	dma_wmb(); /* make sure shadow area is updated before moving tail */
- 
- 	IRDMA_RING_MOVE_TAIL(cqp->sq_ring);
--	ccq->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]++;
-+	atomic64_inc(&cqp->completed_ops);
- 
- 	return ret_code;
- }
-diff --git a/drivers/infiniband/hw/irdma/defs.h b/drivers/infiniband/hw/irdma/defs.h
-index 6014b9d06a9ba..d06e45d2c23fd 100644
---- a/drivers/infiniband/hw/irdma/defs.h
-+++ b/drivers/infiniband/hw/irdma/defs.h
-@@ -191,32 +191,30 @@ enum irdma_cqp_op_type {
- 	IRDMA_OP_MANAGE_VF_PBLE_BP		= 25,
- 	IRDMA_OP_QUERY_FPM_VAL			= 26,
- 	IRDMA_OP_COMMIT_FPM_VAL			= 27,
--	IRDMA_OP_REQ_CMDS			= 28,
--	IRDMA_OP_CMPL_CMDS			= 29,
--	IRDMA_OP_AH_CREATE			= 30,
--	IRDMA_OP_AH_MODIFY			= 31,
--	IRDMA_OP_AH_DESTROY			= 32,
--	IRDMA_OP_MC_CREATE			= 33,
--	IRDMA_OP_MC_DESTROY			= 34,
--	IRDMA_OP_MC_MODIFY			= 35,
--	IRDMA_OP_STATS_ALLOCATE			= 36,
--	IRDMA_OP_STATS_FREE			= 37,
--	IRDMA_OP_STATS_GATHER			= 38,
--	IRDMA_OP_WS_ADD_NODE			= 39,
--	IRDMA_OP_WS_MODIFY_NODE			= 40,
--	IRDMA_OP_WS_DELETE_NODE			= 41,
--	IRDMA_OP_WS_FAILOVER_START		= 42,
--	IRDMA_OP_WS_FAILOVER_COMPLETE		= 43,
--	IRDMA_OP_SET_UP_MAP			= 44,
--	IRDMA_OP_GEN_AE				= 45,
--	IRDMA_OP_QUERY_RDMA_FEATURES		= 46,
--	IRDMA_OP_ALLOC_LOCAL_MAC_ENTRY		= 47,
--	IRDMA_OP_ADD_LOCAL_MAC_ENTRY		= 48,
--	IRDMA_OP_DELETE_LOCAL_MAC_ENTRY		= 49,
--	IRDMA_OP_CQ_MODIFY			= 50,
-+	IRDMA_OP_AH_CREATE			= 28,
-+	IRDMA_OP_AH_MODIFY			= 29,
-+	IRDMA_OP_AH_DESTROY			= 30,
-+	IRDMA_OP_MC_CREATE			= 31,
-+	IRDMA_OP_MC_DESTROY			= 32,
-+	IRDMA_OP_MC_MODIFY			= 33,
-+	IRDMA_OP_STATS_ALLOCATE			= 34,
-+	IRDMA_OP_STATS_FREE			= 35,
-+	IRDMA_OP_STATS_GATHER			= 36,
-+	IRDMA_OP_WS_ADD_NODE			= 37,
-+	IRDMA_OP_WS_MODIFY_NODE			= 38,
-+	IRDMA_OP_WS_DELETE_NODE			= 39,
-+	IRDMA_OP_WS_FAILOVER_START		= 40,
-+	IRDMA_OP_WS_FAILOVER_COMPLETE		= 41,
-+	IRDMA_OP_SET_UP_MAP			= 42,
-+	IRDMA_OP_GEN_AE				= 43,
-+	IRDMA_OP_QUERY_RDMA_FEATURES		= 44,
-+	IRDMA_OP_ALLOC_LOCAL_MAC_ENTRY		= 45,
-+	IRDMA_OP_ADD_LOCAL_MAC_ENTRY		= 46,
-+	IRDMA_OP_DELETE_LOCAL_MAC_ENTRY		= 47,
-+	IRDMA_OP_CQ_MODIFY			= 48,
- 
- 	/* Must be last entry*/
--	IRDMA_MAX_CQP_OPS			= 51,
-+	IRDMA_MAX_CQP_OPS			= 49,
- };
- 
- /* CQP SQ WQES */
-diff --git a/drivers/infiniband/hw/irdma/type.h b/drivers/infiniband/hw/irdma/type.h
-index 5ee68604e59fc..a20709577ab0a 100644
---- a/drivers/infiniband/hw/irdma/type.h
-+++ b/drivers/infiniband/hw/irdma/type.h
-@@ -365,6 +365,8 @@ struct irdma_sc_cqp {
- 	struct irdma_dcqcn_cc_params dcqcn_params;
- 	__le64 *host_ctx;
- 	u64 *scratch_array;
-+	u64 requested_ops;
-+	atomic64_t completed_ops;
- 	u32 cqp_id;
- 	u32 sq_size;
- 	u32 hw_sq_size;
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index 71e1c5d347092..775a79946f7df 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -567,7 +567,7 @@ static int irdma_wait_event(struct irdma_pci_f *rf,
- 	bool cqp_error = false;
- 	int err_code = 0;
- 
--	cqp_timeout.compl_cqp_cmds = rf->sc_dev.cqp_cmd_stats[IRDMA_OP_CMPL_CMDS];
-+	cqp_timeout.compl_cqp_cmds = atomic64_read(&rf->sc_dev.cqp->completed_ops);
- 	do {
- 		irdma_cqp_ce_handler(rf, &rf->ccq.sc_cq);
- 		if (wait_event_timeout(cqp_request->waitq,
+ 	if (phydev->drv->phy_id != MARVELL_PHY_ID_88X3310 ||
+ 	    priv->firmware_ver < 0x00030000)
+ 		return ret;
 -- 
-2.40.1
+2.39.2
 
 
 
