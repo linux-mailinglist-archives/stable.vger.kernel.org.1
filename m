@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A281976AE27
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 710B876ACF2
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233161AbjHAJg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34938 "EHLO
+        id S231195AbjHAJYd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233090AbjHAJgC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:02 -0400
+        with ESMTP id S232821AbjHAJYQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:24:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4A52132
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E732CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:23:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5FFF614FD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE051C433C9;
-        Tue,  1 Aug 2023 09:34:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 05EA5614FB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:23:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119F6C433C8;
+        Tue,  1 Aug 2023 09:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882461;
-        bh=hTy8gvcqHTFIoR8SGIscVUuFWrZynvdlb0lZ1Lc9OCo=;
+        s=korg; t=1690881793;
+        bh=FCShCS+fCSQ+GKKgeu38iIvgOPgpJor28S1Rai/MqqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CBh1Hg820Q5qsXRZ6+yvpkfnjoD0Bb0l4SeFRME4rG50AUfTYedFbVLvWbnAePogZ
-         Ut4SKq38sswkSUpbacE9/cA0i/9jWB5DPMHBTY+ucR5YYqP4IDBMNoDgF6LG0AsKPA
-         p6Vbaa83mfgDtZaZqcocVIbkgaPEwyug1qT6kqYc=
+        b=teJBKoQw8QP9jv8Sbsuzw66DPoGnSACJfGMRF34L6sQZ0X8yYX9ObnRvH+Ul1MNG0
+         EipAxH6nflqjoWz4smD3NHDXAXTqco6eYT629sh/rEO9v2+jndDlpX6nEr+zx+fWMC
+         QTg2E6nwD0M9u7oXUXt7cRzXOHUTCSbvRHaIi7g8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Lan <lanhao@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/228] net: hns3: fix the imp capability bit cannot exceed 32 bits issue
-Date:   Tue,  1 Aug 2023 11:19:03 +0200
-Message-ID: <20230801091925.925237763@linuxfoundation.org>
+Subject: [PATCH 5.15 032/155] pwm: meson: fix handling of period/duty if greater than UINT_MAX
+Date:   Tue,  1 Aug 2023 11:19:04 +0200
+Message-ID: <20230801091911.338480266@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,87 +59,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Lan <lanhao@huawei.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit b27d0232e8897f7c896dc8ad80c9907dd57fd3f3 ]
+[ Upstream commit 87a2cbf02d7701255f9fcca7e5bd864a7bb397cf ]
 
-Current only the first 32 bits of the capability flag bit are considered.
-When the matching capability flag bit is greater than 31 bits,
-it will get an error bit.This patch use bitmap to solve this issue.
-It can handle each capability bit whitout bit width limit.
+state->period/duty are of type u64, and if their value is greater than
+UINT_MAX, then the cast to uint will cause problems. Fix this by
+changing the type of the respective local variables to u64.
 
-Fixes: da77aef9cc58 ("net: hns3: create common cmdq resource allocate/free/query APIs")
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: b79c3670e120 ("pwm: meson: Don't duplicate the polarity internally")
+Cc: stable@vger.kernel.org
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  3 ++-
- .../hns3/hns3_common/hclge_comm_cmd.c         | 21 ++++++++++++++++---
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ drivers/pwm/pwm-meson.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index 17137de9338cf..fcb8b6dc5ab92 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -31,6 +31,7 @@
- #include <linux/pci.h>
- #include <linux/pkt_sched.h>
- #include <linux/types.h>
-+#include <linux/bitmap.h>
- #include <net/pkt_cls.h>
+diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
+index 37bbad88a3ee5..ec6a544d6f526 100644
+--- a/drivers/pwm/pwm-meson.c
++++ b/drivers/pwm/pwm-meson.c
+@@ -163,8 +163,9 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
+ 			  const struct pwm_state *state)
+ {
+ 	struct meson_pwm_channel *channel = &meson->channels[pwm->hwpwm];
+-	unsigned int duty, period, pre_div, cnt, duty_cnt;
++	unsigned int pre_div, cnt, duty_cnt;
+ 	unsigned long fin_freq;
++	u64 duty, period;
  
- #define HNAE3_MOD_VERSION "1.0"
-@@ -402,7 +403,7 @@ struct hnae3_ae_dev {
- 	unsigned long hw_err_reset_req;
- 	struct hnae3_dev_specs dev_specs;
- 	u32 dev_version;
--	unsigned long caps[BITS_TO_LONGS(HNAE3_DEV_CAPS_MAX_NUM)];
-+	DECLARE_BITMAP(caps, HNAE3_DEV_CAPS_MAX_NUM);
- 	void *priv;
- };
+ 	duty = state->duty_cycle;
+ 	period = state->period;
+@@ -186,19 +187,19 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
  
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-index c797d54f98caa..2ccb0f5460797 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-@@ -170,6 +170,20 @@ static const struct hclge_comm_caps_bit_map hclge_vf_cmd_caps[] = {
- 	{HCLGE_COMM_CAP_GRO_B, HNAE3_DEV_SUPPORT_GRO_B},
- };
+ 	dev_dbg(meson->chip.dev, "fin_freq: %lu Hz\n", fin_freq);
  
-+static void
-+hclge_comm_capability_to_bitmap(unsigned long *bitmap, __le32 *caps)
-+{
-+	const unsigned int words = HCLGE_COMM_QUERY_CAP_LENGTH;
-+	u32 val[HCLGE_COMM_QUERY_CAP_LENGTH];
-+	unsigned int i;
-+
-+	for (i = 0; i < words; i++)
-+		val[i] = __le32_to_cpu(caps[i]);
-+
-+	bitmap_from_arr32(bitmap, val,
-+			  HCLGE_COMM_QUERY_CAP_LENGTH * BITS_PER_TYPE(u32));
-+}
-+
- static void
- hclge_comm_parse_capability(struct hnae3_ae_dev *ae_dev, bool is_pf,
- 			    struct hclge_comm_query_version_cmd *cmd)
-@@ -178,11 +192,12 @@ hclge_comm_parse_capability(struct hnae3_ae_dev *ae_dev, bool is_pf,
- 				is_pf ? hclge_pf_cmd_caps : hclge_vf_cmd_caps;
- 	u32 size = is_pf ? ARRAY_SIZE(hclge_pf_cmd_caps) :
- 				ARRAY_SIZE(hclge_vf_cmd_caps);
--	u32 caps, i;
-+	DECLARE_BITMAP(caps, HCLGE_COMM_QUERY_CAP_LENGTH * BITS_PER_TYPE(u32));
-+	u32 i;
+-	pre_div = div64_u64(fin_freq * (u64)period, NSEC_PER_SEC * 0xffffLL);
++	pre_div = div64_u64(fin_freq * period, NSEC_PER_SEC * 0xffffLL);
+ 	if (pre_div > MISC_CLK_DIV_MASK) {
+ 		dev_err(meson->chip.dev, "unable to get period pre_div\n");
+ 		return -EINVAL;
+ 	}
  
--	caps = __le32_to_cpu(cmd->caps[0]);
-+	hclge_comm_capability_to_bitmap(caps, cmd->caps);
- 	for (i = 0; i < size; i++)
--		if (hnae3_get_bit(caps, caps_map[i].imp_bit))
-+		if (test_bit(caps_map[i].imp_bit, caps))
- 			set_bit(caps_map[i].local_bit, ae_dev->caps);
- }
+-	cnt = div64_u64(fin_freq * (u64)period, NSEC_PER_SEC * (pre_div + 1));
++	cnt = div64_u64(fin_freq * period, NSEC_PER_SEC * (pre_div + 1));
+ 	if (cnt > 0xffff) {
+ 		dev_err(meson->chip.dev, "unable to get period cnt\n");
+ 		return -EINVAL;
+ 	}
  
+-	dev_dbg(meson->chip.dev, "period=%u pre_div=%u cnt=%u\n", period,
++	dev_dbg(meson->chip.dev, "period=%llu pre_div=%u cnt=%u\n", period,
+ 		pre_div, cnt);
+ 
+ 	if (duty == period) {
+@@ -211,14 +212,13 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
+ 		channel->lo = cnt;
+ 	} else {
+ 		/* Then check is we can have the duty with the same pre_div */
+-		duty_cnt = div64_u64(fin_freq * (u64)duty,
+-				     NSEC_PER_SEC * (pre_div + 1));
++		duty_cnt = div64_u64(fin_freq * duty, NSEC_PER_SEC * (pre_div + 1));
+ 		if (duty_cnt > 0xffff) {
+ 			dev_err(meson->chip.dev, "unable to get duty cycle\n");
+ 			return -EINVAL;
+ 		}
+ 
+-		dev_dbg(meson->chip.dev, "duty=%u pre_div=%u duty_cnt=%u\n",
++		dev_dbg(meson->chip.dev, "duty=%llu pre_div=%u duty_cnt=%u\n",
+ 			duty, pre_div, duty_cnt);
+ 
+ 		channel->pre_div = pre_div;
 -- 
 2.39.2
 
