@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D0FA76AEA6
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30AAF76AFC4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233286AbjHAJkf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40160 "EHLO
+        id S233681AbjHAJuF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233289AbjHAJkI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5CE1985
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:06 -0700 (PDT)
+        with ESMTP id S232155AbjHAJtw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83190198C
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D59561507
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C2BC433C8;
-        Tue,  1 Aug 2023 09:38:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B4AE614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AA4C433C8;
+        Tue,  1 Aug 2023 09:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882685;
-        bh=XhABoXK3MZ6InE6Cx6RgE3IE/CjlFi6FEWpFYGZGxb8=;
+        s=korg; t=1690883352;
+        bh=qDjDRUtcOY/MS2lsWc+t32KZydNOPBTBVVaPUjiRfb8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mpZSuTi+HmApGffraDKet8fFx8ZNSpV5GINf27ShVLZHPD+9OxkSD+gwPGZloi2fq
-         SCLNQiGaSJfThR6Pv2XTCeUYxbeAKbgBG5mmKRhGI41Dp0rlizvVfPZU/kn5RcQRnA
-         LzOQzUcp+XMHMONmqD/MNPdZPupOG2qbiHLTwrc4=
+        b=11ULswjSd+582inrUw/50P9vF4QNMgHTqgQwN8cIi+ZBKhiN7OHVUJF14UpeMrMt3
+         usBNpqEmD3tJTnrJTi2VuFEUpvIEAR2M9ihsPuahHre7xMMewOKVUqOfsx8IOVKLIZ
+         +Bkx0lm312H/qLw7SdznzPtTywuua6UUcQp+CK18=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 194/228] proc/vmcore: fix signedness bug in read_from_oldmem()
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 188/239] btrfs: check for commit error at btrfs_attach_transaction_barrier()
 Date:   Tue,  1 Aug 2023 11:20:52 +0200
-Message-ID: <20230801091929.874597014@linuxfoundation.org>
+Message-ID: <20230801091932.473798568@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,45 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 641db40f3afe7998011bfabc726dba3e698f8196 upstream.
+commit b28ff3a7d7e97456fd86b68d24caa32e1cfa7064 upstream.
 
-The bug is the error handling:
+btrfs_attach_transaction_barrier() is used to get a handle pointing to the
+current running transaction if the transaction has not started its commit
+yet (its state is < TRANS_STATE_COMMIT_START). If the transaction commit
+has started, then we wait for the transaction to commit and finish before
+returning - however we completely ignore if the transaction was aborted
+due to some error during its commit, we simply return ERR_PT(-ENOENT),
+which makes the caller assume everything is fine and no errors happened.
 
-	if (tmp < nr_bytes) {
+This could make an fsync return success (0) to user space when in fact we
+had a transaction abort and the target inode changes were therefore not
+persisted.
 
-"tmp" can hold negative error codes but because "nr_bytes" is type size_t
-the negative error codes are treated as very high positive values
-(success).  Fix this by changing "nr_bytes" to type ssize_t.  The
-"nr_bytes" variable is used to store values between 1 and PAGE_SIZE and
-they can fit in ssize_t without any issue.
+Fix this by checking for the return value from btrfs_wait_for_commit(),
+and if it returned an error, return it back to the caller.
 
-Link: https://lkml.kernel.org/r/b55f7eed-1c65-4adc-95d1-6c7c65a54a6e@moroto.mountain
-Fixes: 5d8de293c224 ("vmcore: convert copy_oldmem_page() to take an iov_iter")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d4edf39bd5db ("Btrfs: fix uncompleted transaction")
+CC: stable@vger.kernel.org # 4.19+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/vmcore.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/transaction.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -132,7 +132,7 @@ ssize_t read_from_oldmem(struct iov_iter
- 			 u64 *ppos, bool encrypted)
- {
- 	unsigned long pfn, offset;
--	size_t nr_bytes;
-+	ssize_t nr_bytes;
- 	ssize_t read = 0, tmp;
- 	int idx;
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -828,8 +828,13 @@ btrfs_attach_transaction_barrier(struct
  
+ 	trans = start_transaction(root, 0, TRANS_ATTACH,
+ 				  BTRFS_RESERVE_NO_FLUSH, true);
+-	if (trans == ERR_PTR(-ENOENT))
+-		btrfs_wait_for_commit(root->fs_info, 0);
++	if (trans == ERR_PTR(-ENOENT)) {
++		int ret;
++
++		ret = btrfs_wait_for_commit(root->fs_info, 0);
++		if (ret)
++			return ERR_PTR(ret);
++	}
+ 
+ 	return trans;
+ }
 
 
