@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A4E976A894
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA5E76A8A6
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230373AbjHAGAr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 02:00:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57602 "EHLO
+        id S231297AbjHAGFw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 02:05:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjHAGAq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 02:00:46 -0400
+        with ESMTP id S229661AbjHAGFv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 02:05:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94726E7D
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:00:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06A0610C1
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:05:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CC3B61470
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:00:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14CDC433C7;
-        Tue,  1 Aug 2023 06:00:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 701FB61475
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:05:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A538C433C9;
+        Tue,  1 Aug 2023 06:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690869644;
-        bh=X3ZPMenTMsglyngWkkIyETc1gdYbspJ58Nhdh8qL2Kc=;
+        s=korg; t=1690869946;
+        bh=qO+02X8PpKMUStXfaPAR21Oxhj8ga9Qq6nBhjoEOaK8=;
         h=Subject:To:Cc:From:Date:From;
-        b=aL98V0L1FOfvOT92tiZrB/4gc2LNd3O1JTdZciK14qpMxNGZcgOK1YNl4QJvo5ytR
-         vJwKT68v7BoT8piidjkQlw32rf/V5qsj6HfgX3hLin+fyTG4pNbvYbA5s1DKtY4nud
-         NdiuL2SzNM+7FuK9QlDccyEI9zq0oB8Fw85oAFNo=
-Subject: FAILED: patch "[PATCH] soundwire: fix enumeration completion" failed to apply to 5.10-stable tree
-To:     johan+linaro@kernel.org, pierre-louis.bossart@linux.intel.com,
-        rander.wang@linux.intel.com, vkoul@kernel.org
+        b=LVcR56iZifffAfv7zlaVsU/18q+D0gIwYUvLmXaJBEiDvbA11qZkFc9rY/jGolBbe
+         PzB4ql9a+Kwhrmm1jUinM6blJ6fUWIhEVutRp6bL8bPESHr+Ct7RVtsLqThCb/b5kb
+         fncaThyjeRndbihQlE2Wri3T/dS2ynORfhAd7Mv8=
+Subject: FAILED: patch "[PATCH] PM: sleep: wakeirq: fix wake irq arming" failed to apply to 5.15-stable tree
+To:     johan+linaro@kernel.org, rafael.j.wysocki@intel.com,
+        stable@vger.kernel.org, tony@atomide.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 01 Aug 2023 08:00:28 +0200
-Message-ID: <2023080128-durably-grading-2e25@gregkh>
+Date:   Tue, 01 Aug 2023 08:05:43 +0200
+Message-ID: <2023080143-spry-emptier-f572@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,25 +50,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x c40d6b3249b11d60e09d81530588f56233d9aa44
+git cherry-pick -x 8527beb12087238d4387607597b4020bc393c4b4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080128-durably-grading-2e25@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080143-spry-emptier-f572@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-c40d6b3249b1 ("soundwire: fix enumeration completion")
-e557bca49b81 ("soundwire: bus: pm_runtime_request_resume on peripheral attachment")
-f1b690261247 ("soundwire: bus: add better dev_dbg to track complete() calls")
+8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
+259714100d98 ("PM / wakeirq: support enabling wake-up irq after runtime_suspend called")
 
 thanks,
 
@@ -76,68 +75,87 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c40d6b3249b11d60e09d81530588f56233d9aa44 Mon Sep 17 00:00:00 2001
+From 8527beb12087238d4387607597b4020bc393c4b4 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan+linaro@kernel.org>
-Date: Wed, 5 Jul 2023 14:30:11 +0200
-Subject: [PATCH] soundwire: fix enumeration completion
+Date: Thu, 13 Jul 2023 16:57:39 +0200
+Subject: [PATCH] PM: sleep: wakeirq: fix wake irq arming
 
-The soundwire subsystem uses two completion structures that allow
-drivers to wait for soundwire device to become enumerated on the bus and
-initialised by their drivers, respectively.
+The decision whether to enable a wake irq during suspend can not be done
+based on the runtime PM state directly as a driver may use wake irqs
+without implementing runtime PM. Such drivers specifically leave the
+state set to the default 'suspended' and the wake irq is thus never
+enabled at suspend.
 
-The code implementing the signalling is currently broken as it does not
-signal all current and future waiters and also uses the wrong
-reinitialisation function, which can potentially lead to memory
-corruption if there are still waiters on the queue.
+Add a new wake irq flag to track whether a dedicated wake irq has been
+enabled at runtime suspend and therefore must not be enabled at system
+suspend.
 
-Not signalling future waiters specifically breaks sound card probe
-deferrals as codec drivers can not tell that the soundwire device is
-already attached when being reprobed. Some codec runtime PM
-implementations suffer from similar problems as waiting for enumeration
-during resume can also timeout despite the device already having been
-enumerated.
+Note that pm_runtime_enabled() can not be used as runtime PM is always
+disabled during late suspend.
 
-Fixes: fb9469e54fa7 ("soundwire: bus: fix race condition with enumeration_complete signaling")
-Fixes: a90def068127 ("soundwire: bus: fix race condition with initialization_complete signaling")
-Cc: stable@vger.kernel.org      # 5.7
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: Rander Wang <rander.wang@linux.intel.com>
+Fixes: 69728051f5bf ("PM / wakeirq: Fix unbalanced IRQ enable for wakeirq")
+Cc: 4.16+ <stable@vger.kernel.org> # 4.16+
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230705123018.30903-2-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index dba920ec88f6..cf78839b3f74 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -922,8 +922,8 @@ static void sdw_modify_slave_status(struct sdw_slave *slave,
- 			"initializing enumeration and init completion for Slave %d\n",
- 			slave->dev_num);
+diff --git a/drivers/base/power/power.h b/drivers/base/power/power.h
+index 0eb7f02b3ad5..922ed457db19 100644
+--- a/drivers/base/power/power.h
++++ b/drivers/base/power/power.h
+@@ -29,6 +29,7 @@ extern u64 pm_runtime_active_time(struct device *dev);
+ #define WAKE_IRQ_DEDICATED_MASK		(WAKE_IRQ_DEDICATED_ALLOCATED | \
+ 					 WAKE_IRQ_DEDICATED_MANAGED | \
+ 					 WAKE_IRQ_DEDICATED_REVERSE)
++#define WAKE_IRQ_DEDICATED_ENABLED	BIT(3)
  
--		init_completion(&slave->enumeration_complete);
--		init_completion(&slave->initialization_complete);
-+		reinit_completion(&slave->enumeration_complete);
-+		reinit_completion(&slave->initialization_complete);
+ struct wake_irq {
+ 	struct device *dev;
+diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
+index d487a6bac630..afd094dec5ca 100644
+--- a/drivers/base/power/wakeirq.c
++++ b/drivers/base/power/wakeirq.c
+@@ -314,8 +314,10 @@ void dev_pm_enable_wake_irq_check(struct device *dev,
+ 	return;
  
- 	} else if ((status == SDW_SLAVE_ATTACHED) &&
- 		   (slave->status == SDW_SLAVE_UNATTACHED)) {
-@@ -931,7 +931,7 @@ static void sdw_modify_slave_status(struct sdw_slave *slave,
- 			"signaling enumeration completion for Slave %d\n",
- 			slave->dev_num);
+ enable:
+-	if (!can_change_status || !(wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
++	if (!can_change_status || !(wirq->status & WAKE_IRQ_DEDICATED_REVERSE)) {
+ 		enable_irq(wirq->irq);
++		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
++	}
+ }
  
--		complete(&slave->enumeration_complete);
-+		complete_all(&slave->enumeration_complete);
+ /**
+@@ -336,8 +338,10 @@ void dev_pm_disable_wake_irq_check(struct device *dev, bool cond_disable)
+ 	if (cond_disable && (wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
+ 		return;
+ 
+-	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED)
++	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED) {
++		wirq->status &= ~WAKE_IRQ_DEDICATED_ENABLED;
+ 		disable_irq_nosync(wirq->irq);
++	}
+ }
+ 
+ /**
+@@ -376,7 +380,7 @@ void dev_pm_arm_wake_irq(struct wake_irq *wirq)
+ 
+ 	if (device_may_wakeup(wirq->dev)) {
+ 		if (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED &&
+-		    !pm_runtime_status_suspended(wirq->dev))
++		    !(wirq->status & WAKE_IRQ_DEDICATED_ENABLED))
+ 			enable_irq(wirq->irq);
+ 
+ 		enable_irq_wake(wirq->irq);
+@@ -399,7 +403,7 @@ void dev_pm_disarm_wake_irq(struct wake_irq *wirq)
+ 		disable_irq_wake(wirq->irq);
+ 
+ 		if (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED &&
+-		    !pm_runtime_status_suspended(wirq->dev))
++		    !(wirq->status & WAKE_IRQ_DEDICATED_ENABLED))
+ 			disable_irq_nosync(wirq->irq);
  	}
- 	slave->status = status;
- 	mutex_unlock(&bus->bus_lock);
-@@ -1951,7 +1951,7 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
- 				"signaling initialization completion for Slave %d\n",
- 				slave->dev_num);
- 
--			complete(&slave->initialization_complete);
-+			complete_all(&slave->initialization_complete);
- 
- 			/*
- 			 * If the manager became pm_runtime active, the peripherals will be
+ }
 
