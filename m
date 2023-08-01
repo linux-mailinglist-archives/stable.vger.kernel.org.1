@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FBEB76AD30
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC7E76AE24
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232723AbjHAJ1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52792 "EHLO
+        id S231429AbjHAJgU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:36:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232908AbjHAJ0q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:46 -0400
+        with ESMTP id S233165AbjHAJgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FEAF359B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7722E2D65
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFA7B61504
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1CFC433C7;
-        Tue,  1 Aug 2023 09:25:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 07618614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B53C433CC;
+        Tue,  1 Aug 2023 09:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881945;
-        bh=rHV3MVF4p6VUHmx14rKFTV8YgX3IjC8b74A1KC5MZDM=;
+        s=korg; t=1690882455;
+        bh=KjHEaMl2cXLGv+WaI1/Ho+9ij72207x1P/B7xUfWL3Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NcNukxQCZ8WDx2bkwpd7MGGw8CIAsMscthzd8AgFaCCIfShrc5wBVJjeawyezoNnG
-         iCE4DJMn25XIidC8keOW5bcPQIGuJMvyEus0V3ypKhOD3gkHQ2kr6pXr6bPtrI0ooc
-         ql1iXxrLE+ZdI2uKkNtGih3LCN8g/YDd2UgtCF8w=
+        b=QrXfZGwlY2VZ8EtDOs7QxyCXBE+T//c+9LwI4HQAwtUT92xV/i7Ff+KqGdV9oih5x
+         vlbI2BdjEKNtRmyla/OTdLg7K1egLW71YFduwDLUN7ZDevNE+Wb2OFIS6vXKVdgHwI
+         y4crm3qQxilwlEFj/pzoU4k2pew0lU6XkzpiEpLI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Ferenc Fejes <fejes@inf.elte.hu>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/155] iavf: fix potential deadlock on allocation failure
+Subject: [PATCH 6.1 110/228] net/sched: mqprio: add extack to mqprio_parse_nlattr()
 Date:   Tue,  1 Aug 2023 11:19:28 +0200
-Message-ID: <20230801091912.194484448@linuxfoundation.org>
+Message-ID: <20230801091926.762200860@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,58 +58,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit a2f054c10bef0b54600ec9cb776508443e941343 ]
+[ Upstream commit 57f21bf85400abadac0cb2a4db5de1d663f8863f ]
 
-In iavf_adminq_task(), if kzalloc() fails to allocate the event.msg_buf,
-the function will exit without releasing the adapter->crit_lock.
+Netlink attribute parsing in mqprio is a minesweeper game, with many
+options having the possibility of being passed incorrectly and the user
+being none the wiser.
 
-This is unlikely, but if it happens, the next access to that mutex will
-deadlock.
+Try to make errors less sour by giving user space some information
+regarding what went wrong.
 
-Fix this by moving the unlock to the end of the function, and adding a new
-label to allow jumping to the unlock portion of the function exit flow.
-
-Fixes: fc2e6b3b132a ("iavf: Rework mutexes for better synchronisation")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/sched/sch_mqprio.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index bcceb2ddfea63..1e349a90d21aa 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -2546,7 +2546,7 @@ static void iavf_adminq_task(struct work_struct *work)
- 	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
- 	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
- 	if (!event.msg_buf)
--		goto out;
-+		goto unlock;
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index 166b22601e60f..1ab20d43c50b0 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -131,7 +131,8 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ }
  
- 	do {
- 		ret = iavf_clean_arq_element(hw, &event, &pending);
-@@ -2561,7 +2561,6 @@ static void iavf_adminq_task(struct work_struct *work)
- 		if (pending != 0)
- 			memset(event.msg_buf, 0, IAVF_MAX_AQ_BUF_SIZE);
- 	} while (pending);
--	mutex_unlock(&adapter->crit_lock);
+ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+-			       struct nlattr *opt)
++			       struct nlattr *opt,
++			       struct netlink_ext_ack *extack)
+ {
+ 	struct mqprio_sched *priv = qdisc_priv(sch);
+ 	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
+@@ -143,8 +144,11 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	if (err < 0)
+ 		return err;
  
- 	if ((adapter->flags & IAVF_FLAG_SETUP_NETDEV_FEATURES)) {
- 		if (adapter->netdev_registered ||
-@@ -2619,6 +2618,8 @@ static void iavf_adminq_task(struct work_struct *work)
+-	if (!qopt->hw)
++	if (!qopt->hw) {
++		NL_SET_ERR_MSG(extack,
++			       "mqprio TCA_OPTIONS can only contain netlink attributes in hardware mode");
+ 		return -EINVAL;
++	}
  
- freedom:
- 	kfree(event.msg_buf);
-+unlock:
-+	mutex_unlock(&adapter->crit_lock);
- out:
- 	/* re-enable Admin queue interrupt cause */
- 	iavf_misc_irq_enable(adapter);
+ 	if (tb[TCA_MQPRIO_MODE]) {
+ 		priv->flags |= TC_MQPRIO_F_MODE;
+@@ -157,13 +161,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	}
+ 
+ 	if (tb[TCA_MQPRIO_MIN_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MIN_RATE64],
++					    "min_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->min_rate[i] = *(u64 *)nla_data(attr);
+@@ -173,13 +183,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	}
+ 
+ 	if (tb[TCA_MQPRIO_MAX_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MAX_RATE64],
++					    "max_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->max_rate[i] = *(u64 *)nla_data(attr);
+@@ -224,7 +240,7 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
+ 	if (len > 0) {
+-		err = mqprio_parse_nlattr(sch, qopt, opt);
++		err = mqprio_parse_nlattr(sch, qopt, opt, extack);
+ 		if (err)
+ 			return err;
+ 	}
 -- 
 2.39.2
 
