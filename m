@@ -2,45 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC40376AF1E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E2C076AD0C
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233452AbjHAJpQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45264 "EHLO
+        id S231731AbjHAJZq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:25:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233142AbjHAJpB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:01 -0400
+        with ESMTP id S230358AbjHAJZa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8727E18D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B01A3593
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25D12614FF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F1AC433C8;
-        Tue,  1 Aug 2023 09:42:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C56CC614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98E8C433C9;
+        Tue,  1 Aug 2023 09:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882977;
-        bh=xvFmXc1L69NQAU4BhIh6Mx5iXrGy0c+uKjwWyUWaRaE=;
+        s=korg; t=1690881852;
+        bh=7bgiO5N7NJOuZuG3Rlc75W6jB4nwmpaBTAdxigSzbX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H/0zWwuVqPD4bMUY5g1hrLEgIbfB2Cgc5l2UQMMQd62VsN313dL0uKw/cD3mxTU7i
-         8MjkkzlHoBVen3a8fPQk+7I6KYSgWookYwdmhsze/dsVKvpASeR01ZV8oneqi/xv59
-         adJmoFx122UVxVxs+ktjCF4nBc1jJzXPkiGgGXPk=
+        b=cwORnmggyt9ZxOkYovvKtb61YJioyvzZL2F2HErUaAWX7Jva02sH8FajggEAbPzwK
+         zdzwlS+XCfWl9qZkkiXvnx/bTDTfoWa5OhPZ+9lDVD/RWDupmpV/KDu9zEFc3sHzED
+         Npic5yqVj2is/+VbJVIBN2NQ7UHFuXsxctd+Eryg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Benc <jbenc@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 071/239] vxlan: generalize vxlan_parse_gpe_hdr and remove unused args
+        patches@lists.linux.dev,
+        Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Huang Rui <ray.huang@amd.com>, dri-devel@lists.freedesktop.org,
+        =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH 5.15 023/155] drm/ttm: Dont leak a resource on eviction error
 Date:   Tue,  1 Aug 2023 11:18:55 +0200
-Message-ID: <20230801091928.240856649@linuxfoundation.org>
+Message-ID: <20230801091911.034163924@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,113 +61,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Benc <jbenc@redhat.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit 17a0a64448b568442a101de09575f81ffdc45d15 ]
+[ Upstream commit e8188c461ee015ba0b9ab2fc82dbd5ebca5a5532 ]
 
-The vxlan_parse_gpe_hdr function extracts the next protocol value from
-the GPE header and marks GPE bits as parsed.
+On eviction errors other than -EMULTIHOP we were leaking a resource.
+Fix.
 
-In order to be used in the next patch, split the function into protocol
-extraction and bit marking. The bit marking is meaningful only in
-vxlan_rcv; move it directly there.
+v2:
+- Avoid yet another goto (Andi Shyti)
 
-Rename the function to vxlan_parse_gpe_proto to reflect what it now
-does. Remove unused arguments skb and vxflags. Move the function earlier
-in the file to allow it to be called from more places in the next patch.
-
-Signed-off-by: Jiri Benc <jbenc@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: b0b672c4d095 ("vxlan: fix GRO with VXLAN-GPE")
+Fixes: 403797925768 ("drm/ttm: Fix multihop assert on eviction.")
+Cc: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com> #v1
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230626091450.14757-4-thomas.hellstrom@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 58 ++++++++++++++++------------------
- 1 file changed, 28 insertions(+), 30 deletions(-)
+ drivers/gpu/drm/ttm/ttm_bo.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index fed54702b7e21..cb2d82785d900 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -623,6 +623,32 @@ static int vxlan_fdb_append(struct vxlan_fdb *f,
- 	return 1;
- }
- 
-+static bool vxlan_parse_gpe_proto(struct vxlanhdr *hdr, __be16 *protocol)
-+{
-+	struct vxlanhdr_gpe *gpe = (struct vxlanhdr_gpe *)hdr;
-+
-+	/* Need to have Next Protocol set for interfaces in GPE mode. */
-+	if (!gpe->np_applied)
-+		return false;
-+	/* "The initial version is 0. If a receiver does not support the
-+	 * version indicated it MUST drop the packet.
-+	 */
-+	if (gpe->version != 0)
-+		return false;
-+	/* "When the O bit is set to 1, the packet is an OAM packet and OAM
-+	 * processing MUST occur." However, we don't implement OAM
-+	 * processing, thus drop the packet.
-+	 */
-+	if (gpe->oam_flag)
-+		return false;
-+
-+	*protocol = tun_p_to_eth_p(gpe->next_protocol);
-+	if (!*protocol)
-+		return false;
-+
-+	return true;
-+}
-+
- static struct vxlanhdr *vxlan_gro_remcsum(struct sk_buff *skb,
- 					  unsigned int off,
- 					  struct vxlanhdr *vh, size_t hdrlen,
-@@ -1525,35 +1551,6 @@ static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
- 	unparsed->vx_flags &= ~VXLAN_GBP_USED_BITS;
- }
- 
--static bool vxlan_parse_gpe_hdr(struct vxlanhdr *unparsed,
--				__be16 *protocol,
--				struct sk_buff *skb, u32 vxflags)
--{
--	struct vxlanhdr_gpe *gpe = (struct vxlanhdr_gpe *)unparsed;
--
--	/* Need to have Next Protocol set for interfaces in GPE mode. */
--	if (!gpe->np_applied)
--		return false;
--	/* "The initial version is 0. If a receiver does not support the
--	 * version indicated it MUST drop the packet.
--	 */
--	if (gpe->version != 0)
--		return false;
--	/* "When the O bit is set to 1, the packet is an OAM packet and OAM
--	 * processing MUST occur." However, we don't implement OAM
--	 * processing, thus drop the packet.
--	 */
--	if (gpe->oam_flag)
--		return false;
--
--	*protocol = tun_p_to_eth_p(gpe->next_protocol);
--	if (!*protocol)
--		return false;
--
--	unparsed->vx_flags &= ~VXLAN_GPE_USED_BITS;
--	return true;
--}
--
- static bool vxlan_set_mac(struct vxlan_dev *vxlan,
- 			  struct vxlan_sock *vs,
- 			  struct sk_buff *skb, __be32 vni)
-@@ -1655,8 +1652,9 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	 * used by VXLAN extensions if explicitly requested.
- 	 */
- 	if (vs->flags & VXLAN_F_GPE) {
--		if (!vxlan_parse_gpe_hdr(&unparsed, &protocol, skb, vs->flags))
-+		if (!vxlan_parse_gpe_proto(&unparsed, &protocol))
- 			goto drop;
-+		unparsed.vx_flags &= ~VXLAN_GPE_USED_BITS;
- 		raw_proto = true;
+diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+index cf390ab636978..6080f4b5c450c 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -552,18 +552,18 @@ static int ttm_bo_evict(struct ttm_buffer_object *bo,
+ 		goto out;
  	}
  
+-bounce:
+-	ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+-	if (ret == -EMULTIHOP) {
++	do {
++		ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
++		if (ret != -EMULTIHOP)
++			break;
++
+ 		ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem, ctx, &hop);
+-		if (ret) {
+-			if (ret != -ERESTARTSYS && ret != -EINTR)
+-				pr_err("Buffer eviction failed\n");
+-			ttm_resource_free(bo, &evict_mem);
+-			goto out;
+-		}
+-		/* try and move to final place now. */
+-		goto bounce;
++	} while (!ret);
++
++	if (ret) {
++		ttm_resource_free(bo, &evict_mem);
++		if (ret != -ERESTARTSYS && ret != -EINTR)
++			pr_err("Buffer eviction failed\n");
+ 	}
+ out:
+ 	return ret;
 -- 
 2.39.2
 
