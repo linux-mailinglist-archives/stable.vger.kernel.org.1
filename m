@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3DC76AF3D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C699F76AD2C
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233604AbjHAJqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45274 "EHLO
+        id S232233AbjHAJ1A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230410AbjHAJpz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43EF930C2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:25 -0700 (PDT)
+        with ESMTP id S232230AbjHAJ0o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2631FC8
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5314614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4643C433CA;
-        Tue,  1 Aug 2023 09:44:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16CA661506
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D37C433CA;
+        Tue,  1 Aug 2023 09:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883063;
-        bh=/7pizk2TmIgPofxJ0nHnMOqVYzAzUkwOChP4OtPV1/s=;
+        s=korg; t=1690881939;
+        bh=IlKoMXAx8zR8fIYAxyXlgt688RTBBU3wcISHUv+L2cE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bv7/obU4E0cRF+iWWTpkA16F3kDkSHEJQjXkG9O23WnW5bDn0BHYeEGAns9AXkKj5
-         59S5hPENdcn7NjKdjSbtX4YUcJM6ZxjqfYXhGPxDqJ8UgSPsMRS1GIHv2G+rg8qC2k
-         vQLch1NDouV2/0/jc+Q7nsfkePwaeI6LtBdn1v2E=
+        b=moMi97eidHVpjWc5cBNlsCvZ/R1y6TDgzLtie2zmhGxiqnJz1RVwcAlpGywWmfIDE
+         ag7lyK+Jm3+qmAa6ZJp2URgPc+kRJKACCnpwAunU7xFP0cGfdS3rw5JsAh8eFTsH7I
+         LRhUmcg+KnPKnUu2p9vtNzViYm/nyKORyCCslzbc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 102/239] drm/msm/dpu: drop enum dpu_core_perf_data_bus_id
+Subject: [PATCH 5.15 054/155] media: staging: atomisp: select V4L2_FWNODE
 Date:   Tue,  1 Aug 2023 11:19:26 +0200
-Message-ID: <20230801091929.387317183@linuxfoundation.org>
+Message-ID: <20230801091912.124320070@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,51 +58,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit e8383f5cf1b3573ce140a80bfbfd809278ab16d6 ]
+[ Upstream commit bf4c985707d3168ebb7d87d15830de66949d979c ]
 
-Drop the leftover of bus-client -> interconnect conversion, the enum
-dpu_core_perf_data_bus_id.
+Select V4L2_FWNODE as the driver depends on it.
 
-Fixes: cb88482e2570 ("drm/msm/dpu: clean up references of DPU custom bus scaling")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/546048/
-Link: https://lore.kernel.org/r/20230707193942.3806526-2-dmitry.baryshkov@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: aa31f6514047 ("media: atomisp: allow building the driver again")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/staging/media/atomisp/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
-index e3795995e1454..29bb8ee2bc266 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
-@@ -14,19 +14,6 @@
- 
- #define	DPU_PERF_DEFAULT_MAX_CORE_CLK_RATE	412500000
- 
--/**
-- * enum dpu_core_perf_data_bus_id - data bus identifier
-- * @DPU_CORE_PERF_DATA_BUS_ID_MNOC: DPU/MNOC data bus
-- * @DPU_CORE_PERF_DATA_BUS_ID_LLCC: MNOC/LLCC data bus
-- * @DPU_CORE_PERF_DATA_BUS_ID_EBI: LLCC/EBI data bus
-- */
--enum dpu_core_perf_data_bus_id {
--	DPU_CORE_PERF_DATA_BUS_ID_MNOC,
--	DPU_CORE_PERF_DATA_BUS_ID_LLCC,
--	DPU_CORE_PERF_DATA_BUS_ID_EBI,
--	DPU_CORE_PERF_DATA_BUS_ID_MAX,
--};
--
- /**
-  * struct dpu_core_perf_params - definition of performance parameters
-  * @max_per_pipe_ib: maximum instantaneous bandwidth request
+diff --git a/drivers/staging/media/atomisp/Kconfig b/drivers/staging/media/atomisp/Kconfig
+index aeed5803dfb1e..0031d76356c1c 100644
+--- a/drivers/staging/media/atomisp/Kconfig
++++ b/drivers/staging/media/atomisp/Kconfig
+@@ -13,6 +13,7 @@ config VIDEO_ATOMISP
+ 	tristate "Intel Atom Image Signal Processor Driver"
+ 	depends on VIDEO_V4L2 && INTEL_ATOMISP
+ 	depends on PMIC_OPREGION
++	select V4L2_FWNODE
+ 	select IOSF_MBI
+ 	select VIDEOBUF_VMALLOC
+ 	select VIDEO_V4L2_SUBDEV_API
 -- 
-2.40.1
+2.39.2
 
 
 
