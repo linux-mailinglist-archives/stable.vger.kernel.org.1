@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4047576A88E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 07:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD8476A890
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbjHAF76 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 01:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57466 "EHLO
+        id S230266AbjHAGAH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 02:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbjHAF75 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 01:59:57 -0400
+        with ESMTP id S229977AbjHAGAG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 02:00:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7EE10C7
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 22:59:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42B62E7D
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:00:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B19C76136C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 05:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7BFC433C8;
-        Tue,  1 Aug 2023 05:59:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4A766146F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:00:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC67C433C8;
+        Tue,  1 Aug 2023 06:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690869595;
-        bh=VwgvOd1/mbkErjaHz4W02DtXdB72WlOl/PuctY+CPS4=;
+        s=korg; t=1690869604;
+        bh=ZVyD/UchPhAjkgG4NU6ApU8vm6WMVdPe2/u3DD/bad0=;
         h=Subject:To:Cc:From:Date:From;
-        b=HFOCRvZc7I6uOXy3toi+yV+lvLK5poiaIOKB2D4Finh6BK4rpeIyhQLhLLjLMEocF
-         M2rsdgTymHMn4/f02pMEXOqRwHZkL9YUGB9/7NdQ35XUUQSwVpxRUEUJweK9ZWruIl
-         KzEQlIBQvyXPvncWiIdmzTBRXJbZ3XqJ3N6iuPy0=
-Subject: FAILED: patch "[PATCH] selftests/rseq: Play nice with binaries statically linked" failed to apply to 5.15-stable tree
+        b=cVgkUgK6lLnneJjZ9it/U0/OmF3viDPlvkHTRuocFSxzUqsI3Hq4Rj90WQTMdNJFT
+         465nYe4I80N7MhtD8Bnvns5M/w7cAFnOhyGI+dxo/TAYRuPwlyU/0j7KJOUyxqVK86
+         A8QpgtC8nMR0yjHj+Dk/vvafuSfVH4BNKECUVZY4=
+Subject: FAILED: patch "[PATCH] selftests/rseq: Play nice with binaries statically linked" failed to apply to 5.10-stable tree
 To:     seanjc@google.com, aaronlewis@google.com, pbonzini@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 01 Aug 2023 07:59:47 +0200
-Message-ID: <2023080147-playset-hydrogen-cc0c@gregkh>
+Date:   Tue, 01 Aug 2023 07:59:53 +0200
+Message-ID: <2023080153-drivable-stout-f966@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3bcbc20942db5d738221cca31a928efc09827069
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080147-playset-hydrogen-cc0c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080153-drivable-stout-f966@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
