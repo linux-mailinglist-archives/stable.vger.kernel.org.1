@@ -2,47 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA9076AF03
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6120876ADD4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233448AbjHAJoY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45266 "EHLO
+        id S232983AbjHAJdw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:33:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233488AbjHAJn7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:59 -0400
+        with ESMTP id S233305AbjHAJdY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB4BE619F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 603D14EDF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC98561518
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FC8C433C7;
-        Tue,  1 Aug 2023 09:41:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4CCC61510
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A1EC433C7;
+        Tue,  1 Aug 2023 09:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882888;
-        bh=97ANXdqjYeHyGz10vv+YL9+p8/XNAq6z6Q2NZ92A850=;
+        s=korg; t=1690882270;
+        bh=u+a/YN5RSA6Dxd9P6Tjnv1mbNg9xAQykg2GEYGRJBCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vDILZpQX3ABOSJkS1KlJmdPSf9OqjlO8Iow6QxgP02AvNl4IbtJq99O6EreZI6t85
-         CpiNlJ/2T/njPyac0iDGDRmfKAfzp9JpFKoP2ZGWVXBrcTwDT01Tdlxm/rkChlJOYm
-         W88WDIjo9qjGlPkgfKajSocLWkjMAI3URMAKBOYc=
+        b=zkUFmCUwV8KVES013VBN0vA8S9HU/a5dDIiwtfEt/MhM4kY6/SNYj+cQ174uqwmia
+         c0acmUUbRRZ7IWx/m04JMkLRrfZeiNNnU76MSUOTkWoNNEb8hgCREldUbM8TyyO9Ey
+         RIVaDKufUP0YF7RtUn7Ywookx7QcvZBOnbpGJigQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Cruise Hung <cruise.hung@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>, Pelloux-Prayer@vger.kernel.org
-Subject: [PATCH 6.4 039/239] drm/ttm: never consider pinned BOs for eviction&swap
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 045/228] drm/amd/display: Update correct DCN314 register header
 Date:   Tue,  1 Aug 2023 11:18:23 +0200
-Message-ID: <20230801091926.994226354@linuxfoundation.org>
+Message-ID: <20230801091924.526950181@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,41 +59,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian König <christian.koenig@amd.com>
+From: Cruise Hung <cruise.hung@amd.com>
 
-[ Upstream commit a2848d08742c8e8494675892c02c0d22acbe3cf8 ]
+[ Upstream commit 268182606f26434c5d3ebd0e86efcb0418dec487 ]
 
-There is a small window where we have already incremented the pin count
-but not yet moved the bo from the lru to the pinned list.
+[Why]
+The register header for DCN314 is not correct.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reported-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
-Tested-by: Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://patchwork.freedesktop.org/patch/msgid/20230707120826.3701-1-christian.koenig@amd.com
+[How]
+Update correct DCN314 register header.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Cruise Hung <cruise.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: cd2e31a9ab93 ("drm/amd/display: Set minimum requirement for using PSR-SU on Phoenix")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/dmub/src/Makefile |  2 +-
+ .../drm/amd/display/dmub/src/dmub_dcn314.c    | 62 +++++++++++++++++++
+ .../drm/amd/display/dmub/src/dmub_dcn314.h    | 33 ++++++++++
+ .../gpu/drm/amd/display/dmub/src/dmub_srv.c   |  5 +-
+ 4 files changed, 100 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
+ create mode 100644 drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
 
-diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
-index 1a1cfd675cc46..7139a522b2f3b 100644
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -517,6 +517,12 @@ static bool ttm_bo_evict_swapout_allowable(struct ttm_buffer_object *bo,
- {
- 	bool ret = false;
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/Makefile b/drivers/gpu/drm/amd/display/dmub/src/Makefile
+index 0589ad4778eea..caf095aca8f3f 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/Makefile
++++ b/drivers/gpu/drm/amd/display/dmub/src/Makefile
+@@ -22,7 +22,7 @@
  
-+	if (bo->pin_count) {
-+		*locked = false;
-+		*busy = false;
-+		return false;
-+	}
+ DMUB = dmub_srv.o dmub_srv_stat.o dmub_reg.o dmub_dcn20.o dmub_dcn21.o
+ DMUB += dmub_dcn30.o dmub_dcn301.o dmub_dcn302.o dmub_dcn303.o
+-DMUB += dmub_dcn31.o dmub_dcn315.o dmub_dcn316.o
++DMUB += dmub_dcn31.o dmub_dcn314.o dmub_dcn315.o dmub_dcn316.o
+ DMUB += dmub_dcn32.o
+ 
+ AMD_DAL_DMUB = $(addprefix $(AMDDALPATH)/dmub/src/,$(DMUB))
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
+new file mode 100644
+index 0000000000000..48a06dbd9be78
+--- /dev/null
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
+@@ -0,0 +1,62 @@
++/*
++ * Copyright 2021 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Authors: AMD
++ *
++ */
 +
- 	if (bo->base.resv == ctx->resv) {
- 		dma_resv_assert_held(bo->base.resv);
- 		if (ctx->allow_res_evict)
++#include "../dmub_srv.h"
++#include "dmub_reg.h"
++#include "dmub_dcn314.h"
++
++#include "dcn/dcn_3_1_4_offset.h"
++#include "dcn/dcn_3_1_4_sh_mask.h"
++
++#define DCN_BASE__INST0_SEG0                       0x00000012
++#define DCN_BASE__INST0_SEG1                       0x000000C0
++#define DCN_BASE__INST0_SEG2                       0x000034C0
++#define DCN_BASE__INST0_SEG3                       0x00009000
++#define DCN_BASE__INST0_SEG4                       0x02403C00
++#define DCN_BASE__INST0_SEG5                       0
++
++#define BASE_INNER(seg) DCN_BASE__INST0_SEG##seg
++#define CTX dmub
++#define REGS dmub->regs_dcn31
++#define REG_OFFSET_EXP(reg_name) (BASE(reg##reg_name##_BASE_IDX) + reg##reg_name)
++
++/* Registers. */
++
++const struct dmub_srv_dcn31_regs dmub_srv_dcn314_regs = {
++#define DMUB_SR(reg) REG_OFFSET_EXP(reg),
++	{
++		DMUB_DCN31_REGS()
++		DMCUB_INTERNAL_REGS()
++	},
++#undef DMUB_SR
++
++#define DMUB_SF(reg, field) FD_MASK(reg, field),
++	{ DMUB_DCN31_FIELDS() },
++#undef DMUB_SF
++
++#define DMUB_SF(reg, field) FD_SHIFT(reg, field),
++	{ DMUB_DCN31_FIELDS() },
++#undef DMUB_SF
++};
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
+new file mode 100644
+index 0000000000000..674267a2940e9
+--- /dev/null
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
+@@ -0,0 +1,33 @@
++/*
++ * Copyright 2021 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Authors: AMD
++ *
++ */
++
++#ifndef _DMUB_DCN314_H_
++#define _DMUB_DCN314_H_
++
++#include "dmub_dcn31.h"
++
++extern const struct dmub_srv_dcn31_regs dmub_srv_dcn314_regs;
++
++#endif /* _DMUB_DCN314_H_ */
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+index 92c18bfb98b3b..6d76ce327d69f 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+@@ -32,6 +32,7 @@
+ #include "dmub_dcn302.h"
+ #include "dmub_dcn303.h"
+ #include "dmub_dcn31.h"
++#include "dmub_dcn314.h"
+ #include "dmub_dcn315.h"
+ #include "dmub_dcn316.h"
+ #include "dmub_dcn32.h"
+@@ -226,7 +227,9 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
+ 	case DMUB_ASIC_DCN314:
+ 	case DMUB_ASIC_DCN315:
+ 	case DMUB_ASIC_DCN316:
+-		if (asic == DMUB_ASIC_DCN315)
++		if (asic == DMUB_ASIC_DCN314)
++			dmub->regs_dcn31 = &dmub_srv_dcn314_regs;
++		else if (asic == DMUB_ASIC_DCN315)
+ 			dmub->regs_dcn31 = &dmub_srv_dcn315_regs;
+ 		else if (asic == DMUB_ASIC_DCN316)
+ 			dmub->regs_dcn31 = &dmub_srv_dcn316_regs;
 -- 
 2.39.2
 
