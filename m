@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C4C476A886
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 07:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4047576A88E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 07:59:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230501AbjHAFyL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 01:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55626 "EHLO
+        id S230250AbjHAF76 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 01:59:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbjHAFyL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 01:54:11 -0400
+        with ESMTP id S229977AbjHAF75 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 01:59:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC213E7D
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 22:54:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7EE10C7
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 22:59:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68A6761291
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 05:54:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77307C433C7;
-        Tue,  1 Aug 2023 05:54:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B19C76136C
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 05:59:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7BFC433C8;
+        Tue,  1 Aug 2023 05:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690869248;
-        bh=xujyHiZ/6FMW5X3jcaEQWiTXSPceNdML5fhb9hOaXmI=;
+        s=korg; t=1690869595;
+        bh=VwgvOd1/mbkErjaHz4W02DtXdB72WlOl/PuctY+CPS4=;
         h=Subject:To:Cc:From:Date:From;
-        b=RW42OCCcs8qHnGau3XeDXgucRZDF5iq+7LiEd/tRlhM2l/8dKqGWETUHe7Lb+xUil
-         XqPNHXrN7FEw+agYgRSRKIE8J4qR1EDzi5ZhqTbj9/+dBBFgURzp0THHi+kTngbP5g
-         ZI8V/chTnAdNuo0y6f0HoZovfxoDZJGhISLT4FoE=
-Subject: FAILED: patch "[PATCH] io_uring: gate iowait schedule on having pending requests" failed to apply to 5.10-stable tree
-To:     axboe@kernel.dk, andres@anarazel.de, oleksandr@natalenko.name,
-        phil@raspberrypi.com
+        b=HFOCRvZc7I6uOXy3toi+yV+lvLK5poiaIOKB2D4Finh6BK4rpeIyhQLhLLjLMEocF
+         M2rsdgTymHMn4/f02pMEXOqRwHZkL9YUGB9/7NdQ35XUUQSwVpxRUEUJweK9ZWruIl
+         KzEQlIBQvyXPvncWiIdmzTBRXJbZ3XqJ3N6iuPy0=
+Subject: FAILED: patch "[PATCH] selftests/rseq: Play nice with binaries statically linked" failed to apply to 5.15-stable tree
+To:     seanjc@google.com, aaronlewis@google.com, pbonzini@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 01 Aug 2023 07:53:56 +0200
-Message-ID: <2023080156-easeful-driller-8a26@gregkh>
+Date:   Tue, 01 Aug 2023 07:59:47 +0200
+Message-ID: <2023080147-playset-hydrogen-cc0c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,42 +49,31 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7b72d661f1f2f950ab8c12de7e2bc48bdac8ed69
+git cherry-pick -x 3bcbc20942db5d738221cca31a928efc09827069
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080156-easeful-driller-8a26@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080147-playset-hydrogen-cc0c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-7b72d661f1f2 ("io_uring: gate iowait schedule on having pending requests")
-8a796565cec3 ("io_uring: Use io_schedule* in cqring wait")
-d33a39e57768 ("io_uring: keep timeout in io_wait_queue")
-46ae7eef44f6 ("io_uring: optimise non-timeout waiting")
-846072f16eed ("io_uring: mimimise io_cqring_wait_schedule")
-3fcf19d592d5 ("io_uring: parse check_cq out of wq waiting")
-12521a5d5cb7 ("io_uring: fix CQ waiting timeout handling")
-52ea806ad983 ("io_uring: finish waiting before flushing overflow entries")
-35d90f95cfa7 ("io_uring: include task_work run after scheduling in wait for events")
-1b346e4aa8e7 ("io_uring: don't check overflow flush failures")
-a85381d8326d ("io_uring: skip overflow CQE posting for dying ring")
-c0e0d6ba25f1 ("io_uring: add IORING_SETUP_DEFER_TASKRUN")
-b4c98d59a787 ("io_uring: introduce io_has_work")
-78a861b94959 ("io_uring: add sync cancelation API through io_uring_register()")
-c34398a8c018 ("io_uring: remove __io_req_task_work_add")
-ed5ccb3beeba ("io_uring: remove priority tw list optimisation")
-4a0fef62788b ("io_uring: optimize io_uring_task layout")
-253993210bd8 ("io_uring: introduce locking helpers for CQE posting")
-305bef988708 ("io_uring: hide eventfd assumptions in eventfd paths")
-affa87db9010 ("io_uring: fix multi ctx cancellation")
+3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
+d1a997ba4c1b ("selftests/rseq: check if libc rseq support is registered")
+889c5d60fbcf ("selftests/rseq: Change type of rseq_offset to ptrdiff_t")
+4e15bb766b6c ("selftests/rseq: x86-64: use %fs segment selector for accessing rseq thread area")
+233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
+e546cd48ccc4 ("selftests/rseq: Introduce rseq_get_abi() helper")
+94b80a19ebfe ("selftests/rseq: Remove volatile from __rseq_abi")
+5c105d55a9dc ("selftests/rseq: introduce own copy of rseq uapi header")
+07ad4f7629d4 ("selftests/rseq: remove ARRAY_SIZE define from individual tests")
 
 thanks,
 
@@ -93,80 +81,77 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7b72d661f1f2f950ab8c12de7e2bc48bdac8ed69 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Mon, 24 Jul 2023 11:28:17 -0600
-Subject: [PATCH] io_uring: gate iowait schedule on having pending requests
+From 3bcbc20942db5d738221cca31a928efc09827069 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 21 Jul 2023 15:33:52 -0700
+Subject: [PATCH] selftests/rseq: Play nice with binaries statically linked
+ against glibc 2.35+
 
-A previous commit made all cqring waits marked as iowait, as a way to
-improve performance for short schedules with pending IO. However, for
-use cases that have a special reaper thread that does nothing but
-wait on events on the ring, this causes a cosmetic issue where we
-know have one core marked as being "busy" with 100% iowait.
+To allow running rseq and KVM's rseq selftests as statically linked
+binaries, initialize the various "trampoline" pointers to point directly
+at the expect glibc symbols, and skip the dlysm() lookups if the rseq
+size is non-zero, i.e. the binary is statically linked *and* the libc
+registered its own rseq.
 
-While this isn't a grave issue, it is confusing to users. Rather than
-always mark us as being in iowait, gate setting of current->in_iowait
-to 1 by whether or not the waiting task has pending requests.
+Define weak versions of the symbols so as not to break linking against
+libc versions that don't support rseq in any capacity.
 
+The KVM selftests in particular are often statically linked so that they
+can be run on targets with very limited runtime environments, i.e. test
+machines.
+
+Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/io-uring/CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com/
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217699
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217700
-Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Reported-by: Phil Elwell <phil@raspberrypi.com>
-Tested-by: Andres Freund <andres@anarazel.de>
-Fixes: 8a796565cec3 ("io_uring: Use io_schedule* in cqring wait")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230721223352.2333911-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 89a611541bc4..f4591b912ea8 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2493,11 +2493,20 @@ int io_run_task_work_sig(struct io_ring_ctx *ctx)
- 	return 0;
- }
+diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
+index 4e4aa006004c..a723da253244 100644
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -34,9 +34,17 @@
+ #include "../kselftest.h"
+ #include "rseq.h"
  
-+static bool current_pending_io(void)
-+{
-+	struct io_uring_task *tctx = current->io_uring;
+-static const ptrdiff_t *libc_rseq_offset_p;
+-static const unsigned int *libc_rseq_size_p;
+-static const unsigned int *libc_rseq_flags_p;
++/*
++ * Define weak versions to play nice with binaries that are statically linked
++ * against a libc that doesn't support registering its own rseq.
++ */
++__weak ptrdiff_t __rseq_offset;
++__weak unsigned int __rseq_size;
++__weak unsigned int __rseq_flags;
 +
-+	if (!tctx)
-+		return false;
-+	return percpu_counter_read_positive(&tctx->inflight);
-+}
-+
- /* when returns >0, the caller should retry */
- static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
- 					  struct io_wait_queue *iowq)
++static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
++static const unsigned int *libc_rseq_size_p = &__rseq_size;
++static const unsigned int *libc_rseq_flags_p = &__rseq_flags;
+ 
+ /* Offset from the thread pointer to the rseq area. */
+ ptrdiff_t rseq_offset;
+@@ -155,9 +163,17 @@ unsigned int get_rseq_feature_size(void)
+ static __attribute__((constructor))
+ void rseq_init(void)
  {
--	int token, ret;
-+	int io_wait, ret;
- 
- 	if (unlikely(READ_ONCE(ctx->check_cq)))
- 		return 1;
-@@ -2511,17 +2520,19 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
- 		return 0;
- 
- 	/*
--	 * Use io_schedule_prepare/finish, so cpufreq can take into account
--	 * that the task is waiting for IO - turns out to be important for low
--	 * QD IO.
-+	 * Mark us as being in io_wait if we have pending requests, so cpufreq
-+	 * can take into account that the task is waiting for IO - turns out
-+	 * to be important for low QD IO.
- 	 */
--	token = io_schedule_prepare();
-+	io_wait = current->in_iowait;
-+	if (current_pending_io())
-+		current->in_iowait = 1;
- 	ret = 0;
- 	if (iowq->timeout == KTIME_MAX)
- 		schedule();
- 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
- 		ret = -ETIME;
--	io_schedule_finish(token);
-+	current->in_iowait = io_wait;
- 	return ret;
- }
- 
+-	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+-	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+-	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	/*
++	 * If the libc's registered rseq size isn't already valid, it may be
++	 * because the binary is dynamically linked and not necessarily due to
++	 * libc not having registered a restartable sequence.  Try to find the
++	 * symbols if that's the case.
++	 */
++	if (!*libc_rseq_size_p) {
++		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
++		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
++		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	}
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
+ 		/* rseq registration owned by glibc */
 
