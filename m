@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9F976AD69
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88E9B76AFA0
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232721AbjHAJ27 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58266 "EHLO
+        id S233639AbjHAJtY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:49:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbjHAJ2j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:28:39 -0400
+        with ESMTP id S233657AbjHAJtJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438A810D4
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:27:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 431DD270D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D49E4614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:27:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1316C433C8;
-        Tue,  1 Aug 2023 09:27:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3C16614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48DDC433C7;
+        Tue,  1 Aug 2023 09:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882054;
-        bh=klIyRPhZk1qjMfAf/bEyH2s8w7OPj8rpn0B/fHo3njE=;
+        s=korg; t=1690883260;
+        bh=YKMhp9xMG6FgEvvKAQVnbEfORzXXG7mlgz8YGEb+Lqo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I5+X/yGB9i4SAyH/ZzVl1729lPz9pt1kvk2xFYB72YG3fGhnpXZfZrUQrAjx78Ni0
-         i0WhG34kg4LRQEbwFzmnayVi1ReRbIUnDnoXvLVvkEwYbTrW8mPsCMQjj4idFESXQM
-         BkpsQSiF/ZJ0NR6Cdgp9AnFeiqqoxQkhF/JW5rHk=
+        b=00Tnq0KQXyUjUiDkxxXTXogemcxcRW7qfdyp4AhXQ9jnukPjxjHlfNtFuO1e/I4jG
+         pNyJlUgbsNIwC4RGsz7g67Ramf0X2XZNuwOMfi5nkuD0wo+kF5t+Pk8UcMNQBGfuhl
+         bVPG5ELDWlnspg+dk7gF/K7tYkZtSfdJk0CvCyts=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Zhang Shurong <zhang_shurong@foxmail.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 5.15 125/155] staging: ks7010: potential buffer overflow in ks_wlan_set_encode_ext()
+        patches@lists.linux.dev,
+        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
+        Nam Cao <namcaov@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH 6.4 173/239] staging: r8712: Fix memory leak in _r8712_init_xmit_priv()
 Date:   Tue,  1 Aug 2023 11:20:37 +0200
-Message-ID: <20230801091914.667237626@linuxfoundation.org>
+Message-ID: <20230801091931.882192587@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +56,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Larry Finger <Larry.Finger@lwfinger.net>
 
-commit 5f1c7031e044cb2fba82836d55cc235e2ad619dc upstream.
+commit ac83631230f77dda94154ed0ebfd368fc81c70a3 upstream.
 
-The "exc->key_len" is a u16 that comes from the user.  If it's over
-IW_ENCODING_TOKEN_MAX (64) that could lead to memory corruption.
+In the above mentioned routine, memory is allocated in several places.
+If the first succeeds and a later one fails, the routine will leak memory.
+This patch fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver
+to the mainline kernel"). A potential memory leak in
+r8712_xmit_resource_alloc() is also addressed.
 
-Fixes: b121d84882b9 ("staging: ks7010: simplify calls to memcpy()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/tencent_5153B668C0283CAA15AA518325346E026A09@qq.com
+Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
+Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/x/log.txt?x=11ac3fa0a80000
+Cc: stable@vger.kernel.org
+Cc: Nam Cao <namcaov@gmail.com>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Reviewed-by: Nam Cao <namcaov@gmail.com>
+Link: https://lore.kernel.org/r/20230714175417.18578-1-Larry.Finger@lwfinger.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/ks7010/ks_wlan_net.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/staging/rtl8712/rtl871x_xmit.c |   43 ++++++++++++++++++++++++++-------
+ drivers/staging/rtl8712/xmit_linux.c   |    6 ++++
+ 2 files changed, 40 insertions(+), 9 deletions(-)
 
---- a/drivers/staging/ks7010/ks_wlan_net.c
-+++ b/drivers/staging/ks7010/ks_wlan_net.c
-@@ -1584,8 +1584,10 @@ static int ks_wlan_set_encode_ext(struct
- 			commit |= SME_WEP_FLAG;
- 		}
- 		if (enc->key_len) {
--			memcpy(&key->key_val[0], &enc->key[0], enc->key_len);
--			key->key_len = enc->key_len;
-+			int key_len = clamp_val(enc->key_len, 0, IW_ENCODING_TOKEN_MAX);
+--- a/drivers/staging/rtl8712/rtl871x_xmit.c
++++ b/drivers/staging/rtl8712/rtl871x_xmit.c
+@@ -21,6 +21,7 @@
+ #include "osdep_intf.h"
+ #include "usb_ops.h"
+ 
++#include <linux/usb.h>
+ #include <linux/ieee80211.h>
+ 
+ static const u8 P802_1H_OUI[P80211_OUI_LEN] = {0x00, 0x00, 0xf8};
+@@ -55,6 +56,7 @@ int _r8712_init_xmit_priv(struct xmit_pr
+ 	sint i;
+ 	struct xmit_buf *pxmitbuf;
+ 	struct xmit_frame *pxframe;
++	int j;
+ 
+ 	memset((unsigned char *)pxmitpriv, 0, sizeof(struct xmit_priv));
+ 	spin_lock_init(&pxmitpriv->lock);
+@@ -117,11 +119,8 @@ int _r8712_init_xmit_priv(struct xmit_pr
+ 	_init_queue(&pxmitpriv->pending_xmitbuf_queue);
+ 	pxmitpriv->pallocated_xmitbuf =
+ 		kmalloc(NR_XMITBUFF * sizeof(struct xmit_buf) + 4, GFP_ATOMIC);
+-	if (!pxmitpriv->pallocated_xmitbuf) {
+-		kfree(pxmitpriv->pallocated_frame_buf);
+-		pxmitpriv->pallocated_frame_buf = NULL;
+-		return -ENOMEM;
+-	}
++	if (!pxmitpriv->pallocated_xmitbuf)
++		goto clean_up_frame_buf;
+ 	pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 -
+ 			      ((addr_t)(pxmitpriv->pallocated_xmitbuf) & 3);
+ 	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
+@@ -129,13 +128,17 @@ int _r8712_init_xmit_priv(struct xmit_pr
+ 		INIT_LIST_HEAD(&pxmitbuf->list);
+ 		pxmitbuf->pallocated_buf =
+ 			kmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ, GFP_ATOMIC);
+-		if (!pxmitbuf->pallocated_buf)
+-			return -ENOMEM;
++		if (!pxmitbuf->pallocated_buf) {
++			j = 0;
++			goto clean_up_alloc_buf;
++		}
+ 		pxmitbuf->pbuf = pxmitbuf->pallocated_buf + XMITBUF_ALIGN_SZ -
+ 				 ((addr_t) (pxmitbuf->pallocated_buf) &
+ 				 (XMITBUF_ALIGN_SZ - 1));
+-		if (r8712_xmit_resource_alloc(padapter, pxmitbuf))
+-			return -ENOMEM;
++		if (r8712_xmit_resource_alloc(padapter, pxmitbuf)) {
++			j = 1;
++			goto clean_up_alloc_buf;
++		}
+ 		list_add_tail(&pxmitbuf->list,
+ 				 &(pxmitpriv->free_xmitbuf_queue.queue));
+ 		pxmitbuf++;
+@@ -146,6 +149,28 @@ int _r8712_init_xmit_priv(struct xmit_pr
+ 	init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
+ 	tasklet_setup(&pxmitpriv->xmit_tasklet, r8712_xmit_bh);
+ 	return 0;
 +
-+			memcpy(&key->key_val[0], &enc->key[0], key_len);
-+			key->key_len = key_len;
- 			commit |= (SME_WEP_VAL1 << index);
++clean_up_alloc_buf:
++	if (j) {
++		/* failure happened in r8712_xmit_resource_alloc()
++		 * delete extra pxmitbuf->pallocated_buf
++		 */
++		kfree(pxmitbuf->pallocated_buf);
++	}
++	for (j = 0; j < i; j++) {
++		int k;
++
++		pxmitbuf--;			/* reset pointer */
++		kfree(pxmitbuf->pallocated_buf);
++		for (k = 0; k < 8; k++)		/* delete xmit urb's */
++			usb_free_urb(pxmitbuf->pxmit_urb[k]);
++	}
++	kfree(pxmitpriv->pallocated_xmitbuf);
++	pxmitpriv->pallocated_xmitbuf = NULL;
++clean_up_frame_buf:
++	kfree(pxmitpriv->pallocated_frame_buf);
++	pxmitpriv->pallocated_frame_buf = NULL;
++	return -ENOMEM;
+ }
+ 
+ void _free_xmit_priv(struct xmit_priv *pxmitpriv)
+--- a/drivers/staging/rtl8712/xmit_linux.c
++++ b/drivers/staging/rtl8712/xmit_linux.c
+@@ -112,6 +112,12 @@ int r8712_xmit_resource_alloc(struct _ad
+ 	for (i = 0; i < 8; i++) {
+ 		pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
+ 		if (!pxmitbuf->pxmit_urb[i]) {
++			int k;
++
++			for (k = i - 1; k >= 0; k--) {
++				/* handle allocation errors part way through loop */
++				usb_free_urb(pxmitbuf->pxmit_urb[k]);
++			}
+ 			netdev_err(padapter->pnetdev, "pxmitbuf->pxmit_urb[i] == NULL\n");
+ 			return -ENOMEM;
  		}
- 		break;
 
 
