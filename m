@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DF2E76AD05
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA9276AE14
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbjHAJZb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52290 "EHLO
+        id S233158AbjHAJf4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231732AbjHAJZM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:12 -0400
+        with ESMTP id S233059AbjHAJff (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 703F23C33
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:23:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A27292108
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDB23614FB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:23:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1872C433C7;
-        Tue,  1 Aug 2023 09:23:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26587614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392F4C433C8;
+        Tue,  1 Aug 2023 09:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881838;
-        bh=ahITj23HydiKsWK51fNOuU1r05dyXmP4bEJC6fauEqQ=;
+        s=korg; t=1690882424;
+        bh=hLv+fj9Zoh3pP38Y3doKhgAe6T71XdS1sjd4pPeNiGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qc/57ChSpC4BU7/ij2aOne9u3rt0cXbWjPT+LrZup7M/bRJmsKdoCWh7HJBT8qt2p
-         /yXOAaRfjdD6lDlxq74XzkH1X2UnApAmE39kxXGToeet7NPFE4EktlMRYXn8oLprM/
-         3CVj0iQbmPgVX/wLeu7VFhxDjcCa7ZjW4XM8iAqs=
+        b=I4ZAZUIqx/yqvjPLiUmfRjCjyIP5oFfDTVCNXl/ftgEhJ2WrTtW3GsDPmv8TRIDgz
+         4TSz3djUd7BRtW0k/woBhX5Pn2Bf71O9SlZGdD+EoLsH0jgl/cYxvsDY0B3T3UPZrs
+         uIQvtzTt2wi0mMZCoIi7uk8LWnyVxo/DPRZzW0TU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/155] jbd2: remove t_checkpoint_io_list
+Subject: [PATCH 6.1 100/228] octeontx2-af: Fix hash extraction enable configuration
 Date:   Tue,  1 Aug 2023 11:19:18 +0200
-Message-ID: <20230801091911.825792826@linuxfoundation.org>
+Message-ID: <20230801091926.436390735@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,144 +56,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Suman Ghosh <sumang@marvell.com>
 
-[ Upstream commit be22255360f80d3af789daad00025171a65424a5 ]
+[ Upstream commit 4e62c99d71e56817c934caa2a709a775c8cee078 ]
 
-Since t_checkpoint_io_list was stop using in jbd2_log_do_checkpoint()
-now, it's time to remove the whole t_checkpoint_io_list logic.
+As of today, hash extraction support is enabled for all the silicons.
+Because of which we are facing initialization issues when the silicon
+does not support hash extraction. During creation of the hardware
+parsing table for IPv6 address, we need to consider if hash extraction
+is enabled then extract only 32 bit, otherwise 128 bit needs to be
+extracted. This patch fixes the issue and configures the hardware parser
+based on the availability of the feature.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+Fixes: a95ab93550d3 ("octeontx2-af: Use hashed field in MCAM key")
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230721061222.2632521-1-sumang@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c | 42 ++----------------------------------------
- fs/jbd2/commit.c     |  3 +--
- include/linux/jbd2.h |  6 ------
- 3 files changed, 3 insertions(+), 48 deletions(-)
+ .../marvell/octeontx2/af/rvu_npc_hash.c       | 43 ++++++++++++++++++-
+ .../marvell/octeontx2/af/rvu_npc_hash.h       |  8 ++--
+ 2 files changed, 46 insertions(+), 5 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index d2aba55833f92..c1f543e86170a 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -27,7 +27,7 @@
-  *
-  * Called with j_list_lock held.
-  */
--static inline void __buffer_unlink_first(struct journal_head *jh)
-+static inline void __buffer_unlink(struct journal_head *jh)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
+index efc2e64689f7d..34fa59575fa91 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
+@@ -218,13 +218,54 @@ void npc_config_secret_key(struct rvu *rvu, int blkaddr)
+ 
+ void npc_program_mkex_hash(struct rvu *rvu, int blkaddr)
  {
- 	transaction_t *transaction = jh->b_cp_transaction;
++	struct npc_mcam_kex_hash *mh = rvu->kpu.mkex_hash;
+ 	struct hw_cap *hwcap = &rvu->hw->cap;
++	u8 intf, ld, hdr_offset, byte_len;
+ 	struct rvu_hwinfo *hw = rvu->hw;
+-	u8 intf;
++	u64 cfg;
  
-@@ -40,23 +40,6 @@ static inline void __buffer_unlink_first(struct journal_head *jh)
- 	}
- }
++	/* Check if hardware supports hash extraction */
+ 	if (!hwcap->npc_hash_extract)
+ 		return;
  
--/*
-- * Unlink a buffer from a transaction checkpoint(io) list.
-- *
-- * Called with j_list_lock held.
-- */
--static inline void __buffer_unlink(struct journal_head *jh)
--{
--	transaction_t *transaction = jh->b_cp_transaction;
--
--	__buffer_unlink_first(jh);
--	if (transaction->t_checkpoint_io_list == jh) {
--		transaction->t_checkpoint_io_list = jh->b_cpnext;
--		if (transaction->t_checkpoint_io_list == jh)
--			transaction->t_checkpoint_io_list = NULL;
--	}
--}
--
- /*
-  * Check a checkpoint buffer could be release or not.
-  *
-@@ -505,15 +488,6 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 			break;
- 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
- 			break;
--		if (released)
--			continue;
--
--		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_io_list,
--						       nr_to_scan, &released);
--		if (*nr_to_scan == 0)
--			break;
--		if (need_resched() || spin_needbreak(&journal->j_list_lock))
--			break;
- 	} while (transaction != last_transaction);
- 
- 	if (transaction != last_transaction) {
-@@ -568,17 +542,6 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 		 */
- 		if (need_resched())
- 			return;
--		if (ret)
--			continue;
--		/*
--		 * It is essential that we are as careful as in the case of
--		 * t_checkpoint_list with removing the buffer from the list as
--		 * we can possibly see not yet submitted buffers on io_list
--		 */
--		ret = journal_clean_one_cp_list(transaction->
--				t_checkpoint_io_list, destroy);
--		if (need_resched())
--			return;
- 		/*
- 		 * Stop scanning if we couldn't free the transaction. This
- 		 * avoids pointless scanning of transactions which still
-@@ -663,7 +626,7 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 	jbd2_journal_put_journal_head(jh);
- 
- 	/* Is this transaction empty? */
--	if (transaction->t_checkpoint_list || transaction->t_checkpoint_io_list)
-+	if (transaction->t_checkpoint_list)
- 		return 0;
- 
- 	/*
-@@ -755,7 +718,6 @@ void __jbd2_journal_drop_transaction(journal_t *journal, transaction_t *transact
- 	J_ASSERT(transaction->t_forget == NULL);
- 	J_ASSERT(transaction->t_shadow_list == NULL);
- 	J_ASSERT(transaction->t_checkpoint_list == NULL);
--	J_ASSERT(transaction->t_checkpoint_io_list == NULL);
- 	J_ASSERT(atomic_read(&transaction->t_updates) == 0);
- 	J_ASSERT(journal->j_committing_transaction != transaction);
- 	J_ASSERT(journal->j_running_transaction != transaction);
-diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-index ac328e3321242..20294c1bbeab7 100644
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -1184,8 +1184,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 	spin_lock(&journal->j_list_lock);
- 	commit_transaction->t_state = T_FINISHED;
- 	/* Check if the transaction can be dropped now that we are finished */
--	if (commit_transaction->t_checkpoint_list == NULL &&
--	    commit_transaction->t_checkpoint_io_list == NULL) {
-+	if (commit_transaction->t_checkpoint_list == NULL) {
- 		__jbd2_journal_drop_transaction(journal, commit_transaction);
- 		jbd2_journal_free_transaction(commit_transaction);
- 	}
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index d63b8106796e2..e6cfbcde96f29 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -626,12 +626,6 @@ struct transaction_s
- 	 */
- 	struct journal_head	*t_checkpoint_list;
- 
--	/*
--	 * Doubly-linked circular list of all buffers submitted for IO while
--	 * checkpointing. [j_list_lock]
--	 */
--	struct journal_head	*t_checkpoint_io_list;
--
- 	/*
- 	 * Doubly-linked circular list of metadata buffers being
- 	 * shadowed by log IO.  The IO buffers on the iobuf list and
++	/* Check if IPv6 source/destination address
++	 * should be hash enabled.
++	 * Hashing reduces 128bit SIP/DIP fields to 32bit
++	 * so that 224 bit X2 key can be used for IPv6 based filters as well,
++	 * which in turn results in more number of MCAM entries available for
++	 * use.
++	 *
++	 * Hashing of IPV6 SIP/DIP is enabled in below scenarios
++	 * 1. If the silicon variant supports hashing feature
++	 * 2. If the number of bytes of IP addr being extracted is 4 bytes ie
++	 *    32bit. The assumption here is that if user wants 8bytes of LSB of
++	 *    IP addr or full 16 bytes then his intention is not to use 32bit
++	 *    hash.
++	 */
++	for (intf = 0; intf < hw->npc_intfs; intf++) {
++		for (ld = 0; ld < NPC_MAX_LD; ld++) {
++			cfg = rvu_read64(rvu, blkaddr,
++					 NPC_AF_INTFX_LIDX_LTX_LDX_CFG(intf,
++								       NPC_LID_LC,
++								       NPC_LT_LC_IP6,
++								       ld));
++			hdr_offset = FIELD_GET(NPC_HDR_OFFSET, cfg);
++			byte_len = FIELD_GET(NPC_BYTESM, cfg);
++			/* Hashing of IPv6 source/destination address should be
++			 * enabled if,
++			 * hdr_offset == 8 (offset of source IPv6 address) or
++			 * hdr_offset == 24 (offset of destination IPv6)
++			 * address) and the number of byte to be
++			 * extracted is 4. As per hardware configuration
++			 * byte_len should be == actual byte_len - 1.
++			 * Hence byte_len is checked against 3 but nor 4.
++			 */
++			if ((hdr_offset == 8 || hdr_offset == 24) && byte_len == 3)
++				mh->lid_lt_ld_hash_en[intf][NPC_LID_LC][NPC_LT_LC_IP6][ld] = true;
++		}
++	}
++
++	/* Update hash configuration if the field is hash enabled */
+ 	for (intf = 0; intf < hw->npc_intfs; intf++) {
+ 		npc_program_mkex_hash_rx(rvu, blkaddr, intf);
+ 		npc_program_mkex_hash_tx(rvu, blkaddr, intf);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
+index a1c3d987b8044..57a09328d46b5 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
+@@ -70,8 +70,8 @@ static struct npc_mcam_kex_hash npc_mkex_hash_default __maybe_unused = {
+ 	[NIX_INTF_RX] = {
+ 		[NPC_LID_LC] = {
+ 			[NPC_LT_LC_IP6] = {
+-				true,
+-				true,
++				false,
++				false,
+ 			},
+ 		},
+ 	},
+@@ -79,8 +79,8 @@ static struct npc_mcam_kex_hash npc_mkex_hash_default __maybe_unused = {
+ 	[NIX_INTF_TX] = {
+ 		[NPC_LID_LC] = {
+ 			[NPC_LT_LC_IP6] = {
+-				true,
+-				true,
++				false,
++				false,
+ 			},
+ 		},
+ 	},
 -- 
 2.39.2
 
