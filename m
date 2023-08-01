@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 773FD76AE20
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECE576AD2B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233069AbjHAJgJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
+        id S232020AbjHAJ06 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233037AbjHAJf4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A555E7
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:05 -0700 (PDT)
+        with ESMTP id S232076AbjHAJ0k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7872C3C18
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4573614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0556C433C8;
-        Tue,  1 Aug 2023 09:34:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4042261511
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7E7C433C7;
+        Tue,  1 Aug 2023 09:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882444;
-        bh=3MCRaZ2ro62yTZdIbEfzhF3TO7F3/AbZpBCiurAclbY=;
+        s=korg; t=1690881936;
+        bh=jjLYDe9h4wx6RoTzO1uMMdtby9F083aT+qE3AReXMlw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0vnHMAVupXTTWafIpfxmzo3ewHGjQMVWWT7I3yVh7ZIY9c2Ld3kHLiaCu1BKswFcX
-         SnM2cT/12piuVZR//BZ+vPpgR4mRLtu1Tpi79DJ3umu/1YEfPmawji5Nd9DLkf+XYi
-         T+h1iik2MNxpq8sk/AZs3dndph63OEIw0X/3ujj0=
+        b=QxS+USER3YY+ac8i+lm2qsQKQp0iI6GbNj9VgMNG9K72+5oDqWa7XbLY3f/lTtPS8
+         Ct4ybOdqq6GlrEyKHusfGyetpczWyIEDkgeLza7RXO4HYLjQX+wk8qpEBEUmoWy1Fq
+         ORzkm7ZcbvRVa8PNODpnuqqVF8PJICIHkor2FD28=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/228] netfilter: nf_tables: disallow rule addition to bound chain via NFTA_RULE_CHAIN_ID
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 053/155] soundwire: qcom: update status correctly with mask
 Date:   Tue,  1 Aug 2023 11:19:25 +0200
-Message-ID: <20230801091926.660211517@linuxfoundation.org>
+Message-ID: <20230801091912.085379091@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 0ebc1064e4874d5987722a2ddbc18f94aa53b211 ]
+[ Upstream commit f84d41b2a083b990cbdf70f3b24b6b108b9678ad ]
 
-Bail out with EOPNOTSUPP when adding rule to bound chain via
-NFTA_RULE_CHAIN_ID. The following warning splat is shown when
-adding a rule to a deleted bound chain:
+SoundWire device status can be incorrectly updated without
+proper mask, fix this by adding a mask before updating the status.
 
- WARNING: CPU: 2 PID: 13692 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
- CPU: 2 PID: 13692 Comm: chain-bound-rul Not tainted 6.1.39 #1
- RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
-
-Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: c7d49c76d1d5 ("soundwire: qcom: add support to new interrupts")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230525133812.30841-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/soundwire/qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e2e5ff6acd2bf..dd57a9ebe113d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3626,8 +3626,6 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN]);
- 			return PTR_ERR(chain);
+diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
+index 2045bcdfce1ab..e3b52d5aa411e 100644
+--- a/drivers/soundwire/qcom.c
++++ b/drivers/soundwire/qcom.c
+@@ -405,7 +405,7 @@ static int qcom_swrm_get_alert_slave_dev_num(struct qcom_swrm_ctrl *ctrl)
+ 		status = (val >> (dev_num * SWRM_MCP_SLV_STATUS_SZ));
+ 
+ 		if ((status & SWRM_MCP_SLV_STATUS_MASK) == SDW_SLAVE_ALERT) {
+-			ctrl->status[dev_num] = status;
++			ctrl->status[dev_num] = status & SWRM_MCP_SLV_STATUS_MASK;
+ 			return dev_num;
  		}
--		if (nft_chain_is_bound(chain))
--			return -EOPNOTSUPP;
- 
- 	} else if (nla[NFTA_RULE_CHAIN_ID]) {
- 		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID],
-@@ -3640,6 +3638,9 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 		return -EINVAL;
  	}
- 
-+	if (nft_chain_is_bound(chain))
-+		return -EOPNOTSUPP;
-+
- 	if (nla[NFTA_RULE_HANDLE]) {
- 		handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_HANDLE]));
- 		rule = __nft_rule_lookup(chain, handle);
 -- 
 2.39.2
 
