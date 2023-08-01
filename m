@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8585D76AE9C
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE6FA76AFAA
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233348AbjHAJkT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
+        id S233668AbjHAJtr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233326AbjHAJjz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:55 -0400
+        with ESMTP id S233670AbjHAJt0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B87518D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EFD33C2D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70264614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C808C433C9;
-        Tue,  1 Aug 2023 09:37:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFFFD614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF40C433C8;
+        Tue,  1 Aug 2023 09:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882660;
-        bh=Jox5gd+Qaq5+/DbN/eI13CvmA860wSs3BcXSfv69Pus=;
+        s=korg; t=1690883282;
+        bh=vIB+txEOnViMd2ZAX8AJdis+7COc7/YFNzm2nB95+eE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PsI5Raxd8z8tAJnpX0LF+L0jMyTlwnoH/fE9e4fBRZqfGLvOtum7aUHH2yMIit5Pz
-         i8fhaP93atxl2AwVr76VXSbFaxnmJk0oTINOmNmnqJsqxglituA/CVtSVyZ5AjHbv8
-         YWsAlbpSzPP0BNtbU5nIcKSi3txq40IpuPgpGkXY=
+        b=QnCclikGG14ErZ1/zuUB8UVjWumMCjZKYhr4e/MzcENpIk/LfQiG6PlxKjoMJ2ZaG
+         ROkECMKCS6svULd75cJe+EcMfBYJfWj0EezlOib4pLDBs9hubPDvHsP9sFOhQBvJHj
+         ORHpUc/YxP5MqN59Xqp8AXYobQBbiJMtcixnyFVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 6.1 186/228] x86/MCE/AMD: Decrement threshold_bank refcount when removing threshold blocks
+        patches@lists.linux.dev, Gilles Buloz <gilles.buloz@kontron.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.4 180/239] hwmon: (nct7802) Fix for temp6 (PECI1) processed even if PECI1 disabled
 Date:   Tue,  1 Aug 2023 11:20:44 +0200
-Message-ID: <20230801091929.580958007@linuxfoundation.org>
+Message-ID: <20230801091932.157009030@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,93 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Gilles Buloz <Gilles.Buloz@kontron.com>
 
-commit 3ba2e83334bed2b1980b59734e6e84dfaf96026c upstream.
+commit 54685abe660a59402344d5045ce08c43c6a5ac42 upstream.
 
-AMD systems from Family 10h to 16h share MCA bank 4 across multiple CPUs.
-Therefore, the threshold_bank structure for bank 4, and its threshold_block
-structures, will be initialized once at boot time. And the kobject for the
-shared bank will be added to each of the CPUs that share it. Furthermore,
-the threshold_blocks for the shared bank will be added again to the bank's
-kobject. These additions will increase the refcount for the bank's kobject.
+Because of hex value 0x46 used instead of decimal 46, the temp6
+(PECI1) temperature is always declared visible and then displayed
+even if disabled in the chip
 
-For example, a shared bank with two blocks and shared across two CPUs will
-be set up like this:
-
-  CPU0 init
-    bank create and add; bank refcount = 1; threshold_create_bank()
-      block 0 init and add; bank refcount = 2; allocate_threshold_blocks()
-      block 1 init and add; bank refcount = 3; allocate_threshold_blocks()
-  CPU1 init
-    bank add; bank refcount = 3; threshold_create_bank()
-      block 0 add; bank refcount = 4; __threshold_add_blocks()
-      block 1 add; bank refcount = 5; __threshold_add_blocks()
-
-Currently in threshold_remove_bank(), if the bank is shared then
-__threshold_remove_blocks() is called. Here the shared bank's kobject and
-the bank's blocks' kobjects are deleted. This is done on the first call
-even while the structures are still shared. Subsequent calls from other
-CPUs that share the structures will attempt to delete the kobjects.
-
-During kobject_del(), kobject->sd is removed. If the kobject is not part of
-a kset with default_groups, then subsequent kobject_del() calls seem safe
-even with kobject->sd == NULL.
-
-Originally, the AMD MCA thresholding structures did not use default_groups.
-And so the above behavior was not apparent.
-
-However, a recent change implemented default_groups for the thresholding
-structures. Therefore, kobject_del() will go down the sysfs_remove_groups()
-code path. In this case, the first kobject_del() may succeed and remove
-kobject->sd. But subsequent kobject_del() calls will give a WARNing in
-kernfs_remove_by_name_ns() since kobject->sd == NULL.
-
-Use kobject_put() on the shared bank's kobject when "removing" blocks. This
-decrements the bank's refcount while keeping kobjects enabled until the
-bank is no longer shared. At that point, kobject_put() will be called on
-the blocks which drives their refcount to 0 and deletes them and also
-decrementing the bank's refcount. And finally kobject_put() will be called
-on the bank driving its refcount to 0 and deleting it.
-
-The same example above:
-
-  CPU1 shutdown
-    bank is shared; bank refcount = 5; threshold_remove_bank()
-      block 0 put parent bank; bank refcount = 4; __threshold_remove_blocks()
-      block 1 put parent bank; bank refcount = 3; __threshold_remove_blocks()
-  CPU0 shutdown
-    bank is no longer shared; bank refcount = 3; threshold_remove_bank()
-      block 0 put block; bank refcount = 2; deallocate_threshold_blocks()
-      block 1 put block; bank refcount = 1; deallocate_threshold_blocks()
-    put bank; bank refcount = 0; threshold_remove_bank()
-
-Fixes: 7f99cb5e6039 ("x86/CPU/AMD: Use default_groups in kobj_type")
-Reported-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/alpine.LRH.2.02.2205301145540.25840@file01.intranet.prod.int.rdu2.redhat.com
+Signed-off-by: Gilles Buloz <gilles.buloz@kontron.com>
+Link: https://lore.kernel.org/r/DU0PR10MB62526435ADBC6A85243B90E08002A@DU0PR10MB6252.EURPRD10.PROD.OUTLOOK.COM
+Fixes: fcdc5739dce03 ("hwmon: (nct7802) add temperature sensor type attribute")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/nct7802.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -1265,10 +1265,10 @@ static void __threshold_remove_blocks(st
- 	struct threshold_block *pos = NULL;
- 	struct threshold_block *tmp = NULL;
+--- a/drivers/hwmon/nct7802.c
++++ b/drivers/hwmon/nct7802.c
+@@ -725,7 +725,7 @@ static umode_t nct7802_temp_is_visible(s
+ 	if (index >= 38 && index < 46 && !(reg & 0x01))		/* PECI 0 */
+ 		return 0;
  
--	kobject_del(b->kobj);
-+	kobject_put(b->kobj);
+-	if (index >= 0x46 && (!(reg & 0x02)))			/* PECI 1 */
++	if (index >= 46 && !(reg & 0x02))			/* PECI 1 */
+ 		return 0;
  
- 	list_for_each_entry_safe(pos, tmp, &b->blocks->miscj, miscj)
--		kobject_del(&pos->kobj);
-+		kobject_put(b->kobj);
- }
- 
- static void threshold_remove_bank(struct threshold_bank *bank)
+ 	return attr->mode;
 
 
