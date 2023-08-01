@@ -2,50 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B344476AEDB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFA4B76AFC8
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233257AbjHAJmg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
+        id S233565AbjHAJuI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233251AbjHAJmX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ABDE5B8B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:56 -0700 (PDT)
+        with ESMTP id S233516AbjHAJtx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19EE21BC3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B4861525
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BF4C433C9;
-        Tue,  1 Aug 2023 09:39:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C78D614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95730C433CB;
+        Tue,  1 Aug 2023 09:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882796;
-        bh=dJwhxcZD/MAAxzrG1zgBMGMBqDn9vvMG+m3IWTMk2HY=;
+        s=korg; t=1690883358;
+        bh=yk1dnTiTN5hhO1OfOdeMulKRxehiVlE+uLyY8efFnfo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u46dggobJNnUu47JTvw9brAAs8piTeM+9jtH/J4OJzfTTbz5fV/yggo6mVzIiPOO7
-         V0K3QceTJ0k05uxzgwMgPPX+N5dRfAi4yh3diW/QWSw8y0E1SbyBOeLkjtDQcsqj0r
-         17G6PVLHj5eF2yMkwMF6l1rv0WdWZSNd7jCA0z1E=
+        b=iYBeseyu8wAu2pNsAOCy1+eCXK/+yEBNrRph2BnWsB6PHk6hRNw3k+aL/UbX7t6V8
+         wJfZOptFL4bOAqeBkmtGVS6SpSNLJExSYgzzS5ahNE9WWq8yGrW0BNiFe189RC8j4X
+         ix9DU07qRkylahZ1SHw5EI2RNZqkrBgngSLsAD/0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Chris Wilson <chris.p.wilson@intel.com>,
-        Fei Yang <fei.yang@intel.com>,
-        Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Subject: [PATCH 6.1 212/228] drm/i915/dpt: Use shmem for dpt objects
-Date:   Tue,  1 Aug 2023 11:21:10 +0200
-Message-ID: <20230801091930.522886608@linuxfoundation.org>
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Phil Elwell <phil@raspberrypi.com>,
+        Andres Freund <andres@anarazel.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 207/239] io_uring: gate iowait schedule on having pending requests
+Date:   Tue,  1 Aug 2023 11:21:11 +0200
+Message-ID: <20230801091933.281555192@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,55 +57,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 3844ed5e78823eebb5f0f1edefc403310693d402 upstream.
+commit 7b72d661f1f2f950ab8c12de7e2bc48bdac8ed69 upstream.
 
-Dpt objects that are created from internal get evicted when there is
-memory pressure and do not get restored when pinned during scanout. The
-pinned page table entries look corrupted and programming the display
-engine with the incorrect pte's result in DE throwing pipe faults.
+A previous commit made all cqring waits marked as iowait, as a way to
+improve performance for short schedules with pending IO. However, for
+use cases that have a special reaper thread that does nothing but
+wait on events on the ring, this causes a cosmetic issue where we
+know have one core marked as being "busy" with 100% iowait.
 
-Create DPT objects from shmem and mark the object as dirty when pinning so
-that the object is restored when shrinker evicts an unpinned buffer object.
+While this isn't a grave issue, it is confusing to users. Rather than
+always mark us as being in iowait, gate setting of current->in_iowait
+to 1 by whether or not the waiting task has pending requests.
 
-v2: Unconditionally mark the dpt objects dirty during pinning(Chris).
-
-Fixes: 0dc987b699ce ("drm/i915/display: Add smem fallback allocation for dpt")
-Cc: <stable@vger.kernel.org> # v6.0+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
-Signed-off-by: Fei Yang <fei.yang@intel.com>
-Signed-off-by: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230718225118.2562132-1-radhakrishna.sripada@intel.com
-(cherry picked from commit e91a777a6e602ba0e3366e053e4e094a334a1244)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/io-uring/CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217699
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217700
+Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Reported-by: Phil Elwell <phil@raspberrypi.com>
+Tested-by: Andres Freund <andres@anarazel.de>
+Fixes: 8a796565cec3 ("io_uring: Use io_schedule* in cqring wait")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dpt.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |   23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dpt.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpt.c
-@@ -163,6 +163,8 @@ struct i915_vma *intel_dpt_pin(struct i9
- 		i915_vma_get(vma);
- 	}
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2579,11 +2579,20 @@ int io_run_task_work_sig(struct io_ring_
+ 	return 0;
+ }
  
-+	dpt->obj->mm.dirty = true;
++static bool current_pending_io(void)
++{
++	struct io_uring_task *tctx = current->io_uring;
 +
- 	atomic_dec(&i915->gpu_error.pending_fb_pin);
- 	intel_runtime_pm_put(&i915->runtime_pm, wakeref);
++	if (!tctx)
++		return false;
++	return percpu_counter_read_positive(&tctx->inflight);
++}
++
+ /* when returns >0, the caller should retry */
+ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 					  struct io_wait_queue *iowq)
+ {
+-	int token, ret;
++	int io_wait, ret;
  
-@@ -258,7 +260,7 @@ intel_dpt_create(struct intel_framebuffe
- 		dpt_obj = i915_gem_object_create_stolen(i915, size);
- 	if (IS_ERR(dpt_obj) && !HAS_LMEM(i915)) {
- 		drm_dbg_kms(&i915->drm, "Allocating dpt from smem\n");
--		dpt_obj = i915_gem_object_create_internal(i915, size);
-+		dpt_obj = i915_gem_object_create_shmem(i915, size);
- 	}
- 	if (IS_ERR(dpt_obj))
- 		return ERR_CAST(dpt_obj);
+ 	if (unlikely(READ_ONCE(ctx->check_cq)))
+ 		return 1;
+@@ -2597,17 +2606,19 @@ static inline int io_cqring_wait_schedul
+ 		return 0;
+ 
+ 	/*
+-	 * Use io_schedule_prepare/finish, so cpufreq can take into account
+-	 * that the task is waiting for IO - turns out to be important for low
+-	 * QD IO.
++	 * Mark us as being in io_wait if we have pending requests, so cpufreq
++	 * can take into account that the task is waiting for IO - turns out
++	 * to be important for low QD IO.
+ 	 */
+-	token = io_schedule_prepare();
++	io_wait = current->in_iowait;
++	if (current_pending_io())
++		current->in_iowait = 1;
+ 	ret = 0;
+ 	if (iowq->timeout == KTIME_MAX)
+ 		schedule();
+ 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
+ 		ret = -ETIME;
+-	io_schedule_finish(token);
++	current->in_iowait = io_wait;
+ 	return ret;
+ }
+ 
 
 
