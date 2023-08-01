@@ -2,152 +2,231 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1D1176B01D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81D2376B019
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232663AbjHAJ7V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:59:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        id S231435AbjHAJ7U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:59:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233846AbjHAJ6A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:58:00 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C47E7C;
-        Tue,  1 Aug 2023 02:57:39 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 49B1B6015F;
-        Tue,  1 Aug 2023 11:57:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690883846; bh=HvFuOQ+AD9vAeGv0bVGl9kIg9XMWNofn3eX/sGBr77Y=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=IKPUJQJYCCJAkPzbTaVmpITL7DojUgTrFvVl1qtS9um44B4zklEEaqyKKBWSqfmk4
-         yfoeFHALqkEVpaWY+2V6ZO42W9uCHD7goKeX5m3pB/0lQf8fdTZL/FZbUeZ26pH9Jq
-         LrKCozI9LaY7+otVV2Dy7vLyqOZiFmBiBLMaGpBPRFyrobrFOM0uZzyMWCuF1drL9K
-         vQMWjEjcAsQNYRM0igKjI+4/xAjga9EzGq58GP3K3PrWST1vRSugtZZiGqQ97bJOJy
-         tuSWlmcVV13Y766sHbT9BeDsham5GvI2298OdkrtgvOrlYGSeYrXPLuHAem6WCQnQT
-         K1z5ywMP5wsVQ==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 5I306fRjD5hA; Tue,  1 Aug 2023 11:57:23 +0200 (CEST)
-Received: from [193.198.186.200] (pc-mtodorov.slava.alu.hr [193.198.186.200])
-        by domac.alu.hr (Postfix) with ESMTPSA id BF3EF6017C;
-        Tue,  1 Aug 2023 11:57:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690883843; bh=HvFuOQ+AD9vAeGv0bVGl9kIg9XMWNofn3eX/sGBr77Y=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=G0gmK1J1sicJCKLGWrDPHzkP00i6il/3BeFgrnArBclfkcN5ltJjqCO31TYzXIbaS
-         dXY5qEfdnWSV7vRhQB8cQ9SXqG2Z1fkRyhBMt6C5Y+JSHxODo4vtPBe922PRJul6Fh
-         QR0+ucG2hmo/4wFPTjy+Gu4z+2FapEBoLbwM/XHvL510WRHnnSYMGGeG7zY28r0vP4
-         i36yy/6UpGLaJm9TSzRf5xJPTIQmVkQYLMdU4E5BFpYINgnB3E/HRaFyuCqkV4Wiht
-         2qlxa7SfjwCGsC9rROKIe+fzERAPd2EOrrjG5e1yuFXPnVfsi/GsJtl8aVQ4zY4UkK
-         pb40ysdJQMOXA==
-Message-ID: <24d27380-544e-66d1-1cb2-14eb87ce89ac@alu.unizg.hr>
-Date:   Tue, 1 Aug 2023 11:57:19 +0200
+        with ESMTP id S234014AbjHAJ6s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:58:48 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC25E10D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:58:46 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1bbc2e1c6b2so34781755ad.3
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 02:58:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690883926; x=1691488726;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=2lL0wNmhQ8lJcfdblJOxEyLxERAgoWFXh6rsg0kKXB0=;
+        b=t9VWxHcdIxZ7udDzxmHq6aDvNIha2TFc9sIsz88cKw0w1OmOl8kr+IdHyhJooqAkhj
+         ebwBID5bLrygcGIWTiIYTt4M20KeaJggywxmlkuexKcqucbwsjMa9sA/cX77k78D+NTi
+         kcBjpSFDi9LanRmiu+KpKQEH3AQcDe/WGEqyXeysgZALHNGwL0//xp7NQAYKmESdwzKq
+         72H0wpgnRYnSmQxeUPjDzPY30lL4RY1wNQ2CizttGCtiXwSHJJc43oRPG29yFoME3MT+
+         UnRYdgwdLcpaDtpUwWMwV2R2GjexwjX8CjDhJlqPHx1clsPwqDj7F9X/AZpokGyVvQJ7
+         pooQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690883926; x=1691488726;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2lL0wNmhQ8lJcfdblJOxEyLxERAgoWFXh6rsg0kKXB0=;
+        b=J1U6E+de+xCk3dOb04xkKCmMKqIglJRKhcKWw/ntoUTFShmAK+nQXrxeZvrKFTWklA
+         GJYpiZlql+U0ltzZvONxcDM82kbbEODfHqBYiZMxS+mS1Eai8uMpxOJpIi8wLYhoRXq2
+         ZIqi7fl9ORqg52wcY4tlfC21IAdBZfDW8rcbrOn20lXtLFIVLWUpl7UL4qrX3rlkyd8P
+         gFvjZZ8H3tJ+Vh0fUxhROtYQqa4aQg46+USrbtrC3OAAkU0uG1Vwqco7n5l/6ZDbyfQ4
+         u+RzA4fUBb0JrqcvxzCu3ZI8IlrGVaU6iX+9NQLX5NlVBT0wxFf+qbhUd25JP+B3+JEi
+         dBmQ==
+X-Gm-Message-State: ABy/qLYEtfwWeP2sZyUyNdOeKm51naT1xdLP4E5fxwybHE+8jeFh6SH1
+        FmJv9JmsF6622j/AviZJ8bW3KoiU17Ep906GIHKfyA==
+X-Google-Smtp-Source: APBJJlGjZ5dscTIE77OygItTXLNbModQ04b3JCPza/lrCZNrKrxbu4/2AdxIm2i1ZnzrmWz3LCvd9w==
+X-Received: by 2002:a17:903:247:b0:1bb:dc48:644a with SMTP id j7-20020a170903024700b001bbdc48644amr12029959plh.49.1690883925831;
+        Tue, 01 Aug 2023 02:58:45 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id ij29-20020a170902ab5d00b001b8a53dde99sm10186577plb.296.2023.08.01.02.58.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 02:58:45 -0700 (PDT)
+Message-ID: <64c8d755.170a0220.28c75.3321@mx.google.com>
+Date:   Tue, 01 Aug 2023 02:58:45 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 1/1] test_firmware: prevent race conditions by a
- correct implementation of locking
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        Russ Weight <russell.h.weight@intel.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>
-References: <20230731165018.8233-1-mirsad.todorovac@alu.unizg.hr>
- <ZMfvAhOfSP5UXN6l@bombadil.infradead.org>
- <0e3a740f-60dd-e657-8a5c-79b155fa62b3@alu.unizg.hr>
-Content-Language: en-US, hr
-In-Reply-To: <0e3a740f-60dd-e657-8a5c-79b155fa62b3@alu.unizg.hr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Kernel: v5.10.188-113-gbaae5ca1b36f
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.188-113-gbaae5ca1b36f)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/1/23 10:24, Mirsad Todorovac wrote:
-> On 7/31/23 19:27, Luis Chamberlain wrote:
->> On Mon, Jul 31, 2023 at 06:50:19PM +0200, Mirsad Todorovac wrote:
->>> NOTE: This patch is tested against 5.4 stable
->>>
->>> NOTE: This is a patch for the 5.4 stable branch, not for the torvalds tree.
->>>
->>>        The torvalds tree, and stable tree 5.10, 5.15, 6.1 and 6.4 branches
->>>        were fixed in the separate
->>>        commit ID 4acfe3dfde68 ("test_firmware: prevent race conditions by a correct implementation of locking")
->>>        which was incompatible with 5.4
->>>
->>
->> The above part is not part of the original commit, you also forgot to
->> mention the upstream commit:
->>
->> [ Upstream commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 ]
-> 
-> Will fix. Actually, I wasn't sure if it was required, because this backported patch
-> isn't verbatim equal to commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 .
-> 
-> Though they are cousins, addressing the same issue.
-> 
-> There is a race to be fixed, despite not all racy functions present in the original commit c92316bf8e948.
-> 
->>> Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
->>> Cc: Luis R. Rodriguez <mcgrof@kernel.org>
->>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> Cc: Russ Weight <russell.h.weight@intel.com>
->>> Cc: Takashi Iwai <tiwai@suse.de>
->>> Cc: Tianfei Zhang <tianfei.zhang@intel.com>
->>> Cc: Shuah Khan <shuah@kernel.org>
->>> Cc: Colin Ian King <colin.i.king@gmail.com>
->>> Cc: Randy Dunlap <rdunlap@infradead.org>
->>> Cc: linux-kselftest@vger.kernel.org
->>> Cc: stable@vger.kernel.org # v5.4
->>> Suggested-by: Dan Carpenter <error27@gmail.com>
->>
->> Here you can add the above note in brackets:
->>
->> [ explain your changes here from the original commit ]
->>
->> Then, I see two commits upstream on Linus tree which are also fixes
->> but not merged on v5.4, did you want those applied too?
-> 
-> These seem merged in the stable 5.4?
-> 
-> commit 75d9e00f65cd2e0f2ce9ceeb395f821976773489 test_firmware: fix a memory leak with reqs buffer
-> commit 94f3bc7e84af2f17dbfbc7afe93991c2a6f2f25e test_firmware: fix the memory leak of the allocated firmware buffer
-> 
-> Maybe this commit should be backported instead:
-> 
-> test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
-> [ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
-> 
-> It was also merged into 6.4, 6.1, 5.15 and 5.10 stable, but not on 5.4
-> 
-> I might also check whether the 4.19 and 4.14 are vulnerable to these memory leaks and this race
-> (Yes, they are, so it might be prudent that we backport this fix.)
+stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v=
+5.10.188-113-gbaae5ca1b36f)
 
-FYI, just checked, the patch applied w/o modifications to 4.19 and 4.14 LTS stable branches.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.188-113-gbaae5ca1b36f/
 
-Mirsad
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.188-113-gbaae5ca1b36f
+Git Commit: baae5ca1b36f1d8a166963760a0bb8358d481ebd
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
--- 
-Mirsad Todorovac
-Sistem inženjer
-Grafički fakultet | Akademija likovnih umjetnosti
-Sveučilište u Zagrebu
+Warnings Detected:
 
-System engineer
-Faculty of Graphic Arts | Academy of Fine Arts
-University of Zagreb, Republic of Croatia
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
