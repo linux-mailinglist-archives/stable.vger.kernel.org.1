@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B528076AEEF
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB9076ADBB
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233238AbjHAJnV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:43:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40404 "EHLO
+        id S232049AbjHAJcd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:32:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233264AbjHAJnI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:08 -0400
+        with ESMTP id S231617AbjHAJb5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:31:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044332702
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C2149FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:30:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABFFC6151F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95DFC433C9;
-        Tue,  1 Aug 2023 09:40:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EF366150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:30:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A892C433C8;
+        Tue,  1 Aug 2023 09:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882849;
-        bh=mdpyvY6EAWFvMTznOX9R64TzTvnevr5Ow6QqsgaoGRM=;
+        s=korg; t=1690882225;
+        bh=3JWXxAibJDxCkJu3mzdiwzqp6n094e8wPBSTXZrhSY4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Al84Z9zvlyjv8LpNlNiNwpN+U6Z3Io2xy43GeInMjIDgEBvnH/+2KIgUyh6Z1jbWE
-         3cE+TgSlcb4NAbZUOmovecIsiG2utmSu8S11N/n4WUAnS/sDuVjPTLWA7m6IlVC2jD
-         0YGv5foZ2Xt4o6U3YBNRR08uEGuQz7B8RV6lCyw0=
+        b=ToHEq2kdM4Rbi9JV07OHMB2vJ5zjwvNypEQ+ll0Q5d1fj8FQBAjBfxxWuDZKqMZ2R
+         eiS5Lc5nGE7J4ROLyI8B5pAhk9kMrUZNGeVQ8PkZBbnlMOP9c/yQX1gVp/ytlbUL1k
+         XGTaqpeRLfNRJxjK7oz+f+lNaJx+HzS1DPQxBNs0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andi Shyti <andi.shyti@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 024/239] i2c: nomadik: Use devm_clk_get_enabled()
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 030/228] PCI: rockchip: Remove writes to unused registers
 Date:   Tue,  1 Aug 2023 11:18:08 +0200
-Message-ID: <20230801091926.504781068@linuxfoundation.org>
+Message-ID: <20230801091923.963909527@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,74 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andi Shyti <andi.shyti@kernel.org>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit 9c7174db4cdd111e10d19eed5c36fd978a14c8a2 ]
+[ Upstream commit 92a9c57c325dd51682d428ba960d961fec3c8a08 ]
 
-Replace the pair of functions, devm_clk_get() and
-clk_prepare_enable(), with a single function
-devm_clk_get_enabled().
+Remove write accesses to registers that are marked "unused" (and
+therefore read-only) in the technical reference manual (TRM)
+(see RK3399 TRM 17.6.8.1)
 
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
+Link: https://lore.kernel.org/r/20230418074700.1083505-2-rick.wertenbroek@gmail.com
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Stable-dep-of: dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for endpoint")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-nomadik.c | 18 +++---------------
- 1 file changed, 3 insertions(+), 15 deletions(-)
+ drivers/pci/controller/pcie-rockchip-ep.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index 8b9577318388e..2141ba05dfece 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -1005,18 +1005,12 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
- 		return ret;
- 	}
- 
--	dev->clk = devm_clk_get(&adev->dev, NULL);
-+	dev->clk = devm_clk_get_enabled(&adev->dev, NULL);
- 	if (IS_ERR(dev->clk)) {
--		dev_err(&adev->dev, "could not get i2c clock\n");
-+		dev_err(&adev->dev, "could enable i2c clock\n");
- 		return PTR_ERR(dev->clk);
- 	}
- 
--	ret = clk_prepare_enable(dev->clk);
--	if (ret) {
--		dev_err(&adev->dev, "can't prepare_enable clock\n");
--		return ret;
--	}
--
- 	init_hw(dev);
- 
- 	adap = &dev->adap;
-@@ -1037,16 +1031,11 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
- 
- 	ret = i2c_add_adapter(adap);
- 	if (ret)
--		goto err_no_adap;
-+		return ret;
- 
- 	pm_runtime_put(&adev->dev);
- 
- 	return 0;
--
-- err_no_adap:
--	clk_disable_unprepare(dev->clk);
--
--	return ret;
+diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+index 827d91e73efab..9e17f3dba743a 100644
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -61,10 +61,6 @@ static void rockchip_pcie_clear_ep_ob_atu(struct rockchip_pcie *rockchip,
+ 			    ROCKCHIP_PCIE_AT_OB_REGION_DESC0(region));
+ 	rockchip_pcie_write(rockchip, 0,
+ 			    ROCKCHIP_PCIE_AT_OB_REGION_DESC1(region));
+-	rockchip_pcie_write(rockchip, 0,
+-			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR0(region));
+-	rockchip_pcie_write(rockchip, 0,
+-			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR1(region));
  }
  
- static void nmk_i2c_remove(struct amba_device *adev)
-@@ -1060,7 +1049,6 @@ static void nmk_i2c_remove(struct amba_device *adev)
- 	clear_all_interrupts(dev);
- 	/* disable the controller */
- 	i2c_clr_bit(dev->virtbase + I2C_CR, I2C_CR_PE);
--	clk_disable_unprepare(dev->clk);
- 	release_mem_region(res->start, resource_size(res));
+ static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
+@@ -114,12 +110,6 @@ static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
+ 		     PCIE_CORE_OB_REGION_ADDR0_LO_ADDR);
+ 		addr1 = upper_32_bits(cpu_addr);
+ 	}
+-
+-	/* CPU bus address region */
+-	rockchip_pcie_write(rockchip, addr0,
+-			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR0(r));
+-	rockchip_pcie_write(rockchip, addr1,
+-			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR1(r));
  }
  
+ static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn, u8 vfn,
 -- 
 2.39.2
 
