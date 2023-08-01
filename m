@@ -2,119 +2,189 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D327976BB4B
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD12776BBE0
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 20:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233304AbjHARcv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 13:32:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39484 "EHLO
+        id S229782AbjHASDb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 14:03:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232136AbjHARcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:32:50 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10934E71;
-        Tue,  1 Aug 2023 10:32:50 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-3493862cfb1so1917555ab.1;
-        Tue, 01 Aug 2023 10:32:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690911169; x=1691515969;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rxfffmnKLjMpRaF+oj2k9XWjuJzG7Mpl/8fOeP1Tlj8=;
-        b=VcIp2nJOsFoMuplIw3t8qwptOiLdWXL8dwUmccUOs6t93Cc9xR9xVrWBEDBf7tzu0H
-         uMXkDf38gFnQafLeR6fnO1wPdRHl5iaFTwuMX+LzJ646zOl1X7m4UuG+2amE2UqSqH7l
-         Pz3zqm2tMdLhixWFTWqYqJBYiM0Rp5twyLOQGZfL1yEB7ZQ56l+PLOEzKsZeqrjbZ9uI
-         yYkhyzfjZKUVKFRcfoMiQjHuWcnWn9JQi07F7ywdV02+cBq/mCzX6jAU/EEd11gV/o9h
-         6RVkuiWqTuQJdrCYyAkC9qb8HWR3oXCEiGAuvcdT/gilw3zvbh1e+rZOiXiDzM0Pn0Ts
-         jhIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690911169; x=1691515969;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rxfffmnKLjMpRaF+oj2k9XWjuJzG7Mpl/8fOeP1Tlj8=;
-        b=JpitpFvg5TyZOCkQlExTr5uRRij3XYhxKgAQCV/IW5M3GEZtMRJ1uVd5JDmVe7X95/
-         Q6Yl5t/DfPaKJFrXSFel78cQ4H/vfY8QuKs+PXPwoV+MFu7PLr19EcJFHSY6Gd/p1vhP
-         zUlORiGC9bqL4pVQbk7On9lng3rVyKm23O/rY2bDK7G8pCGeum4qWURh9ITZYmVXwzxu
-         kgGhJfpT5j20szTaMfgYseOgyH0/yAhMPpFFuYMteW/2WRmsXDUU8QqTggRiHmxjkVNO
-         yGm55mHc0HA+fuDiteK1HRkI08FVV5ugjMzGDXXdV9NGTkDIflW5kJXos6NrKH4VmGb8
-         vkJw==
-X-Gm-Message-State: ABy/qLYxIB/+r7bCZ8ca+lIeFimMnv0qGA8Ou8Ufo8j63HN8t+WAOeMf
-        rby1aivuYof899iGWRhSJ+Q=
-X-Google-Smtp-Source: APBJJlEfYNHAmcDXBD2bJbxgOiEovrQqUA0zD0/q6PfUdnUPPnfhj2y4B95WeuHZ1i438RcxyPsVUQ==
-X-Received: by 2002:a05:6e02:1a0d:b0:342:512a:ccec with SMTP id s13-20020a056e021a0d00b00342512accecmr13376561ild.31.1690911169208;
-        Tue, 01 Aug 2023 10:32:49 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id n11-20020a92d9cb000000b00345d2845c42sm3991233ilq.57.2023.08.01.10.32.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Aug 2023 10:32:48 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <a05743a3-4dec-6af7-302f-d1d2a0db7d3e@roeck-us.net>
-Date:   Tue, 1 Aug 2023 10:32:45 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Roy Hopkins <rhopkins@suse.de>,
-        Joel Fernandes <joel@joelfernandes.org>, paulmck@kernel.org,
-        Pavel Machek <pavel@denx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
-References: <2cfc68cc-3a2f-4350-a711-ef0c0d8385fd@paulmck-laptop>
- <D56D0318-A2EA-4448-8F4D-BE84706E26A5@joelfernandes.org>
- <3da81a5c-700b-8e21-1bde-27dd3a0b8945@roeck-us.net>
- <20230731141934.GK29590@hirez.programming.kicks-ass.net>
- <20230731143954.GB37820@hirez.programming.kicks-ass.net>
- <f5a18aa3-9db7-6ad2-33d5-3335a18e4e2f@roeck-us.net>
- <20230731145232.GM29590@hirez.programming.kicks-ass.net>
- <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
- <20230731161452.GA40850@hirez.programming.kicks-ass.net>
- <baa58a8e-54f0-2309-b34e-d62999a452a1@roeck-us.net>
- <20230731211517.GA51835@hirez.programming.kicks-ass.net>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
- 6.4.7-rc1 review)
-In-Reply-To: <20230731211517.GA51835@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229626AbjHASDb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 14:03:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05112100;
+        Tue,  1 Aug 2023 11:03:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8178261666;
+        Tue,  1 Aug 2023 18:03:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF68C433C8;
+        Tue,  1 Aug 2023 18:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1690913008;
+        bh=umAAyNwUcyhKiUF7YUdwZLW4kbxYKPj9iFe7hGZ18UQ=;
+        h=Date:To:From:Subject:From;
+        b=uy2Dmb9jRAEcuilDv6QACbtm47GpL7V0itnWl7IrQZG73j4B0PThN+0R8zmwoGCgA
+         tNv4qNsE0yzW2uU40biY/3uikSnEKtKkcZSKE082iufiBwkDw3g5V+3yWosFLwuBni
+         wnJ/uoF8qAbYVj1bwCEA3IIodiuqHWzo//BFsJfw=
+Date:   Tue, 01 Aug 2023 11:03:28 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org, will@kernel.org,
+        wangkefeng.wang@huawei.com, viro@zeniv.linux.org.uk,
+        urezki@gmail.com, stable@vger.kernel.org,
+        regressions@leemhuis.info, olsajiri@gmail.com,
+        liushixin2@huawei.com, jolsa@kernel.org, efault@gmx.de,
+        david@redhat.com, catalin.marinas@arm.com, bhe@redhat.com,
+        axboe@kernel.dk, ardb@kernel.org, lstoakes@gmail.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + fs-proc-kcore-reinstate-bounce-buffer-for-kcore_text-regions.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230801180328.CDF68C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/31/23 14:15, Peter Zijlstra wrote:
-> On Mon, Jul 31, 2023 at 09:34:29AM -0700, Guenter Roeck wrote:
->>> Ha!, I was poking around the same thing. My hack below seems to (so far,
->>> <20 boots) help things.
->>>
->>
->> So, dumb question:
->> How comes this bisects to "sched/fair: Remove sched_feat(START_DEBIT)" ?
-> 
-> That commit changes the timings of things; dumb luck otherwise.
 
-Kind of scary. So I only experienced the problem because the START_DEBIT patch
-happened to be queued roughly at the same time, and it might otherwise have
-found its way unnoticed into the upstream kernel. That makes me wonder if this
-or other similar patches may uncover similar problems elsewhere in the kernel
-(i.e., either hide new or existing race conditions or expose existing ones).
+The patch titled
+     Subject: fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT regions
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-proc-kcore-reinstate-bounce-buffer-for-kcore_text-regions.patch
 
-This in turn makes me wonder if it would be possible to define a test which
-would uncover such problems without the START_DEBIT patch. Any idea ?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-kcore-reinstate-bounce-buffer-for-kcore_text-regions.patch
 
-Guenter
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lstoakes@gmail.com>
+Subject: fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT regions
+Date: Mon, 31 Jul 2023 22:50:21 +0100
+
+Some architectures do not populate the entire range categorised by
+KCORE_TEXT, so we must ensure that the kernel address we read from is
+valid.
+
+Unfortunately there is no solution currently available to do so with a
+purely iterator solution so reinstate the bounce buffer in this instance
+so we can use copy_from_kernel_nofault() in order to avoid page faults
+when regions are unmapped.
+
+This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
+bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
+the code to continue to use an iterator.
+
+Link: https://lkml.kernel.org/r/20230731215021.70911-1-lstoakes@gmail.com
+Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reported-by: Jiri Olsa <olsajiri@gmail.com>
+Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Will Deacon <will@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mike Galbraith <efault@gmx.de>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/kcore.c |   26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+--- a/fs/proc/kcore.c~fs-proc-kcore-reinstate-bounce-buffer-for-kcore_text-regions
++++ a/fs/proc/kcore.c
+@@ -309,6 +309,8 @@ static void append_kcore_note(char *note
+ 
+ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ {
++	struct file *file = iocb->ki_filp;
++	char *buf = file->private_data;
+ 	loff_t *fpos = &iocb->ki_pos;
+ 	size_t phdrs_offset, notes_offset, data_offset;
+ 	size_t page_offline_frozen = 1;
+@@ -555,10 +557,21 @@ static ssize_t read_kcore_iter(struct ki
+ 		case KCORE_VMEMMAP:
+ 		case KCORE_TEXT:
+ 			/*
++			 * Sadly we must use a bounce buffer here to be able to
++			 * make use of copy_from_kernel_nofault(), as these
++			 * memory regions might not always be mapped on all
++			 * architectures.
++			 */
++			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
++				if (iov_iter_zero(tsz, iter) != tsz) {
++					ret = -EFAULT;
++					goto out;
++				}
++			/*
+ 			 * We use _copy_to_iter() to bypass usermode hardening
+ 			 * which would otherwise prevent this operation.
+ 			 */
+-			if (_copy_to_iter((char *)start, tsz, iter) != tsz) {
++			} else if (_copy_to_iter(buf, tsz, iter) != tsz) {
+ 				ret = -EFAULT;
+ 				goto out;
+ 			}
+@@ -595,6 +608,10 @@ static int open_kcore(struct inode *inod
+ 	if (ret)
+ 		return ret;
+ 
++	filp->private_data = kmalloc(PAGE_SIZE, GFP_KERNEL);
++	if (!filp->private_data)
++		return -ENOMEM;
++
+ 	if (kcore_need_update)
+ 		kcore_update_ram();
+ 	if (i_size_read(inode) != proc_root_kcore->size) {
+@@ -605,9 +622,16 @@ static int open_kcore(struct inode *inod
+ 	return 0;
+ }
+ 
++static int release_kcore(struct inode *inode, struct file *file)
++{
++	kfree(file->private_data);
++	return 0;
++}
++
+ static const struct proc_ops kcore_proc_ops = {
+ 	.proc_read_iter	= read_kcore_iter,
+ 	.proc_open	= open_kcore,
++	.proc_release	= release_kcore,
+ 	.proc_lseek	= default_llseek,
+ };
+ 
+_
+
+Patches currently in -mm which might be from lstoakes@gmail.com are
+
+fs-proc-kcore-reinstate-bounce-buffer-for-kcore_text-regions.patch
+fs-proc-kcore-reinstate-bounce-buffer-for-kcore_text-regions-fix.patch
 
