@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3DEF76ACDB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7504F76AF3A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231750AbjHAJYD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:24:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52212 "EHLO
+        id S233438AbjHAJp6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231775AbjHAJXp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:23:45 -0400
+        with ESMTP id S233420AbjHAJpp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C912D448B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1554C25
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A988614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8AFC433C8;
-        Tue,  1 Aug 2023 09:22:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DBC461524
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E43DC433C7;
+        Tue,  1 Aug 2023 09:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881736;
-        bh=GYRMifDyhnXB1Cz/4bFT/SPKGdSY5r0YuvITARtiFZM=;
+        s=korg; t=1690883054;
+        bh=+21/ymggUEfksUToKNnnOu9YT62fk9C0mkY8CafhxXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u9VErevP0kOcIRg8Cxi3K3WYhDEaD6bYkxXksMlIu1XkJ3Nfr9PsNhiuG4oPOCyPH
-         jWgNi1UV4ik7yTYQwXa8ZRlmAGZRbKIDZpj0ojjSQGRghPr5uhd7w3qXDE0M+G+34h
-         zNXaAVdx6ot+bw95ZWvohPqgU3xWvvDvg/SaA7A4=
+        b=dVzJ27a5M69hsIvJ7pSMb+/8nYo8RBtz/QCACqeDas1lKk9vtkgWuqtZ92749Wjto
+         TYjmQx3bCb7Jsz8Lhmm21+ZawG3f20RsQy3SujqS/pIpK6hJ1USN32a4hxZaT7vWTH
+         rjLPOJGqlWqz8mWwJ2l1/oNNAz6fzLDMp4AqmEDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/155] i2c: nomadik: Remove a useless call in the remove function
+        patches@lists.linux.dev,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 060/239] media: amphion: Fix firmware path to match linux-firmware
 Date:   Tue,  1 Aug 2023 11:18:44 +0200
-Message-ID: <20230801091910.632324411@linuxfoundation.org>
+Message-ID: <20230801091927.814036325@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-[ Upstream commit 05f933d5f7318b03ff2028c1704dc867ac16f2c7 ]
+[ Upstream commit dcff0b56f661b6b42e828012b464d22cc2068c38 ]
 
-Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
-driver"), there is no more request_mem_region() call in this driver.
+The path did not match the one it was submitted into linux-firmware
+which prevented generic distribution from having working CODEC.
 
-So remove the release_mem_region() call from the remove function which is
-likely a left over.
-
-Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
-Cc: <stable@vger.kernel.org> # v3.6+
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-nomadik.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/platform/amphion/vpu_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index 2141ba05dfece..9c5d66bd6dc1c 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -1040,7 +1040,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+diff --git a/drivers/media/platform/amphion/vpu_core.c b/drivers/media/platform/amphion/vpu_core.c
+index de23627a119a0..82bf8b3be66a2 100644
+--- a/drivers/media/platform/amphion/vpu_core.c
++++ b/drivers/media/platform/amphion/vpu_core.c
+@@ -826,7 +826,7 @@ static const struct dev_pm_ops vpu_core_pm_ops = {
  
- static void nmk_i2c_remove(struct amba_device *adev)
- {
--	struct resource *res = &adev->res;
- 	struct nmk_i2c_dev *dev = amba_get_drvdata(adev);
+ static struct vpu_core_resources imx8q_enc = {
+ 	.type = VPU_CORE_TYPE_ENC,
+-	.fwname = "vpu/vpu_fw_imx8_enc.bin",
++	.fwname = "amphion/vpu/vpu_fw_imx8_enc.bin",
+ 	.stride = 16,
+ 	.max_width = 1920,
+ 	.max_height = 1920,
+@@ -841,7 +841,7 @@ static struct vpu_core_resources imx8q_enc = {
  
- 	i2c_del_adapter(&dev->adap);
-@@ -1049,7 +1048,6 @@ static void nmk_i2c_remove(struct amba_device *adev)
- 	clear_all_interrupts(dev);
- 	/* disable the controller */
- 	i2c_clr_bit(dev->virtbase + I2C_CR, I2C_CR_PE);
--	release_mem_region(res->start, resource_size(res));
- }
- 
- static struct i2c_vendor_data vendor_stn8815 = {
+ static struct vpu_core_resources imx8q_dec = {
+ 	.type = VPU_CORE_TYPE_DEC,
+-	.fwname = "vpu/vpu_fw_imx8_dec.bin",
++	.fwname = "amphion/vpu/vpu_fw_imx8_dec.bin",
+ 	.stride = 256,
+ 	.max_width = 8188,
+ 	.max_height = 8188,
 -- 
 2.39.2
 
