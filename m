@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80F5676AF61
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6C2476AE3B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232837AbjHAJq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45464 "EHLO
+        id S233168AbjHAJhL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233492AbjHAJqc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 983C1E49
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:13 -0700 (PDT)
+        with ESMTP id S233014AbjHAJgy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E594C35
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 769AA6126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89153C433C7;
-        Tue,  1 Aug 2023 09:45:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8A15614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AC0C433C8;
+        Tue,  1 Aug 2023 09:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883112;
-        bh=7Mf8wvQQrHW024RmVALhiI1c7yA37AEAl9OfI5tfrNQ=;
+        s=korg; t=1690882494;
+        bh=IrpIoiwDB/Sxj07qL2kfVGEK05JL2gk3iyQLKzTC/go=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SDroQAYIgUS63VsXyg/jBf2koXna2/GREUfnXv6CdhVOK3hc2BNhgZuVL/YVAgxXL
-         hDx/wxGon1OUHNGc5Iba2cZsUfTcAyu1IdEcV6wgGfT7o1MCdyI72SHrE9OZfAQPyD
-         flrVHfqJ7r2hztLqPyLfEY2Uo8oGjUqgZMbVeY6I=
+        b=tg4KU2dc14ieopjzDppp1kzDJpb1qM7bfV2t8atpvTJRLxj+r4ducp3K4NJoOBB4y
+         4+5i6THsuPa6eMM00RmeyDwXv90ZzUveNjXRp5ymsWi+T5+DTHdYhteiGqyha2mzSX
+         zqbg1xJoHFWhQ4VO3A1+hJFVs/oDNjo4yI6SULF4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Breno Leitao <leitao@debian.org>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
+        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 119/239] cxl/acpi: Fix a use-after-free in cxl_parse_cfmws()
-Date:   Tue,  1 Aug 2023 11:19:43 +0200
-Message-ID: <20230801091930.013223090@linuxfoundation.org>
+Subject: [PATCH 6.1 126/228] ASoC: fsl_spdif: Silence output on stop
+Date:   Tue,  1 Aug 2023 11:19:44 +0200
+Message-ID: <20230801091927.294947161@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,49 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Breno Leitao <leitao@debian.org>
+From: Matus Gajdos <matuszpd@gmail.com>
 
-[ Upstream commit 4cf67d3cc9994a59cf77bb9c0ccf9007fe916afe ]
+[ Upstream commit 0e4c2b6b0c4a4b4014d9424c27e5e79d185229c5 ]
 
-KASAN and KFENCE detected an user-after-free in the CXL driver. This
-happens in the cxl_decoder_add() fail path. KASAN prints the following
-error:
+Clear TX registers on stop to prevent the SPDIF interface from sending
+last written word over and over again.
 
-   BUG: KASAN: slab-use-after-free in cxl_parse_cfmws (drivers/cxl/acpi.c:299)
-
-This happens in cxl_parse_cfmws(), where put_device() is called,
-releasing cxld, which is accessed later.
-
-Use the local variables in the dev_err() instead of pointing to the
-released memory. Since the dev_err() is printing a resource, change the open
-coded print format to use the %pr format specifier.
-
-Fixes: e50fe01e1f2a ("cxl/core: Drop ->platform_res attribute for root decoders")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20230714093146.2253438-1-leitao@debian.org
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+Fixes: a2388a498ad2 ("ASoC: fsl: Add S/PDIF CPU DAI driver")
+Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/r/20230719164729.19969-1-matuszpd@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/acpi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/fsl/fsl_spdif.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 7e1765b09e04a..973d6747078c9 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -296,8 +296,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 	else
- 		rc = cxl_decoder_autoremove(dev, cxld);
- 	if (rc) {
--		dev_err(dev, "Failed to add decode range [%#llx - %#llx]\n",
--			cxld->hpa_range.start, cxld->hpa_range.end);
-+		dev_err(dev, "Failed to add decode range: %pr", res);
- 		return 0;
- 	}
- 	dev_dbg(dev, "add: %s node: %d range [%#llx - %#llx]\n",
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index 275aba8e0c469..fb6806b2db859 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -751,6 +751,8 @@ static int fsl_spdif_trigger(struct snd_pcm_substream *substream,
+ 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+ 		regmap_update_bits(regmap, REG_SPDIF_SCR, dmaen, 0);
+ 		regmap_update_bits(regmap, REG_SPDIF_SIE, intr, 0);
++		regmap_write(regmap, REG_SPDIF_STL, 0x0);
++		regmap_write(regmap, REG_SPDIF_STR, 0x0);
+ 		break;
+ 	default:
+ 		return -EINVAL;
 -- 
 2.40.1
 
