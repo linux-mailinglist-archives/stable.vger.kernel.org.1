@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B3476AF78
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1088F76AE79
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233408AbjHAJro (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45226 "EHLO
+        id S233224AbjHAJjN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233482AbjHAJr3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA923A86
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:04 -0700 (PDT)
+        with ESMTP id S233218AbjHAJiw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF0935A8
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B30FD614BB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAD9C433C7;
-        Tue,  1 Aug 2023 09:46:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 109656150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A43DC433C8;
+        Tue,  1 Aug 2023 09:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883163;
-        bh=8/4yf623rSjI3i44RV1xF28lWzqnoeXZEdFcYBgm05I=;
+        s=korg; t=1690882594;
+        bh=NibyUMpGG+Nz4Atlqq0i416mRoYyP5CEACAwdDs5q4A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0724PI9zczypy8+Pgg+cORLurQB6m23QEvZBahUluE6pIAdR/Dqx9U8IbTg6rL5ax
-         Mg2CelXPutmPZZA644m0NtkXUTc5io4+qK+NU/s2R6FyQmCuNmKmdPqMfnWZk8ZdaM
-         z2dsmis+b5/42AglnpfCo3I8nR7wEVQXK2Ym2GhE=
+        b=081rdOzuUnA5zj79Q3FP8tH+2FfWuovnk8Njo+ltP3TtTvh0JQX0gBTFDw+7JXYPu
+         jLGi6gXRXGr6B0i1Duno5mx0IiEHCkKSugt02GO/Omh6WOk2LoW9K+IEYIQMirOvxC
+         g+cO0/AhXNkbsLkyKt5m920bmjueOPjkxO79Vutw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hugh Dickins <hughd@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, mhiramat@kernel.org,
+        vnagarnaik@google.com, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 138/239] tmpfs: fix Documentation of noswap and huge mount options
+Subject: [PATCH 6.1 144/228] ring-buffer: Fix wrong stat of cpu_buffer->read
 Date:   Tue,  1 Aug 2023 11:20:02 +0200
-Message-ID: <20230801091930.665877363@linuxfoundation.org>
+Message-ID: <20230801091928.091500749@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,106 +56,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hugh Dickins <hughd@google.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 253e5df8b8f0145adb090f57c6f4e6efa52d738e ]
+[ Upstream commit 2d093282b0d4357373497f65db6a05eb0c28b7c8 ]
 
-The noswap mount option is surely not one of the three options for sizing:
-move its description down.
+When pages are removed in rb_remove_pages(), 'cpu_buffer->read' is set
+to 0 in order to make sure any read iterators reset themselves. However,
+this will mess 'entries' stating, see following steps:
 
-The huge= mount option does not accept numeric values: those are just in
-an internal enum.  Delete those numbers, and follow the manpage text more
-closely (but there's not yet any fadvise() or fcntl() which applies here).
+  # cd /sys/kernel/tracing/
+  # 1. Enlarge ring buffer prepare for later reducing:
+  # echo 20 > per_cpu/cpu0/buffer_size_kb
+  # 2. Write a log into ring buffer of cpu0:
+  # taskset -c 0 echo "hello1" > trace_marker
+  # 3. Read the log:
+  # cat per_cpu/cpu0/trace_pipe
+       <...>-332     [000] .....    62.406844: tracing_mark_write: hello1
+  # 4. Stop reading and see the stats, now 0 entries, and 1 event readed:
+  # cat per_cpu/cpu0/stats
+   entries: 0
+   [...]
+   read events: 1
+  # 5. Reduce the ring buffer
+  # echo 7 > per_cpu/cpu0/buffer_size_kb
+  # 6. Now entries became unexpected 1 because actually no entries!!!
+  # cat per_cpu/cpu0/stats
+   entries: 1
+   [...]
+   read events: 0
 
-/sys/kernel/mm/transparent_hugepage/shmem_enabled is hard to describe, and
-barely relevant to mounting a tmpfs: just refer to transhuge.rst (while
-still using the words deny and force, to help as informal reminders).
+To fix it, introduce 'page_removed' field to count total removed pages
+since last reset, then use it to let read iterators reset themselves
+instead of changing the 'read' pointer.
 
-[rdunlap@infradead.org: fixup Docs table for huge mount options]
-  Link: https://lkml.kernel.org/r/20230725052333.26857-1-rdunlap@infradead.org
-Link: https://lkml.kernel.org/r/986cb0bf-9780-354-9bb-4bf57aadbab@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Fixes: d0f5a85442d1 ("shmem: update documentation")
-Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20230724054040.3489499-1-zhengyejian1@huawei.com
+
+Cc: <mhiramat@kernel.org>
+Cc: <vnagarnaik@google.com>
+Fixes: 83f40318dab0 ("ring-buffer: Make removal of ring buffer pages atomic")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/tmpfs.rst | 47 ++++++++++++-----------------
- 1 file changed, 20 insertions(+), 27 deletions(-)
+ kernel/trace/ring_buffer.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/filesystems/tmpfs.rst b/Documentation/filesystems/tmpfs.rst
-index f18f46be5c0c7..2cd8fa332feb7 100644
---- a/Documentation/filesystems/tmpfs.rst
-+++ b/Documentation/filesystems/tmpfs.rst
-@@ -84,8 +84,6 @@ nr_inodes  The maximum number of inodes for this instance. The default
-            is half of the number of your physical RAM pages, or (on a
-            machine with highmem) the number of lowmem RAM pages,
-            whichever is the lower.
--noswap     Disables swap. Remounts must respect the original settings.
--           By default swap is enabled.
- =========  ============================================================
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index c264421c4ecd8..c49ed619a64dd 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -529,6 +529,8 @@ struct ring_buffer_per_cpu {
+ 	rb_time_t			before_stamp;
+ 	u64				event_stamp[MAX_NEST];
+ 	u64				read_stamp;
++	/* pages removed since last reset */
++	unsigned long			pages_removed;
+ 	/* ring buffer pages to update, > 0 to add, < 0 to remove */
+ 	long				nr_pages_to_update;
+ 	struct list_head		new_pages; /* new pages to add */
+@@ -564,6 +566,7 @@ struct ring_buffer_iter {
+ 	struct buffer_page		*head_page;
+ 	struct buffer_page		*cache_reader_page;
+ 	unsigned long			cache_read;
++	unsigned long			cache_pages_removed;
+ 	u64				read_stamp;
+ 	u64				page_stamp;
+ 	struct ring_buffer_event	*event;
+@@ -1967,6 +1970,8 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
+ 		to_remove = rb_list_head(to_remove)->next;
+ 		head_bit |= (unsigned long)to_remove & RB_PAGE_HEAD;
+ 	}
++	/* Read iterators need to reset themselves when some pages removed */
++	cpu_buffer->pages_removed += nr_removed;
  
- These parameters accept a suffix k, m or g for kilo, mega and giga and
-@@ -99,36 +97,31 @@ mount with such options, since it allows any user with write access to
- use up all the memory on the machine; but enhances the scalability of
- that instance in a system with many CPUs making intensive use of it.
+ 	next_page = rb_list_head(to_remove)->next;
  
-+tmpfs blocks may be swapped out, when there is a shortage of memory.
-+tmpfs has a mount option to disable its use of swap:
-+
-+======  ===========================================================
-+noswap  Disables swap. Remounts must respect the original settings.
-+        By default swap is enabled.
-+======  ===========================================================
-+
- tmpfs also supports Transparent Huge Pages which requires a kernel
- configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge supported for
- your system (has_transparent_hugepage(), which is architecture specific).
- The mount options for this are:
+@@ -1988,12 +1993,6 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
+ 		cpu_buffer->head_page = list_entry(next_page,
+ 						struct buffer_page, list);
  
--======  ============================================================
--huge=0  never: disables huge pages for the mount
--huge=1  always: enables huge pages for the mount
--huge=2  within_size: only allocate huge pages if the page will be
--        fully within i_size, also respect fadvise()/madvise() hints.
--huge=3  advise: only allocate huge pages if requested with
--        fadvise()/madvise()
--======  ============================================================
+-	/*
+-	 * change read pointer to make sure any read iterators reset
+-	 * themselves
+-	 */
+-	cpu_buffer->read = 0;
 -
--There is a sysfs file which you can also use to control system wide THP
--configuration for all tmpfs mounts, the file is:
--
--/sys/kernel/mm/transparent_hugepage/shmem_enabled
--
--This sysfs file is placed on top of THP sysfs directory and so is registered
--by THP code. It is however only used to control all tmpfs mounts with one
--single knob. Since it controls all tmpfs mounts it should only be used either
--for emergency or testing purposes. The values you can set for shmem_enabled are:
--
--==  ============================================================
---1  deny: disables huge on shm_mnt and all mounts, for
--    emergency use
---2  force: enables huge on shm_mnt and all mounts, w/o needing
--    option, for testing
--==  ============================================================
-+================ ==============================================================
-+huge=never       Do not allocate huge pages.  This is the default.
-+huge=always      Attempt to allocate huge page every time a new page is needed.
-+huge=within_size Only allocate huge page if it will be fully within i_size.
-+                 Also respect madvise(2) hints.
-+huge=advise      Only allocate huge page if requested with madvise(2).
-+================ ==============================================================
-+
-+See also Documentation/admin-guide/mm/transhuge.rst, which describes the
-+sysfs file /sys/kernel/mm/transparent_hugepage/shmem_enabled: which can
-+be used to deny huge pages on all tmpfs mounts in an emergency, or to
-+force huge pages on all tmpfs mounts for testing.
+ 	/* pages are removed, resume tracing and then free the pages */
+ 	atomic_dec(&cpu_buffer->record_disabled);
+ 	raw_spin_unlock_irq(&cpu_buffer->reader_lock);
+@@ -4385,6 +4384,7 @@ static void rb_iter_reset(struct ring_buffer_iter *iter)
  
- tmpfs has a mount option to set the NUMA memory allocation policy for
- all files in that instance (if CONFIG_NUMA is enabled) - which can be
+ 	iter->cache_reader_page = iter->head_page;
+ 	iter->cache_read = cpu_buffer->read;
++	iter->cache_pages_removed = cpu_buffer->pages_removed;
+ 
+ 	if (iter->head) {
+ 		iter->read_stamp = cpu_buffer->read_stamp;
+@@ -4841,12 +4841,13 @@ rb_iter_peek(struct ring_buffer_iter *iter, u64 *ts)
+ 	buffer = cpu_buffer->buffer;
+ 
+ 	/*
+-	 * Check if someone performed a consuming read to
+-	 * the buffer. A consuming read invalidates the iterator
+-	 * and we need to reset the iterator in this case.
++	 * Check if someone performed a consuming read to the buffer
++	 * or removed some pages from the buffer. In these cases,
++	 * iterator was invalidated and we need to reset it.
+ 	 */
+ 	if (unlikely(iter->cache_read != cpu_buffer->read ||
+-		     iter->cache_reader_page != cpu_buffer->reader_page))
++		     iter->cache_reader_page != cpu_buffer->reader_page ||
++		     iter->cache_pages_removed != cpu_buffer->pages_removed))
+ 		rb_iter_reset(iter);
+ 
+  again:
+@@ -5291,6 +5292,7 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
+ 	cpu_buffer->last_overrun = 0;
+ 
+ 	rb_head_page_activate(cpu_buffer);
++	cpu_buffer->pages_removed = 0;
+ }
+ 
+ /* Must have disabled the cpu buffer then done a synchronize_rcu */
 -- 
 2.40.1
 
