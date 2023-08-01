@@ -2,50 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C8276ADF4
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9443376AF34
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230522AbjHAJey (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35222 "EHLO
+        id S233567AbjHAJpj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232373AbjHAJeY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:24 -0400
+        with ESMTP id S233572AbjHAJpW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F13B15264
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6202D44
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4B8A614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10E5C433C8;
-        Tue,  1 Aug 2023 09:32:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CFD056150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDFDC433C7;
+        Tue,  1 Aug 2023 09:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882341;
-        bh=6Z289H6OVEr8Ohb+NcUJgZPZJa3RADtYyZYv9vZxR4s=;
+        s=korg; t=1690883038;
+        bh=ayWGq/45E8IlQD7a+uCQlhVOhAK3GKm4ap5vuUBnl1s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qvoHTX6d2JRy3R2xZBqEQLqK8VWA8rCfAp+e8EKb07X7xgl0ZWmyohkxWfK+9ioBw
-         fSv/VSLUv1ZS1bKl3hxvd0fssyrKEHdIbUrWD56iSXtbEAmBaBSvIOgU2Z+Z3V8PTm
-         APqQKqfgPzDqMMxUl/7uG73z2ghSDSg0LndflVtc=
+        b=OoDq1VXwc09Sz/5cdLw1YM7BQy5RmLayYvdkV/rIGvhcGdu7dlzhmey3xhfK8+dnh
+         qxlyUYZTYsmBaqK0ht7VEDYvEKI0B1LYcJwpjEaB9oNtYGxJMRI0EqihZBM9E72+5+
+         Kk0Ls7EznjRNiPE7+yo+y3PNYYubgQUS0TvWBucc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Alan Liu <haoping.liu@amd.com>,
-        Daniel Miess <daniel.miess@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
+        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/228] drm/amd/display: Prevent vtotal from being set to 0
+Subject: [PATCH 6.4 064/239] iavf: fix potential deadlock on allocation failure
 Date:   Tue,  1 Aug 2023 11:18:48 +0200
-Message-ID: <20230801091925.353670788@linuxfoundation.org>
+Message-ID: <20230801091927.975379940@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,49 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Miess <daniel.miess@amd.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 2a9482e55968ed7368afaa9c2133404069117320 ]
+[ Upstream commit a2f054c10bef0b54600ec9cb776508443e941343 ]
 
-[Why]
-In dcn314 DML the destination pipe vtotal was being set
-to the crtc adjustment vtotal_min value even in cases
-where that value is 0.
+In iavf_adminq_task(), if kzalloc() fails to allocate the event.msg_buf,
+the function will exit without releasing the adapter->crit_lock.
 
-[How]
-Only set vtotal to the crtc adjustment vtotal_min value
-in cases where the value is non-zero.
+This is unlikely, but if it happens, the next access to that mutex will
+deadlock.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Alan Liu <haoping.liu@amd.com>
-Signed-off-by: Daniel Miess <daniel.miess@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by moving the unlock to the end of the function, and adding a new
+label to allow jumping to the unlock portion of the function exit flow.
+
+Fixes: fc2e6b3b132a ("iavf: Rework mutexes for better synchronisation")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index a2a32cb9d5710..8a88605827a84 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -302,7 +302,11 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
- 		pipe = &res_ctx->pipe_ctx[i];
- 		timing = &pipe->stream->timing;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index ba96312feb505..6c25d240e70bc 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -3300,7 +3300,7 @@ static void iavf_adminq_task(struct work_struct *work)
+ 	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
+ 	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
+ 	if (!event.msg_buf)
+-		goto out;
++		goto unlock;
  
--		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
-+		if (pipe->stream->adjust.v_total_min != 0)
-+			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
-+		else
-+			pipes[pipe_cnt].pipe.dest.vtotal = timing->v_total;
-+
- 		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
- 		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
- 		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
+ 	do {
+ 		ret = iavf_clean_arq_element(hw, &event, &pending);
+@@ -3315,7 +3315,6 @@ static void iavf_adminq_task(struct work_struct *work)
+ 		if (pending != 0)
+ 			memset(event.msg_buf, 0, IAVF_MAX_AQ_BUF_SIZE);
+ 	} while (pending);
+-	mutex_unlock(&adapter->crit_lock);
+ 
+ 	if (iavf_is_reset_in_progress(adapter))
+ 		goto freedom;
+@@ -3359,6 +3358,8 @@ static void iavf_adminq_task(struct work_struct *work)
+ 
+ freedom:
+ 	kfree(event.msg_buf);
++unlock:
++	mutex_unlock(&adapter->crit_lock);
+ out:
+ 	/* re-enable Admin queue interrupt cause */
+ 	iavf_misc_irq_enable(adapter);
 -- 
 2.39.2
 
