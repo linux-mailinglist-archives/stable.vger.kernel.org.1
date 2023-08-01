@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FEF076AF85
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0583876AE68
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233517AbjHAJsc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45494 "EHLO
+        id S233130AbjHAJiU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:38:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233814AbjHAJsQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:16 -0400
+        with ESMTP id S233294AbjHAJh5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E8C359D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E382711
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15806614BB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2820FC433C8;
-        Tue,  1 Aug 2023 09:46:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4DD8614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43E0C433C8;
+        Tue,  1 Aug 2023 09:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883193;
-        bh=CBkzK+AGk42vvbBcJm2WP4qsYkxRNoMWFgSBQicvAX8=;
+        s=korg; t=1690882572;
+        bh=l6Pcvzb0AvMm9DsHofV8Ursvkib+BQffG9sT3tfszYQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nwvCEjyBNXw5H9zU8xwp2nOsKU87zf13Kx1hdKhMyM8T6UwN6WEUWp4n2AO+mkWQd
-         uOEp0Pwdso+aYXBeE22FkC5oSklAHTVi2BxGXn/YvwY/o8sPfHsxY9ByTve5Yug3nR
-         /8GxB1Ixz85BKac33ZDs+9DWli0CI9tqAV2+VliE=
+        b=U4GAn7wdyvarJz7L251b9dHo+a/xZENPPQ01UjcfFdtRFZ6o0AKSUXZXAwVEL9+OK
+         nXeFKIk8G1RsbJOmJBdhZI73QLOyvUJBHPZiwHU/oOh29MVX3g/y5NSc/C9pSiCaza
+         QNCcYQuxNMe841gVhCSOezlT7NVm4GNVhAn2n+Og=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5feef0b9ee9c8e9e5689@syzkaller.appspotmail.com,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.4 148/239] KVM: x86: Disallow KVM_SET_SREGS{2} if incoming CR0 is invalid
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Ruihong Luo <colorsu1922@gmail.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.1 154/228] serial: 8250_dw: Preserve original value of DLF register
 Date:   Tue,  1 Aug 2023 11:20:12 +0200
-Message-ID: <20230801091931.004745887@linuxfoundation.org>
+Message-ID: <20230801091928.461368035@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,204 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ruihong Luo <colorsu1922@gmail.com>
 
-commit 26a0652cb453c72f6aab0974bc4939e9b14f886b upstream.
+commit 748c5ea8b8796ae8ee80b8d3a3d940570b588d59 upstream.
 
-Reject KVM_SET_SREGS{2} with -EINVAL if the incoming CR0 is invalid,
-e.g. due to setting bits 63:32, illegal combinations, or to a value that
-isn't allowed in VMX (non-)root mode.  The VMX checks in particular are
-"fun" as failure to disallow Real Mode for an L2 that is configured with
-unrestricted guest disabled, when KVM itself has unrestricted guest
-enabled, will result in KVM forcing VM86 mode to virtual Real Mode for
-L2, but then fail to unwind the related metadata when synthesizing a
-nested VM-Exit back to L1 (which has unrestricted guest enabled).
+Preserve the original value of the Divisor Latch Fraction (DLF) register.
+When the DLF register is modified without preservation, it can disrupt
+the baudrate settings established by firmware or bootloader, leading to
+data corruption and the generation of unreadable or distorted characters.
 
-Opportunistically fix a benign typo in the prototype for is_valid_cr4().
-
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+5feef0b9ee9c8e9e5689@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000f316b705fdf6e2b4@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230613203037.1968489-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ruihong Luo <colorsu1922@gmail.com>
+Link: https://lore.kernel.org/stable/20230713004235.35904-1-colorsu1922%40gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230713004235.35904-1-colorsu1922@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |    1 +
- arch/x86/include/asm/kvm_host.h    |    3 ++-
- arch/x86/kvm/svm/svm.c             |    6 ++++++
- arch/x86/kvm/vmx/vmx.c             |   28 +++++++++++++++++++++-------
- arch/x86/kvm/x86.c                 |   34 ++++++++++++++++++++++------------
- 5 files changed, 52 insertions(+), 20 deletions(-)
+ drivers/tty/serial/8250/8250_dwlib.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -37,6 +37,7 @@ KVM_X86_OP(get_segment)
- KVM_X86_OP(get_cpl)
- KVM_X86_OP(set_segment)
- KVM_X86_OP(get_cs_db_l_bits)
-+KVM_X86_OP(is_valid_cr0)
- KVM_X86_OP(set_cr0)
- KVM_X86_OP_OPTIONAL(post_set_cr3)
- KVM_X86_OP(is_valid_cr4)
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1566,9 +1566,10 @@ struct kvm_x86_ops {
- 	void (*set_segment)(struct kvm_vcpu *vcpu,
- 			    struct kvm_segment *var, int seg);
- 	void (*get_cs_db_l_bits)(struct kvm_vcpu *vcpu, int *db, int *l);
-+	bool (*is_valid_cr0)(struct kvm_vcpu *vcpu, unsigned long cr0);
- 	void (*set_cr0)(struct kvm_vcpu *vcpu, unsigned long cr0);
- 	void (*post_set_cr3)(struct kvm_vcpu *vcpu, unsigned long cr3);
--	bool (*is_valid_cr4)(struct kvm_vcpu *vcpu, unsigned long cr0);
-+	bool (*is_valid_cr4)(struct kvm_vcpu *vcpu, unsigned long cr4);
- 	void (*set_cr4)(struct kvm_vcpu *vcpu, unsigned long cr4);
- 	int (*set_efer)(struct kvm_vcpu *vcpu, u64 efer);
- 	void (*get_idt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1799,6 +1799,11 @@ static void sev_post_set_cr3(struct kvm_
- 	}
- }
+--- a/drivers/tty/serial/8250/8250_dwlib.c
++++ b/drivers/tty/serial/8250/8250_dwlib.c
+@@ -244,7 +244,7 @@ void dw8250_setup_port(struct uart_port
+ 	struct dw8250_port_data *pd = p->private_data;
+ 	struct dw8250_data *data = to_dw8250_data(pd);
+ 	struct uart_8250_port *up = up_to_u8250p(p);
+-	u32 reg;
++	u32 reg, old_dlf;
  
-+static bool svm_is_valid_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
-+{
-+	return true;
-+}
-+
- void svm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
-@@ -4838,6 +4843,7 @@ static struct kvm_x86_ops svm_x86_ops __
- 	.set_segment = svm_set_segment,
- 	.get_cpl = svm_get_cpl,
- 	.get_cs_db_l_bits = svm_get_cs_db_l_bits,
-+	.is_valid_cr0 = svm_is_valid_cr0,
- 	.set_cr0 = svm_set_cr0,
- 	.post_set_cr3 = sev_post_set_cr3,
- 	.is_valid_cr4 = svm_is_valid_cr4,
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -3045,6 +3045,15 @@ static void enter_rmode(struct kvm_vcpu
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	struct kvm_vmx *kvm_vmx = to_kvm_vmx(vcpu->kvm);
+ 	pd->hw_rs485_support = dw8250_detect_rs485_hw(p);
+ 	if (pd->hw_rs485_support) {
+@@ -270,9 +270,11 @@ void dw8250_setup_port(struct uart_port
+ 	dev_dbg(p->dev, "Designware UART version %c.%c%c\n",
+ 		(reg >> 24) & 0xff, (reg >> 16) & 0xff, (reg >> 8) & 0xff);
  
-+	/*
-+	 * KVM should never use VM86 to virtualize Real Mode when L2 is active,
-+	 * as using VM86 is unnecessary if unrestricted guest is enabled, and
-+	 * if unrestricted guest is disabled, VM-Enter (from L1) with CR0.PG=0
-+	 * should VM-Fail and KVM should reject userspace attempts to stuff
-+	 * CR0.PG=0 when L2 is active.
-+	 */
-+	WARN_ON_ONCE(is_guest_mode(vcpu));
-+
- 	vmx_get_segment(vcpu, &vmx->rmode.segs[VCPU_SREG_TR], VCPU_SREG_TR);
- 	vmx_get_segment(vcpu, &vmx->rmode.segs[VCPU_SREG_ES], VCPU_SREG_ES);
- 	vmx_get_segment(vcpu, &vmx->rmode.segs[VCPU_SREG_DS], VCPU_SREG_DS);
-@@ -3234,6 +3243,17 @@ void ept_save_pdptrs(struct kvm_vcpu *vc
- #define CR3_EXITING_BITS (CPU_BASED_CR3_LOAD_EXITING | \
- 			  CPU_BASED_CR3_STORE_EXITING)
++	/* Preserve value written by firmware or bootloader  */
++	old_dlf = dw8250_readl_ext(p, DW_UART_DLF);
+ 	dw8250_writel_ext(p, DW_UART_DLF, ~0U);
+ 	reg = dw8250_readl_ext(p, DW_UART_DLF);
+-	dw8250_writel_ext(p, DW_UART_DLF, 0);
++	dw8250_writel_ext(p, DW_UART_DLF, old_dlf);
  
-+static bool vmx_is_valid_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
-+{
-+	if (is_guest_mode(vcpu))
-+		return nested_guest_cr0_valid(vcpu, cr0);
-+
-+	if (to_vmx(vcpu)->nested.vmxon)
-+		return nested_host_cr0_valid(vcpu, cr0);
-+
-+	return true;
-+}
-+
- void vmx_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -5372,18 +5392,11 @@ static int handle_set_cr0(struct kvm_vcp
- 		val = (val & ~vmcs12->cr0_guest_host_mask) |
- 			(vmcs12->guest_cr0 & vmcs12->cr0_guest_host_mask);
- 
--		if (!nested_guest_cr0_valid(vcpu, val))
--			return 1;
--
- 		if (kvm_set_cr0(vcpu, val))
- 			return 1;
- 		vmcs_writel(CR0_READ_SHADOW, orig_val);
- 		return 0;
- 	} else {
--		if (to_vmx(vcpu)->nested.vmxon &&
--		    !nested_host_cr0_valid(vcpu, val))
--			return 1;
--
- 		return kvm_set_cr0(vcpu, val);
- 	}
- }
-@@ -8165,6 +8178,7 @@ static struct kvm_x86_ops vmx_x86_ops __
- 	.set_segment = vmx_set_segment,
- 	.get_cpl = vmx_get_cpl,
- 	.get_cs_db_l_bits = vmx_get_cs_db_l_bits,
-+	.is_valid_cr0 = vmx_is_valid_cr0,
- 	.set_cr0 = vmx_set_cr0,
- 	.is_valid_cr4 = vmx_is_valid_cr4,
- 	.set_cr4 = vmx_set_cr4,
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -906,6 +906,22 @@ int load_pdptrs(struct kvm_vcpu *vcpu, u
- }
- EXPORT_SYMBOL_GPL(load_pdptrs);
- 
-+static bool kvm_is_valid_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
-+{
-+#ifdef CONFIG_X86_64
-+	if (cr0 & 0xffffffff00000000UL)
-+		return false;
-+#endif
-+
-+	if ((cr0 & X86_CR0_NW) && !(cr0 & X86_CR0_CD))
-+		return false;
-+
-+	if ((cr0 & X86_CR0_PG) && !(cr0 & X86_CR0_PE))
-+		return false;
-+
-+	return static_call(kvm_x86_is_valid_cr0)(vcpu, cr0);
-+}
-+
- void kvm_post_set_cr0(struct kvm_vcpu *vcpu, unsigned long old_cr0, unsigned long cr0)
- {
- 	/*
-@@ -952,20 +968,13 @@ int kvm_set_cr0(struct kvm_vcpu *vcpu, u
- {
- 	unsigned long old_cr0 = kvm_read_cr0(vcpu);
- 
--	cr0 |= X86_CR0_ET;
--
--#ifdef CONFIG_X86_64
--	if (cr0 & 0xffffffff00000000UL)
-+	if (!kvm_is_valid_cr0(vcpu, cr0))
- 		return 1;
--#endif
--
--	cr0 &= ~CR0_RESERVED_BITS;
- 
--	if ((cr0 & X86_CR0_NW) && !(cr0 & X86_CR0_CD))
--		return 1;
-+	cr0 |= X86_CR0_ET;
- 
--	if ((cr0 & X86_CR0_PG) && !(cr0 & X86_CR0_PE))
--		return 1;
-+	/* Write to CR0 reserved bits are ignored, even on Intel. */
-+	cr0 &= ~CR0_RESERVED_BITS;
- 
- #ifdef CONFIG_X86_64
- 	if ((vcpu->arch.efer & EFER_LME) && !is_paging(vcpu) &&
-@@ -11461,7 +11470,8 @@ static bool kvm_is_valid_sregs(struct kv
- 			return false;
- 	}
- 
--	return kvm_is_valid_cr4(vcpu, sregs->cr4);
-+	return kvm_is_valid_cr4(vcpu, sregs->cr4) &&
-+	       kvm_is_valid_cr0(vcpu, sregs->cr0);
- }
- 
- static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	if (reg) {
+ 		pd->dlf_size = fls(reg);
 
 
