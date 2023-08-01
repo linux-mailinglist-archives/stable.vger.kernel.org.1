@@ -2,217 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F287676B947
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57B5076B96A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232656AbjHAQC1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 12:02:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41696 "EHLO
+        id S233724AbjHAQIG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 12:08:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232435AbjHAQCX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:02:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D478123
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:01:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690905695;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=2XkdV+BwvY5fppShBDqBRTS7/vq3kiC6iaJMHPy1Nf4=;
-        b=U0UqBsIgydzQtDQ8JqO6EmhdlRnNbOkfeR/QXTt5magAvfFV1tK2eVZE/He/ssZBAE0npD
-        y1CWKDVsbedF9LBaQg+QK9B2JOSDjh3f/bTDFCsLDE/DbU6EHrFIQBWbQXvh8ml8mF9J8b
-        xA1la8+XCaATAZIIw4U48UplAu+LXwE=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-670-zOa1_9nCO-uE6Aw5tIi0OQ-1; Tue, 01 Aug 2023 12:01:24 -0400
-X-MC-Unique: zOa1_9nCO-uE6Aw5tIi0OQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47C431C05AEC;
-        Tue,  1 Aug 2023 16:01:20 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.107])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 5769E40C2063;
-        Tue,  1 Aug 2023 16:01:19 +0000 (UTC)
-Date:   Wed, 2 Aug 2023 00:01:16 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Lorenzo Stoakes <lstoakes@gmail.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        linux-fsdevel@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
-        Will Deacon <will@kernel.org>, Mike Galbraith <efault@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        wangkefeng.wang@huawei.com, catalin.marinas@arm.com,
-        ardb@kernel.org, David Hildenbrand <david@redhat.com>,
-        Linux regression tracking <regressions@leemhuis.info>,
-        regressions@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT
- regions
-Message-ID: <ZMksTC6pewXDgkFe@MiWiFi-R3L-srv>
-References: <20230731215021.70911-1-lstoakes@gmail.com>
- <ZMkrfBDARIAYFYwz@MiWiFi-R3L-srv>
+        with ESMTP id S234243AbjHAQH6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:07:58 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0086AA
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:07:56 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-63cf69f3c22so39959326d6.3
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 09:07:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690906076; x=1691510876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/k92ZHvqcMDEEn2PMICpqw+YFYats7fBIresqkxLI9s=;
+        b=sS66kgoJddsynyo1UV0ieyYMcA9voQhStth5bDRPXBk1MVejV3/iWWy1kxQL4qY3Y0
+         Az2pHu5ZUsfqKYrZeia5MvMsEuQ9WhHRyqHg216RJG/m+4OTPZs9v6vrj9RQcw8tI7V3
+         FJQMp97WGOpc46OvCU+2JLcfbBcEkRO7KA3VKNdLvWeD7jSfWcD+NHkCq+kQ6GCRsq48
+         /hIDK4hr9MAxULLomYvIdTGsbRCtaIBo5Ycm7SNRR+s8WdKVrKD4nqJxpRxeXSNnOv6P
+         35zJ4H4mJd+HUTBdmKNqSoQi1KBUEwYp69UZoCuCJSHWjHRBKok4L+lCxXfTWkQxlSRQ
+         V4tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690906076; x=1691510876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/k92ZHvqcMDEEn2PMICpqw+YFYats7fBIresqkxLI9s=;
+        b=lkV+xwC8wFLaowmmFzaKtytDXlYos1uaqFtwKLjItAdRHnPwWbOu36RUGeXwqmOHEv
+         NtBMqIsCf7oA5LFTP90saDcpHqm0DfmWP26Fj4oWmihRkqlhnjR4UbLVQPPelIw6MGzU
+         Hwtz3sQ8OKH9z0w4r/A2g0xkkItObdoTB2uuv8NColewxo6BlbnwLC1oFTq+5mlGWZc9
+         Ch96jFTjyj7OODgPJfl/PtsnGHQFvP0M0ZPzMGUsMPB5hJoQH/Nr6ELnT+HstNeLGfda
+         IE54J97Gp4pLUF77z6LbhBsITABEVuaAJUWqyqiuo/lhs7PGC6zNV17GVFd6Wl03rGIT
+         DySA==
+X-Gm-Message-State: ABy/qLbKg9HtKhu2EecsGjlvdpQAQUNk9SR0kKkPaRYbCehNJPUfDUlc
+        LVkEiX2CQTb5gqypTxu2JMlngCwi1em3/FzL9z3uiQ==
+X-Google-Smtp-Source: APBJJlFCv8rnnQQkeN4DoY3CihEHr2mytwUwbh3PC3qFHxKRFc2KTxnhyrho6l5eJYWtCxApzjcmyUd/sNqmjVPj354=
+X-Received: by 2002:a05:6214:311:b0:63c:f979:b810 with SMTP id
+ i17-20020a056214031100b0063cf979b810mr14002062qvu.46.1690906075647; Tue, 01
+ Aug 2023 09:07:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZMkrfBDARIAYFYwz@MiWiFi-R3L-srv>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230801050714.28974-1-ebiggers@kernel.org>
+In-Reply-To: <20230801050714.28974-1-ebiggers@kernel.org>
+From:   Victor Hsieh <victorhsieh@google.com>
+Date:   Tue, 1 Aug 2023 09:07:44 -0700
+Message-ID: <CAFCauYMrQf4TJJ+8atPrsihDa9+nKb5zn-rCKqB3081d8ZvZoA@mail.gmail.com>
+Subject: Re: [PATCH] fsverity: skip PKCS#7 parser when keyring is empty
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     fsverity@lists.linux.dev, keyrings@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 08/01/23 at 11:57pm, Baoquan He wrote:
-> On 07/31/23 at 10:50pm, Lorenzo Stoakes wrote:
-> > Some architectures do not populate the entire range categorised by
-> > KCORE_TEXT, so we must ensure that the kernel address we read from is
-> > valid.
-> > 
-> > Unfortunately there is no solution currently available to do so with a
-> > purely iterator solution so reinstate the bounce buffer in this instance so
-> > we can use copy_from_kernel_nofault() in order to avoid page faults when
-> > regions are unmapped.
-> > 
-> > This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
-> > bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
-> > the code to continue to use an iterator.
-> > 
-> > Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
-> > Reported-by: Jiri Olsa <olsajiri@gmail.com>
-> > Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-> > ---
-> >  fs/proc/kcore.c | 26 +++++++++++++++++++++++++-
-> >  1 file changed, 25 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-> > index 9cb32e1a78a0..3bc689038232 100644
-> > --- a/fs/proc/kcore.c
-> > +++ b/fs/proc/kcore.c
-> > @@ -309,6 +309,8 @@ static void append_kcore_note(char *notes, size_t *i, const char *name,
-> >  
-> >  static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
-> >  {
-> > +	struct file *file = iocb->ki_filp;
-> > +	char *buf = file->private_data;
-> >  	loff_t *fpos = &iocb->ki_pos;
-> >  	size_t phdrs_offset, notes_offset, data_offset;
-> >  	size_t page_offline_frozen = 1;
-> > @@ -554,11 +556,22 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
-> >  			fallthrough;
-> >  		case KCORE_VMEMMAP:
-> >  		case KCORE_TEXT:
-> > +			/*
-> > +			 * Sadly we must use a bounce buffer here to be able to
-> > +			 * make use of copy_from_kernel_nofault(), as these
-> > +			 * memory regions might not always be mapped on all
-> > +			 * architectures.
-> > +			 */
-> > +			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
-> > +				if (iov_iter_zero(tsz, iter) != tsz) {
-> > +					ret = -EFAULT;
-> > +					goto out;
-> > +				}
-> >  			/*
-> >  			 * We use _copy_to_iter() to bypass usermode hardening
-> >  			 * which would otherwise prevent this operation.
-> >  			 */
-> > -			if (_copy_to_iter((char *)start, tsz, iter) != tsz) {
-> > +			} else if (_copy_to_iter(buf, tsz, iter) != tsz) {
-> >  				ret = -EFAULT;
-> >  				goto out;
-> >  			}
-> > @@ -595,6 +608,10 @@ static int open_kcore(struct inode *inode, struct file *filp)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > +	filp->private_data = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> > +	if (!filp->private_data)
-> > +		return -ENOMEM;
-> > +
-> >  	if (kcore_need_update)
-> >  		kcore_update_ram();
-> >  	if (i_size_read(inode) != proc_root_kcore->size) {
-> > @@ -605,9 +622,16 @@ static int open_kcore(struct inode *inode, struct file *filp)
-> >  	return 0;
-> >  }
-> >  
-> > +static int release_kcore(struct inode *inode, struct file *file)
-> > +{
-> > +	kfree(file->private_data);
-> > +	return 0;
-> > +}
-> > +
-> >  static const struct proc_ops kcore_proc_ops = {
-> >  	.proc_read_iter	= read_kcore_iter,
-> >  	.proc_open	= open_kcore,
-> > +	.proc_release	= release_kcore,
-> >  	.proc_lseek	= default_llseek,
-> >  };
-> 
-> On 6.5-rc4, the failures can be reproduced stably on a arm64 machine.
-> With patch applied, both makedumpfile and objdump test cases passed.
-> 
-> And the code change looks good to me, thanks.
-> 
-> Tested-by: Baoquan He <bhe@redhat.com>
-> Reviewed-by: Baoquan He <bhe@redhat.com>
-> 
-> 
-> ===============================================
-> [root@ ~]# makedumpfile --mem-usage /proc/kcore 
-> The kernel version is not supported.
-> The makedumpfile operation may be incomplete.
-> 
-> TYPE		PAGES			EXCLUDABLE	DESCRIPTION
-> ----------------------------------------------------------------------
-> ZERO		76234           	yes		Pages filled with zero
-> NON_PRI_CACHE	147613          	yes		Cache pages without private flag
-> PRI_CACHE	3847            	yes		Cache pages with private flag
-> USER		15276           	yes		User process pages
-> FREE		15809884        	yes		Free pages
-> KERN_DATA	459950          	no		Dumpable kernel data 
-> 
-> page size:		4096            
-> Total pages on system:	16512804        
-> Total size on system:	67636445184      Byte
-> 
-> [root@ ~]# objdump -d  --start-address=0x^C
-> [root@ ~]# cat /proc/kallsyms | grep ksys_read
-> ffffab3be77229d8 T ksys_readahead
-> ffffab3be782a700 T ksys_read
-> [root@ ~]# objdump -d  --start-address=0xffffab3be782a700 --stop-address=0xffffab3be782a710 /proc/kcore 
-> 
-> /proc/kcore:     file format elf64-littleaarch64
-> 
-> 
-> Disassembly of section load1:
-> 
-> ffffab3be782a700 <load1+0x41a700>:
-> ffffab3be782a700:	aa1e03e9 	mov	x9, x30
-> ffffab3be782a704:	d503201f 	nop
-> ffffab3be782a708:	d503233f 	paciasp
-> ffffab3be782a70c:	a9bc7bfd 	stp	x29, x30, [sp, #-64]!
-> objdump: error: /proc/kcore(load2) is too large (0x7bff70000000 bytes)
-> objdump: Reading section load2 failed because: memory exhausted
+Should the whole use of "d" be moved into the else block?
 
-By the way, I can still see the objdump error saying kcore is too large
-as above, at the same time there's console printing as below. Haven't
-checked it's objdump's issue or kernel's.
 
-[ 6631.575800] __vm_enough_memory: pid: 5321, comm: objdump, not enough memory for the allocation
-[ 6631.584469] __vm_enough_memory: pid: 5321, comm: objdump, not enough memory for the allocation
-
+On Mon, Jul 31, 2023 at 10:09=E2=80=AFPM Eric Biggers <ebiggers@kernel.org>=
+ wrote:
+>
+> From: Eric Biggers <ebiggers@google.com>
+>
+> If an fsverity builtin signature is given for a file but the
+> ".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+> parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+> signature support is configured into the kernel but is not being used.
+>
+> This is a hardening improvement, not a fix per se, but I've added
+> Fixes and Cc stable to get it out to more users.
+>
+> Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+>  fs/verity/signature.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/verity/signature.c b/fs/verity/signature.c
+> index b95acae64eac6..f6668d92d8151 100644
+> --- a/fs/verity/signature.c
+> +++ b/fs/verity/signature.c
+> @@ -70,10 +70,26 @@ int fsverity_verify_signature(const struct fsverity_i=
+nfo *vi,
+>         d->digest_size =3D cpu_to_le16(hash_alg->digest_size);
+>         memcpy(d->digest, vi->file_digest, hash_alg->digest_size);
+>
+> -       err =3D verify_pkcs7_signature(d, sizeof(*d) + hash_alg->digest_s=
+ize,
+> -                                    signature, sig_size, fsverity_keyrin=
+g,
+> -                                    VERIFYING_UNSPECIFIED_SIGNATURE,
+> -                                    NULL, NULL);
+> +       if (fsverity_keyring->keys.nr_leaves_on_tree =3D=3D 0) {
+> +               /*
+> +                * The ".fs-verity" keyring is empty, due to builtin sign=
+atures
+> +                * being supported by the kernel but not actually being u=
+sed.
+> +                * In this case, verify_pkcs7_signature() would always re=
+turn an
+> +                * error, usually ENOKEY.  It could also be EBADMSG if th=
+e
+> +                * PKCS#7 is malformed, but that isn't very important to
+> +                * distinguish.  So, just skip to ENOKEY to avoid the att=
+ack
+> +                * surface of the PKCS#7 parser, which would otherwise be
+> +                * reachable by any task able to execute FS_IOC_ENABLE_VE=
+RITY.
+> +                */
+> +               err =3D -ENOKEY;
+> +       } else {
+> +               err =3D verify_pkcs7_signature(d,
+> +                                            sizeof(*d) + hash_alg->diges=
+t_size,
+> +                                            signature, sig_size,
+> +                                            fsverity_keyring,
+> +                                            VERIFYING_UNSPECIFIED_SIGNAT=
+URE,
+> +                                            NULL, NULL);
+> +       }
+>         kfree(d);
+>
+>         if (err) {
+>
+> base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
+> --
+> 2.41.0
+>
