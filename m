@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6B976AE09
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A24B76ACF9
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233032AbjHAJft (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
+        id S231529AbjHAJYn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231429AbjHAJf0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECE3D139
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:14 -0700 (PDT)
+        with ESMTP id S232866AbjHAJYT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:24:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7348A10FD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:23:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77BAB614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D34C433C7;
-        Tue,  1 Aug 2023 09:33:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EDC75614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098A3C433C8;
+        Tue,  1 Aug 2023 09:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882393;
-        bh=75BZq0c91+Yt3neqveQ/7DYVu5WES6CMi2WU0hq0NGQ=;
+        s=korg; t=1690881807;
+        bh=2SJQnLtg9IBgEELKFZxGGLYlZ4XuM5VNPa1/SkNC2ug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pcRTOvbSjwpE1WpKVZG5P+ZyPHEj3UtAET+WuIVedUJ6rcaNp+ESOqjDTK46fqn8n
-         OL51U9AYz/Gc2OvF75bn5j0gNY3Zfg+yRSA/9vFYkvFPtrgr4SXjTzXln4GOTPCj+E
-         G5dvFwGcZi0ezlBPUsYiin5YJxsirrQuTDC3cB40=
+        b=N2Q/IbTY1KguMYusxMrqB76vIs1SlTZ4mjWD/IUvVe+a7XhkgDy93DaRqYA+6HuLq
+         UIQhTrHvbEj/HyPKzoldd8BgKnVRIi1AjuNucr+ML7UQApGzp6QgoVp417hxs+DToe
+         qmr1IFo24oH3Lyyc4PyEUIiUx54s8TaJfgG+U6KM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Jiri Benc <jbenc@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+        Tom Zanussi <zanussi@kernel.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/228] vxlan: fix GRO with VXLAN-GPE
+Subject: [PATCH 5.15 036/155] Revert "tracing: Add "(fault)" name injection to kernel probes"
 Date:   Tue,  1 Aug 2023 11:19:08 +0200
-Message-ID: <20230801091926.096897319@linuxfoundation.org>
+Message-ID: <20230801091911.469165142@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,171 +57,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Benc <jbenc@redhat.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit b0b672c4d0957e5897685667fc848132b8bd2d71 ]
+[ Upstream commit 4ed8f337dee32df71435689c19d22e4ee846e15a ]
 
-In VXLAN-GPE, there may not be an Ethernet header following the VXLAN
-header. But in GRO, the vxlan driver calls eth_gro_receive
-unconditionally, which means the following header is incorrectly parsed
-as Ethernet.
+This reverts commit 2e9906f84fc7c99388bb7123ade167250d50f1c0.
 
-Introduce GPE specific GRO handling.
+It was turned out that commit 2e9906f84fc7 ("tracing: Add "(fault)"
+name injection to kernel probes") did not work correctly and probe
+events still show just '(fault)' (instead of '"(fault)"'). Also,
+current '(fault)' is more explicit that it faulted.
 
-For better performance, do not check for GPE during GRO but rather
-install a different set of functions at setup time.
+This also moves FAULT_STRING macro to trace.h so that synthetic
+event can keep using it, and uses it in trace_probe.c too.
 
-Fixes: e1e5314de08ba ("vxlan: implement GPE")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Jiri Benc <jbenc@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/all/168908495772.123124.1250788051922100079.stgit@devnote2/
+Link: https://lore.kernel.org/all/20230706230642.3793a593@rorschach.local.home/
+
+Cc: stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 797311bce5c2 ("tracing/probes: Fix to record 0-length data_loc in fetch_store_string*() if fails")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 84 ++++++++++++++++++++++++++++------
- 1 file changed, 69 insertions(+), 15 deletions(-)
+ kernel/trace/trace.h              |  2 ++
+ kernel/trace/trace_probe.c        |  2 +-
+ kernel/trace/trace_probe_kernel.h | 31 ++++++-------------------------
+ 3 files changed, 9 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 0dc7326fd6ed4..0c3eb850fcb79 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -722,26 +722,24 @@ static struct vxlanhdr *vxlan_gro_remcsum(struct sk_buff *skb,
- 	return vh;
- }
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 33c55c8826a7e..43058077a4def 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -113,6 +113,8 @@ enum trace_type {
+ #define MEM_FAIL(condition, fmt, ...)					\
+ 	DO_ONCE_LITE_IF(condition, pr_err, "ERROR: " fmt, ##__VA_ARGS__)
  
--static struct sk_buff *vxlan_gro_receive(struct sock *sk,
--					 struct list_head *head,
--					 struct sk_buff *skb)
-+static struct vxlanhdr *vxlan_gro_prepare_receive(struct sock *sk,
-+						  struct list_head *head,
-+						  struct sk_buff *skb,
-+						  struct gro_remcsum *grc)
++#define FAULT_STRING "(fault)"
++
+ #define HIST_STACKTRACE_DEPTH	16
+ #define HIST_STACKTRACE_SIZE	(HIST_STACKTRACE_DEPTH * sizeof(unsigned long))
+ #define HIST_STACKTRACE_SKIP	5
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 90bae188d0928..0888f0644d257 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -64,7 +64,7 @@ int PRINT_TYPE_FUNC_NAME(string)(struct trace_seq *s, void *data, void *ent)
+ 	int len = *(u32 *)data >> 16;
+ 
+ 	if (!len)
+-		trace_seq_puts(s, "(fault)");
++		trace_seq_puts(s, FAULT_STRING);
+ 	else
+ 		trace_seq_printf(s, "\"%s\"",
+ 				 (const char *)get_loc_data(data, ent));
+diff --git a/kernel/trace/trace_probe_kernel.h b/kernel/trace/trace_probe_kernel.h
+index 77dbd9ff97826..1d43df29a1f8e 100644
+--- a/kernel/trace/trace_probe_kernel.h
++++ b/kernel/trace/trace_probe_kernel.h
+@@ -2,8 +2,6 @@
+ #ifndef __TRACE_PROBE_KERNEL_H_
+ #define __TRACE_PROBE_KERNEL_H_
+ 
+-#define FAULT_STRING "(fault)"
+-
+ /*
+  * This depends on trace_probe.h, but can not include it due to
+  * the way trace_probe_tmpl.h is used by trace_kprobe.c and trace_eprobe.c.
+@@ -15,16 +13,8 @@ static nokprobe_inline int
+ kern_fetch_store_strlen_user(unsigned long addr)
  {
--	struct sk_buff *pp = NULL;
- 	struct sk_buff *p;
- 	struct vxlanhdr *vh, *vh2;
- 	unsigned int hlen, off_vx;
--	int flush = 1;
- 	struct vxlan_sock *vs = rcu_dereference_sk_user_data(sk);
- 	__be32 flags;
--	struct gro_remcsum grc;
+ 	const void __user *uaddr =  (__force const void __user *)addr;
+-	int ret;
  
--	skb_gro_remcsum_init(&grc);
-+	skb_gro_remcsum_init(grc);
- 
- 	off_vx = skb_gro_offset(skb);
- 	hlen = off_vx + sizeof(*vh);
- 	vh = skb_gro_header(skb, hlen, off_vx);
- 	if (unlikely(!vh))
--		goto out;
-+		return NULL;
- 
- 	skb_gro_postpull_rcsum(skb, vh, sizeof(struct vxlanhdr));
- 
-@@ -749,12 +747,12 @@ static struct sk_buff *vxlan_gro_receive(struct sock *sk,
- 
- 	if ((flags & VXLAN_HF_RCO) && (vs->flags & VXLAN_F_REMCSUM_RX)) {
- 		vh = vxlan_gro_remcsum(skb, off_vx, vh, sizeof(struct vxlanhdr),
--				       vh->vx_vni, &grc,
-+				       vh->vx_vni, grc,
- 				       !!(vs->flags &
- 					  VXLAN_F_REMCSUM_NOPARTIAL));
- 
- 		if (!vh)
--			goto out;
-+			return NULL;
- 	}
- 
- 	skb_gro_pull(skb, sizeof(struct vxlanhdr)); /* pull vxlan header */
-@@ -771,12 +769,48 @@ static struct sk_buff *vxlan_gro_receive(struct sock *sk,
- 		}
- 	}
- 
--	pp = call_gro_receive(eth_gro_receive, head, skb);
--	flush = 0;
-+	return vh;
-+}
-+
-+static struct sk_buff *vxlan_gro_receive(struct sock *sk,
-+					 struct list_head *head,
-+					 struct sk_buff *skb)
-+{
-+	struct sk_buff *pp = NULL;
-+	struct gro_remcsum grc;
-+	int flush = 1;
- 
--out:
-+	if (vxlan_gro_prepare_receive(sk, head, skb, &grc)) {
-+		pp = call_gro_receive(eth_gro_receive, head, skb);
-+		flush = 0;
-+	}
- 	skb_gro_flush_final_remcsum(skb, pp, flush, &grc);
-+	return pp;
-+}
- 
-+static struct sk_buff *vxlan_gpe_gro_receive(struct sock *sk,
-+					     struct list_head *head,
-+					     struct sk_buff *skb)
-+{
-+	const struct packet_offload *ptype;
-+	struct sk_buff *pp = NULL;
-+	struct gro_remcsum grc;
-+	struct vxlanhdr *vh;
-+	__be16 protocol;
-+	int flush = 1;
-+
-+	vh = vxlan_gro_prepare_receive(sk, head, skb, &grc);
-+	if (vh) {
-+		if (!vxlan_parse_gpe_proto(vh, &protocol))
-+			goto out;
-+		ptype = gro_find_receive_by_type(protocol);
-+		if (!ptype)
-+			goto out;
-+		pp = call_gro_receive(ptype->callbacks.gro_receive, head, skb);
-+		flush = 0;
-+	}
-+out:
-+	skb_gro_flush_final_remcsum(skb, pp, flush, &grc);
- 	return pp;
+-	ret = strnlen_user_nofault(uaddr, MAX_STRING_SIZE);
+-	/*
+-	 * strnlen_user_nofault returns zero on fault, insert the
+-	 * FAULT_STRING when that occurs.
+-	 */
+-	if (ret <= 0)
+-		return strlen(FAULT_STRING) + 1;
+-	return ret;
++	return strnlen_user_nofault(uaddr, MAX_STRING_SIZE);
  }
  
-@@ -788,6 +822,21 @@ static int vxlan_gro_complete(struct sock *sk, struct sk_buff *skb, int nhoff)
- 	return eth_gro_complete(skb, nhoff + sizeof(struct vxlanhdr));
+ /* Return the length of string -- including null terminal byte */
+@@ -44,18 +34,7 @@ kern_fetch_store_strlen(unsigned long addr)
+ 		len++;
+ 	} while (c && ret == 0 && len < MAX_STRING_SIZE);
+ 
+-	/* For faults, return enough to hold the FAULT_STRING */
+-	return (ret < 0) ? strlen(FAULT_STRING) + 1 : len;
+-}
+-
+-static nokprobe_inline void set_data_loc(int ret, void *dest, void *__dest, void *base, int len)
+-{
+-	if (ret >= 0) {
+-		*(u32 *)dest = make_data_loc(ret, __dest - base);
+-	} else {
+-		strscpy(__dest, FAULT_STRING, len);
+-		ret = strlen(__dest) + 1;
+-	}
++	return (ret < 0) ? ret : len;
  }
  
-+static int vxlan_gpe_gro_complete(struct sock *sk, struct sk_buff *skb, int nhoff)
-+{
-+	struct vxlanhdr *vh = (struct vxlanhdr *)(skb->data + nhoff);
-+	const struct packet_offload *ptype;
-+	int err = -ENOSYS;
-+	__be16 protocol;
-+
-+	if (!vxlan_parse_gpe_proto(vh, &protocol))
-+		return err;
-+	ptype = gro_find_complete_by_type(protocol);
-+	if (ptype)
-+		err = ptype->callbacks.gro_complete(skb, nhoff + sizeof(struct vxlanhdr));
-+	return err;
-+}
-+
- static struct vxlan_fdb *vxlan_fdb_alloc(struct vxlan_dev *vxlan, const u8 *mac,
- 					 __u16 state, __be32 src_vni,
- 					 __u16 ndm_flags)
-@@ -3416,8 +3465,13 @@ static struct vxlan_sock *vxlan_socket_create(struct net *net, bool ipv6,
- 	tunnel_cfg.encap_rcv = vxlan_rcv;
- 	tunnel_cfg.encap_err_lookup = vxlan_err_lookup;
- 	tunnel_cfg.encap_destroy = NULL;
--	tunnel_cfg.gro_receive = vxlan_gro_receive;
--	tunnel_cfg.gro_complete = vxlan_gro_complete;
-+	if (vs->flags & VXLAN_F_GPE) {
-+		tunnel_cfg.gro_receive = vxlan_gpe_gro_receive;
-+		tunnel_cfg.gro_complete = vxlan_gpe_gro_complete;
-+	} else {
-+		tunnel_cfg.gro_receive = vxlan_gro_receive;
-+		tunnel_cfg.gro_complete = vxlan_gro_complete;
-+	}
+ /*
+@@ -76,7 +55,8 @@ kern_fetch_store_string_user(unsigned long addr, void *dest, void *base)
+ 	__dest = get_loc_data(dest, base);
  
- 	setup_udp_tunnel_sock(net, sock, &tunnel_cfg);
+ 	ret = strncpy_from_user_nofault(__dest, uaddr, maxlen);
+-	set_data_loc(ret, dest, __dest, base, maxlen);
++	if (ret >= 0)
++		*(u32 *)dest = make_data_loc(ret, __dest - base);
  
+ 	return ret;
+ }
+@@ -107,7 +87,8 @@ kern_fetch_store_string(unsigned long addr, void *dest, void *base)
+ 	 * probing.
+ 	 */
+ 	ret = strncpy_from_kernel_nofault(__dest, (void *)addr, maxlen);
+-	set_data_loc(ret, dest, __dest, base, maxlen);
++	if (ret >= 0)
++		*(u32 *)dest = make_data_loc(ret, __dest - base);
+ 
+ 	return ret;
+ }
 -- 
 2.39.2
 
