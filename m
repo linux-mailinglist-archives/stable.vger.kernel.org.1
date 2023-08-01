@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38B8376AE6A
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27E3876AF86
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233209AbjHAJid (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:38:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35008 "EHLO
+        id S233528AbjHAJsd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233322AbjHAJiB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:01 -0400
+        with ESMTP id S233815AbjHAJsQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E062736
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EE9C359F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91D0B61507
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE2FC433C9;
-        Tue,  1 Aug 2023 09:36:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D16B2614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B90C433C9;
+        Tue,  1 Aug 2023 09:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882575;
-        bh=fOkkrAkZBlriAJNrBQVZNSWli/C37UZRFIbFxhLbJMg=;
+        s=korg; t=1690883196;
+        bh=ClWwZd3CkcD88TAy1Isc5wAm/UF93+Dtw2FKyC5nWnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kfv+9azXfZNMmcYvwg6H1bBcjezBa1gW9FXPniv4/VZIOCNKdY93Ji7lPOmd/eFCn
-         Ko8oC/QcSeK8xzWdxw4Q/HQyHLX3QbDfCq1kMEmapTmt6o1m53bSbvPU+qbCI95FEe
-         J1sYrG1icoEFBX6DszllpukJ9lpQoOftnD4cet68=
+        b=mNrMmCN0yjzhpzywtMASz+sIbAJl2fU6HARYjC3Qn1+s+uQYbyXmGaHUIoVP586s3
+         WKOBf5qu/TmPDKVE5SZhrIDRBdXLDAoVht3Idrhj1BG4N/pZWBb4DwLhJ2rY4Ku2Jc
+         afASzdToDgwiiSph+ueYaBJr8XyOmWzSvrtQE960=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Samuel Holland <samuel.holland@sifive.com>
-Subject: [PATCH 6.1 155/228] serial: sifive: Fix sifive_serial_console_setup() section
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.4 149/239] serial: qcom-geni: drop bogus runtime pm state update
 Date:   Tue,  1 Aug 2023 11:20:13 +0200
-Message-ID: <20230801091928.500436277@linuxfoundation.org>
+Message-ID: <20230801091931.038781012@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 9b8fef6345d5487137d4193bb0a0eae2203c284e upstream.
+commit 4dd8752a14ca0303fbdf0a6c68ff65f0a50bd2fa upstream.
 
-This function is called indirectly from the platform driver probe
-function. Even if the driver is built in, it may be probed after
-free_initmem() due to deferral or unbinding/binding via sysfs.
-Thus the function cannot be marked as __init.
+The runtime PM state should not be changed by drivers that do not
+implement runtime PM even if it happens to work around a bug in PM core.
 
-Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20230624060159.3401369-1-samuel.holland@sifive.com
+With the wake irq arming now fixed, drop the bogus runtime PM state
+update which left the device in active state (and could potentially
+prevent a parent device from suspending).
+
+Fixes: f3974413cf02 ("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup")
+Cc: 5.6+ <stable@vger.kernel.org> # 5.6+
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sifive.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/tty/serial/sifive.c
-+++ b/drivers/tty/serial/sifive.c
-@@ -832,7 +832,7 @@ static void sifive_serial_console_write(
- 	local_irq_restore(flags);
- }
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1676,13 +1676,6 @@ static int qcom_geni_serial_probe(struct
+ 	if (ret)
+ 		return ret;
  
--static int __init sifive_serial_console_setup(struct console *co, char *options)
-+static int sifive_serial_console_setup(struct console *co, char *options)
- {
- 	struct sifive_serial_port *ssp;
- 	int baud = SIFIVE_DEFAULT_BAUD_RATE;
+-	/*
+-	 * Set pm_runtime status as ACTIVE so that wakeup_irq gets
+-	 * enabled/disabled from dev_pm_arm_wake_irq during system
+-	 * suspend/resume respectively.
+-	 */
+-	pm_runtime_set_active(&pdev->dev);
+-
+ 	if (port->wakeup_irq > 0) {
+ 		device_init_wakeup(&pdev->dev, true);
+ 		ret = dev_pm_set_dedicated_wake_irq(&pdev->dev,
 
 
