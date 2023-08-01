@@ -2,77 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B5D76C042
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 00:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1D1776C088
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 00:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbjHAWOL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 18:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39478 "EHLO
+        id S230177AbjHAWq5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 18:46:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230514AbjHAWOK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 18:14:10 -0400
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF65419BE
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 15:14:09 -0700 (PDT)
-Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6bc8d1878a0so3531226a34.1
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 15:14:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690928049; x=1691532849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WpNjvdyqURVpJ2zUI1mEAiHbIdULXSwVnHK8BVQhnhU=;
-        b=4SMyoopMgqoEw0/F6B5MkJennZdxMY2EtGO2rfkv6UnELFUnWA5Vg6jl+P/m7tKwvd
-         2+FP33M7rwHe3mrVYq3RXK/tuUJ4kBPz76+GmvDDDo+Oe+d/qnTHjlMF1MxSKIEwRGMo
-         F00Hf+vxcbas/ajrgyfqBaPIlHeytFhZ5INR+Ax31S8hxpYRYFceOs32LgzCRI54TUEW
-         opSH1X7BJMeMX6cEQdUH9OqNvAJJ056NV2bdOpbnWGB0UWKih10N/g6Ozg9c0L7+T/8d
-         b4VvZRxjwLWgChBZ8uXy4ndGXEgOZOLFqe9ZNKlqHSZkYh3JtvscUZpj4pUPHWLMIVBT
-         tUDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690928049; x=1691532849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WpNjvdyqURVpJ2zUI1mEAiHbIdULXSwVnHK8BVQhnhU=;
-        b=AAnjF0GzIOht7dXExHDyrlasNxkhSw8QLqKIM7XVuD7WHJmDHmavbtN8boW8d0luSU
-         gtv6XnRqRcRdx33OqJ4ky61NKm55GFiS5l3j31/MIGnMAYOfF/OHO2CqdJ0sI8dL8OFY
-         8GBkL38nwIMtheaO+e3VpyJzR3BHLNqHfLXa0zv58+ZZ3+FCw6YXDOGV2MX8BLzmR+Uf
-         yGOxohrvXz8HvkpyFPWMkX/g16KYO7GFT6A6qazKqQ+zzFxA6c5x6vbWr7jV7R4V3Q8o
-         BW+gfEMXxHcvQHaAtYE/DSD+9K6ieavBNaYkG3e6mIh/fe5SQjxe/gO7/qndS/8zoj+0
-         FYlA==
-X-Gm-Message-State: ABy/qLYsYrL1Lbg32WLYh+bidn1WbqHES2cB1ihWjyoSHLu60MDhFzAL
-        9r/EAyeaAcDAnUO91MU618uT7CtiAlVTjxO+KMtCIg==
-X-Google-Smtp-Source: APBJJlE8GREzg52Zu/8+K0wDx3mHcyDe2LUEP4ybOfNAM7BlHzGg7YgywGt4VVG7BPJEVRJPtQHvkINFBy+onuKKviw=
-X-Received: by 2002:a05:6830:44a:b0:6b9:1917:b4af with SMTP id
- d10-20020a056830044a00b006b91917b4afmr14757444otc.33.1690928048966; Tue, 01
- Aug 2023 15:14:08 -0700 (PDT)
+        with ESMTP id S230398AbjHAWq4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 18:46:56 -0400
+Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673B412B;
+        Tue,  1 Aug 2023 15:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1690930007;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=tHEfEuheYq1rMmU1IaJm2EFOCvJfmQ3ow7jMNnIxa/M=;
+        b=MSu4DZNa3bvrCP+heR+AOZfSkDu75Iw6kFWS/Dz71v+UIw3G/+MNovPRlwhwQjCu4o/ABp
+        1hPqUKZ5l4uckFZfOoayy8H9OJg7YHVz1mjJ3uSum1AyIZ15FDv7r4bCQw/UQ/LWm3+V3O
+        MftzXTLiFtt9FAUMu7bNzTuqYk6ItI8=
+From:   Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH v2 0/2] ath11k: Don't leak ack_status_frame during
+ tx_complete* processing
+Date:   Wed, 02 Aug 2023 00:46:25 +0200
+Message-Id: <20230802-ath11k-ack_status_leak-v2-0-c0af729d6229@narfation.org>
 MIME-Version: 1.0
-References: <20230731171233.1098105-1-surenb@google.com> <20230731171233.1098105-2-surenb@google.com>
- <CAHk-=wjEbJS3OhUu+2sV8Kft8GnGcsNFOhYhXYQuk5nvvqR-NQ@mail.gmail.com>
- <CAJuCfpFWOknMsBmk1RwsX9_0-eZBoF+cy=P-E7xAmOWyeo4rvA@mail.gmail.com>
- <CAHk-=wiFXOJ_6mnuP5h3ZKNM1+SBNZFZz9p8hyS8NaYUGLioEg@mail.gmail.com>
- <CAJuCfpG4Yk65b=0TLfGRqrO7VpY3ZaYKqbBjEP+45ViC9zySVQ@mail.gmail.com>
- <CAJuCfpF6WcJBSix0PD0cOD_MaeLpfGz1ddS6Ug_M+g0QTfkdzw@mail.gmail.com>
- <ZMl6c+bVxdWW0YnN@x1n> <CAJuCfpG0zACcu3JrU4zWLT4rgOmTThm3N0FaHTsFthCxsBApkQ@mail.gmail.com>
-In-Reply-To: <CAJuCfpG0zACcu3JrU4zWLT4rgOmTThm3N0FaHTsFthCxsBApkQ@mail.gmail.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Tue, 1 Aug 2023 15:13:56 -0700
-Message-ID: <CAJuCfpGN+YE+w08cmMw9py_QrPBWNMVG=JGt=3sAWPZKhmnDTg@mail.gmail.com>
-Subject: Re: [PATCH 1/6] mm: enable page walking API to lock vmas during the walk
-To:     Peter Xu <peterx@redhat.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        akpm@linux-foundation.org, jannh@google.com, willy@infradead.org,
-        liam.howlett@oracle.com, david@redhat.com, ldufour@linux.ibm.com,
-        vbabka@suse.cz, michel@lespinasse.org, jglisse@google.com,
-        mhocko@suse.com, hannes@cmpxchg.org, dave@stgolabs.net,
-        hughd@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEGLyWQC/43OQQqDMBCF4avIrDsliQRrV71HKTLGiQZbI5NUC
+ uLdG3qCLr/F+3k7JJbACa7VDsJbSCEuBeZUgZtoGRnDUAxGmVpdlEbKk9Yzkpu7lCm/U/dkmrF
+ R1FCt2A6thzJehX34/ML3R7GX+MI8CdNfuU2jRlu3rm+Ms7Z3t4XEUy7vzlFGOI4v37F6AboAA
+ AA=
+To:     Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Cc:     Kalle Valo <quic_kvalo@quicinc.com>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1943; i=sven@narfation.org;
+ h=from:subject:message-id; bh=NCr+XZUPJYsm0GGWvSDiIYvPVRyI2bf72kEgqxdL8a0=;
+ b=owEBbQKS/ZANAwAKAV2HCgfBJntGAcsmYgBkyYtPRPa2MLdnh+gYmkV/WsqI2xv99XWI5nkj3
+ /ts+ZsZvnmJAjMEAAEKAB0WIQQXXSuHYSVz3OMy4AJdhwoHwSZ7RgUCZMmLTwAKCRBdhwoHwSZ7
+ Rg71D/9ZSifsvtEFs6NOoYEqLiMtXYjqpYmYHL4hOfX5PMLrn0HwizkdauD5KbxH6wy15zyMDlK
+ 2OdG1VIP+nWkJlSmdz+XXfO2PnsZ4lOt0TD0/x3DjH1HmsIEl9qgEfnokrTbMLe92kc/4bou4dz
+ 4t6y01LXeGQTud6BnXzAjP9Xgp+sT59VyQluNw5WIP7L60LE2aWbKWxGIK+wNni/TSFT+B7gZAd
+ 7cuLSjvtfPzfrq1fzkYRf7kj0gnELrljReFv9dx8gtrul7CasaPDuO693K6mP/azk44jRayidqV
+ /VyRfCyweUXk3EzFOG8r0fuqRQhazHIhdJXw6p2yyIFhuRsbyU6t8OumRF1g9RO0QQkiRDN+OKI
+ SLdZVUApoYohUzUwNVHukf11oFkywg+gtWWbdcQs3jh+NMAAuvwPA1qbdhgBVdlkEUzi1NFYxTe
+ LqHTrgWAKHNLFkJIUEgLK+bqFZKY5CwkYGDha1Fk2kHbJ1MgMJfyczvIz8Zu4dCzXu3Ykqq0N69
+ CHGiy/NKmLx/rWuexyHT7Y9SiUWeBgdiQrGNoJiiiSk0FZ2EF5YH1jUEk90x9J9a3GeFQCJx8Qs
+ 9J5x0uv5E6hJ/0UbJnbe6q+duCNOI3JCwj5KMJt7FiJn/NfZto8zwzdPNNhiwHCBdoxFH5WKA8T
+ 7mJPGZvU8smMj5Q==
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,55 +68,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 1, 2023 at 2:46=E2=80=AFPM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
->
-> On Tue, Aug 1, 2023 at 2:34=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote=
-:
-> >
-> > On Tue, Aug 01, 2023 at 01:28:56PM -0700, Suren Baghdasaryan wrote:
-> > > I have the new patchset ready but I see 3 places where we walk the
-> > > pages after mmap_write_lock() while *I think* we can tolerate
-> > > concurrent page faults (don't need to lock the vmas):
-> > >
-> > > s390_enable_sie()
-> > > break_ksm()
-> > > clear_refs_write()
-> >
-> > This one doesn't look right to be listed - tlb flushing is postponed af=
-ter
-> > pgtable lock released, so I assume the same issue can happen like fork(=
-):
-> > where we can have race coditions to corrupt data if, e.g., thread A
-> > writting with a writable (unflushed) tlb, alongside with thread B CoWin=
-g.
->
-> Ah, good point.
->
-> >
-> > It'll indeed be nice to know whether break_ksm() can avoid that lock_vm=
-a
-> > parameter across quite a few function jumps. I don't yet see an immedia=
-te
-> > issue with this one..  No idea on s390_enable_sie(), but to make it sim=
-ple
-> > and safe I'd simply leave it with the write vma lock to match the mmap
-> > write lock.
->
-> Thanks for taking a look, Peter!
->
-> Ok, let me keep all three of them with vma locking in place to be safe
-> and will post v2 for further discussion.
+It was noticed that APs stopped to accept clients after a while. With QCA's
+ath11k fork, it even printed some additional information:
 
-v2 posted at https://lore.kernel.org/all/20230801220733.1987762-1-surenb@go=
-ogle.com/
+  attach ack fail -28
 
-> Thanks,
-> Suren.
->
-> >
-> > Thanks,
-> >
-> > --
-> > Peter Xu
-> >
+when new clients tried to connect. hostapd was then usually showing a
+message like "deauthenticated due to inactivity (timer DEAUTH/REMOVE)".
+
+While debugging this, it was noticed that this happened when a peer was no
+longer known by ath11k but an NL80211_CMD_PROBE_CLIENT triggered TX was
+just "finished" for it. In that case, ath11k was just throwing the skb away
+and left some information in various data structures in mac80211.
+
+And after Felix pointed out ieee80211_free_txskb(), it is also clear that
+dev_kfree_skb_any() in these functions should also be calls to
+ieee80211_free_txskb() - but for these, I have nothing to trigger this
+error case. Still, a patch is provided as part of this patch series.
+
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+---
+Changes in v2:
+- Simply switch to ieee80211_free_txskb() as recommended by Felix Fietkau
+
+  + ieee80211_free_txskb calls ieee80211_report_used_skb
+  + ieee80211_report_used_skb calls ieee80211_report_ack_skb (when
+    ack_frame_id is set and !IEEE80211_TX_INTFL_MLME_CONN_TX)
+  + ieee80211_report_ack_skb will remove skb from ack_status_frames
+
+- Add second patch which handles similar situations in the previously
+  patched functions
+- Link to v1: https://lore.kernel.org/r/20230801-ath11k-ack_status_leak-v1-1-539cb72c55bc@narfation.org
+
+---
+Sven Eckelmann (2):
+      ath11k: Don't drop tx_status when peer cannot be found
+      ath11k: Cleanup mac80211 references on failure during tx_complete
+
+ drivers/net/wireless/ath/ath11k/dp_tx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+---
+base-commit: 1d7dd5aa35474e553b8671b58579e0749b560779
+change-id: 20230801-ath11k-ack_status_leak-70a7a30e5d9f
+
+Best regards,
+-- 
+Sven Eckelmann <sven@narfation.org>
+
