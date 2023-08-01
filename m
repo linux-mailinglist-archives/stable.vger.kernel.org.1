@@ -2,50 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4813476ADCC
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8B976AF06
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232353AbjHAJdr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58384 "EHLO
+        id S233386AbjHAJo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:44:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233247AbjHAJdS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:18 -0400
+        with ESMTP id S233384AbjHAJoF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8B34C0E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C84861B4
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D502614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F297C433C8;
-        Tue,  1 Aug 2023 09:31:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1317A6151F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E94C43391;
+        Tue,  1 Aug 2023 09:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882275;
-        bh=MZnXpx9dRTQM+9OT+78YOBTpervD520XISPh+SST6mU=;
+        s=korg; t=1690882894;
+        bh=2VzeC+8Z8lQSffTQdhl/+Ayiwv4cntheT+WHaTZjW1g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0BY5/Yj0a+2SLB7Dazymd7/Rw+YV5Yyq0M3fLL4Y93VnUX5MMcF5c+y9JFluHAEiq
-         RHgheYPKpGFkIsSmCuQdlqMisWVDP5TI3ksPhV4tfQhDGxBov7C3X+QRdOeyJM99Q9
-         FyM9w3dVUGekhYmve/f3JaBsddjFDxfeJSykDV9w=
+        b=vFOyEuOmYbzSmpcUzCdvoLAAg7ZFHlnDA7k7GFAuHI3lFj9PlBS4OOuQNTX2zDfII
+         r16gYIPaKh5AtlV4ciQ9UpTaO9tlMNM84NykoReZcsrKEkjOJNup5P154239kQvyK2
+         znmpjZJgtTX6xILXIjR8jurj9Ot5wQTpqvdfOwT4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Wang <sean.ns.wang@amd.com>,
-        Marc Rossi <Marc.Rossi@amd.com>,
-        Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
-        "Tsung-hua (Ryan) Lin" <Tsung-hua.Lin@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/228] drm/amd/display: Set minimum requirement for using PSR-SU on Phoenix
+Subject: [PATCH 6.4 041/239] maple_tree: fix 32 bit mas_next testing
 Date:   Tue,  1 Aug 2023 11:18:25 +0200
-Message-ID: <20230801091924.601102786@linuxfoundation.org>
+Message-ID: <20230801091927.055514312@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,66 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-[ Upstream commit cd2e31a9ab93d13c412a36c6e26811e0f830985b ]
+[ Upstream commit 7a93c71a6714ca1a9c03d70432dac104b0cfb815 ]
 
-The same parade TCON issue can potentially happen on Phoenix, and the same
-PSR resilience changes have been ported into the DMUB firmware.
+The test setup of mas_next is dependent on node entry size to create a 2
+level tree, but the tests did not account for this in the expected value
+when shifting beyond the scope of the tree.
 
-Don't allow running PSR-SU unless on the newer firmware.
+Fix this by setting up the test to succeed depending on the node entries
+which is dependent on the 32/64 bit setup.
 
-Cc: stable@vger.kernel.org
-Cc: Sean Wang <sean.ns.wang@amd.com>
-Cc: Marc Rossi <Marc.Rossi@amd.com>
-Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
-Cc: Tsung-hua (Ryan) Lin <Tsung-hua.Lin@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lkml.kernel.org/r/20230712173916.168805-1-Liam.Howlett@oracle.com
+Fixes: 120b116208a0 ("maple_tree: reorganize testing to restore module testing")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+  Closes: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c | 5 +++++
- drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h | 2 ++
- drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c    | 1 +
- 3 files changed, 8 insertions(+)
+ lib/test_maple_tree.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
-index 48a06dbd9be78..f161aeb7e7c4a 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.c
-@@ -60,3 +60,8 @@ const struct dmub_srv_dcn31_regs dmub_srv_dcn314_regs = {
- 	{ DMUB_DCN31_FIELDS() },
- #undef DMUB_SF
- };
-+
-+bool dmub_dcn314_is_psrsu_supported(struct dmub_srv *dmub)
-+{
-+	return dmub->fw_version >= DMUB_FW_VERSION(8, 0, 16);
-+}
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
-index 674267a2940e9..f213bd82c9110 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn314.h
-@@ -30,4 +30,6 @@
+diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
+index 261bad680f81d..fad668042f3e7 100644
+--- a/lib/test_maple_tree.c
++++ b/lib/test_maple_tree.c
+@@ -1863,13 +1863,16 @@ static noinline void __init next_prev_test(struct maple_tree *mt)
+ 						   725};
+ 	static const unsigned long level2_32[] = { 1747, 2000, 1750, 1755,
+ 						   1760, 1765};
++	unsigned long last_index;
  
- extern const struct dmub_srv_dcn31_regs dmub_srv_dcn314_regs;
+ 	if (MAPLE_32BIT) {
+ 		nr_entries = 500;
+ 		level2 = level2_32;
++		last_index = 0x138e;
+ 	} else {
+ 		nr_entries = 200;
+ 		level2 = level2_64;
++		last_index = 0x7d6;
+ 	}
  
-+bool dmub_dcn314_is_psrsu_supported(struct dmub_srv *dmub);
-+
- #endif /* _DMUB_DCN314_H_ */
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-index 0f43a05a41874..0dab22d794808 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-@@ -229,6 +229,7 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
- 	case DMUB_ASIC_DCN316:
- 		if (asic == DMUB_ASIC_DCN314) {
- 			dmub->regs_dcn31 = &dmub_srv_dcn314_regs;
-+			funcs->is_psrsu_supported = dmub_dcn314_is_psrsu_supported;
- 		} else if (asic == DMUB_ASIC_DCN315) {
- 			dmub->regs_dcn31 = &dmub_srv_dcn315_regs;
- 		} else if (asic == DMUB_ASIC_DCN316) {
+ 	for (i = 0; i <= nr_entries; i++)
+@@ -1976,7 +1979,7 @@ static noinline void __init next_prev_test(struct maple_tree *mt)
+ 
+ 	val = mas_next(&mas, ULONG_MAX);
+ 	MT_BUG_ON(mt, val != NULL);
+-	MT_BUG_ON(mt, mas.index != ULONG_MAX);
++	MT_BUG_ON(mt, mas.index != last_index);
+ 	MT_BUG_ON(mt, mas.last != ULONG_MAX);
+ 
+ 	val = mas_prev(&mas, 0);
 -- 
 2.39.2
 
