@@ -2,114 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16E7A76BAC6
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CAA476BACE
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:09:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234416AbjHARHZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 13:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46058 "EHLO
+        id S232062AbjHARJp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 13:09:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234451AbjHARHK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:07:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11822724;
-        Tue,  1 Aug 2023 10:06:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 681E96167E;
-        Tue,  1 Aug 2023 17:05:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8129EC433C7;
-        Tue,  1 Aug 2023 17:05:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690909526;
-        bh=8DvPnZYYz1f7lPkvDNrKkWmFPFTrNmAWxpgz4FHEUes=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YoVbD+bE1jT5KEVa3RTBhfDxOLoOopSVt1Zhim84ydMWSRMuCS34gnUY9sNjsouVh
-         mVw7z3lXAgS31Ga7g16CH26tpqIbTsTa8k4NvHdJzaaJhX3YPXn1HpCcD2x9moO2RJ
-         kC4ONgXzBGmOmfhkLzNVj8bu06rI46lwd5EWEiJ/K355VKsn7ik4HWIFSaNTw5VGAZ
-         91cYdj99nLyHMp5EMWysgO4RCpP6CqTgouo8ZA/i6R5fpx0PskXG/Pd2yQqrnAL4Ai
-         23SDyTuD2G2gq6cI/KHZGvMDU0f+HbAZiXzti4QpsMMWGeyyD0RvXXS3/X0YKPZnD/
-         zLMzRLAW76yqw==
-From:   SeongJae Park <sj@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, damon@lists.linux.dev,
-        SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.1 000/228] 6.1.43-rc1 review
-Date:   Tue,  1 Aug 2023 17:05:23 +0000
-Message-Id: <20230801170523.122482-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: 
+        with ESMTP id S232424AbjHARJo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:09:44 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1662735;
+        Tue,  1 Aug 2023 10:09:12 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id E2D276017C;
+        Tue,  1 Aug 2023 19:09:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690909749; bh=e6Bszk6G8nn708Yum4V8G3z8149Ww6/gLP9EzNUvxuo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FP0C+zTwyvERTQuh8B2EgRRe8bKfJwUBetXKuq+9gUAIF2fOidbjm+soAfkOc8yb1
+         Tq93y7luRQAB/5JCxIo2UsWFYMpGjjkVHS7BpKiGkL3a7crWTVdpTQBL02Jdivz9xD
+         NhF7gS3wEOxQG2yUoRXhoK7ZCWNq40HN/63v4H12y+Tc9HmV1OwXFEqq+DYQ0ZLJxv
+         Vu92U9lLRFrCPX3RxvtTNV446aBYiQlLxLT3vzWg2eg/dJqXdES4bikYelz2HMQxYl
+         uFvZAfDfOJC5XcBh+rJp3rjef6i+Qos7Q1cSSuIx+G5CvSbB6F8gmK+qfmncAXJg2N
+         f8DUEDGpq492g==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id o4ZKyBaRx3Iz; Tue,  1 Aug 2023 19:09:07 +0200 (CEST)
+Received: from defiant.. (unknown [94.250.191.183])
+        by domac.alu.hr (Postfix) with ESMTPSA id D228C6015F;
+        Tue,  1 Aug 2023 19:08:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1690909747; bh=e6Bszk6G8nn708Yum4V8G3z8149Ww6/gLP9EzNUvxuo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NIi/IRqXTxYAZRPVtZEFea23cg+CDIvwOzVlY+RXnH1bpPpcxf00VBxCsVvRsi+xy
+         xshyRiv/8AH3E7Pw9yyRJemwYgP3/+iK7PGLcc+VtW7iPSU5iYa7B5MUo02Cv9ACge
+         knotXaT2tZsij0Qaj8Kybc5LWarWHZGRNnfxG9oxNMauqClqD/BprpjlT/Yqm94wfn
+         GHGKArGl9WzUa28QOENciK4zc+UIcGpvSPmNgx5vzYebqXRuZXV2r/7wobgbEjrjt4
+         O+R7ByCrbB6vz05TYP2GyuNR5pXhQCveNAF4GfAD4R6rjaOAH2M4w2sR2XHdAInY8m
+         Iuhrowt65eGGA==
+From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+To:     Luis Chamberlain <mcgrof@kernel.org>,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH v1 1/1] test_firmware: fix a memory leak with reqs buffer
+Date:   Tue,  1 Aug 2023 19:07:47 +0200
+Message-Id: <20230801170746.191505-1-mirsad.todorovac@alu.unizg.hr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
+[ commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream ]
 
-On Tue, 1 Aug 2023 11:17:38 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Dan Carpenter spotted that test_fw_config->reqs will be leaked if
+trigger_batched_requests_store() is called two or more times.
+The same appears with trigger_batched_requests_async_store().
 
-> This is the start of the stable review cycle for the 6.1.43 release.
-> There are 228 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.43-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+This bug wasn't triggered by the tests, but observed by Dan's visual
+inspection of the code.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+The recommended workaround was to return -EBUSY if test_fw_config->reqs
+is already allocated.
 
-Tested-by: SeongJae Park <sj@kernel.org>
+Fixes: c92316bf8e94 ("test_firmware: add batched firmware tests")
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Russ Weight <russell.h.weight@intel.com>
+Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: stable@vger.kernel.org # v4.19
+Suggested-by: Dan Carpenter <error27@gmail.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] b2c388dc2443 ("Linux 5.15.124-rc1")
-
-
-Thanks,
-SJ
-
-[...]
-
+[ This is a backport to v4.19 stable branch without a change in code from the 5.4+ patch ]
 ---
+v1:
+ patch sumbmitted verbatim from the 5.4+ branch to 4.19
 
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_m68k.sh
-ok 12 selftests: damon-tests: build_arm64.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
+ lib/test_firmware.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-PASS
+diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+index f4cc874021da..e4688821eab8 100644
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -618,6 +618,11 @@ static ssize_t trigger_batched_requests_store(struct device *dev,
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++	if (test_fw_config->reqs) {
++		rc = -EBUSY;
++		goto out_bail;
++	}
++
+ 	test_fw_config->reqs =
+ 		vzalloc(array3_size(sizeof(struct test_batched_req),
+ 				    test_fw_config->num_requests, 2));
+@@ -721,6 +726,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++	if (test_fw_config->reqs) {
++		rc = -EBUSY;
++		goto out_bail;
++	}
++
+ 	test_fw_config->reqs =
+ 		vzalloc(array3_size(sizeof(struct test_batched_req),
+ 				    test_fw_config->num_requests, 2));
+-- 
+2.34.1
+
