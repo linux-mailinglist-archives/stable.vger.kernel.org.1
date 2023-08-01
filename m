@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 644FC76AF5E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E132076ADD3
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjHAJq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
+        id S232982AbjHAJdv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233408AbjHAJo4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8719A0
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:44 -0700 (PDT)
+        with ESMTP id S233303AbjHAJdY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC31B4ED9
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 422B56150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE3BC433CD;
-        Tue,  1 Aug 2023 09:42:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02FC361511
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117B4C433C8;
+        Tue,  1 Aug 2023 09:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882963;
-        bh=nUPcIfnTLKlK1PZtRVfvGT9RpsAx4dw12pji0H6gnt0=;
+        s=korg; t=1690882267;
+        bh=LKJVr04grVPhYAiQAmW9rlGWFRAAlQubJBvFgVHc3f8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kn+tG0rexbtntCQDeRjGT5Yu2HgKiOxlywLITFcpKd/M/51L0uicbPDCLw7yoYP+c
-         lAET+psz6OwbsvSleg/8ZrDjcxVmOJsJPjKgjHKOlPHPgYRqPlDqPS9aUYWtdNG/Qv
-         dUhRP7WCsU8BF4VWj/ZP5o/xtVxBfZv2xgwB28eM=
+        b=Nq1IsfIHyfthVcpzlro2CWo/CHFIodNQwcpm3cutNPXAa5woVzzF/iwcrhcuh/KtD
+         4EqRHuzqciNgjy8gsU1VZzZpoA+bBBAyBqM+FJMpZFN5EYm/7RlkAa4BHViTpvdhfe
+         R/Y5vgD4yT9ZZRPE69YdEvo1TjX4OEqDXwZ8ixPA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Wang <sean.ns.wang@amd.com>,
-        Marc Rossi <Marc.Rossi@amd.com>,
-        Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
-        "Tsung-hua (Ryan) Lin" <Tsung-hua.Lin@amd.com>,
+        patches@lists.linux.dev,
         Mario Limonciello <mario.limonciello@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
+        Charlene Liu <Charlene.Liu@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 037/239] drm/amd/display: Set minimum requirement for using PSR-SU on Rembrandt
-Date:   Tue,  1 Aug 2023 11:18:21 +0200
-Message-ID: <20230801091926.930866891@linuxfoundation.org>
+Subject: [PATCH 6.1 044/228] drm/amd/display: fix dcn315 single stream crb allocation
+Date:   Tue,  1 Aug 2023 11:18:22 +0200
+Message-ID: <20230801091924.479706591@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,150 +60,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
 
-[ Upstream commit c35b6ea8f2ecfa9d775530b70d4e727869099a9c ]
+[ Upstream commit 49f26218c344741cb3eaa740b1e44e960551a87f ]
 
-A number of parade TCONs are causing system hangs when utilized with
-older DMUB firmware and PSR-SU. Some changes have been introduced into
-DMUB firmware to add resilience against these failures.
+Change to improve avoiding asymetric crb calculations for single stream
+scenarios.
 
-Don't allow running PSR-SU unless on the newer firmware.
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Sean Wang <sean.ns.wang@amd.com>
-Cc: Marc Rossi <Marc.Rossi@amd.com>
-Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
-Cc: Tsung-hua (Ryan) Lin <Tsung-hua.Lin@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2443
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: cd2e31a9ab93 ("drm/amd/display: Set minimum requirement for using PSR-SU on Phoenix")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c |  3 ++-
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c          |  7 +++++++
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h          |  1 +
- drivers/gpu/drm/amd/display/dmub/dmub_srv.h           |  2 ++
- drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c     |  5 +++++
- drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h     |  2 ++
- drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c       | 10 ++++++----
- 7 files changed, 25 insertions(+), 5 deletions(-)
+ .../drm/amd/display/dc/dcn315/dcn315_resource.c   | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-index d647f68fd5630..4f61d4f257cd7 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-@@ -24,6 +24,7 @@
-  */
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
+index 88c4a378daa12..b9b1e5ac4f538 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
+@@ -1662,6 +1662,10 @@ static bool allow_pixel_rate_crb(struct dc *dc, struct dc_state *context)
+ 	int i;
+ 	struct resource_context *res_ctx = &context->res_ctx;
  
- #include "amdgpu_dm_psr.h"
-+#include "dc_dmub_srv.h"
- #include "dc.h"
- #include "dm_helpers.h"
- #include "amdgpu_dm.h"
-@@ -50,7 +51,7 @@ static bool link_supports_psrsu(struct dc_link *link)
- 	    !link->dpcd_caps.psr_info.psr2_su_y_granularity_cap)
- 		return false;
- 
--	return true;
-+	return dc_dmub_check_min_version(dc->ctx->dmub_srv->dmub);
- }
- 
- /*
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index a9b9490a532c2..ab4542b57b9a3 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -1079,3 +1079,10 @@ void dc_send_update_cursor_info_to_dmu(
- 		dc_send_cmd_to_dmu(pCtx->stream->ctx->dmub_srv, &cmd);
++	/*Don't apply for single stream*/
++	if (context->stream_count < 2)
++		return false;
++
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		if (!res_ctx->pipe_ctx[i].stream)
+ 			continue;
+@@ -1749,19 +1753,23 @@ static int dcn315_populate_dml_pipes_from_context(
+ 		pipe_cnt++;
  	}
- }
+ 
+-	/* Spread remaining unreserved crb evenly among all pipes, use default policy if not enough det or single pipe */
++	/* Spread remaining unreserved crb evenly among all pipes*/
+ 	if (pixel_rate_crb) {
+ 		for (i = 0, pipe_cnt = 0, crb_idx = 0; i < dc->res_pool->pipe_count; i++) {
+ 			pipe = &res_ctx->pipe_ctx[i];
+ 			if (!pipe->stream)
+ 				continue;
+ 
++			/* Do not use asymetric crb if not enough for pstate support */
++			if (remaining_det_segs < 0) {
++				pipes[pipe_cnt].pipe.src.det_size_override = 0;
++				continue;
++			}
 +
-+bool dc_dmub_check_min_version(struct dmub_srv *srv)
-+{
-+	if (!srv->hw_funcs.is_psrsu_supported)
-+		return true;
-+	return srv->hw_funcs.is_psrsu_supported(srv);
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-index d34f5563df2ec..9a248ced03b9c 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-@@ -89,4 +89,5 @@ void dc_dmub_setup_subvp_dmub_command(struct dc *dc, struct dc_state *context, b
- void dc_dmub_srv_log_diagnostic_data(struct dc_dmub_srv *dc_dmub_srv);
+ 			if (!pipe->top_pipe && !pipe->prev_odm_pipe) {
+ 				bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
+ 						|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
  
- void dc_send_update_cursor_info_to_dmu(struct pipe_ctx *pCtx, uint8_t pipe_idx);
-+bool dc_dmub_check_min_version(struct dmub_srv *srv);
- #endif /* _DMUB_DC_SRV_H_ */
-diff --git a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
-index 554ab48d4e647..9cad599b27094 100644
---- a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
-+++ b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
-@@ -364,6 +364,8 @@ struct dmub_srv_hw_funcs {
- 
- 	bool (*is_supported)(struct dmub_srv *dmub);
- 
-+	bool (*is_psrsu_supported)(struct dmub_srv *dmub);
+-				if (remaining_det_segs < 0 || crb_pipes == 1)
+-					pipes[pipe_cnt].pipe.src.det_size_override = 0;
+ 				if (remaining_det_segs > MIN_RESERVED_DET_SEGS)
+ 					pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
+ 							(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
+@@ -1777,6 +1785,7 @@ static int dcn315_populate_dml_pipes_from_context(
+ 				}
+ 				/* Convert segments into size for DML use */
+ 				pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
 +
- 	bool (*is_hw_init)(struct dmub_srv *dmub);
- 
- 	bool (*is_phy_init)(struct dmub_srv *dmub);
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
-index c90b9ee42e126..89d24fb7024e2 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
-@@ -297,6 +297,11 @@ bool dmub_dcn31_is_supported(struct dmub_srv *dmub)
- 	return supported;
- }
- 
-+bool dmub_dcn31_is_psrsu_supported(struct dmub_srv *dmub)
-+{
-+	return dmub->fw_version >= DMUB_FW_VERSION(4, 0, 59);
-+}
-+
- void dmub_dcn31_set_gpint(struct dmub_srv *dmub,
- 			  union dmub_gpint_data_register reg)
- {
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
-index f6db6f89d45dc..eb62410941473 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
-@@ -219,6 +219,8 @@ bool dmub_dcn31_is_hw_init(struct dmub_srv *dmub);
- 
- bool dmub_dcn31_is_supported(struct dmub_srv *dmub);
- 
-+bool dmub_dcn31_is_psrsu_supported(struct dmub_srv *dmub);
-+
- void dmub_dcn31_set_gpint(struct dmub_srv *dmub,
- 			  union dmub_gpint_data_register reg);
- 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-index 6d76ce327d69f..0f43a05a41874 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-@@ -227,14 +227,16 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
- 	case DMUB_ASIC_DCN314:
- 	case DMUB_ASIC_DCN315:
- 	case DMUB_ASIC_DCN316:
--		if (asic == DMUB_ASIC_DCN314)
-+		if (asic == DMUB_ASIC_DCN314) {
- 			dmub->regs_dcn31 = &dmub_srv_dcn314_regs;
--		else if (asic == DMUB_ASIC_DCN315)
-+		} else if (asic == DMUB_ASIC_DCN315) {
- 			dmub->regs_dcn31 = &dmub_srv_dcn315_regs;
--		else if (asic == DMUB_ASIC_DCN316)
-+		} else if (asic == DMUB_ASIC_DCN316) {
- 			dmub->regs_dcn31 = &dmub_srv_dcn316_regs;
--		else
-+		} else {
- 			dmub->regs_dcn31 = &dmub_srv_dcn31_regs;
-+			funcs->is_psrsu_supported = dmub_dcn31_is_psrsu_supported;
-+		}
- 		funcs->reset = dmub_dcn31_reset;
- 		funcs->reset_release = dmub_dcn31_reset_release;
- 		funcs->backdoor_load = dmub_dcn31_backdoor_load;
+ 				crb_idx++;
+ 			}
+ 			pipe_cnt++;
 -- 
 2.39.2
 
