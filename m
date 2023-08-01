@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D2476AF40
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1C176AD10
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233621AbjHAJqR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45178 "EHLO
+        id S232823AbjHAJZy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:25:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbjHAJqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:03 -0400
+        with ESMTP id S232866AbjHAJZl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B6885248
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50A1213E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0529D61518
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127BBC433C7;
-        Tue,  1 Aug 2023 09:44:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F035961509
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF0AC433C8;
+        Tue,  1 Aug 2023 09:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883071;
-        bh=LPFd2x3PeWqVB6TuzmyW/N5yvT9lfH8qbx2UvNsVqIg=;
+        s=korg; t=1690881863;
+        bh=sI3tgQwxIU/tfKPGFm3ZbuLhqUfb1xzwjrPA90Y2v5A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tq5xuk8iaG2WXgRQlt65kRwXn/d65kjb9YLlWB5kmg5apXBdEiFqwpgm9WA1j66hw
-         zVVVEUU/OpNMPa+DlkxwvINgeUC7ebNu2yDYGxdN9SlqG8z7DArHKP02u0ttwqWdjp
-         tU7bqvUdSXhtp8F96V/hNJ+XWXRFwzsmg8sIhrvM=
+        b=oVuFpuhq3zzaxpyI1IN820K9wVoO8rcxk6V3byAaJ+ICP+zWf2ibGqms7xS2Xtzf5
+         /kzIYx/k+BnCBBQ54rfrCOKLK+nRzUxg6i9EM3jTId9NKdOFydxCJ4YeQ2Y/tSqYMY
+         8wNyplEK1/EPQLdgTCQ/fKLFkM/eN2crpsgxJlPo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shiraz Saleem <shiraz.saleem@intel.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 105/239] RDMA/irdma: Add missing read barriers
+Subject: [PATCH 5.15 057/155] iavf: check for removal state before IAVF_FLAG_PF_COMMS_FAILED
 Date:   Tue,  1 Aug 2023 11:19:29 +0200
-Message-ID: <20230801091929.508976737@linuxfoundation.org>
+Message-ID: <20230801091912.234447534@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,101 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shiraz Saleem <shiraz.saleem@intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 4984eb51453ff7eddee9e5ce816145be39c0ec5c ]
+[ Upstream commit 91896c8acce23d33ed078cffd46a9534b1f82be5 ]
 
-On code inspection, there are many instances in the driver where
-CEQE and AEQE fields written to by HW are read without guaranteeing
-that the polarity bit has been read and checked first.
+In iavf_adminq_task(), if the function can't acquire the
+adapter->crit_lock, it checks if the driver is removing. If so, it simply
+exits without re-enabling the interrupt. This is done to ensure that the
+task stops processing as soon as possible once the driver is being removed.
 
-Add a read barrier to avoid reordering of loads on the CEQE/AEQE fields
-prior to checking the polarity bit.
+However, if the IAVF_FLAG_PF_COMMS_FAILED is set, the function checks this
+before attempting to acquire the lock. In this case, the function exits
+early and re-enables the interrupt. This will happen even if the driver is
+already removing.
 
-Fixes: 3f49d6842569 ("RDMA/irdma: Implement HW Admin Queue OPs")
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Link: https://lore.kernel.org/r/20230711175253.1289-2-shiraz.saleem@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Avoid this, by moving the check to after the adapter->crit_lock is
+acquired. This way, if the driver is removing, we will not re-enable the
+interrupt.
+
+Fixes: fc2e6b3b132a ("iavf: Rework mutexes for better synchronisation")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c | 9 ++++++++-
- drivers/infiniband/hw/irdma/puda.c | 6 ++++++
- drivers/infiniband/hw/irdma/uk.c   | 3 +++
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
-index d88c9184007ea..c91439f428c76 100644
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -3363,6 +3363,9 @@ int irdma_sc_ccq_get_cqe_info(struct irdma_sc_cq *ccq,
- 	if (polarity != ccq->cq_uk.polarity)
- 		return -ENOENT;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 1e349a90d21aa..a87f4f1ae6845 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -2532,9 +2532,6 @@ static void iavf_adminq_task(struct work_struct *work)
+ 	u32 val, oldval;
+ 	u16 pending;
  
-+	/* Ensure CEQE contents are read after valid bit is checked */
-+	dma_rmb();
+-	if (adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)
+-		goto out;
+-
+ 	if (!mutex_trylock(&adapter->crit_lock)) {
+ 		if (adapter->state == __IAVF_REMOVE)
+ 			return;
+@@ -2543,6 +2540,9 @@ static void iavf_adminq_task(struct work_struct *work)
+ 		goto out;
+ 	}
+ 
++	if (adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)
++		goto unlock;
 +
- 	get_64bit_val(cqe, 8, &qp_ctx);
- 	cqp = (struct irdma_sc_cqp *)(unsigned long)qp_ctx;
- 	info->error = (bool)FIELD_GET(IRDMA_CQ_ERROR, temp);
-@@ -4009,13 +4012,17 @@ int irdma_sc_get_next_aeqe(struct irdma_sc_aeq *aeq,
- 	u8 polarity;
- 
- 	aeqe = IRDMA_GET_CURRENT_AEQ_ELEM(aeq);
--	get_64bit_val(aeqe, 0, &compl_ctx);
- 	get_64bit_val(aeqe, 8, &temp);
- 	polarity = (u8)FIELD_GET(IRDMA_AEQE_VALID, temp);
- 
- 	if (aeq->polarity != polarity)
- 		return -ENOENT;
- 
-+	/* Ensure AEQE contents are read after valid bit is checked */
-+	dma_rmb();
-+
-+	get_64bit_val(aeqe, 0, &compl_ctx);
-+
- 	print_hex_dump_debug("WQE: AEQ_ENTRY WQE", DUMP_PREFIX_OFFSET, 16, 8,
- 			     aeqe, 16, false);
- 
-diff --git a/drivers/infiniband/hw/irdma/puda.c b/drivers/infiniband/hw/irdma/puda.c
-index 4ec9639f1bdbf..562531712ea44 100644
---- a/drivers/infiniband/hw/irdma/puda.c
-+++ b/drivers/infiniband/hw/irdma/puda.c
-@@ -230,6 +230,9 @@ static int irdma_puda_poll_info(struct irdma_sc_cq *cq,
- 	if (valid_bit != cq_uk->polarity)
- 		return -ENOENT;
- 
-+	/* Ensure CQE contents are read after valid bit is checked */
-+	dma_rmb();
-+
- 	if (cq->dev->hw_attrs.uk_attrs.hw_rev >= IRDMA_GEN_2)
- 		ext_valid = (bool)FIELD_GET(IRDMA_CQ_EXTCQE, qword3);
- 
-@@ -243,6 +246,9 @@ static int irdma_puda_poll_info(struct irdma_sc_cq *cq,
- 		if (polarity != cq_uk->polarity)
- 			return -ENOENT;
- 
-+		/* Ensure ext CQE contents are read after ext valid bit is checked */
-+		dma_rmb();
-+
- 		IRDMA_RING_MOVE_HEAD_NOCHECK(cq_uk->cq_ring);
- 		if (!IRDMA_RING_CURRENT_HEAD(cq_uk->cq_ring))
- 			cq_uk->polarity = !cq_uk->polarity;
-diff --git a/drivers/infiniband/hw/irdma/uk.c b/drivers/infiniband/hw/irdma/uk.c
-index dd428d915c175..ea2c07751245a 100644
---- a/drivers/infiniband/hw/irdma/uk.c
-+++ b/drivers/infiniband/hw/irdma/uk.c
-@@ -1527,6 +1527,9 @@ void irdma_uk_clean_cq(void *q, struct irdma_cq_uk *cq)
- 		if (polarity != temp)
- 			break;
- 
-+		/* Ensure CQE contents are read after valid bit is checked */
-+		dma_rmb();
-+
- 		get_64bit_val(cqe, 8, &comp_ctx);
- 		if ((void *)(unsigned long)comp_ctx == q)
- 			set_64bit_val(cqe, 8, 0);
+ 	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
+ 	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
+ 	if (!event.msg_buf)
 -- 
-2.40.1
+2.39.2
 
 
 
