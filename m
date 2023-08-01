@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B935376AEC1
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F67476AFCB
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233101AbjHAJlc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:41:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40240 "EHLO
+        id S233586AbjHAJuJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233257AbjHAJlO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:41:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488C65279
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:59 -0700 (PDT)
+        with ESMTP id S233569AbjHAJty (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F2D127;
+        Tue,  1 Aug 2023 02:49:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C04126150E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDACC433C8;
-        Tue,  1 Aug 2023 09:38:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D4C8614FC;
+        Tue,  1 Aug 2023 09:49:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A251C433C8;
+        Tue,  1 Aug 2023 09:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882738;
-        bh=US/jeUgSAEVyfTeDn5qQMyBonK+TdnJelKJTKYCLzCU=;
+        s=korg; t=1690883363;
+        bh=H3ZC1kUIui+w/WasGPqsvFTpiAI3fLlRwG41WoG6CCM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BI5BCWumDKALqnK0QPAcrpBRTtPB/2rmu5cII+2KC+mKLXY6VNoGwgoK0sqEPbuZJ
-         mrvkBC5dOqIrG9+ry8a1x0w80PHuvyTpVneCglgT4fTXgkNLmqEWY4VO5WSGo0YSEJ
-         g21ZYnWAVvHHX1wlh+IJg/cdO+cN9hbEYbM2c/40=
+        b=dxZ7IsDveHIwIrXjWNf1kI2+qG6LIK0+gQniB4FgcXNadUsJDI3JxdKbxjnHWCl36
+         Pv7Uk18hfXsOGX8h+2Mji1UmVBKJSlE/ByLiUJtDZ+osXlniuEHP+YMcvtp08jD49l
+         IsbjIH2sfOd3bH+x2jjtIM8x0G7jppFTNSWQFquw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 6.1 214/228] rbd: make get_lock_owner_info() return a single locker or NULL
-Date:   Tue,  1 Aug 2023 11:21:12 +0200
-Message-ID: <20230801091930.598150968@linuxfoundation.org>
+        patches@lists.linux.dev, Aaron Lewis <aaronlewis@google.com>,
+        kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.4 209/239] selftests/rseq: Play nice with binaries statically linked against glibc 2.35+
+Date:   Tue,  1 Aug 2023 11:21:13 +0200
+Message-ID: <20230801091933.368989826@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,176 +55,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit f38cb9d9c2045dad16eead4a2e1aedfddd94603b upstream.
+commit 3bcbc20942db5d738221cca31a928efc09827069 upstream.
 
-Make the "num_lockers can be only 0 or 1" assumption explicit and
-simplify the API by getting rid of output parameters in preparation
-for calling get_lock_owner_info() twice before blocklisting.
+To allow running rseq and KVM's rseq selftests as statically linked
+binaries, initialize the various "trampoline" pointers to point directly
+at the expect glibc symbols, and skip the dlysm() lookups if the rseq
+size is non-zero, i.e. the binary is statically linked *and* the libc
+registered its own rseq.
 
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Define weak versions of the symbols so as not to break linking against
+libc versions that don't support rseq in any capacity.
+
+The KVM selftests in particular are often statically linked so that they
+can be run on targets with very limited runtime environments, i.e. test
+machines.
+
+Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230721223352.2333911-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c |   84 +++++++++++++++++++++++++++++++---------------------
- 1 file changed, 51 insertions(+), 33 deletions(-)
+ tools/testing/selftests/rseq/rseq.c |   28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3850,10 +3850,17 @@ static void wake_lock_waiters(struct rbd
- 	list_splice_tail_init(&rbd_dev->acquiring_list, &rbd_dev->running_list);
- }
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -34,9 +34,17 @@
+ #include "../kselftest.h"
+ #include "rseq.h"
  
--static int get_lock_owner_info(struct rbd_device *rbd_dev,
--			       struct ceph_locker **lockers, u32 *num_lockers)
-+static void free_locker(struct ceph_locker *locker)
-+{
-+	if (locker)
-+		ceph_free_lockers(locker, 1);
-+}
+-static const ptrdiff_t *libc_rseq_offset_p;
+-static const unsigned int *libc_rseq_size_p;
+-static const unsigned int *libc_rseq_flags_p;
++/*
++ * Define weak versions to play nice with binaries that are statically linked
++ * against a libc that doesn't support registering its own rseq.
++ */
++__weak ptrdiff_t __rseq_offset;
++__weak unsigned int __rseq_size;
++__weak unsigned int __rseq_flags;
 +
-+static struct ceph_locker *get_lock_owner_info(struct rbd_device *rbd_dev)
- {
- 	struct ceph_osd_client *osdc = &rbd_dev->rbd_client->client->osdc;
-+	struct ceph_locker *lockers;
-+	u32 num_lockers;
- 	u8 lock_type;
- 	char *lock_tag;
- 	int ret;
-@@ -3862,39 +3869,45 @@ static int get_lock_owner_info(struct rb
++static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
++static const unsigned int *libc_rseq_size_p = &__rseq_size;
++static const unsigned int *libc_rseq_flags_p = &__rseq_flags;
  
- 	ret = ceph_cls_lock_info(osdc, &rbd_dev->header_oid,
- 				 &rbd_dev->header_oloc, RBD_LOCK_NAME,
--				 &lock_type, &lock_tag, lockers, num_lockers);
--	if (ret)
--		return ret;
-+				 &lock_type, &lock_tag, &lockers, &num_lockers);
-+	if (ret) {
-+		rbd_warn(rbd_dev, "failed to retrieve lockers: %d", ret);
-+		return ERR_PTR(ret);
+ /* Offset from the thread pointer to the rseq area. */
+ ptrdiff_t rseq_offset;
+@@ -155,9 +163,17 @@ unsigned int get_rseq_feature_size(void)
+ static __attribute__((constructor))
+ void rseq_init(void)
+ {
+-	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+-	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+-	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	/*
++	 * If the libc's registered rseq size isn't already valid, it may be
++	 * because the binary is dynamically linked and not necessarily due to
++	 * libc not having registered a restartable sequence.  Try to find the
++	 * symbols if that's the case.
++	 */
++	if (!*libc_rseq_size_p) {
++		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
++		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
++		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
 +	}
- 
--	if (*num_lockers == 0) {
-+	if (num_lockers == 0) {
- 		dout("%s rbd_dev %p no lockers detected\n", __func__, rbd_dev);
-+		lockers = NULL;
- 		goto out;
- 	}
- 
- 	if (strcmp(lock_tag, RBD_LOCK_TAG)) {
- 		rbd_warn(rbd_dev, "locked by external mechanism, tag %s",
- 			 lock_tag);
--		ret = -EBUSY;
--		goto out;
-+		goto err_busy;
- 	}
- 
- 	if (lock_type == CEPH_CLS_LOCK_SHARED) {
- 		rbd_warn(rbd_dev, "shared lock type detected");
--		ret = -EBUSY;
--		goto out;
-+		goto err_busy;
- 	}
- 
--	if (strncmp((*lockers)[0].id.cookie, RBD_LOCK_COOKIE_PREFIX,
-+	WARN_ON(num_lockers != 1);
-+	if (strncmp(lockers[0].id.cookie, RBD_LOCK_COOKIE_PREFIX,
- 		    strlen(RBD_LOCK_COOKIE_PREFIX))) {
- 		rbd_warn(rbd_dev, "locked by external mechanism, cookie %s",
--			 (*lockers)[0].id.cookie);
--		ret = -EBUSY;
--		goto out;
-+			 lockers[0].id.cookie);
-+		goto err_busy;
- 	}
- 
- out:
- 	kfree(lock_tag);
--	return ret;
-+	return lockers;
-+
-+err_busy:
-+	kfree(lock_tag);
-+	ceph_free_lockers(lockers, num_lockers);
-+	return ERR_PTR(-EBUSY);
- }
- 
- static int find_watcher(struct rbd_device *rbd_dev,
-@@ -3948,51 +3961,56 @@ out:
- static int rbd_try_lock(struct rbd_device *rbd_dev)
- {
- 	struct ceph_client *client = rbd_dev->rbd_client->client;
--	struct ceph_locker *lockers;
--	u32 num_lockers;
-+	struct ceph_locker *locker;
- 	int ret;
- 
- 	for (;;) {
-+		locker = NULL;
-+
- 		ret = rbd_lock(rbd_dev);
- 		if (ret != -EBUSY)
--			return ret;
-+			goto out;
- 
- 		/* determine if the current lock holder is still alive */
--		ret = get_lock_owner_info(rbd_dev, &lockers, &num_lockers);
--		if (ret)
--			return ret;
--
--		if (num_lockers == 0)
-+		locker = get_lock_owner_info(rbd_dev);
-+		if (IS_ERR(locker)) {
-+			ret = PTR_ERR(locker);
-+			locker = NULL;
-+			goto out;
-+		}
-+		if (!locker)
- 			goto again;
- 
--		ret = find_watcher(rbd_dev, lockers);
-+		ret = find_watcher(rbd_dev, locker);
- 		if (ret)
- 			goto out; /* request lock or error */
- 
- 		rbd_warn(rbd_dev, "breaking header lock owned by %s%llu",
--			 ENTITY_NAME(lockers[0].id.name));
-+			 ENTITY_NAME(locker->id.name));
- 
- 		ret = ceph_monc_blocklist_add(&client->monc,
--					      &lockers[0].info.addr);
-+					      &locker->info.addr);
- 		if (ret) {
--			rbd_warn(rbd_dev, "blocklist of %s%llu failed: %d",
--				 ENTITY_NAME(lockers[0].id.name), ret);
-+			rbd_warn(rbd_dev, "failed to blocklist %s%llu: %d",
-+				 ENTITY_NAME(locker->id.name), ret);
- 			goto out;
- 		}
- 
- 		ret = ceph_cls_break_lock(&client->osdc, &rbd_dev->header_oid,
- 					  &rbd_dev->header_oloc, RBD_LOCK_NAME,
--					  lockers[0].id.cookie,
--					  &lockers[0].id.name);
--		if (ret && ret != -ENOENT)
-+					  locker->id.cookie, &locker->id.name);
-+		if (ret && ret != -ENOENT) {
-+			rbd_warn(rbd_dev, "failed to break header lock: %d",
-+				 ret);
- 			goto out;
-+		}
- 
- again:
--		ceph_free_lockers(lockers, num_lockers);
-+		free_locker(locker);
- 	}
- 
- out:
--	ceph_free_lockers(lockers, num_lockers);
-+	free_locker(locker);
- 	return ret;
- }
- 
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
+ 		/* rseq registration owned by glibc */
 
 
