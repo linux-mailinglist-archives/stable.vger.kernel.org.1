@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0838476AD65
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D4B76AF9B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229991AbjHAJ2s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57010 "EHLO
+        id S233420AbjHAJtO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232954AbjHAJ2c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:28:32 -0400
+        with ESMTP id S233450AbjHAJs6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF4A198C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:27:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664632690
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66565614BB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:27:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F608C433C9;
-        Tue,  1 Aug 2023 09:27:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 418B9614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAFDC433C9;
+        Tue,  1 Aug 2023 09:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882045;
-        bh=D6/ImxoH9T4HOxUCh1VIDSXf5DTrEFBySBTS6g6aIAI=;
+        s=korg; t=1690883251;
+        bh=eKptBPxHQ2G1T44618ga8rrIQiIoYGCCl8BLvBDoWP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cfndPw+82ywDGhW8EJFkgkrChNmCVRGXX1Ke047YymsDMvHk3mm9wrfLBpeXNxP2F
-         y9+n9Zp922KLhkIVqtucnp/WiAk/FscLG+MLH3URdKV6FUKxFuqRlkSGSVRP5phrgW
-         M+NZGUuVPe970qB9eo82gmfsTBngyJpNCa/4W+X4=
+        b=IGyUf3eKJCCfZFFopPV9+PxiRc6tx9QprVrvIKc+sueYCymaPm1kkc3gQPndRZb/2
+         XwUXGPIJAZuRFqS+vRgYuXXxRBKX7DAnuwVc6qR/K+cKnyWq+xpMB0yNuc90OCF1cR
+         c2NRJsw39a6FjuGK6LXoOmmtWR3BqJFEfsLpWoQk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.15 122/155] Documentation: security-bugs.rst: update preferences when dealing with the linux-distros group
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.4 170/239] Revert "usb: xhci: tegra: Fix error check"
 Date:   Tue,  1 Aug 2023 11:20:34 +0200
-Message-ID: <20230801091914.566835831@linuxfoundation.org>
+Message-ID: <20230801091931.764272886@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,56 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 4fee0915e649bd0cea56dece6d96f8f4643df33c upstream.
+commit 288b4fa1798e3637a9304c6e90a93d900e02369c upstream.
 
-Because the linux-distros group forces reporters to release information
-about reported bugs, and they impose arbitrary deadlines in having those
-bugs fixed despite not actually being kernel developers, the kernel
-security team recommends not interacting with them at all as this just
-causes confusion and the early-release of reported security problems.
+This reverts commit 18fc7c435be3f17ea26a21b2e2312fcb9088e01f.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/2023063020-throat-pantyhose-f110@gregkh
+The reverted commit was based on static analysis and a misunderstanding
+of how PTR_ERR() and NULLs are supposed to work.  When a function
+returns both pointer errors and NULL then normally the NULL means
+"continue operating without a feature because it was deliberately
+turned off".  The NULL should not be treated as a failure.  If a driver
+cannot work when that feature is disabled then the KConfig should
+enforce that the function cannot return NULL.  We should not need to
+test for it.
+
+In this code, the patch means that certain tegra_xusb_probe() will
+fail if the firmware supports power-domains but CONFIG_PM is disabled.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 18fc7c435be3 ("usb: xhci: tegra: Fix error check")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/8baace8d-fb4b-41a4-ad5f-848ae643a23b@moroto.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/security-bugs.rst |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/usb/host/xhci-tegra.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/Documentation/admin-guide/security-bugs.rst
-+++ b/Documentation/admin-guide/security-bugs.rst
-@@ -63,20 +63,18 @@ information submitted to the security li
- of the report are treated confidentially even after the embargo has been
- lifted, in perpetuity.
+--- a/drivers/usb/host/xhci-tegra.c
++++ b/drivers/usb/host/xhci-tegra.c
+@@ -1145,15 +1145,15 @@ static int tegra_xusb_powerdomain_init(s
+ 	int err;
  
--Coordination
--------------
-+Coordination with other groups
-+------------------------------
+ 	tegra->genpd_dev_host = dev_pm_domain_attach_by_name(dev, "xusb_host");
+-	if (IS_ERR_OR_NULL(tegra->genpd_dev_host)) {
+-		err = PTR_ERR(tegra->genpd_dev_host) ? : -ENODATA;
++	if (IS_ERR(tegra->genpd_dev_host)) {
++		err = PTR_ERR(tegra->genpd_dev_host);
+ 		dev_err(dev, "failed to get host pm-domain: %d\n", err);
+ 		return err;
+ 	}
  
--Fixes for sensitive bugs, such as those that might lead to privilege
--escalations, may need to be coordinated with the private
--<linux-distros@vs.openwall.org> mailing list so that distribution vendors
--are well prepared to issue a fixed kernel upon public disclosure of the
--upstream fix. Distros will need some time to test the proposed patch and
--will generally request at least a few days of embargo, and vendor update
--publication prefers to happen Tuesday through Thursday. When appropriate,
--the security team can assist with this coordination, or the reporter can
--include linux-distros from the start. In this case, remember to prefix
--the email Subject line with "[vs]" as described in the linux-distros wiki:
--<http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists>
-+The kernel security team strongly recommends that reporters of potential
-+security issues NEVER contact the "linux-distros" mailing list until
-+AFTER discussing it with the kernel security team.  Do not Cc: both
-+lists at once.  You may contact the linux-distros mailing list after a
-+fix has been agreed on and you fully understand the requirements that
-+doing so will impose on you and the kernel community.
-+
-+The different lists have different goals and the linux-distros rules do
-+not contribute to actually fixing any potential security problems.
- 
- CVE assignment
- --------------
+ 	tegra->genpd_dev_ss = dev_pm_domain_attach_by_name(dev, "xusb_ss");
+-	if (IS_ERR_OR_NULL(tegra->genpd_dev_ss)) {
+-		err = PTR_ERR(tegra->genpd_dev_ss) ? : -ENODATA;
++	if (IS_ERR(tegra->genpd_dev_ss)) {
++		err = PTR_ERR(tegra->genpd_dev_ss);
+ 		dev_err(dev, "failed to get superspeed pm-domain: %d\n", err);
+ 		return err;
+ 	}
 
 
