@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B047976AE39
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB63E76AD1F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233089AbjHAJhF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34968 "EHLO
+        id S231831AbjHAJ0j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233085AbjHAJgs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:48 -0400
+        with ESMTP id S231820AbjHAJ0V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D634C13
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949B849F6
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E98861509
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7A1C433C8;
-        Tue,  1 Aug 2023 09:34:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27D6C61503
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D04C433C7;
+        Tue,  1 Aug 2023 09:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882491;
-        bh=HM+AcfolXafKb/i8DKHEJbIxPSATVAi48a2/D1Bb8NU=;
+        s=korg; t=1690881905;
+        bh=NNSGxKrDbuhcyX5wdq1hV2DeSjsnKp+QjZ20Z33GBJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rtBcXumbWVsSaaVLwoM+9srsJp5Xu/+4yTSMQxRcaP+ng5M9Oda8xOEKdIqp/5flS
-         6kITfpGswnlDKGat1quxqRAa6e6djSdk6I7+PWBKaluTm7BtrudnAs2ul39XlkkhUp
-         2H5EeXtluXm4Ar8iwyAD88kFlh55MMJ/QbjbcPFQ=
+        b=ueNTAhEI9f/7qv176xPpRJjjKM7gJlrfH8SO1hamEFQWgbWUu2H+tShpKz2886O5R
+         TnSSFJ/TgRR3U3o2duNptIiHw7oPGL12xPZVPUvI2djBbtDmL1Kab6xXepm5aE2yEE
+         Nfot/efgI1B/jQw9tyP6bLXcBuNEBjDhDOZNTp2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Breno Leitao <leitao@debian.org>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
+        patches@lists.linux.dev, Maxim Mikityanskiy <maxtram95@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/228] cxl/acpi: Return rc instead of 0 in cxl_parse_cfmws()
+Subject: [PATCH 5.15 071/155] platform/x86: msi-laptop: Fix rfkill out-of-sync on MSI Wind U100
 Date:   Tue,  1 Aug 2023 11:19:43 +0200
-Message-ID: <20230801091927.265222816@linuxfoundation.org>
+Message-ID: <20230801091912.703388824@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Breno Leitao <leitao@debian.org>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 91019b5bc7c2c5e6f676cce80ee6d12b2753d018 ]
+[ Upstream commit ad084a6d99bc182bf109c190c808e2ea073ec57b ]
 
-Driver initialization returned success (return 0) even if the
-initialization (cxl_decoder_add() or acpi_table_parse_cedt()) failed.
+Only the HW rfkill state is toggled on laptops with quirks->ec_read_only
+(so far only MSI Wind U90/U100). There are, however, a few issues with
+the implementation:
 
-Return the error instead of swallowing it.
+1. The initial HW state is always unblocked, regardless of the actual
+   state on boot, because msi_init_rfkill only sets the SW state,
+   regardless of ec_read_only.
 
-Fixes: f4ce1f766f1e ("cxl/acpi: Convert CFMWS parsing to ACPI sub-table helpers")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20230714093146.2253438-2-leitao@debian.org
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+2. The initial SW state corresponds to the actual state on boot, but it
+   can't be changed afterwards, because set_device_state returns
+   -EOPNOTSUPP. It confuses the userspace, making Wi-Fi and/or Bluetooth
+   unusable if it was blocked on boot, and breaking the airplane mode if
+   the rfkill was unblocked on boot.
+
+Address the above issues by properly initializing the HW state on
+ec_read_only laptops and by allowing the userspace to toggle the SW
+state. Don't set the SW state ourselves and let the userspace fully
+control it. Toggling the SW state is a no-op, however, it allows the
+userspace to properly toggle the airplane mode. The actual SW radio
+disablement is handled by the corresponding rtl818x_pci and btusb
+drivers that have their own rfkills.
+
+Tested on MSI Wind U100 Plus, BIOS ver 1.0G, EC ver 130.
+
+Fixes: 0816392b97d4 ("msi-laptop: merge quirk tables to one")
+Fixes: 0de6575ad0a8 ("msi-laptop: Add MSI Wind U90/U100 support")
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://lore.kernel.org/r/20230721145423.161057-1-maxtram95@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/msi-laptop.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 55907a94cb388..07b184382707e 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -155,7 +155,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 		rc = cxl_decoder_autoremove(dev, cxld);
- 	if (rc) {
- 		dev_err(dev, "Failed to add decode range: %pr", res);
--		return 0;
-+		return rc;
+diff --git a/drivers/platform/x86/msi-laptop.c b/drivers/platform/x86/msi-laptop.c
+index 0e804b6c2d242..dfb4af759aa75 100644
+--- a/drivers/platform/x86/msi-laptop.c
++++ b/drivers/platform/x86/msi-laptop.c
+@@ -210,7 +210,7 @@ static ssize_t set_device_state(const char *buf, size_t count, u8 mask)
+ 		return -EINVAL;
+ 
+ 	if (quirks->ec_read_only)
+-		return -EOPNOTSUPP;
++		return 0;
+ 
+ 	/* read current device state */
+ 	result = ec_read(MSI_STANDARD_EC_COMMAND_ADDRESS, &rdata);
+@@ -841,15 +841,15 @@ static bool msi_laptop_i8042_filter(unsigned char data, unsigned char str,
+ static void msi_init_rfkill(struct work_struct *ignored)
+ {
+ 	if (rfk_wlan) {
+-		rfkill_set_sw_state(rfk_wlan, !wlan_s);
++		msi_rfkill_set_state(rfk_wlan, !wlan_s);
+ 		rfkill_wlan_set(NULL, !wlan_s);
  	}
- 	dev_dbg(dev, "add: %s node: %d range [%#llx - %#llx]\n",
- 		dev_name(&cxld->dev),
+ 	if (rfk_bluetooth) {
+-		rfkill_set_sw_state(rfk_bluetooth, !bluetooth_s);
++		msi_rfkill_set_state(rfk_bluetooth, !bluetooth_s);
+ 		rfkill_bluetooth_set(NULL, !bluetooth_s);
+ 	}
+ 	if (rfk_threeg) {
+-		rfkill_set_sw_state(rfk_threeg, !threeg_s);
++		msi_rfkill_set_state(rfk_threeg, !threeg_s);
+ 		rfkill_threeg_set(NULL, !threeg_s);
+ 	}
+ }
 -- 
-2.40.1
+2.39.2
 
 
 
