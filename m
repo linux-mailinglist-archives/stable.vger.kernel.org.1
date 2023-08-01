@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBEEB76AE33
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F46176AF4E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233104AbjHAJgv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35002 "EHLO
+        id S233669AbjHAJqu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjHAJgc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED5D54226
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:41 -0700 (PDT)
+        with ESMTP id S230123AbjHAJq3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EF5E1
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B312614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED1BC433C9;
-        Tue,  1 Aug 2023 09:34:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29D3A614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A7FC433C7;
+        Tue,  1 Aug 2023 09:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882480;
-        bh=B28jOyjaNmF2IVqKPmCZXi/DGMf3VnPp980hBsyqFxM=;
+        s=korg; t=1690883104;
+        bh=Iidxy7Txz/Ag0UZabRS2GyTWPkAKLCVfqDrMetzxoSM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PCnpJvoynnZBl8xDePPqfyEIJ/A24zG84rQFLC/25HF1DwI2RGDIT74AdYQRAdeVf
-         HqUqxFeusEX0Vhwd9uw78hpZGzYbTxWVDDsd76/l07ogsb+ara+CWdrQUp/8vHcbTh
-         D9c2BR11MV/QpA7Kq2hw8lo1hhs0Te7nkX66FuzI=
+        b=oov/Vfjy6jVKYhyK/hCM1F/iR3RRZuZugxaL/ih6xvNo3HmDOKILXhxJR2d59Hl2X
+         D7Y7Ke2xRZSv1j6fmxvk68XCKzt7lDzgFg0gOeR4hLFYYDQ4fcTZLuA/JJGNz4upQu
+         zVSazCKsKlAJ2midcZezwMJblQx8X7BI7mcHGOYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
         Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/228] RDMA/mthca: Fix crash when polling CQ for shared QPs
-Date:   Tue,  1 Aug 2023 11:19:39 +0200
-Message-ID: <20230801091927.120590748@linuxfoundation.org>
+Subject: [PATCH 6.4 116/239] RDMA/bnxt_re: Fix hang during driver unload
+Date:   Tue,  1 Aug 2023 11:19:40 +0200
+Message-ID: <20230801091929.917993613@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +57,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit dc52aadbc1849cbe3fcf6bc54d35f6baa396e0a1 ]
+[ Upstream commit 29900bf351e1a7e4643da5c3c3cd9df75c577b88 ]
 
-Commit 21c2fe94abb2 ("RDMA/mthca: Combine special QP struct with mthca QP")
-introduced a new struct mthca_sqp which doesn't contain struct mthca_qp
-any longer. Placing a pointer of this new struct into qptable leads
-to crashes, because mthca_poll_one() expects a qp pointer. Fix this
-by putting the correct pointer into qptable.
+Driver unload hits a hang during stress testing of load/unload.
 
-Fixes: 21c2fe94abb2 ("RDMA/mthca: Combine special QP struct with mthca QP")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Link: https://lore.kernel.org/r/20230713141658.9426-1-tbogendoerfer@suse.de
+stack trace snippet -
+
+tasklet_kill at ffffffff9aabb8b2
+bnxt_qplib_nq_stop_irq at ffffffffc0a805fb [bnxt_re]
+bnxt_qplib_disable_nq at ffffffffc0a80c5b [bnxt_re]
+bnxt_re_dev_uninit at ffffffffc0a67d15 [bnxt_re]
+bnxt_re_remove_device at ffffffffc0a6af1d [bnxt_re]
+
+tasklet_kill can hang if the tasklet is scheduled after it is disabled.
+
+Modified the sequences to disable the interrupt first and synchronize
+irq before disabling the tasklet.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1689322969-25402-3-git-send-email-selvin.xavier@broadcom.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mthca/mthca_qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c   | 10 +++++-----
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c |  9 ++++-----
+ 2 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mthca/mthca_qp.c b/drivers/infiniband/hw/mthca/mthca_qp.c
-index 69bba0ef4a5df..53f43649f7d08 100644
---- a/drivers/infiniband/hw/mthca/mthca_qp.c
-+++ b/drivers/infiniband/hw/mthca/mthca_qp.c
-@@ -1393,7 +1393,7 @@ int mthca_alloc_sqp(struct mthca_dev *dev,
- 	if (mthca_array_get(&dev->qp_table.qp, mqpn))
- 		err = -EBUSY;
- 	else
--		mthca_array_set(&dev->qp_table.qp, mqpn, qp->sqp);
-+		mthca_array_set(&dev->qp_table.qp, mqpn, qp);
- 	spin_unlock_irq(&dev->qp_table.lock);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index e589b04f953c5..b34cc500f51f3 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -420,19 +420,19 @@ void bnxt_qplib_nq_stop_irq(struct bnxt_qplib_nq *nq, bool kill)
+ 	if (!nq->requested)
+ 		return;
  
- 	if (err)
+-	tasklet_disable(&nq->nq_tasklet);
++	nq->requested = false;
+ 	/* Mask h/w interrupt */
+ 	bnxt_qplib_ring_nq_db(&nq->nq_db.dbinfo, nq->res->cctx, false);
+ 	/* Sync with last running IRQ handler */
+ 	synchronize_irq(nq->msix_vec);
+-	if (kill)
+-		tasklet_kill(&nq->nq_tasklet);
+-
+ 	irq_set_affinity_hint(nq->msix_vec, NULL);
+ 	free_irq(nq->msix_vec, nq);
+ 	kfree(nq->name);
+ 	nq->name = NULL;
+-	nq->requested = false;
++
++	if (kill)
++		tasklet_kill(&nq->nq_tasklet);
++	tasklet_disable(&nq->nq_tasklet);
+ }
+ 
+ void bnxt_qplib_disable_nq(struct bnxt_qplib_nq *nq)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 0028043bb51cd..05683ce64887f 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -826,19 +826,18 @@ void bnxt_qplib_rcfw_stop_irq(struct bnxt_qplib_rcfw *rcfw, bool kill)
+ 	if (!creq->requested)
+ 		return;
+ 
+-	tasklet_disable(&creq->creq_tasklet);
++	creq->requested = false;
+ 	/* Mask h/w interrupts */
+ 	bnxt_qplib_ring_nq_db(&creq->creq_db.dbinfo, rcfw->res->cctx, false);
+ 	/* Sync with last running IRQ-handler */
+ 	synchronize_irq(creq->msix_vec);
+-	if (kill)
+-		tasklet_kill(&creq->creq_tasklet);
+-
+ 	free_irq(creq->msix_vec, rcfw);
+ 	kfree(creq->irq_name);
+ 	creq->irq_name = NULL;
+-	creq->requested = false;
+ 	atomic_set(&rcfw->rcfw_intr_enabled, 0);
++	if (kill)
++		tasklet_kill(&creq->creq_tasklet);
++	tasklet_disable(&creq->creq_tasklet);
+ }
+ 
+ void bnxt_qplib_disable_rcfw_channel(struct bnxt_qplib_rcfw *rcfw)
 -- 
 2.40.1
 
