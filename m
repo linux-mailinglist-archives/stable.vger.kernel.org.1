@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DF6F76AD84
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8E2676AE81
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231793AbjHAJ3z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:29:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
+        id S233206AbjHAJj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231862AbjHAJ3m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86F8930FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:25 -0700 (PDT)
+        with ESMTP id S233202AbjHAJjJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B211C4690
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55A24614BB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67053C433C8;
-        Tue,  1 Aug 2023 09:28:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ADFC3613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C197BC433C9;
+        Tue,  1 Aug 2023 09:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882104;
-        bh=rNCzcZmK60mJYzUTbnDpFOToZwXaxdUomogcZh5PnbI=;
+        s=korg; t=1690882619;
+        bh=+cSykmEd8jLkDlWWxthMSy1Nu6DBJj/GdLkrby1HzzU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EqZUgMxHIhZytT30XSnaLxFwrEx1RcyU22fQoHM2/IC634xQbJXxvxTPHH3HbfSWV
-         AMCgEMxxNJv8p6sBE56E7ecVLHKobmg9dtuOQ+rD56I0iNEE96tPaLaD08zVzYq5nF
-         pm3wF5VGRIl43fIWCdRWFxiHoaUdRNmgaXFL34WE=
+        b=QiGlg94YZ/D3S2bNJa4H8+MxwGWO3PzNx0u7FdL8aguQSeCPePBwp0VL8yf7b0R92
+         TT8ekdsPQS/v66jydCfvIhIoQnGsRN4h31G4K+6j3jocH+2JtYyUQp7ebdNE5EldGp
+         sDxbs3OiHMbqSaIKUpN+HxYT1WUv7P5izlITVsRU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable <stable@kernel.org>,
-        Gratian Crisan <gratian.crisan@ni.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.15 115/155] usb: dwc3: pci: skip BYT GPIO lookup table for hardwired phy
-Date:   Tue,  1 Aug 2023 11:20:27 +0200
-Message-ID: <20230801091914.326815986@linuxfoundation.org>
+        Ravi Gunasekaran <r-gunasekaran@ti.com>,
+        Frank Li <Frank.Li@nxp.com>, Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.1 170/228] usb: cdns3: fix incorrect calculation of ep_buf_size when more than one config
+Date:   Tue,  1 Aug 2023 11:20:28 +0200
+Message-ID: <20230801091929.010324033@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gratian Crisan <gratian.crisan@ni.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit b32b8f2b9542d8039f5468303a6ca78c1b5611a5 upstream.
+commit 2627335a1329a0d39d8d277994678571c4f21800 upstream.
 
-Hardware based on the Bay Trail / BYT SoCs require an external ULPI phy for
-USB device-mode. The phy chip usually has its 'reset' and 'chip select'
-lines connected to GPIOs described by ACPI fwnodes in the DSDT table.
+Previously, the cdns3_gadget_check_config() function in the cdns3 driver
+mistakenly calculated the ep_buf_size by considering only one
+configuration's endpoint information because "claimed" will be clear after
+call usb_gadget_check_config().
 
-Because of hardware with missing ACPI resources for the 'reset' and 'chip
-select' GPIOs commit 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table
-on platforms without ACPI GPIO resources") introduced a fallback
-gpiod_lookup_table with hard-coded mappings for Bay Trail devices.
+The fix involves checking the private flags EP_CLAIMED instead of relying
+on the "claimed" flag.
 
-However there are existing Bay Trail based devices, like the National
-Instruments cRIO-903x series, where the phy chip has its 'reset' and
-'chip-select' lines always asserted in hardware via resistor pull-ups. On
-this hardware the phy chip is always enabled and the ACPI dsdt table is
-missing information not only for the 'chip-select' and 'reset' lines but
-also for the BYT GPIO controller itself "INT33FC".
-
-With the introduction of the gpiod_lookup_table initializing the USB
-device-mode on these hardware now errors out. The error comes from the
-gpiod_get_optional() calls in dwc3_pci_quirks() which will now return an
--ENOENT error due to the missing ACPI entry for the INT33FC gpio controller
-used in the aforementioned table.
-
-This hardware used to work before because gpiod_get_optional() will return
-NULL instead of -ENOENT if no GPIO has been assigned to the requested
-function. The dwc3_pci_quirks() code for setting the 'cs' and 'reset' GPIOs
-was then skipped (due to the NULL return). This is the correct behavior in
-cases where the phy chip is hardwired and there are no GPIOs to control.
-
-Since the gpiod_lookup_table relies on the presence of INT33FC fwnode
-in ACPI tables only add the table if we know the entry for the INT33FC
-gpio controller is present. This allows Bay Trail based devices with
-hardwired dwc3 ULPI phys to continue working.
-
-Fixes: 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table on platforms without ACPI GPIO resources")
+Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Gratian Crisan <gratian.crisan@ni.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230726184555.218091-2-gratian.crisan@ni.com
+Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Tested-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Link: https://lore.kernel.org/r/20230707230015.494999-2-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -219,10 +219,12 @@ static int dwc3_pci_quirks(struct dwc3_p
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -3012,12 +3012,14 @@ static int cdns3_gadget_udc_stop(struct
+ static int cdns3_gadget_check_config(struct usb_gadget *gadget)
+ {
+ 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
++	struct cdns3_endpoint *priv_ep;
+ 	struct usb_ep *ep;
+ 	int n_in = 0;
+ 	int total;
  
- 			/*
- 			 * A lot of BYT devices lack ACPI resource entries for
--			 * the GPIOs, add a fallback mapping to the reference
-+			 * the GPIOs. If the ACPI entry for the GPIO controller
-+			 * is present add a fallback mapping to the reference
- 			 * design GPIOs which all boards seem to use.
- 			 */
--			gpiod_add_lookup_table(&platform_bytcr_gpios);
-+			if (acpi_dev_present("INT33FC", NULL, -1))
-+				gpiod_add_lookup_table(&platform_bytcr_gpios);
+ 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
+-		if (ep->claimed && (ep->address & USB_DIR_IN))
++		priv_ep = ep_to_cdns3_ep(ep);
++		if ((priv_ep->flags & EP_CLAIMED) && (ep->address & USB_DIR_IN))
+ 			n_in++;
+ 	}
  
- 			/*
- 			 * These GPIOs will turn on the USB2 PHY. Note that we have to
 
 
