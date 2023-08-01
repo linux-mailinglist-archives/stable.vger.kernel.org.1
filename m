@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E51976ACE6
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9107476ADE6
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231642AbjHAJYV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:24:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52766 "EHLO
+        id S233060AbjHAJeW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231731AbjHAJYD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:24:03 -0400
+        with ESMTP id S233095AbjHAJeB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D623AAB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F753585
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 095B961500
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C07DC433C9;
-        Tue,  1 Aug 2023 09:22:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A080E614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A759AC433C8;
+        Tue,  1 Aug 2023 09:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881762;
-        bh=Ui4NihlIv0+S1U4E7ZfEE2TQSCpeites75t3ZEOu6Yg=;
+        s=korg; t=1690882316;
+        bh=YIJ8iip5sT6GDUmpZCrhZn5u/26BQbRjuvDfgp3nKiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y12MdBVaJIfNEaXcM/K290y0IwpXS4peXOZ0xZuJMm+dfjdYDkV1rfLcUqQp0LUoA
-         MHujylywj5qGrVrbDj+FznRfoJwrbAoc7xdxQS8sQdlc8jbAsPjVIdlG42fTW5yiqv
-         GZMPssh9NT3E0ZAULHZpr3gAHMur6CNmUZ5idBRc=
+        b=BiGfABlO7RxmA2D7M67+aSCi13+nA/clpg9dkkULZ+tpLUqjQHHm+x9GnR/FRQLjK
+         nLSJM53y6lIIl5OVwAN2zz//hPEd601BVEMIK6oE4OR+XTCJCy+607IRxQJHLqhtkL
+         p3jfCs2kI5qi7dLqkGJ5w96ZDjj62q/X6ehbYvX0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Markus Elfring <elfring@users.sourceforge.net>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 008/155] i2c: Delete error messages for failed memory allocations
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/228] test_maple_tree: test modifications while iterating
 Date:   Tue,  1 Aug 2023 11:18:40 +0200
-Message-ID: <20230801091910.488340673@linuxfoundation.org>
+Message-ID: <20230801091925.095763683@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,79 +56,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Liam R. Howlett <Liam.Howlett@Oracle.com>
 
-[ Upstream commit 6b3b21a8542fd2fb6ffc61bc13b9419f0c58ebad ]
+[ Upstream commit 5159d64b335401fa83f18c27e2267f1eafc41bd3 ]
 
-These issues were detected by using the Coccinelle software.
+Add a testcase to ensure the iterator detects bad states on modifications
+and does what the user expects
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
+Link: https://lkml.kernel.org/r/20230120162650.984577-5-Liam.Howlett@oracle.com
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7a93c71a6714 ("maple_tree: fix 32 bit mas_next testing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ibm_iic.c  | 4 +---
- drivers/i2c/busses/i2c-nomadik.c  | 1 -
- drivers/i2c/busses/i2c-sh7760.c   | 1 -
- drivers/i2c/busses/i2c-tiny-usb.c | 4 +---
- 4 files changed, 2 insertions(+), 8 deletions(-)
+ lib/test_maple_tree.c | 72 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-ibm_iic.c b/drivers/i2c/busses/i2c-ibm_iic.c
-index 9f71daf6db64b..c073f5b8833a2 100644
---- a/drivers/i2c/busses/i2c-ibm_iic.c
-+++ b/drivers/i2c/busses/i2c-ibm_iic.c
-@@ -694,10 +694,8 @@ static int iic_probe(struct platform_device *ofdev)
- 	int ret;
+diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
+index f7364b9fee939..f1db333270e9f 100644
+--- a/lib/test_maple_tree.c
++++ b/lib/test_maple_tree.c
+@@ -1709,6 +1709,74 @@ static noinline void check_forking(struct maple_tree *mt)
+ 	mtree_destroy(&newmt);
+ }
  
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (!dev) {
--		dev_err(&ofdev->dev, "failed to allocate device data\n");
-+	if (!dev)
- 		return -ENOMEM;
--	}
++static noinline void check_iteration(struct maple_tree *mt)
++{
++	int i, nr_entries = 125;
++	void *val;
++	MA_STATE(mas, mt, 0, 0);
++
++	for (i = 0; i <= nr_entries; i++)
++		mtree_store_range(mt, i * 10, i * 10 + 9,
++				  xa_mk_value(i), GFP_KERNEL);
++
++	mt_set_non_kernel(99999);
++
++	i = 0;
++	mas_lock(&mas);
++	mas_for_each(&mas, val, 925) {
++		MT_BUG_ON(mt, mas.index != i * 10);
++		MT_BUG_ON(mt, mas.last != i * 10 + 9);
++		/* Overwrite end of entry 92 */
++		if (i == 92) {
++			mas.index = 925;
++			mas.last = 929;
++			mas_store(&mas, val);
++		}
++		i++;
++	}
++	/* Ensure mas_find() gets the next value */
++	val = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, val != xa_mk_value(i));
++
++	mas_set(&mas, 0);
++	i = 0;
++	mas_for_each(&mas, val, 785) {
++		MT_BUG_ON(mt, mas.index != i * 10);
++		MT_BUG_ON(mt, mas.last != i * 10 + 9);
++		/* Overwrite start of entry 78 */
++		if (i == 78) {
++			mas.index = 780;
++			mas.last = 785;
++			mas_store(&mas, val);
++		} else {
++			i++;
++		}
++	}
++	val = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, val != xa_mk_value(i));
++
++	mas_set(&mas, 0);
++	i = 0;
++	mas_for_each(&mas, val, 765) {
++		MT_BUG_ON(mt, mas.index != i * 10);
++		MT_BUG_ON(mt, mas.last != i * 10 + 9);
++		/* Overwrite end of entry 76 and advance to the end */
++		if (i == 76) {
++			mas.index = 760;
++			mas.last = 765;
++			mas_store(&mas, val);
++			mas_next(&mas, ULONG_MAX);
++		}
++		i++;
++	}
++	/* Make sure the next find returns the one after 765, 766-769 */
++	val = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, val != xa_mk_value(76));
++	mas_unlock(&mas);
++	mas_destroy(&mas);
++	mt_set_non_kernel(0);
++}
++
+ static noinline void check_mas_store_gfp(struct maple_tree *mt)
+ {
  
- 	platform_set_drvdata(ofdev, dev);
+@@ -2702,6 +2770,10 @@ static int maple_tree_seed(void)
+ 	goto skip;
+ #endif
  
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index a2d12a5b1c34c..05eaae5aeb180 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -972,7 +972,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
- 
- 	dev = devm_kzalloc(&adev->dev, sizeof(struct nmk_i2c_dev), GFP_KERNEL);
- 	if (!dev) {
--		dev_err(&adev->dev, "cannot allocate memory\n");
- 		ret = -ENOMEM;
- 		goto err_no_mem;
- 	}
-diff --git a/drivers/i2c/busses/i2c-sh7760.c b/drivers/i2c/busses/i2c-sh7760.c
-index 319d1fa617c88..a0ccc5d009874 100644
---- a/drivers/i2c/busses/i2c-sh7760.c
-+++ b/drivers/i2c/busses/i2c-sh7760.c
-@@ -445,7 +445,6 @@ static int sh7760_i2c_probe(struct platform_device *pdev)
- 
- 	id = kzalloc(sizeof(struct cami2c), GFP_KERNEL);
- 	if (!id) {
--		dev_err(&pdev->dev, "no mem for private data\n");
- 		ret = -ENOMEM;
- 		goto out0;
- 	}
-diff --git a/drivers/i2c/busses/i2c-tiny-usb.c b/drivers/i2c/busses/i2c-tiny-usb.c
-index 7279ca0eaa2d0..d1fa9ff5aeab4 100644
---- a/drivers/i2c/busses/i2c-tiny-usb.c
-+++ b/drivers/i2c/busses/i2c-tiny-usb.c
-@@ -226,10 +226,8 @@ static int i2c_tiny_usb_probe(struct usb_interface *interface,
- 
- 	/* allocate memory for our device state and initialize it */
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (dev == NULL) {
--		dev_err(&interface->dev, "Out of memory\n");
-+	if (!dev)
- 		goto error;
--	}
- 
- 	dev->usb_dev = usb_get_dev(interface_to_usbdev(interface));
- 	dev->interface = interface;
++	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE);
++	check_iteration(&tree);
++	mtree_destroy(&tree);
++
+ 	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE);
+ 	check_forking(&tree);
+ 	mtree_destroy(&tree);
 -- 
 2.39.2
 
