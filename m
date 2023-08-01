@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A87876AEEA
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD2E176ADD8
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233271AbjHAJnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
+        id S233080AbjHAJd7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:33:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233431AbjHAJmx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:53 -0400
+        with ESMTP id S233368AbjHAJda (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3233C125
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54127269F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0378961510
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE1CC433C8;
-        Tue,  1 Aug 2023 09:40:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E7911613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B86C433C8;
+        Tue,  1 Aug 2023 09:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882832;
-        bh=8aDQGPdI60fhVkFH25qrsMT41gnch0JeShILs06iHms=;
+        s=korg; t=1690882290;
+        bh=B2L++1REw280gUtS+wMInmWJ0TE/a2go2Yu1ppkM1dE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QI/OF/8vrFLgkauCcHL9Wxld6OjPX8POZh5Fno0pQ/pseTiRY92CzYqotrtnbY2Lh
-         nrmPWqjX9sEDifKJepTxLLddTKGOqoIMikCAQvLgnAP5aocFiWACeZKdLcJ3ir+hhr
-         EGmn0aJVXWlEFtz6oFJ0OspXpCrv9zQd4fbhP5eA=
+        b=oicmGH617vpwoJAG+MPHEXfc6lVeypXh8SwcC3W9Clv0t37RsgGZNXdpXrzL+8qF8
+         8/8+ZIFy0XFgdSdeo1JM4LQnNuCVg6n7hXA66yWawMvRtq3BaGsA+eHSvxBlSvZNE3
+         pydcz/TD0UVPuDz6psnA3mptRlg12hGasrukRkMA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Christoph Hellwig <hch@lst.de>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 019/239] btrfs: fix fsverify read error handling in end_page_read
+Subject: [PATCH 6.1 025/228] MIPS: Loongson: Move arch cflags to MIPS top level Makefile
 Date:   Tue,  1 Aug 2023 11:18:03 +0200
-Message-ID: <20230801091926.331382169@linuxfoundation.org>
+Message-ID: <20230801091923.784646409@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +55,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 2c14f0ffdd30bd3d321ad5fe76fcf701746e1df6 ]
+[ Upstream commit 194a835210521282ad31e8f7047556318611f596 ]
 
-Also clear the uptodate bit to make sure the page isn't seen as uptodate
-in the page cache if fsverity verification fails.
+Arch cflags should be independent to Platform.
 
-Fixes: 146054090b08 ("btrfs: initial fsverity support")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Stable-dep-of: 531b3d1195d0 ("MIPS: Loongson: Fix build error when make modules_install")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/mips/Makefile             | 38 ++++++++++++++++++++++++++++++++++
+ arch/mips/loongson2ef/Platform | 35 -------------------------------
+ arch/mips/loongson64/Platform  | 16 --------------
+ 3 files changed, 38 insertions(+), 51 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 496c2c9920fc6..82b9779deaa88 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -494,12 +494,8 @@ static void end_page_read(struct page *page, bool uptodate, u64 start, u32 len)
- 	ASSERT(page_offset(page) <= start &&
- 	       start + len <= page_offset(page) + PAGE_SIZE);
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 85d3c3b4b7bdc..ca457f19f7fe0 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -190,9 +190,47 @@ endif
+ cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
+ cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
  
--	if (uptodate) {
--		if (!btrfs_verify_page(page, start)) {
--			btrfs_page_set_error(fs_info, page, start, len);
--		} else {
--			btrfs_page_set_uptodate(fs_info, page, start, len);
--		}
-+	if (uptodate && btrfs_verify_page(page, start)) {
-+		btrfs_page_set_uptodate(fs_info, page, start, len);
- 	} else {
- 		btrfs_page_clear_uptodate(fs_info, page, start, len);
- 		btrfs_page_set_error(fs_info, page, start, len);
++cflags-$(CONFIG_CPU_LOONGSON2E) += -march=loongson2e -Wa,--trap
++cflags-$(CONFIG_CPU_LOONGSON2F) += -march=loongson2f -Wa,--trap
++# Some -march= flags enable MMI instructions, and GCC complains about that
++# support being enabled alongside -msoft-float. Thus explicitly disable MMI.
++cflags-$(CONFIG_CPU_LOONGSON2EF) += $(call cc-option,-mno-loongson-mmi)
++ifdef CONFIG_CPU_LOONGSON64
++cflags-$(CONFIG_CPU_LOONGSON64)	+= -Wa,--trap
++cflags-$(CONFIG_CC_IS_GCC) += -march=loongson3a
++cflags-$(CONFIG_CC_IS_CLANG) += -march=mips64r2
++endif
++cflags-$(CONFIG_CPU_LOONGSON64) += $(call cc-option,-mno-loongson-mmi)
++
+ cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
+ cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
+ cflags-$(CONFIG_CPU_DADDI_WORKAROUNDS)	+= $(call cc-option,-mno-daddi,)
++ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
++cflags-$(CONFIG_CPU_NOP_WORKAROUNDS) += -Wa,-mfix-loongson2f-nop
++cflags-$(CONFIG_CPU_JUMP_WORKAROUNDS) += -Wa,-mfix-loongson2f-jump
++endif
++
++#
++# Some versions of binutils, not currently mainline as of 2019/02/04, support
++# an -mfix-loongson3-llsc flag which emits a sync prior to each ll instruction
++# to work around a CPU bug (see __SYNC_loongson3_war in asm/sync.h for a
++# description).
++#
++# We disable this in order to prevent the assembler meddling with the
++# instruction that labels refer to, ie. if we label an ll instruction:
++#
++# 1: ll v0, 0(a0)
++#
++# ...then with the assembler fix applied the label may actually point at a sync
++# instruction inserted by the assembler, and if we were using the label in an
++# exception table the table would no longer contain the address of the ll
++# instruction.
++#
++# Avoid this by explicitly disabling that assembler behaviour. If upstream
++# binutils does not merge support for the flag then we can revisit & remove
++# this later - for now it ensures vendor toolchains don't cause problems.
++#
++cflags-$(CONFIG_CPU_LOONGSON64)	+= $(call as-option,-Wa$(comma)-mno-fix-loongson3-llsc,)
+ 
+ # For smartmips configurations, there are hundreds of warnings due to ISA overrides
+ # in assembly and header files. smartmips is only supported for MIPS32r1 onwards
+diff --git a/arch/mips/loongson2ef/Platform b/arch/mips/loongson2ef/Platform
+index c6f7a4b959978..d446b705fba47 100644
+--- a/arch/mips/loongson2ef/Platform
++++ b/arch/mips/loongson2ef/Platform
+@@ -2,41 +2,6 @@
+ # Loongson Processors' Support
+ #
+ 
+-cflags-$(CONFIG_CPU_LOONGSON2EF)	+= -Wa,--trap
+-cflags-$(CONFIG_CPU_LOONGSON2E) += -march=loongson2e
+-cflags-$(CONFIG_CPU_LOONGSON2F) += -march=loongson2f
+-#
+-# Some versions of binutils, not currently mainline as of 2019/02/04, support
+-# an -mfix-loongson3-llsc flag which emits a sync prior to each ll instruction
+-# to work around a CPU bug (see __SYNC_loongson3_war in asm/sync.h for a
+-# description).
+-#
+-# We disable this in order to prevent the assembler meddling with the
+-# instruction that labels refer to, ie. if we label an ll instruction:
+-#
+-# 1: ll v0, 0(a0)
+-#
+-# ...then with the assembler fix applied the label may actually point at a sync
+-# instruction inserted by the assembler, and if we were using the label in an
+-# exception table the table would no longer contain the address of the ll
+-# instruction.
+-#
+-# Avoid this by explicitly disabling that assembler behaviour. If upstream
+-# binutils does not merge support for the flag then we can revisit & remove
+-# this later - for now it ensures vendor toolchains don't cause problems.
+-#
+-cflags-$(CONFIG_CPU_LOONGSON2EF)	+= $(call cc-option,-Wa$(comma)-mno-fix-loongson3-llsc,)
+-
+-# Enable the workarounds for Loongson2f
+-ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
+-cflags-$(CONFIG_CPU_NOP_WORKAROUNDS) += -Wa,-mfix-loongson2f-nop
+-cflags-$(CONFIG_CPU_JUMP_WORKAROUNDS) += -Wa,-mfix-loongson2f-jump
+-endif
+-
+-# Some -march= flags enable MMI instructions, and GCC complains about that
+-# support being enabled alongside -msoft-float. Thus explicitly disable MMI.
+-cflags-y += $(call cc-option,-mno-loongson-mmi)
+-
+ #
+ # Loongson Machines' Support
+ #
+diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
+index 473404cae1c44..49c9889e3d563 100644
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -1,19 +1,3 @@
+-#
+-# Loongson Processors' Support
+-#
+-
+-
+-cflags-$(CONFIG_CPU_LOONGSON64)	+= -Wa,--trap
+-
+-ifdef CONFIG_CPU_LOONGSON64
+-cflags-$(CONFIG_CC_IS_GCC) += -march=loongson3a
+-cflags-$(CONFIG_CC_IS_CLANG) += -march=mips64r2
+-endif
+-
+-# Some -march= flags enable MMI instructions, and GCC complains about that
+-# support being enabled alongside -msoft-float. Thus explicitly disable MMI.
+-cflags-y += $(call cc-option,-mno-loongson-mmi)
+-
+ #
+ # Loongson Machines' Support
+ #
 -- 
 2.39.2
 
