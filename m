@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F01C76AFDE
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 400ED76AEAF
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232401AbjHAJuw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:50:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50676 "EHLO
+        id S233342AbjHAJko (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:40:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233721AbjHAJu3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:50:29 -0400
+        with ESMTP id S233364AbjHAJkb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E324E52
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:50:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A628526A2;
+        Tue,  1 Aug 2023 02:38:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FA90614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:50:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80890C433C8;
-        Tue,  1 Aug 2023 09:49:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD0A661507;
+        Tue,  1 Aug 2023 09:38:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB53CC433C8;
+        Tue,  1 Aug 2023 09:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883399;
-        bh=IH7OugVO0r2HthaA3TOInLT6jDo6Wajg//YTbHZRld4=;
+        s=korg; t=1690882702;
+        bh=vqAY7YW61xy0z3vOVjce1a/HQl5XRFWSPk2PWz99NJM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZrBZeD+WECARSppVSkfaeBpHiOPHvwbCokmBZCHW9NvomV1uf72gzabN36frXN+JH
-         Cvf60JisQM/UwcUEAVcQo8SCvDYWYYs4ibo8K+y53QdfVm5Xpk72Qkkg5DzE/v5ymr
-         21wAg1WpkAy6Y8AHZJmIplx7kouyKse9YdXkYUEc=
+        b=bfl8VgUeiUYchKskqEjNe8zHy915IwyoSzzn7bjSV7gyaZXb2QcWambr7Gdp2mBSZ
+         7cFE3/HoSidKcXkZfyQmJApm3MaLSuINMe0/Fq6Rf3AbD+toYxtlRux8YE5vIgIevf
+         nf0CCp0q7rmqmd6UrP3F+XLRZxq3AKCHyt65Do+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Guanghui Feng <guanghuifeng@linux.alibaba.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.4 194/239] ACPI/IORT: Remove erroneous id_count check in iort_node_get_rmr_info()
+        patches@lists.linux.dev, Aaron Lewis <aaronlewis@google.com>,
+        kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 200/228] selftests/rseq: Play nice with binaries statically linked against glibc 2.35+
 Date:   Tue,  1 Aug 2023 11:20:58 +0200
-Message-ID: <20230801091932.706025024@linuxfoundation.org>
+Message-ID: <20230801091930.106383753@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,44 +55,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 003e6b56d780095a9adc23efc9cb4b4b4717169b upstream.
+commit 3bcbc20942db5d738221cca31a928efc09827069 upstream.
 
-According to the ARM IORT specifications DEN 0049 issue E,
-the "Number of IDs" field in the ID mapping format reports
-the number of IDs in the mapping range minus one.
+To allow running rseq and KVM's rseq selftests as statically linked
+binaries, initialize the various "trampoline" pointers to point directly
+at the expect glibc symbols, and skip the dlysm() lookups if the rseq
+size is non-zero, i.e. the binary is statically linked *and* the libc
+registered its own rseq.
 
-In iort_node_get_rmr_info(), we erroneously skip ID mappings
-whose "Number of IDs" equal to 0, resulting in valid mapping
-nodes with a single ID to map being skipped, which is wrong.
+Define weak versions of the symbols so as not to break linking against
+libc versions that don't support rseq in any capacity.
 
-Fix iort_node_get_rmr_info() by removing the bogus id_count
-check.
+The KVM selftests in particular are often statically linked so that they
+can be run on targets with very limited runtime environments, i.e. test
+machines.
 
-Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # 6.0.x
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Tested-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://lore.kernel.org/r/1689593625-45213-1-git-send-email-guanghuifeng@linux.alibaba.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230721223352.2333911-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/arm64/iort.c |    3 ---
- 1 file changed, 3 deletions(-)
+ tools/testing/selftests/rseq/rseq.c |   28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1006,9 +1006,6 @@ static void iort_node_get_rmr_info(struc
- 	for (i = 0; i < node->mapping_count; i++, map++) {
- 		struct acpi_iort_node *parent;
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -32,9 +32,17 @@
+ #include "../kselftest.h"
+ #include "rseq.h"
  
--		if (!map->id_count)
--			continue;
--
- 		parent = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
- 				      map->output_reference);
- 		if (parent != iommu)
+-static const ptrdiff_t *libc_rseq_offset_p;
+-static const unsigned int *libc_rseq_size_p;
+-static const unsigned int *libc_rseq_flags_p;
++/*
++ * Define weak versions to play nice with binaries that are statically linked
++ * against a libc that doesn't support registering its own rseq.
++ */
++__weak ptrdiff_t __rseq_offset;
++__weak unsigned int __rseq_size;
++__weak unsigned int __rseq_flags;
++
++static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
++static const unsigned int *libc_rseq_size_p = &__rseq_size;
++static const unsigned int *libc_rseq_flags_p = &__rseq_flags;
+ 
+ /* Offset from the thread pointer to the rseq area.  */
+ ptrdiff_t rseq_offset;
+@@ -108,9 +116,17 @@ int rseq_unregister_current_thread(void)
+ static __attribute__((constructor))
+ void rseq_init(void)
+ {
+-	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+-	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+-	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	/*
++	 * If the libc's registered rseq size isn't already valid, it may be
++	 * because the binary is dynamically linked and not necessarily due to
++	 * libc not having registered a restartable sequence.  Try to find the
++	 * symbols if that's the case.
++	 */
++	if (!*libc_rseq_size_p) {
++		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
++		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
++		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	}
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
+ 		/* rseq registration owned by glibc */
 
 
