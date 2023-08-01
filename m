@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C7D576AF93
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F1B76AE3E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233223AbjHAJsy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
+        id S233199AbjHAJhO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233639AbjHAJsi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31AF51706
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:10 -0700 (PDT)
+        with ESMTP id S233208AbjHAJg5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC0C4EE5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1BBB614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133D3C433C9;
-        Tue,  1 Aug 2023 09:47:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58D6561509
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6381DC433C8;
+        Tue,  1 Aug 2023 09:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883229;
-        bh=YUyLLVb3rgS8yxg7hY/o/8b6wKgfNZymevTviuL5LXo=;
+        s=korg; t=1690882502;
+        bh=anNq+DgTWNlMX1ULsb+0b5vq3jTs2vPSLz4jNs/1vmA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H/Cu6yDmmyc2xdEdMlK7KBQJZK1kANcZTqn/Wvb/HbFWDDQZyg++xn/kdR1adc7OP
-         Yz5X2jos6ofc/qluZi5RZyPMrL08JWcK5TYdlhIwuodWfUkT4WWdOlpV+1vSm/zsBE
-         /ILuslWxqBkuxE8bM9gAvHncCKliVCFdJJOLmZvM=
+        b=0slums7cGkyWdzZsz8VvOXvszygfhSq0Zck/HvN2M/LKs2iZM3UTlbTFOQo2ibcTo
+         h60+xkh3iW2Ri8/lu+A5GAhsLRuQmSKHjn0kDijZVZ5pEPAJ8IXz4T6r7dWtYqMPJb
+         zPDW5ShqfeL0kK2zL/3ZkeJXL9OCYlXa/oNk2GFM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 122/239] block: Fix a source code comment in include/uapi/linux/blkzoned.h
-Date:   Tue,  1 Aug 2023 11:19:46 +0200
-Message-ID: <20230801091930.114801291@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/228] drm/i915: Fix an error handling path in igt_write_huge()
+Date:   Tue,  1 Aug 2023 11:19:47 +0200
+Message-ID: <20230801091927.408426825@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,48 +58,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit e0933b526fbfd937c4a8f4e35fcdd49f0e22d411 ]
+[ Upstream commit e354f67733115b4453268f61e6e072e9b1ea7a2f ]
 
-Fix the symbolic names for zone conditions in the blkzoned.h header
-file.
+All error handling paths go to 'out', except this one. Be consistent and
+also branch to 'out' here.
 
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Fixes: 6a0cb1bc106f ("block: Implement support for zoned block devices")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230706201422.3987341-1-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: c10a652e239e ("drm/i915/selftests: Rework context handling in hugepages selftests")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/7a036b88671312ee9adc01c74ef5b3376f690b76.1689619758.git.christophe.jaillet@wanadoo.fr
+(cherry picked from commit 361ecaadb1ce3c5312c7c4c419271326d43899eb)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/blkzoned.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/gem/selftests/huge_pages.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/blkzoned.h b/include/uapi/linux/blkzoned.h
-index b80fcc9ea5257..f85743ef6e7d1 100644
---- a/include/uapi/linux/blkzoned.h
-+++ b/include/uapi/linux/blkzoned.h
-@@ -51,13 +51,13 @@ enum blk_zone_type {
-  *
-  * The Zone Condition state machine in the ZBC/ZAC standards maps the above
-  * deinitions as:
-- *   - ZC1: Empty         | BLK_ZONE_EMPTY
-+ *   - ZC1: Empty         | BLK_ZONE_COND_EMPTY
-  *   - ZC2: Implicit Open | BLK_ZONE_COND_IMP_OPEN
-  *   - ZC3: Explicit Open | BLK_ZONE_COND_EXP_OPEN
-- *   - ZC4: Closed        | BLK_ZONE_CLOSED
-- *   - ZC5: Full          | BLK_ZONE_FULL
-- *   - ZC6: Read Only     | BLK_ZONE_READONLY
-- *   - ZC7: Offline       | BLK_ZONE_OFFLINE
-+ *   - ZC4: Closed        | BLK_ZONE_COND_CLOSED
-+ *   - ZC5: Full          | BLK_ZONE_COND_FULL
-+ *   - ZC6: Read Only     | BLK_ZONE_COND_READONLY
-+ *   - ZC7: Offline       | BLK_ZONE_COND_OFFLINE
-  *
-  * Conditions 0x5 to 0xC are reserved by the current ZBC/ZAC spec and should
-  * be considered invalid.
+diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+index 436598f19522c..02fe7ea8c5df8 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
++++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+@@ -1185,8 +1185,10 @@ static int igt_write_huge(struct drm_i915_private *i915,
+ 	 * times in succession a possibility by enlarging the permutation array.
+ 	 */
+ 	order = i915_random_order(count * count, &prng);
+-	if (!order)
+-		return -ENOMEM;
++	if (!order) {
++		err = -ENOMEM;
++		goto out;
++	}
+ 
+ 	max_page_size = rounddown_pow_of_two(obj->mm.page_sizes.sg);
+ 	max = div_u64(max - size, max_page_size);
 -- 
 2.40.1
 
