@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB62076AE15
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD0C76AF65
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233072AbjHAJf5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
+        id S232036AbjHAJrJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:47:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233135AbjHAJfg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A262134
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:48 -0700 (PDT)
+        with ESMTP id S233581AbjHAJqo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7AC1716
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9EB1614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22CCC433C8;
-        Tue,  1 Aug 2023 09:33:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB4DF614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78CFC433C7;
+        Tue,  1 Aug 2023 09:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882427;
-        bh=632GqK/UiWvngfr67lbiE69pzQWD7kLvqmkvz0XaLJQ=;
+        s=korg; t=1690883124;
+        bh=fce2Qd5LEaze9qUPKjUNtsoDT/CJpXGBNOHwPa2QaXk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1X2xWLub1c907cH/x/fbmClNHtUuCCwIROfed44aVMQQn3Y2eCGgCtlWtahe94+tw
-         KA9sIBuJsfOqVgzaxYUk17i8YfqZZC0PColNBSHXhjy7ZiAsojlvSUV8VB7a6+rAju
-         pQKRRe8dylG52UfuVnvvP3Ua0/0ZNjM5mOi9Ddek=
+        b=b/I5VI7cMj2vp4cACCpwkCyF6fWQ/rH27LG6xs22hyQ9IPx1oAECkALKk1D6hJe4g
+         fDMyrXdUzhqAdLrAo0LoHs0hNS4SWbZDSuJMrVHV3E7gzKv0Pt5kpDwnIUTfxihzlL
+         MFTJOqELBICnQfl/bMkZyB18LrL7wsD4hNIAAcqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Simon Horman <simon.horman@corigine.com>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/228] net: stmmac: Apply redundant write work around on 4.xx too
+Subject: [PATCH 6.4 095/239] benet: fix return value check in be_lancer_xmit_workarounds()
 Date:   Tue,  1 Aug 2023 11:19:19 +0200
-Message-ID: <20230801091926.467145387@linuxfoundation.org>
+Message-ID: <20230801091929.167911379@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vincent Whitchurch <vincent.whitchurch@axis.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 284779dbf4e98753458708783af8c35630674a21 ]
+[ Upstream commit 5c85f7065718a949902b238a6abd8fc907c5d3e0 ]
 
-commit a3a57bf07de23fe1ff779e0fdf710aa581c3ff73 ("net: stmmac: work
-around sporadic tx issue on link-up") worked around a problem with TX
-sometimes not working after a link-up by avoiding a redundant write to
-MAC_CTRL_REG (aka GMAC_CONFIG), since the IP appeared to have problems
-with handling multiple writes to that register in some cases.
+in be_lancer_xmit_workarounds(), it should go to label 'tx_drop'
+if an unexpected value is returned by pskb_trim().
 
-That commit however only added the work around to dwmac_lib.c (apart
-from the common code in stmmac_main.c), but my systems with version
-4.21a of the IP exhibit the same problem, so add the work around to
-dwmac4_lib.c too.
-
-Fixes: a3a57bf07de2 ("net: stmmac: work around sporadic tx issue on link-up")
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230721-stmmac-tx-workaround-v1-1-9411cbd5ee07@axis.com
+Fixes: 93040ae5cc8d ("be2net: Fix to trim skb for padded vlan packets to workaround an ASIC Bug")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Link: https://lore.kernel.org/r/20230725032726.15002-1-ruc_gongyuanjun@163.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/emulex/benet/be_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-index d1c605777985f..7c26394f665e4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-@@ -207,13 +207,15 @@ void stmmac_dwmac4_set_mac_addr(void __iomem *ioaddr, const u8 addr[6],
- void stmmac_dwmac4_set_mac(void __iomem *ioaddr, bool enable)
- {
- 	u32 value = readl(ioaddr + GMAC_CONFIG);
-+	u32 old_val = value;
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index 0defd519ba62e..7fa057d379c1a 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1138,7 +1138,8 @@ static struct sk_buff *be_lancer_xmit_workarounds(struct be_adapter *adapter,
+ 	    (lancer_chip(adapter) || BE3_chip(adapter) ||
+ 	     skb_vlan_tag_present(skb)) && is_ipv4_pkt(skb)) {
+ 		ip = (struct iphdr *)ip_hdr(skb);
+-		pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len));
++		if (unlikely(pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len))))
++			goto tx_drop;
+ 	}
  
- 	if (enable)
- 		value |= GMAC_CONFIG_RE | GMAC_CONFIG_TE;
- 	else
- 		value &= ~(GMAC_CONFIG_TE | GMAC_CONFIG_RE);
- 
--	writel(value, ioaddr + GMAC_CONFIG);
-+	if (value != old_val)
-+		writel(value, ioaddr + GMAC_CONFIG);
- }
- 
- void stmmac_dwmac4_get_mac_addr(void __iomem *ioaddr, unsigned char *addr,
+ 	/* If vlan tag is already inlined in the packet, skip HW VLAN
 -- 
 2.39.2
 
