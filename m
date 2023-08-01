@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2920E76AEC8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B608E76AFD4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233385AbjHAJl5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:41:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40384 "EHLO
+        id S233506AbjHAJuW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233269AbjHAJln (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:41:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB3C2D69
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:18 -0700 (PDT)
+        with ESMTP id S233694AbjHAJuG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:50:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300C42690
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 203F86150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C036C433C7;
-        Tue,  1 Aug 2023 09:39:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED1CC6150D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CE1C433C8;
+        Tue,  1 Aug 2023 09:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882757;
-        bh=eROYAVkyYnHhQxzxb0aHGeIlSI/+VDSY16vWeCSiGkg=;
+        s=korg; t=1690883380;
+        bh=yrBDOiIu0aV9oXezmy5/7ovkM7W/KcH1JXR6mfXWPI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t51OR/senb9jLCeCLrHkYKGEPjjfvTpBDigHGAd7NdsGAby9WLrDxJjpFTh7pPu5K
-         VzxynvdLyOS2oUI4NYYMeUKoHFSBF2YEDYqv51J+9SKAbP8OO9knoJb1SmAU/cJ4LA
-         28UbJW7LqQhblT5VBvgmd6ExOT3LSFd7HYRdsl1Q=
+        b=oo6lx5ySkNyU44xXNIxc1QKQMcn/IbqBlSRHDm4FYTfn+DkSfUjUNud5OJwVEU/qN
+         zrlVa5qiZeqm+LqtR+UDvmdfk/ASdiNwRgqSVR7DgKETPkze6ZovxLC5o7zmGggAxL
+         9dfHfMReWKSuShY/R0pht41CAnqI2T+FidHJlY98=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pratyush Yadav <ptyadav@amazon.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hagar Hemdan <hagarhem@amazon.de>
-Subject: [PATCH 6.1 221/228] ACPI: processor: perflib: Use the "no limit" frequency QoS
+        patches@lists.linux.dev, Chenguang Zhao <zhaochenguang@kylinos.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.4 215/239] LoongArch: BPF: Enable bpf_probe_read{, str}() on LoongArch
 Date:   Tue,  1 Aug 2023 11:21:19 +0200
-Message-ID: <20230801091930.838576744@linuxfoundation.org>
+Message-ID: <20230801091933.641357262@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,70 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-commit c02d5feb6e2f60affc6ba8606d8d614c071e2ba6 upstream.
+commit de0e30bee86d0f99c696a1fea34474e556a946ec upstream.
 
-When _PPC returns 0, it means that the CPU frequency is not limited by
-the platform firmware, so make acpi_processor_get_platform_limit()
-update the frequency QoS request used by it to "no limit" in that case.
+Currently nettrace does not work on LoongArch due to missing
+bpf_probe_read{,str}() support, with the error message:
 
-This addresses a problem with limiting CPU frequency artificially on
-some systems after CPU offline/online to the frequency that corresponds
-to the first entry in the _PSS return package.
+     ERROR: failed to load kprobe-based eBPF
+     ERROR: failed to load kprobe-based bpf
 
-Reported-by: Pratyush Yadav <ptyadav@amazon.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Pratyush Yadav <ptyadav@amazon.de>
-Tested-by: Pratyush Yadav <ptyadav@amazon.de>
-Tested-by: Hagar Hemdan <hagarhem@amazon.de>
+According to commit 0ebeea8ca8a4d1d ("bpf: Restrict bpf_probe_read{,
+str}() only to archs where they work"), we only need to select
+CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE to add said support,
+because LoongArch does have non-overlapping address ranges for kernel
+and userspace.
+
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |   20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ arch/loongarch/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -53,6 +53,8 @@ static int acpi_processor_get_platform_l
- {
- 	acpi_status status = 0;
- 	unsigned long long ppc = 0;
-+	s32 qos_value;
-+	int index;
- 	int ret;
- 
- 	if (!pr)
-@@ -72,17 +74,27 @@ static int acpi_processor_get_platform_l
- 		}
- 	}
- 
-+	index = ppc;
-+
- 	pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
--		       (int)ppc, ppc ? "" : "not");
-+		 index, index ? "is" : "is not");
- 
--	pr->performance_platform_limit = (int)ppc;
-+	pr->performance_platform_limit = index;
- 
- 	if (ppc >= pr->performance->state_count ||
- 	    unlikely(!freq_qos_request_active(&pr->perflib_req)))
- 		return 0;
- 
--	ret = freq_qos_update_request(&pr->perflib_req,
--			pr->performance->states[ppc].core_frequency * 1000);
-+	/*
-+	 * If _PPC returns 0, it means that all of the available states can be
-+	 * used ("no limit").
-+	 */
-+	if (index == 0)
-+		qos_value = FREQ_QOS_MAX_DEFAULT_VALUE;
-+	else
-+		qos_value = pr->performance->states[index].core_frequency * 1000;
-+
-+	ret = freq_qos_update_request(&pr->perflib_req, qos_value);
- 	if (ret < 0) {
- 		pr_warn("Failed to update perflib freq constraint: CPU%d (%d)\n",
- 			pr->id, ret);
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -12,6 +12,7 @@ config LOONGARCH
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
++	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_INLINE_READ_LOCK if !PREEMPTION
 
 
