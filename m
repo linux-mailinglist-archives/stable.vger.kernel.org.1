@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FED576AD15
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CAFD76AF46
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232047AbjHAJ0G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
+        id S233472AbjHAJq3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231820AbjHAJZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:25:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9832035A5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:38 -0700 (PDT)
+        with ESMTP id S233626AbjHAJqO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59B0430F2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC54D614FB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FD8C433C9;
-        Tue,  1 Aug 2023 09:24:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C0C436150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DDBC433C8;
+        Tue,  1 Aug 2023 09:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881877;
-        bh=ZFwYAEKIA6i1SyYiWoVQdqs0t5BSdZT2RZ2BzA25Zf4=;
+        s=korg; t=1690883085;
+        bh=iBV6le6i09imLutKFBGvPpbEhDn7ZImugPfJnDAXfpA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hVnudV8SswDCaN6FFugDdleZ0PFaH7wTAs/tMtbItdrOj2qMNnzb7JQNrs9jMRQ3u
-         uWAgWi/a0mFEk/YYIWg8feNXoHjkJhPC/brgEvwIXfcgzEeI6e4TVhh1NI8IBwY2L5
-         CkqjEzW3NFFA2JYLU7uxu/uuD+qarJIugjBAcGbY=
+        b=2T1Aw2iHhCJt3lkYzWB/MXnlTp9iaynB682Id2NSF1UcVH2xDNhz+iyr+og0/9CAB
+         jA2bYsb41A6SSF9f9imWiNCRT+tKL4HB/gHWSJizW9AvPOTw60+La5cVNbOROvE0Sk
+         JNdigqYmBB4OYNyy20NlVaSFGe+UHdYAC8y3EASI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Benc <jbenc@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/155] vxlan: calculate correct header length for GPE
+Subject: [PATCH 6.4 110/239] RDMA/bnxt_re: Prevent handling any completions after qp destroy
 Date:   Tue,  1 Aug 2023 11:19:34 +0200
-Message-ID: <20230801091912.412170574@linuxfoundation.org>
+Message-ID: <20230801091929.695778119@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,164 +57,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Benc <jbenc@redhat.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 94d166c5318c6edd1e079df8552233443e909c33 ]
+[ Upstream commit b5bbc6551297447d3cca55cf907079e206e9cd82 ]
 
-VXLAN-GPE does not add an extra inner Ethernet header. Take that into
-account when calculating header length.
+HW may generate completions that indicates QP is destroyed.
+Driver should not be scheduling any more completion handlers
+for this QP, after the QP is destroyed. Since CQs are active
+during the QP destroy, driver may still schedule completion
+handlers. This can cause a race where the destroy_cq and poll_cq
+running simultaneously.
 
-This causes problems in skb_tunnel_check_pmtu, where incorrect PMTU is
-cached.
+Snippet of kernel panic while doing bnxt_re driver load unload in loop.
+This indicates a poll after the CQ is freed. 
 
-In the collect_md mode (which is the only mode that VXLAN-GPE
-supports), there's no magic auto-setting of the tunnel interface MTU.
-It can't be, since the destination and thus the underlying interface
-may be different for each packet.
+[77786.481636] Call Trace:
+[77786.481640]  <TASK>
+[77786.481644]  bnxt_re_poll_cq+0x14a/0x620 [bnxt_re]
+[77786.481658]  ? kvm_clock_read+0x14/0x30
+[77786.481693]  __ib_process_cq+0x57/0x190 [ib_core]
+[77786.481728]  ib_cq_poll_work+0x26/0x80 [ib_core]
+[77786.481761]  process_one_work+0x1e5/0x3f0
+[77786.481768]  worker_thread+0x50/0x3a0
+[77786.481785]  ? __pfx_worker_thread+0x10/0x10
+[77786.481790]  kthread+0xe2/0x110
+[77786.481794]  ? __pfx_kthread+0x10/0x10
+[77786.481797]  ret_from_fork+0x2c/0x50
 
-So, the administrator is responsible for setting the correct tunnel
-interface MTU. Apparently, the administrators are capable enough to
-calculate that the maximum MTU for VXLAN-GPE is (their_lower_MTU - 36).
-They set the tunnel interface MTU to 1464. If you run a TCP stream over
-such interface, it's then segmented according to the MTU 1464, i.e.
-producing 1514 bytes frames. Which is okay, this still fits the lower
-MTU.
+To avoid this, complete all completion handlers before returning the
+destroy QP. If free_cq is called soon after destroy_qp,  IB stack
+will cancel the CQ work before invoking the destroy_cq verb and
+this will prevent any race mentioned.
 
-However, skb_tunnel_check_pmtu (called from vxlan_xmit_one) uses 50 as
-the header size and thus incorrectly calculates the frame size to be
-1528. This leads to ICMP too big message being generated (locally),
-PMTU of 1450 to be cached and the TCP stream to be resegmented.
-
-The fix is to use the correct actual header size, especially for
-skb_tunnel_check_pmtu calculation.
-
-Fixes: e1e5314de08ba ("vxlan: implement GPE")
-Signed-off-by: Jiri Benc <jbenc@redhat.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1689322969-25402-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  2 +-
- drivers/net/vxlan/vxlan_core.c                | 23 ++++++++-----------
- include/net/vxlan.h                           | 13 +++++++----
- 3 files changed, 20 insertions(+), 18 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 12 ++++++++++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 18 ++++++++++++++++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h |  1 +
+ 3 files changed, 31 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 6fb9c18297bc8..af824370a2f6f 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -8398,7 +8398,7 @@ static void ixgbe_atr(struct ixgbe_ring *ring,
- 		struct ixgbe_adapter *adapter = q_vector->adapter;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 952811c40c54b..ebe6852c40e8c 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -797,7 +797,10 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
+ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
+ {
+ 	struct bnxt_re_qp *qp = container_of(ib_qp, struct bnxt_re_qp, ib_qp);
++	struct bnxt_qplib_qp *qplib_qp = &qp->qplib_qp;
+ 	struct bnxt_re_dev *rdev = qp->rdev;
++	struct bnxt_qplib_nq *scq_nq = NULL;
++	struct bnxt_qplib_nq *rcq_nq = NULL;
+ 	unsigned int flags;
+ 	int rc;
  
- 		if (unlikely(skb_tail_pointer(skb) < hdr.network +
--			     VXLAN_HEADROOM))
-+			     vxlan_headroom(0)))
- 			return;
+@@ -831,6 +834,15 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
+ 	ib_umem_release(qp->rumem);
+ 	ib_umem_release(qp->sumem);
  
- 		/* verify the port is recognized as VXLAN */
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 129e270e9a7cd..106b66570e046 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2721,7 +2721,7 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
- 		}
- 
- 		ndst = &rt->dst;
--		err = skb_tunnel_check_pmtu(skb, ndst, VXLAN_HEADROOM,
-+		err = skb_tunnel_check_pmtu(skb, ndst, vxlan_headroom(flags & VXLAN_F_GPE),
- 					    netif_is_any_bridge_port(dev));
- 		if (err < 0) {
- 			goto tx_error;
-@@ -2782,7 +2782,8 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
- 				goto out_unlock;
- 		}
- 
--		err = skb_tunnel_check_pmtu(skb, ndst, VXLAN6_HEADROOM,
-+		err = skb_tunnel_check_pmtu(skb, ndst,
-+					    vxlan_headroom((flags & VXLAN_F_GPE) | VXLAN_F_IPV6),
- 					    netif_is_any_bridge_port(dev));
- 		if (err < 0) {
- 			goto tx_error;
-@@ -3159,14 +3160,12 @@ static int vxlan_change_mtu(struct net_device *dev, int new_mtu)
- 	struct vxlan_rdst *dst = &vxlan->default_dst;
- 	struct net_device *lowerdev = __dev_get_by_index(vxlan->net,
- 							 dst->remote_ifindex);
--	bool use_ipv6 = !!(vxlan->cfg.flags & VXLAN_F_IPV6);
- 
- 	/* This check is different than dev->max_mtu, because it looks at
- 	 * the lowerdev->mtu, rather than the static dev->max_mtu
- 	 */
- 	if (lowerdev) {
--		int max_mtu = lowerdev->mtu -
--			      (use_ipv6 ? VXLAN6_HEADROOM : VXLAN_HEADROOM);
-+		int max_mtu = lowerdev->mtu - vxlan_headroom(vxlan->cfg.flags);
- 		if (new_mtu > max_mtu)
- 			return -EINVAL;
- 	}
-@@ -3788,11 +3787,11 @@ static void vxlan_config_apply(struct net_device *dev,
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	struct vxlan_rdst *dst = &vxlan->default_dst;
- 	unsigned short needed_headroom = ETH_HLEN;
--	bool use_ipv6 = !!(conf->flags & VXLAN_F_IPV6);
- 	int max_mtu = ETH_MAX_MTU;
-+	u32 flags = conf->flags;
- 
- 	if (!changelink) {
--		if (conf->flags & VXLAN_F_GPE)
-+		if (flags & VXLAN_F_GPE)
- 			vxlan_raw_setup(dev);
- 		else
- 			vxlan_ether_setup(dev);
-@@ -3818,8 +3817,7 @@ static void vxlan_config_apply(struct net_device *dev,
- 
- 		dev->needed_tailroom = lowerdev->needed_tailroom;
- 
--		max_mtu = lowerdev->mtu - (use_ipv6 ? VXLAN6_HEADROOM :
--					   VXLAN_HEADROOM);
-+		max_mtu = lowerdev->mtu - vxlan_headroom(flags);
- 		if (max_mtu < ETH_MIN_MTU)
- 			max_mtu = ETH_MIN_MTU;
- 
-@@ -3830,10 +3828,9 @@ static void vxlan_config_apply(struct net_device *dev,
- 	if (dev->mtu > max_mtu)
- 		dev->mtu = max_mtu;
- 
--	if (use_ipv6 || conf->flags & VXLAN_F_COLLECT_METADATA)
--		needed_headroom += VXLAN6_HEADROOM;
--	else
--		needed_headroom += VXLAN_HEADROOM;
-+	if (flags & VXLAN_F_COLLECT_METADATA)
-+		flags |= VXLAN_F_IPV6;
-+	needed_headroom += vxlan_headroom(flags);
- 	dev->needed_headroom = needed_headroom;
- 
- 	memcpy(&vxlan->cfg, conf, sizeof(*conf));
-diff --git a/include/net/vxlan.h b/include/net/vxlan.h
-index 08537aa14f7c3..cf1d870f7b9a8 100644
---- a/include/net/vxlan.h
-+++ b/include/net/vxlan.h
-@@ -327,10 +327,15 @@ static inline netdev_features_t vxlan_features_check(struct sk_buff *skb,
- 	return features;
++	/* Flush all the entries of notification queue associated with
++	 * given qp.
++	 */
++	scq_nq = qplib_qp->scq->nq;
++	rcq_nq = qplib_qp->rcq->nq;
++	bnxt_re_synchronize_nq(scq_nq);
++	if (scq_nq != rcq_nq)
++		bnxt_re_synchronize_nq(rcq_nq);
++
+ 	return 0;
  }
  
--/* IP header + UDP + VXLAN + Ethernet header */
--#define VXLAN_HEADROOM (20 + 8 + 8 + 14)
--/* IPv6 header + UDP + VXLAN + Ethernet header */
--#define VXLAN6_HEADROOM (40 + 8 + 8 + 14)
-+static inline int vxlan_headroom(u32 flags)
-+{
-+	/* VXLAN:     IP4/6 header + UDP + VXLAN + Ethernet header */
-+	/* VXLAN-GPE: IP4/6 header + UDP + VXLAN */
-+	return (flags & VXLAN_F_IPV6 ? sizeof(struct ipv6hdr) :
-+				       sizeof(struct iphdr)) +
-+	       sizeof(struct udphdr) + sizeof(struct vxlanhdr) +
-+	       (flags & VXLAN_F_GPE ? 0 : ETH_HLEN);
-+}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 55f092c2c8a88..e589b04f953c5 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -381,6 +381,24 @@ static void bnxt_qplib_service_nq(struct tasklet_struct *t)
+ 	spin_unlock_bh(&hwq->lock);
+ }
  
- static inline struct vxlanhdr *vxlan_hdr(struct sk_buff *skb)
++/* bnxt_re_synchronize_nq - self polling notification queue.
++ * @nq      -     notification queue pointer
++ *
++ * This function will start polling entries of a given notification queue
++ * for all pending  entries.
++ * This function is useful to synchronize notification entries while resources
++ * are going away.
++ */
++
++void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq)
++{
++	int budget = nq->budget;
++
++	nq->budget = nq->hwq.max_elements;
++	bnxt_qplib_service_nq(&nq->nq_tasklet);
++	nq->budget = budget;
++}
++
+ static irqreturn_t bnxt_qplib_nq_irq(int irq, void *dev_instance)
+ {
+ 	struct bnxt_qplib_nq *nq = dev_instance;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index a42820821c473..404b851091ca2 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -553,6 +553,7 @@ int bnxt_qplib_process_flush_list(struct bnxt_qplib_cq *cq,
+ 				  struct bnxt_qplib_cqe *cqe,
+ 				  int num_cqes);
+ void bnxt_qplib_flush_cqn_wq(struct bnxt_qplib_qp *qp);
++void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq);
+ 
+ static inline void *bnxt_qplib_get_swqe(struct bnxt_qplib_q *que, u32 *swq_idx)
  {
 -- 
-2.39.2
+2.40.1
 
 
 
