@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA9276AE14
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D10F76AD31
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbjHAJf4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35154 "EHLO
+        id S232772AbjHAJ1F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233059AbjHAJff (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A27292108
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:45 -0700 (PDT)
+        with ESMTP id S232789AbjHAJ0s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCBD2D74
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26587614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392F4C433C8;
-        Tue,  1 Aug 2023 09:33:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 728CF614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82598C433C9;
+        Tue,  1 Aug 2023 09:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882424;
-        bh=hLv+fj9Zoh3pP38Y3doKhgAe6T71XdS1sjd4pPeNiGI=;
+        s=korg; t=1690881947;
+        bh=HYYpfOg0YV6UxnMMR3HULJu4CeN2YoVXwZRuh8YJ7Bc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4ZAZUIqx/yqvjPLiUmfRjCjyIP5oFfDTVCNXl/ftgEhJ2WrTtW3GsDPmv8TRIDgz
-         4TSz3djUd7BRtW0k/woBhX5Pn2Bf71O9SlZGdD+EoLsH0jgl/cYxvsDY0B3T3UPZrs
-         uIQvtzTt2wi0mMZCoIi7uk8LWnyVxo/DPRZzW0TU=
+        b=h2/TA9KZg9Xe6t0xxDBWimEy6SxCkDjFq5epm5yOWF0+beEGeh6oQ5IqpU9Nw2YgD
+         OxDoR8rtnDmRzQ9SuEEvAyyasQ/yBG5lpnFZtzuiOe92izp/Ak6NG5kuAP5jSsQD1A
+         HRT61gw6TNC2ltU8deDcg5Uoa1skpWC+8+NL91kE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/228] octeontx2-af: Fix hash extraction enable configuration
-Date:   Tue,  1 Aug 2023 11:19:18 +0200
-Message-ID: <20230801091926.436390735@linuxfoundation.org>
+Subject: [PATCH 5.15 047/155] jbd2: remove journal_clean_one_cp_list()
+Date:   Tue,  1 Aug 2023 11:19:19 +0200
+Message-ID: <20230801091911.867814225@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,115 +55,233 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 4e62c99d71e56817c934caa2a709a775c8cee078 ]
+[ Upstream commit b98dba273a0e47dbfade89c9af73c5b012a4eabb ]
 
-As of today, hash extraction support is enabled for all the silicons.
-Because of which we are facing initialization issues when the silicon
-does not support hash extraction. During creation of the hardware
-parsing table for IPv6 address, we need to consider if hash extraction
-is enabled then extract only 32 bit, otherwise 128 bit needs to be
-extracted. This patch fixes the issue and configures the hardware parser
-based on the availability of the feature.
+journal_clean_one_cp_list() and journal_shrink_one_cp_list() are almost
+the same, so merge them into journal_shrink_one_cp_list(), remove the
+nr_to_scan parameter, always scan and try to free the whole checkpoint
+list.
 
-Fixes: a95ab93550d3 ("octeontx2-af: Use hashed field in MCAM key")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230721061222.2632521-1-sumang@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-4-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/af/rvu_npc_hash.c       | 43 ++++++++++++++++++-
- .../marvell/octeontx2/af/rvu_npc_hash.h       |  8 ++--
- 2 files changed, 46 insertions(+), 5 deletions(-)
+ fs/jbd2/checkpoint.c        | 75 +++++++++----------------------------
+ include/trace/events/jbd2.h | 12 ++----
+ 2 files changed, 21 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-index efc2e64689f7d..34fa59575fa91 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-@@ -218,13 +218,54 @@ void npc_config_secret_key(struct rvu *rvu, int blkaddr)
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index c1f543e86170a..ab72aeb766a74 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -349,50 +349,10 @@ int jbd2_cleanup_journal_tail(journal_t *journal)
  
- void npc_program_mkex_hash(struct rvu *rvu, int blkaddr)
+ /* Checkpoint list management */
+ 
+-/*
+- * journal_clean_one_cp_list
+- *
+- * Find all the written-back checkpoint buffers in the given list and
+- * release them. If 'destroy' is set, clean all buffers unconditionally.
+- *
+- * Called with j_list_lock held.
+- * Returns 1 if we freed the transaction, 0 otherwise.
+- */
+-static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
+-{
+-	struct journal_head *last_jh;
+-	struct journal_head *next_jh = jh;
+-
+-	if (!jh)
+-		return 0;
+-
+-	last_jh = jh->b_cpprev;
+-	do {
+-		jh = next_jh;
+-		next_jh = jh->b_cpnext;
+-
+-		if (!destroy && __cp_buffer_busy(jh))
+-			return 0;
+-
+-		if (__jbd2_journal_remove_checkpoint(jh))
+-			return 1;
+-		/*
+-		 * This function only frees up some memory
+-		 * if possible so we dont have an obligation
+-		 * to finish processing. Bail out if preemption
+-		 * requested:
+-		 */
+-		if (need_resched())
+-			return 0;
+-	} while (jh != last_jh);
+-
+-	return 0;
+-}
+-
+ /*
+  * journal_shrink_one_cp_list
+  *
+- * Find 'nr_to_scan' written-back checkpoint buffers in the given list
++ * Find all the written-back checkpoint buffers in the given list
+  * and try to release them. If the whole transaction is released, set
+  * the 'released' parameter. Return the number of released checkpointed
+  * buffers.
+@@ -400,15 +360,15 @@ static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
+  * Called with j_list_lock held.
+  */
+ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+-						unsigned long *nr_to_scan,
+-						bool *released)
++						bool destroy, bool *released)
  {
-+	struct npc_mcam_kex_hash *mh = rvu->kpu.mkex_hash;
- 	struct hw_cap *hwcap = &rvu->hw->cap;
-+	u8 intf, ld, hdr_offset, byte_len;
- 	struct rvu_hwinfo *hw = rvu->hw;
--	u8 intf;
-+	u64 cfg;
+ 	struct journal_head *last_jh;
+ 	struct journal_head *next_jh = jh;
+ 	unsigned long nr_freed = 0;
+ 	int ret;
  
-+	/* Check if hardware supports hash extraction */
- 	if (!hwcap->npc_hash_extract)
- 		return;
+-	if (!jh || *nr_to_scan == 0)
++	*released = false;
++	if (!jh)
+ 		return 0;
  
-+	/* Check if IPv6 source/destination address
-+	 * should be hash enabled.
-+	 * Hashing reduces 128bit SIP/DIP fields to 32bit
-+	 * so that 224 bit X2 key can be used for IPv6 based filters as well,
-+	 * which in turn results in more number of MCAM entries available for
-+	 * use.
-+	 *
-+	 * Hashing of IPV6 SIP/DIP is enabled in below scenarios
-+	 * 1. If the silicon variant supports hashing feature
-+	 * 2. If the number of bytes of IP addr being extracted is 4 bytes ie
-+	 *    32bit. The assumption here is that if user wants 8bytes of LSB of
-+	 *    IP addr or full 16 bytes then his intention is not to use 32bit
-+	 *    hash.
-+	 */
-+	for (intf = 0; intf < hw->npc_intfs; intf++) {
-+		for (ld = 0; ld < NPC_MAX_LD; ld++) {
-+			cfg = rvu_read64(rvu, blkaddr,
-+					 NPC_AF_INTFX_LIDX_LTX_LDX_CFG(intf,
-+								       NPC_LID_LC,
-+								       NPC_LT_LC_IP6,
-+								       ld));
-+			hdr_offset = FIELD_GET(NPC_HDR_OFFSET, cfg);
-+			byte_len = FIELD_GET(NPC_BYTESM, cfg);
-+			/* Hashing of IPv6 source/destination address should be
-+			 * enabled if,
-+			 * hdr_offset == 8 (offset of source IPv6 address) or
-+			 * hdr_offset == 24 (offset of destination IPv6)
-+			 * address) and the number of byte to be
-+			 * extracted is 4. As per hardware configuration
-+			 * byte_len should be == actual byte_len - 1.
-+			 * Hence byte_len is checked against 3 but nor 4.
-+			 */
-+			if ((hdr_offset == 8 || hdr_offset == 24) && byte_len == 3)
-+				mh->lid_lt_ld_hash_en[intf][NPC_LID_LC][NPC_LT_LC_IP6][ld] = true;
-+		}
-+	}
-+
-+	/* Update hash configuration if the field is hash enabled */
- 	for (intf = 0; intf < hw->npc_intfs; intf++) {
- 		npc_program_mkex_hash_rx(rvu, blkaddr, intf);
- 		npc_program_mkex_hash_tx(rvu, blkaddr, intf);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-index a1c3d987b8044..57a09328d46b5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-@@ -70,8 +70,8 @@ static struct npc_mcam_kex_hash npc_mkex_hash_default __maybe_unused = {
- 	[NIX_INTF_RX] = {
- 		[NPC_LID_LC] = {
- 			[NPC_LT_LC_IP6] = {
--				true,
--				true,
-+				false,
-+				false,
- 			},
- 		},
- 	},
-@@ -79,8 +79,8 @@ static struct npc_mcam_kex_hash npc_mkex_hash_default __maybe_unused = {
- 	[NIX_INTF_TX] = {
- 		[NPC_LID_LC] = {
- 			[NPC_LT_LC_IP6] = {
--				true,
--				true,
-+				false,
-+				false,
- 			},
- 		},
- 	},
+ 	last_jh = jh->b_cpprev;
+@@ -416,8 +376,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+ 		jh = next_jh;
+ 		next_jh = jh->b_cpnext;
+ 
+-		(*nr_to_scan)--;
+-		if (__cp_buffer_busy(jh))
++		if (!destroy && __cp_buffer_busy(jh))
+ 			continue;
+ 
+ 		nr_freed++;
+@@ -429,7 +388,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+ 
+ 		if (need_resched())
+ 			break;
+-	} while (jh != last_jh && *nr_to_scan);
++	} while (jh != last_jh);
+ 
+ 	return nr_freed;
+ }
+@@ -447,11 +406,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+ 						  unsigned long *nr_to_scan)
+ {
+ 	transaction_t *transaction, *last_transaction, *next_transaction;
+-	bool released;
++	bool __maybe_unused released;
+ 	tid_t first_tid = 0, last_tid = 0, next_tid = 0;
+ 	tid_t tid = 0;
+ 	unsigned long nr_freed = 0;
+-	unsigned long nr_scanned = *nr_to_scan;
++	unsigned long freed;
+ 
+ again:
+ 	spin_lock(&journal->j_list_lock);
+@@ -480,10 +439,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+ 		transaction = next_transaction;
+ 		next_transaction = transaction->t_cpnext;
+ 		tid = transaction->t_tid;
+-		released = false;
+ 
+-		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_list,
+-						       nr_to_scan, &released);
++		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
++						   false, &released);
++		nr_freed += freed;
++		(*nr_to_scan) -= min(*nr_to_scan, freed);
+ 		if (*nr_to_scan == 0)
+ 			break;
+ 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
+@@ -504,9 +464,8 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+ 	if (*nr_to_scan && next_tid)
+ 		goto again;
+ out:
+-	nr_scanned -= *nr_to_scan;
+ 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
+-					  nr_freed, nr_scanned, next_tid);
++					  nr_freed, next_tid);
+ 
+ 	return nr_freed;
+ }
+@@ -522,7 +481,7 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
+ {
+ 	transaction_t *transaction, *last_transaction, *next_transaction;
+-	int ret;
++	bool released;
+ 
+ 	transaction = journal->j_checkpoint_transactions;
+ 	if (!transaction)
+@@ -533,8 +492,8 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
+ 	do {
+ 		transaction = next_transaction;
+ 		next_transaction = transaction->t_cpnext;
+-		ret = journal_clean_one_cp_list(transaction->t_checkpoint_list,
+-						destroy);
++		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
++					   destroy, &released);
+ 		/*
+ 		 * This function only frees up some memory if possible so we
+ 		 * dont have an obligation to finish processing. Bail out if
+@@ -547,7 +506,7 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
+ 		 * avoids pointless scanning of transactions which still
+ 		 * weren't checkpointed.
+ 		 */
+-		if (!ret)
++		if (!released)
+ 			return;
+ 	} while (transaction != last_transaction);
+ }
+diff --git a/include/trace/events/jbd2.h b/include/trace/events/jbd2.h
+index 29414288ea3e0..34ce197bd76e0 100644
+--- a/include/trace/events/jbd2.h
++++ b/include/trace/events/jbd2.h
+@@ -462,11 +462,9 @@ TRACE_EVENT(jbd2_shrink_scan_exit,
+ TRACE_EVENT(jbd2_shrink_checkpoint_list,
+ 
+ 	TP_PROTO(journal_t *journal, tid_t first_tid, tid_t tid, tid_t last_tid,
+-		 unsigned long nr_freed, unsigned long nr_scanned,
+-		 tid_t next_tid),
++		 unsigned long nr_freed, tid_t next_tid),
+ 
+-	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed,
+-		nr_scanned, next_tid),
++	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed, next_tid),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+@@ -474,7 +472,6 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
+ 		__field(tid_t, tid)
+ 		__field(tid_t, last_tid)
+ 		__field(unsigned long, nr_freed)
+-		__field(unsigned long, nr_scanned)
+ 		__field(tid_t, next_tid)
+ 	),
+ 
+@@ -484,15 +481,14 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
+ 		__entry->tid		= tid;
+ 		__entry->last_tid	= last_tid;
+ 		__entry->nr_freed	= nr_freed;
+-		__entry->nr_scanned	= nr_scanned;
+ 		__entry->next_tid	= next_tid;
+ 	),
+ 
+ 	TP_printk("dev %d,%d shrink transaction %u-%u(%u) freed %lu "
+-		  "scanned %lu next transaction %u",
++		  "next transaction %u",
+ 		  MAJOR(__entry->dev), MINOR(__entry->dev),
+ 		  __entry->first_tid, __entry->tid, __entry->last_tid,
+-		  __entry->nr_freed, __entry->nr_scanned, __entry->next_tid)
++		  __entry->nr_freed, __entry->next_tid)
+ );
+ 
+ #endif /* _TRACE_JBD2_H */
 -- 
 2.39.2
 
