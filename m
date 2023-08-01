@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1963476AED5
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C071976AD95
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233364AbjHAJm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:42:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
+        id S230014AbjHAJag (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:30:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233271AbjHAJmI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:08 -0400
+        with ESMTP id S230527AbjHAJaQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266D859FB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E08E9
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4D756150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3182C433C7;
-        Tue,  1 Aug 2023 09:39:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E6522614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F07C433C8;
+        Tue,  1 Aug 2023 09:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882785;
-        bh=4f7fv3dQg7qgakDR+xelOA9Wtmz6SSAgDxL6Ft5RvFg=;
+        s=korg; t=1690882138;
+        bh=9z95hJi4Dxic5HJgi0QvgjsknWbPyNl6Envi8nYHibI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iesvzug2GONN9hAYIZZ9A9ysfZl0QrezYJ+oWOr13fHoJkRUBzUQHAOHlJ5HUncQR
-         ry2jJXNXX4JDu+CMj+5HmnrbLxwLJQOwShmHL7ePgvHdWf1LYZWEvrO9pGiWA/GVkT
-         23eeI5zmosuVkJb2ceLE7Vwx59XPP57qxT9cP0ME=
+        b=1b20pHa0DDT6BwsLXNrP0XRnBl1WaNd+CWnNLFhhCuD3ckXZQ3i9hF4YB0DrHGsMN
+         g4kqRuX8RAmgF3XTJfK5WbUNXzfoNrhwjUKtgjHfmUIScqZmLqwLz2oRW033XC8lar
+         zkwiVWxhHX1CBVDkvGslt/WGg+RWt5h+iUDc3G1I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 208/228] ASoC: wm8904: Fill the cache for WM8904_ADC_TEST_0 register
-Date:   Tue,  1 Aug 2023 11:21:06 +0200
-Message-ID: <20230801091930.381468029@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Mat Martineau <martineau@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 155/155] selftests: mptcp: join: only check for ip6tables if needed
+Date:   Tue,  1 Aug 2023 11:21:07 +0200
+Message-ID: <20230801091915.657037056@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit f061e2be8689057cb4ec0dbffa9f03e1a23cdcb2 upstream.
+commit 016e7ba47f33064fbef8c4307a2485d2669dfd03 upstream.
 
-The WM8904_ADC_TEST_0 register is modified as part of updating the OSR
-controls but does not have a cache default, leading to errors when we try
-to modify these controls in cache only mode with no prior read:
+If 'iptables-legacy' is available, 'ip6tables-legacy' command will be
+used instead of 'ip6tables'. So no need to look if 'ip6tables' is
+available in this case.
 
-wm8904 3-001a: ASoC: error at snd_soc_component_update_bits on wm8904.3-001a for register: [0x000000c6] -16
-
-Add a read of the register to probe() to fill the cache and avoid both the
-error messages and the misconfiguration of the chip which will result.
-
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230723-asoc-fix-wm8904-adc-test-read-v1-1-2cdf2edd83fd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0c4cd3f86a40 ("selftests: mptcp: join: use 'iptables-legacy' if available")
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20230725-send-net-20230725-v1-1-6f60fe7137a9@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8904.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/sound/soc/codecs/wm8904.c
-+++ b/sound/soc/codecs/wm8904.c
-@@ -2308,6 +2308,9 @@ static int wm8904_i2c_probe(struct i2c_c
- 	regmap_update_bits(wm8904->regmap, WM8904_BIAS_CONTROL_0,
- 			    WM8904_POBCTRL, 0);
- 
-+	/* Fill the cache for the ADC test register */
-+	regmap_read(wm8904->regmap, WM8904_ADC_TEST_0, &val);
-+
- 	/* Can leave the device powered off until we need it */
- 	regcache_cache_only(wm8904->regmap, true);
- 	regulator_bulk_disable(ARRAY_SIZE(wm8904->supplies), wm8904->supplies);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -179,10 +179,7 @@ if iptables-legacy -V &> /dev/null; then
+ elif ! iptables -V &> /dev/null; then
+ 	echo "SKIP: Could not run all tests without iptables tool"
+ 	exit $ksft_skip
+-fi
+-
+-ip6tables -V > /dev/null 2>&1
+-if [ $? -ne 0 ];then
++elif ! ip6tables -V &> /dev/null; then
+ 	echo "SKIP: Could not run all tests without ip6tables tool"
+ 	exit $ksft_skip
+ fi
 
 
