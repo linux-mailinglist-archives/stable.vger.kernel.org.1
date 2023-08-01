@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59C7A76AD29
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D05276AF6F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231890AbjHAJ0z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52690 "EHLO
+        id S233499AbjHAJr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:47:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbjHAJ0h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238623AB8
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:35 -0700 (PDT)
+        with ESMTP id S233504AbjHAJq6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 770F62130
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72F6261509
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9FCC433C8;
-        Tue,  1 Aug 2023 09:25:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C160A614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA792C433C8;
+        Tue,  1 Aug 2023 09:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881933;
-        bh=FYId0g5PhR+EKtuWQGUMcWaCC80YXL75T4ECqqG25HM=;
+        s=korg; t=1690883138;
+        bh=1Nf/KDsMLV+nlbpAYw8FLANkyBtbYIi1RS58w/n3wQ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ljGXMlzuZVocE5aRlqlgKHw/8cVybZY4QatM6OyvhdWkkzTNIiL1SrObU+zmkmrL+
-         DWgpuxEHU9d6kZa4BrxIUiq7SjuYt8eGMDLOiEKiH/kc36aY10v99ho2WgijZiXz9T
-         etXFd4FSHLxpLEsrsuuKwsIGK7cK4zJTdWYJwgoU=
+        b=P1n9Z7JTFm1CkQzLDCd+vcCKNT7wqU+yflV4VopwpjHl/tH+ne6n0f92cJ2W3mDEe
+         8EB7vDho6/4ICqDxArQMdk/K7SkwR+YYMDgwd3eMwkPlHZPkOmcbFl1Eq/qA5HGC1P
+         HYHOjiCf/yKjshh9GacCZ84PjuMzH0kFFUR8IDmY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/155] phy: qcom-snps-femto-v2: properly enable ref clock
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 100/239] drm/msm/mdss: correct UBWC programming for SM8550
 Date:   Tue,  1 Aug 2023 11:19:24 +0200
-Message-ID: <20230801091912.046125428@linuxfoundation.org>
+Message-ID: <20230801091929.327377283@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,173 +56,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adrien Thierry <athierry@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 8a0eb8f9b9a002291a3934acfd913660b905249e ]
+[ Upstream commit a85c238c5ccd64f8d4c4560702c65cb25dee791c ]
 
-The driver is not enabling the ref clock, which thus gets disabled by
-the clk_disable_unused() initcall. This leads to the dwc3 controller
-failing to initialize if probed after clk_disable_unused() is called,
-for instance when the driver is built as a module.
+The SM8550 platform employs newer UBWC decoder, which requires slightly
+different programming.
 
-To fix this, switch to the clk_bulk API to handle both cfg_ahb and ref
-clocks at the proper places.
-
-Note that the cfg_ahb clock is currently not used by any device tree
-instantiation of the PHY. Work needs to be done separately to fix this.
-
-Link: https://lore.kernel.org/linux-arm-msm/ZEqvy+khHeTkC2hf@fedora/
-Fixes: 51e8114f80d0 ("phy: qcom-snps: Add SNPS USB PHY driver for QCOM based SOCs")
-Signed-off-by: Adrien Thierry <athierry@redhat.com>
-Link: https://lore.kernel.org/r/20230629144542.14906-3-athierry@redhat.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: a2f33995c19d ("drm/msm: mdss: add support for SM8550")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/546934/
+Link: https://lore.kernel.org/r/20230712121145.1994830-3-dmitry.baryshkov@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 63 ++++++++++++++-----
- 1 file changed, 48 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/msm/msm_mdss.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index dfe5f09449100..abb9264569336 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -68,11 +68,13 @@ static const char * const qcom_snps_hsphy_vreg_names[] = {
- /**
-  * struct qcom_snps_hsphy - snps hs phy attributes
-  *
-+ * @dev: device structure
-+ *
-  * @phy: generic phy
-  * @base: iomapped memory space for snps hs phy
-  *
-- * @cfg_ahb_clk: AHB2PHY interface clock
-- * @ref_clk: phy reference clock
-+ * @num_clks: number of clocks
-+ * @clks: array of clocks
-  * @phy_reset: phy reset control
-  * @vregs: regulator supplies bulk data
-  * @phy_initialized: if PHY has been initialized correctly
-@@ -80,11 +82,13 @@ static const char * const qcom_snps_hsphy_vreg_names[] = {
-  * @update_seq_cfg: tuning parameters for phy init
-  */
- struct qcom_snps_hsphy {
-+	struct device *dev;
-+
- 	struct phy *phy;
- 	void __iomem *base;
+diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
+index e8c93731aaa18..4ae6fac20e48c 100644
+--- a/drivers/gpu/drm/msm/msm_mdss.c
++++ b/drivers/gpu/drm/msm/msm_mdss.c
+@@ -189,6 +189,7 @@ static int _msm_mdss_irq_domain_add(struct msm_mdss *msm_mdss)
+ #define UBWC_2_0 0x20000000
+ #define UBWC_3_0 0x30000000
+ #define UBWC_4_0 0x40000000
++#define UBWC_4_3 0x40030000
  
--	struct clk *cfg_ahb_clk;
--	struct clk *ref_clk;
-+	int num_clks;
-+	struct clk_bulk_data *clks;
- 	struct reset_control *phy_reset;
- 	struct regulator_bulk_data vregs[SNPS_HS_NUM_VREGS];
- 
-@@ -92,6 +96,34 @@ struct qcom_snps_hsphy {
- 	enum phy_mode mode;
+ static void msm_mdss_setup_ubwc_dec_20(struct msm_mdss *msm_mdss)
+ {
+@@ -227,7 +228,10 @@ static void msm_mdss_setup_ubwc_dec_40(struct msm_mdss *msm_mdss)
+ 		writel_relaxed(1, msm_mdss->mmio + UBWC_CTRL_2);
+ 		writel_relaxed(0, msm_mdss->mmio + UBWC_PREDICTION_MODE);
+ 	} else {
+-		writel_relaxed(2, msm_mdss->mmio + UBWC_CTRL_2);
++		if (data->ubwc_dec_version == UBWC_4_3)
++			writel_relaxed(3, msm_mdss->mmio + UBWC_CTRL_2);
++		else
++			writel_relaxed(2, msm_mdss->mmio + UBWC_CTRL_2);
+ 		writel_relaxed(1, msm_mdss->mmio + UBWC_PREDICTION_MODE);
+ 	}
+ }
+@@ -271,6 +275,7 @@ static int msm_mdss_enable(struct msm_mdss *msm_mdss)
+ 		msm_mdss_setup_ubwc_dec_30(msm_mdss);
+ 		break;
+ 	case UBWC_4_0:
++	case UBWC_4_3:
+ 		msm_mdss_setup_ubwc_dec_40(msm_mdss);
+ 		break;
+ 	default:
+@@ -561,6 +566,16 @@ static const struct msm_mdss_data sm8250_data = {
+ 	.macrotile_mode = 1,
  };
  
-+static int qcom_snps_hsphy_clk_init(struct qcom_snps_hsphy *hsphy)
-+{
-+	struct device *dev = hsphy->dev;
++static const struct msm_mdss_data sm8550_data = {
++	.ubwc_version = UBWC_4_0,
++	.ubwc_dec_version = UBWC_4_3,
++	.ubwc_swizzle = 6,
++	.ubwc_static = 1,
++	/* TODO: highest_bank_bit = 2 for LP_DDR4 */
++	.highest_bank_bit = 3,
++	.macrotile_mode = 1,
++};
 +
-+	hsphy->num_clks = 2;
-+	hsphy->clks = devm_kcalloc(dev, hsphy->num_clks, sizeof(*hsphy->clks), GFP_KERNEL);
-+	if (!hsphy->clks)
-+		return -ENOMEM;
-+
-+	/*
-+	 * TODO: Currently no device tree instantiation of the PHY is using the clock.
-+	 * This needs to be fixed in order for this code to be able to use devm_clk_bulk_get().
-+	 */
-+	hsphy->clks[0].id = "cfg_ahb";
-+	hsphy->clks[0].clk = devm_clk_get_optional(dev, "cfg_ahb");
-+	if (IS_ERR(hsphy->clks[0].clk))
-+		return dev_err_probe(dev, PTR_ERR(hsphy->clks[0].clk),
-+				     "failed to get cfg_ahb clk\n");
-+
-+	hsphy->clks[1].id = "ref";
-+	hsphy->clks[1].clk = devm_clk_get(dev, "ref");
-+	if (IS_ERR(hsphy->clks[1].clk))
-+		return dev_err_probe(dev, PTR_ERR(hsphy->clks[1].clk),
-+				     "failed to get ref clk\n");
-+
-+	return 0;
-+}
-+
- static inline void qcom_snps_hsphy_write_mask(void __iomem *base, u32 offset,
- 						u32 mask, u32 val)
- {
-@@ -174,16 +206,16 @@ static int qcom_snps_hsphy_init(struct phy *phy)
- 	if (ret)
- 		return ret;
- 
--	ret = clk_prepare_enable(hsphy->cfg_ahb_clk);
-+	ret = clk_bulk_prepare_enable(hsphy->num_clks, hsphy->clks);
- 	if (ret) {
--		dev_err(&phy->dev, "failed to enable cfg ahb clock, %d\n", ret);
-+		dev_err(&phy->dev, "failed to enable clocks, %d\n", ret);
- 		goto poweroff_phy;
- 	}
- 
- 	ret = reset_control_assert(hsphy->phy_reset);
- 	if (ret) {
- 		dev_err(&phy->dev, "failed to assert phy_reset, %d\n", ret);
--		goto disable_ahb_clk;
-+		goto disable_clks;
- 	}
- 
- 	usleep_range(100, 150);
-@@ -191,7 +223,7 @@ static int qcom_snps_hsphy_init(struct phy *phy)
- 	ret = reset_control_deassert(hsphy->phy_reset);
- 	if (ret) {
- 		dev_err(&phy->dev, "failed to de-assert phy_reset, %d\n", ret);
--		goto disable_ahb_clk;
-+		goto disable_clks;
- 	}
- 
- 	qcom_snps_hsphy_write_mask(hsphy->base, USB2_PHY_USB_PHY_CFG0,
-@@ -237,8 +269,8 @@ static int qcom_snps_hsphy_init(struct phy *phy)
- 
- 	return 0;
- 
--disable_ahb_clk:
--	clk_disable_unprepare(hsphy->cfg_ahb_clk);
-+disable_clks:
-+	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
- poweroff_phy:
- 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
- 
-@@ -250,7 +282,7 @@ static int qcom_snps_hsphy_exit(struct phy *phy)
- 	struct qcom_snps_hsphy *hsphy = phy_get_drvdata(phy);
- 
- 	reset_control_assert(hsphy->phy_reset);
--	clk_disable_unprepare(hsphy->cfg_ahb_clk);
-+	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
- 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
- 	hsphy->phy_initialized = false;
- 
-@@ -290,14 +322,15 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
- 	if (!hsphy)
- 		return -ENOMEM;
- 
-+	hsphy->dev = dev;
-+
- 	hsphy->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(hsphy->base))
- 		return PTR_ERR(hsphy->base);
- 
--	hsphy->ref_clk = devm_clk_get(dev, "ref");
--	if (IS_ERR(hsphy->ref_clk))
--		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
--				     "failed to get ref clk\n");
-+	ret = qcom_snps_hsphy_clk_init(hsphy);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to initialize clocks\n");
- 
- 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (IS_ERR(hsphy->phy_reset)) {
+ static const struct of_device_id mdss_dt_match[] = {
+ 	{ .compatible = "qcom,mdss" },
+ 	{ .compatible = "qcom,msm8998-mdss" },
+@@ -575,7 +590,7 @@ static const struct of_device_id mdss_dt_match[] = {
+ 	{ .compatible = "qcom,sm8250-mdss", .data = &sm8250_data },
+ 	{ .compatible = "qcom,sm8350-mdss", .data = &sm8250_data },
+ 	{ .compatible = "qcom,sm8450-mdss", .data = &sm8250_data },
+-	{ .compatible = "qcom,sm8550-mdss", .data = &sm8250_data },
++	{ .compatible = "qcom,sm8550-mdss", .data = &sm8550_data },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, mdss_dt_match);
 -- 
-2.39.2
+2.40.1
 
 
 
