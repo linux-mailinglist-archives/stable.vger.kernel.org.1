@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2011B76AE6B
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4974C76AD50
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233260AbjHAJin (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:38:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35104 "EHLO
+        id S230281AbjHAJ2V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233391AbjHAJiI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A343C5254
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:19 -0700 (PDT)
+        with ESMTP id S231635AbjHAJ1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A4E269A
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F9A2614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6D0C433C8;
-        Tue,  1 Aug 2023 09:36:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D8E7614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2151EC433C8;
+        Tue,  1 Aug 2023 09:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882577;
-        bh=RL9RBXmGnk83Lglxc1dK+n6oKfAAOT68XQuTr52dmGk=;
+        s=korg; t=1690881995;
+        bh=iZFei3x9GYH6BSuxgnzWLWMQKot7wy3GWFrEtILFXr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1dx3ar0Kq9OuEMKRd4V3hsC4oWRBN5wRHKUAWazzcLq8pQEwbyWw5TzhaiB3VwLKf
-         YPgQfVTUylj+rnDyBhNIauD0dgvx0UAIsxYq31/9SpifCRoXnF54fqxoHbRYkdu/1Z
-         eEvTQmO0Yrt6EIrIx/Y4B9lh5gmRYAMflgFrbAYM=
+        b=qO2L12SGC1Zcg6MTeYEwujsNCa47qbW1/tIZTqL1fwJ5GEgaDQJ4wNlxHYsIY8qC0
+         BFXcFKvESQ4hHzPEz2N2Xk3EAqr8/tiMBPazsz5SGKvgQeJdYhiuDconCHzAw/csYu
+         SEiDQyoz2DtgQw9FCrGWH09Uo7QrxhnsdKbBbhxU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerry Meng <jerry-meng@foxmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 156/228] USB: serial: option: support Quectel EM060K_128
-Date:   Tue,  1 Aug 2023 11:20:14 +0200
-Message-ID: <20230801091928.530886956@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+feb045d335c1fdde5bf7@syzkaller.appspotmail.com,
+        stable <stable@kernel.org>, Zqiang <qiang.zhang1211@gmail.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 5.15 103/155] USB: gadget: Fix the memory leak in raw_gadget driver
+Date:   Tue,  1 Aug 2023 11:20:15 +0200
+Message-ID: <20230801091913.911157669@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jerry Meng <jerry-meng@foxmail.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-commit 4f7cab49cecee16120d27c1734cfdf3d6c0e5329 upstream.
+commit 83e30f2bf86ef7c38fbd476ed81a88522b620628 upstream.
 
-EM060K_128 is EM060K's sub-model, having the same name "Quectel EM060K-GL"
+Currently, increasing raw_dev->count happens before invoke the
+raw_queue_event(), if the raw_queue_event() return error, invoke
+raw_release() will not trigger the dev_free() to be called.
 
-MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+[  268.905865][ T5067] raw-gadget.0 gadget.0: failed to queue event
+[  268.912053][ T5067] udc dummy_udc.0: failed to start USB Raw Gadget: -12
+[  268.918885][ T5067] raw-gadget.0: probe of gadget.0 failed with error -12
+[  268.925956][ T5067] UDC core: USB Raw Gadget: couldn't find an available UDC or it's busy
+[  268.934657][ T5067] misc raw-gadget: fail, usb_gadget_register_driver returned -16
 
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0128 Rev= 5.04
-S:  Manufacturer=Quectel
-S:  Product=Quectel EM060K-GL
-S:  SerialNumber=f6fa08b6
-C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+BUG: memory leak
 
-Signed-off-by: Jerry Meng <jerry-meng@foxmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+[<ffffffff8154bf94>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1076
+[<ffffffff8347eb55>] kmalloc include/linux/slab.h:582 [inline]
+[<ffffffff8347eb55>] kzalloc include/linux/slab.h:703 [inline]
+[<ffffffff8347eb55>] dev_new drivers/usb/gadget/legacy/raw_gadget.c:191 [inline]
+[<ffffffff8347eb55>] raw_open+0x45/0x110 drivers/usb/gadget/legacy/raw_gadget.c:385
+[<ffffffff827d1d09>] misc_open+0x1a9/0x1f0 drivers/char/misc.c:165
+
+[<ffffffff8154bf94>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1076
+[<ffffffff8347cd2f>] kmalloc include/linux/slab.h:582 [inline]
+[<ffffffff8347cd2f>] raw_ioctl_init+0xdf/0x410 drivers/usb/gadget/legacy/raw_gadget.c:460
+[<ffffffff8347dfe9>] raw_ioctl+0x5f9/0x1120 drivers/usb/gadget/legacy/raw_gadget.c:1250
+[<ffffffff81685173>] vfs_ioctl fs/ioctl.c:51 [inline]
+
+[<ffffffff8154bf94>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1076
+[<ffffffff833ecc6a>] kmalloc include/linux/slab.h:582 [inline]
+[<ffffffff833ecc6a>] kzalloc include/linux/slab.h:703 [inline]
+[<ffffffff833ecc6a>] dummy_alloc_request+0x5a/0xe0 drivers/usb/gadget/udc/dummy_hcd.c:665
+[<ffffffff833e9132>] usb_ep_alloc_request+0x22/0xd0 drivers/usb/gadget/udc/core.c:196
+[<ffffffff8347f13d>] gadget_bind+0x6d/0x370 drivers/usb/gadget/legacy/raw_gadget.c:292
+
+This commit therefore invoke kref_get() under the condition that
+raw_queue_event() return success.
+
+Reported-by: syzbot+feb045d335c1fdde5bf7@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=feb045d335c1fdde5bf7
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Tested-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://lore.kernel.org/r/20230714074011.20989-1-qiang.zhang1211@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/legacy/raw_gadget.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -251,6 +251,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
- #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
- #define QUECTEL_PRODUCT_EC25			0x0125
-+#define QUECTEL_PRODUCT_EM060K_128		0x0128
- #define QUECTEL_PRODUCT_EG91			0x0191
- #define QUECTEL_PRODUCT_EG95			0x0195
- #define QUECTEL_PRODUCT_BG96			0x0296
-@@ -1197,6 +1198,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x40) },
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -310,13 +310,15 @@ static int gadget_bind(struct usb_gadget
+ 	dev->eps_num = i;
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+ 
+-	/* Matches kref_put() in gadget_unbind(). */
+-	kref_get(&dev->count);
+-
+ 	ret = raw_queue_event(dev, USB_RAW_EVENT_CONNECT, 0, NULL);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_err(&gadget->dev, "failed to queue event\n");
++		set_gadget_data(gadget, NULL);
++		return ret;
++	}
+ 
++	/* Matches kref_put() in gadget_unbind(). */
++	kref_get(&dev->count);
+ 	return ret;
+ }
+ 
 
 
