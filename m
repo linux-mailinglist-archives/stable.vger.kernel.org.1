@@ -2,299 +2,320 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B27176B511
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 14:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F2176B57E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 15:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232674AbjHAMtv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 08:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
+        id S231811AbjHANJs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 09:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231203AbjHAMtr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 08:49:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365E51FEF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 05:48:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690894138;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PelEjOaWZH6A1jlfDs5yVYOsc8ih/vy8IfMPFWkWCRI=;
-        b=TMtnSy9hmbUPVkoHHYgfVJG6YBekdOqlG1/gKMQD5/9CgTmh2nNfDPEaXiGpqvxXo16M9/
-        l99lJGLlU1bS6zQ4i/4sy1tlt6dlivuaA+cRW6ahVo8RLD64hq2Yejqs0GG78XNxrg/2uZ
-        3aGbkW2CRyZzG490MvSH77C09LTc7wQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-450-sCg6i6arPcC_qRSyqhkAOQ-1; Tue, 01 Aug 2023 08:48:55 -0400
-X-MC-Unique: sCg6i6arPcC_qRSyqhkAOQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S231792AbjHANJs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 09:09:48 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0831727
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:09:46 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A5D6104458A;
-        Tue,  1 Aug 2023 12:48:54 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.193.232])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E8606C585A0;
-        Tue,  1 Aug 2023 12:48:49 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        liubo <liubo254@huawei.com>, Peter Xu <peterx@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Mel Gorman <mgorman@suse.de>, Shuah Khan <shuah@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH v2 1/8] mm/gup: reintroduce FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
-Date:   Tue,  1 Aug 2023 14:48:37 +0200
-Message-ID: <20230801124844.278698-2-david@redhat.com>
-In-Reply-To: <20230801124844.278698-1-david@redhat.com>
-References: <20230801124844.278698-1-david@redhat.com>
+        by smtp-out2.suse.de (Postfix) with ESMTPS id E91AC1FD71;
+        Tue,  1 Aug 2023 13:09:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1690895384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=lsa5moaEw3yYrBGKqxNgGv59gqUakEyFOpX7t8BOEks=;
+        b=gPOhGG9H3rjEN4F1EisHlpNNC/goGO0c3G0dzPfmNUUPEZG0Qy2FlemX1z7Z7NhYxZUlrp
+        53GVfRkfpL7gISvnzFca0NSDuTKE3o9jSxYqENHMDdshD+bO/cSHRXNWNWd0KrNFlfGyLG
+        0dTtMIFO6irdcRD1um2kxfRzRmsglug=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1690895384;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=lsa5moaEw3yYrBGKqxNgGv59gqUakEyFOpX7t8BOEks=;
+        b=XAxXu+Wrjffn+l2uaY0IXmXe6S+BTUuVcQ6YlqmxmrI0//AJpUmb+cMgLqRLKentEyepEv
+        H/oIqSPkcPHI9bBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DA780139BD;
+        Tue,  1 Aug 2023 13:09:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id TXRMNRgEyWQMPAAAMHmgww
+        (envelope-from <jack@suse.cz>); Tue, 01 Aug 2023 13:09:44 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id 72152A076B; Tue,  1 Aug 2023 15:09:44 +0200 (CEST)
+Date:   Tue, 1 Aug 2023 15:09:44 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 047/155] jbd2: remove journal_clean_one_cp_list()
+Message-ID: <20230801130944.7e3hhyosweufeuaf@quack3>
+References: <20230801091910.165050260@linuxfoundation.org>
+ <20230801091911.867814225@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230801091911.867814225@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Unfortunately commit 474098edac26 ("mm/gup: replace FOLL_NUMA by
-gup_can_follow_protnone()") missed that follow_page() and
-follow_trans_huge_pmd() never implicitly set FOLL_NUMA because they really
-don't want to fail on PROT_NONE-mapped pages -- either due to NUMA hinting
-or due to inaccessible (PROT_NONE) VMAs.
+On Tue 01-08-23 11:19:19, Greg Kroah-Hartman wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
+> 
+> [ Upstream commit b98dba273a0e47dbfade89c9af73c5b012a4eabb ]
+> 
+> journal_clean_one_cp_list() and journal_shrink_one_cp_list() are almost
+> the same, so merge them into journal_shrink_one_cp_list(), remove the
+> nr_to_scan parameter, always scan and try to free the whole checkpoint
+> list.
+> 
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Link: https://lore.kernel.org/r/20230606135928.434610-4-yi.zhang@huaweicloud.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-As spelled out in commit 0b9d705297b2 ("mm: numa: Support NUMA hinting page
-faults from gup/gup_fast"): "Other follow_page callers like KSM should not
-use FOLL_NUMA, or they would fail to get the pages if they use follow_page
-instead of get_user_pages."
+This and the following patch (46f881b5b175) have some issues [1] and cause a
+performance regression for some workloads and possible metadata corruption
+after a crash. So please drop these two patches from the stable trees for
+now. We can include them again later once the code has stabilized...
+Thanks!
 
-liubo reported [1] that smaps_rollup results are imprecise, because they
-miss accounting of pages that are mapped PROT_NONE. Further, it's easy
-to reproduce that KSM no longer works on inaccessible VMAs on x86-64,
-because pte_protnone()/pmd_protnone() also indictaes "true" in
-inaccessible VMAs, and follow_page() refuses to return such pages right
-now.
+								Honza
 
-As KVM really depends on these NUMA hinting faults, removing the
-pte_protnone()/pmd_protnone() handling in GUP code completely is not really
-an option.
+[1] https://lore.kernel.org/all/20230714025528.564988-1-yi.zhang@huaweicloud.com
 
-To fix the issues at hand, let's revive FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
-to restore the original behavior for now and add better comments.
 
-Set FOLL_HONOR_NUMA_FAULT independent of FOLL_FORCE in
-is_valid_gup_args(), to add that flag for all external GUP users.
-
-Note that there are three GUP-internal __get_user_pages() users that don't
-end up calling is_valid_gup_args() and consequently won't get
-FOLL_HONOR_NUMA_FAULT set.
-
-1) get_dump_page(): we really don't want to handle NUMA hinting
-   faults. It specifies FOLL_FORCE and wouldn't have honored NUMA
-   hinting faults already.
-2) populate_vma_page_range(): we really don't want to handle NUMA hinting
-   faults. It specifies FOLL_FORCE on accessible VMAs, so it wouldn't have
-   honored NUMA hinting faults already.
-3) faultin_vma_page_range(): we similarly don't want to handle NUMA
-   hinting faults.
-
-To make the combination of FOLL_FORCE and FOLL_HONOR_NUMA_FAULT work in
-inaccessible VMAs properly, we have to perform VMA accessibility checks in
-gup_can_follow_protnone().
-
-As GUP-fast should reject such pages either way in
-pte_access_permitted()/pmd_access_permitted() -- for example on x86-64 and
-arm64 that both implement pte_protnone() -- let's just always fallback
-to ordinary GUP when stumbling over pte_protnone()/pmd_protnone().
-
-As Linus notes [2], honoring NUMA faults might only make sense for
-selected GUP users.
-
-So we should really see if we can instead let relevant GUP callers specify
-it manually, and not trigger NUMA hinting faults from GUP as default.
-Prepare for that by making FOLL_HONOR_NUMA_FAULT an external GUP flag
-and adding appropriate documenation.
-
-[1] https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
-[2] https://lore.kernel.org/r/CAHk-=wgRiP_9X0rRdZKT8nhemZGNateMtb366t37d8-x7VRs=g@mail.gmail.com
-
-Reported-by: liubo <liubo254@huawei.com>
-Closes: https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
-Reported-by: Peter Xu <peterx@redhat.com>
-Closes: https://lore.kernel.org/all/ZMKJjDaqZ7FW0jfe@x1n/
-Fixes: 474098edac26 ("mm/gup: replace FOLL_NUMA by gup_can_follow_protnone()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- include/linux/mm.h       | 21 +++++++++++++++------
- include/linux/mm_types.h |  9 +++++++++
- mm/gup.c                 | 29 +++++++++++++++++++++++------
- mm/huge_memory.c         |  2 +-
- 4 files changed, 48 insertions(+), 13 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 2fbc6c631764..165830a95641 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3455,15 +3455,24 @@ static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
-  * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-  * a (NUMA hinting) fault is required.
-  */
--static inline bool gup_can_follow_protnone(unsigned int flags)
-+static inline bool gup_can_follow_protnone(struct vm_area_struct *vma,
-+					   unsigned int flags)
- {
- 	/*
--	 * FOLL_FORCE has to be able to make progress even if the VMA is
--	 * inaccessible. Further, FOLL_FORCE access usually does not represent
--	 * application behaviour and we should avoid triggering NUMA hinting
--	 * faults.
-+	 * If callers don't want to honor NUMA hinting faults, no need to
-+	 * determine if we would actually have to trigger a NUMA hinting fault.
- 	 */
--	return flags & FOLL_FORCE;
-+	if (!(flags & FOLL_HONOR_NUMA_FAULT))
-+		return true;
-+
-+	/*
-+	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
-+	 *
-+	 * Requiring a fault here even for inaccessible VMAs would mean that
-+	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
-+	 * refuses to process NUMA hinting faults in inaccessible VMAs.
-+	 */
-+	return !vma_is_accessible(vma);
- }
- 
- typedef int (*pte_fn_t)(pte_t *pte, unsigned long addr, void *data);
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index da538ff68953..18c8c3d793b0 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1296,6 +1296,15 @@ enum {
- 	FOLL_PCI_P2PDMA = 1 << 10,
- 	/* allow interrupts from generic signals */
- 	FOLL_INTERRUPTIBLE = 1 << 11,
-+	/*
-+	 * Always honor (trigger) NUMA hinting faults.
-+	 *
-+	 * FOLL_WRITE implicitly honors NUMA hinting faults because a
-+	 * PROT_NONE-mapped page is not writable (exceptions with FOLL_FORCE
-+	 * apply). get_user_pages_fast_only() always implicitly honors NUMA
-+	 * hinting faults.
-+	 */
-+	FOLL_HONOR_NUMA_FAULT = 1 << 12,
- 
- 	/* See also internal only FOLL flags in mm/internal.h */
- };
-diff --git a/mm/gup.c b/mm/gup.c
-index 2493ffa10f4b..f463d3004ddc 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -597,7 +597,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
- 	pte = ptep_get(ptep);
- 	if (!pte_present(pte))
- 		goto no_page;
--	if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
-+	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
- 		goto no_page;
- 
- 	page = vm_normal_page(vma, address, pte);
-@@ -714,7 +714,7 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
- 	if (likely(!pmd_trans_huge(pmdval)))
- 		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
- 
--	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(flags))
-+	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
- 		return no_page_table(vma, flags);
- 
- 	ptl = pmd_lock(mm, pmd);
-@@ -844,6 +844,10 @@ struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
- 	if (WARN_ON_ONCE(foll_flags & FOLL_PIN))
- 		return NULL;
- 
-+	/*
-+	 * We never set FOLL_HONOR_NUMA_FAULT because callers don't expect
-+	 * to fail on PROT_NONE-mapped pages.
-+	 */
- 	page = follow_page_mask(vma, address, foll_flags, &ctx);
- 	if (ctx.pgmap)
- 		put_dev_pagemap(ctx.pgmap);
-@@ -2240,6 +2244,12 @@ static bool is_valid_gup_args(struct page **pages, int *locked,
- 		gup_flags |= FOLL_UNLOCKABLE;
- 	}
- 
-+	/*
-+	 * For now, always trigger NUMA hinting faults. Some GUP users like
-+	 * KVM really require it to benefit from autonuma.
-+	 */
-+	gup_flags |= FOLL_HONOR_NUMA_FAULT;
-+
- 	/* FOLL_GET and FOLL_PIN are mutually exclusive. */
- 	if (WARN_ON_ONCE((gup_flags & (FOLL_PIN | FOLL_GET)) ==
- 			 (FOLL_PIN | FOLL_GET)))
-@@ -2564,7 +2574,14 @@ static int gup_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
- 		struct page *page;
- 		struct folio *folio;
- 
--		if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
-+		/*
-+		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
-+		 * pte_access_permitted() better should reject these pages
-+		 * either way: otherwise, GUP-fast might succeed in
-+		 * cases where ordinary GUP would fail due to VMA access
-+		 * permissions.
-+		 */
-+		if (pte_protnone(pte))
- 			goto pte_unmap;
- 
- 		if (!pte_access_permitted(pte, flags & FOLL_WRITE))
-@@ -2983,8 +3000,8 @@ static int gup_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr, unsigned lo
- 
- 		if (unlikely(pmd_trans_huge(pmd) || pmd_huge(pmd) ||
- 			     pmd_devmap(pmd))) {
--			if (pmd_protnone(pmd) &&
--			    !gup_can_follow_protnone(flags))
-+			/* See gup_pte_range() */
-+			if (pmd_protnone(pmd))
- 				return 0;
- 
- 			if (!gup_huge_pmd(pmd, pmdp, addr, next, flags,
-@@ -3164,7 +3181,7 @@ static int internal_get_user_pages_fast(unsigned long start,
- 	if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
- 				       FOLL_FORCE | FOLL_PIN | FOLL_GET |
- 				       FOLL_FAST_ONLY | FOLL_NOFAULT |
--				       FOLL_PCI_P2PDMA)))
-+				       FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
- 		return -EINVAL;
- 
- 	if (gup_flags & FOLL_PIN)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2e2e8a24cc71..2cd3e5502180 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1468,7 +1468,7 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
- 		return ERR_PTR(-EFAULT);
- 
- 	/* Full NUMA hinting faults to serialise migration in fault paths */
--	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(flags))
-+	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(vma, flags))
- 		return NULL;
- 
- 	if (!pmd_write(*pmd) && gup_must_unshare(vma, flags, page))
+>  fs/jbd2/checkpoint.c        | 75 +++++++++----------------------------
+>  include/trace/events/jbd2.h | 12 ++----
+>  2 files changed, 21 insertions(+), 66 deletions(-)
+> 
+> diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+> index c1f543e86170a..ab72aeb766a74 100644
+> --- a/fs/jbd2/checkpoint.c
+> +++ b/fs/jbd2/checkpoint.c
+> @@ -349,50 +349,10 @@ int jbd2_cleanup_journal_tail(journal_t *journal)
+>  
+>  /* Checkpoint list management */
+>  
+> -/*
+> - * journal_clean_one_cp_list
+> - *
+> - * Find all the written-back checkpoint buffers in the given list and
+> - * release them. If 'destroy' is set, clean all buffers unconditionally.
+> - *
+> - * Called with j_list_lock held.
+> - * Returns 1 if we freed the transaction, 0 otherwise.
+> - */
+> -static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
+> -{
+> -	struct journal_head *last_jh;
+> -	struct journal_head *next_jh = jh;
+> -
+> -	if (!jh)
+> -		return 0;
+> -
+> -	last_jh = jh->b_cpprev;
+> -	do {
+> -		jh = next_jh;
+> -		next_jh = jh->b_cpnext;
+> -
+> -		if (!destroy && __cp_buffer_busy(jh))
+> -			return 0;
+> -
+> -		if (__jbd2_journal_remove_checkpoint(jh))
+> -			return 1;
+> -		/*
+> -		 * This function only frees up some memory
+> -		 * if possible so we dont have an obligation
+> -		 * to finish processing. Bail out if preemption
+> -		 * requested:
+> -		 */
+> -		if (need_resched())
+> -			return 0;
+> -	} while (jh != last_jh);
+> -
+> -	return 0;
+> -}
+> -
+>  /*
+>   * journal_shrink_one_cp_list
+>   *
+> - * Find 'nr_to_scan' written-back checkpoint buffers in the given list
+> + * Find all the written-back checkpoint buffers in the given list
+>   * and try to release them. If the whole transaction is released, set
+>   * the 'released' parameter. Return the number of released checkpointed
+>   * buffers.
+> @@ -400,15 +360,15 @@ static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
+>   * Called with j_list_lock held.
+>   */
+>  static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+> -						unsigned long *nr_to_scan,
+> -						bool *released)
+> +						bool destroy, bool *released)
+>  {
+>  	struct journal_head *last_jh;
+>  	struct journal_head *next_jh = jh;
+>  	unsigned long nr_freed = 0;
+>  	int ret;
+>  
+> -	if (!jh || *nr_to_scan == 0)
+> +	*released = false;
+> +	if (!jh)
+>  		return 0;
+>  
+>  	last_jh = jh->b_cpprev;
+> @@ -416,8 +376,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+>  		jh = next_jh;
+>  		next_jh = jh->b_cpnext;
+>  
+> -		(*nr_to_scan)--;
+> -		if (__cp_buffer_busy(jh))
+> +		if (!destroy && __cp_buffer_busy(jh))
+>  			continue;
+>  
+>  		nr_freed++;
+> @@ -429,7 +388,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+>  
+>  		if (need_resched())
+>  			break;
+> -	} while (jh != last_jh && *nr_to_scan);
+> +	} while (jh != last_jh);
+>  
+>  	return nr_freed;
+>  }
+> @@ -447,11 +406,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+>  						  unsigned long *nr_to_scan)
+>  {
+>  	transaction_t *transaction, *last_transaction, *next_transaction;
+> -	bool released;
+> +	bool __maybe_unused released;
+>  	tid_t first_tid = 0, last_tid = 0, next_tid = 0;
+>  	tid_t tid = 0;
+>  	unsigned long nr_freed = 0;
+> -	unsigned long nr_scanned = *nr_to_scan;
+> +	unsigned long freed;
+>  
+>  again:
+>  	spin_lock(&journal->j_list_lock);
+> @@ -480,10 +439,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+>  		transaction = next_transaction;
+>  		next_transaction = transaction->t_cpnext;
+>  		tid = transaction->t_tid;
+> -		released = false;
+>  
+> -		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_list,
+> -						       nr_to_scan, &released);
+> +		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
+> +						   false, &released);
+> +		nr_freed += freed;
+> +		(*nr_to_scan) -= min(*nr_to_scan, freed);
+>  		if (*nr_to_scan == 0)
+>  			break;
+>  		if (need_resched() || spin_needbreak(&journal->j_list_lock))
+> @@ -504,9 +464,8 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+>  	if (*nr_to_scan && next_tid)
+>  		goto again;
+>  out:
+> -	nr_scanned -= *nr_to_scan;
+>  	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
+> -					  nr_freed, nr_scanned, next_tid);
+> +					  nr_freed, next_tid);
+>  
+>  	return nr_freed;
+>  }
+> @@ -522,7 +481,7 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
+>  void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
+>  {
+>  	transaction_t *transaction, *last_transaction, *next_transaction;
+> -	int ret;
+> +	bool released;
+>  
+>  	transaction = journal->j_checkpoint_transactions;
+>  	if (!transaction)
+> @@ -533,8 +492,8 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
+>  	do {
+>  		transaction = next_transaction;
+>  		next_transaction = transaction->t_cpnext;
+> -		ret = journal_clean_one_cp_list(transaction->t_checkpoint_list,
+> -						destroy);
+> +		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
+> +					   destroy, &released);
+>  		/*
+>  		 * This function only frees up some memory if possible so we
+>  		 * dont have an obligation to finish processing. Bail out if
+> @@ -547,7 +506,7 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
+>  		 * avoids pointless scanning of transactions which still
+>  		 * weren't checkpointed.
+>  		 */
+> -		if (!ret)
+> +		if (!released)
+>  			return;
+>  	} while (transaction != last_transaction);
+>  }
+> diff --git a/include/trace/events/jbd2.h b/include/trace/events/jbd2.h
+> index 29414288ea3e0..34ce197bd76e0 100644
+> --- a/include/trace/events/jbd2.h
+> +++ b/include/trace/events/jbd2.h
+> @@ -462,11 +462,9 @@ TRACE_EVENT(jbd2_shrink_scan_exit,
+>  TRACE_EVENT(jbd2_shrink_checkpoint_list,
+>  
+>  	TP_PROTO(journal_t *journal, tid_t first_tid, tid_t tid, tid_t last_tid,
+> -		 unsigned long nr_freed, unsigned long nr_scanned,
+> -		 tid_t next_tid),
+> +		 unsigned long nr_freed, tid_t next_tid),
+>  
+> -	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed,
+> -		nr_scanned, next_tid),
+> +	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed, next_tid),
+>  
+>  	TP_STRUCT__entry(
+>  		__field(dev_t, dev)
+> @@ -474,7 +472,6 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
+>  		__field(tid_t, tid)
+>  		__field(tid_t, last_tid)
+>  		__field(unsigned long, nr_freed)
+> -		__field(unsigned long, nr_scanned)
+>  		__field(tid_t, next_tid)
+>  	),
+>  
+> @@ -484,15 +481,14 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
+>  		__entry->tid		= tid;
+>  		__entry->last_tid	= last_tid;
+>  		__entry->nr_freed	= nr_freed;
+> -		__entry->nr_scanned	= nr_scanned;
+>  		__entry->next_tid	= next_tid;
+>  	),
+>  
+>  	TP_printk("dev %d,%d shrink transaction %u-%u(%u) freed %lu "
+> -		  "scanned %lu next transaction %u",
+> +		  "next transaction %u",
+>  		  MAJOR(__entry->dev), MINOR(__entry->dev),
+>  		  __entry->first_tid, __entry->tid, __entry->last_tid,
+> -		  __entry->nr_freed, __entry->nr_scanned, __entry->next_tid)
+> +		  __entry->nr_freed, __entry->next_tid)
+>  );
+>  
+>  #endif /* _TRACE_JBD2_H */
+> -- 
+> 2.39.2
+> 
+> 
+> 
 -- 
-2.41.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
