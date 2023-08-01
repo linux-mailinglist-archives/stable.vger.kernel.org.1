@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C69D76AFAF
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1525C76AEA3
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233465AbjHAJtw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:49:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50746 "EHLO
+        id S233014AbjHAJkd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:40:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233477AbjHAJta (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 441F5449C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:20 -0700 (PDT)
+        with ESMTP id S233235AbjHAJkG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9468C139
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB519614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B492EC433C7;
-        Tue,  1 Aug 2023 09:48:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3295F6150B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECB2C433C8;
+        Tue,  1 Aug 2023 09:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883299;
-        bh=f8g8BzD3wSQbWC97+iyPFgUoqTGX9tkOF6SPvGLXdlk=;
+        s=korg; t=1690882674;
+        bh=CNQBEPIs29o6Z98KW4KnoUY1nOXM1mknfQVVq2BL2RE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rrt+BWFTXbmIYHluUCvafO/AiGV9rH6bLJLSqXMNdyfSuCumhiECr1/dDrP29O8kJ
-         5xLKYJipMlHBAphXW2n8I8pOlFqEeEuLnwyalnT889LUGz1VXaP7whyMZh/dTrPRIm
-         cjrEfArHGN0NBylQW5eHhkbwnh+AtkX57fpu2ik8=
+        b=2eaal31S2PxSgmzKACro9jqbmIAK+y1Urmc6tJYpKeoSVLSitjLh/vlxTH94quaVw
+         83U0FK3FYN7+ZuXy38244EkGu3to96P81imgRV44p8DFpoduy67fkF9zVXyHilxDj7
+         IFE0JacS0SXo/yrPSLnvJGTjZR1N+xlmu4N4mwtA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 185/239] btrfs: zoned: do not enable async discard
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 191/228] irq-bcm6345-l1: Do not assume a fixed block to cpu mapping
 Date:   Tue,  1 Aug 2023 11:20:49 +0200
-Message-ID: <20230801091932.350512990@linuxfoundation.org>
+Message-ID: <20230801091929.760134915@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,66 +56,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 95ca6599a589ee84c69f02d0e1d928c8d1367fb1 upstream.
+[ Upstream commit 55ad24857341c36616ecc1d9580af5626c226cf1 ]
 
-The zoned mode need to reset a zone before using it. We rely on btrfs's
-original discard functionality (discarding unused block group range) to do
-the resetting.
+The irq to block mapping is fixed, and interrupts from the first block
+will always be routed to the first parent IRQ. But the parent interrupts
+themselves can be routed to any available CPU.
 
-While the commit 63a7cb130718 ("btrfs: auto enable discard=async when
-possible") made the discard done in an async manner, a zoned reset do not
-need to be async, as it is fast enough.
+This is used by the bootloader to map the first parent interrupt to the
+boot CPU, regardless wether the boot CPU is the first one or the second
+one.
 
-Even worth, delaying zone rests prevents using those zones again. So, let's
-disable async discard on the zoned mode.
+When booting from the second CPU, the assumption that the first block's
+IRQ is mapped to the first CPU breaks, and the system hangs because
+interrupts do not get routed correctly.
 
-Fixes: 63a7cb130718 ("btrfs: auto enable discard=async when possible")
-CC: stable@vger.kernel.org # 6.3+
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ update message text ]
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by passing the appropriate bcm6434_l1_cpu to the interrupt
+handler instead of the chip itself, so the handler always has the right
+block.
+
+Fixes: c7c42ec2baa1 ("irqchips/bmips: Add bcm6345-l1 interrupt controller")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230629072620.62527-1-jonas.gorski@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |    7 ++++++-
- fs/btrfs/zoned.c   |    3 +++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-bcm6345-l1.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -3692,11 +3692,16 @@ int __cold open_ctree(struct super_block
- 	 * For devices supporting discard turn on discard=async automatically,
- 	 * unless it's already set or disabled. This could be turned off by
- 	 * nodiscard for the same mount.
-+	 *
-+	 * The zoned mode piggy backs on the discard functionality for
-+	 * resetting a zone. There is no reason to delay the zone reset as it is
-+	 * fast enough. So, do not enable async discard for zoned mode.
- 	 */
- 	if (!(btrfs_test_opt(fs_info, DISCARD_SYNC) ||
- 	      btrfs_test_opt(fs_info, DISCARD_ASYNC) ||
- 	      btrfs_test_opt(fs_info, NODISCARD)) &&
--	    fs_info->fs_devices->discardable) {
-+	    fs_info->fs_devices->discardable &&
-+	    !btrfs_is_zoned(fs_info)) {
- 		btrfs_set_and_info(fs_info, DISCARD_ASYNC,
- 				   "auto enabling async discard");
- 	}
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -804,6 +804,9 @@ int btrfs_check_mountopts_zoned(struct b
+diff --git a/drivers/irqchip/irq-bcm6345-l1.c b/drivers/irqchip/irq-bcm6345-l1.c
+index 6899e37810a88..b14c74f7b9b98 100644
+--- a/drivers/irqchip/irq-bcm6345-l1.c
++++ b/drivers/irqchip/irq-bcm6345-l1.c
+@@ -82,6 +82,7 @@ struct bcm6345_l1_chip {
+ };
+ 
+ struct bcm6345_l1_cpu {
++	struct bcm6345_l1_chip	*intc;
+ 	void __iomem		*map_base;
+ 	unsigned int		parent_irq;
+ 	u32			enable_cache[];
+@@ -115,17 +116,11 @@ static inline unsigned int cpu_for_irq(struct bcm6345_l1_chip *intc,
+ 
+ static void bcm6345_l1_irq_handle(struct irq_desc *desc)
+ {
+-	struct bcm6345_l1_chip *intc = irq_desc_get_handler_data(desc);
+-	struct bcm6345_l1_cpu *cpu;
++	struct bcm6345_l1_cpu *cpu = irq_desc_get_handler_data(desc);
++	struct bcm6345_l1_chip *intc = cpu->intc;
+ 	struct irq_chip *chip = irq_desc_get_chip(desc);
+ 	unsigned int idx;
+ 
+-#ifdef CONFIG_SMP
+-	cpu = intc->cpus[cpu_logical_map(smp_processor_id())];
+-#else
+-	cpu = intc->cpus[0];
+-#endif
+-
+ 	chained_irq_enter(chip, desc);
+ 
+ 	for (idx = 0; idx < intc->n_words; idx++) {
+@@ -253,6 +248,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
+ 	if (!cpu)
+ 		return -ENOMEM;
+ 
++	cpu->intc = intc;
+ 	cpu->map_base = ioremap(res.start, sz);
+ 	if (!cpu->map_base)
+ 		return -ENOMEM;
+@@ -268,7 +264,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
  		return -EINVAL;
  	}
+ 	irq_set_chained_handler_and_data(cpu->parent_irq,
+-						bcm6345_l1_irq_handle, intc);
++						bcm6345_l1_irq_handle, cpu);
  
-+	btrfs_clear_and_info(info, DISCARD_ASYNC,
-+			"zoned: async discard ignored and disabled for zoned mode");
-+
  	return 0;
  }
- 
+-- 
+2.40.1
+
 
 
