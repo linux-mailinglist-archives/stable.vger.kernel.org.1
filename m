@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D0276ACDD
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E6276ADF1
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232547AbjHAJYH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52782 "EHLO
+        id S229885AbjHAJeq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232597AbjHAJXu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:23:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CF6D44B4
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:23 -0700 (PDT)
+        with ESMTP id S230469AbjHAJeX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CDDF5258
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C68FB614FD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46F5C433C7;
-        Tue,  1 Aug 2023 09:22:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F08E4614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F84CC433C7;
+        Tue,  1 Aug 2023 09:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881742;
-        bh=NA5gLcV2EdxXfJunMIz4C6fOmeZDEAvW0u8geKfU6e8=;
+        s=korg; t=1690882338;
+        bh=shXgfbM8H6NuSZc1HISNrn4zgbDQ2Qpl/nmlbKhYE+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v9J532WeuC4VOVn4d17ImgOtTgzEg3tXb+ARlKBHjxEBIH+htHksisjjKw4pmHmJy
-         VByALZm90oSwsbFKHDoJEGmE9HtQWkPxor/SCghZd3Eq00hi1wsWRvWAq2+pV2gxtJ
-         JaiqBEMweP6q+7v2Kf7fjvytnp6aGz3m7MDgg6x8=
+        b=egSYv/+qqgtPoZDvenHZBb+EroMA5+gQ6CBGBr7igNTB3izlX7Cpu8Zh/R2BUex+v
+         o/NkBeSHT5L6z1QW9kwEBnQ1nD9ww0TT+4HOOMcwiUaLgzSFdmKNN4h2EdfbteIeYw
+         outzDewKkGQgFiTPqZl1onuBho6F5XAP6+NX+AY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        patches@lists.linux.dev, Jun Lei <jun.lei@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Daniel Miess <daniel.miess@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 014/155] PCI/ASPM: Factor out pcie_wait_for_retrain()
-Date:   Tue,  1 Aug 2023 11:18:46 +0200
-Message-ID: <20230801091910.713077610@linuxfoundation.org>
+Subject: [PATCH 6.1 069/228] drm/amd/display: Fix possible underflow for displays with large vblank
+Date:   Tue,  1 Aug 2023 11:18:47 +0200
+Message-ID: <20230801091925.319149599@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,74 +58,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Daniel Miess <daniel.miess@amd.com>
 
-[ Upstream commit 9c7f136433d26592cb4d9cd00b4e15c33d9797c6 ]
+[ Upstream commit 1a4bcdbea4319efeb26cc4b05be859a7867e02dc ]
 
-Factor pcie_wait_for_retrain() out from pcie_retrain_link().  No functional
-change intended.
+[Why]
+Underflow observed when using a display with a large vblank region
+and low refresh rate
 
-[bhelgaas: split out from
-https: //lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com]
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e7e39756363a ("PCI/ASPM: Avoid link retraining race")
+[How]
+Simplify calculation of vblank_nom
+
+Increase value for VBlankNomDefaultUS to 800us
+
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 2a9482e55968 ("drm/amd/display: Prevent vtotal from being set to 0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ .../amd/display/dc/dml/dcn314/dcn314_fpu.c    | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index e7f742ff31c3c..5e09cbb563366 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -192,10 +192,26 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
- 	link->clkpm_disable = blacklist ? 1 : 0;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+index 395eed9f6b1be..a2a32cb9d5710 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -32,7 +32,7 @@
+ #include "dml/display_mode_vba.h"
  
-+static int pcie_wait_for_retrain(struct pci_dev *pdev)
-+{
-+	unsigned long end_jiffies;
-+	u16 reg16;
-+
-+	/* Wait for Link Training to be cleared by hardware */
-+	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
-+	do {
-+		pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &reg16);
-+		if (!(reg16 & PCI_EXP_LNKSTA_LT))
-+			return 0;
-+		msleep(1);
-+	} while (time_before(jiffies, end_jiffies));
-+
-+	return -ETIMEDOUT;
-+}
-+
- static int pcie_retrain_link(struct pcie_link_state *link)
- {
- 	struct pci_dev *parent = link->pdev;
--	unsigned long end_jiffies;
- 	u16 reg16;
+ struct _vcs_dpi_ip_params_st dcn3_14_ip = {
+-	.VBlankNomDefaultUS = 668,
++	.VBlankNomDefaultUS = 800,
+ 	.gpuvm_enable = 1,
+ 	.gpuvm_max_page_table_levels = 1,
+ 	.hostvm_enable = 1,
+@@ -288,7 +288,7 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
+ 	struct resource_context *res_ctx = &context->res_ctx;
+ 	struct pipe_ctx *pipe;
+ 	bool upscaled = false;
+-	bool isFreesyncVideo = false;
++	const unsigned int max_allowed_vblank_nom = 1023;
  
- 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
-@@ -211,17 +227,7 @@ static int pcie_retrain_link(struct pcie_link_state *link)
- 		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
- 	}
+ 	dc_assert_fp_enabled();
  
--	/* Wait for link training end. Break out after waiting for timeout */
--	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
--	do {
--		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
--		if (!(reg16 & PCI_EXP_LNKSTA_LT))
--			break;
--		msleep(1);
--	} while (time_before(jiffies, end_jiffies));
--	if (reg16 & PCI_EXP_LNKSTA_LT)
--		return -ETIMEDOUT;
--	return 0;
-+	return pcie_wait_for_retrain(parent);
- }
+@@ -302,16 +302,11 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
+ 		pipe = &res_ctx->pipe_ctx[i];
+ 		timing = &pipe->stream->timing;
  
- /*
+-		isFreesyncVideo = pipe->stream->adjust.v_total_max == pipe->stream->adjust.v_total_min;
+-		isFreesyncVideo = isFreesyncVideo && pipe->stream->adjust.v_total_min > timing->v_total;
+-
+-		if (!isFreesyncVideo) {
+-			pipes[pipe_cnt].pipe.dest.vblank_nom =
+-				dcn3_14_ip.VBlankNomDefaultUS / (timing->h_total / (timing->pix_clk_100hz / 10000.0));
+-		} else {
+-			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
+-			pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
+-		}
++		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
++		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
++		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
++		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
++		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, max_allowed_vblank_nom);
+ 
+ 		if (pipe->plane_state &&
+ 				(pipe->plane_state->src_rect.height < pipe->plane_state->dst_rect.height ||
 -- 
 2.39.2
 
