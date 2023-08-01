@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A354176AE44
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2F8976AF8F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233152AbjHAJh2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35194 "EHLO
+        id S233504AbjHAJsp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233165AbjHAJhL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:11 -0400
+        with ESMTP id S233523AbjHAJsc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 156104EFE
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9F054222
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E605161500
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF45AC433C7;
-        Tue,  1 Aug 2023 09:35:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6BB06126D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FBAC433C9;
+        Tue,  1 Aug 2023 09:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882519;
-        bh=2rLxZOz8kmM5rWE/sdfl3HtjjLejZ3ndtj66kfRoYMA=;
+        s=korg; t=1690883221;
+        bh=4QR4i/5FCmjj8vvofHns45GjYebhTG+h+CyJAUo12YA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MjnZQb+5/0kq7QeLYp6kzl0XGCqVOr8LdTZzvdIxdjomtF4+rOMjIBJ5Cq6+NhI6p
-         ynfZx26pXmkJ+IhJwD4XA/+77GfZjtosZaXETKc6KLsoZz9peSWdyp3sT+tj96MS81
-         kboBuUfUTQZXW887y3juEgqjl1AYQQhfCR922ivo=
+        b=wkzXth8VRWquiON6+S2T32R12FGVb111gHBBqB/Neh10rwjhFwO7xLqPxiV2fLzx+
+         0sEdoif+AcnzsruIZBszUXbOWhmvujOS/DLpDE9JjwcGdIxhx0TlTm/tDUl+WO6wRD
+         jWPT7uqKFUvSWi4h/wObokHM9f1ZhIV9fEVOpI8A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Lijo Lazar <lijo.lazar@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/228] drm/amd: Fix an error handling mistake in psp_sw_init()
-Date:   Tue,  1 Aug 2023 11:19:52 +0200
-Message-ID: <20230801091927.571490383@linuxfoundation.org>
+Subject: [PATCH 6.4 129/239] drm/amd: Fix an error handling mistake in psp_sw_init()
+Date:   Tue,  1 Aug 2023 11:19:53 +0200
+Message-ID: <20230801091930.372701769@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index 0af9fb4098e8a..eecbd8eeb1f5a 100644
+index e4757a2807d9a..db820331f2c61 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -472,11 +472,11 @@ static int psp_sw_init(void *handle)
+@@ -491,11 +491,11 @@ static int psp_sw_init(void *handle)
  	return 0;
  
  failed2:
