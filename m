@@ -2,117 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8563776BF4F
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 23:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8978B76BF55
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 23:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230004AbjHAVcZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 17:32:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49794 "EHLO
+        id S229868AbjHAVfj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 17:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231222AbjHAVcX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 17:32:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 469B01B6;
-        Tue,  1 Aug 2023 14:32:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC6326170B;
-        Tue,  1 Aug 2023 21:32:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAEEC433C7;
-        Tue,  1 Aug 2023 21:32:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690925539;
-        bh=mlLJwvIQ28in3hFDAHgMaBkqadXCSNy7GdeKaCPuqZE=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=l9XhNVJGckmHfYujiSYBsJ7YApijXQj8Jo0yIajaRkRGPyQNzi0llLBftY9lUu6V0
-         vzXfru2a+7ey7T7oNksxGnz2QDFBFwslI/sECS3OsqQoS0E75LuLbMoYIiq3vYLU5e
-         RpSD9+k4MnTWJMNFD9KGcYsSmizswMw1fmTG9hIZjSSQeWpFASxd3EgUghuyoAqtn9
-         pSxOkPoMOwG8+iVLLXlhS+/ig5tyM4urfdSxAvhIk+7cmm9jU5GvOoh5or41yNzf3W
-         mI3tk6AJ0Q3HNXS5WhdTd+FKXcTXYrxlo0/CXyGJx9BFDzn7YNgMxfNGM1gw+//rFN
-         TwRX76lVadhsg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id B632ECE0908; Tue,  1 Aug 2023 14:32:18 -0700 (PDT)
-Date:   Tue, 1 Aug 2023 14:32:18 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>, Roy Hopkins <rhopkins@suse.de>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Pavel Machek <pavel@denx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        rcu@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Marco Elver <elver@google.com>
-Subject: Re: scheduler problems in -next (was: Re: [PATCH 6.4 000/227]
- 6.4.7-rc1 review)
-Message-ID: <9154ee27-6f38-4efe-9391-ef626cdc2ff4@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20230731141934.GK29590@hirez.programming.kicks-ass.net>
- <20230731143954.GB37820@hirez.programming.kicks-ass.net>
- <f5a18aa3-9db7-6ad2-33d5-3335a18e4e2f@roeck-us.net>
- <20230731145232.GM29590@hirez.programming.kicks-ass.net>
- <7ff2a2393d78275b14ff867f3af902b5d4b93ea2.camel@suse.de>
- <20230731161452.GA40850@hirez.programming.kicks-ass.net>
- <baa58a8e-54f0-2309-b34e-d62999a452a1@roeck-us.net>
- <20230731211517.GA51835@hirez.programming.kicks-ass.net>
- <a05743a3-4dec-6af7-302f-d1d2a0db7d3e@roeck-us.net>
- <20230801190852.GG11704@hirez.programming.kicks-ass.net>
+        with ESMTP id S229545AbjHAVfh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 17:35:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D858EFF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 14:34:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690925691;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=nHR+gYw7cHBLdaoz+kXX0wBV31cLT+GSZK2PmYnjFDI=;
+        b=Nl0nfs5inmEznoVQcP5xv5jLIx0y9Tk3QWAfz+ksm8CFnIQo3YOeI4r9aq6jilBDmIpJUi
+        kzt9Wfh9WtF0XITd99nDSrsURBlYiMO/ESr63BwTYcoi+9do2+x9kOvSoJ93x9pTObesL3
+        BKHDGsd820S1zXqirAfduRk36v/mQaQ=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-434-aoaEx7NiOHWnjDJ9QpeFow-1; Tue, 01 Aug 2023 17:34:49 -0400
+X-MC-Unique: aoaEx7NiOHWnjDJ9QpeFow-1
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4054266d0beso14107001cf.0
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 14:34:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690925689; x=1691530489;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nHR+gYw7cHBLdaoz+kXX0wBV31cLT+GSZK2PmYnjFDI=;
+        b=ZpVVgcYpHD6aNYri7mTjG+wLwKCI/XmX/HAUMJqEi2p+GKAd1OWJ22Af2stLTED8Fh
+         UmICXeemFRGFmGsqU8TAgvo7uaqSNXXHx5to7Ch7oH5EmkizLtz21YdJ8UqAQ5V3K7x0
+         XOU0SajzmTf3toWVZ9pjd1dTSYbpzqRSGwf2R4GmAiCUXjm5sfd0AJhlw3SjXTQBhJRt
+         vtfn/baONJRNgEq5O1eFJ2k9r7Hnfpl2OePbPZXcSnHrwKxjK+ikohKM76OjK4aBYiJl
+         3yj+9Xa2doIsQ7fnt+VFQ/KWwlpQsBtaSSmEHHA2N+ktqiGODZfRLuKJwxxbh3JQfVht
+         EZNA==
+X-Gm-Message-State: ABy/qLbTojI255X73Tt0RlnHq5f4MYqz6MxnQUv9bIvenaV/9RwSk9Je
+        4M5EDvappflrZAiYzUmrwEvWGQnZWDrl755tB23ntNqJII+mqfeS5VACHaPm8eddl9/oWpM4uXz
+        pGe6+laqz7NprGd8c
+X-Received: by 2002:a05:622a:148c:b0:403:ae76:12da with SMTP id t12-20020a05622a148c00b00403ae7612damr16141364qtx.1.1690925689348;
+        Tue, 01 Aug 2023 14:34:49 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlERXmNdWW2CNoL1GTyXMrbw7WyphoXCE2tsi7Ar+vBKiuIbu6/USybxg48TLXkKPEj8+66m3Q==
+X-Received: by 2002:a05:622a:148c:b0:403:ae76:12da with SMTP id t12-20020a05622a148c00b00403ae7612damr16141349qtx.1.1690925689073;
+        Tue, 01 Aug 2023 14:34:49 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+        by smtp.gmail.com with ESMTPSA id bq22-20020a05622a1c1600b0040331a24f16sm4706166qtb.3.2023.08.01.14.34.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 14:34:48 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 17:34:43 -0400
+From:   Peter Xu <peterx@redhat.com>
+To:     Suren Baghdasaryan <surenb@google.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        akpm@linux-foundation.org, jannh@google.com, willy@infradead.org,
+        liam.howlett@oracle.com, david@redhat.com, ldufour@linux.ibm.com,
+        vbabka@suse.cz, michel@lespinasse.org, jglisse@google.com,
+        mhocko@suse.com, hannes@cmpxchg.org, dave@stgolabs.net,
+        hughd@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/6] mm: enable page walking API to lock vmas during the
+ walk
+Message-ID: <ZMl6c+bVxdWW0YnN@x1n>
+References: <20230731171233.1098105-1-surenb@google.com>
+ <20230731171233.1098105-2-surenb@google.com>
+ <CAHk-=wjEbJS3OhUu+2sV8Kft8GnGcsNFOhYhXYQuk5nvvqR-NQ@mail.gmail.com>
+ <CAJuCfpFWOknMsBmk1RwsX9_0-eZBoF+cy=P-E7xAmOWyeo4rvA@mail.gmail.com>
+ <CAHk-=wiFXOJ_6mnuP5h3ZKNM1+SBNZFZz9p8hyS8NaYUGLioEg@mail.gmail.com>
+ <CAJuCfpG4Yk65b=0TLfGRqrO7VpY3ZaYKqbBjEP+45ViC9zySVQ@mail.gmail.com>
+ <CAJuCfpF6WcJBSix0PD0cOD_MaeLpfGz1ddS6Ug_M+g0QTfkdzw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230801190852.GG11704@hirez.programming.kicks-ass.net>
+In-Reply-To: <CAJuCfpF6WcJBSix0PD0cOD_MaeLpfGz1ddS6Ug_M+g0QTfkdzw@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 09:08:52PM +0200, Peter Zijlstra wrote:
-> On Tue, Aug 01, 2023 at 10:32:45AM -0700, Guenter Roeck wrote:
-> > On 7/31/23 14:15, Peter Zijlstra wrote:
-> > > On Mon, Jul 31, 2023 at 09:34:29AM -0700, Guenter Roeck wrote:
-> > > > > Ha!, I was poking around the same thing. My hack below seems to (so far,
-> > > > > <20 boots) help things.
-> > > > > 
-> > > > 
-> > > > So, dumb question:
-> > > > How comes this bisects to "sched/fair: Remove sched_feat(START_DEBIT)" ?
-> > > 
-> > > That commit changes the timings of things; dumb luck otherwise.
-> > 
-> > Kind of scary. So I only experienced the problem because the START_DEBIT patch
-> > happened to be queued roughly at the same time, and it might otherwise have
-> > found its way unnoticed into the upstream kernel. That makes me wonder if this
-> > or other similar patches may uncover similar problems elsewhere in the kernel
-> > (i.e., either hide new or existing race conditions or expose existing ones).
-> > 
-> > This in turn makes me wonder if it would be possible to define a test which
-> > would uncover such problems without the START_DEBIT patch. Any idea ?
+On Tue, Aug 01, 2023 at 01:28:56PM -0700, Suren Baghdasaryan wrote:
+> I have the new patchset ready but I see 3 places where we walk the
+> pages after mmap_write_lock() while *I think* we can tolerate
+> concurrent page faults (don't need to lock the vmas):
 > 
-> IIRC some of the thread sanitizers use breakpoints to inject random
-> sleeps, specifically to tickle races.
+> s390_enable_sie()
+> break_ksm()
+> clear_refs_write()
 
-I have heard of are some of these, arguably including KCSAN, but they
-would have a tough time on this one.
+This one doesn't look right to be listed - tlb flushing is postponed after
+pgtable lock released, so I assume the same issue can happen like fork():
+where we can have race coditions to corrupt data if, e.g., thread A
+writting with a writable (unflushed) tlb, alongside with thread B CoWing.
 
-They would have to inject many milliseconds between the check of
-->kthread_ptr in synchronize_rcu_tasks_generic() and that mutex_lock()
-in rcu_tasks_one_gp().  Plus this window only occurs during boot shortly
-before init is spawned.
+It'll indeed be nice to know whether break_ksm() can avoid that lock_vma
+parameter across quite a few function jumps. I don't yet see an immediate
+issue with this one..  No idea on s390_enable_sie(), but to make it simple
+and safe I'd simply leave it with the write vma lock to match the mmap
+write lock.
 
-On the other hand, randomly injecting delay just before acquiring each
-lock would cover this case.  But such a sanitzer would still only get
-one shot per boot of the kernel for this particular bug.
+Thanks,
 
-							Thanx, Paul
+-- 
+Peter Xu
+
