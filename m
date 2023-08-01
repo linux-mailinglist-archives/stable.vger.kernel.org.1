@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46A4E76AE6D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EB2D76AF8A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233184AbjHAJit (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40026 "EHLO
+        id S233616AbjHAJsh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233195AbjHAJi1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:27 -0400
+        with ESMTP id S233856AbjHAJsV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47AA5278
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6236E3C13
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12D686150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2FCC433C9;
-        Tue,  1 Aug 2023 09:36:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB1B16126D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5E8C433C7;
+        Tue,  1 Aug 2023 09:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882580;
-        bh=y2X+6Ws0RSAnwqIEIVnYHSMjoQ/u0fwlQxWXNh1VjCc=;
+        s=korg; t=1690883207;
+        bh=RopRS8/BqNw5xX41lDD+Dul0b7haYQ2OrScBPyLz8+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k/6aV5I2FWmKDF8sXTJh3G+G9lqoDxAIHAQEGRbpdHxHXhGtYhAbCtQp+/TxNy4yl
-         4SP6ys7kW0sqVJyT1x1DZCFFgeOIi3QBgcTpUjk+eTkHwkbLx2cSvlEVIjeR4ZJ69d
-         4+wS91VaX9VpDGJUTshsuWVVV2/pQUTgVB9Mzmoo=
+        b=kevAczyTxG7Qurs2SjNMzNv2ZKnYJHN9HPSuYpXMMKoVCNGUQDrENAMYDpbG7P1FG
+         sMu7DX8oWD+nld+wFBeVmtvyiuOIVbSCKJb5Dcqi8ElwRfWEzoqWAK139BENRyTIph
+         ReMgvTZzWpwHtmC1SAUxdiYuLxv1nXlR6nlTMoYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mohsen Tahmasebi <moh53n@moh53n.ir>,
-        Mostafa Ghofrani <mostafaghrr@gmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 157/228] USB: serial: option: add Quectel EC200A module support
-Date:   Tue,  1 Aug 2023 11:20:15 +0200
-Message-ID: <20230801091928.568764884@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Samuel Holland <samuel.holland@sifive.com>
+Subject: [PATCH 6.4 152/239] serial: sifive: Fix sifive_serial_console_setup() section
+Date:   Tue,  1 Aug 2023 11:20:16 +0200
+Message-ID: <20230801091931.136039518@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mohsen Tahmasebi <moh53n@moh53n.ir>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 857ea9005806e2a458016880278f98715873e977 upstream.
+commit 9b8fef6345d5487137d4193bb0a0eae2203c284e upstream.
 
-Add Quectel EC200A "DIAG, AT, MODEM":
+This function is called indirectly from the platform driver probe
+function. Even if the driver is built in, it may be probed after
+free_initmem() due to deferral or unbinding/binding via sysfs.
+Thus the function cannot be marked as __init.
 
-0x6005: ECM / RNDIS + DIAG + AT + MODEM
-
-T:  Bus=01 Lev=01 Prnt=02 Port=05 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=6005 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-S:  SerialNumber=0000
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-
-Signed-off-by: Mohsen Tahmasebi <moh53n@moh53n.ir>
-Tested-by: Mostafa Ghofrani <mostafaghrr@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20230624060159.3401369-1-samuel.holland@sifive.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/sifive.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -269,6 +269,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_RM520N			0x0801
- #define QUECTEL_PRODUCT_EC200U			0x0901
- #define QUECTEL_PRODUCT_EC200S_CN		0x6002
-+#define QUECTEL_PRODUCT_EC200A			0x6005
- #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
- #define QUECTEL_PRODUCT_EM061K_LCN		0x6009
- #define QUECTEL_PRODUCT_EC200T			0x6026
-@@ -1229,6 +1230,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM520N, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, 0x0900, 0xff, 0, 0), /* RM500U-CN */
- 	  .driver_info = ZLP },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200A, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
+--- a/drivers/tty/serial/sifive.c
++++ b/drivers/tty/serial/sifive.c
+@@ -811,7 +811,7 @@ static void sifive_serial_console_write(
+ 	local_irq_restore(flags);
+ }
+ 
+-static int __init sifive_serial_console_setup(struct console *co, char *options)
++static int sifive_serial_console_setup(struct console *co, char *options)
+ {
+ 	struct sifive_serial_port *ssp;
+ 	int baud = SIFIVE_DEFAULT_BAUD_RATE;
 
 
