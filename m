@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 460F576AE37
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208AF76AD1E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233175AbjHAJg7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35200 "EHLO
+        id S230417AbjHAJ0d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233029AbjHAJgg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A03A44BE
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:47 -0700 (PDT)
+        with ESMTP id S232907AbjHAJ0S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2AAD2709
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8CBE614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F59C433C8;
-        Tue,  1 Aug 2023 09:34:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7394C613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81327C433C8;
+        Tue,  1 Aug 2023 09:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882486;
-        bh=S+h7iIiAlFKsHxTDOwMLX3m4N5EzIKr5CiQ+PmjQWXQ=;
+        s=korg; t=1690881899;
+        bh=6IQpSme99R6/7tZQ93zgVGwFKD0s+2sQIT2uMshNPrQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ry3jz1Dcs++OKC7aU/hmFAivzXIxKhf0T1pv1+m3i3cvleK8lOCtIDcTX0wCL67i8
-         lIsWj/4+kfsiPTlQNBxHpTvPHpRA5ZMKGH1i8G34xbgWfoRO5i+HlKszJ76iHUnZIe
-         XccOTKmQY/yWUOS6sqivsM79lRXWxuS6S9Zmj/vU=
+        b=n4wEMnZDvPcEE79L/SlOjvb+8x86Zr+tLVgTu9zSHnA/0xcVMGpR4WHEXWKShHLoV
+         Ahwl2q3QUftK84MXB5q7jZfG4HIiFmzgEBHCPcuo05OPeXkoubJijzgansyU7AqUMr
+         QwOune1SbKq+T6LMjVL9tCyABFVoOYTyA5O6y2ZI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Akhil P Oommen <quic_akhilpo@quicinc.com>,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/228] drm/msm: Fix IS_ERR_OR_NULL() vs NULL check in a5xx_submit_in_rb()
+Subject: [PATCH 5.15 069/155] team: reset teams flags when down link is P2P device
 Date:   Tue,  1 Aug 2023 11:19:41 +0200
-Message-ID: <20230801091927.188781687@linuxfoundation.org>
+Message-ID: <20230801091912.645031654@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,41 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 6e8a996563ecbe68e49c49abd4aaeef69f11f2dc ]
+[ Upstream commit fa532bee17d15acf8bba4bc8e2062b7a093ba801 ]
 
-The msm_gem_get_vaddr() returns an ERR_PTR() on failure, and a null
-is catastrophic here, so we should use IS_ERR_OR_NULL() to check
-the return value.
+When adding a point to point downlink to team device, we neglected to reset
+the team's flags, which were still using flags like BROADCAST and
+MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
+interfaces, such as when adding a GRE device to team device. Fix this by
+remove multicast/broadcast flags and add p2p and noarp flags.
 
-Fixes: 6a8bd08d0465 ("drm/msm: add sudo flag to submit ioctl")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/547712/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+After removing the none ethernet interface and adding an ethernet interface
+to team, we need to reset team interface flags. Unlike bonding interface,
+team do not need restore IFF_MASTER, IFF_SLAVE flags.
+
+Reported-by: Liang Li <liali@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/team/team.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 0829eaf2cd4e8..895a0e9db1f09 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -89,7 +89,7 @@ static void a5xx_submit_in_rb(struct msm_gpu *gpu, struct msm_gem_submit *submit
- 			 * since we've already mapped it once in
- 			 * submit_reloc()
- 			 */
--			if (WARN_ON(!ptr))
-+			if (WARN_ON(IS_ERR_OR_NULL(ptr)))
- 				return;
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index d9386d614a94c..4dfa9c610974a 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2130,6 +2130,15 @@ static void team_setup_by_port(struct net_device *dev,
+ 	dev->mtu = port_dev->mtu;
+ 	memcpy(dev->broadcast, port_dev->broadcast, port_dev->addr_len);
+ 	eth_hw_addr_inherit(dev, port_dev);
++
++	if (port_dev->flags & IFF_POINTOPOINT) {
++		dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
++		dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
++	} else if ((port_dev->flags & (IFF_BROADCAST | IFF_MULTICAST)) ==
++		    (IFF_BROADCAST | IFF_MULTICAST)) {
++		dev->flags |= (IFF_BROADCAST | IFF_MULTICAST);
++		dev->flags &= ~(IFF_POINTOPOINT | IFF_NOARP);
++	}
+ }
  
- 			for (i = 0; i < dwords; i++) {
+ static int team_dev_type_check_change(struct net_device *dev,
 -- 
-2.40.1
+2.39.2
 
 
 
