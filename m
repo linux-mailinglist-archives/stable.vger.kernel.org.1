@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D05276AF6F
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 773FD76AE20
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233499AbjHAJr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45226 "EHLO
+        id S233069AbjHAJgJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233504AbjHAJq6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:58 -0400
+        with ESMTP id S233037AbjHAJf4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 770F62130
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A555E7
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C160A614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA792C433C8;
-        Tue,  1 Aug 2023 09:45:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A4573614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0556C433C8;
+        Tue,  1 Aug 2023 09:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883138;
-        bh=1Nf/KDsMLV+nlbpAYw8FLANkyBtbYIi1RS58w/n3wQ8=;
+        s=korg; t=1690882444;
+        bh=3MCRaZ2ro62yTZdIbEfzhF3TO7F3/AbZpBCiurAclbY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P1n9Z7JTFm1CkQzLDCd+vcCKNT7wqU+yflV4VopwpjHl/tH+ne6n0f92cJ2W3mDEe
-         8EB7vDho6/4ICqDxArQMdk/K7SkwR+YYMDgwd3eMwkPlHZPkOmcbFl1Eq/qA5HGC1P
-         HYHOjiCf/yKjshh9GacCZ84PjuMzH0kFFUR8IDmY=
+        b=0vnHMAVupXTTWafIpfxmzo3ewHGjQMVWWT7I3yVh7ZIY9c2Ld3kHLiaCu1BKswFcX
+         SnM2cT/12piuVZR//BZ+vPpgR4mRLtu1Tpi79DJ3umu/1YEfPmawji5Nd9DLkf+XYi
+         T+h1iik2MNxpq8sk/AZs3dndph63OEIw0X/3ujj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 100/239] drm/msm/mdss: correct UBWC programming for SM8550
-Date:   Tue,  1 Aug 2023 11:19:24 +0200
-Message-ID: <20230801091929.327377283@linuxfoundation.org>
+Subject: [PATCH 6.1 107/228] netfilter: nf_tables: disallow rule addition to bound chain via NFTA_RULE_CHAIN_ID
+Date:   Tue,  1 Aug 2023 11:19:25 +0200
+Message-ID: <20230801091926.660211517@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,84 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit a85c238c5ccd64f8d4c4560702c65cb25dee791c ]
+[ Upstream commit 0ebc1064e4874d5987722a2ddbc18f94aa53b211 ]
 
-The SM8550 platform employs newer UBWC decoder, which requires slightly
-different programming.
+Bail out with EOPNOTSUPP when adding rule to bound chain via
+NFTA_RULE_CHAIN_ID. The following warning splat is shown when
+adding a rule to a deleted bound chain:
 
-Fixes: a2f33995c19d ("drm/msm: mdss: add support for SM8550")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/546934/
-Link: https://lore.kernel.org/r/20230712121145.1994830-3-dmitry.baryshkov@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+ WARNING: CPU: 2 PID: 13692 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+ CPU: 2 PID: 13692 Comm: chain-bound-rul Not tainted 6.1.39 #1
+ RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_mdss.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
-index e8c93731aaa18..4ae6fac20e48c 100644
---- a/drivers/gpu/drm/msm/msm_mdss.c
-+++ b/drivers/gpu/drm/msm/msm_mdss.c
-@@ -189,6 +189,7 @@ static int _msm_mdss_irq_domain_add(struct msm_mdss *msm_mdss)
- #define UBWC_2_0 0x20000000
- #define UBWC_3_0 0x30000000
- #define UBWC_4_0 0x40000000
-+#define UBWC_4_3 0x40030000
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e2e5ff6acd2bf..dd57a9ebe113d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3626,8 +3626,6 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN]);
+ 			return PTR_ERR(chain);
+ 		}
+-		if (nft_chain_is_bound(chain))
+-			return -EOPNOTSUPP;
  
- static void msm_mdss_setup_ubwc_dec_20(struct msm_mdss *msm_mdss)
- {
-@@ -227,7 +228,10 @@ static void msm_mdss_setup_ubwc_dec_40(struct msm_mdss *msm_mdss)
- 		writel_relaxed(1, msm_mdss->mmio + UBWC_CTRL_2);
- 		writel_relaxed(0, msm_mdss->mmio + UBWC_PREDICTION_MODE);
- 	} else {
--		writel_relaxed(2, msm_mdss->mmio + UBWC_CTRL_2);
-+		if (data->ubwc_dec_version == UBWC_4_3)
-+			writel_relaxed(3, msm_mdss->mmio + UBWC_CTRL_2);
-+		else
-+			writel_relaxed(2, msm_mdss->mmio + UBWC_CTRL_2);
- 		writel_relaxed(1, msm_mdss->mmio + UBWC_PREDICTION_MODE);
+ 	} else if (nla[NFTA_RULE_CHAIN_ID]) {
+ 		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID],
+@@ -3640,6 +3638,9 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 		return -EINVAL;
  	}
- }
-@@ -271,6 +275,7 @@ static int msm_mdss_enable(struct msm_mdss *msm_mdss)
- 		msm_mdss_setup_ubwc_dec_30(msm_mdss);
- 		break;
- 	case UBWC_4_0:
-+	case UBWC_4_3:
- 		msm_mdss_setup_ubwc_dec_40(msm_mdss);
- 		break;
- 	default:
-@@ -561,6 +566,16 @@ static const struct msm_mdss_data sm8250_data = {
- 	.macrotile_mode = 1,
- };
  
-+static const struct msm_mdss_data sm8550_data = {
-+	.ubwc_version = UBWC_4_0,
-+	.ubwc_dec_version = UBWC_4_3,
-+	.ubwc_swizzle = 6,
-+	.ubwc_static = 1,
-+	/* TODO: highest_bank_bit = 2 for LP_DDR4 */
-+	.highest_bank_bit = 3,
-+	.macrotile_mode = 1,
-+};
++	if (nft_chain_is_bound(chain))
++		return -EOPNOTSUPP;
 +
- static const struct of_device_id mdss_dt_match[] = {
- 	{ .compatible = "qcom,mdss" },
- 	{ .compatible = "qcom,msm8998-mdss" },
-@@ -575,7 +590,7 @@ static const struct of_device_id mdss_dt_match[] = {
- 	{ .compatible = "qcom,sm8250-mdss", .data = &sm8250_data },
- 	{ .compatible = "qcom,sm8350-mdss", .data = &sm8250_data },
- 	{ .compatible = "qcom,sm8450-mdss", .data = &sm8250_data },
--	{ .compatible = "qcom,sm8550-mdss", .data = &sm8250_data },
-+	{ .compatible = "qcom,sm8550-mdss", .data = &sm8550_data },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, mdss_dt_match);
+ 	if (nla[NFTA_RULE_HANDLE]) {
+ 		handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_HANDLE]));
+ 		rule = __nft_rule_lookup(chain, handle);
 -- 
-2.40.1
+2.39.2
 
 
 
