@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1F3276AE17
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDC0876AD1B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233097AbjHAJgC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34936 "EHLO
+        id S229847AbjHAJ0Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjHAJfu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5D21FC8
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:54 -0700 (PDT)
+        with ESMTP id S232597AbjHAJ0K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9562108
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83D7A61502
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC6FC433C8;
-        Tue,  1 Aug 2023 09:33:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0513614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F36BC433C8;
+        Tue,  1 Aug 2023 09:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882432;
-        bh=rNu7Y6xHmNS6vIklF4I9duwn2R6fRwl0mCjFqk2cmYs=;
+        s=korg; t=1690881891;
+        bh=4fJDMZTYfFaPEwz8wir+h/3ybU5pVKMyEQ4m+0vJAio=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fAOX0YkooA9CMTolZMCavSXf+HH88p+2fEVOz5SxPSG1lkkxG9gdpOlqr7M8bnq+v
-         eQ5Y91WzCzQebsLev6l4P5WpCo2A8ykBWxQMEkXbcSO+f89U80Q+0/Q41/D0xk/t+U
-         o76Tsh+v1fYft5D8NSLWVicDRec+bmdeJLr1xKM0=
+        b=zLZNKqwy7xCvpCH8wYXFE2s9vG1bkASyR7SU2w0B5JIfdW48mfmaQtcDQ2OrtWamD
+         2SplHVMtTElUVjVP+5qOsCoeHpSsyxvYDdiYSDUyFE+uObxSQ7vierzYmxgrl8vRtG
+         l1caZPlosRK/8Kqil31e5ZYY80h8ADhDsHm00iZU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/228] x86/traps: Fix load_unaligned_zeropad() handling for shared TDX memory
+        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Andrew Halaney <ahalaney@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 049/155] phy: qcom-snps: Use dev_err_probe() to simplify code
 Date:   Tue,  1 Aug 2023 11:19:21 +0200
-Message-ID: <20230801091926.532313240@linuxfoundation.org>
+Message-ID: <20230801091911.947322265@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,92 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 9f9116406120638b4d8db3831ffbc430dd2e1e95 ]
+[ Upstream commit 668dc8afce43d4bc01feb3e929d6d5ffcb14f899 ]
 
-Commit c4e34dd99f2e ("x86: simplify load_unaligned_zeropad()
-implementation") changes how exceptions around load_unaligned_zeropad()
-handled.  The kernel now uses the fault_address in fixup_exception() to
-verify the address calculations for the load_unaligned_zeropad().
+In the probe path, dev_err() can be replaced with dev_err_probe()
+which will check if error code is -EPROBE_DEFER and prints the
+error name. It also sets the defer probe reason which can be
+checked later through debugfs.
 
-It works fine for #PF, but breaks on #VE since no fault address is
-passed down to fixup_exception().
-
-Propagating ve_info.gla down to fixup_exception() resolves the issue.
-
-See commit 1e7769653b06 ("x86/tdx: Handle load_unaligned_zeropad()
-page-cross to a shared page") for more context.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Michael Kelley <mikelley@microsoft.com>
-Fixes: c4e34dd99f2e ("x86: simplify load_unaligned_zeropad() implementation")
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20220922111228.36355-8-yuancan@huawei.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/traps.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index d3fdec706f1d2..c0a5a4f225d9a 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -697,9 +697,10 @@ static bool try_fixup_enqcmd_gp(void)
- }
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index 7e61202aa234e..54846259405a9 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -304,12 +304,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
+ 		return PTR_ERR(hsphy->base);
  
- static bool gp_try_fixup_and_notify(struct pt_regs *regs, int trapnr,
--				    unsigned long error_code, const char *str)
-+				    unsigned long error_code, const char *str,
-+				    unsigned long address)
- {
--	if (fixup_exception(regs, trapnr, error_code, 0))
-+	if (fixup_exception(regs, trapnr, error_code, address))
- 		return true;
+ 	hsphy->ref_clk = devm_clk_get(dev, "ref");
+-	if (IS_ERR(hsphy->ref_clk)) {
+-		ret = PTR_ERR(hsphy->ref_clk);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get ref clk, %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(hsphy->ref_clk))
++		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
++				     "failed to get ref clk\n");
  
- 	current->thread.error_code = error_code;
-@@ -759,7 +760,7 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
- 		goto exit;
- 	}
+ 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (IS_ERR(hsphy->phy_reset)) {
+@@ -322,12 +319,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
+ 		hsphy->vregs[i].supply = qcom_snps_hsphy_vreg_names[i];
  
--	if (gp_try_fixup_and_notify(regs, X86_TRAP_GP, error_code, desc))
-+	if (gp_try_fixup_and_notify(regs, X86_TRAP_GP, error_code, desc, 0))
- 		goto exit;
+ 	ret = devm_regulator_bulk_get(dev, num, hsphy->vregs);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get regulator supplies: %d\n",
+-				ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "failed to get regulator supplies\n");
  
- 	if (error_code)
-@@ -1357,17 +1358,20 @@ DEFINE_IDTENTRY(exc_device_not_available)
- 
- #define VE_FAULT_STR "VE fault"
- 
--static void ve_raise_fault(struct pt_regs *regs, long error_code)
-+static void ve_raise_fault(struct pt_regs *regs, long error_code,
-+			   unsigned long address)
- {
- 	if (user_mode(regs)) {
- 		gp_user_force_sig_segv(regs, X86_TRAP_VE, error_code, VE_FAULT_STR);
- 		return;
- 	}
- 
--	if (gp_try_fixup_and_notify(regs, X86_TRAP_VE, error_code, VE_FAULT_STR))
-+	if (gp_try_fixup_and_notify(regs, X86_TRAP_VE, error_code,
-+				    VE_FAULT_STR, address)) {
- 		return;
-+	}
- 
--	die_addr(VE_FAULT_STR, regs, error_code, 0);
-+	die_addr(VE_FAULT_STR, regs, error_code, address);
- }
- 
- /*
-@@ -1431,7 +1435,7 @@ DEFINE_IDTENTRY(exc_virtualization_exception)
- 	 * it successfully, treat it as #GP(0) and handle it.
- 	 */
- 	if (!tdx_handle_virt_exception(regs, &ve))
--		ve_raise_fault(regs, 0);
-+		ve_raise_fault(regs, 0, ve.gla);
- 
- 	cond_local_irq_disable(regs);
- }
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
 -- 
 2.39.2
 
