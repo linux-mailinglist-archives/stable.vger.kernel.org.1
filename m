@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3259C76AD51
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9839776AE71
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231635AbjHAJ2W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57522 "EHLO
+        id S233226AbjHAJix (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:38:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231793AbjHAJ1r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:47 -0400
+        with ESMTP id S233236AbjHAJij (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63D526AD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7D6212E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A55A761508
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EECC433C8;
-        Tue,  1 Aug 2023 09:26:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6E7161515
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C55C433C9;
+        Tue,  1 Aug 2023 09:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882001;
-        bh=YO5Xr6Xew+pHeFGfcchE1IpaRZJpl4xSWu0oyU8W8nQ=;
+        s=korg; t=1690882586;
+        bh=qHzkB4rDZhclUz0Z8Wnq1Bjd2kYpJ1sHdGLBjwrSiaw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=clzosYDTofNT0ealy7DA7t/Mlka3HJy8h1mRdOhkE4bgaL3fUCC/RgnqzlJK2piJn
-         Zlabbov+VvDeaMiixsMXlVq1kQJoZ8jvmIOYY5cDuGSFyTuTHSjfdcs4WRl6UFkTNm
-         0fgLfZhriY4M0z2lkk2ndBBf5wodMIpVO9mNlRwE=
+        b=H+UJKvrgdKajl2ke4Hwj8Dy3T7rHWtL35zwriHLp9pI6feFm8t+MgxVgykJki6Wb7
+         eJBtAl7EwBuk+GwkLMAnC7B1F6psyq9htlT+0m6Xf+AMWaXJ2RX5cye/huOAzFmORu
+         dDH4sD8fps7Dfe4ugUwKaDzmFYncvWdgtZnDvJCs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jim Mattson <jmattson@google.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.15 105/155] KVM: VMX: Dont fudge CR0 and CR4 for restricted L2 guest
+        patches@lists.linux.dev, Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 159/228] USB: serial: simple: sort driver entries
 Date:   Tue,  1 Aug 2023 11:20:17 +0200
-Message-ID: <20230801091913.985109985@linuxfoundation.org>
+Message-ID: <20230801091928.630247210@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,88 +53,157 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit c4abd7352023aa96114915a0bb2b88016a425cda upstream.
+commit d245aedc00775c4d7265a9f4522cc4e1fd34d102 upstream.
 
-Stuff CR0 and/or CR4 to be compliant with a restricted guest if and only
-if KVM itself is not configured to utilize unrestricted guests, i.e. don't
-stuff CR0/CR4 for a restricted L2 that is running as the guest of an
-unrestricted L1.  Any attempt to VM-Enter a restricted guest with invalid
-CR0/CR4 values should fail, i.e. in a nested scenario, KVM (as L0) should
-never observe a restricted L2 with incompatible CR0/CR4, since nested
-VM-Enter from L1 should have failed.
+Sort the driver symbols alphabetically in order to make it more obvious
+where new driver entries should be added.
 
-And if KVM does observe an active, restricted L2 with incompatible state,
-e.g. due to a KVM bug, fudging CR0/CR4 instead of letting VM-Enter fail
-does more harm than good, as KVM will often neglect to undo the side
-effects, e.g. won't clear rmode.vm86_active on nested VM-Exit, and thus
-the damage can easily spill over to L1.  On the other hand, letting
-VM-Enter fail due to bad guest state is more likely to contain the damage
-to L2 as KVM relies on hardware to perform most guest state consistency
-checks, i.e. KVM needs to be able to reflect a failed nested VM-Enter into
-L1 irrespective of (un)restricted guest behavior.
-
-Cc: Jim Mattson <jmattson@google.com>
 Cc: stable@vger.kernel.org
-Fixes: bddd82d19e2e ("KVM: nVMX: KVM needs to unset "unrestricted guest" VM-execution control in vmcs02 if vmcs12 doesn't set it")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230613203037.1968489-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/usb/serial/usb-serial-simple.c |   66 ++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1416,6 +1416,11 @@ void vmx_set_rflags(struct kvm_vcpu *vcp
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	unsigned long old_rflags;
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -38,16 +38,6 @@ static struct usb_serial_driver vendor##
+ 	{ USB_DEVICE(0x0a21, 0x8001) }	/* MMT-7305WW */
+ DEVICE(carelink, CARELINK_IDS);
  
-+	/*
-+	 * Unlike CR0 and CR4, RFLAGS handling requires checking if the vCPU
-+	 * is an unrestricted guest in order to mark L2 as needing emulation
-+	 * if L1 runs L2 as a restricted guest.
-+	 */
- 	if (is_unrestricted_guest(vcpu)) {
- 		kvm_register_mark_available(vcpu, VCPU_EXREG_RFLAGS);
- 		vmx->rflags = rflags;
-@@ -3088,7 +3093,7 @@ void vmx_set_cr0(struct kvm_vcpu *vcpu,
- 	old_cr0_pg = kvm_read_cr0_bits(vcpu, X86_CR0_PG);
+-/* ZIO Motherboard USB driver */
+-#define ZIO_IDS()			\
+-	{ USB_DEVICE(0x1CBE, 0x0103) }
+-DEVICE(zio, ZIO_IDS);
+-
+-/* Funsoft Serial USB driver */
+-#define FUNSOFT_IDS()			\
+-	{ USB_DEVICE(0x1404, 0xcddc) }
+-DEVICE(funsoft, FUNSOFT_IDS);
+-
+ /* Infineon Flashloader driver */
+ #define FLASHLOADER_IDS()		\
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x058b, 0x0041, USB_CLASS_CDC_DATA) }, \
+@@ -55,6 +45,11 @@ DEVICE(funsoft, FUNSOFT_IDS);
+ 	{ USB_DEVICE(0x8087, 0x0801) }
+ DEVICE(flashloader, FLASHLOADER_IDS);
  
- 	hw_cr0 = (cr0 & ~KVM_VM_CR0_ALWAYS_OFF);
--	if (is_unrestricted_guest(vcpu))
-+	if (enable_unrestricted_guest)
- 		hw_cr0 |= KVM_VM_CR0_ALWAYS_ON_UNRESTRICTED_GUEST;
- 	else {
- 		hw_cr0 |= KVM_VM_CR0_ALWAYS_ON;
-@@ -3116,7 +3121,7 @@ void vmx_set_cr0(struct kvm_vcpu *vcpu,
- 	}
- #endif
++/* Funsoft Serial USB driver */
++#define FUNSOFT_IDS()			\
++	{ USB_DEVICE(0x1404, 0xcddc) }
++DEVICE(funsoft, FUNSOFT_IDS);
++
+ /* Google Serial USB SubClass */
+ #define GOOGLE_IDS()						\
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x18d1,			\
+@@ -63,6 +58,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
  
--	if (enable_ept && !is_unrestricted_guest(vcpu)) {
-+	if (enable_ept && !enable_unrestricted_guest) {
- 		/*
- 		 * Ensure KVM has an up-to-date snapshot of the guest's CR3.  If
- 		 * the below code _enables_ CR3 exiting, vmx_cache_reg() will
-@@ -3239,7 +3244,7 @@ void vmx_set_cr4(struct kvm_vcpu *vcpu,
- 	unsigned long hw_cr4;
++/* HP4x (48/49) Generic Serial driver */
++#define HP4X_IDS()			\
++	{ USB_DEVICE(0x03f0, 0x0121) }
++DEVICE(hp4x, HP4X_IDS);
++
+ /* KAUFMANN RKS+CAN VCP */
+ #define KAUFMANN_IDS()			\
+ 	{ USB_DEVICE(0x16d0, 0x0870) }
+@@ -73,11 +73,6 @@ DEVICE(kaufmann, KAUFMANN_IDS);
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+ DEVICE(libtransistor, LIBTRANSISTOR_IDS);
  
- 	hw_cr4 = (cr4_read_shadow() & X86_CR4_MCE) | (cr4 & ~X86_CR4_MCE);
--	if (is_unrestricted_guest(vcpu))
-+	if (enable_unrestricted_guest)
- 		hw_cr4 |= KVM_VM_CR4_ALWAYS_ON_UNRESTRICTED_GUEST;
- 	else if (vmx->rmode.vm86_active)
- 		hw_cr4 |= KVM_RMODE_VM_CR4_ALWAYS_ON;
-@@ -3259,7 +3264,7 @@ void vmx_set_cr4(struct kvm_vcpu *vcpu,
- 	vcpu->arch.cr4 = cr4;
- 	kvm_register_mark_available(vcpu, VCPU_EXREG_CR4);
+-/* ViVOpay USB Serial Driver */
+-#define VIVOPAY_IDS()			\
+-	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
+-DEVICE(vivopay, VIVOPAY_IDS);
+-
+ /* Motorola USB Phone driver */
+ #define MOTO_IDS()			\
+ 	{ USB_DEVICE(0x05c6, 0x3197) },	/* unknown Motorola phone */	\
+@@ -106,10 +101,10 @@ DEVICE(nokia, NOKIA_IDS);
+ 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
+ DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
  
--	if (!is_unrestricted_guest(vcpu)) {
-+	if (!enable_unrestricted_guest) {
- 		if (enable_ept) {
- 			if (!is_paging(vcpu)) {
- 				hw_cr4 &= ~X86_CR4_PAE;
+-/* HP4x (48/49) Generic Serial driver */
+-#define HP4X_IDS()			\
+-	{ USB_DEVICE(0x03f0, 0x0121) }
+-DEVICE(hp4x, HP4X_IDS);
++/* Siemens USB/MPI adapter */
++#define SIEMENS_IDS()			\
++	{ USB_DEVICE(0x908, 0x0004) }
++DEVICE(siemens_mpi, SIEMENS_IDS);
+ 
+ /* Suunto ANT+ USB Driver */
+ #define SUUNTO_IDS()			\
+@@ -117,47 +112,52 @@ DEVICE(hp4x, HP4X_IDS);
+ 	{ USB_DEVICE(0x0fcf, 0x1009) } /* Dynastream ANT USB-m Stick */
+ DEVICE(suunto, SUUNTO_IDS);
+ 
+-/* Siemens USB/MPI adapter */
+-#define SIEMENS_IDS()			\
+-	{ USB_DEVICE(0x908, 0x0004) }
+-DEVICE(siemens_mpi, SIEMENS_IDS);
++/* ViVOpay USB Serial Driver */
++#define VIVOPAY_IDS()			\
++	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
++DEVICE(vivopay, VIVOPAY_IDS);
++
++/* ZIO Motherboard USB driver */
++#define ZIO_IDS()			\
++	{ USB_DEVICE(0x1CBE, 0x0103) }
++DEVICE(zio, ZIO_IDS);
+ 
+ /* All of the above structures mushed into two lists */
+ static struct usb_serial_driver * const serial_drivers[] = {
+ 	&carelink_device,
+-	&zio_device,
+-	&funsoft_device,
+ 	&flashloader_device,
++	&funsoft_device,
+ 	&google_device,
++	&hp4x_device,
+ 	&kaufmann_device,
+ 	&libtransistor_device,
+-	&vivopay_device,
+ 	&moto_modem_device,
+ 	&motorola_tetra_device,
+ 	&nokia_device,
+ 	&novatel_gps_device,
+-	&hp4x_device,
+-	&suunto_device,
+ 	&siemens_mpi_device,
++	&suunto_device,
++	&vivopay_device,
++	&zio_device,
+ 	NULL
+ };
+ 
+ static const struct usb_device_id id_table[] = {
+ 	CARELINK_IDS(),
+-	ZIO_IDS(),
+-	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
++	FUNSOFT_IDS(),
+ 	GOOGLE_IDS(),
++	HP4X_IDS(),
+ 	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+-	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
+ 	MOTOROLA_TETRA_IDS(),
+ 	NOKIA_IDS(),
+ 	NOVATEL_IDS(),
+-	HP4X_IDS(),
+-	SUUNTO_IDS(),
+ 	SIEMENS_IDS(),
++	SUUNTO_IDS(),
++	VIVOPAY_IDS(),
++	ZIO_IDS(),
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(usb, id_table);
 
 
