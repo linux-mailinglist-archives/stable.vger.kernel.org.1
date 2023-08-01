@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D532376AEA8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A06376AFD5
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233266AbjHAJkg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40230 "EHLO
+        id S233698AbjHAJu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233269AbjHAJkI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A5D1990
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:09 -0700 (PDT)
+        with ESMTP id S233551AbjHAJuJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:50:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A2326AA
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D36E1614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68FAC433C8;
-        Tue,  1 Aug 2023 09:38:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ADC27614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6C7C433C8;
+        Tue,  1 Aug 2023 09:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882688;
-        bh=8HXLGUrCNiavyQ6pVX0C+j0ohz4Q5cHmJEclUQg60fQ=;
+        s=korg; t=1690883383;
+        bh=GwYXda8gFtzaTwkZdWNh6hsqFkCq46ZT1qtwIhTLmQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cLqX007oQXFRQ4JQHr81j9V8NIQjBVEgHdv8jqW6pKlTE5ULvoyApH+onnswE4L/W
-         HfPFoJqNTuHOsPq5PmjoPBQ7rXtpQcunBIFx/3fwZ0IB8XN4pxYvsrRidNcStAmhUA
-         gH7GF21xmu4C0okyOZPALQnrxZFY6dd7uwlG5/Jk=
+        b=PXwTpheid7ymILC/BiCqXEoampV66DRGFSHY7UKJGcW3heE1Cdr7kzmRDaGQ2rS/3
+         BfNZJv6hH9lqXyS5ejsLs3IVcNEIiTIiS0BoI2sTNR/sjLKxuwSsoLBOt9yCj9poI1
+         b9BpzYOfGHiJHgSLAwMWQC1LogZrZO5Yc0Sms/0Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Demi Marie Obenour <demi@invisiblethingslab.com>,
-        Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.1 195/228] xen: speed up grant-table reclaim
+        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 6.4 189/239] x86/MCE/AMD: Decrement threshold_bank refcount when removing threshold blocks
 Date:   Tue,  1 Aug 2023 11:20:53 +0200
-Message-ID: <20230801091929.912618240@linuxfoundation.org>
+Message-ID: <20230801091932.514865662@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,143 +55,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Demi Marie Obenour <demi@invisiblethingslab.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit c04e9894846c663f3278a414f34416e6e45bbe68 upstream.
+commit 3ba2e83334bed2b1980b59734e6e84dfaf96026c upstream.
 
-When a grant entry is still in use by the remote domain, Linux must put
-it on a deferred list.  Normally, this list is very short, because
-the PV network and block protocols expect the backend to unmap the grant
-first.  However, Qubes OS's GUI protocol is subject to the constraints
-of the X Window System, and as such winds up with the frontend unmapping
-the window first.  As a result, the list can grow very large, resulting
-in a massive memory leak and eventual VM freeze.
+AMD systems from Family 10h to 16h share MCA bank 4 across multiple CPUs.
+Therefore, the threshold_bank structure for bank 4, and its threshold_block
+structures, will be initialized once at boot time. And the kobject for the
+shared bank will be added to each of the CPUs that share it. Furthermore,
+the threshold_blocks for the shared bank will be added again to the bank's
+kobject. These additions will increase the refcount for the bank's kobject.
 
-To partially solve this problem, make the number of entries that the VM
-will attempt to free at each iteration tunable.  The default is still
-10, but it can be overridden via a module parameter.
+For example, a shared bank with two blocks and shared across two CPUs will
+be set up like this:
 
-This is Cc: stable because (when combined with appropriate userspace
-changes) it fixes a severe performance and stability problem for Qubes
-OS users.
+  CPU0 init
+    bank create and add; bank refcount = 1; threshold_create_bank()
+      block 0 init and add; bank refcount = 2; allocate_threshold_blocks()
+      block 1 init and add; bank refcount = 3; allocate_threshold_blocks()
+  CPU1 init
+    bank add; bank refcount = 3; threshold_create_bank()
+      block 0 add; bank refcount = 4; __threshold_add_blocks()
+      block 1 add; bank refcount = 5; __threshold_add_blocks()
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20230726165354.1252-1-demi@invisiblethingslab.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Currently in threshold_remove_bank(), if the bank is shared then
+__threshold_remove_blocks() is called. Here the shared bank's kobject and
+the bank's blocks' kobjects are deleted. This is done on the first call
+even while the structures are still shared. Subsequent calls from other
+CPUs that share the structures will attempt to delete the kobjects.
+
+During kobject_del(), kobject->sd is removed. If the kobject is not part of
+a kset with default_groups, then subsequent kobject_del() calls seem safe
+even with kobject->sd == NULL.
+
+Originally, the AMD MCA thresholding structures did not use default_groups.
+And so the above behavior was not apparent.
+
+However, a recent change implemented default_groups for the thresholding
+structures. Therefore, kobject_del() will go down the sysfs_remove_groups()
+code path. In this case, the first kobject_del() may succeed and remove
+kobject->sd. But subsequent kobject_del() calls will give a WARNing in
+kernfs_remove_by_name_ns() since kobject->sd == NULL.
+
+Use kobject_put() on the shared bank's kobject when "removing" blocks. This
+decrements the bank's refcount while keeping kobjects enabled until the
+bank is no longer shared. At that point, kobject_put() will be called on
+the blocks which drives their refcount to 0 and deletes them and also
+decrementing the bank's refcount. And finally kobject_put() will be called
+on the bank driving its refcount to 0 and deleting it.
+
+The same example above:
+
+  CPU1 shutdown
+    bank is shared; bank refcount = 5; threshold_remove_bank()
+      block 0 put parent bank; bank refcount = 4; __threshold_remove_blocks()
+      block 1 put parent bank; bank refcount = 3; __threshold_remove_blocks()
+  CPU0 shutdown
+    bank is no longer shared; bank refcount = 3; threshold_remove_bank()
+      block 0 put block; bank refcount = 2; deallocate_threshold_blocks()
+      block 1 put block; bank refcount = 1; deallocate_threshold_blocks()
+    put bank; bank refcount = 0; threshold_remove_bank()
+
+Fixes: 7f99cb5e6039 ("x86/CPU/AMD: Use default_groups in kobj_type")
+Reported-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/alpine.LRH.2.02.2205301145540.25840@file01.intranet.prod.int.rdu2.redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-module |   11 +++++++++
- drivers/xen/grant-table.c              |   40 +++++++++++++++++++++++----------
- 2 files changed, 40 insertions(+), 11 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/ABI/testing/sysfs-module
-+++ b/Documentation/ABI/testing/sysfs-module
-@@ -60,3 +60,14 @@ Description:	Module taint flags:
- 			C   staging driver module
- 			E   unsigned module
- 			==  =====================
-+
-+What:		/sys/module/grant_table/parameters/free_per_iteration
-+Date:		July 2023
-+KernelVersion:	6.5 but backported to all supported stable branches
-+Contact:	Xen developer discussion <xen-devel@lists.xenproject.org>
-+Description:	Read and write number of grant entries to attempt to free per iteration.
-+
-+		Note: Future versions of Xen and Linux may provide a better
-+		interface for controlling the rate of deferred grant reclaim
-+		or may not need it at all.
-+Users:		Qubes OS (https://www.qubes-os.org)
---- a/drivers/xen/grant-table.c
-+++ b/drivers/xen/grant-table.c
-@@ -498,14 +498,21 @@ static LIST_HEAD(deferred_list);
- static void gnttab_handle_deferred(struct timer_list *);
- static DEFINE_TIMER(deferred_timer, gnttab_handle_deferred);
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -1259,10 +1259,10 @@ static void __threshold_remove_blocks(st
+ 	struct threshold_block *pos = NULL;
+ 	struct threshold_block *tmp = NULL;
  
-+static atomic64_t deferred_count;
-+static atomic64_t leaked_count;
-+static unsigned int free_per_iteration = 10;
-+module_param(free_per_iteration, uint, 0600);
-+
- static void gnttab_handle_deferred(struct timer_list *unused)
- {
--	unsigned int nr = 10;
-+	unsigned int nr = READ_ONCE(free_per_iteration);
-+	const bool ignore_limit = nr == 0;
- 	struct deferred_entry *first = NULL;
- 	unsigned long flags;
-+	size_t freed = 0;
+-	kobject_del(b->kobj);
++	kobject_put(b->kobj);
  
- 	spin_lock_irqsave(&gnttab_list_lock, flags);
--	while (nr--) {
-+	while ((ignore_limit || nr--) && !list_empty(&deferred_list)) {
- 		struct deferred_entry *entry
- 			= list_first_entry(&deferred_list,
- 					   struct deferred_entry, list);
-@@ -515,10 +522,14 @@ static void gnttab_handle_deferred(struc
- 		list_del(&entry->list);
- 		spin_unlock_irqrestore(&gnttab_list_lock, flags);
- 		if (_gnttab_end_foreign_access_ref(entry->ref)) {
-+			uint64_t ret = atomic64_dec_return(&deferred_count);
-+
- 			put_free_entry(entry->ref);
--			pr_debug("freeing g.e. %#x (pfn %#lx)\n",
--				 entry->ref, page_to_pfn(entry->page));
-+			pr_debug("freeing g.e. %#x (pfn %#lx), %llu remaining\n",
-+				 entry->ref, page_to_pfn(entry->page),
-+				 (unsigned long long)ret);
- 			put_page(entry->page);
-+			freed++;
- 			kfree(entry);
- 			entry = NULL;
- 		} else {
-@@ -530,21 +541,22 @@ static void gnttab_handle_deferred(struc
- 		spin_lock_irqsave(&gnttab_list_lock, flags);
- 		if (entry)
- 			list_add_tail(&entry->list, &deferred_list);
--		else if (list_empty(&deferred_list))
--			break;
- 	}
--	if (!list_empty(&deferred_list) && !timer_pending(&deferred_timer)) {
-+	if (list_empty(&deferred_list))
-+		WARN_ON(atomic64_read(&deferred_count));
-+	else if (!timer_pending(&deferred_timer)) {
- 		deferred_timer.expires = jiffies + HZ;
- 		add_timer(&deferred_timer);
- 	}
- 	spin_unlock_irqrestore(&gnttab_list_lock, flags);
-+	pr_debug("Freed %zu references", freed);
+ 	list_for_each_entry_safe(pos, tmp, &b->blocks->miscj, miscj)
+-		kobject_del(&pos->kobj);
++		kobject_put(b->kobj);
  }
  
- static void gnttab_add_deferred(grant_ref_t ref, struct page *page)
- {
- 	struct deferred_entry *entry;
- 	gfp_t gfp = (in_atomic() || irqs_disabled()) ? GFP_ATOMIC : GFP_KERNEL;
--	const char *what = KERN_WARNING "leaking";
-+	uint64_t leaked, deferred;
- 
- 	entry = kmalloc(sizeof(*entry), gfp);
- 	if (!page) {
-@@ -567,10 +579,16 @@ static void gnttab_add_deferred(grant_re
- 			add_timer(&deferred_timer);
- 		}
- 		spin_unlock_irqrestore(&gnttab_list_lock, flags);
--		what = KERN_DEBUG "deferring";
-+		deferred = atomic64_inc_return(&deferred_count);
-+		leaked = atomic64_read(&leaked_count);
-+		pr_debug("deferring g.e. %#x (pfn %#lx) (total deferred %llu, total leaked %llu)\n",
-+			 ref, page ? page_to_pfn(page) : -1, deferred, leaked);
-+	} else {
-+		deferred = atomic64_read(&deferred_count);
-+		leaked = atomic64_inc_return(&leaked_count);
-+		pr_warn("leaking g.e. %#x (pfn %#lx) (total deferred %llu, total leaked %llu)\n",
-+			ref, page ? page_to_pfn(page) : -1, deferred, leaked);
- 	}
--	printk("%s g.e. %#x (pfn %#lx)\n",
--	       what, ref, page ? page_to_pfn(page) : -1);
- }
- 
- int gnttab_try_end_foreign_access(grant_ref_t ref)
+ static void threshold_remove_bank(struct threshold_bank *bank)
 
 
