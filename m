@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E4076AFF3
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D3376AFF4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233627AbjHAJvq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S233635AbjHAJvq (ORCPT <rfc822;lists+stable@lfdr.de>);
         Tue, 1 Aug 2023 05:51:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50470 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233759AbjHAJv2 (ORCPT
+        with ESMTP id S233769AbjHAJv2 (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:51:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6DA1708
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:51:01 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A095171C
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:51:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16944614D0
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:51:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25507C433C9;
-        Tue,  1 Aug 2023 09:50:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB14F6150C
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87BAC433C7;
+        Tue,  1 Aug 2023 09:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883460;
-        bh=4f7fv3dQg7qgakDR+xelOA9Wtmz6SSAgDxL6Ft5RvFg=;
+        s=korg; t=1690883463;
+        bh=uJxlDFOPK3w/8qVVhFZBlAYqHTuYbFOEP4+eMFD0+0c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rGa9qxtMcEVZUYBUQ+drz0HfPdeVrJWqDt3cubUE6tySkkjRpuz324VkKKA8kMu3B
-         +dyBSl3KXNf7cJglJqb4ACQA/nT5xe7bcZ66xeq8Mm/sSwATo/JhDH3PU76OT0Ia/s
-         QfdCGDnuT7PYnoTFgyqlzKcXNl0ibemEc9NGhFZM=
+        b=MVOIwOsKGI9mHL1oZmj9yQN18coVs6Di/qlTzwgAJG/98LJ12o4zLMJmRmYHyrnVg
+         YHgYhiqG9o9raUgH+cqGOKxVkogjr2PJmFsafuOiW2kPXnfcPvIeQmA3hCK/fJcABM
+         qHXMagsSSIpKJ+sYC/P5SEg6Fmb4sC68nEGj426o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 224/239] ASoC: wm8904: Fill the cache for WM8904_ADC_TEST_0 register
-Date:   Tue,  1 Aug 2023 11:21:28 +0200
-Message-ID: <20230801091934.018362780@linuxfoundation.org>
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.4 225/239] arm64/sme: Set new vector length before reallocating
+Date:   Tue,  1 Aug 2023 11:21:29 +0200
+Message-ID: <20230801091934.058482096@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
 References: <20230801091925.659598007@linuxfoundation.org>
@@ -57,38 +56,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Mark Brown <broonie@kernel.org>
 
-commit f061e2be8689057cb4ec0dbffa9f03e1a23cdcb2 upstream.
+commit 05d881b85b48c7ac6a7c92ce00aa916c4a84d052 upstream.
 
-The WM8904_ADC_TEST_0 register is modified as part of updating the OSR
-controls but does not have a cache default, leading to errors when we try
-to modify these controls in cache only mode with no prior read:
+As part of fixing the allocation of the buffer for SVE state when changing
+SME vector length we introduced an immediate reallocation of the SVE state,
+this is also done when changing the SVE vector length for consistency.
+Unfortunately this reallocation is done prior to writing the new vector
+length to the task struct, meaning the allocation is done with the old
+vector length and can lead to memory corruption due to an undersized buffer
+being used.
 
-wm8904 3-001a: ASoC: error at snd_soc_component_update_bits on wm8904.3-001a for register: [0x000000c6] -16
+Move the update of the vector length before the allocation to ensure that
+the new vector length is taken into account.
 
-Add a read of the register to probe() to fill the cache and avoid both the
-error messages and the misconfiguration of the chip which will result.
+For some reason this isn't triggering any problems when running tests on
+the arm64 fixes branch (even after repeated tries) but is triggering
+issues very often after merge into mainline.
 
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Fixes: d4d5be94a878 ("arm64/fpsimd: Ensure SME storage is allocated after SVE VL changes")
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230723-asoc-fix-wm8904-adc-test-read-v1-1-2cdf2edd83fd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230726-arm64-fix-sme-fix-v1-1-7752ec58af27@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8904.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/kernel/fpsimd.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/wm8904.c
-+++ b/sound/soc/codecs/wm8904.c
-@@ -2308,6 +2308,9 @@ static int wm8904_i2c_probe(struct i2c_c
- 	regmap_update_bits(wm8904->regmap, WM8904_BIAS_CONTROL_0,
- 			    WM8904_POBCTRL, 0);
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -917,6 +917,8 @@ int vec_set_vector_length(struct task_st
+ 	if (task == current)
+ 		put_cpu_fpsimd_context();
  
-+	/* Fill the cache for the ADC test register */
-+	regmap_read(wm8904->regmap, WM8904_ADC_TEST_0, &val);
++	task_set_vl(task, type, vl);
 +
- 	/* Can leave the device powered off until we need it */
- 	regcache_cache_only(wm8904->regmap, true);
- 	regulator_bulk_disable(ARRAY_SIZE(wm8904->supplies), wm8904->supplies);
+ 	/*
+ 	 * Free the changed states if they are not in use, SME will be
+ 	 * reallocated to the correct size on next use and we just
+@@ -931,8 +933,6 @@ int vec_set_vector_length(struct task_st
+ 	if (free_sme)
+ 		sme_free(task);
+ 
+-	task_set_vl(task, type, vl);
+-
+ out:
+ 	update_tsk_thread_flag(task, vec_vl_inherit_flag(type),
+ 			       flags & PR_SVE_VL_INHERIT);
 
 
