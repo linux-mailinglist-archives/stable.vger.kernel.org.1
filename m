@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A005E76AD75
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 193FB76AE9E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232965AbjHAJ3j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:29:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57626 "EHLO
+        id S232312AbjHAJkV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:40:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231624AbjHAJ3R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:17 -0400
+        with ESMTP id S233219AbjHAJjz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36B92699
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B521713
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED219614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:27:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0656AC433C8;
-        Tue,  1 Aug 2023 09:27:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28DA1614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E32C433C8;
+        Tue,  1 Aug 2023 09:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882079;
-        bh=0OjYzf8FFP4wqk1dfYXVxw7ZMBzzhIUHN8/jj8++hMg=;
+        s=korg; t=1690882663;
+        bh=MKb8QdAp0ZycEec599NIZ60uvBHACSKCrbs1+KGHOmg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MAOHQCezYDzrPMKxOTJjiU1S4Auniheua8W77KKBZzhsF4X3yuPRHJHltc7WP6ejt
-         SAjw9ifa3eEpr2YzdMEtow+WOfCQBodJCLVGqESom/rIT9eu5SKa87m+NyGUlZUB1p
-         5NtuAi1SXdwPhvcwqyo3IUYN00YFIR3jwtA1hQD4=
+        b=PX92sOlg0U13Wco1hdHrk353rrwpY8TxAM+lG0imQt6RBVA7cJF0nbRZrgAXS3/gF
+         qca5t0dwsnlGsvPnutx7IIPZni1j7Z2Ln8c43nWAiBalmigoeNqqcgXdIgGncmHq94
+         jQjF4prDeWwTKI5pIFEG2auLyJsVag5ZGxZF3LfQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable@kernel.org,
         Christian Brauner <brauner@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 133/155] file: always lock position for FMODE_ATOMIC_POS
+Subject: [PATCH 6.1 187/228] file: always lock position for FMODE_ATOMIC_POS
 Date:   Tue,  1 Aug 2023 11:20:45 +0200
-Message-ID: <20230801091914.917557253@linuxfoundation.org>
+Message-ID: <20230801091929.619825256@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -48,7 +48,7 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/file.c
 +++ b/fs/file.c
-@@ -1068,10 +1068,8 @@ unsigned long __fdget_pos(unsigned int f
+@@ -1042,10 +1042,8 @@ unsigned long __fdget_pos(unsigned int f
  	struct file *file = (struct file *)(v & ~3);
  
  	if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
