@@ -2,249 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC14676A7BB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 06:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC2DD76A82B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 07:09:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231964AbjHAEA5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 00:00:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56568 "EHLO
+        id S229850AbjHAFJI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 01:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232072AbjHAEA2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 00:00:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4738E198C
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 20:59:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690862360;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Dza8jMKV3xIyM3BPcCMbgn0dYv6gyaAqEL73HkVbBbk=;
-        b=CzC4PayKmmSw2jRPwdMpn/d18D0iHPdOOphg5pJjsZdjtj+ZlexpI2TfPkCCkB6sf1HBWh
-        nqdSkYKm+cY/67X6A9ZdqbGJv2Nxk86jYMzcpNnerePfhQnNZikbMiTUni+YxyQaB7fImj
-        HRoDbGYz53JqeH1FdRwv6pYdjBcDQYQ=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-EWzTiGaAN2ydXTrKB0wAsg-1; Mon, 31 Jul 2023 23:59:18 -0400
-X-MC-Unique: EWzTiGaAN2ydXTrKB0wAsg-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2b9bb2d0b1bso42897101fa.0
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 20:59:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690862357; x=1691467157;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dza8jMKV3xIyM3BPcCMbgn0dYv6gyaAqEL73HkVbBbk=;
-        b=gisABziTJanlT4Efdbu1QjhFqx0R8sdEqDENPgqWILZE3bCUaRJ8uV3M4Z82DrJ1zC
-         xdSh1+USKGs66mEA24ZcV7Oe5tzqUlgFtVLj0IEM1eKmaOwWGIQaxF2i8U0qMTy2JTlI
-         1YfFF5DH5/9Z9yA+sm9Aw/jfOzaMOq67Sq+ukS0iSkjl5Ez9RCGCbgmn09n501IS99a8
-         IURc9YbqcCsUix1igayNd93l+MXLlX/tnKbZ46R6nfVD/n89IJCPP5SHQG+PFnSFtbEB
-         TlkWpPYanJB/5EzSRHIQlMFlEGXhzUJIIDfXl3dZ0n4xtlnbISkZgKhOLeG+di0kmy5x
-         sTFQ==
-X-Gm-Message-State: ABy/qLaVFIC9up4OqQ/sUq2iJJZ4apIDQglS8K6jZzSoqYN23Kv8WaJE
-        D+Disomq12GP5+y4qxpRiPKqR9v8QikCvNOzT0Squ7I0LhH2YZdCtKVg1CavGjTl/OVcN8CZE1v
-        OsQO4NdCSdBslk22oxQ8IqfvYQfOII212
-X-Received: by 2002:a2e:9c99:0:b0:2b9:e701:ac4d with SMTP id x25-20020a2e9c99000000b002b9e701ac4dmr1276624lji.26.1690862357106;
-        Mon, 31 Jul 2023 20:59:17 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEFYjkfcpcJ+FsF8cYNmEuD0SEymHjz9fsPALtE1qxeEQO3oQKofSOLXC/PzAQa5+yxtXSWAuIcgIWW0MYQ+DM=
-X-Received: by 2002:a2e:9c99:0:b0:2b9:e701:ac4d with SMTP id
- x25-20020a2e9c99000000b002b9e701ac4dmr1276619lji.26.1690862356799; Mon, 31
- Jul 2023 20:59:16 -0700 (PDT)
+        with ESMTP id S229610AbjHAFJI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 01:09:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7905F173A;
+        Mon, 31 Jul 2023 22:09:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 151E861460;
+        Tue,  1 Aug 2023 05:09:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5027CC433C7;
+        Tue,  1 Aug 2023 05:09:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690866545;
+        bh=erFyHPkFzUaKQZWyMrsZygmMCnR3AvgrkSfnViTNgrM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ADoWAYOrSNgHN2SAwv21aWdd70EVNQfj1xITQPCIzFrJ1K0TfPelT5V7hjXKhwc75
+         6XeyMKnh9XyFw/3J64ppWcmq1I55t/YblOIYnneO/vgqhHVz5r8Y8t4yxZxUji7m/j
+         jfvxB9T4isqeGy6XaPOciLNqGSQgO1Znwg/fkpyf01hDaOFdSlSZ26aCsBw2priH5/
+         tl30ukQHTMZk6DlQ5SW08JIt64JCHyLuKAwC/6V3tyLkDBZeDSZqzq/djfeavVLm1Q
+         enWKSG5IvM/gpMQOFOsw5mUfT+0UP6VvCq+6Gi76HZvDt5kIM+RP8lajEkbPz/Gu12
+         sHIdXJ0UfGLLA==
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     fsverity@lists.linux.dev
+Cc:     keyrings@vger.kernel.org, Victor Hsieh <victorhsieh@google.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] fsverity: skip PKCS#7 parser when keyring is empty
+Date:   Mon, 31 Jul 2023 22:07:14 -0700
+Message-ID: <20230801050714.28974-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230726190744.14143-1-dtatulea@nvidia.com> <20230726152258-mutt-send-email-mst@kernel.org>
- <3ae9e8919a9316d06d7bb507698c820ac6194f45.camel@nvidia.com>
- <20230727122633-mutt-send-email-mst@kernel.org> <b97484f15824c86f5cee4fe673794f17419bcb1b.camel@nvidia.com>
- <20230731050200-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230731050200-mutt-send-email-mst@kernel.org>
-From:   Jason Wang <jasowang@redhat.com>
-Date:   Tue, 1 Aug 2023 11:59:05 +0800
-Message-ID: <CACGkMEtiwNjq4pMVY-Yvgo3+DihMP5zO+q+HH-xAF+Xu_=gbHg@mail.gmail.com>
-Subject: Re: [PATCH] vdpa/mlx5: Fix crash on shutdown for when no ndev exists
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     Dragos Tatulea <dtatulea@nvidia.com>,
-        "virtualization@lists.linux-foundation.org" 
-        <virtualization@lists.linux-foundation.org>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 31, 2023 at 5:08=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Mon, Jul 31, 2023 at 07:15:31AM +0000, Dragos Tatulea wrote:
-> > On Thu, 2023-07-27 at 12:28 -0400, Michael S. Tsirkin wrote:
-> > > On Thu, Jul 27, 2023 at 04:02:16PM +0000, Dragos Tatulea wrote:
-> > > > On Wed, 2023-07-26 at 15:26 -0400, Michael S. Tsirkin wrote:
-> > > > > On Wed, Jul 26, 2023 at 10:07:38PM +0300, Dragos Tatulea wrote:
-> > > > > > The ndev was accessed on shutdown without a check if it actuall=
-y exists.
-> > > > > > This triggered the crash pasted below. This patch simply adds a=
- check
-> > > > > > before using ndev.
-> > > > > >
-> > > > > >  BUG: kernel NULL pointer dereference, address: 000000000000030=
-0
-> > > > > >  #PF: supervisor read access in kernel mode
-> > > > > >  #PF: error_code(0x0000) - not-present page
-> > > > > >  PGD 0 P4D 0
-> > > > > >  Oops: 0000 [#1] SMP
-> > > > > >  CPU: 0 PID: 1 Comm: systemd-shutdow Not tainted 6.5.0-
-> > > > > > rc2_for_upstream_min_debug_2023_07_17_15_05 #1
-> > > > > >  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1=
-.13.0-0-
-> > > > > > gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-> > > > > >  RIP: 0010:mlx5v_shutdown+0xe/0x50 [mlx5_vdpa]
-> > > > > >  RSP: 0018:ffff8881003bfdc0 EFLAGS: 00010286
-> > > > > >  RAX: ffff888103befba0 RBX: ffff888109d28008 RCX: 0000000000000=
-017
-> > > > > >  RDX: 0000000000000001 RSI: 0000000000000212 RDI: ffff888109d28=
-000
-> > > > > >  RBP: 0000000000000000 R08: 0000000d3a3a3882 R09: 0000000000000=
-001
-> > > > > >  R10: 0000000000000000 R11: 0000000000000000 R12: ffff888109d28=
-000
-> > > > > >  R13: ffff888109d28080 R14: 00000000fee1dead R15: 0000000000000=
-000
-> > > > > >  FS:  00007f4969e0be40(0000) GS:ffff88852c800000(0000)
-> > > > > > knlGS:0000000000000000
-> > > > > >  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > > >  CR2: 0000000000000300 CR3: 00000001051cd006 CR4: 0000000000370=
-eb0
-> > > > > >  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000=
-000
-> > > > > >  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000=
-400
-> > > > > >  Call Trace:
-> > > > > >   <TASK>
-> > > > > >   ? __die+0x20/0x60
-> > > > > >   ? page_fault_oops+0x14c/0x3c0
-> > > > > >   ? exc_page_fault+0x75/0x140
-> > > > > >   ? asm_exc_page_fault+0x22/0x30
-> > > > > >   ? mlx5v_shutdown+0xe/0x50 [mlx5_vdpa]
-> > > > > >   device_shutdown+0x13e/0x1e0
-> > > > > >   kernel_restart+0x36/0x90
-> > > > > >   __do_sys_reboot+0x141/0x210
-> > > > > >   ? vfs_writev+0xcd/0x140
-> > > > > >   ? handle_mm_fault+0x161/0x260
-> > > > > >   ? do_writev+0x6b/0x110
-> > > > > >   do_syscall_64+0x3d/0x90
-> > > > > >   entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> > > > > >  RIP: 0033:0x7f496990fb56
-> > > > > >  RSP: 002b:00007fffc7bdde88 EFLAGS: 00000206 ORIG_RAX: 00000000=
-000000a9
-> > > > > >  RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f496990f=
-b56
-> > > > > >  RDX: 0000000001234567 RSI: 0000000028121969 RDI: fffffffffee1d=
-ead
-> > > > > >  RBP: 00007fffc7bde1d0 R08: 0000000000000000 R09: 0000000000000=
-000
-> > > > > >  R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000=
-000
-> > > > > >  R13: 00007fffc7bddf10 R14: 0000000000000000 R15: 00007fffc7bde=
-2b8
-> > > > > >   </TASK>
-> > > > > >  CR2: 0000000000000300
-> > > > > >  ---[ end trace 0000000000000000 ]---
-> > > > > >
-> > > > > > Fixes: bc9a2b3e686e ("vdpa/mlx5: Support interrupt bypassing")
-> > > > > > Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> > > > > > ---
-> > > > > >  drivers/vdpa/mlx5/net/mlx5_vnet.c | 3 ++-
-> > > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > index 9138ef2fb2c8..e2e7ebd71798 100644
-> > > > > > --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > @@ -3556,7 +3556,8 @@ static void mlx5v_shutdown(struct auxilia=
-ry_device
-> > > > > > *auxdev)
-> > > > > >         mgtdev =3D auxiliary_get_drvdata(auxdev);
-> > > > > >         ndev =3D mgtdev->ndev;
-> > > > > >
-> > > > > > -       free_irqs(ndev);
-> > > > > > +       if (ndev)
-> > > > > > +               free_irqs(ndev);
-> > > > > >  }
-> > > > > >
-> > > > >
-> > > > > something I don't get:
-> > > > > irqs are allocated in mlx5_vdpa_dev_add
-> > > > > why are they not freed in mlx5_vdpa_dev_del?
-> > > > >
-> > > > That is a good point. I will try to find out. I also don't get why =
-free_irq
-> > > > is
-> > > > called in the vdpa dev .free op instead of mlx5_vdpa_dev_del. Maybe=
- I can
-> > > > change
-> > > > that in a different refactoring.
-> > >
-> > > as it is I have no idea whether e.g. ndev can change
-> > > between these two call sites. that would make the check
-> > > pointless.
-> > >
-> > > > > this is what's creating all this mess.
-> > > > >
-> > > > >
-> > > > Not quite: mlx5_vdpa_dev_del (which is a .dev_del of for struct
-> > > > vdpa_mgmtdev_ops) doesn't get called on shutdown. At least that's w=
-hat I
-> > > > see. Or
-> > > > am I missing something?
-> > >
-> > > and why do we care whether irqs are freed on shutdown?
-> > >
-> > Had to ask around a bit to find out the answer: there can be issues wit=
-h kexec
-> > IRQ allocation on some platforms. It is documented here [0] for mlx5_co=
-re.
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/drivers/net/ethernet/mellanox/mlx5/core/main.c#n2129
-> >
-> > Thanks,
-> > Dragos
->
-> It's quite weird.
->          * Some platforms requiring freeing the IRQ's in the shutdown
->          * flow. If they aren't freed they can't be allocated after
->          * kexec. There is no need to cleanup the mlx5_core software
->          * contexts.
->
-> but most drivers don't have a shutdown callback how do they work then?
-> do you know which platforms these are?
+From: Eric Biggers <ebiggers@google.com>
 
-There used to be bzs that requires virtio drivers to add a shutdown to
-fix kexec:
+If an fsverity builtin signature is given for a file but the
+".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+signature support is configured into the kernel but is not being used.
 
-https://bugzilla.redhat.com/show_bug.cgi?id=3D2108406
+This is a hardening improvement, not a fix per se, but I've added
+Fixes and Cc stable to get it out to more users.
 
-Thanks
+Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ fs/verity/signature.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
->
-> I don't really know much about why shutdown callback is even necessary.
-> I guess this is to detect shutdown and do a faster cleanup than
-> the slow, graceful removal, just cleaning hardware resources?
->
->
-> --
-> MST
->
+diff --git a/fs/verity/signature.c b/fs/verity/signature.c
+index b95acae64eac6..f6668d92d8151 100644
+--- a/fs/verity/signature.c
++++ b/fs/verity/signature.c
+@@ -70,10 +70,26 @@ int fsverity_verify_signature(const struct fsverity_info *vi,
+ 	d->digest_size = cpu_to_le16(hash_alg->digest_size);
+ 	memcpy(d->digest, vi->file_digest, hash_alg->digest_size);
+ 
+-	err = verify_pkcs7_signature(d, sizeof(*d) + hash_alg->digest_size,
+-				     signature, sig_size, fsverity_keyring,
+-				     VERIFYING_UNSPECIFIED_SIGNATURE,
+-				     NULL, NULL);
++	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
++		/*
++		 * The ".fs-verity" keyring is empty, due to builtin signatures
++		 * being supported by the kernel but not actually being used.
++		 * In this case, verify_pkcs7_signature() would always return an
++		 * error, usually ENOKEY.  It could also be EBADMSG if the
++		 * PKCS#7 is malformed, but that isn't very important to
++		 * distinguish.  So, just skip to ENOKEY to avoid the attack
++		 * surface of the PKCS#7 parser, which would otherwise be
++		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
++		 */
++		err = -ENOKEY;
++	} else {
++		err = verify_pkcs7_signature(d,
++					     sizeof(*d) + hash_alg->digest_size,
++					     signature, sig_size,
++					     fsverity_keyring,
++					     VERIFYING_UNSPECIFIED_SIGNATURE,
++					     NULL, NULL);
++	}
+ 	kfree(d);
+ 
+ 	if (err) {
+
+base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
+-- 
+2.41.0
 
