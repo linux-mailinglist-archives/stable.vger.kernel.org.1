@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E87576AF70
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DADA776AE10
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233518AbjHAJrb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
+        id S233155AbjHAJfx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233525AbjHAJrI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CBE52686
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:42 -0700 (PDT)
+        with ESMTP id S233016AbjHAJfa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D05F1BD9
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D0E8614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BE3C433C8;
-        Tue,  1 Aug 2023 09:45:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF2D3613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D31C433C8;
+        Tue,  1 Aug 2023 09:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883141;
-        bh=//5jYeo8U8YuRZlT0XV+A/crE2kZsIB3RHjpibMsCi0=;
+        s=korg; t=1690882413;
+        bh=s+E6fFIK/MGqjjbX8twbGT9940TD1Eqw4K3MjyHYWVY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IfnjhJTncxfE1qn7OTL0OK1mXvluxEjSJIwWFlfHgDzTzQukLeJdgE1kha1SbWwmq
-         flMQS96WWAVOG/26SrCKP05NORucDMDRt6diUIHxY3E8K83IRjrelZx5XV7wudZzCc
-         uBDLGgTuI6hv0eLTa4yvkm6WamNH6vM5zL7c0S/s=
+        b=yTrnIpTWRmNwc8PNQoRrVoBo+cBXqz3f5L0JJ9cZ5dSSFTR379Oxu4colXJJ0lPxr
+         GlkQThxur02z0vZe+8Co5DvFxYue+JwQh4iLokHClWnKqFjtJpPk41rJxl5Fj4SViT
+         mA7F7YwPPUEC0Zb33W1kfKodLH4Hg3RtqX4xZbXE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thomas Lamprecht <t.lamprecht@proxmox.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PATCH 6.4 091/239] mm: suppress mm fault logging if fatal signal already pending
+        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 097/228] bonding: reset bonds flags when down link is P2P device
 Date:   Tue,  1 Aug 2023 11:19:15 +0200
-Message-ID: <20230801091929.017974308@linuxfoundation.org>
+Message-ID: <20230801091926.338247230@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,71 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 5f0bc0b042fc77ff70e14c790abdec960cde4ec1 ]
+[ Upstream commit da19a2b967cf1e2c426f50d28550d1915214a81d ]
 
-Commit eda0047296a1 ("mm: make the page fault mmap locking killable")
-intentionally made it much easier to trigger the "page fault fails
-because a fatal signal is pending" situation, by having the mmap locking
-fail early in that case.
+When adding a point to point downlink to the bond, we neglected to reset
+the bond's flags, which were still using flags like BROADCAST and
+MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
+interfaces, such as when adding a GRE device to the bonding.
 
-We have long aborted page faults in other fatal cases when the actual IO
-for a page is interrupted by SIGKILL - which is particularly useful for
-the traditional case of NFS hanging due to network issues, but local
-filesystems could cause it too if you happened to get the SIGKILL while
-waiting for a page to be faulted in (eg lock_folio_maybe_drop_mmap()).
+To address this issue, let's reset the bond's flags for P2P interfaces.
 
-So aborting the page fault wasn't a new condition - but it now triggers
-earlier, before we even get to 'handle_mm_fault()'.  And as a result the
-error doesn't go through our 'fault_signal_pending()' logic, and doesn't
-get filtered away there.
+Before fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond0 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr 167f:18:f188::
+8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 brd 2006:70:10::2
+    inet6 fe80::200:ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever
 
-Normally you'd never even notice, because if a fatal signal is pending,
-the new SIGSEGV we send ends up being ignored anyway.
+After fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond2 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr c29e:557a:e9d9::
+8: bond0: <POINTOPOINT,NOARP,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2
+    inet6 fe80::1/64 scope link
+       valid_lft forever preferred_lft forever
 
-But it turns out that there is one very noticeable exception: if you
-enable 'show_unhandled_signals', the aborted page fault will be logged
-in the kernel messages, and you'll get a scary line looking something
-like this in your logs:
-
-  pverados[2183248]: segfault at 55e5a00f9ae0 ip 000055e5a00f9ae0 sp 00007ffc0720bea8 error 14 in perl[55e5a00d4000+195000] likely on CPU 10 (core 4, socket 0)
-
-which is rather misleading.  It's not really a segfault at all, it's
-just "the thread was killed before the page fault completed, so we
-aborted the page fault".
-
-Fix this by just making it clear that a pending fatal signal means that
-any new signal coming in after that is implicitly handled.  This will
-avoid the misleading logging, since now the signal isn't 'unhandled' any
-more.
-
-Reported-and-tested-by: Fiona Ebner <f.ebner@proxmox.com>
-Tested-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
-Link: https://lore.kernel.org/lkml/8d063a26-43f5-0bb7-3203-c6a04dc159f8@proxmox.com/
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Fixes: eda0047296a1 ("mm: make the page fault mmap locking killable")
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported-by: Liang Li <liali@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/signal.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/bonding/bond_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 2547fa73bde51..1b39cba7dfd38 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -561,6 +561,10 @@ bool unhandled_signal(struct task_struct *tsk, int sig)
- 	if (handler != SIG_IGN && handler != SIG_DFL)
- 		return false;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 91d84df91123b..576370f89c755 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1512,6 +1512,11 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
  
-+	/* If dying, we handle all new signals by ignoring them */
-+	if (fatal_signal_pending(tsk))
-+		return false;
+ 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
+ 		slave_dev->addr_len);
 +
- 	/* if ptraced, let the tracer determine */
- 	return !tsk->ptrace;
++	if (slave_dev->flags & IFF_POINTOPOINT) {
++		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
++		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
++	}
  }
+ 
+ /* On bonding slaves other than the currently active slave, suppress
 -- 
 2.39.2
 
