@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C666976AF71
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A729D76AD22
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233642AbjHAJrd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
+        id S232597AbjHAJ0p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233537AbjHAJrJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:09 -0400
+        with ESMTP id S231919AbjHAJ0Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860D6269A
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29981BC5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67709614FF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EF7C433C7;
-        Tue,  1 Aug 2023 09:45:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96B25614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9881C433C7;
+        Tue,  1 Aug 2023 09:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883143;
-        bh=rrhgRIRVtRSDOtXfH4MAY1t2sEX3vUNAY620I4DKhok=;
+        s=korg; t=1690881920;
+        bh=MjS7szhwt4eZbtsTc8VHrzn8mYK/yeqIsUTF0FsxBSk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jty8C89ntB8vW+Pjxv3bJO/XRuojN8e6sh9aPtgYrfMH9SVH0VFiHqUgHsZUqGsa2
-         7UZDVQiPzmATKYrPf7uIX489KYOSh7sQeBPArBZvxbvhXJPty1cvn/+Q4IrgmNLtML
-         fHkhyH9dSjuvlnoI9q2gF2aKYd46Tq3dr/vDN8Fg=
+        b=fN2CPy4A5EXM6uoakHdXJ9nrvvAzlaU7wRSFiNhJyon/TJIBNT3O2zEQkio1hdhrz
+         aTjkzgz/HtFKc4BLwAg9WjDxc1tQf4aO1EK+YL4AUpCN8uiRFMcjwKCodnsk9qF2pz
+         1jOg9mExi4y7+oq9PeQQ7dFEyyJd9ggB19s115/I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roy Shterman <roy.shterman@gmail.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 123/239] smb3: do not set NTLMSSP_VERSION flag for negotiate not auth request
-Date:   Tue,  1 Aug 2023 11:19:47 +0200
-Message-ID: <20230801091930.153827706@linuxfoundation.org>
+Subject: [PATCH 5.15 076/155] net/sched: mqprio: refactor nlattr parsing to a separate function
+Date:   Tue,  1 Aug 2023 11:19:48 +0200
+Message-ID: <20230801091912.852905447@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,49 +57,165 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steve French <stfrench@microsoft.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 19826558210b9102a7d4681c91784d137d60d71b ]
+[ Upstream commit feb2cf3dcfb930aec2ca65c66d1365543d5ba943 ]
 
-The NTLMSSP_NEGOTIATE_VERSION flag only needs to be sent during
-the NTLMSSP NEGOTIATE (not the AUTH) request, so filter it out for
-NTLMSSP AUTH requests. See MS-NLMP 2.2.1.3
+mqprio_init() is quite large and unwieldy to add more code to.
+Split the netlink attribute parsing to a dedicated function.
 
-This fixes a problem found by the gssntlmssp server.
-
-Link: https://github.com/gssapi/gss-ntlmssp/issues/95
-Fixes: 52d005337b2c ("smb3: send NTLMSSP version information")
-Acked-by: Roy Shterman <roy.shterman@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sched/sch_mqprio.c | 114 +++++++++++++++++++++++------------------
+ 1 file changed, 63 insertions(+), 51 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 335c078c42fb5..c57ca2050b73f 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -1013,6 +1013,7 @@ int build_ntlmssp_smb3_negotiate_blob(unsigned char **pbuffer,
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index 50e15add6068f..a5df5604e0150 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -130,6 +130,67 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
  }
  
++static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
++			       struct nlattr *opt)
++{
++	struct mqprio_sched *priv = qdisc_priv(sch);
++	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
++	struct nlattr *attr;
++	int i, rem, err;
++
++	err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
++			 sizeof(*qopt));
++	if (err < 0)
++		return err;
++
++	if (!qopt->hw)
++		return -EINVAL;
++
++	if (tb[TCA_MQPRIO_MODE]) {
++		priv->flags |= TC_MQPRIO_F_MODE;
++		priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
++	}
++
++	if (tb[TCA_MQPRIO_SHAPER]) {
++		priv->flags |= TC_MQPRIO_F_SHAPER;
++		priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
++	}
++
++	if (tb[TCA_MQPRIO_MIN_RATE64]) {
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++			return -EINVAL;
++		i = 0;
++		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
++				    rem) {
++			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
++				return -EINVAL;
++			if (i >= qopt->num_tc)
++				break;
++			priv->min_rate[i] = *(u64 *)nla_data(attr);
++			i++;
++		}
++		priv->flags |= TC_MQPRIO_F_MIN_RATE;
++	}
++
++	if (tb[TCA_MQPRIO_MAX_RATE64]) {
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++			return -EINVAL;
++		i = 0;
++		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
++				    rem) {
++			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
++				return -EINVAL;
++			if (i >= qopt->num_tc)
++				break;
++			priv->max_rate[i] = *(u64 *)nla_data(attr);
++			i++;
++		}
++		priv->flags |= TC_MQPRIO_F_MAX_RATE;
++	}
++
++	return 0;
++}
++
+ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 		       struct netlink_ext_ack *extack)
+ {
+@@ -139,9 +200,6 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 	struct Qdisc *qdisc;
+ 	int i, err = -EOPNOTSUPP;
+ 	struct tc_mqprio_qopt *qopt = NULL;
+-	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
+-	struct nlattr *attr;
+-	int rem;
+ 	int len;
  
-+/* See MS-NLMP 2.2.1.3 */
- int build_ntlmssp_auth_blob(unsigned char **pbuffer,
- 					u16 *buflen,
- 				   struct cifs_ses *ses,
-@@ -1047,7 +1048,8 @@ int build_ntlmssp_auth_blob(unsigned char **pbuffer,
+ 	BUILD_BUG_ON(TC_MAX_QUEUE != TC_QOPT_MAX_QUEUE);
+@@ -166,55 +224,9 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
  
- 	flags = ses->ntlmssp->server_flags | NTLMSSP_REQUEST_TARGET |
- 		NTLMSSP_NEGOTIATE_TARGET_INFO | NTLMSSP_NEGOTIATE_WORKSTATION_SUPPLIED;
+ 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
+ 	if (len > 0) {
+-		err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
+-				 sizeof(*qopt));
+-		if (err < 0)
++		err = mqprio_parse_nlattr(sch, qopt, opt);
++		if (err)
+ 			return err;
 -
-+	/* we only send version information in ntlmssp negotiate, so do not set this flag */
-+	flags = flags & ~NTLMSSP_NEGOTIATE_VERSION;
- 	tmp = *pbuffer + sizeof(AUTHENTICATE_MESSAGE);
- 	sec_blob->NegotiateFlags = cpu_to_le32(flags);
+-		if (!qopt->hw)
+-			return -EINVAL;
+-
+-		if (tb[TCA_MQPRIO_MODE]) {
+-			priv->flags |= TC_MQPRIO_F_MODE;
+-			priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
+-		}
+-
+-		if (tb[TCA_MQPRIO_SHAPER]) {
+-			priv->flags |= TC_MQPRIO_F_SHAPER;
+-			priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
+-		}
+-
+-		if (tb[TCA_MQPRIO_MIN_RATE64]) {
+-			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
+-				return -EINVAL;
+-			i = 0;
+-			nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
+-					    rem) {
+-				if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
+-					return -EINVAL;
+-				if (i >= qopt->num_tc)
+-					break;
+-				priv->min_rate[i] = *(u64 *)nla_data(attr);
+-				i++;
+-			}
+-			priv->flags |= TC_MQPRIO_F_MIN_RATE;
+-		}
+-
+-		if (tb[TCA_MQPRIO_MAX_RATE64]) {
+-			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
+-				return -EINVAL;
+-			i = 0;
+-			nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
+-					    rem) {
+-				if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
+-					return -EINVAL;
+-				if (i >= qopt->num_tc)
+-					break;
+-				priv->max_rate[i] = *(u64 *)nla_data(attr);
+-				i++;
+-			}
+-			priv->flags |= TC_MQPRIO_F_MAX_RATE;
+-		}
+ 	}
  
+ 	/* pre-allocate qdisc, attachment can't fail */
 -- 
-2.40.1
+2.39.2
 
 
 
