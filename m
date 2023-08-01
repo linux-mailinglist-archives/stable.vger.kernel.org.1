@@ -2,106 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A6576B9E6
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE1176BAC8
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232345AbjHAQtL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 12:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37128 "EHLO
+        id S230375AbjHARIB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 13:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232223AbjHAQtA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:49:00 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E75E3212B;
-        Tue,  1 Aug 2023 09:48:58 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6bca3588edbso1507784a34.0;
-        Tue, 01 Aug 2023 09:48:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690908538; x=1691513338;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y0yN6oK3W9vL3zkCb9k5pyMai7qNiWEPcK6Gyy1cYqA=;
-        b=Ix/DTEX1m/gtD8uXOHuBBxW6hMOKamO9UAXE9c1LO0s4csrTFC/bweCy9bbE899qXX
-         WpKI8EdLvpeeXT6xsunwg08RqeT+jxuqwbLip5JROV3XcnCFg3YSsp92f2WI9/2pb5sh
-         SOSienQtHkV80z4qdnYqExUVRIteMzqbQxRR/ekxYZCeKRGzZnm3dxX864M1RFq0Ti0c
-         0ht6ty6vc6eN2Ey6r8kLTXbibw2CUrGRxMYOnpaAnO1j1RCfbAIwjoB9eDzKDoESQU6D
-         h7aVSOtomaPFrZ72fpd7IECb1xRxheRL5KZfcTEUR/gQTdTxR/rMholQ0ddOKfT6KJpk
-         CfaA==
+        with ESMTP id S234560AbjHARHr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:07:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C56268D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 10:06:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690909508;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=iHJDHQhMPESpDTCc7d6m6CZ7cgDoS6a5SZpOnu6DMTE=;
+        b=ZpZfSliZeCAyVHnq07/nNC0aK60SdRbYESozhXODI57HIuorJIw1JwSiwxIT49YBdRD9Fo
+        W01E/klqO4ngmanIJ0JU6bkijwWepgR+35PyAW7bpMK2xdtykZJA6Qa/2bNPKWFlKFhJ2L
+        mPEYU2szrEspg3eHAnvduUydszwbXHU=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-80-t_Ys9G0TMjCM6EnReFUi8A-1; Tue, 01 Aug 2023 13:05:04 -0400
+X-MC-Unique: t_Ys9G0TMjCM6EnReFUi8A-1
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-40ec97d5b60so5348781cf.1
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 10:05:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690908538; x=1691513338;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y0yN6oK3W9vL3zkCb9k5pyMai7qNiWEPcK6Gyy1cYqA=;
-        b=CUpbcWheWZrGYjkVxYJ3qriWSf2rBzbzQXsVCAH0OxFVMX7e8cXkh9Ba1UnrgIx+d/
-         ztg1Hn5s1nFYb8RhM9T6QXDQNfjMFqg1I+TxjRM85C+91NFodX+1IkN2/B8W5q/7ewUl
-         5yIGMO05i6HQXTu5B8u7rvciBbhZN1r26Hw/mrnh4B0MBbilub093HCDOyDLIPsx+LUo
-         SYDXYI5pwFODdtgqGwcNvjjP3nYk3/YEQaUStXy4ZM2JWtNCXcJjTaKzXMWYWCGWH/b4
-         /SqVVKdqvGFE7MrFzqXNeDtdoJnU9Sdre1odHNZkKiRaJWlqZkzE9jdRFrTUlE80Wj4N
-         kd8g==
-X-Gm-Message-State: ABy/qLarOr6+V9V2PVQMoHaXqPu4hbWR+34JEABMNia9zjB2NoFSptIt
-        DKPvVu/QCtV5cFSN58R1i5ADle6nv9IDZA==
-X-Google-Smtp-Source: APBJJlHOeh/7Q1YTGuo1v/PI5q/b2xtH3Wfwj95sIp3lC1DXJJ3qkXpBpoMlIx73ZvkebdPzr1qgAA==
-X-Received: by 2002:a05:6358:5e0e:b0:139:8a11:8a00 with SMTP id q14-20020a0563585e0e00b001398a118a00mr1454370rwn.32.1690908537839;
-        Tue, 01 Aug 2023 09:48:57 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id a17-20020a0c8bd1000000b0063c6c7f4b92sm4768947qvc.1.2023.08.01.09.48.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Aug 2023 09:48:57 -0700 (PDT)
-Message-ID: <11f91413-3300-bea3-7f61-3ad855ef8c59@gmail.com>
-Date:   Tue, 1 Aug 2023 09:48:51 -0700
+        d=1e100.net; s=20221208; t=1690909504; x=1691514304;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iHJDHQhMPESpDTCc7d6m6CZ7cgDoS6a5SZpOnu6DMTE=;
+        b=WN3CANp8GFWDqYkwVqd3B8jXPy48L2J26WQcuhNGX68VkWYSphgSRU8Ia1+zmI7Xgj
+         JNVoa8Jxb50AvVLFbxxnkpfs+X9jPTuzE0KuhyVnvHib0QDdSt6geTtDBNIe9oXmhTo7
+         n9hjcbEeigAqbUaxkW1ZaSQ9AJy4fEWzC2VI+gOcYv6dT7GnH9tKOv9W8GTB2yQFFdw/
+         eCG877hmU5WvXqSBSC//oEcdyWAA/qCmcKP8CQr0hdUcndG/L4VQ2UA75C4vszPjG6f7
+         32aZG0Hvw2g6cabz7lgj2mXp0TLeyLGYDd1uzZBkozu/IZo57jsAxAO6WGhbqctuehPJ
+         Wm4w==
+X-Gm-Message-State: ABy/qLbifwb/T/061BqPD4bM2sru+HFrjrVMO2lYmTRo/IT2+1mJWsBn
+        VbS0ks0pqO55natiXMegG4xdnvbc7pCwDfc8hRpx9F3g9D4il9HiUTlCFPwB+UbPn6tY3BQ2JgW
+        /L2DzbC5OjJOMSGLY
+X-Received: by 2002:ad4:5b83:0:b0:63c:f5fd:d30f with SMTP id 3-20020ad45b83000000b0063cf5fdd30fmr13776731qvp.1.1690909504488;
+        Tue, 01 Aug 2023 10:05:04 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFaaBdvX372gnIc+hqJabCioknXLsWVusS1Xd1tIAYtUq1mP4VO3uaCM3OMaXWQ6+iPT5cVCQ==
+X-Received: by 2002:ad4:5b83:0:b0:63c:f5fd:d30f with SMTP id 3-20020ad45b83000000b0063cf5fdd30fmr13776714qvp.1.1690909504219;
+        Tue, 01 Aug 2023 10:05:04 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+        by smtp.gmail.com with ESMTPSA id e30-20020a0caa5e000000b0063d10086876sm4807945qvb.115.2023.08.01.10.05.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 10:05:03 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 13:04:50 -0400
+From:   Peter Xu <peterx@redhat.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        liubo <liubo254@huawei.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Hugh Dickins <hughd@google.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Mel Gorman <mgorman@suse.de>, Shuah Khan <shuah@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/8] mm/gup: reintroduce FOLL_NUMA as
+ FOLL_HONOR_NUMA_FAULT
+Message-ID: <ZMk7MqApTDZXzwKX@x1n>
+References: <20230801124844.278698-1-david@redhat.com>
+ <20230801124844.278698-2-david@redhat.com>
+ <ZMkpM95vdc9wgs9T@x1n>
+ <30d86a2d-4af2-d840-91be-2e68c73a07bd@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 6.1 000/228] 6.1.43-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230801091922.799813980@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <30d86a2d-4af2-d840-91be-2e68c73a07bd@redhat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/1/23 02:17, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.43 release.
-> There are 228 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Aug 01, 2023 at 06:15:48PM +0200, David Hildenbrand wrote:
+> On 01.08.23 17:48, Peter Xu wrote:
+> > On Tue, Aug 01, 2023 at 02:48:37PM +0200, David Hildenbrand wrote:
+> > > @@ -2240,6 +2244,12 @@ static bool is_valid_gup_args(struct page **pages, int *locked,
+> > >   		gup_flags |= FOLL_UNLOCKABLE;
+> > >   	}
+> > > +	/*
+> > > +	 * For now, always trigger NUMA hinting faults. Some GUP users like
+> > > +	 * KVM really require it to benefit from autonuma.
+> > > +	 */
+> > > +	gup_flags |= FOLL_HONOR_NUMA_FAULT;
+> > 
+> > Since at it, do we want to not set it for FOLL_REMOTE, which still sounds
+> > like a good thing to have?
 > 
-> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.43-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> I thought about that, but decided against making that patch here more
+> complicated to eventually rip it again all out in #4.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I thought that was the whole point of having patch 4 separate, because we
+should assume patch 4 may not exist in (at least) some trees, so I ignored
+patch 4 when commenting here, and we should not assume it's destined to be
+removed here.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> 
+> I fully agree that FOLL_REMOTE does not make too much sense, but let's
+> rather keep it simple for this patch.
+
+It's fine - I suppose this patch fixes whatever we're aware of that's
+broken with FOLL_NUMA's removal, so it can even be anything on top when
+needed.  I assume I'm happy to ack this with/without that change, then:
+
+Acked-by: Peter Xu <peterx@redhat.com>
+
+PS: I still hope that the other oneliner can be squashed here directly; it
+literally changes exact the same line above so reading this patch alone can
+be affected.  You said there you didn't want the commit message to be too
+long here, but this is definitely not long at all!  I bet you have similar
+understanding to me on defining "long commit message". :) I'd never worry
+that.  Your call.
+
+Thanks,
+
 -- 
-Florian
+Peter Xu
 
