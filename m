@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD66F76AFB0
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBD976AD57
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233692AbjHAJtx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:49:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50750 "EHLO
+        id S232867AbjHAJ23 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233506AbjHAJtb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:31 -0400
+        with ESMTP id S233058AbjHAJ2E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:28:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A702A198D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 367D635AA
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:27:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4543C614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517EEC433C7;
-        Tue,  1 Aug 2023 09:48:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20065614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:27:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3072AC433C7;
+        Tue,  1 Aug 2023 09:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883304;
-        bh=mFw4hYtk1K7dScW5T/6+dgMBtlOXJLkXp/wAiuIkrd0=;
+        s=korg; t=1690882020;
+        bh=9ONyQ4ihBn7mfC8UgUwyjEKAdvj/wr1Iu5ByNyvxK8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KiYhSTxEbgS1OWiEmOJ3boSXAM/x+g+uoHa30KmJzSVB+DayKDPcYJxaHP/4/8B4S
-         r5Mm97U+DaDiywKKdxgcqYL+UigPU5mF+g3RGiTYHUVBLX3PbbQ9bQ0fl16OtNLL+h
-         2TkPbo2b0YHB1EJ3pQWk3oNReePyWdhGcFiqoWzk=
+        b=oScPaM6KczlahiWrpp6WXvPnmU8PLTLPeEzxsz5cqMZhnITOFH8QvtFX8hLpMNIm8
+         KVC0sDxSmCHuMJCvFbK844by2GwJ/B9Ud7QPJ56dNMDGH3J+FsaiN5Wpof0wPQ5o5A
+         bi7DWrT/ZCCXLIndXE3MOtZzUxB6d2BQJ/NBc+Ic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kyle Tso <kyletso@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.4 159/239] usb: typec: Set port->pd before adding device for typec_port
+        patches@lists.linux.dev,
+        Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>,
+        Oliver Neukum <oneukum@suse.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 111/155] USB: serial: simple: add Kaufmann RKS+CAN VCP
 Date:   Tue,  1 Aug 2023 11:20:23 +0200
-Message-ID: <20230801091931.371116787@linuxfoundation.org>
+Message-ID: <20230801091914.182596347@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,47 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kyle Tso <kyletso@google.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit b33ebb2415e7e0a55ee3d049c2890d3a3e3805b6 upstream.
+commit dd92c8a1f99bcd166204ffc219ea5a23dd65d64f upstream.
 
-When calling device_add in the registration of typec_port, it will do
-the NULL check on usb_power_delivery handle in typec_port for the
-visibility of the device attributes. It is always NULL because port->pd
-is set in typec_port_set_usb_power_delivery which is later than the
-device_add call.
+Add the device and product ID for this CAN bus interface / license
+dongle. The device is usable either directly from user space or can be
+attached to a kernel CAN interface with slcan_attach.
 
-Set port->pd before device_add and only link the device after that.
-
-Fixes: a7cff92f0635 ("usb: typec: USB Power Delivery helpers for ports and partners")
+Reported-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Tested-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+[ johan: amend commit message and move entries in sort order ]
 Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230623151036.3955013-2-kyletso@google.com
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/usb-serial-simple.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -2288,6 +2288,8 @@ struct typec_port *typec_register_port(s
- 		return ERR_PTR(ret);
- 	}
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -63,6 +63,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
  
-+	port->pd = cap->pd;
++/* KAUFMANN RKS+CAN VCP */
++#define KAUFMANN_IDS()			\
++	{ USB_DEVICE(0x16d0, 0x0870) }
++DEVICE(kaufmann, KAUFMANN_IDS);
 +
- 	ret = device_add(&port->dev);
- 	if (ret) {
- 		dev_err(parent, "failed to register port (%d)\n", ret);
-@@ -2295,7 +2297,7 @@ struct typec_port *typec_register_port(s
- 		return ERR_PTR(ret);
- 	}
- 
--	ret = typec_port_set_usb_power_delivery(port, cap->pd);
-+	ret = usb_power_delivery_link_device(port->pd, &port->dev);
- 	if (ret) {
- 		dev_err(&port->dev, "failed to link pd\n");
- 		device_unregister(&port->dev);
+ /* Libtransistor USB console */
+ #define LIBTRANSISTOR_IDS()			\
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+@@ -124,6 +129,7 @@ static struct usb_serial_driver * const
+ 	&funsoft_device,
+ 	&flashloader_device,
+ 	&google_device,
++	&kaufmann_device,
+ 	&libtransistor_device,
+ 	&vivopay_device,
+ 	&moto_modem_device,
+@@ -142,6 +148,7 @@ static const struct usb_device_id id_tab
+ 	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
+ 	GOOGLE_IDS(),
++	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+ 	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
 
 
