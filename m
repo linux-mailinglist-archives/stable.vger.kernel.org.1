@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB7B76AEE9
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083F176ADD5
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233241AbjHAJnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
+        id S232992AbjHAJdx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:33:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233338AbjHAJmt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:49 -0400
+        with ESMTP id S233313AbjHAJdZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BCBDC1
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2014EE0
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AB726151C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FB0C433C8;
-        Tue,  1 Aug 2023 09:40:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E19B61514
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E95C433C7;
+        Tue,  1 Aug 2023 09:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882826;
-        bh=NyjbPFyh8/vpO3bxQ6FOcJkSjE+lBnvIFvA3I59b6bA=;
+        s=korg; t=1690882284;
+        bh=mdpyvY6EAWFvMTznOX9R64TzTvnevr5Ow6QqsgaoGRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e+L1VluteHWvF7AB3U+4O1wEpaAaehyUzAPcvFojD+OKxXXRxneCnqBikjycQ2T+T
-         yGEeX9Zjsbh991lQT5P2MBkCuUOiR9Kjt76DEewr4GFBJ7yPW/0Y1j73jLOamfPcrO
-         E13xaC6UCRXd55OiFvDtMeRTQbLvP1p79TK8X7VU=
+        b=EirCz+nQEZD0gqiUvypeRLdOZOeD+CbRiyOBArBwMZqI/iluKm+scFaeL5NHo2SYX
+         XCQK0rEoZNmiJThXaCquBH1bvrdQKoPSb9GYnrplR7XxPVL52Y1MCQq3EDSpvFm1HQ
+         iTHmbURkaaZVcw0yG5mBaMWiFVIbwHiDJaOwYMEE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 017/239] regmap: Disable locking for RBTREE and MAPLE unit tests
+        patches@lists.linux.dev, Andi Shyti <andi.shyti@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 023/228] i2c: nomadik: Use devm_clk_get_enabled()
 Date:   Tue,  1 Aug 2023 11:18:01 +0200
-Message-ID: <20230801091926.266107629@linuxfoundation.org>
+Message-ID: <20230801091923.698329654@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Andi Shyti <andi.shyti@kernel.org>
 
-[ Upstream commit a9e26169cfda651802f88262a315146fbe4bc74c ]
+[ Upstream commit 9c7174db4cdd111e10d19eed5c36fd978a14c8a2 ]
 
-REGCACHE_RBTREE and REGCACHE_MAPLE dynamically allocate memory
-for regmap operations. This is incompatible with spinlock based locking
-which is used for fast_io operations. Disable locking for the associated
-unit tests to avoid lockdep splashes.
+Replace the pair of functions, devm_clk_get() and
+clk_prepare_enable(), with a single function
+devm_clk_get_enabled().
 
-Fixes: f033c26de5a5 ("regmap: Add maple tree based register cache")
-Fixes: 2238959b6ad2 ("regmap: Add some basic kunit tests")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230720032848.1306349-1-linux@roeck-us.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-kunit.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-nomadik.c | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-kunit.c b/drivers/base/regmap/regmap-kunit.c
-index f76d416881349..0b3dacc7fa424 100644
---- a/drivers/base/regmap/regmap-kunit.c
-+++ b/drivers/base/regmap/regmap-kunit.c
-@@ -58,6 +58,9 @@ static struct regmap *gen_regmap(struct regmap_config *config,
- 	int i;
- 	struct reg_default *defaults;
+diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
+index 8b9577318388e..2141ba05dfece 100644
+--- a/drivers/i2c/busses/i2c-nomadik.c
++++ b/drivers/i2c/busses/i2c-nomadik.c
+@@ -1005,18 +1005,12 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+ 		return ret;
+ 	}
  
-+	config->disable_locking = config->cache_type == REGCACHE_RBTREE ||
-+					config->cache_type == REGCACHE_MAPLE;
-+
- 	buf = kmalloc(size, GFP_KERNEL);
- 	if (!buf)
- 		return ERR_PTR(-ENOMEM);
+-	dev->clk = devm_clk_get(&adev->dev, NULL);
++	dev->clk = devm_clk_get_enabled(&adev->dev, NULL);
+ 	if (IS_ERR(dev->clk)) {
+-		dev_err(&adev->dev, "could not get i2c clock\n");
++		dev_err(&adev->dev, "could enable i2c clock\n");
+ 		return PTR_ERR(dev->clk);
+ 	}
+ 
+-	ret = clk_prepare_enable(dev->clk);
+-	if (ret) {
+-		dev_err(&adev->dev, "can't prepare_enable clock\n");
+-		return ret;
+-	}
+-
+ 	init_hw(dev);
+ 
+ 	adap = &dev->adap;
+@@ -1037,16 +1031,11 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+ 
+ 	ret = i2c_add_adapter(adap);
+ 	if (ret)
+-		goto err_no_adap;
++		return ret;
+ 
+ 	pm_runtime_put(&adev->dev);
+ 
+ 	return 0;
+-
+- err_no_adap:
+-	clk_disable_unprepare(dev->clk);
+-
+-	return ret;
+ }
+ 
+ static void nmk_i2c_remove(struct amba_device *adev)
+@@ -1060,7 +1049,6 @@ static void nmk_i2c_remove(struct amba_device *adev)
+ 	clear_all_interrupts(dev);
+ 	/* disable the controller */
+ 	i2c_clr_bit(dev->virtbase + I2C_CR, I2C_CR_PE);
+-	clk_disable_unprepare(dev->clk);
+ 	release_mem_region(res->start, resource_size(res));
+ }
+ 
 -- 
 2.39.2
 
