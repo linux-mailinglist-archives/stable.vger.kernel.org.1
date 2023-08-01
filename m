@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD0C76AF65
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 766D276AF67
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232036AbjHAJrJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45266 "EHLO
+        id S233581AbjHAJrQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:47:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233581AbjHAJqo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7AC1716
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:25 -0700 (PDT)
+        with ESMTP id S233661AbjHAJqr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC233173F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB4DF614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78CFC433C7;
-        Tue,  1 Aug 2023 09:45:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C86161500
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5BDC433C7;
+        Tue,  1 Aug 2023 09:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883124;
-        bh=fce2Qd5LEaze9qUPKjUNtsoDT/CJpXGBNOHwPa2QaXk=;
+        s=korg; t=1690883127;
+        bh=ZvATkJ8PIJA8nhtnyjwRe8nCoJKJJnIKKCfZc0vuBDE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b/I5VI7cMj2vp4cACCpwkCyF6fWQ/rH27LG6xs22hyQ9IPx1oAECkALKk1D6hJe4g
-         fDMyrXdUzhqAdLrAo0LoHs0hNS4SWbZDSuJMrVHV3E7gzKv0Pt5kpDwnIUTfxihzlL
-         MFTJOqELBICnQfl/bMkZyB18LrL7wsD4hNIAAcqM=
+        b=S7XQcM3hg9bPLzHsPKoqS3PRSBogC9Ou3qekNEJ/h7VZhBUEsctRC4+cuUSAUdUqY
+         hFkdQojXbtkJN1MVzv2lCdSRowOVpuIrh1XaFxsi4b/4IUgx1Fn7Brx9h7Q0Bkusdj
+         389S6TNEupGI029/oRdSiqwWUfWpG/dbRbxv+8YE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Tung Nguyen <tung.q.nguyen@dektech.com.au>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 095/239] benet: fix return value check in be_lancer_xmit_workarounds()
-Date:   Tue,  1 Aug 2023 11:19:19 +0200
-Message-ID: <20230801091929.167911379@linuxfoundation.org>
+Subject: [PATCH 6.4 096/239] tipc: check return value of pskb_trim()
+Date:   Tue,  1 Aug 2023 11:19:20 +0200
+Message-ID: <20230801091929.201488521@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
 References: <20230801091925.659598007@linuxfoundation.org>
@@ -57,34 +58,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 5c85f7065718a949902b238a6abd8fc907c5d3e0 ]
+[ Upstream commit e46e06ffc6d667a89b979701288e2264f45e6a7b ]
 
-in be_lancer_xmit_workarounds(), it should go to label 'tx_drop'
-if an unexpected value is returned by pskb_trim().
+goto free_skb if an unexpected result is returned by pskb_tirm()
+in tipc_crypto_rcv_complete().
 
-Fixes: 93040ae5cc8d ("be2net: Fix to trim skb for padded vlan packets to workaround an ASIC Bug")
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
 Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Link: https://lore.kernel.org/r/20230725032726.15002-1-ruc_gongyuanjun@163.com
+Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Link: https://lore.kernel.org/r/20230725064810.5820-1-ruc_gongyuanjun@163.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 3 ++-
+ net/tipc/crypto.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index 0defd519ba62e..7fa057d379c1a 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1138,7 +1138,8 @@ static struct sk_buff *be_lancer_xmit_workarounds(struct be_adapter *adapter,
- 	    (lancer_chip(adapter) || BE3_chip(adapter) ||
- 	     skb_vlan_tag_present(skb)) && is_ipv4_pkt(skb)) {
- 		ip = (struct iphdr *)ip_hdr(skb);
--		pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len));
-+		if (unlikely(pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len))))
-+			goto tx_drop;
- 	}
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 577fa5af33ec7..302fd749c4249 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -1960,7 +1960,8 @@ static void tipc_crypto_rcv_complete(struct net *net, struct tipc_aead *aead,
  
- 	/* If vlan tag is already inlined in the packet, skip HW VLAN
+ 	skb_reset_network_header(*skb);
+ 	skb_pull(*skb, tipc_ehdr_size(ehdr));
+-	pskb_trim(*skb, (*skb)->len - aead->authsize);
++	if (pskb_trim(*skb, (*skb)->len - aead->authsize))
++		goto free_skb;
+ 
+ 	/* Validate TIPCv2 message */
+ 	if (unlikely(!tipc_msg_validate(skb))) {
 -- 
 2.39.2
 
