@@ -2,154 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEC4676BD14
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 20:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DB3976BD01
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 20:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231566AbjHAS4g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 14:56:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36786 "EHLO
+        id S230151AbjHASxw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 14:53:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230012AbjHAS4e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 14:56:34 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8239FFF;
-        Tue,  1 Aug 2023 11:56:23 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id ACBC660182;
-        Tue,  1 Aug 2023 20:56:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690916180; bh=MPYljj3h/SN6YXOHz3zCHJ6JU1rITTD4c44UeRuh36Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=IUxyKyWtm1Yqnyayl7fu2PbJK5kmHUKYV5V5PVmU+VnUeM/4mo69iEy+FNJeECmkc
-         Gt3rTc7CUe6q3HxacyVc6TJ0zbY5kVTuIkAacvfrMV8DD18+Wqx2vKk8CUNhEHpnvO
-         F4aby3MJMBMtGt4Cb1Pt3jAnGOxiUBnGcRA79vgdvvroaIahyLOwtCNLIrvZpiWbOj
-         91CUza+jvwO2O0QwfYxlWBnCKAj50ZEbmN2vGgKBYD+2uK2r1rH+ls5RSHeY8zcmZQ
-         m09HO4BCF98nESN2M3AUi2dnF7T9kIQGPkn4cb/WlUYhDrltbFEaSRDojBQDJSEMEX
-         aRX1SesPDjxfg==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6nGW5UqLdght; Tue,  1 Aug 2023 20:56:18 +0200 (CEST)
-Received: from defiant.. (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id D19BF6015F;
-        Tue,  1 Aug 2023 20:56:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690916178; bh=MPYljj3h/SN6YXOHz3zCHJ6JU1rITTD4c44UeRuh36Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=N/NwOhcvsN59P/LNNc4ACP1mfQ3tUsVp1adujxkcrN2lTd/BvCHzVktlbi5k1+4+g
-         g2Qojk3vNFQ64oQoHYGnx8Z1YY/erWJr9KT5iPYckyITyeQJm1RbOCg8WrjUjSOhIl
-         HXxHe2O3/wk2EI0M2smesPpPlm21iCaxsHQ5pNVevpLNUF3uUiS7rseaInXm3pWkeW
-         SUatlKDYMc5l+8VJuOL1NeTGnkg28opFiiVlIVQmB4zg1xB42qa7OsnJuCxF9z3w+2
-         gGhDOHaVbm5Nu7tL7ixZOO4F4ZDiAJwby4OWEexIYvGEA3WJjypp2aOp119ZL4R9jZ
-         cdSW+4JiMdeng==
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        linux-kernel@vger.kernel.org
-Cc:     Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        "Luis R . Rodriguez" <mcgrof@kernel.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v1 1/1] test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
-Date:   Tue,  1 Aug 2023 20:53:25 +0200
-Message-Id: <20230801185324.197544-1-mirsad.todorovac@alu.unizg.hr>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,FILL_THIS_FORM,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229690AbjHASxw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 14:53:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A59FF;
+        Tue,  1 Aug 2023 11:53:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A42A361694;
+        Tue,  1 Aug 2023 18:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D6DC433C7;
+        Tue,  1 Aug 2023 18:53:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690916030;
+        bh=6zOLPCS72gmJFXlHaooAjRFMkSKhQVfBRJ8FIz5BjQs=;
+        h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+        b=Ca3WQYX+pX+wPq9kUL+s3+DzalW+RL3Sm1au+IVAhbxqW1yrTeM+l0pgF4R4EfYQK
+         ufERbQjsOKpI34RbqqbK86azss7Z0WilP8Aszu+1jdcKU648vSlooDXMsptiZ1kgnw
+         Zy8MD+nACOdsKqqOqgy2ezv0z6rL+XdCIVI825vTBr1jIpCtaKHMHz86WYYSMtR0AT
+         0Lf40jBsFpAGMXpF6W4Xxkss59XNsWzYkfAo6pTmfN9bubFUKBDE+Ne3Jh1Jwsg2DT
+         eDe8F+9FypbiTR3IdztsJ/XFSlhGA53IwxhpdrrO+The5iB2TgIqm3NkfT8BSI3zPR
+         wz89GYtjxXtFg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 01 Aug 2023 21:53:46 +0300
+Message-Id: <CUHFPELPS4E8.3SLQHDV1V8JWK@suppilovahvero>
+To:     "Eric Biggers" <ebiggers@kernel.org>, <fsverity@lists.linux.dev>
+Cc:     <keyrings@vger.kernel.org>,
+        "Victor Hsieh" <victorhsieh@google.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] fsverity: skip PKCS#7 parser when keyring is empty
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20230801050714.28974-1-ebiggers@kernel.org>
+In-Reply-To: <20230801050714.28974-1-ebiggers@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
+On Tue Aug 1, 2023 at 8:07 AM EEST, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
+>
+> If an fsverity builtin signature is given for a file but the
+> ".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+> parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+> signature support is configured into the kernel but is not being used.
+>
+> This is a hardening improvement, not a fix per se, but I've added
+> Fixes and Cc stable to get it out to more users.
+>
+> Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+>  fs/verity/signature.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/verity/signature.c b/fs/verity/signature.c
+> index b95acae64eac6..f6668d92d8151 100644
+> --- a/fs/verity/signature.c
+> +++ b/fs/verity/signature.c
+> @@ -70,10 +70,26 @@ int fsverity_verify_signature(const struct fsverity_i=
+nfo *vi,
+>  	d->digest_size =3D cpu_to_le16(hash_alg->digest_size);
+>  	memcpy(d->digest, vi->file_digest, hash_alg->digest_size);
+> =20
+> -	err =3D verify_pkcs7_signature(d, sizeof(*d) + hash_alg->digest_size,
+> -				     signature, sig_size, fsverity_keyring,
+> -				     VERIFYING_UNSPECIFIED_SIGNATURE,
+> -				     NULL, NULL);
+> +	if (fsverity_keyring->keys.nr_leaves_on_tree =3D=3D 0) {
+> +		/*
+> +		 * The ".fs-verity" keyring is empty, due to builtin signatures
+> +		 * being supported by the kernel but not actually being used.
+> +		 * In this case, verify_pkcs7_signature() would always return an
+> +		 * error, usually ENOKEY.  It could also be EBADMSG if the
+> +		 * PKCS#7 is malformed, but that isn't very important to
+> +		 * distinguish.  So, just skip to ENOKEY to avoid the attack
+> +		 * surface of the PKCS#7 parser, which would otherwise be
+> +		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
+> +		 */
+> +		err =3D -ENOKEY;
+> +	} else {
+> +		err =3D verify_pkcs7_signature(d,
+> +					     sizeof(*d) + hash_alg->digest_size,
+> +					     signature, sig_size,
+> +					     fsverity_keyring,
+> +					     VERIFYING_UNSPECIFIED_SIGNATURE,
+> +					     NULL, NULL);
+> +	}
+>  	kfree(d);
+> =20
+>  	if (err) {
+>
+> base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
+> --=20
+> 2.41.0
 
-In a couple of situations like
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-	name = kstrndup(buf, count, GFP_KERNEL);
-	if (!name)
-		return -ENOSPC;
-
-the error is not actually "No space left on device", but "Out of memory".
-
-It is semantically correct to return -ENOMEM in all failed kstrndup()
-and kzalloc() cases in this driver, as it is not a problem with disk
-space, but with kernel memory allocator failing allocation.
-
-The semantically correct should be:
-
-        name = kstrndup(buf, count, GFP_KERNEL);
-        if (!name)
-                return -ENOMEM;
-
-Cc: Dan Carpenter <error27@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Luis R. Rodriguez <mcgrof@kernel.org>
-Cc: Brian Norris <computersforpeace@gmail.com>
-Cc: stable@vger.kernel.org # 4.19, 4.14
-Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
-Fixes: 0a8adf584759c ("test: add firmware_class loader test")
-Fixes: eb910947c82f9 ("test: firmware_class: add asynchronous request trigger")
-Fixes: 061132d2b9c95 ("test_firmware: add test custom fallback trigger")
-Link: https://lore.kernel.org/all/20230606070808.9300-1-mirsad.todorovac@alu.unizg.hr/
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-
-[ This is the backport of the patch to 4.19 and 4.14 branches. There are no	]
-[ semantic differences in the commit. Backport is provided for completenes sake	]
-[ so it would apply to all of the supported LTS kernels				]
----
-v1:
- no semantic difference, but there is change in code (one less patched instance of -ENOSPC),
- so I am submitting the patch for a review.
-
- lib/test_firmware.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index e4688821eab8..b5e779bcfb34 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -160,7 +160,7 @@ static int __kstrncpy(char **dst, const char *name, size_t count, gfp_t gfp)
- {
- 	*dst = kstrndup(name, count, gfp);
- 	if (!*dst)
--		return -ENOSPC;
-+		return -ENOMEM;
- 	return count;
- }
- 
-@@ -456,7 +456,7 @@ static ssize_t trigger_request_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s'\n", name);
- 
-@@ -497,7 +497,7 @@ static ssize_t trigger_async_request_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s'\n", name);
- 
-@@ -540,7 +540,7 @@ static ssize_t trigger_custom_fallback_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s' using custom fallback mechanism\n", name);
- 
--- 
-2.34.1
-
+BR, Jarkko
