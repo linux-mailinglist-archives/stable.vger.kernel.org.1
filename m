@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A729D76AD22
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF5276AF7F
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232597AbjHAJ0p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52236 "EHLO
+        id S233267AbjHAJs2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231919AbjHAJ0Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:25 -0400
+        with ESMTP id S233550AbjHAJrv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29981BC5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21AAF449C
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 96B25614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9881C433C7;
-        Tue,  1 Aug 2023 09:25:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6FB6614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4235C433C8;
+        Tue,  1 Aug 2023 09:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881920;
-        bh=MjS7szhwt4eZbtsTc8VHrzn8mYK/yeqIsUTF0FsxBSk=;
+        s=korg; t=1690883174;
+        bh=mS7vX7MXhLeVaULGyG6xSt1crhOn4XklG7btJeh8SVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fN2CPy4A5EXM6uoakHdXJ9nrvvAzlaU7wRSFiNhJyon/TJIBNT3O2zEQkio1hdhrz
-         aTjkzgz/HtFKc4BLwAg9WjDxc1tQf4aO1EK+YL4AUpCN8uiRFMcjwKCodnsk9qF2pz
-         1jOg9mExi4y7+oq9PeQQ7dFEyyJd9ggB19s115/I=
+        b=gKc7cn+bor1InigwnBfVSr3SBD/KcNWQytLAhkNGqtrqr0HnTpHd/y9jQAWPl43+h
+         6UemVFpmkKUk4f5jwA+6gTK8wcHtXDllrZ0yW5kTCWnedWrFP8FyeAbuuIBvQsAlKH
+         54haIOaq/F3rBgDjoIvC2RcTOB51C0NauryJisQg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/155] net/sched: mqprio: refactor nlattr parsing to a separate function
+Subject: [PATCH 6.4 124/239] drm/i915: Fix an error handling path in igt_write_huge()
 Date:   Tue,  1 Aug 2023 11:19:48 +0200
-Message-ID: <20230801091912.852905447@linuxfoundation.org>
+Message-ID: <20230801091930.184475133@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,165 +58,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit feb2cf3dcfb930aec2ca65c66d1365543d5ba943 ]
+[ Upstream commit e354f67733115b4453268f61e6e072e9b1ea7a2f ]
 
-mqprio_init() is quite large and unwieldy to add more code to.
-Split the netlink attribute parsing to a dedicated function.
+All error handling paths go to 'out', except this one. Be consistent and
+also branch to 'out' here.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
+Fixes: c10a652e239e ("drm/i915/selftests: Rework context handling in hugepages selftests")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/7a036b88671312ee9adc01c74ef5b3376f690b76.1689619758.git.christophe.jaillet@wanadoo.fr
+(cherry picked from commit 361ecaadb1ce3c5312c7c4c419271326d43899eb)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_mqprio.c | 114 +++++++++++++++++++++++------------------
- 1 file changed, 63 insertions(+), 51 deletions(-)
+ drivers/gpu/drm/i915/gem/selftests/huge_pages.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
-index 50e15add6068f..a5df5604e0150 100644
---- a/net/sched/sch_mqprio.c
-+++ b/net/sched/sch_mqprio.c
-@@ -130,6 +130,67 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- 	return 0;
- }
- 
-+static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
-+			       struct nlattr *opt)
-+{
-+	struct mqprio_sched *priv = qdisc_priv(sch);
-+	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
-+	struct nlattr *attr;
-+	int i, rem, err;
-+
-+	err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
-+			 sizeof(*qopt));
-+	if (err < 0)
-+		return err;
-+
-+	if (!qopt->hw)
-+		return -EINVAL;
-+
-+	if (tb[TCA_MQPRIO_MODE]) {
-+		priv->flags |= TC_MQPRIO_F_MODE;
-+		priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
+diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+index 99f39a5feca15..e86e75971ec60 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
++++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+@@ -1190,8 +1190,10 @@ static int igt_write_huge(struct drm_i915_private *i915,
+ 	 * times in succession a possibility by enlarging the permutation array.
+ 	 */
+ 	order = i915_random_order(count * count, &prng);
+-	if (!order)
+-		return -ENOMEM;
++	if (!order) {
++		err = -ENOMEM;
++		goto out;
 +	}
-+
-+	if (tb[TCA_MQPRIO_SHAPER]) {
-+		priv->flags |= TC_MQPRIO_F_SHAPER;
-+		priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
-+	}
-+
-+	if (tb[TCA_MQPRIO_MIN_RATE64]) {
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+			return -EINVAL;
-+		i = 0;
-+		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
-+				    rem) {
-+			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
-+				return -EINVAL;
-+			if (i >= qopt->num_tc)
-+				break;
-+			priv->min_rate[i] = *(u64 *)nla_data(attr);
-+			i++;
-+		}
-+		priv->flags |= TC_MQPRIO_F_MIN_RATE;
-+	}
-+
-+	if (tb[TCA_MQPRIO_MAX_RATE64]) {
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+			return -EINVAL;
-+		i = 0;
-+		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
-+				    rem) {
-+			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
-+				return -EINVAL;
-+			if (i >= qopt->num_tc)
-+				break;
-+			priv->max_rate[i] = *(u64 *)nla_data(attr);
-+			i++;
-+		}
-+		priv->flags |= TC_MQPRIO_F_MAX_RATE;
-+	}
-+
-+	return 0;
-+}
-+
- static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 		       struct netlink_ext_ack *extack)
- {
-@@ -139,9 +200,6 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 	struct Qdisc *qdisc;
- 	int i, err = -EOPNOTSUPP;
- 	struct tc_mqprio_qopt *qopt = NULL;
--	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
--	struct nlattr *attr;
--	int rem;
- 	int len;
  
- 	BUILD_BUG_ON(TC_MAX_QUEUE != TC_QOPT_MAX_QUEUE);
-@@ -166,55 +224,9 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
- 	if (len > 0) {
--		err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
--				 sizeof(*qopt));
--		if (err < 0)
-+		err = mqprio_parse_nlattr(sch, qopt, opt);
-+		if (err)
- 			return err;
--
--		if (!qopt->hw)
--			return -EINVAL;
--
--		if (tb[TCA_MQPRIO_MODE]) {
--			priv->flags |= TC_MQPRIO_F_MODE;
--			priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
--		}
--
--		if (tb[TCA_MQPRIO_SHAPER]) {
--			priv->flags |= TC_MQPRIO_F_SHAPER;
--			priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
--		}
--
--		if (tb[TCA_MQPRIO_MIN_RATE64]) {
--			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
--				return -EINVAL;
--			i = 0;
--			nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
--					    rem) {
--				if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
--					return -EINVAL;
--				if (i >= qopt->num_tc)
--					break;
--				priv->min_rate[i] = *(u64 *)nla_data(attr);
--				i++;
--			}
--			priv->flags |= TC_MQPRIO_F_MIN_RATE;
--		}
--
--		if (tb[TCA_MQPRIO_MAX_RATE64]) {
--			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
--				return -EINVAL;
--			i = 0;
--			nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
--					    rem) {
--				if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
--					return -EINVAL;
--				if (i >= qopt->num_tc)
--					break;
--				priv->max_rate[i] = *(u64 *)nla_data(attr);
--				i++;
--			}
--			priv->flags |= TC_MQPRIO_F_MAX_RATE;
--		}
- 	}
- 
- 	/* pre-allocate qdisc, attachment can't fail */
+ 	max_page_size = rounddown_pow_of_two(obj->mm.page_sizes.sg);
+ 	max = div_u64(max - size, max_page_size);
 -- 
-2.39.2
+2.40.1
 
 
 
