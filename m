@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CA876AD25
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3FD76AD2A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232632AbjHAJ0r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52280 "EHLO
+        id S231820AbjHAJ05 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232132AbjHAJ01 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34C62D71
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:23 -0700 (PDT)
+        with ESMTP id S232020AbjHAJ0j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD2C3C10
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AD376150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68245C433C8;
-        Tue,  1 Aug 2023 09:25:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96A2F6150F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2760C433C7;
+        Tue,  1 Aug 2023 09:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881922;
-        bh=oURpJredoucDcEveexJXt0TQPG51YWuWX58XsNxKLPA=;
+        s=korg; t=1690881931;
+        bh=8XYO5Fs3XGCJan3ht12nOXKFKl4/FYRTCY3Bo75DSgI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BT12aSiSD8pdLMM0YPJVh0UfBbcIgvXV5SgdK2F7DQeM2uIL6Rcj9fFL50bTCGZL5
-         y2SD2hqvml3nH8/G8v6NQXvni4PIQeP8ScWp4diH2L9Y+mTzipDvaIokzeLFOivJbk
-         AfQdPggHmNjL0iZVtGhVZ7UJx5U0t/IiQOxXXCOA=
+        b=WTqO14xAljawvRQrUkY37wcXVFrcOZ6fWUSSRH3QnjLtCvmgjwKvcktWGzpRrhlQB
+         B1Y3U0VfOqF36uMGrKhWktdmWBOxTY6Q4AV6h+64zkyBorT4V8+G8hlaJRB93COyXA
+         k8moVfDjAp1pM57U12HETAAr6Evt0J22m+tEf1Tw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
         Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/155] phy: qcom-snps: correct struct qcom_snps_hsphy kerneldoc
-Date:   Tue,  1 Aug 2023 11:19:22 +0200
-Message-ID: <20230801091911.977176934@linuxfoundation.org>
+Subject: [PATCH 5.15 051/155] phy: qcom-snps-femto-v2: keep cfg_ahb_clk enabled during runtime suspend
+Date:   Tue,  1 Aug 2023 11:19:23 +0200
+Message-ID: <20230801091912.007023584@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
 References: <20230801091910.165050260@linuxfoundation.org>
@@ -56,41 +54,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Adrien Thierry <athierry@redhat.com>
 
-[ Upstream commit 2a881183dc5ab2474ef602e48fe7af34db460d95 ]
+[ Upstream commit 45d89a344eb46db9dce851c28e14f5e3c635c251 ]
 
-Update kerneldoc of struct qcom_snps_hsphy to fix:
+In the dwc3 core, both system and runtime suspend end up calling
+dwc3_suspend_common(). From there, what happens for the PHYs depends on
+the USB mode and whether the controller is entering system or runtime
+suspend.
 
-  drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c:135: warning: Function parameter or member 'update_seq_cfg' not described in 'qcom_snps_hsphy'
+HOST mode:
+  (1) system suspend on a non-wakeup-capable controller
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230507144818.193039-1-krzysztof.kozlowski@linaro.org
+  The [1] if branch is taken. dwc3_core_exit() is called, which ends up
+  calling phy_power_off() and phy_exit(). Those two functions decrease the
+  PM runtime count at some point, so they will trigger the PHY runtime
+  sleep (assuming the count is right).
+
+  (2) runtime suspend / system suspend on a wakeup-capable controller
+
+  The [1] branch is not taken. dwc3_suspend_common() calls
+  phy_pm_runtime_put_sync(). Assuming the ref count is right, the PHY
+  runtime suspend op is called.
+
+DEVICE mode:
+  dwc3_core_exit() is called on both runtime and system sleep
+  unless the controller is already runtime suspended.
+
+OTG mode:
+  (1) system suspend : dwc3_core_exit() is called
+
+  (2) runtime suspend : do nothing
+
+In host mode, the code seems to make a distinction between 1) runtime
+sleep / system sleep for wakeup-capable controller, and 2) system sleep
+for non-wakeup-capable controller, where phy_power_off() and phy_exit()
+are only called for the latter. This suggests the PHY is not supposed to
+be in a fully powered-off state for runtime sleep and system sleep for
+wakeup-capable controller.
+
+Moreover, downstream, cfg_ahb_clk only gets disabled for system suspend.
+The clocks are disabled by phy->set_suspend() [2] which is only called
+in the system sleep path through dwc3_core_exit() [3].
+
+With that in mind, don't disable the clocks during the femto PHY runtime
+suspend callback. The clocks will only be disabled during system suspend
+for non-wakeup-capable controllers, through dwc3_core_exit().
+
+[1] https://elixir.bootlin.com/linux/v6.4/source/drivers/usb/dwc3/core.c#L1988
+[2] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/LV.AU.1.2.1.r2-05300-gen3meta.0/drivers/usb/phy/phy-msm-snps-hs.c#L524
+[3] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/LV.AU.1.2.1.r2-05300-gen3meta.0/drivers/usb/dwc3/core.c#L1915
+
+Signed-off-by: Adrien Thierry <athierry@redhat.com>
+Link: https://lore.kernel.org/r/20230629144542.14906-2-athierry@redhat.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index 54846259405a9..136b45903c798 100644
+index 136b45903c798..dfe5f09449100 100644
 --- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
 +++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -73,11 +73,11 @@ static const char * const qcom_snps_hsphy_vreg_names[] = {
-  *
-  * @cfg_ahb_clk: AHB2PHY interface clock
-  * @ref_clk: phy reference clock
-- * @iface_clk: phy interface clock
-  * @phy_reset: phy reset control
-  * @vregs: regulator supplies bulk data
-  * @phy_initialized: if PHY has been initialized correctly
-  * @mode: contains the current mode the PHY is in
-+ * @update_seq_cfg: tuning parameters for phy init
-  */
- struct qcom_snps_hsphy {
- 	struct phy *phy;
+@@ -122,22 +122,13 @@ static int qcom_snps_hsphy_suspend(struct qcom_snps_hsphy *hsphy)
+ 					   0, USB2_AUTO_RESUME);
+ 	}
+ 
+-	clk_disable_unprepare(hsphy->cfg_ahb_clk);
+ 	return 0;
+ }
+ 
+ static int qcom_snps_hsphy_resume(struct qcom_snps_hsphy *hsphy)
+ {
+-	int ret;
+-
+ 	dev_dbg(&hsphy->phy->dev, "Resume QCOM SNPS PHY, mode\n");
+ 
+-	ret = clk_prepare_enable(hsphy->cfg_ahb_clk);
+-	if (ret) {
+-		dev_err(&hsphy->phy->dev, "failed to enable cfg ahb clock\n");
+-		return ret;
+-	}
+-
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
