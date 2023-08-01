@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C4DE76AF2E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E39976AE0C
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233601AbjHAJp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45690 "EHLO
+        id S233147AbjHAJfv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230143AbjHAJpM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD11D2107
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:42 -0700 (PDT)
+        with ESMTP id S232973AbjHAJf2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D953125
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47FAB61511
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586E1C433C7;
-        Tue,  1 Aug 2023 09:43:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BDF9A614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF13C433C7;
+        Tue,  1 Aug 2023 09:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883021;
-        bh=nqXUpcsp+/BUIRwwPKLlWWYzLBlqVzpOUkNRtjvXT6Y=;
+        s=korg; t=1690882402;
+        bh=zlsbGVw4/akM9I92cWfwDGj2+5b37FkNefnSw4Cm/u8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PblTfjfHlQpVTBr1962c4UoC6cMPBw+EGudr+oAo7dtN+/FwLMq/e0ms6VtXER1Jo
-         WC/t3K0PXTxAovIVajypUZRRWr+EuZa2Quw6vdAJeNFYtwoxGgCGrSaEOhgPF5nlj5
-         sLjk6N/2hE3FmcWrD49Fu0jKiDt9VG0TibhbW/G8=
+        b=CbjmcNvdSPDQxrWvIETNFMrzOysvnMPTLTHOpPsBhLt/8kNnqQ+DA8hazH5523sUk
+         ZwrOcco6JeIRWWEw8e7hdnIu67vaXSc9ppVw22NL8h+m7lQcSfGrxmwrg1GgCdmLnX
+         rhP4oIXffBU9niWZjOCDv/DrNaTT1Hu+fGRD6b9E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
         Simon Horman <simon.horman@corigine.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 086/239] macvlan: add forgotten nla_policy for IFLA_MACVLAN_BC_CUTOFF
-Date:   Tue,  1 Aug 2023 11:19:10 +0200
-Message-ID: <20230801091928.844736046@linuxfoundation.org>
+Subject: [PATCH 6.1 093/228] ethernet: atheros: fix return value check in atl1e_tso_csum()
+Date:   Tue,  1 Aug 2023 11:19:11 +0200
+Message-ID: <20230801091926.200891917@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 55cef78c244d0d076f5a75a35530ca63c92f4426 ]
+[ Upstream commit 69a184f7a372aac588babfb0bd681aaed9779f5b ]
 
-The previous commit 954d1fa1ac93 ("macvlan: Add netlink attribute for
-broadcast cutoff") added one additional attribute named
-IFLA_MACVLAN_BC_CUTOFF to allow broadcast cutfoff.
+in atl1e_tso_csum, it should check the return value of pskb_trim(),
+and return an error code if an unexpected value is returned
+by pskb_trim().
 
-However, it forgot to describe the nla_policy at macvlan_policy
-(drivers/net/macvlan.c). Hence, this suppose NLA_S32 (4 bytes) integer
-can be faked as empty (0 bytes) by a malicious user, which could leads
-to OOB in heap just like CVE-2023-3773.
-
-To fix it, this commit just completes the nla_policy description for
-IFLA_MACVLAN_BC_CUTOFF. This enforces the length check and avoids the
-potential OOB read.
-
-Fixes: 954d1fa1ac93 ("macvlan: Add netlink attribute for broadcast cutoff")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
 Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230723080205.3715164-1-linma@zju.edu.cn
+Link: https://lore.kernel.org/r/20230720144219.39285-1-ruc_gongyuanjun@163.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 4a53debf9d7c4..ed908165a8b4e 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1746,6 +1746,7 @@ static const struct nla_policy macvlan_policy[IFLA_MACVLAN_MAX + 1] = {
- 	[IFLA_MACVLAN_MACADDR_COUNT] = { .type = NLA_U32 },
- 	[IFLA_MACVLAN_BC_QUEUE_LEN] = { .type = NLA_U32 },
- 	[IFLA_MACVLAN_BC_QUEUE_LEN_USED] = { .type = NLA_REJECT },
-+	[IFLA_MACVLAN_BC_CUTOFF] = { .type = NLA_S32 },
- };
+diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+index 5db0f3495a32e..5935be190b9e2 100644
+--- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
++++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+@@ -1641,8 +1641,11 @@ static int atl1e_tso_csum(struct atl1e_adapter *adapter,
+ 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
+ 					+ ntohs(ip_hdr(skb)->tot_len));
  
- int macvlan_link_register(struct rtnl_link_ops *ops)
+-			if (real_len < skb->len)
+-				pskb_trim(skb, real_len);
++			if (real_len < skb->len) {
++				err = pskb_trim(skb, real_len);
++				if (err)
++					return err;
++			}
+ 
+ 			hdr_len = skb_tcp_all_headers(skb);
+ 			if (unlikely(skb->len == hdr_len)) {
 -- 
 2.39.2
 
