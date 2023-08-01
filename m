@@ -2,46 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4813876ACE8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C8276ADF4
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231544AbjHAJYY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:24:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
+        id S230522AbjHAJey (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231927AbjHAJYF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:24:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD940213C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:51 -0700 (PDT)
+        with ESMTP id S232373AbjHAJeY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F13B15264
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B8EF61504
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45E1C433C9;
-        Tue,  1 Aug 2023 09:22:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4B8A614F3
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10E5C433C8;
+        Tue,  1 Aug 2023 09:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881771;
-        bh=3JWXxAibJDxCkJu3mzdiwzqp6n094e8wPBSTXZrhSY4=;
+        s=korg; t=1690882341;
+        bh=6Z289H6OVEr8Ohb+NcUJgZPZJa3RADtYyZYv9vZxR4s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q/3BPK08E+Fl6sMCrO8+/tWrjcOGFlcbfOBhUzMqgN3UrV6/D/gDbIvn4uUzstE1V
-         rLAOH2UVfzco/dqS7LCXYT/Gyz2qTG/yWD4X5bkiqlVIzMYtxx/zOYcwqRKfkh6MRs
-         OOUpegIGD/cGC+pw28chW46gKeul16ELwCH8pttk=
+        b=qvoHTX6d2JRy3R2xZBqEQLqK8VWA8rCfAp+e8EKb07X7xgl0ZWmyohkxWfK+9ioBw
+         fSv/VSLUv1ZS1bKl3hxvd0fssyrKEHdIbUrWD56iSXtbEAmBaBSvIOgU2Z+Z3V8PTm
+         APqQKqfgPzDqMMxUl/7uG73z2ghSDSg0LndflVtc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Alan Liu <haoping.liu@amd.com>,
+        Daniel Miess <daniel.miess@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/155] PCI: rockchip: Remove writes to unused registers
+Subject: [PATCH 6.1 070/228] drm/amd/display: Prevent vtotal from being set to 0
 Date:   Tue,  1 Aug 2023 11:18:48 +0200
-Message-ID: <20230801091910.774878991@linuxfoundation.org>
+Message-ID: <20230801091925.353670788@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +60,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Daniel Miess <daniel.miess@amd.com>
 
-[ Upstream commit 92a9c57c325dd51682d428ba960d961fec3c8a08 ]
+[ Upstream commit 2a9482e55968ed7368afaa9c2133404069117320 ]
 
-Remove write accesses to registers that are marked "unused" (and
-therefore read-only) in the technical reference manual (TRM)
-(see RK3399 TRM 17.6.8.1)
+[Why]
+In dcn314 DML the destination pipe vtotal was being set
+to the crtc adjustment vtotal_min value even in cases
+where that value is 0.
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-2-rick.wertenbroek@gmail.com
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Stable-dep-of: dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for endpoint")
+[How]
+Only set vtotal to the crtc adjustment vtotal_min value
+in cases where the value is non-zero.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Alan Liu <haoping.liu@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
-index 827d91e73efab..9e17f3dba743a 100644
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -61,10 +61,6 @@ static void rockchip_pcie_clear_ep_ob_atu(struct rockchip_pcie *rockchip,
- 			    ROCKCHIP_PCIE_AT_OB_REGION_DESC0(region));
- 	rockchip_pcie_write(rockchip, 0,
- 			    ROCKCHIP_PCIE_AT_OB_REGION_DESC1(region));
--	rockchip_pcie_write(rockchip, 0,
--			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR0(region));
--	rockchip_pcie_write(rockchip, 0,
--			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR1(region));
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+index a2a32cb9d5710..8a88605827a84 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -302,7 +302,11 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
+ 		pipe = &res_ctx->pipe_ctx[i];
+ 		timing = &pipe->stream->timing;
  
- static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
-@@ -114,12 +110,6 @@ static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
- 		     PCIE_CORE_OB_REGION_ADDR0_LO_ADDR);
- 		addr1 = upper_32_bits(cpu_addr);
- 	}
--
--	/* CPU bus address region */
--	rockchip_pcie_write(rockchip, addr0,
--			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR0(r));
--	rockchip_pcie_write(rockchip, addr1,
--			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR1(r));
- }
- 
- static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn, u8 vfn,
+-		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
++		if (pipe->stream->adjust.v_total_min != 0)
++			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
++		else
++			pipes[pipe_cnt].pipe.dest.vtotal = timing->v_total;
++
+ 		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
+ 		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
+ 		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
 -- 
 2.39.2
 
