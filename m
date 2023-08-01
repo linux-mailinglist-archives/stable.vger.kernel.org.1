@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 132E276AF59
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1395676ADC2
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233407AbjHAJqy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45422 "EHLO
+        id S231617AbjHAJdk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233443AbjHAJow (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A918CE48
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:33 -0700 (PDT)
+        with ESMTP id S233237AbjHAJdR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9514C03
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30A91614FD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C045C433C9;
-        Tue,  1 Aug 2023 09:42:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC1B9613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0605DC433CA;
+        Tue,  1 Aug 2023 09:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882952;
-        bh=pVBiHBp9KPGK6aJm1+lqMksAxpyJnbSdv2Kg5Ijs0aU=;
+        s=korg; t=1690882253;
+        bh=La6xybk4y1y3c9oVbfgpNQSQ9WSokpYnLRVxGTNbh48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qADJDgWsz8u9loboFeFYPc8rZpifwFE8CCbwzo6fA/ri1HAAl0QxNmCBxIv62EGQa
-         UKriKysGDQnP6oGPO5urrJIMm02OC/2LV0kDzvh5eSQJDS4407FJqSI8ptlxIitJPK
-         HCyoVI0qk1QmDXdsUQHaQI1hnqMtqvp9WEkAvprM=
+        b=k3j935M7aZiPO/98kJ9gdhFisUUsNKZWZQ39xBeS3Rfxov7TKFkpBjoMmiQD45N9j
+         DExN1HCdEOaxtcdlpl4zXaoGv337Ksu+EaGAzf2ZFzbHYYUhICMaqdxy7zpPTNK5KT
+         VZycxLJXmi069f4snuPMHvcHyGfUsXRcTPVqFkU0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Wheeler <daniel.wheeler@amd.com>,
-        George Shen <George.Shen@amd.com>, Aric Cyr <Aric.Cyr@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Michael Strauss <michael.strauss@amd.com>,
+        patches@lists.linux.dev, Jun Lei <Jun.Lei@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Alvin Lee <Alvin.Lee2@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 033/239] drm/amd/display: Keep disable aux-i delay as 0
+Subject: [PATCH 6.1 039/228] drm/amd/display: Use min transition for all SubVP plane add/remove
 Date:   Tue,  1 Aug 2023 11:18:17 +0200
-Message-ID: <20230801091926.804342923@linuxfoundation.org>
+Message-ID: <20230801091924.301875218@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,77 +58,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Alvin Lee <Alvin.Lee2@amd.com>
 
-[ Upstream commit 5a096b73c8fed3a9987ba15378285df360e2284b ]
+[ Upstream commit e4c1b01bc35b04e15782608165aa85b9e1724f7b ]
 
-[WHY]
-Current Aux-I sequence checks for local_sink which isn't populated on
-MST links
+[Description]
+- Whenever disabling a phantom pipe, we must run through the
+  minimal transition sequence
+- In the case where SetVisibility = false for the main pipe,
+  we also need to run through the min transtion when disabling
+  the phantom pipes
 
-[HOW]
-Leave disable aux-i delay as 0 for MST cases
-
-Cc: stable@vger.kernel.org
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alvin Lee <Alvin.Lee2@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: George Shen <George.Shen@amd.com>
-Reviewed-by: Aric Cyr <Aric.Cyr@amd.com>
-Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 59de751e3845 ("drm/amd/display: add ODM case when looking for first split pipe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../link_dp_training_fixed_vs_pe_retimer.c       | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 31 +++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-index fb6c938c6dab1..15faaf645b145 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-@@ -233,8 +233,7 @@ enum link_training_result dp_perform_fixed_vs_pe_training_sequence_legacy(
- 			link->dpcd_caps.lttpr_caps.phy_repeater_cnt);
- 	const uint8_t vendor_lttpr_write_data_intercept_en[4] = {0x1, 0x55, 0x63, 0x0};
- 	const uint8_t vendor_lttpr_write_data_intercept_dis[4] = {0x1, 0x55, 0x63, 0x68};
--	uint32_t pre_disable_intercept_delay_ms =
--			link->local_sink->edid_caps.panel_patch.delay_disable_aux_intercept_ms;
-+	uint32_t pre_disable_intercept_delay_ms = 0;
- 	uint8_t vendor_lttpr_write_data_vs[4] = {0x1, 0x51, 0x63, 0x0};
- 	uint8_t vendor_lttpr_write_data_pe[4] = {0x1, 0x52, 0x63, 0x0};
- 	uint32_t vendor_lttpr_write_address = 0xF004F;
-@@ -245,6 +244,10 @@ enum link_training_result dp_perform_fixed_vs_pe_training_sequence_legacy(
- 	uint8_t toggle_rate;
- 	uint8_t rate;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index cbbad496cfc63..c429748c86cdb 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3731,17 +3731,17 @@ static bool could_mpcc_tree_change_for_active_pipes(struct dc *dc,
+ 		}
+ 	}
  
-+	if (link->local_sink)
-+		pre_disable_intercept_delay_ms =
-+				link->local_sink->edid_caps.panel_patch.delay_disable_aux_intercept_ms;
-+
- 	/* Only 8b/10b is supported */
- 	ASSERT(link_dp_get_encoding_format(&lt_settings->link_settings) ==
- 			DP_8b_10b_ENCODING);
-@@ -595,10 +598,7 @@ enum link_training_result dp_perform_fixed_vs_pe_training_sequence(
- 	const uint8_t vendor_lttpr_write_data_adicora_eq3[4] = {0x1, 0x55, 0x63, 0x68};
- 	uint8_t vendor_lttpr_write_data_vs[4] = {0x1, 0x51, 0x63, 0x0};
- 	uint8_t vendor_lttpr_write_data_pe[4] = {0x1, 0x52, 0x63, 0x0};
--	uint32_t pre_disable_intercept_delay_ms =
--			link->local_sink->edid_caps.panel_patch.delay_disable_aux_intercept_ms;
--
--
-+	uint32_t pre_disable_intercept_delay_ms = 0;
- 	uint32_t vendor_lttpr_write_address = 0xF004F;
- 	enum link_training_result status = LINK_TRAINING_SUCCESS;
- 	uint8_t lane = 0;
-@@ -607,6 +607,10 @@ enum link_training_result dp_perform_fixed_vs_pe_training_sequence(
- 	uint8_t toggle_rate;
- 	uint8_t rate;
+-	/* For SubVP when adding MPO video we need to add a minimal transition.
++	/* For SubVP when adding or removing planes we need to add a minimal transition
++	 * (even when disabling all planes). Whenever disabling a phantom pipe, we
++	 * must use the minimal transition path to disable the pipe correctly.
+ 	 */
+ 	if (cur_stream_status && stream->mall_stream_config.type == SUBVP_MAIN) {
+ 		/* determine if minimal transition is required due to SubVP*/
+-		if (surface_count > 0) {
+-			if (cur_stream_status->plane_count > surface_count) {
+-				force_minimal_pipe_splitting = true;
+-			} else if (cur_stream_status->plane_count < surface_count) {
+-				force_minimal_pipe_splitting = true;
+-				*is_plane_addition = true;
+-			}
++		if (cur_stream_status->plane_count > surface_count) {
++			force_minimal_pipe_splitting = true;
++		} else if (cur_stream_status->plane_count < surface_count) {
++			force_minimal_pipe_splitting = true;
++			*is_plane_addition = true;
+ 		}
+ 	}
  
-+	if (link->local_sink)
-+		pre_disable_intercept_delay_ms =
-+				link->local_sink->edid_caps.panel_patch.delay_disable_aux_intercept_ms;
+@@ -3758,6 +3758,7 @@ static bool commit_minimal_transition_state(struct dc *dc,
+ 	enum dc_status ret = DC_ERROR_UNEXPECTED;
+ 	unsigned int i, j;
+ 	unsigned int pipe_in_use = 0;
++	bool subvp_in_use = false;
+ 
+ 	if (!transition_context)
+ 		return false;
+@@ -3770,6 +3771,18 @@ static bool commit_minimal_transition_state(struct dc *dc,
+ 			pipe_in_use++;
+ 	}
+ 
++	/* If SubVP is enabled and we are adding or removing planes from any main subvp
++	 * pipe, we must use the minimal transition.
++	 */
++	for (i = 0; i < dc->res_pool->pipe_count; i++) {
++		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
 +
- 	/* Only 8b/10b is supported */
- 	ASSERT(link_dp_get_encoding_format(&lt_settings->link_settings) ==
- 			DP_8b_10b_ENCODING);
++		if (pipe->stream && pipe->stream->mall_stream_config.type == SUBVP_PHANTOM) {
++			subvp_in_use = true;
++			break;
++		}
++	}
++
+ 	/* When the OS add a new surface if we have been used all of pipes with odm combine
+ 	 * and mpc split feature, it need use commit_minimal_transition_state to transition safely.
+ 	 * After OS exit MPO, it will back to use odm and mpc split with all of pipes, we need
+@@ -3778,7 +3791,7 @@ static bool commit_minimal_transition_state(struct dc *dc,
+ 	 * Reduce the scenarios to use dc_commit_state_no_check in the stage of flip. Especially
+ 	 * enter/exit MPO when DCN still have enough resources.
+ 	 */
+-	if (pipe_in_use != dc->res_pool->pipe_count) {
++	if (pipe_in_use != dc->res_pool->pipe_count && !subvp_in_use) {
+ 		dc_release_state(transition_context);
+ 		return true;
+ 	}
 -- 
 2.39.2
 
