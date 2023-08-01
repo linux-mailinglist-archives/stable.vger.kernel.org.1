@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9F1B76AE3E
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 274ED76AD21
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233199AbjHAJhO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:37:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35204 "EHLO
+        id S231898AbjHAJ0p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233208AbjHAJg5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:57 -0400
+        with ESMTP id S232327AbjHAJ0Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC0C4EE5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F146F2D67
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58D6561509
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6381DC433C8;
-        Tue,  1 Aug 2023 09:35:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3EB3614FE
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4107C433C7;
+        Tue,  1 Aug 2023 09:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882502;
-        bh=anNq+DgTWNlMX1ULsb+0b5vq3jTs2vPSLz4jNs/1vmA=;
+        s=korg; t=1690881917;
+        bh=KMK7dFgTT2c4G9OFv2qbTGw8rnSgXdj158CuXgf+BgM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0slums7cGkyWdzZsz8VvOXvszygfhSq0Zck/HvN2M/LKs2iZM3UTlbTFOQo2ibcTo
-         h60+xkh3iW2Ri8/lu+A5GAhsLRuQmSKHjn0kDijZVZ5pEPAJ8IXz4T6r7dWtYqMPJb
-         zPDW5ShqfeL0kK2zL/3ZkeJXL9OCYlXa/oNk2GFM=
+        b=B3RySZt+aTii4TvgF7pbgZkfaZh1wqg4GrcOcU9w2e+u4JwpfhhvSzRM+6QLM3/Sf
+         wyxvOk3pbXdecSIebWeFPo8uI0cMjYBXHdBBRTmU93NJcKR+ROC7OfGtWKiQW3QD2N
+         djhHwaFMOLcS9J1Csdg9nKj+y8fL7L8JAsjmQjsk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/228] drm/i915: Fix an error handling path in igt_write_huge()
+Subject: [PATCH 5.15 075/155] netfilter: nf_tables: disallow rule addition to bound chain via NFTA_RULE_CHAIN_ID
 Date:   Tue,  1 Aug 2023 11:19:47 +0200
-Message-ID: <20230801091927.408426825@linuxfoundation.org>
+Message-ID: <20230801091912.823773901@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,45 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e354f67733115b4453268f61e6e072e9b1ea7a2f ]
+[ Upstream commit 0ebc1064e4874d5987722a2ddbc18f94aa53b211 ]
 
-All error handling paths go to 'out', except this one. Be consistent and
-also branch to 'out' here.
+Bail out with EOPNOTSUPP when adding rule to bound chain via
+NFTA_RULE_CHAIN_ID. The following warning splat is shown when
+adding a rule to a deleted bound chain:
 
-Fixes: c10a652e239e ("drm/i915/selftests: Rework context handling in hugepages selftests")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/7a036b88671312ee9adc01c74ef5b3376f690b76.1689619758.git.christophe.jaillet@wanadoo.fr
-(cherry picked from commit 361ecaadb1ce3c5312c7c4c419271326d43899eb)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+ WARNING: CPU: 2 PID: 13692 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+ CPU: 2 PID: 13692 Comm: chain-bound-rul Not tainted 6.1.39 #1
+ RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/selftests/huge_pages.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-index 436598f19522c..02fe7ea8c5df8 100644
---- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-+++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-@@ -1185,8 +1185,10 @@ static int igt_write_huge(struct drm_i915_private *i915,
- 	 * times in succession a possibility by enlarging the permutation array.
- 	 */
- 	order = i915_random_order(count * count, &prng);
--	if (!order)
--		return -ENOMEM;
-+	if (!order) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e0e675313d8e1..ce9f962380b7b 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3529,8 +3529,6 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN]);
+ 			return PTR_ERR(chain);
+ 		}
+-		if (nft_chain_is_bound(chain))
+-			return -EOPNOTSUPP;
  
- 	max_page_size = rounddown_pow_of_two(obj->mm.page_sizes.sg);
- 	max = div_u64(max - size, max_page_size);
+ 	} else if (nla[NFTA_RULE_CHAIN_ID]) {
+ 		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID],
+@@ -3543,6 +3541,9 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 		return -EINVAL;
+ 	}
+ 
++	if (nft_chain_is_bound(chain))
++		return -EOPNOTSUPP;
++
+ 	if (nla[NFTA_RULE_HANDLE]) {
+ 		handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_HANDLE]));
+ 		rule = __nft_rule_lookup(chain, handle);
 -- 
-2.40.1
+2.39.2
 
 
 
