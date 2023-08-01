@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2020776AFF1
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BDAA76AED3
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233569AbjHAJvn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50446 "EHLO
+        id S233337AbjHAJmV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:42:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233754AbjHAJv1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:51:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51852D74
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:50:55 -0700 (PDT)
+        with ESMTP id S233336AbjHAJmE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD7A04C17
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 96393614D0
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:50:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A295EC433C7;
-        Tue,  1 Aug 2023 09:50:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 275F16151B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36806C433C8;
+        Tue,  1 Aug 2023 09:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883455;
-        bh=NdrbPJ6MjiJEmiINacqUzw5BfzHT6wtgk3NqiQu46l0=;
+        s=korg; t=1690882779;
+        bh=Z/quAPdbPq9ut+BE9T7MZZjmWh6JfpZ2WFydCUkmnwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QAfT//V5yZaMJotPbRViTxeVtwHEnXgU+63s2pDlH+ZBA9ZOrZvON6DFVEjTVxtN5
-         wECsLLgFSKdzPgoiQsHOHFmycRMXMMIhn8g5g71XM3PJxHecbdxay0PHk5yASKtzS8
-         5JK19Uka7gW1nlk66f8iINQCGPE1AhiIufTLOTMw=
+        b=OdGzcN/WIKNWXbbmlL/+sIOLgEtJs2S4T6IT/Raq3qu9V8QVDqNCtvuNm09m+b0tQ
+         YpBtjo9a4syQql2BxAEIVCRkhCT5MCIXHFnvsMKGKvVkuNHWRNtIeXx8VLVnZLjXv2
+         d1ykdpNO5rcWnGJgAERFjS+/14wtwADU7r0L3aYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 222/239] s390/dasd: print copy pair message only for the correct error
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Jindong Yue <jindong.yue@nxp.com>
+Subject: [PATCH 6.1 228/228] dma-buf: fix an error pointer vs NULL bug
 Date:   Tue,  1 Aug 2023 11:21:26 +0200
-Message-ID: <20230801091933.941201004@linuxfoundation.org>
+Message-ID: <20230801091931.078947464@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +56,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 856d8e3c633b183df23549ce760ae84478a7098d upstream.
+commit 00ae1491f970acc454be0df63f50942d94825860 upstream.
 
-The DASD driver has certain types of requests that might be rejected by
-the storage server or z/VM because they are not supported. Since the
-missing support of the command is not a real issue there is no user
-visible kernel error message for this.
+Smatch detected potential error pointer dereference.
 
-For copy pair setups  there is a specific error that IO is not allowed on
-secondary devices. This error case is explicitly handled and an error
-message is printed.
+    drivers/gpu/drm/drm_syncobj.c:888 drm_syncobj_transfer_to_timeline()
+    error: 'fence' dereferencing possible ERR_PTR()
 
-The code checking for the error did use a bitwise 'and' that is used to
-check for specific bits. But in this case the whole sense byte has to
-match.
+The error pointer comes from dma_fence_allocate_private_stub().  One
+caller expected error pointers and one expected NULL pointers.  Change
+it to return NULL and update the caller which expected error pointers,
+drm_syncobj_assign_null_handle(), to check for NULL instead.
 
-This leads to the problem that the copy pair related error message is
-erroneously printed for other error cases that are usually not reported.
-This might heavily confuse users and lead to follow on actions that might
-disrupt application processing.
-
-Fix by checking the sense byte for the exact value and not single bits.
-
-Cc: stable@vger.kernel.org # 6.1+
-Fixes: 1fca631a1185 ("s390/dasd: suppress generic error messages for PPRC secondary devices")
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230721193647.3889634-5-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: f781f661e8c9 ("dma-buf: keep the signaling time of merged fences v3")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Sumit Semwal <sumit.semwal@linaro.org>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/b09f1996-3838-4fa2-9193-832b68262e43@moroto.mountain
+Cc: Jindong Yue <jindong.yue@nxp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_3990_erp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma-buf/dma-fence.c   |    2 +-
+ drivers/gpu/drm/drm_syncobj.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/s390/block/dasd_3990_erp.c
-+++ b/drivers/s390/block/dasd_3990_erp.c
-@@ -1050,7 +1050,7 @@ dasd_3990_erp_com_rej(struct dasd_ccw_re
- 		dev_err(&device->cdev->dev, "An I/O request was rejected"
- 			" because writing is inhibited\n");
- 		erp = dasd_3990_erp_cleanup(erp, DASD_CQR_FAILED);
--	} else if (sense[7] & SNS7_INVALID_ON_SEC) {
-+	} else if (sense[7] == SNS7_INVALID_ON_SEC) {
- 		dev_err(&device->cdev->dev, "An I/O request was rejected on a copy pair secondary device\n");
- 		/* suppress dump of sense data for this error */
- 		set_bit(DASD_CQR_SUPPRESS_CR, &erp->refers->flags);
+--- a/drivers/dma-buf/dma-fence.c
++++ b/drivers/dma-buf/dma-fence.c
+@@ -160,7 +160,7 @@ struct dma_fence *dma_fence_allocate_pri
+ 
+ 	fence = kzalloc(sizeof(*fence), GFP_KERNEL);
+ 	if (fence == NULL)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	dma_fence_init(fence,
+ 		       &dma_fence_stub_ops,
+--- a/drivers/gpu/drm/drm_syncobj.c
++++ b/drivers/gpu/drm/drm_syncobj.c
+@@ -355,8 +355,8 @@ static int drm_syncobj_assign_null_handl
+ {
+ 	struct dma_fence *fence = dma_fence_allocate_private_stub(ktime_get());
+ 
+-	if (IS_ERR(fence))
+-		return PTR_ERR(fence);
++	if (!fence)
++		return -ENOMEM;
+ 
+ 	drm_syncobj_replace_fence(syncobj, fence);
+ 	dma_fence_put(fence);
 
 
