@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFA4B76AFC8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E649276AEDC
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233565AbjHAJuI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:50:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
+        id S233349AbjHAJmh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:42:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233516AbjHAJtx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:53 -0400
+        with ESMTP id S233413AbjHAJmZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19EE21BC3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2FB75B98
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:39:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C78D614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95730C433CB;
-        Tue,  1 Aug 2023 09:49:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CD016151C
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:39:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88187C433C8;
+        Tue,  1 Aug 2023 09:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883358;
-        bh=yk1dnTiTN5hhO1OfOdeMulKRxehiVlE+uLyY8efFnfo=;
+        s=korg; t=1690882798;
+        bh=yKDvqHR7T0FSWMpV0dFske5p3OC0K1EEr0nAJOCfDUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iYBeseyu8wAu2pNsAOCy1+eCXK/+yEBNrRph2BnWsB6PHk6hRNw3k+aL/UbX7t6V8
-         wJfZOptFL4bOAqeBkmtGVS6SpSNLJExSYgzzS5ahNE9WWq8yGrW0BNiFe189RC8j4X
-         ix9DU07qRkylahZ1SHw5EI2RNZqkrBgngSLsAD/0=
+        b=cvk/BY2ceOWCRjZ7r1/8rI0jY+DAcFUqhgfxkUDnoOWVXz9aOHECJ39vax0HjwC63
+         wrVR/ztrBglgimtdh+agNBGcvFEQw2WFhs51Aul0S8+R/nbrAbxkvxeXN8IC0x3dj4
+         Yhxt7L5/RnruU2aBRsM2yW8kv07/Hfcp6cXkP5rA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Phil Elwell <phil@raspberrypi.com>,
-        Andres Freund <andres@anarazel.de>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 207/239] io_uring: gate iowait schedule on having pending requests
+        patches@lists.linux.dev, David Jeffery <djeffery@redhat.com>,
+        Joe Thornber <ejt@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 213/228] dm cache policy smq: ensure IO doesnt prevent cleaner policy progress
 Date:   Tue,  1 Aug 2023 11:21:11 +0200
-Message-ID: <20230801091933.281555192@linuxfoundation.org>
+Message-ID: <20230801091930.553879927@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,82 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Joe Thornber <ejt@redhat.com>
 
-commit 7b72d661f1f2f950ab8c12de7e2bc48bdac8ed69 upstream.
+commit 1e4ab7b4c881cf26c1c72b3f56519e03475486fb upstream.
 
-A previous commit made all cqring waits marked as iowait, as a way to
-improve performance for short schedules with pending IO. However, for
-use cases that have a special reaper thread that does nothing but
-wait on events on the ring, this causes a cosmetic issue where we
-know have one core marked as being "busy" with 100% iowait.
+When using the cleaner policy to decommission the cache, there is
+never any writeback started from the cache as it is constantly delayed
+due to normal I/O keeping the device busy. Meaning @idle=false was
+always being passed to clean_target_met()
 
-While this isn't a grave issue, it is confusing to users. Rather than
-always mark us as being in iowait, gate setting of current->in_iowait
-to 1 by whether or not the waiting task has pending requests.
+Fix this by adding a specific 'cleaner' flag that is set when the
+cleaner policy is configured. This flag serves to always allow the
+cleaner's writeback work to be queued until the cache is
+decommissioned (even if the cache isn't idle).
 
+Reported-by: David Jeffery <djeffery@redhat.com>
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/io-uring/CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com/
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217699
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217700
-Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Reported-by: Phil Elwell <phil@raspberrypi.com>
-Tested-by: Andres Freund <andres@anarazel.de>
-Fixes: 8a796565cec3 ("io_uring: Use io_schedule* in cqring wait")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Joe Thornber <ejt@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/md/dm-cache-policy-smq.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2579,11 +2579,20 @@ int io_run_task_work_sig(struct io_ring_
- 	return 0;
- }
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -855,7 +855,13 @@ struct smq_policy {
  
-+static bool current_pending_io(void)
-+{
-+	struct io_uring_task *tctx = current->io_uring;
+ 	struct background_tracker *bg_work;
+ 
+-	bool migrations_allowed;
++	bool migrations_allowed:1;
 +
-+	if (!tctx)
-+		return false;
-+	return percpu_counter_read_positive(&tctx->inflight);
-+}
-+
- /* when returns >0, the caller should retry */
- static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
- 					  struct io_wait_queue *iowq)
- {
--	int token, ret;
-+	int io_wait, ret;
++	/*
++	 * If this is set the policy will try and clean the whole cache
++	 * even if the device is not idle.
++	 */
++	bool cleaner:1;
+ };
  
- 	if (unlikely(READ_ONCE(ctx->check_cq)))
- 		return 1;
-@@ -2597,17 +2606,19 @@ static inline int io_cqring_wait_schedul
- 		return 0;
- 
- 	/*
--	 * Use io_schedule_prepare/finish, so cpufreq can take into account
--	 * that the task is waiting for IO - turns out to be important for low
--	 * QD IO.
-+	 * Mark us as being in io_wait if we have pending requests, so cpufreq
-+	 * can take into account that the task is waiting for IO - turns out
-+	 * to be important for low QD IO.
+ /*----------------------------------------------------------------*/
+@@ -1136,7 +1142,7 @@ static bool clean_target_met(struct smq_
+ 	 * Cache entries may not be populated.  So we cannot rely on the
+ 	 * size of the clean queue.
  	 */
--	token = io_schedule_prepare();
-+	io_wait = current->in_iowait;
-+	if (current_pending_io())
-+		current->in_iowait = 1;
- 	ret = 0;
- 	if (iowq->timeout == KTIME_MAX)
- 		schedule();
- 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
- 		ret = -ETIME;
--	io_schedule_finish(token);
-+	current->in_iowait = io_wait;
- 	return ret;
+-	if (idle) {
++	if (idle || mq->cleaner) {
+ 		/*
+ 		 * We'd like to clean everything.
+ 		 */
+@@ -1719,11 +1725,9 @@ static void calc_hotspot_params(sector_t
+ 		*hotspot_block_size /= 2u;
  }
  
+-static struct dm_cache_policy *__smq_create(dm_cblock_t cache_size,
+-					    sector_t origin_size,
+-					    sector_t cache_block_size,
+-					    bool mimic_mq,
+-					    bool migrations_allowed)
++static struct dm_cache_policy *
++__smq_create(dm_cblock_t cache_size, sector_t origin_size, sector_t cache_block_size,
++	     bool mimic_mq, bool migrations_allowed, bool cleaner)
+ {
+ 	unsigned int i;
+ 	unsigned int nr_sentinels_per_queue = 2u * NR_CACHE_LEVELS;
+@@ -1810,6 +1814,7 @@ static struct dm_cache_policy *__smq_cre
+ 		goto bad_btracker;
+ 
+ 	mq->migrations_allowed = migrations_allowed;
++	mq->cleaner = cleaner;
+ 
+ 	return &mq->policy;
+ 
+@@ -1833,21 +1838,24 @@ static struct dm_cache_policy *smq_creat
+ 					  sector_t origin_size,
+ 					  sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, false, true);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    false, true, false);
+ }
+ 
+ static struct dm_cache_policy *mq_create(dm_cblock_t cache_size,
+ 					 sector_t origin_size,
+ 					 sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, true, true);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    true, true, false);
+ }
+ 
+ static struct dm_cache_policy *cleaner_create(dm_cblock_t cache_size,
+ 					      sector_t origin_size,
+ 					      sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, false, false);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    false, false, true);
+ }
+ 
+ /*----------------------------------------------------------------*/
 
 
