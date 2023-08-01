@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E20CE76AE28
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0054A76AF28
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233190AbjHAJgd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34984 "EHLO
+        id S233607AbjHAJpW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233014AbjHAJgE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05E972D7F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:24 -0700 (PDT)
+        with ESMTP id S233572AbjHAJpI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 233181BCF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:43:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DB97614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC56C433C8;
-        Tue,  1 Aug 2023 09:34:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6A65614FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:43:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4883C433C8;
+        Tue,  1 Aug 2023 09:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882463;
-        bh=6CH7UG6S5g1k94W3g6/7SX/XdWLR1XYy4Hj/A327TMA=;
+        s=korg; t=1690883005;
+        bh=7v6v4mvV7BAP73qFAdh6DrPxyEjT9dchsETpp/vj448=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gYaXnB2IgBxOBgRsuKTizOLLXoZgIPDSwl2vGGZskFN0AvKvCtSilkyc/2vQYJMED
-         fBs7IJSOtegGRgWyWZnyrbwrF1LtM6h8Q80MjbpfGuPTvix5N361z8TpabmQQdH6EX
-         Z7ENXAIe6qk+DcuO+iRil0x11zSRTJ0ASxo1RHts=
+        b=HPC5wgR1FfDnwidEFMl46KNcscN12ecS5f1W4SYakUAioGemwMtB1jaS+X/eiZoEF
+         XpxXosaHvZepYm5WRUPHVihkChhegWHwEMblPDxkaWrkCbXTR09lJIO/jf29VAiops
+         YAqMVOaSDoNwxkVFpBem862DI1blaKIqikZo1yWI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/228] net: hns3: fix wrong tc bandwidth weight data issue
+Subject: [PATCH 6.4 080/239] bonding: reset bonds flags when down link is P2P device
 Date:   Tue,  1 Aug 2023 11:19:04 +0200
-Message-ID: <20230801091925.965376699@linuxfoundation.org>
+Message-ID: <20230801091928.622017829@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 116d9f732eef634abbd871f2c6f613a5b4677742 ]
+[ Upstream commit da19a2b967cf1e2c426f50d28550d1915214a81d ]
 
-Currently, the weight saved by the driver is used as the query result,
-which may be different from the actual weight in the register.
-Therefore, the register value read from the firmware is used
-as the query result
+When adding a point to point downlink to the bond, we neglected to reset
+the bond's flags, which were still using flags like BROADCAST and
+MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
+interfaces, such as when adding a GRE device to the bonding.
 
-Fixes: 0e32038dc856 ("net: hns3: refactor dump tc of debugfs")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+To address this issue, let's reset the bond's flags for P2P interfaces.
+
+Before fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond0 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr 167f:18:f188::
+8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 brd 2006:70:10::2
+    inet6 fe80::200:ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever
+
+After fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond2 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr c29e:557a:e9d9::
+8: bond0: <POINTOPOINT,NOARP,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2
+    inet6 fe80::1/64 scope link
+       valid_lft forever preferred_lft forever
+
+Reported-by: Liang Li <liali@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-index 0ebc21401b7c2..726062e512939 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-@@ -692,8 +692,7 @@ static int hclge_dbg_dump_tc(struct hclge_dev *hdev, char *buf, int len)
- 	for (i = 0; i < HNAE3_MAX_TC; i++) {
- 		sch_mode_str = ets_weight->tc_weight[i] ? "dwrr" : "sp";
- 		pos += scnprintf(buf + pos, len - pos, "%u     %4s    %3u\n",
--				 i, sch_mode_str,
--				 hdev->tm_info.pg_info[0].tc_dwrr[i]);
-+				 i, sch_mode_str, ets_weight->tc_weight[i]);
- 	}
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 091e035c76a6f..1a0776f9b008a 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1507,6 +1507,11 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
  
- 	return 0;
+ 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
+ 		slave_dev->addr_len);
++
++	if (slave_dev->flags & IFF_POINTOPOINT) {
++		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
++		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
++	}
+ }
+ 
+ /* On bonding slaves other than the currently active slave, suppress
 -- 
 2.39.2
 
