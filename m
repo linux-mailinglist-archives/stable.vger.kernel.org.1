@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0AD76ADF6
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7A4476AF35
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232111AbjHAJfF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:35:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
+        id S233609AbjHAJpp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232790AbjHAJe1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24A2526E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:24 -0700 (PDT)
+        with ESMTP id S233346AbjHAJpb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6989E3C2F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75CF9614DF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82775C433C8;
-        Tue,  1 Aug 2023 09:32:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DDCF614FD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3CEC433C8;
+        Tue,  1 Aug 2023 09:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882343;
-        bh=Psyd79LdTTSmFp0T07GDVbbx/KLF6MKOP8pOm3wFjws=;
+        s=korg; t=1690883041;
+        bh=Irz36TBrvqhmPQCU/glQw/kKYdz7mRCL0tJmOEteYLo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xi716R1xDZs/38Vu2G8IuKA6rOPJVLxReROPFqT3kWq9xfXO36Vb9XZkcBXcHvPJ8
-         I9DbCl4zzuUmeJBSx+ck9lG2NJDkD6FBNA/ybpsn2twS7JV0L692gTEVtKVE57NL6y
-         5Hl4CdifCcQMUrRMA9P0NG9rjZHQwmxnXpBQHEwA=
+        b=t1fbNH0RTk4O0zrXl1l8ZswBjAdRddfZQewaDBOkt6aXagzozT4Ps/XouhBDjdcMV
+         9VC64/4Ub3f7eWpEFy+e7TVjcjPw0LrkWL60Ez875+VbgCAuBJIQRJyV4Th+is2TpX
+         H+YhQA30pYvL7QDVFHTU8KHg2z7fej4eu+/gG8nE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/228] jbd2: remove t_checkpoint_io_list
+Subject: [PATCH 6.4 065/239] iavf: check for removal state before IAVF_FLAG_PF_COMMS_FAILED
 Date:   Tue,  1 Aug 2023 11:18:49 +0200
-Message-ID: <20230801091925.384524776@linuxfoundation.org>
+Message-ID: <20230801091928.006965674@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,144 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit be22255360f80d3af789daad00025171a65424a5 ]
+[ Upstream commit 91896c8acce23d33ed078cffd46a9534b1f82be5 ]
 
-Since t_checkpoint_io_list was stop using in jbd2_log_do_checkpoint()
-now, it's time to remove the whole t_checkpoint_io_list logic.
+In iavf_adminq_task(), if the function can't acquire the
+adapter->crit_lock, it checks if the driver is removing. If so, it simply
+exits without re-enabling the interrupt. This is done to ensure that the
+task stops processing as soon as possible once the driver is being removed.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+However, if the IAVF_FLAG_PF_COMMS_FAILED is set, the function checks this
+before attempting to acquire the lock. In this case, the function exits
+early and re-enables the interrupt. This will happen even if the driver is
+already removing.
+
+Avoid this, by moving the check to after the adapter->crit_lock is
+acquired. This way, if the driver is removing, we will not re-enable the
+interrupt.
+
+Fixes: fc2e6b3b132a ("iavf: Rework mutexes for better synchronisation")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c | 42 ++----------------------------------------
- fs/jbd2/commit.c     |  3 +--
- include/linux/jbd2.h |  6 ------
- 3 files changed, 3 insertions(+), 48 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index c4e0da6db7195..723b4eb112828 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -27,7 +27,7 @@
-  *
-  * Called with j_list_lock held.
-  */
--static inline void __buffer_unlink_first(struct journal_head *jh)
-+static inline void __buffer_unlink(struct journal_head *jh)
- {
- 	transaction_t *transaction = jh->b_cp_transaction;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 6c25d240e70bc..e48810e0627d2 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -3286,9 +3286,6 @@ static void iavf_adminq_task(struct work_struct *work)
+ 	u32 val, oldval;
+ 	u16 pending;
  
-@@ -40,23 +40,6 @@ static inline void __buffer_unlink_first(struct journal_head *jh)
- 	}
- }
- 
--/*
-- * Unlink a buffer from a transaction checkpoint(io) list.
-- *
-- * Called with j_list_lock held.
-- */
--static inline void __buffer_unlink(struct journal_head *jh)
--{
--	transaction_t *transaction = jh->b_cp_transaction;
+-	if (adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)
+-		goto out;
 -
--	__buffer_unlink_first(jh);
--	if (transaction->t_checkpoint_io_list == jh) {
--		transaction->t_checkpoint_io_list = jh->b_cpnext;
--		if (transaction->t_checkpoint_io_list == jh)
--			transaction->t_checkpoint_io_list = NULL;
--	}
--}
--
- /*
-  * Check a checkpoint buffer could be release or not.
-  *
-@@ -505,15 +488,6 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 			break;
- 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
- 			break;
--		if (released)
--			continue;
--
--		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_io_list,
--						       nr_to_scan, &released);
--		if (*nr_to_scan == 0)
--			break;
--		if (need_resched() || spin_needbreak(&journal->j_list_lock))
--			break;
- 	} while (transaction != last_transaction);
- 
- 	if (transaction != last_transaction) {
-@@ -568,17 +542,6 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 		 */
- 		if (need_resched())
+ 	if (!mutex_trylock(&adapter->crit_lock)) {
+ 		if (adapter->state == __IAVF_REMOVE)
  			return;
--		if (ret)
--			continue;
--		/*
--		 * It is essential that we are as careful as in the case of
--		 * t_checkpoint_list with removing the buffer from the list as
--		 * we can possibly see not yet submitted buffers on io_list
--		 */
--		ret = journal_clean_one_cp_list(transaction->
--				t_checkpoint_io_list, destroy);
--		if (need_resched())
--			return;
- 		/*
- 		 * Stop scanning if we couldn't free the transaction. This
- 		 * avoids pointless scanning of transactions which still
-@@ -663,7 +626,7 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 	jbd2_journal_put_journal_head(jh);
- 
- 	/* Is this transaction empty? */
--	if (transaction->t_checkpoint_list || transaction->t_checkpoint_io_list)
-+	if (transaction->t_checkpoint_list)
- 		return 0;
- 
- 	/*
-@@ -755,7 +718,6 @@ void __jbd2_journal_drop_transaction(journal_t *journal, transaction_t *transact
- 	J_ASSERT(transaction->t_forget == NULL);
- 	J_ASSERT(transaction->t_shadow_list == NULL);
- 	J_ASSERT(transaction->t_checkpoint_list == NULL);
--	J_ASSERT(transaction->t_checkpoint_io_list == NULL);
- 	J_ASSERT(atomic_read(&transaction->t_updates) == 0);
- 	J_ASSERT(journal->j_committing_transaction != transaction);
- 	J_ASSERT(journal->j_running_transaction != transaction);
-diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-index 885a7a6cc53e6..f1d9db6686e31 100644
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -1171,8 +1171,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 	spin_lock(&journal->j_list_lock);
- 	commit_transaction->t_state = T_FINISHED;
- 	/* Check if the transaction can be dropped now that we are finished */
--	if (commit_transaction->t_checkpoint_list == NULL &&
--	    commit_transaction->t_checkpoint_io_list == NULL) {
-+	if (commit_transaction->t_checkpoint_list == NULL) {
- 		__jbd2_journal_drop_transaction(journal, commit_transaction);
- 		jbd2_journal_free_transaction(commit_transaction);
+@@ -3297,6 +3294,9 @@ static void iavf_adminq_task(struct work_struct *work)
+ 		goto out;
  	}
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index 0b7242370b567..67912fe08fbbd 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -622,12 +622,6 @@ struct transaction_s
- 	 */
- 	struct journal_head	*t_checkpoint_list;
  
--	/*
--	 * Doubly-linked circular list of all buffers submitted for IO while
--	 * checkpointing. [j_list_lock]
--	 */
--	struct journal_head	*t_checkpoint_io_list;
--
- 	/*
- 	 * Doubly-linked circular list of metadata buffers being
- 	 * shadowed by log IO.  The IO buffers on the iobuf list and
++	if (adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)
++		goto unlock;
++
+ 	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
+ 	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
+ 	if (!event.msg_buf)
 -- 
 2.39.2
 
