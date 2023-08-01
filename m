@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A778876AF19
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0212B76ACD8
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233490AbjHAJpO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45392 "EHLO
+        id S232675AbjHAJXv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233305AbjHAJov (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:51 -0400
+        with ESMTP id S232646AbjHAJXZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:23:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38EAB469D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7405F4201
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:22:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCBBB6126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE20BC433C7;
-        Tue,  1 Aug 2023 09:42:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D00C614FE
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:22:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A582C433CA;
+        Tue,  1 Aug 2023 09:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882944;
-        bh=KaFARStEbsP4AiT6iSo+JtrNslN+0r00H2IoIuavtDo=;
+        s=korg; t=1690881730;
+        bh=t7rHmNfJi8Xzf8k1L0tqxO6xhIyurqe/8uqRDwpI+zU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ytmUZ6A+2cw347OQTEg1w+uUQcSqowGh5+OuP/pO5cVGllQPnCX/Pjdd2t5wbhU/8
-         xpQuY3KsbJiT1AjV6CDFJTk9EsFGKYQW0ol7RpgVHp0HX+KAxCX+MwqmFsGEpyCO6B
-         EKaPANbsGiAPTjyrWkw62P+QiXWPztmdbUvOFiXY=
+        b=Ivuge0TOZZMZ9Z54dyGi+owHQTgNznd/+26WaSS5Y/VtenrGOaLvohSHvaUerU3wE
+         BlZw+AVRBfAE7mVCFavE/c5CIEnf4Uhw+Map9ceolBW/PRz1Snt64FQ+GbokIkQG0H
+         PjKA/lBd7yPkGBk50A2tN28ePzoWxJXvmOzCJJjY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 058/239] media: tc358746: Address compiler warnings
+        patches@lists.linux.dev, Andi Shyti <andi.shyti@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 010/155] i2c: nomadik: Remove unnecessary goto label
 Date:   Tue,  1 Aug 2023 11:18:42 +0200
-Message-ID: <20230801091927.725919778@linuxfoundation.org>
+Message-ID: <20230801091910.566391182@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,53 +55,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Andi Shyti <andi.shyti@kernel.org>
 
-[ Upstream commit 9c2dcfc2cf0f2e4e0a0db33bc1a626e35928c475 ]
+[ Upstream commit 1c5d33fff0d375e4ab7c4261dc62a286babbb4c6 ]
 
-Address these compiler warnings by initialising the m_best and p_best
-values to 0 and 1 respectively (as latter is used as a divisor):
+The err_no_mem goto label doesn't do anything. Remove it.
 
-   drivers/media/i2c/tc358746.c: In function 'tc358746_find_pll_settings':
->> drivers/media/i2c/tc358746.c:817:13: warning: 'p_best' is used uninitialized
-[-Wuninitialized]
-     817 |         u16 p_best, p;
-         |             ^~~~~~
->> drivers/media/i2c/tc358746.c:816:13: warning: 'm_best' is used uninitialized
-[-Wuninitialized]
-     816 |         u16 m_best, mul;
-         |             ^~~~~~
-
-The warnings may well be a false positive but it is difficult for a
-compiler to find out whether that truly is the case.
-
-Closes: https://lore.kernel.org/oe-kbuild-all/202305301627.fLT3Bkds-lkp@intel.com/
-
-Reported-by: kernel test robot <lkp@intel.com>
-Fixes: 80a21da3605 ("media: tc358746: add Toshiba TC358746 Parallel to CSI-2 bridge driver")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358746.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-nomadik.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358746.c b/drivers/media/i2c/tc358746.c
-index ec1a193ba161a..25fbce5cabdaa 100644
---- a/drivers/media/i2c/tc358746.c
-+++ b/drivers/media/i2c/tc358746.c
-@@ -813,8 +813,8 @@ static unsigned long tc358746_find_pll_settings(struct tc358746 *tc358746,
- 	u32 min_delta = 0xffffffff;
- 	u16 prediv_max = 17;
- 	u16 prediv_min = 1;
--	u16 m_best, mul;
--	u16 p_best, p;
-+	u16 m_best = 0, mul;
-+	u16 p_best = 1, p;
- 	u8 postdiv;
+diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
+index 5004b9dd98563..8b9577318388e 100644
+--- a/drivers/i2c/busses/i2c-nomadik.c
++++ b/drivers/i2c/busses/i2c-nomadik.c
+@@ -971,10 +971,9 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+ 	u32 max_fifo_threshold = (vendor->fifodepth / 2) - 1;
  
- 	if (fout > 1000 * HZ_PER_MHZ) {
+ 	dev = devm_kzalloc(&adev->dev, sizeof(*dev), GFP_KERNEL);
+-	if (!dev) {
+-		ret = -ENOMEM;
+-		goto err_no_mem;
+-	}
++	if (!dev)
++		return -ENOMEM;
++
+ 	dev->vendor = vendor;
+ 	dev->adev = adev;
+ 	nmk_i2c_of_probe(np, dev);
+@@ -995,30 +994,27 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+ 
+ 	dev->virtbase = devm_ioremap(&adev->dev, adev->res.start,
+ 				resource_size(&adev->res));
+-	if (!dev->virtbase) {
+-		ret = -ENOMEM;
+-		goto err_no_mem;
+-	}
++	if (!dev->virtbase)
++		return -ENOMEM;
+ 
+ 	dev->irq = adev->irq[0];
+ 	ret = devm_request_irq(&adev->dev, dev->irq, i2c_irq_handler, 0,
+ 				DRIVER_NAME, dev);
+ 	if (ret) {
+ 		dev_err(&adev->dev, "cannot claim the irq %d\n", dev->irq);
+-		goto err_no_mem;
++		return ret;
+ 	}
+ 
+ 	dev->clk = devm_clk_get(&adev->dev, NULL);
+ 	if (IS_ERR(dev->clk)) {
+ 		dev_err(&adev->dev, "could not get i2c clock\n");
+-		ret = PTR_ERR(dev->clk);
+-		goto err_no_mem;
++		return PTR_ERR(dev->clk);
+ 	}
+ 
+ 	ret = clk_prepare_enable(dev->clk);
+ 	if (ret) {
+ 		dev_err(&adev->dev, "can't prepare_enable clock\n");
+-		goto err_no_mem;
++		return ret;
+ 	}
+ 
+ 	init_hw(dev);
+@@ -1049,7 +1045,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+ 
+  err_no_adap:
+ 	clk_disable_unprepare(dev->clk);
+- err_no_mem:
+ 
+ 	return ret;
+ }
 -- 
 2.39.2
 
