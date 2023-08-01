@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 846ED76AF81
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7346876AD46
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233406AbjHAJs3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45426 "EHLO
+        id S231927AbjHAJ1r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233653AbjHAJr7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826D549D3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:21 -0700 (PDT)
+        with ESMTP id S232846AbjHAJ1X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14D84208
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 523D2614FF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB8CC433C7;
-        Tue,  1 Aug 2023 09:46:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF256614F5
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA0AC433C8;
+        Tue,  1 Aug 2023 09:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883179;
-        bh=uRoFGTK+T1FTI6P7B5c8o4N5arElCcjD9cHNwfj3Qys=;
+        s=korg; t=1690881973;
+        bh=EcqhSCjgIROBiFLPRFCf18cataeVuyiG4n5wDIhvlLo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vh6aSf20+mDag9kYnM0liAg3yUaOG+NdlcnoJK/w5U/vSALYviUEI+bLAFNZwb7Pi
-         W6XmpgRu0drtyuG85YLulcHkmBRLvGu3nLf/2gQJlCSrl6Za8U03zVCfRQOWb7qnvl
-         d1QmEzq/O5nnNt+qAA7HCU09tEYFUAq/0BOGixKw=
+        b=oVBRM1PQFME2MaRe7K8TZldmdSJUa0glkNwAKmYK3PYEyWw6mfy9EV+kUkQXt+CFy
+         pcfqXNOa5enFEFQ7SDCvM45d20cVIIxk/n729JNytmQBZhaOMJThdvEuPmEo3ULUZM
+         SCEb7kMWqd3BPrGiWM0/zi3EmHelNNQkwIrx6L6M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ravi Gunasekaran <r-gunasekaran@ti.com>,
-        Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.4 143/239] usb: gadget: call usb_gadget_check_config() to verify UDC capability
-Date:   Tue,  1 Aug 2023 11:20:07 +0200
-Message-ID: <20230801091930.830443511@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 096/155] drm/amd: Fix an error handling mistake in psp_sw_init()
+Date:   Tue,  1 Aug 2023 11:20:08 +0200
+Message-ID: <20230801091913.631606534@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit f4fc01af5b640bc39bd9403b5fd855345a2ad5f8 upstream.
+[ Upstream commit c01aebeef3ce45f696ffa0a1303cea9b34babb45 ]
 
-The legacy gadget driver omitted calling usb_gadget_check_config()
-to ensure that the USB device controller (UDC) has adequate resources,
-including sufficient endpoint numbers and types, to support the given
-configuration.
+If the second call to amdgpu_bo_create_kernel() fails, the memory
+allocated from the first call should be cleared.  If the third call
+fails, the memory from the second call should be cleared.
 
-Previously, usb_add_config() was solely invoked by the legacy gadget
-driver. Adds the necessary usb_gadget_check_config() after the bind()
-operation to fix the issue.
-
-Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
-Cc: stable <stable@kernel.org>
-Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230707230015.494999-1-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b95b5391684b ("drm/amdgpu/psp: move PSP memory alloc from hw_init to sw_init")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1125,6 +1125,10 @@ int usb_add_config(struct usb_composite_
- 		goto done;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 65744c3bd3648..f305a0f8e9b9a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -341,11 +341,11 @@ static int psp_sw_init(void *handle)
+ 	return 0;
  
- 	status = bind(config);
-+
-+	if (status == 0)
-+		status = usb_gadget_check_config(cdev->gadget);
-+
- 	if (status < 0) {
- 		while (!list_empty(&config->functions)) {
- 			struct usb_function		*f;
+ failed2:
+-	amdgpu_bo_free_kernel(&psp->fw_pri_bo,
+-			      &psp->fw_pri_mc_addr, &psp->fw_pri_buf);
+-failed1:
+ 	amdgpu_bo_free_kernel(&psp->fence_buf_bo,
+ 			      &psp->fence_buf_mc_addr, &psp->fence_buf);
++failed1:
++	amdgpu_bo_free_kernel(&psp->fw_pri_bo,
++			      &psp->fw_pri_mc_addr, &psp->fw_pri_buf);
+ 	return ret;
+ }
+ 
+-- 
+2.40.1
+
 
 
