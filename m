@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04A9776AD9A
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22A2E76AFBA
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233017AbjHAJau (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:30:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
+        id S233600AbjHAJt4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:49:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232947AbjHAJab (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 953E312F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:10 -0700 (PDT)
+        with ESMTP id S233591AbjHAJto (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52459FF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 233BE614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E924C433C8;
-        Tue,  1 Aug 2023 09:29:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE517614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6D0C433CA;
+        Tue,  1 Aug 2023 09:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882149;
-        bh=oXyexiuyzl/imbCi3gJuLASDfwpadoa8v4N9BIPj3/0=;
+        s=korg; t=1690883324;
+        bh=HAAFwBRpDho/3G6ruXQdWMUPmwPoqXn7qB3+rtO2SE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ngd/IUExMmsnMvaHlocaNAEyiBizJaPqpq+6WxihsoDCRVj3kj+v2On5oSyYaqIWq
-         e7k9puNIRWg2a13lbKOd6sz90y2/dgdnXMuDSZ58hLovGlPvl3LIAO5l3gHYe6z5/N
-         Gmu6jS2qImWRvm5UB1vqpcHPrwabOTKMfWhtHLi0=
+        b=ALDK6OYNNFGEfY08GQH1Psy7hKIIPlZ8k5GWyFGVjq9HtqvXM2evlb4KMgRZziakn
+         N64z2zeFMubp5sROuVvXRq05YJMvnIX8gH+Wi9h+vi1QYdnFoRpQzoCUOlXHis8Oxx
+         KavwJNM4Asr937zOSNd2LrsfPaMQc/4wvkZ2+ITs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Zanussi <zanussi@kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.15 148/155] tracing: Fix trace_event_raw_event_synth() if else statement
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 196/239] irq-bcm6345-l1: Do not assume a fixed block to cpu mapping
 Date:   Tue,  1 Aug 2023 11:21:00 +0200
-Message-ID: <20230801091915.414167488@linuxfoundation.org>
+Message-ID: <20230801091932.799021086@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,51 +56,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 9971c3f944489ff7aacb9d25e0cde841a5f6018a upstream.
+[ Upstream commit 55ad24857341c36616ecc1d9580af5626c226cf1 ]
 
-The test to check if the field is a stack is to be done if it is not a
-string. But the code had:
+The irq to block mapping is fixed, and interrupts from the first block
+will always be routed to the first parent IRQ. But the parent interrupts
+themselves can be routed to any available CPU.
 
-    } if (event->fields[i]->is_stack) {
+This is used by the bootloader to map the first parent interrupt to the
+boot CPU, regardless wether the boot CPU is the first one or the second
+one.
 
-and not
+When booting from the second CPU, the assumption that the first block's
+IRQ is mapped to the first CPU breaks, and the system hangs because
+interrupts do not get routed correctly.
 
-   } else if (event->fields[i]->is_stack) {
+Fix this by passing the appropriate bcm6434_l1_cpu to the interrupt
+handler instead of the chip itself, so the handler always has the right
+block.
 
-which would cause it to always be tested. Worse yet, this also included an
-"else" statement that was only to be called if the field was not a string
-and a stack, but this code allows it to be called if it was a string (and
-not a stack).
-
-Also fixed some whitespace issues.
-
-Link: https://lore.kernel.org/all/202301302110.mEtNwkBD-lkp@intel.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20230131095237.63e3ca8d@gandalf.local.home
-
-Cc: Tom Zanussi <zanussi@kernel.org>
-Fixes: 00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7c42ec2baa1 ("irqchips/bmips: Add bcm6345-l1 interrupt controller")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230629072620.62527-1-jonas.gorski@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_synth.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-bcm6345-l1.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -557,8 +557,8 @@ static notrace void trace_event_raw_even
- 					   event->fields[i]->is_dynamic,
- 					   data_size, &n_u64);
- 			data_size += len; /* only dynamic string increments */
--		} if (event->fields[i]->is_stack) {
--		        long *stack = (long *)(long)var_ref_vals[val_idx];
-+		} else if (event->fields[i]->is_stack) {
-+			long *stack = (long *)(long)var_ref_vals[val_idx];
+diff --git a/drivers/irqchip/irq-bcm6345-l1.c b/drivers/irqchip/irq-bcm6345-l1.c
+index fa113cb2529a4..6341c0167c4ab 100644
+--- a/drivers/irqchip/irq-bcm6345-l1.c
++++ b/drivers/irqchip/irq-bcm6345-l1.c
+@@ -82,6 +82,7 @@ struct bcm6345_l1_chip {
+ };
  
- 			len = trace_stack(entry, event, stack,
- 					   data_size, &n_u64);
+ struct bcm6345_l1_cpu {
++	struct bcm6345_l1_chip	*intc;
+ 	void __iomem		*map_base;
+ 	unsigned int		parent_irq;
+ 	u32			enable_cache[];
+@@ -115,17 +116,11 @@ static inline unsigned int cpu_for_irq(struct bcm6345_l1_chip *intc,
+ 
+ static void bcm6345_l1_irq_handle(struct irq_desc *desc)
+ {
+-	struct bcm6345_l1_chip *intc = irq_desc_get_handler_data(desc);
+-	struct bcm6345_l1_cpu *cpu;
++	struct bcm6345_l1_cpu *cpu = irq_desc_get_handler_data(desc);
++	struct bcm6345_l1_chip *intc = cpu->intc;
+ 	struct irq_chip *chip = irq_desc_get_chip(desc);
+ 	unsigned int idx;
+ 
+-#ifdef CONFIG_SMP
+-	cpu = intc->cpus[cpu_logical_map(smp_processor_id())];
+-#else
+-	cpu = intc->cpus[0];
+-#endif
+-
+ 	chained_irq_enter(chip, desc);
+ 
+ 	for (idx = 0; idx < intc->n_words; idx++) {
+@@ -253,6 +248,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
+ 	if (!cpu)
+ 		return -ENOMEM;
+ 
++	cpu->intc = intc;
+ 	cpu->map_base = ioremap(res.start, sz);
+ 	if (!cpu->map_base)
+ 		return -ENOMEM;
+@@ -271,7 +267,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
+ 		return -EINVAL;
+ 	}
+ 	irq_set_chained_handler_and_data(cpu->parent_irq,
+-						bcm6345_l1_irq_handle, intc);
++						bcm6345_l1_irq_handle, cpu);
+ 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
