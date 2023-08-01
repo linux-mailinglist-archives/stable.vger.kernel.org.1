@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B1E76AE1F
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59C7A76AD29
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233035AbjHAJgH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:36:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35318 "EHLO
+        id S231890AbjHAJ0z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:26:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233016AbjHAJfy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 657FA26AA
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:02 -0700 (PDT)
+        with ESMTP id S231186AbjHAJ0h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238623AB8
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D725D614CF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6795C433C8;
-        Tue,  1 Aug 2023 09:34:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72F6261509
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9FCC433C8;
+        Tue,  1 Aug 2023 09:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882441;
-        bh=zhKYFYy57Qs0uc7J8Lh99D9RbtSjZxvrhNWwkxjxBjg=;
+        s=korg; t=1690881933;
+        bh=FYId0g5PhR+EKtuWQGUMcWaCC80YXL75T4ECqqG25HM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RcVkyoZOmwxukU5yXQU9oUpv6sQnRbMFbWrmXnao4BS4Bfsv4DKgUJn/O+bdNRo0P
-         nfA8w3iCpy+mDaL+/qnLBnKvw3TE8A7Jk5L9X6iqHDdYodRD9p2RTw/SZGD1t6Ufx9
-         1aKqKIb3YH03D+XjbOg7tFqjsBcf/Ygl2BSst3ok=
+        b=ljGXMlzuZVocE5aRlqlgKHw/8cVybZY4QatM6OyvhdWkkzTNIiL1SrObU+zmkmrL+
+         DWgpuxEHU9d6kZa4BrxIUiq7SjuYt8eGMDLOiEKiH/kc36aY10v99ho2WgijZiXz9T
+         etXFd4FSHLxpLEsrsuuKwsIGK7cK4zJTdWYJwgoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/228] netfilter: nf_tables: skip immediate deactivate in _PREPARE_ERROR
+        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 052/155] phy: qcom-snps-femto-v2: properly enable ref clock
 Date:   Tue,  1 Aug 2023 11:19:24 +0200
-Message-ID: <20230801091926.626867733@linuxfoundation.org>
+Message-ID: <20230801091912.046125428@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,87 +54,171 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Adrien Thierry <athierry@redhat.com>
 
-[ Upstream commit 0a771f7b266b02d262900c75f1e175c7fe76fec2 ]
+[ Upstream commit 8a0eb8f9b9a002291a3934acfd913660b905249e ]
 
-On error when building the rule, the immediate expression unbinds the
-chain, hence objects can be deactivated by the transaction records.
+The driver is not enabling the ref clock, which thus gets disabled by
+the clk_disable_unused() initcall. This leads to the dwc3 controller
+failing to initialize if probed after clk_disable_unused() is called,
+for instance when the driver is built as a module.
 
-Otherwise, it is possible to trigger the following warning:
+To fix this, switch to the clk_bulk API to handle both cfg_ahb and ref
+clocks at the proper places.
 
- WARNING: CPU: 3 PID: 915 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
- CPU: 3 PID: 915 Comm: chain-bind-err- Not tainted 6.1.39 #1
- RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+Note that the cfg_ahb clock is currently not used by any device tree
+instantiation of the PHY. Work needs to be done separately to fix this.
 
-Fixes: 4bedf9eee016 ("netfilter: nf_tables: fix chain binding transaction logic")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://lore.kernel.org/linux-arm-msm/ZEqvy+khHeTkC2hf@fedora/
+Fixes: 51e8114f80d0 ("phy: qcom-snps: Add SNPS USB PHY driver for QCOM based SOCs")
+Signed-off-by: Adrien Thierry <athierry@redhat.com>
+Link: https://lore.kernel.org/r/20230629144542.14906-3-athierry@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_immediate.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 63 ++++++++++++++-----
+ 1 file changed, 48 insertions(+), 15 deletions(-)
 
-diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
-index 900e75e8c3465..391c18e4b3ebd 100644
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -125,15 +125,27 @@ static void nft_immediate_activate(const struct nft_ctx *ctx,
- 	return nft_data_hold(&priv->data, nft_dreg_to_type(priv->dreg));
- }
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index dfe5f09449100..abb9264569336 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -68,11 +68,13 @@ static const char * const qcom_snps_hsphy_vreg_names[] = {
+ /**
+  * struct qcom_snps_hsphy - snps hs phy attributes
+  *
++ * @dev: device structure
++ *
+  * @phy: generic phy
+  * @base: iomapped memory space for snps hs phy
+  *
+- * @cfg_ahb_clk: AHB2PHY interface clock
+- * @ref_clk: phy reference clock
++ * @num_clks: number of clocks
++ * @clks: array of clocks
+  * @phy_reset: phy reset control
+  * @vregs: regulator supplies bulk data
+  * @phy_initialized: if PHY has been initialized correctly
+@@ -80,11 +82,13 @@ static const char * const qcom_snps_hsphy_vreg_names[] = {
+  * @update_seq_cfg: tuning parameters for phy init
+  */
+ struct qcom_snps_hsphy {
++	struct device *dev;
++
+ 	struct phy *phy;
+ 	void __iomem *base;
  
-+static void nft_immediate_chain_deactivate(const struct nft_ctx *ctx,
-+					   struct nft_chain *chain,
-+					   enum nft_trans_phase phase)
+-	struct clk *cfg_ahb_clk;
+-	struct clk *ref_clk;
++	int num_clks;
++	struct clk_bulk_data *clks;
+ 	struct reset_control *phy_reset;
+ 	struct regulator_bulk_data vregs[SNPS_HS_NUM_VREGS];
+ 
+@@ -92,6 +96,34 @@ struct qcom_snps_hsphy {
+ 	enum phy_mode mode;
+ };
+ 
++static int qcom_snps_hsphy_clk_init(struct qcom_snps_hsphy *hsphy)
 +{
-+	struct nft_ctx chain_ctx;
-+	struct nft_rule *rule;
++	struct device *dev = hsphy->dev;
 +
-+	chain_ctx = *ctx;
-+	chain_ctx.chain = chain;
++	hsphy->num_clks = 2;
++	hsphy->clks = devm_kcalloc(dev, hsphy->num_clks, sizeof(*hsphy->clks), GFP_KERNEL);
++	if (!hsphy->clks)
++		return -ENOMEM;
 +
-+	list_for_each_entry(rule, &chain->rules, list)
-+		nft_rule_expr_deactivate(&chain_ctx, rule, phase);
++	/*
++	 * TODO: Currently no device tree instantiation of the PHY is using the clock.
++	 * This needs to be fixed in order for this code to be able to use devm_clk_bulk_get().
++	 */
++	hsphy->clks[0].id = "cfg_ahb";
++	hsphy->clks[0].clk = devm_clk_get_optional(dev, "cfg_ahb");
++	if (IS_ERR(hsphy->clks[0].clk))
++		return dev_err_probe(dev, PTR_ERR(hsphy->clks[0].clk),
++				     "failed to get cfg_ahb clk\n");
++
++	hsphy->clks[1].id = "ref";
++	hsphy->clks[1].clk = devm_clk_get(dev, "ref");
++	if (IS_ERR(hsphy->clks[1].clk))
++		return dev_err_probe(dev, PTR_ERR(hsphy->clks[1].clk),
++				     "failed to get ref clk\n");
++
++	return 0;
 +}
 +
- static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 				     const struct nft_expr *expr,
- 				     enum nft_trans_phase phase)
+ static inline void qcom_snps_hsphy_write_mask(void __iomem *base, u32 offset,
+ 						u32 mask, u32 val)
  {
- 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
- 	const struct nft_data *data = &priv->data;
--	struct nft_ctx chain_ctx;
- 	struct nft_chain *chain;
--	struct nft_rule *rule;
+@@ -174,16 +206,16 @@ static int qcom_snps_hsphy_init(struct phy *phy)
+ 	if (ret)
+ 		return ret;
  
- 	if (priv->dreg == NFT_REG_VERDICT) {
- 		switch (data->verdict.code) {
-@@ -143,20 +155,17 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 			if (!nft_chain_binding(chain))
- 				break;
+-	ret = clk_prepare_enable(hsphy->cfg_ahb_clk);
++	ret = clk_bulk_prepare_enable(hsphy->num_clks, hsphy->clks);
+ 	if (ret) {
+-		dev_err(&phy->dev, "failed to enable cfg ahb clock, %d\n", ret);
++		dev_err(&phy->dev, "failed to enable clocks, %d\n", ret);
+ 		goto poweroff_phy;
+ 	}
  
--			chain_ctx = *ctx;
--			chain_ctx.chain = chain;
--
--			list_for_each_entry(rule, &chain->rules, list)
--				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
--
- 			switch (phase) {
- 			case NFT_TRANS_PREPARE_ERROR:
- 				nf_tables_unbind_chain(ctx, chain);
--				fallthrough;
-+				nft_deactivate_next(ctx->net, chain);
-+				break;
- 			case NFT_TRANS_PREPARE:
-+				nft_immediate_chain_deactivate(ctx, chain, phase);
- 				nft_deactivate_next(ctx->net, chain);
- 				break;
- 			default:
-+				nft_immediate_chain_deactivate(ctx, chain, phase);
- 				nft_chain_del(chain);
- 				chain->bound = false;
- 				chain->table->use--;
+ 	ret = reset_control_assert(hsphy->phy_reset);
+ 	if (ret) {
+ 		dev_err(&phy->dev, "failed to assert phy_reset, %d\n", ret);
+-		goto disable_ahb_clk;
++		goto disable_clks;
+ 	}
+ 
+ 	usleep_range(100, 150);
+@@ -191,7 +223,7 @@ static int qcom_snps_hsphy_init(struct phy *phy)
+ 	ret = reset_control_deassert(hsphy->phy_reset);
+ 	if (ret) {
+ 		dev_err(&phy->dev, "failed to de-assert phy_reset, %d\n", ret);
+-		goto disable_ahb_clk;
++		goto disable_clks;
+ 	}
+ 
+ 	qcom_snps_hsphy_write_mask(hsphy->base, USB2_PHY_USB_PHY_CFG0,
+@@ -237,8 +269,8 @@ static int qcom_snps_hsphy_init(struct phy *phy)
+ 
+ 	return 0;
+ 
+-disable_ahb_clk:
+-	clk_disable_unprepare(hsphy->cfg_ahb_clk);
++disable_clks:
++	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
+ poweroff_phy:
+ 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
+ 
+@@ -250,7 +282,7 @@ static int qcom_snps_hsphy_exit(struct phy *phy)
+ 	struct qcom_snps_hsphy *hsphy = phy_get_drvdata(phy);
+ 
+ 	reset_control_assert(hsphy->phy_reset);
+-	clk_disable_unprepare(hsphy->cfg_ahb_clk);
++	clk_bulk_disable_unprepare(hsphy->num_clks, hsphy->clks);
+ 	regulator_bulk_disable(ARRAY_SIZE(hsphy->vregs), hsphy->vregs);
+ 	hsphy->phy_initialized = false;
+ 
+@@ -290,14 +322,15 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
+ 	if (!hsphy)
+ 		return -ENOMEM;
+ 
++	hsphy->dev = dev;
++
+ 	hsphy->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(hsphy->base))
+ 		return PTR_ERR(hsphy->base);
+ 
+-	hsphy->ref_clk = devm_clk_get(dev, "ref");
+-	if (IS_ERR(hsphy->ref_clk))
+-		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
+-				     "failed to get ref clk\n");
++	ret = qcom_snps_hsphy_clk_init(hsphy);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to initialize clocks\n");
+ 
+ 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (IS_ERR(hsphy->phy_reset)) {
 -- 
 2.39.2
 
