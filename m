@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C5B876AD53
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76E7B76AE75
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjHAJ2Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57616 "EHLO
+        id S233148AbjHAJjC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:39:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232954AbjHAJ1u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B68972728
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:47 -0700 (PDT)
+        with ESMTP id S233122AbjHAJiq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A5E030D6
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C1F5614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D3FC433C9;
-        Tue,  1 Aug 2023 09:26:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E3361509
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D643DC433C8;
+        Tue,  1 Aug 2023 09:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882006;
-        bh=v/YyHskIMONw7W8OYh+x6h1qcGTm1Mgs/t4Mnf22p58=;
+        s=korg; t=1690882597;
+        bh=UP9HvCUR7vB/WPAzwB92Wnz5jo7cvdsxeYTqtQF+00Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U5w1IvYL2qtfkaIo33iUyDk9lrMgJR9T99BeFkaK77N+0ysnRFkoEGltGxaTNZ9ZJ
-         sqdMIeP02SCqah+RNWmAM6N/UDj9X50VrITkAEn+i3/GXX4Z3i+gy0u6zS0pQnSQ3R
-         RyD+/qs8TDKpZ3XsYapcNy0KSJCRdj/zGTPkbIDs=
+        b=eb/9+6xwZl4VqYEonKukSHjNylnVgxjRijzJHrb+3M3RUvP3Vp62yH+bzVulhCoQZ
+         YtawNNEdFy9GilW0kT7o5+40lGMLhMXa6g9cdg6K45Dt/oO65FbZ4+TExyzusXDpjQ
+         ceUQeL/JSN8997D9l+oSjwqsktAOlks3ufXv4sVo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ruihong Luo <colorsu1922@gmail.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.15 107/155] serial: 8250_dw: Preserve original value of DLF register
-Date:   Tue,  1 Aug 2023 11:20:19 +0200
-Message-ID: <20230801091914.055118170@linuxfoundation.org>
+        patches@lists.linux.dev, Kyle Tso <kyletso@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 162/228] usb: typec: Iterate pds array when showing the pd list
+Date:   Tue,  1 Aug 2023 11:20:20 +0200
+Message-ID: <20230801091928.731945864@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihong Luo <colorsu1922@gmail.com>
+From: Kyle Tso <kyletso@google.com>
 
-commit 748c5ea8b8796ae8ee80b8d3a3d940570b588d59 upstream.
+commit 4b642dc9829507e4afabc03d32a18abbdb192c5e upstream.
 
-Preserve the original value of the Divisor Latch Fraction (DLF) register.
-When the DLF register is modified without preservation, it can disrupt
-the baudrate settings established by firmware or bootloader, leading to
-data corruption and the generation of unreadable or distorted characters.
+The pointers of each usb_power_delivery handles are stored in "pds"
+array returned from the pd_get ops but not in the adjacent memory
+calculated from "pd". Get the handles from "pds" array directly instead
+of deriving them from "pd".
 
-Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ruihong Luo <colorsu1922@gmail.com>
-Link: https://lore.kernel.org/stable/20230713004235.35904-1-colorsu1922%40gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230713004235.35904-1-colorsu1922@gmail.com
+Fixes: a7cff92f0635 ("usb: typec: USB Power Delivery helpers for ports and partners")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Tso <kyletso@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230623151036.3955013-3-kyletso@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dwlib.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/typec/class.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dwlib.c
-+++ b/drivers/tty/serial/8250/8250_dwlib.c
-@@ -80,7 +80,7 @@ static void dw8250_set_divisor(struct ua
- void dw8250_setup_port(struct uart_port *p)
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -1258,8 +1258,7 @@ static ssize_t select_usb_power_delivery
  {
- 	struct uart_8250_port *up = up_to_u8250p(p);
--	u32 reg;
-+	u32 reg, old_dlf;
+ 	struct typec_port *port = to_typec_port(dev);
+ 	struct usb_power_delivery **pds;
+-	struct usb_power_delivery *pd;
+-	int ret = 0;
++	int i, ret = 0;
  
- 	/*
- 	 * If the Component Version Register returns zero, we know that
-@@ -93,9 +93,11 @@ void dw8250_setup_port(struct uart_port
- 	dev_dbg(p->dev, "Designware UART version %c.%c%c\n",
- 		(reg >> 24) & 0xff, (reg >> 16) & 0xff, (reg >> 8) & 0xff);
+ 	if (!port->ops || !port->ops->pd_get)
+ 		return -EOPNOTSUPP;
+@@ -1268,11 +1267,11 @@ static ssize_t select_usb_power_delivery
+ 	if (!pds)
+ 		return 0;
  
-+	/* Preserve value written by firmware or bootloader  */
-+	old_dlf = dw8250_readl_ext(p, DW_UART_DLF);
- 	dw8250_writel_ext(p, DW_UART_DLF, ~0U);
- 	reg = dw8250_readl_ext(p, DW_UART_DLF);
--	dw8250_writel_ext(p, DW_UART_DLF, 0);
-+	dw8250_writel_ext(p, DW_UART_DLF, old_dlf);
+-	for (pd = pds[0]; pd; pd++) {
+-		if (pd == port->pd)
+-			ret += sysfs_emit(buf + ret, "[%s] ", dev_name(&pd->dev));
++	for (i = 0; pds[i]; i++) {
++		if (pds[i] == port->pd)
++			ret += sysfs_emit(buf + ret, "[%s] ", dev_name(&pds[i]->dev));
+ 		else
+-			ret += sysfs_emit(buf + ret, "%s ", dev_name(&pd->dev));
++			ret += sysfs_emit(buf + ret, "%s ", dev_name(&pds[i]->dev));
+ 	}
  
- 	if (reg) {
- 		struct dw8250_port_data *d = p->private_data;
+ 	buf[ret - 1] = '\n';
 
 
