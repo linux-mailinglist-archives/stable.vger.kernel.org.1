@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0453876AD44
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0445376AF82
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231312AbjHAJ1j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:27:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52820 "EHLO
+        id S233422AbjHAJsa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230358AbjHAJ1P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:15 -0400
+        with ESMTP id S233665AbjHAJr7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68D7268F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBD24699
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ABB16150E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D09C433C9;
-        Tue,  1 Aug 2023 09:26:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B401614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AF0C433C8;
+        Tue,  1 Aug 2023 09:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881967;
-        bh=Kp9kimFPwyKVOm4C5ToDvms6XGPgnnsSwknexkGuF+k=;
+        s=korg; t=1690883177;
+        bh=7nOIQW1Bo9u7RGf7rS2RJgxnJppbhXjZcscHSDTpTVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CzoXtkPIs7wLi+fdiyMveZSdXvUvDZByGhIbyKqSa0WHBQcBGH+UZt8KsqkN1R//k
-         TZh+ga5iUXR9YYmpKlTdi4PiV5R+Wxc4PHF712wlXHu6fwj1Q/RW8p+hftaEpMQKs7
-         +VOYnrJbEXYFMSJWwcc5/MbJlxJgVZaY0xmEqhIE=
+        b=ivlyYTtMQN4oneVFeCKUgzt3KNyWhTK0wyC15cIrkaxEXf/6kAKF/yyUlXgmzbZZQ
+         YZPRwx1Oq/mdCxI+CQcIY8ZQ6B6JUkpI0KrGRMSrdnyrTH1wzy6zt4LLYlpxd+BLKG
+         UyAa68XUfQ+XC4vWfGbrMFsFPUNeqh6KA68xAaI0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Mike Snitzer <snitzer@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/155] dm raid: clean up four equivalent goto tags in raid_ctr()
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.4 142/239] Revert "usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()"
 Date:   Tue,  1 Aug 2023 11:20:06 +0200
-Message-ID: <20230801091913.541679869@linuxfoundation.org>
+Message-ID: <20230801091930.801099305@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,97 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e74c874eabe2e9173a8fbdad616cd89c70eb8ffd ]
+commit a8291be6b5dd465c22af229483dbac543a91e24e upstream.
 
-There are four equivalent goto tags in raid_ctr(), clean them up to
-use just one.
+This reverts commit f08aa7c80dac27ee00fa6827f447597d2fba5465.
 
-There is no functional change and this is preparation to fix
-raid_ctr()'s unprotected md_stop().
+The reverted commit was based on static analysis and a misunderstanding
+of how PTR_ERR() and NULLs are supposed to work.  When a function
+returns both pointer errors and NULL then normally the NULL means
+"continue operating without a feature because it was deliberately
+turned off".  The NULL should not be treated as a failure.  If a driver
+cannot work when that feature is disabled then the KConfig should
+enforce that the function cannot return NULL.  We should not need to
+test for it.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Stable-dep-of: 7d5fff8982a2 ("dm raid: protect md_stop() with 'reconfig_mutex'")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In this driver, the bug means that probe cannot succeed when CONFIG_PM
+is disabled.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: f08aa7c80dac ("usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/ZKQoBa84U/ykEh3C@moroto
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid.c | 27 +++++++++------------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ drivers/usb/gadget/udc/tegra-xudc.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index d3ac3b894bdf5..6d4e287350a33 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -3258,8 +3258,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	r = md_start(&rs->md);
- 	if (r) {
- 		ti->error = "Failed to start raid array";
--		mddev_unlock(&rs->md);
--		goto bad_md_start;
-+		goto bad_unlock;
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3718,15 +3718,15 @@ static int tegra_xudc_powerdomain_init(s
+ 	int err;
+ 
+ 	xudc->genpd_dev_device = dev_pm_domain_attach_by_name(dev, "dev");
+-	if (IS_ERR_OR_NULL(xudc->genpd_dev_device)) {
+-		err = PTR_ERR(xudc->genpd_dev_device) ? : -ENODATA;
++	if (IS_ERR(xudc->genpd_dev_device)) {
++		err = PTR_ERR(xudc->genpd_dev_device);
+ 		dev_err(dev, "failed to get device power domain: %d\n", err);
+ 		return err;
  	}
  
- 	/* If raid4/5/6 journal mode explicitly requested (only possible with journal dev) -> set it */
-@@ -3267,8 +3266,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 		r = r5c_journal_mode_set(&rs->md, rs->journal_dev.mode);
- 		if (r) {
- 			ti->error = "Failed to set raid4/5/6 journal mode";
--			mddev_unlock(&rs->md);
--			goto bad_journal_mode_set;
-+			goto bad_unlock;
- 		}
+ 	xudc->genpd_dev_ss = dev_pm_domain_attach_by_name(dev, "ss");
+-	if (IS_ERR_OR_NULL(xudc->genpd_dev_ss)) {
+-		err = PTR_ERR(xudc->genpd_dev_ss) ? : -ENODATA;
++	if (IS_ERR(xudc->genpd_dev_ss)) {
++		err = PTR_ERR(xudc->genpd_dev_ss);
+ 		dev_err(dev, "failed to get SuperSpeed power domain: %d\n", err);
+ 		return err;
  	}
- 
-@@ -3278,19 +3276,15 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	/* Try to adjust the raid4/5/6 stripe cache size to the stripe size */
- 	if (rs_is_raid456(rs)) {
- 		r = rs_set_raid456_stripe_cache(rs);
--		if (r) {
--			mddev_unlock(&rs->md);
--			goto bad_stripe_cache;
--		}
-+		if (r)
-+			goto bad_unlock;
- 	}
- 
- 	/* Now do an early reshape check */
- 	if (test_bit(RT_FLAG_RESHAPE_RS, &rs->runtime_flags)) {
- 		r = rs_check_reshape(rs);
--		if (r) {
--			mddev_unlock(&rs->md);
--			goto bad_check_reshape;
--		}
-+		if (r)
-+			goto bad_unlock;
- 
- 		/* Restore new, ctr requested layout to perform check */
- 		rs_config_restore(rs, &rs_layout);
-@@ -3299,8 +3293,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 			r = rs->md.pers->check_reshape(&rs->md);
- 			if (r) {
- 				ti->error = "Reshape check failed";
--				mddev_unlock(&rs->md);
--				goto bad_check_reshape;
-+				goto bad_unlock;
- 			}
- 		}
- 	}
-@@ -3311,10 +3304,8 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	mddev_unlock(&rs->md);
- 	return 0;
- 
--bad_md_start:
--bad_journal_mode_set:
--bad_stripe_cache:
--bad_check_reshape:
-+bad_unlock:
-+	mddev_unlock(&rs->md);
- 	md_stop(&rs->md);
- bad:
- 	raid_set_free(rs);
--- 
-2.40.1
-
 
 
