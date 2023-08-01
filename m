@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90AA076AF83
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0415D76AD48
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231754AbjHAJsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45884 "EHLO
+        id S232638AbjHAJ1s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233780AbjHAJsM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:12 -0400
+        with ESMTP id S232952AbjHAJ1e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7751030D0
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 807F44221
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9466C614FD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CE3C433C8;
-        Tue,  1 Aug 2023 09:46:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61ECC614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B5C433C7;
+        Tue,  1 Aug 2023 09:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883188;
-        bh=3aLo/OWMW8M+kIMBorP4UWShjcCcFTohr5qVaqdxiYw=;
+        s=korg; t=1690881978;
+        bh=Z0j17gW43x9D+CBrLA+IfYo9ja2zAPqOlz84PxwP1ec=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WFYgN3ou1UaWz1Ai8B3b2J9h9AXjMzybdlF4UCwx+jaw6r8jj7gg89dNICHPZIhp8
-         CBwmds2dtjtxTgaC+v9VizMkiaHj5zFrexOVtisIDLDBwErOXiMzZ71bq+1ceaWTr/
-         Zz1N0gBj2BvrPPklHzDi5p4UioL6XWk1B2/KHzZU=
+        b=tcewGhEatwPnRr4md3hnYhsq3OZSFcqNPLTIxyHm2J4BRVjwMhJaHtoqaAwrYuokd
+         AcI+QbyqNZRQU39IJK5akIwgHXf+4TcKadEcc0xIbLlq7PM7lK7RzJBY0VqOPplQc6
+         5QdM0dIC1WPfXw2oSH3vvorTXexKM1zrmfX6+j2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Zhang <zheng.zhang@email.ucr.edu>,
-        Kees Cook <keescook@chromium.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.4 146/239] KVM: Grab a reference to KVM for VM and vCPU stats file descriptors
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 098/155] ata: pata_ns87415: mark ns87560_tf_read static
 Date:   Tue,  1 Aug 2023 11:20:10 +0200
-Message-ID: <20230801091930.927808003@linuxfoundation.org>
+Message-ID: <20230801091913.712067466@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,89 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit eed3013faa401aae662398709410a59bb0646e32 upstream.
+[ Upstream commit 3fc2febb0f8ffae354820c1772ec008733237cfa ]
 
-Grab a reference to KVM prior to installing VM and vCPU stats file
-descriptors to ensure the underlying VM and vCPU objects are not freed
-until the last reference to any and all stats fds are dropped.
+The global function triggers a warning because of the missing prototype
 
-Note, the stats paths manually invoke fd_install() and so don't need to
-grab a reference before creating the file.
+drivers/ata/pata_ns87415.c:263:6: warning: no previous prototype for 'ns87560_tf_read' [-Wmissing-prototypes]
+  263 | void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
 
-Fixes: ce55c049459c ("KVM: stats: Support binary stats retrieval for a VCPU")
-Fixes: fcfe1baeddbf ("KVM: stats: Support binary stats retrieval for a VM")
-Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
-Closes: https://lore.kernel.org/all/CAC_GQSr3xzZaeZt85k_RCBd5kfiOve8qXo7a81Cq53LuVQ5r=Q@mail.gmail.com
-Cc: stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Message-Id: <20230711230131.648752-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There are no other references to this, so just make it static.
+
+Fixes: c4b5b7b6c4423 ("pata_ns87415: Initial cut at 87415/87560 IDE support")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/kvm_main.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/ata/pata_ns87415.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4047,8 +4047,17 @@ static ssize_t kvm_vcpu_stats_read(struc
- 			sizeof(vcpu->stat), user_buffer, size, offset);
- }
+diff --git a/drivers/ata/pata_ns87415.c b/drivers/ata/pata_ns87415.c
+index 9dd6bffefb485..602472d4e693e 100644
+--- a/drivers/ata/pata_ns87415.c
++++ b/drivers/ata/pata_ns87415.c
+@@ -260,7 +260,7 @@ static u8 ns87560_check_status(struct ata_port *ap)
+  *	LOCKING:
+  *	Inherited from caller.
+  */
+-void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
++static void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
+ {
+ 	struct ata_ioports *ioaddr = &ap->ioaddr;
  
-+static int kvm_vcpu_stats_release(struct inode *inode, struct file *file)
-+{
-+	struct kvm_vcpu *vcpu = file->private_data;
-+
-+	kvm_put_kvm(vcpu->kvm);
-+	return 0;
-+}
-+
- static const struct file_operations kvm_vcpu_stats_fops = {
- 	.read = kvm_vcpu_stats_read,
-+	.release = kvm_vcpu_stats_release,
- 	.llseek = noop_llseek,
- };
- 
-@@ -4069,6 +4078,9 @@ static int kvm_vcpu_ioctl_get_stats_fd(s
- 		put_unused_fd(fd);
- 		return PTR_ERR(file);
- 	}
-+
-+	kvm_get_kvm(vcpu->kvm);
-+
- 	file->f_mode |= FMODE_PREAD;
- 	fd_install(fd, file);
- 
-@@ -4712,8 +4724,17 @@ static ssize_t kvm_vm_stats_read(struct
- 				sizeof(kvm->stat), user_buffer, size, offset);
- }
- 
-+static int kvm_vm_stats_release(struct inode *inode, struct file *file)
-+{
-+	struct kvm *kvm = file->private_data;
-+
-+	kvm_put_kvm(kvm);
-+	return 0;
-+}
-+
- static const struct file_operations kvm_vm_stats_fops = {
- 	.read = kvm_vm_stats_read,
-+	.release = kvm_vm_stats_release,
- 	.llseek = noop_llseek,
- };
- 
-@@ -4732,6 +4753,9 @@ static int kvm_vm_ioctl_get_stats_fd(str
- 		put_unused_fd(fd);
- 		return PTR_ERR(file);
- 	}
-+
-+	kvm_get_kvm(kvm);
-+
- 	file->f_mode |= FMODE_PREAD;
- 	fd_install(fd, file);
- 
+-- 
+2.40.1
+
 
 
