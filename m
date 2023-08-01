@@ -2,168 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D03D76B9AB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1DFD76B9B3
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 18:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229905AbjHAQdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 12:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57630 "EHLO
+        id S229643AbjHAQeg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 12:34:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbjHAQdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:33:24 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111C31BF8;
-        Tue,  1 Aug 2023 09:33:22 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-3128fcd58f3so6019186f8f.1;
-        Tue, 01 Aug 2023 09:33:21 -0700 (PDT)
+        with ESMTP id S231181AbjHAQee (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 12:34:34 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B7D52108
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:31 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id 38308e7fff4ca-2b703a0453fso89465741fa.3
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 09:34:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690907600; x=1691512400;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kHGU2gldR70GqySNOHxAwDHvYPybisAew0SwiRmKpZY=;
-        b=sUkr6tkOpfLpmNAXaSFuiW9LXXeEwoKnrmMBkcK4Hzd0GO2uCmDG+gS3aJeFobgXlD
-         ImcBSaz6f4I9GQ+RO4VH50l6qUxD+A8J0DSNTD75KJC1ayt6U4xdPnPubhdWeczlWQ6H
-         fMfduYyNkmjd2kWxa5QQJ123pP6nOzDRnh1UyGT5KnRAlO3R6gH86arPxDYsF/4Pn0ie
-         rKXwqC3Nj3MtsSP9/dw1OtLM6sSmfKy6MMU9v7Uf0lNMpxRtqiBJuwYDHe1w6uAg17kf
-         ZTu8tou6vHV8MSGse9+huBvZCwjrIlu7RI0oZQNdHGmjzTEizy9R6fAyj0yfLm36uJBV
-         32xg==
+        d=linux-foundation.org; s=google; t=1690907669; x=1691512469;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jc82kojdaqyd+xCXovsKafxAFudlMfSjCmPbISb0d8U=;
+        b=WNKHgoB3CqjvfLbiAHVgIS7IlInjEXf/OSCwNsQeto78AISCsztuAmCDbR9Y18shrU
+         GvtLblk8ecZYbeihE42tEKkeuqc3awwItjlpXY++6L2MC4en29WquLuTsLoPdPze3Wfd
+         QfaJmfz7Yv4eyewmTu0PA4QK+yeCM9btM7lsQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690907600; x=1691512400;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kHGU2gldR70GqySNOHxAwDHvYPybisAew0SwiRmKpZY=;
-        b=Q4Kwa16mPVrx0jNDTjeW7G6cN5lX8nDltLwYtANQFpkx8P8YzVXnYj/W33X8OMt8MB
-         p9wnu1gAWQoqQlN1nEEgDOuTecAp8vFiMHtXW4LJDwL4U7dvPLs6Azzi/hS++iShdrVS
-         kGG7DirCW+boYnJe6Y2Tv4hHM6tWqhJ7rJStzkIPOqZJZrq4wXrx7GfNtRjaazXwrc+5
-         nzRakY2RZzJi1PAd2XU0mjnew6f5mg2R6MnkQwYOoshGQ/RswPjEHV5QiOsIPAGlz6e0
-         8KF+1Th3ixV0N1rOTXBHe1BwaTnL7N1ANkBJmMQmgCKfUvQiTbo9HJO1DOUZgIaJ9l5M
-         2Nlw==
-X-Gm-Message-State: ABy/qLYjZjBMQdqnCc2yKXkkX6mb77eZHQOB7FVqopZjAKYA2jjgWCCo
-        4MCMBN9oqiDU7gtTwsRJfzc=
-X-Google-Smtp-Source: APBJJlGWssiVAATcXmhQas2IAW1DtAJFXZ/rOYG4wKV4z3qFLF/SvVTfMh8RRRDM4z57utXs4wl8gg==
-X-Received: by 2002:a5d:6783:0:b0:313:f02f:be7f with SMTP id v3-20020a5d6783000000b00313f02fbe7fmr2576237wru.55.1690907600207;
-        Tue, 01 Aug 2023 09:33:20 -0700 (PDT)
-Received: from localhost ([2a00:23c5:dc8c:8701:1663:9a35:5a7b:1d76])
-        by smtp.gmail.com with ESMTPSA id h16-20020adffa90000000b0031423a8f4f7sm16488864wrr.56.2023.08.01.09.33.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Aug 2023 09:33:19 -0700 (PDT)
-Date:   Tue, 1 Aug 2023 17:33:18 +0100
-From:   Lorenzo Stoakes <lstoakes@gmail.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <bhe@redhat.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        linux-fsdevel@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
-        Will Deacon <will@kernel.org>, Mike Galbraith <efault@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        wangkefeng.wang@huawei.com, catalin.marinas@arm.com,
-        ardb@kernel.org,
-        Linux regression tracking <regressions@leemhuis.info>,
-        regressions@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT
- regions
-Message-ID: <dc30a97b-853e-4d2a-b171-e68fb3ab026c@lucifer.local>
-References: <20230731215021.70911-1-lstoakes@gmail.com>
- <0af1bc20-8ba2-c6b6-64e6-c1f58d521504@redhat.com>
+        d=1e100.net; s=20221208; t=1690907669; x=1691512469;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jc82kojdaqyd+xCXovsKafxAFudlMfSjCmPbISb0d8U=;
+        b=Ctc30w9xi20MwtZgbiRUuye+mW7DZNb6t6zyhp6IL84zJv+VlYtX5OXN+EjDPJ9VJ1
+         acWv5u9c83GORc7xK/nhUSdQYmONnTDboxehgQGpn4U1ekzwG2brA0MWcCYkmnae3C3w
+         cjKvl7AmfhJk+4fTQJByO2WWpB7sza1zJojib2HX2R+mC5l+Q7u0KRkVEhcp7mElqNlZ
+         ApYjYj3GKzfnq0UFcrc7kwJHS0T17/xUnoAXLB14wKPsynU2QgoMEPI3WCC4OTY4IMSh
+         PhqB3J0bOUOfOpAzhM4sh5J+ZBMfJ0cFYgV3g3U2LfegOij10ylaBPXdYKhVAU0E/oIE
+         6B8A==
+X-Gm-Message-State: ABy/qLZUAIVZRuutj5AaEajMowfHl6EJxlewvTcnhaq6tUPakWy2Cgn8
+        CY3K3T0T3nlcQZ4sVmio+h1XK5/VyWoLp6+Bq9vagYLHijM=
+X-Google-Smtp-Source: APBJJlHkeiORCF+dkEnHkp2m7XjYriP1TCmA3G8hbIuyUA3O2jk/kW5cC1eomL8xqyRK/jtkzfWbSg==
+X-Received: by 2002:a2e:7e0b:0:b0:2b4:65ef:3af5 with SMTP id z11-20020a2e7e0b000000b002b465ef3af5mr2860172ljc.30.1690907669418;
+        Tue, 01 Aug 2023 09:34:29 -0700 (PDT)
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com. [209.85.167.44])
+        by smtp.gmail.com with ESMTPSA id 2-20020a05651c008200b002b9f4841913sm590505ljq.1.2023.08.01.09.34.28
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Aug 2023 09:34:28 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-4fe28f92d8eso4975785e87.1
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 09:34:28 -0700 (PDT)
+X-Received: by 2002:a05:6512:3147:b0:4f8:76ba:ad3c with SMTP id
+ s7-20020a056512314700b004f876baad3cmr2339380lfi.55.1690907667960; Tue, 01 Aug
+ 2023 09:34:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0af1bc20-8ba2-c6b6-64e6-c1f58d521504@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <2023080129-surface-stench-5e24@gregkh>
+In-Reply-To: <2023080129-surface-stench-5e24@gregkh>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 1 Aug 2023 09:34:10 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjfdPq6=rwECsYaSzFaehBoGxGEHwyJmAVK0ekXoS89FQ@mail.gmail.com>
+Message-ID: <CAHk-=wjfdPq6=rwECsYaSzFaehBoGxGEHwyJmAVK0ekXoS89FQ@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] mm: lock_vma_under_rcu() must check
+ vma->anon_vma under vma" failed to apply to 6.4-stable tree
+To:     gregkh@linuxfoundation.org
+Cc:     jannh@google.com, stable@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000e670d30601df1ef0"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 11:05:40AM +0200, David Hildenbrand wrote:
-> On 31.07.23 23:50, Lorenzo Stoakes wrote:
-> > Some architectures do not populate the entire range categorised by
-> > KCORE_TEXT, so we must ensure that the kernel address we read from is
-> > valid.
-> >
-> > Unfortunately there is no solution currently available to do so with a
-> > purely iterator solution so reinstate the bounce buffer in this instance so
-> > we can use copy_from_kernel_nofault() in order to avoid page faults when
-> > regions are unmapped.
-> >
-> > This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
-> > bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
-> > the code to continue to use an iterator.
-> >
-> > Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
-> > Reported-by: Jiri Olsa <olsajiri@gmail.com>
-> > Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-> > ---
-> >   fs/proc/kcore.c | 26 +++++++++++++++++++++++++-
-> >   1 file changed, 25 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-> > index 9cb32e1a78a0..3bc689038232 100644
-> > --- a/fs/proc/kcore.c
-> > +++ b/fs/proc/kcore.c
-> > @@ -309,6 +309,8 @@ static void append_kcore_note(char *notes, size_t *i, const char *name,
-> >   static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
-> >   {
-> > +	struct file *file = iocb->ki_filp;
-> > +	char *buf = file->private_data;
-> >   	loff_t *fpos = &iocb->ki_pos;
-> >   	size_t phdrs_offset, notes_offset, data_offset;
-> >   	size_t page_offline_frozen = 1;
-> > @@ -554,11 +556,22 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
-> >   			fallthrough;
-> >   		case KCORE_VMEMMAP:
-> >   		case KCORE_TEXT:
-> > +			/*
-> > +			 * Sadly we must use a bounce buffer here to be able to
-> > +			 * make use of copy_from_kernel_nofault(), as these
-> > +			 * memory regions might not always be mapped on all
-> > +			 * architectures.
-> > +			 */
-> > +			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
-> > +				if (iov_iter_zero(tsz, iter) != tsz) {
-> > +					ret = -EFAULT;
-> > +					goto out;
-> > +				}
-> >   			/*
-> >   			 * We use _copy_to_iter() to bypass usermode hardening
-> >   			 * which would otherwise prevent this operation.
-> >   			 */
->
-> Having a comment at this indentation level looks for the else case looks
-> kind of weird.
+--000000000000e670d30601df1ef0
+Content-Type: text/plain; charset="UTF-8"
 
-Yeah, but having it indented again would be weird and seem like it doesn't
-apply to the block below, there's really no good spot for it and
-checkpatch.pl doesn't mind so I think this is ok :)
-
+On Mon, 31 Jul 2023 at 23:28, <gregkh@linuxfoundation.org> wrote:
 >
-> (does that comment still apply?)
+> The patch below does not apply to the 6.4-stable tree.
 
-Hm good point, actually, now we're using the bounce buffer we don't need to
-avoid usermode hardening any more.
+Ahh. The vma_is_tcp() checks are new.
 
-However since we've established a bounce buffer ourselves its still
-appropriate to use _copy_to_iter() as we know the source region is good to
-copy from.
+I think you can literally just remove all occurrences of
 
-To make life easy I'll just respin with an updated comment :)
+     && !vma_is_tcp(vma)
 
->
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+in that patch to make it apply.
+
+The end result should look something like the attached, afaik.
+
+            Linus
+
+--000000000000e670d30601df1ef0
+Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
+Content-Disposition: attachment; filename="patch.diff"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lksiqsr90>
+X-Attachment-Id: f_lksiqsr90
+
+ZGlmZiAtLWdpdCBhL21tL21lbW9yeS5jIGIvbW0vbWVtb3J5LmMKaW5kZXggZjY5ZmJjMjUxMTk4
+Li5hZGRmNTdhNDI3ODUgMTAwNjQ0Ci0tLSBhL21tL21lbW9yeS5jCisrKyBiL21tL21lbW9yeS5j
+CkBAIC01Mjg0LDI3ICs1Mjg0LDI4IEBAIHN0cnVjdCB2bV9hcmVhX3N0cnVjdCAqbG9ja192bWFf
+dW5kZXJfcmN1KHN0cnVjdCBtbV9zdHJ1Y3QgKm1tLAogCWlmICghdm1hX2lzX2Fub255bW91cyh2
+bWEpKQogCQlnb3RvIGludmFsOwogCi0JLyogZmluZF9tZXJnZWFibGVfYW5vbl92bWEgdXNlcyBh
+ZGphY2VudCB2bWFzIHdoaWNoIGFyZSBub3QgbG9ja2VkICovCi0JaWYgKCF2bWEtPmFub25fdm1h
+KQotCQlnb3RvIGludmFsOwotCiAJaWYgKCF2bWFfc3RhcnRfcmVhZCh2bWEpKQogCQlnb3RvIGlu
+dmFsOwogCisJLyoKKwkgKiBmaW5kX21lcmdlYWJsZV9hbm9uX3ZtYSB1c2VzIGFkamFjZW50IHZt
+YXMgd2hpY2ggYXJlIG5vdCBsb2NrZWQuCisJICogVGhpcyBjaGVjayBtdXN0IGhhcHBlbiBhZnRl
+ciB2bWFfc3RhcnRfcmVhZCgpOyBvdGhlcndpc2UsIGEKKwkgKiBjb25jdXJyZW50IG1yZW1hcCgp
+IHdpdGggTVJFTUFQX0RPTlRVTk1BUCBjb3VsZCBkaXNzb2NpYXRlIHRoZSBWTUEKKwkgKiBmcm9t
+IGl0cyBhbm9uX3ZtYS4KKwkgKi8KKwlpZiAodW5saWtlbHkoIXZtYS0+YW5vbl92bWEpKQorCQln
+b3RvIGludmFsX2VuZF9yZWFkOworCiAJLyoKIAkgKiBEdWUgdG8gdGhlIHBvc3NpYmlsaXR5IG9m
+IHVzZXJmYXVsdCBoYW5kbGVyIGRyb3BwaW5nIG1tYXBfbG9jaywgYXZvaWQKIAkgKiBpdCBmb3Ig
+bm93IGFuZCBmYWxsIGJhY2sgdG8gcGFnZSBmYXVsdCBoYW5kbGluZyB1bmRlciBtbWFwX2xvY2su
+CiAJICovCi0JaWYgKHVzZXJmYXVsdGZkX2FybWVkKHZtYSkpIHsKLQkJdm1hX2VuZF9yZWFkKHZt
+YSk7Ci0JCWdvdG8gaW52YWw7Ci0JfQorCWlmICh1c2VyZmF1bHRmZF9hcm1lZCh2bWEpKQorCQln
+b3RvIGludmFsX2VuZF9yZWFkOwogCiAJLyogQ2hlY2sgc2luY2Ugdm1fc3RhcnQvdm1fZW5kIG1p
+Z2h0IGNoYW5nZSBiZWZvcmUgd2UgbG9jayB0aGUgVk1BICovCi0JaWYgKHVubGlrZWx5KGFkZHJl
+c3MgPCB2bWEtPnZtX3N0YXJ0IHx8IGFkZHJlc3MgPj0gdm1hLT52bV9lbmQpKSB7Ci0JCXZtYV9l
+bmRfcmVhZCh2bWEpOwotCQlnb3RvIGludmFsOwotCX0KKwlpZiAodW5saWtlbHkoYWRkcmVzcyA8
+IHZtYS0+dm1fc3RhcnQgfHwgYWRkcmVzcyA+PSB2bWEtPnZtX2VuZCkpCisJCWdvdG8gaW52YWxf
+ZW5kX3JlYWQ7CiAKIAkvKiBDaGVjayBpZiB0aGUgVk1BIGdvdCBpc29sYXRlZCBhZnRlciB3ZSBm
+b3VuZCBpdCAqLwogCWlmICh2bWEtPmRldGFjaGVkKSB7CkBAIC01MzE2LDYgKzUzMTcsOSBAQCBz
+dHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKmxvY2tfdm1hX3VuZGVyX3JjdShzdHJ1Y3QgbW1fc3RydWN0
+ICptbSwKIAogCXJjdV9yZWFkX3VubG9jaygpOwogCXJldHVybiB2bWE7CisKK2ludmFsX2VuZF9y
+ZWFkOgorCXZtYV9lbmRfcmVhZCh2bWEpOwogaW52YWw6CiAJcmN1X3JlYWRfdW5sb2NrKCk7CiAJ
+Y291bnRfdm1fdm1hX2xvY2tfZXZlbnQoVk1BX0xPQ0tfQUJPUlQpOwo=
+--000000000000e670d30601df1ef0--
