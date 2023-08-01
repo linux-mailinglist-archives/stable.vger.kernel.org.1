@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8E2676AE81
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D67DD76AD88
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233206AbjHAJj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
+        id S232250AbjHAJaH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:30:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233202AbjHAJjJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:09 -0400
+        with ESMTP id S232781AbjHAJ3p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B211C4690
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5F03589
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ADFC3613E2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C197BC433C9;
-        Tue,  1 Aug 2023 09:36:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E984B6150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04855C433C8;
+        Tue,  1 Aug 2023 09:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882619;
-        bh=+cSykmEd8jLkDlWWxthMSy1Nu6DBJj/GdLkrby1HzzU=;
+        s=korg; t=1690882110;
+        bh=2ZAgWxFFDNJ1Ecg1q5Ivvkui9ZuQkNELJi6W3qHWkb4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QiGlg94YZ/D3S2bNJa4H8+MxwGWO3PzNx0u7FdL8aguQSeCPePBwp0VL8yf7b0R92
-         TT8ekdsPQS/v66jydCfvIhIoQnGsRN4h31G4K+6j3jocH+2JtYyUQp7ebdNE5EldGp
-         sDxbs3OiHMbqSaIKUpN+HxYT1WUv7P5izlITVsRU=
+        b=r0onNj+Ok290vO8sW0FoclddqcbMvkUOQRxSPjs12qXyopqJguJ67vB1vvztCftDu
+         e2MRZzl5AzUTJJ7nslKRfd41i3w5qdQFNl1oqbFrYH2rpzTDkJ5+zB108mzvVxgUa6
+         1sBDhDCqGYptkyDBmtKc2rf7rENWKQ86s4zPa+DM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ravi Gunasekaran <r-gunasekaran@ti.com>,
-        Frank Li <Frank.Li@nxp.com>, Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.1 170/228] usb: cdns3: fix incorrect calculation of ep_buf_size when more than one config
+        Jisheng Zhang <jszhang@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 116/155] usb: dwc3: dont reset device side if dwc3 was configured as host-only
 Date:   Tue,  1 Aug 2023 11:20:28 +0200
-Message-ID: <20230801091929.010324033@linuxfoundation.org>
+Message-ID: <20230801091914.367275514@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit 2627335a1329a0d39d8d277994678571c4f21800 upstream.
+commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7 upstream.
 
-Previously, the cdns3_gadget_check_config() function in the cdns3 driver
-mistakenly calculated the ep_buf_size by considering only one
-configuration's endpoint information because "claimed" will be clear after
-call usb_gadget_check_config().
+Commit c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
+system_suspend in host mode") replaces check for HOST only dr_mode with
+current_dr_role. But during booting, the current_dr_role isn't
+initialized, thus the device side reset is always issued even if dwc3
+was configured as host-only. What's more, on some platforms with host
+only dwc3, aways issuing device side reset by accessing device register
+block can cause kernel panic.
 
-The fix involves checking the private flags EP_CLAIMED instead of relying
-on the "claimed" flag.
-
-Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
+Fixes: c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on system_suspend in host mode")
 Cc: stable <stable@kernel.org>
-Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Tested-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Link: https://lore.kernel.org/r/20230707230015.494999-2-Frank.Li@nxp.com
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20230627162018.739-1-jszhang@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -3012,12 +3012,14 @@ static int cdns3_gadget_udc_stop(struct
- static int cdns3_gadget_check_config(struct usb_gadget *gadget)
- {
- 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
-+	struct cdns3_endpoint *priv_ep;
- 	struct usb_ep *ep;
- 	int n_in = 0;
- 	int total;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -275,9 +275,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	/*
+ 	 * We're resetting only the device side because, if we're in host mode,
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+-	 * host-only mode, then we can return early.
++	 * host-only mode or current role is host, then we can return early.
+ 	 */
+-	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
--		if (ep->claimed && (ep->address & USB_DIR_IN))
-+		priv_ep = ep_to_cdns3_ep(ep);
-+		if ((priv_ep->flags & EP_CLAIMED) && (ep->address & USB_DIR_IN))
- 			n_in++;
- 	}
- 
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
 
 
