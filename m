@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACE3176ADE1
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CF4276AF16
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233036AbjHAJeM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35268 "EHLO
+        id S233282AbjHAJpB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233037AbjHAJd4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:56 -0400
+        with ESMTP id S233439AbjHAJos (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5262D71
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:31:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2B4C4684
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 024E9614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1118DC433C8;
-        Tue,  1 Aug 2023 09:31:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D091D6126D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8ADC433C8;
+        Tue,  1 Aug 2023 09:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882310;
-        bh=c+MvEk6Sqzt2G6M8aeoBzc1ERtnxXCjwNP1lACM0umY=;
+        s=korg; t=1690882933;
+        bh=oZJEWfjWnijPJojbva5F8R561rZid5WlFHGIXzpZIjY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=prpvCeBH9SlpyhIpYxE3ptYMDh6QzY/yzVSBZf8+tHeaaQAUpfcD6buIEMZVY9zg8
-         v40YIATHNFUtWNGM90D355eQzfwdBlS8A6gakv+aoD+cO3LqaIER2OBja2c8xjFKig
-         iTmkHL01fSqSMKeW6WFax+j0cQ5jXoe8cAJhbGvA=
+        b=PPvh10qNEcwpuRyydNXEdYTQnHXEz9K2Dz5DRrmJRVhdXDkkdkYy6Xzi96L22PZ53
+         VEBAzrCZ+WQAClloUXNps5apNk5q5vX9rmv2wLxQrDX1DcZoE+AIw4cJV6SNtDFEgv
+         5q5KlxQ7VlBZeLCwVceiEK7vU3DiBVYwvF8mVFCE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-        Tom Zanussi <zanussi@kernel.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/228] Revert "tracing: Add "(fault)" name injection to kernel probes"
+        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 054/239] phy: qcom-snps-femto-v2: keep cfg_ahb_clk enabled during runtime suspend
 Date:   Tue,  1 Aug 2023 11:18:38 +0200
-Message-ID: <20230801091925.031817847@linuxfoundation.org>
+Message-ID: <20230801091927.477936865@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,133 +54,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Adrien Thierry <athierry@redhat.com>
 
-[ Upstream commit 4ed8f337dee32df71435689c19d22e4ee846e15a ]
+[ Upstream commit 45d89a344eb46db9dce851c28e14f5e3c635c251 ]
 
-This reverts commit 2e9906f84fc7c99388bb7123ade167250d50f1c0.
+In the dwc3 core, both system and runtime suspend end up calling
+dwc3_suspend_common(). From there, what happens for the PHYs depends on
+the USB mode and whether the controller is entering system or runtime
+suspend.
 
-It was turned out that commit 2e9906f84fc7 ("tracing: Add "(fault)"
-name injection to kernel probes") did not work correctly and probe
-events still show just '(fault)' (instead of '"(fault)"'). Also,
-current '(fault)' is more explicit that it faulted.
+HOST mode:
+  (1) system suspend on a non-wakeup-capable controller
 
-This also moves FAULT_STRING macro to trace.h so that synthetic
-event can keep using it, and uses it in trace_probe.c too.
+  The [1] if branch is taken. dwc3_core_exit() is called, which ends up
+  calling phy_power_off() and phy_exit(). Those two functions decrease the
+  PM runtime count at some point, so they will trigger the PHY runtime
+  sleep (assuming the count is right).
 
-Link: https://lore.kernel.org/all/168908495772.123124.1250788051922100079.stgit@devnote2/
-Link: https://lore.kernel.org/all/20230706230642.3793a593@rorschach.local.home/
+  (2) runtime suspend / system suspend on a wakeup-capable controller
 
-Cc: stable@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 797311bce5c2 ("tracing/probes: Fix to record 0-length data_loc in fetch_store_string*() if fails")
+  The [1] branch is not taken. dwc3_suspend_common() calls
+  phy_pm_runtime_put_sync(). Assuming the ref count is right, the PHY
+  runtime suspend op is called.
+
+DEVICE mode:
+  dwc3_core_exit() is called on both runtime and system sleep
+  unless the controller is already runtime suspended.
+
+OTG mode:
+  (1) system suspend : dwc3_core_exit() is called
+
+  (2) runtime suspend : do nothing
+
+In host mode, the code seems to make a distinction between 1) runtime
+sleep / system sleep for wakeup-capable controller, and 2) system sleep
+for non-wakeup-capable controller, where phy_power_off() and phy_exit()
+are only called for the latter. This suggests the PHY is not supposed to
+be in a fully powered-off state for runtime sleep and system sleep for
+wakeup-capable controller.
+
+Moreover, downstream, cfg_ahb_clk only gets disabled for system suspend.
+The clocks are disabled by phy->set_suspend() [2] which is only called
+in the system sleep path through dwc3_core_exit() [3].
+
+With that in mind, don't disable the clocks during the femto PHY runtime
+suspend callback. The clocks will only be disabled during system suspend
+for non-wakeup-capable controllers, through dwc3_core_exit().
+
+[1] https://elixir.bootlin.com/linux/v6.4/source/drivers/usb/dwc3/core.c#L1988
+[2] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/LV.AU.1.2.1.r2-05300-gen3meta.0/drivers/usb/phy/phy-msm-snps-hs.c#L524
+[3] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/LV.AU.1.2.1.r2-05300-gen3meta.0/drivers/usb/dwc3/core.c#L1915
+
+Signed-off-by: Adrien Thierry <athierry@redhat.com>
+Link: https://lore.kernel.org/r/20230629144542.14906-2-athierry@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.h              |  2 ++
- kernel/trace/trace_probe.c        |  2 +-
- kernel/trace/trace_probe_kernel.h | 31 ++++++-------------------------
- 3 files changed, 9 insertions(+), 26 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index e90c7e840320d..3d3505286aa7f 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -113,6 +113,8 @@ enum trace_type {
- #define MEM_FAIL(condition, fmt, ...)					\
- 	DO_ONCE_LITE_IF(condition, pr_err, "ERROR: " fmt, ##__VA_ARGS__)
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index 6c237f3cc66db..3335480fc395a 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -165,22 +165,13 @@ static int qcom_snps_hsphy_suspend(struct qcom_snps_hsphy *hsphy)
+ 					   0, USB2_AUTO_RESUME);
+ 	}
  
-+#define FAULT_STRING "(fault)"
-+
- #define HIST_STACKTRACE_DEPTH	16
- #define HIST_STACKTRACE_SIZE	(HIST_STACKTRACE_DEPTH * sizeof(unsigned long))
- #define HIST_STACKTRACE_SKIP	5
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index c3852180bbb61..eef9806bb9b14 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -64,7 +64,7 @@ int PRINT_TYPE_FUNC_NAME(string)(struct trace_seq *s, void *data, void *ent)
- 	int len = *(u32 *)data >> 16;
+-	clk_disable_unprepare(hsphy->cfg_ahb_clk);
+ 	return 0;
+ }
  
- 	if (!len)
--		trace_seq_puts(s, "(fault)");
-+		trace_seq_puts(s, FAULT_STRING);
- 	else
- 		trace_seq_printf(s, "\"%s\"",
- 				 (const char *)get_loc_data(data, ent));
-diff --git a/kernel/trace/trace_probe_kernel.h b/kernel/trace/trace_probe_kernel.h
-index 77dbd9ff97826..1d43df29a1f8e 100644
---- a/kernel/trace/trace_probe_kernel.h
-+++ b/kernel/trace/trace_probe_kernel.h
-@@ -2,8 +2,6 @@
- #ifndef __TRACE_PROBE_KERNEL_H_
- #define __TRACE_PROBE_KERNEL_H_
- 
--#define FAULT_STRING "(fault)"
--
- /*
-  * This depends on trace_probe.h, but can not include it due to
-  * the way trace_probe_tmpl.h is used by trace_kprobe.c and trace_eprobe.c.
-@@ -15,16 +13,8 @@ static nokprobe_inline int
- kern_fetch_store_strlen_user(unsigned long addr)
+ static int qcom_snps_hsphy_resume(struct qcom_snps_hsphy *hsphy)
  {
- 	const void __user *uaddr =  (__force const void __user *)addr;
 -	int ret;
- 
--	ret = strnlen_user_nofault(uaddr, MAX_STRING_SIZE);
--	/*
--	 * strnlen_user_nofault returns zero on fault, insert the
--	 * FAULT_STRING when that occurs.
--	 */
--	if (ret <= 0)
--		return strlen(FAULT_STRING) + 1;
--	return ret;
-+	return strnlen_user_nofault(uaddr, MAX_STRING_SIZE);
- }
- 
- /* Return the length of string -- including null terminal byte */
-@@ -44,18 +34,7 @@ kern_fetch_store_strlen(unsigned long addr)
- 		len++;
- 	} while (c && ret == 0 && len < MAX_STRING_SIZE);
- 
--	/* For faults, return enough to hold the FAULT_STRING */
--	return (ret < 0) ? strlen(FAULT_STRING) + 1 : len;
--}
 -
--static nokprobe_inline void set_data_loc(int ret, void *dest, void *__dest, void *base, int len)
--{
--	if (ret >= 0) {
--		*(u32 *)dest = make_data_loc(ret, __dest - base);
--	} else {
--		strscpy(__dest, FAULT_STRING, len);
--		ret = strlen(__dest) + 1;
+ 	dev_dbg(&hsphy->phy->dev, "Resume QCOM SNPS PHY, mode\n");
+ 
+-	ret = clk_prepare_enable(hsphy->cfg_ahb_clk);
+-	if (ret) {
+-		dev_err(&hsphy->phy->dev, "failed to enable cfg ahb clock\n");
+-		return ret;
 -	}
-+	return (ret < 0) ? ret : len;
+-
+ 	return 0;
  }
  
- /*
-@@ -76,7 +55,8 @@ kern_fetch_store_string_user(unsigned long addr, void *dest, void *base)
- 	__dest = get_loc_data(dest, base);
- 
- 	ret = strncpy_from_user_nofault(__dest, uaddr, maxlen);
--	set_data_loc(ret, dest, __dest, base, maxlen);
-+	if (ret >= 0)
-+		*(u32 *)dest = make_data_loc(ret, __dest - base);
- 
- 	return ret;
- }
-@@ -107,7 +87,8 @@ kern_fetch_store_string(unsigned long addr, void *dest, void *base)
- 	 * probing.
- 	 */
- 	ret = strncpy_from_kernel_nofault(__dest, (void *)addr, maxlen);
--	set_data_loc(ret, dest, __dest, base, maxlen);
-+	if (ret >= 0)
-+		*(u32 *)dest = make_data_loc(ret, __dest - base);
- 
- 	return ret;
- }
 -- 
 2.39.2
 
