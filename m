@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09C5076AF62
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7097B76AE3C
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233492AbjHAJrA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45062 "EHLO
+        id S233092AbjHAJhM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:37:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233073AbjHAJqh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:37 -0400
+        with ESMTP id S233193AbjHAJg4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:36:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C67E910E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E57F14ED2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:34:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64C816150C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71072C433C9;
-        Tue,  1 Aug 2023 09:45:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C702F613E2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:34:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5674C433C7;
+        Tue,  1 Aug 2023 09:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883115;
-        bh=WllhNuc1gDmBtDiE2Gcqukbw4COGXIC2Z1Z9agtAi8U=;
+        s=korg; t=1690882497;
+        bh=YUyLLVb3rgS8yxg7hY/o/8b6wKgfNZymevTviuL5LXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RUSCULs+8QTSBzuPqjSNpgerm955S4/6Npu2SBFp67+rDlrqsw/vjf6Zj3/3xAOKh
-         k6eNWBBGOV/HiLsWSzpjD6h/zSPEJ/ccMw8y7oJ/lpFRhPm4RPkXxpeY1zUUmADThQ
-         awnbEG/F5UyIgA/GBtqCHHl+slcZEZFlNnWvb9uM=
+        b=jK0ZO+zWrFF+ldgQcLnSeizkHo6svMI/MiJCFt+fUXKPWjZ25+tv5cEuLeSlfbSDt
+         xRVo5ShzlhIf9be6awEnmHqVo0+ViGXjG/ndkXI+x+fB2oXefZ5LxNpZyYFZYn4KYH
+         pgdA3inVpJbMg6szLnmdd8wbpUJuHCyIJcZXGmqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Breno Leitao <leitao@debian.org>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 120/239] cxl/acpi: Return rc instead of 0 in cxl_parse_cfmws()
-Date:   Tue,  1 Aug 2023 11:19:44 +0200
-Message-ID: <20230801091930.042448907@linuxfoundation.org>
+        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/228] block: Fix a source code comment in include/uapi/linux/blkzoned.h
+Date:   Tue,  1 Aug 2023 11:19:45 +0200
+Message-ID: <20230801091927.329542289@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Breno Leitao <leitao@debian.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 91019b5bc7c2c5e6f676cce80ee6d12b2753d018 ]
+[ Upstream commit e0933b526fbfd937c4a8f4e35fcdd49f0e22d411 ]
 
-Driver initialization returned success (return 0) even if the
-initialization (cxl_decoder_add() or acpi_table_parse_cedt()) failed.
+Fix the symbolic names for zone conditions in the blkzoned.h header
+file.
 
-Return the error instead of swallowing it.
-
-Fixes: f4ce1f766f1e ("cxl/acpi: Convert CFMWS parsing to ACPI sub-table helpers")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20230714093146.2253438-2-leitao@debian.org
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Fixes: 6a0cb1bc106f ("block: Implement support for zoned block devices")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20230706201422.3987341-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/blkzoned.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 973d6747078c9..8757bf886207b 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -297,7 +297,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 		rc = cxl_decoder_autoremove(dev, cxld);
- 	if (rc) {
- 		dev_err(dev, "Failed to add decode range: %pr", res);
--		return 0;
-+		return rc;
- 	}
- 	dev_dbg(dev, "add: %s node: %d range [%#llx - %#llx]\n",
- 		dev_name(&cxld->dev),
+diff --git a/include/uapi/linux/blkzoned.h b/include/uapi/linux/blkzoned.h
+index b80fcc9ea5257..f85743ef6e7d1 100644
+--- a/include/uapi/linux/blkzoned.h
++++ b/include/uapi/linux/blkzoned.h
+@@ -51,13 +51,13 @@ enum blk_zone_type {
+  *
+  * The Zone Condition state machine in the ZBC/ZAC standards maps the above
+  * deinitions as:
+- *   - ZC1: Empty         | BLK_ZONE_EMPTY
++ *   - ZC1: Empty         | BLK_ZONE_COND_EMPTY
+  *   - ZC2: Implicit Open | BLK_ZONE_COND_IMP_OPEN
+  *   - ZC3: Explicit Open | BLK_ZONE_COND_EXP_OPEN
+- *   - ZC4: Closed        | BLK_ZONE_CLOSED
+- *   - ZC5: Full          | BLK_ZONE_FULL
+- *   - ZC6: Read Only     | BLK_ZONE_READONLY
+- *   - ZC7: Offline       | BLK_ZONE_OFFLINE
++ *   - ZC4: Closed        | BLK_ZONE_COND_CLOSED
++ *   - ZC5: Full          | BLK_ZONE_COND_FULL
++ *   - ZC6: Read Only     | BLK_ZONE_COND_READONLY
++ *   - ZC7: Offline       | BLK_ZONE_COND_OFFLINE
+  *
+  * Conditions 0x5 to 0xC are reserved by the current ZBC/ZAC spec and should
+  * be considered invalid.
 -- 
 2.40.1
 
