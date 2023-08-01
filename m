@@ -2,232 +2,223 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1E4376B2A2
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 13:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 098ED76B2A7
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 13:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232038AbjHALGI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 07:06:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
+        id S232009AbjHALGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 07:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234019AbjHALFs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 07:05:48 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C5955AB
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 03:59:31 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-686b879f605so3642040b3a.1
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 03:59:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690887570; x=1691492370;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6VBAbHASe38ig1WqBIb9v8893q4OXJ4OpB+l/ipx+Bw=;
-        b=XufNbPcgg4ae1vDIf7RfiSKPHl3uWIM2evCFFzDhiO0YmLrMb9kAm6zgvK6kwBcd6F
-         qv6/vUQtnWa+Cf/fJtKK6W3P84mb8CP0APAna8c9fn5/n8wTYm+U9s3BZW1MeLB0YyX+
-         JxclKfRCfZxu9Gg1VgwVRsx97gkjs3yDBJIN8u7iHvkmW++Z5NI74sCO3asMhBAeWP0d
-         x8uY/QYPXGCrEkbFpAImUZF4feeU+woywsAd1FmSy7K2jQQDYKLimsMquBu0ON12LBY4
-         IHgwUkbzAS3tXeATOF4rPEVW4Aenta15rgm5k0MM2fqhqQoicbtzoLkVSNRhl9kCKVq+
-         x4ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690887570; x=1691492370;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6VBAbHASe38ig1WqBIb9v8893q4OXJ4OpB+l/ipx+Bw=;
-        b=L1jAxUoX6l6VAGaoPegLqSF5fVBj9wsBJT3waih/gsceaf5jhqapfZbY8DbeA7gafc
-         4FbV+/KSFbbZ1RR5Yca7FdhNzjKX1b3Xm8/75clIKyxiMuegZ+fRG54Ha4dop2U8klmD
-         zwNRp+1EQ1Q7uyTVOTnttSQD0BfaNu7fmPqto7oyRzcU8lDyFkBL/1UkLp9QgXXWjKzi
-         Iz/f3Z/G+7PiX14/igeUTIOyl4x2N0CSBzwaZfucmGDReSYNn1Y6KxWmcw8Etwyt692b
-         f5cX9qQ8V2uTPXrn7ctNrqQ5deC7lS87+epOmKK8X8OYHApYeQSyykXzOzt9uy2iQgRk
-         42/Q==
-X-Gm-Message-State: ABy/qLZ3PZ4gutoi41cxf7jrBXgKjT+Vh5BUfr3Dy0iI7QOCdLM+v0p8
-        ZIALm7zwblEUzJ6smxfJpVVSW8gvLD44dqbcWy3fYA==
-X-Google-Smtp-Source: APBJJlGpumaNzh3AHdJfP5Ap4nVnWmSUZaZNQ1N3YZhHraeeCFsXhfiGYPpyLKi55EVCsjzQSZ0kXw==
-X-Received: by 2002:a05:6a21:27a4:b0:134:8b50:47cd with SMTP id rn36-20020a056a2127a400b001348b5047cdmr10732791pzb.9.1690887570658;
-        Tue, 01 Aug 2023 03:59:30 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x13-20020a170902a38d00b001b9cf522c0esm10342094pla.97.2023.08.01.03.59.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Aug 2023 03:59:29 -0700 (PDT)
-Message-ID: <64c8e591.170a0220.19e1a.3957@mx.google.com>
-Date:   Tue, 01 Aug 2023 03:59:29 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S234232AbjHALGH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 07:06:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B07B7ABB;
+        Tue,  1 Aug 2023 03:59:59 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA38061531;
+        Tue,  1 Aug 2023 10:59:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC84C433C9;
+        Tue,  1 Aug 2023 10:59:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690887598;
+        bh=cJ6HxF/ThVR/+zvBOoBquVMaIQzGoP/7I5cRuZVbKXk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=GrZtGmBdeIoyU2JiaGKKDBn3Nl8VLA+7Vojpmhlw3zVvHa48VBG3ieI9OytShJwi2
+         U2nN8BFFtw+YOUkkOoSm1BkUwCfjaU2my6TFQ2yTJkdke+21jEZKYk0QTF9wM6KzNc
+         5poC1oTNbMl9oaOWm3lKK7riTCj2rQXfkSzRt4QJTXF1lfTD1lxGZn56rkMo0rGOlT
+         S9c1jBV8AaqiEhfz23ekmGVZ9nTJQ4J6uuNekicEPyjWP0fs2JULp2a20aoICXYuuM
+         bkn6+6+p6T/jRgJ7cw+db3NlG1hEBvbxVnffE0in0mjLKh1n+vYlDqELzaIMGSVrrD
+         781oZ0oHW02Nw==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-522c9d388d2so2553573a12.3;
+        Tue, 01 Aug 2023 03:59:58 -0700 (PDT)
+X-Gm-Message-State: ABy/qLYN8K64K6yFDRrUoPrpgvWop9Zd080I37kbNLkt7lroXplMkD/o
+        o/AItp22Ys/E/r441EYGD/orQOaxv9hAXnGyusU=
+X-Google-Smtp-Source: APBJJlGsjvVUdm0WV1N6LPXXmNwny1y2pnBM4pxtv3fQG12+7vk1ulLoruprtA24W9EggBNpBOOK4g/odFc4GuJfPZk=
+X-Received: by 2002:a50:ec92:0:b0:522:2d1b:5a2e with SMTP id
+ e18-20020a50ec92000000b005222d1b5a2emr2092080edr.12.1690887596515; Tue, 01
+ Aug 2023 03:59:56 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230731095534.22842-1-xingmingzheng@iscas.ac.cn> <20230731150511.38140-1-xingmingzheng@iscas.ac.cn>
+In-Reply-To: <20230731150511.38140-1-xingmingzheng@iscas.ac.cn>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Tue, 1 Aug 2023 18:59:45 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQ75bFm+=dZBV1dijNv5h-kKuAYKHkakgq-seTS5BWOBw@mail.gmail.com>
+Message-ID: <CAJF2gTQ75bFm+=dZBV1dijNv5h-kKuAYKHkakgq-seTS5BWOBw@mail.gmail.com>
+Subject: Re: [PATCH] riscv: Handle zicsr/zifencei issue between gcc and binutils
+To:     Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Cc:     Conor Dooley <conor@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, Bin Meng <bmeng@tinylab.org>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Kernel: v5.15.123-156-gb2c388dc24433
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.123-156-gb2c388dc24433)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
-5.15.123-156-gb2c388dc24433)
+On Mon, Jul 31, 2023 at 11:06=E2=80=AFPM Mingzheng Xing
+<xingmingzheng@iscas.ac.cn> wrote:
+>
+> Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the new=
+er
+> 20191213 version which moves some instructions from the I extension to th=
+e
+> Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
+> that version, we should explicitly specifying Zicsr and Zifencei via -mar=
+ch
+> to cope with the new changes. but this only occurs when binutils >=3D 2.3=
+6
+> and GCC >=3D 11.1.0. It's a different story when binutils < 2.36.
+>
+> binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
+> Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
+> and Zifencei extension for -march. binutils-2.35 does not support the
+> Zifencei extension, and does not need to specify Zicsr and Zifencei when
+> working with GCC >=3D 12.1.0.
+>
+> To make our lives easier, let's relax the check to binutils >=3D 2.36 in
+> CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
+> where clang < 17 or GCC < 11.1.0, we will deal with them in
+> CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+>
+> For more information, please refer to:
+> commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
+> commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang a=
+nd binutils")
+> Link: https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Daed=
+44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
+> Link: https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3D98416dbb0a62579=
+d4a7a4a76bab51b5b52fec2cd [1]
+> Link: https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3D5a1=
+b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
+> Link: https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3D729=
+a53530e86972d1143553a415db34e6e01d5d2 [3]
+> Link: https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3Db03be74bad08c38=
+2da47e048007a78fa3fb4ef49 [4]
+> Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.o=
+rg
+> Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+> ---
+>  arch/riscv/Kconfig                     | 32 +++++++++++++++-----------
+>  arch/riscv/kernel/compat_vdso/Makefile |  8 ++++++-
+>  2 files changed, 26 insertions(+), 14 deletions(-)
+>
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 4c07b9189c86..10e7a7ad175a 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -570,24 +570,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
+>  config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+>         def_bool y
+>         # https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=
+=3Daed44286efa8ae8717a77d94b51ac3614e2ca6dc
+> -       depends on AS_IS_GNU && AS_VERSION >=3D 23800
+> -       help
+> -         Newer binutils versions default to ISA spec version 20191213 wh=
+ich
+> -         moves some instructions from the I extension to the Zicsr and Z=
+ifencei
+> -         extensions.
+> +       # https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3D98416dbb0a6=
+2579d4a7a4a76bab51b5b52fec2cd
+> +       depends on AS_IS_GNU && AS_VERSION >=3D 23600
+> +       help
+> +         Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the=
+ newer
+> +         20191213 version, which moves some instructions from the I exte=
+nsion to
+> +         the Zicsr and Zifencei extensions. This requires explicitly spe=
+cifying
+> +         Zicsr and Zifencei when binutils >=3D 2.38 or GCC >=3D 12.1.0. =
+Zicsr
+> +         and Zifencei are supported in binutils from version 2.36 onward=
+s.
+> +         To make life easier, and avoid forcing toolchains that default =
+to a
+> +         newer ISA spec to version 2.2, relax the check to binutils >=3D=
+ 2.36.
+> +         For clang < 17 or GCC < 11.1.0, for which this is not possible,=
+ this is
+> +         dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+>
+>  config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+>         def_bool y
+>         depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+>         # https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943=
+c0c0d4498694e15bf8a16
+> -       depends on CC_IS_CLANG && CLANG_VERSION < 170000
+> -       help
+> -         Certain versions of clang do not support zicsr and zifencei via=
+ -march
+> -         but newer versions of binutils require it for the reasons noted=
+ in the
+> -         help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. Th=
+is
+> -         option causes an older ISA spec compatible with these older ver=
+sions
+> -         of clang to be passed to GAS, which has the same result as pass=
+ing zicsr
+> -         and zifencei to -march.
+> +       # https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dcommit;h=3Db03be74bad0=
+8c382da47e048007a78fa3fb4ef49
+> +       depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC =
+&& GCC_VERSION < 110100)
+> +       help
+> +         Certain versions of clang and GCC do not support zicsr and zife=
+ncei via
+> +         -march. This option causes an older ISA spec compatible with th=
+ese older
+> +         versions of clang and GCC to be passed to GAS, which has the sa=
+me result
+> +         as passing zicsr and zifencei to -march.
+>
+>  config FPU
+>         bool "FPU support"
+> diff --git a/arch/riscv/kernel/compat_vdso/Makefile b/arch/riscv/kernel/c=
+ompat_vdso/Makefile
+> index 189345773e7e..b86e5e2c3aea 100644
+> --- a/arch/riscv/kernel/compat_vdso/Makefile
+> +++ b/arch/riscv/kernel/compat_vdso/Makefile
+> @@ -11,7 +11,13 @@ compat_vdso-syms +=3D flush_icache
+>  COMPAT_CC :=3D $(CC)
+>  COMPAT_LD :=3D $(LD)
+>
+> -COMPAT_CC_FLAGS :=3D -march=3Drv32g -mabi=3Dilp32
+> +# binutils 2.35 does not support the zifencei extension, but in the ISA
+> +# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
+> +ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+Acked-by: Guo Ren <guoren@kernel.org>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.123-156-gb2c388dc24433/
-
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.123-156-gb2c388dc24433
-Git Commit: b2c388dc24433c87e9fa67ae5aeade83f5625286
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+> +       COMPAT_CC_FLAGS :=3D -march=3Drv32g -mabi=3Dilp32
+> +else
+> +       COMPAT_CC_FLAGS :=3D -march=3Drv32imafd -mabi=3Dilp32
+> +endif
 
 
-Warnings summary:
+>  COMPAT_LD_FLAGS :=3D -melf32lriscv
+>
+>  # Disable attributes, as they're useless and break the build.
+> --
+> 2.34.1
+>
 
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----
-For more info write to <info@kernelci.org>
+--=20
+Best Regards
+ Guo Ren
