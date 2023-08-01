@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AE1B76AEF9
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8967A76ADA7
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233410AbjHAJnp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40586 "EHLO
+        id S233002AbjHAJbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233411AbjHAJn1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:27 -0400
+        with ESMTP id S232588AbjHAJar (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 224205FFE
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E0A2114
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1289E6150B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21647C433C9;
-        Tue,  1 Aug 2023 09:41:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43372614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5210BC433C8;
+        Tue,  1 Aug 2023 09:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882871;
-        bh=WzHTNSA87HLxOruL4ex5cs3VyHc/Wppr3H1ANaX10Xk=;
+        s=korg; t=1690882174;
+        bh=jTbswkzDPhIVOFs1/1bs6Q946Gf651tfGhjo+nxkGzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V7YMaegcOKnoBZzd9/+LF5P9QFS53KnWFIhjj72Y4zoVCzgbvey3DjUnJ3em8ZrR0
-         3tfOsnb28yhPVcWUJA88outUQO7PFcSpyU659aCBx0pQbT8xLqT1AsmcmBY9xlxPge
-         7g7BT+X1gg8ozAzMVS0PImfbJ0ox5Af3/tdeGxMY=
+        b=TW0UugMDvJvhUono55CUv+8tL3Zz49IxlYq5+I3lJ7iB2wWGl2hRlGkJGY2MG3gfe
+         nT/cc4ParUIZnvYrQtvoG0VRcvnFhd8Mh1SJzygcwm5unODRlbxNUFcXTTjjE5D0DM
+         cZPpyoGb657ZBR0M3H/dVM/UjDdgf8zcEhAmk/ok=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 006/239] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
+        patches@lists.linux.dev,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/228] KVM: s390: pv: fix index value of replaced ASCE
 Date:   Tue,  1 Aug 2023 11:17:50 +0200
-Message-ID: <20230801091925.877746747@linuxfoundation.org>
+Message-ID: <20230801091923.278441678@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,103 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
+[ Upstream commit c2fceb59bbda16468bda82b002383bff59de89ab ]
 
-Following process,
+The index field of the struct page corresponding to a guest ASCE should
+be 0. When replacing the ASCE in s390_replace_asce(), the index of the
+new ASCE should also be set to 0.
 
-jbd2_journal_commit_transaction
-// there are several dirty buffer heads in transaction->t_checkpoint_list
-          P1                   wb_workfn
-jbd2_log_do_checkpoint
- if (buffer_locked(bh)) // false
-                            __block_write_full_page
-                             trylock_buffer(bh)
-                             test_clear_buffer_dirty(bh)
- if (!buffer_dirty(bh))
-  __jbd2_journal_remove_checkpoint(jh)
-   if (buffer_write_io_error(bh)) // false
-                             >> bh IO error occurs <<
- jbd2_cleanup_journal_tail
-  __jbd2_update_log_tail
-   jbd2_write_superblock
-   // The bh won't be replayed in next mount.
-, which could corrupt the ext4 image, fetch a reproducer in [Link].
+Having the wrong index might lead to the wrong addresses being passed
+around when notifying pte invalidations, and eventually to validity
+intercepts (VM crash) if the prefix gets unmapped and the notifier gets
+called with the wrong address.
 
-Since writeback process clears buffer dirty after locking buffer head,
-we can fix it by try locking buffer and check dirtiness while buffer is
-locked, the buffer head can be removed if it is neither dirty nor locked.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
-Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: faa2f72cb356 ("KVM: s390: pv: leak the topmost page table when destroy fails")
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-ID: <20230705111937.33472-3-imbrenda@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ arch/s390/mm/gmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 25e3c20eb19f6..c4e0da6db7195 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -221,20 +221,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 		jh = transaction->t_checkpoint_list;
- 		bh = jh2bh(jh);
+diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+index 02d15c8dc92e9..243f673fa6515 100644
+--- a/arch/s390/mm/gmap.c
++++ b/arch/s390/mm/gmap.c
+@@ -2843,6 +2843,7 @@ int s390_replace_asce(struct gmap *gmap)
+ 	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
+ 	if (!page)
+ 		return -ENOMEM;
++	page->index = 0;
+ 	table = page_to_virt(page);
+ 	memcpy(table, gmap->table, 1UL << (CRST_ALLOC_ORDER + PAGE_SHIFT));
  
--		/*
--		 * The buffer may be writing back, or flushing out in the
--		 * last couple of cycles, or re-adding into a new transaction,
--		 * need to check it again until it's unlocked.
--		 */
--		if (buffer_locked(bh)) {
--			get_bh(bh);
--			spin_unlock(&journal->j_list_lock);
--			wait_on_buffer(bh);
--			/* the journal_head may have gone by now */
--			BUFFER_TRACE(bh, "brelse");
--			__brelse(bh);
--			goto retry;
--		}
- 		if (jh->b_transaction != NULL) {
- 			transaction_t *t = jh->b_transaction;
- 			tid_t tid = t->t_tid;
-@@ -269,7 +255,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			spin_lock(&journal->j_list_lock);
- 			goto restart;
- 		}
--		if (!buffer_dirty(bh)) {
-+		if (!trylock_buffer(bh)) {
-+			/*
-+			 * The buffer is locked, it may be writing back, or
-+			 * flushing out in the last couple of cycles, or
-+			 * re-adding into a new transaction, need to check
-+			 * it again until it's unlocked.
-+			 */
-+			get_bh(bh);
-+			spin_unlock(&journal->j_list_lock);
-+			wait_on_buffer(bh);
-+			/* the journal_head may have gone by now */
-+			BUFFER_TRACE(bh, "brelse");
-+			__brelse(bh);
-+			goto retry;
-+		} else if (!buffer_dirty(bh)) {
-+			unlock_buffer(bh);
- 			BUFFER_TRACE(bh, "remove from checkpoint");
- 			/*
- 			 * If the transaction was released or the checkpoint
-@@ -279,6 +280,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			    !transaction->t_checkpoint_list)
- 				goto out;
- 		} else {
-+			unlock_buffer(bh);
- 			/*
- 			 * We are about to write the buffer, it could be
- 			 * raced by some other transaction shrink or buffer
 -- 
 2.39.2
 
