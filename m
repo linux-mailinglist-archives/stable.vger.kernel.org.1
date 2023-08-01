@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F67876AE66
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40DBB76AD34
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233061AbjHAJiR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:38:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35320 "EHLO
+        id S231589AbjHAJ1V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233130AbjHAJhl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E441BD8
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:05 -0700 (PDT)
+        with ESMTP id S231573AbjHAJ0z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BD4213E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8981561507
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71789C433C7;
-        Tue,  1 Aug 2023 09:36:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 183E2614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CDEC433C9;
+        Tue,  1 Aug 2023 09:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882564;
-        bh=Z0j17gW43x9D+CBrLA+IfYo9ja2zAPqOlz84PxwP1ec=;
+        s=korg; t=1690881953;
+        bh=ovo46j2uUpcxdPkVWX7Q6o3B1l97pXUEWQ1HaUeYYl8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dr0XI7WZ/K60ytxa0Ep/67kvL50y5ld17YJH9kZF9dHlZTV7OKbfSqNz5G6Y8TyGA
-         zo2rzEyg5PVF3clpImvMS+r9+K051e1vgMeUMJyE16NJ0mpXWkjUixNOdljhd++UQP
-         O/pw2Jj8VOqm3U1XaBzZTEbqd4G6ipLPxh/ufmb0=
+        b=ezB1MmKOto1wjeOgVk7ZkjgxfdSKsO/SfNkRcvlLFRFol3epkpLrIiq0HEDATnsxf
+         lCXKTRtPSuR5D0HdbcFZRRgHItR3ncWNZzS3JrYuew7iJz6/Hll4AuqMmxkOAqb7tG
+         AgmUQF66FyyzImsGMh2ZDrURrHouTkaJ5RfMHfjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Damien Le Moal <dlemoal@kernel.org>,
+        patches@lists.linux.dev,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/228] ata: pata_ns87415: mark ns87560_tf_read static
+Subject: [PATCH 5.15 089/155] RDMA/bnxt_re: Prevent handling any completions after qp destroy
 Date:   Tue,  1 Aug 2023 11:20:01 +0200
-Message-ID: <20230801091928.051413769@linuxfoundation.org>
+Message-ID: <20230801091913.354687650@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,40 +57,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 3fc2febb0f8ffae354820c1772ec008733237cfa ]
+[ Upstream commit b5bbc6551297447d3cca55cf907079e206e9cd82 ]
 
-The global function triggers a warning because of the missing prototype
+HW may generate completions that indicates QP is destroyed.
+Driver should not be scheduling any more completion handlers
+for this QP, after the QP is destroyed. Since CQs are active
+during the QP destroy, driver may still schedule completion
+handlers. This can cause a race where the destroy_cq and poll_cq
+running simultaneously.
 
-drivers/ata/pata_ns87415.c:263:6: warning: no previous prototype for 'ns87560_tf_read' [-Wmissing-prototypes]
-  263 | void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
+Snippet of kernel panic while doing bnxt_re driver load unload in loop.
+This indicates a poll after the CQ is freed. 
 
-There are no other references to this, so just make it static.
+[77786.481636] Call Trace:
+[77786.481640]  <TASK>
+[77786.481644]  bnxt_re_poll_cq+0x14a/0x620 [bnxt_re]
+[77786.481658]  ? kvm_clock_read+0x14/0x30
+[77786.481693]  __ib_process_cq+0x57/0x190 [ib_core]
+[77786.481728]  ib_cq_poll_work+0x26/0x80 [ib_core]
+[77786.481761]  process_one_work+0x1e5/0x3f0
+[77786.481768]  worker_thread+0x50/0x3a0
+[77786.481785]  ? __pfx_worker_thread+0x10/0x10
+[77786.481790]  kthread+0xe2/0x110
+[77786.481794]  ? __pfx_kthread+0x10/0x10
+[77786.481797]  ret_from_fork+0x2c/0x50
 
-Fixes: c4b5b7b6c4423 ("pata_ns87415: Initial cut at 87415/87560 IDE support")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+To avoid this, complete all completion handlers before returning the
+destroy QP. If free_cq is called soon after destroy_qp,  IB stack
+will cancel the CQ work before invoking the destroy_cq verb and
+this will prevent any race mentioned.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1689322969-25402-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_ns87415.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 12 ++++++++++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 18 ++++++++++++++++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h |  1 +
+ 3 files changed, 31 insertions(+)
 
-diff --git a/drivers/ata/pata_ns87415.c b/drivers/ata/pata_ns87415.c
-index 9dd6bffefb485..602472d4e693e 100644
---- a/drivers/ata/pata_ns87415.c
-+++ b/drivers/ata/pata_ns87415.c
-@@ -260,7 +260,7 @@ static u8 ns87560_check_status(struct ata_port *ap)
-  *	LOCKING:
-  *	Inherited from caller.
-  */
--void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
-+static void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 843d0b5d99acd..87ee616e69384 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -792,7 +792,10 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
+ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
  {
- 	struct ata_ioports *ioaddr = &ap->ioaddr;
+ 	struct bnxt_re_qp *qp = container_of(ib_qp, struct bnxt_re_qp, ib_qp);
++	struct bnxt_qplib_qp *qplib_qp = &qp->qplib_qp;
+ 	struct bnxt_re_dev *rdev = qp->rdev;
++	struct bnxt_qplib_nq *scq_nq = NULL;
++	struct bnxt_qplib_nq *rcq_nq = NULL;
+ 	unsigned int flags;
+ 	int rc;
  
+@@ -826,6 +829,15 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
+ 	ib_umem_release(qp->rumem);
+ 	ib_umem_release(qp->sumem);
+ 
++	/* Flush all the entries of notification queue associated with
++	 * given qp.
++	 */
++	scq_nq = qplib_qp->scq->nq;
++	rcq_nq = qplib_qp->rcq->nq;
++	bnxt_re_synchronize_nq(scq_nq);
++	if (scq_nq != rcq_nq)
++		bnxt_re_synchronize_nq(rcq_nq);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index d44b6a5c90b57..f1aa3e19b6de6 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -386,6 +386,24 @@ static void bnxt_qplib_service_nq(struct tasklet_struct *t)
+ 	spin_unlock_bh(&hwq->lock);
+ }
+ 
++/* bnxt_re_synchronize_nq - self polling notification queue.
++ * @nq      -     notification queue pointer
++ *
++ * This function will start polling entries of a given notification queue
++ * for all pending  entries.
++ * This function is useful to synchronize notification entries while resources
++ * are going away.
++ */
++
++void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq)
++{
++	int budget = nq->budget;
++
++	nq->budget = nq->hwq.max_elements;
++	bnxt_qplib_service_nq(&nq->nq_tasklet);
++	nq->budget = budget;
++}
++
+ static irqreturn_t bnxt_qplib_nq_irq(int irq, void *dev_instance)
+ {
+ 	struct bnxt_qplib_nq *nq = dev_instance;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index f859710f9a7f4..49d89c0808275 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -548,6 +548,7 @@ int bnxt_qplib_process_flush_list(struct bnxt_qplib_cq *cq,
+ 				  struct bnxt_qplib_cqe *cqe,
+ 				  int num_cqes);
+ void bnxt_qplib_flush_cqn_wq(struct bnxt_qplib_qp *qp);
++void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq);
+ 
+ static inline void *bnxt_qplib_get_swqe(struct bnxt_qplib_q *que, u32 *swq_idx)
+ {
 -- 
 2.40.1
 
