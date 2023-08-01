@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A5276AD4D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2011B76AE6B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230448AbjHAJ2T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52718 "EHLO
+        id S233260AbjHAJin (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232967AbjHAJ1n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:43 -0400
+        with ESMTP id S233391AbjHAJiI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65B7BCF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A343C5254
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 470EC614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568DCC433C8;
-        Tue,  1 Aug 2023 09:26:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F9A2614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6D0C433C8;
+        Tue,  1 Aug 2023 09:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881992;
-        bh=VT/91pgKjNCt/BsoG3IcvlM8apZHOO/cvtmaGhHIg+4=;
+        s=korg; t=1690882577;
+        bh=RL9RBXmGnk83Lglxc1dK+n6oKfAAOT68XQuTr52dmGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1C08aXojS9Y2GycXu0cDBq/u+rawHBuQ74JHgMPDVA7iICqUK3YfToO4/BKxBJowp
-         sYvyWiqKuVDdVZeA9cU0l18fClRC2xqYNVHW0a7kdNC5jVxxP88Uk8xrjBqmoCHqkd
-         NNtp5Fn5eILuxLozGAWTZ5/ch9JFp607nByhIkII=
+        b=1dx3ar0Kq9OuEMKRd4V3hsC4oWRBN5wRHKUAWazzcLq8pQEwbyWw5TzhaiB3VwLKf
+         YPgQfVTUylj+rnDyBhNIauD0dgvx0UAIsxYq31/9SpifCRoXnF54fqxoHbRYkdu/1Z
+         eEvTQmO0Yrt6EIrIx/Y4B9lh5gmRYAMflgFrbAYM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ravi Gunasekaran <r-gunasekaran@ti.com>,
-        Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 5.15 102/155] usb: gadget: call usb_gadget_check_config() to verify UDC capability
+        patches@lists.linux.dev, Jerry Meng <jerry-meng@foxmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 156/228] USB: serial: option: support Quectel EM060K_128
 Date:   Tue,  1 Aug 2023 11:20:14 +0200
-Message-ID: <20230801091913.871481175@linuxfoundation.org>
+Message-ID: <20230801091928.530886956@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jerry Meng <jerry-meng@foxmail.com>
 
-commit f4fc01af5b640bc39bd9403b5fd855345a2ad5f8 upstream.
+commit 4f7cab49cecee16120d27c1734cfdf3d6c0e5329 upstream.
 
-The legacy gadget driver omitted calling usb_gadget_check_config()
-to ensure that the USB device controller (UDC) has adequate resources,
-including sufficient endpoint numbers and types, to support the given
-configuration.
+EM060K_128 is EM060K's sub-model, having the same name "Quectel EM060K-GL"
 
-Previously, usb_add_config() was solely invoked by the legacy gadget
-driver. Adds the necessary usb_gadget_check_config() after the bind()
-operation to fix the issue.
+MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
 
-Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
-Cc: stable <stable@kernel.org>
-Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230707230015.494999-1-Frank.Li@nxp.com
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0128 Rev= 5.04
+S:  Manufacturer=Quectel
+S:  Product=Quectel EM060K-GL
+S:  SerialNumber=f6fa08b6
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Jerry Meng <jerry-meng@foxmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |    4 ++++
+ drivers/usb/serial/option.c |    4 ++++
  1 file changed, 4 insertions(+)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1033,6 +1033,10 @@ int usb_add_config(struct usb_composite_
- 		goto done;
- 
- 	status = bind(config);
-+
-+	if (status == 0)
-+		status = usb_gadget_check_config(cdev->gadget);
-+
- 	if (status < 0) {
- 		while (!list_empty(&config->functions)) {
- 			struct usb_function		*f;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -251,6 +251,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
+ #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
+ #define QUECTEL_PRODUCT_EC25			0x0125
++#define QUECTEL_PRODUCT_EM060K_128		0x0128
+ #define QUECTEL_PRODUCT_EG91			0x0191
+ #define QUECTEL_PRODUCT_EG95			0x0195
+ #define QUECTEL_PRODUCT_BG96			0x0296
+@@ -1197,6 +1198,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x40) },
 
 
