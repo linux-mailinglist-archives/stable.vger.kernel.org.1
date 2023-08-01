@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14B2476AEFF
+	by mail.lfdr.de (Postfix) with ESMTP id B0A9176AF00
 	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233338AbjHAJoA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45264 "EHLO
+        id S233495AbjHAJoB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:44:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233343AbjHAJnl (ORCPT
+        with ESMTP id S233358AbjHAJnl (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:43:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63C825254
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:19 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE97B525B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:41:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BBA7461514
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9F5C433C7;
-        Tue,  1 Aug 2023 09:41:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89BEF6150E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:41:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9896BC433C7;
+        Tue,  1 Aug 2023 09:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882877;
-        bh=w+avc87IUA49qshDebpm+os9gnuFYcn9IGfIZQlT+qk=;
+        s=korg; t=1690882880;
+        bh=+0SUBqNuFZ0gY4kODQ9MpJrpgKOhAh0fzVNICRZ7OFQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mO9+p5l0VrYjiZtOPY0Wv1A0n/4SxuWGK+KRKsavTHBzO23fK8lQMbBaqiJpHK65F
-         RSAPJn9JHCWt47k6COBfhvtAc9W6vWzyaR93oydlrh6WJ1ORbwvZtHNf6pVTKcz8tz
-         2juic8KhHyyhLjcuFUWIeT7qTYovFh4PlHDHPY6o=
+        b=bwA38rsYzggLStgr4TIJWaHYhCGu3KFLc8QgJ4PXuhbZYSiosAmlmMgQsUC9hyO5v
+         iFeH/dMlO5vtDTkkURPIxUXFynJRnrDh9oZZzFx0f+p+4AXvFJziacpxW7TJKMvZIf
+         E1lUvkGX3mhLjDTNQDwWlfZ5hIAXnDtsKpNqL4j4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ross Lagerwall <ross.lagerwall@citrix.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 008/239] blk-mq: Fix stall due to recursive flush plug
-Date:   Tue,  1 Aug 2023 11:17:52 +0200
-Message-ID: <20230801091925.947372651@linuxfoundation.org>
+        patches@lists.linux.dev, Haren Myneni <haren@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 009/239] powerpc/pseries/vas: Hold mmap_mutex after mmap lock during window close
+Date:   Tue,  1 Aug 2023 11:17:53 +0200
+Message-ID: <20230801091925.991537760@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
 References: <20230801091925.659598007@linuxfoundation.org>
@@ -56,78 +55,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Haren Myneni <haren@linux.ibm.com>
 
-[ Upstream commit 70904263512a74a3b8941dd9e6e515ca6fc57821 ]
+[ Upstream commit b59c9dc4d9d47b3c4572d826603fde507055b656 ]
 
-We have seen rare IO stalls as follows:
+Commit 8ef7b9e1765a ("powerpc/pseries/vas: Close windows with DLPAR
+core removal") unmaps the window paste address and issues HCALL to
+close window in the hypervisor for migration or DLPAR core removal
+events. So holds mmap_mutex and then mmap lock before unmap the
+paste address. But if the user space issue mmap paste address at
+the same time with the migration event, coproc_mmap() is called
+after holding the mmap lock which can trigger deadlock when trying
+to acquire mmap_mutex in coproc_mmap().
 
-* blk_mq_plug_issue_direct() is entered with an mq_list containing two
-requests.
-* For the first request, it sets last == false and enters the driver's
-queue_rq callback.
-* The driver queue_rq callback indirectly calls schedule() which calls
-blk_flush_plug(). This may happen if the driver has the
-BLK_MQ_F_BLOCKING flag set and is allowed to sleep in ->queue_rq.
-* blk_flush_plug() handles the remaining request in the mq_list. mq_list
-is now empty.
-* The original call to queue_rq resumes (with last == false).
-* The loop in blk_mq_plug_issue_direct() terminates because there are no
-remaining requests in mq_list.
+t1: mmap() call to mmap              t2: Migration event
+    window paste address
 
-The IO is now stalled because the last request submitted to the driver
-had last == false and there was no subsequent call to commit_rqs().
+do_mmap2()                           migration_store()
+ ksys_mmap_pgoff()                    pseries_migrate_partition()
+  vm_mmap_pgoff()                      vas_migration_handler()
+    Acquire mmap lock                   reconfig_close_windows()
+    do_mmap()                             lock mmap_mutex
+     mmap_region()                        Acquire mmap lock
+      call_mmap()                         //Wait for mmap lock
+       coproc_mmap()                        unmap vma
+         lock mmap_mutex                    update window status
+         //wait for mmap_mutex            Release mmap lock
+          mmap vma                        unlock mmap_mutex
+          update window status
+         unlock mmap_mutex
+    ...
+    Release mmap lock
 
-Fix this by returning early in blk_mq_flush_plug_list() if rq_count is 0
-which it will be in the recursive case, rather than checking if the
-mq_list is empty. At the same time, adjust one of the callers to skip
-the mq_list empty check as it is not necessary.
+Fix this deadlock issue by holding mmap lock first before mmap_mutex
+in reconfig_close_windows().
 
-Fixes: dc5fc361d891 ("block: attempt direct issue of plug list")
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230714101106.3635611-1-ross.lagerwall@citrix.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 8ef7b9e1765a ("powerpc/pseries/vas: Close windows with DLPAR core removal")
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230716100506.7833-1-haren@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c | 3 +--
- block/blk-mq.c   | 9 ++++++++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/pseries/vas.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 3fc68b9444791..0434f5a8151fe 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -1141,8 +1141,7 @@ void __blk_flush_plug(struct blk_plug *plug, bool from_schedule)
- {
- 	if (!list_empty(&plug->cb_list))
- 		flush_plug_callbacks(plug, from_schedule);
--	if (!rq_list_empty(plug->mq_list))
--		blk_mq_flush_plug_list(plug, from_schedule);
-+	blk_mq_flush_plug_list(plug, from_schedule);
- 	/*
- 	 * Unconditionally flush out cached requests, even if the unplug
- 	 * event came from schedule. Since we know hold references to the
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 73ed8ccb09ce8..58bf41e8e66c7 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2754,7 +2754,14 @@ void blk_mq_flush_plug_list(struct blk_plug *plug, bool from_schedule)
- {
- 	struct request *rq;
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 9a44a98ba3420..3fbc2a6aa319d 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -744,6 +744,12 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
+ 		}
  
--	if (rq_list_empty(plug->mq_list))
-+	/*
-+	 * We may have been called recursively midway through handling
-+	 * plug->mq_list via a schedule() in the driver's queue_rq() callback.
-+	 * To avoid mq_list changing under our feet, clear rq_count early and
-+	 * bail out specifically if rq_count is 0 rather than checking
-+	 * whether the mq_list is empty.
-+	 */
-+	if (plug->rq_count == 0)
- 		return;
- 	plug->rq_count = 0;
+ 		task_ref = &win->vas_win.task_ref;
++		/*
++		 * VAS mmap (coproc_mmap()) and its fault handler
++		 * (vas_mmap_fault()) are called after holding mmap lock.
++		 * So hold mmap mutex after mmap_lock to avoid deadlock.
++		 */
++		mmap_write_lock(task_ref->mm);
+ 		mutex_lock(&task_ref->mmap_mutex);
+ 		vma = task_ref->vma;
+ 		/*
+@@ -752,7 +758,6 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
+ 		 */
+ 		win->vas_win.status |= flag;
  
+-		mmap_write_lock(task_ref->mm);
+ 		/*
+ 		 * vma is set in the original mapping. But this mapping
+ 		 * is done with mmap() after the window is opened with ioctl.
+@@ -762,8 +767,8 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
+ 		if (vma)
+ 			zap_vma_pages(vma);
+ 
+-		mmap_write_unlock(task_ref->mm);
+ 		mutex_unlock(&task_ref->mmap_mutex);
++		mmap_write_unlock(task_ref->mm);
+ 		/*
+ 		 * Close VAS window in the hypervisor, but do not
+ 		 * free vas_window struct since it may be reused
 -- 
 2.39.2
 
