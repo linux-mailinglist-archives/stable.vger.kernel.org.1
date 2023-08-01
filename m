@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BF0576AEBF
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8964276AD8E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:30:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233332AbjHAJl1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:41:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40466 "EHLO
+        id S232956AbjHAJaO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:30:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233338AbjHAJlC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:41:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDFE526D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:53 -0700 (PDT)
+        with ESMTP id S231732AbjHAJ3t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:29:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F273C13
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:28:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3ADE46126D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A61DC433C8;
-        Tue,  1 Aug 2023 09:38:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74901614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:28:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD07C433C8;
+        Tue,  1 Aug 2023 09:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882732;
-        bh=D6/ImxoH9T4HOxUCh1VIDSXf5DTrEFBySBTS6g6aIAI=;
+        s=korg; t=1690882118;
+        bh=+cSykmEd8jLkDlWWxthMSy1Nu6DBJj/GdLkrby1HzzU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kgTxvGEwVb5bU0U/z6QoCxlJOCHqPbMKwi9KzZsd5krEzg2eN8m2BM9Z6iUlKuwac
-         rEP5m5Nes3P9PTunMD0MUHuclEv1ip22Ot2F9ECU0sSBWfbTjrRZ61Ic2ilf+n1Jvh
-         B7co7bNnpb8Qu7Msww91/7vRWvKWgRrxL+fJR6/Y=
+        b=E9l+BqACnJ0WzIS+YEEVplZjsrrH+5WRQlSiuokhP8hE65rHW8d7NLDtinlPajQQd
+         BujmG6W8WyR9u1G3O4wEN8tlWk1TRSd+R1aLG/v216UPxs5gm8meOR7wBMLQAccUaL
+         92VmHzdOsS0cqQoA1vi6Nd0iRMX54Q2E6fb8G+eQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.1 173/228] Documentation: security-bugs.rst: update preferences when dealing with the linux-distros group
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Ravi Gunasekaran <r-gunasekaran@ti.com>,
+        Frank Li <Frank.Li@nxp.com>, Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 5.15 119/155] usb: cdns3: fix incorrect calculation of ep_buf_size when more than one config
 Date:   Tue,  1 Aug 2023 11:20:31 +0200
-Message-ID: <20230801091929.121060644@linuxfoundation.org>
+Message-ID: <20230801091914.468713046@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,56 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 4fee0915e649bd0cea56dece6d96f8f4643df33c upstream.
+commit 2627335a1329a0d39d8d277994678571c4f21800 upstream.
 
-Because the linux-distros group forces reporters to release information
-about reported bugs, and they impose arbitrary deadlines in having those
-bugs fixed despite not actually being kernel developers, the kernel
-security team recommends not interacting with them at all as this just
-causes confusion and the early-release of reported security problems.
+Previously, the cdns3_gadget_check_config() function in the cdns3 driver
+mistakenly calculated the ep_buf_size by considering only one
+configuration's endpoint information because "claimed" will be clear after
+call usb_gadget_check_config().
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/2023063020-throat-pantyhose-f110@gregkh
+The fix involves checking the private flags EP_CLAIMED instead of relying
+on the "claimed" flag.
+
+Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
+Cc: stable <stable@kernel.org>
+Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Tested-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Link: https://lore.kernel.org/r/20230707230015.494999-2-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/security-bugs.rst |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/security-bugs.rst
-+++ b/Documentation/admin-guide/security-bugs.rst
-@@ -63,20 +63,18 @@ information submitted to the security li
- of the report are treated confidentially even after the embargo has been
- lifted, in perpetuity.
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -3012,12 +3012,14 @@ static int cdns3_gadget_udc_stop(struct
+ static int cdns3_gadget_check_config(struct usb_gadget *gadget)
+ {
+ 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
++	struct cdns3_endpoint *priv_ep;
+ 	struct usb_ep *ep;
+ 	int n_in = 0;
+ 	int total;
  
--Coordination
--------------
-+Coordination with other groups
-+------------------------------
+ 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
+-		if (ep->claimed && (ep->address & USB_DIR_IN))
++		priv_ep = ep_to_cdns3_ep(ep);
++		if ((priv_ep->flags & EP_CLAIMED) && (ep->address & USB_DIR_IN))
+ 			n_in++;
+ 	}
  
--Fixes for sensitive bugs, such as those that might lead to privilege
--escalations, may need to be coordinated with the private
--<linux-distros@vs.openwall.org> mailing list so that distribution vendors
--are well prepared to issue a fixed kernel upon public disclosure of the
--upstream fix. Distros will need some time to test the proposed patch and
--will generally request at least a few days of embargo, and vendor update
--publication prefers to happen Tuesday through Thursday. When appropriate,
--the security team can assist with this coordination, or the reporter can
--include linux-distros from the start. In this case, remember to prefix
--the email Subject line with "[vs]" as described in the linux-distros wiki:
--<http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists>
-+The kernel security team strongly recommends that reporters of potential
-+security issues NEVER contact the "linux-distros" mailing list until
-+AFTER discussing it with the kernel security team.  Do not Cc: both
-+lists at once.  You may contact the linux-distros mailing list after a
-+fix has been agreed on and you fully understand the requirements that
-+doing so will impose on you and the kernel community.
-+
-+The different lists have different goals and the linux-distros rules do
-+not contribute to actually fixing any potential security problems.
- 
- CVE assignment
- --------------
 
 
