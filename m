@@ -2,165 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6936A76BC1D
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 20:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA00B76BC79
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 20:29:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230221AbjHASPv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 14:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34530 "EHLO
+        id S230473AbjHAS3J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 14:29:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbjHASPu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 14:15:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685892684
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 11:14:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690913698;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=aebcEwGh27gNIQ03Imyal/tAdi6Up/DQcokGZ4ckJ+Y=;
-        b=JP58bN7QUHrNXdQgIloZuS+s1GKkOfAHbMzVGMDc5/gwh40KzerDFUhVB3ByuPWoSKrjOe
-        VAz/fx58xAOS+YnJZQ5qttozot31dmDMF1Qn/RaBhxZz7zUUNY5m4rOnUpZkBnpCI5u0gv
-        6Lz5Hm52p6cQZroDGUk93XEwFkzeft8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-GKWLj7cTMdCwuFMy6fVfvQ-1; Tue, 01 Aug 2023 14:14:57 -0400
-X-MC-Unique: GKWLj7cTMdCwuFMy6fVfvQ-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3fe19cf2796so21034255e9.0
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 11:14:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690913696; x=1691518496;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aebcEwGh27gNIQ03Imyal/tAdi6Up/DQcokGZ4ckJ+Y=;
-        b=gTlYYS59pIACelczZy49xE5xOjC6VXfe62ddRxvdvwwIj0+hYBE8k1B4VBRnOTSGOt
-         hUXCOssNYfWzZ+NTkVE84ulut7bBeRlHpx6eq89lxC43CRL4u9Qzt0mAsx6r64PJwC1D
-         +ZlTgYzFq2pQdbzWYxs+2aBEpfz8L5r3tVWjZZnHUQUlcU7wxB77Vt54Zg3Gdy2d2LOg
-         cAllvkD4vZ/7MpVkHX7oJeP9zbClaeRABhbKOsHZM+xeNhGe3YfKaAe3QIj9upynSt/x
-         6D2hSUBw3ls+Sm2taYjLu1F2yIM6mA1FsC3+SMGWBMCEIKHSizLkwQ9O1hcBuJ9AnX8V
-         OwCw==
-X-Gm-Message-State: ABy/qLb22hfE/54qaWa9qjpPfcBe8DaZ+XI7noMi7Ew7fo5s6m455GOs
-        g8IG0+WN2+96QwCXQwZ5f5hTVXM2v5ZCSeELfxJw0CA7OQpCey7mGHhCoD1k8h3IFjVKwMDO5JH
-        ERwzTWp5wwZV1OFhR
-X-Received: by 2002:a05:600c:2991:b0:3fe:1f98:deb7 with SMTP id r17-20020a05600c299100b003fe1f98deb7mr3227758wmd.35.1690913695683;
-        Tue, 01 Aug 2023 11:14:55 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHjAyBiUjEr3ZWEVqJbYhIbSVEFxyFvlkeCGfJy70Ndyc8CB99cVZI0cTQrSpDMu/5BC6J9pA==
-X-Received: by 2002:a05:600c:2991:b0:3fe:1f98:deb7 with SMTP id r17-20020a05600c299100b003fe1f98deb7mr3227726wmd.35.1690913695269;
-        Tue, 01 Aug 2023 11:14:55 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c705:d100:871b:ec55:67d:5247? (p200300cbc705d100871bec55067d5247.dip0.t-ipconnect.de. [2003:cb:c705:d100:871b:ec55:67d:5247])
-        by smtp.gmail.com with ESMTPSA id e19-20020a05600c219300b003fbdbd0a7desm17194996wme.27.2023.08.01.11.14.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Aug 2023 11:14:54 -0700 (PDT)
-Message-ID: <70442e7f-a401-1b4a-3060-ee1d9ac45290@redhat.com>
-Date:   Tue, 1 Aug 2023 20:14:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT
- regions
-Content-Language: en-US
-To:     Lorenzo Stoakes <lstoakes@gmail.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <bhe@redhat.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        linux-fsdevel@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
-        Will Deacon <will@kernel.org>, Mike Galbraith <efault@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        wangkefeng.wang@huawei.com, catalin.marinas@arm.com,
-        ardb@kernel.org,
-        Linux regression tracking <regressions@leemhuis.info>,
-        regressions@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        stable@vger.kernel.org
-References: <20230731215021.70911-1-lstoakes@gmail.com>
- <0af1bc20-8ba2-c6b6-64e6-c1f58d521504@redhat.com>
- <dc30a97b-853e-4d2a-b171-e68fb3ab026c@lucifer.local>
- <b6cb8d7f-f3f3-93c3-3ea0-4c184109a4db@redhat.com>
- <525a3f14-74fa-4c22-9fca-9dab4de8a0c3@lucifer.local>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <525a3f14-74fa-4c22-9fca-9dab4de8a0c3@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229731AbjHAS3G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 14:29:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1672426A6;
+        Tue,  1 Aug 2023 11:28:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A893E61652;
+        Tue,  1 Aug 2023 18:28:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA47C433C9;
+        Tue,  1 Aug 2023 18:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690914528;
+        bh=vgVYV9KtDNmY3fINh0LBn3d28Rjju1adTv5BCcegXgs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=S7KpXyC7YsVn4bCy0g6OarEl0e/GJMlhFwf7pcfPe89AY/qHstW2sdi145peCS7ZO
+         QwfiOyIc8FlBse+4LSJwgChDPTreeGOhjqemo+LRydMLqiMzcqfRaKnMJ6vExlKCKD
+         JO0+p4kMKk5D0QSxF9BtLJanLaBsMjHW/94jQO5fgacPFvO1trl4cSD7+JsCdwjb2M
+         OLwINtfc49eCX+sLR+SeVKwuKNnRp8ZLSBW3DE3E8hqfLT5knjk11BSV1NK/tS4FuN
+         BLiyGW6TQr7pl83T+doEE9qlir/58n0S9DTAW6IDmvcVrHWTs+pN78THJJv49X0npb
+         q/JWwN6P9HzoA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 01 Aug 2023 21:28:42 +0300
+Message-Id: <CUHF67ZOFOTN.1UFE7Q1IFRQMX@suppilovahvero>
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Linus Torvalds" <torvalds@linux-foundation.org>
+Cc:     "Daniil Stas" <daniil.stas@posteo.net>,
+        "Mario Limonciello" <mario.limonciello@amd.com>,
+        <James.Bottomley@hansenpartnership.com>, <Jason@zx2c4.com>,
+        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <regressions@leemhuis.info>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
+X-Mailer: aerc 0.14.0
+References: <20230727183805.69c36d6e@g14>
+ <b1dd27df-744b-3977-0a86-f5dde8e24288@amd.com>
+ <20230727193949.55c18805@g14>
+ <65a1c307-826d-4ca3-0336-07a185684e5d@amd.com>
+ <20230727195019.41abb48d@g14>
+ <67eefe98-e6df-e152-3169-44329e22478d@amd.com>
+ <20230727200527.4080c595@g14>
+ <CAHk-=whqT0PxBazwfjWwoHQQFzZt50tV6Jfgq3iYceKMJtyuUg@mail.gmail.com>
+ <CUGAV1Y993FB.1O2Q691015Z2C@seitikki>
+ <CAHk-=whphk8Jp=NYmnm7Qv+vZ6ScYCz+rV8a2G1nD-AQY3z+mQ@mail.gmail.com>
+In-Reply-To: <CAHk-=whphk8Jp=NYmnm7Qv+vZ6ScYCz+rV8a2G1nD-AQY3z+mQ@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->>> Hm good point, actually, now we're using the bounce buffer we don't need to
->>> avoid usermode hardening any more.
->>>
->>> However since we've established a bounce buffer ourselves its still
->>> appropriate to use _copy_to_iter() as we know the source region is good to
->>> copy from.
->>>
->>> To make life easy I'll just respin with an updated comment :)
->>
->> I'm not too picky this time, no need to resend if everybody else is fine :P
->>
-> 
-> Haha you know the classic Lorenzo respin spiral and want to avoid it I see ;)
+On Mon Jul 31, 2023 at 10:05 PM EEST, Linus Torvalds wrote:
+> On Mon, 31 Jul 2023 at 03:53, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > I quickly carved up a patch (attached), which is only compile tested
+> > because I do not have any AMD hardware at hand.
+>
+> Is there some way to just see "this is a fTPM"?
+>
+> Because honestly, even if AMD is the one that has had stuttering
+> issues, the bigger argument is that there is simply no _point_ in
+> supporting randomness from a firmware source.
+>
+> There is no way anybody should believe that a firmware TPM generates
+> better randomness than we do natively.
+>
+> And there are many reasons to _not_ believe it. The AMD problem is
+> just the most user-visible one.
+>
+> Now, I'm not saying that a fTPM needs to be disabled in general - but
+> I really feel like we should just do
+>
+>  static int tpm_add_hwrng(struct tpm_chip *chip)
+>  {
+>         if (!IS_ENABLED(CONFIG_HW_RANDOM_TPM))
+>                 return 0;
+>         // If it's not hardware, don't treat it as such
+>         if (tpm_is_fTPM(chip))
+>                 return 0;
+>         [...]
+>
+> and be done with it.
+>
+> But hey, if we have no way to see that whole "this is firmware
+> emulation", then just blocking AMD might be the only way.
+>
+>                Linus
 
-Don't want to make your apparently stressful week more stressful. Not 
-this time ;)
+I would disable it inside tpm_crb driver, which is the driver used
+for fTPM's: they are identified by MSFT0101 ACPI identifier.
 
-> 
-> The comment is actually inaccurate now, so to avoid noise + make life easy
-> (maybe) for Andrew here's a fix patch that just corrects the comment:-
-> 
-> ----8<----
-> 
->  From d2b8fb271f21b79048e5630699133f77a93d0481 Mon Sep 17 00:00:00 2001
-> From: Lorenzo Stoakes <lstoakes@gmail.com>
-> Date: Tue, 1 Aug 2023 17:36:08 +0100
-> Subject: [PATCH] fs/proc/kcore: correct comment
-> 
-> Correct comment to be strictly correct about reasoning.
-> 
-> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-> ---
->   fs/proc/kcore.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-> index 3bc689038232..23fc24d16b31 100644
-> --- a/fs/proc/kcore.c
-> +++ b/fs/proc/kcore.c
-> @@ -568,8 +568,8 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
->   					goto out;
->   				}
->   			/*
-> -			 * We use _copy_to_iter() to bypass usermode hardening
-> -			 * which would otherwise prevent this operation.
-> +			 * We know the bounce buffer is safe to copy from, so
-> +			 * use _copy_to_iter() directly.
->   			 */
->   			} else if (_copy_to_iter(buf, tsz, iter) != tsz) {
->   				ret = -EFAULT;
-> --
-> 2.41.0
-> 
+I think the right scope is still AMD because we don't have such
+regressions with Intel fTPM.
 
-Thanks!
+I.e. I would move the helper I created inside tpm_crb driver, and
+a new flag, let's say "TPM_CHIP_FLAG_HWRNG_DISABLED", which tpm_crb
+sets before calling tpm_chip_register().
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Finally, tpm_add_hwrng() needs the following invariant:
 
--- 
-Cheers,
+	if (chip->flags & TPM_CHIP_FLAG_HWRNG_DISABLED)
+		return 0;
 
-David / dhildenb
+How does this sound? I can refine this quickly from my first trial.
 
+BR, Jarkko
