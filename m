@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D32CE76AF87
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A5276AD4D
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbjHAJsd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:48:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
+        id S230448AbjHAJ2T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233826AbjHAJsR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C1B35A9
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:40 -0700 (PDT)
+        with ESMTP id S232967AbjHAJ1n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65B7BCF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C515614FF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CADC433C7;
-        Tue,  1 Aug 2023 09:46:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 470EC614EC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568DCC433C8;
+        Tue,  1 Aug 2023 09:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883199;
-        bh=d6EulDygj8rJMQLCktFMZbCy/cY2VFdd/lQ/qxV5oRQ=;
+        s=korg; t=1690881992;
+        bh=VT/91pgKjNCt/BsoG3IcvlM8apZHOO/cvtmaGhHIg+4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=neE1DMw/buX4oAASV5wYuUdKN7DvnrCfdjFwHtLWWHf5vF3n9cudM6W3thFmR99Gi
-         CNzspalcJV6LkruizS8TGwBj0Q3mbC7L5a7/Nrn8g2FbkBDAdhGIcHiaXOMyRfgBOZ
-         KJmC5K7xwN7j/28/I9yOaZaMQiX74ACe3jLP/4i4=
+        b=1C08aXojS9Y2GycXu0cDBq/u+rawHBuQ74JHgMPDVA7iICqUK3YfToO4/BKxBJowp
+         sYvyWiqKuVDdVZeA9cU0l18fClRC2xqYNVHW0a7kdNC5jVxxP88Uk8xrjBqmoCHqkd
+         NNtp5Fn5eILuxLozGAWTZ5/ch9JFp607nByhIkII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 6.4 150/239] tty: serial: sh-sci: Fix sleeping in atomic context
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Ravi Gunasekaran <r-gunasekaran@ti.com>,
+        Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 5.15 102/155] usb: gadget: call usb_gadget_check_config() to verify UDC capability
 Date:   Tue,  1 Aug 2023 11:20:14 +0200
-Message-ID: <20230801091931.073219207@linuxfoundation.org>
+Message-ID: <20230801091913.871481175@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 57c984f6fe20ebb9306d6e8c09b4f67fe63298c6 upstream.
+commit f4fc01af5b640bc39bd9403b5fd855345a2ad5f8 upstream.
 
-Fix sleeping in atomic context warning as reported by the Smatch static
-checker tool by replacing disable_irq->disable_irq_nosync.
+The legacy gadget driver omitted calling usb_gadget_check_config()
+to ensure that the USB device controller (UDC) has adequate resources,
+including sufficient endpoint numbers and types, to support the given
+configuration.
 
-Reported by: Dan Carpenter <dan.carpenter@linaro.org>
+Previously, usb_add_config() was solely invoked by the legacy gadget
+driver. Adds the necessary usb_gadget_check_config() after the bind()
+operation to fix the issue.
 
-Fixes: 8749061be196 ("tty: serial: sh-sci: Add RZ/G2L SCIFA DMA tx support")
-Cc: stable@kernel.org
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230704154818.406913-1-biju.das.jz@bp.renesas.com
+Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
+Cc: stable <stable@kernel.org>
+Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230707230015.494999-1-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/composite.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 7c9457962a3d..8b7a42e05d6d 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -590,7 +590,7 @@ static void sci_start_tx(struct uart_port *port)
- 	    dma_submit_error(s->cookie_tx)) {
- 		if (s->cfg->regtype == SCIx_RZ_SCIFA_REGTYPE)
- 			/* Switch irq from SCIF to DMA */
--			disable_irq(s->irqs[SCIx_TXI_IRQ]);
-+			disable_irq_nosync(s->irqs[SCIx_TXI_IRQ]);
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1033,6 +1033,10 @@ int usb_add_config(struct usb_composite_
+ 		goto done;
  
- 		s->cookie_tx = 0;
- 		schedule_work(&s->work_tx);
--- 
-2.41.0
-
+ 	status = bind(config);
++
++	if (status == 0)
++		status = usb_gadget_check_config(cdev->gadget);
++
+ 	if (status < 0) {
+ 		while (!list_empty(&config->functions)) {
+ 			struct usb_function		*f;
 
 
