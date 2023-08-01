@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E035276AE43
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BA676AF8E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233100AbjHAJhY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
+        id S233398AbjHAJsn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233085AbjHAJhG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:06 -0400
+        with ESMTP id S233453AbjHAJsa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 776A310DD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05661BD
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2234F6150D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB4BC433C8;
-        Tue,  1 Aug 2023 09:35:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CEA09614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF975C433CD;
+        Tue,  1 Aug 2023 09:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882516;
-        bh=fTKllKbEwv5kyVyIOz0CaOFxiDJp2W7rtAozxdXLQes=;
+        s=korg; t=1690883218;
+        bh=TwtjF2k6/NEhYfnvcgWbO8uaUrougZivXyfV3ZDy/KM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R6t9Y9quKDmwFAFfP5ZDFr1AOZZ158icdkwGQuidMRks4uq9uv75xsiZbMZFvvT57
-         VNN6KUdzJMRhoflZCa+iEkiQaMyadoUPMYMVfS3T1PzGG4nxj6ayyTZy7gzZ13JgYc
-         5WbCmJ6JrZO0AEv0qbj7i+zRhOBWHfsfOPIk/RdQ=
+        b=Ezoo2KD81MiolLXVcWvqXA0N7tS3AbnLVzidjFBqqf5ChO/FsKqPnzz6Jbiylwy90
+         +1mA9QRBKV3R+ZKUFlrfzq+su6iwTmL9oDbx86Gn4JxA3OHr71qUX4qa/fcAMWMcUE
+         rtZSzzmQITcsRh5/5Qx/8tiuYHp2ta/blH4YhX9Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
         Mike Snitzer <snitzer@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/228] dm raid: protect md_stop() with reconfig_mutex
-Date:   Tue,  1 Aug 2023 11:19:51 +0200
-Message-ID: <20230801091927.537776505@linuxfoundation.org>
+Subject: [PATCH 6.4 128/239] dm raid: protect md_stop() with reconfig_mutex
+Date:   Tue,  1 Aug 2023 11:19:52 +0200
+Message-ID: <20230801091930.343040931@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index c3736d1f72310..4b7528dc2fd08 100644
+index 156d44f690096..de3dd6e6bb892 100644
 --- a/drivers/md/dm-raid.c
 +++ b/drivers/md/dm-raid.c
-@@ -3301,8 +3301,8 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+@@ -3298,8 +3298,8 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
  	return 0;
  
  bad_unlock:
@@ -89,7 +89,7 @@ index c3736d1f72310..4b7528dc2fd08 100644
  bad:
  	raid_set_free(rs);
  
-@@ -3313,7 +3313,9 @@ static void raid_dtr(struct dm_target *ti)
+@@ -3310,7 +3310,9 @@ static void raid_dtr(struct dm_target *ti)
  {
  	struct raid_set *rs = ti->private;
  
@@ -100,10 +100,10 @@ index c3736d1f72310..4b7528dc2fd08 100644
  }
  
 diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 829e1bd9bcbf9..45daba0eb9310 100644
+index 18384251399ab..32d7ba8069aef 100644
 --- a/drivers/md/md.c
 +++ b/drivers/md/md.c
-@@ -6269,6 +6269,8 @@ static void __md_stop(struct mddev *mddev)
+@@ -6260,6 +6260,8 @@ static void __md_stop(struct mddev *mddev)
  
  void md_stop(struct mddev *mddev)
  {
