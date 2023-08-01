@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA92A76AD43
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1095576AF7C
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232907AbjHAJ1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
+        id S229585AbjHAJsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232934AbjHAJ1E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85251FE2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:05 -0700 (PDT)
+        with ESMTP id S233422AbjHAJrl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0684210
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B66261504
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88908C433C7;
-        Tue,  1 Aug 2023 09:26:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0899F614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19393C433C8;
+        Tue,  1 Aug 2023 09:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881964;
-        bh=toYJ/CO/OMrBMvBx85taIAekcQ7y1dZXKrYDaxLLK8c=;
+        s=korg; t=1690883171;
+        bh=zWrqDLBbfVLf9E1MiIeCYtFqgxe2aqAS/571T4SVpkc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FR4/bj26EY5wjFvUEPXJgo5LGmjjxdcAwbmQMiYj463XsZli1BpAKV5ioBCzXA1XN
-         BU718KkbEECAzoKRTFV7tgjulkQl14L4qIoQJa7UQhtvoG35Y+EOVvtMsXE3umHKLg
-         XugkpApIb6bHXD1j7nBoVu658xbwbsQCU4UgzAjQ=
+        b=Cxu7f7H9KU2zWDbWTY0qlhoEWhbPxH4pIA2BNw1l4NBcTRQ1T+enXKb6qkxX+zGjA
+         3YOSOdf1WL5yk08BA0RjH2EEuZ+xGLs6/pM3i499lwagR7ANkB7txDRLxVcCFjwldX
+         37Ww5vfi/SUA8kMiRTF2lyFB1WlpmxO55jTOEoEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Mike Snitzer <snitzer@kernel.org>,
+        patches@lists.linux.dev, mhiramat@kernel.org,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/155] dm raid: fix missing reconfig_mutex unlock in raid_ctr() error paths
+Subject: [PATCH 6.4 141/239] tracing: Fix warning in trace_buffered_event_disable()
 Date:   Tue,  1 Aug 2023 11:20:05 +0200
-Message-ID: <20230801091913.501306931@linuxfoundation.org>
+Message-ID: <20230801091930.767796676@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +56,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit bae3028799dc4f1109acc4df37c8ff06f2d8f1a0 ]
+[ Upstream commit dea499781a1150d285c62b26659f62fb00824fce ]
 
-In the error paths 'bad_stripe_cache' and 'bad_check_reshape',
-'reconfig_mutex' is still held after raid_ctr() returns.
+Warning happened in trace_buffered_event_disable() at
+  WARN_ON_ONCE(!trace_buffered_event_ref)
 
-Fixes: 9dbd1aa3a81c ("dm raid: add reshaping support to the target")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+  Call Trace:
+   ? __warn+0xa5/0x1b0
+   ? trace_buffered_event_disable+0x189/0x1b0
+   __ftrace_event_enable_disable+0x19e/0x3e0
+   free_probe_data+0x3b/0xa0
+   unregister_ftrace_function_probe_func+0x6b8/0x800
+   event_enable_func+0x2f0/0x3d0
+   ftrace_process_regex.isra.0+0x12d/0x1b0
+   ftrace_filter_write+0xe6/0x140
+   vfs_write+0x1c9/0x6f0
+   [...]
+
+The cause of the warning is in __ftrace_event_enable_disable(),
+trace_buffered_event_enable() was called once while
+trace_buffered_event_disable() was called twice.
+Reproduction script show as below, for analysis, see the comments:
+ ```
+ #!/bin/bash
+
+ cd /sys/kernel/tracing/
+
+ # 1. Register a 'disable_event' command, then:
+ #    1) SOFT_DISABLED_BIT was set;
+ #    2) trace_buffered_event_enable() was called first time;
+ echo 'cmdline_proc_show:disable_event:initcall:initcall_finish' > \
+     set_ftrace_filter
+
+ # 2. Enable the event registered, then:
+ #    1) SOFT_DISABLED_BIT was cleared;
+ #    2) trace_buffered_event_disable() was called first time;
+ echo 1 > events/initcall/initcall_finish/enable
+
+ # 3. Try to call into cmdline_proc_show(), then SOFT_DISABLED_BIT was
+ #    set again!!!
+ cat /proc/cmdline
+
+ # 4. Unregister the 'disable_event' command, then:
+ #    1) SOFT_DISABLED_BIT was cleared again;
+ #    2) trace_buffered_event_disable() was called second time!!!
+ echo '!cmdline_proc_show:disable_event:initcall:initcall_finish' > \
+     set_ftrace_filter
+ ```
+
+To fix it, IIUC, we can change to call trace_buffered_event_enable() at
+fist time soft-mode enabled, and call trace_buffered_event_disable() at
+last time soft-mode disabled.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230726095804.920457-1-zhengyejian1@huawei.com
+
+Cc: <mhiramat@kernel.org>
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index eba277bb8a1f1..d3ac3b894bdf5 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -3278,15 +3278,19 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	/* Try to adjust the raid4/5/6 stripe cache size to the stripe size */
- 	if (rs_is_raid456(rs)) {
- 		r = rs_set_raid456_stripe_cache(rs);
--		if (r)
-+		if (r) {
-+			mddev_unlock(&rs->md);
- 			goto bad_stripe_cache;
-+		}
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 57e539d479890..32f39eabc0716 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -611,7 +611,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ {
+ 	struct trace_event_call *call = file->event_call;
+ 	struct trace_array *tr = file->tr;
+-	unsigned long file_flags = file->flags;
+ 	int ret = 0;
+ 	int disable;
+ 
+@@ -635,6 +634,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 				break;
+ 			disable = file->flags & EVENT_FILE_FL_SOFT_DISABLED;
+ 			clear_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
++			/* Disable use of trace_buffered_event */
++			trace_buffered_event_disable();
+ 		} else
+ 			disable = !(file->flags & EVENT_FILE_FL_SOFT_MODE);
+ 
+@@ -673,6 +674,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 			if (atomic_inc_return(&file->sm_ref) > 1)
+ 				break;
+ 			set_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
++			/* Enable use of trace_buffered_event */
++			trace_buffered_event_enable();
+ 		}
+ 
+ 		if (!(file->flags & EVENT_FILE_FL_ENABLED)) {
+@@ -712,15 +715,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 		break;
  	}
  
- 	/* Now do an early reshape check */
- 	if (test_bit(RT_FLAG_RESHAPE_RS, &rs->runtime_flags)) {
- 		r = rs_check_reshape(rs);
--		if (r)
-+		if (r) {
-+			mddev_unlock(&rs->md);
- 			goto bad_check_reshape;
-+		}
+-	/* Enable or disable use of trace_buffered_event */
+-	if ((file_flags & EVENT_FILE_FL_SOFT_DISABLED) !=
+-	    (file->flags & EVENT_FILE_FL_SOFT_DISABLED)) {
+-		if (file->flags & EVENT_FILE_FL_SOFT_DISABLED)
+-			trace_buffered_event_enable();
+-		else
+-			trace_buffered_event_disable();
+-	}
+-
+ 	return ret;
+ }
  
- 		/* Restore new, ctr requested layout to perform check */
- 		rs_config_restore(rs, &rs_layout);
-@@ -3295,6 +3299,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 			r = rs->md.pers->check_reshape(&rs->md);
- 			if (r) {
- 				ti->error = "Reshape check failed";
-+				mddev_unlock(&rs->md);
- 				goto bad_check_reshape;
- 			}
- 		}
 -- 
 2.40.1
 
