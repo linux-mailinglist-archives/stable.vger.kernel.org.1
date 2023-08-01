@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40DBB76AD34
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B22E76AF77
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:47:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231589AbjHAJ1V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:27:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52714 "EHLO
+        id S229692AbjHAJrn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:47:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231573AbjHAJ0z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BD4213E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:54 -0700 (PDT)
+        with ESMTP id S229585AbjHAJr2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:47:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74C7D3586
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 183E2614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CDEC433C9;
-        Tue,  1 Aug 2023 09:25:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0840614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D66C433C8;
+        Tue,  1 Aug 2023 09:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881953;
-        bh=ovo46j2uUpcxdPkVWX7Q6o3B1l97pXUEWQ1HaUeYYl8=;
+        s=korg; t=1690883160;
+        bh=A7jwBXNSjN5gvu4/4jtDYWoLTSc+Gb13j8Gfh7ZfjnU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ezB1MmKOto1wjeOgVk7ZkjgxfdSKsO/SfNkRcvlLFRFol3epkpLrIiq0HEDATnsxf
-         lCXKTRtPSuR5D0HdbcFZRRgHItR3ncWNZzS3JrYuew7iJz6/Hll4AuqMmxkOAqb7tG
-         AgmUQF66FyyzImsGMh2ZDrURrHouTkaJ5RfMHfjM=
+        b=ukBh+wcQ0WzQL5tj4lBdv6jU8weXnVDLKr/UDUb9P76Otg/iT12+hWWUkGLHDzhn/
+         +69bVJ1majCx9M74utS3BFWKqx9uMjHKvp2NKlhhfBqPE4KDpiOVxZFm60vHeVeCwm
+         wNPz4+I7Ju6cKhBn7uf+F8P7htm0dXsF0PeKnchs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
+        syzbot+7574ebfe589049630608@syzkaller.appspotmail.com,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/155] RDMA/bnxt_re: Prevent handling any completions after qp destroy
+Subject: [PATCH 6.4 137/239] iommufd: IOMMUFD_DESTROY should not increase the refcount
 Date:   Tue,  1 Aug 2023 11:20:01 +0200
-Message-ID: <20230801091913.354687650@linuxfoundation.org>
+Message-ID: <20230801091930.632624012@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,122 +56,253 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit b5bbc6551297447d3cca55cf907079e206e9cd82 ]
+[ Upstream commit 99f98a7c0d6985d5507c8130a981972e4b7b3bdc ]
 
-HW may generate completions that indicates QP is destroyed.
-Driver should not be scheduling any more completion handlers
-for this QP, after the QP is destroyed. Since CQs are active
-during the QP destroy, driver may still schedule completion
-handlers. This can cause a race where the destroy_cq and poll_cq
-running simultaneously.
+syzkaller found a race where IOMMUFD_DESTROY increments the refcount:
 
-Snippet of kernel panic while doing bnxt_re driver load unload in loop.
-This indicates a poll after the CQ is freed. 
+       obj = iommufd_get_object(ucmd->ictx, cmd->id, IOMMUFD_OBJ_ANY);
+       if (IS_ERR(obj))
+               return PTR_ERR(obj);
+       iommufd_ref_to_users(obj);
+       /* See iommufd_ref_to_users() */
+       if (!iommufd_object_destroy_user(ucmd->ictx, obj))
 
-[77786.481636] Call Trace:
-[77786.481640]  <TASK>
-[77786.481644]  bnxt_re_poll_cq+0x14a/0x620 [bnxt_re]
-[77786.481658]  ? kvm_clock_read+0x14/0x30
-[77786.481693]  __ib_process_cq+0x57/0x190 [ib_core]
-[77786.481728]  ib_cq_poll_work+0x26/0x80 [ib_core]
-[77786.481761]  process_one_work+0x1e5/0x3f0
-[77786.481768]  worker_thread+0x50/0x3a0
-[77786.481785]  ? __pfx_worker_thread+0x10/0x10
-[77786.481790]  kthread+0xe2/0x110
-[77786.481794]  ? __pfx_kthread+0x10/0x10
-[77786.481797]  ret_from_fork+0x2c/0x50
+As part of the sequence to join the two existing primitives together.
 
-To avoid this, complete all completion handlers before returning the
-destroy QP. If free_cq is called soon after destroy_qp,  IB stack
-will cancel the CQ work before invoking the destroy_cq verb and
-this will prevent any race mentioned.
+Allowing the refcount the be elevated without holding the destroy_rwsem
+violates the assumption that all temporary refcount elevations are
+protected by destroy_rwsem. Racing IOMMUFD_DESTROY with
+iommufd_object_destroy_user() will cause spurious failures:
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1689322969-25402-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+  WARNING: CPU: 0 PID: 3076 at drivers/iommu/iommufd/device.c:477 iommufd_access_destroy+0x18/0x20 drivers/iommu/iommufd/device.c:478
+  Modules linked in:
+  CPU: 0 PID: 3076 Comm: syz-executor.0 Not tainted 6.3.0-rc1-syzkaller #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
+  RIP: 0010:iommufd_access_destroy+0x18/0x20 drivers/iommu/iommufd/device.c:477
+  Code: e8 3d 4e 00 00 84 c0 74 01 c3 0f 0b c3 0f 1f 44 00 00 f3 0f 1e fa 48 89 fe 48 8b bf a8 00 00 00 e8 1d 4e 00 00 84 c0 74 01 c3 <0f> 0b c3 0f 1f 44 00 00 41 57 41 56 41 55 4c 8d ae d0 00 00 00 41
+  RSP: 0018:ffffc90003067e08 EFLAGS: 00010246
+  RAX: 0000000000000000 RBX: ffff888109ea0300 RCX: 0000000000000000
+  RDX: 0000000000000001 RSI: 0000000000000000 RDI: 00000000ffffffff
+  RBP: 0000000000000004 R08: 0000000000000000 R09: ffff88810bbb3500
+  R10: ffff88810bbb3e48 R11: 0000000000000000 R12: ffffc90003067e88
+  R13: ffffc90003067ea8 R14: ffff888101249800 R15: 00000000fffffffe
+  FS:  00007ff7254fe6c0(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000555557262da8 CR3: 000000010a6fd000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   iommufd_test_create_access drivers/iommu/iommufd/selftest.c:596 [inline]
+   iommufd_test+0x71c/0xcf0 drivers/iommu/iommufd/selftest.c:813
+   iommufd_fops_ioctl+0x10f/0x1b0 drivers/iommu/iommufd/main.c:337
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:870 [inline]
+   __se_sys_ioctl fs/ioctl.c:856 [inline]
+   __x64_sys_ioctl+0x84/0xc0 fs/ioctl.c:856
+   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+   do_syscall_64+0x38/0x80 arch/x86/entry/common.c:80
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+The solution is to not increment the refcount on the IOMMUFD_DESTROY path
+at all. Instead use the xa_lock to serialize everything. The refcount
+check == 1 and xa_erase can be done under a single critical region. This
+avoids the need for any refcount incrementing.
+
+It has the downside that if userspace races destroy with other operations
+it will get an EBUSY instead of waiting, but this is kind of racing is
+already dangerous.
+
+Fixes: 2ff4bed7fee7 ("iommufd: File descriptor, context, kconfig and makefiles")
+Link: https://lore.kernel.org/r/2-v1-85aacb2af554+bc-iommufd_syz3_jgg@nvidia.com
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reported-by: syzbot+7574ebfe589049630608@syzkaller.appspotmail.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 12 ++++++++++++
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 18 ++++++++++++++++++
- drivers/infiniband/hw/bnxt_re/qplib_fp.h |  1 +
- 3 files changed, 31 insertions(+)
+ drivers/iommu/iommufd/device.c          | 12 +---
+ drivers/iommu/iommufd/iommufd_private.h | 15 ++++-
+ drivers/iommu/iommufd/main.c            | 78 +++++++++++++++++++------
+ 3 files changed, 75 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 843d0b5d99acd..87ee616e69384 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -792,7 +792,10 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
- int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
+diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
+index 29d05663d4d17..ed2937a4e196f 100644
+--- a/drivers/iommu/iommufd/device.c
++++ b/drivers/iommu/iommufd/device.c
+@@ -109,10 +109,7 @@ EXPORT_SYMBOL_NS_GPL(iommufd_device_bind, IOMMUFD);
+  */
+ void iommufd_device_unbind(struct iommufd_device *idev)
  {
- 	struct bnxt_re_qp *qp = container_of(ib_qp, struct bnxt_re_qp, ib_qp);
-+	struct bnxt_qplib_qp *qplib_qp = &qp->qplib_qp;
- 	struct bnxt_re_dev *rdev = qp->rdev;
-+	struct bnxt_qplib_nq *scq_nq = NULL;
-+	struct bnxt_qplib_nq *rcq_nq = NULL;
- 	unsigned int flags;
- 	int rc;
+-	bool was_destroyed;
+-
+-	was_destroyed = iommufd_object_destroy_user(idev->ictx, &idev->obj);
+-	WARN_ON(!was_destroyed);
++	iommufd_object_destroy_user(idev->ictx, &idev->obj);
+ }
+ EXPORT_SYMBOL_NS_GPL(iommufd_device_unbind, IOMMUFD);
  
-@@ -826,6 +829,15 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
- 	ib_umem_release(qp->rumem);
- 	ib_umem_release(qp->sumem);
+@@ -382,7 +379,7 @@ void iommufd_device_detach(struct iommufd_device *idev)
+ 	mutex_unlock(&hwpt->devices_lock);
  
-+	/* Flush all the entries of notification queue associated with
-+	 * given qp.
-+	 */
-+	scq_nq = qplib_qp->scq->nq;
-+	rcq_nq = qplib_qp->rcq->nq;
-+	bnxt_re_synchronize_nq(scq_nq);
-+	if (scq_nq != rcq_nq)
-+		bnxt_re_synchronize_nq(rcq_nq);
+ 	if (hwpt->auto_domain)
+-		iommufd_object_destroy_user(idev->ictx, &hwpt->obj);
++		iommufd_object_deref_user(idev->ictx, &hwpt->obj);
+ 	else
+ 		refcount_dec(&hwpt->obj.users);
+ 
+@@ -456,10 +453,7 @@ EXPORT_SYMBOL_NS_GPL(iommufd_access_create, IOMMUFD);
+  */
+ void iommufd_access_destroy(struct iommufd_access *access)
+ {
+-	bool was_destroyed;
+-
+-	was_destroyed = iommufd_object_destroy_user(access->ictx, &access->obj);
+-	WARN_ON(!was_destroyed);
++	iommufd_object_destroy_user(access->ictx, &access->obj);
+ }
+ EXPORT_SYMBOL_NS_GPL(iommufd_access_destroy, IOMMUFD);
+ 
+diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+index b38e67d1988bd..f9790983699ce 100644
+--- a/drivers/iommu/iommufd/iommufd_private.h
++++ b/drivers/iommu/iommufd/iommufd_private.h
+@@ -176,8 +176,19 @@ void iommufd_object_abort_and_destroy(struct iommufd_ctx *ictx,
+ 				      struct iommufd_object *obj);
+ void iommufd_object_finalize(struct iommufd_ctx *ictx,
+ 			     struct iommufd_object *obj);
+-bool iommufd_object_destroy_user(struct iommufd_ctx *ictx,
+-				 struct iommufd_object *obj);
++void __iommufd_object_destroy_user(struct iommufd_ctx *ictx,
++				   struct iommufd_object *obj, bool allow_fail);
++static inline void iommufd_object_destroy_user(struct iommufd_ctx *ictx,
++					       struct iommufd_object *obj)
++{
++	__iommufd_object_destroy_user(ictx, obj, false);
++}
++static inline void iommufd_object_deref_user(struct iommufd_ctx *ictx,
++					     struct iommufd_object *obj)
++{
++	__iommufd_object_destroy_user(ictx, obj, true);
++}
 +
+ struct iommufd_object *_iommufd_object_alloc(struct iommufd_ctx *ictx,
+ 					     size_t size,
+ 					     enum iommufd_object_type type);
+diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
+index 3fbe636c3d8a6..4cf5f73f27084 100644
+--- a/drivers/iommu/iommufd/main.c
++++ b/drivers/iommu/iommufd/main.c
+@@ -116,14 +116,56 @@ struct iommufd_object *iommufd_get_object(struct iommufd_ctx *ictx, u32 id,
+ 	return obj;
+ }
+ 
++/*
++ * Remove the given object id from the xarray if the only reference to the
++ * object is held by the xarray. The caller must call ops destroy().
++ */
++static struct iommufd_object *iommufd_object_remove(struct iommufd_ctx *ictx,
++						    u32 id, bool extra_put)
++{
++	struct iommufd_object *obj;
++	XA_STATE(xas, &ictx->objects, id);
++
++	xa_lock(&ictx->objects);
++	obj = xas_load(&xas);
++	if (xa_is_zero(obj) || !obj) {
++		obj = ERR_PTR(-ENOENT);
++		goto out_xa;
++	}
++
++	/*
++	 * If the caller is holding a ref on obj we put it here under the
++	 * spinlock.
++	 */
++	if (extra_put)
++		refcount_dec(&obj->users);
++
++	if (!refcount_dec_if_one(&obj->users)) {
++		obj = ERR_PTR(-EBUSY);
++		goto out_xa;
++	}
++
++	xas_store(&xas, NULL);
++	if (ictx->vfio_ioas == container_of(obj, struct iommufd_ioas, obj))
++		ictx->vfio_ioas = NULL;
++
++out_xa:
++	xa_unlock(&ictx->objects);
++
++	/* The returned object reference count is zero */
++	return obj;
++}
++
+ /*
+  * The caller holds a users refcount and wants to destroy the object. Returns
+  * true if the object was destroyed. In all cases the caller no longer has a
+  * reference on obj.
+  */
+-bool iommufd_object_destroy_user(struct iommufd_ctx *ictx,
+-				 struct iommufd_object *obj)
++void __iommufd_object_destroy_user(struct iommufd_ctx *ictx,
++				   struct iommufd_object *obj, bool allow_fail)
+ {
++	struct iommufd_object *ret;
++
+ 	/*
+ 	 * The purpose of the destroy_rwsem is to ensure deterministic
+ 	 * destruction of objects used by external drivers and destroyed by this
+@@ -131,22 +173,22 @@ bool iommufd_object_destroy_user(struct iommufd_ctx *ictx,
+ 	 * side of this, such as during ioctl execution.
+ 	 */
+ 	down_write(&obj->destroy_rwsem);
+-	xa_lock(&ictx->objects);
+-	refcount_dec(&obj->users);
+-	if (!refcount_dec_if_one(&obj->users)) {
+-		xa_unlock(&ictx->objects);
+-		up_write(&obj->destroy_rwsem);
+-		return false;
+-	}
+-	__xa_erase(&ictx->objects, obj->id);
+-	if (ictx->vfio_ioas && &ictx->vfio_ioas->obj == obj)
+-		ictx->vfio_ioas = NULL;
+-	xa_unlock(&ictx->objects);
++	ret = iommufd_object_remove(ictx, obj->id, true);
+ 	up_write(&obj->destroy_rwsem);
+ 
++	if (allow_fail && IS_ERR(ret))
++		return;
++
++	/*
++	 * If there is a bug and we couldn't destroy the object then we did put
++	 * back the caller's refcount and will eventually try to free it again
++	 * during close.
++	 */
++	if (WARN_ON(IS_ERR(ret)))
++		return;
++
+ 	iommufd_object_ops[obj->type].destroy(obj);
+ 	kfree(obj);
+-	return true;
+ }
+ 
+ static int iommufd_destroy(struct iommufd_ucmd *ucmd)
+@@ -154,13 +196,11 @@ static int iommufd_destroy(struct iommufd_ucmd *ucmd)
+ 	struct iommu_destroy *cmd = ucmd->cmd;
+ 	struct iommufd_object *obj;
+ 
+-	obj = iommufd_get_object(ucmd->ictx, cmd->id, IOMMUFD_OBJ_ANY);
++	obj = iommufd_object_remove(ucmd->ictx, cmd->id, false);
+ 	if (IS_ERR(obj))
+ 		return PTR_ERR(obj);
+-	iommufd_ref_to_users(obj);
+-	/* See iommufd_ref_to_users() */
+-	if (!iommufd_object_destroy_user(ucmd->ictx, obj))
+-		return -EBUSY;
++	iommufd_object_ops[obj->type].destroy(obj);
++	kfree(obj);
  	return 0;
  }
  
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index d44b6a5c90b57..f1aa3e19b6de6 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -386,6 +386,24 @@ static void bnxt_qplib_service_nq(struct tasklet_struct *t)
- 	spin_unlock_bh(&hwq->lock);
- }
- 
-+/* bnxt_re_synchronize_nq - self polling notification queue.
-+ * @nq      -     notification queue pointer
-+ *
-+ * This function will start polling entries of a given notification queue
-+ * for all pending  entries.
-+ * This function is useful to synchronize notification entries while resources
-+ * are going away.
-+ */
-+
-+void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq)
-+{
-+	int budget = nq->budget;
-+
-+	nq->budget = nq->hwq.max_elements;
-+	bnxt_qplib_service_nq(&nq->nq_tasklet);
-+	nq->budget = budget;
-+}
-+
- static irqreturn_t bnxt_qplib_nq_irq(int irq, void *dev_instance)
- {
- 	struct bnxt_qplib_nq *nq = dev_instance;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index f859710f9a7f4..49d89c0808275 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -548,6 +548,7 @@ int bnxt_qplib_process_flush_list(struct bnxt_qplib_cq *cq,
- 				  struct bnxt_qplib_cqe *cqe,
- 				  int num_cqes);
- void bnxt_qplib_flush_cqn_wq(struct bnxt_qplib_qp *qp);
-+void bnxt_re_synchronize_nq(struct bnxt_qplib_nq *nq);
- 
- static inline void *bnxt_qplib_get_swqe(struct bnxt_qplib_q *que, u32 *swq_idx)
- {
 -- 
 2.40.1
 
