@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67D4876AFBC
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69FA176AD9E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233703AbjHAJt7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:49:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50696 "EHLO
+        id S232822AbjHAJbA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:31:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230329AbjHAJts (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:48 -0400
+        with ESMTP id S232960AbjHAJag (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B64EFE5C
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9C33C0B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 535356150D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F91EC433CA;
-        Tue,  1 Aug 2023 09:48:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68332614DF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A642C433C7;
+        Tue,  1 Aug 2023 09:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883332;
-        bh=XhABoXK3MZ6InE6Cx6RgE3IE/CjlFi6FEWpFYGZGxb8=;
+        s=korg; t=1690882157;
+        bh=cNmlzYkTlShDZRA6sTKyA75Va4rh7bvaixOrFb8LbM4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JfnCsIFm2RGJhKl2hukxcj5nIsgEDFMHuj9loooCl2GfLk56yFj+fHEjnR+GaXajL
-         W8m8rky0xrDWx2xIT4K0sWUDL/63h9hkqEpjiZPYclJyFJS0R/PDhlck0oeRDvLuel
-         RGSam4+QeUC7Hoa03AGc3umvzsa77S2X84paYkwQ=
+        b=IdwVB+yUWg4rjZHY9fuVMpt6lD/KpieX2YsSBlYX0TQlVm0dAsS1XUzs0zDL0aCnx
+         teSMlfR6mEJE/NoAZ6JkeL35Ho9Ezh5K7hbLYoalLnIQqI/AYvlJvuppkgdHbN4zdf
+         Vs5PpU1TYOs766NjMZ4i35pdFF5tIRpNbM6qqEj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 199/239] proc/vmcore: fix signedness bug in read_from_oldmem()
+        patches@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hagar Hemdan <hagarhem@amazon.de>
+Subject: [PATCH 5.15 151/155] cpufreq: intel_pstate: Drop ACPI _PSS states table patching
 Date:   Tue,  1 Aug 2023 11:21:03 +0200
-Message-ID: <20230801091932.949476526@linuxfoundation.org>
+Message-ID: <20230801091915.524439278@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,45 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 641db40f3afe7998011bfabc726dba3e698f8196 upstream.
+commit e8a0e30b742f76ebd0f3b196973df4bf65d8fbbb upstream.
 
-The bug is the error handling:
+After making acpi_processor_get_platform_limit() use the "no limit"
+value for its frequency QoS request when _PPC returns 0, it is not
+necessary to replace the frequency corresponding to the first _PSS
+return package entry with the maximum turbo frequency of the given
+CPU in intel_pstate_init_acpi_perf_limits() any more, so drop the
+code doing that along with the comment explaining it.
 
-	if (tmp < nr_bytes) {
-
-"tmp" can hold negative error codes but because "nr_bytes" is type size_t
-the negative error codes are treated as very high positive values
-(success).  Fix this by changing "nr_bytes" to type ssize_t.  The
-"nr_bytes" variable is used to store values between 1 and PAGE_SIZE and
-they can fit in ssize_t without any issue.
-
-Link: https://lkml.kernel.org/r/b55f7eed-1c65-4adc-95d1-6c7c65a54a6e@moroto.mountain
-Fixes: 5d8de293c224 ("vmcore: convert copy_oldmem_page() to take an iov_iter")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Hagar Hemdan <hagarhem@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/vmcore.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/intel_pstate.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -132,7 +132,7 @@ ssize_t read_from_oldmem(struct iov_iter
- 			 u64 *ppos, bool encrypted)
- {
- 	unsigned long pfn, offset;
--	size_t nr_bytes;
-+	ssize_t nr_bytes;
- 	ssize_t read = 0, tmp;
- 	int idx;
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -448,20 +448,6 @@ static void intel_pstate_init_acpi_perf_
+ 			 (u32) cpu->acpi_perf_data.states[i].control);
+ 	}
+ 
+-	/*
+-	 * The _PSS table doesn't contain whole turbo frequency range.
+-	 * This just contains +1 MHZ above the max non turbo frequency,
+-	 * with control value corresponding to max turbo ratio. But
+-	 * when cpufreq set policy is called, it will call with this
+-	 * max frequency, which will cause a reduced performance as
+-	 * this driver uses real max turbo frequency as the max
+-	 * frequency. So correct this frequency in _PSS table to
+-	 * correct max turbo frequency based on the turbo state.
+-	 * Also need to convert to MHz as _PSS freq is in MHz.
+-	 */
+-	if (!global.turbo_disabled)
+-		cpu->acpi_perf_data.states[0].core_frequency =
+-					policy->cpuinfo.max_freq / 1000;
+ 	cpu->valid_pss_table = true;
+ 	pr_debug("_PPC limits will be enforced\n");
  
 
 
