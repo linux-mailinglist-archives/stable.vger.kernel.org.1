@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1828D76AD4F
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C55A76AE6E
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbjHAJ2U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57508 "EHLO
+        id S233217AbjHAJiv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230281AbjHAJ1q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E39D2269F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:38 -0700 (PDT)
+        with ESMTP id S233218AbjHAJih (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:38:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA5F527F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5422614F5
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB77C433C7;
-        Tue,  1 Aug 2023 09:26:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CFC8061510
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0734C433C7;
+        Tue,  1 Aug 2023 09:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881998;
-        bh=5OuVzdwn1BQzTT9FwN4c1HtEgiOsoCPh1mGjqBIGJMo=;
+        s=korg; t=1690882583;
+        bh=9ONyQ4ihBn7mfC8UgUwyjEKAdvj/wr1Iu5ByNyvxK8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b5abTMP4i9UbgmtUK69Q3VLmvTMX52QkfVKThRFtV2xjb39LSPQUmAsWRFl1vZSG8
-         xwUENE/GbbKMfbR4ZfNfG2vd9mFm31DyFDnv05Avj2ZH0y6AV/V5ISpKkT7DgFMaAn
-         sMthePuEv/RF9JE8ELepI1CwGPkc/Ma6w6Dx4FqM=
+        b=bmXlvjvLhPi+iqs2cCyaobF6zPV9N4DI7W/9k4eXk2GYZs3IqRtDStHQCK7WQHMcE
+         lb00880fdaq3t6S4EBqxELxpCQy6jGmlV4ipn7NkITmjVJAQK2NCtBRKh7D5VjlXfr
+         ZvTweZg1NnN1SDYVuoA3IzT5WlVBTxiL0PEprZII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Zhang <zheng.zhang@email.ucr.edu>,
-        Kees Cook <keescook@chromium.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.15 104/155] KVM: Grab a reference to KVM for VM and vCPU stats file descriptors
+        patches@lists.linux.dev,
+        Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>,
+        Oliver Neukum <oneukum@suse.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 158/228] USB: serial: simple: add Kaufmann RKS+CAN VCP
 Date:   Tue,  1 Aug 2023 11:20:16 +0200
-Message-ID: <20230801091913.951630144@linuxfoundation.org>
+Message-ID: <20230801091928.598424971@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,89 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit eed3013faa401aae662398709410a59bb0646e32 upstream.
+commit dd92c8a1f99bcd166204ffc219ea5a23dd65d64f upstream.
 
-Grab a reference to KVM prior to installing VM and vCPU stats file
-descriptors to ensure the underlying VM and vCPU objects are not freed
-until the last reference to any and all stats fds are dropped.
+Add the device and product ID for this CAN bus interface / license
+dongle. The device is usable either directly from user space or can be
+attached to a kernel CAN interface with slcan_attach.
 
-Note, the stats paths manually invoke fd_install() and so don't need to
-grab a reference before creating the file.
-
-Fixes: ce55c049459c ("KVM: stats: Support binary stats retrieval for a VCPU")
-Fixes: fcfe1baeddbf ("KVM: stats: Support binary stats retrieval for a VM")
-Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
-Closes: https://lore.kernel.org/all/CAC_GQSr3xzZaeZt85k_RCBd5kfiOve8qXo7a81Cq53LuVQ5r=Q@mail.gmail.com
+Reported-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Tested-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+[ johan: amend commit message and move entries in sort order ]
 Cc: stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Message-Id: <20230711230131.648752-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- virt/kvm/kvm_main.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/usb/serial/usb-serial-simple.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3804,8 +3804,17 @@ static ssize_t kvm_vcpu_stats_read(struc
- 			sizeof(vcpu->stat), user_buffer, size, offset);
- }
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -63,6 +63,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
  
-+static int kvm_vcpu_stats_release(struct inode *inode, struct file *file)
-+{
-+	struct kvm_vcpu *vcpu = file->private_data;
++/* KAUFMANN RKS+CAN VCP */
++#define KAUFMANN_IDS()			\
++	{ USB_DEVICE(0x16d0, 0x0870) }
++DEVICE(kaufmann, KAUFMANN_IDS);
 +
-+	kvm_put_kvm(vcpu->kvm);
-+	return 0;
-+}
-+
- static const struct file_operations kvm_vcpu_stats_fops = {
- 	.read = kvm_vcpu_stats_read,
-+	.release = kvm_vcpu_stats_release,
- 	.llseek = noop_llseek,
- };
- 
-@@ -3826,6 +3835,9 @@ static int kvm_vcpu_ioctl_get_stats_fd(s
- 		put_unused_fd(fd);
- 		return PTR_ERR(file);
- 	}
-+
-+	kvm_get_kvm(vcpu->kvm);
-+
- 	file->f_mode |= FMODE_PREAD;
- 	fd_install(fd, file);
- 
-@@ -4409,8 +4421,17 @@ static ssize_t kvm_vm_stats_read(struct
- 				sizeof(kvm->stat), user_buffer, size, offset);
- }
- 
-+static int kvm_vm_stats_release(struct inode *inode, struct file *file)
-+{
-+	struct kvm *kvm = file->private_data;
-+
-+	kvm_put_kvm(kvm);
-+	return 0;
-+}
-+
- static const struct file_operations kvm_vm_stats_fops = {
- 	.read = kvm_vm_stats_read,
-+	.release = kvm_vm_stats_release,
- 	.llseek = noop_llseek,
- };
- 
-@@ -4429,6 +4450,9 @@ static int kvm_vm_ioctl_get_stats_fd(str
- 		put_unused_fd(fd);
- 		return PTR_ERR(file);
- 	}
-+
-+	kvm_get_kvm(kvm);
-+
- 	file->f_mode |= FMODE_PREAD;
- 	fd_install(fd, file);
- 
+ /* Libtransistor USB console */
+ #define LIBTRANSISTOR_IDS()			\
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+@@ -124,6 +129,7 @@ static struct usb_serial_driver * const
+ 	&funsoft_device,
+ 	&flashloader_device,
+ 	&google_device,
++	&kaufmann_device,
+ 	&libtransistor_device,
+ 	&vivopay_device,
+ 	&moto_modem_device,
+@@ -142,6 +148,7 @@ static const struct usb_device_id id_tab
+ 	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
+ 	GOOGLE_IDS(),
++	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+ 	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
 
 
