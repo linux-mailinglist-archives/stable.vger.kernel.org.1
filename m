@@ -2,137 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE1176BAC8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E7A76BAC6
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 19:07:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjHARIB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 13:08:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45968 "EHLO
+        id S234416AbjHARHZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 13:07:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234560AbjHARHr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:07:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C56268D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 10:06:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690909508;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=iHJDHQhMPESpDTCc7d6m6CZ7cgDoS6a5SZpOnu6DMTE=;
-        b=ZpZfSliZeCAyVHnq07/nNC0aK60SdRbYESozhXODI57HIuorJIw1JwSiwxIT49YBdRD9Fo
-        W01E/klqO4ngmanIJ0JU6bkijwWepgR+35PyAW7bpMK2xdtykZJA6Qa/2bNPKWFlKFhJ2L
-        mPEYU2szrEspg3eHAnvduUydszwbXHU=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-t_Ys9G0TMjCM6EnReFUi8A-1; Tue, 01 Aug 2023 13:05:04 -0400
-X-MC-Unique: t_Ys9G0TMjCM6EnReFUi8A-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-40ec97d5b60so5348781cf.1
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 10:05:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690909504; x=1691514304;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iHJDHQhMPESpDTCc7d6m6CZ7cgDoS6a5SZpOnu6DMTE=;
-        b=WN3CANp8GFWDqYkwVqd3B8jXPy48L2J26WQcuhNGX68VkWYSphgSRU8Ia1+zmI7Xgj
-         JNVoa8Jxb50AvVLFbxxnkpfs+X9jPTuzE0KuhyVnvHib0QDdSt6geTtDBNIe9oXmhTo7
-         n9hjcbEeigAqbUaxkW1ZaSQ9AJy4fEWzC2VI+gOcYv6dT7GnH9tKOv9W8GTB2yQFFdw/
-         eCG877hmU5WvXqSBSC//oEcdyWAA/qCmcKP8CQr0hdUcndG/L4VQ2UA75C4vszPjG6f7
-         32aZG0Hvw2g6cabz7lgj2mXp0TLeyLGYDd1uzZBkozu/IZo57jsAxAO6WGhbqctuehPJ
-         Wm4w==
-X-Gm-Message-State: ABy/qLbifwb/T/061BqPD4bM2sru+HFrjrVMO2lYmTRo/IT2+1mJWsBn
-        VbS0ks0pqO55natiXMegG4xdnvbc7pCwDfc8hRpx9F3g9D4il9HiUTlCFPwB+UbPn6tY3BQ2JgW
-        /L2DzbC5OjJOMSGLY
-X-Received: by 2002:ad4:5b83:0:b0:63c:f5fd:d30f with SMTP id 3-20020ad45b83000000b0063cf5fdd30fmr13776731qvp.1.1690909504488;
-        Tue, 01 Aug 2023 10:05:04 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFaaBdvX372gnIc+hqJabCioknXLsWVusS1Xd1tIAYtUq1mP4VO3uaCM3OMaXWQ6+iPT5cVCQ==
-X-Received: by 2002:ad4:5b83:0:b0:63c:f5fd:d30f with SMTP id 3-20020ad45b83000000b0063cf5fdd30fmr13776714qvp.1.1690909504219;
-        Tue, 01 Aug 2023 10:05:04 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
-        by smtp.gmail.com with ESMTPSA id e30-20020a0caa5e000000b0063d10086876sm4807945qvb.115.2023.08.01.10.05.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Aug 2023 10:05:03 -0700 (PDT)
-Date:   Tue, 1 Aug 2023 13:04:50 -0400
-From:   Peter Xu <peterx@redhat.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        liubo <liubo254@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Mel Gorman <mgorman@suse.de>, Shuah Khan <shuah@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/8] mm/gup: reintroduce FOLL_NUMA as
- FOLL_HONOR_NUMA_FAULT
-Message-ID: <ZMk7MqApTDZXzwKX@x1n>
-References: <20230801124844.278698-1-david@redhat.com>
- <20230801124844.278698-2-david@redhat.com>
- <ZMkpM95vdc9wgs9T@x1n>
- <30d86a2d-4af2-d840-91be-2e68c73a07bd@redhat.com>
+        with ESMTP id S234451AbjHARHK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 13:07:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11822724;
+        Tue,  1 Aug 2023 10:06:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 681E96167E;
+        Tue,  1 Aug 2023 17:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8129EC433C7;
+        Tue,  1 Aug 2023 17:05:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690909526;
+        bh=8DvPnZYYz1f7lPkvDNrKkWmFPFTrNmAWxpgz4FHEUes=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=YoVbD+bE1jT5KEVa3RTBhfDxOLoOopSVt1Zhim84ydMWSRMuCS34gnUY9sNjsouVh
+         mVw7z3lXAgS31Ga7g16CH26tpqIbTsTa8k4NvHdJzaaJhX3YPXn1HpCcD2x9moO2RJ
+         kC4ONgXzBGmOmfhkLzNVj8bu06rI46lwd5EWEiJ/K355VKsn7ik4HWIFSaNTw5VGAZ
+         91cYdj99nLyHMp5EMWysgO4RCpP6CqTgouo8ZA/i6R5fpx0PskXG/Pd2yQqrnAL4Ai
+         23SDyTuD2G2gq6cI/KHZGvMDU0f+HbAZiXzti4QpsMMWGeyyD0RvXXS3/X0YKPZnD/
+         zLMzRLAW76yqw==
+From:   SeongJae Park <sj@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, damon@lists.linux.dev,
+        SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 6.1 000/228] 6.1.43-rc1 review
+Date:   Tue,  1 Aug 2023 17:05:23 +0000
+Message-Id: <20230801170523.122482-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <30d86a2d-4af2-d840-91be-2e68c73a07bd@redhat.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 06:15:48PM +0200, David Hildenbrand wrote:
-> On 01.08.23 17:48, Peter Xu wrote:
-> > On Tue, Aug 01, 2023 at 02:48:37PM +0200, David Hildenbrand wrote:
-> > > @@ -2240,6 +2244,12 @@ static bool is_valid_gup_args(struct page **pages, int *locked,
-> > >   		gup_flags |= FOLL_UNLOCKABLE;
-> > >   	}
-> > > +	/*
-> > > +	 * For now, always trigger NUMA hinting faults. Some GUP users like
-> > > +	 * KVM really require it to benefit from autonuma.
-> > > +	 */
-> > > +	gup_flags |= FOLL_HONOR_NUMA_FAULT;
-> > 
-> > Since at it, do we want to not set it for FOLL_REMOTE, which still sounds
-> > like a good thing to have?
+Hello,
+
+On Tue, 1 Aug 2023 11:17:38 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.1.43 release.
+> There are 228 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> I thought about that, but decided against making that patch here more
-> complicated to eventually rip it again all out in #4.
-
-I thought that was the whole point of having patch 4 separate, because we
-should assume patch 4 may not exist in (at least) some trees, so I ignored
-patch 4 when commenting here, and we should not assume it's destined to be
-removed here.
-
+> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
+> Anything received after that time might be too late.
 > 
-> I fully agree that FOLL_REMOTE does not make too much sense, but let's
-> rather keep it simple for this patch.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.43-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 
-It's fine - I suppose this patch fixes whatever we're aware of that's
-broken with FOLL_NUMA's removal, so it can even be anything on top when
-needed.  I assume I'm happy to ack this with/without that change, then:
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-Acked-by: Peter Xu <peterx@redhat.com>
+Tested-by: SeongJae Park <sj@kernel.org>
 
-PS: I still hope that the other oneliner can be squashed here directly; it
-literally changes exact the same line above so reading this patch alone can
-be affected.  You said there you didn't want the commit message to be too
-long here, but this is definitely not long at all!  I bet you have similar
-understanding to me on defining "long commit message". :) I'd never worry
-that.  Your call.
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] b2c388dc2443 ("Linux 5.15.124-rc1")
+
 
 Thanks,
+SJ
 
--- 
-Peter Xu
+[...]
 
+---
+
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_m68k.sh
+ok 12 selftests: damon-tests: build_arm64.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+
+PASS
