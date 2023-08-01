@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F06576AE60
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45A6876AF4A
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233186AbjHAJiP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:38:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35104 "EHLO
+        id S233655AbjHAJqq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233206AbjHAJhe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:37:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BCCFE7B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:35:56 -0700 (PDT)
+        with ESMTP id S233595AbjHAJqY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A292421D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:44:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CCBD61509
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:35:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EADC433C7;
-        Tue,  1 Aug 2023 09:35:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF62461511
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:44:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE952C433C8;
+        Tue,  1 Aug 2023 09:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882555;
-        bh=xflFs7qqtPEPNO6pSUA+eT47r1kdXe173GTxILzAY9g=;
+        s=korg; t=1690883096;
+        bh=hZiqTLPZXYoX5V1TR41waoId9oi2nQrkl5lKTbqUuQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HRww0+6QNJcEU9LUeRoy7plFRrqy4JlYw4mXNXCwP6TpKyz/Q7be7mIOr9s/8xO9F
-         OwxboWXeuqDomtO2ZgNgV9zG4gi6LLWfEhjQ8PqfiRetGEaFeyH8fXqXbaVH0URxwM
-         wc3yukJg6lO1CJygVuHj8fBiaD9movbqr+W7aJIA=
+        b=scDBGB3VbHKF1MyvJKT63nxlhFPWfXEHNpILlzKE0C0OZ5OvklnNvq91LoOI3HeaC
+         fRXOoVCcBHkrRlpx9ZrDdsnOqVPfa0rkZq1TGrZCVLC+6O26cyyVZRtfKJAcVUVDht
+         e8rbOxOIMoWg3eG+hKuOjU5OTxXfdxnirwXVj7U0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shiraz Saleem <shiraz.saleem@intel.com>,
+        patches@lists.linux.dev,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
         Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/228] RDMA/irdma: Fix data race on CQP completion stats
+Subject: [PATCH 6.4 113/239] RDMA/bnxt_re: use shadow qd while posting non blocking rcfw command
 Date:   Tue,  1 Aug 2023 11:19:37 +0200
-Message-ID: <20230801091927.057726744@linuxfoundation.org>
+Message-ID: <20230801091929.810834555@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,215 +57,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shiraz Saleem <shiraz.saleem@intel.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit f2c3037811381f9149243828c7eb9a1631df9f9c ]
+[ Upstream commit 65288a22ddd81422a2a2a10c15df976a5332e41b ]
 
-CQP completion statistics is read lockesly in irdma_wait_event and
-irdma_check_cqp_progress while it can be updated in the completion
-thread irdma_sc_ccq_get_cqe_info on another CPU as KCSAN reports.
+Whenever there is a fast path IO and create/destroy resources from
+the slow path is happening in parallel, we may notice high latency
+of slow path command completion.
 
-Make completion statistics an atomic variable to reflect coherent updates
-to it. This will also avoid load/store tearing logic bug potentially
-possible by compiler optimizations.
+Introduces a shadow queue depth to prevent the outstanding requests
+to the FW. Driver will not allow more than #RCFW_CMD_NON_BLOCKING_SHADOW_QD
+non-blocking commands to the Firmware.
 
-[77346.170861] BUG: KCSAN: data-race in irdma_handle_cqp_op [irdma] / irdma_sc_ccq_get_cqe_info [irdma]
+Shadow queue depth is a soft limit only for non-blocking
+commands. Blocking commands will be posted to the firmware
+as long as there is a free slot.
 
-[77346.171383] write to 0xffff8a3250b108e0 of 8 bytes by task 9544 on cpu 4:
-[77346.171483]  irdma_sc_ccq_get_cqe_info+0x27a/0x370 [irdma]
-[77346.171658]  irdma_cqp_ce_handler+0x164/0x270 [irdma]
-[77346.171835]  cqp_compl_worker+0x1b/0x20 [irdma]
-[77346.172009]  process_one_work+0x4d1/0xa40
-[77346.172024]  worker_thread+0x319/0x700
-[77346.172037]  kthread+0x180/0x1b0
-[77346.172054]  ret_from_fork+0x22/0x30
-
-[77346.172136] read to 0xffff8a3250b108e0 of 8 bytes by task 9838 on cpu 2:
-[77346.172234]  irdma_handle_cqp_op+0xf4/0x4b0 [irdma]
-[77346.172413]  irdma_cqp_aeq_cmd+0x75/0xa0 [irdma]
-[77346.172592]  irdma_create_aeq+0x390/0x45a [irdma]
-[77346.172769]  irdma_rt_init_hw.cold+0x212/0x85d [irdma]
-[77346.172944]  irdma_probe+0x54f/0x620 [irdma]
-[77346.173122]  auxiliary_bus_probe+0x66/0xa0
-[77346.173137]  really_probe+0x140/0x540
-[77346.173154]  __driver_probe_device+0xc7/0x220
-[77346.173173]  driver_probe_device+0x5f/0x140
-[77346.173190]  __driver_attach+0xf0/0x2c0
-[77346.173208]  bus_for_each_dev+0xa8/0xf0
-[77346.173225]  driver_attach+0x29/0x30
-[77346.173240]  bus_add_driver+0x29c/0x2f0
-[77346.173255]  driver_register+0x10f/0x1a0
-[77346.173272]  __auxiliary_driver_register+0xbc/0x140
-[77346.173287]  irdma_init_module+0x55/0x1000 [irdma]
-[77346.173460]  do_one_initcall+0x7d/0x410
-[77346.173475]  do_init_module+0x81/0x2c0
-[77346.173491]  load_module+0x1232/0x12c0
-[77346.173506]  __do_sys_finit_module+0x101/0x180
-[77346.173522]  __x64_sys_finit_module+0x3c/0x50
-[77346.173538]  do_syscall_64+0x39/0x90
-[77346.173553]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-[77346.173634] value changed: 0x0000000000000094 -> 0x0000000000000095
-
-Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Link: https://lore.kernel.org/r/20230711175253.1289-3-shiraz.saleem@intel.com
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1686308514-11996-8-git-send-email-selvin.xavier@broadcom.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 29900bf351e1 ("RDMA/bnxt_re: Fix hang during driver unload")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c  | 22 +++++++-------
- drivers/infiniband/hw/irdma/defs.h  | 46 ++++++++++++++---------------
- drivers/infiniband/hw/irdma/type.h  |  2 ++
- drivers/infiniband/hw/irdma/utils.c |  2 +-
- 4 files changed, 36 insertions(+), 36 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 60 +++++++++++++++++++++-
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.h |  3 ++
+ 2 files changed, 61 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
-index d86d7ca9cee4a..6544c9c60b7db 100644
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -2693,13 +2693,13 @@ static int irdma_sc_cq_modify(struct irdma_sc_cq *cq,
-  */
- void irdma_check_cqp_progress(struct irdma_cqp_timeout *timeout, struct irdma_sc_dev *dev)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index bfa0f29c7abf4..42484a1149c7c 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -281,8 +281,21 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw,
+ 	return 0;
+ }
+ 
+-int bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+-				 struct bnxt_qplib_cmdqmsg *msg)
++/**
++ * __bnxt_qplib_rcfw_send_message   -	qplib interface to send
++ * and complete rcfw command.
++ * @rcfw      -   rcfw channel instance of rdev
++ * @msg      -    qplib message internal
++ *
++ * This function does not account shadow queue depth. It will send
++ * all the command unconditionally as long as send queue is not full.
++ *
++ * Returns:
++ * 0 if command completed by firmware.
++ * Non zero if the command is not completed by firmware.
++ */
++static int __bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
++					  struct bnxt_qplib_cmdqmsg *msg)
  {
--	if (timeout->compl_cqp_cmds != dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]) {
--		timeout->compl_cqp_cmds = dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS];
-+	u64 completed_ops = atomic64_read(&dev->cqp->completed_ops);
+ 	struct creq_qp_event *evnt = (struct creq_qp_event *)msg->resp;
+ 	u16 cookie;
+@@ -331,6 +344,48 @@ int bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+ 
+ 	return rc;
+ }
 +
-+	if (timeout->compl_cqp_cmds != completed_ops) {
-+		timeout->compl_cqp_cmds = completed_ops;
- 		timeout->count = 0;
--	} else {
--		if (dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS] !=
--		    timeout->compl_cqp_cmds)
--			timeout->count++;
-+	} else if (timeout->compl_cqp_cmds != dev->cqp->requested_ops) {
-+		timeout->count++;
++/**
++ * bnxt_qplib_rcfw_send_message   -	qplib interface to send
++ * and complete rcfw command.
++ * @rcfw      -   rcfw channel instance of rdev
++ * @msg      -    qplib message internal
++ *
++ * Driver interact with Firmware through rcfw channel/slow path in two ways.
++ * a. Blocking rcfw command send. In this path, driver cannot hold
++ * the context for longer period since it is holding cpu until
++ * command is not completed.
++ * b. Non-blocking rcfw command send. In this path, driver can hold the
++ * context for longer period. There may be many pending command waiting
++ * for completion because of non-blocking nature.
++ *
++ * Driver will use shadow queue depth. Current queue depth of 8K
++ * (due to size of rcfw message there can be actual ~4K rcfw outstanding)
++ * is not optimal for rcfw command processing in firmware.
++ *
++ * Restrict at max #RCFW_CMD_NON_BLOCKING_SHADOW_QD Non-Blocking rcfw commands.
++ * Allow all blocking commands until there is no queue full.
++ *
++ * Returns:
++ * 0 if command completed by firmware.
++ * Non zero if the command is not completed by firmware.
++ */
++int bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
++				 struct bnxt_qplib_cmdqmsg *msg)
++{
++	int ret;
++
++	if (!msg->block) {
++		down(&rcfw->rcfw_inflight);
++		ret = __bnxt_qplib_rcfw_send_message(rcfw, msg);
++		up(&rcfw->rcfw_inflight);
++	} else {
++		ret = __bnxt_qplib_rcfw_send_message(rcfw, msg);
++	}
++
++	return ret;
++}
++
+ /* Completions */
+ static int bnxt_qplib_process_func_event(struct bnxt_qplib_rcfw *rcfw,
+ 					 struct creq_func_event *func_event)
+@@ -937,6 +992,7 @@ int bnxt_qplib_enable_rcfw_channel(struct bnxt_qplib_rcfw *rcfw,
+ 		return rc;
  	}
+ 
++	sema_init(&rcfw->rcfw_inflight, RCFW_CMD_NON_BLOCKING_SHADOW_QD);
+ 	bnxt_qplib_start_rcfw(rcfw);
+ 
+ 	return 0;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+index 92f7a25533d3b..675c388348827 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+@@ -67,6 +67,8 @@ static inline void bnxt_qplib_rcfw_cmd_prep(struct cmdq_base *req,
+ 	req->cmd_size = cmd_size;
  }
  
-@@ -2742,7 +2742,7 @@ static int irdma_cqp_poll_registers(struct irdma_sc_cqp *cqp, u32 tail,
- 		if (newtail != tail) {
- 			/* SUCCESS */
- 			IRDMA_RING_MOVE_TAIL(cqp->sq_ring);
--			cqp->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]++;
-+			atomic64_inc(&cqp->completed_ops);
- 			return 0;
- 		}
- 		udelay(cqp->dev->hw_attrs.max_sleep_count);
-@@ -3102,8 +3102,8 @@ int irdma_sc_cqp_init(struct irdma_sc_cqp *cqp,
- 	info->dev->cqp = cqp;
++/* Shadow queue depth for non blocking command */
++#define RCFW_CMD_NON_BLOCKING_SHADOW_QD	64
+ #define RCFW_CMD_WAIT_TIME_MS		20000 /* 20 Seconds timeout */
  
- 	IRDMA_RING_INIT(cqp->sq_ring, cqp->sq_size);
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS] = 0;
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS] = 0;
-+	cqp->requested_ops = 0;
-+	atomic64_set(&cqp->completed_ops, 0);
- 	/* for the cqp commands backlog. */
- 	INIT_LIST_HEAD(&cqp->dev->cqp_cmd_head);
- 
-@@ -3255,7 +3255,7 @@ __le64 *irdma_sc_cqp_get_next_send_wqe_idx(struct irdma_sc_cqp *cqp, u64 scratch
- 	if (ret_code)
- 		return NULL;
- 
--	cqp->dev->cqp_cmd_stats[IRDMA_OP_REQ_CMDS]++;
-+	cqp->requested_ops++;
- 	if (!*wqe_idx)
- 		cqp->polarity = !cqp->polarity;
- 	wqe = cqp->sq_base[*wqe_idx].elem;
-@@ -3381,7 +3381,7 @@ int irdma_sc_ccq_get_cqe_info(struct irdma_sc_cq *ccq,
- 	dma_wmb(); /* make sure shadow area is updated before moving tail */
- 
- 	IRDMA_RING_MOVE_TAIL(cqp->sq_ring);
--	ccq->dev->cqp_cmd_stats[IRDMA_OP_CMPL_CMDS]++;
-+	atomic64_inc(&cqp->completed_ops);
- 
- 	return ret_code;
- }
-diff --git a/drivers/infiniband/hw/irdma/defs.h b/drivers/infiniband/hw/irdma/defs.h
-index c1906cab5c8ad..ad54260cb58c9 100644
---- a/drivers/infiniband/hw/irdma/defs.h
-+++ b/drivers/infiniband/hw/irdma/defs.h
-@@ -190,32 +190,30 @@ enum irdma_cqp_op_type {
- 	IRDMA_OP_MANAGE_VF_PBLE_BP		= 25,
- 	IRDMA_OP_QUERY_FPM_VAL			= 26,
- 	IRDMA_OP_COMMIT_FPM_VAL			= 27,
--	IRDMA_OP_REQ_CMDS			= 28,
--	IRDMA_OP_CMPL_CMDS			= 29,
--	IRDMA_OP_AH_CREATE			= 30,
--	IRDMA_OP_AH_MODIFY			= 31,
--	IRDMA_OP_AH_DESTROY			= 32,
--	IRDMA_OP_MC_CREATE			= 33,
--	IRDMA_OP_MC_DESTROY			= 34,
--	IRDMA_OP_MC_MODIFY			= 35,
--	IRDMA_OP_STATS_ALLOCATE			= 36,
--	IRDMA_OP_STATS_FREE			= 37,
--	IRDMA_OP_STATS_GATHER			= 38,
--	IRDMA_OP_WS_ADD_NODE			= 39,
--	IRDMA_OP_WS_MODIFY_NODE			= 40,
--	IRDMA_OP_WS_DELETE_NODE			= 41,
--	IRDMA_OP_WS_FAILOVER_START		= 42,
--	IRDMA_OP_WS_FAILOVER_COMPLETE		= 43,
--	IRDMA_OP_SET_UP_MAP			= 44,
--	IRDMA_OP_GEN_AE				= 45,
--	IRDMA_OP_QUERY_RDMA_FEATURES		= 46,
--	IRDMA_OP_ALLOC_LOCAL_MAC_ENTRY		= 47,
--	IRDMA_OP_ADD_LOCAL_MAC_ENTRY		= 48,
--	IRDMA_OP_DELETE_LOCAL_MAC_ENTRY		= 49,
--	IRDMA_OP_CQ_MODIFY			= 50,
-+	IRDMA_OP_AH_CREATE			= 28,
-+	IRDMA_OP_AH_MODIFY			= 29,
-+	IRDMA_OP_AH_DESTROY			= 30,
-+	IRDMA_OP_MC_CREATE			= 31,
-+	IRDMA_OP_MC_DESTROY			= 32,
-+	IRDMA_OP_MC_MODIFY			= 33,
-+	IRDMA_OP_STATS_ALLOCATE			= 34,
-+	IRDMA_OP_STATS_FREE			= 35,
-+	IRDMA_OP_STATS_GATHER			= 36,
-+	IRDMA_OP_WS_ADD_NODE			= 37,
-+	IRDMA_OP_WS_MODIFY_NODE			= 38,
-+	IRDMA_OP_WS_DELETE_NODE			= 39,
-+	IRDMA_OP_WS_FAILOVER_START		= 40,
-+	IRDMA_OP_WS_FAILOVER_COMPLETE		= 41,
-+	IRDMA_OP_SET_UP_MAP			= 42,
-+	IRDMA_OP_GEN_AE				= 43,
-+	IRDMA_OP_QUERY_RDMA_FEATURES		= 44,
-+	IRDMA_OP_ALLOC_LOCAL_MAC_ENTRY		= 45,
-+	IRDMA_OP_ADD_LOCAL_MAC_ENTRY		= 46,
-+	IRDMA_OP_DELETE_LOCAL_MAC_ENTRY		= 47,
-+	IRDMA_OP_CQ_MODIFY			= 48,
- 
- 	/* Must be last entry*/
--	IRDMA_MAX_CQP_OPS			= 51,
-+	IRDMA_MAX_CQP_OPS			= 49,
+ /* CMDQ elements */
+@@ -201,6 +203,7 @@ struct bnxt_qplib_rcfw {
+ 	u64 oos_prev;
+ 	u32 init_oos_stats;
+ 	u32 cmdq_depth;
++	struct semaphore rcfw_inflight;
  };
  
- /* CQP SQ WQES */
-diff --git a/drivers/infiniband/hw/irdma/type.h b/drivers/infiniband/hw/irdma/type.h
-index 517d41a1c2894..d6cb94dc744c5 100644
---- a/drivers/infiniband/hw/irdma/type.h
-+++ b/drivers/infiniband/hw/irdma/type.h
-@@ -410,6 +410,8 @@ struct irdma_sc_cqp {
- 	struct irdma_dcqcn_cc_params dcqcn_params;
- 	__le64 *host_ctx;
- 	u64 *scratch_array;
-+	u64 requested_ops;
-+	atomic64_t completed_ops;
- 	u32 cqp_id;
- 	u32 sq_size;
- 	u32 hw_sq_size;
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index 7887230c867b1..90ca4a1b60c21 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -567,7 +567,7 @@ static int irdma_wait_event(struct irdma_pci_f *rf,
- 	bool cqp_error = false;
- 	int err_code = 0;
- 
--	cqp_timeout.compl_cqp_cmds = rf->sc_dev.cqp_cmd_stats[IRDMA_OP_CMPL_CMDS];
-+	cqp_timeout.compl_cqp_cmds = atomic64_read(&rf->sc_dev.cqp->completed_ops);
- 	do {
- 		irdma_cqp_ce_handler(rf, &rf->ccq.sc_cq);
- 		if (wait_event_timeout(cqp_request->waitq,
+ struct bnxt_qplib_cmdqmsg {
 -- 
 2.40.1
 
