@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E33376A940
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6F2C76A941
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 08:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230034AbjHAGgY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 02:36:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
+        id S231448AbjHAGgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 02:36:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231913AbjHAGgL (ORCPT
+        with ESMTP id S231743AbjHAGgL (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 02:36:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFBF1BF0
-        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:35:38 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4298BE5F
+        for <stable@vger.kernel.org>; Mon, 31 Jul 2023 23:35:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 141B66139D
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:35:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B88C433C8;
-        Tue,  1 Aug 2023 06:35:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86A8861474
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 06:35:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93524C433C7;
+        Tue,  1 Aug 2023 06:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690871724;
-        bh=Rr1VpwtSlrpZDtv50U71rxqL2CBmluS0DKOn41uIzjY=;
+        s=korg; t=1690871732;
+        bh=4MPRe/6U2i9Veyte09RHa9QuCMBy2opwjdf/YXCXK3Q=;
         h=Subject:To:Cc:From:Date:From;
-        b=i3x/tnIUGdTR+DJfFLXa0hgKAD/EcDELjrBP+gULp9BpimLg6LD9x4FsBQBZBlLXr
-         xGl3tFT9bzKYZKrlY8Pnf84gU2rebLXkYKE/MXiPNtOB9YcecLFHPe2If1HiswlqI3
-         pS5u2obEE1MtiDm/XE+wnF39bSTP/8SqY7HtmjdE=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Revert vblank change that causes null" failed to apply to 6.4-stable tree
+        b=1rx4ZbYe3aCsqB/kBQT8jZD1dfTVi4kA7M1pYriBDL/Fn/nHYvlmU3+74Ec5bk4GS
+         mUi0ng53s1ukO2XgDBgqyVplzlJvf+wRCK1jMT90Ya1cUuPQFLZrUZNJUKrhZzDAyR
+         7yJQn44QIFjVEnxE1r/5/e7tkPO+fmLQZPqH7lSI=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Revert vblank change that causes null" failed to apply to 6.1-stable tree
 To:     daniel.miess@amd.com, alexander.deucher@amd.com,
         chiahsuan.chung@amd.com, daniel.wheeler@amd.com,
         nicholas.kazlauskas@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 01 Aug 2023 08:35:21 +0200
-Message-ID: <2023080120-jalapeno-cubicle-d3d2@gregkh>
+Date:   Tue, 01 Aug 2023 08:35:29 +0200
+Message-ID: <2023080128-reshuffle-aching-6a89@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,23 +51,33 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x c02b04633c4f4654331c53966cb937df1c73a9bb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080120-jalapeno-cubicle-d3d2@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080128-reshuffle-aching-6a89@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+c02b04633c4f ("drm/amd/display: Revert vblank change that causes null pointer crash")
+1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
+469a62938a45 ("drm/amd/display: update extended blank for dcn314 onwards")
+e3416e872f84 ("drm/amd/display: Add FAMS validation before trying to use it")
+0db13eae41fc ("drm/amd/display: Add minimum Z8 residency debug option")
+73dd4ca4b5a0 ("drm/amd/display: Fix Z8 support configurations")
+db4107e92a81 ("drm/amd/display: fix dc/core/dc.c kernel-doc")
+00812bfc7bcb ("drm/amd/display: Add debug option to skip PSR CRTC disable")
+80676936805e ("drm/amd/display: Add Z8 allow states to z-state support list")
+e366f36958f6 ("drm/amd/display: Rework comments on dc file")
+bd829d570773 ("drm/amd/display: Refactor eDP PSR codes")
 
 thanks,
 
