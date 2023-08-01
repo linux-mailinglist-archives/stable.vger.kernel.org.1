@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11EC376AD26
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6130A76AF89
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231515AbjHAJ0t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
+        id S233597AbjHAJsg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:48:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232841AbjHAJ0a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336BE30CD
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:26 -0700 (PDT)
+        with ESMTP id S233847AbjHAJsU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7093C04
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:46:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10D10614EC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D3BC433C7;
-        Tue,  1 Aug 2023 09:25:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1121F6150D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23502C433C7;
+        Tue,  1 Aug 2023 09:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881925;
-        bh=zt8m6+ocboRYsXwshUSV93BTHV3fnqjyRhJaoxtWpzw=;
+        s=korg; t=1690883204;
+        bh=A6+Al5i39VM4XIx65EAS8+h+NSAGGCHmal1OJ1Q5NLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S2ELnrvwtXI2L2AjJHv0q8ZpjQwAVV1MhyQR88Q8YXBAWfJWtcHdyO3UJsWeI4sJH
-         CTvjqkD2M7LeyRDB0WvzHYxNJeLoiwq7yvxvx+yrMjrel9EzmfcUHOrQM+tYJAI6o5
-         3uI/tKRnzJpfVBSOlwsCbIjQsg0YZ5vQhN+p+cU8=
+        b=UmzRTe8+t6Q5oHhTUC//a5px9vPMzJeXQqEbDg351XzpG3i4RIc4tvl6B5A+ieM2i
+         XKzkZOaFn7ACg8IxLdyX7QbxEkEVoViTZl/Nsy3gVhB2SS3ItXR2R1kxDwuMwzF6CQ
+         zvoz7SGsLM46nPhuKHW2cvkRB2kJW/ITuPj1LHeU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Ferenc Fejes <fejes@inf.elte.hu>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Stefano Stabellini <stefano.stabellini@amd.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Juergen Gross <jgross@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/155] net/sched: mqprio: add extack to mqprio_parse_nlattr()
+Subject: [PATCH 6.4 125/239] xenbus: check xen_domain in xenbus_probe_initcall
 Date:   Tue,  1 Aug 2023 11:19:49 +0200
-Message-ID: <20230801091912.892462293@linuxfoundation.org>
+Message-ID: <20230801091930.225363607@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,110 +58,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Stefano Stabellini <sstabellini@kernel.org>
 
-[ Upstream commit 57f21bf85400abadac0cb2a4db5de1d663f8863f ]
+[ Upstream commit 0d8f7cc8057890db08c54fe610d8a94af59da082 ]
 
-Netlink attribute parsing in mqprio is a minesweeper game, with many
-options having the possibility of being passed incorrectly and the user
-being none the wiser.
+The same way we already do in xenbus_init.
+Fixes the following warning:
 
-Try to make errors less sour by giving user space some information
-regarding what went wrong.
+[  352.175563] Trying to free already-free IRQ 0
+[  352.177355] WARNING: CPU: 1 PID: 88 at kernel/irq/manage.c:1893 free_irq+0xbf/0x350
+[...]
+[  352.213951] Call Trace:
+[  352.214390]  <TASK>
+[  352.214717]  ? __warn+0x81/0x170
+[  352.215436]  ? free_irq+0xbf/0x350
+[  352.215906]  ? report_bug+0x10b/0x200
+[  352.216408]  ? prb_read_valid+0x17/0x20
+[  352.216926]  ? handle_bug+0x44/0x80
+[  352.217409]  ? exc_invalid_op+0x13/0x60
+[  352.217932]  ? asm_exc_invalid_op+0x16/0x20
+[  352.218497]  ? free_irq+0xbf/0x350
+[  352.218979]  ? __pfx_xenbus_probe_thread+0x10/0x10
+[  352.219600]  xenbus_probe+0x7a/0x80
+[  352.221030]  xenbus_probe_thread+0x76/0xc0
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
+Fixes: 5b3353949e89 ("xen: add support for initializing xenstore later as HVM domain")
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+Tested-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+
+Link: https://lore.kernel.org/r/alpine.DEB.2.22.394.2307211609140.3118466@ubuntu-linux-20-04-desktop
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_mqprio.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ drivers/xen/xenbus/xenbus_probe.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
-index a5df5604e0150..4ec222a5530d1 100644
---- a/net/sched/sch_mqprio.c
-+++ b/net/sched/sch_mqprio.c
-@@ -131,7 +131,8 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- }
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 58b732dcbfb83..639bf628389ba 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -811,6 +811,9 @@ static int xenbus_probe_thread(void *unused)
  
- static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
--			       struct nlattr *opt)
-+			       struct nlattr *opt,
-+			       struct netlink_ext_ack *extack)
+ static int __init xenbus_probe_initcall(void)
  {
- 	struct mqprio_sched *priv = qdisc_priv(sch);
- 	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
-@@ -143,8 +144,11 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	if (err < 0)
- 		return err;
- 
--	if (!qopt->hw)
-+	if (!qopt->hw) {
-+		NL_SET_ERR_MSG(extack,
-+			       "mqprio TCA_OPTIONS can only contain netlink attributes in hardware mode");
- 		return -EINVAL;
-+	}
- 
- 	if (tb[TCA_MQPRIO_MODE]) {
- 		priv->flags |= TC_MQPRIO_F_MODE;
-@@ -157,13 +161,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	}
- 
- 	if (tb[TCA_MQPRIO_MIN_RATE64]) {
--		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MIN_RATE64],
-+					    "min_rate accepted only when shaper is in bw_rlimit mode");
- 			return -EINVAL;
-+		}
- 		i = 0;
- 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
- 				    rem) {
--			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
-+			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64) {
-+				NL_SET_ERR_MSG_ATTR(extack, attr,
-+						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
- 				return -EINVAL;
-+			}
- 			if (i >= qopt->num_tc)
- 				break;
- 			priv->min_rate[i] = *(u64 *)nla_data(attr);
-@@ -173,13 +183,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	}
- 
- 	if (tb[TCA_MQPRIO_MAX_RATE64]) {
--		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MAX_RATE64],
-+					    "max_rate accepted only when shaper is in bw_rlimit mode");
- 			return -EINVAL;
-+		}
- 		i = 0;
- 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
- 				    rem) {
--			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
-+			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64) {
-+				NL_SET_ERR_MSG_ATTR(extack, attr,
-+						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
- 				return -EINVAL;
-+			}
- 			if (i >= qopt->num_tc)
- 				break;
- 			priv->max_rate[i] = *(u64 *)nla_data(attr);
-@@ -224,7 +240,7 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
- 	if (len > 0) {
--		err = mqprio_parse_nlattr(sch, qopt, opt);
-+		err = mqprio_parse_nlattr(sch, qopt, opt, extack);
- 		if (err)
- 			return err;
- 	}
++	if (!xen_domain())
++		return -ENODEV;
++
+ 	/*
+ 	 * Probe XenBus here in the XS_PV case, and also XS_HVM unless we
+ 	 * need to wait for the platform PCI device to come up or
 -- 
-2.39.2
+2.40.1
 
 
 
