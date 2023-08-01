@@ -2,50 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7B0176AD1A
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B911976AF4D
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjHAJ0Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52746 "EHLO
+        id S233614AbjHAJqt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231919AbjHAJ0J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:09 -0400
+        with ESMTP id S233223AbjHAJq1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:46:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EECF82107
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:24:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC529422A
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:45:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D07C7614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:24:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4B6C433C8;
-        Tue,  1 Aug 2023 09:24:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B66561501
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:45:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B896C433CB;
+        Tue,  1 Aug 2023 09:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881894;
-        bh=zYddYCvSVc3zKuZWeB860YQM4ox68ycvUgirnTF3KXw=;
+        s=korg; t=1690883101;
+        bh=VjWuXvhqYuZGa1kV/h01hq3m0MHvxttDe2Rx5fWWEPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pJ3/Qfa9TRBnRLiGK4a1GPyXl9n0SMWgx4j/jlF145FVxSWR8lES9eLy/dK/g3OWC
-         qwGCq+2NYZ+WZDBT1vK6WBwXvzYdBelWGjMlrWQC9Mk1XNW2rvvPUjgk8Bt8K8lEsH
-         ZkeZjBlCvIcAfTboRvhoysl0eVY4ffT3goBcUSsU=
+        b=G0/D5sX2Sw8YU32tMSerDHCBTGmF6op1uyD1JEXveA4YO9XiKFfNAQTXVi+QC9CLF
+         zOpDv5osxM4ZHKIGE2VyaGv5a+b4FNyImQH97o2yEA6PCebtrJM8ieAwiE0Wf6biCe
+         Iie30smnmvvszW6wXDJ26qhxZnCac4xlb2gLbCAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 067/155] ice: Fix memory management in ice_ethtool_fdir.c
+        patches@lists.linux.dev,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 115/239] RDMA/bnxt_re: add helper function __poll_for_resp
 Date:   Tue,  1 Aug 2023 11:19:39 +0200
-Message-ID: <20230801091912.582203294@linuxfoundation.org>
+Message-ID: <20230801091929.874894138@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,103 +57,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit a3336056504d780590ac6d6ac94fbba829994594 ]
+[ Upstream commit 354f5bd985af9515190828bc642ebdf59acea121 ]
 
-Fix ethtool FDIR logic to not use memory after its release.
-In the ice_ethtool_fdir.c file there are 2 spots where code can
-refer to pointers which may be missing.
+This interface will be used if the driver has not enabled interrupt
+and/or interrupt is disabled for a short period of time.
+Completion is not possible from interrupt so this interface does
+self-polling.
 
-In the ice_cfg_fdir_xtrct_seq() function seg may be freed but
-even then may be still used by memcpy(&tun_seg[1], seg, sizeof(*seg)).
-
-In the ice_add_fdir_ethtool() function struct ice_fdir_fltr *input
-may first fail to be added via ice_fdir_update_list_entry() but then
-may be deleted by ice_fdir_update_list_entry.
-
-Terminate in both cases when the returned value of the previous
-operation is other than 0, free memory and don't use it anymore.
-
-Reported-by: Michal Schmidt <mschmidt@redhat.com>
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2208423
-Fixes: cac2a27cd9ab ("ice: Support IPv4 Flow Director filters")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230721155854.1292805-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1686308514-11996-10-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 29900bf351e1 ("RDMA/bnxt_re: Fix hang during driver unload")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/ice/ice_ethtool_fdir.c | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 44 +++++++++++++++++++++-
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.h |  1 +
+ 2 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-index 16de603b280c6..0106ea3519a01 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-@@ -1135,16 +1135,21 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
- 				     ICE_FLOW_FLD_OFF_INVAL);
- 	}
- 
--	/* add filter for outer headers */
- 	fltr_idx = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
-+
-+	assign_bit(fltr_idx, hw->fdir_perfect_fltr, perfect_filter);
-+
-+	/* add filter for outer headers */
- 	ret = ice_fdir_set_hw_fltr_rule(pf, seg, fltr_idx,
- 					ICE_FD_HW_SEG_NON_TUN);
--	if (ret == -EEXIST)
--		/* Rule already exists, free memory and continue */
--		devm_kfree(dev, seg);
--	else if (ret)
-+	if (ret == -EEXIST) {
-+		/* Rule already exists, free memory and count as success */
-+		ret = 0;
-+		goto err_exit;
-+	} else if (ret) {
- 		/* could not write filter, free memory */
- 		goto err_exit;
-+	}
- 
- 	/* make tunneled filter HW entries if possible */
- 	memcpy(&tun_seg[1], seg, sizeof(*seg));
-@@ -1159,18 +1164,13 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
- 		devm_kfree(dev, tun_seg);
- 	}
- 
--	if (perfect_filter)
--		set_bit(fltr_idx, hw->fdir_perfect_fltr);
--	else
--		clear_bit(fltr_idx, hw->fdir_perfect_fltr);
--
- 	return ret;
- 
- err_exit:
- 	devm_kfree(dev, tun_seg);
- 	devm_kfree(dev, seg);
- 
--	return -EOPNOTSUPP;
-+	return ret;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index f867507d427f9..0028043bb51cd 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -260,6 +260,44 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw,
+ 	return 0;
  }
  
- /**
-@@ -1684,7 +1684,9 @@ int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 	input->comp_report = ICE_FXD_FLTR_QW0_COMP_REPORT_SW_FAIL;
++/**
++ * __poll_for_resp   -	self poll completion for rcfw command
++ * @rcfw      -   rcfw channel instance of rdev
++ * @cookie    -   cookie to track the command
++ * @opcode    -   rcfw submitted for given opcode
++ *
++ * It works same as __wait_for_resp except this function will
++ * do self polling in sort interval since interrupt is disabled.
++ * This function can not be called from non-sleepable context.
++ *
++ * Returns:
++ * -ETIMEOUT if command is not completed in specific time interval.
++ * 0 if command is completed by firmware.
++ */
++static int __poll_for_resp(struct bnxt_qplib_rcfw *rcfw, u16 cookie,
++			   u8 opcode)
++{
++	struct bnxt_qplib_cmdq_ctx *cmdq = &rcfw->cmdq;
++	unsigned long issue_time;
++	u16 cbit;
++
++	cbit = cookie % rcfw->cmdq_depth;
++	issue_time = jiffies;
++
++	do {
++		if (test_bit(ERR_DEVICE_DETACHED, &cmdq->flags))
++			return bnxt_qplib_map_rc(opcode);
++
++		usleep_range(1000, 1001);
++
++		bnxt_qplib_service_creq(&rcfw->creq.creq_tasklet);
++		if (!test_bit(cbit, cmdq->cmdq_bitmap))
++			return 0;
++		if (jiffies_to_msecs(jiffies - issue_time) > 10000)
++			return -ETIMEDOUT;
++	} while (true);
++};
++
+ static int __send_message_basic_sanity(struct bnxt_qplib_rcfw *rcfw,
+ 				       struct bnxt_qplib_cmdqmsg *msg)
+ {
+@@ -328,8 +366,10 @@ static int __bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
  
- 	/* input struct is added to the HW filter list */
--	ice_fdir_update_list_entry(pf, input, fsp->location);
-+	ret = ice_fdir_update_list_entry(pf, input, fsp->location);
-+	if (ret)
-+		goto release_lock;
+ 	if (msg->block)
+ 		rc = __block_for_resp(rcfw, cookie, opcode);
+-	else
++	else if (atomic_read(&rcfw->rcfw_intr_enabled))
+ 		rc = __wait_for_resp(rcfw, cookie, opcode);
++	else
++		rc = __poll_for_resp(rcfw, cookie, opcode);
+ 	if (rc) {
+ 		/* timed out */
+ 		dev_err(&rcfw->pdev->dev, "cmdq[%#x]=%#x timedout (%d)msec\n",
+@@ -798,6 +838,7 @@ void bnxt_qplib_rcfw_stop_irq(struct bnxt_qplib_rcfw *rcfw, bool kill)
+ 	kfree(creq->irq_name);
+ 	creq->irq_name = NULL;
+ 	creq->requested = false;
++	atomic_set(&rcfw->rcfw_intr_enabled, 0);
+ }
  
- 	ret = ice_fdir_write_all_fltr(pf, input, true);
- 	if (ret)
+ void bnxt_qplib_disable_rcfw_channel(struct bnxt_qplib_rcfw *rcfw)
+@@ -859,6 +900,7 @@ int bnxt_qplib_rcfw_start_irq(struct bnxt_qplib_rcfw *rcfw, int msix_vector,
+ 	creq->requested = true;
+ 
+ 	bnxt_qplib_ring_nq_db(&creq->creq_db.dbinfo, res->cctx, true);
++	atomic_inc(&rcfw->rcfw_intr_enabled);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+index 43dc11febf46a..4608c0ef07a87 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+@@ -225,6 +225,7 @@ struct bnxt_qplib_rcfw {
+ 	u64 oos_prev;
+ 	u32 init_oos_stats;
+ 	u32 cmdq_depth;
++	atomic_t rcfw_intr_enabled;
+ 	struct semaphore rcfw_inflight;
+ };
+ 
 -- 
-2.39.2
+2.40.1
 
 
 
