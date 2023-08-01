@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3265376AEA9
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69C7576AFD8
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233374AbjHAJkh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40232 "EHLO
+        id S233673AbjHAJug (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:50:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233090AbjHAJkJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F701BC3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:12 -0700 (PDT)
+        with ESMTP id S233709AbjHAJuS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:50:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FC152D5D
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:49:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9251614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B806BC433C8;
-        Tue,  1 Aug 2023 09:38:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE7A5614CF
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:49:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4A4C433C8;
+        Tue,  1 Aug 2023 09:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882691;
-        bh=U4NRU5pL2qmWf8Na+8tcAgA0qSek0x/0bbaBd8aMXoo=;
+        s=korg; t=1690883391;
+        bh=MKb8QdAp0ZycEec599NIZ60uvBHACSKCrbs1+KGHOmg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yw1Qbk7upqx//hLr1xUNmhlnFzlJ4er8wU645rT0A8CpxUSJmAdLiRjl8Q2plyCt4
-         WH5eu83x9rkdLZKa8+vQRDSYJk+mRZKgsJej4rzh5oWQYwi60RNn6HN5FrOIGcaRWA
-         8ACz1EswyvvqX6oV0uZmMYmsnOi0NANZjiPvEjxA=
+        b=DCvbRnwqFqhtjoPdUU8ykAAwmQGMZHmc0b4tWtfBTDJNEEk3oLE320uzBpp3DhXif
+         87pQUYagcHVQpVmaA8h1zQSQXUBepHF9fEW7Zm9VqJVDuoDKkZ6UMVAzb/CQ79cgW8
+         iHhULFQA6l4mTaEj0pJm6hAKjKHduny1VBbXpXbg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 196/228] virtio-net: fix race between set queues and probe
-Date:   Tue,  1 Aug 2023 11:20:54 +0200
-Message-ID: <20230801091929.942000113@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        Christian Brauner <brauner@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.4 191/239] file: always lock position for FMODE_ATOMIC_POS
+Date:   Tue,  1 Aug 2023 11:20:55 +0200
+Message-ID: <20230801091932.579764151@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Wang <jasowang@redhat.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 25266128fe16d5632d43ada34c847d7b8daba539 upstream.
+commit 20ea1e7d13c1b544fe67c4a8dc3943bb1ab33e6f upstream.
 
-A race were found where set_channels could be called after registering
-but before virtnet_set_queues() in virtnet_probe(). Fixing this by
-moving the virtnet_set_queues() before netdevice registering. While at
-it, use _virtnet_set_queues() to avoid holding rtnl as the device is
-not even registered at that time.
+The pidfd_getfd() system call allows a caller with ptrace_may_access()
+abilities on another process to steal a file descriptor from this
+process. This system call is used by debuggers, container runtimes,
+system call supervisors, networking proxies etc. So while it is a
+special interest system call it is used in common tools.
 
-Cc: stable@vger.kernel.org
-Fixes: a220871be66f ("virtio-net: correctly enable multiqueue")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230725072049.617289-1-jasowang@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+That ability ends up breaking our long-time optimization in fdget_pos(),
+which "knew" that if we had exclusive access to the file descriptor
+nobody else could access it, and we didn't need the lock for the file
+position.
+
+That check for file_count(file) was always fairly subtle - it depended
+on __fdget() not incrementing the file count for single-threaded
+processes and thus included that as part of the rule - but it did mean
+that we didn't need to take the lock in all those traditional unix
+process contexts.
+
+So it's sad to see this go, and I'd love to have some way to re-instate
+the optimization. At the same time, the lock obviously isn't ever
+contended in the case we optimized, so all we were optimizing away is
+the atomics and the cacheline dirtying. Let's see if anybody even
+notices that the optimization is gone.
+
+Link: https://lore.kernel.org/linux-fsdevel/20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org/
+Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
+Cc: stable@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/file.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3940,6 +3940,8 @@ static int virtnet_probe(struct virtio_d
- 	if (vi->has_rss || vi->has_rss_hash_report)
- 		virtnet_init_default_rss(vi);
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1042,10 +1042,8 @@ unsigned long __fdget_pos(unsigned int f
+ 	struct file *file = (struct file *)(v & ~3);
  
-+	_virtnet_set_queues(vi, vi->curr_queue_pairs);
-+
- 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
- 	rtnl_lock();
- 
-@@ -3960,8 +3962,6 @@ static int virtnet_probe(struct virtio_d
- 		goto free_unregister_netdev;
+ 	if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
+-		if (file_count(file) > 1) {
+-			v |= FDPUT_POS_UNLOCK;
+-			mutex_lock(&file->f_pos_lock);
+-		}
++		v |= FDPUT_POS_UNLOCK;
++		mutex_lock(&file->f_pos_lock);
  	}
- 
--	virtnet_set_queues(vi, vi->curr_queue_pairs);
--
- 	/* Assume link up if device can't report link status,
- 	   otherwise get link status from config. */
- 	netif_carrier_off(dev);
+ 	return v;
+ }
 
 
