@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A595B76AF96
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCBDC76AE82
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233479AbjHAJtA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45638 "EHLO
+        id S233208AbjHAJj2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232543AbjHAJsp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:48:45 -0400
+        with ESMTP id S232997AbjHAJjL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FAFA19BE
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:47:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F12469E
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:37:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D2F6614F3
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57381C433C8;
-        Tue,  1 Aug 2023 09:47:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7899561517
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CB3C433C7;
+        Tue,  1 Aug 2023 09:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883237;
-        bh=QsYuCVHwNhX7htojaEBKLZ0mhsd7dkS5VMUMjDCGC4Q=;
+        s=korg; t=1690882621;
+        bh=YwIsGVHUr2sJbtY7RJIj1Acb16lWFaaKz5yceoW/yf4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tu+tQNgFk8xnbRzrKT9Fda+xv75OfGrF7SlgELYBPp+Q+GoylqlUpNzhZ6sgIkhAs
-         DAcKYdHK8h6AsNwCYWokDxvuofZCCFLBxl1g7jxPxR5Om80h6L5h2T/QNH2jLVZcxV
-         SDsVxPOXQkK7Wg9HBwFpTObV5s9pOaRXr3zJ6ZP0=
+        b=1EkPfLHR4aexnC7qq26eCI61vCq1uETQ38KjA6UyQaQMuQrbv2Mj1sNUa0sIXe+Ol
+         5+cqsjLQ1fVm0N8BoKAjAYqch6ORWfuJP28HAApN21QNxajrmBX39ZR74rRqbQc31l
+         MabPf6sLhWTatKJq0HAkrbM23i1pg989PU711dtU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable <stable@kernel.org>,
-        Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.4 165/239] usb: misc: ehset: fix wrong if condition
+        Zubin Mithra <zsm@chromium.org>,
+        Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH 6.1 171/228] usb: xhci-mtk: set the dma max_seg_size
 Date:   Tue,  1 Aug 2023 11:20:29 +0200
-Message-ID: <20230801091931.581270473@linuxfoundation.org>
+Message-ID: <20230801091929.046331744@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,60 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 7f2327666a9080e428166964e37548b0168cd5e9 upstream.
+commit 9fd10829a9eb482e192a845675ecc5480e0bfa10 upstream.
 
-A negative number from ret means the host controller had failed to send
-usb message and 0 means succeed. Therefore, the if logic is wrong here
-and this patch will fix it.
+Allow devices to have dma operations beyond 64K, and avoid warnings such
+as:
 
-Fixes: f2b42379c576 ("usb: misc: ehset: Rework test mode entry")
+DMA-API: xhci-mtk 11200000.usb: mapping sg segment longer than device claims to support [len=98304] [max=65536]
+
+Fixes: 0cbd4b34cda9 ("xhci: mediatek: support MTK xHCI host controller")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20230705095231.457860-1-xu.yang_2@nxp.com
+Tested-by: Zubin Mithra <zsm@chromium.org>
+Reported-by: Zubin Mithra <zsm@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20230628-mtk-usb-v2-1-c8c34eb9f229@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/ehset.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-mtk.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/misc/ehset.c
-+++ b/drivers/usb/misc/ehset.c
-@@ -77,7 +77,7 @@ static int ehset_probe(struct usb_interf
- 	switch (test_pid) {
- 	case TEST_SE0_NAK_PID:
- 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
--		if (!ret)
-+		if (ret < 0)
- 			break;
- 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
- 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
-@@ -86,7 +86,7 @@ static int ehset_probe(struct usb_interf
- 		break;
- 	case TEST_J_PID:
- 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
--		if (!ret)
-+		if (ret < 0)
- 			break;
- 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
- 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
-@@ -95,7 +95,7 @@ static int ehset_probe(struct usb_interf
- 		break;
- 	case TEST_K_PID:
- 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
--		if (!ret)
-+		if (ret < 0)
- 			break;
- 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
- 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
-@@ -104,7 +104,7 @@ static int ehset_probe(struct usb_interf
- 		break;
- 	case TEST_PACKET_PID:
- 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
--		if (!ret)
-+		if (ret < 0)
- 			break;
- 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
- 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
+--- a/drivers/usb/host/xhci-mtk.c
++++ b/drivers/usb/host/xhci-mtk.c
+@@ -590,6 +590,7 @@ static int xhci_mtk_probe(struct platfor
+ 	}
+ 
+ 	device_init_wakeup(dev, true);
++	dma_set_max_seg_size(dev, UINT_MAX);
+ 
+ 	xhci = hcd_to_xhci(hcd);
+ 	xhci->main_hcd = hcd;
 
 
