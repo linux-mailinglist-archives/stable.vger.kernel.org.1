@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2E676ADC9
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C4E776AF5C
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:46:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232265AbjHAJdo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:33:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34992 "EHLO
+        id S233484AbjHAJq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:46:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233092AbjHAJdB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:33:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F531BF9
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:30:59 -0700 (PDT)
+        with ESMTP id S233389AbjHAJoy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:44:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E9F1738
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:42:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A26B561515
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32E5C433C8;
-        Tue,  1 Aug 2023 09:30:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C2D8261511
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:42:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD591C433C7;
+        Tue,  1 Aug 2023 09:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882259;
-        bh=KIpLyrl4ZFhrzX6oWGp8tSYN9SyYTsfjVX4nRfjiO4M=;
+        s=korg; t=1690882958;
+        bh=PJ8vPfA4wTvmLgfmcJRNRpw38qb5HDJeeo5EHd5rInw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bH/flocc3oWl4nZxNIzAobiY4NmMDwsGhUTotIGAMTORqDSqoqNCM9QLIZNVrVeJM
-         SBdaUcXxPfvPAHHnvC2/56V5Y1if3Yyfg5GVboW7jRiUdN+lFdtf/9k3RcNRgDmUoL
-         OKwKuRpa59IkYuZg6Z/Mp2+3n/2SccUEbFr2KS1g=
+        b=cTpSJy4A/9FAZa1Gtj9zQJd5lKpWRuymRuC8DSlyEtKeENlF4xXJ1CDF9zaXRqIni
+         nLWF9nrQQYdVoePxZkVvS7XifAyw46raGKg25lR1DCHGJ149VUWBxyxDyXw2SFvYtd
+         g9hXQeX7/lnDP7Zd4doEoaIMO4t7w9WR0mB5aE34=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Charlene Liu <Charlene.Liu@amd.com>,
-        Tom Chung <chiahsuan.chung@amd.com>,
-        Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
+        Charlene Liu <Charlene.Liu@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/228] drm/amd/display: use low clocks for no plane configs
+Subject: [PATCH 6.4 035/239] drm/amd/display: fix dcn315 single stream crb allocation
 Date:   Tue,  1 Aug 2023 11:18:19 +0200
-Message-ID: <20230801091924.362986956@linuxfoundation.org>
+Message-ID: <20230801091926.864394157@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,108 +60,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>
+From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
 
-[ Upstream commit 2641c7b7808191cba25ba28b82bb73ca294924cc ]
+[ Upstream commit 49f26218c344741cb3eaa740b1e44e960551a87f ]
 
-Stream only configurations do not require DCFCLK, SOCCLK, DPPCLK
-or FCLK. They also always allow pstate change.
+Change to improve avoiding asymetric crb calculations for single stream
+scenarios.
 
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
 Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 49f26218c344 ("drm/amd/display: fix dcn315 single stream crb allocation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dml/dcn31/dcn31_fpu.c   | 18 ++++++++++++++----
- .../drm/amd/display/dc/dml/dcn32/dcn32_fpu.c   | 14 +++++++++++++-
- 2 files changed, 27 insertions(+), 5 deletions(-)
+ .../drm/amd/display/dc/dcn315/dcn315_resource.c   | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-index 8e416433184cf..aa1c2917a4a1d 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-@@ -483,7 +483,7 @@ void dcn31_calculate_wm_and_dlg_fp(
- 		int pipe_cnt,
- 		int vlevel)
- {
--	int i, pipe_idx, active_dpp_count = 0;
-+	int i, pipe_idx, active_hubp_count = 0;
- 	double dcfclk = context->bw_ctx.dml.vba.DCFCLKState[vlevel][context->bw_ctx.dml.vba.maxMpcComb];
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
+index 42a0157fd8133..ae99b2851e019 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
+@@ -1662,6 +1662,10 @@ static bool allow_pixel_rate_crb(struct dc *dc, struct dc_state *context)
+ 	int i;
+ 	struct resource_context *res_ctx = &context->res_ctx;
  
- 	dc_assert_fp_enabled();
-@@ -529,7 +529,7 @@ void dcn31_calculate_wm_and_dlg_fp(
++	/*Don't apply for single stream*/
++	if (context->stream_count < 2)
++		return false;
++
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		if (!res_ctx->pipe_ctx[i].stream)
  			continue;
- 
- 		if (context->res_ctx.pipe_ctx[i].plane_state)
--			active_dpp_count++;
-+			active_hubp_count++;
- 
- 		pipes[pipe_idx].clks_cfg.dispclk_mhz = get_dispclk_calculated(&context->bw_ctx.dml, pipes, pipe_cnt);
- 		pipes[pipe_idx].clks_cfg.dppclk_mhz = get_dppclk_calculated(&context->bw_ctx.dml, pipes, pipe_cnt, pipe_idx);
-@@ -547,9 +547,19 @@ void dcn31_calculate_wm_and_dlg_fp(
+@@ -1748,19 +1752,23 @@ static int dcn315_populate_dml_pipes_from_context(
+ 		pipe_cnt++;
  	}
  
- 	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
--	/* For 31x apu pstate change is only supported if possible in vactive or if there are no active dpps */
-+	/* For 31x apu pstate change is only supported if possible in vactive*/
- 	context->bw_ctx.bw.dcn.clk.p_state_change_support =
--			context->bw_ctx.dml.vba.DRAMClockChangeSupport[vlevel][context->bw_ctx.dml.vba.maxMpcComb] == dm_dram_clock_change_vactive || !active_dpp_count;
-+			context->bw_ctx.dml.vba.DRAMClockChangeSupport[vlevel][context->bw_ctx.dml.vba.maxMpcComb] == dm_dram_clock_change_vactive;
-+	/* If DCN isn't making memory requests we can allow pstate change and lower clocks */
-+	if (!active_hubp_count) {
-+		context->bw_ctx.bw.dcn.clk.socclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dppclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dcfclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dcfclk_deep_sleep_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dramclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.fclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.p_state_change_support = true;
-+	}
- }
+-	/* Spread remaining unreserved crb evenly among all pipes, use default policy if not enough det or single pipe */
++	/* Spread remaining unreserved crb evenly among all pipes*/
+ 	if (pixel_rate_crb) {
+ 		for (i = 0, pipe_cnt = 0, crb_idx = 0; i < dc->res_pool->pipe_count; i++) {
+ 			pipe = &res_ctx->pipe_ctx[i];
+ 			if (!pipe->stream)
+ 				continue;
  
- void dcn31_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index f28caece5f901..f88c80594bd7e 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -1237,7 +1237,7 @@ static void dcn32_calculate_dlg_params(struct dc *dc, struct dc_state *context,
- 				       display_e2e_pipe_params_st *pipes,
- 				       int pipe_cnt, int vlevel)
- {
--	int i, pipe_idx;
-+	int i, pipe_idx, active_hubp_count = 0;
- 	bool usr_retraining_support = false;
- 	bool unbounded_req_enabled = false;
++			/* Do not use asymetric crb if not enough for pstate support */
++			if (remaining_det_segs < 0) {
++				pipes[pipe_cnt].pipe.src.det_size_override = 0;
++				continue;
++			}
++
+ 			if (!pipe->top_pipe && !pipe->prev_odm_pipe) {
+ 				bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
+ 						|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
  
-@@ -1282,6 +1282,8 @@ static void dcn32_calculate_dlg_params(struct dc *dc, struct dc_state *context,
- 	for (i = 0, pipe_idx = 0; i < dc->res_pool->pipe_count; i++) {
- 		if (!context->res_ctx.pipe_ctx[i].stream)
- 			continue;
-+		if (context->res_ctx.pipe_ctx[i].plane_state)
-+			active_hubp_count++;
- 		pipes[pipe_idx].pipe.dest.vstartup_start = get_vstartup(&context->bw_ctx.dml, pipes, pipe_cnt,
- 				pipe_idx);
- 		pipes[pipe_idx].pipe.dest.vupdate_offset = get_vupdate_offset(&context->bw_ctx.dml, pipes, pipe_cnt,
-@@ -1307,6 +1309,16 @@ static void dcn32_calculate_dlg_params(struct dc *dc, struct dc_state *context,
- 		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
- 		pipe_idx++;
- 	}
-+	/* If DCN isn't making memory requests we can allow pstate change and lower clocks */
-+	if (!active_hubp_count) {
-+		context->bw_ctx.bw.dcn.clk.socclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dppclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dcfclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dcfclk_deep_sleep_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.dramclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.fclk_khz = 0;
-+		context->bw_ctx.bw.dcn.clk.p_state_change_support = true;
-+	}
- 	/*save a original dppclock copy*/
- 	context->bw_ctx.bw.dcn.clk.bw_dppclk_khz = context->bw_ctx.bw.dcn.clk.dppclk_khz;
- 	context->bw_ctx.bw.dcn.clk.bw_dispclk_khz = context->bw_ctx.bw.dcn.clk.dispclk_khz;
+-				if (remaining_det_segs < 0 || crb_pipes == 1)
+-					pipes[pipe_cnt].pipe.src.det_size_override = 0;
+ 				if (remaining_det_segs > MIN_RESERVED_DET_SEGS)
+ 					pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
+ 							(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
+@@ -1776,6 +1784,7 @@ static int dcn315_populate_dml_pipes_from_context(
+ 				}
+ 				/* Convert segments into size for DML use */
+ 				pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
++
+ 				crb_idx++;
+ 			}
+ 			pipe_cnt++;
 -- 
 2.39.2
 
