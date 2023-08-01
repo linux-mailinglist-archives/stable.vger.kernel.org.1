@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5FA476AFB8
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7E5576AD52
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233720AbjHAJt4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50622 "EHLO
+        id S231784AbjHAJ2X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233551AbjHAJtl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:49:41 -0400
+        with ESMTP id S232941AbjHAJ1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:27:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F39A0
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:48:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F5C2706
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:26:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52AEE614FC
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:48:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FCDC433C7;
-        Tue,  1 Aug 2023 09:48:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D6F8614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EAAC433C8;
+        Tue,  1 Aug 2023 09:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690883318;
-        bh=y2X+6Ws0RSAnwqIEIVnYHSMjoQ/u0fwlQxWXNh1VjCc=;
+        s=korg; t=1690882003;
+        bh=3awcHok41KnFOZwGM4nIMgXByG6KYvIAKqAdpq1OO1U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A2F9sthjjjcHWJBNcdTenakLUr5RC3BCaKUg64fmRzGCOjE7SL8UugWcLv8VQj4Gr
-         ZoanlpsQAYaSTHznmzi3ad2HlJD12QTcDaHF8PcdaYQxgn7+dZhYC7E7f1v6fybDU5
-         c/MwVlIoaq2Ao1QDQYKYuaqS4J1EEH9athSXYKmo=
+        b=nPqBM5vZEXIKcfhtXhMriv8srL2pAKIu+Raexco2fmJ9KTMwnr7cDzgQF2f1l7fzo
+         WxUnd7plTV3Y9cOvVFOiiUeFQp/mX0f7JP3XsMzD2cvPh8ON7A9yiYs2pWt1BVVdXz
+         id/nj8JHn5Ltfkz5RqQ02/QhaRuNLTKjh6gnPCJc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mohsen Tahmasebi <moh53n@moh53n.ir>,
-        Mostafa Ghofrani <mostafaghrr@gmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.4 154/239] USB: serial: option: add Quectel EC200A module support
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 106/155] serial: qcom-geni: drop bogus runtime pm state update
 Date:   Tue,  1 Aug 2023 11:20:18 +0200
-Message-ID: <20230801091931.204274903@linuxfoundation.org>
+Message-ID: <20230801091914.024014786@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mohsen Tahmasebi <moh53n@moh53n.ir>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 857ea9005806e2a458016880278f98715873e977 upstream.
+commit 4dd8752a14ca0303fbdf0a6c68ff65f0a50bd2fa upstream.
 
-Add Quectel EC200A "DIAG, AT, MODEM":
+The runtime PM state should not be changed by drivers that do not
+implement runtime PM even if it happens to work around a bug in PM core.
 
-0x6005: ECM / RNDIS + DIAG + AT + MODEM
+With the wake irq arming now fixed, drop the bogus runtime PM state
+update which left the device in active state (and could potentially
+prevent a parent device from suspending).
 
-T:  Bus=01 Lev=01 Prnt=02 Port=05 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=6005 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-S:  SerialNumber=0000
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-
-Signed-off-by: Mohsen Tahmasebi <moh53n@moh53n.ir>
-Tested-by: Mostafa Ghofrani <mostafaghrr@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: f3974413cf02 ("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup")
+Cc: 5.6+ <stable@vger.kernel.org> # 5.6+
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/qcom_geni_serial.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -269,6 +269,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_RM520N			0x0801
- #define QUECTEL_PRODUCT_EC200U			0x0901
- #define QUECTEL_PRODUCT_EC200S_CN		0x6002
-+#define QUECTEL_PRODUCT_EC200A			0x6005
- #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
- #define QUECTEL_PRODUCT_EM061K_LCN		0x6009
- #define QUECTEL_PRODUCT_EC200T			0x6026
-@@ -1229,6 +1230,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM520N, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, 0x0900, 0xff, 0, 0), /* RM500U-CN */
- 	  .driver_info = ZLP },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200A, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1455,13 +1455,6 @@ static int qcom_geni_serial_probe(struct
+ 	if (ret)
+ 		return ret;
+ 
+-	/*
+-	 * Set pm_runtime status as ACTIVE so that wakeup_irq gets
+-	 * enabled/disabled from dev_pm_arm_wake_irq during system
+-	 * suspend/resume respectively.
+-	 */
+-	pm_runtime_set_active(&pdev->dev);
+-
+ 	if (port->wakeup_irq > 0) {
+ 		device_init_wakeup(&pdev->dev, true);
+ 		ret = dev_pm_set_dedicated_wake_irq(&pdev->dev,
 
 
