@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D10F76AD31
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB62076AE15
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232772AbjHAJ1F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:27:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52604 "EHLO
+        id S233072AbjHAJf5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:35:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232789AbjHAJ0s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:26:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCBD2D74
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:25:48 -0700 (PDT)
+        with ESMTP id S233135AbjHAJfg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:35:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A262134
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:33:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 728CF614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:25:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82598C433C9;
-        Tue,  1 Aug 2023 09:25:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9EB1614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:33:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22CCC433C8;
+        Tue,  1 Aug 2023 09:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690881947;
-        bh=HYYpfOg0YV6UxnMMR3HULJu4CeN2YoVXwZRuh8YJ7Bc=;
+        s=korg; t=1690882427;
+        bh=632GqK/UiWvngfr67lbiE69pzQWD7kLvqmkvz0XaLJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h2/TA9KZg9Xe6t0xxDBWimEy6SxCkDjFq5epm5yOWF0+beEGeh6oQ5IqpU9Nw2YgD
-         OxDoR8rtnDmRzQ9SuEEvAyyasQ/yBG5lpnFZtzuiOe92izp/Ak6NG5kuAP5jSsQD1A
-         HRT61gw6TNC2ltU8deDcg5Uoa1skpWC+8+NL91kE=
+        b=1X2xWLub1c907cH/x/fbmClNHtUuCCwIROfed44aVMQQn3Y2eCGgCtlWtahe94+tw
+         KA9sIBuJsfOqVgzaxYUk17i8YfqZZC0PColNBSHXhjy7ZiAsojlvSUV8VB7a6+rAju
+         pQKRRe8dylG52UfuVnvvP3Ua0/0ZNjM5mOi9Ddek=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/155] jbd2: remove journal_clean_one_cp_list()
+Subject: [PATCH 6.1 101/228] net: stmmac: Apply redundant write work around on 4.xx too
 Date:   Tue,  1 Aug 2023 11:19:19 +0200
-Message-ID: <20230801091911.867814225@linuxfoundation.org>
+Message-ID: <20230801091926.467145387@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,233 +57,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-[ Upstream commit b98dba273a0e47dbfade89c9af73c5b012a4eabb ]
+[ Upstream commit 284779dbf4e98753458708783af8c35630674a21 ]
 
-journal_clean_one_cp_list() and journal_shrink_one_cp_list() are almost
-the same, so merge them into journal_shrink_one_cp_list(), remove the
-nr_to_scan parameter, always scan and try to free the whole checkpoint
-list.
+commit a3a57bf07de23fe1ff779e0fdf710aa581c3ff73 ("net: stmmac: work
+around sporadic tx issue on link-up") worked around a problem with TX
+sometimes not working after a link-up by avoiding a redundant write to
+MAC_CTRL_REG (aka GMAC_CONFIG), since the IP appeared to have problems
+with handling multiple writes to that register in some cases.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+That commit however only added the work around to dwmac_lib.c (apart
+from the common code in stmmac_main.c), but my systems with version
+4.21a of the IP exhibit the same problem, so add the work around to
+dwmac4_lib.c too.
+
+Fixes: a3a57bf07de2 ("net: stmmac: work around sporadic tx issue on link-up")
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230721-stmmac-tx-workaround-v1-1-9411cbd5ee07@axis.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c        | 75 +++++++++----------------------------
- include/trace/events/jbd2.h | 12 ++----
- 2 files changed, 21 insertions(+), 66 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index c1f543e86170a..ab72aeb766a74 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -349,50 +349,10 @@ int jbd2_cleanup_journal_tail(journal_t *journal)
- 
- /* Checkpoint list management */
- 
--/*
-- * journal_clean_one_cp_list
-- *
-- * Find all the written-back checkpoint buffers in the given list and
-- * release them. If 'destroy' is set, clean all buffers unconditionally.
-- *
-- * Called with j_list_lock held.
-- * Returns 1 if we freed the transaction, 0 otherwise.
-- */
--static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
--{
--	struct journal_head *last_jh;
--	struct journal_head *next_jh = jh;
--
--	if (!jh)
--		return 0;
--
--	last_jh = jh->b_cpprev;
--	do {
--		jh = next_jh;
--		next_jh = jh->b_cpnext;
--
--		if (!destroy && __cp_buffer_busy(jh))
--			return 0;
--
--		if (__jbd2_journal_remove_checkpoint(jh))
--			return 1;
--		/*
--		 * This function only frees up some memory
--		 * if possible so we dont have an obligation
--		 * to finish processing. Bail out if preemption
--		 * requested:
--		 */
--		if (need_resched())
--			return 0;
--	} while (jh != last_jh);
--
--	return 0;
--}
--
- /*
-  * journal_shrink_one_cp_list
-  *
-- * Find 'nr_to_scan' written-back checkpoint buffers in the given list
-+ * Find all the written-back checkpoint buffers in the given list
-  * and try to release them. If the whole transaction is released, set
-  * the 'released' parameter. Return the number of released checkpointed
-  * buffers.
-@@ -400,15 +360,15 @@ static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
-  * Called with j_list_lock held.
-  */
- static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
--						unsigned long *nr_to_scan,
--						bool *released)
-+						bool destroy, bool *released)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
+index d1c605777985f..7c26394f665e4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
+@@ -207,13 +207,15 @@ void stmmac_dwmac4_set_mac_addr(void __iomem *ioaddr, const u8 addr[6],
+ void stmmac_dwmac4_set_mac(void __iomem *ioaddr, bool enable)
  {
- 	struct journal_head *last_jh;
- 	struct journal_head *next_jh = jh;
- 	unsigned long nr_freed = 0;
- 	int ret;
+ 	u32 value = readl(ioaddr + GMAC_CONFIG);
++	u32 old_val = value;
  
--	if (!jh || *nr_to_scan == 0)
-+	*released = false;
-+	if (!jh)
- 		return 0;
+ 	if (enable)
+ 		value |= GMAC_CONFIG_RE | GMAC_CONFIG_TE;
+ 	else
+ 		value &= ~(GMAC_CONFIG_TE | GMAC_CONFIG_RE);
  
- 	last_jh = jh->b_cpprev;
-@@ -416,8 +376,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 		jh = next_jh;
- 		next_jh = jh->b_cpnext;
- 
--		(*nr_to_scan)--;
--		if (__cp_buffer_busy(jh))
-+		if (!destroy && __cp_buffer_busy(jh))
- 			continue;
- 
- 		nr_freed++;
-@@ -429,7 +388,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 
- 		if (need_resched())
- 			break;
--	} while (jh != last_jh && *nr_to_scan);
-+	} while (jh != last_jh);
- 
- 	return nr_freed;
+-	writel(value, ioaddr + GMAC_CONFIG);
++	if (value != old_val)
++		writel(value, ioaddr + GMAC_CONFIG);
  }
-@@ -447,11 +406,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 						  unsigned long *nr_to_scan)
- {
- 	transaction_t *transaction, *last_transaction, *next_transaction;
--	bool released;
-+	bool __maybe_unused released;
- 	tid_t first_tid = 0, last_tid = 0, next_tid = 0;
- 	tid_t tid = 0;
- 	unsigned long nr_freed = 0;
--	unsigned long nr_scanned = *nr_to_scan;
-+	unsigned long freed;
  
- again:
- 	spin_lock(&journal->j_list_lock);
-@@ -480,10 +439,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 		transaction = next_transaction;
- 		next_transaction = transaction->t_cpnext;
- 		tid = transaction->t_tid;
--		released = false;
- 
--		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_list,
--						       nr_to_scan, &released);
-+		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-+						   false, &released);
-+		nr_freed += freed;
-+		(*nr_to_scan) -= min(*nr_to_scan, freed);
- 		if (*nr_to_scan == 0)
- 			break;
- 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
-@@ -504,9 +464,8 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 	if (*nr_to_scan && next_tid)
- 		goto again;
- out:
--	nr_scanned -= *nr_to_scan;
- 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
--					  nr_freed, nr_scanned, next_tid);
-+					  nr_freed, next_tid);
- 
- 	return nr_freed;
- }
-@@ -522,7 +481,7 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- {
- 	transaction_t *transaction, *last_transaction, *next_transaction;
--	int ret;
-+	bool released;
- 
- 	transaction = journal->j_checkpoint_transactions;
- 	if (!transaction)
-@@ -533,8 +492,8 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 	do {
- 		transaction = next_transaction;
- 		next_transaction = transaction->t_cpnext;
--		ret = journal_clean_one_cp_list(transaction->t_checkpoint_list,
--						destroy);
-+		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-+					   destroy, &released);
- 		/*
- 		 * This function only frees up some memory if possible so we
- 		 * dont have an obligation to finish processing. Bail out if
-@@ -547,7 +506,7 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 		 * avoids pointless scanning of transactions which still
- 		 * weren't checkpointed.
- 		 */
--		if (!ret)
-+		if (!released)
- 			return;
- 	} while (transaction != last_transaction);
- }
-diff --git a/include/trace/events/jbd2.h b/include/trace/events/jbd2.h
-index 29414288ea3e0..34ce197bd76e0 100644
---- a/include/trace/events/jbd2.h
-+++ b/include/trace/events/jbd2.h
-@@ -462,11 +462,9 @@ TRACE_EVENT(jbd2_shrink_scan_exit,
- TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 
- 	TP_PROTO(journal_t *journal, tid_t first_tid, tid_t tid, tid_t last_tid,
--		 unsigned long nr_freed, unsigned long nr_scanned,
--		 tid_t next_tid),
-+		 unsigned long nr_freed, tid_t next_tid),
- 
--	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed,
--		nr_scanned, next_tid),
-+	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed, next_tid),
- 
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
-@@ -474,7 +472,6 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 		__field(tid_t, tid)
- 		__field(tid_t, last_tid)
- 		__field(unsigned long, nr_freed)
--		__field(unsigned long, nr_scanned)
- 		__field(tid_t, next_tid)
- 	),
- 
-@@ -484,15 +481,14 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 		__entry->tid		= tid;
- 		__entry->last_tid	= last_tid;
- 		__entry->nr_freed	= nr_freed;
--		__entry->nr_scanned	= nr_scanned;
- 		__entry->next_tid	= next_tid;
- 	),
- 
- 	TP_printk("dev %d,%d shrink transaction %u-%u(%u) freed %lu "
--		  "scanned %lu next transaction %u",
-+		  "next transaction %u",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
- 		  __entry->first_tid, __entry->tid, __entry->last_tid,
--		  __entry->nr_freed, __entry->nr_scanned, __entry->next_tid)
-+		  __entry->nr_freed, __entry->next_tid)
- );
- 
- #endif /* _TRACE_JBD2_H */
+ void stmmac_dwmac4_get_mac_addr(void __iomem *ioaddr, unsigned char *addr,
 -- 
 2.39.2
 
