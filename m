@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 741BE76ADAA
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ADB276AEDF
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:42:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbjHAJbK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57628 "EHLO
+        id S233372AbjHAJmn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:42:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231811AbjHAJax (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:30:53 -0400
+        with ESMTP id S233370AbjHAJmb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:42:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00EA32699
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:29:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0DAD5BA0
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:40:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EE16614EF
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6B5C433C9;
-        Tue,  1 Aug 2023 09:29:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5963614FC
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:40:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58B8C433C7;
+        Tue,  1 Aug 2023 09:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882185;
-        bh=q1hYGR0jJ/OuvYz1wD4cfBq35LF9jS0vb5wek+lMblQ=;
+        s=korg; t=1690882807;
+        bh=JsutQyQYYvaNaN24RytUNgnTDSMBdmWfuAHv/Nkvs8E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DEKRbygePK179opbu0URSMC8o6VPyqcJDQcexnPF+X7uWXyjm49qcTWWWhNLWVCUO
-         ThDsBaeuFyqEMse6ygkkJIq2xSRg8A18iuekjycOnS16wiXphuyDTZ/e+S2nL16J6y
-         x2dsR1v/d7WjuG+pHuoxVtPpe8hD1W+Dx7RN+KWE=
+        b=1fPq8MH3cdKaFd/BFuWYAG4moNbBCyCU0K1Zg9/pIsZ8bu1sj6us2Twy/dnQ1ZHJz
+         +RGJnwZE9Vqgk2OyRhMoeYhDBwVviAbMKvtnvgc5MQsdzKJD6vTrzUpuv2XTP/jv0F
+         GHdQxgSRAUr5IarhwPzlLBh2ngO/PGVB1SzKF5Qk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/228] gpio: mvebu: fix irq domain leak
+        patches@lists.linux.dev, Marc Hartmayer <mhartmay@linux.ibm.com>,
+        Nico Boehr <nrb@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 010/239] KVM: s390: pv: simplify shutdown and fix race
 Date:   Tue,  1 Aug 2023 11:17:54 +0200
-Message-ID: <20230801091923.432652312@linuxfoundation.org>
+Message-ID: <20230801091926.031512391@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,72 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 644ee70267a934be27370f9aa618b29af7290544 ]
+[ Upstream commit 5ff92181577a89ed12ad4e0e5813751faf16a139 ]
 
-Uwe Kleine-König pointed out we still have one resource leak in the mvebu
-driver triggered on driver detach. Let's address it with a custom devm
-action.
+Simplify the shutdown of non-protected VMs. There is no need to do
+complex manipulations of the counter if it was zero.
 
-Fixes: 812d47889a8e ("gpio/mvebu: Use irq_domain_add_linear")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+This also fixes a very rare race which caused pages to be torn down
+from the address space with a non-zero counter even on older machines
+that don't support the UVC instruction, causing a crash.
+
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Fixes: fb491d5500a7 ("KVM: s390: pv: asynchronous destroy for reboot")
+Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-ID: <20230705111937.33472-2-imbrenda@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-mvebu.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/s390/kvm/pv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
-index f86b6c3bc1604..0ba9d04183a60 100644
---- a/drivers/gpio/gpio-mvebu.c
-+++ b/drivers/gpio/gpio-mvebu.c
-@@ -1112,6 +1112,13 @@ static int mvebu_gpio_probe_syscon(struct platform_device *pdev,
- 	return 0;
- }
+diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
+index 3ce5f4351156a..899f3b8ac0110 100644
+--- a/arch/s390/kvm/pv.c
++++ b/arch/s390/kvm/pv.c
+@@ -411,8 +411,12 @@ int kvm_s390_pv_deinit_cleanup_all(struct kvm *kvm, u16 *rc, u16 *rrc)
+ 	u16 _rc, _rrc;
+ 	int cc = 0;
  
-+static void mvebu_gpio_remove_irq_domain(void *data)
-+{
-+	struct irq_domain *domain = data;
-+
-+	irq_domain_remove(domain);
-+}
-+
- static int mvebu_gpio_probe(struct platform_device *pdev)
- {
- 	struct mvebu_gpio_chip *mvchip;
-@@ -1246,13 +1253,18 @@ static int mvebu_gpio_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
+-	/* Make sure the counter does not reach 0 before calling s390_uv_destroy_range */
+-	atomic_inc(&kvm->mm->context.protected_count);
++	/*
++	 * Nothing to do if the counter was already 0. Otherwise make sure
++	 * the counter does not reach 0 before calling s390_uv_destroy_range.
++	 */
++	if (!atomic_inc_not_zero(&kvm->mm->context.protected_count))
++		return 0;
  
-+	err = devm_add_action_or_reset(&pdev->dev, mvebu_gpio_remove_irq_domain,
-+				       mvchip->domain);
-+	if (err)
-+		return err;
-+
- 	err = irq_alloc_domain_generic_chips(
- 	    mvchip->domain, ngpios, 2, np->name, handle_level_irq,
- 	    IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_LEVEL, 0, 0);
- 	if (err) {
- 		dev_err(&pdev->dev, "couldn't allocate irq chips %s (DT).\n",
- 			mvchip->chip.label);
--		goto err_domain;
-+		return err;
- 	}
- 
- 	/*
-@@ -1292,10 +1304,6 @@ static int mvebu_gpio_probe(struct platform_device *pdev)
- 	}
- 
- 	return 0;
--
--err_domain:
--	irq_domain_remove(mvchip->domain);
--	return err;
- }
- 
- static struct platform_driver mvebu_gpio_driver = {
+ 	*rc = 1;
+ 	/* If the current VM is protected, destroy it */
 -- 
 2.39.2
 
