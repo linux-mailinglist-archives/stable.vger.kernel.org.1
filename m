@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B5C76AD63
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FBF276AE7B
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232941AbjHAJ2r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
+        id S233276AbjHAJjY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232930AbjHAJ2a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:28:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 346A43C2F
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:27:24 -0700 (PDT)
+        with ESMTP id S233280AbjHAJjC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:39:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56384449F
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:36:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 553E7614B2
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:27:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61ABAC433C8;
-        Tue,  1 Aug 2023 09:27:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88EB7614B2
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:36:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97518C433C7;
+        Tue,  1 Aug 2023 09:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882042;
-        bh=ofz8n2r47jYTluDLcurNJCtpQuBROZB9DtXWN4VQw0g=;
+        s=korg; t=1690882611;
+        bh=QsYuCVHwNhX7htojaEBKLZ0mhsd7dkS5VMUMjDCGC4Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1cYghuHut4r5dKjBdEmztvbrihBpxEan5kKOsHxOIymmQQxasXoBrPy5t0KS3i2E/
-         2fblG0b4yp7H6JN4+Yz1B1X6V2mdHilHek5y0Qipiljpgm8lUnq/oo+7aLG3bO++w6
-         cgCeOG99CcicY+s0TAyrT0/eQLkNBl6jxTLmCO5s=
+        b=eCvW5jRWHcPqjFGLlSzPAj1+CFE0pHWEHp0sIbYjv05RZj3FbCdm/yXwr4LDBVnLh
+         rtO7x+NFodXoyHyKZ+Reb2FvqTSlJNwicQE6CnbFuwbFCvlLV/+gxfpvpUX6pHl6V9
+         5FnNfiS62fFiAssORI1RLSJ9RsPlIz64ntJFB01s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15 113/155] can: gs_usb: gs_can_close(): add missing set of CAN state to CAN_STATE_STOPPED
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.1 167/228] usb: misc: ehset: fix wrong if condition
 Date:   Tue,  1 Aug 2023 11:20:25 +0200
-Message-ID: <20230801091914.258801627@linuxfoundation.org>
+Message-ID: <20230801091928.901849117@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-References: <20230801091910.165050260@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+References: <20230801091922.799813980@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,42 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit f8a2da6ec2417cca169fa85a8ab15817bccbb109 upstream.
+commit 7f2327666a9080e428166964e37548b0168cd5e9 upstream.
 
-After an initial link up the CAN device is in ERROR-ACTIVE mode. Due
-to a missing CAN_STATE_STOPPED in gs_can_close() it doesn't change to
-STOPPED after a link down:
+A negative number from ret means the host controller had failed to send
+usb message and 0 means succeed. Therefore, the if logic is wrong here
+and this patch will fix it.
 
-| ip link set dev can0 up
-| ip link set dev can0 down
-| ip --details link show can0
-| 13: can0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN mode DEFAULT group default qlen 10
-|     link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-|     can state ERROR-ACTIVE restart-ms 1000
-
-Add missing assignment of CAN_STATE_STOPPED in gs_can_close().
-
-Cc: stable@vger.kernel.org
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://lore.kernel.org/all/20230718-gs_usb-fix-can-state-v1-1-f19738ae2c23@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: f2b42379c576 ("usb: misc: ehset: Rework test mode entry")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20230705095231.457860-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/gs_usb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/misc/ehset.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -734,6 +734,8 @@ static int gs_can_close(struct net_devic
- 	usb_kill_anchored_urbs(&dev->tx_submitted);
- 	atomic_set(&dev->active_tx_urbs, 0);
- 
-+	dev->can.state = CAN_STATE_STOPPED;
-+
- 	/* reset the device */
- 	rc = gs_cmd_reset(dev);
- 	if (rc < 0)
+--- a/drivers/usb/misc/ehset.c
++++ b/drivers/usb/misc/ehset.c
+@@ -77,7 +77,7 @@ static int ehset_probe(struct usb_interf
+ 	switch (test_pid) {
+ 	case TEST_SE0_NAK_PID:
+ 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
+-		if (!ret)
++		if (ret < 0)
+ 			break;
+ 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
+ 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
+@@ -86,7 +86,7 @@ static int ehset_probe(struct usb_interf
+ 		break;
+ 	case TEST_J_PID:
+ 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
+-		if (!ret)
++		if (ret < 0)
+ 			break;
+ 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
+ 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
+@@ -95,7 +95,7 @@ static int ehset_probe(struct usb_interf
+ 		break;
+ 	case TEST_K_PID:
+ 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
+-		if (!ret)
++		if (ret < 0)
+ 			break;
+ 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
+ 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
+@@ -104,7 +104,7 @@ static int ehset_probe(struct usb_interf
+ 		break;
+ 	case TEST_PACKET_PID:
+ 		ret = ehset_prepare_port_for_testing(hub_udev, portnum);
+-		if (!ret)
++		if (ret < 0)
+ 			break;
+ 		ret = usb_control_msg_send(hub_udev, 0, USB_REQ_SET_FEATURE,
+ 					   USB_RT_PORT, USB_PORT_FEAT_TEST,
 
 
