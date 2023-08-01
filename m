@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6364C76AEB3
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0838476AD65
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:28:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233371AbjHAJk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40378 "EHLO
+        id S229991AbjHAJ2s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233305AbjHAJkk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:40:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E46D49DA
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:38:31 -0700 (PDT)
+        with ESMTP id S232954AbjHAJ2c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:28:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF4A198C
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:27:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 062B96150E
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:38:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1491FC433C7;
-        Tue,  1 Aug 2023 09:38:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66565614BB
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:27:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F608C433C9;
+        Tue,  1 Aug 2023 09:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882710;
-        bh=klIyRPhZk1qjMfAf/bEyH2s8w7OPj8rpn0B/fHo3njE=;
+        s=korg; t=1690882045;
+        bh=D6/ImxoH9T4HOxUCh1VIDSXf5DTrEFBySBTS6g6aIAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ov/hcT14i2ohqNbPaT3Ol9niqFrH6pbsTV2kRg9shgnMIZqS/H8vOZqqf1PUqUuWe
-         Q1HNltrvWoLIf/SnTTbERcY6spA8Qy3TlSL0xG80HByAM7DWRlFrMWAS87D9dezDkO
-         2kwXwNI1SV8ihIHxBEfLSIVzS/ULE33NDSMT4Vn4=
+        b=cfndPw+82ywDGhW8EJFkgkrChNmCVRGXX1Ke047YymsDMvHk3mm9wrfLBpeXNxP2F
+         y9+n9Zp922KLhkIVqtucnp/WiAk/FscLG+MLH3URdKV6FUKxFuqRlkSGSVRP5phrgW
+         M+NZGUuVPe970qB9eo82gmfsTBngyJpNCa/4W+X4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Zhang Shurong <zhang_shurong@foxmail.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.1 176/228] staging: ks7010: potential buffer overflow in ks_wlan_set_encode_ext()
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.15 122/155] Documentation: security-bugs.rst: update preferences when dealing with the linux-distros group
 Date:   Tue,  1 Aug 2023 11:20:34 +0200
-Message-ID: <20230801091929.230743107@linuxfoundation.org>
+Message-ID: <20230801091914.566835831@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
+References: <20230801091910.165050260@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +53,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 5f1c7031e044cb2fba82836d55cc235e2ad619dc upstream.
+commit 4fee0915e649bd0cea56dece6d96f8f4643df33c upstream.
 
-The "exc->key_len" is a u16 that comes from the user.  If it's over
-IW_ENCODING_TOKEN_MAX (64) that could lead to memory corruption.
+Because the linux-distros group forces reporters to release information
+about reported bugs, and they impose arbitrary deadlines in having those
+bugs fixed despite not actually being kernel developers, the kernel
+security team recommends not interacting with them at all as this just
+causes confusion and the early-release of reported security problems.
 
-Fixes: b121d84882b9 ("staging: ks7010: simplify calls to memcpy()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/tencent_5153B668C0283CAA15AA518325346E026A09@qq.com
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/2023063020-throat-pantyhose-f110@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/ks7010/ks_wlan_net.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/security-bugs.rst |   24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
---- a/drivers/staging/ks7010/ks_wlan_net.c
-+++ b/drivers/staging/ks7010/ks_wlan_net.c
-@@ -1584,8 +1584,10 @@ static int ks_wlan_set_encode_ext(struct
- 			commit |= SME_WEP_FLAG;
- 		}
- 		if (enc->key_len) {
--			memcpy(&key->key_val[0], &enc->key[0], enc->key_len);
--			key->key_len = enc->key_len;
-+			int key_len = clamp_val(enc->key_len, 0, IW_ENCODING_TOKEN_MAX);
+--- a/Documentation/admin-guide/security-bugs.rst
++++ b/Documentation/admin-guide/security-bugs.rst
+@@ -63,20 +63,18 @@ information submitted to the security li
+ of the report are treated confidentially even after the embargo has been
+ lifted, in perpetuity.
+ 
+-Coordination
+-------------
++Coordination with other groups
++------------------------------
+ 
+-Fixes for sensitive bugs, such as those that might lead to privilege
+-escalations, may need to be coordinated with the private
+-<linux-distros@vs.openwall.org> mailing list so that distribution vendors
+-are well prepared to issue a fixed kernel upon public disclosure of the
+-upstream fix. Distros will need some time to test the proposed patch and
+-will generally request at least a few days of embargo, and vendor update
+-publication prefers to happen Tuesday through Thursday. When appropriate,
+-the security team can assist with this coordination, or the reporter can
+-include linux-distros from the start. In this case, remember to prefix
+-the email Subject line with "[vs]" as described in the linux-distros wiki:
+-<http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists>
++The kernel security team strongly recommends that reporters of potential
++security issues NEVER contact the "linux-distros" mailing list until
++AFTER discussing it with the kernel security team.  Do not Cc: both
++lists at once.  You may contact the linux-distros mailing list after a
++fix has been agreed on and you fully understand the requirements that
++doing so will impose on you and the kernel community.
 +
-+			memcpy(&key->key_val[0], &enc->key[0], key_len);
-+			key->key_len = key_len;
- 			commit |= (SME_WEP_VAL1 << index);
- 		}
- 		break;
++The different lists have different goals and the linux-distros rules do
++not contribute to actually fixing any potential security problems.
+ 
+ CVE assignment
+ --------------
 
 
