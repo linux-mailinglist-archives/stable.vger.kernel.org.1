@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C6B76ADEB
-	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B108976AF1C
+	for <lists+stable@lfdr.de>; Tue,  1 Aug 2023 11:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233112AbjHAJec (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
+        id S232885AbjHAJpP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 05:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233113AbjHAJeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:34:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC44F3C19
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 02:32:07 -0700 (PDT)
+        with ESMTP id S233527AbjHAJpA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 05:45:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28C8A213C;
+        Tue,  1 Aug 2023 02:42:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9EE661502
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 09:32:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9821C433C8;
-        Tue,  1 Aug 2023 09:32:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA4C8614FF;
+        Tue,  1 Aug 2023 09:42:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84811C433C7;
+        Tue,  1 Aug 2023 09:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1690882327;
-        bh=1rDH38Fe9oXo2eELUsDo4U+VpucVbyz4LiiLWYXx2II=;
+        s=korg; t=1690882972;
+        bh=FLoZhyQCtXSQb2maAcfuDyqQ9YJgmRuOmqAVE0AUmQU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0+yBh58FNmlbW3XUsnEDoBneQ7lRax+sbI/sO1//xrLLtHM8epR1uzZrCa+1tqxXC
-         BlvUQvLONWC6L2idWhahm1e1RY4LjnbcrYIAs8AmKFEyj/UgFdCo8CRXtl+EMCGv8P
-         GGfmx2HB8bC5o5cyY9uJfYw9jmy8gEh9qS5BQADA=
+        b=pgeMAFlqjuR58SN5GBfXVrdp9tQoEAlp+Yk4/GB4XGKnRbSPLRaVRKMyZkvgWj+nA
+         q86E6lVRfXGRi5fbhbs/bwzBw3YZgd5C+R9DieSMKOVisp73Szuk5lMrBS6dmnW/Xk
+         UOEV4PuNTyCSA8dezbMt+C4XtEh63fJtshaO6rSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
         kernel test robot <lkp@intel.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>, amd-gfx@lists.freedesktop.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/228] drm/amd/display: fix dc/core/dc.c kernel-doc
-Date:   Tue,  1 Aug 2023 11:18:44 +0200
-Message-ID: <20230801091925.222236760@linuxfoundation.org>
+        Bin Liu <bin.liu@mediatek.com>,
+        oushixiong <oushixiong@kylinos.cn>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        linux-media@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 061/239] media: mtk-jpeg: move data/code inside CONFIG_OF blocks
+Date:   Tue,  1 Aug 2023 11:18:45 +0200
+Message-ID: <20230801091927.855136951@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
-References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+References: <20230801091925.659598007@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -64,162 +61,986 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit db4107e92a817502ad19fdd30250f87dcb6f6331 ]
+[ Upstream commit da4ede4b7fd6aa341b69e3a9d2517b8df5e744fd ]
 
-Fix all kernel-doc warnings in dc/core/dc.c:
+Lots of data and functions here are not needed when CONFIG_OF is not
+set, so move them inside #ifdef CONFIG_OF blocks to prevent the warnings.
 
-dc.c:385: warning: missing initial short description on line:
- *  dc_stream_adjust_vmin_vmax:
-dc.c:392: warning: contents before sections
-dc.c:399: warning: No description found for return value of 'dc_stream_adjust_vmin_vmax'
-dc.c:434: warning: Excess function parameter 'adjust' description in 'dc_stream_get_last_used_drr_vtotal'
-dc.c:434: warning: No description found for return value of 'dc_stream_get_last_used_drr_vtotal'
-dc.c:574: warning: No description found for return value of 'dc_stream_configure_crc'
-dc.c:1746: warning: No description found for return value of 'dc_commit_state_no_check'
-dc.c:4991: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * dc_extended_blank_supported 0 Decide whether extended blank is supported
-dc.c:4991: warning: missing initial short description on line:
- * dc_extended_blank_supported 0 Decide whether extended blank is supported
-dc.c:4723: warning: Function parameter or member 'dc' not described in 'dc_enable_dmub_outbox'
-dc.c:4926: warning: Function parameter or member 'dc' not described in 'dc_process_dmub_dpia_hpd_int_enable'
-dc.c:4926: warning: Function parameter or member 'hpd_int_enable' not described in 'dc_process_dmub_dpia_hpd_int_enable'
-12 warnings
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1645:29: warning: ‘mtk_jpeg_clocks’ defined but not used [-Wunused-variable]
+ 1645 | static struct clk_bulk_data mtk_jpeg_clocks[] = {
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1640:29: warning: ‘mt8173_jpeg_dec_clocks’ defined but not used [-Wunused-variable]
+ 1640 | static struct clk_bulk_data mt8173_jpeg_dec_clocks[] = {
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1481:20: warning: ‘mtk_jpeg_dec_irq’ defined but not used [-Wunused-function]
+ 1481 | static irqreturn_t mtk_jpeg_dec_irq(int irq, void *priv)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1461:20: warning: ‘mtk_jpeg_enc_irq’ defined but not used [-Wunused-function]
+ 1461 | static irqreturn_t mtk_jpeg_enc_irq(int irq, void *priv)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1180:13: warning: ‘mtk_jpegdec_worker’ defined but not used [-Wunused-function]
+ 1180 | static void mtk_jpegdec_worker(struct work_struct *work)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:986:13: warning: ‘mtk_jpegenc_worker’ defined but not used [-Wunused-function]
+  986 | static void mtk_jpegenc_worker(struct work_struct *work)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:79:28: warning: ‘mtk_jpeg_dec_formats’ defined but not used [-Wunused-variable]
+   79 | static struct mtk_jpeg_fmt mtk_jpeg_dec_formats[] = {
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:31:28: warning: ‘mtk_jpeg_enc_formats’ defined but not used [-Wunused-variable]
+   31 | static struct mtk_jpeg_fmt mtk_jpeg_enc_formats[] = {
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1222:20: warning: ‘mtk_jpeg_enc_done’ defined but not used [-Wunused-function]
+ 1222 | static irqreturn_t mtk_jpeg_enc_done(struct mtk_jpeg_dev *jpeg)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1072:12: warning: ‘mtk_jpegdec_set_hw_param’ defined but not used [-Wunused-function]
+ 1072 | static int mtk_jpegdec_set_hw_param(struct mtk_jpeg_ctx *ctx,
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1060:12: warning: ‘mtk_jpegdec_put_hw’ defined but not used [-Wunused-function]
+ 1060 | static int mtk_jpegdec_put_hw(struct mtk_jpeg_dev *jpeg, int hw_id)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1038:12: warning: ‘mtk_jpegdec_get_hw’ defined but not used [-Wunused-function]
+ 1038 | static int mtk_jpegdec_get_hw(struct mtk_jpeg_ctx *ctx)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:977:12: warning: ‘mtk_jpegenc_put_hw’ defined but not used [-Wunused-function]
+  977 | static int mtk_jpegenc_put_hw(struct mtk_jpeg_dev *jpeg, int hw_id)
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:963:12: warning: ‘mtk_jpegenc_set_hw_param’ defined but not used [-Wunused-function]
+  963 | static int mtk_jpegenc_set_hw_param(struct mtk_jpeg_ctx *ctx,
+../drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:941:12: warning: ‘mtk_jpegenc_get_hw’ defined but not used [-Wunused-function]
+  941 | static int mtk_jpegenc_get_hw(struct mtk_jpeg_ctx *ctx)
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Reported-by: kernel test robot <lkp@intel.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 2a9482e55968 ("drm/amd/display: Prevent vtotal from being set to 0")
+Link: https://lore.kernel.org/linux-media/202305042146.j4ZxuvpM-lkp@intel.com/
+Cc: Bin Liu <bin.liu@mediatek.com>
+Cc: oushixiong <oushixiong@kylinos.cn>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: linux-media@vger.kernel.org
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 20de9fdaf488 ("media: mtk_jpeg_core: avoid unused-variable warning")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 40 +++++++++++++++---------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+ .../platform/mediatek/jpeg/mtk_jpeg_core.c    | 858 +++++++++---------
+ 1 file changed, 430 insertions(+), 428 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 85ed1c7cdeaa9..6e2220e2e5ba3 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -382,16 +382,18 @@ static void dc_perf_trace_destroy(struct dc_perf_trace **perf_trace)
+diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+index 0051f372a66cf..4768156181c99 100644
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -28,6 +28,7 @@
+ #include "mtk_jpeg_core.h"
+ #include "mtk_jpeg_dec_parse.h"
+ 
++#if defined(CONFIG_OF)
+ static struct mtk_jpeg_fmt mtk_jpeg_enc_formats[] = {
+ 	{
+ 		.fourcc		= V4L2_PIX_FMT_JPEG,
+@@ -101,6 +102,7 @@ static struct mtk_jpeg_fmt mtk_jpeg_dec_formats[] = {
+ 		.flags		= MTK_JPEG_FMT_FLAG_CAPTURE,
+ 	},
+ };
++#endif
+ 
+ #define MTK_JPEG_ENC_NUM_FORMATS ARRAY_SIZE(mtk_jpeg_enc_formats)
+ #define MTK_JPEG_DEC_NUM_FORMATS ARRAY_SIZE(mtk_jpeg_dec_formats)
+@@ -936,148 +938,6 @@ static int mtk_jpeg_set_dec_dst(struct mtk_jpeg_ctx *ctx,
+ 	return 0;
  }
  
- /**
-- *  dc_stream_adjust_vmin_vmax:
-+ *  dc_stream_adjust_vmin_vmax - look up pipe context & update parts of DRR
-+ *  @dc:     dc reference
-+ *  @stream: Initial dc stream state
-+ *  @adjust: Updated parameters for vertical_total_min and vertical_total_max
-  *
-  *  Looks up the pipe context of dc_stream_state and updates the
-  *  vertical_total_min and vertical_total_max of the DRR, Dynamic Refresh
-  *  Rate, which is a power-saving feature that targets reducing panel
-  *  refresh rate while the screen is static
-  *
-- *  @dc:     dc reference
-- *  @stream: Initial dc stream state
-- *  @adjust: Updated parameters for vertical_total_min and vertical_total_max
-+ *  Return: %true if the pipe context is found and adjusted;
-+ *          %false if the pipe context is not found.
-  */
- bool dc_stream_adjust_vmin_vmax(struct dc *dc,
- 		struct dc_stream_state *stream,
-@@ -427,14 +429,17 @@ bool dc_stream_adjust_vmin_vmax(struct dc *dc,
- }
- 
- /**
-- * dc_stream_get_last_used_drr_vtotal - dc_stream_get_last_vrr_vtotal
-+ * dc_stream_get_last_used_drr_vtotal - Looks up the pipe context of
-+ * dc_stream_state and gets the last VTOTAL used by DRR (Dynamic Refresh Rate)
-  *
-  * @dc: [in] dc reference
-  * @stream: [in] Initial dc stream state
-- * @adjust: [in] Updated parameters for vertical_total_min and
-+ * @refresh_rate: [in] new refresh_rate
-  *
-- * Looks up the pipe context of dc_stream_state and gets the last VTOTAL used
-- * by DRR (Dynamic Refresh Rate)
-+ * Return: %true if the pipe context is found and there is an associated
-+ *         timing_generator for the DC;
-+ *         %false if the pipe context is not found or there is no
-+ *         timing_generator for the DC.
-  */
- bool dc_stream_get_last_used_drr_vtotal(struct dc *dc,
- 		struct dc_stream_state *stream,
-@@ -581,7 +586,10 @@ bool dc_stream_stop_dmcu_crc_win_update(struct dc *dc, struct dc_stream_state *s
-  *              once.
-  *
-  * By default, only CRC0 is configured, and the entire frame is used to
-- * calculate the crc.
-+ * calculate the CRC.
-+ *
-+ * Return: %false if the stream is not found or CRC capture is not supported;
-+ *         %true if the stream has been configured.
-  */
- bool dc_stream_configure_crc(struct dc *dc, struct dc_stream_state *stream,
- 			     struct crc_params *crc_window, bool enable, bool continuous)
-@@ -650,7 +658,7 @@ bool dc_stream_configure_crc(struct dc *dc, struct dc_stream_state *stream,
-  * dc_stream_configure_crc needs to be called beforehand to enable CRCs.
-  *
-  * Return:
-- * false if stream is not found, or if CRCs are not enabled.
-+ * %false if stream is not found, or if CRCs are not enabled.
-  */
- bool dc_stream_get_crc(struct dc *dc, struct dc_stream_state *stream,
- 		       uint32_t *r_cr, uint32_t *g_y, uint32_t *b_cb)
-@@ -1739,6 +1747,8 @@ void dc_z10_save_init(struct dc *dc)
- /*
-  * Applies given context to HW and copy it into current context.
-  * It's up to the user to release the src context afterwards.
-+ *
-+ * Return: an enum dc_status result code for the operation
-  */
- static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *context)
+-static int mtk_jpegenc_get_hw(struct mtk_jpeg_ctx *ctx)
+-{
+-	struct mtk_jpegenc_comp_dev *comp_jpeg;
+-	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
+-	unsigned long flags;
+-	int hw_id = -1;
+-	int i;
+-
+-	spin_lock_irqsave(&jpeg->hw_lock, flags);
+-	for (i = 0; i < MTK_JPEGENC_HW_MAX; i++) {
+-		comp_jpeg = jpeg->enc_hw_dev[i];
+-		if (comp_jpeg->hw_state == MTK_JPEG_HW_IDLE) {
+-			hw_id = i;
+-			comp_jpeg->hw_state = MTK_JPEG_HW_BUSY;
+-			break;
+-		}
+-	}
+-	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
+-
+-	return hw_id;
+-}
+-
+-static int mtk_jpegenc_set_hw_param(struct mtk_jpeg_ctx *ctx,
+-				    int hw_id,
+-				    struct vb2_v4l2_buffer *src_buf,
+-				    struct vb2_v4l2_buffer *dst_buf)
+-{
+-	struct mtk_jpegenc_comp_dev *jpeg = ctx->jpeg->enc_hw_dev[hw_id];
+-
+-	jpeg->hw_param.curr_ctx = ctx;
+-	jpeg->hw_param.src_buffer = src_buf;
+-	jpeg->hw_param.dst_buffer = dst_buf;
+-
+-	return 0;
+-}
+-
+-static int mtk_jpegenc_put_hw(struct mtk_jpeg_dev *jpeg, int hw_id)
+-{
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&jpeg->hw_lock, flags);
+-	jpeg->enc_hw_dev[hw_id]->hw_state = MTK_JPEG_HW_IDLE;
+-	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
+-
+-	return 0;
+-}
+-
+-static void mtk_jpegenc_worker(struct work_struct *work)
+-{
+-	struct mtk_jpegenc_comp_dev *comp_jpeg[MTK_JPEGENC_HW_MAX];
+-	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
+-	struct mtk_jpeg_src_buf *jpeg_dst_buf;
+-	struct vb2_v4l2_buffer *src_buf, *dst_buf;
+-	int ret, i, hw_id = 0;
+-	unsigned long flags;
+-
+-	struct mtk_jpeg_ctx *ctx = container_of(work,
+-		struct mtk_jpeg_ctx,
+-		jpeg_work);
+-	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
+-
+-	for (i = 0; i < MTK_JPEGENC_HW_MAX; i++)
+-		comp_jpeg[i] = jpeg->enc_hw_dev[i];
+-	i = 0;
+-
+-retry_select:
+-	hw_id = mtk_jpegenc_get_hw(ctx);
+-	if (hw_id < 0) {
+-		ret = wait_event_interruptible(jpeg->hw_wq,
+-					       atomic_read(&jpeg->hw_rdy) > 0);
+-		if (ret != 0 || (i++ > MTK_JPEG_MAX_RETRY_TIME)) {
+-			dev_err(jpeg->dev, "%s : %d, all HW are busy\n",
+-				__func__, __LINE__);
+-			v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-			return;
+-		}
+-
+-		goto retry_select;
+-	}
+-
+-	atomic_dec(&jpeg->hw_rdy);
+-	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
+-	if (!src_buf)
+-		goto getbuf_fail;
+-
+-	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
+-	if (!dst_buf)
+-		goto getbuf_fail;
+-
+-	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
+-
+-	mtk_jpegenc_set_hw_param(ctx, hw_id, src_buf, dst_buf);
+-	ret = pm_runtime_get_sync(comp_jpeg[hw_id]->dev);
+-	if (ret < 0) {
+-		dev_err(jpeg->dev, "%s : %d, pm_runtime_get_sync fail !!!\n",
+-			__func__, __LINE__);
+-		goto enc_end;
+-	}
+-
+-	ret = clk_prepare_enable(comp_jpeg[hw_id]->venc_clk.clks->clk);
+-	if (ret) {
+-		dev_err(jpeg->dev, "%s : %d, jpegenc clk_prepare_enable fail\n",
+-			__func__, __LINE__);
+-		goto enc_end;
+-	}
+-
+-	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+-	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+-
+-	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
+-			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+-
+-	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
+-	jpeg_dst_buf = mtk_jpeg_vb2_to_srcbuf(&dst_buf->vb2_buf);
+-	jpeg_dst_buf->curr_ctx = ctx;
+-	jpeg_dst_buf->frame_num = ctx->total_frame_num;
+-	ctx->total_frame_num++;
+-	mtk_jpeg_enc_reset(comp_jpeg[hw_id]->reg_base);
+-	mtk_jpeg_set_enc_dst(ctx,
+-			     comp_jpeg[hw_id]->reg_base,
+-			     &dst_buf->vb2_buf);
+-	mtk_jpeg_set_enc_src(ctx,
+-			     comp_jpeg[hw_id]->reg_base,
+-			     &src_buf->vb2_buf);
+-	mtk_jpeg_set_enc_params(ctx, comp_jpeg[hw_id]->reg_base);
+-	mtk_jpeg_enc_start(comp_jpeg[hw_id]->reg_base);
+-	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-	spin_unlock_irqrestore(&comp_jpeg[hw_id]->hw_lock, flags);
+-
+-	return;
+-
+-enc_end:
+-	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+-	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+-	v4l2_m2m_buf_done(src_buf, buf_state);
+-	v4l2_m2m_buf_done(dst_buf, buf_state);
+-getbuf_fail:
+-	atomic_inc(&jpeg->hw_rdy);
+-	mtk_jpegenc_put_hw(jpeg, hw_id);
+-	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-}
+-
+ static void mtk_jpeg_enc_device_run(void *priv)
  {
-@@ -4600,7 +4610,7 @@ bool dc_enable_dmub_notifications(struct dc *dc)
- /**
-  * dc_enable_dmub_outbox - Enables DMUB unsolicited notification
-  *
-- * dc: [in] dc structure
-+ * @dc: [in] dc structure
-  *
-  * Enables DMUB unsolicited notifications to x86 via outbox.
-  */
-@@ -4801,8 +4811,8 @@ enum dc_status dc_process_dmub_set_mst_slots(const struct dc *dc,
- /**
-  * dc_process_dmub_dpia_hpd_int_enable - Submits DPIA DPD interruption
-  *
-- * @dc [in]: dc structure
-- * @hpd_int_enable [in]: 1 for hpd int enable, 0 to disable
-+ * @dc: [in] dc structure
-+ * @hpd_int_enable: [in] 1 for hpd int enable, 0 to disable
-  *
-  * Submits dpia hpd int enable command to dmub via inbox message
-  */
-@@ -4883,7 +4893,7 @@ void dc_notify_vsync_int_state(struct dc *dc, struct dc_stream_state *stream, bo
+ 	struct mtk_jpeg_ctx *ctx = priv;
+@@ -1128,206 +988,39 @@ static void mtk_jpeg_multicore_enc_device_run(void *priv)
+ 	queue_work(jpeg->workqueue, &ctx->jpeg_work);
  }
  
- /**
-- * dc_extended_blank_supported 0 Decide whether extended blank is supported
-+ * dc_extended_blank_supported - Decide whether extended blank is supported
-  *
-  * @dc: [in] Current DC state
-  *
-@@ -4892,7 +4902,7 @@ void dc_notify_vsync_int_state(struct dc *dc, struct dc_stream_state *stream, bo
-  * ability to enter z9/z10.
-  *
-  * Return:
-- * Indicate whether extended blank is supported (true or false)
-+ * Indicate whether extended blank is supported (%true or %false)
-  */
- bool dc_extended_blank_supported(struct dc *dc)
+-static int mtk_jpegdec_get_hw(struct mtk_jpeg_ctx *ctx)
++static void mtk_jpeg_multicore_dec_device_run(void *priv)
  {
+-	struct mtk_jpegdec_comp_dev *comp_jpeg;
++	struct mtk_jpeg_ctx *ctx = priv;
+ 	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
+-	unsigned long flags;
+-	int hw_id = -1;
+-	int i;
+-
+-	spin_lock_irqsave(&jpeg->hw_lock, flags);
+-	for (i = 0; i < MTK_JPEGDEC_HW_MAX; i++) {
+-		comp_jpeg = jpeg->dec_hw_dev[i];
+-		if (comp_jpeg->hw_state == MTK_JPEG_HW_IDLE) {
+-			hw_id = i;
+-			comp_jpeg->hw_state = MTK_JPEG_HW_BUSY;
+-			break;
+-		}
+-	}
+-	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
+-
+-	return hw_id;
+-}
+-
+-static int mtk_jpegdec_put_hw(struct mtk_jpeg_dev *jpeg, int hw_id)
+-{
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&jpeg->hw_lock, flags);
+-	jpeg->dec_hw_dev[hw_id]->hw_state =
+-		MTK_JPEG_HW_IDLE;
+-	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
+-
+-	return 0;
+-}
+-
+-static int mtk_jpegdec_set_hw_param(struct mtk_jpeg_ctx *ctx,
+-				    int hw_id,
+-				    struct vb2_v4l2_buffer *src_buf,
+-				    struct vb2_v4l2_buffer *dst_buf)
+-{
+-	struct mtk_jpegdec_comp_dev *jpeg =
+-		ctx->jpeg->dec_hw_dev[hw_id];
+-
+-	jpeg->hw_param.curr_ctx = ctx;
+-	jpeg->hw_param.src_buffer = src_buf;
+-	jpeg->hw_param.dst_buffer = dst_buf;
+ 
+-	return 0;
++	queue_work(jpeg->workqueue, &ctx->jpeg_work);
+ }
+ 
+-static void mtk_jpegdec_worker(struct work_struct *work)
++static void mtk_jpeg_dec_device_run(void *priv)
+ {
+-	struct mtk_jpeg_ctx *ctx = container_of(work, struct mtk_jpeg_ctx,
+-		jpeg_work);
+-	struct mtk_jpegdec_comp_dev *comp_jpeg[MTK_JPEGDEC_HW_MAX];
+-	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
+-	struct mtk_jpeg_src_buf *jpeg_src_buf, *jpeg_dst_buf;
+-	struct vb2_v4l2_buffer *src_buf, *dst_buf;
++	struct mtk_jpeg_ctx *ctx = priv;
+ 	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
+-	int ret, i, hw_id = 0;
++	struct vb2_v4l2_buffer *src_buf, *dst_buf;
++	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
++	unsigned long flags;
++	struct mtk_jpeg_src_buf *jpeg_src_buf;
+ 	struct mtk_jpeg_bs bs;
+ 	struct mtk_jpeg_fb fb;
+-	unsigned long flags;
+-
+-	for (i = 0; i < MTK_JPEGDEC_HW_MAX; i++)
+-		comp_jpeg[i] = jpeg->dec_hw_dev[i];
+-	i = 0;
+-
+-retry_select:
+-	hw_id = mtk_jpegdec_get_hw(ctx);
+-	if (hw_id < 0) {
+-		ret = wait_event_interruptible_timeout(jpeg->hw_wq,
+-						       atomic_read(&jpeg->hw_rdy) > 0,
+-						       MTK_JPEG_HW_TIMEOUT_MSEC);
+-		if (ret != 0 || (i++ > MTK_JPEG_MAX_RETRY_TIME)) {
+-			dev_err(jpeg->dev, "%s : %d, all HW are busy\n",
+-				__func__, __LINE__);
+-			v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-			return;
+-		}
+-
+-		goto retry_select;
+-	}
++	int ret;
+ 
+-	atomic_dec(&jpeg->hw_rdy);
+ 	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
+-	if (!src_buf)
+-		goto getbuf_fail;
+-
+ 	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
+-	if (!dst_buf)
+-		goto getbuf_fail;
+-
+-	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
+ 	jpeg_src_buf = mtk_jpeg_vb2_to_srcbuf(&src_buf->vb2_buf);
+-	jpeg_dst_buf = mtk_jpeg_vb2_to_srcbuf(&dst_buf->vb2_buf);
+ 
+-	if (mtk_jpeg_check_resolution_change(ctx,
+-					     &jpeg_src_buf->dec_param)) {
++	if (mtk_jpeg_check_resolution_change(ctx, &jpeg_src_buf->dec_param)) {
+ 		mtk_jpeg_queue_src_chg_event(ctx);
+ 		ctx->state = MTK_JPEG_SOURCE_CHANGE;
+-		goto getbuf_fail;
++		v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++		return;
+ 	}
+ 
+-	jpeg_src_buf->curr_ctx = ctx;
+-	jpeg_src_buf->frame_num = ctx->total_frame_num;
+-	jpeg_dst_buf->curr_ctx = ctx;
+-	jpeg_dst_buf->frame_num = ctx->total_frame_num;
+-
+-	mtk_jpegdec_set_hw_param(ctx, hw_id, src_buf, dst_buf);
+-	ret = pm_runtime_get_sync(comp_jpeg[hw_id]->dev);
+-	if (ret < 0) {
+-		dev_err(jpeg->dev, "%s : %d, pm_runtime_get_sync fail !!!\n",
+-			__func__, __LINE__);
+-		goto dec_end;
+-	}
+-
+-	ret = clk_prepare_enable(comp_jpeg[hw_id]->jdec_clk.clks->clk);
+-	if (ret) {
+-		dev_err(jpeg->dev, "%s : %d, jpegdec clk_prepare_enable fail\n",
+-			__func__, __LINE__);
+-		goto clk_end;
+-	}
+-
+-	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+-	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+-
+-	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
+-			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+-
+-	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
+-	if (mtk_jpeg_set_dec_dst(ctx,
+-				 &jpeg_src_buf->dec_param,
+-				 &dst_buf->vb2_buf, &fb)) {
+-		dev_err(jpeg->dev, "%s : %d, mtk_jpeg_set_dec_dst fail\n",
+-			__func__, __LINE__);
+-		goto setdst_end;
+-	}
+-
+-	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
+-	ctx->total_frame_num++;
+-	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
+-	mtk_jpeg_dec_set_config(comp_jpeg[hw_id]->reg_base,
+-				&jpeg_src_buf->dec_param,
+-				jpeg_src_buf->bs_size,
+-				&bs,
+-				&fb);
+-	mtk_jpeg_dec_start(comp_jpeg[hw_id]->reg_base);
+-	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-	spin_unlock_irqrestore(&comp_jpeg[hw_id]->hw_lock, flags);
+-
+-	return;
+-
+-setdst_end:
+-	clk_disable_unprepare(comp_jpeg[hw_id]->jdec_clk.clks->clk);
+-clk_end:
+-	pm_runtime_put(comp_jpeg[hw_id]->dev);
+-dec_end:
+-	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+-	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+-	v4l2_m2m_buf_done(src_buf, buf_state);
+-	v4l2_m2m_buf_done(dst_buf, buf_state);
+-getbuf_fail:
+-	atomic_inc(&jpeg->hw_rdy);
+-	mtk_jpegdec_put_hw(jpeg, hw_id);
+-	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-}
+-
+-static void mtk_jpeg_multicore_dec_device_run(void *priv)
+-{
+-	struct mtk_jpeg_ctx *ctx = priv;
+-	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
+-
+-	queue_work(jpeg->workqueue, &ctx->jpeg_work);
+-}
+-
+-static void mtk_jpeg_dec_device_run(void *priv)
+-{
+-	struct mtk_jpeg_ctx *ctx = priv;
+-	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
+-	struct vb2_v4l2_buffer *src_buf, *dst_buf;
+-	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
+-	unsigned long flags;
+-	struct mtk_jpeg_src_buf *jpeg_src_buf;
+-	struct mtk_jpeg_bs bs;
+-	struct mtk_jpeg_fb fb;
+-	int ret;
+-
+-	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
+-	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
+-	jpeg_src_buf = mtk_jpeg_vb2_to_srcbuf(&src_buf->vb2_buf);
+-
+-	if (mtk_jpeg_check_resolution_change(ctx, &jpeg_src_buf->dec_param)) {
+-		mtk_jpeg_queue_src_chg_event(ctx);
+-		ctx->state = MTK_JPEG_SOURCE_CHANGE;
+-		v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-		return;
+-	}
+-
+-	ret = pm_runtime_resume_and_get(jpeg->dev);
+-	if (ret < 0)
++	ret = pm_runtime_resume_and_get(jpeg->dev);
++	if (ret < 0)
+ 		goto dec_end;
+ 
+ 	schedule_delayed_work(&jpeg->job_timeout_work,
+@@ -1430,101 +1123,6 @@ static void mtk_jpeg_clk_off(struct mtk_jpeg_dev *jpeg)
+ 				   jpeg->variant->clks);
+ }
+ 
+-static irqreturn_t mtk_jpeg_enc_done(struct mtk_jpeg_dev *jpeg)
+-{
+-	struct mtk_jpeg_ctx *ctx;
+-	struct vb2_v4l2_buffer *src_buf, *dst_buf;
+-	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
+-	u32 result_size;
+-
+-	ctx = v4l2_m2m_get_curr_priv(jpeg->m2m_dev);
+-	if (!ctx) {
+-		v4l2_err(&jpeg->v4l2_dev, "Context is NULL\n");
+-		return IRQ_HANDLED;
+-	}
+-
+-	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+-	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+-
+-	result_size = mtk_jpeg_enc_get_file_size(jpeg->reg_base);
+-	vb2_set_plane_payload(&dst_buf->vb2_buf, 0, result_size);
+-
+-	buf_state = VB2_BUF_STATE_DONE;
+-
+-	v4l2_m2m_buf_done(src_buf, buf_state);
+-	v4l2_m2m_buf_done(dst_buf, buf_state);
+-	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-	pm_runtime_put(ctx->jpeg->dev);
+-	return IRQ_HANDLED;
+-}
+-
+-static irqreturn_t mtk_jpeg_enc_irq(int irq, void *priv)
+-{
+-	struct mtk_jpeg_dev *jpeg = priv;
+-	u32 irq_status;
+-	irqreturn_t ret = IRQ_NONE;
+-
+-	cancel_delayed_work(&jpeg->job_timeout_work);
+-
+-	irq_status = readl(jpeg->reg_base + JPEG_ENC_INT_STS) &
+-		     JPEG_ENC_INT_STATUS_MASK_ALLIRQ;
+-	if (irq_status)
+-		writel(0, jpeg->reg_base + JPEG_ENC_INT_STS);
+-
+-	if (!(irq_status & JPEG_ENC_INT_STATUS_DONE))
+-		return ret;
+-
+-	ret = mtk_jpeg_enc_done(jpeg);
+-	return ret;
+-}
+-
+-static irqreturn_t mtk_jpeg_dec_irq(int irq, void *priv)
+-{
+-	struct mtk_jpeg_dev *jpeg = priv;
+-	struct mtk_jpeg_ctx *ctx;
+-	struct vb2_v4l2_buffer *src_buf, *dst_buf;
+-	struct mtk_jpeg_src_buf *jpeg_src_buf;
+-	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
+-	u32	dec_irq_ret;
+-	u32 dec_ret;
+-	int i;
+-
+-	cancel_delayed_work(&jpeg->job_timeout_work);
+-
+-	dec_ret = mtk_jpeg_dec_get_int_status(jpeg->reg_base);
+-	dec_irq_ret = mtk_jpeg_dec_enum_result(dec_ret);
+-	ctx = v4l2_m2m_get_curr_priv(jpeg->m2m_dev);
+-	if (!ctx) {
+-		v4l2_err(&jpeg->v4l2_dev, "Context is NULL\n");
+-		return IRQ_HANDLED;
+-	}
+-
+-	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+-	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+-	jpeg_src_buf = mtk_jpeg_vb2_to_srcbuf(&src_buf->vb2_buf);
+-
+-	if (dec_irq_ret >= MTK_JPEG_DEC_RESULT_UNDERFLOW)
+-		mtk_jpeg_dec_reset(jpeg->reg_base);
+-
+-	if (dec_irq_ret != MTK_JPEG_DEC_RESULT_EOF_DONE) {
+-		dev_err(jpeg->dev, "decode failed\n");
+-		goto dec_end;
+-	}
+-
+-	for (i = 0; i < dst_buf->vb2_buf.num_planes; i++)
+-		vb2_set_plane_payload(&dst_buf->vb2_buf, i,
+-				      jpeg_src_buf->dec_param.comp_size[i]);
+-
+-	buf_state = VB2_BUF_STATE_DONE;
+-
+-dec_end:
+-	v4l2_m2m_buf_done(src_buf, buf_state);
+-	v4l2_m2m_buf_done(dst_buf, buf_state);
+-	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+-	pm_runtime_put(ctx->jpeg->dev);
+-	return IRQ_HANDLED;
+-}
+-
+ static void mtk_jpeg_set_default_params(struct mtk_jpeg_ctx *ctx)
+ {
+ 	struct mtk_jpeg_q_data *q = &ctx->out_q;
+@@ -1637,15 +1235,6 @@ static const struct v4l2_file_operations mtk_jpeg_fops = {
+ 	.mmap           = v4l2_m2m_fop_mmap,
+ };
+ 
+-static struct clk_bulk_data mt8173_jpeg_dec_clocks[] = {
+-	{ .id = "jpgdec-smi" },
+-	{ .id = "jpgdec" },
+-};
+-
+-static struct clk_bulk_data mtk_jpeg_clocks[] = {
+-	{ .id = "jpgenc" },
+-};
+-
+ static void mtk_jpeg_job_timeout_work(struct work_struct *work)
+ {
+ 	struct mtk_jpeg_dev *jpeg = container_of(work, struct mtk_jpeg_dev,
+@@ -1867,6 +1456,419 @@ static const struct dev_pm_ops mtk_jpeg_pm_ops = {
+ };
+ 
+ #if defined(CONFIG_OF)
++static int mtk_jpegenc_get_hw(struct mtk_jpeg_ctx *ctx)
++{
++	struct mtk_jpegenc_comp_dev *comp_jpeg;
++	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
++	unsigned long flags;
++	int hw_id = -1;
++	int i;
++
++	spin_lock_irqsave(&jpeg->hw_lock, flags);
++	for (i = 0; i < MTK_JPEGENC_HW_MAX; i++) {
++		comp_jpeg = jpeg->enc_hw_dev[i];
++		if (comp_jpeg->hw_state == MTK_JPEG_HW_IDLE) {
++			hw_id = i;
++			comp_jpeg->hw_state = MTK_JPEG_HW_BUSY;
++			break;
++		}
++	}
++	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
++
++	return hw_id;
++}
++
++static int mtk_jpegenc_set_hw_param(struct mtk_jpeg_ctx *ctx,
++				    int hw_id,
++				    struct vb2_v4l2_buffer *src_buf,
++				    struct vb2_v4l2_buffer *dst_buf)
++{
++	struct mtk_jpegenc_comp_dev *jpeg = ctx->jpeg->enc_hw_dev[hw_id];
++
++	jpeg->hw_param.curr_ctx = ctx;
++	jpeg->hw_param.src_buffer = src_buf;
++	jpeg->hw_param.dst_buffer = dst_buf;
++
++	return 0;
++}
++
++static int mtk_jpegenc_put_hw(struct mtk_jpeg_dev *jpeg, int hw_id)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&jpeg->hw_lock, flags);
++	jpeg->enc_hw_dev[hw_id]->hw_state = MTK_JPEG_HW_IDLE;
++	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
++
++	return 0;
++}
++
++static int mtk_jpegdec_get_hw(struct mtk_jpeg_ctx *ctx)
++{
++	struct mtk_jpegdec_comp_dev *comp_jpeg;
++	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
++	unsigned long flags;
++	int hw_id = -1;
++	int i;
++
++	spin_lock_irqsave(&jpeg->hw_lock, flags);
++	for (i = 0; i < MTK_JPEGDEC_HW_MAX; i++) {
++		comp_jpeg = jpeg->dec_hw_dev[i];
++		if (comp_jpeg->hw_state == MTK_JPEG_HW_IDLE) {
++			hw_id = i;
++			comp_jpeg->hw_state = MTK_JPEG_HW_BUSY;
++			break;
++		}
++	}
++	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
++
++	return hw_id;
++}
++
++static int mtk_jpegdec_put_hw(struct mtk_jpeg_dev *jpeg, int hw_id)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&jpeg->hw_lock, flags);
++	jpeg->dec_hw_dev[hw_id]->hw_state =
++		MTK_JPEG_HW_IDLE;
++	spin_unlock_irqrestore(&jpeg->hw_lock, flags);
++
++	return 0;
++}
++
++static int mtk_jpegdec_set_hw_param(struct mtk_jpeg_ctx *ctx,
++				    int hw_id,
++				    struct vb2_v4l2_buffer *src_buf,
++				    struct vb2_v4l2_buffer *dst_buf)
++{
++	struct mtk_jpegdec_comp_dev *jpeg =
++		ctx->jpeg->dec_hw_dev[hw_id];
++
++	jpeg->hw_param.curr_ctx = ctx;
++	jpeg->hw_param.src_buffer = src_buf;
++	jpeg->hw_param.dst_buffer = dst_buf;
++
++	return 0;
++}
++
++static irqreturn_t mtk_jpeg_enc_done(struct mtk_jpeg_dev *jpeg)
++{
++	struct mtk_jpeg_ctx *ctx;
++	struct vb2_v4l2_buffer *src_buf, *dst_buf;
++	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
++	u32 result_size;
++
++	ctx = v4l2_m2m_get_curr_priv(jpeg->m2m_dev);
++	if (!ctx) {
++		v4l2_err(&jpeg->v4l2_dev, "Context is NULL\n");
++		return IRQ_HANDLED;
++	}
++
++	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
++	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++
++	result_size = mtk_jpeg_enc_get_file_size(jpeg->reg_base);
++	vb2_set_plane_payload(&dst_buf->vb2_buf, 0, result_size);
++
++	buf_state = VB2_BUF_STATE_DONE;
++
++	v4l2_m2m_buf_done(src_buf, buf_state);
++	v4l2_m2m_buf_done(dst_buf, buf_state);
++	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++	pm_runtime_put(ctx->jpeg->dev);
++	return IRQ_HANDLED;
++}
++
++static void mtk_jpegenc_worker(struct work_struct *work)
++{
++	struct mtk_jpegenc_comp_dev *comp_jpeg[MTK_JPEGENC_HW_MAX];
++	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
++	struct mtk_jpeg_src_buf *jpeg_dst_buf;
++	struct vb2_v4l2_buffer *src_buf, *dst_buf;
++	int ret, i, hw_id = 0;
++	unsigned long flags;
++
++	struct mtk_jpeg_ctx *ctx = container_of(work,
++		struct mtk_jpeg_ctx,
++		jpeg_work);
++	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
++
++	for (i = 0; i < MTK_JPEGENC_HW_MAX; i++)
++		comp_jpeg[i] = jpeg->enc_hw_dev[i];
++	i = 0;
++
++retry_select:
++	hw_id = mtk_jpegenc_get_hw(ctx);
++	if (hw_id < 0) {
++		ret = wait_event_interruptible(jpeg->hw_wq,
++					       atomic_read(&jpeg->hw_rdy) > 0);
++		if (ret != 0 || (i++ > MTK_JPEG_MAX_RETRY_TIME)) {
++			dev_err(jpeg->dev, "%s : %d, all HW are busy\n",
++				__func__, __LINE__);
++			v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++			return;
++		}
++
++		goto retry_select;
++	}
++
++	atomic_dec(&jpeg->hw_rdy);
++	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
++	if (!src_buf)
++		goto getbuf_fail;
++
++	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
++	if (!dst_buf)
++		goto getbuf_fail;
++
++	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
++
++	mtk_jpegenc_set_hw_param(ctx, hw_id, src_buf, dst_buf);
++	ret = pm_runtime_get_sync(comp_jpeg[hw_id]->dev);
++	if (ret < 0) {
++		dev_err(jpeg->dev, "%s : %d, pm_runtime_get_sync fail !!!\n",
++			__func__, __LINE__);
++		goto enc_end;
++	}
++
++	ret = clk_prepare_enable(comp_jpeg[hw_id]->venc_clk.clks->clk);
++	if (ret) {
++		dev_err(jpeg->dev, "%s : %d, jpegenc clk_prepare_enable fail\n",
++			__func__, __LINE__);
++		goto enc_end;
++	}
++
++	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++
++	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
++			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
++
++	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
++	jpeg_dst_buf = mtk_jpeg_vb2_to_srcbuf(&dst_buf->vb2_buf);
++	jpeg_dst_buf->curr_ctx = ctx;
++	jpeg_dst_buf->frame_num = ctx->total_frame_num;
++	ctx->total_frame_num++;
++	mtk_jpeg_enc_reset(comp_jpeg[hw_id]->reg_base);
++	mtk_jpeg_set_enc_dst(ctx,
++			     comp_jpeg[hw_id]->reg_base,
++			     &dst_buf->vb2_buf);
++	mtk_jpeg_set_enc_src(ctx,
++			     comp_jpeg[hw_id]->reg_base,
++			     &src_buf->vb2_buf);
++	mtk_jpeg_set_enc_params(ctx, comp_jpeg[hw_id]->reg_base);
++	mtk_jpeg_enc_start(comp_jpeg[hw_id]->reg_base);
++	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++	spin_unlock_irqrestore(&comp_jpeg[hw_id]->hw_lock, flags);
++
++	return;
++
++enc_end:
++	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_buf_done(src_buf, buf_state);
++	v4l2_m2m_buf_done(dst_buf, buf_state);
++getbuf_fail:
++	atomic_inc(&jpeg->hw_rdy);
++	mtk_jpegenc_put_hw(jpeg, hw_id);
++	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++}
++
++static void mtk_jpegdec_worker(struct work_struct *work)
++{
++	struct mtk_jpeg_ctx *ctx = container_of(work, struct mtk_jpeg_ctx,
++		jpeg_work);
++	struct mtk_jpegdec_comp_dev *comp_jpeg[MTK_JPEGDEC_HW_MAX];
++	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
++	struct mtk_jpeg_src_buf *jpeg_src_buf, *jpeg_dst_buf;
++	struct vb2_v4l2_buffer *src_buf, *dst_buf;
++	struct mtk_jpeg_dev *jpeg = ctx->jpeg;
++	int ret, i, hw_id = 0;
++	struct mtk_jpeg_bs bs;
++	struct mtk_jpeg_fb fb;
++	unsigned long flags;
++
++	for (i = 0; i < MTK_JPEGDEC_HW_MAX; i++)
++		comp_jpeg[i] = jpeg->dec_hw_dev[i];
++	i = 0;
++
++retry_select:
++	hw_id = mtk_jpegdec_get_hw(ctx);
++	if (hw_id < 0) {
++		ret = wait_event_interruptible_timeout(jpeg->hw_wq,
++						       atomic_read(&jpeg->hw_rdy) > 0,
++						       MTK_JPEG_HW_TIMEOUT_MSEC);
++		if (ret != 0 || (i++ > MTK_JPEG_MAX_RETRY_TIME)) {
++			dev_err(jpeg->dev, "%s : %d, all HW are busy\n",
++				__func__, __LINE__);
++			v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++			return;
++		}
++
++		goto retry_select;
++	}
++
++	atomic_dec(&jpeg->hw_rdy);
++	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
++	if (!src_buf)
++		goto getbuf_fail;
++
++	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
++	if (!dst_buf)
++		goto getbuf_fail;
++
++	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
++	jpeg_src_buf = mtk_jpeg_vb2_to_srcbuf(&src_buf->vb2_buf);
++	jpeg_dst_buf = mtk_jpeg_vb2_to_srcbuf(&dst_buf->vb2_buf);
++
++	if (mtk_jpeg_check_resolution_change(ctx,
++					     &jpeg_src_buf->dec_param)) {
++		mtk_jpeg_queue_src_chg_event(ctx);
++		ctx->state = MTK_JPEG_SOURCE_CHANGE;
++		goto getbuf_fail;
++	}
++
++	jpeg_src_buf->curr_ctx = ctx;
++	jpeg_src_buf->frame_num = ctx->total_frame_num;
++	jpeg_dst_buf->curr_ctx = ctx;
++	jpeg_dst_buf->frame_num = ctx->total_frame_num;
++
++	mtk_jpegdec_set_hw_param(ctx, hw_id, src_buf, dst_buf);
++	ret = pm_runtime_get_sync(comp_jpeg[hw_id]->dev);
++	if (ret < 0) {
++		dev_err(jpeg->dev, "%s : %d, pm_runtime_get_sync fail !!!\n",
++			__func__, __LINE__);
++		goto dec_end;
++	}
++
++	ret = clk_prepare_enable(comp_jpeg[hw_id]->jdec_clk.clks->clk);
++	if (ret) {
++		dev_err(jpeg->dev, "%s : %d, jpegdec clk_prepare_enable fail\n",
++			__func__, __LINE__);
++		goto clk_end;
++	}
++
++	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++
++	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
++			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
++
++	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
++	if (mtk_jpeg_set_dec_dst(ctx,
++				 &jpeg_src_buf->dec_param,
++				 &dst_buf->vb2_buf, &fb)) {
++		dev_err(jpeg->dev, "%s : %d, mtk_jpeg_set_dec_dst fail\n",
++			__func__, __LINE__);
++		goto setdst_end;
++	}
++
++	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
++	ctx->total_frame_num++;
++	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
++	mtk_jpeg_dec_set_config(comp_jpeg[hw_id]->reg_base,
++				&jpeg_src_buf->dec_param,
++				jpeg_src_buf->bs_size,
++				&bs,
++				&fb);
++	mtk_jpeg_dec_start(comp_jpeg[hw_id]->reg_base);
++	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++	spin_unlock_irqrestore(&comp_jpeg[hw_id]->hw_lock, flags);
++
++	return;
++
++setdst_end:
++	clk_disable_unprepare(comp_jpeg[hw_id]->jdec_clk.clks->clk);
++clk_end:
++	pm_runtime_put(comp_jpeg[hw_id]->dev);
++dec_end:
++	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_buf_done(src_buf, buf_state);
++	v4l2_m2m_buf_done(dst_buf, buf_state);
++getbuf_fail:
++	atomic_inc(&jpeg->hw_rdy);
++	mtk_jpegdec_put_hw(jpeg, hw_id);
++	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++}
++
++static irqreturn_t mtk_jpeg_enc_irq(int irq, void *priv)
++{
++	struct mtk_jpeg_dev *jpeg = priv;
++	u32 irq_status;
++	irqreturn_t ret = IRQ_NONE;
++
++	cancel_delayed_work(&jpeg->job_timeout_work);
++
++	irq_status = readl(jpeg->reg_base + JPEG_ENC_INT_STS) &
++		     JPEG_ENC_INT_STATUS_MASK_ALLIRQ;
++	if (irq_status)
++		writel(0, jpeg->reg_base + JPEG_ENC_INT_STS);
++
++	if (!(irq_status & JPEG_ENC_INT_STATUS_DONE))
++		return ret;
++
++	ret = mtk_jpeg_enc_done(jpeg);
++	return ret;
++}
++
++static irqreturn_t mtk_jpeg_dec_irq(int irq, void *priv)
++{
++	struct mtk_jpeg_dev *jpeg = priv;
++	struct mtk_jpeg_ctx *ctx;
++	struct vb2_v4l2_buffer *src_buf, *dst_buf;
++	struct mtk_jpeg_src_buf *jpeg_src_buf;
++	enum vb2_buffer_state buf_state = VB2_BUF_STATE_ERROR;
++	u32	dec_irq_ret;
++	u32 dec_ret;
++	int i;
++
++	cancel_delayed_work(&jpeg->job_timeout_work);
++
++	dec_ret = mtk_jpeg_dec_get_int_status(jpeg->reg_base);
++	dec_irq_ret = mtk_jpeg_dec_enum_result(dec_ret);
++	ctx = v4l2_m2m_get_curr_priv(jpeg->m2m_dev);
++	if (!ctx) {
++		v4l2_err(&jpeg->v4l2_dev, "Context is NULL\n");
++		return IRQ_HANDLED;
++	}
++
++	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
++	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++	jpeg_src_buf = mtk_jpeg_vb2_to_srcbuf(&src_buf->vb2_buf);
++
++	if (dec_irq_ret >= MTK_JPEG_DEC_RESULT_UNDERFLOW)
++		mtk_jpeg_dec_reset(jpeg->reg_base);
++
++	if (dec_irq_ret != MTK_JPEG_DEC_RESULT_EOF_DONE) {
++		dev_err(jpeg->dev, "decode failed\n");
++		goto dec_end;
++	}
++
++	for (i = 0; i < dst_buf->vb2_buf.num_planes; i++)
++		vb2_set_plane_payload(&dst_buf->vb2_buf, i,
++				      jpeg_src_buf->dec_param.comp_size[i]);
++
++	buf_state = VB2_BUF_STATE_DONE;
++
++dec_end:
++	v4l2_m2m_buf_done(src_buf, buf_state);
++	v4l2_m2m_buf_done(dst_buf, buf_state);
++	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
++	pm_runtime_put(ctx->jpeg->dev);
++	return IRQ_HANDLED;
++}
++
++static struct clk_bulk_data mtk_jpeg_clocks[] = {
++	{ .id = "jpgenc" },
++};
++
++static struct clk_bulk_data mt8173_jpeg_dec_clocks[] = {
++	{ .id = "jpgdec-smi" },
++	{ .id = "jpgdec" },
++};
++
+ static const struct mtk_jpeg_variant mt8173_jpeg_drvdata = {
+ 	.clks = mt8173_jpeg_dec_clocks,
+ 	.num_clks = ARRAY_SIZE(mt8173_jpeg_dec_clocks),
 -- 
 2.39.2
 
