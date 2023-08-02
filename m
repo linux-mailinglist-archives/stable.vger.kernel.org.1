@@ -2,124 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E1176C28A
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 03:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C248D76C2F2
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 04:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231644AbjHBB5U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 21:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53888 "EHLO
+        id S230009AbjHBCeH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 22:34:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjHBB5S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 21:57:18 -0400
-Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D432B212A
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 18:57:15 -0700 (PDT)
-Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-4863c756812so2530685e0c.1
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 18:57:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690941435; x=1691546235;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=du9gT3nEt+eVSe4TYuA1bs7ljCbROmy1XMMZ5PJR5GA=;
-        b=Rvd2+4Yywg8ZcmZi2a/qLKRqvq/9yK8B9pk6oqe5l9/Q7ugzflHiUc0ybk95JCYS2a
-         E6I4Br5GJfH1OJysf8bzX6KZAXWwnUWY3YWSn/vKEKCMHVQoGwxtSOA702CKmqZPcMlP
-         E27uFiGYpPNn/sfcDFalTP9qb+ef5XeFoJHELHbK3nogUsA5TzV8fmwGeDFuDZeGd3Rj
-         hd/0LRP5K1O9vZezZoK8QXMT5W56tPfdwktAG4i+H+8XXT4WdjY2a4u0BHLVfImi398Y
-         3Zxw/wAhMdowOpwNghl5y9uaxDtxSNxUzKUeyy343KMWryGmEg39pCqDWfZpTmM01i2X
-         Xncw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690941435; x=1691546235;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=du9gT3nEt+eVSe4TYuA1bs7ljCbROmy1XMMZ5PJR5GA=;
-        b=R5htYpruLgxO0d4Ows25+Z9KxBh4pz0awcN+k+FbhiH9T3NalyUyApluGOUP5i9yws
-         zf6cX9k2ftAr9+BzDTK/GVPr4yCfEYwUntAHgaJP29LlbdW/7J1CeVkw0QBe1g38d9ye
-         80hKK0IKdiI4bknVwghEALGV24LdrXghJ+CuTuBfH+9crioj0sp0l0q/HxFayfE2NgsF
-         PjWJqP6NTUVKrKUcW8Yh93Yxorebz21lpx1SAllOerrMVd+7o/Hr1Rs8BmZF6EeV9pUA
-         GRXZ/pfQAugO+b0a4P20INb3B5Joj3o2ib+qD1T3kNnvPD2uPeoSM2t1Wj/zgd8jE6IF
-         ReuQ==
-X-Gm-Message-State: ABy/qLb+OjwJfz3E+xD2U7kjWWcjdF0YGSCdtfteZjhyDgzm5CmSZ/tV
-        tjE4GeFG6Rgd2P1CGc4KbxTux3R3C5jMvNWudawKNA==
-X-Google-Smtp-Source: APBJJlGWKFhhmL48f26bOfdV+vak3IRD/bcJYZAXm2uQvWL+oHbaEnsw3yuZ6sZ0lfhUB2Nhbw2fFgMEIz/15MCf5W0=
-X-Received: by 2002:a1f:5f90:0:b0:46e:85b8:c019 with SMTP id
- t138-20020a1f5f90000000b0046e85b8c019mr4191070vkb.1.1690941434912; Tue, 01
- Aug 2023 18:57:14 -0700 (PDT)
+        with ESMTP id S229685AbjHBCeG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 22:34:06 -0400
+Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AAC1139;
+        Tue,  1 Aug 2023 19:34:04 -0700 (PDT)
+Received: from dlp.unisoc.com ([10.29.3.86])
+        by SHSQR01.spreadtrum.com with ESMTP id 3722UWPq049048;
+        Wed, 2 Aug 2023 10:30:32 +0800 (+08)
+        (envelope-from Yunlong.Xing@unisoc.com)
+Received: from SHDLP.spreadtrum.com (bjmbx02.spreadtrum.com [10.0.64.8])
+        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RFwrx0tqrz2NmLXW;
+        Wed,  2 Aug 2023 10:28:49 +0800 (CST)
+Received: from tj10379pcu.spreadtrum.com (10.5.32.15) by
+ BJMBX02.spreadtrum.com (10.0.64.8) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.23; Wed, 2 Aug 2023 10:30:27 +0800
+From:   Yunlong Xing <yunlong.xing@unisoc.com>
+To:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        <CLoehle@hyperstone.com>, <brauner@kernel.org>, <hare@suse.de>,
+        <asuk4.q@gmail.com>, <avri.altman@wdc.com>, <beanhuo@micron.com>
+CC:     <linus.walleij@linaro.org>, <linux-mmc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <hongyu.jin@unisoc.com>, <zhiguo.niu@unisoc.com>,
+        <yunlong.xing23@gmail.com>, <yibin.ding@unisoc.com>,
+        <dongliang.cui@unisoc.com>
+Subject: [PATCH V2] mmc: block: Fix in_flight[issue_type] value error
+Date:   Wed, 2 Aug 2023 10:30:23 +0800
+Message-ID: <20230802023023.1318134-1-yunlong.xing@unisoc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230801091910.165050260@linuxfoundation.org>
-In-Reply-To: <20230801091910.165050260@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 2 Aug 2023 07:27:03 +0530
-Message-ID: <CA+G9fYtCYSQ2fzmJU0t7ZCOUWjeRp9+Dn3gJ=4oRJP_CJttOcw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/155] 5.15.124-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.5.32.15]
+X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
+ BJMBX02.spreadtrum.com (10.0.64.8)
+X-MAIL: SHSQR01.spreadtrum.com 3722UWPq049048
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 1 Aug 2023 at 14:52, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.124 release.
-> There are 155 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.124-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Yibin Ding <yibin.ding@unisoc.com>
 
-Following patch caused build regression on stable-rc 5.15 and stable-rc 6.1,
+For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
+function is executed, the bitmap_tags corresponding to the
+request will be cleared, that is, the request will be regarded as
+idle. If the request is acquired by a different type of process at
+this time, the issue_type of the request may change. It further
+caused the value of mq->in_flight[issue_type] to be abnormal,
+and a large number of requests could not be sent.
 
-Regressions found on arm:
+p1:					      p2:
+mmc_blk_mq_complete_rq
+  blk_mq_free_request
+					      blk_mq_get_request
+					        blk_mq_rq_ctx_init
+mmc_blk_mq_dec_in_flight
+  mmc_issue_type(mq, req)
 
-  - build/gcc-12-orion5x_defconfig
-  - build/clang-nightly-orion5x_defconfig
-  - build/gcc-8-orion5x_defconfig
-  - build/clang-16-orion5x_defconfig
+This strategy can ensure the consistency of issue_type
+before and after executing mmc_blk_mq_complete_rq.
 
-gpio: mvebu: Make use of devm_pwmchip_add
-[ Upstream commit 1945063eb59e64d2919cb14d54d081476d9e53bb ]
+Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+---
+changes of v2: Sort local declarations in descending order of
+line length
+---
+ drivers/mmc/core/block.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Build log:
-------
-drivers/gpio/gpio-mvebu.c: In function 'mvebu_pwm_probe':
-drivers/gpio/gpio-mvebu.c:877:16: error: implicit declaration of
-function 'devm_pwmchip_add'; did you mean 'pwmchip_add'?
-[-Werror=implicit-function-declaration]
-  877 |         return devm_pwmchip_add(dev, &mvpwm->chip);
-      |                ^~~~~~~~~~~~~~~~
-      |                pwmchip_add
-cc1: some warnings being treated as errors
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index f701efb1fa78..b6f4be25b31b 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -2097,14 +2097,14 @@ static void mmc_blk_mq_poll_completion(struct mmc_queue *mq,
+ 	mmc_blk_urgent_bkops(mq, mqrq);
+ }
+ 
+-static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
++static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, enum mmc_issue_type issue_type)
+ {
+ 	unsigned long flags;
+ 	bool put_card;
+ 
+ 	spin_lock_irqsave(&mq->lock, flags);
+ 
+-	mq->in_flight[mmc_issue_type(mq, req)] -= 1;
++	mq->in_flight[issue_type] -= 1;
+ 
+ 	put_card = (mmc_tot_in_flight(mq) == 0);
+ 
+@@ -2117,6 +2117,7 @@ static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
+ static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
+ 				bool can_sleep)
+ {
++	enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
+ 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
+ 	struct mmc_request *mrq = &mqrq->brq.mrq;
+ 	struct mmc_host *host = mq->card->host;
+@@ -2136,7 +2137,7 @@ static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
+ 			blk_mq_complete_request(req);
+ 	}
+ 
+-	mmc_blk_mq_dec_in_flight(mq, req);
++	mmc_blk_mq_dec_in_flight(mq, issue_type);
+ }
+ 
+ void mmc_blk_mq_recovery(struct mmc_queue *mq)
+-- 
+2.25.1
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Links:
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.123-156-gb2c388dc2443/testrun/18771613/suite/build/test/gcc-12-orion5x_defconfig/details/
-
---
-Linaro LKFT
-https://lkft.linaro.org
