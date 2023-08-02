@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F19276C7B5
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 10:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC3276C815
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 10:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231153AbjHBIAX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 04:00:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56536 "EHLO
+        id S233803AbjHBILd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 04:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231329AbjHBIAG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 04:00:06 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C964549DC
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 00:58:20 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1bbf3da0ea9so29871785ad.2
-        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 00:58:20 -0700 (PDT)
+        with ESMTP id S233796AbjHBILb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 04:11:31 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE8E1FC6
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 01:11:29 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1bb8a89b975so39258695ad.1
+        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 01:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690963099; x=1691567899;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1690963888; x=1691568688;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PYNwK2LCp1cpkz75TWRyv5j54IaG/+uH6EVkZT0HPkw=;
-        b=Rn2v1s0GCkslgmWd/DjdSUOdVcnd3l0oYFRt4y7mqAp7p5Iy0X658+w/wG8dzL9Yc4
-         Z0MdSXZ2HH3XqCJKwz5AOPJVtY+ysxizcA8DlEImcuv8KamFZ2ShbnXwBfOfwt+HgEas
-         yWMZ9hANZ9Bt7x4aJFuwOcgeqh+9pSHeZi3JBn24sTpCyStEiOs0I3BCZXdlAwKc3QEY
-         PLaf4rBeQgM5QZ/btVU9k5Ho9Hp7cSbq41vXdCjp8hoM/2w+2nJGV3ZthXo+w0iyLTim
-         k2z9oWNmrCzT/tlCdFzt+V6WeQ9bdgMmrnGYRSjrT//yLL2xME+jxTwGJ1eEECyXAgCk
-         Dg+Q==
+        bh=f7gHJ1DGq2DroPTnTOQBrr6agFe4QaaluUTK3UUCB/8=;
+        b=tAbvU6pqdPlu3flRF9wzPMNywKDfzI1wr9XgtIM+FUF0IILMC3hwxGrkJh5AIPvSJq
+         iy7OPJU7xo1nov0NPUWxSdcdK2JaidbC6lDNEczNbUQCK4x9s7g7Qo/GqqIE0VWeLtDB
+         pJfyc1S0B+oHu5KR3kUK9TrRxEt6kugTLkk+OSJ2jFIkAbKXaQqE50jdJeGEwhso/Ss0
+         TruH1FFYPWMzu3cRqDDnsCixhziBNK3eb/pExVYd3f71NKm+L0Ye75jfAEkpbufO81dp
+         52IGJzlLnWfjZa1+q7qncGRVy1G066nuOBMDwyBa+wQgyQ40qhO4EfDa1/dx+v7rqISO
+         Fs0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690963099; x=1691567899;
+        d=1e100.net; s=20221208; t=1690963888; x=1691568688;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PYNwK2LCp1cpkz75TWRyv5j54IaG/+uH6EVkZT0HPkw=;
-        b=J/93NAmmbt6CHyGOVawPb/CvxVB/tAx8+04JRzu6obeSJXPM5VzRuWmvBBeIpbm9zN
-         V2Z6ZMrc+1ain0nmu+QoU8RFECIigcE2f+lt+kv2WaKUWG6TNJxk/9RF3WvRirp3Prcu
-         wr9UKsjL02qb94k7HO9B8n5rsXuna/KhFOUG+mkvtb3lBfwwKAIzCL9TsKT3OrzmFCzx
-         dJ/VTYendiMFYc2BPQEGi3wVbnLS2BkxYWw9RsICE6UCiKmujWVKRbWl4uXXkwF6Qzru
-         zbxwPgvNZNX2PjydIdVdbUHVNmC9t/HdNJRBXDLCIl3EWtDj2yWo9MfTGXlwjWSp6Q2k
-         3FfQ==
-X-Gm-Message-State: ABy/qLaHXW4/otXB2KaLl8qUsF81It9y41Yo2w4KN+tMc+/4KHPSL8Zh
-        dXTKdIrbPQFh09ROsKBWCERWggylwSPQSaTYFK53JA==
-X-Google-Smtp-Source: APBJJlGlMjA+z9PuLGtaHBXW5R4QdEE2+Go1aRqrwhEcOIxnHLzC2UO5vEp7PdjYY3+ehvGnbEGBhA==
-X-Received: by 2002:a17:902:d2d1:b0:1bb:a55d:c6e7 with SMTP id n17-20020a170902d2d100b001bba55dc6e7mr17484822plc.55.1690963099539;
-        Wed, 02 Aug 2023 00:58:19 -0700 (PDT)
+        bh=f7gHJ1DGq2DroPTnTOQBrr6agFe4QaaluUTK3UUCB/8=;
+        b=TzBpTwerD0r42GLIwQZpWbKvq8AxWBdYnJjDK6Zo+NGheqebLxe0AXuw1rxgTK/3iC
+         GOnbbq6gcKb+dkh+BjqJodLK0rFQjdbssJLPsL1xZfygfCwZMHWF3KmMqmwsaoRoCvRW
+         x0HVlun1pifbO0ono3iEzEJiX0Y2B0Qv9/eu9IqJ0TJQ+js+laRjGGrSKdBY4EdIn3Bw
+         9E2uyG5G9aNk1HyXrXLhWFlbs6gEc42zVX9Za+c1+EtBbdApE9++XpbDWpFqxndzEJxe
+         0TnUAmrGxQ3wTg0FPyIytejkTnq6lm19j0fJheDa+tap0qBD//oFobIWbUDEGgHnTiP0
+         wO2w==
+X-Gm-Message-State: ABy/qLbf489WuAQTxbX0UR31/90thzBCzUF/ok3/TvP9YfdNOX9bHVCe
+        bQaGbgV9mTDWAvy68yXMkx68hxwffvXBLVdrzMCJRg==
+X-Google-Smtp-Source: APBJJlF7B5ZArc5plqcNuSM25pSn7ZMPI5LfT82zapZt2alF49DUzmccxQObe7L1FRFe9nA2m46MKg==
+X-Received: by 2002:a17:902:8207:b0:1b8:b464:fa1d with SMTP id x7-20020a170902820700b001b8b464fa1dmr12179899pln.69.1690963888551;
+        Wed, 02 Aug 2023 01:11:28 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x17-20020a170902ea9100b001b9de39905asm11695626plb.59.2023.08.02.00.58.18
+        by smtp.gmail.com with ESMTPSA id a9-20020a170902ee8900b001bbd8cf6b57sm11744836pld.230.2023.08.02.01.11.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Aug 2023 00:58:18 -0700 (PDT)
-Message-ID: <64ca0c9a.170a0220.8bf29.6e73@mx.google.com>
-Date:   Wed, 02 Aug 2023 00:58:18 -0700 (PDT)
+        Wed, 02 Aug 2023 01:11:27 -0700 (PDT)
+Message-ID: <64ca0faf.170a0220.867b8.72cc@mx.google.com>
+Date:   Wed, 02 Aug 2023 01:11:27 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.123-154-gb261bd72eeda8
+X-Kernelci-Kernel: v6.1.42-226-gbdcf4e82a088
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.15.y
-Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.123-154-gb261bd72eeda8)
+X-Kernelci-Branch: linux-6.1.y
+Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.42-226-gbdcf4e82a088)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -72,16 +72,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
-5.15.123-154-gb261bd72eeda8)
+stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
+1.42-226-gbdcf4e82a088)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.123-154-gb261bd72eeda8/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.42-226-gbdcf4e82a088/
 
 Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.123-154-gb261bd72eeda8
-Git Commit: b261bd72eeda8af76b98809780cd6f182ec444bc
+Branch: linux-6.1.y
+Git Describe: v6.1.42-226-gbdcf4e82a088
+Git Commit: bdcf4e82a088a0bc7c5557d08d0c86c67bbda149
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -102,14 +102,10 @@ mips:
 riscv:
 
 x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
 
 
 Warnings summary:
 
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
     1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
 e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
 ted "0,0"
@@ -133,13 +129,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
 ---------------------------------------------------------------------------=
 -----
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -203,13 +199,13 @@ ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -218,21 +214,13 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
 x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
+0 warnings, 0 section mismatches
 
 ---
 For more info write to <info@kernelci.org>
