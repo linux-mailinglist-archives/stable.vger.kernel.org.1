@@ -2,87 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BA4A76DAF6
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 00:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4DDC76DB21
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 01:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231781AbjHBWu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 18:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45980 "EHLO
+        id S232127AbjHBXAd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 19:00:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230096AbjHBWu4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 18:50:56 -0400
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921A89B;
-        Wed,  2 Aug 2023 15:50:55 -0700 (PDT)
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-686f8614ce5so300275b3a.3;
-        Wed, 02 Aug 2023 15:50:55 -0700 (PDT)
+        with ESMTP id S232452AbjHBXA3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 19:00:29 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560631702;
+        Wed,  2 Aug 2023 16:00:28 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-63d23473ed5so1954306d6.1;
+        Wed, 02 Aug 2023 16:00:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691017227; x=1691622027;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LxADmvrlLWmDyCAfvF5yFmWfrqeRu+A61EMrjZsBdpU=;
+        b=MCTvs2WU0T65ZORgtIgfJ87PCli+WTdroZQHVcG4PCHRDJaFXjywFGlYS9Btx4uBn4
+         2IliSatuleFIQ6L6o+MPmzZtXLk/+8v1l0xJK9xmEmMyW1xO+fdznksEsfvUiyzCkKdA
+         mb8A3A6Zddk9MVpou1oCuqs5DcgxO4Ol4iOWZdNglz9Gbx6r/Yy6FZoZ1zxQoio9aKe3
+         XnFXeJVAH6Bu6aDgr1JwZ9s2cNN5r5Dy4uplFwA/ZSiuMU7aw2aH9NO1D/Koh0GZ3U4x
+         2x0oP3Y5PT7sDh+qmorH0yuws2CQ2QQulz93ovGs2K7tJX/VHUzyxS2YLqHXhtMRBxB0
+         lVYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691016655; x=1691621455;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DSZP6s8E87YIozKHHuno/d/txSVRFI7AHAk3fEQT3oo=;
-        b=QbZOKhR3PWBARSvzW1NZN7USu+BXZj4uutwyCwIutvUqKuNeJSvrER2r8Mlt2CmIEq
-         LhY5Qmf35B05TAGS0ITQQrvsiWiNhMWcBw+uo6QcfjnnAcxd7fhdKSASsfGhf+CYtUuV
-         CRf1lLjFluFu6KMs8hbaegRxh0zISof9jHIOSRsE58nphpjXsgsWp+n0PECvkvPTLfvE
-         Ueq94L44zfkbjyhE7+opy6sSrqKKAva7qk0mommmmrSHghFg0xQaCuhIVG7zbOhLUAJv
-         k7oofj6aySnB3oBelnjWChr6uS7t65k2m3Mu7oQFJMAIL1a92DYDa0SgFc71MtQadJjl
-         r1Eg==
-X-Gm-Message-State: ABy/qLZxp+Bd/Ccjm8Q0EtgYfRQ6HjD+v3ebI7fYgV2099VcY+cV0LG3
-        X6IIQXiOFAofXK1bBpD3pK8=
-X-Google-Smtp-Source: APBJJlEQyc/oGseiiXbsMGMZUszVgfMcxK3SQMnZu2T/xFQsiEwlYTiKIL/zNbyeM4OOfg2IpeyZfg==
-X-Received: by 2002:a05:6a20:a10e:b0:13d:b318:5c70 with SMTP id q14-20020a056a20a10e00b0013db3185c70mr13020943pzk.19.1691016655000;
-        Wed, 02 Aug 2023 15:50:55 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
-        by smtp.gmail.com with ESMTPSA id x26-20020a62fb1a000000b00686e6e2b556sm11467645pfm.26.2023.08.02.15.50.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Aug 2023 15:50:54 -0700 (PDT)
-Date:   Wed, 2 Aug 2023 22:50:48 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Cc:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
-        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
-        ssengar@linux.microsoft.com, vkuznets@redhat.com,
-        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, schakrabarti@microsoft.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH V6 net] net: mana: Fix MANA VF unload when hardware is
-Message-ID: <ZMrdyFgwr9sL7BmZ@liuwe-devbox-debian-v2>
-References: <1690377336-1353-1-git-send-email-schakrabarti@linux.microsoft.com>
+        d=1e100.net; s=20221208; t=1691017227; x=1691622027;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LxADmvrlLWmDyCAfvF5yFmWfrqeRu+A61EMrjZsBdpU=;
+        b=R7ISd8BKeENQWESE83I7lo+1t6FwyQhmnfUuC4FVSDTpYAUSZiTnCBMtYzNZP2vqyk
+         gWeXLqBBA92wCSMBDJAOpPNdHO0eb07jq0YkVHALj6JaIVIvc6eR2eltgIPz10Rq8ZdK
+         Z7nLuNDTDh3rDHdD1LU7ui6nXdjEAjuXpGD+kVYTpeH2eWRQ/YsActh1i2A4JiZx3Pz+
+         r3Ul3EX3hsXAWQPaPfW1m4BwSazXIAmNmaHU7nuual1Qk2/kcPq9Ai8oDuD1l36/KZyN
+         FysoBbO9jx/ghuQy49veiJAMKenVmZYore+Q42ddX316Hf957KsYg8r+vJFPxQAuKdGZ
+         K3Bg==
+X-Gm-Message-State: ABy/qLbb6mMwFfK9mrIhR5Gsmfru1+/OCefz0c+jhwREJFfCjyCTfERf
+        GHBVpluCmPjRLrQHYy6zGO0=
+X-Google-Smtp-Source: APBJJlHK7nE7o0Ajw+MONwVK5MWQ4wAv41//AS/uvZj9o4BsInIdqPWTGQ0NHbYfN5uvF3OssOdDTQ==
+X-Received: by 2002:a0c:de0e:0:b0:634:cdae:9931 with SMTP id t14-20020a0cde0e000000b00634cdae9931mr15395990qvk.0.1691017227366;
+        Wed, 02 Aug 2023 16:00:27 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id n16-20020a0ce550000000b0063d585225e0sm4275868qvm.61.2023.08.02.16.00.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Aug 2023 16:00:26 -0700 (PDT)
+Message-ID: <671b5b2c-1913-3693-296a-844abf5852a2@gmail.com>
+Date:   Wed, 2 Aug 2023 16:00:24 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1690377336-1353-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.1 000/225] 6.1.43-rc2 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230802065510.869511253@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230802065510.869511253@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 06:15:36AM -0700, Souradeep Chakrabarti wrote:
-> When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
-> hardware to complete any inflight packets and set the pending send count
-> to zero. But if the hardware has failed, mana_dealloc_queues()
-> could wait forever.
+On 8/2/23 00:41, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.43 release.
+> There are 225 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
-> which is a somewhat arbitrary value that is more than long enough for
-> functional hardware to complete any sends.
+> Responses should be made by Fri, 04 Aug 2023 06:54:28 +0000.
+> Anything received after that time might be too late.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.43-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 > 
-> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> thanks,
+> 
+> greg k-h
 
-Hi Souradeep. The subject line of this patch seems to be cut off half
-way.
 
-Thanks,
-Wei.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
