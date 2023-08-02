@@ -2,54 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E67D776C750
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 09:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E24476C773
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 09:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233067AbjHBHqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 03:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44770 "EHLO
+        id S233718AbjHBHwD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 03:52:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233079AbjHBHph (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 03:45:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BD1C1BF0;
-        Wed,  2 Aug 2023 00:43:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C62D66185C;
-        Wed,  2 Aug 2023 07:43:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82271C433CA;
-        Wed,  2 Aug 2023 07:43:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690962191;
-        bh=uliLFqbyfAo8ZWX8SKLjPrgv/IXg23iwEndg0QZY4NE=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=BBV4dJjCqOVG5TcNj0S/19UTgWEwPQmIUTarzCPUbgVhaALhKERTC0cYDc+r0xaLy
-         IC4n2ymPEsesVEKYK78KfLCJozVt4XNCYvASWYdZCVcini0GY8qVDbpvaM7OsYRxC+
-         7v90t9YDyV0EBdFkYNKUyOXKRQWqG1JL3APDJe5Dmk6QoOZIg91zohVYlz+6pSfuuJ
-         Dkn94uDQTaBMdy1ThqVrpM0XR23HKdY8vsQWXYfFRInEWGE5VJYcu4jEQYYoOSu5bZ
-         3BLFiuTdiZm5cE//ujN+IimL0uisdPWLnV4zUfwjdXKkujOVvc/CnLBuN0TVkKrRNd
-         8xgimMD7NETWA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 02 Aug 2023 10:43:06 +0300
-Message-Id: <CUHW2GFPQ5KC.3SOJM5AMOZ9T0@suppilovahvero>
-Cc:     <fsverity@lists.linux.dev>, <keyrings@vger.kernel.org>,
-        "Victor Hsieh" <victorhsieh@google.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] fsverity: skip PKCS#7 parser when keyring is empty
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Eric Biggers" <ebiggers@kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230802041503.11530-1-ebiggers@kernel.org>
- <CUHRWHU485NB.19OIDMLF4WY5G@suppilovahvero>
- <20230802043158.GC1543@sol.localdomain>
-In-Reply-To: <20230802043158.GC1543@sol.localdomain>
+        with ESMTP id S233475AbjHBHvf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 03:51:35 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C79DE1702;
+        Wed,  2 Aug 2023 00:49:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1690962572; x=1722498572;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DYTa7yzuU2WNmYLWDCsrxL5o3sd/RAfjdGyrpN5cwm4=;
+  b=OwhIwKWofkWzmalt8y0BHhuNv+tDCE+i4PC9DHEyVc1KYfjOnz/mpsFU
+   /foZAGclJxZml2LCw7F/iOwRGnpoUCIYtJ8HvEAM7QSDhpw85pyvWCBkt
+   y9OF+OM9tVnPag8sAmYnXEF5h+nItZo68mjdFYJcB/IEMDZ/MmZ10jQ4F
+   zEumtvjvxBMCTPtpNKj3WJmzGrFo+QitBnEcGhzVA31oMOiUabs9X+QjG
+   cSsM0mtJ7sAv7zW/Pa5cBepov+z/rQAH+ajHtAV6MslADAVJunFylfZAP
+   GAiw2LplNW95QhmGu5/dC5S58fptMdMkg/QI5hNngzI1qynGsVED4m1SC
+   A==;
+X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
+   d="asc'?scan'208";a="227772213"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 02 Aug 2023 00:49:31 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Wed, 2 Aug 2023 00:49:14 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Wed, 2 Aug 2023 00:49:12 -0700
+Date:   Wed, 2 Aug 2023 08:48:36 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Minda Chen <minda.chen@starfivetech.com>
+CC:     Conor Dooley <conor@kernel.org>,
+        Jisheng Zhang <jszhang@kernel.org>,
+        Samuel Holland <samuel@sholland.org>,
+        Dao Lu <daolu@rivosinc.com>, Heiko Stuebner <heiko@sntech.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+        Mason Huo <mason.huo@starfivetech.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v1] riscv: Using TOOLCHAIN_HAS_ZIHINTPAUSE marco replace
+ zihintpause
+Message-ID: <20230802-seismic-gallstone-fca0f4b17076@wendy>
+References: <20230802064215.31111-1-minda.chen@starfivetech.com>
+ <20230802-sharpness-spoon-f9b8804fb66f@wendy>
+ <d64874cb-8628-a6d2-d2f4-8af4d0ebf8b2@starfivetech.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="JTYctk/RlWnk7XbV"
+Content-Disposition: inline
+In-Reply-To: <d64874cb-8628-a6d2-d2f4-8af4d0ebf8b2@starfivetech.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,84 +76,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed Aug 2, 2023 at 7:31 AM EEST, Eric Biggers wrote:
-> On Wed, Aug 02, 2023 at 07:27:15AM +0300, Jarkko Sakkinen wrote:
-> > On Wed Aug 2, 2023 at 7:15 AM EEST, Eric Biggers wrote:
-> > > From: Eric Biggers <ebiggers@google.com>
-> > >
-> > > If an fsverity builtin signature is given for a file but the
-> > > ".fs-verity" keyring is empty, there's no real reason to run the PKCS=
-#7
-> > > parser.  Skip this to avoid the PKCS#7 attack surface when builtin
-> > > signature support is configured into the kernel but is not being used=
-.
-> > >
-> > > This is a hardening improvement, not a fix per se, but I've added
-> > > Fixes and Cc stable to get it out to more users.
-> > >
-> > > Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
-> > > Cc: stable@vger.kernel.org
-> > > Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > > ---
-> > >
-> > > v2: check keyring and return early before allocating formatted digest
-> > >
-> > >  fs/verity/signature.c | 15 +++++++++++++++
-> > >  1 file changed, 15 insertions(+)
-> > >
-> > > diff --git a/fs/verity/signature.c b/fs/verity/signature.c
-> > > index b95acae64eac6..8f474702aa249 100644
-> > > --- a/fs/verity/signature.c
-> > > +++ b/fs/verity/signature.c
-> > > @@ -62,6 +62,21 @@ int fsverity_verify_signature(const struct fsverit=
-y_info *vi,
-> > >  		return 0;
-> > >  	}
-> > > =20
-> > > +	if (fsverity_keyring->keys.nr_leaves_on_tree =3D=3D 0) {
-> > > +		/*
-> > > +		 * The ".fs-verity" keyring is empty, due to builtin signatures
-> > > +		 * being supported by the kernel but not actually being used.
-> > > +		 * In this case, verify_pkcs7_signature() would always return an
-> > > +		 * error, usually ENOKEY.  It could also be EBADMSG if the
-> > > +		 * PKCS#7 is malformed, but that isn't very important to
-> > > +		 * distinguish.  So, just skip to ENOKEY to avoid the attack
-> > > +		 * surface of the PKCS#7 parser, which would otherwise be
-> > > +		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
-> > > +		 */
-> > > +		fsverity_err(inode, "fs-verity keyring is empty");
-> > > +		return -ENOKEY;
-> > > +	}
-> > > +
-> > >  	d =3D kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
-> > >  	if (!d)
-> > >  		return -ENOMEM;
-> > >
-> > > base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
-> > > --=20
-> > > 2.41.0
-> >=20
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >=20
-> > applied
-> >=20
-> > BR, Jarkko
->
-> Hi Jarkko, thanks for the review!
->
-> I actually intended to take this through the fsverity tree.  Is that okay=
-?
->
-> BTW, we could actually make this change to verify_pkcs7_signature() itsel=
-f.
-> I wasn't sure it would be appropriate for all callers, though.  Any thoug=
-hts?
+--JTYctk/RlWnk7XbV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It is OK for me. I just wanted make sure that I don't get yelled let's
-say month from now, why I haven't picked it already. That's why the
-"more eager" approach :-)
+On Wed, Aug 02, 2023 at 03:32:15PM +0800, Minda Chen wrote:
+>=20
+>=20
+> On 2023/8/2 14:54, Conor Dooley wrote:
+> > Hey Minda,
+> >=20
+> > On Wed, Aug 02, 2023 at 02:42:15PM +0800, Minda Chen wrote:
+> >> Actually it is a part of Conor's
+> >> commit aae538cd03bc ("riscv: fix detection of toolchain
+> >> Zihintpause support").
+> >> It is looks like a merge issue.
+> >=20
+> > Yup, spot on.
+> >=20
+> >> Samuel's
+> >> commit 0b1d60d6dd9e ("riscv: Fix build with
+> >> CONFIG_CC_OPTIMIZE_FOR_SIZE=3Dy") do not base on Conor's commit and
+> >> revert to __riscv_zihintpause. So this patch can fix it.
+> >>=20
+> >> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+> >=20
+> > Did you actually manage to trigger this, or was this by inspection?
+> > clang-15 + binutils 2.35 was, IIRC, how we spotted this because that's
+> > what the clang-built-linux CI uses to test the LTS kernels from before
+> > LLVM's IAS was supported for RISC-V. Seemingly all that needs to be
+> > satisfied there is that zihintpause doesn't appear in -march so this has
+> > gone unnoticed.
+> >=20
+> > Fixes: 3c349eacc559 ("Merge patch "riscv: Fix build with CONFIG_CC_OPTI=
+MIZE_FOR_SIZE=3Dy"")
+> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> >=20
+> > Thanks,
+> > Conor.
+> >=20
+> Thanks, Conor. I found this just by inspection. I found a issue that vdso=
+=2Eso call cpu_relax
+> cause application core dump in kernel 6.1.31. I need Samuel'patch to fix =
+this. And I search the log
+> of processor.h found this issue.
 
-I'll drop it from my master branch today.
+That doesn't look like it is fixed in later stable kernels (we are at
+6.1.42-rcN right now I think). It sounds we should ask Greg to backport
+0b1d60d6dd9e ("riscv: Fix build with CONFIG_CC_OPTIMIZE_FOR_SIZE=3Dy")
+to 6.1. Does that make sense to you?
 
-BR, Jarkko
+--JTYctk/RlWnk7XbV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMoKVAAKCRB4tDGHoIJi
+0qGuAP4k6WdiXs2y09Sk66yBTqGCWcA0PLL/uBMrEneon9j7pgEA8KYUThTRSCMA
+ZVvVDzsueLWC7z+D9r5SulFqPvZ5ZAo=
+=Qq1m
+-----END PGP SIGNATURE-----
+
+--JTYctk/RlWnk7XbV--
