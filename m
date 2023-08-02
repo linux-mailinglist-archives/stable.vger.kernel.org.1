@@ -2,170 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCB8D76D132
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 17:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62C8B76D1DB
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 17:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233868AbjHBPNT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 11:13:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35504 "EHLO
+        id S235192AbjHBP0j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 11:26:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234995AbjHBPNI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 11:13:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 834E52103
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 08:12:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690989134;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=w+0KWNa1xwubY/Ggk8izjhhZVuMUOv4VLooz2GsqEHg=;
-        b=IRR7X9LPKMUcaSHSPlvUnuc8pgL9j4k4WJkCB/eHKcM6V32PasUO/dKJoYwIJYneC2RrPX
-        +1E/hqr/GtGAgWSKqahcsUliRGtmEqjV+CFPEztG7dA4moto2tejAK+6NdIBVp+obSGiJU
-        Ti9zOtCRDyKQPDvH6NUeyMekl21dSm8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-OYn0hNMhOauIlf0XnjZSIA-1; Wed, 02 Aug 2023 11:12:13 -0400
-X-MC-Unique: OYn0hNMhOauIlf0XnjZSIA-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fe1521678fso30499615e9.1
-        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 08:12:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690989130; x=1691593930;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w+0KWNa1xwubY/Ggk8izjhhZVuMUOv4VLooz2GsqEHg=;
-        b=GEIpqkEwdLacm9oItEZqNJkERPo+f/YIi27T0mGuAPr8CvJwI+s/sxqMOgLjbw5Abu
-         idSDlAA1IDrbhPqctkPb5YFlo+MqhFeyNTp0Rwsm5vibYqdlutwtFDixmOqQnkoi/Mi8
-         WcuA4eUWwCKr7Uc18ptOCf2E7qGN2nu6XJqM2L1FEsxS5qpoGT+zHALMV09/bLnwvWa6
-         4khOy57DfE7cvGDFADPWXmAGLySw1E1aXbGJ/6mxcMSDGPWOPNqQ9vkvDlV2Z3zUX1g/
-         bkbSJ9XHngk6MH/etwbHAw5NUgnxh331ABefAM26tQCR+iTdfXoBe/3CT/LRDiZ0gt7G
-         6BxA==
-X-Gm-Message-State: ABy/qLYOePcQVySiJCj+Mey8WIgYI/pgbkFb9Nix5//UYR43S8276Me1
-        WzFUnzdKZaSussiDQrH58KXyLC4B/i/jl1m0BldxQDNG1Bcuj/Fr2VfMaCNFDVjINaEabQ4V8nQ
-        ylesFUX1GTMib8Vft
-X-Received: by 2002:a5d:595b:0:b0:316:f3cf:6f12 with SMTP id e27-20020a5d595b000000b00316f3cf6f12mr4856140wri.48.1690989130092;
-        Wed, 02 Aug 2023 08:12:10 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFiwCmVukTG4b003Kw1jOw/WrbZSFH1/nxmUVT0cf0q5oxfG7XYzDO68q2V6Sj2RMU4SGVtAg==
-X-Received: by 2002:a5d:595b:0:b0:316:f3cf:6f12 with SMTP id e27-20020a5d595b000000b00316f3cf6f12mr4856114wri.48.1690989129710;
-        Wed, 02 Aug 2023 08:12:09 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70b:e00:b8a4:8613:1529:1caf? (p200300cbc70b0e00b8a4861315291caf.dip0.t-ipconnect.de. [2003:cb:c70b:e00:b8a4:8613:1529:1caf])
-        by smtp.gmail.com with ESMTPSA id c18-20020a5d4f12000000b0030647449730sm19346391wru.74.2023.08.02.08.12.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Aug 2023 08:12:09 -0700 (PDT)
-Message-ID: <fa396bd9-9453-2212-6cfd-9dc0ae1c8c48@redhat.com>
-Date:   Wed, 2 Aug 2023 17:12:07 +0200
+        with ESMTP id S234121AbjHBP0W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 11:26:22 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 91F1E44B9
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 08:23:52 -0700 (PDT)
+Received: (qmail 207244 invoked by uid 1000); 2 Aug 2023 11:23:46 -0400
+Date:   Wed, 2 Aug 2023 11:23:46 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Cc:     "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "hayeswang@realtek.com" <hayeswang@realtek.com>,
+        "jflf_kernel@gmx.com" <jflf_kernel@gmx.com>,
+        "bjorn@mork.no" <bjorn@mork.no>,
+        "svenva@chromium.org" <svenva@chromium.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Zhang, Eniac" <eniac-xw.zhang@hp.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] r8152: Suspend USB device before shutdown when WoL is
+ enabled
+Message-ID: <fa2a3e71-be88-44d9-a955-94af236cf2c7@rowland.harvard.edu>
+References: <2c12d7a0-3edb-48b3-abf7-135e1a8838ca@rowland.harvard.edu>
+ <20230719173756.380829-1-alexandru.gagniuc@hp.com>
+ <3c4fd3d8-2b0b-492e-aacc-afafcea98417@rowland.harvard.edu>
+ <SJ0PR84MB2088F20891376312BA8D550A8F0BA@SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/8] mm/gup: reintroduce FOLL_NUMA as
- FOLL_HONOR_NUMA_FAULT
-Content-Language: en-US
-To:     Mel Gorman <mgorman@techsingularity.net>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        liubo <liubo254@huawei.com>, Peter Xu <peterx@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Mel Gorman <mgorman@suse.de>, Shuah Khan <shuah@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org
-References: <20230801124844.278698-1-david@redhat.com>
- <20230801124844.278698-2-david@redhat.com>
- <20230802150816.aaubbx4t7745lqik@techsingularity.net>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230802150816.aaubbx4t7745lqik@techsingularity.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ0PR84MB2088F20891376312BA8D550A8F0BA@SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->> Reported-by: liubo <liubo254@huawei.com>
->> Closes: https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
->> Reported-by: Peter Xu <peterx@redhat.com>
->> Closes: https://lore.kernel.org/all/ZMKJjDaqZ7FW0jfe@x1n/
->> Fixes: 474098edac26 ("mm/gup: replace FOLL_NUMA by gup_can_follow_protnone()")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Wed, Aug 02, 2023 at 02:56:43PM +0000, Gagniuc, Alexandru wrote:
+> On Wed, Jul 19, 2023 at 02:36:25PM -0400, Alan Stern wrote:
+> > On Wed, Jul 19, 2023 at 05:37:56PM +0000, Alexandru Gagniuc wrote:
+> > > For Wake-on-LAN to work from S5 (shutdown), the USB link must be put
+> > > in U3 state. If it is not, and the host "disappears", the chip will
+> > > no longer respond to WoL triggers.
+> > > 
+> > > To resolve this, add a notifier block and register it as a reboot
+> > > notifier. When WoL is enabled, work through the usb_device struct to
+> > > get to the suspend function. Calling this function puts the link in
+> > > the correct state for WoL to function.
+> > 
+> > How do you know that the link will _remain_ in the correct state?
 > 
-> I agree that FOLL_REMOTE probably needs separate treatment but also agree
-> that it's outside the context of this patch, particularly as a -stable
-> candidate so
+> The objective is to get to xhci_set_link_state() with the USB_SS_PORT_LS_U3
+> argument. This is achieved through usb_port_suspend() in drivers/usb/host/hub.c,
+> and the function is implemented in drivers/usb/host/xhci-hub.c.
 > 
-> Acked-by: Mel Gorman <mgorman@techsingularity.net>
+> This is the only path in the kernel that I am aware of for setting the U3 link
+> state. Given that it is part of the USB subsystem, I am fairly confident it will
+> show consistent behavior across platforms.
+
+That does not answer my question.  I agree that making this change will 
+put the link into the U3 state.  But I don't have any reason to think 
+that some other software won't later put the link into some other state.
+
+> > That is, how do you know that the shutdown processing for the USB host 
+> > controller won't disable the link entirely, thereby preventing WoL from 
+> > working?
 > 
-> I've a minor nit below that would be nice to get fixed up, but not
-> mandatory.
+> We are talking to the USB hub in order to set the link state. I don't see how
+> specifics of the host controller would influence behavior.
 
-Thanks Mel for taking a look, so I don't mess up once more :)
+Specifics of the host controller probably won't influence behavior.  
+However, specifics of the _software_ can make a big difference.
 
-> 
->> ---
->>   include/linux/mm.h       | 21 +++++++++++++++------
->>   include/linux/mm_types.h |  9 +++++++++
->>   mm/gup.c                 | 29 +++++++++++++++++++++++------
->>   mm/huge_memory.c         |  2 +-
->>   4 files changed, 48 insertions(+), 13 deletions(-)
->>
->> diff --git a/mm/gup.c b/mm/gup.c
->> index 2493ffa10f4b..f463d3004ddc 100644
->> --- a/mm/gup.c
->> +++ b/mm/gup.c
->> @@ -2240,6 +2244,12 @@ static bool is_valid_gup_args(struct page **pages, int *locked,
->>   		gup_flags |= FOLL_UNLOCKABLE;
->>   	}
->>   
->> +	/*
->> +	 * For now, always trigger NUMA hinting faults. Some GUP users like
->> +	 * KVM really require it to benefit from autonuma.
->> +	 */
->> +	gup_flags |= FOLL_HONOR_NUMA_FAULT;
->> +
->>   	/* FOLL_GET and FOLL_PIN are mutually exclusive. */
->>   	if (WARN_ON_ONCE((gup_flags & (FOLL_PIN | FOLL_GET)) ==
->>   			 (FOLL_PIN | FOLL_GET)))
-> 
-> Expand on *why* KVM requires it even though I suspect this changes later
-> in the series. Maybe "Some GUP users like KVM require the hint to be as
-> the calling context of GUP is functionally similar to a memory reference
-> from task context"?
+>  I do expect a
+> controller which advertises S4/S5 in /proc/acpi/wakeup to not do anything that
+> would sabotage this capability. Disabling the link entirely would probalby
+> violate that promise.
 
-It's raised later in this series but it doesn't hurt to discuss it here 
-in a bit more detail.
+Not if the kernel _tells_ the controller to disable the link.
 
-Sounds good to me.
+> Think of USB-C docks with a power button showing up as a HID class. The scenario
+> herein would disable the power button. I would take that to be a bug in the host
+> controller driver if the S4/S5 capability is advertised.
 
-> 
-> Also minor nit -- s/autonuma/NUMA Balancing/ or numab. autonuma refers to
-> a specific implementation of automatic balancing that operated similar to
-> khugepaged but not merged. If you grep for it, you'll find that autonuma
-> is only referenced in powerpc-specific code. It's not important these
-> days but very early on, it was very confusing if AutoNUMA was mentioned
-> when NUMAB was intended.
+Indeed.  And I am asking how you can be sure the host controller driver 
+(or some other part of the software stack) doesn't have this bug.
 
-Ah, yes, thanks. That's the one of the only place where that terminology 
-accidentally slipped in.
-
-I'll wait for more feedback and resend!
-
--- 
-Cheers,
-
-David / dhildenb
-
+Alan Stern
