@@ -2,144 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D9A76CD57
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 14:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70A7A76CD64
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 14:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234659AbjHBMpy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 08:45:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37428 "EHLO
+        id S234706AbjHBMqu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 08:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234672AbjHBMpw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 08:45:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 046D02722
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 05:44:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690980231;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UOzUrt7muFZfH5D+b0L7Q8SCbDEFvQqhKmACrqvdGts=;
-        b=Zh0ReP6Vux7O9jKxJ+j1Hkt7KAc56paAHpPqDea5uhzcXkJiLeyMwHkAHmiL/u8RklB/U/
-        y/T0D/qaH4BCTb6FKzKEw3QvassirA+kkeOMVSpLuXoua0CzabhKzorb/T1u6ZnjrD9bI8
-        HZPAOuOdRcYLEUejB9rhQkGCTs9tk+k=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-1vFriIXNPIqZ0pBkF6PjoQ-1; Wed, 02 Aug 2023 08:43:50 -0400
-X-MC-Unique: 1vFriIXNPIqZ0pBkF6PjoQ-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3fd2dec82a6so42768945e9.3
-        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 05:43:50 -0700 (PDT)
+        with ESMTP id S234512AbjHBMqq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 08:46:46 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A943835A5
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 05:46:26 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so1947080a12.1
+        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 05:46:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1690980384; x=1691585184;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1jPNTUnEQLa/vby68PUQOq0gidCidKmFF2Y70Baz8cg=;
+        b=Y/sN+v9e/KjFR3mHRAQJs7ZXEWv/HN8IJxocaNZrmUrou/Vfoah2wKf7LegCZwT2e6
+         5wcmbTbByU81XUuM+bGm3DLUe6HsWj4YiY1rhTJPHW+7dkHjJyE7LeaubYV2fm3eWcut
+         FN6rwaB7QV3Bafw7RPfZyB1qH1FIIH+vekFB7KijWb9WPRuJHkAbfHvPBY07JLp1mbiK
+         sXoQW1hR579ea5ZtccrHX91aR2LjH5sRuYwF6HowWtSSV3JIwIVNu+XkJ5iCd9s3vFDO
+         KKlsLN/+0CFE9lfBeTPeAUjWvYP2MWXTKU/tj9H32/MtbRCNvh8SLVRZ8rrxhZWz1Je5
+         b4kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690980229; x=1691585029;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UOzUrt7muFZfH5D+b0L7Q8SCbDEFvQqhKmACrqvdGts=;
-        b=Od4fFhR3aAT7D6rzkxMLiZQMi9V0Me3ETUy2H/JDDLCnMK1aooegz2vmd59DJOvvdC
-         OSIpvyWSjfn24AhztIqYSfiIHrZXpPcPgghkgNyVdE6Xgmviv8ze4h+HHZ/T1iarmcqr
-         U8mqUV77qoordCaGJTt+ZlxQRnRzLCGWElY+ndXnN4C1PqEd2fbooaoavWeOApqdI/Q1
-         /1DvpKFgPk0Klhlpgz4GmhgqX5AvQJ4jsY1eDmgYL20bMkH7cF3kihq8aE0MDZVq2UuJ
-         oaoQGlVI/+zCk8OdMZRqlkV5n2YQNRrDS93VCxiYXhfX3YjHktPEolc6vqwXmrJ3S5Ae
-         DNLg==
-X-Gm-Message-State: ABy/qLZcyQVz9z3TOsvItl8sFkUF33mDD7F1eShdf1/bSdb2Ziw625X4
-        fw9HJ2huMdHIld6JB7ZJxqF/36IoPpQCDpCFnguJnmvjZk1z7ZT5ILHFTuQxp4Nj93VB5WJaFax
-        atJtyHPu2dO9UL1kB4LfHSz9a
-X-Received: by 2002:a7b:c04d:0:b0:3fd:129d:b721 with SMTP id u13-20020a7bc04d000000b003fd129db721mr4607746wmc.16.1690980229241;
-        Wed, 02 Aug 2023 05:43:49 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGzcgncVNOJgDZsqA1DBdhJGe9Z4qiLmCg4fj5jktc5aWfKR91E0F0weNz2j8tDecBGhdGORA==
-X-Received: by 2002:a7b:c04d:0:b0:3fd:129d:b721 with SMTP id u13-20020a7bc04d000000b003fd129db721mr4607725wmc.16.1690980228865;
-        Wed, 02 Aug 2023 05:43:48 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70b:e00:b8a4:8613:1529:1caf? (p200300cbc70b0e00b8a4861315291caf.dip0.t-ipconnect.de. [2003:cb:c70b:e00:b8a4:8613:1529:1caf])
-        by smtp.gmail.com with ESMTPSA id l7-20020a7bc347000000b003fe215e4492sm1643900wmj.4.2023.08.02.05.43.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Aug 2023 05:43:48 -0700 (PDT)
-Message-ID: <ee48a65f-b384-b90f-09c5-7dddeaf8eb7e@redhat.com>
-Date:   Wed, 2 Aug 2023 14:43:47 +0200
+        d=1e100.net; s=20221208; t=1690980384; x=1691585184;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1jPNTUnEQLa/vby68PUQOq0gidCidKmFF2Y70Baz8cg=;
+        b=LrSlVLWFRC17B0er7ld4yoTkTZ9tyQke0qHyVb7801M9XnoSSiLv19bIhCTt3h6UoU
+         uGsWCqUTF+/ZiW8X2by4KQs941e8N+jCcRR2fr5U/5082TQBG6TJsQtyuIMnccP9P71M
+         IXopRJeZl0UteJrQl0EhJRrT21jeUmu/bRRBwTvppasBXaLJIhTDJoR0nTdcriPdNVbe
+         X+hP48isoilSwXu2eDl5UYd1UOvxCA577uKXfaLbsNSOj4Pd5uTpdW69HVktO/veSoWU
+         wfPHcTsiApRgZ1e4X/i+Mwd+DFxBTPjLM1tGTsIYygTGwBO+6cqtnLcodcHkrF9RuP12
+         fIrQ==
+X-Gm-Message-State: ABy/qLZQgnAQbuFdOg0pj2/AclNsWp0eA8ejPg2a17S/xYnbwMYc+yhY
+        gkXBYOSzqfgAVE1ZGybvMa7sN0gB2gTf5/KM1iRSnA==
+X-Google-Smtp-Source: APBJJlG6MH+8DtLRZ0WDEr8YewPHyaBOyzfa56SZBQSo3KmJOimYMnNRDNJs1dvfRqY+rJfMJ4O6XPXbj5Ej1gME1UA=
+X-Received: by 2002:a05:6402:518b:b0:522:ddeb:cdcb with SMTP id
+ q11-20020a056402518b00b00522ddebcdcbmr5854329edd.18.1690980383950; Wed, 02
+ Aug 2023 05:46:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/2] don't use mapcount() to check large folio sharing
-Content-Language: en-US
-To:     Ryan Roberts <ryan.roberts@arm.com>,
-        "Yin, Fengwei" <fengwei.yin@intel.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        akpm@linux-foundation.org, willy@infradead.org,
-        vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
-        minchan@kernel.org, yuzhao@google.com, shy828301@gmail.com
-References: <20230728161356.1784568-1-fengwei.yin@intel.com>
- <3bbfde16-ced1-dca8-6a3f-da893e045bc5@arm.com>
- <56c8f4f9-b54b-b0bb-250c-ec8643accfc7@intel.com>
- <3541d2de-5cf8-2f84-8153-277e2bfc0101@arm.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <3541d2de-5cf8-2f84-8153-277e2bfc0101@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230802065510.869511253@linuxfoundation.org>
+In-Reply-To: <20230802065510.869511253@linuxfoundation.org>
+From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date:   Wed, 2 Aug 2023 21:46:13 +0900
+Message-ID: <CAKL4bV6VSG8rsu2tM8A9Mrp=khz33YxTMkx53HZytk4Z9izJGQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/225] 6.1.43-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 02.08.23 14:40, Ryan Roberts wrote:
-> On 02/08/2023 13:35, Yin, Fengwei wrote:
->>
->>
->> On 8/2/2023 6:27 PM, Ryan Roberts wrote:
->>> On 28/07/2023 17:13, Yin Fengwei wrote:
->>>> In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(),
->>>> folio_mapcount() is used to check whether the folio is shared. But it's
->>>> not correct as folio_mapcount() returns total mapcount of large folio.
->>>>
->>>> Use folio_estimated_sharers() here as the estimated number is enough.
->>>>
->>>> Yin Fengwei (2):
->>>>    madvise: don't use mapcount() against large folio for sharing check
->>>>    madvise: don't use mapcount() against large folio for sharing check
->>>>
->>>>   mm/huge_memory.c | 2 +-
->>>>   mm/madvise.c     | 6 +++---
->>>>   2 files changed, 4 insertions(+), 4 deletions(-)
->>>>
->>>
->>> As a set of fixes, I agree this is definitely an improvement, so:
->>>
->>> Reviewed-By: Ryan Roberts
->> Thanks.
->>
->>>
->>>
->>> But I have a couple of comments around further improvements;
->>>
->>> Once we have the scheme that David is working on to be able to provide precise
->>> exclusive vs shared info, we will probably want to move to that. Although that
->>> scheme will need access to the mm_struct of a process known to be mapping the
->>> folio. We have that info, but its not passed to folio_estimated_sharers() so we
->>> can't just reimplement folio_estimated_sharers() - we will need to rework these
->>> call sites again.
->> Yes. This could be extra work. Maybe should delay till David's work is done.
-> 
-> What you have is definitely an improvement over what was there before. And is
-> probably the best we can do without David's scheme. So I wouldn't delay this.
-> Just pointing out that we will be able to make it even better later on (if
-> David's stuff goes in).
+Hi Greg
 
-Agreed, we just should be careful and clearly spell out the implications 
-and that this is eventually also not what we 100% want.
+On Wed, Aug 2, 2023 at 4:44=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.43 release.
+> There are 225 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 04 Aug 2023 06:54:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.43-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-That MADV_PAGEOUT now fails on a PTE-mapped THP -- as can be seen when 
-executing the cow selftest where MADV_PAGEOUT will essentially fail -- 
-is certainly undesired and should be fixed IMHO.
+6.1.43-rc2 tested.
 
--- 
-Cheers,
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-David / dhildenb
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
