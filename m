@@ -2,144 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D8476D96B
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 23:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5052D76D971
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 23:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbjHBVYI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 17:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33288 "EHLO
+        id S229693AbjHBV03 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 17:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHBVYI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 17:24:08 -0400
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11E8CAC;
-        Wed,  2 Aug 2023 14:24:07 -0700 (PDT)
+        with ESMTP id S229446AbjHBV03 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 17:26:29 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB2AE6F;
+        Wed,  2 Aug 2023 14:26:28 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1b8b2886364so2651755ad.0;
+        Wed, 02 Aug 2023 14:26:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1691011447; x=1722547447;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UGL2vJ6MLNe12v+8D3skuK9/dM3RwPLrOS4RD+wo23g=;
-  b=Ku1U123VDtKWrc6vTmdiowKBuBCaZ6iXvCNNQwZ/Mrai77BDapiNpnAU
-   HbH59f27LawLohhjOoa1Sy9BiF+RW4W/io0sxVSjL99OcG1rpMyNNZB4Y
-   6hyyad8Q56DFXB+SvaJBYTNhoD9app/sEMVNWxFmC/1TmPUShaILEU41T
-   0=;
-X-IronPort-AV: E=Sophos;i="6.01,250,1684800000"; 
-   d="scan'208";a="343285625"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-245b69b1.us-east-1.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 21:24:06 +0000
-Received: from EX19MTAUWC001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-        by email-inbound-relay-iad-1e-m6i4x-245b69b1.us-east-1.amazon.com (Postfix) with ESMTPS id 0E8A4344A1E;
-        Wed,  2 Aug 2023 21:24:04 +0000 (UTC)
-Received: from EX19D002UWC002.ant.amazon.com (10.13.138.166) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 2 Aug 2023 21:24:04 +0000
-Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
- EX19D002UWC002.ant.amazon.com (10.13.138.166) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 2 Aug 2023 21:24:04 +0000
-Received: from dev-dsk-risbhat-2b-8bdc64cd.us-west-2.amazon.com
- (10.189.73.169) by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP
- Server id 15.2.1118.30 via Frontend Transport; Wed, 2 Aug 2023 21:24:03 +0000
-Received: by dev-dsk-risbhat-2b-8bdc64cd.us-west-2.amazon.com (Postfix, from userid 22673075)
-        id 85C4FE4C; Wed,  2 Aug 2023 21:24:03 +0000 (UTC)
-From:   Rishabh Bhatnagar <risbhat@amazon.com>
-To:     <gregkh@linuxfoundation.org>, <lee@kernel.org>
-CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Rishabh Bhatnagar <risbhat@amazon.com>
-Subject: [PATCH 4.19] net/sched: cls_u32: Fix reference counter leak leading to overflow
-Date:   Wed, 2 Aug 2023 21:23:55 +0000
-Message-ID: <20230802212355.27982-1-risbhat@amazon.com>
-X-Mailer: git-send-email 2.40.1
+        d=gmail.com; s=20221208; t=1691011588; x=1691616388;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Vpxv8V9L5JZbPZfIFzQxedIS3P5Jxl68SXEqUp5VX1Y=;
+        b=X6WSbmzaTIAv/HyInxOx9KeKlbuu9qh8gZsOBYMIUykFA/ug53wGtt9o0XTD2lkmTc
+         ljR5lXKVVZeAIvylCU4LYiWAIxc55b9bE9LMZpb4oQ8fudh5x2w1WSGbz1JLCRpJ19/q
+         moU7gWPvm+vYtyiG2IRP05ydm65gmrGOx0yirkOhnirpqfYnMJRsbiLIcwUzpkEB9Y3d
+         EqX97wClSGNXXrRqulK/HrlUNk2vx30wbiz0q11Alfd0tYh1cnszWdN9wMMOwOLvrBT1
+         J/PazZwAi+wvfehWkHrfIEMzDVSh5wwUb8KXSP2U1Z59R5ywT3FSJY0lFY2esxpdxB3R
+         RizA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691011588; x=1691616388;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vpxv8V9L5JZbPZfIFzQxedIS3P5Jxl68SXEqUp5VX1Y=;
+        b=FXjm67PEH2lHlVZInJBzlLjrrvMy1NpGiEQs/wl2ZV6s5n6F7SGt2Ucgwo9cCzGS//
+         l+hcDyhAU/afOjKHUWGVwAa9+hIZ3vFxlUt3vwNfXXqQD+VBr+2g8qKK2NBYjIeQ7l+t
+         igQLsqblESgrGsMiQVL2RZecV6R7HgQg5A31BKoGtVopr4qlErLJhOLmPXt+AYfNQeF+
+         I9shoPRYs/MuEkdJnRt1N7PTT56udRke8GosBzsYMCRwSNhhCDnNCFG7IfZZroahSE2P
+         AJIdt4HxCSg+AaF6ZU2UhPU6HOqB1tKbhJy344PdXbY7WP1lyxkXmI38WEx37HywGCAt
+         +0Ng==
+X-Gm-Message-State: ABy/qLa8dGZnFmChI2RQntizoTHcfN/gUeRgzbBPr2AIIDpZSJ9myps+
+        zyO4xx3j55cAANQ6+aXH5gY=
+X-Google-Smtp-Source: APBJJlEgKciE33/chNIcAQ96G1OCtS5OCHSVQg/14SDAGAXKpbOq7gbtv6F6jd3XUXC5lStKovfWeQ==
+X-Received: by 2002:a17:903:2351:b0:1bb:d280:5e0b with SMTP id c17-20020a170903235100b001bbd2805e0bmr17334723plh.18.1691011587738;
+        Wed, 02 Aug 2023 14:26:27 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id jj6-20020a170903048600b001bba7aab826sm12880629plb.163.2023.08.02.14.26.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Aug 2023 14:26:26 -0700 (PDT)
+Message-ID: <64b9cfad-94db-9f18-72e7-f88da212b56c@gmail.com>
+Date:   Wed, 2 Aug 2023 14:26:23 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5.15 000/153] 5.15.124-rc2 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230802065452.161574662@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230802065452.161574662@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+On 8/2/23 00:41, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.124 release.
+> There are 153 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 04 Aug 2023 06:54:22 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.124-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Upstream commit 04c55383fa5689357bcdd2c8036725a55ed632bc.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-In the event of a failure in tcf_change_indev(), u32_set_parms() will
-immediately return without decrementing the recently incremented
-reference counter.  If this happens enough times, the counter will
-rollover and the reference freed, leading to a double free which can be
-used to do 'bad things'.
-
-In order to prevent this, move the point of possible failure above the
-point where the reference counter is incremented.  Also save any
-meaningful return values to be applied to the return data at the
-appropriate point in time.
-
-This issue was caught with KASAN.
-
-Fixes: 705c7091262d ("net: sched: cls_u32: no need to call tcf_exts_change for newly allocated struct")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
----
- net/sched/cls_u32.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index d30256ac3537..ee8ef606a8e9 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -778,11 +778,22 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
- 			 struct netlink_ext_ack *extack)
- {
- 	int err;
-+#ifdef CONFIG_NET_CLS_IND
-+	int ifindex = -1;
-+#endif
- 
- 	err = tcf_exts_validate(net, tp, tb, est, &n->exts, ovr, extack);
- 	if (err < 0)
- 		return err;
- 
-+#ifdef CONFIG_NET_CLS_IND
-+	if (tb[TCA_U32_INDEV]) {
-+		ifindex = tcf_change_indev(net, tb[TCA_U32_INDEV], extack);
-+		if (ifindex < 0)
-+			return -EINVAL;
-+	}
-+#endif
-+
- 	if (tb[TCA_U32_LINK]) {
- 		u32 handle = nla_get_u32(tb[TCA_U32_LINK]);
- 		struct tc_u_hnode *ht_down = NULL, *ht_old;
-@@ -814,13 +825,8 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
- 	}
- 
- #ifdef CONFIG_NET_CLS_IND
--	if (tb[TCA_U32_INDEV]) {
--		int ret;
--		ret = tcf_change_indev(net, tb[TCA_U32_INDEV], extack);
--		if (ret < 0)
--			return -EINVAL;
--		n->ifindex = ret;
--	}
-+	if (ifindex >= 0)
-+		n->ifindex = ifindex;
- #endif
- 	return 0;
- }
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.40.1
+Florian
 
