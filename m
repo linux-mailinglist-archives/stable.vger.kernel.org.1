@@ -2,107 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4DDC76DB21
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 01:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1193B76DB4B
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 01:13:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232127AbjHBXAd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 19:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50816 "EHLO
+        id S231982AbjHBXN4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 19:13:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232452AbjHBXA3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 19:00:29 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560631702;
-        Wed,  2 Aug 2023 16:00:28 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-63d23473ed5so1954306d6.1;
-        Wed, 02 Aug 2023 16:00:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691017227; x=1691622027;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LxADmvrlLWmDyCAfvF5yFmWfrqeRu+A61EMrjZsBdpU=;
-        b=MCTvs2WU0T65ZORgtIgfJ87PCli+WTdroZQHVcG4PCHRDJaFXjywFGlYS9Btx4uBn4
-         2IliSatuleFIQ6L6o+MPmzZtXLk/+8v1l0xJK9xmEmMyW1xO+fdznksEsfvUiyzCkKdA
-         mb8A3A6Zddk9MVpou1oCuqs5DcgxO4Ol4iOWZdNglz9Gbx6r/Yy6FZoZ1zxQoio9aKe3
-         XnFXeJVAH6Bu6aDgr1JwZ9s2cNN5r5Dy4uplFwA/ZSiuMU7aw2aH9NO1D/Koh0GZ3U4x
-         2x0oP3Y5PT7sDh+qmorH0yuws2CQ2QQulz93ovGs2K7tJX/VHUzyxS2YLqHXhtMRBxB0
-         lVYQ==
+        with ESMTP id S229632AbjHBXNz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 19:13:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CAE2D9
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 16:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691017989;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=20Np0whiILikZWPV0Tm+DkfZOvMb6xU6aDilwDNR8Lg=;
+        b=DqzhmOWV76IC7G6Vitt+S08ADe8+uy2hWDwuRks6XAhntBg0XSCkYDvbxEGWqIJ5OnIMM9
+        qEAL5m9oTt+e4MzIdIrqILUd9HBQ3c2zj/bTrAX2zuPpJ2ICM8ka59nrFcc6XusWTCSy2M
+        Fj2/+fAu+nZpwcdzKAINpsdC0YG5UbI=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-60-AHA-SSTRNCuWhAEIvqtIIA-1; Wed, 02 Aug 2023 19:13:08 -0400
+X-MC-Unique: AHA-SSTRNCuWhAEIvqtIIA-1
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-1bbb749507aso3198235ad.0
+        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 16:13:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691017227; x=1691622027;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LxADmvrlLWmDyCAfvF5yFmWfrqeRu+A61EMrjZsBdpU=;
-        b=R7ISd8BKeENQWESE83I7lo+1t6FwyQhmnfUuC4FVSDTpYAUSZiTnCBMtYzNZP2vqyk
-         gWeXLqBBA92wCSMBDJAOpPNdHO0eb07jq0YkVHALj6JaIVIvc6eR2eltgIPz10Rq8ZdK
-         Z7nLuNDTDh3rDHdD1LU7ui6nXdjEAjuXpGD+kVYTpeH2eWRQ/YsActh1i2A4JiZx3Pz+
-         r3Ul3EX3hsXAWQPaPfW1m4BwSazXIAmNmaHU7nuual1Qk2/kcPq9Ai8oDuD1l36/KZyN
-         FysoBbO9jx/ghuQy49veiJAMKenVmZYore+Q42ddX316Hf957KsYg8r+vJFPxQAuKdGZ
-         K3Bg==
-X-Gm-Message-State: ABy/qLbb6mMwFfK9mrIhR5Gsmfru1+/OCefz0c+jhwREJFfCjyCTfERf
-        GHBVpluCmPjRLrQHYy6zGO0=
-X-Google-Smtp-Source: APBJJlHK7nE7o0Ajw+MONwVK5MWQ4wAv41//AS/uvZj9o4BsInIdqPWTGQ0NHbYfN5uvF3OssOdDTQ==
-X-Received: by 2002:a0c:de0e:0:b0:634:cdae:9931 with SMTP id t14-20020a0cde0e000000b00634cdae9931mr15395990qvk.0.1691017227366;
-        Wed, 02 Aug 2023 16:00:27 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id n16-20020a0ce550000000b0063d585225e0sm4275868qvm.61.2023.08.02.16.00.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Aug 2023 16:00:26 -0700 (PDT)
-Message-ID: <671b5b2c-1913-3693-296a-844abf5852a2@gmail.com>
-Date:   Wed, 2 Aug 2023 16:00:24 -0700
+        d=1e100.net; s=20221208; t=1691017987; x=1691622787;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=20Np0whiILikZWPV0Tm+DkfZOvMb6xU6aDilwDNR8Lg=;
+        b=f9lRz13kepZ4m8bjWZG3228AcOVqbdxU5/hP5/VZ2CLCArENg6EKFJDB3QP4wGdF7y
+         X/7fdZws0ckRZrM/TNa1AN5TyR1HEPMwWY9FsBseEXtUtHB9efHmksxRAtOleNE2jMXP
+         DA4wjqO+cBqL4lmBVLa65zXg2DNvyBBMeGZA3m6pMzt6v99AsJTYxKneSXVFJef/+cSL
+         7iRTda1xrkEoq2XRcr0PyohqeryE7jiM0BxlcUDdOsLcWdeOINBX8AbMaAOtK+t0IfaP
+         RLUfK3vuqy52eb8D5YFytggE8aZ9l8fQ/CIRAizfQdUdUL8d8T+GMpst8xQmWSpNZ5pr
+         tE0A==
+X-Gm-Message-State: ABy/qLaUAXEsoROLr3X2LRFGiZTr3dygIhy8ICSad66mPNnNe1qqTKg7
+        vFgo2XkxU1Ct1PdqCqC11+v9O0EtMo8y3F4I48zBkcub30LqIcHJP+9FDRygINhD+qdVp4hX+sW
+        eMvY5etui0Mf6dNx6
+X-Received: by 2002:a17:903:234d:b0:1b6:6c32:59a8 with SMTP id c13-20020a170903234d00b001b66c3259a8mr16368693plh.36.1691017987195;
+        Wed, 02 Aug 2023 16:13:07 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGUasP1ILLvLjYv7dds9M1+TNQWo0lRyGqDpoahYttq390Z2rmdy2dwB1sArRMDxIfc57+UQg==
+X-Received: by 2002:a17:903:234d:b0:1b6:6c32:59a8 with SMTP id c13-20020a170903234d00b001b66c3259a8mr16368677plh.36.1691017986871;
+        Wed, 02 Aug 2023 16:13:06 -0700 (PDT)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id v5-20020a170902b7c500b001b891259eddsm12882039plz.197.2023.08.02.16.13.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Aug 2023 16:13:06 -0700 (PDT)
+Date:   Wed, 2 Aug 2023 16:13:04 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Daniil Stas <daniil.stas@posteo.net>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        James.Bottomley@hansenpartnership.com, Jason@zx2c4.com,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@leemhuis.info, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] tpm: disable hwrng for fTPM on some AMD designs
+Message-ID: <ejqnhdrhktfrhcb76bxx6y73hydjov34t7m4wrvzjc22gdtzts@p4g7yqxdnijn>
+References: <65a1c307-826d-4ca3-0336-07a185684e5d@amd.com>
+ <20230727195019.41abb48d@g14>
+ <67eefe98-e6df-e152-3169-44329e22478d@amd.com>
+ <20230727200527.4080c595@g14>
+ <CAHk-=whqT0PxBazwfjWwoHQQFzZt50tV6Jfgq3iYceKMJtyuUg@mail.gmail.com>
+ <CUGAV1Y993FB.1O2Q691015Z2C@seitikki>
+ <CAHk-=whphk8Jp=NYmnm7Qv+vZ6ScYCz+rV8a2G1nD-AQY3z+mQ@mail.gmail.com>
+ <CUHF67ZOFOTN.1UFE7Q1IFRQMX@suppilovahvero>
+ <CAHk-=wgK0Z-LrJGExwG=e=oxjD93LJhY3jMmi_2O2_Pkjf8Tsg@mail.gmail.com>
+ <CUHG1TB7IELF.PVXOXEXBGEPP@suppilovahvero>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 6.1 000/225] 6.1.43-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230802065510.869511253@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230802065510.869511253@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CUHG1TB7IELF.PVXOXEXBGEPP@suppilovahvero>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/2/23 00:41, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.43 release.
-> There are 225 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Aug 01, 2023 at 10:09:58PM +0300, Jarkko Sakkinen wrote:
+> On Tue Aug 1, 2023 at 9:42 PM EEST, Linus Torvalds wrote:
+> > On Tue, 1 Aug 2023 at 11:28, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > >
+> > > I would disable it inside tpm_crb driver, which is the driver used
+> > > for fTPM's: they are identified by MSFT0101 ACPI identifier.
+> > >
+> > > I think the right scope is still AMD because we don't have such
+> > > regressions with Intel fTPM.
+> >
+> > I'm ok with that.
+> >
+> > > I.e. I would move the helper I created inside tpm_crb driver, and
+> > > a new flag, let's say "TPM_CHIP_FLAG_HWRNG_DISABLED", which tpm_crb
+> > > sets before calling tpm_chip_register().
+> > >
+> > > Finally, tpm_add_hwrng() needs the following invariant:
+> > >
+> > >         if (chip->flags & TPM_CHIP_FLAG_HWRNG_DISABLED)
+> > >                 return 0;
+> > >
+> > > How does this sound? I can refine this quickly from my first trial.
+> >
+> > Sounds fine.
 > 
-> Responses should be made by Fri, 04 Aug 2023 06:54:28 +0000.
-> Anything received after that time might be too late.
+> Mario, it would be good if you could send a fix candidate but take my
+> suggestion for a new TPM chip flag into account, while doing it. Please
+> send it as a separate patch, not attachment to this thread.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.43-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> I can test and ack it, if it looks reasonable.
 > 
-> thanks,
+> > My only worry comes from my ignorance: do these fTPM devices *always*
+> > end up being enumerated through CRB, or do they potentially look
+> > "normal enough" that you can actually end up using them even without
+> > having that CRB driver loaded?
 > 
-> greg k-h
+> I know that QEMU has TPM passthrough but I don't know how it behaves
+> exactly.
+> 
 
+I just created a passthrough tpm device with a guest which it is using
+the tis driver, while the host is using crb (and apparently one of the
+amd devices that has an impacted fTPM). It looks like there is a
+complete separation between the frontend and backends, with the front
+end providing either a tis or crb interface to the guest, and then the
+backend sending commands by writing to the passthrough device that was
+given, such as /dev/tpm0, or an emulator such as swtpm. Stefan can
+probably explain it much better than I.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Regards,
+Jerry
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+> > Put another way: is the CRB driver the _only_ way they are visible, or
+> > could some people hit on this through the TPM TIS interface if they
+> > have CRB disabled?
+> 
+> I'm not aware of such implementations.
+> 
+> > I see, for example, that qemu ends up emulating the TIS layer, and it
+> > might end up forwarding the TPM requests to something that is natively
+> > CRB?
+> >
+> > But again: I don't know enough about CRB vs TIS, so the above may be a
+> > stupid question.
+> >
+> >            Linus
+> 
+> I would focus exactly what is known not to work and disable exactly
+> that.
+> 
+> If someone still wants to enable TPM on such hardware, we can later
+> on add a kernel command-line flag to enforce hwrng. This ofc based
+> on user feedback, not something I would add right now.
+> 
+> BR, Jarkko
 
