@@ -2,123 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D616176C26A
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 03:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959C876C281
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 03:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbjHBBmc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 21:42:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48022 "EHLO
+        id S231572AbjHBByh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 21:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230020AbjHBBm2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 21:42:28 -0400
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8172D4E;
-        Tue,  1 Aug 2023 18:42:05 -0700 (PDT)
-Received: from dlp.unisoc.com ([10.29.3.86])
-        by SHSQR01.spreadtrum.com with ESMTP id 3721dBOw089645;
-        Wed, 2 Aug 2023 09:39:11 +0800 (+08)
-        (envelope-from surong.pang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (shmbx02.spreadtrum.com [10.0.1.204])
-        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RFvjh6T77z2NmGQq;
-        Wed,  2 Aug 2023 09:37:28 +0800 (CST)
-Received: from shmbx05.spreadtrum.com (10.29.1.56) by SHMBX02.spreadtrum.com
- (10.0.1.204) with Microsoft SMTP Server (TLS) id 15.0.1497.23; Wed, 2 Aug
- 2023 09:39:09 +0800
-Received: from shmbx05.spreadtrum.com ([fe80::3169:eec0:7a15:2543]) by
- shmbx05.spreadtrum.com ([fe80::3169:eec0:7a15:2543%16]) with mapi id
- 15.00.1497.023; Wed, 2 Aug 2023 09:39:09 +0800
-From:   =?utf-8?B?5bqe6IuP6I2jIChTdXJvbmcgUGFuZyk=?= 
-        <surong.pang@unisoc.com>
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Elson Roy Serrao <quic_eserrao@quicinc.com>
-CC:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "felipe.balbi@linux.intel.com" <felipe.balbi@linux.intel.com>,
-        "rogerq@kernel.org" <rogerq@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "quic_wcheng@quicinc.com" <quic_wcheng@quicinc.com>,
-        "quic_jackp@quicinc.com" <quic_jackp@quicinc.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        =?utf-8?B?5bqe6IuP6I2jIChTdXJvbmcgUGFuZyk=?= 
-        <surong.pang@unisoc.com>
-Subject: Re: [PATCH] usb: dwc3: Properly handle processing of pending events
-Thread-Topic: [PATCH] usb: dwc3: Properly handle processing of pending events
-Thread-Index: AdnE4JtB3fks6OUtQTaFZJ3KC9QX1w==
-Date:   Wed, 2 Aug 2023 01:39:09 +0000
-Message-ID: <2bf3663abc72448da44427dcaedb49fe@shmbx05.spreadtrum.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.29.69.35]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S231477AbjHBByh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 21:54:37 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D30F72116
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 18:54:35 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-4477b141804so1541620137.3
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 18:54:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690941275; x=1691546075;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Il+U9n5lkmGrYzbgPyJy+8Iv+Ld+DI3VHeIjDoz9VUM=;
+        b=vSL0H8DTXB0Kmux8lwHUA0+W91duPqgibPyWwXQ6YMB+vb1l4P2S5ewfEHHHnR4WIN
+         4DdmLWqkZyUM2yUIa/LA/VGeYSRLQTUtw1HTiMhy+PE9fkfpGO8Nm7rdXYatSGDhEkQs
+         imK3HsRUgwVo2eeH+4FjzpfgZzjFzX6kjXTYqGVXAG+DPHsvM5t1n4ujqIUXcznjO4+z
+         /ssmOzh6Bp2DD//7d2bf/zApW8dDuKVx+4cYL7TXCRDXXFe2gMeo+n37VFRXZ0uXspqg
+         w867U2wDo3tVKXXNxVyumM7zKmroWlSSMHsghwAIiYCqwlP1DCLmqmIgjg8/MARKAcF8
+         jhPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690941275; x=1691546075;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Il+U9n5lkmGrYzbgPyJy+8Iv+Ld+DI3VHeIjDoz9VUM=;
+        b=A/in62OTP8Cf8wMKOEQBfPx3Lm4vbxMUOR40Xc+FM85C08l7Iiwoff6OdZ3t+RM3+0
+         uK/2X0TYrCzpOm2Bzk0Y064lQccSc2YY6BDN0qJBbVjSkSGWQwUYVDGp6/ihYFoCoY3Z
+         gPzHiyKt+udT0amArNgM1R5KP/clhtOT9khFNyKZbeKbCX8w7YjoUYKGNUHPEyDcSj5E
+         cgfB7+unqlewJk9fF5uyEja8jKucfx+uzwKQtx8Ue3kP9FFJfmf234QgOnvGKVLaEgd4
+         X8zODPwcvFGS11rGhVCm6sUg37tPeCWl5QHy2XtbU0oLVzHCWAOkIc0NxR8MSswuKZ/N
+         eBvQ==
+X-Gm-Message-State: ABy/qLbq7YNfJC4ZHxb0071UnnharvzSLre5GeCOd0uTzpOdmxKBB8rT
+        kJ02gbhIWM2whfwLw4egMHJ3f0L7pzv7/snH8+iAUexQ6piqEz9Rc/4=
+X-Google-Smtp-Source: APBJJlHVwke1xKedtBlG6j6nnQKNFJJs08fE/jID+0Q0nxx/66rdtlH74xRK3FUg7aXspTtHo+zeGBv+Kznh+Q3Z30Q=
+X-Received: by 2002:a67:eb92:0:b0:443:6052:43a7 with SMTP id
+ e18-20020a67eb92000000b00443605243a7mr3785649vso.32.1690941274911; Tue, 01
+ Aug 2023 18:54:34 -0700 (PDT)
 MIME-Version: 1.0
-X-MAIL: SHSQR01.spreadtrum.com 3721dBOw089645
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20230801091922.799813980@linuxfoundation.org>
+In-Reply-To: <20230801091922.799813980@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 2 Aug 2023 07:24:23 +0530
+Message-ID: <CA+G9fYsqEE6P8vKKvWgFDjpgT64FebUssPNS48n6qfUriu6Z1w@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/228] 6.1.43-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-RGVhcnPvvIwNCklmIHRoZXJlIGlzL2FyZSBldmVudChzKSBpbiBldnQtPmJ1ZiwgIGluIGR3YzNf
-Y2hlY2tfZXZlbnRfYnVmLCAgZHdjM190aHJlYWRfaW50ZXJydXB0IHdpbGwgYmUgd29rZSB1cC4N
-Cg0KPiA+IEBAIC00NzE4LDYgKzQ3MjMsOCBAQCB2b2lkIGR3YzNfZ2FkZ2V0X3Byb2Nlc3NfcGVu
-ZGluZ19ldmVudHMoc3RydWN0DQo+ID4gZHdjMyAqZHdjKSAgew0KPiA+ICAgICAgIGlmIChkd2Mt
-PnBlbmRpbmdfZXZlbnRzKSB7DQo+ID4gICAgICAgICAgICAgICBkd2MzX2ludGVycnVwdChkd2Mt
-PmlycV9nYWRnZXQsIGR3Yy0+ZXZfYnVmKTsNCj4gPiArICAgICAgICAgICAgIGR3YzNfdGhyZWFk
-X2ludGVycnVwdChkd2MtPmlycV9nYWRnZXQsIGR3Yy0+ZXZfYnVmKTsNCj4gPiArICAgICAgICAg
-ICAgIHBtX3J1bnRpbWVfcHV0KGR3Yy0+ZGV2KTsNCj4gPiAgICAgICAgICAgICAgIGR3Yy0+cGVu
-ZGluZ19ldmVudHMgPSBmYWxzZTsNCj4gPiAgICAgICAgICAgICAgIGVuYWJsZV9pcnEoZHdjLT5p
-cnFfZ2FkZ2V0KTsNCj4gPiAgICAgICB9DQoNCkkganVzdCB3YW50IHRvIGtub3cgZHdjM190aHJl
-YWRfaW50ZXJydXB0IGhlcmUgaXMgbmVjZXNzYXJ5IG9yIG5vdD8NCg0KDQo+IE9uIFR1ZSwgQXVn
-IDAyLCAyMDIzIDg6MTIgVGhpbmggTmd1eWVuIHdyb3RlOg0KPj4gT24gVHVlLCBBdWcgMDEsIDIw
-MjMsIEVsc29uIFJveSBTZXJyYW8gd3JvdGU6DQo+ID4gSWYgZHdjMyBpcyBydW50aW1lIHN1c3Bl
-bmRlZCB3ZSBkZWZlciBwcm9jZXNzaW5nIHRoZSBldmVudCBidWZmZXINCj4gPiB1bnRpbCByZXN1
-bWUsIGJ5IHNldHRpbmcgdGhlIHBlbmRpbmdfZXZlbnRzIGZsYWcuIFNldCB0aGlzIGZsYWcgYmVm
-b3JlDQo+ID4gdHJpZ2dlcmluZyByZXN1bWUgdG8gYXZvaWQgcmFjZSB3aXRoIHRoZSBydW50aW1l
-IHJlc3VtZSBjYWxsYmFjay4NCj4gPg0KPiA+IFdoaWxlIGhhbmRsaW5nIHRoZSBwZW5kaW5nIGV2
-ZW50cywgaW4gYWRkaXRpb24gdG8gY2hlY2tpbmcgdGhlIGV2ZW50DQo+ID4gYnVmZmVyIHdlIGFs
-c28gbmVlZCB0byBwcm9jZXNzIGl0LiBIYW5kbGUgdGhpcyBieSBleHBsaWNpdGx5IGNhbGxpbmcN
-Cj4gPiBkd2MzX3RocmVhZF9pbnRlcnJ1cHQoKS4gQWxzbyBiYWxhbmNlIHRoZSBydW50aW1lIHBt
-IGdldCgpIG9wZXJhdGlvbg0KPiA+IHRoYXQgdHJpZ2dlcmVkIHRoaXMgcHJvY2Vzc2luZy4NCj4g
-Pg0KPiA+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4gRml4ZXM6IGZjOGJiOTFiYzgz
-ZSAoInVzYjogZHdjMzogaW1wbGVtZW50IHJ1bnRpbWUgUE0iKQ0KPiA+IFNpZ25lZC1vZmYtYnk6
-IEVsc29uIFJveSBTZXJyYW8gPHF1aWNfZXNlcnJhb0BxdWljaW5jLmNvbT4NCj4gPiAtLS0NCj4g
-PiBDaGFuZ2Ugc2VwYXJhdGVkIGZyb20gYmVsb3cgc2VyaWVzIGFzIGFuIGluZGVwZW5kZW50IGZp
-eCBiYXNlZCBvbiB0aGUNCj4gPiBlYXJsaWVyIGRpc2N1c3Npb24NCj4gPiBodHRwczovL3VybGRl
-ZmVuc2UuY29tL3YzL19faHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsL2JlNTc1MTFkLTIwMDUt
-DQo+ID4gYTFmNS1kNWE1LTgwOWU3MTAyOWFlY0BxdWljaW5jLmNvbS9fXzshIUE0RjJSOUdfcGch
-WXRaOTNBTEVwRE5UQ0VoZjBXRQ0KPiA+IHlCNVMwOTBwUGxLSUtWdGpxVE9BRUpkeGRXYmw4UUc2
-ZWlSbWx2Zml2VXRENXFqS1dXTFgyQzRmYjRXOFZBZzV3OXFhc0wNCj4gPiB1S0IkDQo+ID4NCj4g
-PiAgZHJpdmVycy91c2IvZHdjMy9nYWRnZXQuYyB8IDkgKysrKysrKystDQo+ID4gIDEgZmlsZSBj
-aGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPg0KPiA+IGRpZmYgLS1n
-aXQgYS9kcml2ZXJzL3VzYi9kd2MzL2dhZGdldC5jIGIvZHJpdmVycy91c2IvZHdjMy9nYWRnZXQu
-Yw0KPiA+IGluZGV4IDVmZDA2NzE1MWZiZi4uODU4ZmU0YzI5OWI3IDEwMDY0NA0KPiA+IC0tLSBh
-L2RyaXZlcnMvdXNiL2R3YzMvZ2FkZ2V0LmMNCj4gPiArKysgYi9kcml2ZXJzL3VzYi9kd2MzL2dh
-ZGdldC5jDQo+ID4gQEAgLTQ0NTUsOSArNDQ1NSwxNCBAQCBzdGF0aWMgaXJxcmV0dXJuX3QgZHdj
-M19jaGVja19ldmVudF9idWYoc3RydWN0IGR3YzNfZXZlbnRfYnVmZmVyICpldnQpDQo+ID4gICAg
-ICAgdTMyIGNvdW50Ow0KPiA+DQo+ID4gICAgICAgaWYgKHBtX3J1bnRpbWVfc3VzcGVuZGVkKGR3
-Yy0+ZGV2KSkgew0KPiA+ICsgICAgICAgICAgICAgZHdjLT5wZW5kaW5nX2V2ZW50cyA9IHRydWU7
-DQo+ID4gKyAgICAgICAgICAgICAvKg0KPiA+ICsgICAgICAgICAgICAgICogVHJpZ2dlciBydW50
-aW1lIHJlc3VtZS4gVGhlIGdldCgpIGZ1bmN0aW9uIHdpbGwgYmUgYmFsYW5jZWQNCj4gPiArICAg
-ICAgICAgICAgICAqIGFmdGVyIHByb2Nlc3NpbmcgdGhlIHBlbmRpbmcgZXZlbnRzIGluIGR3YzNf
-cHJvY2Vzc19wZW5kaW5nDQo+ID4gKyAgICAgICAgICAgICAgKiBldmVudHMoKS4NCj4gPiArICAg
-ICAgICAgICAgICAqLw0KPiA+ICAgICAgICAgICAgICAgcG1fcnVudGltZV9nZXQoZHdjLT5kZXYp
-Ow0KPiA+ICAgICAgICAgICAgICAgZGlzYWJsZV9pcnFfbm9zeW5jKGR3Yy0+aXJxX2dhZGdldCk7
-DQo+ID4gLSAgICAgICAgICAgICBkd2MtPnBlbmRpbmdfZXZlbnRzID0gdHJ1ZTsNCj4gPiAgICAg
-ICAgICAgICAgIHJldHVybiBJUlFfSEFORExFRDsNCj4gPiAgICAgICB9DQo+ID4NCj4gPiBAQCAt
-NDcxOCw2ICs0NzIzLDggQEAgdm9pZCBkd2MzX2dhZGdldF9wcm9jZXNzX3BlbmRpbmdfZXZlbnRz
-KHN0cnVjdA0KPiA+IGR3YzMgKmR3YykgIHsNCj4gPiAgICAgICBpZiAoZHdjLT5wZW5kaW5nX2V2
-ZW50cykgew0KPiA+ICAgICAgICAgICAgICAgZHdjM19pbnRlcnJ1cHQoZHdjLT5pcnFfZ2FkZ2V0
-LCBkd2MtPmV2X2J1Zik7DQo+ID4gKyAgICAgICAgICAgICBkd2MzX3RocmVhZF9pbnRlcnJ1cHQo
-ZHdjLT5pcnFfZ2FkZ2V0LCBkd2MtPmV2X2J1Zik7DQo+ID4gKyAgICAgICAgICAgICBwbV9ydW50
-aW1lX3B1dChkd2MtPmRldik7DQo+ID4gICAgICAgICAgICAgICBkd2MtPnBlbmRpbmdfZXZlbnRz
-ID0gZmFsc2U7DQo+ID4gICAgICAgICAgICAgICBlbmFibGVfaXJxKGR3Yy0+aXJxX2dhZGdldCk7
-DQo+ID4gICAgICAgfQ0KPiA+IC0tDQo+ID4gMi4xNy4xDQo+ID4NCj4gDQo+IFRoaXMgZml4IGlz
-IG1vcmUgY29tcGxldGUuDQo+IA0KPiBBY2tlZC1ieTogVGhpbmggTmd1eWVuIDxUaGluaC5OZ3V5
-ZW5Ac3lub3BzeXMuY29tPg0KPiANCj4gVGhhbmtzLA0KPiBUaGluaA0K
+On Tue, 1 Aug 2023 at 15:00, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.43 release.
+> There are 228 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.43-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+
+Following patch caused build regression on stable-rc 6.1 and 5.15,
+
+Regressions found on arm:
+
+  - build/gcc-12-orion5x_defconfig
+  - build/clang-nightly-orion5x_defconfig
+  - build/gcc-8-orion5x_defconfig
+  - build/clang-16-orion5x_defconfig
+
+gpio: mvebu: Make use of devm_pwmchip_add
+[ Upstream commit 1945063eb59e64d2919cb14d54d081476d9e53bb ]
+
+Build log:
+------
+drivers/gpio/gpio-mvebu.c: In function 'mvebu_pwm_probe':
+drivers/gpio/gpio-mvebu.c:877:16: error: implicit declaration of
+function 'devm_pwmchip_add'; did you mean 'pwmchip_add'?
+[-Werror=implicit-function-declaration]
+  877 |         return devm_pwmchip_add(dev, &mvpwm->chip);
+      |                ^~~~~~~~~~~~~~~~
+      |                pwmchip_add
+cc1: some warnings being treated as errors
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+--
+Linaro LKFT
+https://lkft.linaro.org
