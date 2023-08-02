@@ -2,120 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CE976D78F
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 21:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20BEE76D7B2
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 21:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbjHBTO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 15:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
+        id S231806AbjHBT2P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 15:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230272AbjHBTO4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 15:14:56 -0400
-Received: from qproxy3-pub.mail.unifiedlayer.com (qproxy3-pub.mail.unifiedlayer.com [67.222.38.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C26526B5
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 12:14:50 -0700 (PDT)
-Received: from outbound-ss-761.bluehost.com (outbound-ss-761.bluehost.com [74.220.211.250])
-        by qproxy3.mail.unifiedlayer.com (Postfix) with ESMTP id 74CAB8028C1C
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 19:14:49 +0000 (UTC)
-Received: from cmgw15.mail.unifiedlayer.com (unknown [10.0.90.130])
-        by progateway8.mail.pro1.eigbox.com (Postfix) with ESMTP id 19CEC1004959E
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 19:14:49 +0000 (UTC)
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTP
-        id RHJ3qrG1VlzgsRHJ3qzSJc; Wed, 02 Aug 2023 19:14:49 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=eIXWMFl1 c=1 sm=1 tr=0 ts=64caab29
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10:nop_charset_1 a=UttIx32zK-AA:10:nop_rcvd_month_year
- a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ykKLMO6uxbxasuSOcTMpQf6zbPiZ5cMm8K3Hr37SHFA=; b=VJwspuoBYPNOMcr9qL6vFTs230
-        DNiO4xZtbnXlooeBUrMD7hktShPXtWY/J5kB5fkDA89EsHDhJnQbKInXsrOlO6bski4iDzDq99JTV
-        DAsLtXn3I14+TPc2RS6o4ceu6xs7sso6qLwkJZzCPmQg52PkPRcbSmzI7SnQ6zdondjCCzxc67q7Y
-        05BDeWgP1eAO21ec6K/moIL8CUfhU/NFKxAA4ziczWq2Bc28hKIp6YvxOm/rUlzEFyPJvQmUGuasu
-        hk2ig2IGFXOKeItj55bwPMxhvnH5WaGBpkbz9NqQ9s5rdsQ44dqaDFB+usGh+EJbaVkxBX5pVyJFX
-        ua37iR5w==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:50494 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <re@w6rz.net>)
-        id 1qRHJ1-001Veq-37;
-        Wed, 02 Aug 2023 13:14:47 -0600
-Subject: Re: [PATCH 5.15 000/153] 5.15.124-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230802065452.161574662@linuxfoundation.org>
-In-Reply-To: <20230802065452.161574662@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <5638a340-b219-29fd-8808-bae271ecc217@w6rz.net>
-Date:   Wed, 2 Aug 2023 12:14:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S229495AbjHBT2O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 15:28:14 -0400
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2759199F
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 12:28:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1691004493; x=1722540493;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fa84hNPgKijtfa9WwHljmiMvasfeqi6OZYpTHwoaVUQ=;
+  b=hVjorigx4DZ5VB6NJKoZdr/YTdZUojeRD2lMK7qUvGGRjTr9ntBVsn2A
+   XPPrGJfRAbJ6IbweEPx3dM/Voiho2D1uVOfEkk5r/YvAi1gh+XeKEohZ5
+   0zKLi55xsnnEaMOPR2UwM9c9DQcf/svOvL5OXKu2epl6PwFu3YGRqfK8G
+   A=;
+X-IronPort-AV: E=Sophos;i="6.01,249,1684800000"; 
+   d="scan'208";a="20174800"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-366646a6.us-east-1.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 19:28:11 +0000
+Received: from EX19MTAUEB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1a-m6i4x-366646a6.us-east-1.amazon.com (Postfix) with ESMTPS id 60D8BA28CF;
+        Wed,  2 Aug 2023 19:28:09 +0000 (UTC)
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Wed, 2 Aug 2023 19:28:07 +0000
+Received: from [192.168.0.224] (10.106.179.26) by
+ EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Wed, 2 Aug 2023 19:28:05 +0000
+Message-ID: <e635cac7-9dc4-f54d-bc12-3bf3401ce97f@amazon.com>
+Date:   Wed, 2 Aug 2023 15:28:02 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5.10 0/6] Backporting for test_verifier failed
 Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qRHJ1-001Veq-37
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:50494
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 36
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+To:     Pu Lehui <pulehui@huaweicloud.com>, <stable@vger.kernel.org>,
+        Greg KH <greg@kroah.com>, Eduard Zingerman <eddyz87@gmail.com>
+CC:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Pu Lehui <pulehui@huawei.com>
+References: <20230801143700.1012887-1-pulehui@huaweicloud.com>
+From:   Luiz Capitulino <luizcap@amazon.com>
+In-Reply-To: <20230801143700.1012887-1-pulehui@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.106.179.26]
+X-ClientProxiedBy: EX19D037UWB003.ant.amazon.com (10.13.138.115) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/2/23 12:41 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.124 release.
-> There are 153 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 04 Aug 2023 06:54:22 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.124-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Tested-by: Ron Economos <re@w6rz.net>
+On 2023-08-01 10:36, Pu Lehui wrote:
 
+> 
+> 
+> 
+> Luiz Capitulino reported the test_verifier test failed:
+> "precise: ST insn causing spi > allocated_stack".
+> And it was introduced by the following upstream commit:
+> ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
+> 
+> Eduard's investigation [4] shows that test failure is not a bug, but a
+> difference in BPF verifier behavior between upstream, where commits
+> [1,2,3] by Andrii are present, and 5.10, where these commits are absent.
+> 
+> Backporting strategy is consistent with Eduard in kernel version 6.1 [5],
+> but with some conflicts in patch #1, #4 and #6 due to the bpf of 5.10
+> doesn't support more features. Both test_verifier and test_maps have
+> passed, while test_progs and test_progs-no_alu32 with no new failure
+> ceses.
+
+I tested this one today on top of 5.10.188.
+
+Before this series:
+
+   # #760/p precise: ST insn causing spi > allocated_stack FAIL
+   # Summary: 1192 PASSED, 546 SKIPPED, 1 FAILED
+
+With this series applied:
+
+  # Summary: 1193 PASSED, 546 SKIPPED, 0 FAILED
+
+Thank you very much Pu and Eduard for your work on this. Unfortunately,
+I haven't been able to test the 6.1 series yet (it may take a bit before
+I can do it).
+
+Tested-by: Luiz Capitulino <luizcap@amazon.com>
+
+> 
+> Commits of Andrii:
+> [1] be2ef8161572 ("bpf: allow precision tracking for programs with subprogs")
+> [2] f63181b6ae79 ("bpf: stop setting precise in current state")
+> [3] 7a830b53c17b ("bpf: aggressively forget precise markings during state checkpointing")
+> 
+> Links:
+> [4] https://lore.kernel.org/stable/c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com/
+> [5] https://lore.kernel.org/all/20230724124223.1176479-2-eddyz87@gmail.com/
+> 
+> Andrii Nakryiko (4):
+>    bpf: allow precision tracking for programs with subprogs
+>    bpf: stop setting precise in current state
+>    bpf: aggressively forget precise markings during state checkpointing
+>    selftests/bpf: make test_align selftest more robust
+> 
+> Ilya Leoshkevich (1):
+>    selftests/bpf: Fix sk_assign on s390x
+> 
+> Yonghong Song (1):
+>    selftests/bpf: Workaround verification failure for
+>      fexit_bpf2bpf/func_replace_return_code
+> 
+>   kernel/bpf/verifier.c                         | 175 ++++++++++++++++--
+>   .../testing/selftests/bpf/prog_tests/align.c  |  36 ++--
+>   .../selftests/bpf/prog_tests/sk_assign.c      |  25 ++-
+>   .../selftests/bpf/progs/connect4_prog.c       |   2 +-
+>   .../selftests/bpf/progs/test_sk_assign.c      |  11 ++
+>   .../bpf/progs/test_sk_assign_libbpf.c         |   3 +
+>   6 files changed, 219 insertions(+), 33 deletions(-)
+>   create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+> 
+> --
+> 2.25.1
+> 
