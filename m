@@ -2,286 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BC4176C31B
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 04:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 303AE76C31D
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 04:53:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231434AbjHBCwW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 22:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43330 "EHLO
+        id S231346AbjHBCxO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 22:53:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjHBCwV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 22:52:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB9202101
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 19:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690944698;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gnB8l46sLYgDywYxEJydmMqQZMbbUuJEWlWKa6HccxY=;
-        b=Ui1hKEkZSP8HwcrDBopu7HtVP/cJiIfvZUjXtrULIFEp8xUNrZb+6N0ra5zBLQ1yBI+dD7
-        C2TYPn1A2vkc/7I9RSIKSpUG4KnEnS2igS53jy+VY0LGarEIeieklmuwC0ZoRrEFGh71OU
-        FGsMNAg1B2lhX2daastBw5c3FKh9SVY=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-381-pZhoFgA5PWWV1003u41g-Q-1; Tue, 01 Aug 2023 22:51:36 -0400
-X-MC-Unique: pZhoFgA5PWWV1003u41g-Q-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2b9d0b3a572so54309511fa.1
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 19:51:36 -0700 (PDT)
+        with ESMTP id S230262AbjHBCxO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 22:53:14 -0400
+Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E1810B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 19:53:12 -0700 (PDT)
+Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-48645045826so2415372e0c.2
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 19:53:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690944791; x=1691549591;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=b6/35ZoKcBhfJYY+Rmmtzdcbq9J4zFITai0RFdfSbKg=;
+        b=GFFHVZxFzhErjyxupkWSnu/vaA8M1Nq7no8oPjk3qW1UIOCo5AKVjDfmJmi7ayFaJT
+         vD+t4WD8+T+AY+agUnbVx89OBhk72U57EV0jFQh59gUK2/8m0ECt2ipZPB6NB9jfn+AT
+         uhA31zLtxJP9fnwh50y3A0ZU+eBGnS8ZTf73tOKuiy1L/zKm8tXzYYlUw3c2kSZZtYvg
+         jxlkGpCX7CEiIxgKaDbdUUFG1+NOX3u0Lp6yCLmU5YrWrVAdmDXu7T/zHJEtdhs2mXB4
+         496KGV/XVZnw7gRe8On02O4wSFzzDh7AS7ti2PNiDd+lFX0Yn46zQeAwJf1ZHkks4KDu
+         pi6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690944694; x=1691549494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gnB8l46sLYgDywYxEJydmMqQZMbbUuJEWlWKa6HccxY=;
-        b=d+3A2TOowgIRl9cuKhwfsM+pa2Jiqtch0tXAzfLNThlfaQNvq4jpJmmVNkgfAUECYQ
-         uaWZ9bh7p78g+j07vmlH5KGPQ0Q1OuQftgVC59OB3hRXf+jMObximSeYhTgDf7VqYATL
-         Z6ztY/M0R5m1n3ZzJ5K6peE08ZHV6Kx8snbNP3W4M5hMjSJ7XTgY3hkRhM5BTvrtLLMX
-         3guM50JQ3iOlvvHYa2jC+JgAS6xkGB2OjUAiFv4Kx4zK9IFoiqX7vkhyCr+UZPLBho6o
-         CYcN6MgoDkSbWGNlAgUy+oiluWgVQ8l6lUF5vWJ2EkaUMZ6CNCjYsaTu9O/r5Y4IFj3X
-         jW/w==
-X-Gm-Message-State: ABy/qLZmMYy2wf9lBK1aMjiPNnZMv6XjHzhhEkuBZdsGrvQ/ZRhmGH4A
-        oOOuLQP/020cT22NhYKQa2k2UAl8xZ1I8Jfxd6Hnr2KJNhuWqrrTTYEad1J2kUlR7qNZPoumNye
-        c81x9nYyYqMKUq2BfR8e/0RZGKuFIj423
-X-Received: by 2002:a2e:93d7:0:b0:2b9:48f1:b193 with SMTP id p23-20020a2e93d7000000b002b948f1b193mr3591041ljh.46.1690944694450;
-        Tue, 01 Aug 2023 19:51:34 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGcsCsrj00r7RkBkqUnPfn4ZD12lA23g1iJmQi+QyRcoOo888/DfI6dipdzX+66ZNI4sSHRvzrgpwua7urDFeo=
-X-Received: by 2002:a2e:93d7:0:b0:2b9:48f1:b193 with SMTP id
- p23-20020a2e93d7000000b002b948f1b193mr3591035ljh.46.1690944694091; Tue, 01
- Aug 2023 19:51:34 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690944791; x=1691549591;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b6/35ZoKcBhfJYY+Rmmtzdcbq9J4zFITai0RFdfSbKg=;
+        b=Ik7Q52Z0kh745KB1N37Db+ziGoa2EZVogfNqt+cYDVYc2ljwR7rCNWRAzIEd7YzoSZ
+         yUED72p/X3hrYe6r702C2rwVS7IcJReKRPOI5zyX0gVNMvkNVtLrxGnhLIsFjKBykCho
+         R44YwQRzIdhsSHKUZlpcuJYUt3nyWqkZ5XGs9GdBu4EDCvqmlQ1+bJy6ttVmifvK3oL2
+         TboEJLb5fQXdiPZZgbZ4ODStvRAEtXEIHTGBPGzA2XOcyG2ptcfDFWU3nkRJnMZ+Cb/q
+         Li+x0wJv1VuDKvuT1wBE5Zugj7hsU8qzRjePzLhuR3tLzhRmYriywb5t4JD95FrDlb5G
+         +5Cw==
+X-Gm-Message-State: ABy/qLZ1Ofjbq58HcvmBQQeM0ET3wt6byL/YIqWpbI0UfWCKlbhD7Mwa
+        CckfR7yZ7qxWo2IAR6oEMFlyYJLkHb+Ay0c0URXePw==
+X-Google-Smtp-Source: APBJJlE1gCA8tKH5sYTEP/FZeFFoep4cuyxkMCDwNwtcVmaE3u/k2C0/DAImLXlO/nZL9KA/7Dms2iGYeM3LrVk5CUs=
+X-Received: by 2002:a1f:c304:0:b0:471:7996:228f with SMTP id
+ t4-20020a1fc304000000b004717996228fmr3664338vkf.7.1690944791082; Tue, 01 Aug
+ 2023 19:53:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230726190744.14143-1-dtatulea@nvidia.com> <20230726152258-mutt-send-email-mst@kernel.org>
- <3ae9e8919a9316d06d7bb507698c820ac6194f45.camel@nvidia.com>
- <20230727122633-mutt-send-email-mst@kernel.org> <b97484f15824c86f5cee4fe673794f17419bcb1b.camel@nvidia.com>
- <20230731050200-mutt-send-email-mst@kernel.org> <CACGkMEtiwNjq4pMVY-Yvgo3+DihMP5zO+q+HH-xAF+Xu_=gbHg@mail.gmail.com>
- <39c3be5dd59e67e7b5dd301100e96aa9428bc332.camel@nvidia.com>
-In-Reply-To: <39c3be5dd59e67e7b5dd301100e96aa9428bc332.camel@nvidia.com>
-From:   Jason Wang <jasowang@redhat.com>
-Date:   Wed, 2 Aug 2023 10:51:22 +0800
-Message-ID: <CACGkMEueOXgjbr9Q0Tw5Bv-=YH9+5UR9jxttrf6hN-VRK9KtMg@mail.gmail.com>
-Subject: Re: [PATCH] vdpa/mlx5: Fix crash on shutdown for when no ndev exists
-To:     Dragos Tatulea <dtatulea@nvidia.com>
-Cc:     "mst@redhat.com" <mst@redhat.com>,
-        "virtualization@lists.linux-foundation.org" 
-        <virtualization@lists.linux-foundation.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-        bhe <bhe@redhat.com>, eperezma <eperezma@redhat.com>,
-        ruyang <ruyang@redhat.com>
+References: <20230801091925.659598007@linuxfoundation.org>
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 2 Aug 2023 08:22:59 +0530
+Message-ID: <CA+G9fYsv5dFJfjNq7O+CW3J9jEV0zDQiOR+8dyacwhpDih0xJw@mail.gmail.com>
+Subject: Re: [PATCH 6.4 000/239] 6.4.8-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Aaron Lewis <aaronlewis@google.com>,
+        kvm list <kvm@vger.kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 1, 2023 at 4:17=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com>=
- wrote:
+On Tue, 1 Aug 2023 at 15:11, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Tue, 2023-08-01 at 11:59 +0800, Jason Wang wrote:
-> > On Mon, Jul 31, 2023 at 5:08=E2=80=AFPM Michael S. Tsirkin <mst@redhat.=
-com> wrote:
-> > >
-> > > On Mon, Jul 31, 2023 at 07:15:31AM +0000, Dragos Tatulea wrote:
-> > > > On Thu, 2023-07-27 at 12:28 -0400, Michael S. Tsirkin wrote:
-> > > > > On Thu, Jul 27, 2023 at 04:02:16PM +0000, Dragos Tatulea wrote:
-> > > > > > On Wed, 2023-07-26 at 15:26 -0400, Michael S. Tsirkin wrote:
-> > > > > > > On Wed, Jul 26, 2023 at 10:07:38PM +0300, Dragos Tatulea wrot=
-e:
-> > > > > > > > The ndev was accessed on shutdown without a check if it act=
-ually
-> > > > > > > > exists.
-> > > > > > > > This triggered the crash pasted below. This patch simply ad=
-ds a
-> > > > > > > > check
-> > > > > > > > before using ndev.
-> > > > > > > >
-> > > > > > > >  BUG: kernel NULL pointer dereference, address: 00000000000=
-00300
-> > > > > > > >  #PF: supervisor read access in kernel mode
-> > > > > > > >  #PF: error_code(0x0000) - not-present page
-> > > > > > > >  PGD 0 P4D 0
-> > > > > > > >  Oops: 0000 [#1] SMP
-> > > > > > > >  CPU: 0 PID: 1 Comm: systemd-shutdow Not tainted 6.5.0-
-> > > > > > > > rc2_for_upstream_min_debug_2023_07_17_15_05 #1
-> > > > > > > >  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS r=
-el-
-> > > > > > > > 1.13.0-0-
-> > > > > > > > gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-> > > > > > > >  RIP: 0010:mlx5v_shutdown+0xe/0x50 [mlx5_vdpa]
-> > > > > > > >  RSP: 0018:ffff8881003bfdc0 EFLAGS: 00010286
-> > > > > > > >  RAX: ffff888103befba0 RBX: ffff888109d28008 RCX: 000000000=
-0000017
-> > > > > > > >  RDX: 0000000000000001 RSI: 0000000000000212 RDI: ffff88810=
-9d28000
-> > > > > > > >  RBP: 0000000000000000 R08: 0000000d3a3a3882 R09: 000000000=
-0000001
-> > > > > > > >  R10: 0000000000000000 R11: 0000000000000000 R12: ffff88810=
-9d28000
-> > > > > > > >  R13: ffff888109d28080 R14: 00000000fee1dead R15: 000000000=
-0000000
-> > > > > > > >  FS:  00007f4969e0be40(0000) GS:ffff88852c800000(0000)
-> > > > > > > > knlGS:0000000000000000
-> > > > > > > >  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > > > > >  CR2: 0000000000000300 CR3: 00000001051cd006 CR4: 000000000=
-0370eb0
-> > > > > > > >  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 000000000=
-0000000
-> > > > > > > >  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 000000000=
-0000400
-> > > > > > > >  Call Trace:
-> > > > > > > >   <TASK>
-> > > > > > > >   ? __die+0x20/0x60
-> > > > > > > >   ? page_fault_oops+0x14c/0x3c0
-> > > > > > > >   ? exc_page_fault+0x75/0x140
-> > > > > > > >   ? asm_exc_page_fault+0x22/0x30
-> > > > > > > >   ? mlx5v_shutdown+0xe/0x50 [mlx5_vdpa]
-> > > > > > > >   device_shutdown+0x13e/0x1e0
-> > > > > > > >   kernel_restart+0x36/0x90
-> > > > > > > >   __do_sys_reboot+0x141/0x210
-> > > > > > > >   ? vfs_writev+0xcd/0x140
-> > > > > > > >   ? handle_mm_fault+0x161/0x260
-> > > > > > > >   ? do_writev+0x6b/0x110
-> > > > > > > >   do_syscall_64+0x3d/0x90
-> > > > > > > >   entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> > > > > > > >  RIP: 0033:0x7f496990fb56
-> > > > > > > >  RSP: 002b:00007fffc7bdde88 EFLAGS: 00000206 ORIG_RAX:
-> > > > > > > > 00000000000000a9
-> > > > > > > >  RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f496=
-990fb56
-> > > > > > > >  RDX: 0000000001234567 RSI: 0000000028121969 RDI: fffffffff=
-ee1dead
-> > > > > > > >  RBP: 00007fffc7bde1d0 R08: 0000000000000000 R09: 000000000=
-0000000
-> > > > > > > >  R10: 0000000000000000 R11: 0000000000000206 R12: 000000000=
-0000000
-> > > > > > > >  R13: 00007fffc7bddf10 R14: 0000000000000000 R15: 00007fffc=
-7bde2b8
-> > > > > > > >   </TASK>
-> > > > > > > >  CR2: 0000000000000300
-> > > > > > > >  ---[ end trace 0000000000000000 ]---
-> > > > > > > >
-> > > > > > > > Fixes: bc9a2b3e686e ("vdpa/mlx5: Support interrupt bypassin=
-g")
-> > > > > > > > Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> > > > > > > > ---
-> > > > > > > >  drivers/vdpa/mlx5/net/mlx5_vnet.c | 3 ++-
-> > > > > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > > > > >
-> > > > > > > > diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > > > b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > > > index 9138ef2fb2c8..e2e7ebd71798 100644
-> > > > > > > > --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > > > +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> > > > > > > > @@ -3556,7 +3556,8 @@ static void mlx5v_shutdown(struct
-> > > > > > > > auxiliary_device
-> > > > > > > > *auxdev)
-> > > > > > > >         mgtdev =3D auxiliary_get_drvdata(auxdev);
-> > > > > > > >         ndev =3D mgtdev->ndev;
-> > > > > > > >
-> > > > > > > > -       free_irqs(ndev);
-> > > > > > > > +       if (ndev)
-> > > > > > > > +               free_irqs(ndev);
-> > > > > > > >  }
-> > > > > > > >
-> > > > > > >
-> > > > > > > something I don't get:
-> > > > > > > irqs are allocated in mlx5_vdpa_dev_add
-> > > > > > > why are they not freed in mlx5_vdpa_dev_del?
-> > > > > > >
-> > > > > > That is a good point. I will try to find out. I also don't get =
-why
-> > > > > > free_irq
-> > > > > > is
-> > > > > > called in the vdpa dev .free op instead of mlx5_vdpa_dev_del. M=
-aybe I
-> > > > > > can
-> > > > > > change
-> > > > > > that in a different refactoring.
-> > > > >
-> > > > > as it is I have no idea whether e.g. ndev can change
-> > > > > between these two call sites. that would make the check
-> > > > > pointless.
-> > > > >
-> > > > > > > this is what's creating all this mess.
-> > > > > > >
-> > > > > > >
-> > > > > > Not quite: mlx5_vdpa_dev_del (which is a .dev_del of for struct
-> > > > > > vdpa_mgmtdev_ops) doesn't get called on shutdown. At least that=
-'s what
-> > > > > > I
-> > > > > > see. Or
-> > > > > > am I missing something?
-> > > > >
-> > > > > and why do we care whether irqs are freed on shutdown?
-> > > > >
-> > > > Had to ask around a bit to find out the answer: there can be issues=
- with
-> > > > kexec
-> > > > IRQ allocation on some platforms. It is documented here [0] for mlx=
-5_core.
-> > > >
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-tree/drivers/net/ethernet/mellanox/mlx5/core/main.c#n2129
-> > > >
-> > > > Thanks,
-> > > > Dragos
-> > >
-> > > It's quite weird.
-> > >          * Some platforms requiring freeing the IRQ's in the shutdown
-> > >          * flow. If they aren't freed they can't be allocated after
-> > >          * kexec. There is no need to cleanup the mlx5_core software
-> > >          * contexts.
-> > >
-> > > but most drivers don't have a shutdown callback how do they work then=
-?
-> > > do you know which platforms these are?
-> >
-> I don't. x86_64 is not one of them though. I will do some more digging ..=
-.
+> This is the start of the stable review cycle for the 6.4.8 release.
+> There are 239 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> > There used to be bzs that requires virtio drivers to add a shutdown to
-> > fix kexec:
-> >
-> > https://bugzilla.redhat.com/show_bug.cgi?id=3D2108406
-> >
-> I don't have access to this. What is it about?
-
-This bug might be more accurate:
-
-https://bugzilla.redhat.com/show_bug.cgi?id=3D1820521
-
-It's about the kexec guys (cced relevant people) wanting to add a
-shutdown method for virito to fix potential kexec issues.
-
-Thanks
-
+> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
+> Anything received after that time might be too late.
 >
-> Thanks,
-> Dragos
-> > Thanks
-> >
-> > >
-> > > I don't really know much about why shutdown callback is even necessar=
-y.
-> > > I guess this is to detect shutdown and do a faster cleanup than
-> > > the slow, graceful removal, just cleaning hardware resources?
-> > >
-> > >
-> > > --
-> > > MST
-> > >
-> >
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.8-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
 >
+> thanks,
+>
+> greg k-h
 
+Following kselftest build regression found,
+
+    selftests/rseq: Play nice with binaries statically linked against
+glibc 2.35+
+    commit 3bcbc20942db5d738221cca31a928efc09827069 upstream.
+
+
+    To allow running rseq and KVM's rseq selftests as statically linked
+    binaries, initialize the various "trampoline" pointers to point directly
+    at the expect glibc symbols, and skip the dlysm() lookups if the rseq
+    size is non-zero, i.e. the binary is statically linked *and* the libc
+    registered its own rseq.
+
+    Define weak versions of the symbols so as not to break linking against
+    libc versions that don't support rseq in any capacity.
+
+    The KVM selftests in particular are often statically linked so that they
+    can be run on targets with very limited runtime environments, i.e. test
+    machines.
+
+    Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for
+compatibility with glibc-2.35")
+    Cc: Aaron Lewis <aaronlewis@google.com>
+    Cc: kvm@vger.kernel.org
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Sean Christopherson <seanjc@google.com>
+    Message-Id: <20230721223352.2333911-1-seanjc@google.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+
+Build log:
+----
+x86_64-linux-gnu-gcc -O2 -Wall -g -I./ -isystem
+/home/tuxbuild/.cache/tuxmake/builds/1/build/usr/include
+-L/home/tuxbuild/.cache/tuxmake/builds/1/build/kselftest/rseq
+-Wl,-rpath=./   -shared -fPIC rseq.c -lpthread -ldl -o
+/home/tuxbuild/.cache/tuxmake/builds/1/build/kselftest/rseq/librseq.so
+rseq.c:41:1: error: unknown type name '__weak'
+   41 | __weak ptrdiff_t __rseq_offset;
+      | ^~~~~~
+rseq.c:41:18: error: expected '=', ',', ';', 'asm' or '__attribute__'
+before '__rseq_offset'
+   41 | __weak ptrdiff_t __rseq_offset;
+      |                  ^~~~~~~~~~~~~
+rseq.c:42:7: error: expected ';' before 'unsigned'
+   42 | __weak unsigned int __rseq_size;
+      |       ^~~~~~~~~
+      |       ;
+rseq.c:43:7: error: expected ';' before 'unsigned'
+   43 | __weak unsigned int __rseq_flags;
+      |       ^~~~~~~~~
+      |       ;
+rseq.c:45:47: error: '__rseq_offset' undeclared here (not in a
+function); did you mean 'rseq_offset'?
+   45 | static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
+      |                                               ^~~~~~~~~~~~~
+      |                                               rseq_offset
+make[3]: Leaving directory 'tools/testing/selftests/rseq'
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Links:
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TNSVjRCfcIaJWQNkPwDQ9jn2ls/build.log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.4.7-240-g2c273bf138a4/testrun/18770115/suite/kselftest-rseq/test/shardfile-rseq/details/
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
