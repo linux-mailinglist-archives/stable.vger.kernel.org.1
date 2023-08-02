@@ -2,216 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A17DF76CAFA
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 12:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4017076CB2E
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 12:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233809AbjHBKhd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 06:37:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52174 "EHLO
+        id S230401AbjHBKpR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 06:45:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233828AbjHBKg1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 06:36:27 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03BD4490;
-        Wed,  2 Aug 2023 03:32:40 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 22E0566018CF;
-        Wed,  2 Aug 2023 11:32:38 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1690972359;
-        bh=/7pQ+RL+C9IsOxEUKck+Ky/01nkzrjWwtJzBRApAFFg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=FSPr7IDaJUZI8qae4UT7rbflUxVKpkNX71m4yCF5Ruhxl/K4k5yyEdDxEQkQccg9k
-         qDCrpbpi6aumO2kervMVnEQq432YsYqfYdS160+3UTkYZiNBUr3te5/PO0PzOSsSis
-         ioBQTiDXnuTlca51tOlHBJzoOBnrEsg8bQ3z7jcsS5qPjVIKWfQePpct+eFJDw99be
-         RW746hV1YiZIkVkK9FOJnpsgOOGL1qUqC4dUwbjywXrTA0DkjPt4VGh4oNU7fdwr/P
-         3f9lzB2BzLVkwByQNV++CgFAla1k/rgVOBc5Gi/57J1Q2HEy+7tXrh5F35M3xkuAlP
-         0xOcVABb4VkwA==
-Message-ID: <a410f098-af13-435d-688c-1021cc7b8cbb@collabora.com>
-Date:   Wed, 2 Aug 2023 12:32:35 +0200
+        with ESMTP id S230314AbjHBKpA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 06:45:00 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CECE335A2;
+        Wed,  2 Aug 2023 03:44:29 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-686efdeabaeso4482900b3a.3;
+        Wed, 02 Aug 2023 03:44:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690973069; x=1691577869;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PSfohqKv/ZinqsoF8vB1X8kqyFmbZl82QWhQosdrgX8=;
+        b=l3hRtcrJ7G2P5VIn+bqZadfdxFpjOLNT0y/0b/jmTb0gb/JG5lH0KlzSjVZVBKUThR
+         I4w2fms4o98/3WoMHb1PscyyrwPGutTGmGzhaIsrd+jMUdZW7X5ccskLSiiBnpOBusA4
+         /yF8rNWPQon8oy+LpRoPnNJR6r37uzpDEB8Sy0KpGNkqL044ohYaCG+qV9nEFuNKLjf5
+         a3bpVYSDDosAaTM3z5/N1UK2vjiY3H8TI+0J7s0haWjCOkCRlxqbG4sgSgbFPXHAwpX/
+         vj95OiBWqvZZW9+xkRPRUqrHSN1CNFknGuLSJYzbciByGWDrt6HYUeTdJC4vJPadkS7V
+         4lGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690973069; x=1691577869;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PSfohqKv/ZinqsoF8vB1X8kqyFmbZl82QWhQosdrgX8=;
+        b=VFd5jrHHTmrX3YE5qUytewUL8dDKUgDeSan/GfanIFfT1C8UZQiaErkHncA3hwxlXL
+         P2xPsaq09qHRZXCr7CIQgk91tUL+m0kwwEzvyUmCMEa38lBSzY2qWeMPc44lM1FzLXnV
+         USo19cnALxsGjngwXgN8zhqWPtDkS4YxPS0ytgZvB2Q8hOAVtsFu+bDcDZX/POhOQzY6
+         FK0dBpGw/1T2DEj5OhzLo1usxWOLmpqkpKHErKcT9HNo8hmrZb+en9feFQqkNp907QFi
+         StFZtct4/hpzebpRTEnRnXrLEyEgbSL9GB6Tvde3+jhHlT9VGhRAEnvuUmnWKDe3shwf
+         hghg==
+X-Gm-Message-State: ABy/qLYrBiVqUCioP4WCB0MuYUFLZCdqX0i9CgoepUWcZRIpT85bOD2Y
+        pAcc4U9nJWS+2J3s+3plRJw=
+X-Google-Smtp-Source: APBJJlETmUOfP5RxhXg51IdrQj3IwWnz+XUBKZfvnwsOowUz5UxjDeZ5ea90MKIQIRBXLFuAGNt/XA==
+X-Received: by 2002:a05:6a00:1a56:b0:687:4a3d:8fad with SMTP id h22-20020a056a001a5600b006874a3d8fadmr6285922pfv.16.1690973069147;
+        Wed, 02 Aug 2023 03:44:29 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id a15-20020a62e20f000000b006783ee5df8asm10791570pfi.189.2023.08.02.03.44.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Aug 2023 03:44:28 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id A0EE48197C37; Wed,  2 Aug 2023 17:44:25 +0700 (WIB)
+Date:   Wed, 2 Aug 2023 17:44:25 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.4 000/239] 6.4.8-rc1 review
+Message-ID: <ZMoziaxnZljReMvR@debian.me>
+References: <20230801091925.659598007@linuxfoundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/3] mm-unstable: Multi-gen LRU: Fix per-zone reclaim
-Content-Language: en-US
-To:     Kalesh Singh <kaleshsingh@google.com>, yuzhao@google.com,
-        akpm@linux-foundation.org
-Cc:     surenb@google.com, android-mm@google.com, kernel-team@android.com,
-        stable@vger.kernel.org,
-        Charan Teja Kalla <quic_charante@quicinc.com>,
-        Lecopzer Chen <lecopzer.chen@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Suleiman Souhlal <suleiman@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Steven Barrett <steven@liquorix.net>,
-        Brian Geffon <bgeffon@google.com>,
-        Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-References: <20230802025606.346758-1-kaleshsingh@google.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230802025606.346758-1-kaleshsingh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="v90g9n7xpLHxyWn0"
+Content-Disposition: inline
+In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Il 02/08/23 04:56, Kalesh Singh ha scritto:
-> MGLRU has a LRU list for each zone for each type (anon/file) in each
-> generation:
-> 
-> 	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
-> The min_seq (oldest generation) can progress independently for each
-> type but the max_seq (youngest generation) is shared for both anon and
-> file. This is to maintain a common frame of reference.
-> 
-> In order for eviction to advance the min_seq of a type, all the per-zone
-> lists in the oldest generation of that type must be empty.
-> 
-> The eviction logic only considers pages from eligible zones for
-> eviction or promotion.
-> 
->      scan_folios() {
-> 	...
-> 	for (zone = sc->reclaim_idx; zone >= 0; zone--)  {
-> 	    ...
-> 	    sort_folio(); 	// Promote
-> 	    ...
-> 	    isolate_folio(); 	// Evict
-> 	}
-> 	...
->      }
-> 
-> Consider the system has the movable zone configured and default 4
-> generations. The current state of the system is as shown below
-> (only illustrating one type for simplicity):
-> 
-> Type: ANON
-> 
-> 	Zone    DMA32     Normal    Movable    Device
-> 
-> 	Gen 0       0          0        4GB         0
-> 
-> 	Gen 1       0        1GB        1MB         0
-> 
-> 	Gen 2     1MB        4GB        1MB         0
-> 
-> 	Gen 3     1MB        1MB        1MB         0
-> 
-> Now consider there is a GFP_KERNEL allocation request (eligible zone
-> index <= Normal), evict_folios() will return without doing any work
-> since there are no pages to scan in the eligible zones of the oldest
-> generation. Reclaim won't make progress until triggered from a ZONE_MOVABLE
-> allocation request; which may not happen soon if there is a lot of free
-> memory in the movable zone. This can lead to OOM kills, although there
-> is 1GB pages in the Normal zone of Gen 1 that we have not yet tried to
-> reclaim.
-> 
-> This issue is not seen in the conventional active/inactive LRU since
-> there are no per-zone lists.
-> 
-> If there are no (not enough) folios to scan in the eligible zones, move
-> folios from ineligible zone (zone_index > reclaim_index) to the next
-> generation. This allows for the progression of min_seq and reclaiming
-> from the next generation (Gen 1).
-> 
-> Qualcomm, Mediatek and raspberrypi [1] discovered this issue independently.
-> 
-> [1] https://github.com/raspberrypi/linux/issues/5395
-> 
-> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-> Cc: stable@vger.kernel.org
-> Cc: Yu Zhao <yuzhao@google.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-> Reported-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
-> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 
-Whole series tested on MT8173 Elm Chromebook and MT6795 Xperia M5 as those are
-low ram devices. Can't reproduce the issue described in your [1] link from RPi.
+--v90g9n7xpLHxyWn0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-MediaTek:
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+On Tue, Aug 01, 2023 at 11:17:44AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.8 release.
+> There are 239 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-> ---
-> 
-> Changes in v2:
->    - Add Fixes tag and cc stable
-> 
->   mm/vmscan.c | 18 ++++++++++++++----
->   1 file changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 4039620d30fe..489a4fc7d9b1 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4889,7 +4889,8 @@ static int lru_gen_memcg_seg(struct lruvec *lruvec)
->    *                          the eviction
->    ******************************************************************************/
->   
-> -static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
-> +static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
-> +		       int tier_idx)
->   {
->   	bool success;
->   	int gen = folio_lru_gen(folio);
-> @@ -4939,6 +4940,13 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
->   		return true;
->   	}
->   
-> +	/* ineligible */
-> +	if (zone > sc->reclaim_idx) {
-> +		gen = folio_inc_gen(lruvec, folio, false);
-> +		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
-> +		return true;
-> +	}
-> +
->   	/* waiting for writeback */
->   	if (folio_test_locked(folio) || folio_test_writeback(folio) ||
->   	    (type == LRU_GEN_FILE && folio_test_dirty(folio))) {
-> @@ -4987,7 +4995,8 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
->   static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
->   		       int type, int tier, struct list_head *list)
->   {
-> -	int gen, zone;
-> +	int i;
-> +	int gen;
->   	enum vm_event_item item;
->   	int sorted = 0;
->   	int scanned = 0;
-> @@ -5003,9 +5012,10 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
->   
->   	gen = lru_gen_from_seq(lrugen->min_seq[type]);
->   
-> -	for (zone = sc->reclaim_idx; zone >= 0; zone--) {
-> +	for (i = MAX_NR_ZONES; i > 0; i--) {
->   		LIST_HEAD(moved);
->   		int skipped = 0;
-> +		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
->   		struct list_head *head = &lrugen->folios[gen][type][zone];
->   
->   		while (!list_empty(head)) {
-> @@ -5019,7 +5029,7 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
->   
->   			scanned += delta;
->   
-> -			if (sort_folio(lruvec, folio, tier))
-> +			if (sort_folio(lruvec, folio, sc, tier))
->   				sorted += delta;
->   			else if (isolate_folio(lruvec, folio, sc)) {
->   				list_add(&folio->lru, list);
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--v90g9n7xpLHxyWn0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZMozggAKCRD2uYlJVVFO
+o9ZoAP4u/SWwFLFLC5yO48Pk+fBL5p3stCXyBKptk/KrengdvQD8Ded+WjyKVAfI
+0WJ4nq/YR2ek/hUEgo0q/6Fgzz8Rrgs=
+=17DW
+-----END PGP SIGNATURE-----
+
+--v90g9n7xpLHxyWn0--
