@@ -2,65 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFDDA76C83E
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 10:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA9376C84A
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 10:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233878AbjHBISH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 04:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41724 "EHLO
+        id S231264AbjHBIWe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 04:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233921AbjHBIR6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 04:17:58 -0400
-Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A37E9;
-        Wed,  2 Aug 2023 01:17:56 -0700 (PDT)
-Received: from EXMBX166.cuchost.com (unknown [175.102.18.54])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX166", Issuer "EXMBX166" (not verified))
-        by ex01.ufhost.com (Postfix) with ESMTP id 998FF24E282;
-        Wed,  2 Aug 2023 16:17:53 +0800 (CST)
-Received: from EXMBX171.cuchost.com (172.16.6.91) by EXMBX166.cuchost.com
- (172.16.6.76) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Wed, 2 Aug
- 2023 16:17:53 +0800
-Received: from [192.168.125.127] (183.27.98.54) by EXMBX171.cuchost.com
- (172.16.6.91) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Wed, 2 Aug
- 2023 16:17:52 +0800
-Message-ID: <c42bd997-8795-8bf7-eee1-3ac8b153371a@starfivetech.com>
-Date:   Wed, 2 Aug 2023 16:17:51 +0800
+        with ESMTP id S229784AbjHBIWd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 04:22:33 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B840BDA
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 01:22:31 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qR77l-0003y4-B3; Wed, 02 Aug 2023 10:22:29 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qR77j-000ZVR-38; Wed, 02 Aug 2023 10:22:27 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qR77i-009pAW-Cd; Wed, 02 Aug 2023 10:22:26 +0200
+Date:   Wed, 2 Aug 2023 10:22:26 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH 6.1 000/228] 6.1.43-rc1 review
+Message-ID: <20230802082226.ok23iygasc3byc35@pengutronix.de>
+References: <20230801091922.799813980@linuxfoundation.org>
+ <CA+G9fYsqEE6P8vKKvWgFDjpgT64FebUssPNS48n6qfUriu6Z1w@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1] riscv: Using TOOLCHAIN_HAS_ZIHINTPAUSE marco replace
- zihintpause
-Content-Language: en-US
-To:     Conor Dooley <conor.dooley@microchip.com>
-CC:     Conor Dooley <conor@kernel.org>,
-        Jisheng Zhang <jszhang@kernel.org>,
-        Samuel Holland <samuel@sholland.org>,
-        Dao Lu <daolu@rivosinc.com>,
-        "Heiko Stuebner" <heiko@sntech.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
-        Mason Huo <mason.huo@starfivetech.com>,
-        <stable@vger.kernel.org>
-References: <20230802064215.31111-1-minda.chen@starfivetech.com>
- <20230802-sharpness-spoon-f9b8804fb66f@wendy>
- <d64874cb-8628-a6d2-d2f4-8af4d0ebf8b2@starfivetech.com>
- <20230802-seismic-gallstone-fca0f4b17076@wendy>
-From:   Minda Chen <minda.chen@starfivetech.com>
-In-Reply-To: <20230802-seismic-gallstone-fca0f4b17076@wendy>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [183.27.98.54]
-X-ClientProxiedBy: EXCAS061.cuchost.com (172.16.6.21) To EXMBX171.cuchost.com
- (172.16.6.91)
-X-YovoleRuleAgent: yovoleflag
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SCC_BODY_URI_ONLY,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="lhcm5ps2paryt6e6"
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYsqEE6P8vKKvWgFDjpgT64FebUssPNS48n6qfUriu6Z1w@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -68,48 +61,61 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+--lhcm5ps2paryt6e6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 2023/8/2 15:48, Conor Dooley wrote:
-> On Wed, Aug 02, 2023 at 03:32:15PM +0800, Minda Chen wrote:
->> 
->> 
->> On 2023/8/2 14:54, Conor Dooley wrote:
->> > Hey Minda,
->> > 
->> > On Wed, Aug 02, 2023 at 02:42:15PM +0800, Minda Chen wrote:
->> >> Actually it is a part of Conor's
->> >> commit aae538cd03bc ("riscv: fix detection of toolchain
->> >> Zihintpause support").
->> >> It is looks like a merge issue.
->> > 
->> > Yup, spot on.
->> > 
->> >> Samuel's
->> >> commit 0b1d60d6dd9e ("riscv: Fix build with
->> >> CONFIG_CC_OPTIMIZE_FOR_SIZE=y") do not base on Conor's commit and
->> >> revert to __riscv_zihintpause. So this patch can fix it.
->> >> 
->> >> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
->> > 
->> > Did you actually manage to trigger this, or was this by inspection?
->> > clang-15 + binutils 2.35 was, IIRC, how we spotted this because that's
->> > what the clang-built-linux CI uses to test the LTS kernels from before
->> > LLVM's IAS was supported for RISC-V. Seemingly all that needs to be
->> > satisfied there is that zihintpause doesn't appear in -march so this has
->> > gone unnoticed.
->> > 
->> > Fixes: 3c349eacc559 ("Merge patch "riscv: Fix build with CONFIG_CC_OPTIMIZE_FOR_SIZE=y"")
->> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
->> > 
->> > Thanks,
->> > Conor.
->> > 
->> Thanks, Conor. I found this just by inspection. I found a issue that vdso.so call cpu_relax
->> cause application core dump in kernel 6.1.31. I need Samuel'patch to fix this. And I search the log
->> of processor.h found this issue.
-> 
-> That doesn't look like it is fixed in later stable kernels (we are at
-> 6.1.42-rcN right now I think). It sounds we should ask Greg to backport
-> 0b1d60d6dd9e ("riscv: Fix build with CONFIG_CC_OPTIMIZE_FOR_SIZE=y")
-> to 6.1. Does that make sense to you?
-Yes. 6.1 is lts kernel. Starfive will use this kernel for a long time. Thanks.
+On Wed, Aug 02, 2023 at 07:24:23AM +0530, Naresh Kamboju wrote:
+> On Tue, 1 Aug 2023 at 15:00, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.1.43 release.
+> > There are 228 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
+h-6.1.43-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>=20
+> Following patch caused build regression on stable-rc 6.1 and 5.15,
+
+Looking at 6.1.x, cherry-picking
+88da4e8113110d5f4ebdd2f8cd0899e300cd1954 can be done without conflicts
+and fixes this regression.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--lhcm5ps2paryt6e6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmTKEkEACgkQj4D7WH0S
+/k5wvggAgtrCjOYtlxIf+mTuERuXed1KoBxR5BVykRI0G1jdxrdZValMvoqkksAf
+dtCGlrNmzTInIDBC6ih9a6lNZeQ+J0I8L69d2Tnf5ik375mJRi9ChsBvfWT4aCcY
+AEc3tfKL2eB8CvHickjAqJ98ddRdQgD2FI1331x/kGS/mCtTpPECOd/6g+fwntYl
+pafHicNklXmeDeQ07fsuEx4kqLLD3+JUma6+9bsqdu8njK3Eu9nbF7WjHYr/B1gB
+tlgEvCtxz/qKRgzp6l/Gi4K1ZkvHfzBcteFDrXjOfk2wxhJdLLz5pIQYV705ftsR
+4jYySnxN7+BIKX+GLFhsUzy4Bm6AAg==
+=rbCs
+-----END PGP SIGNATURE-----
+
+--lhcm5ps2paryt6e6--
