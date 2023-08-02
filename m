@@ -2,219 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 966C376C32D
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 04:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3254876C32F
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 04:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbjHBC4b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 22:56:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46022 "EHLO
+        id S230169AbjHBC4f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 22:56:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231588AbjHBC4b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 22:56:31 -0400
+        with ESMTP id S231196AbjHBC4e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 22:56:34 -0400
 Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14375273B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 19:56:16 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d27ac992539so5059120276.3
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 19:56:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051712720
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 19:56:21 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d0d27cd9db9so875798276.0
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 19:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690944975; x=1691549775;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aqehfJB+hF+Fne+AdGJurbsZIYsQCeOte57mRi2GAJw=;
-        b=33TVVDzXg6eBl7/Vpt8F6zz+Hj/NOmdXdllc0HT3+fXbEBhkPYtEkaq37eNBBfQ//f
-         huzyAhMvUorpNH56dDYRwA06JZVdYTEAbzfGjbqw3gBWiic0SbSYYIRLI7+dUO6KJeP/
-         QbLSh8xuVcrhWjh4oWX9BfGiIQ2WhcFjEVln6zdtkNbTrb8Vr/FaB0bbjGe719xWxqpC
-         hL3EQTp/eSWIIOfcyzhoc5/BO66sBZZeI+o1Tma4ICZmtHB5eUiGscJSklwG5yeK8aOP
-         pOTWKEoNcoXV0uOzF2WA7ODrKPaZuVgMaXvYUoulWRPVnXT17L+Vmq1QR0HZFgWxuJek
-         tQWw==
+        d=google.com; s=20221208; t=1690944980; x=1691549780;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J6cxPzKelBRogs1RcqlDIpKMeY4RfiCOB4MpGgBN/Dg=;
+        b=Jrr8nzKXxGfH9rZ05coei/Z5XkXPQKYffsRvq0JJPMkpPWKSPML6OO06eZDIof3ZxE
+         FqR3adURv8HbiY0CSWCrzORDmomvxAk0WLRY9cf18uCIkdSyJjl/VvbdCY4q9Wy7Oc4w
+         +pskRXdmBEFfcC42q/5pqN3PxM0TzWr4gK4sE9xc5wu50UZc34qQkFTahmwhRGZJVytQ
+         iQt96NsYT5jF6oFb+S9xqxKcAjWxbIwls+nZQCaZUiFG50rjkxYUVoWP/KSzWH+XfZJr
+         RVj4ctwi+migEpHkjEJI3k5GUHjwOtKhv4c0gSFmtgVSST9QuZmYcyIVrwx+qWlaHlyG
+         UnUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690944975; x=1691549775;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aqehfJB+hF+Fne+AdGJurbsZIYsQCeOte57mRi2GAJw=;
-        b=aXxA8a047oCXLdSOLZGZJ6kTHSYzGOJSDV3GLjGPAsvzvVqYnd5CLlOcZQJE3b8gOU
-         Kdqq2EJVo8w3pBOyGNvHgE79YMV1jXL2IcuHErKrBSo/nJ/x1MNyYExrQebQkUFwmkHz
-         Mfic37qAfeYHzWxDym+3nZJ8NghM2d8RgqoYxsHrsph6bZxByomzg6e+aPKxdoNt25Cv
-         ykvCfHNqo+cn8NxLvvHJGv+hANxc5EetVNt+dbYoyqbZSpDY4/1+Lk1WkoPZxIZ3bBwN
-         mKu/82nmef54bArQ8Q6HJyuTNMGTMAB3DEEhKaAWOFZSYFLUtL7DyAsq103r5/OZ4OFR
-         obWg==
-X-Gm-Message-State: ABy/qLbPqegP4q+V4YSJQ4GQWXQN4GNnjHWVxhjMhzE6KRJqGsHcEeH8
-        eACHpe44ksH/HU0IjkSmxECJcRRs8k/rxgq7Lw==
-X-Google-Smtp-Source: APBJJlGu4CGYprEhx9EAJQV2bkMTULOViWk9fNZltzmcAuDxS7zR2BS8SgTh3oU+2KBCXMRrlqL63XtCKu/qeEPcYg==
+        d=1e100.net; s=20221208; t=1690944980; x=1691549780;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J6cxPzKelBRogs1RcqlDIpKMeY4RfiCOB4MpGgBN/Dg=;
+        b=LG3GlqiWx0vS5M0SZTE1FSXqlLNQXshINONro40MMfOI0uXlTqv3IbQ1UIuD52NiD1
+         1qMnmoGPxtzHYZUpGvR/voBW+Xn05dzFJ2WDrhdLBJZJboF+jZd0sFmffKUyp5OdYokl
+         aWMQOkuD7csvrI/LbGWh0ZCAsUJem9o8EAqrYPfNLA3bf0+kEiygFL+MVdIZEAUJzGC7
+         VMuooj/HkBhSrpw628qyR52xvPuPGXyF8092ptXNWUyBu5fhh7CmF6kuqAFiTfOX7lmC
+         0pxbnrBt1mYGlppFKls8rUc8CEm1jBOdAROcuzgCBUEt3IpQpf7F3shSlo8jaTuPRPff
+         7VOw==
+X-Gm-Message-State: ABy/qLbh9SzGj2dbdj/zXl77JZE/qKf65SqSnOak378BcSkA6rd/Sm1a
+        9cZQ/yHeHI6e5GeUAwXesJ0g3g7o9Mtbq/1D1A==
+X-Google-Smtp-Source: APBJJlHvG4mc4jsYVOJYfZ7h42Tv/EwdyD/HOeVXUVvtcmr8y48s75g7rEDYvVAnOWGuPl5UYIq68sSDD86PJyMPYA==
 X-Received: from kalesh.mtv.corp.google.com ([2620:15c:211:201:aa5f:ff75:318:255])
- (user=kaleshsingh job=sendgmr) by 2002:a05:6902:100f:b0:cf9:3564:33cc with
- SMTP id w15-20020a056902100f00b00cf9356433ccmr116986ybt.13.1690944975112;
- Tue, 01 Aug 2023 19:56:15 -0700 (PDT)
-Date:   Tue,  1 Aug 2023 19:56:02 -0700
+ (user=kaleshsingh job=sendgmr) by 2002:a25:b084:0:b0:bd5:dc2d:9d7f with SMTP
+ id f4-20020a25b084000000b00bd5dc2d9d7fmr167401ybj.4.1690944980290; Tue, 01
+ Aug 2023 19:56:20 -0700 (PDT)
+Date:   Tue,  1 Aug 2023 19:56:03 -0700
+In-Reply-To: <20230802025606.346758-1-kaleshsingh@google.com>
 Mime-Version: 1.0
+References: <20230802025606.346758-1-kaleshsingh@google.com>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230802025606.346758-1-kaleshsingh@google.com>
-Subject: [PATCH v2 1/3] mm-unstable: Multi-gen LRU: Fix per-zone reclaim
+Message-ID: <20230802025606.346758-2-kaleshsingh@google.com>
+Subject: [PATCH v2 2/3] mm-unstable: Multi-gen LRU: Avoid race in inc_min_seq()
 From:   Kalesh Singh <kaleshsingh@google.com>
 To:     yuzhao@google.com, akpm@linux-foundation.org
 Cc:     surenb@google.com, android-mm@google.com, kernel-team@android.com,
         Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org,
-        Charan Teja Kalla <quic_charante@quicinc.com>,
-        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        Suleiman Souhlal <suleiman@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
         "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Steven Barrett <steven@liquorix.net>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
         Brian Geffon <bgeffon@google.com>,
-        Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
+        Steven Barrett <steven@liquorix.net>,
+        Suleiman Souhlal <suleiman@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-MGLRU has a LRU list for each zone for each type (anon/file) in each
-generation:
+inc_max_seq() will try to inc_min_seq() if nr_gens == MAX_NR_GENS. This
+is because the generations are reused (the last oldest now empty
+generation will become the next youngest generation).
 
-	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
-The min_seq (oldest generation) can progress independently for each
-type but the max_seq (youngest generation) is shared for both anon and
-file. This is to maintain a common frame of reference.
+inc_min_seq() is retried until successful, dropping the lru_lock
+and yielding the CPU on each failure, and retaking the lock before
+trying again:
 
-In order for eviction to advance the min_seq of a type, all the per-zone
-lists in the oldest generation of that type must be empty.
+        while (!inc_min_seq(lruvec, type, can_swap)) {
+                spin_unlock_irq(&lruvec->lru_lock);
+                cond_resched();
+                spin_lock_irq(&lruvec->lru_lock);
+        }
 
-The eviction logic only considers pages from eligible zones for
-eviction or promotion.
+However, the initial condition that required incrementing the min_seq
+(nr_gens == MAX_NR_GENS) is not retested. This can change by another
+call to inc_max_seq() from run_aging() with force_scan=true from the
+debugfs interface.
 
-    scan_folios() {
-	...
-	for (zone = sc->reclaim_idx; zone >= 0; zone--)  {
-	    ...
-	    sort_folio(); 	// Promote
-	    ...
-	    isolate_folio(); 	// Evict
-	}
-	...
-    }
+Since the eviction stalls when the nr_gens == MIN_NR_GENS, avoid
+unnecessarily incrementing the min_seq by rechecking the number of
+generations before each attempt.
 
-Consider the system has the movable zone configured and default 4
-generations. The current state of the system is as shown below
-(only illustrating one type for simplicity):
+This issue was uncovered in previous discussion on the list by Yu Zhao
+and Aneesh Kumar [1].
 
-Type: ANON
+[1] https://lore.kernel.org/linux-mm/CAOUHufbO7CaVm=xjEb1avDhHVvnC8pJmGyKcFf2iY_dpf+zR3w@mail.gmail.com/
 
-	Zone    DMA32     Normal    Movable    Device
-
-	Gen 0       0          0        4GB         0
-
-	Gen 1       0        1GB        1MB         0
-
-	Gen 2     1MB        4GB        1MB         0
-
-	Gen 3     1MB        1MB        1MB         0
-
-Now consider there is a GFP_KERNEL allocation request (eligible zone
-index <= Normal), evict_folios() will return without doing any work
-since there are no pages to scan in the eligible zones of the oldest
-generation. Reclaim won't make progress until triggered from a ZONE_MOVABLE
-allocation request; which may not happen soon if there is a lot of free
-memory in the movable zone. This can lead to OOM kills, although there
-is 1GB pages in the Normal zone of Gen 1 that we have not yet tried to
-reclaim.
-
-This issue is not seen in the conventional active/inactive LRU since
-there are no per-zone lists.
-
-If there are no (not enough) folios to scan in the eligible zones, move
-folios from ineligible zone (zone_index > reclaim_index) to the next
-generation. This allows for the progression of min_seq and reclaiming
-from the next generation (Gen 1).
-
-Qualcomm, Mediatek and raspberrypi [1] discovered this issue independently.
-
-[1] https://github.com/raspberrypi/linux/issues/5395
-
-Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+Fixes: d6c3af7d8a2b ("mm: multi-gen LRU: debugfs interface")
 Cc: stable@vger.kernel.org
 Cc: Yu Zhao <yuzhao@google.com>
+Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Reported-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
 Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 ---
 
 Changes in v2:
   - Add Fixes tag and cc stable
 
- mm/vmscan.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ mm/vmscan.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 4039620d30fe..489a4fc7d9b1 100644
+index 489a4fc7d9b1..6eecd291756c 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4889,7 +4889,8 @@ static int lru_gen_memcg_seg(struct lruvec *lruvec)
-  *                          the eviction
-  ******************************************************************************/
+@@ -4439,7 +4439,7 @@ static void inc_max_seq(struct lruvec *lruvec, bool can_swap, bool force_scan)
+ 	int prev, next;
+ 	int type, zone;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+-
++restart:
+ 	spin_lock_irq(&lruvec->lru_lock);
  
--static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
-+static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
-+		       int tier_idx)
- {
- 	bool success;
- 	int gen = folio_lru_gen(folio);
-@@ -4939,6 +4940,13 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
- 		return true;
+ 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+@@ -4450,11 +4450,12 @@ static void inc_max_seq(struct lruvec *lruvec, bool can_swap, bool force_scan)
+ 
+ 		VM_WARN_ON_ONCE(!force_scan && (type == LRU_GEN_FILE || can_swap));
+ 
+-		while (!inc_min_seq(lruvec, type, can_swap)) {
+-			spin_unlock_irq(&lruvec->lru_lock);
+-			cond_resched();
+-			spin_lock_irq(&lruvec->lru_lock);
+-		}
++		if (inc_min_seq(lruvec, type, can_swap))
++			continue;
++
++		spin_unlock_irq(&lruvec->lru_lock);
++		cond_resched();
++		goto restart;
  	}
  
-+	/* ineligible */
-+	if (zone > sc->reclaim_idx) {
-+		gen = folio_inc_gen(lruvec, folio, false);
-+		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
-+		return true;
-+	}
-+
- 	/* waiting for writeback */
- 	if (folio_test_locked(folio) || folio_test_writeback(folio) ||
- 	    (type == LRU_GEN_FILE && folio_test_dirty(folio))) {
-@@ -4987,7 +4995,8 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
- static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
- 		       int type, int tier, struct list_head *list)
- {
--	int gen, zone;
-+	int i;
-+	int gen;
- 	enum vm_event_item item;
- 	int sorted = 0;
- 	int scanned = 0;
-@@ -5003,9 +5012,10 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
- 
- 	gen = lru_gen_from_seq(lrugen->min_seq[type]);
- 
--	for (zone = sc->reclaim_idx; zone >= 0; zone--) {
-+	for (i = MAX_NR_ZONES; i > 0; i--) {
- 		LIST_HEAD(moved);
- 		int skipped = 0;
-+		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
- 		struct list_head *head = &lrugen->folios[gen][type][zone];
- 
- 		while (!list_empty(head)) {
-@@ -5019,7 +5029,7 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
- 
- 			scanned += delta;
- 
--			if (sort_folio(lruvec, folio, tier))
-+			if (sort_folio(lruvec, folio, sc, tier))
- 				sorted += delta;
- 			else if (isolate_folio(lruvec, folio, sc)) {
- 				list_add(&folio->lru, list);
+ 	/*
 -- 
 2.41.0.255.g8b1d071c50-goog
 
