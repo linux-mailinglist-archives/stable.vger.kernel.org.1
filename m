@@ -2,197 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF7D676CC17
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 13:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E0D76CC6E
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 14:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234276AbjHBLxi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 07:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36650 "EHLO
+        id S230386AbjHBMQu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 08:16:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232731AbjHBLxh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 07:53:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CEDF2D42
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 04:52:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690977164;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5SbuVFR03MYvfb13U1nMAvAGZ+NkapiDklKoMGko6wE=;
-        b=dJ/oqlGa8irg5Q4b8rhkZ1WZJJh+cuf1ulVqLEqiQqLL314DMVR87ysfpvUerK2Cdp/tpk
-        5NU/2Iyp/jsFrVBqIDDKxfAQmIk9GgWt7Et8yb0SXR30DIEqCfN/AhwaBsRXub3qglpZST
-        eCo60RcK0O/TRGnaZLtJFSP9143It8k=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-73FtCqeGNIOW5bZFTqS7qQ-1; Wed, 02 Aug 2023 07:52:43 -0400
-X-MC-Unique: 73FtCqeGNIOW5bZFTqS7qQ-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-317955f1b5fso2751862f8f.0
-        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 04:52:42 -0700 (PDT)
+        with ESMTP id S229806AbjHBMQt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 08:16:49 -0400
+Received: from mail-lf1-x161.google.com (mail-lf1-x161.google.com [IPv6:2a00:1450:4864:20::161])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA05139
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 05:16:48 -0700 (PDT)
+Received: by mail-lf1-x161.google.com with SMTP id 2adb3069b0e04-4fe457ec6e7so3018955e87.3
+        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 05:16:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1690978606; x=1691583406;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vI0xScBewLpP69CRTitC0lTT7+EQ4m3F00K4EPi3Rvc=;
+        b=Mbafs0baJURckkIHcwi0pOJ6UDeZzv5ZovlhZi8oTGUC/gXOxjLjfvTKqkXCbyMwZ2
+         nyWkDOXap24VDElJYdG7iUDsu5/SOsjsisMDT0uw2jO2uabGEd1E85G2cmEEXTH0mKDG
+         vuTSVqVwWTHZx7Z2b33jurtmq+2pFhvrRUkrBmx7pHsFWCCIoRdsrNhA/uSe5VhyoYJ5
+         1I8gO8XHCXjtCTegTEc+2IRSleM4wTcs+nYFTXMIzd4Jah3zhK61ruCvm2gWUJPXNQYg
+         p32aOmxkC7V1lMgxcbub+WERhjxwBB30A9Rgmn9i60a4ZjC2AXpchC0GKqaxYoumYjRr
+         wQkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690977162; x=1691581962;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5SbuVFR03MYvfb13U1nMAvAGZ+NkapiDklKoMGko6wE=;
-        b=gFmcgISMROK1Pe7kCFN6JDZl5CDgGZK5gewrQr3ZlaBa1tqkcS2Wge+4ToHgDZAqUN
-         AQLdxu3T9WjL8bWgc8Ys5GhujSNd3stlzP4Qa04Fpb0vLGK7Fy8mAHZWB2/sPI+9BhVy
-         pIgCPDqfD0iOOgu+pA4OalJxYYP+r/0tPIUUEjEQcSAUsHKQNk/GSpRiyvVnOg+7PKK3
-         XVRqL3J5jhZnxrjR8T6Xrsx0dTKg7DW9KHt/CD5PUYYgmUbR09f30hF7GKgE2v6VA0NH
-         wDS2HfN/h21V2hSKyA8tyfe5JhiVmGUc3/QHBJekY//MzIpsUggj7IWLW/iPyp/rhYxL
-         5wow==
-X-Gm-Message-State: ABy/qLalATsjFTKW3rpj6Xj6Gwu7jtc6S/45AHAs0Dx8zYeUdTjlRN4T
-        QT4kXvLeUA2jGMpI2jc1leJlE4G+HREse4sMDIWRixdPGRlXARcpHTX8zNU5gFc/ltIef7oblT0
-        SkRd77jy0xrT9JQ1I
-X-Received: by 2002:adf:e7cb:0:b0:314:2132:a277 with SMTP id e11-20020adfe7cb000000b003142132a277mr5076676wrn.9.1690977161968;
-        Wed, 02 Aug 2023 04:52:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEXKitccTNjLbBaunJd/lIcNHXV0fS8ByyqZPsRwUJgtwC37K9kQMbP0eifwf8QDG7nU35foQ==
-X-Received: by 2002:adf:e7cb:0:b0:314:2132:a277 with SMTP id e11-20020adfe7cb000000b003142132a277mr5076659wrn.9.1690977161481;
-        Wed, 02 Aug 2023 04:52:41 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70b:e00:b8a4:8613:1529:1caf? (p200300cbc70b0e00b8a4861315291caf.dip0.t-ipconnect.de. [2003:cb:c70b:e00:b8a4:8613:1529:1caf])
-        by smtp.gmail.com with ESMTPSA id l9-20020a05600012c900b003143801f8d8sm18828317wrx.103.2023.08.02.04.52.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Aug 2023 04:52:40 -0700 (PDT)
-Message-ID: <df78f949-dfaf-7378-fe64-c39235e7afb8@redhat.com>
-Date:   Wed, 2 Aug 2023 13:52:39 +0200
+        d=1e100.net; s=20221208; t=1690978606; x=1691583406;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vI0xScBewLpP69CRTitC0lTT7+EQ4m3F00K4EPi3Rvc=;
+        b=V4gQc+DEcE1PfrruxIk8G8w9pEVbbcpMGdZFhZirfCzlWPK77OU8+bUHMn3LUdD51w
+         OWSGl7HOEC9s24WiF5llX1UveC27swM675QOS0wn3Zq9CywnHYG0xQhhd+v5ZzgucH2M
+         +2qqdTlAo8OXVWnNhdE5+LCTefQ3QyF4c9kyXh4AoIk8Iws4kE/dRrf4Ouc1ZML+AltJ
+         hnK+cbPlTI4quKU4mygsHtEhXRtkh/Ee/v5mG0l7zspFMljtroYSANEuSCrKmNLw9A5L
+         SVmebbjcX1wzUBhCiT5U24FVTIKNMZDyuHqAlMCbSQR4kj43xFhlCkG2TvHW/FdnmhS4
+         ffEA==
+X-Gm-Message-State: ABy/qLYaN0Ozsap08tvnO+h2WWpfLq/lkXQ2SGT+Fh51PH5yhq7CfJu5
+        XwVgyFhCAW81R48DXGSqW+pb1XpynkqbRxs6jhvt/VNKdfjvyQ==
+X-Google-Smtp-Source: APBJJlE48gCCETGUTzl7w+GwHpvtWhiyjXW+/IDQTPtJtflWvIY+F//loA9GYiYXlZQ2AkOWG4isovje9bGf
+X-Received: by 2002:ac2:58c9:0:b0:4f5:a181:97b8 with SMTP id u9-20020ac258c9000000b004f5a18197b8mr3787757lfo.25.1690978606213;
+        Wed, 02 Aug 2023 05:16:46 -0700 (PDT)
+Received: from smtpservice.6wind.com ([185.13.181.2])
+        by smtp-relay.gmail.com with ESMTP id a26-20020a17090640da00b00993ad4112f7sm1949585ejk.260.2023.08.02.05.16.46;
+        Wed, 02 Aug 2023 05:16:46 -0700 (PDT)
+X-Relaying-Domain: 6wind.com
+Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
+        by smtpservice.6wind.com (Postfix) with ESMTPS id D8FFE60036;
+        Wed,  2 Aug 2023 14:16:45 +0200 (CEST)
+Received: from dichtel by bretzel with local (Exim 4.94.2)
+        (envelope-from <nicolas.dichtel@6wind.com>)
+        id 1qRAmT-00Cgt0-In; Wed, 02 Aug 2023 14:16:45 +0200
+From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>
+Cc:     netdev@vger.kernel.org, bpf@vger.kernel.org,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        stable@vger.kernel.org
+Subject: [PATCH net] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+Date:   Wed,  2 Aug 2023 14:16:14 +0200
+Message-Id: <20230802121614.3024701-1-nicolas.dichtel@6wind.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/2] don't use mapcount() to check large folio sharing
-Content-Language: en-US
-To:     Ryan Roberts <ryan.roberts@arm.com>,
-        Yin Fengwei <fengwei.yin@intel.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        akpm@linux-foundation.org, willy@infradead.org,
-        vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
-        minchan@kernel.org, yuzhao@google.com, shy828301@gmail.com
-References: <20230728161356.1784568-1-fengwei.yin@intel.com>
- <3bbfde16-ced1-dca8-6a3f-da893e045bc5@arm.com>
- <31093c49-5baa-caed-9871-9503cb89454b@redhat.com>
- <20419779-b5f5-7240-3f90-fe5c4b590e4d@arm.com>
- <2722c9ad-370a-70ff-c374-90a94eca742a@redhat.com>
- <2d64ca09-06fe-a32f-16f9-c277b7033b57@arm.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <2d64ca09-06fe-a32f-16f9-c277b7033b57@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 02.08.23 13:51, Ryan Roberts wrote:
-> On 02/08/2023 12:36, David Hildenbrand wrote:
->> On 02.08.23 13:20, Ryan Roberts wrote:
->>> On 02/08/2023 11:48, David Hildenbrand wrote:
->>>> On 02.08.23 12:27, Ryan Roberts wrote:
->>>>> On 28/07/2023 17:13, Yin Fengwei wrote:
->>>>>> In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(),
->>>>>> folio_mapcount() is used to check whether the folio is shared. But it's
->>>>>> not correct as folio_mapcount() returns total mapcount of large folio.
->>>>>>
->>>>>> Use folio_estimated_sharers() here as the estimated number is enough.
->>>>>>
->>>>>> Yin Fengwei (2):
->>>>>>      madvise: don't use mapcount() against large folio for sharing check
->>>>>>      madvise: don't use mapcount() against large folio for sharing check
->>>>>>
->>>>>>     mm/huge_memory.c | 2 +-
->>>>>>     mm/madvise.c     | 6 +++---
->>>>>>     2 files changed, 4 insertions(+), 4 deletions(-)
->>>>>>
->>>>>
->>>>> As a set of fixes, I agree this is definitely an improvement, so:
->>>>>
->>>>> Reviewed-By: Ryan Roberts
->>>>>
->>>>>
->>>>> But I have a couple of comments around further improvements;
->>>>>
->>>>> Once we have the scheme that David is working on to be able to provide precise
->>>>> exclusive vs shared info, we will probably want to move to that. Although that
->>>>> scheme will need access to the mm_struct of a process known to be mapping the
->>>>
->>>> There are probably ways to work around lack of mm_struct, but it would not be
->>>> completely for free. But passing the mm_struct should probably be an easy
->>>> refactoring.
->>>>
->>>>> folio. We have that info, but its not passed to folio_estimated_sharers() so we
->>>>> can't just reimplement folio_estimated_sharers() - we will need to rework these
->>>>> call sites again.
->>>>
->>>> We should probably just have a
->>>>
->>>> folio_maybe_mapped_shared()
->>>>
->>>> with proper documentation. Nobody should care about the exact number.
->>>>
->>>>
->>>> If my scheme for anon pages makes it in, that would be precise for anon pages
->>>> and we could document that. Once we can handle pagecache pages as well to get a
->>>> precise answer, we could change to folio_mapped_shared() and adjust the
->>>> documentation.
->>>
->>> Makes sense to me. I'm assuming your change would allow us to get rid of
->>> PG_anon_exclusive too? In which case we would also want a precise API
->>> specifically for anon folios for the CoW case, without waiting for pagecache
->>> page support.
->>
->> Not necessarily and I'm currently not planning that
->>
->> On the COW path, I'm planning on using it only when PG_anon_exclusive is clear
->> for a compound page, combined with a check that there are no other page
->> references besides from mappings: all mappings from me and #refs == #mappings ->
->> reuse (set PG_anon_exclusive). That keeps the default (no fork) as fast as
->> possible and simple.
->>
->>>>
->>>> I just saw
->>>>
->>>> https://lkml.kernel.org/r/20230802095346.87449-1-wangkefeng.wang@huawei.com
->>>>
->>>> that converts a lot of code to folio_estimated_sharers().
->>>>
->>>>
->>>> That patchset, for example, also does
->>>>
->>>> total_mapcount(page) > 1 -> folio_estimated_sharers(folio) > 1
->>>>
->>>> I'm not 100% sure what to think about that at this point. We eventually add
->>>> false negatives (actually shared but we fail to detect it) all over the place,
->>>> instead of having false positives (actually exclusive, but we fail to detect
->>>> it).
->>>>
->>>> And that patch set doesn't even spell that out.
->>>>
->>>>
->>>> Maybe it's as good as we will get, especially if my scheme doesn't make it in.
->>>
->>> I've been working on the assumption that your scheme is plan A, and I'm waiting
->>> for it to unblock forward progress on large anon folios. Is this the right
->>> approach, or do you think your scheme is sufficiently riskly and/or far out that
->>> I should aim not to depend on it?
->>
->> It is plan A. IMHO, it does not feel too risky and/or far out at this point --
->> and the implementation should not end up too complicated. But as always, I
->> cannot promise anything before it's been implemented and discussed upstream.
-> 
-> OK, good we are on the same folio... (stolen from Hugh; if a joke is worth
-> telling once, its worth telling 1000 times ;-)
+This kind of interface doesn't have a mac header. This patch fixes
+bpf_redirect() to a ppp interface.
 
-Heard it first the time :))
+CC: stable@vger.kernel.org
+Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+---
+ include/linux/if_arp.h | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/include/linux/if_arp.h b/include/linux/if_arp.h
+index 1ed52441972f..8efbe29a6f0c 100644
+--- a/include/linux/if_arp.h
++++ b/include/linux/if_arp.h
+@@ -53,6 +53,7 @@ static inline bool dev_is_mac_header_xmit(const struct net_device *dev)
+ 	case ARPHRD_NONE:
+ 	case ARPHRD_RAWIP:
+ 	case ARPHRD_PIMREG:
++	case ARPHRD_PPP:
+ 		return false;
+ 	default:
+ 		return true;
 -- 
-Cheers,
-
-David / dhildenb
+2.39.2
 
