@@ -2,171 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A78BF76D32B
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 17:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7227576D393
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 18:24:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235490AbjHBP6w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 11:58:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
+        id S229469AbjHBQY1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 12:24:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235495AbjHBP6i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 11:58:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8CF2103;
-        Wed,  2 Aug 2023 08:58:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69FBF61A10;
-        Wed,  2 Aug 2023 15:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69DCC433C9;
-        Wed,  2 Aug 2023 15:58:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1690991913;
-        bh=9xubLaIO5MdhpiaxNsf8DSgID/M5lEj2ExNCYUJF2Ts=;
-        h=Date:To:From:Subject:From;
-        b=Rz4avHmrVNYWJxVZNqJRmoEgYG8wpCz/AOIWNLGQ1kHuKAaljYsF/1rMw52jwZQYx
-         /fbqD+O4cgvLmEgYvnkWfAgG6UlWpjXiY4UGBgrGwdfMUNRnNd5Y4p6HYC+qfe1439
-         6SeCYFWlf5G3d0Oxa7auWTHW5BHjf8z0KwEW6ro8=
-Date:   Wed, 02 Aug 2023 08:58:33 -0700
-To:     mm-commits@vger.kernel.org, zhengqi.arch@bytedance.com,
-        yuzhao@google.com, surenb@google.com, suleiman@google.com,
-        steven@liquorix.net, stable@vger.kernel.org,
-        quic_charante@quicinc.com, oleksandr@natalenko.name,
-        matthias.bgg@gmail.com, lecopzer.chen@mediatek.com,
-        heftig@archlinux.org, bgeffon@google.com, baohua@kernel.org,
-        angelogioacchino.delregno@collabora.com,
-        aneesh.kumar@linux.ibm.com, kaleshsingh@google.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-unstable-multi-gen-lru-avoid-race-in-inc_min_seq.patch added to mm-unstable branch
-Message-Id: <20230802155833.B69DCC433C9@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229495AbjHBQY0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 12:24:26 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940A72102;
+        Wed,  2 Aug 2023 09:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690993461; x=1691598261; i=rwarsow@gmx.de;
+ bh=cq4ElQGiX8L/DIAYdvWjKqUUNUqQdGiDkVhdL9ofxLY=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=U8KHNwM+b2CTk6TO8V/6wwRIo+dldO0w84iaFpYedKT5RH8F8yyY+a4verKAbjYhHJQ3H0n
+ v/JqiF0ChjXhFnWjoWqyHuCBS1MmEgEQ/Q/wVv3K1YoFijjWgGeY/OvJp/15r8H8LNCUqFASQ
+ mVU8+WtvQ9K23IIhNlZSVYNs1shaNR5QPBM2wZFOgF/hTOIYRgqMzLb04NrmbPhhuP93X8LOd
+ Ba2BPWR1nwlu6BFniVivnVIYOS34zrprGxD1pelZHcBEL8zReEmN+lc5Bu08vZs3yKWY87MVv
+ ADAOaMKug6Rti7xwCBwF6A4DM4a9AskaFnQWyxFg6H5jEguS1sNg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.0]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M59C2-1qSL6f0nPo-001CjS; Wed, 02
+ Aug 2023 18:24:21 +0200
+Message-ID: <4681f49e-03dd-a553-431d-8756a3f9fcef@gmx.de>
+Date:   Wed, 2 Aug 2023 18:24:20 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+From:   Ronald Warsow <rwarsow@gmx.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.4 000/235] 6.4.8-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:cGF5WdyJZyEIToD6oe3+u4BWOMCPnN2qfrYw//lQ99KsYWmbBBl
+ kSxif2oMP06h7tPBWCUD1J4fO73ptRwYaxZu4U3Fk3uXt0pUE79N3gTDFiB8h7tjHIR1s82
+ JhHadw8IO0xc6VzHGpTT3hR8/aPIRmahIFZkEcclnf+b3N7cJrDIWzxxS1yngYhSBtvIqUm
+ TJOwzMDcYtDgXnndHrGDQ==
+UI-OutboundReport: notjunk:1;M01:P0:fm28WEnRfS4=;aS19RNFSKGwbU/GoxG9TjAKP9jc
+ 0KsEOWqQ390s0MzBW38JkMFz6sYciL1qZVuAyL82j1/u7kpK0i8mNFYn3q4nH1W0RMC+u0all
+ ulUdK7l4osfdCAdzn/03INMUG1EztQVNNjjlGJQuLBqUxWgDcA5sZ4inyLPeyNwGAgalwjUtw
+ I9zPZz880h9LXvYxTmxI3NSC/J3QbUDPD8ERcWkMv5evWBT3hiepkLkzL+HtPwRNQ2BC6rtJr
+ aEP1dXQK9dBnGsHze+dNJHObj1Od7fIp9ZqzOkz5kNKejsDkVhbkUgKuLeGHWKx6V/hm11M3k
+ 8ECmyauMoIxZ2OcmeiW6xjNtkEZDttB6UbEMxsbhrZfCpw9Ur2pqXQkwbprQK0e9RLHD27zxL
+ +YSS2+S88YctSaqf6bZr/Z5nw3UfZS5NsQGV2uTQmijc3WmgkAbGzP3me/2RZoC2+7u/HQCGR
+ IsDO6Hcz1btohtOVKGNWdraMOYmhjS3hvfCRypSDEjWmlUVBPbKsIVdx2oMfDKj5JlGkqbxpz
+ y6GQ8oAE3mybvma+oXlLhbzmlZMHvUrCC8X4u3zWC8fJMMs6SoBNUXPpingPPSk6F6XEE/U+A
+ 9fGF2fGS9xPLw2MWw74p8G33MHiWRlzmQUj6KwgJgAvKgxXnY6PBVYzrt5tAldsAGuvFwR68p
+ HqQcTsYQLZ/tfK1lOOTN5eMhZKrfh8NpxD6uX6InYvjxNL0oErP8mgfz5ZMMGzmVL2yqTN9FO
+ AXX1bVV2b499uWYsHCwia6QrU6c46J9+gnEtAamLodbnc7N7BTeP3QrJ13uo4Z+IhfyewdnJF
+ soOWrXgBaS/19NZ2hdS5j6QRtQQTA2JIURkjq4/MynY+koz/kxrNh8ZeVk/b8JdRzo1fs1zyb
+ WXh2HJSdEWjo6XRwNl4v4QaT+AWFJxUysYDLfYP5UDjrGU49qH7myTRIhxwqarf5dkxucFmOK
+ LQ56Ij5z9S6tXvs/DUiMNHC17l8=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Greg
 
-The patch titled
-     Subject: Multi-gen LRU: Avoid race in inc_min_seq()
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-unstable-multi-gen-lru-avoid-race-in-inc_min_seq.patch
+6.4.8-rc2
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-unstable-multi-gen-lru-avoid-race-in-inc_min_seq.patch
+compiles, boots and runs here on x86_64
+(Intel Rocket Lake, i5-11400)
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Thanks
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Kalesh Singh <kaleshsingh@google.com>
-Subject: Multi-gen LRU: Avoid race in inc_min_seq()
-Date: Tue, 1 Aug 2023 19:56:03 -0700
-
-inc_max_seq() will try to inc_min_seq() if nr_gens == MAX_NR_GENS. This
-is because the generations are reused (the last oldest now empty
-generation will become the next youngest generation).
-
-inc_min_seq() is retried until successful, dropping the lru_lock
-and yielding the CPU on each failure, and retaking the lock before
-trying again:
-
-        while (!inc_min_seq(lruvec, type, can_swap)) {
-                spin_unlock_irq(&lruvec->lru_lock);
-                cond_resched();
-                spin_lock_irq(&lruvec->lru_lock);
-        }
-
-However, the initial condition that required incrementing the min_seq
-(nr_gens == MAX_NR_GENS) is not retested. This can change by another
-call to inc_max_seq() from run_aging() with force_scan=true from the
-debugfs interface.
-
-Since the eviction stalls when the nr_gens == MIN_NR_GENS, avoid
-unnecessarily incrementing the min_seq by rechecking the number of
-generations before each attempt.
-
-This issue was uncovered in previous discussion on the list by Yu Zhao
-and Aneesh Kumar [1].
-
-[1] https://lore.kernel.org/linux-mm/CAOUHufbO7CaVm=xjEb1avDhHVvnC8pJmGyKcFf2iY_dpf+zR3w@mail.gmail.com/
-
-Link: https://lkml.kernel.org/r/20230802025606.346758-2-kaleshsingh@google.com
-Fixes: d6c3af7d8a2b ("mm: multi-gen LRU: debugfs interface")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
-Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
-Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Steven Barrett <steven@liquorix.net>
-Cc: Suleiman Souhlal <suleiman@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/vmscan.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
---- a/mm/vmscan.c~mm-unstable-multi-gen-lru-avoid-race-in-inc_min_seq
-+++ a/mm/vmscan.c
-@@ -4439,7 +4439,7 @@ static void inc_max_seq(struct lruvec *l
- 	int prev, next;
- 	int type, zone;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
--
-+restart:
- 	spin_lock_irq(&lruvec->lru_lock);
- 
- 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
-@@ -4450,11 +4450,12 @@ static void inc_max_seq(struct lruvec *l
- 
- 		VM_WARN_ON_ONCE(!force_scan && (type == LRU_GEN_FILE || can_swap));
- 
--		while (!inc_min_seq(lruvec, type, can_swap)) {
--			spin_unlock_irq(&lruvec->lru_lock);
--			cond_resched();
--			spin_lock_irq(&lruvec->lru_lock);
--		}
-+		if (inc_min_seq(lruvec, type, can_swap))
-+			continue;
-+
-+		spin_unlock_irq(&lruvec->lru_lock);
-+		cond_resched();
-+		goto restart;
- 	}
- 
- 	/*
-_
-
-Patches currently in -mm which might be from kaleshsingh@google.com are
-
-mm-unstable-multi-gen-lru-fix-per-zone-reclaim.patch
-mm-unstable-multi-gen-lru-avoid-race-in-inc_min_seq.patch
-mm-unstable-multi-gen-lru-fix-can_swap-in-lru_gen_look_around.patch
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
