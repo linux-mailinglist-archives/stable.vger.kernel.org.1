@@ -2,124 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA93B76D527
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 19:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F6F76D563
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 19:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232560AbjHBR1H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 13:27:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48544 "EHLO
+        id S230049AbjHBRdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 13:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232559AbjHBR0s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 13:26:48 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 179FA2D6A;
-        Wed,  2 Aug 2023 10:26:44 -0700 (PDT)
-Received: from rrs24-12-35.corp.microsoft.com (unknown [131.107.147.181])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 5E652238C435;
-        Wed,  2 Aug 2023 10:26:43 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5E652238C435
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1690997203;
-        bh=JxNu19adZsu3M0z/z3GFu4USKc1JYfzjTR+eXKUvlDs=;
+        with ESMTP id S229924AbjHBRcl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 13:32:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA2C3C28;
+        Wed,  2 Aug 2023 10:30:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2613861A41;
+        Wed,  2 Aug 2023 17:30:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4A2C433C8;
+        Wed,  2 Aug 2023 17:30:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690997436;
+        bh=lH1EorD3zk3GKWEsJuCDZ7QgsmxXYbXfbbIODKU0jSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WP2U/xqOlg9dXus047uOQXiWeS1uOyD1f5yFXMPeDHHAErxOn36jTxi8wnAmpH02A
-         JU2Ni3Wy3G6AnIKF0bfXMiALAu7srGzIz9tPLmDvmiCjRyzShf36ejAObu/IEqszGv
-         /hdJjYPo0dyRR6HJSdMKGo8WpMTyuOmiLuPaqFKw=
-From:   Easwar Hariharan <eahariha@linux.microsoft.com>
-To:     stable@vger.kernel.org
-Cc:     easwar.hariharan@microsoft.com,
-        Robin Murphy <robin.murphy@arm.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Joerg Roedel <joro@8bytes.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Tomas Krcka <krckatom@amazon.de>,
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT
-        (AARCH64 ARCHITECTURE)),
-        linux-doc@vger.kernel.org (open list:DOCUMENTATION),
-        linux-kernel@vger.kernel.org (open list),
-        iommu@lists.linux.dev (open list:IOMMU SUBSYSTEM)
-Subject: [PATCH v2 6.4 4/4] iommu/arm-smmu-v3: Document nesting-related errata
-Date:   Wed,  2 Aug 2023 17:26:20 +0000
-Message-Id: <20230802172620.1628017-5-eahariha@linux.microsoft.com>
+        b=qaX4Uo2ysGBuBwAlUUrofmzs01dRfoOr2JeFqx8H1R/9onI6denHz3JBQZewrPegy
+         P/A5uP4qRQ4IbXibfGLi+DLtgADSQU1oykSEiqO/bDRbU260OfPc0XyUwVKUSHVZhl
+         Wl1eYbLV9sHAjVF7dN2jufkbaWyiU7klv5S+h4iKO+Av/4iASSM2YnSHIguIMG8knk
+         TJohy7LRoq57cxcQkJO9zGSgkkDc+fKKFFB5PUCu5KLZD/Og6zbyoadj37IuUBHdqA
+         fznAKjMjo04Nn5pBD/15FUMIUxbTV8bdNA6dXjRv7HFfbTIhNr4s5P4/b3Ax+NVK4M
+         RdOTMfq5lyHdA==
+From:   SeongJae Park <sj@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, damon@lists.linux.dev,
+        SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 6.4 000/235] 6.4.8-rc2 review
+Date:   Wed,  2 Aug 2023 17:30:33 +0000
+Message-Id: <20230802173033.108621-1-sj@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230802172620.1628017-1-eahariha@linux.microsoft.com>
-References: <20230802172620.1628017-1-eahariha@linux.microsoft.com>
+In-Reply-To: <20230802065501.780725463@linuxfoundation.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+On Wed, 2 Aug 2023 09:42:04 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-commit 0bfbfc526c70606bf0fad302e4821087cbecfaf4 upstream
+> This is the start of the stable review cycle for the 6.4.8 release.
+> There are 235 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 04 Aug 2023 06:54:15 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.8-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
 
-Both MMU-600 and MMU-700 have similar errata around TLB invalidation
-while both stages of translation are active, which will need some
-consideration once nesting support is implemented. For now, though,
-it's very easy to make our implicit lack of nesting support explicit
-for those cases, so they're less likely to be missed in future.
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/696da78d32bb4491f898f11b0bb4d850a8aa7c6a.1683731256.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] 6a44ac630b76 ("Linux 6.4.8-rc2")
+
+
+Thanks,
+SJ
+
+[...]
+
 ---
- Documentation/arm64/silicon-errata.rst      | 4 ++--
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 5 +++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index b0346968765d..3ce6e4aebdef 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -143,9 +143,9 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
--| ARM            | MMU-600         | #1076982        | N/A                         |
-+| ARM            | MMU-600         | #1076982,1209401| N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
--| ARM            | MMU-700         | #2812531        | N/A                         |
-+| ARM            | MMU-700         | #2268618,2812531| N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 7e08ec55df2a..bbad54aa6c8c 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3457,11 +3457,16 @@ static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
- 			/* Arm erratum 1076982 */
- 			if (variant == 0 && revision <= 2)
- 				smmu->features &= ~ARM_SMMU_FEAT_SEV;
-+			/* Arm erratum 1209401 */
-+			if (variant < 2)
-+				smmu->features &= ~ARM_SMMU_FEAT_NESTING;
- 			break;
- 		case IIDR_PRODUCTID_ARM_MMU_700:
- 			/* Arm erratum 2812531 */
- 			smmu->features &= ~ARM_SMMU_FEAT_BTM;
- 			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
-+			/* Arm errata 2268618, 2812531 */
-+			smmu->features &= ~ARM_SMMU_FEAT_NESTING;
- 			break;
- 		}
- 		break;
--- 
-2.25.1
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: debugfs_rm_non_contexts.sh
+ok 8 selftests: damon: sysfs.sh
+ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
+ok 10 selftests: damon: reclaim.sh
+ok 11 selftests: damon: lru_sort.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_m68k.sh
+ok 12 selftests: damon-tests: build_arm64.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
 
+PASS
