@@ -2,141 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5668776C4E5
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 07:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B4576C4F2
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 07:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230381AbjHBFfd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 01:35:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47766 "EHLO
+        id S231883AbjHBFhH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 01:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjHBFfc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 01:35:32 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25008E4;
-        Tue,  1 Aug 2023 22:35:30 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id D446460173;
-        Wed,  2 Aug 2023 07:35:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690954528; bh=rHsulKEUysysj8x5Cke2gqcEQZZ8Y32joe5UZz0C7uQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=icxcG/fgor0g4xLI7PuB+dQcgMN8y+rgod3MRL5eJMw5T1TfcXcNl4yZ7ynnQUpeA
-         8lyfcCI8PplJcL5qAnpSvdZeSx4qsRURk1Onb6ywrdjF+rtFqhkF7Xp0e6OwGJ90fn
-         DEu/UYJi0pUDvInEcsy0fG5BuH/KrtlpllROF8wjqnBkTSoCFneC2v5Awe583bDHmE
-         YFIq6SLIa0xVYukIu3WxQrefhdCNPLfGEscgB16ZNlClgdIjKxZETVZ/coJU02hVqm
-         DpGH9qnVwxn1skVk0ATi2B3/gSNM70PwzlCSwa9x0cdibJBlualltYKt5SUJ0nSEbh
-         WyfOTxXD5PicA==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id YP72WSpx8Yoe; Wed,  2 Aug 2023 07:35:26 +0200 (CEST)
-Received: from defiant.. (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id B9DDE6015F;
-        Wed,  2 Aug 2023 07:35:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1690954526; bh=rHsulKEUysysj8x5Cke2gqcEQZZ8Y32joe5UZz0C7uQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=cIRvR0dG81Ev2J0lJL3CjNoNsTn0LqPgeoI8BBQhAevdjXrBEofmKAt1z4pXMiU0/
-         yYf0NWix9m9s8MuD8ZYQSVa0Go3AGO3ZiDlhCzspBNvU+C/lB0Kmq+oaokzhYLygCa
-         y7S6Hfwv//hzqZyjwua763PwKKK0JVa0Khya7+PMYTnC9nTeiuTI2VjqEWbkcJzZki
-         fI+m3Aa1GHMC1xBXSxyT4Ws+ul2ZvUJ5kNM5sqquli8sYPCB2mJUoHP/M6dRy7QKzv
-         BSC0i+39UL3OAyeehbKulsVnIGJ6rCcu4ThwjBc5LRgdBLcDWKYtcFplDGLEZk9ne/
-         yrnKLOKf66iEA==
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        linux-kernel@vger.kernel.org
-Cc:     Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH v2 1/1] test_firmware: fix the memory leaks with the reqs buffer
-Date:   Wed,  2 Aug 2023 07:32:54 +0200
-Message-Id: <20230802053253.667634-1-mirsad.todorovac@alu.unizg.hr>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230425AbjHBFhG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 01:37:06 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7FCAFE4;
+        Tue,  1 Aug 2023 22:37:05 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1099)
+        id E6B10238AF65; Tue,  1 Aug 2023 22:37:04 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E6B10238AF65
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1690954624;
+        bh=llvx4mdfvSj5J9l9m59JQT19sx7YAHn2YDSG1Mqh4zg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XXeucYayypWB4Kio0+xxOSHEZRvpMym5mJtcgLvrT2yZlil5eZM/tWaHJtEkIUWiP
+         FF8Vo+uFbn0zN1C/cQslGXIeVX0ojBDCdxMUZstsuVdhBv0IvOOX96FOhvqpxx51wT
+         0XNmljKGS06jFaD5DcQ/XkZQ6NFNWwgR/P0q/eio=
+Date:   Tue, 1 Aug 2023 22:37:04 -0700
+From:   Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+To:     Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
+Cc:     Souradeep Chakrabarti <schakrabarti@microsoft.com>,
+        Simon Horman <horms@kernel.org>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        Long Li <longli@microsoft.com>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "cai.huoqing@linux.dev" <cai.huoqing@linux.dev>,
+        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+        vkuznets <vkuznets@redhat.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [EXTERNAL] Re: [PATCH V7 net] net: mana: Fix MANA VF unload when
+ hardware is
+Message-ID: <20230802053704.GA3488@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1690892953-25201-1-git-send-email-schakrabarti@linux.microsoft.com>
+ <ZMklUch+vfZBqfAr@kernel.org>
+ <PUZP153MB0788A2C4FC7A76D2CDD021BCCC0AA@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
+ <CAH-L+nPsuoJfCQcJnpMWk5DPGev8f+YWi0K4V+fU=5-bxP5GVw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <CAH-L+nPsuoJfCQcJnpMWk5DPGev8f+YWi0K4V+fU=5-bxP5GVw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream ]
+On Wed, Aug 02, 2023 at 10:57:52AM +0530, Kalesh Anakkur Purayil wrote:
+> Hi Souradeep,
+> 
+> It looks like the subject line is not complete. I could see "net: mana: Fix
+> MANA VF unload when hardware is".
+> 
+> Is that correct?
+> 
+> Regards,
+> Kalesh
+>
+Yes, it got truncated. Will fix it in next version. 
+> On Wed, Aug 2, 2023 at 12:29 AM Souradeep Chakrabarti <
+> schakrabarti@microsoft.com> wrote:
+> 
+> >
+> >
+> > >-----Original Message-----
+> > >From: Simon Horman <horms@kernel.org>
+> > >Sent: Tuesday, August 1, 2023 9:01 PM
+> > >To: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> > >Cc: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
+> > ><haiyangz@microsoft.com>; wei.liu@kernel.org; Dexuan Cui
+> > ><decui@microsoft.com>; davem@davemloft.net; edumazet@google.com;
+> > >kuba@kernel.org; pabeni@redhat.com; Long Li <longli@microsoft.com>; Ajay
+> > >Sharma <sharmaajay@microsoft.com>; leon@kernel.org;
+> > >cai.huoqing@linux.dev; ssengar@linux.microsoft.com; vkuznets
+> > ><vkuznets@redhat.com>; tglx@linutronix.de; linux-hyperv@vger.kernel.org;
+> > >netdev@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
+> > >rdma@vger.kernel.org; Souradeep Chakrabarti
+> > ><schakrabarti@microsoft.com>; stable@vger.kernel.org
+> > >Subject: [EXTERNAL] Re: [PATCH V7 net] net: mana: Fix MANA VF unload when
+> > >hardware is
+> > >
+> > >On Tue, Aug 01, 2023 at 05:29:13AM -0700, Souradeep Chakrabarti wrote:
+> > >
+> > >...
+> > >
+> > >Hi Souradeep,
+> > >
+> > >
+> > >> +    for (i = 0; i < apc->num_queues; i++) {
+> > >> +            txq = &apc->tx_qp[i].txq;
+> > >> +            while (skb = skb_dequeue(&txq->pending_skbs)) {
+> > >
+> > >W=1 builds with both clang-16 and gcc-12 complain that they would like an
+> > >extra set of parentheses around an assignment used as a truth value.
+> > Thanks for letting me know. I will fix it in next version.
+> > >
+> > >> +                    mana_unmap_skb(skb, apc);
+> > >> +                    dev_consume_skb_any(skb);
+> > >> +            }
+> > >> +            atomic_set(&txq->pending_sends, 0);
+> > >> +    }
+> > >>      /* We're 100% sure the queues can no longer be woken up, because
+> > >>       * we're sure now mana_poll_tx_cq() can't be running.
+> > >>       */
+> > >> --
+> > >> 2.34.1
+> > >>
+> > >>
+> >
+> >
+> 
+> -- 
+> Regards,
+> Kalesh A P
 
-Dan Carpenter spotted that test_fw_config->reqs will be leaked if
-trigger_batched_requests_store() is called two or more times.
-The same appears with trigger_batched_requests_async_store().
-
-This bug wasn't triggered by the tests, but observed by Dan's visual
-inspection of the code.
-
-The recommended workaround was to return -EBUSY if test_fw_config->reqs
-is already allocated.
-
-Fixes: c92316bf8e94 ("test_firmware: add batched firmware tests")
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v4.14
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-
-[ This fix is applied against the 4.14 stable branch. There are no changes to the ]
-[ fix in code when compared to the upstread, only the reformatting for backport.  ]
-
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
----
-v1 -> v2:
- removed the Reviewed-by: and Acked-by tags, as this is a slightly different patch and
- those need to be reacquired
-
- lib/test_firmware.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 1c5e5246bf10..5318c5e18acf 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -621,6 +621,11 @@ static ssize_t trigger_batched_requests_store(struct device *dev,
- 
- 	mutex_lock(&test_fw_mutex);
- 
-+        if (test_fw_config->reqs) {
-+                rc = -EBUSY;
-+                goto out_bail;
-+        }
-+
- 	test_fw_config->reqs = vzalloc(sizeof(struct test_batched_req) *
- 				       test_fw_config->num_requests * 2);
- 	if (!test_fw_config->reqs) {
-@@ -723,6 +728,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
- 
- 	mutex_lock(&test_fw_mutex);
- 
-+        if (test_fw_config->reqs) {
-+                rc = -EBUSY;
-+                goto out_bail;
-+        }
-+
- 	test_fw_config->reqs = vzalloc(sizeof(struct test_batched_req) *
- 				       test_fw_config->num_requests * 2);
- 	if (!test_fw_config->reqs) {
--- 
-2.34.1
 
