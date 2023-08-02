@@ -2,168 +2,219 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 303AE76C31D
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 04:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 966C376C32D
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 04:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231346AbjHBCxO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 1 Aug 2023 22:53:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44082 "EHLO
+        id S229933AbjHBC4b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 1 Aug 2023 22:56:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230262AbjHBCxO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 22:53:14 -0400
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E1810B
-        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 19:53:12 -0700 (PDT)
-Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-48645045826so2415372e0c.2
-        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 19:53:12 -0700 (PDT)
+        with ESMTP id S231588AbjHBC4b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 1 Aug 2023 22:56:31 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14375273B
+        for <stable@vger.kernel.org>; Tue,  1 Aug 2023 19:56:16 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d27ac992539so5059120276.3
+        for <stable@vger.kernel.org>; Tue, 01 Aug 2023 19:56:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690944791; x=1691549591;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=b6/35ZoKcBhfJYY+Rmmtzdcbq9J4zFITai0RFdfSbKg=;
-        b=GFFHVZxFzhErjyxupkWSnu/vaA8M1Nq7no8oPjk3qW1UIOCo5AKVjDfmJmi7ayFaJT
-         vD+t4WD8+T+AY+agUnbVx89OBhk72U57EV0jFQh59gUK2/8m0ECt2ipZPB6NB9jfn+AT
-         uhA31zLtxJP9fnwh50y3A0ZU+eBGnS8ZTf73tOKuiy1L/zKm8tXzYYlUw3c2kSZZtYvg
-         jxlkGpCX7CEiIxgKaDbdUUFG1+NOX3u0Lp6yCLmU5YrWrVAdmDXu7T/zHJEtdhs2mXB4
-         496KGV/XVZnw7gRe8On02O4wSFzzDh7AS7ti2PNiDd+lFX0Yn46zQeAwJf1ZHkks4KDu
-         pi6g==
+        d=google.com; s=20221208; t=1690944975; x=1691549775;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aqehfJB+hF+Fne+AdGJurbsZIYsQCeOte57mRi2GAJw=;
+        b=33TVVDzXg6eBl7/Vpt8F6zz+Hj/NOmdXdllc0HT3+fXbEBhkPYtEkaq37eNBBfQ//f
+         huzyAhMvUorpNH56dDYRwA06JZVdYTEAbzfGjbqw3gBWiic0SbSYYIRLI7+dUO6KJeP/
+         QbLSh8xuVcrhWjh4oWX9BfGiIQ2WhcFjEVln6zdtkNbTrb8Vr/FaB0bbjGe719xWxqpC
+         hL3EQTp/eSWIIOfcyzhoc5/BO66sBZZeI+o1Tma4ICZmtHB5eUiGscJSklwG5yeK8aOP
+         pOTWKEoNcoXV0uOzF2WA7ODrKPaZuVgMaXvYUoulWRPVnXT17L+Vmq1QR0HZFgWxuJek
+         tQWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690944791; x=1691549591;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b6/35ZoKcBhfJYY+Rmmtzdcbq9J4zFITai0RFdfSbKg=;
-        b=Ik7Q52Z0kh745KB1N37Db+ziGoa2EZVogfNqt+cYDVYc2ljwR7rCNWRAzIEd7YzoSZ
-         yUED72p/X3hrYe6r702C2rwVS7IcJReKRPOI5zyX0gVNMvkNVtLrxGnhLIsFjKBykCho
-         R44YwQRzIdhsSHKUZlpcuJYUt3nyWqkZ5XGs9GdBu4EDCvqmlQ1+bJy6ttVmifvK3oL2
-         TboEJLb5fQXdiPZZgbZ4ODStvRAEtXEIHTGBPGzA2XOcyG2ptcfDFWU3nkRJnMZ+Cb/q
-         Li+x0wJv1VuDKvuT1wBE5Zugj7hsU8qzRjePzLhuR3tLzhRmYriywb5t4JD95FrDlb5G
-         +5Cw==
-X-Gm-Message-State: ABy/qLZ1Ofjbq58HcvmBQQeM0ET3wt6byL/YIqWpbI0UfWCKlbhD7Mwa
-        CckfR7yZ7qxWo2IAR6oEMFlyYJLkHb+Ay0c0URXePw==
-X-Google-Smtp-Source: APBJJlE1gCA8tKH5sYTEP/FZeFFoep4cuyxkMCDwNwtcVmaE3u/k2C0/DAImLXlO/nZL9KA/7Dms2iGYeM3LrVk5CUs=
-X-Received: by 2002:a1f:c304:0:b0:471:7996:228f with SMTP id
- t4-20020a1fc304000000b004717996228fmr3664338vkf.7.1690944791082; Tue, 01 Aug
- 2023 19:53:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230801091925.659598007@linuxfoundation.org>
-In-Reply-To: <20230801091925.659598007@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 2 Aug 2023 08:22:59 +0530
-Message-ID: <CA+G9fYsv5dFJfjNq7O+CW3J9jEV0zDQiOR+8dyacwhpDih0xJw@mail.gmail.com>
-Subject: Re: [PATCH 6.4 000/239] 6.4.8-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Aaron Lewis <aaronlewis@google.com>,
-        kvm list <kvm@vger.kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>
+        d=1e100.net; s=20221208; t=1690944975; x=1691549775;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aqehfJB+hF+Fne+AdGJurbsZIYsQCeOte57mRi2GAJw=;
+        b=aXxA8a047oCXLdSOLZGZJ6kTHSYzGOJSDV3GLjGPAsvzvVqYnd5CLlOcZQJE3b8gOU
+         Kdqq2EJVo8w3pBOyGNvHgE79YMV1jXL2IcuHErKrBSo/nJ/x1MNyYExrQebQkUFwmkHz
+         Mfic37qAfeYHzWxDym+3nZJ8NghM2d8RgqoYxsHrsph6bZxByomzg6e+aPKxdoNt25Cv
+         ykvCfHNqo+cn8NxLvvHJGv+hANxc5EetVNt+dbYoyqbZSpDY4/1+Lk1WkoPZxIZ3bBwN
+         mKu/82nmef54bArQ8Q6HJyuTNMGTMAB3DEEhKaAWOFZSYFLUtL7DyAsq103r5/OZ4OFR
+         obWg==
+X-Gm-Message-State: ABy/qLbPqegP4q+V4YSJQ4GQWXQN4GNnjHWVxhjMhzE6KRJqGsHcEeH8
+        eACHpe44ksH/HU0IjkSmxECJcRRs8k/rxgq7Lw==
+X-Google-Smtp-Source: APBJJlGu4CGYprEhx9EAJQV2bkMTULOViWk9fNZltzmcAuDxS7zR2BS8SgTh3oU+2KBCXMRrlqL63XtCKu/qeEPcYg==
+X-Received: from kalesh.mtv.corp.google.com ([2620:15c:211:201:aa5f:ff75:318:255])
+ (user=kaleshsingh job=sendgmr) by 2002:a05:6902:100f:b0:cf9:3564:33cc with
+ SMTP id w15-20020a056902100f00b00cf9356433ccmr116986ybt.13.1690944975112;
+ Tue, 01 Aug 2023 19:56:15 -0700 (PDT)
+Date:   Tue,  1 Aug 2023 19:56:02 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Message-ID: <20230802025606.346758-1-kaleshsingh@google.com>
+Subject: [PATCH v2 1/3] mm-unstable: Multi-gen LRU: Fix per-zone reclaim
+From:   Kalesh Singh <kaleshsingh@google.com>
+To:     yuzhao@google.com, akpm@linux-foundation.org
+Cc:     surenb@google.com, android-mm@google.com, kernel-team@android.com,
+        Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org,
+        Charan Teja Kalla <quic_charante@quicinc.com>,
+        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Suleiman Souhlal <suleiman@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Steven Barrett <steven@liquorix.net>,
+        Brian Geffon <bgeffon@google.com>,
+        Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 1 Aug 2023 at 15:11, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.4.8 release.
-> There are 239 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 03 Aug 2023 09:18:38 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.8-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+MGLRU has a LRU list for each zone for each type (anon/file) in each
+generation:
 
-Following kselftest build regression found,
+	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
+The min_seq (oldest generation) can progress independently for each
+type but the max_seq (youngest generation) is shared for both anon and
+file. This is to maintain a common frame of reference.
 
-    selftests/rseq: Play nice with binaries statically linked against
-glibc 2.35+
-    commit 3bcbc20942db5d738221cca31a928efc09827069 upstream.
+In order for eviction to advance the min_seq of a type, all the per-zone
+lists in the oldest generation of that type must be empty.
 
+The eviction logic only considers pages from eligible zones for
+eviction or promotion.
 
-    To allow running rseq and KVM's rseq selftests as statically linked
-    binaries, initialize the various "trampoline" pointers to point directly
-    at the expect glibc symbols, and skip the dlysm() lookups if the rseq
-    size is non-zero, i.e. the binary is statically linked *and* the libc
-    registered its own rseq.
+    scan_folios() {
+	...
+	for (zone = sc->reclaim_idx; zone >= 0; zone--)  {
+	    ...
+	    sort_folio(); 	// Promote
+	    ...
+	    isolate_folio(); 	// Evict
+	}
+	...
+    }
 
-    Define weak versions of the symbols so as not to break linking against
-    libc versions that don't support rseq in any capacity.
+Consider the system has the movable zone configured and default 4
+generations. The current state of the system is as shown below
+(only illustrating one type for simplicity):
 
-    The KVM selftests in particular are often statically linked so that they
-    can be run on targets with very limited runtime environments, i.e. test
-    machines.
+Type: ANON
 
-    Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for
-compatibility with glibc-2.35")
-    Cc: Aaron Lewis <aaronlewis@google.com>
-    Cc: kvm@vger.kernel.org
-    Cc: stable@vger.kernel.org
-    Signed-off-by: Sean Christopherson <seanjc@google.com>
-    Message-Id: <20230721223352.2333911-1-seanjc@google.com>
-    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	Zone    DMA32     Normal    Movable    Device
 
+	Gen 0       0          0        4GB         0
 
-Build log:
-----
-x86_64-linux-gnu-gcc -O2 -Wall -g -I./ -isystem
-/home/tuxbuild/.cache/tuxmake/builds/1/build/usr/include
--L/home/tuxbuild/.cache/tuxmake/builds/1/build/kselftest/rseq
--Wl,-rpath=./   -shared -fPIC rseq.c -lpthread -ldl -o
-/home/tuxbuild/.cache/tuxmake/builds/1/build/kselftest/rseq/librseq.so
-rseq.c:41:1: error: unknown type name '__weak'
-   41 | __weak ptrdiff_t __rseq_offset;
-      | ^~~~~~
-rseq.c:41:18: error: expected '=', ',', ';', 'asm' or '__attribute__'
-before '__rseq_offset'
-   41 | __weak ptrdiff_t __rseq_offset;
-      |                  ^~~~~~~~~~~~~
-rseq.c:42:7: error: expected ';' before 'unsigned'
-   42 | __weak unsigned int __rseq_size;
-      |       ^~~~~~~~~
-      |       ;
-rseq.c:43:7: error: expected ';' before 'unsigned'
-   43 | __weak unsigned int __rseq_flags;
-      |       ^~~~~~~~~
-      |       ;
-rseq.c:45:47: error: '__rseq_offset' undeclared here (not in a
-function); did you mean 'rseq_offset'?
-   45 | static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
-      |                                               ^~~~~~~~~~~~~
-      |                                               rseq_offset
-make[3]: Leaving directory 'tools/testing/selftests/rseq'
+	Gen 1       0        1GB        1MB         0
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+	Gen 2     1MB        4GB        1MB         0
 
-Links:
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TNSVjRCfcIaJWQNkPwDQ9jn2ls/build.log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.4.7-240-g2c273bf138a4/testrun/18770115/suite/kselftest-rseq/test/shardfile-rseq/details/
+	Gen 3     1MB        1MB        1MB         0
 
+Now consider there is a GFP_KERNEL allocation request (eligible zone
+index <= Normal), evict_folios() will return without doing any work
+since there are no pages to scan in the eligible zones of the oldest
+generation. Reclaim won't make progress until triggered from a ZONE_MOVABLE
+allocation request; which may not happen soon if there is a lot of free
+memory in the movable zone. This can lead to OOM kills, although there
+is 1GB pages in the Normal zone of Gen 1 that we have not yet tried to
+reclaim.
 
---
-Linaro LKFT
-https://lkft.linaro.org
+This issue is not seen in the conventional active/inactive LRU since
+there are no per-zone lists.
+
+If there are no (not enough) folios to scan in the eligible zones, move
+folios from ineligible zone (zone_index > reclaim_index) to the next
+generation. This allows for the progression of min_seq and reclaiming
+from the next generation (Gen 1).
+
+Qualcomm, Mediatek and raspberrypi [1] discovered this issue independently.
+
+[1] https://github.com/raspberrypi/linux/issues/5395
+
+Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+Cc: stable@vger.kernel.org
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Reported-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+---
+
+Changes in v2:
+  - Add Fixes tag and cc stable
+
+ mm/vmscan.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 4039620d30fe..489a4fc7d9b1 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4889,7 +4889,8 @@ static int lru_gen_memcg_seg(struct lruvec *lruvec)
+  *                          the eviction
+  ******************************************************************************/
+ 
+-static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
++static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
++		       int tier_idx)
+ {
+ 	bool success;
+ 	int gen = folio_lru_gen(folio);
+@@ -4939,6 +4940,13 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
+ 		return true;
+ 	}
+ 
++	/* ineligible */
++	if (zone > sc->reclaim_idx) {
++		gen = folio_inc_gen(lruvec, folio, false);
++		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
++		return true;
++	}
++
+ 	/* waiting for writeback */
+ 	if (folio_test_locked(folio) || folio_test_writeback(folio) ||
+ 	    (type == LRU_GEN_FILE && folio_test_dirty(folio))) {
+@@ -4987,7 +4995,8 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
+ 		       int type, int tier, struct list_head *list)
+ {
+-	int gen, zone;
++	int i;
++	int gen;
+ 	enum vm_event_item item;
+ 	int sorted = 0;
+ 	int scanned = 0;
+@@ -5003,9 +5012,10 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
+ 
+ 	gen = lru_gen_from_seq(lrugen->min_seq[type]);
+ 
+-	for (zone = sc->reclaim_idx; zone >= 0; zone--) {
++	for (i = MAX_NR_ZONES; i > 0; i--) {
+ 		LIST_HEAD(moved);
+ 		int skipped = 0;
++		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
+ 		struct list_head *head = &lrugen->folios[gen][type][zone];
+ 
+ 		while (!list_empty(head)) {
+@@ -5019,7 +5029,7 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
+ 
+ 			scanned += delta;
+ 
+-			if (sort_folio(lruvec, folio, tier))
++			if (sort_folio(lruvec, folio, sc, tier))
+ 				sorted += delta;
+ 			else if (isolate_folio(lruvec, folio, sc)) {
+ 				list_add(&folio->lru, list);
+-- 
+2.41.0.255.g8b1d071c50-goog
+
