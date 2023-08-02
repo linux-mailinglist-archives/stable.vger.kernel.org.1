@@ -2,76 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DECF76D774
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 21:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45CE976D78F
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 21:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjHBTJl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 15:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59102 "EHLO
+        id S229691AbjHBTO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 15:14:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbjHBTJj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 15:09:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F2326AE;
-        Wed,  2 Aug 2023 12:09:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEA7461A73;
-        Wed,  2 Aug 2023 19:09:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A35C433C7;
-        Wed,  2 Aug 2023 19:09:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691003378;
-        bh=YKlsStj3ezOkt0RWaJXuZ7tqMra0EQULwTm0YtT1O1I=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=BxoOGEVgCqbAnkuVPG4r70PXFYVmKk+LgZKjejuZD+9XmICZoqz+vPYJLel0E1B6o
-         q2mW1hNKaAIYNwWyrxVYTzK7rcU09oDYKY2+ZmvszEHpiBNjgQ764DuCtTqngdvIDu
-         JcOID4UUx5AYHu7cZ6qE2Ru4slL1l6zWldrGtIBLXnBU69uYZLRAYIo4FBoHHgdFpl
-         LFA3Ac1Y74LrcMQcnYBnUqpuSYXOeopyFnmvtSyR8hxTB0i1XGEwXXa4UsG8vVPcEb
-         H2v9KUBhuDO1Mf8/6XRLs2Z5HH2H/5U5mEpke4BBwEz7vE7ynvv8UAxKKsnNz6prd/
-         l7VLa+dsQ9gBw==
-Message-ID: <ccd0ea6c0c0165490279a357745b0f71.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230272AbjHBTO4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 15:14:56 -0400
+Received: from qproxy3-pub.mail.unifiedlayer.com (qproxy3-pub.mail.unifiedlayer.com [67.222.38.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C26526B5
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 12:14:50 -0700 (PDT)
+Received: from outbound-ss-761.bluehost.com (outbound-ss-761.bluehost.com [74.220.211.250])
+        by qproxy3.mail.unifiedlayer.com (Postfix) with ESMTP id 74CAB8028C1C
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 19:14:49 +0000 (UTC)
+Received: from cmgw15.mail.unifiedlayer.com (unknown [10.0.90.130])
+        by progateway8.mail.pro1.eigbox.com (Postfix) with ESMTP id 19CEC1004959E
+        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 19:14:49 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id RHJ3qrG1VlzgsRHJ3qzSJc; Wed, 02 Aug 2023 19:14:49 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=eIXWMFl1 c=1 sm=1 tr=0 ts=64caab29
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10:nop_charset_1 a=UttIx32zK-AA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ykKLMO6uxbxasuSOcTMpQf6zbPiZ5cMm8K3Hr37SHFA=; b=VJwspuoBYPNOMcr9qL6vFTs230
+        DNiO4xZtbnXlooeBUrMD7hktShPXtWY/J5kB5fkDA89EsHDhJnQbKInXsrOlO6bski4iDzDq99JTV
+        DAsLtXn3I14+TPc2RS6o4ceu6xs7sso6qLwkJZzCPmQg52PkPRcbSmzI7SnQ6zdondjCCzxc67q7Y
+        05BDeWgP1eAO21ec6K/moIL8CUfhU/NFKxAA4ziczWq2Bc28hKIp6YvxOm/rUlzEFyPJvQmUGuasu
+        hk2ig2IGFXOKeItj55bwPMxhvnH5WaGBpkbz9NqQ9s5rdsQ44dqaDFB+usGh+EJbaVkxBX5pVyJFX
+        ua37iR5w==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:50494 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qRHJ1-001Veq-37;
+        Wed, 02 Aug 2023 13:14:47 -0600
+Subject: Re: [PATCH 5.15 000/153] 5.15.124-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230802065452.161574662@linuxfoundation.org>
+In-Reply-To: <20230802065452.161574662@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <5638a340-b219-29fd-8808-bae271ecc217@w6rz.net>
+Date:   Wed, 2 Aug 2023 12:14:45 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230728165923.108589-1-krzysztof.kozlowski@linaro.org>
-References: <20230728165923.108589-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] dt-bindings: clock: xlnx,versal-clk: drop select:false
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org,
-        Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
-To:     Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Michal Simek <michal.simek@amd.com>,
-        Rajan Vaja <rajan.vaja@xilinx.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 02 Aug 2023 12:09:36 -0700
-User-Agent: alot/0.10
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qRHJ1-001Veq-37
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:50494
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 36
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Quoting Krzysztof Kozlowski (2023-07-28 09:59:23)
-> select:false makes the schema basically ignored and not effective, which
-> is clearly not what we want for a device binding.
->=20
-> Fixes: 352546805a44 ("dt-bindings: clock: Add bindings for versal clock d=
-river")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> ---
+On 8/2/23 12:41 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.124 release.
+> There are 153 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 04 Aug 2023 06:54:22 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.124-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Applied to clk-next
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+
+Tested-by: Ron Economos <re@w6rz.net>
+
