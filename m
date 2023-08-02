@@ -2,111 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70A7A76CD64
-	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 14:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5AE976CD84
+	for <lists+stable@lfdr.de>; Wed,  2 Aug 2023 14:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234706AbjHBMqu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 2 Aug 2023 08:46:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38750 "EHLO
+        id S234738AbjHBMuM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 2 Aug 2023 08:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234512AbjHBMqq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 08:46:46 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A943835A5
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 05:46:26 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so1947080a12.1
-        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 05:46:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1690980384; x=1691585184;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1jPNTUnEQLa/vby68PUQOq0gidCidKmFF2Y70Baz8cg=;
-        b=Y/sN+v9e/KjFR3mHRAQJs7ZXEWv/HN8IJxocaNZrmUrou/Vfoah2wKf7LegCZwT2e6
-         5wcmbTbByU81XUuM+bGm3DLUe6HsWj4YiY1rhTJPHW+7dkHjJyE7LeaubYV2fm3eWcut
-         FN6rwaB7QV3Bafw7RPfZyB1qH1FIIH+vekFB7KijWb9WPRuJHkAbfHvPBY07JLp1mbiK
-         sXoQW1hR579ea5ZtccrHX91aR2LjH5sRuYwF6HowWtSSV3JIwIVNu+XkJ5iCd9s3vFDO
-         KKlsLN/+0CFE9lfBeTPeAUjWvYP2MWXTKU/tj9H32/MtbRCNvh8SLVRZ8rrxhZWz1Je5
-         b4kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690980384; x=1691585184;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1jPNTUnEQLa/vby68PUQOq0gidCidKmFF2Y70Baz8cg=;
-        b=LrSlVLWFRC17B0er7ld4yoTkTZ9tyQke0qHyVb7801M9XnoSSiLv19bIhCTt3h6UoU
-         uGsWCqUTF+/ZiW8X2by4KQs941e8N+jCcRR2fr5U/5082TQBG6TJsQtyuIMnccP9P71M
-         IXopRJeZl0UteJrQl0EhJRrT21jeUmu/bRRBwTvppasBXaLJIhTDJoR0nTdcriPdNVbe
-         X+hP48isoilSwXu2eDl5UYd1UOvxCA577uKXfaLbsNSOj4Pd5uTpdW69HVktO/veSoWU
-         wfPHcTsiApRgZ1e4X/i+Mwd+DFxBTPjLM1tGTsIYygTGwBO+6cqtnLcodcHkrF9RuP12
-         fIrQ==
-X-Gm-Message-State: ABy/qLZQgnAQbuFdOg0pj2/AclNsWp0eA8ejPg2a17S/xYnbwMYc+yhY
-        gkXBYOSzqfgAVE1ZGybvMa7sN0gB2gTf5/KM1iRSnA==
-X-Google-Smtp-Source: APBJJlG6MH+8DtLRZ0WDEr8YewPHyaBOyzfa56SZBQSo3KmJOimYMnNRDNJs1dvfRqY+rJfMJ4O6XPXbj5Ej1gME1UA=
-X-Received: by 2002:a05:6402:518b:b0:522:ddeb:cdcb with SMTP id
- q11-20020a056402518b00b00522ddebcdcbmr5854329edd.18.1690980383950; Wed, 02
- Aug 2023 05:46:23 -0700 (PDT)
+        with ESMTP id S234901AbjHBMtt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 2 Aug 2023 08:49:49 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F0C6F2121;
+        Wed,  2 Aug 2023 05:49:24 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2DD5A113E;
+        Wed,  2 Aug 2023 05:50:07 -0700 (PDT)
+Received: from [10.57.77.90] (unknown [10.57.77.90])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB4F03F5A1;
+        Wed,  2 Aug 2023 05:49:21 -0700 (PDT)
+Message-ID: <a590da86-0c42-7d46-d320-c661a59a46c1@arm.com>
+Date:   Wed, 2 Aug 2023 13:49:19 +0100
 MIME-Version: 1.0
-References: <20230802065510.869511253@linuxfoundation.org>
-In-Reply-To: <20230802065510.869511253@linuxfoundation.org>
-From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date:   Wed, 2 Aug 2023 21:46:13 +0900
-Message-ID: <CAKL4bV6VSG8rsu2tM8A9Mrp=khz33YxTMkx53HZytk4Z9izJGQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/225] 6.1.43-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 0/2] don't use mapcount() to check large folio sharing
+To:     "Yin, Fengwei" <fengwei.yin@intel.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        akpm@linux-foundation.org, willy@infradead.org,
+        vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+        minchan@kernel.org, yuzhao@google.com, david@redhat.com,
+        shy828301@gmail.com
+References: <20230728161356.1784568-1-fengwei.yin@intel.com>
+ <3bbfde16-ced1-dca8-6a3f-da893e045bc5@arm.com>
+ <56c8f4f9-b54b-b0bb-250c-ec8643accfc7@intel.com>
+ <3541d2de-5cf8-2f84-8153-277e2bfc0101@arm.com>
+ <5f98748a-97ca-6426-1e24-a5675da75381@intel.com>
+From:   Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <5f98748a-97ca-6426-1e24-a5675da75381@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On 02/08/2023 13:42, Yin, Fengwei wrote:
+> 
+> 
+> On 8/2/2023 8:40 PM, Ryan Roberts wrote:
+>> On 02/08/2023 13:35, Yin, Fengwei wrote:
+>>>
+>>>
+>>> On 8/2/2023 6:27 PM, Ryan Roberts wrote:
+>>>> On 28/07/2023 17:13, Yin Fengwei wrote:
+>>>>> In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(),
+>>>>> folio_mapcount() is used to check whether the folio is shared. But it's
+>>>>> not correct as folio_mapcount() returns total mapcount of large folio.
+>>>>>
+>>>>> Use folio_estimated_sharers() here as the estimated number is enough.
+>>>>>
+>>>>> Yin Fengwei (2):
+>>>>>   madvise: don't use mapcount() against large folio for sharing check
+>>>>>   madvise: don't use mapcount() against large folio for sharing check
+>>>>>
+>>>>>  mm/huge_memory.c | 2 +-
+>>>>>  mm/madvise.c     | 6 +++---
+>>>>>  2 files changed, 4 insertions(+), 4 deletions(-)
+>>>>>
+>>>>
+>>>> As a set of fixes, I agree this is definitely an improvement, so:
+>>>>
+>>>> Reviewed-By: Ryan Roberts
+>>> Thanks.
+>>>
+>>>>
+>>>>
+>>>> But I have a couple of comments around further improvements;
+>>>>
+>>>> Once we have the scheme that David is working on to be able to provide precise
+>>>> exclusive vs shared info, we will probably want to move to that. Although that
+>>>> scheme will need access to the mm_struct of a process known to be mapping the
+>>>> folio. We have that info, but its not passed to folio_estimated_sharers() so we
+>>>> can't just reimplement folio_estimated_sharers() - we will need to rework these
+>>>> call sites again.
+>>> Yes. This could be extra work. Maybe should delay till David's work is done.
+>>
+>> What you have is definitely an improvement over what was there before. And is
+>> probably the best we can do without David's scheme. So I wouldn't delay this.
+>> Just pointing out that we will be able to make it even better later on (if
+>> David's stuff goes in).
+> Yes. I agree that we should wait for David's work ready and do fix based on that.
 
-On Wed, Aug 2, 2023 at 4:44=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.43 release.
-> There are 225 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 04 Aug 2023 06:54:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.43-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+I was suggesting the opposite - not waiting. Then we can do separate improvement
+later.
 
-6.1.43-rc2 tested.
+> 
+> 
+> Regards
+> Yin, Fengwei
+> 
+>>
+>>>
+>>>>
+>>>> Given the aspiration for most of the memory to be large folios going forwards,
+>>>> wouldn't it be better to avoid splitting the large folio where the large folio
+>>>> is mapped entirely within the range of the madvise operation? Sorry if this has
+>>>> already been discussed and decided against - I didn't follow the RFC too
+>>>> closely. Or perhaps you plan to do this as a follow up?
+>>> Yes. We are on same page. RFC patchset did that. But there are some other opens
+>>> on the RFC. So I tried to submit this part of change which is bug fix. The other
+>>> thing left in RFC is optimization (avoid split large folio if we can).
+>>>
+>>>
+>>> Regards
+>>> Yin, Fengwei
+>>>
+>>>>
+>>>> Thanks,
+>>>> Ryan
+>>>>
+>>
+>>
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
