@@ -2,375 +2,320 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0852776F35B
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 21:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA2F76F363
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 21:28:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229727AbjHCTVb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 15:21:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
+        id S229657AbjHCT2s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 15:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbjHCTVa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 15:21:30 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 422C0BA;
-        Thu,  3 Aug 2023 12:21:27 -0700 (PDT)
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 373JJZZ6032449;
-        Thu, 3 Aug 2023 19:20:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type :
- content-transfer-encoding : in-reply-to : mime-version; s=corp-2023-03-30;
- bh=ZCnhilp0ZcR2qwT/hDKmsy1NSsdhrk5WVNfkLBOCyyg=;
- b=VhuUd1tI/tMPzDj05+ixUDKZ4XD3EvlIB8MXMrBNNLa04vTBPX7i5J4PlxIBb4122tVD
- i3tFSb6FhacvyeMAMrSQHlLrjeMZfXdV+LADWVHBHfiQKAsor+m4JOqRD7X3ykZ9HFvb
- 2exJiVgJHjIumAhOqiXBB/0FOTqgRb78yYByat/HBLXaD+sryxVBCKo/ftTHgAKu0QuI
- uNixHtuyPOhnSzFVRnc8WqeZPqnbTBKNsuP+vLsDALtdzt0LMi7u3c6Pkwhq2c8leuAn
- msRpWVy9yJc86bC2h/uxluDGql6088AgHu3NvoQn/FUOm92e/UsJzvvKzG99oM/hew0u XQ== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s4tnbjd4r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Aug 2023 19:20:36 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 373HvkTE003318;
-        Thu, 3 Aug 2023 19:20:35 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2049.outbound.protection.outlook.com [104.47.66.49])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3s856rvgkb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Aug 2023 19:20:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GZKCnCYKGlnUDIgBnHWXXQX2SC97S/OOnccuWL3VbyKpMN/6M7lXdkjxt6YfgCtGzbp+gJLBfKiz6UK1bdAVA1B//Cu1vpXy4kD7JaXjCGIXzRbyCKaL+lb499455gLA186dWXW7HibwPE2SGr0FBd8PjI8oq0Ms5HNtwjeGlk76RiMqQ6pErM0daQoEnbY0vCv5vDeC1HOa8XmeBcIdnZHARUjaOX++VJgIl74qwwnt/E8IVYS9ixioaCmLmjoQjgZxVUMuVA2K8oa/MelvxwgGaOmBRuBQ30eioXY1kJUDUUaKsdfzFXvVTZ2CG4xlxJ+bGdfe8SKpj+lSt1Jznw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZCnhilp0ZcR2qwT/hDKmsy1NSsdhrk5WVNfkLBOCyyg=;
- b=fu0dsBJ9yBYp7LMuQ3qduiU+rz7t66pjbITVsIgozULeC9pzyvXTpOdcrmfBz1rGn9ORToR5L96eUIzBg25h9XoVqBknbVYJK+1ki3klHUH+YEC038GIVv/9Yvd/SLn4YpT99gA2H2g7h+F6Yf5tjmH0Y4NVXUvo7eitC2VB1RaSVuMZsri4yqpJVLus9owVSCtAUEEGh8b9HmDRrYU7klU3hRyTjNVRInOgWvcHiioTIvVbMavyM1UTyixXqpcU2YnEj5zb84uUhynAEQZZX213PF1rJ0zZS3H+BNA/nVGZy7h5Fz04fuXOUZbHhjLOa8p5wfbudhZKGgcUEvrVrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZCnhilp0ZcR2qwT/hDKmsy1NSsdhrk5WVNfkLBOCyyg=;
- b=eCgyFKtLYBio5D9F2KsaczOT7HhHO4Fjgdt/qbGYGqUf4antFKp43H+hVm45/ohofc7pvV5Zrn+wnJrjv0MrIKlqAj5mPatIbhGVpXTeIhq7Rn+ekKU51vaRTAd1aq8Kl4PZ9mO0VjSHoDR+wG5czO5vgCC6mk4W6TrrAgBes7Q=
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
- by IA1PR10MB7334.namprd10.prod.outlook.com (2603:10b6:208:3fc::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Thu, 3 Aug
- 2023 19:20:32 +0000
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::26d3:6f41:6415:8c35]) by SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::26d3:6f41:6415:8c35%3]) with mapi id 15.20.6631.046; Thu, 3 Aug 2023
- 19:20:32 +0000
-Date:   Thu, 3 Aug 2023 15:20:29 -0400
-From:   "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-To:     Suren Baghdasaryan <surenb@google.com>
-Cc:     akpm@linux-foundation.org, torvalds@linux-foundation.org,
-        jannh@google.com, willy@infradead.org, david@redhat.com,
-        peterx@redhat.com, ldufour@linux.ibm.com, vbabka@suse.cz,
-        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
-        hannes@cmpxchg.org, dave@stgolabs.net, hughd@google.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org,
-        Linus Torvalds <torvalds@linuxfoundation.org>
-Subject: Re: [PATCH v3 6/6] mm: move vma locking out of vma_prepare and
- dup_anon_vma
-Message-ID: <20230803192029.ykcxc647fihar46c@revolver>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-        Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, jannh@google.com,
-        willy@infradead.org, david@redhat.com, peterx@redhat.com,
-        ldufour@linux.ibm.com, vbabka@suse.cz, michel@lespinasse.org,
-        jglisse@google.com, mhocko@suse.com, hannes@cmpxchg.org,
-        dave@stgolabs.net, hughd@google.com, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, stable@vger.kernel.org,
-        Linus Torvalds <torvalds@linuxfoundation.org>
-References: <20230803172652.2849981-1-surenb@google.com>
- <20230803172652.2849981-7-surenb@google.com>
- <20230803183228.zreczwv3g3qp4kux@revolver>
- <CAJuCfpHUp5xVV-p=pKXp6javYq+GmUx_3cDKr9mmTnHYxsg0Mw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAJuCfpHUp5xVV-p=pKXp6javYq+GmUx_3cDKr9mmTnHYxsg0Mw@mail.gmail.com>
-User-Agent: NeoMutt/20220429
-X-ClientProxiedBy: MN2PR04CA0032.namprd04.prod.outlook.com
- (2603:10b6:208:d4::45) To SN6PR10MB3022.namprd10.prod.outlook.com
- (2603:10b6:805:d8::25)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|IA1PR10MB7334:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae476c61-0b0f-448b-1059-08db9456b48c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: klVv5v2evYeppGFuob4+qULwfvswnwKXhIBxB+Aafye4SgZIFL8idDziTq/9eZ2CR8OBBX6l/+aZze/VE6++IqVAB3dE9zv3VT/RkR9hQJiCB467cv2IVYZR372E3ihDwSFIGimulS6OXS63cR5ozUwB8QWkcBKpc97s5ZLipihKHyM1Y8oS0UPXRBk8ANgXOrdQAZmVQHqzUYCVOzyZtXSrQcDKsALvLpXmgesK46VPnMAAzTqF/kbyR3TVV2y6mcEW+/lPQ+4Lo8dqKTEtB1gkWAsNjpI5aAsFxhsbrBteCRuI9PuybycRRTE99x1BESZQzmUu47JyBo2Lo2/MxE5Eb7W7pNfydJkYLaekWPPcg5CiuHNUiF7QU4wgoiz3RxsKtMxvoQnRjITGTEsEIPDPmy7lgXW5GoUT5d6plquT32hOiNkTnJbPfYlHl9btPcPfp1iBLlpCPG43JPkiLZNNTd28HkISAndpswcYf9kO9R8xD0xrYyplYlqEKD3di5AVhjOYv1dpzoFkOvAjNJy7aKJOcfbbkvID44YiCicy78qLYQWh4dQbsiAZWlRB
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(396003)(136003)(39860400002)(376002)(366004)(346002)(451199021)(86362001)(33716001)(478600001)(38100700002)(1076003)(6506007)(186003)(26005)(83380400001)(8676002)(53546011)(41300700001)(7416002)(8936002)(6512007)(9686003)(6486002)(6666004)(316002)(66556008)(66476007)(2906002)(6916009)(5660300002)(4326008)(66946007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a0tMLzJ2YVlyRVFSQmxRcVFQYWZRRzFGZlBUT3VJNlErQmxBQXZiQmIySldW?=
- =?utf-8?B?ZWpidWRzVVhPclRwNDNSanVHYVdoaUxBWnhZSW1mcnBjL3ZjWnBOazdQUk9B?=
- =?utf-8?B?ZWo1ZEZkTGN5S0hoSnFvMndwK25QaTVMZ0ZzYmxONjI0b1hkS1VrUHlQakZ5?=
- =?utf-8?B?dzZJZC9tNUdYT3Z6WDU0Z0lLa0h3dTF6NjJIMHhIZVFYSms3dTNjd3FaWTJl?=
- =?utf-8?B?UGlFbDRxV2lKalZRWjlscm81RHdkazNvaTlMZWxoenBPVS9JRFl1Nk1vazYw?=
- =?utf-8?B?VzB2c1daNjFTOEtFUWNHaC9MZkd2eWlPQWVFMUJtUXBZLzBEMFM4VitqVmpO?=
- =?utf-8?B?LzVXZmprSEVEbXFVdXZrSnB2cHpMTXJVc2FZMGo0ZWVtZjZMQ3lQVzZCZWxH?=
- =?utf-8?B?bDJUb1V2d2xEREMwYWNFRjcwUmhBcU1yQ0ZoQ2ZObm1pVGQrYW1JRk13eXN6?=
- =?utf-8?B?b094bVJjS0ROS25FeC9xYmRrMlNkRjZpbElrRDAwSUZCUkhHam5xZTBBWWMx?=
- =?utf-8?B?UlJ4bEJHMUVHcEdJTTBDcjBnaTJvSWNBS3I4RHhSR0d3aFhNT3IwOGVyVFBH?=
- =?utf-8?B?V1JJMUZWTVI2SEtOdVMrSVBGbVgxQUNKcVNIRDNOL2twVzNVRE54aTE4Qk1F?=
- =?utf-8?B?aG02SmYrUGthQUcyWmpNREVoRm9pMnVSQXRzOEp5VitmbXhEZmFzYkpGbWJj?=
- =?utf-8?B?K3ZLVVBpMFlnT0l1ZmppZlNCaXJXMytlcjJLeXNqcGFQUzgxOUZQbVl6QXo4?=
- =?utf-8?B?a3FjdmdOSDlOaTNFOGNIOGFDNXU4TDQvYWVndDNET3JGUm14R0g4cnhOV1lQ?=
- =?utf-8?B?aWJJWmU0eXBKQzkwWEJUTWV4ZTZYWTB1YWtQTDB1bFM5eXpPRXJlVGVtYU5v?=
- =?utf-8?B?bTdpZXVoeXpMeEZ4aDFKTGtJN0hsMC9yQWN2MnROUjU2K0U1RXdOTEdRTE1r?=
- =?utf-8?B?ZHpZSjVMd0xZNDRkRFU4ZklkU1htbG96NHAzNXRHTHZLN0tkeXYwMzAxY1B6?=
- =?utf-8?B?eDVCTDc4N0RsTXVYNnFHTGVOSXhNUndKSnFpZnNyaHRUVEoyZG9mVkQ2d3ZD?=
- =?utf-8?B?L2p0OVZ3UDhqSmtXNWpHMDZZVSt4REZSSTlSMS9jRlBLNTZBQ2xlK2RObDVW?=
- =?utf-8?B?T0xqZG9ieitkaHFPMTB0bmVkMlRUcDM4SEJjTzlkZEs5ZXJWemxjanA0ZzRZ?=
- =?utf-8?B?ajF2NWVHK093dndwOTNieFNlN3o3WjE3ZWZMbFFSUFZIaDBUb2h0SVdCYnpy?=
- =?utf-8?B?Vko4YlZnZ2NpZTIyTUN5eE9WdGpuVTdHVVE3bGI4OWU0SGtWVEd4NTNaUmox?=
- =?utf-8?B?M0EydEQxMXFWZ3RkdUoweEhKTUkvSU5DMHREMk9HT1lxdmlOYmZPbzJkUW43?=
- =?utf-8?B?K2Q0YW40c1lzMldjYlZ0VTNlRHUxN3NKbTZ0ZWZ3MmJHalFpVXpPQWEveFJ5?=
- =?utf-8?B?VmZ4MGhoNUZ4cEhOZFBsSURsYm02TlNKNlcxRStZOU0xQ3BjYzlIQmU3TFRV?=
- =?utf-8?B?YTRjWHlZamNiOUxlemZ6bXFBaWFoNmwzN1NYcEQyU1ExSWh3REtQOEJPVTRD?=
- =?utf-8?B?Ui9NV0xlcHNYYm1OUnNkYis0ZFlWWTVmRG9GREpFWjdKKzVERHZEbDd6RE1N?=
- =?utf-8?B?Z2dsRVovVlUvOU9hRjBQWUhRS1hRcTU0Yjcxc3o1cWhGbU5pL0Y5M1UrWkpL?=
- =?utf-8?B?RXNUMmk5QlpDV2l3VWpuTGNVTGN3RC9lUWp2OG1GOThUVWZ3YVhkVHpIN2Fn?=
- =?utf-8?B?U05GNy9pN1BHcEh3QnZ5bmphZVgvTEFnWXhwbFhwVDVUblJtWUJmSWZ5MDRk?=
- =?utf-8?B?eHBhc2hxeUZ0Z3BXVmp6VlRXZHIyVmVsWUV2MHJjYzFFUm5tb3lGUUF4S0NN?=
- =?utf-8?B?Q2pzcWh1YzRWZ1dmT1lXcmtla2lsV0FPOTlFLzRid2VzNzRHaWo0ejNJa0VJ?=
- =?utf-8?B?Nm16czBsZWo3WjRlUDlQMkxmK0h5ayt6cXlXaC9EL3pLYmxZYm5HUW1jR1pK?=
- =?utf-8?B?S1ltejIyU01QUnBRbW1XbU1MNGxwdVJ5bUw5ME0zTmZUNTlEakFnWHZqbzNm?=
- =?utf-8?B?VG41MFIraUpxaW9KcnlBSVhpYjdGQ3BsblVCMG5xRlIxTVN4cmQvbGxoM0tk?=
- =?utf-8?B?WVYrSGJDOTRYWW5sbEtDZVFMajY2UDVSS0ltS3B4djNaSjkwZzFFK2VLYk9h?=
- =?utf-8?B?MGc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?OGRKbVRLL245V2RxQ2RQM0Z2NFNXQ0tYT0lxNVM0UDI5OW9oWk12VW43Q1lj?=
- =?utf-8?B?Q0hYRUUvTzZOZEJyd1Jya2V5Y25kaXFrQjFwaUhGS1JyVlREeGNCS1ZUQmN4?=
- =?utf-8?B?WUlma3p1WEsyTXdUMmZYcjhYSnVFNVpSN0QxOVNmMUpHc3c3S1lqNkN3SHpR?=
- =?utf-8?B?bHhaZ1A2cFJGQy9rNHplU3piRTQ2THN4SVkyYTZTQm1TcXd1L2tURUVHcDZK?=
- =?utf-8?B?eDJKY3kvMTR2RXdVVjQ5Z0JOOGZuN3dsL2NFd3FBekFMYXJ4cTNiaUF1TXNI?=
- =?utf-8?B?cDk2ckRNTC8xd2xZTHNrZlF5SVhYVG9wSGErQ2xJVUJsdXpxdmFTSENGcFNS?=
- =?utf-8?B?SUxRaysyZ09ZeG1KV3kva09UQmcrNDg2ZlAva1dKdEQxeHI5eUJLQmdtRUU0?=
- =?utf-8?B?eTkvU29IQktwN2oxUDJvVG9oNTdoTGRyNkFhanhsM2pzeTF6Ky9BNjhlU0I1?=
- =?utf-8?B?Q3grTm1sYzBjbTJ0VXE0ZVVlVUZsMHRHTmFqWGUrR3Z5ZUFodWVCK2RQVmFo?=
- =?utf-8?B?a3VzM1BZVnBkLzlZQitnR01mM016V2ZIaUNFaDd1T2Vvd3d1QW9MaHAxcXQy?=
- =?utf-8?B?bXJtNDhJbUY1UTViaFJBbmlNaGFzMkZROHNuQ1dFc2RnOUQ2QWNwblZoclBB?=
- =?utf-8?B?WjFQakVtL2NpazFMREp1Tm01eTZ6SjJubnVaSkNhTWhyV0VTbGlYNkEyTmxQ?=
- =?utf-8?B?dTZJN3Q3dHduM0RiZzZNTXB3cHg3USt6TDluWU5qM3dHUUNQRXlVQXg2M3hx?=
- =?utf-8?B?WmtsZG15cTNIN040UUNKcktuemY2Q1Zyc0pkTXdPSnlIWUpTNUVrQ1Y3WFM4?=
- =?utf-8?B?OCt3RFpFY2JFbitSVzdONHdOZ0VYOExYS0xZR2pzZ3ZGcjhKVFpxL2Iwdis0?=
- =?utf-8?B?SHA2ZFZrNmN0RlNPUnQvTXhlWElwNUFoenVsRG5MMmhDOWwwd1JNUVFBN0sy?=
- =?utf-8?B?OE5GQWJPVTRRcGN1SEZGSGZVZmRxSFRhUm9Jb1JCcUJCU1ZkSWppMTFmc1o5?=
- =?utf-8?B?bU5RZkNpTDdYZGtsdUNpNm5aSUVTZ3d4VjgvZ3VMYzJRTnViT0gzV1lXbkI3?=
- =?utf-8?B?aTVQenFrejBqL2xWbkNIZ2Q1YkhZdVhVVlpWSUZwV2dxSmFnL25rZXZsV2ZU?=
- =?utf-8?B?TjNIbEh3L3JkMzBQTWRBMjJkc2N5K1NDcEV2UmJpcU1ieE5kRmlaR2srOXZI?=
- =?utf-8?B?bmVMU0IvZFZPMWpNZGdYRVE4WlhlR0tmNEw3cWoybnpDV2IwTkF2ZWxTdkov?=
- =?utf-8?B?ZXpnOFJvNWhRK1laLy9TNkpyTlZwREhBcGNQak52TXFoSjM4eXkyeXVWeEJR?=
- =?utf-8?B?SU80a2FHSW5nY0ZOaWozbEZRQUd3emtZUWpGY2tDVVB4b1ZXT1hTKzB5b1Jr?=
- =?utf-8?B?cnNiN2xrZkFJMTJGNmhPaWlHMUJzUStzYnRKSUYwamQxYytCVXJ0TCtVaUdr?=
- =?utf-8?B?V2g1eVk5MHZYR1l1RFVqYTZuMkh3eHF6Y1RNSG9FaEZmeStaRDBqSFp3UndV?=
- =?utf-8?B?UXZrMUhkL3dtU2NRQjZPRENZQ0lyd29SVEtvY0VmRXlQTDdORHJOMW84dE4w?=
- =?utf-8?Q?eaJWfGy3sil7A3MB0wQih62us=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae476c61-0b0f-448b-1059-08db9456b48c
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2023 19:20:32.1043
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H4e0vPKLX1+eMbWmhfaGXOQdINLXAWHApnilf8dQC6YWjOlTsZHs0paRpDoeJaa0NtmW4AfPu+zWdUetucPwzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7334
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-03_20,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 spamscore=0
- adultscore=0 malwarescore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308030174
-X-Proofpoint-ORIG-GUID: b0G_q93J5LB_DMyYvAX1-FEJZKzWqJVC
-X-Proofpoint-GUID: b0G_q93J5LB_DMyYvAX1-FEJZKzWqJVC
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229495AbjHCT2r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 15:28:47 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0DF3E1A8;
+        Thu,  3 Aug 2023 12:28:46 -0700 (PDT)
+Received: from UbuntuVM-18.efytirfs5hsengjwslc1ligxab.xx.internal.cloudapp.net (unknown [20.72.208.6])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 29544207F5AF;
+        Thu,  3 Aug 2023 12:28:45 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 29544207F5AF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1691090925;
+        bh=d/Q0tfkeWRaqXZbjrsVExBbWs12KQlVq15rFnfwJiBg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=isi4Quf1AWk8mU9YL/qO/DvCjakYV3nqa7wyZgPloXIvrEoeS7FQoWqVDX0i9FmZQ
+         0ksh37AtqX1ROZjF0f36O5CDiJjxtOVfDr0JU9sXAcpeGfiMAFVb/Kkv4qMtjHnMwk
+         PutE8LMqyT1zASd7n2hujny/b8oGZrjG1Z/abVT0=
+From:   Hardik Garg <hargar@linux.microsoft.com>
+To:     stable@vger.kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, shayd@nvidia.com,
+        saeedm@nvidia.com, fred@cloudflare.com, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1 5.15] net/mlx5: Free irqs only on shutdown callback
+Date:   Thu,  3 Aug 2023 19:28:32 +0000
+Message-Id: <20230803192832.22966-1-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-18.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_SBL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-* Suren Baghdasaryan <surenb@google.com> [230803 15:16]:
-> On Thu, Aug 3, 2023 at 11:32=E2=80=AFAM Liam R. Howlett <Liam.Howlett@ora=
-cle.com> wrote:
-> >
-> > * Suren Baghdasaryan <surenb@google.com> [230803 13:27]:
-> > > vma_prepare() is currently the central place where vmas are being loc=
-ked
-> > > before vma_complete() applies changes to them. While this is convenie=
-nt,
-> > > it also obscures vma locking and makes it harder to follow the lockin=
-g
-> > > rules. Move vma locking out of vma_prepare() and take vma locks
-> > > explicitly at the locations where vmas are being modified. Move vma
-> > > locking and replace it with an assertion inside dup_anon_vma() to fur=
-ther
-> > > clarify the locking pattern inside vma_merge().
-> > >
-> > > Suggested-by: Linus Torvalds <torvalds@linuxfoundation.org>
-> > > Suggested-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > ---
-> > >  mm/mmap.c | 29 ++++++++++++++++++-----------
-> > >  1 file changed, 18 insertions(+), 11 deletions(-)
-> > >
-> > > diff --git a/mm/mmap.c b/mm/mmap.c
-> > > index 850a39dee075..ae28d6f94c34 100644
-> > > --- a/mm/mmap.c
-> > > +++ b/mm/mmap.c
-> > > @@ -476,16 +476,6 @@ static inline void init_vma_prep(struct vma_prep=
-are *vp,
-> > >   */
-> > >  static inline void vma_prepare(struct vma_prepare *vp)
-> > >  {
-> > > -     vma_start_write(vp->vma);
-> > > -     if (vp->adj_next)
-> > > -             vma_start_write(vp->adj_next);
-> > > -     if (vp->insert)
-> > > -             vma_start_write(vp->insert);
-> > > -     if (vp->remove)
-> > > -             vma_start_write(vp->remove);
-> > > -     if (vp->remove2)
-> > > -             vma_start_write(vp->remove2);
-> > > -
-> > >       if (vp->file) {
-> > >               uprobe_munmap(vp->vma, vp->vma->vm_start, vp->vma->vm_e=
-nd);
-> > >
-> > > @@ -618,7 +608,7 @@ static inline int dup_anon_vma(struct vm_area_str=
-uct *dst,
-> > >        * anon pages imported.
-> > >        */
-> > >       if (src->anon_vma && !dst->anon_vma) {
-> > > -             vma_start_write(dst);
-> > > +             vma_assert_write_locked(dst);
-> > >               dst->anon_vma =3D src->anon_vma;
-> > >               return anon_vma_clone(dst, src);
-> > >       }
-> > > @@ -650,10 +640,12 @@ int vma_expand(struct vma_iterator *vmi, struct=
- vm_area_struct *vma,
-> > >       bool remove_next =3D false;
-> > >       struct vma_prepare vp;
-> > >
-> > > +     vma_start_write(vma);
-> > >       if (next && (vma !=3D next) && (end =3D=3D next->vm_end)) {
-> > >               int ret;
-> > >
-> > >               remove_next =3D true;
-> > > +             vma_start_write(next);
-> > >               ret =3D dup_anon_vma(vma, next);
-> > >               if (ret)
-> > >                       return ret;
-> > > @@ -708,6 +700,8 @@ int vma_shrink(struct vma_iterator *vmi, struct v=
-m_area_struct *vma,
-> > >       if (vma_iter_prealloc(vmi))
-> > >               return -ENOMEM;
-> > >
-> > > +     vma_start_write(vma);
-> > > +
-> > >       init_vma_prep(&vp, vma);
-> > >       vma_prepare(&vp);
-> > >       vma_adjust_trans_huge(vma, start, end, 0);
-> > > @@ -940,16 +934,21 @@ struct vm_area_struct *vma_merge(struct vma_ite=
-rator *vmi, struct mm_struct *mm,
-> > >       if (!merge_prev && !merge_next)
-> > >               return NULL; /* Not mergeable. */
-> > >
-> > > +     if (prev)
-> >
-> > Maybe if (merge_prev) instead of prev?  We will write lock prev if it
-> > exists and won't change with the current check (case 3 and 8,
-> > specifically), with this change case 4 will need to lock prev as it
-> > shifts prev->vm_end lower.
->=20
-> Ah, I see. I was trying to make sure we don't miss any locks and
-> over-locked it for case 3 and 8.
-> Ok, I'll change the check to if (merge_prev) and will add a separate
-> locking for case 4. I think that's what you meant?
+commit 9c2d08010963 ("net/mlx5: Free irqs only on shutdown callback")
+backport this v6.4 commit to v6.1 and v5.15
 
-Yes, I think that will cover all the cases.  Thanks.
+Whenever a shutdown is invoked, free irqs only and keep mlx5_irq
+synthetic wrapper intact in order to avoid use-after-free on
+system shutdown.
 
->=20
-> >
-> > > +             vma_start_write(prev);
-> > > +
-> > >       res =3D vma =3D prev;
-> > >       remove =3D remove2 =3D adjust =3D NULL;
-> > >
-> > >       /* Can we merge both the predecessor and the successor? */
-> > >       if (merge_prev && merge_next &&
-> > >           is_mergeable_anon_vma(prev->anon_vma, next->anon_vma, NULL)=
-) {
-> > > +             vma_start_write(next);
-> > >               remove =3D next;                          /* case 1 */
-> > >               vma_end =3D next->vm_end;
-> > >               err =3D dup_anon_vma(prev, next);
-> > >               if (curr) {                             /* case 6 */
-> > > +                     vma_start_write(curr);
-> > >                       remove =3D curr;
-> > >                       remove2 =3D next;
-> > >                       if (!next->anon_vma)
-> > > @@ -957,6 +956,7 @@ struct vm_area_struct *vma_merge(struct vma_itera=
-tor *vmi, struct mm_struct *mm,
-> > >               }
-> > >       } else if (merge_prev) {                        /* case 2 */
-> > >               if (curr) {
-> > > +                     vma_start_write(curr);
-> > >                       err =3D dup_anon_vma(prev, curr);
-> > >                       if (end =3D=3D curr->vm_end) {      /* case 7 *=
-/
-> > >                               remove =3D curr;
-> > > @@ -966,6 +966,7 @@ struct vm_area_struct *vma_merge(struct vma_itera=
-tor *vmi, struct mm_struct *mm,
-> > >                       }
-> > >               }
-> > >       } else { /* merge_next */
-> > > +             vma_start_write(next);
-> > >               res =3D next;
-> > >               if (prev && addr < prev->vm_end) {      /* case 4 */
-> > >                       vma_end =3D addr;
-> > > @@ -983,6 +984,7 @@ struct vm_area_struct *vma_merge(struct vma_itera=
-tor *vmi, struct mm_struct *mm,
-> > >                       vma_pgoff =3D next->vm_pgoff - pglen;
-> > >                       if (curr) {                     /* case 8 */
-> > >                               vma_pgoff =3D curr->vm_pgoff;
-> > > +                             vma_start_write(curr);
-> > >                               remove =3D curr;
-> > >                               err =3D dup_anon_vma(next, curr);
-> > >                       }
-> > > @@ -2373,6 +2375,9 @@ int __split_vma(struct vma_iterator *vmi, struc=
-t vm_area_struct *vma,
-> > >       if (new->vm_ops && new->vm_ops->open)
-> > >               new->vm_ops->open(new);
-> > >
-> > > +     vma_start_write(vma);
-> > > +     vma_start_write(new);
-> > > +
-> > >       init_vma_prep(&vp, vma);
-> > >       vp.insert =3D new;
-> > >       vma_prepare(&vp);
-> > > @@ -3078,6 +3083,8 @@ static int do_brk_flags(struct vma_iterator *vm=
-i, struct vm_area_struct *vma,
-> > >               if (vma_iter_prealloc(vmi))
-> > >                       goto unacct_fail;
-> > >
-> > > +             vma_start_write(vma);
-> > > +
-> > >               init_vma_prep(&vp, vma);
-> > >               vma_prepare(&vp);
-> > >               vma_adjust_trans_huge(vma, vma->vm_start, addr + len, 0=
-);
-> > > --
-> > > 2.41.0.585.gd2178a4bd4-goog
-> > >
+for example:
+==================================================================
+BUG: KASAN: use-after-free in _find_first_bit+0x66/0x80
+Read of size 8 at addr ffff88823fc0d318 by task kworker/u192:0/13608
+
+CPU: 25 PID: 13608 Comm: kworker/u192:0 Tainted: 
+G    B   W  O  6.1.21-cloudflare-kasan-2023.3.21 #1
+Hardware name: GIGABYTE R162-R2-GEN0/MZ12-HD2-CD, BIOS R14 05/03/2021
+Workqueue: mlx5e mlx5e_tx_timeout_work [mlx5_core]
+Call Trace:
+  <TASK>
+  dump_stack_lvl+0x34/0x48
+  print_report+0x170/0x473
+  ? _find_first_bit+0x66/0x80
+  kasan_report+0xad/0x130
+  ? _find_first_bit+0x66/0x80
+  _find_first_bit+0x66/0x80
+  mlx5e_open_channels+0x3c5/0x3a10 [mlx5_core]
+  ? console_unlock+0x2fa/0x430
+  ? _raw_spin_lock_irqsave+0x8d/0xf0
+  ? _raw_spin_unlock_irqrestore+0x42/0x80
+  ? preempt_count_add+0x7d/0x150
+  ? __wake_up_klogd.part.0+0x7d/0xc0
+  ? vprintk_emit+0xfe/0x2c0
+  ? mlx5e_trigger_napi_sched+0x40/0x40 [mlx5_core]
+  ? dev_attr_show.cold+0x35/0x35
+  ? devlink_health_do_dump.part.0+0x174/0x340
+  ? devlink_health_report+0x504/0x810
+  ? mlx5e_reporter_tx_timeout+0x29d/0x3a0 [mlx5_core]
+  ? mlx5e_tx_timeout_work+0x17c/0x230 [mlx5_core]
+  ? process_one_work+0x680/0x1050
+  mlx5e_safe_switch_params+0x156/0x220 [mlx5_core]
+  ? mlx5e_switch_priv_channels+0x310/0x310 [mlx5_core]
+  ? mlx5_eq_poll_irq_disabled+0xb6/0x100 [mlx5_core]
+  mlx5e_tx_reporter_timeout_recover+0x123/0x240 [mlx5_core]
+  ? __mutex_unlock_slowpath.constprop.0+0x2b0/0x2b0
+  devlink_health_reporter_recover+0xa6/0x1f0
+  devlink_health_report+0x2f7/0x810
+  ? vsnprintf+0x854/0x15e0
+  mlx5e_reporter_tx_timeout+0x29d/0x3a0 [mlx5_core]
+  ? mlx5e_reporter_tx_err_cqe+0x1a0/0x1a0 [mlx5_core]
+  ? mlx5e_tx_reporter_timeout_dump+0x50/0x50 [mlx5_core]
+  ? mlx5e_tx_reporter_dump_sq+0x260/0x260 [mlx5_core]
+  ? newidle_balance+0x9b7/0xe30
+  ? psi_group_change+0x6a7/0xb80
+  ? mutex_lock+0x96/0xf0
+  ? __mutex_lock_slowpath+0x10/0x10
+  mlx5e_tx_timeout_work+0x17c/0x230 [mlx5_core]
+  process_one_work+0x680/0x1050
+  worker_thread+0x5a0/0xeb0
+  ? process_one_work+0x1050/0x1050
+  kthread+0x2a2/0x340
+  ? kthread_complete_and_exit+0x20/0x20
+  ret_from_fork+0x22/0x30
+  </TASK>
+
+Freed by task 1:
+  kasan_save_stack+0x23/0x50
+  kasan_set_track+0x21/0x30
+  kasan_save_free_info+0x2a/0x40
+  ____kasan_slab_free+0x169/0x1d0
+  slab_free_freelist_hook+0xd2/0x190
+  __kmem_cache_free+0x1a1/0x2f0
+  irq_pool_free+0x138/0x200 [mlx5_core]
+  mlx5_irq_table_destroy+0xf6/0x170 [mlx5_core]
+  mlx5_core_eq_free_irqs+0x74/0xf0 [mlx5_core]
+  shutdown+0x194/0x1aa [mlx5_core]
+  pci_device_shutdown+0x75/0x120
+  device_shutdown+0x35c/0x620
+  kernel_restart+0x60/0xa0
+  __do_sys_reboot+0x1cb/0x2c0
+  do_syscall_64+0x3b/0x90
+  entry_SYSCALL_64_after_hwframe+0x4b/0xb5
+
+The buggy address belongs to the object at ffff88823fc0d300
+  which belongs to the cache kmalloc-192 of size 192
+The buggy address is located 24 bytes inside of
+  192-byte region [ffff88823fc0d300, ffff88823fc0d3c0)
+
+The buggy address belongs to the physical page:
+page:0000000010139587 refcount:1 mapcount:0 mapping:0000000000000000
+index:0x0 pfn:0x23fc0c
+head:0000000010139587 order:1 compound_mapcount:0 compound_pincount:0
+flags: 0x2ffff800010200(slab|head|node=0|zone=2|lastcpupid=0x1ffff)
+raw: 002ffff800010200 0000000000000000 dead000000000122 ffff88810004ca00
+raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+  ffff88823fc0d200: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff88823fc0d280: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+ >ffff88823fc0d300: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                             ^
+  ffff88823fc0d380: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+  ffff88823fc0d400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
+general protection fault, probably for non-canonical address
+0xdffffc005c40d7ac: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: probably user-memory-access in range 
+[0x00000002e206bd60-0x00000002e206bd67]
+CPU: 25 PID: 13608 Comm: kworker/u192:0 Tainted: 
+G    B   W  O  6.1.21-cloudflare-kasan-2023.3.21 #1
+Hardware name: GIGABYTE R162-R2-GEN0/MZ12-HD2-CD, BIOS R14 05/03/2021
+Workqueue: mlx5e mlx5e_tx_timeout_work [mlx5_core]
+RIP: 0010:__alloc_pages+0x141/0x5c0
+Call Trace:
+  <TASK>
+  ? sysvec_apic_timer_interrupt+0xa0/0xc0
+  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+  ? __alloc_pages_slowpath.constprop.0+0x1ec0/0x1ec0
+  ? _raw_spin_unlock_irqrestore+0x3d/0x80
+  __kmalloc_large_node+0x80/0x120
+  ? kvmalloc_node+0x4e/0x170
+  __kmalloc_node+0xd4/0x150
+  kvmalloc_node+0x4e/0x170
+  mlx5e_open_channels+0x631/0x3a10 [mlx5_core]
+  ? console_unlock+0x2fa/0x430
+  ? _raw_spin_lock_irqsave+0x8d/0xf0
+  ? _raw_spin_unlock_irqrestore+0x42/0x80
+  ? preempt_count_add+0x7d/0x150
+  ? __wake_up_klogd.part.0+0x7d/0xc0
+  ? vprintk_emit+0xfe/0x2c0
+  ? mlx5e_trigger_napi_sched+0x40/0x40 [mlx5_core]
+  ? dev_attr_show.cold+0x35/0x35
+  ? devlink_health_do_dump.part.0+0x174/0x340
+  ? devlink_health_report+0x504/0x810
+  ? mlx5e_reporter_tx_timeout+0x29d/0x3a0 [mlx5_core]
+  ? mlx5e_tx_timeout_work+0x17c/0x230 [mlx5_core]
+  ? process_one_work+0x680/0x1050
+  mlx5e_safe_switch_params+0x156/0x220 [mlx5_core]
+  ? mlx5e_switch_priv_channels+0x310/0x310 [mlx5_core]
+  ? mlx5_eq_poll_irq_disabled+0xb6/0x100 [mlx5_core]
+  mlx5e_tx_reporter_timeout_recover+0x123/0x240 [mlx5_core]
+  ? __mutex_unlock_slowpath.constprop.0+0x2b0/0x2b0
+  devlink_health_reporter_recover+0xa6/0x1f0
+  devlink_health_report+0x2f7/0x810
+  ? vsnprintf+0x854/0x15e0
+  mlx5e_reporter_tx_timeout+0x29d/0x3a0 [mlx5_core]
+  ? mlx5e_reporter_tx_err_cqe+0x1a0/0x1a0 [mlx5_core]
+  ? mlx5e_tx_reporter_timeout_dump+0x50/0x50 [mlx5_core]
+  ? mlx5e_tx_reporter_dump_sq+0x260/0x260 [mlx5_core]
+  ? newidle_balance+0x9b7/0xe30
+  ? psi_group_change+0x6a7/0xb80
+  ? mutex_lock+0x96/0xf0
+  ? __mutex_lock_slowpath+0x10/0x10
+  mlx5e_tx_timeout_work+0x17c/0x230 [mlx5_core]
+  process_one_work+0x680/0x1050
+  worker_thread+0x5a0/0xeb0
+  ? process_one_work+0x1050/0x1050
+  kthread+0x2a2/0x340
+  ? kthread_complete_and_exit+0x20/0x20
+  ret_from_fork+0x22/0x30
+  </TASK>
+---[ end trace 0000000000000000  ]---
+RIP: 0010:__alloc_pages+0x141/0x5c0
+Code: e0 39 a3 96 89 e9 b8 22 01 32 01 83 e1 0f 48 89 fa 01 c9 48 c1 ea
+03 d3 f8 83 e0 03 89 44 24 6c 48 b8 00 00 00 00 00 fc ff df <80> 3c 02
+00 0f 85 fc 03 00 00 89 e8 4a 8b 14 f5 e0 39 a3 96 4c 89
+RSP: 0018:ffff888251f0f438 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 1ffff1104a3e1e8b RCX: 0000000000000000
+RDX: 000000005c40d7ac RSI: 0000000000000003 RDI: 00000002e206bd60
+RBP: 0000000000052dc0 R08: ffff8882b0044218 R09: ffff8882b0045e8a
+R10: fffffbfff300fefc R11: ffff888167af4000 R12: 0000000000000003
+R13: 0000000000000000 R14: 00000000696c7070 R15: ffff8882373f4380
+FS:  0000000000000000(0000) GS:ffff88bf2be80000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005641d031eee8 CR3: 0000002e7ca14000 CR4: 0000000000350ee0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x11000000 from 0xffffffff81000000 (relocation range:
+0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception  ]---]
+
+Reported-by: Frederick Lawler <fred@cloudflare.com>
+Link: https://lore.kernel.org/netdev/be5b9271-7507-19c5-ded1-fa78f1980e69@cloudflare.com
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+[hardik: Refer to the irqn member of the mlx5_irq struct, instead of
+ the msi_map, since we don't have upstream v6.4 commit 235a25fe28de
+ ("net/mlx5: Modify struct mlx5_irq to use struct msi_map")].
+[hardik: Refer to the pf_pool member of the mlx5_irq_table struct,
+ instead of pcif_pool, since we don't have upstream v6.4 commit
+ 8bebfd767909 ("net/mlx5: Improve naming of pci function vectors")].
+ 
+Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/eq.c  |  2 +-
+ .../ethernet/mellanox/mlx5/core/mlx5_irq.h    |  1 +
+ .../net/ethernet/mellanox/mlx5/core/pci_irq.c | 29 +++++++++++++++++++
+ 3 files changed, 31 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+index a0242dc15741..e112b5685b02 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+@@ -1061,7 +1061,7 @@ void mlx5_core_eq_free_irqs(struct mlx5_core_dev *dev)
+ 	mutex_lock(&table->lock); /* sync with create/destroy_async_eq */
+ 	if (!mlx5_core_is_sf(dev))
+ 		clear_rmap(dev);
+-	mlx5_irq_table_destroy(dev);
++	mlx5_irq_table_free_irqs(dev);
+ 	mutex_unlock(&table->lock);
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
+index 23cb63fa4588..2e728e4e81fa 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
+@@ -14,6 +14,7 @@ int mlx5_irq_table_init(struct mlx5_core_dev *dev);
+ void mlx5_irq_table_cleanup(struct mlx5_core_dev *dev);
+ int mlx5_irq_table_create(struct mlx5_core_dev *dev);
+ void mlx5_irq_table_destroy(struct mlx5_core_dev *dev);
++void mlx5_irq_table_free_irqs(struct mlx5_core_dev *dev);
+ int mlx5_irq_table_get_num_comp(struct mlx5_irq_table *table);
+ int mlx5_irq_table_get_sfs_vec(struct mlx5_irq_table *table);
+ struct mlx5_irq_table *mlx5_irq_table_get(struct mlx5_core_dev *dev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index 662f1d55e30e..5e0f7d96aac5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -591,6 +591,24 @@ static void irq_pools_destroy(struct mlx5_irq_table *table)
+ 	irq_pool_free(table->pf_pool);
+ }
+ 
++static void mlx5_irq_pool_free_irqs(struct mlx5_irq_pool *pool)
++{
++	struct mlx5_irq *irq;
++	unsigned long index;
++
++	xa_for_each(&pool->irqs, index, irq)
++		free_irq(irq->irqn, &irq->nh);
++}
++
++static void mlx5_irq_pools_free_irqs(struct mlx5_irq_table *table)
++{
++	if (table->sf_ctrl_pool) {
++		mlx5_irq_pool_free_irqs(table->sf_comp_pool);
++		mlx5_irq_pool_free_irqs(table->sf_ctrl_pool);
++	}
++	mlx5_irq_pool_free_irqs(table->pf_pool);
++}
++
+ /* irq_table API */
+ 
+ int mlx5_irq_table_init(struct mlx5_core_dev *dev)
+@@ -670,6 +688,17 @@ void mlx5_irq_table_destroy(struct mlx5_core_dev *dev)
+ 	pci_free_irq_vectors(dev->pdev);
+ }
+ 
++void mlx5_irq_table_free_irqs(struct mlx5_core_dev *dev)
++{
++	struct mlx5_irq_table *table = dev->priv.irq_table;
++
++	if (mlx5_core_is_sf(dev))
++		return;
++
++	mlx5_irq_pools_free_irqs(table);
++	pci_free_irq_vectors(dev->pdev);
++}
++
+ int mlx5_irq_table_get_sfs_vec(struct mlx5_irq_table *table)
+ {
+ 	if (table->sf_comp_pool)
+-- 
+2.34.1
+
+
